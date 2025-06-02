@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB98FACB577
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF93ACB758
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09EC57A2B2B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10154C7AE2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729FF225792;
-	Mon,  2 Jun 2025 14:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136BA226D12;
+	Mon,  2 Jun 2025 15:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14mk6no3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8+EaF4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2B224B02;
-	Mon,  2 Jun 2025 14:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33C7226D0A;
+	Mon,  2 Jun 2025 15:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876117; cv=none; b=f8gFXH4C4QyLzdui66JNQ8dChqw5bUa/rXxG/aiwu3IFQq9rMfik7SxKe2tpzxrXr6JqT/ctHJ9sxCIq57JCaa+H5HGdf43CKjdu9XSy9OYke0Pw/9aW9JPKWitmbLXa8lCBv6n7Yrcey88CnWmhP9D4dgoZOJY/1iWEv9ynRS0=
+	t=1748877123; cv=none; b=XmRwhZLXe+A4mQKurZnjC/1mrn5xof08DzOyUXwuONJx1gT9C6olM6qlDr55vkkLgTKACJanHtm55VUvd+8FVP/pz84/qSENOyz518GHZw77QhLTvaTX9Yfx96lSxYtNf6NEbkfactDjZVXDb+k5NOdSLpxw+/c9Wx6xXmUh44Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876117; c=relaxed/simple;
-	bh=gYZctUuCMJ4ZI3Z/29qtbhcRvJ0X0l0S67che+p5ZgY=;
+	s=arc-20240116; t=1748877123; c=relaxed/simple;
+	bh=zfXeZYyKUops0886JlJLblAwfVfSFA2VBZ5TIdZbr3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFsqHxtZT/blJTh8yof6LhyARAKjfH3nFEoY6J8u9dAWICdlBYeVTlzJp/5YOH3oyTIzR/mtF+/cshuD4gpcKSFxPbWA20+6eIeikTtX10puKldSXfH2hyDajoCAaHYnSg5jb+O1SSQx1cxfF1NDRrPv3UjtApAyPgXBH7JR6ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14mk6no3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9458FC4CEEE;
-	Mon,  2 Jun 2025 14:55:16 +0000 (UTC)
+	 MIME-Version; b=bS2fT2uH1xadPmIUOzl8npdXb8h/nBMMbeiLoV8PUNb4vhZKlvCThN8S9ss86YNxM4WLC49He9gyfJWAPUx90xsojnIWGRwEtiA4k5q0XznDhTl70Y75ajR6Q8yFx38y9lLg5WLMXzETRpG+r9LtWfboXs6WwJdWgIIIskIXP04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8+EaF4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3979C4CEEB;
+	Mon,  2 Jun 2025 15:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876117;
-	bh=gYZctUuCMJ4ZI3Z/29qtbhcRvJ0X0l0S67che+p5ZgY=;
+	s=korg; t=1748877123;
+	bh=zfXeZYyKUops0886JlJLblAwfVfSFA2VBZ5TIdZbr3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14mk6no36OIUhwMx3+0gR5ddV3atFHDNQh8I7F1Lq2+cXbq3aTN1fkw9MyVTCfA1B
-	 Sc+idxlgKM9KbZZtBDSDZCefOeqnUCchGqcDjn/JW3lNE5BxbQCbvraGx0kGsAizai
-	 4mRoYE6l8b2WJseeALgU/h26l1FlMXlPGoKHL2kw=
+	b=M8+EaF4FK8ACsFVfRQYH42SxlChmoryfGHzUiAY9B3j0W2W2WbpXXu04lOhIcDCHD
+	 E6qd71t/mEaJ1dX6+ptZyhdrQvdzBArN6enWXoJ7yqMy6mUvkSVX7GAT5yE+uBg/1C
+	 ua74j6z5tD4pE22m6VfBFNL0IPeXOQtZm2vyZcks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/207] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
+Subject: [PATCH 6.1 172/325] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
 Date: Mon,  2 Jun 2025 15:47:28 +0200
-Message-ID: <20250602134301.714215915@linuxfoundation.org>
+Message-ID: <20250602134326.811538254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Valentin Caron <valentin.caron@foss.st.com>
 
-[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
+[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
+Cross case in pinctrl framework make impossible to an hogged pin and
+another, not hogged, used within the same device-tree node. For example
+with this simplified device-tree :
 
-fib_table_insert() and fib_table_delete() are called from 3 paths
+  &pinctrl {
+    pinctrl_pin_1: pinctrl-pin-1 {
+      pins = "dummy-pinctrl-pin";
+    };
+  };
 
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
+  &rtc {
+    pinctrl-names = "default"
+    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
 
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
+    rtc_pin_1: rtc-pin-1 {
+      pins = "dummy-rtc-pin";
+    };
+  };
 
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
+"pinctrl_pin_1" configuration is never set. This produces this path in
+the code:
 
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
+  really_probe()
+    pinctrl_bind_pins()
+    | devm_pinctrl_get()
+    |   pinctrl_get()
+    |     create_pinctrl()
+    |       pinctrl_dt_to_map()
+    |         // Hog pin create an abort for all pins of the node
+    |         ret = dt_to_map_one_config()
+    |         | /* Do not defer probing of hogs (circular loop) */
+    |         | if (np_pctldev == p->dev->of_node)
+    |         |   return -ENODEV;
+    |         if (ret)
+    |           goto err
+    |
+    call_driver_probe()
+      stm32_rtc_probe()
+        pinctrl_enable()
+          pinctrl_claim_hogs()
+            create_pinctrl()
+              for_each_maps(maps_node, i, map)
+                // Not hog pin is skipped
+                if (pctldev && strcmp(dev_name(pctldev->dev),
+                                      map->ctrl_dev_name))
+                  continue;
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+At the first call of create_pinctrl() the hogged pin produces an abort to
+avoid a defer of hogged pins. All other pin configurations are trashed.
+
+At the second call, create_pinctrl is now called with pctldev parameter to
+get hogs, but in this context only hogs are set. And other pins are
+skipped.
+
+To handle this, do not produce an abort in the first call of
+create_pinctrl(). Classic pin configuration will be set in
+pinctrl_bind_pins() context. And the hogged pin configuration will be set
+in pinctrl_claim_hogs() context.
+
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ drivers/pinctrl/devicetree.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 545dd994f0609..ced6bd48bb416 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -817,19 +817,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
+diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
+index 5ee746cb81f59..6520b88db1105 100644
+--- a/drivers/pinctrl/devicetree.c
++++ b/drivers/pinctrl/devicetree.c
+@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
+ 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
+ 		if (pctldev)
+ 			break;
+-		/* Do not defer probing of hogs (circular loop) */
++		/*
++		 * Do not defer probing of hogs (circular loop)
++		 *
++		 * Return 1 to let the caller catch the case.
++		 */
+ 		if (np_pctldev == p->dev->of_node) {
+ 			of_node_put(np_pctldev);
+-			return -ENODEV;
++			return 1;
  		}
  	}
- 
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
+ 	of_node_put(np_pctldev);
+@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ 			ret = dt_to_map_one_config(p, pctldev, statename,
+ 						   np_config);
+ 			of_node_put(np_config);
++			if (ret == 1)
++				continue;
+ 			if (ret < 0)
+ 				goto err;
  		}
- 	}
- 
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
- 
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index ec0113ecf3949..8ab6ad65d0b86 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1187,22 +1187,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
- 	return 0;
- }
- 
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
--	}
--
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
--	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
- 
-@@ -1223,9 +1207,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
- 
- 	fi = fib_create_info(cfg, extack);
-@@ -1715,9 +1696,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
 -- 
 2.39.5
 
