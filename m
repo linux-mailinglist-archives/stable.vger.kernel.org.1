@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5B7ACB7BE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9831FACB406
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2959E4A68A5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BE91BA2E93
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E0D222580;
-	Mon,  2 Jun 2025 15:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EB922F77B;
+	Mon,  2 Jun 2025 14:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKmJA8+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lzva60Bq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B58221F10;
-	Mon,  2 Jun 2025 15:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367F222F767;
+	Mon,  2 Jun 2025 14:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877013; cv=none; b=H9TuDxDzBbXIdiZQ1obxeWGVHxOgBe1QZQ4M5WtjLbWsWVRqmZfgw9a1ZeosoJWPmRH4/vV6FADukdwcEjnOREk5KrGSb6T4RvUCXNH52cOZ5THyT2N4HXJJDIWguNKUYpAXmqxRGCSBE9iqhteWoi2Nz+u9xF0cQxK12f0PMzY=
+	t=1748874540; cv=none; b=L44NBIt9ytiNlpmR4zP5W50kI8Gc2XUNMeNmhTiPU2Id9LXeQwrBF4YQgfM1VgLAlspkLqqXvVEh+uNiN2nPNjyyOY51askFkzrTtatPnlwBiDBhMf+rhjDDzCPkiDClcGPjRmMeipw5Dh4m+7nqXcv/PZf+ZGsCZcCpnNl5z08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877013; c=relaxed/simple;
-	bh=pczDHTTUHWUzD8q/cwusnAqY+TIzLqnnrMM9imA/JsQ=;
+	s=arc-20240116; t=1748874540; c=relaxed/simple;
+	bh=An3GFcre/sozyfmKmPToZsyGrZR3UXlErXXXgH76Wug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdYVWnaPKJAU+48xQwLgxgHMzkAFvkx46iJjnkrRgJ4YsahtcvDe7/yaX5713LATEeMmM8w++xxFeuHvEWn/VDFE9CexAMY4ct1YDz+wSZE63MI/sDDZgHtGVS8J6Fp2XWvnls7mk4FViqIKUfs9RPDFOpFW86Z05ayvUYDivSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKmJA8+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F8EC4CEEE;
-	Mon,  2 Jun 2025 15:10:12 +0000 (UTC)
+	 MIME-Version; b=OiWPVWOciFhh0SW/1AChwJH6piXah4pCCPgPAg/01spOCJUcEip9qu68/nTyqjT4a4KDFBiQIye5oUU+Bc3+3g1UJO+3Wyc/xj+K+ZLGPrf4bsMzRujsTlZ5uMmIguGdjdjRr9ySZKP+YQ6HMBVzHn1O16H2WDBrUV2DNeTUhss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lzva60Bq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99164C4CEFB;
+	Mon,  2 Jun 2025 14:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877013;
-	bh=pczDHTTUHWUzD8q/cwusnAqY+TIzLqnnrMM9imA/JsQ=;
+	s=korg; t=1748874540;
+	bh=An3GFcre/sozyfmKmPToZsyGrZR3UXlErXXXgH76Wug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKmJA8+9WBoOnMyPAGTiqaWgXZwiKcgdn2DY35vfPHeuQshwl5eVhm7ly/WSvzjeB
-	 x3SyEb20iopQODnTBjh7Kcg7xabZDLuwo+KYP4m8Dxi5/Z1CaVREZHLDRmI3pmm2pQ
-	 c3R3YtE2L8caBe9e8ljQKsqeKOX/ZpzdaU+DV9Sc=
+	b=Lzva60Bq7rHfSeEYhWISvUC7j76jfrX9/2Dz2YPvYubQU1i9BSbjOJzTDOFDZJUB0
+	 byaxv5ppyhdpR2TDYAbrpVglV+Jcw4NejtAd2XV1Rd4jgEPq4wrKgB6L9rzx+9dUM6
+	 m+vtyBO23KHuI5g6iTJ0BFa+6OBB5yWSTIw7OmcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/325] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
+Subject: [PATCH 5.4 057/204] types: Complement the aligned types with signed 64-bit one
 Date: Mon,  2 Jun 2025 15:46:30 +0200
-Message-ID: <20250602134324.413979307@linuxfoundation.org>
+Message-ID: <20250602134257.922458764@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
+[ Upstream commit e4ca0e59c39442546866f3dd514a3a5956577daf ]
 
-fib_valid_key_len() is called in the beginning of fib_table_insert()
-or fib_table_delete() to check if the prefix length is valid.
+Some user may want to use aligned signed 64-bit type.
+Provide it for them.
 
-fib_table_insert() and fib_table_delete() are called from 3 paths
-
-  - ip_rt_ioctl()
-  - inet_rtm_newroute() / inet_rtm_delroute()
-  - fib_magic()
-
-In the first ioctl() path, rtentry_to_fib_config() checks the prefix
-length with bad_mask().  Also, fib_magic() always passes the correct
-prefix: 32 or ifa->ifa_prefixlen, which is already validated.
-
-Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
-
-While at it, 2 direct returns in rtm_to_fib_config() are changed to
-goto to match other places in the same function
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20240903180218.3640501-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5097eaae98e5 ("iio: adc: dln2: Use aligned_s64 for timestamp")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
- net/ipv4/fib_trie.c     | 22 ----------------------
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ include/linux/types.h      | 3 ++-
+ include/uapi/linux/types.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index 90ce87ffed461..7993ff46de23c 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -829,19 +829,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
- 		}
- 	}
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 05030f608be32..71e55c06c9639 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -114,8 +114,9 @@ typedef u64			u_int64_t;
+ typedef s64			int64_t;
+ #endif
  
-+	if (cfg->fc_dst_len > 32) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
-+	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
-+		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
-+		err = -EINVAL;
-+		goto errout;
-+	}
-+
- 	if (cfg->fc_nh_id) {
- 		if (cfg->fc_oif || cfg->fc_gw_family ||
- 		    cfg->fc_encap || cfg->fc_mp) {
- 			NL_SET_ERR_MSG(extack,
- 				       "Nexthop specification and nexthop id are mutually exclusive");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto errout;
- 		}
- 	}
+-/* this is a special 64bit data type that is 8-byte aligned */
++/* These are the special 64-bit data types that are 8-byte aligned */
+ #define aligned_u64		__aligned_u64
++#define aligned_s64		__aligned_s64
+ #define aligned_be64		__aligned_be64
+ #define aligned_le64		__aligned_le64
  
- 	if (has_gw && has_via) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Nexthop configuration can not contain both GATEWAY and VIA");
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto errout;
- 	}
+diff --git a/include/uapi/linux/types.h b/include/uapi/linux/types.h
+index 2fce8b6876e90..cf5f4617ba5aa 100644
+--- a/include/uapi/linux/types.h
++++ b/include/uapi/linux/types.h
+@@ -46,6 +46,7 @@ typedef __u32 __bitwise __wsum;
+  * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
+  */
+ #define __aligned_u64 __u64 __attribute__((aligned(8)))
++#define __aligned_s64 __s64 __attribute__((aligned(8)))
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
  
- 	if (!cfg->fc_table)
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 77b97c48da5ea..fa54b36b241ac 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1192,22 +1192,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
- 	return 0;
- }
- 
--static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
--{
--	if (plen > KEYLENGTH) {
--		NL_SET_ERR_MSG(extack, "Invalid prefix length");
--		return false;
--	}
--
--	if ((plen < KEYLENGTH) && (key << plen)) {
--		NL_SET_ERR_MSG(extack,
--			       "Invalid prefix for given prefix length");
--		return false;
--	}
--
--	return true;
--}
--
- static void fib_remove_alias(struct trie *t, struct key_vector *tp,
- 			     struct key_vector *l, struct fib_alias *old);
- 
-@@ -1228,9 +1212,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
- 
- 	fi = fib_create_info(cfg, extack);
-@@ -1723,9 +1704,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
- 
- 	key = ntohl(cfg->fc_dst);
- 
--	if (!fib_valid_key_len(key, plen, extack))
--		return -EINVAL;
--
- 	l = fib_find_node(t, &tp, key);
- 	if (!l)
- 		return -ESRCH;
 -- 
 2.39.5
 
