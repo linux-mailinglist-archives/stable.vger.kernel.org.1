@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-149592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65452ACB42A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46C2ACB4C1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E7819437DA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5A24A68E3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA68122AE76;
-	Mon,  2 Jun 2025 14:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0A72236E0;
+	Mon,  2 Jun 2025 14:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1KCTCmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSf0qnJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620A81DD543;
-	Mon,  2 Jun 2025 14:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBD4221F3E;
+	Mon,  2 Jun 2025 14:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874425; cv=none; b=icw298CAvf2lxkUcW1aG3zRVR7HKT/wbtVgmqek4e4/1/vpjgg8Vq5QRLwEk5A2XHpTqiz7zwF/qDf318dNzsz9na86ddve5V60ruoScB8TATXV8dsXG2aL8Bheh1dPXBIYjv0LufWG5mF4yiB7RHgzSE+nEz8gQDxM0zNDMEE4=
+	t=1748875325; cv=none; b=h6bhGtgN2u/4bcQQvfQ9NM2QeZYGpd4C+khwkp0K8jQIJzdQmD7yoz7kuq4Mygn16S5apjuxCmpFMk+pl4kdlijQlV7SnubOKjGwC+oaLaXMUDxv26XK4ihXTasFC1/EqfKC9GFS/ny1oACnQQYISvSaJItzYHzUWFH25ny6iKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874425; c=relaxed/simple;
-	bh=+Xiuu+guafYM2m2/Fw0Bv+8JCxcRGqwZVbNHS7Q0vQA=;
+	s=arc-20240116; t=1748875325; c=relaxed/simple;
+	bh=8AtsrdtvGC6P77rTSx+r7B94Pm77wX38IE7mZPxsIgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SzmbUOprsFpk6lppA5U45ZlnioeOXqf7oFkD2hR3vMWVBxYbtLVUs1utj7hHXniWiHwRL5nP5AX3+OO8XPOfSXvRZkrFIHcQbICt8LQc11GyELCY9mFr9DtzEE0ZiroojX230+7J5XGJZgxgtxSAny7y9CjFOA4qx/LZYit/yo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1KCTCmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C59BC4CEEB;
-	Mon,  2 Jun 2025 14:27:04 +0000 (UTC)
+	 MIME-Version; b=rvo3+U7W7kMCgbwYxXRbk7HwLd52URDn+VFX7NzAiE6cnwumnvlT/XZd/0NpaYzZdm0KUrVCOvZPxVbHP0sv7q8B0JavdfNvQX+YjpdXh7ddPfo5FSpzE8MnuE81A2NEy8uu8DwOzo5XI3s8x9wwNDNOFKnSPh1rde2K4tpei4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSf0qnJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7957CC4CEEB;
+	Mon,  2 Jun 2025 14:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874425;
-	bh=+Xiuu+guafYM2m2/Fw0Bv+8JCxcRGqwZVbNHS7Q0vQA=;
+	s=korg; t=1748875325;
+	bh=8AtsrdtvGC6P77rTSx+r7B94Pm77wX38IE7mZPxsIgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1KCTCmjuFN+rikxziWnQ0jYR8M0BTFhBnhTOIVAC4NaH69LnNIQBrRDquSfUefqS
-	 D9G50HhQ3ECV/4oEn7VzxYGIxyN+XJq0lGQJ8vC+ftvZdG+bmhZgPCNlBoteLHtRRP
-	 Y2xLxIjW7QmongP9c4M46ztr09YzuJcJG+vFm+ec=
+	b=uSf0qnJ59+5uUbGt538siBLerDkRUZd98baSAP4MhvDJ/ZjFCPrAZLBMxRvq2gUUc
+	 +XgiAOj/eCC1XVicWlsuIlR3bgON4ag0OAK6OFzfjekFCz42iVJTPqw1SZ8ZnBtuXh
+	 goccRBLIg4Ri/grjKYWjhWb3phLSX4Z363luYZxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Ryan Matthews <ryanmatthews@fastmail.com>
-Subject: [PATCH 5.4 020/204] PCI: imx6: Skip controller_id generation logic for i.MX7D
+	Jan Kara <jack@suse.cz>,
+	Shichangkuo <shi.changkuo@h3c.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 068/270] ocfs2: stop quota recovery before disabling quotas
 Date: Mon,  2 Jun 2025 15:45:53 +0200
-Message-ID: <20250602134256.294885139@linuxfoundation.org>
+Message-ID: <20250602134309.969462680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +68,178 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Jan Kara <jack@suse.cz>
 
-commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 upstream.
+commit fcaf3b2683b05a9684acdebda706a12025a6927a upstream.
 
-The i.MX7D only has one PCIe controller, so controller_id should always be
-0. The previous code is incorrect although yielding the correct result.
+Currently quota recovery is synchronized with unmount using sb->s_umount
+semaphore.  That is however prone to deadlocks because
+flush_workqueue(osb->ocfs2_wq) called from umount code can wait for quota
+recovery to complete while ocfs2_finish_quota_recovery() waits for
+sb->s_umount semaphore.
 
-Fix by removing "IMX7D" from the switch case branch.
+Grabbing of sb->s_umount semaphore in ocfs2_finish_quota_recovery() is
+only needed to protect that function from disabling of quotas from
+ocfs2_dismount_volume().  Handle this problem by disabling quota recovery
+early during unmount in ocfs2_dismount_volume() instead so that we can
+drop acquisition of sb->s_umount from ocfs2_finish_quota_recovery().
 
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-[Because this switch case does more than just controller_id
- logic, move the "IMX7D" case label instead of removing it entirely.]
-Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
+Link: https://lkml.kernel.org/r/20250424134515.18933-6-jack@suse.cz
+Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reported-by: Shichangkuo <shi.changkuo@h3c.com>
+Reported-by: Murad Masimov <m.masimov@mt-integration.ru>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Tested-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/ocfs2/journal.c     |   20 ++++++++++++++++++--
+ fs/ocfs2/journal.h     |    1 +
+ fs/ocfs2/ocfs2.h       |    6 ++++++
+ fs/ocfs2/quota_local.c |    9 ++-------
+ fs/ocfs2/super.c       |    3 +++
+ 5 files changed, 30 insertions(+), 9 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1112,11 +1112,10 @@ static int imx6_pcie_probe(struct platfo
- 			dev_err(dev, "pcie_aux clock source missing or invalid\n");
- 			return PTR_ERR(imx6_pcie->pcie_aux);
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -229,6 +229,11 @@ out_lock:
+ 		flush_workqueue(osb->ocfs2_wq);
+ }
+ 
++void ocfs2_recovery_disable_quota(struct ocfs2_super *osb)
++{
++	ocfs2_recovery_disable(osb, OCFS2_REC_QUOTA_WANT_DISABLE);
++}
++
+ void ocfs2_recovery_exit(struct ocfs2_super *osb)
+ {
+ 	struct ocfs2_recovery_map *rm;
+@@ -1429,6 +1434,18 @@ static int __ocfs2_recovery_thread(void
  		}
--		/* fall through */
--	case IMX7D:
- 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
- 			imx6_pcie->controller_id = 1;
--
-+		/* fall through */
-+	case IMX7D:
- 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
- 									    "pciephy");
- 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
+ 	}
+ restart:
++	if (quota_enabled) {
++		mutex_lock(&osb->recovery_lock);
++		/* Confirm that recovery thread will no longer recover quotas */
++		if (osb->recovery_state == OCFS2_REC_QUOTA_WANT_DISABLE) {
++			osb->recovery_state = OCFS2_REC_QUOTA_DISABLED;
++			wake_up(&osb->recovery_event);
++		}
++		if (osb->recovery_state >= OCFS2_REC_QUOTA_DISABLED)
++			quota_enabled = 0;
++		mutex_unlock(&osb->recovery_lock);
++	}
++
+ 	status = ocfs2_super_lock(osb, 1);
+ 	if (status < 0) {
+ 		mlog_errno(status);
+@@ -1532,8 +1549,7 @@ bail:
+ 
+ 	mutex_unlock(&osb->recovery_lock);
+ 
+-	if (quota_enabled)
+-		kfree(rm_quota);
++	kfree(rm_quota);
+ 
+ 	/* no one is callint kthread_stop() for us so the kthread() api
+ 	 * requires that we call do_exit().  And it isn't exported, but
+--- a/fs/ocfs2/journal.h
++++ b/fs/ocfs2/journal.h
+@@ -150,6 +150,7 @@ void ocfs2_wait_for_recovery(struct ocfs
+ 
+ int ocfs2_recovery_init(struct ocfs2_super *osb);
+ void ocfs2_recovery_exit(struct ocfs2_super *osb);
++void ocfs2_recovery_disable_quota(struct ocfs2_super *osb);
+ 
+ int ocfs2_compute_replay_slots(struct ocfs2_super *osb);
+ void ocfs2_free_replay_slots(struct ocfs2_super *osb);
+--- a/fs/ocfs2/ocfs2.h
++++ b/fs/ocfs2/ocfs2.h
+@@ -288,6 +288,12 @@ enum ocfs2_mount_options
+ 
+ enum ocfs2_recovery_state {
+ 	OCFS2_REC_ENABLED = 0,
++	OCFS2_REC_QUOTA_WANT_DISABLE,
++	/*
++	 * Must be OCFS2_REC_QUOTA_WANT_DISABLE + 1 for
++	 * ocfs2_recovery_disable_quota() to work.
++	 */
++	OCFS2_REC_QUOTA_DISABLED,
+ 	OCFS2_REC_WANT_DISABLE,
+ 	/*
+ 	 * Must be OCFS2_REC_WANT_DISABLE + 1 for ocfs2_recovery_exit() to work
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -453,8 +453,7 @@ out:
+ 
+ /* Sync changes in local quota file into global quota file and
+  * reinitialize local quota file.
+- * The function expects local quota file to be already locked and
+- * s_umount locked in shared mode. */
++ * The function expects local quota file to be already locked. */
+ static int ocfs2_recover_local_quota_file(struct inode *lqinode,
+ 					  int type,
+ 					  struct ocfs2_quota_recovery *rec)
+@@ -585,7 +584,6 @@ int ocfs2_finish_quota_recovery(struct o
+ {
+ 	unsigned int ino[OCFS2_MAXQUOTAS] = { LOCAL_USER_QUOTA_SYSTEM_INODE,
+ 					      LOCAL_GROUP_QUOTA_SYSTEM_INODE };
+-	struct super_block *sb = osb->sb;
+ 	struct ocfs2_local_disk_dqinfo *ldinfo;
+ 	struct buffer_head *bh;
+ 	handle_t *handle;
+@@ -597,7 +595,6 @@ int ocfs2_finish_quota_recovery(struct o
+ 	printk(KERN_NOTICE "ocfs2: Finishing quota recovery on device (%s) for "
+ 	       "slot %u\n", osb->dev_str, slot_num);
+ 
+-	down_read(&sb->s_umount);
+ 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
+ 		if (list_empty(&(rec->r_list[type])))
+ 			continue;
+@@ -674,7 +671,6 @@ out_put:
+ 			break;
+ 	}
+ out:
+-	up_read(&sb->s_umount);
+ 	kfree(rec);
+ 	return status;
+ }
+@@ -840,8 +836,7 @@ static int ocfs2_local_free_info(struct
+ 	ocfs2_release_local_quota_bitmaps(&oinfo->dqi_chunk);
+ 
+ 	/*
+-	 * s_umount held in exclusive mode protects us against racing with
+-	 * recovery thread...
++	 * ocfs2_dismount_volume() has already aborted quota recovery...
+ 	 */
+ 	if (oinfo->dqi_rec) {
+ 		ocfs2_free_quota_recovery(oinfo->dqi_rec);
+--- a/fs/ocfs2/super.c
++++ b/fs/ocfs2/super.c
+@@ -1876,6 +1876,9 @@ static void ocfs2_dismount_volume(struct
+ 	/* Orphan scan should be stopped as early as possible */
+ 	ocfs2_orphan_scan_stop(osb);
+ 
++	/* Stop quota recovery so that we can disable quotas */
++	ocfs2_recovery_disable_quota(osb);
++
+ 	ocfs2_disable_quotas(osb);
+ 
+ 	/* All dquots should be freed by now */
 
 
 
