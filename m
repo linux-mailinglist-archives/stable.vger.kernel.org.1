@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF62ACB508
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D1EACB836
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34C2A7B186E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9341C407573
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEF5221F10;
-	Mon,  2 Jun 2025 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99D23024D;
+	Mon,  2 Jun 2025 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hdp+54Iq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0849UCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245831DED64;
-	Mon,  2 Jun 2025 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2745C1F4165;
+	Mon,  2 Jun 2025 15:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875665; cv=none; b=jnqSm5IDu1HH9WpT4qNU4G7CpCkzsEj4u+V1nS+MFTWqRVXr6QiNIwQvc6TVAcouOLfchBQ162rBElakpsI4Owau2vRt6AHde6ORQ28+3EAjq6b1YDKt42TNKB4eUjbGJEUDkAHnNsDccL6RVOndRZKI7PMK7BttztNVQkvDCRY=
+	t=1748877241; cv=none; b=eckewpkicBgnXpEtZYBxt1oqBsk4ngFTvlneu9V+Tv02fNv2sXL+M5w2Oz8EZafS6fh/mwCc+En1cDzZ2ak4jfPtcyx0SAAdsDGjcDIKrQ3bYFOFQ39a48+D31+iAJ7/pL3NUA8w6YR2D3JCOXLLdEHJD+KG/9ZM/R6vcQNrM3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875665; c=relaxed/simple;
-	bh=5JdIpDXYLgWeMD3mAKGiUO2UOfTKf1gFhX/GBkhmm5g=;
+	s=arc-20240116; t=1748877241; c=relaxed/simple;
+	bh=8047DHaIOEHNoEkhaElM5lRjVGBJnomkQBIGPlsvSJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YYd2VgR3NgNGBAH8QnwaWL5EwXhK8sd/18kRqK2HNN4ZGeoq2aHw+xAe7pv5kSPU6WQu12+6+3bz+h/ajxMHWKqv8Ahk7jlvMB04ZHPaQygBMt7CDCGmv1oCL5Lp1HwAz8FwlykQMSXB7diZGXhOGWy2lHSgfloXKyOCOUtbPxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hdp+54Iq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C63BC4CEEB;
-	Mon,  2 Jun 2025 14:47:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QIU/sUvQH0gyKRVQ3FBsFezGIp2GRN3bKSeDN08zRl2wrFqEQGAPpopBa0aVmUSi6lJrkDL4PmjIhVkYGTbaRbB1uxtvL9kKuDOuCldpuyaQ4BNVKuT9SpT0K+vg3jWg2tnT9INVdPcwH3A44QUBdUmP6Z1oPjfkKhsegjmH0lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0849UCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AF0C4CEEB;
+	Mon,  2 Jun 2025 15:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875665;
-	bh=5JdIpDXYLgWeMD3mAKGiUO2UOfTKf1gFhX/GBkhmm5g=;
+	s=korg; t=1748877241;
+	bh=8047DHaIOEHNoEkhaElM5lRjVGBJnomkQBIGPlsvSJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hdp+54IqSnttMdMvxpnn+tGtnyMOZqg5k3K/DqBQVaD13TTCdZYyHVwODFuBX3VtJ
-	 7yHKzOMSAT3BwqZlLuYaLshy4G4E81u/jQbaQIVd3H7ML1fydowV+sdHqr7roc/225
-	 qzXQ6Qs3FznuzFmgor3DDGE1zZonC4si2M0OvsK4=
+	b=d0849UCG+orL2RtiqGBtKYcf1Pgh7Wmq0kTkMQLatqgQX3CiLu4jV93QyosijDMpu
+	 tGP4X3SFip88r1IdvFke1B/b8NAg42y4iV0RswtF2N0lrUC/YT6GXCTFFo6bPj7g+8
+	 TvjEAOhbyOko+KYy43SbZBn/MAD5QMpJFaicF8FQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/270] phy: core: dont require set_mode() callback for phy_get_mode() to work
-Date: Mon,  2 Jun 2025 15:48:11 +0200
-Message-ID: <20250602134315.615999758@linuxfoundation.org>
+Subject: [PATCH 6.1 216/325] wifi: ath9k: return by of_get_mac_address
+Date: Mon,  2 Jun 2025 15:48:12 +0200
+Message-ID: <20250602134328.571298640@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
+[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
 
-As reported by Damon Ding, the phy_get_mode() call doesn't work as
-expected unless the PHY driver has a .set_mode() call. This prompts PHY
-drivers to have empty stubs for .set_mode() for the sake of being able
-to get the mode.
+When using nvmem, ath9k could potentially be loaded before nvmem, which
+loads after mtd. This is an issue if DT contains an nvmem mac address.
 
-Make .set_mode() callback truly optional and update PHY's mode even if
-it there is none.
+If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
+it to _probe so that ath9k can properly grab a potentially present MAC
+address.
 
-Cc: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
-Tested-by: Damon Ding <damon.ding@rock-chips.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 1bcdef37e8aa2..dac0f7f4f3d3d 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -360,13 +360,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index 4f00400c7ffb8..58386906598a7 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -691,7 +691,9 @@ static int ath9k_of_init(struct ath_softc *sc)
+ 		ah->ah_flags |= AH_NO_EEP_SWAP;
+ 	}
  
- int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
- {
--	int ret;
-+	int ret = 0;
+-	of_get_mac_address(np, common->macaddr);
++	ret = of_get_mac_address(np, common->macaddr);
++	if (ret == -EPROBE_DEFER)
++		return ret;
  
--	if (!phy || !phy->ops->set_mode)
-+	if (!phy)
- 		return 0;
- 
- 	mutex_lock(&phy->mutex);
--	ret = phy->ops->set_mode(phy, mode, submode);
-+	if (phy->ops->set_mode)
-+		ret = phy->ops->set_mode(phy, mode, submode);
- 	if (!ret)
- 		phy->attrs.mode = mode;
- 	mutex_unlock(&phy->mutex);
+ 	return 0;
+ }
 -- 
 2.39.5
 
