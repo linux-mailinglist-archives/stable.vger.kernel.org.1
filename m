@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96726ACB753
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097FEACB804
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33DBC1947741
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CE8C946622
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27BD22A1FA;
-	Mon,  2 Jun 2025 14:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC4823182D;
+	Mon,  2 Jun 2025 15:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHkFh69g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZzepFlp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C24C231A4D;
-	Mon,  2 Jun 2025 14:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A47222DF9D;
+	Mon,  2 Jun 2025 15:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876315; cv=none; b=HaFU2AVABVcvZyFqUioueKkJ8JiiQH+P3GGvk+A2tLRnHne/bnz1rK5/EC3yj/qyC4thPahKdFvgPiv1BMO1VEfr0Hxj61mT4++6mprqSbdknF08P6i4X3OZ0HxE1T0XzLNYm2CFiBs6s/p6E1XoBvow7qEcq0SEA8949qD9cnM=
+	t=1748877305; cv=none; b=lQU2pfHanjObpNXdYzv2JrCbCEJlT7ODmTef6N4gO0m1UwZMpn4ulmRVJspj74J2sY1Vz1O6bOpQH9mYpnIYPzSanA3VVBULZxLLOYFUWNMKowpaW+uBO+EeDSNNZm1JjUDn0ThGySbjlmaAR7S+6ObSeqH6UHF5Y31a1SUz7F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876315; c=relaxed/simple;
-	bh=J+NPXfEMCUSd4H35pAGiH1AyTw1USeQifUQivPkzMlQ=;
+	s=arc-20240116; t=1748877305; c=relaxed/simple;
+	bh=tv3He+8ejSIrzljiR8W1eSNIMVBFDf7Rumr2Hnm0cn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHVd/3qiXlPjBnem3jbgCqvrII2yvO905D2VIjVEIwmkITKBy2Mb+gK6vkCXEQU9C7eMxMB1iWUpJL+tGY7QmLIgIiamc+oW+B/kWLdYRDrmzk3qnx889gB9jlscTmY/P2P+bVOd50UjZYv7p4rrsryHRipv+W2dh323st4FTFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHkFh69g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A32C4CEEB;
-	Mon,  2 Jun 2025 14:58:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZTkTyXr8jO0gqUWHcttUvZqtJDFL2ILULA0wYpj7eBCxi+zf0/rfLEs5G6zsCidmpzUDo0SIkqQ2euAg42QA9jDBz/EolMqWTaG/wXuUupB+EFDWYk2NFaH2qqestlpfGdhqOSF8l7Ppsucp1RKNpoMTUE/FM380QmXXjhlo0k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZzepFlp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC304C4CEF0;
+	Mon,  2 Jun 2025 15:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876315;
-	bh=J+NPXfEMCUSd4H35pAGiH1AyTw1USeQifUQivPkzMlQ=;
+	s=korg; t=1748877305;
+	bh=tv3He+8ejSIrzljiR8W1eSNIMVBFDf7Rumr2Hnm0cn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHkFh69gXe1jzvicd0V6wnkTLk1al2ZF6a2hKzIux0a0f7Nmqlxx8pSnHn+hf1zCo
-	 ewDGHLRL4t3Q3LbDjSODOeLgTNpzK5nRmbfTuvDXHBhdVOFgGHqYLJgenF/0lr2PF8
-	 dqErYepCxQWCPedN6ucCNB88patrkSYRqxOTC1xQ=
+	b=yZzepFlpxIIc2OqTgdqNdJl74+6OvClWifvSEa3i/IuEtZ8NYjaJdXLtHu9BUjlb8
+	 VNeEMh7JqenhIZERdcdW5Exhg4CzT5WtSPrjFo1KN4JQJN6vmFCoJQAIT0yfmsZ7A0
+	 CIBrBeZ0U5VlmKRStUOtYMt8JmvKXFkMFbFIm7Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/207] r8169: dont scan PHY addresses > 0
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 6.1 234/325] remoteproc: qcom_wcnss: Fix on platforms without fallback regulators
 Date: Mon,  2 Jun 2025 15:48:30 +0200
-Message-ID: <20250602134304.131363299@linuxfoundation.org>
+Message-ID: <20250602134329.292969827@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
+[ Upstream commit 4ca45af0a56d00b86285d6fdd720dca3215059a7 ]
 
-The PHY address is a dummy, because r8169 PHY access registers
-don't support a PHY address. Therefore scan address 0 only.
+Recent change to handle platforms with only single power domain broke
+pronto-v3 which requires power domains and doesn't have fallback voltage
+regulators in case power domains are missing. Add a check to verify
+the number of fallback voltage regulators before using the code which
+handles single power domain situation.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Tested-by: Luca Weiss <luca.weiss@fairphone.com> # sdm632-fairphone-fp3
+Link: https://lore.kernel.org/r/20250511234026.94735-1-matti.lehtimaki@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/remoteproc/qcom_wcnss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index d9d19ea77d20b..1ea30c9b8c07c 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5185,6 +5185,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
- 	new_bus->priv = tp;
- 	new_bus->parent = &pdev->dev;
- 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
-+	new_bus->phy_mask = GENMASK(31, 1);
- 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
- 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
- 
+diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+index ce61e0e7cbeb8..af96541c9b69a 100644
+--- a/drivers/remoteproc/qcom_wcnss.c
++++ b/drivers/remoteproc/qcom_wcnss.c
+@@ -445,7 +445,8 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
+ 	if (wcnss->num_pds) {
+ 		info += wcnss->num_pds;
+ 		/* Handle single power domain case */
+-		num_vregs += num_pd_vregs - wcnss->num_pds;
++		if (wcnss->num_pds < num_pd_vregs)
++			num_vregs += num_pd_vregs - wcnss->num_pds;
+ 	} else {
+ 		num_vregs += num_pd_vregs;
+ 	}
 -- 
 2.39.5
 
