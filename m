@@ -1,112 +1,93 @@
-Return-Path: <stable+bounces-148936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5386EACACBE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:50:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 913C2ACAD32
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22DB8170AA4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 10:50:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 197E57A273A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 11:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97349202988;
-	Mon,  2 Jun 2025 10:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="EpHoT49N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B402482EF;
+	Mon,  2 Jun 2025 11:27:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10627.protonmail.ch (mail-10627.protonmail.ch [79.135.106.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54091FFC5D;
-	Mon,  2 Jun 2025 10:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.27
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744BA18F2FC
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 11:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748861431; cv=none; b=T35o1wRan1And5aF5AFeHt+Jx6x4Zr5FHLJDqDyeIbcF/bDYeAsVxR2WH1PPcdMC+Xa4Z1JaicjF2QxmOGfRD5/q9Vjw/nRqoAKurIseec7OVmFoJ/DC2aUOTsfBZUjaQ7a/aNjOcURTbWFB2jn4+O1U8jmdUUOaeKa1FVIAol0=
+	t=1748863677; cv=none; b=Y+yUQmdHlEY53Fzb9FopgCB2tHqEJ9/NqyRc0Ivd0RLSnSmdMUf4/Kj7nZ3YC6EZ2PEHgdCa8jVnafH1aYm2kfABqwBs79TT96xXjsOl/FRdKWx7g5ZXoZc0doOcsFmenn/l4TILK/hc4e0qR8Bu4Tt14i7NuNAmVkQA7yTBOAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748861431; c=relaxed/simple;
-	bh=uKSIPTGI8grQKL93La9zZdaSme3BTPzgB8WrRUBiXyU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sH1+jKBJ9V0zKySk0Do6mNofxlVKVwA/bBjZ1kup+7ucvrtGsxQKTXj76aRfS60ayo+ByADymrd3Ss4Ajc8RtY5hNGCKnym5JEbZowjUTSDVHCKrwYbos/n41yc+qP4gc24c3T/5I3RwTSF364+d29MCDqg11R62Zp8mUanFn6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=EpHoT49N; arc=none smtp.client-ip=79.135.106.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1748861419; x=1749120619;
-	bh=gEDAzBtI/ychlnWYt1/dVWSXOLsB0ngevZrbS1LZoSE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=EpHoT49N7K+HcgtVgjToh24lzfiY4pGuP+K863DWlKlSyuf+X5ss2Y7ydq5mNoeq7
-	 WpexvFK9I9vzXWabGAT8tYO/RbGv7ta7mFmNlRp2hXEqdhkHP64IzAqI0n0SSgo5fm
-	 oZm5fzFgw5pTx39v0+gTjjzh1PtZg07vjd+bWPWyG0kNX/px2fnbC23VJO0O03lfhx
-	 HwV1TI86BwnFXvQi7IO3b6GM3LQXyNUx6q5zGXCOwJ88Ag5Bf8ezXGwtEf5clkUsUk
-	 NXwx5W06UBa97FrVmhoCviUdISyHAZvhKlbKCwP9ni+7rtyuEAajB7/xTjw/eWJcZH
-	 4eMqZbKqFL0sA==
-Date: Mon, 02 Jun 2025 10:50:14 +0000
-To: Jonathan Cameron <jic23@kernel.org>
-From: Sean Nyekjaer <sean@geanix.com>
-Cc: David Lechner <dlechner@baylibre.com>, =?utf-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: fxls8962af: Fix use after free in fxls8962af_fifo_flush
-Message-ID: <x6lmsxsz6njt22z23l3nbetlstkwn4jk5ohgtpyd23idwleeg5@szatvfu4drjj>
-In-Reply-To: <20250531175302.05b2da17@jic23-huawei>
-References: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com> <20250531175302.05b2da17@jic23-huawei>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: 07b493bb5879b729bcd70292aac626866652aa57
+	s=arc-20240116; t=1748863677; c=relaxed/simple;
+	bh=BUDHAlW/HRDkviXrXJt4p3CXoQlXmR8/H9d2yi/0nRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UqpCPPXD2NTgIvArms8b2KqULKYUbi+S98b93DrFCV07ADeqt4NoF/eXEjsQtjVo65cJcgPUZNH8pllaVXnf4l37U9oUNygx9bS29YLsHpFo2qreXlR3LY8i1mcGwySLYLCP67IgAbs20W/wR9MTiF5Rs6xVix5vyPFHPnoBa8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43FAF12FC;
+	Mon,  2 Jun 2025 04:27:38 -0700 (PDT)
+Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.50])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3C7753F673;
+	Mon,  2 Jun 2025 04:27:54 -0700 (PDT)
+From: Robin Murphy <robin.murphy@arm.com>
+To: stable@vger.kernel.org
+Cc: Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10/5.15] perf/arm-cmn: Initialise cmn->cpu earlier
+Date: Mon,  2 Jun 2025 12:27:45 +0100
+Message-Id: <32923ed9af28f3857fd64f7cd884895e717258b0.1748861349.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+commit 597704e201068db3d104de3c7a4d447ff8209127 upstream.
 
-On Sat, May 31, 2025 at 05:53:02PM +0100, Jonathan Cameron wrote:
-> On Sat, 24 May 2025 12:34:09 +0200
-> Sean Nyekjaer <sean@geanix.com> wrote:
->=20
-> > fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-> > iio_for_each_active_channel()) without making sure the indio_dev
-> > stays in buffer mode.
-> > There is a race if indio_dev exits buffer mode in the middle of the
-> > interrupt that flushes the fifo. Fix this by calling
-> > iio_device_claim_buffer_mode() to ensure indio_dev can't exit buffer
-> > mode during the flush.
-> >
-> > Unable to handle kernel NULL pointer dereference at virtual address 000=
-00000 when read
-> > [...]
-> > _find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-> > fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-> > fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-> > irq_thread_fn from irq_thread+0x110/0x1f4
-> > irq_thread from kthread+0xe0/0xfc
-> > kthread from ret_from_fork+0x14/0x2c
-> >
-> > Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sean Nyekjaer <sean@geanix.com>
->=20
-> That's nasty and a case I'd never thought about.  Most of the
-> races around disabling end up with an extra sample or two which then gets
-> dropped because there are no buffers enabled.
->=20
-> We need to consider the active scan mask as part of the buffer state.
-> So effectively taking mlock if we enter this code will delay the state
-> transition (and change of active_scan_mask until after this interrupt is =
-done).
->=20
-> If David's synchronize_irq() is enough maybe that's a lighter weight path=
-?
+For all the complexity of handling affinity for CPU hotplug, what we've
+apparently managed to overlook is that arm_cmn_init_irqs() has in fact
+always been setting the *initial* affinity of all IRQs to CPU 0, not the
+CPU we subsequently choose for event scheduling. Oh dear.
 
-I agree if David's proposal is sufficient, I can try it.
-It's something we have seen once in some unrelated testing, so it's
-quite hard to reproduce :/
+Cc: stable@vger.kernel.org
+Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ backport past NUMA changes in 5.17 ]
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ drivers/perf/arm-cmn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-/Sean
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index e2a055ba0b7a..cabeff8c944b 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -1512,6 +1512,7 @@ static int arm_cmn_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	cmn->dev = &pdev->dev;
++	cmn->cpu = raw_smp_processor_id();
+ 	platform_set_drvdata(pdev, cmn);
+ 
+ 	if (has_acpi_companion(cmn->dev))
+@@ -1533,7 +1534,6 @@ static int arm_cmn_probe(struct platform_device *pdev)
+ 	if (err)
+ 		return err;
+ 
+-	cmn->cpu = raw_smp_processor_id();
+ 	cmn->pmu = (struct pmu) {
+ 		.module = THIS_MODULE,
+ 		.attr_groups = arm_cmn_attr_groups,
+-- 
+2.39.2.101.g768bb238c484.dirty
 
 
