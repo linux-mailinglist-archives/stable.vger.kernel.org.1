@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AD0ACB7F1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B72FACB3B1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE434C3061
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2306C404498
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BCF22A4F6;
-	Mon,  2 Jun 2025 15:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC59227E97;
+	Mon,  2 Jun 2025 14:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5WSdQkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7N+QNfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A091F4165;
-	Mon,  2 Jun 2025 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E994D227E94;
+	Mon,  2 Jun 2025 14:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877239; cv=none; b=Rl2Bm1m+YcT3K0bRqULCVaglPjNBnxtO1Oa6zLMxILJ3a+mM1t6pV2Aa+5X516CnbsGAuG2r8+pVVJOv9HbzJzDtsc88VnCIIyUNj5YsJLnzzbn5DBBXWJs2Jvc1Tb+hS3jwQm0xotPPqSBKVjggfleHwvl/qMGI87cVy9NehSA=
+	t=1748874310; cv=none; b=FpFgNUyrojbZ0yajX77mGPiEXMSB4D8uAVAvQN4orcCKDVJwpSu+T9/Vs+6xxkfNQ1l6Iwah9YLsXmc11Oto51sig0w5x2rXQoDVpfCikZmhKvPgyKYfo01H1b+H6umLI6Ihr+6IHUTQB/qrOiy67/agbEJJvRHbJ2tY067ZxDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877239; c=relaxed/simple;
-	bh=UyWSct317ej7f2p+vbVviyvUPnIgEPHSOsaMySjdNjU=;
+	s=arc-20240116; t=1748874310; c=relaxed/simple;
+	bh=rAannaRrsFJIXNfrlFjUHUnMS26qFazvXYg+aDIkmL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIg0htWkAxln1Jl8OnEsuuOagtiSjnjf4iUfYkoxVxaNYvxGS6w0BJOCx5OkkBYP9cH6SFIyLKX65ZbHDRN0i1ruESLjRoqGizYxhiUSyAKbAUDg/0lSUtpUIyu1hmqs2Unz42vSIaYoNyrw3amH9Mz2RRo/QW1OMND54rKSATg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5WSdQkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F93C4CEEB;
-	Mon,  2 Jun 2025 15:13:57 +0000 (UTC)
+	 MIME-Version; b=gzcfGB7C+HYTfSsA8VNeJvrn28RFFvsGmGdqruGGUMyaOzRAUAgk7+72vettzk0R9PAWUcHJ+SQVlVmDl5DKx91Ja7qQcyH4OH7mPykBg7CRmSPMDX2C/Re54q0iMznjcyUeIp7v0O2JtEDTqVbPqUigG1LfAnadVwNkhwDGBO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7N+QNfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685FBC4CEEB;
+	Mon,  2 Jun 2025 14:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877238;
-	bh=UyWSct317ej7f2p+vbVviyvUPnIgEPHSOsaMySjdNjU=;
+	s=korg; t=1748874309;
+	bh=rAannaRrsFJIXNfrlFjUHUnMS26qFazvXYg+aDIkmL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5WSdQkZ2qbGNEwCd31VOn+v5RqMGLuGZk9kwqIXM/c/U/6bLEoxrz6PG2pqoW1US
-	 YLYcj3GC+MGM7e7PaFvZAL0ucRWFlsbhX8QmEieY3XwUJIng4BY1ENJSpB79wpeHKl
-	 CPptqpND63Sbb2rl7hA6b/2lNJXNTQ6HU0rBLhfk=
+	b=U7N+QNfN0dAixY5PrUNn3fVSz0TWjf0gCp2+BHIw2tvGZcCZJH+rS7VMaW78koqvS
+	 3twd2Pkod0g2+q1Q9oILMKa0IQv7q7KRgAlQW0wmkWPT0OUTZx3xi4YiFMRH7YIxwM
+	 MHpoIwFIcr6yrI5MNzTAKBhyUj1Z++UJYmyGnDXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/325] regulator: ad5398: Add device tree support
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 427/444] perf/arm-cmn: Fix REQ2/SNP2 mixup
 Date: Mon,  2 Jun 2025 15:48:11 +0200
-Message-ID: <20250602134328.533079864@linuxfoundation.org>
+Message-ID: <20250602134358.274062742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
+commit 11b0f576e0cbde6a12258f2af6753b17b8df342b upstream.
 
-Previously, the ad5398 driver used only platform_data, which is
-deprecated in favour of device tree. This caused the AD5398 to fail to
-probe as it could not load its init_data. If the AD5398 has a device
-tree node, pull the init_data from there using
-of_get_regulator_init_data.
+Somehow the encodings for REQ2/SNP2 channels in XP events
+got mixed up... Unmix them.
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/087023e9737ac93d7ec7a841da904758c254cb01.1746717400.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/ad5398.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/perf/arm-cmn.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
-index 75f432f61e919..f4d6e62bd963e 100644
---- a/drivers/regulator/ad5398.c
-+++ b/drivers/regulator/ad5398.c
-@@ -14,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-+#include <linux/regulator/of_regulator.h>
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -684,8 +684,8 @@ static umode_t arm_cmn_event_attr_is_vis
  
- #define AD5398_CURRENT_EN_MASK	0x8000
+ 		if ((chan == 5 && cmn->rsp_vc_num < 2) ||
+ 		    (chan == 6 && cmn->dat_vc_num < 2) ||
+-		    (chan == 7 && cmn->snp_vc_num < 2) ||
+-		    (chan == 8 && cmn->req_vc_num < 2))
++		    (chan == 7 && cmn->req_vc_num < 2) ||
++		    (chan == 8 && cmn->snp_vc_num < 2))
+ 			return 0;
+ 	}
  
-@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
- 	const struct ad5398_current_data_format *df =
- 			(struct ad5398_current_data_format *)id->driver_data;
+@@ -841,8 +841,8 @@ static umode_t arm_cmn_event_attr_is_vis
+ 	_CMN_EVENT_XP(pub_##_name, (_event) | (4 << 5)),	\
+ 	_CMN_EVENT_XP(rsp2_##_name, (_event) | (5 << 5)),	\
+ 	_CMN_EVENT_XP(dat2_##_name, (_event) | (6 << 5)),	\
+-	_CMN_EVENT_XP(snp2_##_name, (_event) | (7 << 5)),	\
+-	_CMN_EVENT_XP(req2_##_name, (_event) | (8 << 5))
++	_CMN_EVENT_XP(req2_##_name, (_event) | (7 << 5)),	\
++	_CMN_EVENT_XP(snp2_##_name, (_event) | (8 << 5))
  
--	if (!init_data)
--		return -EINVAL;
--
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
- 	config.dev = &client->dev;
-+	if (client->dev.of_node)
-+		init_data = of_get_regulator_init_data(&client->dev,
-+						       client->dev.of_node,
-+						       &ad5398_reg);
-+	if (!init_data)
-+		return -EINVAL;
-+
- 	config.init_data = init_data;
-+	config.of_node = client->dev.of_node;
- 	config.driver_data = chip;
- 
- 	chip->client = client;
--- 
-2.39.5
-
+ #define CMN_EVENT_XP_DAT(_name, _event)				\
+ 	_CMN_EVENT_XP_PORT(dat_##_name, (_event) | (3 << 5)),	\
 
 
 
