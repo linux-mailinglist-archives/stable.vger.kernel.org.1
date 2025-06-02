@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA405ACB40E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A08ACB2D8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70EAD9E05AF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C1019415EA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE2E230D1E;
-	Mon,  2 Jun 2025 14:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F06F239561;
+	Mon,  2 Jun 2025 14:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfh4mk72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KPEtxEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A93321325D;
-	Mon,  2 Jun 2025 14:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078F1E0DD8;
+	Mon,  2 Jun 2025 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874575; cv=none; b=kF/cHpHKTt+jHbnXQoMwa7AToass4dsuPKxbUZhs0npwa6SjXQom7mt00N+dx/Py696CJzac2PWkOl0MdWQHKMwUbYr3hJVqV7zlw517R79eL4Dsjrio5KhzwjRAmRXyPYHPGmguucTSIQuEy9QRLjPaFrSIbQRPw92uBAkxrm8=
+	t=1748874059; cv=none; b=lKNRz/UKr+LlxoUiqHGUQeVcHubYShI7K6hccJaWwLd//1DWuA+GeZlzbgBRGaixEFP5t3bxIO3iB65mqNR6iZnsH5OG4w1AGr2drmq3c/vkvPJAs9HlTKPOAt2GMcrswv+Z+zD22xpgp/3VhY+kekY2Pmc/c2FZ76MAxQA8a1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874575; c=relaxed/simple;
-	bh=m0CL15nfQkYiCNsI9No2RgZKaxmQbLmpm4hbCVMwlTw=;
+	s=arc-20240116; t=1748874059; c=relaxed/simple;
+	bh=exr8vI+faovxTHgTjQsoneWpyOx/EP2vj5/WMzcJmJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c3TzTWFc4ALt4iaBgBldP+xXinMu7N1D4rWhBQ/WDVGNgW4i9TyG77O7iPa0GVtAQrWDLIlLqKWic80+QJPDLzmGRNDdUT35YSNhzoEQU7mTrOFGqIt3RWJKO7adYi74celCLooTJ3g2hFKiRx3z3jzebM677WDUGsmu0Tb3ZVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfh4mk72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26ACC4CEEB;
-	Mon,  2 Jun 2025 14:29:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PcNRrlYAz7T1rprLm2wq/n2asemmBd1OqwQtDWOAodaYIN3aXFbgNQnWhtWrJbbiWrG6XZKn9yjgT4JIYNuHN51C46ayiS52IfIX1dBI/j231ZvGcqhh4p3TMh6Ts+JN2tkFFlGYYnYk+QDLrFJMek3A/3Oa5DVltjBE4E0ye5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KPEtxEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D86AC4CEEB;
+	Mon,  2 Jun 2025 14:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874575;
-	bh=m0CL15nfQkYiCNsI9No2RgZKaxmQbLmpm4hbCVMwlTw=;
+	s=korg; t=1748874057;
+	bh=exr8vI+faovxTHgTjQsoneWpyOx/EP2vj5/WMzcJmJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfh4mk72FpX0aRFfFR+xU3gHz9UIYOIxz/0BS3OHavcUhqzKiw3InThDZ4qYEzUq5
-	 p0mLK5PsRgtNcC/23Kckt00VvJad+Sm25sSHJicuabIcDiYq1gShYXBOXaiOxd9psf
-	 LNb45CteBHP8Pey3ajJQwPTG3B5w+Ynl1r7NRNJs=
+	b=2KPEtxECGHdUBjnZwGXIu6DjRrcqrIxpqF02i9ZcBisHBbdJRQ/BZqC/i0xxWE7QZ
+	 pUyBqNetFusGE6WHIHnv7QxtvHmfnUktZUSSZmOswWXuaYrWj3yB0ukwdf7MXyiK/C
+	 3oxwgd0BVOPizd18O5qy811Oxrl7n0C5bWJJZheY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?Kuba=20Szczodrzy=C5=84ski?= <kuba@szczodrzynski.pl>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/204] iio: adc: ad7768-1: Fix insufficient alignment of timestamp.
+Subject: [PATCH 6.6 336/444] clk: sunxi-ng: d1: Add missing divider for MMC mod clocks
 Date: Mon,  2 Jun 2025 15:46:40 +0200
-Message-ID: <20250602134258.314459156@linuxfoundation.org>
+Message-ID: <20250602134354.567015424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +64,130 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit ffbc26bc91c1f1eb3dcf5d8776e74cbae21ee13a ]
+[ Upstream commit 98e6da673cc6dd46ca9a599802bd2c8f83606710 ]
 
-On architectures where an s64 is not 64-bit aligned, this may result
-insufficient alignment of the timestamp and the structure being too small.
-Use aligned_s64 to force the alignment.
+The D1/R528/T113 SoCs have a hidden divider of 2 in the MMC mod clocks,
+just as other recent SoCs. So far we did not describe that, which led
+to the resulting MMC clock rate to be only half of its intended value.
 
-Fixes: a1caeebab07e ("iio: adc: ad7768-1: Fix too small buffer passed to iio_push_to_buffers_with_timestamp()") # aligned_s64 newer
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-3-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Use a macro that allows to describe a fixed post-divider, to compensate
+for that divisor.
+
+This brings the MMC performance on those SoCs to its expected level,
+so about 23 MB/s for SD cards, instead of the 11 MB/s measured so far.
+
+Fixes: 35b97bb94111 ("clk: sunxi-ng: Add support for the D1 SoC clocks")
+Reported-by: Kuba Szczodrzyński <kuba@szczodrzynski.pl>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Link: https://patch.msgid.link/20250501120631.837186-1-andre.przywara@arm.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu-sun20i-d1.c | 44 ++++++++++++++++------------
+ drivers/clk/sunxi-ng/ccu_mp.h        | 22 ++++++++++++++
+ 2 files changed, 47 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index c1adb95f2a464..fd9aea1453201 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -168,7 +168,7 @@ struct ad7768_state {
- 	union {
- 		struct {
- 			__be32 chan;
--			s64 timestamp;
-+			aligned_s64 timestamp;
- 		} scan;
- 		__be32 d32;
- 		u8 d8[2];
+diff --git a/drivers/clk/sunxi-ng/ccu-sun20i-d1.c b/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
+index f95c3615ca772..98f107e96317e 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
++++ b/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
+@@ -412,19 +412,23 @@ static const struct clk_parent_data mmc0_mmc1_parents[] = {
+ 	{ .hw = &pll_periph0_2x_clk.common.hw },
+ 	{ .hw = &pll_audio1_div2_clk.common.hw },
+ };
+-static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc0_clk, "mmc0", mmc0_mmc1_parents, 0x830,
+-				       0, 4,	/* M */
+-				       8, 2,	/* P */
+-				       24, 3,	/* mux */
+-				       BIT(31),	/* gate */
+-				       0);
+-
+-static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc1_clk, "mmc1", mmc0_mmc1_parents, 0x834,
+-				       0, 4,	/* M */
+-				       8, 2,	/* P */
+-				       24, 3,	/* mux */
+-				       BIT(31),	/* gate */
+-				       0);
++static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc0_clk, "mmc0",
++					       mmc0_mmc1_parents, 0x830,
++					       0, 4,		/* M */
++					       8, 2,		/* P */
++					       24, 3,		/* mux */
++					       BIT(31),		/* gate */
++					       2,		/* post-div */
++					       0);
++
++static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1",
++					       mmc0_mmc1_parents, 0x834,
++					       0, 4,		/* M */
++					       8, 2,		/* P */
++					       24, 3,		/* mux */
++					       BIT(31),		/* gate */
++					       2,		/* post-div */
++					       0);
+ 
+ static const struct clk_parent_data mmc2_parents[] = {
+ 	{ .fw_name = "hosc" },
+@@ -433,12 +437,14 @@ static const struct clk_parent_data mmc2_parents[] = {
+ 	{ .hw = &pll_periph0_800M_clk.common.hw },
+ 	{ .hw = &pll_audio1_div2_clk.common.hw },
+ };
+-static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc2_clk, "mmc2", mmc2_parents, 0x838,
+-				       0, 4,	/* M */
+-				       8, 2,	/* P */
+-				       24, 3,	/* mux */
+-				       BIT(31),	/* gate */
+-				       0);
++static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc2_parents,
++					       0x838,
++					       0, 4,		/* M */
++					       8, 2,		/* P */
++					       24, 3,		/* mux */
++					       BIT(31),		/* gate */
++					       2,		/* post-div */
++					       0);
+ 
+ static SUNXI_CCU_GATE_HWS(bus_mmc0_clk, "bus-mmc0", psi_ahb_hws,
+ 			  0x84c, BIT(0), 0);
+diff --git a/drivers/clk/sunxi-ng/ccu_mp.h b/drivers/clk/sunxi-ng/ccu_mp.h
+index 6e50f3728fb5f..7d836a9fb3db3 100644
+--- a/drivers/clk/sunxi-ng/ccu_mp.h
++++ b/drivers/clk/sunxi-ng/ccu_mp.h
+@@ -52,6 +52,28 @@ struct ccu_mp {
+ 		}							\
+ 	}
+ 
++#define SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(_struct, _name, _parents, \
++						_reg,			\
++						_mshift, _mwidth,	\
++						_pshift, _pwidth,	\
++						_muxshift, _muxwidth,	\
++						_gate, _postdiv, _flags)\
++	struct ccu_mp _struct = {					\
++		.enable	= _gate,					\
++		.m	= _SUNXI_CCU_DIV(_mshift, _mwidth),		\
++		.p	= _SUNXI_CCU_DIV(_pshift, _pwidth),		\
++		.mux	= _SUNXI_CCU_MUX(_muxshift, _muxwidth),		\
++		.fixed_post_div	= _postdiv,				\
++		.common	= {						\
++			.reg		= _reg,				\
++			.features	= CCU_FEATURE_FIXED_POSTDIV,	\
++			.hw.init	= CLK_HW_INIT_PARENTS_DATA(_name, \
++							_parents,	\
++							&ccu_mp_ops,	\
++							_flags),	\
++		}							\
++	}
++
+ #define SUNXI_CCU_MP_WITH_MUX_GATE(_struct, _name, _parents, _reg,	\
+ 				   _mshift, _mwidth,			\
+ 				   _pshift, _pwidth,			\
 -- 
 2.39.5
 
