@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECD5ACB46C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B3CACB7BC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FF087A97A4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4CD4A64DA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB04C221FA4;
-	Mon,  2 Jun 2025 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DAA22F764;
+	Mon,  2 Jun 2025 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCnpk0s6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LO0l8//r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AF121CA1E;
-	Mon,  2 Jun 2025 14:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B416122F757;
+	Mon,  2 Jun 2025 15:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875393; cv=none; b=olTxuMdsxF8Wvp0sibGSXgv0JZ4DAOaaQViRkQWU0TrkSbdaJS9ukNNKMg0USFUTAMMtHRwrMCjyN/9ZvqknCTBLBmKryVQWaicv6/DMyiUe4M49RtOBRLtxvQ3nrv++uLhsZDD6onqlA9k4v1n28RLXgVgpPGBw6+KF2oit4go=
+	t=1748876965; cv=none; b=rTSx33u73ADEQnfdoCHzbi9iflbdWmMectzzH07883EiWWExYzLZeATX+YG0ZWeiVF63rrWwWbhXHPriUlbVd7FmpJIrEsfKdBtQiG7qMDLunO9j0hQYsh38epz9ha38XDbiYvj4iHXcUISwIGW4hl+WJNK8oPiq2QM5E3jP2Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875393; c=relaxed/simple;
-	bh=TW7TLZC40qREbmmzIy+cR3dCqgGYMiKnmepVJXPgr2U=;
+	s=arc-20240116; t=1748876965; c=relaxed/simple;
+	bh=qQuHSkDmgvrUsRAP5w3Ke34rqXZ6VY+Rcd83gcVpwjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOnivo1iLdezaGaULYWtBZLLlxjVqJHxD+WQ1ZG4xlKkJkWF1URkFsLY8txEFhcEGCQ/9AX1L3SzOBjUgd5pNGmxr69g7bt7L7GxUk3+UTyi/UM+tv/BVd1SwLSUQfVooQ9iSyycCHbpqWCZNRsKglTfOIu8/lbwYBTm/3TG0pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCnpk0s6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD86AC4CEEB;
-	Mon,  2 Jun 2025 14:43:12 +0000 (UTC)
+	 MIME-Version; b=tJPZ9ldza7pA548qE7nTf2OT69OHkcvt6z3kUI4cTvj7VqeGbzilRS94vgcxfH/ba1RH3R7KooXUMvyNwsVuoBvcMdLgLOTIGGBU/IxK9hvDebvFF0PwEiJGjnTzzt5PJFrsECMVIbFTGpr2elAsTeQ/qzT9vKqQaJ8vQxyjQvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LO0l8//r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CDCC4CEEB;
+	Mon,  2 Jun 2025 15:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875393;
-	bh=TW7TLZC40qREbmmzIy+cR3dCqgGYMiKnmepVJXPgr2U=;
+	s=korg; t=1748876965;
+	bh=qQuHSkDmgvrUsRAP5w3Ke34rqXZ6VY+Rcd83gcVpwjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCnpk0s6bkxY+9fZkMEO46i7UYD8N6SAg8czy9g+mk+LI1F3/lMfbwCxyxkzHo3Om
-	 qhxI46AnxHyUIlLAZfAZV4ntDBz78c5EDgHMBnRc3kCw/+zVFe8p4IIEuFRGvrhEbK
-	 ta568wwAD3VVMwq8zICRRu2eisOe1vRX781Lvdr4=
+	b=LO0l8//rrOwTq04U1aajHwCA/Dh7TmazhsUZ2PRyGbFRsXlG8r9g+zTwoJzjh0rs6
+	 oB08CfLcHHCshXGqj6UNcDCb428EHwGfQUYf7plHipzo6Gt1bk9jYN/cyiaBgcARi/
+	 fh7ZGnaZipFgK9dJWMv7cBF+UmrGy7SxJX8S9F5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Kevin Krakauer <krakauer@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/270] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
+Subject: [PATCH 6.1 129/325] selftests/net: have `gro.sh -t` return a correct exit code
 Date: Mon,  2 Jun 2025 15:46:45 +0200
-Message-ID: <20250602134312.130560932@linuxfoundation.org>
+Message-ID: <20250602134325.051324102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kevin Krakauer <krakauer@google.com>
 
-[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
+[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
 
-Check that the delegation is still attached after taking the spin lock
-in nfs_start_delegation_return_locked().
+Modify gro.sh to return a useful exit code when the -t flag is used. It
+formerly returned 0 no matter what.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Tested: Ran `gro.sh -t large` and verified that test failures return 1.
+Signed-off-by: Kevin Krakauer <krakauer@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/delegation.c | 3 ++-
+ tools/testing/selftests/net/gro.sh | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index dbed8d44d8053..f3bb987e9dba7 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
- 	if (delegation == NULL)
- 		goto out;
- 	spin_lock(&delegation->lock);
--	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
-+	if (delegation->inode &&
-+	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
- 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
- 		/* Refcount matched in nfs_end_delegation_return() */
- 		ret = nfs_get_delegation(delegation);
+diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
+index 342ad27f631b1..e771f5f7faa26 100755
+--- a/tools/testing/selftests/net/gro.sh
++++ b/tools/testing/selftests/net/gro.sh
+@@ -95,5 +95,6 @@ trap cleanup EXIT
+ if [[ "${test}" == "all" ]]; then
+   run_all_tests
+ else
+-  run_test "${proto}" "${test}"
++  exit_code=$(run_test "${proto}" "${test}")
++  exit $exit_code
+ fi;
 -- 
 2.39.5
 
