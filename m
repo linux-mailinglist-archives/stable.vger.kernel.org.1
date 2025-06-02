@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F0AACB85F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:40:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B82ACB6B5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9FCD4E11F0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:27:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64F54C2D3C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8B2221D92;
-	Mon,  2 Jun 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A156E2222AF;
+	Mon,  2 Jun 2025 15:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeahaza4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4UT8G3P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ED82C324F;
-	Mon,  2 Jun 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F22721CA1E;
+	Mon,  2 Jun 2025 15:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877618; cv=none; b=H/Fd4eoHOvHdN0/IPQQkCSoTPEGLZy+FM62uaI+C0hNJK7oyQrD6fxF/LsPmZ9N4IwRnkEw5kAQWpOY6JpKJMT1FwWGt/W49mtTmRhQucYPdXBpgxE4EsS8jOE/AH7HMw1DNAh1NWR1s2VdmXziE599wOcfmN8UsjKR2PFWf5ys=
+	t=1748876539; cv=none; b=BVqkmINe1G1BRQd0JwGlJmyvtc1PTu+Vt+ix2MVSSAySViYHCnzv7LnWkKVC/7DE6wK23OlneYdPBzGEIvVeaUB/k3NX4/THquANiN965hv3fAcfV6aV9HTr9ZuuxhBRclp7ltxOfjtUih3k+aKCUytHLV5KpgZIpaAzZ2Duihk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877618; c=relaxed/simple;
-	bh=tly66LsaFkSXLwydbU34mDpb/uTr27KGh/FpL1/Ng14=;
+	s=arc-20240116; t=1748876539; c=relaxed/simple;
+	bh=4MVB3s2ewqwI4sFASeOVrzYyT6zeJbvoW4RVwWz+RLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8m2f9s53dgKWkHfSzCQdzRvchMz2A/E5XiHUURKcf4TuD9Xh6uiwVDNoL/61wF65VMDZjtvS6aD0MOA2v5VwcZCfvQUH3vuMEO9mgxw5JOnBQgpRWZvGlNMLZcW4F4bwUHz09e+oNIT0yo8W299WOHDjUsG5koYvoBA1wbtRrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeahaza4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC25C4CEEE;
-	Mon,  2 Jun 2025 15:20:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bNzt8a1EhJUOtCmumpl6TV8LMXdPCmjRJCoQZ71+eFBi/xWq3uzCIvqaJVaQvj0k7ti5ch1ITO4NEWjvSFB15r1PoNX58Cu6nU8D7q64eSefDMXePgf7kt4dT6R7ZQ4oLLabE91lzcPhhXL1Cbylw3jNbBlmjdT/D0MRnQ4mjfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4UT8G3P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488D8C4CEEB;
+	Mon,  2 Jun 2025 15:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877618;
-	bh=tly66LsaFkSXLwydbU34mDpb/uTr27KGh/FpL1/Ng14=;
+	s=korg; t=1748876539;
+	bh=4MVB3s2ewqwI4sFASeOVrzYyT6zeJbvoW4RVwWz+RLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xeahaza4HIghMBAlgFMJZzcqXuZEqCfMbFWirOaWzQ0NmOUKgO+oL562AZLNWWoC5
-	 8RKGv1eUn1QXt6J/hSKtwuIOoKxFJUVg5ndm9Ry0yl9vMUdhi51b6LCQ3RZmhO9YH5
-	 BgMZtC3Ys9mJSbNZMrQJOVDLx8QTJLgsi4dMSwQY=
+	b=H4UT8G3PmvJ7PBWR6SW1mwbVZW6F6wM39z2kzBPFhtAktsx7AaIt6RI8JanSOIxVi
+	 +MuRN+j6NAIjqitrn6w2GHAwwCJsabS4fcQi2UjKwot8LHE+BjPc4ncBj7s+m2BONR
+	 YgKpv69/duxtpAl7D18H+Rjs/lsTk8d911hxenWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 302/325] af_unix: Remove lock dance in unix_peek_fds().
+	Derek Barbosa <debarbos@redhat.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 206/207] platform/x86: thinkpad_acpi: Ignore battery threshold change event notification
 Date: Mon,  2 Jun 2025 15:49:38 +0200
-Message-ID: <20250602134332.187635432@linuxfoundation.org>
+Message-ID: <20250602134306.862678211@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,119 +63,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-commit 118f457da9ed58a79e24b73c2ef0aa1987241f0e upstream.
+[ Upstream commit 29e4e6b4235fefa5930affb531fe449cac330a72 ]
 
-In the previous GC implementation, the shape of the inflight socket
-graph was not expected to change while GC was in progress.
+If user modifies the battery charge threshold an ACPI event is generated.
+Confirmed with Lenovo FW team this is only generated on user event. As no
+action is needed, ignore the event and prevent spurious kernel logs.
 
-MSG_PEEK was tricky because it could install inflight fd silently
-and transform the graph.
-
-Let's say we peeked a fd, which was a listening socket, and accept()ed
-some embryo sockets from it.  The garbage collection algorithm would
-have been confused because the set of sockets visited in scan_inflight()
-would change within the same GC invocation.
-
-That's why we placed spin_lock(&unix_gc_lock) and spin_unlock() in
-unix_peek_fds() with a fat comment.
-
-In the new GC implementation, we no longer garbage-collect the socket
-if it exists in another queue, that is, if it has a bridge to another
-SCC.  Also, accept() will require the lock if it has edges.
-
-Thus, we need not do the complicated lock dance.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240401173125.92184-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Derek Barbosa <debarbos@redhat.com>
+Closes: https://lore.kernel.org/platform-driver-x86/7e9a1c47-5d9c-4978-af20-3949d53fb5dc@app.fastmail.com/T/#m5f5b9ae31d3fbf30d7d9a9d76c15fb3502dfd903
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250517023348.2962591-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |    1 -
- net/unix/af_unix.c    |   42 ------------------------------------------
- net/unix/garbage.c    |    2 +-
- 3 files changed, 1 insertion(+), 44 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -17,7 +17,6 @@ static inline struct unix_sock *unix_get
- }
- #endif
- 
--extern spinlock_t unix_gc_lock;
- extern unsigned int unix_tot_inflight;
- void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver);
- void unix_del_edges(struct scm_fp_list *fpl);
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1770,48 +1770,6 @@ static void unix_detach_fds(struct scm_c
- static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
- {
- 	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
--
--	/*
--	 * Garbage collection of unix sockets starts by selecting a set of
--	 * candidate sockets which have reference only from being in flight
--	 * (total_refs == inflight_refs).  This condition is checked once during
--	 * the candidate collection phase, and candidates are marked as such, so
--	 * that non-candidates can later be ignored.  While inflight_refs is
--	 * protected by unix_gc_lock, total_refs (file count) is not, hence this
--	 * is an instantaneous decision.
--	 *
--	 * Once a candidate, however, the socket must not be reinstalled into a
--	 * file descriptor while the garbage collection is in progress.
--	 *
--	 * If the above conditions are met, then the directed graph of
--	 * candidates (*) does not change while unix_gc_lock is held.
--	 *
--	 * Any operations that changes the file count through file descriptors
--	 * (dup, close, sendmsg) does not change the graph since candidates are
--	 * not installed in fds.
--	 *
--	 * Dequeing a candidate via recvmsg would install it into an fd, but
--	 * that takes unix_gc_lock to decrement the inflight count, so it's
--	 * serialized with garbage collection.
--	 *
--	 * MSG_PEEK is special in that it does not change the inflight count,
--	 * yet does install the socket into an fd.  The following lock/unlock
--	 * pair is to ensure serialization with garbage collection.  It must be
--	 * done between incrementing the file count and installing the file into
--	 * an fd.
--	 *
--	 * If garbage collection starts after the barrier provided by the
--	 * lock/unlock, then it will see the elevated refcount and not mark this
--	 * as a candidate.  If a garbage collection is already in progress
--	 * before the file count was incremented, then the lock/unlock pair will
--	 * ensure that garbage collection is finished before progressing to
--	 * installing the fd.
--	 *
--	 * (*) A -> B where B is on the queue of A or B is on the queue of C
--	 * which is on the queue of listening socket A.
--	 */
--	spin_lock(&unix_gc_lock);
--	spin_unlock(&unix_gc_lock);
- }
- 
- static void unix_destruct_scm(struct sk_buff *skb)
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -183,7 +183,7 @@ static void unix_free_vertices(struct sc
- 	}
- }
- 
--DEFINE_SPINLOCK(unix_gc_lock);
-+static DEFINE_SPINLOCK(unix_gc_lock);
- unsigned int unix_tot_inflight;
- 
- void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index b994e07a61111..9b700a3ad7b2e 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -203,6 +203,7 @@ enum tpacpi_hkey_event_t {
+ 	/* Thermal events */
+ 	TP_HKEY_EV_ALARM_BAT_HOT	= 0x6011, /* battery too hot */
+ 	TP_HKEY_EV_ALARM_BAT_XHOT	= 0x6012, /* battery critically hot */
++	TP_HKEY_EV_ALARM_BAT_LIM_CHANGE	= 0x6013, /* battery charge limit changed*/
+ 	TP_HKEY_EV_ALARM_SENSOR_HOT	= 0x6021, /* sensor too hot */
+ 	TP_HKEY_EV_ALARM_SENSOR_XHOT	= 0x6022, /* sensor critically hot */
+ 	TP_HKEY_EV_THM_TABLE_CHANGED	= 0x6030, /* windows; thermal table changed */
+@@ -4075,6 +4076,10 @@ static bool hotkey_notify_6xxx(const u32 hkey,
+ 		pr_alert("THERMAL EMERGENCY: battery is extremely hot!\n");
+ 		/* recommended action: immediate sleep/hibernate */
+ 		break;
++	case TP_HKEY_EV_ALARM_BAT_LIM_CHANGE:
++		pr_debug("Battery Info: battery charge threshold changed\n");
++		/* User changed charging threshold. No action needed */
++		return true;
+ 	case TP_HKEY_EV_ALARM_SENSOR_HOT:
+ 		pr_crit("THERMAL ALARM: a sensor reports something is too hot!\n");
+ 		/* recommended action: warn user through gui, that */
+-- 
+2.39.5
+
 
 
 
