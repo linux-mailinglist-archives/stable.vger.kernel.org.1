@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0ADACB3FD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD30ACB6CF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F54B194764F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944E23A8031
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC7D228CA9;
-	Mon,  2 Jun 2025 14:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618CE234964;
+	Mon,  2 Jun 2025 14:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fckwEohz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLBTGxqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F212288EE;
-	Mon,  2 Jun 2025 14:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDFA230D0E;
+	Mon,  2 Jun 2025 14:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874824; cv=none; b=jkUiwQFSDDTKyiWSyMGvSq/n77tIgko3CgSDHNPZqgtSaHaF1rTwRRSAHqlg9nws4sBk4lk6qjrMsyv2UMniMpmUBC9tbObPO/piNf2NJ0hR95qzTDuAmP5ttJVaPGssMcl67q0FZgWHHirmwH0l33UQlPwhXnNVjthtD2JelnI=
+	t=1748876220; cv=none; b=Jf51Ud70WSFo8vgwP3TTEX6/LYJYLHl98RSIxMsVDnEB1NZxXfg9leiZ+DRu/dksG1kg3B9pSJQ2jl7D5QKTij67DhOpqupFr2SpO0JvjwEzYa2A25aNnBxPg6ritSUxpBdq1RMWjHHbyX3MWYZs7xG9LI6eU8dizwlKed/BTb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874824; c=relaxed/simple;
-	bh=y66gCV3EEyyYpLn52ogz3JIYpFkDQGFzcOggJMxUzxs=;
+	s=arc-20240116; t=1748876220; c=relaxed/simple;
+	bh=qv6qpCdalm8PfkBheaFurgR2DcgbOlTKQA0hXZRVMSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hm1WBR4XzaaGwcuH0kwWCc95greS9SuoSbFQ8RPVycTvwm8+Bh3fMmhrEn4clZKbZI+NM+TXWEvneZ55TNYm4AblKrx6tSE9iiT3I5XMhyE8tf0wQUyFn3PKLpxLEVCeAVs9AEc/YFMN9uKYkRAA+eCboQk6Ex0jK9LKobqwQqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fckwEohz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19527C4CEEE;
-	Mon,  2 Jun 2025 14:33:43 +0000 (UTC)
+	 MIME-Version; b=VY3o5DcJHP03+vF8MfBK3sg4Nv0FtJDBa+5D77Fx911UtlEaKpXQPxA9liiRqXINglDBmMsERYIglkcsYsFQF/4Ye/9+6lh2swWRZUSjJj0+GXyrnKtN7ug/HscWaMJSLYM496m+Rkx+BwLyMSV3tJOWoemXwF0Qv8wwmOWEQ0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLBTGxqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98376C4CEEB;
+	Mon,  2 Jun 2025 14:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874824;
-	bh=y66gCV3EEyyYpLn52ogz3JIYpFkDQGFzcOggJMxUzxs=;
+	s=korg; t=1748876219;
+	bh=qv6qpCdalm8PfkBheaFurgR2DcgbOlTKQA0hXZRVMSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fckwEohzqeYW0u3W73iTS6FXgOxQM1xPqjPjAuB7YjUIxseoLxaUlR6kktcOCuypI
-	 UzStdkUP2DQhZldLCIqO/asRs4oz/S/n2dxGfFvyYYEVBXynhZsLfz+hRoTFRndcY4
-	 eb/HtWqSCUG5PHogaKMjsl0S9aLzzPKjZKRFmWKY=
+	b=vLBTGxqfpU1rrBSskVXBD+TBP0pJPUhx6yM9KDnz4HN9FywR8ut7Hw3V9rvRlPEf0
+	 zFXLzVFcXwHw1IExgWfFWMYnj48nEnQ58DMS1tjfMmajzUpUigf1EOOAE/x6Df2GtW
+	 4WGDlZfPjnzXWPOq+LdBpAcKVQkHccrYTOxK8kGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 148/204] phy: core: dont require set_mode() callback for phy_get_mode() to work
+Subject: [PATCH 5.15 109/207] can: c_can: Use of_property_present() to test existence of DT property
 Date: Mon,  2 Jun 2025 15:48:01 +0200
-Message-ID: <20250602134301.466147621@linuxfoundation.org>
+Message-ID: <20250602134302.999754837@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
+[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
 
-As reported by Damon Ding, the phy_get_mode() call doesn't work as
-expected unless the PHY driver has a .set_mode() call. This prompts PHY
-drivers to have empty stubs for .set_mode() for the sake of being able
-to get the mode.
+of_property_read_bool() should be used only on boolean properties.
 
-Make .set_mode() callback truly optional and update PHY's mode even if
-it there is none.
-
-Cc: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
-Tested-by: Damon Ding <damon.ding@rock-chips.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: Rob Herring <robh@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/can/c_can/c_can_platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index c94a0d2c45161..917e01af4769f 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -360,13 +360,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
+diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
+index c5d7093d54133..c29862b3bb1f3 100644
+--- a/drivers/net/can/c_can/c_can_platform.c
++++ b/drivers/net/can/c_can/c_can_platform.c
+@@ -334,7 +334,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
+ 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
+ 		 * platforms. Only supported with DT boot.
+ 		 */
+-		if (np && of_property_read_bool(np, "syscon-raminit")) {
++		if (np && of_property_present(np, "syscon-raminit")) {
+ 			u32 id;
+ 			struct c_can_raminit *raminit = &priv->raminit_sys;
  
- int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
- {
--	int ret;
-+	int ret = 0;
- 
--	if (!phy || !phy->ops->set_mode)
-+	if (!phy)
- 		return 0;
- 
- 	mutex_lock(&phy->mutex);
--	ret = phy->ops->set_mode(phy, mode, submode);
-+	if (phy->ops->set_mode)
-+		ret = phy->ops->set_mode(phy, mode, submode);
- 	if (!ret)
- 		phy->attrs.mode = mode;
- 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
