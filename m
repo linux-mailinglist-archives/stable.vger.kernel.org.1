@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8873BACB640
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BF0ACB57B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37F8E1C20117
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34CB1BC2FD4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1CA229B18;
-	Mon,  2 Jun 2025 14:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B4722E3FC;
+	Mon,  2 Jun 2025 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHy2p1C9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yR8GKypC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19831227E95;
-	Mon,  2 Jun 2025 14:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92A615CD55;
+	Mon,  2 Jun 2025 14:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876177; cv=none; b=d9wj+E2RSmizsH0hyxk3j7q3+EztUu58YfX6dD8nYZfp7k5HetdJ2IwKxX6x07c7bd0s3E0LHY5vRu0zG1inXdVBb9Ee+iittdN3i1xcUEmmxdxCGuQzJYjqvFb0hLJoOLYL366rTJT0/h0L2FzFcgcgyAn3+8+cXofz6cGEPcY=
+	t=1748875596; cv=none; b=QMFRHMwFlScWSWyS7HZYHOMbMo1NgK5SWSte/tUyhM8HGb6UEM1d2oIxBslavizV7V3dpVJlzphzJHmnxlXIs5YaFWuGymf3nCNt0MFhOA+RQbJUj9fHQRnoBmsMCEzziSMcIRP/zMV1f3LQOBwfPNK770uF3dA2KNjC6eTpVbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876177; c=relaxed/simple;
-	bh=A0orepzcDd03DCJV6S8ZlEj9VhESrpIY8Hnsn84HjoM=;
+	s=arc-20240116; t=1748875596; c=relaxed/simple;
+	bh=Ny7cwlE4B0z6ohmnNldJ7nJBDNj2zDfpoQAMkMnNFeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DI1oan/2tZ0j4vz22FNUNDgTCy+ySo2GdOlcMl0w0CswtFne2ix3sHU2c1EN5EC/shtj5aiglOgLTd1oHJo+3u2aYKUDpVdSGJdFYHfbKzBF6zK6GRME7zmxavSZS3GpTdT0UpugPutpivAaejw5A5PdS3FnZTm+mXLWde2S07g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHy2p1C9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D34AC4CEEB;
-	Mon,  2 Jun 2025 14:56:16 +0000 (UTC)
+	 MIME-Version; b=Ry5hkXzh0OCocC5wBG+/rNC7zmrl5e8ONvAn/bNvcXzu+0xC+ozsggGomHcWvmTXHQeVI7FLe1eNJLUiHmmEDsNLU3WpKeD+RuXJ5aY9b2aFkMNIZYnDtifAKL5zFF0NhJMfqdM1ZCRepG07gqXzZXcD1Q3LrYEBN+Lx2Zv5alY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yR8GKypC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 225F6C4CEEB;
+	Mon,  2 Jun 2025 14:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876177;
-	bh=A0orepzcDd03DCJV6S8ZlEj9VhESrpIY8Hnsn84HjoM=;
+	s=korg; t=1748875595;
+	bh=Ny7cwlE4B0z6ohmnNldJ7nJBDNj2zDfpoQAMkMnNFeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHy2p1C9ccFDom4m0s52lYVagaFkrRQn1HjP4lukdgxXeEuVYjGsKgz1x5IK38duN
-	 tH1WGIw1FjOOscjyqq+AtZhzi8c5VrbprJjM9jHj7hc1sY0pBEQx4dBziiUVKQi4Rw
-	 3hNH59yAW5q25ICDK/pKNUbm07fR+HBkzbslmX2c=
+	b=yR8GKypC5I1InTuzC+PWB7odhxXrfYU/ikiO345pBcYSQKQOCVZ5lGuwMO2HRNT65
+	 yrjKoxuCnMddq87y8wSV0lNqTWhsCWq9x9wsknDfdJWtQdSNFfAvT4TGICSI/24wdS
+	 g2Q1DZzIuQsYctWp10yOw0skO9XMrsjlCpO/dP+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/207] cpuidle: menu: Avoid discarding useful information
+Subject: [PATCH 5.10 183/270] libbpf: Fix out-of-bound read
 Date: Mon,  2 Jun 2025 15:47:48 +0200
-Message-ID: <20250602134302.499395142@linuxfoundation.org>
+Message-ID: <20250602134314.693351906@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
 
-[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
+[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
 
-When giving up on making a high-confidence prediction,
-get_typical_interval() always returns UINT_MAX which means that the
-next idle interval prediction will be based entirely on the time till
-the next timer.  However, the information represented by the most
-recent intervals may not be completely useless in those cases.
+In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
+that it will be at least two characters long due to the presence of checks for
+opening and closing quotes. But the check for the closing quote
+(value[len - 1] != '"') misses the fact that it could be checking the opening
+quote itself in case of an invalid input that consists of just the opening
+quote.
 
-Namely, the largest recent idle interval is an upper bound on the
-recently observed idle duration, so it is reasonable to assume that
-the next idle duration is unlikely to exceed it.  Moreover, this is
-still true after eliminating the suspected outliers if the sample
-set still under consideration is at least as large as 50% of the
-maximum sample set size.
+This commit adds an explicit check to make sure the string is at least two
+characters long.
 
-Accordingly, make get_typical_interval() return the current maximum
-recent interval value in that case instead of UINT_MAX.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
+Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 2e5670446991f..e1e2721beb75b 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -249,8 +249,19 @@ static unsigned int get_typical_interval(struct menu_device *data,
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
- 	 */
--	if ((divisor * 4) <= INTERVALS * 3)
-+	if (divisor * 4 <= INTERVALS * 3) {
-+		/*
-+		 * If there are sufficiently many data points still under
-+		 * consideration after the outliers have been eliminated,
-+		 * returning without a prediction would be a mistake because it
-+		 * is likely that the next interval will not exceed the current
-+		 * maximum, so return the latter in that case.
-+		 */
-+		if (divisor >= INTERVALS / 2)
-+			return max;
-+
- 		return UINT_MAX;
-+	}
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 33cdcfe106344..f65e03e7cf944 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -1503,7 +1503,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
+ 	}
  
- 	thresh = max - 1;
- 	goto again;
+ 	len = strlen(value);
+-	if (value[len - 1] != '"') {
++	if (len < 2 || value[len - 1] != '"') {
+ 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
+ 			ext->name, value);
+ 		return -EINVAL;
 -- 
 2.39.5
 
