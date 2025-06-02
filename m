@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A904ACB5D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA35ACB328
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63CB54C1680
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E17C94A32F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A1D22DF96;
-	Mon,  2 Jun 2025 14:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF7C23507C;
+	Mon,  2 Jun 2025 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7mRAteE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3w0OxTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D853214A93;
-	Mon,  2 Jun 2025 14:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B47B226863;
+	Mon,  2 Jun 2025 14:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875929; cv=none; b=dg9H7q5tj6cSejIMRUlwGJP/9OhnmWRT1qvaCZFshzuT1Rikmu+CkVoQngXWjQS6jxAn3nvJfev8ZR5KzVD7Nh+9JSVOoa84snq0Ebn1tzPy2bKgdFhsYlW0s9QgaHmj3mi2tiXI+oI2HZABgmappMdfMD7liVOs7aHfNs1mMzY=
+	t=1748874049; cv=none; b=nYNkahlNVHga1y4wX+6vLboIKbynNfdhxXSfB0QepdJD7JpNa3zI38G0PKwelbIuuQ1m35CRdLmBs2zVR7eM4SpihoN8TXyy/43flzRlWLaL4vKY8gL4SitKqAI1m6BBSwFWgVUzTXD0z2S3BJPSgk4YkrbgRnBKh6RrRw7SVJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875929; c=relaxed/simple;
-	bh=PzRG9qXSN2yksuqIOV5se9GNIf+hZ4HE8ahsG18beCE=;
+	s=arc-20240116; t=1748874049; c=relaxed/simple;
+	bh=7ULt6qXlfCx5WbDvymhoJ3ik1dMxBaGIC+PQlmshxio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrgPio+NcX31SxJfnV4AgsYyVmz5Cxk9Egdo7qEiu0JplhEKqlETOSzf83xQ2g+nnksTpWeIf04s6fCd2zORkzvStfcO9oa8QLLQQY5ZUUEiL8kN8KmrfrlMK59PMT8L/V5xR31oDgitG+rbUOC1iqghSGCzjTgLgkTDOt4jwOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7mRAteE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F9BC4CEEB;
-	Mon,  2 Jun 2025 14:52:08 +0000 (UTC)
+	 MIME-Version; b=a+NKnHPWijJaCblB8rWF3eKQRdIeuc6CYzBOYdVkrYQXYDLLmGPT1VX70mtMO62FgfxJe/YKDEO87ofbGffx+9rrtyUfDTsbhIwvEkU8228U5S1WXS2WPzlom55ZdkJ5terBvUIx0tSwxRPrhx13xE9hxgkoynNc4GIJes8p0XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3w0OxTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E851C4CEEB;
+	Mon,  2 Jun 2025 14:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875929;
-	bh=PzRG9qXSN2yksuqIOV5se9GNIf+hZ4HE8ahsG18beCE=;
+	s=korg; t=1748874049;
+	bh=7ULt6qXlfCx5WbDvymhoJ3ik1dMxBaGIC+PQlmshxio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7mRAteE0mrmD6YaZ+jXcVOH+X6pE6iYjJ6HNKBJ8HQqByqOEnbqdFFFYxzehkbMv
-	 tbgoFREFADTOJbmsls/2LSm9yTzwgS4bpUiyjnRYE+7YIS0Oe+nKzI6BhUuipmzbbI
-	 FKfvpA4+wpV/iR2GAVPWS+pLOgx07IUZwE6G4wZg=
+	b=W3w0OxTpEscQf15K5tDYlqPzi+sD46hVxArLO2xabRCDC+xOI0b0xbaCrQSTG12XU
+	 ITdX5h8/WdlH8KJ+eZUd6qeV5dUnbZhB9bjYb0fnxuAi5KYI0oEVyD0OpGToqiHtbm
+	 wV/+jA8zy7UoUCxy8Taq1u1BkdnXSZXP6Hr7D9mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 003/207] dma-mapping: avoid potential unused data compilation warning
+Subject: [PATCH 6.6 311/444] drm: Add valid clones check
 Date: Mon,  2 Jun 2025 15:46:15 +0200
-Message-ID: <20250602134258.904958514@linuxfoundation.org>
+Message-ID: <20250602134353.553716581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit c9b19ea63036fc537a69265acea1b18dabd1cbd3 ]
+[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
 
-When CONFIG_NEED_DMA_MAP_STATE is not defined, dma-mapping clients might
-report unused data compilation warnings for dma_unmap_*() calls
-arguments. Redefine macros for those calls to let compiler to notice that
-it is okay when the provided arguments are not used.
+Check that all encoders attached to a given CRTC are valid
+possible_clones of each other.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250415075659.428549-1-m.szyprowski@samsung.com
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index fe3849434b2a2..d7b91f82b0dce 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -595,10 +595,14 @@ static inline int dma_mmap_wc(struct device *dev,
- #else
- #define DEFINE_DMA_UNMAP_ADDR(ADDR_NAME)
- #define DEFINE_DMA_UNMAP_LEN(LEN_NAME)
--#define dma_unmap_addr(PTR, ADDR_NAME)           (0)
--#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  do { } while (0)
--#define dma_unmap_len(PTR, LEN_NAME)             (0)
--#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    do { } while (0)
-+#define dma_unmap_addr(PTR, ADDR_NAME)           \
-+	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
-+#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  \
-+	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
-+#define dma_unmap_len(PTR, LEN_NAME)             \
-+	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
-+#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    \
-+	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
- #endif
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index f3681970887cc..1aa59586c8f81 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -573,6 +573,30 @@ mode_valid(struct drm_atomic_state *state)
+ 	return 0;
+ }
  
- #endif /* _LINUX_DMA_MAPPING_H */
++static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
++					 struct drm_crtc *crtc)
++{
++	struct drm_encoder *drm_enc;
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
++
++	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
++		if (!drm_enc->possible_clones) {
++			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
++			continue;
++		}
++
++		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
++		    crtc_state->encoder_mask) {
++			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
++				  crtc->base.id, crtc_state->encoder_mask);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
+ /**
+  * drm_atomic_helper_check_modeset - validate state object for modeset changes
+  * @dev: DRM device
+@@ -744,6 +768,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
+ 		ret = drm_atomic_add_affected_planes(state, crtc);
+ 		if (ret != 0)
+ 			return ret;
++
++		ret = drm_atomic_check_valid_clones(state, crtc);
++		if (ret != 0)
++			return ret;
+ 	}
+ 
+ 	/*
 -- 
 2.39.5
 
