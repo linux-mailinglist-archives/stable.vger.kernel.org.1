@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF02DACB051
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2646DACAFF1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100D2188A644
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 044FB40170F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAC8221FCC;
-	Mon,  2 Jun 2025 14:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6291F4165;
+	Mon,  2 Jun 2025 13:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjGQEKdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQakY95m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE5E1D8DFB;
-	Mon,  2 Jun 2025 14:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC3E1A3A80;
+	Mon,  2 Jun 2025 13:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872860; cv=none; b=gu5FWCA6T34p9JmfsvmZnQz77Zizt3Qj0KLjfLUd6+Vr1OEM9UgnVNgn9vq7lmF8p+XFnHzWQJkerL6LqLrDu83NgTilaKIaNKR2PvPWqW0eahvLYyiw91z+X87ZldE+xacu5wyjil+NQ2UVCKqvTYd41Bbkr+NnYiW8wMSeJw4=
+	t=1748872726; cv=none; b=FcZKYDuDXNk1SURaU8xRMdobNpG8TBHWiCkdIPfYKYed34oV6uQ5gVVDHdpLbYJEIfe0/D4o07nEMGuqqxhm7Y+BCygBnAL17K/xgYEW9pIuVGPA9OK0wBU564NBcE0AQ4lA+6ftPmRC6WqFUBElmGVnYcWLOqT5eE+d260khXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872860; c=relaxed/simple;
-	bh=19O+b9yMRuLRIGtt+vzNf2mZSLE6GHG9e5FmACkrDbk=;
+	s=arc-20240116; t=1748872726; c=relaxed/simple;
+	bh=34E/o1Mb9Db+l9KYIRha/s+43PtO+1ShtCkeoKE5/vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBq6dKoFhKralTRUYWhyOs+8kG28kGL0oBs2nu55/dlaBM+iH0Z1NhlxQF2zzqVJJ1EGKMbErerdOMJXGmG8Jz5FCQ0IoOv1qsfRyvnlFIRn29Vw5+e7d47NMrI7T/Ucl60rC+d3hM4PQgrC/glabmnHl1/IIbYjonUhDvnMGpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjGQEKdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD9AC4CEEB;
-	Mon,  2 Jun 2025 14:01:00 +0000 (UTC)
+	 MIME-Version; b=QuYHN2MGvroLEtws2Cij0Mj4JmsFsd9mvAbJyXCne57RSHmbHzMLDPOzOv6lo903Z+NVZ896OQ2f41j5kSdIQHDPpXftLTuivxlr1dTc85yEDc5hSaqSahNQrm6oIbiZ9XdQXn+52zmP0TVIQJpHK63hPpkhIMQ9nuLWLbN/0Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQakY95m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41D5C4CEEB;
+	Mon,  2 Jun 2025 13:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872860;
-	bh=19O+b9yMRuLRIGtt+vzNf2mZSLE6GHG9e5FmACkrDbk=;
+	s=korg; t=1748872726;
+	bh=34E/o1Mb9Db+l9KYIRha/s+43PtO+1ShtCkeoKE5/vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjGQEKdPI6wpBRCUkQ6xVYZRrCF7ZW5hnZ4Jek8p7fMfdTZy6KS6T7EBcILkFJRfh
-	 DwXfODX1hPGXSJsaP7SEhmNCzhm6XN8VZaAHgkr9l3XzE5wRmom3oLIuQ+spu1CwL1
-	 LvPjHZv6HlH5eYwD0SL/Ohgt8r+X3viaZ/VurBXc=
+	b=fQakY95mewTojopQvx9YO/jfuoT8UIFIzUfGMiadbq6L8vvr3ASXzH1aLzkBtSFgz
+	 SWQ94+gI9Mzua7JTM0rl6NXr1TNEXRDdSaklyJJJKfnC1FRalaiCKIbyFGnvP7aOts
+	 kHBeZvUnKidTBbRO/UAn54D1Gn32hHDJhyHE7G3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Jai Luthra <jai.luthra@linux.dev>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.12 19/55] arm64: dts: ti: k3-am62x: Rename I2C switch to I2C mux in IMX219 overlay
+	Milton Barrera <miltonjosue2001@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 50/73] HID: quirks: Add ADATA XPG alpha wireless mouse support
 Date: Mon,  2 Jun 2025 15:47:36 +0200
-Message-ID: <20250602134239.038815369@linuxfoundation.org>
+Message-ID: <20250602134243.671703010@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Milton Barrera <miltonjosue2001@gmail.com>
 
-commit 7b75dd2029ee01a8c11fcf4d97f3ccebbef9f8eb upstream.
+[ Upstream commit fa9fdeea1b7d6440c22efa6d59a769eae8bc89f1 ]
 
-The IMX219 device tree overlay incorrectly defined an I2C switch
-instead of an I2C mux. According to the DT bindings, the correct
-terminology and node definition should use "i2c-mux" instead of
-"i2c-switch". Hence, update the same to avoid dtbs_check warnings.
+This patch adds HID_QUIRK_ALWAYS_POLL for the ADATA XPG wireless gaming mouse (USB ID 125f:7505) and its USB dongle (USB ID 125f:7506). Without this quirk, the device does not generate input events properly.
 
-Fixes: 4111db03dc05 ("arm64: dts: ti: k3-am62x: Add overlay for IMX219")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
-Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
-Link: https://lore.kernel.org/r/20250415111328.3847502-7-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Milton Barrera <miltonjosue2001@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    | 4 ++++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 6 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
-@@ -22,7 +22,7 @@
- 	#size-cells = <0>;
- 	status = "okay";
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 288a2b864cc41..1062731315a2a 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -41,6 +41,10 @@
+ #define USB_VENDOR_ID_ACTIONSTAR	0x2101
+ #define USB_DEVICE_ID_ACTIONSTAR_1011	0x1011
  
--	i2c-switch@71 {
-+	i2c-mux@71 {
- 		compatible = "nxp,pca9543";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
++#define USB_VENDOR_ID_ADATA_XPG 0x125f
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE 0x7505
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE 0x7506
++
+ #define USB_VENDOR_ID_ADS_TECH		0x06e1
+ #define USB_DEVICE_ID_ADS_TECH_RADIO_SI470X	0xa155
+ 
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 5d7a418ccdbec..73979643315bf 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -27,6 +27,8 @@
+ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AFATECH, USB_DEVICE_ID_AFATECH_AF9016), HID_QUIRK_FULLSPEED_INTERVAL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AIREN, USB_DEVICE_ID_AIREN_SLIMPLUS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI_09E8, USB_DEVICE_ID_AKAI_09E8_MIDIMIX), HID_QUIRK_NO_INIT_REPORTS },
+-- 
+2.39.5
+
 
 
 
