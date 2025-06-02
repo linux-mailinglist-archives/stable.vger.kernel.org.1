@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-148982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FF5ACAF87
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:49:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62946ACAFE0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 879E6188905D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B2D188A082
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970B8221299;
-	Mon,  2 Jun 2025 13:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA75722156B;
+	Mon,  2 Jun 2025 13:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph4bFK23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1XrBgCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8E1A3A80;
-	Mon,  2 Jun 2025 13:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A332576;
+	Mon,  2 Jun 2025 13:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872159; cv=none; b=J9+JF9YdJbedQSK/YBTVpoxFnSrqaNZtKtxRW33m/K2dHQAr4EshaV41cQ8vcortlAHbh6LgokvydLUAKqoijkJ4znUgSOTTs7j12GPVXcNZyGo2WEGAcIE1USM67BOJO0z8cUQgqvpVoLUO6DOw2LLXzCo/2YPEaP7Eqa9grmk=
+	t=1748872605; cv=none; b=FSs0vJpGlZIiGvRV+UdvWyVNQLdqaGuiCZG82HVNuCkwqTFxtT0XDTyXeLnlBkX7vZbzQkYIXvWD2dYnx27baaSA949coQDj9c4ARdBZMjeNAj1xsJMJ4c8Dyt1oybNhZsvVvyA8RlWd1IdBC2JQbmuiJ4HDk0u82p4QMEFEBJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872159; c=relaxed/simple;
-	bh=rffd3203g1cFgfDD2WpLeV19H7Unz5lOXHJBEkle9a4=;
+	s=arc-20240116; t=1748872605; c=relaxed/simple;
+	bh=PyDcmJ0c/r2tgPTNj/cCpsTuY79JK67L12Qev2E51v4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E7xfHFeXPkvPWFNakT2EyfAxDGUrXNgJDxUKO3o98QLpbLFW+TDI0KS0x+ilEcTJp53/ozA4MuRFTuF95J4JZe86X7nrvRNyntOiqFFJ30tPp0qL35UI5ZeKZg13qMm85MdAFfurTJUTiGGR5aV12CLmLuTLJ8EFz8G9XC50TkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph4bFK23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A931CC4CEEE;
-	Mon,  2 Jun 2025 13:49:18 +0000 (UTC)
+	 MIME-Version; b=bHIOiHlREajQh47soVEasuGXGr9duIRXQ083Wd3gNroFvTrrtSs+H19JJYq6tB3QD9YD/lP3U2Ka1QACwGsVouFxrJAgpXC4sMyjnQj45CU9r2IauFa+ZVegBVEdf72LJ0BI3MoZ2KFpMldPxqJgg+1r976b2/N7Mz3CZJj+1wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1XrBgCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACE2C4CEEB;
+	Mon,  2 Jun 2025 13:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872159;
-	bh=rffd3203g1cFgfDD2WpLeV19H7Unz5lOXHJBEkle9a4=;
+	s=korg; t=1748872604;
+	bh=PyDcmJ0c/r2tgPTNj/cCpsTuY79JK67L12Qev2E51v4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ph4bFK23f5h2/34oTHF39roQdjy83G0EgmtdzYZm/HGAlOq9f8Sy0BDmGsa1OdVEl
-	 YFu28FmPoNVncCs4AJ4a7+JDg9CyEbHmIVaPC8kCW3Q6lrG90a0SErMDwxpUdr4Jyx
-	 zpW1xI/5iXRo9CP18dRF9qKNnGkNSi1D4fNoekz4=
+	b=C1XrBgCefpB5z48xNOCfOtOcBr1fBK8aJxKQ/aezdMCS0uREnm8p+VfWHltF5zi77
+	 AVWnRJi3jL9jnGiRMEjLpdoZuJtJ/M7rb4uMeBI53VNj/x5cEK3L4dSOnqS5Le+jjo
+	 SYpadoDy4v/DtrT+i4Oq0JmWlJeqn5rpjFCrYNA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 08/49] arm64: dts: qcom: sm8350: Fix typo in pil_camera_mem node
-Date: Mon,  2 Jun 2025 15:47:00 +0200
-Message-ID: <20250602134238.269363133@linuxfoundation.org>
+Subject: [PATCH 6.14 15/73] arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on
+Date: Mon,  2 Jun 2025 15:47:01 +0200
+Message-ID: <20250602134242.297746337@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 295217420a44403a33c30f99d8337fe7b07eb02b upstream.
+commit 63169c07d74031c5e10a9f91229dabade880cf0f upstream.
 
-There is a typo in sm8350.dts where the node label
-mmeory@85200000 should be memory@85200000.
-This patch corrects the typo for clarity and consistency.
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250514114656.2307828-1-alok.a.tiwari@oracle.com
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
+
+Note that these supplies currently have no consumers described in
+mainline.
+
+Fixes: f5b788d0e8cd ("arm64: dts: qcom: Add support for X1-based Dell XPS 13 9345")
+Cc: stable@vger.kernel.org	# 6.13
+Reviewed-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Tested-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-5-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -455,7 +455,7 @@
- 			no-map;
+--- a/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
+@@ -359,6 +359,7 @@
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
  		};
  
--		pil_camera_mem: mmeory@85200000 {
-+		pil_camera_mem: memory@85200000 {
- 			reg = <0x0 0x85200000 0x0 0x500000>;
- 			no-map;
+ 		vreg_l13b_3p0: ldo13 {
+@@ -380,6 +381,7 @@
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
  		};
+ 
+ 		vreg_l17b_2p5: ldo17 {
 
 
 
