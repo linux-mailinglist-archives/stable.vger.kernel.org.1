@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D48EACAFE6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1493ACAF75
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E161BA1F6A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F96173D2F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D94E221299;
-	Mon,  2 Jun 2025 13:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A88E221D92;
+	Mon,  2 Jun 2025 13:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6wjj9Ey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKCCs+hA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0D61401B;
-	Mon,  2 Jun 2025 13:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ACD22068E;
+	Mon,  2 Jun 2025 13:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872641; cv=none; b=JpKsilLKiHR52X/JD+rd/QWblc/JVzlNEAKmzgnXvCdTtwlRqaIOgNOeN2GlC6POdXAotEiiycDQ6FXBVfMirAUJauGPATyjygfsdVZhTrymGnHG3GRdRtSjrFAe3OL3dFXbAqvPoUxY5mwZNSZyIhIarGJcFXMTHCNTCj2iDNY=
+	t=1748872103; cv=none; b=E0f0vLnRNYmTYF+ns0LfZOrmkEdAuin9RAmNC8kjadpDXGcFvx3tDU8UtGwBM/kaKw2OR6E0xYNDm/oekRYDh0obgstcARUwg1FfTbTNTzBYgaPIcF5knH0L76Gq+l1RpAH2orkgKIKUogLDMm1lw8SBAV24uPjtW7fNRYUaKMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872641; c=relaxed/simple;
-	bh=vlHhI/wnfX+cfM81TpAXh/DjSW3GqNA9EQO4yIJXLiE=;
+	s=arc-20240116; t=1748872103; c=relaxed/simple;
+	bh=l+JOu/h6aMm/w5NdIfdmMSqgxy7GyjfGyqfn6yq9j3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=trZUIvd8vOWRTVp78sc0TjlmVjTRQbk8jMJBcUxE6nzVTR6Ir9pssulMF5Tluox21E7tDHuVta1ewbNkhXulDgJA4rbGspk/EQUJ7uBG5DOLaGca4d+okHkeWR9P8RBG4sJXlP2ofYTtWjA5D4R+8c9ub3+3zczlNksC8rjvEK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6wjj9Ey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B94C4CEEE;
-	Mon,  2 Jun 2025 13:57:19 +0000 (UTC)
+	 MIME-Version; b=ItSu+5dDoGjh1uKP54bwVBOxOvFrDC9OcDS85RhkEZIgv7pXm+xggAlLm20Rn7w9toaG9/eP0HzoJGK3bRMDN1VHy0Q4Ubb1TTo3AuWV7EOXgfxNoj0b5CWYxh5JQNetgmT87Twr6kIiib6CdGkyHOVyMVTgSnx1AEz6ufjTWdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKCCs+hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF5C4CEEB;
+	Mon,  2 Jun 2025 13:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872640;
-	bh=vlHhI/wnfX+cfM81TpAXh/DjSW3GqNA9EQO4yIJXLiE=;
+	s=korg; t=1748872102;
+	bh=l+JOu/h6aMm/w5NdIfdmMSqgxy7GyjfGyqfn6yq9j3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6wjj9EyBXA67gZ3uj/pVxlBWNnmDdOIkATnRIyxXj00G52ReQXeQr/f/fb5cMlXe
-	 CQhiB54zG86KN/42FBLPV9YIaK6+VK0YgWvGB3kOlUxjscAEWrr9v7pNZqMVvMhjTI
-	 H7LGJxWQRKtPoIyjotpfkfIcps2VP+VEJoFOgpj0=
+	b=oKCCs+hAfyIZXJPiUtR5k73k6EKOsQS++nUPfh2OWci3o/XsqdHUA4ivx8puUZaZ7
+	 lhFpysUrORmn23B8at3xI1QwN4+wzlgCHUbAbwXtpqP4xm7qiOiUiClj7wBYgvwAP1
+	 JBvMLLR0NQo/N1fN7fl7s9ZqK7fm6z5vDc5qKtgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Stephan Gerhold <stephan.gerhold@linaro.org>,
 	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 25/73] arm64: dts: qcom: x1e80100: Add GPU cooling
+Subject: [PATCH 6.15 19/49] arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: Fix vreg_l2j_1p2 voltage
 Date: Mon,  2 Jun 2025 15:47:11 +0200
-Message-ID: <20250602134242.691171064@linuxfoundation.org>
+Message-ID: <20250602134238.700969223@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,335 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 5ba21fa11f473c9827f378ace8c9f983de9e0287 upstream.
+commit 4f27ede34ca3369cdcde80c5a4ca84cdb28edbbb upstream.
 
-Unlike the CPU, the GPU does not throttle its speed automatically when it
-reaches high temperatures. With certain high GPU loads it is possible to
-reach the critical hardware shutdown temperature of 120°C, endangering the
-hardware and making it impossible to run certain applications.
-
-Set up GPU cooling similar to the ACPI tables, by throttling the GPU speed
-when reaching 95°C and polling every 200ms.
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
 Cc: stable@vger.kernel.org
-Fixes: 721e38301b79 ("arm64: dts: qcom: x1e80100: Add gpu support")
+Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
 Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250219-x1e80100-thermal-fixes-v1-3-d110e44ac3f9@linaro.org
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-5-24b6a2043025@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |  169 +++++++++++++++++----------------
- 1 file changed, 89 insertions(+), 80 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -20,6 +20,7 @@
- #include <dt-bindings/soc/qcom,gpr.h>
- #include <dt-bindings/soc/qcom,rpmh-rsc.h>
- #include <dt-bindings/sound/qcom,q6dsp-lpass-ports.h>
-+#include <dt-bindings/thermal/thermal.h>
+--- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+@@ -508,8 +508,8 @@
  
- / {
- 	interrupt-parent = <&intc>;
-@@ -9359,24 +9360,25 @@
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
  		};
  
- 		gpuss-0-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 5>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss0_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss0_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9385,24 +9387,25 @@
- 		};
- 
- 		gpuss-1-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 6>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss1_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss1_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9411,24 +9414,25 @@
- 		};
- 
- 		gpuss-2-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 7>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss2_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss2_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9437,24 +9441,25 @@
- 		};
- 
- 		gpuss-3-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 8>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss3_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss3_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9463,24 +9468,25 @@
- 		};
- 
- 		gpuss-4-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 9>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss4_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss4_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9489,24 +9495,25 @@
- 		};
- 
- 		gpuss-5-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 10>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss5_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss5_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9515,24 +9522,25 @@
- 		};
- 
- 		gpuss-6-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 11>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss6_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss6_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
-@@ -9541,24 +9549,25 @@
- 		};
- 
- 		gpuss-7-thermal {
--			polling-delay-passive = <10>;
-+			polling-delay-passive = <200>;
- 
- 			thermal-sensors = <&tsens3 12>;
- 
--			trips {
--				trip-point0 {
--					temperature = <85000>;
--					hysteresis = <1000>;
--					type = "passive";
-+			cooling-maps {
-+				map0 {
-+					trip = <&gpuss7_alert0>;
-+					cooling-device = <&gpu THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
- 				};
-+			};
- 
--				trip-point1 {
--					temperature = <90000>;
-+			trips {
-+				gpuss7_alert0: trip-point0 {
-+					temperature = <95000>;
- 					hysteresis = <1000>;
--					type = "hot";
-+					type = "passive";
- 				};
- 
--				trip-point2 {
-+				gpu-critical {
- 					temperature = <115000>;
- 					hysteresis = <1000>;
- 					type = "critical";
 
 
 
