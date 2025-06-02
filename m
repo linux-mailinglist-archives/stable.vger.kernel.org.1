@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-150341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8F3ACB617
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FE7ACB2B4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 620BB7A4767
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6998C1678EF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4581B238145;
-	Mon,  2 Jun 2025 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA97222582;
+	Mon,  2 Jun 2025 14:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lL1CpPzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yefcfnPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D2223644F;
-	Mon,  2 Jun 2025 15:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA31CBA18;
+	Mon,  2 Jun 2025 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876814; cv=none; b=E/yfBsnRkUvcxnMoRvKpqqkOJFMhzhkpOiAjkdzreUK98qcLdtpp8xVsj5TT1Gk6qzL+vSDCjRCPed7jgbjzmmfix8yfkaB1Eh8etOn5+cBr1qMpT0K6hfnj+ajQX5TDvxBhyn43oNzm7vrT5QAIU2p5hCmY85EtzC8Xq6Y9olk=
+	t=1748873914; cv=none; b=hr19A4krKXQ32ZcX9+E9GloSGuj/iCnjmWAqE1WEe0kYECKTNJFnccY/Eo6Pi0n8msHMQ6POQB4e/yOf9Rgj382gHZxAfXYH+HFbBF+xaWRWa6vDtHEa9AIfKi2JvHxbKkg/VgxqqxSLjrf4WVWDkBQq3UWXxrIdffM6z6sSRnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876814; c=relaxed/simple;
-	bh=cY2ny3TSupB+xy+obsMLXMCKNtWfGtp62MypO7UTF0g=;
+	s=arc-20240116; t=1748873914; c=relaxed/simple;
+	bh=wdWFbBuYXmnpskCXzMtSB1dzdJF+qyj1OZ/tZ+I0OZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkuxZ3p/rvIAkWNXGJP+Bke/4c1ldZ7/iJIUvlFav+L3Pb38xdT168FNcW2KTWWEDQ92kFlb7b7JcifNJIB6DHjwQ/I5gKuWFxl96XUIaiYsw+I1MZtDur+mVW8hgegmp7eja04KQOPQ3F0pDzaq/n9wNFhbNJCqrtLPwqYWeWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lL1CpPzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E61C4CEEB;
-	Mon,  2 Jun 2025 15:06:53 +0000 (UTC)
+	 MIME-Version; b=Zb3cCYrG0Ce7ukmbDZA++vwhaOG7M/OBwoG2rqMH2/JCaOvj6aGdjU2ALZi8PSPNpnoaSxRLYGtsFC0zhe77aUdomhwSiBPfUib0a4+T2zCGB//pUg8w+2V2dfeyldZbsHezJgiC2PwaYuDBeSMXsZhXRlrhrdGerO8VSfhAHsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yefcfnPz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8ACC4CEEB;
+	Mon,  2 Jun 2025 14:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876813;
-	bh=cY2ny3TSupB+xy+obsMLXMCKNtWfGtp62MypO7UTF0g=;
+	s=korg; t=1748873914;
+	bh=wdWFbBuYXmnpskCXzMtSB1dzdJF+qyj1OZ/tZ+I0OZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lL1CpPzFkinb2vRs2lb9aNLUS8R5BWAk6QOu/HPTi2ezamgScZ99Xe3tlj3f53x5D
-	 7q88f955Pc6r7+97lziIlnECFfpg9ynt5gWhWYe9rctStADHwlZsqBP3pQAkFnlePA
-	 uIWjrNPTyvHhQ7Ie9OyUpx31p3Uxyp0wThznWk8A=
+	b=yefcfnPzz8MWYHsxBTKWyWVw++hZ86WgN2JDD+vrdpkD3dRQv7wTafMvkCE2r4oyN
+	 s392049LTZVv1yhReSCd7A2Wp6XJMQDENdPsgRRiBPSFLcCaSDlw6rW8rRj7z3hFYL
+	 zUH2GrTrkYm2PKbUfn2vLhD6Z++M5RKgrxl8p2eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/325] arm64/mm: Check PUD_TYPE_TABLE in pud_bad()
+Subject: [PATCH 6.6 295/444] bpftool: Fix readlink usage in get_fd_type
 Date: Mon,  2 Jun 2025 15:45:59 +0200
-Message-ID: <20250602134323.154358758@linuxfoundation.org>
+Message-ID: <20250602134352.924768119@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,51 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit bfb1d2b9021c21891427acc86eb848ccedeb274e ]
+[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
 
-pud_bad() is currently defined in terms of pud_table(). Although for some
-configs, pud_table() is hard-coded to true i.e. when using 64K base pages
-or when page table levels are less than 3.
+The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
+bytes and *does not* append null-terminator to buf. With respect to
+that, fix two pieces in get_fd_type:
 
-pud_bad() is intended to check that the pud is configured correctly. Hence
-let's open-code the same check that the full version of pud_table() uses
-into pud_bad(). Then it always performs the check regardless of the config.
+1. Change the truncation check to contain sizeof(buf) rather than
+   sizeof(path).
+2. Append null-terminator to buf.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-7-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported by Coverity.
+
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
+ tools/bpf/bpftool/common.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 1d713cfb0af16..426c3cb3e3bb1 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -677,7 +677,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- 	pr_err("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index 9b75639434b81..0a764426d9358 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -461,10 +461,11 @@ int get_fd_type(int fd)
+ 		p_err("can't read link type: %s", strerror(errno));
+ 		return -1;
+ 	}
+-	if (n == sizeof(path)) {
++	if (n == sizeof(buf)) {
+ 		p_err("can't read link type: path too long!");
+ 		return -1;
+ 	}
++	buf[n] = '\0';
  
- #define pud_none(pud)		(!pud_val(pud))
--#define pud_bad(pud)		(!pud_table(pud))
-+#define pud_bad(pud)		((pud_val(pud) & PUD_TYPE_MASK) != \
-+				 PUD_TYPE_TABLE)
- #define pud_present(pud)	pte_present(pud_pte(pud))
- #define pud_leaf(pud)		(pud_present(pud) && !pud_table(pud))
- #define pud_valid(pud)		pte_valid(pud_pte(pud))
+ 	if (strstr(buf, "bpf-map"))
+ 		return BPF_OBJ_MAP;
 -- 
 2.39.5
 
