@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B39FACB6CA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E94AACB352
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24C3C1BC2D29
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4888716C917
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44B9230D0E;
-	Mon,  2 Jun 2025 14:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30380227BA9;
+	Mon,  2 Jun 2025 14:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJHEvwpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQjIiiYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0B6228CA9;
-	Mon,  2 Jun 2025 14:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FD1EA65;
+	Mon,  2 Jun 2025 14:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876231; cv=none; b=ScYfpOvZA1BBvCaEhYfqnc34/5rsm2SwuMOBTjk8JLrZ2lsq4ejZvgcCAxWIUDn8XgAcQ5RKIN6uMlOOKsgGFLrUCGd3dldwVODVoQHNVOi/8zrAYefa4+5A8XwyBWiZ9ud4FQN/NODK6WiNYOhSRQvk064rJQGJHGcZYJr9sV8=
+	t=1748874289; cv=none; b=XOO7i9JRIxqK/3h438bQeHk6D388W9upcBQN42PseFVOpneFVXqZucTcH+BiHMgSpaiAHco0q/oU1iYFk4W3UPq/qzNp1FKIRB93tRWdfSEIR89G9KquHpJW6a0zxm+VotHntcVuJ9Uu1PrXbylI2o+Qs4QBm/vXXGVGJgWWRU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876231; c=relaxed/simple;
-	bh=namX4ubmtI1ZBg/Idqg2sUfvYqaYiY5kWTN8a4sdqRg=;
+	s=arc-20240116; t=1748874289; c=relaxed/simple;
+	bh=UcdXwakM+9H5HUA572cYYg7q0sb3NdoA2PSBvdsBXeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6vE2eaXFDkjcq4dMBcCWc+gcUmckBFsXMkgwvUo2EXAfTIiEdOiIh3HyBKz4/S0YLXHvS+S7EzP+au0MMcMUqn5ZWJZQvly64KsxevoxurrXh7WbT+JB01NO43q38V1mRdizuLTVGu2Wu439UrwICJACoEcBLB3y5Dj6Annufw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJHEvwpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1C8C4CEEB;
-	Mon,  2 Jun 2025 14:57:09 +0000 (UTC)
+	 MIME-Version; b=hCfSw3p+2eKKlxRO7Aa52ro5znJNzR5NqGixmhfmI6/gMUUJK3qaAL4lOZCh8esdghwA09AJ+bkL+2loVZRlu38BVx6QOnJUuCeksWimxB0Q7XNvHMMonsyv4hmSk4aqtN8qohjejmpxaTmnuSMgfpxZGft66iG6Kgal4UgZw8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQjIiiYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A501C4CEEB;
+	Mon,  2 Jun 2025 14:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876229;
-	bh=namX4ubmtI1ZBg/Idqg2sUfvYqaYiY5kWTN8a4sdqRg=;
+	s=korg; t=1748874288;
+	bh=UcdXwakM+9H5HUA572cYYg7q0sb3NdoA2PSBvdsBXeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJHEvwpVrr9osBHHHcGes/cWFpndF4NmcHFMl4pOd5MUVVXWG+yVxWjq2RH3VLbrs
-	 J0s/47XbjvCP2tp5FJhh/DskkxJaIV6STJLm5KB08XI+3k+jspj9M4qqk+OFys7Xyx
-	 MUJVsKM6wqdf/G3IPEvJnr/bCsrr8gT09SLRJYT4=
+	b=WQjIiiYibqvHxBI0FEAMCD/UUPXha9N6s3HHfjCUm/hfG/S0RaJOH12DCjwKTtTld
+	 VGLgR7jGpFPgPZGijrxtZ8olzNzCIy8LL6/MaE1b5n95vfiy0xHYi6JeuuDsth88W4
+	 NFfW5FaTvw307nLmRf4U/lKdMOVsQ2GIJFWmLlZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/207] ACPI: HED: Always initialize before evged
+	syzkaller <syzkaller@googlegroups.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 420/444] af_unix: Fix uninit-value in __unix_walk_scc()
 Date: Mon,  2 Jun 2025 15:48:04 +0200
-Message-ID: <20250602134303.115935530@linuxfoundation.org>
+Message-ID: <20250602134357.993787797@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaofei Tan <tanxiaofei@huawei.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
+commit 927fa5b3e4f52e0967bfc859afc98ad1c523d2d5 upstream.
 
-When the HED driver is built-in, it initializes after evged because they
-both are at the same initcall level, so the initialization ordering
-depends on the Makefile order.  However, this prevents RAS records
-coming in between the evged driver initialization and the HED driver
-initialization from being handled.
+KMSAN reported uninit-value access in __unix_walk_scc() [1].
 
-If the number of such RAS records is above the APEI HEST error source
-number, the HEST resources may be exhausted, and that may affect
-subsequent RAS error reporting.
+In the list_for_each_entry_reverse() loop, when the vertex's index
+equals it's scc_index, the loop uses the variable vertex as a
+temporary variable that points to a vertex in scc. And when the loop
+is finished, the variable vertex points to the list head, in this case
+scc, which is a local variable on the stack (more precisely, it's not
+even scc and might underflow the call stack of __unix_walk_scc():
+container_of(&scc, struct unix_vertex, scc_entry)).
 
-To fix this issue, change the initcall level of HED to subsys_initcall
-and prevent the driver from being built as a module by changing ACPI_HED
-in Kconfig from "tristate" to "bool".
+However, the variable vertex is used under the label prev_vertex. So
+if the edge_stack is not empty and the function jumps to the
+prev_vertex label, the function will access invalid data on the
+stack. This causes the uninit-value access issue.
 
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by introducing a new temporary variable for the loop.
+
+[1]
+BUG: KMSAN: uninit-value in __unix_walk_scc net/unix/garbage.c:478 [inline]
+BUG: KMSAN: uninit-value in unix_walk_scc net/unix/garbage.c:526 [inline]
+BUG: KMSAN: uninit-value in __unix_gc+0x2589/0x3c20 net/unix/garbage.c:584
+ __unix_walk_scc net/unix/garbage.c:478 [inline]
+ unix_walk_scc net/unix/garbage.c:526 [inline]
+ __unix_gc+0x2589/0x3c20 net/unix/garbage.c:584
+ process_one_work kernel/workqueue.c:3231 [inline]
+ process_scheduled_works+0xade/0x1bf0 kernel/workqueue.c:3312
+ worker_thread+0xeb6/0x15b0 kernel/workqueue.c:3393
+ kthread+0x3c4/0x530 kernel/kthread.c:389
+ ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Uninit was stored to memory at:
+ unix_walk_scc net/unix/garbage.c:526 [inline]
+ __unix_gc+0x2adf/0x3c20 net/unix/garbage.c:584
+ process_one_work kernel/workqueue.c:3231 [inline]
+ process_scheduled_works+0xade/0x1bf0 kernel/workqueue.c:3312
+ worker_thread+0xeb6/0x15b0 kernel/workqueue.c:3393
+ kthread+0x3c4/0x530 kernel/kthread.c:389
+ ret_from_fork+0x6e/0x90 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Local variable entries created at:
+ ref_tracker_free+0x48/0xf30 lib/ref_tracker.c:222
+ netdev_tracker_free include/linux/netdevice.h:4058 [inline]
+ netdev_put include/linux/netdevice.h:4075 [inline]
+ dev_put include/linux/netdevice.h:4101 [inline]
+ update_gid_event_work_handler+0xaa/0x1b0 drivers/infiniband/core/roce_gid_mgmt.c:813
+
+CPU: 1 PID: 12763 Comm: kworker/u8:31 Not tainted 6.10.0-rc4-00217-g35bb670d65fc #32
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
+Workqueue: events_unbound __unix_gc
+
+Fixes: 3484f063172d ("af_unix: Detect Strongly Connected Components.")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240702160428.10153-1-syoshida@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/Kconfig | 2 +-
- drivers/acpi/hed.c   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ net/unix/garbage.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 1da360c51d662..6a178e38fc4a8 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -437,7 +437,7 @@ config ACPI_SBS
- 	  the modules will be called sbs and sbshc.
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -476,6 +476,7 @@ prev_vertex:
+ 	}
  
- config ACPI_HED
--	tristate "Hardware Error Device"
-+	bool "Hardware Error Device"
- 	help
- 	  This driver supports the Hardware Error Device (PNP0C33),
- 	  which is used to report some hardware errors notified via
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index 60a2939cde6c5..e8e9b1ac06b88 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
- 		.notify = acpi_hed_notify,
- 	},
- };
--module_acpi_driver(acpi_hed_driver);
-+
-+static int __init acpi_hed_driver_init(void)
-+{
-+	return acpi_bus_register_driver(&acpi_hed_driver);
-+}
-+subsys_initcall(acpi_hed_driver_init);
+ 	if (vertex->index == vertex->scc_index) {
++		struct unix_vertex *v;
+ 		struct list_head scc;
+ 		bool scc_dead = true;
  
- MODULE_AUTHOR("Huang Ying");
- MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
--- 
-2.39.5
-
+@@ -486,15 +487,15 @@ prev_vertex:
+ 		 */
+ 		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
+ 
+-		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
++		list_for_each_entry_reverse(v, &scc, scc_entry) {
+ 			/* Don't restart DFS from this vertex in unix_walk_scc(). */
+-			list_move_tail(&vertex->entry, &unix_visited_vertices);
++			list_move_tail(&v->entry, &unix_visited_vertices);
+ 
+ 			/* Mark vertex as off-stack. */
+-			vertex->index = unix_vertex_grouped_index;
++			v->index = unix_vertex_grouped_index;
+ 
+ 			if (scc_dead)
+-				scc_dead = unix_vertex_dead(vertex);
++				scc_dead = unix_vertex_dead(v);
+ 		}
+ 
+ 		if (scc_dead)
 
 
 
