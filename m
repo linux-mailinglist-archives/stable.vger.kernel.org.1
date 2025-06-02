@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EE4ACB709
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8570CACB7D7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58BB01BC28C3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A284C686D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7AF238149;
-	Mon,  2 Jun 2025 14:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7253C22D4C5;
+	Mon,  2 Jun 2025 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rjwrrd0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzbKSxWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AD922A4EB;
-	Mon,  2 Jun 2025 14:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E19B21CA07;
+	Mon,  2 Jun 2025 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876296; cv=none; b=MR788JrqV8VFW5OSzo31FpNuAZ/HDKiLg/EXuUlbn8rvOa+Kd8a50AFSdtslhioauY0rc5U4k0vRseLZGcdLBHyQ1JnrtCSDYa1YMPWCaNi9EV/8FtAe3EKwroS9bFQYWR9k81EiH0drxbXw8s/vScxAnienCE1vS+PFz++jLiM=
+	t=1748877286; cv=none; b=Pivp/GJSBRGUOeaew3Ea9SNIO3BkQY9tMuxtcU/8W0Md3E2luQEfluBT54GNBP3xeEEEgXaEVLLmDEfg7/RibGv5NJAokFb4tkHA1NW77aDAHoic+cqUZ/Es4DAyF2CN9TYKwjPFfw2AR9xaulF/3j0wBzgtONN8alTLYeIoRI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876296; c=relaxed/simple;
-	bh=AzHCPYd5ALImSLTbhOXK/sf77X85noEBPA35vxJgifE=;
+	s=arc-20240116; t=1748877286; c=relaxed/simple;
+	bh=f4jQyzjFUlo3xmsiY8Jq0s58L6kAY4Tno+HWA4TYTiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8TdgX9gx2AKqMsPOvgKu5z30QZwUM2RngwFQ2/38gubjayIF9NNJZI1GACvCDSWvJwICKx/6QAPse9/g2dnZq2kQu/ZNg+bCV7cjlhywiE6M6jqpqbQAGP5P+nkLttRS2XjNQphvyVRb63m7u4JHI2qx9IaziA2bplPWKM6fPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rjwrrd0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FE2C4CEEB;
-	Mon,  2 Jun 2025 14:58:15 +0000 (UTC)
+	 MIME-Version; b=fGJwkQJiYW+RyfcYUB5Xwx07TGNypL9oU9Qh5vfgXTVu0FYTqz5kO8vPS5yiQNK9U2OfN8hUDB9RjpBOyT2pU7TwFxwGAJoK++GvLu7Ck5UV/fFKsnn9cc6ekDIHDNQ4uTP24+kLOR5t+M+Dw4370d6L18VtETE8F7cEi+zj0Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzbKSxWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EFFC4CEEB;
+	Mon,  2 Jun 2025 15:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876295;
-	bh=AzHCPYd5ALImSLTbhOXK/sf77X85noEBPA35vxJgifE=;
+	s=korg; t=1748877286;
+	bh=f4jQyzjFUlo3xmsiY8Jq0s58L6kAY4Tno+HWA4TYTiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rjwrrd0OnIIkgnogHBXoLPkU7kOE4fJR9oKonOQWW2zro70AIw8gCP3QMqESJBkkH
-	 DzlZORN951MDUS0PFYTofn8mCqdEqyWTp5hRfaUCOV4W/PTwzsDBegRcJv7gZPUEvX
-	 ZbevgfR5KxBb1YlcURIkxCQzAnLBGJvI9O1HcGgY=
+	b=UzbKSxWd/bhonuud4AXp833Fs9aDl+w3n2IUMxFGTukxzE2VUSsVf8y4migWTi6fM
+	 BXNefmkn7rKqLeBsqAzGzlhM6GK1/JBxxjczzFdIHbQA3miLtdGyQMR4x2r9ntIc9t
+	 cNaHQHpzdjtGdFeT0O88wFiXijJHw4Jcmbov/qwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 133/207] wifi: rtw88: Fix download_firmware_validate() for RTL8814AU
+Subject: [PATCH 6.1 229/325] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
 Date: Mon,  2 Jun 2025 15:48:25 +0200
-Message-ID: <20250602134303.930419181@linuxfoundation.org>
+Message-ID: <20250602134329.086428160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 9e8243025cc06abc975c876dffda052073207ab3 ]
+[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
 
-After the firmware is uploaded, download_firmware_validate() checks some
-bits in REG_MCUFW_CTRL to see if everything went okay. The
-RTL8814AU power on sequence sets bits 13 and 12 to 2, which this
-function does not expect, so it thinks the firmware upload failed.
+... or we risk stealing final mntput from sync umount - raising mnt_count
+after umount(2) has verified that victim is not busy, but before it
+has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
+that it's safe to quietly undo mnt_count increment and leaves dropping
+the reference to caller, where it'll be a full-blown mntput().
 
-Make download_firmware_validate() ignore bits 13 and 12.
+Check under mount_lock is needed; leaving the current one done before
+taking that makes no sense - it's nowhere near common enough to bother
+with.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/049d2887-22fc-47b7-9e59-62627cb525f8@gmail.com
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/reg.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/namespace.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index c0fb1e446245f..3e5bd64bc09c0 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -107,6 +107,7 @@
- #define BIT_SHIFT_ROM_PGE	16
- #define BIT_FW_INIT_RDY		BIT(15)
- #define BIT_FW_DW_RDY		BIT(14)
-+#define BIT_CPU_CLK_SEL		(BIT(12) | BIT(13))
- #define BIT_RPWM_TOGGLE		BIT(7)
- #define BIT_RAM_DL_SEL		BIT(7)	/* legacy only */
- #define BIT_DMEM_CHKSUM_OK	BIT(6)
-@@ -124,7 +125,7 @@
- 				 BIT_CHECK_SUM_OK)
- #define FW_READY_LEGACY		(BIT_MCUFWDL_RDY | BIT_FWDL_CHK_RPT |	       \
- 				 BIT_WINTINI_RDY | BIT_RAM_DL_SEL)
--#define FW_READY_MASK		0xffff
-+#define FW_READY_MASK		(0xffff & ~BIT_CPU_CLK_SEL)
- 
- #define REG_MCU_TST_CFG		0x84
- #define VAL_FW_TRIGGER		0x1
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 0dcd57a75ad49..211a81240680d 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -632,12 +632,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+-	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+-		mnt_add_count(mnt, -1);
+-		return 1;
+-	}
+ 	lock_mount_hash();
+-	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
++	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
+ 		mnt_add_count(mnt, -1);
+ 		unlock_mount_hash();
+ 		return 1;
 -- 
 2.39.5
 
