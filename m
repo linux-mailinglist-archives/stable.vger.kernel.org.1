@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-149443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E24FACB2BE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF4BACB64E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF854A28EA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E163E1941182
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB47235050;
-	Mon,  2 Jun 2025 14:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6373222DFB5;
+	Mon,  2 Jun 2025 14:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRDbDFSW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7m0CrAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2CB231857;
-	Mon,  2 Jun 2025 14:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AB222331C;
+	Mon,  2 Jun 2025 14:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873978; cv=none; b=mFn0bBbmC0bTXsTTGWG+DgOGvH+cHbsSpAPhXfz9uZu40MV4Fvz3z8jEg8XbYNeYtcCVWMAhIJ8EtC/hOYzH+KrGsxK4MIZ6EUVOvD9Ol6NCb6czM+Kzz+gvgwXvy4MYw+GVZd3bPYGllGCownovVvCvrG1rIeHPg1DOL9NR5io=
+	t=1748875948; cv=none; b=JtqtYfbpo5auyEMqurT93OuryzfwdSKt0mqx3MejT+afg6PCznOd+2cqX1ApEnGqbIsPlYQcc/+3RYwGePqZCM3CNJObwLu44pe82LKpQE4dPGnHcEqXf9Aojz6DWEeoDFZONhqbZext4ATuiYcUrIsV2mB556kXCWdY/IdoAvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873978; c=relaxed/simple;
-	bh=mhcaeDYtoXFIo6WXb3F9n8rX5myVsV5D4OhTYbfL+Vc=;
+	s=arc-20240116; t=1748875948; c=relaxed/simple;
+	bh=+yh3Na9Duzq2Vt1L5oSEZ9ZBGJr4QqGJz7ixB3niwO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWCh/YzL3qHXzg+Q+nN8gEE0Cg0rr/9+BA/H3VAnmCy9oDH4ptkalLQ+kls1c2gpaWarEp7C/8acy2ZZNGT2z7ert6JfbUhLpEwZD5dqavzd+iqNK3AOLe176fr9kCm+6PVXl8p5Z/miDbhp9zQSYRGx2v0GYhwScINgojs9i1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRDbDFSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E177C4CEF0;
-	Mon,  2 Jun 2025 14:19:37 +0000 (UTC)
+	 MIME-Version; b=H8TAjAXBrc0ADenq+FpIycPsL3FUXa3XopHW0J6UQRXQkOQ3c5+tAKvK2G66W8tFLQyIQus1dPQYFHRdtB5JRUhV8T27DvMqPPnVatkCt0fdyv3S+i8tVU6VdTsWNd8enUNYI6J/zSzdxSAB9WjaM3sl9/fMaY3HGvirj7qoIG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7m0CrAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84723C4CEEB;
+	Mon,  2 Jun 2025 14:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873978;
-	bh=mhcaeDYtoXFIo6WXb3F9n8rX5myVsV5D4OhTYbfL+Vc=;
+	s=korg; t=1748875948;
+	bh=+yh3Na9Duzq2Vt1L5oSEZ9ZBGJr4QqGJz7ixB3niwO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRDbDFSWjxSgQ3DViM+Zx/liqwgJzrF3bZ0RLGNNvQGBsgGOq0fGYTx+5GvLTCQXx
-	 KtrbidoOImGlh5X0gfUjJv56Diw/JtzBsHj3zV3AjxCEapzSrDs7kPBcgf2lqa3pcl
-	 bWbzOwuUI4YFrQQXVytk3LUYIRNxCAN5vTUQvCY8=
+	b=P7m0CrAze63a1/f8O4B53QsneOFhmbD9W/QUcxiAsNoWZLvRg00VIT/fKpL5KtFt3
+	 mVOSU2ryYEivTMxGweNFpZ4O+RnXzMDrmxCu50ixiRXREZ+Qi7EXiMWY/ZV7SbTnkq
+	 9tMMnBQgUkd3VW3GPwzpM3xbpOTWAgzEV2Op8XEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/444] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
+Subject: [PATCH 5.15 009/207] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
 Date: Mon,  2 Jun 2025 15:46:21 +0200
-Message-ID: <20250602134353.803498489@linuxfoundation.org>
+Message-ID: <20250602134259.135701942@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
+[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
 
-HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
-workarounds that were applied to another HP Spectre x360 models;
-it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
-seup.
+Check that the delegation is still attached after taking the spin lock
+in nfs_start_delegation_return_locked().
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
-Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ fs/nfs/delegation.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a13795e405a4d..77e9c7a928efe 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6790,6 +6790,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
- 	}
- }
- 
-+/* GPIO1 = amplifier on/off */
-+static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
-+					     const struct hda_fixup *fix,
-+					     int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const hda_nid_t conn[] = { 0x02 };
-+	static const struct hda_pintbl pincfgs[] = {
-+		{ 0x14, 0x90170110 },  /* front/high speakers */
-+		{ 0x17, 0x90170130 },  /* back/bass speakers */
-+		{ }
-+	};
-+
-+	// enable mute led
-+	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		/* needed for amp of back speakers */
-+		spec->gpio_mask |= 0x01;
-+		spec->gpio_dir |= 0x01;
-+		snd_hda_apply_pincfgs(codec, pincfgs);
-+		/* share DAC to have unified volume control */
-+		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
-+		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
-+		break;
-+	case HDA_FIXUP_ACT_INIT:
-+		/* need to toggle GPIO to enable the amp of back speakers */
-+		alc_update_gpio_data(codec, 0x01, true);
-+		msleep(100);
-+		alc_update_gpio_data(codec, 0x01, false);
-+		break;
-+	}
-+}
-+
- static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
- 					  const struct hda_fixup *fix, int action)
- {
-@@ -7401,6 +7436,7 @@ enum {
- 	ALC280_FIXUP_HP_9480M,
- 	ALC245_FIXUP_HP_X360_AMP,
- 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
-+	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
- 	ALC285_FIXUP_HP_ENVY_X360,
- 	ALC288_FIXUP_DELL_HEADSET_MODE,
- 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -9439,6 +9475,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_spectre_x360_eb1
- 	},
-+	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc285_fixup_hp_spectre_x360_df1
-+	},
- 	[ALC285_FIXUP_HP_ENVY_X360] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_envy_x360,
-@@ -10038,6 +10078,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-+	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
- 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
-@@ -10786,6 +10827,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
- 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
- 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
-+	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
- 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
- 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
- 	{.id = ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN, .name = "alc287-yoga9-bass-spk-pin"},
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 0c14ff09cfbe3..45ef1b6f868bf 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
+ 	if (delegation == NULL)
+ 		goto out;
+ 	spin_lock(&delegation->lock);
+-	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++	if (delegation->inode &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
+ 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
+ 		/* Refcount matched in nfs_end_delegation_return() */
+ 		ret = nfs_get_delegation(delegation);
 -- 
 2.39.5
 
