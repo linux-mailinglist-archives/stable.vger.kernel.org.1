@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9CAACB8F9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:51:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F021ACB67C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C71E0947FEE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DE4E1BC1A98
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B547C225760;
-	Mon,  2 Jun 2025 15:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464F12147E7;
+	Mon,  2 Jun 2025 14:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRDY7dT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OC60JmBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734D32253EE;
-	Mon,  2 Jun 2025 15:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BEC226888;
+	Mon,  2 Jun 2025 14:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877417; cv=none; b=KthrLa0tFZy61z6ARyyKyQnsq0JcdMSXGyG0Zgn6kp/WPXaXl6tTDkIHdLBGGZufiSW3Oxl/Xl6eN3I7juPbF7OHSNlYU0FJyM8E+de878sO5ICB3zN6Mgzl0JQXMay1pospW1cdgzdYuqfCxN0v7dss5EQldlrsXJkr11N09l8=
+	t=1748875883; cv=none; b=UAvMbz+LeLDqCG+S6jw/ORDRMz0SSkZJdbt6jDbA7Y5H90olaQJOziag7ISEOgZgjEWJprn+dE8b/kWECDOiZ9DHXrRvfDdiVxYPz4U48aiTO816ZaEKlqAVucItp8orxNv+jF7uJaHhk7wA1tpY32/y9oCV6inkAEJFDg5TS/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877417; c=relaxed/simple;
-	bh=+BeOkcuiVdU7JwtPSSpo4UMRKdoHIsUlvZV1q9UcnTg=;
+	s=arc-20240116; t=1748875883; c=relaxed/simple;
+	bh=RBp1wuns6AdB1dxsuSiZp8+4qCUCjHyL7C/KPJHP0OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAWSz+0ieMRrJCBv6puwdV6+aaiy8vrs+VI9b7YFfVB4hA45Ou9q3ug3XJ1mbFRo9ltDnggZ+dmwZSa369Tb8eypysLke7vT2NppnOmHBsktk3+e7zEOHe6omhG7CgMY6l97OYhhfeEjD2kin2KZEn+baT5xsnn7gSwtetBT4co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRDY7dT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B87FC4CEEB;
-	Mon,  2 Jun 2025 15:16:53 +0000 (UTC)
+	 MIME-Version; b=U6IS9MdRsYbX7m6i0lwE12+l9apT7Gm8Ikj2vZKNTWHhyQ64ttxVH3Cv7H/KUyJCLGpczvt0mfeZH6FnGrMvvyLYsL94KvigpNz1Tkto9I3ZAYvgCe026NMqJsmdvCCk6jWRGbQCXVTGVRjKeWRHkCMwi26qYQx1u/THfs+jEqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OC60JmBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556ECC4CEEB;
+	Mon,  2 Jun 2025 14:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877414;
-	bh=+BeOkcuiVdU7JwtPSSpo4UMRKdoHIsUlvZV1q9UcnTg=;
+	s=korg; t=1748875882;
+	bh=RBp1wuns6AdB1dxsuSiZp8+4qCUCjHyL7C/KPJHP0OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JRDY7dT4O32vB7sD31jaFlFpcmHJUNJzdhAgNYQ5XHpPDbWwhHKWle+R4K1howjsl
-	 xtbaoJY8YZHrwpnR6T6wRp1ZACmNsfHUFt65AhxRPMO/qsPbqjPgRP7vHtQ8KFbVOF
-	 0OgQV8EXx2OnLRATLyvOAKt14QvYbxCjYGwhyvOc=
+	b=OC60JmBg354gSTMGo6QzNlItbdzw7Phz/F57H83jvyYuQIqJumSxZcfdf8OYEq2/N
+	 21vnZ7tEAZZQeB7lzg9Ob4DLa9FoPE4Zt3j7KlhL+TnNKtYg/J4Um1ReVbUie/M6qx
+	 ViXWKMVdZcMgw4A0Kz/RpjyKefEOjwjtm4oIjd2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Milton Barrera <miltonjosue2001@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 269/325] spi: spi-fsl-dspi: Reset SR flags before sending a new message
-Date: Mon,  2 Jun 2025 15:49:05 +0200
-Message-ID: <20250602134330.701675603@linuxfoundation.org>
+Subject: [PATCH 5.10 261/270] HID: quirks: Add ADATA XPG alpha wireless mouse support
+Date: Mon,  2 Jun 2025 15:49:06 +0200
+Message-ID: <20250602134317.998273831@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Milton Barrera <miltonjosue2001@gmail.com>
 
-[ Upstream commit 7aba292eb15389073c7f3bd7847e3862dfdf604d ]
+[ Upstream commit fa9fdeea1b7d6440c22efa6d59a769eae8bc89f1 ]
 
-If, in a previous transfer, the controller sends more data than expected
-by the DSPI target, SR.RFDF (RX FIFO is not empty) will remain asserted.
-When flushing the FIFOs at the beginning of a new transfer (writing 1
-into MCR.CLR_TXF and MCR.CLR_RXF), SR.RFDF should also be cleared.
-Otherwise, when running in target mode with DMA, if SR.RFDF remains
-asserted, the DMA callback will be fired before the controller sends any
-data.
+This patch adds HID_QUIRK_ALWAYS_POLL for the ADATA XPG wireless gaming mouse (USB ID 125f:7505) and its USB dongle (USB ID 125f:7506). Without this quirk, the device does not generate input events properly.
 
-Take this opportunity to reset all Status Register fields.
-
-Fixes: 5ce3cc567471 ("spi: spi-fsl-dspi: Provide support for DSPI slave mode operation (Vybryd vf610)")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-3-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Milton Barrera <miltonjosue2001@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-ids.h    | 4 ++++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 93cdc52f0fb06..5374c6d44519a 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -956,6 +956,8 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d86720fce48f9..4b8f8e0ce8ca2 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -41,6 +41,10 @@
+ #define USB_VENDOR_ID_ACTIONSTAR	0x2101
+ #define USB_DEVICE_ID_ACTIONSTAR_1011	0x1011
  
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
++#define USB_VENDOR_ID_ADATA_XPG 0x125f
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE 0x7505
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE 0x7506
 +
- 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
- 				       dspi->progress, !dspi->irq);
+ #define USB_VENDOR_ID_ADS_TECH		0x06e1
+ #define USB_DEVICE_ID_ADS_TECH_RADIO_SI470X	0xa155
  
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 9c1afe9cdddfd..b3e7ede8f398e 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -27,6 +27,8 @@
+ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AFATECH, USB_DEVICE_ID_AFATECH_AF9016), HID_QUIRK_FULLSPEED_INTERVAL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AIREN, USB_DEVICE_ID_AIREN_SLIMPLUS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI_09E8, USB_DEVICE_ID_AKAI_09E8_MIDIMIX), HID_QUIRK_NO_INIT_REPORTS },
 -- 
 2.39.5
 
