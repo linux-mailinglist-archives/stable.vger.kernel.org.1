@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0FFACB477
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0E9ACB7A9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A66919482D4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E7144A2A35
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4A227E90;
-	Mon,  2 Jun 2025 14:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700C3230BC8;
+	Mon,  2 Jun 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc9/8S3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qb8WMb86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64720227E8E;
-	Mon,  2 Jun 2025 14:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3C622A7EA;
+	Mon,  2 Jun 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875162; cv=none; b=XbysvBIeUq7riT5iXrAWXYzMAK6rCcWMKKl3YMFTaMkdtDkZHJVLVHJHN09Qwd2e/lVe/430wnOgtWpUX9aWOpZD0sZpFW6KjNGaOsA9oyHnSajkk1j4orK4AIm+rTtnyvFk+aBw/b7v45KQcts9u241bD4bOTnh9EImO3xePqQ=
+	t=1748876730; cv=none; b=hj4kYf4WHj/MfYDxyN6b7xKJ5Oz7GQ1Ko2mB9XhP1l3pBtoo+TXhyI18GbgiGJfxzjDGucZfm2EaEMIVTtbnQtm9p7TD9afGe6UDGfKmPkLenLT9srAxyBeJNOkyVgneltd8vgZhrYNR49SeVYEKTf6XdXeOOeCviQPmtLjwv7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875162; c=relaxed/simple;
-	bh=ggCTNRXbVzAhg6MwtD60Wl1aymzuDsoHKPm2k8j1up8=;
+	s=arc-20240116; t=1748876730; c=relaxed/simple;
+	bh=jcw04BBZ/ZwPJb97P20hThL/Jle/flxBjJ/KPE8BH7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVuDsiNAbV4NFgO7ZBfa+gfZSFkGjG+er6GqTYl6ciPfw7yXGcgEmYDHwjwN/guoxvTimmU3WoERmJui2pqaPfYYzvQSTvO5HHqldSq3YTAboICidyHVRay/GEqOFua9a9vSfIWQRBNum0WRfOmKJOpKH0SuJRCGns0nXmigtMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc9/8S3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C3BC4CEEB;
-	Mon,  2 Jun 2025 14:39:21 +0000 (UTC)
+	 MIME-Version; b=cq6FYtFHBaC8dtVRHi+f4ozuf1ZnPzlVKskPweYYoOAtE02UxjbciJNS2SO7ybuEM6/OTbEVngGD1kHu30ZatirY4D+iJy+mg013jNemuV0RuMfyJ86kH2UCAUWtNjkSyxFbCsB0Zzbxo+LC05uG0ufEQ03S2RvloIJ0avBG+D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qb8WMb86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4D4C4CEEB;
+	Mon,  2 Jun 2025 15:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875162;
-	bh=ggCTNRXbVzAhg6MwtD60Wl1aymzuDsoHKPm2k8j1up8=;
+	s=korg; t=1748876730;
+	bh=jcw04BBZ/ZwPJb97P20hThL/Jle/flxBjJ/KPE8BH7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hc9/8S3Nv4D161VmRFbiLo+Sche0M7aYE3M/eAZDIm5tdQ6tNWw5ixytJJYishk5r
-	 irf8BIMK51RkLl6zrQtV3mafRe16Nty2G3VdYLPCkM2TceGTJjGww9qnKI63065otL
-	 CaGR9Jb6/w7SL8ACVy7QBJ2qwKgwGtXPu6Fpg+NI=
+	b=Qb8WMb86CKrwxi1zr+Jt8DeiNGJLkAZahKOZtTOM7yE4IMXXuqwfvlKl7fO/xFu7H
+	 xhR7UGDlBOhvXb9QlCjWHWfUuu/myn8Q6wESNno33/2iqViaO63OFOsrqtdgB2RRRG
+	 bDhw11SnJBBp8bxainEZK71G3+HfaqfLiVXrW8Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kota Toda <kota.toda@gmo-cybersecurity.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/270] netfilter: ipset: fix region locking in hash types
+Subject: [PATCH 6.1 056/325] btrfs: send: return -ENAMETOOLONG when attempting a path that is too long
 Date: Mon,  2 Jun 2025 15:45:32 +0200
-Message-ID: <20250602134309.121908361@linuxfoundation.org>
+Message-ID: <20250602134322.038907479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 8478a729c0462273188263136880480729e9efca ]
+[ Upstream commit a77749b3e21813566cea050bbb3414ae74562eba ]
 
-Region locking introduced in v5.6-rc4 contained three macros to handle
-the region locks: ahash_bucket_start(), ahash_bucket_end() which gave
-back the start and end hash bucket values belonging to a given region
-lock and ahash_region() which should give back the region lock belonging
-to a given hash bucket. The latter was incorrect which can lead to a
-race condition between the garbage collector and adding new elements
-when a hash type of set is defined with timeouts.
+When attempting to build a too long path we are currently returning
+-ENOMEM, which is very odd and misleading. So update fs_path_ensure_buf()
+to return -ENAMETOOLONG instead. Also, while at it, move the WARN_ON()
+into the if statement's expression, as it makes it clear what is being
+tested and also has the effect of adding 'unlikely' to the statement,
+which allows the compiler to generate better code as this condition is
+never expected to happen.
 
-Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
-Reported-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/send.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index 093ec52140084..636118b0f2ef4 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -88,7 +88,7 @@ struct hbucket {
- #define ahash_sizeof_regions(htable_bits)		\
- 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
- #define ahash_region(n, htable_bits)		\
--	((n) % ahash_numof_locks(htable_bits))
-+	((n) / jhash_size(HTABLE_REGION_BITS))
- #define ahash_bucket_start(h,  htable_bits)	\
- 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
- 		: (h) * jhash_size(HTABLE_REGION_BITS))
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index a2b95ccb4cf5c..0735decec99b1 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -431,10 +431,8 @@ static int fs_path_ensure_buf(struct fs_path *p, int len)
+ 	if (p->buf_len >= len)
+ 		return 0;
+ 
+-	if (len > PATH_MAX) {
+-		WARN_ON(1);
+-		return -ENOMEM;
+-	}
++	if (WARN_ON(len > PATH_MAX))
++		return -ENAMETOOLONG;
+ 
+ 	path_len = p->end - p->start;
+ 	old_buf_len = p->buf_len;
 -- 
 2.39.5
 
