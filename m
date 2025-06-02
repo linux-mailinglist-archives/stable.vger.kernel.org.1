@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E27ACB70C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F56AACB51D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1947EA22DAF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5FE1BC13FC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C1722F77F;
-	Mon,  2 Jun 2025 15:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A77224B10;
+	Mon,  2 Jun 2025 14:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPLHpaY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XABslzKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B1422F772;
-	Mon,  2 Jun 2025 15:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832BE1CAA7D;
+	Mon,  2 Jun 2025 14:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876651; cv=none; b=Ip8ZApPGNzy0uynJFQfBD4NV8DoyUSQHs50uB+Xvn06GfIhIzgQKSsEf36zeUpO3Dxe0L0yzLAo1WeLqZGN0wWH6C54e7sHGjvoJlpb8l+UX/JLsKB+e4d8BBoOAy/OGIG7/KSsauf49Wxc7uS9QWuyHB9j1WBAjJtKuYp1zS54=
+	t=1748875082; cv=none; b=HbmE1lGn7arLTqLwAt0QkI6PH8FL751i5FQF7+gW6qF0ylzqp7FgVoyhCapL8rx2pzcZHXyVv2wr3XddC4xs/AQZG0ENBeHWOXigBRCZnWoTi/QsI8TepdKVE9wurF7y1iKoSL8BDti+MHk9jYzqVRcyTgRy8lXjhIO754KdGew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876651; c=relaxed/simple;
-	bh=Va0FVwksD7S/ka60kz6g2tjulbWxbRRn07xPQoNNtjw=;
+	s=arc-20240116; t=1748875082; c=relaxed/simple;
+	bh=XcmhcZjFmWcKfPIUnHYOmT3/9UQMVnxXa3Cx1yP3FUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNHTViu+eEucT0Z5dwZf0RCMI62/UKGE+n6sQLnBf7Rkc4y2ItvAxQlkkgSQFk6M37+2LevwEnuReIjli10OfWXUAOQdSVKCqKq+yHbbWxrtU5Znnbb964P5VipmatV/1pjbekhFTeDgkgsMD3RTtfvpGKmGgsziYnC8ykUxL9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPLHpaY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDA7C4CEEB;
-	Mon,  2 Jun 2025 15:04:10 +0000 (UTC)
+	 MIME-Version; b=pI5ylxzUx1VO5KoS2tV9vdDLkj5hwfIe+JQDQFf6QT/jUB0/eMi23IEoA4ypPq6cR3zN+H/bElGcOb+8FPGOubUqSYiQ+XY5FutyXmdISgRNEl2xdMbEZR+IiX1qnvGe04ZPZr/jsqjSkxBlWNI1gn9LVqbyJxIvPBgHbWlXPQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XABslzKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E907BC4CEEB;
+	Mon,  2 Jun 2025 14:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876650;
-	bh=Va0FVwksD7S/ka60kz6g2tjulbWxbRRn07xPQoNNtjw=;
+	s=korg; t=1748875082;
+	bh=XcmhcZjFmWcKfPIUnHYOmT3/9UQMVnxXa3Cx1yP3FUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPLHpaY2sAHCDftlDLMcKCbW5gWAWgMXO4oSjF1atWDqCxTt9BSX199AAky52W5P/
-	 B+g32GHGn22XzwVCIgEw04lph+a6tQtOz8LjojKk/4kqPAutwd3zOjalyOhWHFj6Fb
-	 YhGUs6vlNbp5JRxVNUimQ5dYBIoy6HC5Q+BtRcf8=
+	b=XABslzKC98Fd8jp2eLGu7IkpMM+sYZQrCwmACcCHUexvqth3UweFHYdQf1IIRWh0b
+	 rJuAu691MEgcYgZgyLoBIpGzET22G+5PJP48lvV11G56oCJsuSB0mg/gEWrYYKvMhD
+	 zavFI4TgNp94zcNZNlwbSifBs9e0uh88DDevluJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/325] mailbox: use error ret code of of_parse_phandle_with_args()
-Date: Mon,  2 Jun 2025 15:45:06 +0200
-Message-ID: <20250602134320.971412851@linuxfoundation.org>
+Subject: [PATCH 5.10 022/270] net_sched: qfq: Fix double list add in class with netem as child qdisc
+Date: Mon,  2 Jun 2025 15:45:07 +0200
+Message-ID: <20250602134308.107151554@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of qfq, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+This patch checks whether the class was already added to the agg->active
+list (cl_is_active) before doing the addition to cater for the reentrant
+case.
+
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sched/sch_qfq.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 4229b9b5da98f..6f54501dc7762 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index ebf9f473c9392..1ee15db5fcc8c 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -204,6 +204,11 @@ struct qfq_sched {
+  */
+ enum update_reason {enqueue, requeue};
  
- 	mutex_lock(&con_mutex);
++static bool cl_is_active(struct qfq_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
++
+ static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
+ {
+ 	struct qfq_sched *q = qdisc_priv(sch);
+@@ -1222,7 +1227,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct qfq_class *cl;
+ 	struct qfq_aggregate *agg;
+ 	int err = 0;
+-	bool first;
  
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
+ 	cl = qfq_classify(skb, sch, &err);
+ 	if (cl == NULL) {
+@@ -1244,7 +1248,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
  	}
  
- 	chan = ERR_PTR(-EPROBE_DEFER);
+ 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
+@@ -1261,8 +1264,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	++sch->q.qlen;
+ 
+ 	agg = cl->agg;
+-	/* if the queue was not empty, then done here */
+-	if (!first) {
++	/* if the class is active, then done here */
++	if (cl_is_active(cl)) {
+ 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
+ 		    list_first_entry(&agg->active, struct qfq_class, alist)
+ 		    == cl && cl->deficit < len)
 -- 
 2.39.5
 
