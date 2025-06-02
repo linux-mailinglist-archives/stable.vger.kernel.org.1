@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF25ACB6E7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F81ACB3C5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DE431BC74D0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EC731940E07
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B934D22D7A6;
-	Mon,  2 Jun 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C49232785;
+	Mon,  2 Jun 2025 14:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfS0RsL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFjrnro7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6726322D9E7;
-	Mon,  2 Jun 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192C231C9C;
+	Mon,  2 Jun 2025 14:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876887; cv=none; b=ESCI65EhfLrZeNArict4k84CxO9TaUe9WkO9Is0wWTjUDhlTFbBf1lZL3xlf29NeWaLBjezj/1+NAgKtyugN5wSoxZ5ZGKqVIR8W2qVvdQbVtuLN1C0td7OzKx69aX0jBVTvrlc4bkr13SWwLTqDj5VMAprKekiDiPB3o+IGWVI=
+	t=1748874603; cv=none; b=Aer30nO/4zZDf5CAwM7/JJcmbqkU9aXcBMuvIGRR/UnmzSYULdEMuGKVIH74f5MCMjoukwNzyChNkX/ovPzjDXQNKQZ2stxsuAQwhhT5bgEgtxDA9mlCceSi3GyHqlOZWt0mCvCx/qHUaDyCR8REOFsV4fN5YmrlTDvduHFdKuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876887; c=relaxed/simple;
-	bh=VCkwJfG2TFI61pWvJ+xhhJN2I/Ozy6V7GhH9INONLjk=;
+	s=arc-20240116; t=1748874603; c=relaxed/simple;
+	bh=NmovvHZ83CDjL1Y90mr06epUCMlVzQNtTkfFnTGpf4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHzMbRpf0VG1k8JdQfM08kFTNQgRFQiqsJsTe+ONLShfKeko54p1W1nmxbLf+lxUAcJo0J5dTAyc/20WOGkTO+ICEj+tsWluse1cj502dcPz9oFxCJmPkH2vkbOKfCOGL1yXESTjP6XxPjBPXcI9wyrQk8m+yFkVqzOwfdxRWJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfS0RsL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51CFC4CEEB;
-	Mon,  2 Jun 2025 15:08:06 +0000 (UTC)
+	 MIME-Version; b=DfpoNiHagINM0GzLC+jDGsFfsUcl2Cct7cfVIy+T3a0qXcaoY9N6AITjrihMZTFD7TktlCLGs74zvdrHBGb6UbAWSrM/k2pgfWJTXn6+F7Dx+qIk5FYME2SUjI9Oq1OkuacUlPsEOvnxJLo7X/R0h7VgR4KwNSFAWSPfErQ49BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFjrnro7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60D7C4CEEB;
+	Mon,  2 Jun 2025 14:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876887;
-	bh=VCkwJfG2TFI61pWvJ+xhhJN2I/Ozy6V7GhH9INONLjk=;
+	s=korg; t=1748874603;
+	bh=NmovvHZ83CDjL1Y90mr06epUCMlVzQNtTkfFnTGpf4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfS0RsL1U0sg0rRCmZQMXh27zZ8kt/m/V0BGDKuHYUSoNLp4RETbZDxtqSmivBIdH
-	 sn5T0VgICcXL4DaUQ1/7+ZWbpvjk9dQPesmgbdB0aDU/o59Bgic5CK4zWZ0G4D5s6y
-	 l3zRsQ9JiSGDjV3pLLU7tW4A84Ele4rFa5NlfbSQ=
+	b=mFjrnro7NLxvDWGRizSfAP2QbyOJ1aImt6w/0oL6NZuX1oZ5uKLsqYU5onB1BZ/qH
+	 FXK+i9yk96pH4pYogvLuyWVCM4GXYFEbOgh3V8bSNeVDKs98waAhNGQ36mQki8igEn
+	 ztRQqXfAkV+4UINxjRkLi389kqgREHeVJoRlqu50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/325] orangefs: Do not truncate file size
+	syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 5.4 047/204] module: ensure that kobject_put() is safe for module type kobjects
 Date: Mon,  2 Jun 2025 15:46:20 +0200
-Message-ID: <20250602134324.009229626@linuxfoundation.org>
+Message-ID: <20250602134257.531970151@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
+commit a6aeb739974ec73e5217c75a7c008a688d3d5cf1 upstream.
 
-'len' is used to store the result of i_size_read(), so making 'len'
-a size_t results in truncation to 4GiB on 32-bit systems.
+In 'lookup_or_create_module_kobject()', an internal kobject is created
+using 'module_ktype'. So call to 'kobject_put()' on error handling
+path causes an attempt to use an uninitialized completion pointer in
+'module_kobject_release()'. In this scenario, we just want to release
+kobject without an extra synchronization required for a regular module
+unloading process, so adding an extra check whether 'complete()' is
+actually required makes 'kobject_put()' safe.
 
-Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
-Tested-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7fb8a372e1f6add936dd
+Fixes: 942e443127e9 ("module: Fix mod->mkobj.kobj potentially freed too early")
+Cc: stable@vger.kernel.org
+Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://lore.kernel.org/r/20250507065044.86529-1-dmantipov@yandex.ru
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/orangefs/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ kernel/params.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index b3bbb5a5787ac..cc81ff6ac735e 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -23,9 +23,9 @@ static int orangefs_writepage_locked(struct page *page,
- 	struct orangefs_write_range *wr = NULL;
- 	struct iov_iter iter;
- 	struct bio_vec bv;
--	size_t len, wlen;
-+	size_t wlen;
- 	ssize_t ret;
--	loff_t off;
-+	loff_t len, off;
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -946,7 +946,9 @@ int module_sysfs_initialized;
+ static void module_kobj_release(struct kobject *kobj)
+ {
+ 	struct module_kobject *mk = to_module_kobject(kobj);
+-	complete(mk->kobj_completion);
++
++	if (mk->kobj_completion)
++		complete(mk->kobj_completion);
+ }
  
- 	set_page_writeback(page);
- 
-@@ -94,8 +94,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
- 	struct orangefs_write_range *wrp, wr;
- 	struct iov_iter iter;
- 	ssize_t ret;
--	size_t len;
--	loff_t off;
-+	loff_t len, off;
- 	int i;
- 
- 	len = i_size_read(inode);
--- 
-2.39.5
-
+ struct kobj_type module_ktype = {
 
 
 
