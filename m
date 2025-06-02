@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45113ACB2AB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E14EACB784
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1645188D622
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E9C4C16EC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7907E230BC3;
-	Mon,  2 Jun 2025 14:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7474E22DA1F;
+	Mon,  2 Jun 2025 15:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGs6Unkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lyu34wvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3432F22FE19;
-	Mon,  2 Jun 2025 14:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7DF15CD55;
+	Mon,  2 Jun 2025 15:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873879; cv=none; b=m9IbnONQDrgW0qTTZm1hmYQ2UrfvV9+OXJtKXS7T3tJ4pR6myD4Kj55VQlEFjoujtursQvn872Hk/deGL2At16wZPlY9ab1rG22SkarjACwTRL8cdZe2m/TSGjmL+WGES7bLAuZpYtwyn+YMEMkP0PXurPw3+cIdJQ9eJhWMboM=
+	t=1748876910; cv=none; b=iXfDEwG+Ft0TwsuvByV2RFdvejgkTke4xHXj7bLNdlyG+PK6VSzvWjxRbAQG8xGG8hNsQyf5/g36xwLsrUQmAjuIb77n/d2uI5mNgYBd6eOrHEKZNQrecnu8mKhZ0O0z70YOWZ4LrgkggNsFbr5DXMoNxPzD84RY1PdAiGGMYW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873879; c=relaxed/simple;
-	bh=azkTUu7NuyrR0HP9OSmyZmbxFgDvxgXohl7/KdwX4d4=;
+	s=arc-20240116; t=1748876910; c=relaxed/simple;
+	bh=eWfI8LkyUIYyDNF1Dlba1Bg1BphkX2SlKF+3eD8dJ8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2hcl7aQGF91d+d1WFnoz1Kd99gmodZlX8EbbyjuNYVH2gfFzT5MXcoH8lSlVfq84K4LrlT0Qwg8D3zT6PIDMSfP2ELNco36YpJHlt0gEU8gO28640teEIMjRAI2sTTD3gy2XcRzSvhVHo/sYjtC9la20x7OTqutBflEzscMORo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGs6Unkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23BCC4CEEB;
-	Mon,  2 Jun 2025 14:17:58 +0000 (UTC)
+	 MIME-Version; b=YYYQWt5GF9Oz4vZAaojVdIQ9uAgwkeSuN9DrFe9BAPot18zwHw073ITJQkVz18J8cw+a4hVMHQN/hvWoba4HG+SM1HgGdx11CR26xpUe8nYnoIPGaz4xhIUp7+vwEN5pqFDiXGMZFecP7L/9Uvgfg5usmM6qx0NgPJhb933HnWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lyu34wvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C7CC4CEEB;
+	Mon,  2 Jun 2025 15:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873879;
-	bh=azkTUu7NuyrR0HP9OSmyZmbxFgDvxgXohl7/KdwX4d4=;
+	s=korg; t=1748876910;
+	bh=eWfI8LkyUIYyDNF1Dlba1Bg1BphkX2SlKF+3eD8dJ8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGs6UnkvFwlA6/SD4QQvx4y1VDDtXwMZWNKVOJ9p+/0fzf78WxRine/EMpeeGU/gR
-	 c1H8HoEBSnlWV6je05UTBIZygZdW9lCLEf3uofetgBOSKG7g0M1QzIHNrccODHozKX
-	 Kvsaf73vw/e4e3h43Z23OqpmnZagW/VOD9wKWjIc=
+	b=Lyu34wvZXNGRWDZV6fV3+/FXghYaEmRwowsDrpSznOfeaOVQYNYd3kww7ZAM84+1E
+	 X3Su9i4oAkMMglK8wD795xI/eJft1fwSgQZeYPjNme66PTg7KwsPN9cRoPIHa2qo5r
+	 cs/8BdegbuKNAKxQDkln+rU9PVAWAoerndJg9xj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Shashank Gupta <shashankg@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/444] ice: count combined queues using Rx/Tx count
+Subject: [PATCH 6.1 072/325] crypto: octeontx2 - suppress auth failure screaming due to negative tests
 Date: Mon,  2 Jun 2025 15:45:48 +0200
-Message-ID: <20250602134352.487160076@linuxfoundation.org>
+Message-ID: <20250602134322.711242965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Shashank Gupta <shashankg@marvell.com>
 
-[ Upstream commit c3a392bdd31adc474f1009ee85c13fdd01fe800d ]
+[ Upstream commit 64b7871522a4cba99d092e1c849d6f9092868aaa ]
 
-Previous implementation assumes that there is 1:1 matching between
-vectors and queues. It isn't always true.
+This patch addresses an issue where authentication failures were being
+erroneously reported due to negative test failures in the "ccm(aes)"
+selftest.
+pr_debug suppress unnecessary screaming of these tests.
 
-Get minimum value from Rx/Tx queues to determine combined queues number.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Shashank Gupta <shashankg@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 39b5f24be7e4f..dd58b2372dc0c 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3329,8 +3329,7 @@ static u32 ice_get_combined_cnt(struct ice_vsi *vsi)
- 	ice_for_each_q_vector(vsi, q_idx) {
- 		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
+index 811ded72ce5fb..798bb40fed68d 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
+@@ -410,9 +410,10 @@ static int cpt_process_ccode(struct otx2_cptlfs_info *lfs,
+ 				break;
+ 			}
  
--		if (q_vector->rx.rx_ring && q_vector->tx.tx_ring)
--			combined++;
-+		combined += min(q_vector->num_ring_tx, q_vector->num_ring_rx);
- 	}
- 
- 	return combined;
+-			dev_err(&pdev->dev,
+-				"Request failed with software error code 0x%x\n",
+-				cpt_status->s.uc_compcode);
++			pr_debug("Request failed with software error code 0x%x: algo = %s driver = %s\n",
++				 cpt_status->s.uc_compcode,
++				 info->req->areq->tfm->__crt_alg->cra_name,
++				 info->req->areq->tfm->__crt_alg->cra_driver_name);
+ 			otx2_cpt_dump_sg_list(pdev, info->req);
+ 			break;
+ 		}
 -- 
 2.39.5
 
