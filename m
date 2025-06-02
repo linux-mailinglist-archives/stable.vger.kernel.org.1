@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-149174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05971ACB175
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:20:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F49ACB137
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D796188B257
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:15:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69FB83BC08B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249F921B9C7;
-	Mon,  2 Jun 2025 14:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E105D242928;
+	Mon,  2 Jun 2025 14:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5YrCnol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfhU9E6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D5020F07C;
-	Mon,  2 Jun 2025 14:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9A324291E;
+	Mon,  2 Jun 2025 14:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873130; cv=none; b=fBXECMAX9qMJjTPziv8/VWYOOioJdt9gujHKa7hNhhBKK3Qsu5uObmWC3VVpsv0WBZcn8rRVk+ntRWay0JxitXM/Fw6r+ITmUF5REJ+uWufBhzvRmw5An3hxxIMv5J5Zrvpo32z4qG7AkXn1nfmUSdEiMMCMjDIU5qN/TMJ9wnw=
+	t=1748873036; cv=none; b=QzD1BpEnVva6SVQwJrTPzX/TPPyWpvGPYiRp0Yli1EnvCcRVFfGH4dzFm7CHIMILVSK/FkJN3+O9Tr72Zn51v2JUR0KtFH2FNRzfrkRxmUwh5P8NgPYwHAa++eQprfo1u/InNw/BiFLGEzzdRtD+fWxbSYwgwvhfeprxftQ5q1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873130; c=relaxed/simple;
-	bh=SJk6rd5+Ka5zPJ5WL2fv6GffL5OlbnghdSzjtePg1O4=;
+	s=arc-20240116; t=1748873036; c=relaxed/simple;
+	bh=bXzF4LwKHZRVwx3j0bORqV8lRWcFRcNIAXpfQWHqn/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhxnOTmQkOKosq57xRlujxfZls0PN5VB0LunPf0zlZGSyg8xEw9Qfk3fbBdJYkMFdEvJVms6RkMlIpgSWKTsobyyDIPwtDZ8XbOHiaSB9dZtft1lFBfQr1ll1jJ/IEJLKPEpppqYApAH5znfB3DNes3toOMrDmspoNR8Ag02Xq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5YrCnol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4353DC4CEEB;
-	Mon,  2 Jun 2025 14:05:30 +0000 (UTC)
+	 MIME-Version; b=hLtqVnopI+PqugTAZPjObAnhVeb1R0rXxvuVK6w9LkdqmMXiKsiTjgobiOIMBF4CKXrL/1GHMq3XLop6EluXmeqhUjhUj7FE28b58AAUroCK/AIDE9KK+ZgVHBJnRJM6E6sIfThHj7Qy3ib95fosmxIvIMk4ztvFmuzjZGyyzFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfhU9E6b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A068BC4CEEB;
+	Mon,  2 Jun 2025 14:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873130;
-	bh=SJk6rd5+Ka5zPJ5WL2fv6GffL5OlbnghdSzjtePg1O4=;
+	s=korg; t=1748873036;
+	bh=bXzF4LwKHZRVwx3j0bORqV8lRWcFRcNIAXpfQWHqn/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5YrCnolBbvM76Q0FCr/1B7oucFRp0I0RSSd45M7V1MlPBfyjK4ddVTQApj9KK2jr
-	 vooLkzjLiAVqiMJQcw0/i6FVww0QBotkuWWQUfp8vUsH4KPBRrx+I0QjtYnlC7k1n4
-	 X5YRtMVcJ4PIUHwpz2fpfq6b3SMUAm1UnTVR0hCE=
+	b=SfhU9E6bo4MYQXsOV/ILfRXtbAF3A3eMtL96djXk0QQRf5FWq8NuzkcNZHILut8F+
+	 cTcNJ0vHcUcNDrb+6dYBCSTV4rEXuPDmjOvj566SiRevQZ+71hio2vIaScyq1XDOJW
+	 USgKE+RChjRWLXooq7wwVFL68ukwAaPB/y/XSoCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/444] nvmem: qfprom: switch to 4-byte aligned reads
-Date: Mon,  2 Jun 2025 15:41:21 +0200
-Message-ID: <20250602134341.609868986@linuxfoundation.org>
+Subject: [PATCH 6.6 018/444] scsi: target: iscsi: Fix timeout on deleted connection
+Date: Mon,  2 Jun 2025 15:41:22 +0200
+Message-ID: <20250602134341.652203219@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -66,82 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-[ Upstream commit 3566a737db87a9bf360c2fd36433c5149f805f2e ]
+[ Upstream commit 7f533cc5ee4c4436cee51dc58e81dfd9c3384418 ]
 
-All platforms since Snapdragon 8 Gen1 (SM8450) require using 4-byte
-reads to access QFPROM data. While older platforms were more than happy
-with 1-byte reads, change the qfprom driver to use 4-byte reads for all
-the platforms. Specify stride and word size of 4 bytes. To retain
-compatibility with the existing DT and to simplify porting data from
-vendor kernels, use fixup_dt_cell_info in order to bump alignment
-requirements.
+NOPIN response timer may expire on a deleted connection and crash with
+such logs:
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20250411112251.68002-12-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Did not receive response to NOPIN on CID: 0, failing connection for I_T Nexus (null),i,0x00023d000125,iqn.2017-01.com.iscsi.target,t,0x3d
+
+BUG: Kernel NULL pointer dereference on read at 0x00000000
+NIP  strlcpy+0x8/0xb0
+LR iscsit_fill_cxn_timeout_err_stats+0x5c/0xc0 [iscsi_target_mod]
+Call Trace:
+ iscsit_handle_nopin_response_timeout+0xfc/0x120 [iscsi_target_mod]
+ call_timer_fn+0x58/0x1f0
+ run_timer_softirq+0x740/0x860
+ __do_softirq+0x16c/0x420
+ irq_exit+0x188/0x1c0
+ timer_interrupt+0x184/0x410
+
+That is because nopin response timer may be re-started on nopin timer
+expiration.
+
+Stop nopin timer before stopping the nopin response timer to be sure
+that no one of them will be re-started.
+
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://lore.kernel.org/r/20241224101757.32300-1-d.bogdanov@yadro.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/qfprom.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ drivers/target/iscsi/iscsi_target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
-index 6c554040c6e67..7b0621fdbc82e 100644
---- a/drivers/nvmem/qfprom.c
-+++ b/drivers/nvmem/qfprom.c
-@@ -321,19 +321,32 @@ static int qfprom_reg_read(void *context,
- 			unsigned int reg, void *_val, size_t bytes)
- {
- 	struct qfprom_priv *priv = context;
--	u8 *val = _val;
--	int i = 0, words = bytes;
-+	u32 *val = _val;
- 	void __iomem *base = priv->qfpcorrected;
-+	int words = DIV_ROUND_UP(bytes, sizeof(u32));
-+	int i;
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index b516c2893420b..b756d4cfecfe9 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4323,8 +4323,8 @@ int iscsit_close_connection(
+ 	spin_unlock(&iscsit_global->ts_bitmap_lock);
  
- 	if (read_raw_data && priv->qfpraw)
- 		base = priv->qfpraw;
+ 	iscsit_stop_timers_for_cmds(conn);
+-	iscsit_stop_nopin_response_timer(conn);
+ 	iscsit_stop_nopin_timer(conn);
++	iscsit_stop_nopin_response_timer(conn);
  
--	while (words--)
--		*val++ = readb(base + reg + i++);
-+	for (i = 0; i < words; i++)
-+		*val++ = readl(base + reg + i * sizeof(u32));
- 
- 	return 0;
- }
- 
-+/* Align reads to word boundary */
-+static void qfprom_fixup_dt_cell_info(struct nvmem_device *nvmem,
-+				      struct nvmem_cell_info *cell)
-+{
-+	unsigned int byte_offset = cell->offset % sizeof(u32);
-+
-+	cell->bit_offset += byte_offset * BITS_PER_BYTE;
-+	cell->offset -= byte_offset;
-+	if (byte_offset && !cell->nbits)
-+		cell->nbits = cell->bytes * BITS_PER_BYTE;
-+}
-+
- static void qfprom_runtime_disable(void *data)
- {
- 	pm_runtime_disable(data);
-@@ -358,10 +371,11 @@ static int qfprom_probe(struct platform_device *pdev)
- 	struct nvmem_config econfig = {
- 		.name = "qfprom",
- 		.add_legacy_fixed_of_cells = true,
--		.stride = 1,
--		.word_size = 1,
-+		.stride = 4,
-+		.word_size = 4,
- 		.id = NVMEM_DEVID_AUTO,
- 		.reg_read = qfprom_reg_read,
-+		.fixup_dt_cell_info = qfprom_fixup_dt_cell_info,
- 	};
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
+ 	if (conn->conn_transport->iscsit_wait_conn)
+ 		conn->conn_transport->iscsit_wait_conn(conn);
 -- 
 2.39.5
 
