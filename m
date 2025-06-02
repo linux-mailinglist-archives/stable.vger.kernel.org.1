@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9331DACB3D4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC5DACB775
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA724081ED
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB929E3BAB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EEF21C177;
-	Mon,  2 Jun 2025 14:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C3C221DB7;
+	Mon,  2 Jun 2025 14:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nltHer67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB4oRWcN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61DB1C5D72;
-	Mon,  2 Jun 2025 14:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90B02C324F;
+	Mon,  2 Jun 2025 14:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874690; cv=none; b=JbYBUGstSTZvHRsQS1bpuBnot3Z1/WO76uXs0aDdPIX9kStCfAkVEuQRtJR03Qz7CciqrLoDn26wj+wseXilf+dMt8srB90QPnH3tKDuSUs71K/8rYjjG3j5+dq/utuwlPrbzvEiNkPjKEZ611PUVnXAchO1i80k3shcDq35j3Q=
+	t=1748875982; cv=none; b=XJjjHRIg0fovM5ikn8dXCEvdwQEJrfkFSechf7xvCvIb+z7Z/fj/Ybk9wgVGoCSEw5kWxxG4YJM6ajcdRhLzRZhv6mi77OUYA7OIAOfZsm5nih2IDZUf8p82Ngtnw95XvMYpg6Dg9bOD2WbYNwC9lCuSylq2cMrI0SM3y4xeGb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874690; c=relaxed/simple;
-	bh=Oqgg0pvMFfx0WCSutj6aRLdzTGx/bbTavCk1wuaygCk=;
+	s=arc-20240116; t=1748875982; c=relaxed/simple;
+	bh=hMIuOp2NPGJnK+KPHbrvlFc5qaBDqhbEpyZAngcr1CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufmkdUlKNbNPTF1g/6u4M5w+ieOQ/OXevwLU/Vj2xUss1raZ0C0rkabkoEu8I/n3J0iw/yfQ0pHERWQ/KrdN9DKnLJSNmar45i1Hg/xOimrpb70FFixBQ18xrRxPLgP+QdN4hE3DrID3go6YuDjno53OqAMYfJeC5PytPqLcK3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nltHer67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C9CC4CEEE;
-	Mon,  2 Jun 2025 14:31:29 +0000 (UTC)
+	 MIME-Version; b=TuRftR7omrUzO+8BJof2op95HesfPSToOPBN9DpNvNjPc7WliI7ZzUOyFaywIUfH3pvUoIXbrnuDzKBxZZib1Zen3A9Tbw2g8l2P2D7BI+mFxOalsvZIzIKlBrFHF4Aln9cFlbF/2D9OLwsmT4T6aeE4r/QXxD/Rq4RRbvNQIgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB4oRWcN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1D0C4CEEB;
+	Mon,  2 Jun 2025 14:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874689;
-	bh=Oqgg0pvMFfx0WCSutj6aRLdzTGx/bbTavCk1wuaygCk=;
+	s=korg; t=1748875982;
+	bh=hMIuOp2NPGJnK+KPHbrvlFc5qaBDqhbEpyZAngcr1CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nltHer67MD8N8+lVvdQXy9LSmqafFEkhULixUl4Csrnn2Owmm9F4rJdRl3VjJtwdq
-	 8sg5qITKbpa0xR0kwHA9Y7c+jGU66kvqCErC9SqHHJYV0sa8cwVh8HDHCGXe3ipNre
-	 4xeWv1WBCgqAysZ0hc9xrdoAWL7PZSHGKpo9zDU8=
+	b=TB4oRWcNIqoynR7QeJ4ESFxGP3ejyDG7uFXp8LewtksD+VVSMnHgW3oFVwUy7skDk
+	 WaeaHe4ilJmDMMOn+JE+ZDHk+RfC1rVTW7HBk3dir7DE4Kpp+EAoWEsSRPwyrPdov7
+	 CMswaJpWg6sfPEH89bgc0d4DJV0Pw2usraWeu318=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heming Zhao <heming.zhao@suse.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 074/204] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
+Subject: [PATCH 5.15 035/207] dlm: make tcp still work in multi-link env
 Date: Mon,  2 Jun 2025 15:46:47 +0200
-Message-ID: <20250602134258.587431767@linuxfoundation.org>
+Message-ID: <20250602134300.138225488@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
+[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
 
-In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
-allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
-not freed. Fix that by jumping to the error path that frees them, by
-calling qlcnic_free_mbx_args(). This was found using static analysis.
+This patch bypasses multi-link errors in TCP mode, allowing dlm
+to operate on the first tcp link.
 
-Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/dlm/lowcomms.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-index 5d8b9e10ddf84..d6fcef1651a7e 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -1486,8 +1486,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 1eb95ba7e7772..5b53425554077 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1852,8 +1852,8 @@ static int dlm_tcp_listen_validate(void)
+ {
+ 	/* We don't support multi-homed hosts */
+ 	if (dlm_local_count > 1) {
+-		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
+-		return -EINVAL;
++		log_print("Detect multi-homed hosts but use only the first IP address.");
++		log_print("Try SCTP, if you want to enable multi-link.");
  	}
  
- 	cmd_op = (cmd.rsp.arg[0] & 0xff);
--	if (cmd.rsp.arg[0] >> 25 == 2)
--		return 2;
-+	if (cmd.rsp.arg[0] >> 25 == 2) {
-+		ret = 2;
-+		goto out;
-+	}
-+
- 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
- 		set_bit(QLC_BC_VF_STATE, &vf->state);
- 	else
+ 	return 0;
 -- 
 2.39.5
 
