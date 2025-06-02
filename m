@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B95ACB35A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C76ACB3DD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFF4E943564
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0496D1946EB4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D8A2222A9;
-	Mon,  2 Jun 2025 14:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D5D2248B0;
+	Mon,  2 Jun 2025 14:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BP2bUqT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvLMz2T8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC7F21885A;
-	Mon,  2 Jun 2025 14:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2C421CC59;
+	Mon,  2 Jun 2025 14:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874236; cv=none; b=lZXBD2/3H1F4dWWEHaeLhv1VZ0aAw9jSoc4WdsMEPAS9SrprkJ6zGrGvanI9KNr9jFs43tY7X1V7bAXuKZj4KtyEYWbSzH0HR1/j8P2YGKkGpk1MZSvwal+OtFDacjiw7f3erf7oU/GpqppCJaQndR3ahaAEnE6GJcE5V/BP634=
+	t=1748874710; cv=none; b=PPUb1pumDtYOqSn9c4+qqYndrIjFvtO+F61vVlCt3lgbx0kgpeKHwuqG0lI9gMpt56tQk8DrrJcf58uQeqZaDjw4Jg2jP3UMxcWXMN0/QxWhilZ6sOybLmosLyd3aSZdc58ppxQQWs+T4tn6eXb7h8vOB0iDjRJHoHGC2kiqlAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874236; c=relaxed/simple;
-	bh=7I8aIwNNmAb1ZkRXY3m8UrG//s+YGm1vyxFopSZFjZI=;
+	s=arc-20240116; t=1748874710; c=relaxed/simple;
+	bh=X8jfRptw65ooNGjpeNaFWp0FQAbDG0qdRU7VS1QjU8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGDPJlcZgW0juJz76Hg6jxW7YgTCRigRWpIOEFMk687hl1CPYujiMGBX2erpfc4aAPuISDpT9xarfTYJEwB3gY1Dt3J8UUO/tiY4I+9uttFguTr3bmHwLFUj2CQDoO82rDlV+7QNMhpX+yYQEjs8F4YKR/FVT0P0ldc0+Q9k4/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BP2bUqT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD53C4CEEB;
-	Mon,  2 Jun 2025 14:23:55 +0000 (UTC)
+	 MIME-Version; b=ntVbjnd1lgMZ8Rnhx+hg27d++v6BdsrybkbB4CFbFQsHp3rYgr0+HxJuuAD385t2/GPtZIQxcLr41+v4Y7mCJGGauO9y9/2pWQYj6Unahu276+0iOLlOwWId3tAMkRFdcBO3+soxiHLvxUS/sb1q0J3IKUbvZxWQqCS3h5wwOt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvLMz2T8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33F2C4CEEB;
+	Mon,  2 Jun 2025 14:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874235;
-	bh=7I8aIwNNmAb1ZkRXY3m8UrG//s+YGm1vyxFopSZFjZI=;
+	s=korg; t=1748874710;
+	bh=X8jfRptw65ooNGjpeNaFWp0FQAbDG0qdRU7VS1QjU8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BP2bUqT+yfUST5V0V6sAPSWCPAvYwXo8C9P9AfU6FOWLxCvUYwYADXpBTfpjH9tNf
-	 NINZbS5JVT+KG+qW8wXxY2uk3dou3pv4v6OmGcOH0UtAQbeFQp/66QxgKbabrC0i9r
-	 iH9VwvfC9B3JL7HCj3grlqRbWG+jGBZBpPiO70tI=
+	b=PvLMz2T8/Hcfulj6Tm8XS7Rc0zQ/BdjB51npTUamRiF0dwmxToA7AenhEgyNCAxKW
+	 Rzl0BshWj776fot2mGvsLmGMRNzJde/HxeLXDQXNCC3AtSXrHh3az9Gu5pweNBIgPf
+	 5NF/KbtTrE4HIy7G8xs0YpCNhD2YyztEjKaBqJeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 373/444] smb: client: Reset all search buffer pointers when releasing buffer
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 104/204] um: Update min_low_pfn to match changes in uml_reserved
 Date: Mon,  2 Jun 2025 15:47:17 +0200
-Message-ID: <20250602134356.054231155@linuxfoundation.org>
+Message-ID: <20250602134259.746541703@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit e48f9d849bfdec276eebf782a84fd4dfbe1c14c0 upstream.
+[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
 
-Multiple pointers in struct cifs_search_info (ntwrk_buf_start,
-srch_entries_start, and last_entry) point to the same allocated buffer.
-However, when freeing this buffer, only ntwrk_buf_start was set to NULL,
-while the other pointers remained pointing to freed memory.
+When uml_reserved is updated, min_low_pfn must also be updated
+accordingly. Otherwise, min_low_pfn will not accurately reflect
+the lowest available PFN.
 
-This is defensive programming to prevent potential issues with stale
-pointers. While the active UAF vulnerability is fixed by the previous
-patch, this change ensures consistent pointer state and more robust error
-handling.
-
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/readdir.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/um/kernel/mem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -733,7 +733,10 @@ find_cifs_entry(const unsigned int xid,
- 			else
- 				cifs_buf_release(cfile->srch_inf.
- 						ntwrk_buf_start);
-+			/* Reset all pointers to the network buffer to prevent stale references */
- 			cfile->srch_inf.ntwrk_buf_start = NULL;
-+			cfile->srch_inf.srch_entries_start = NULL;
-+			cfile->srch_inf.last_entry = NULL;
- 		}
- 		rc = initiate_cifs_search(xid, file, full_path);
- 		if (rc) {
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index 417ff647fb377..06fb50218136d 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -49,6 +49,7 @@ void __init mem_init(void)
+ 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
+ 	memblock_free(__pa(brk_end), uml_reserved - brk_end);
+ 	uml_reserved = brk_end;
++	min_low_pfn = PFN_UP(__pa(uml_reserved));
+ 
+ 	/* this will put all low memory onto the freelists */
+ 	memblock_free_all();
+-- 
+2.39.5
+
 
 
 
