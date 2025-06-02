@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-150298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DACACB6BD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7834AACB4C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 326E54C3CCF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC233188800C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535D622A1D5;
-	Mon,  2 Jun 2025 15:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64037227E80;
+	Mon,  2 Jun 2025 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZTQKW4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QT60LR0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A49226D19;
-	Mon,  2 Jun 2025 15:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2052D226D1E;
+	Mon,  2 Jun 2025 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876679; cv=none; b=CZtsTgCNaTL/OsEu7tY6YPmUUnngWKgk1BKSUWH7N4/JDJk19dvCdutKSCm8OcVXQXlLubD+T19vU9KtmtmGYsXQxsWgfklwdjU+iVLD/17iGEHcw2cOucnK4J2aW4xr3Ry4gHL6gMhgwS9yyyPMKAeM41UgQHBP32TXt03GXUI=
+	t=1748875159; cv=none; b=Rw3LUg5xeHY1IvLHS2w5ZbL/auLYiLAOdlD4YrY5kFLd64ruUWJrz1yHiYXP2WrmdlSHBcL5TR6PMwWRwubOKnkM8W+0TioSDiSuz1zvsFFgWbAvu+Alzzh+ZUkzBntuYIsSM/BdKyHm6faj9ANvWKpFM17/z4x4/aJKuKRwXT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876679; c=relaxed/simple;
-	bh=al5S0/DGvEIZ1uo82U7aCWI02Lm0wK8jwYvMqOFCBdw=;
+	s=arc-20240116; t=1748875159; c=relaxed/simple;
+	bh=4y+f1DWjQzKYPdJGyenWFo50HUNijjrDvl1PvFoWI6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fz46Q1oE980su7n385C50Z3s6Tq2jgzR+X5wIdxwj+8R82eSHiWC2BHZOlKFY8is9j6HCCIih6oVn70i0yae7wFXURHNE44HOValFuDYXbpgs5PHczN10L5iZRONWyGJGFBr6uPCNQWw0dtxLFPtneav2fugs3MYQcHxzvnhsJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZTQKW4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A54C4CEEB;
-	Mon,  2 Jun 2025 15:04:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HX1mEQCTMbu2lj4Oo/9RkZ9kDOFAfzieQBHPZ/qk6CA55TcykuKV1A+P5D6fSQpbHctgjD24f7eCS8o18npgcufmdBuzCL9YHIx+ze1cHjF+FaE+imjZXJnY9ITVDSZaU17fqXilbk0PQcN6+TUNuSBknSzv+L1mhNldsSkHjCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QT60LR0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D637C4CEEB;
+	Mon,  2 Jun 2025 14:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876678;
-	bh=al5S0/DGvEIZ1uo82U7aCWI02Lm0wK8jwYvMqOFCBdw=;
+	s=korg; t=1748875159;
+	bh=4y+f1DWjQzKYPdJGyenWFo50HUNijjrDvl1PvFoWI6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZTQKW4aqm4dTOsACiOVKgtYmztzGTcpD+myGRczxmi4QBH+P0xZ22W3izAHWTXuG
-	 ivH79FJVZiDXVwS4eqdnh+JTFnQwNmTC3qxTVo6JCGj3oKUHAsndrXTnZrxni/pDMt
-	 9W0jCM92sg9S32CQw5PXGc7CFyoPOEX6LAwIqu0k=
+	b=QT60LR0H7AdLVX6YoDAx706rD0k1k7BTy3dIOtJME3tswoPA6RVehmOrjDl/UqK+r
+	 Xov5I319HTNF3Lfle5Jk+7dSm4aHjF8pulnq87VwcWxo/35FDBGr6fzlCmrkDjjspm
+	 RHORqgBZHIaUQBvSnPZ5RnaEgWg3Yw0olMA8fPkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Guo <alice.guo@nxp.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/325] thermal/drivers/qoriq: Power down TMU on system suspend
+	Ryan Matthews <ryanmatthews@fastmail.com>
+Subject: [PATCH 5.10 029/270] PCI: imx6: Skip controller_id generation logic for i.MX7D
 Date: Mon,  2 Jun 2025 15:45:14 +0200
-Message-ID: <20250602134321.304706851@linuxfoundation.org>
+Message-ID: <20250602134308.391161562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Guo <alice.guo@nxp.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
+commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 upstream.
 
-Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
-system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
-i.MX93 platforms.
+The i.MX7D only has one PCIe controller, so controller_id should always be
+0. The previous code is incorrect although yielding the correct result.
 
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by removing "IMX7D" from the switch case branch.
+
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+[Because this switch case does more than just controller_id
+ logic, move the "IMX7D" case label instead of removing it entirely.]
+Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/pci/controller/dwc/pci-imx6.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
-index d111e218f362e..b33cb1d880b74 100644
---- a/drivers/thermal/qoriq_thermal.c
-+++ b/drivers/thermal/qoriq_thermal.c
-@@ -19,6 +19,7 @@
- #define SITES_MAX		16
- #define TMR_DISABLE		0x0
- #define TMR_ME			0x80000000
-+#define TMR_CMD			BIT(29)
- #define TMR_ALPF		0x0c000000
- #define TMR_ALPF_V2		0x03000000
- #define TMTMIR_DEFAULT	0x0000000f
-@@ -345,6 +346,12 @@ static int __maybe_unused qoriq_tmu_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	clk_disable_unprepare(data->clk);
- 
- 	return 0;
-@@ -359,6 +366,12 @@ static int __maybe_unused qoriq_tmu_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Enable monitoring */
- 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
- }
--- 
-2.39.5
-
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1092,11 +1092,10 @@ static int imx6_pcie_probe(struct platfo
+ 		if (IS_ERR(imx6_pcie->pcie_aux))
+ 			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
+ 					     "pcie_aux clock source missing or invalid\n");
+-		fallthrough;
+-	case IMX7D:
+ 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+ 			imx6_pcie->controller_id = 1;
+-
++		fallthrough;
++	case IMX7D:
+ 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
+ 									    "pciephy");
+ 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
 
 
 
