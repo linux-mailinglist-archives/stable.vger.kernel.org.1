@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0D0ACB6E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309C6ACB821
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16EA01948105
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EC291BC24BB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F3422CBEC;
-	Mon,  2 Jun 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAE922DF9D;
+	Mon,  2 Jun 2025 15:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zte4fu5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXw/vm3F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F93F1D8DFB;
-	Mon,  2 Jun 2025 14:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D54622D7A6;
+	Mon,  2 Jun 2025 15:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875895; cv=none; b=uCha2FTjgivkJAfMlYY5Q5gStJKkQSPvXm1NGKKPzsM4d16NrcqaUTl8Lo9lJIBjoj8mQOfCrFqGv1BPJQDohyouM9ZrPTUY436qmxe6UhKscLZfEuo+4tSiJ2G3R5Gz2imGZj5EJ6Nk8TorHOoTaiIFdS0qIST6yy5R5SF1aYQ=
+	t=1748876452; cv=none; b=BTKr76529FBvkz8fYpkYB8TB38QMW7m/fc5Ihh7qiaZ0Bcrycl891+SmADRK5jYKNVpvS2Ke/eUADWS0CvILUnHSdkkzmaHXZ6hPkqTc14amnLi+SECkta+eh4s3qn2wvcqqxYdwu8MkDTcBL8h0ZMf7Fv1BLCXA7DVgtKZL8PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875895; c=relaxed/simple;
-	bh=T1D9m+JqfloIZObj/BuC2Fy8UTs6c25eFwJ/xZmpR8s=;
+	s=arc-20240116; t=1748876452; c=relaxed/simple;
+	bh=NgY+Z61aNq7zZnj+BfstfYALfteYCftCY3l7rcGIjNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSAv0HGJY8XzTfirU/7z10UwMDKptBozaUpph7jubqGQstZQQTYnPQok+pPVgeqnzE4TtJlgRdyFggre+1vSCzAJ/+QcbYJNt/a1+DakIL/DZ5XjpBLVCc8qmHqAg7CNK1V8l3Fs1rJ9QBfj6SpIG7++6a1Ps59eKe63mrCa++I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zte4fu5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926BDC4CEEB;
-	Mon,  2 Jun 2025 14:51:34 +0000 (UTC)
+	 MIME-Version; b=oYM/6qYMfj+78fXWnKUugSsLh/Ox7VK2mnyGgeTVFLzbzz5wUy+4f11NXORh7Ihx+4LRGjptUyTeIDtR1UR0noz/Ima0XVaHeAUVi8Jv+GM2mY/9MVV0aGHXUXH22QUlWf47ClCkn3ojQk5r4U69Gtlor9/z8OLIO4qklVlm7DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXw/vm3F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71227C4CEEB;
+	Mon,  2 Jun 2025 15:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875895;
-	bh=T1D9m+JqfloIZObj/BuC2Fy8UTs6c25eFwJ/xZmpR8s=;
+	s=korg; t=1748876451;
+	bh=NgY+Z61aNq7zZnj+BfstfYALfteYCftCY3l7rcGIjNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zte4fu5u8kTctUd95dsIPfjHGDzNHDUjew79MOSXZlqcBAy3Med8KdnspQZRa9J1s
-	 jXY7qU+z64RnJOUhl8NXV5UFDzrgjlDi7FYQ2DwD88tFJQZzBkIyvNV1YtTFblAJsI
-	 RBDx6v3bTpuhZ7srm7se1PWB9jAtHEsBxvlBUwmw=
+	b=DXw/vm3FVpOcEySJFntlnU7lk9RNQcgkXqtpAEvuOjn4dy3U4CJVgLrHgaUIEzLLR
+	 R3Z886ww2SXf8MQzZYLAlUWK8ibB5tHTtit0DoH59+Vh3FdwA8mvgeMy6R5FGGMhes
+	 08szHhlT1sATgr9/4OlnhMLAvMs9HbXJQVz9f1Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Grassi <alessandro.grassi@mailbox.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 265/270] spi: spi-sun4i: fix early activation
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 5.15 178/207] Revert "drm/amd: Keep display off while going into S4"
 Date: Mon,  2 Jun 2025 15:49:10 +0200
-Message-ID: <20250602134318.173898927@linuxfoundation.org>
+Message-ID: <20250602134305.722730262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Grassi <alessandro.grassi@mailbox.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit fb98bd0a13de2c9d96cb5c00c81b5ca118ac9d71 ]
+commit 7e7cb7a13c81073d38a10fa7b450d23712281ec4 upstream.
 
-The SPI interface is activated before the CPOL setting is applied. In
-that moment, the clock idles high and CS goes low. After a short delay,
-CPOL and other settings are applied, which may cause the clock to change
-state and idle low. This transition is not part of a clock cycle, and it
-can confuse the receiving device.
+commit 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
+attempted to keep displays off during the S4 sequence by not resuming
+display IP.  This however leads to hangs because DRM clients such as the
+console can try to access registers and cause a hang.
 
-To prevent this unexpected transition, activate the interface while CPOL
-and the other settings are being applied.
-
-Signed-off-by: Alessandro Grassi <alessandro.grassi@mailbox.org>
-Link: https://patch.msgid.link/20250502095520.13825-1-alessandro.grassi@mailbox.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4155
+Fixes: 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250522141328.115095-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e485502c37b097b0bd773baa7e2741bf7bd2909a)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sun4i.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 1fdfc6e6691d2..a8fba310d7004 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -263,6 +263,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	else
- 		reg |= SUN4I_CTL_DHB;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2710,11 +2710,6 @@ static int dm_resume(void *handle)
  
-+	/* Now that the settings are correct, enable the interface */
-+	reg |= SUN4I_CTL_ENABLE;
-+
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
- 
- 	/* Ensure that we have a parent clock fast enough */
-@@ -403,7 +406,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
+ 		return 0;
  	}
- 
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
--			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
-+			SUN4I_CTL_MASTER | SUN4I_CTL_TP);
- 
- 	return 0;
- 
--- 
-2.39.5
-
+-
+-	/* leave display off for S4 sequence */
+-	if (adev->in_s4)
+-		return 0;
+-
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
+ 	dc_release_state(dm_state->context);
+ 	dm_state->context = dc_create_state(dm->dc);
 
 
 
