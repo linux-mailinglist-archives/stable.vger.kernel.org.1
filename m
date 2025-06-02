@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A12ACB789
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B85FACB553
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117B8944251
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 588924A5610
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41711DF73C;
-	Mon,  2 Jun 2025 15:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A6422FAD4;
+	Mon,  2 Jun 2025 14:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xetjlbvh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOaQbKcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09DE224B02;
-	Mon,  2 Jun 2025 15:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117C822F772;
+	Mon,  2 Jun 2025 14:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877098; cv=none; b=ukHMtgFRnaEw3/HnnmjVBwB6M0wtemPXx+szBq3IUnlUFCaygPMFkuAOuviEwVoex7Hvjlg1hPRc6Xc65xPRW+9DU5AhmriS/YDXDpKl+tJNTeYV9JW8AoyRR5w12EYnmzPk0G7zWlEw7ms7wYe9YNein8yA3LhiPu26IHimF8s=
+	t=1748875624; cv=none; b=M1VFLYY6H+pF4Sl092Vrp4OkxgXFQXDj7nKrh3bEOpxyIG/5uTi1oSsT6zhrLROckuyAk0efo8VYC5sQFQkWavpCBSqljrenNxYw+SJ3KnA2AP/6U+NU38Rm5J6AdzsVZpHIKZ0A2/ocDzNiFWRpLbcPuNSLdKbZqaSG0P7L76k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877098; c=relaxed/simple;
-	bh=AZyGj/ZFPg/YXj8TUQGOs6BGcaqmHrIyqmqjWh7o8MU=;
+	s=arc-20240116; t=1748875624; c=relaxed/simple;
+	bh=c2hbu2NttbuIqryBT6sCalUHnTW+ccIFdJP1s016X7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jm06PzoYa7sgeFHlLt4Qf7+0zglsC0jfFGbPu3oqqMCNc67Zg+mSQdbEqCY3vHjll6mg7EIYMQSnzcSGpo5fzlWF8KC1kVh6sHf5ihXj6TDInKLR0JayLTH6INn/NDveUTZVfRFOT8MDgvRpxYSr3HlLYviKYcmhmm4JiwxBr+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xetjlbvh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F3CC4CEEB;
-	Mon,  2 Jun 2025 15:11:38 +0000 (UTC)
+	 MIME-Version; b=uUHKa+WWXLB7BBdqwLYKUrpmu7cgVuXJo0Q2jbSXec9P35FJTBGf+zN04a/Q1j+vR3ZvZNi5umSTmSY8lxvynkXL4awNypcx/QCG7WdICIeo16Wx8m96Xnzk2FUiA9WS/okzpfBrv72o3GR0IOcMivD3JMoeZ/q/zDAYnZJiZZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOaQbKcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C486C4CEEB;
+	Mon,  2 Jun 2025 14:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877098;
-	bh=AZyGj/ZFPg/YXj8TUQGOs6BGcaqmHrIyqmqjWh7o8MU=;
+	s=korg; t=1748875623;
+	bh=c2hbu2NttbuIqryBT6sCalUHnTW+ccIFdJP1s016X7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xetjlbvhJIMrCINTwvjeMhH8686ipJmr5xSc2qS9gL37q2atOcBNYolPNPypsBK70
-	 NC+JRlfHtYdcP4d0m3k7tHsQaakXtI4g+rFnbJOarWuzQaRoZ/F9GqNJXjoNhcWIN/
-	 tAp8ldNGmFMw4QKza00Fi++v6lSXVNsLSXFHFCKc=
+	b=TOaQbKcSByhb0RpoIU0ETtPU5vLJ1JF/yqLsICOHGycRDFlBtrGjz5lev0sgNcoIh
+	 dm5qXb+zsZWhIOOBuHHmkYUILKFufYyPEWVCMcwi3Y5lVsDU1BVCv25ZeYXhcPeMkN
+	 gumQFoFOF8PCuwrNfocpZRh/djWITg2cCYMp53GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/325] ASoC: tas2764: Power up/down amp on mute ops
-Date: Mon,  2 Jun 2025 15:47:26 +0200
-Message-ID: <20250602134326.724556594@linuxfoundation.org>
+Subject: [PATCH 5.10 162/270] orangefs: Do not truncate file size
+Date: Mon,  2 Jun 2025 15:47:27 +0200
+Message-ID: <20250602134313.844143119@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
+[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
 
-The ASoC convention is that clocks are removed after codec mute, and
-power up/down is more about top level power management. For these chips,
-the "mute" state still expects a TDM clock, and yanking the clock in
-this state will trigger clock errors. So, do the full
-shutdown<->mute<->active transition on the mute operation, so the amp is
-in software shutdown by the time the clocks are removed.
+'len' is used to store the result of i_size_read(), so making 'len'
+a size_t results in truncation to 4GiB on 32-bit systems.
 
-This fixes TDM clock errors when streams are stopped.
-
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
+Tested-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
+ fs/orangefs/inode.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 94428487a8855..10f0f07b90ff2 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -182,33 +182,6 @@ static SOC_ENUM_SINGLE_DECL(
- static const struct snd_kcontrol_new tas2764_asi1_mux =
- 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
+diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
+index 48f0547d4850e..cd70ded309e47 100644
+--- a/fs/orangefs/inode.c
++++ b/fs/orangefs/inode.c
+@@ -22,9 +22,9 @@ static int orangefs_writepage_locked(struct page *page,
+ 	struct orangefs_write_range *wr = NULL;
+ 	struct iov_iter iter;
+ 	struct bio_vec bv;
+-	size_t len, wlen;
++	size_t wlen;
+ 	ssize_t ret;
+-	loff_t off;
++	loff_t len, off;
  
--static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
--			     struct snd_kcontrol *kcontrol, int event)
--{
--	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
--	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
--	int ret;
--
--	switch (event) {
--	case SND_SOC_DAPM_POST_PMU:
--		tas2764->dac_powered = true;
--		ret = tas2764_update_pwr_ctrl(tas2764);
--		break;
--	case SND_SOC_DAPM_PRE_PMD:
--		tas2764->dac_powered = false;
--		ret = tas2764_update_pwr_ctrl(tas2764);
--		break;
--	default:
--		dev_err(tas2764->dev, "Unsupported event\n");
--		return -EINVAL;
--	}
--
--	if (ret < 0)
--		return ret;
--
--	return 0;
--}
--
- static const struct snd_kcontrol_new isense_switch =
- 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
- static const struct snd_kcontrol_new vsense_switch =
-@@ -221,8 +194,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
- 			    1, &isense_switch),
- 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
- 			    1, &vsense_switch),
--	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
--			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
-+	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_OUTPUT("OUT"),
- 	SND_SOC_DAPM_SIGGEN("VMON"),
- 	SND_SOC_DAPM_SIGGEN("IMON")
-@@ -243,9 +215,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
- {
- 	struct tas2764_priv *tas2764 =
- 			snd_soc_component_get_drvdata(dai->component);
-+	int ret;
-+
-+	if (!mute) {
-+		tas2764->dac_powered = true;
-+		ret = tas2764_update_pwr_ctrl(tas2764);
-+		if (ret)
-+			return ret;
-+	}
+ 	set_page_writeback(page);
  
- 	tas2764->unmuted = !mute;
--	return tas2764_update_pwr_ctrl(tas2764);
-+	ret = tas2764_update_pwr_ctrl(tas2764);
-+	if (ret)
-+		return ret;
-+
-+	if (mute) {
-+		tas2764->dac_powered = false;
-+		ret = tas2764_update_pwr_ctrl(tas2764);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
- }
+@@ -93,8 +93,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
+ 	struct orangefs_write_range *wrp, wr;
+ 	struct iov_iter iter;
+ 	ssize_t ret;
+-	size_t len;
+-	loff_t off;
++	loff_t len, off;
+ 	int i;
  
- static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
+ 	len = i_size_read(inode);
 -- 
 2.39.5
 
