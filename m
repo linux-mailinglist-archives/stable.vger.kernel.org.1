@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4592ACB5CD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AADAEACB7D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C034BA235D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C77F1A26BAC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FD522A819;
-	Mon,  2 Jun 2025 14:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1BE22D4C8;
+	Mon,  2 Jun 2025 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDJpFcFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUZ2FTnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DA322A7F1;
-	Mon,  2 Jun 2025 14:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186C822CBEC;
+	Mon,  2 Jun 2025 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875853; cv=none; b=NR0QsLcRYBRG5cKGhlA+HVuU5KoN/pRczrENpJYLfR4/fIZ4uwyhPkHFUS55uMwUzeJ3OSc67Zy/ofhm772AtZBRh/rilTcnSZ83j74gth4QOzwKWcBfK3JzIdl1NQ5zTnD+9cqaJkB37ZFeSAalL0d8bkMZ8+68vPcbQqIuqMw=
+	t=1748876424; cv=none; b=r5JUJoC05UBHsGBgQIn00G/DKUwWHsgEco/57eYRqPqFh/l0udD2qPkrQurgenQROUgYvPNVgUmsagNAt38kBpf55TN2YXXRN80NDtDGnz7jazsbanRkDEzFbMqIgiMURpstOL+SyfO5/4gmsq5/Hx3I5Vr0mpl1PS8xKMYgWBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875853; c=relaxed/simple;
-	bh=Y+MQ63rIJ+Fw2Flpb2vxLe6M2i9iPIj+VYA2kYIW7DY=;
+	s=arc-20240116; t=1748876424; c=relaxed/simple;
+	bh=1Ftr4HdEkH2n7WhLDwFywThCnnyq+z0QeULipoHnY8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH2w0JEAYOlYutsZOBRd4YIdzZ/j6FMzJHIDjU01OWscCLn7mqGwt0RJ+jYvJ7/BvJ1XgtZhyBQSf63FpX3CdukYdVY0kJPFRVdHMNItePaygf1/9trE96pp+f2hFORU9ribwUaEsl2lKUA+tCHd18S52j3157rCx64zuznMDCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDJpFcFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA240C4CEEB;
-	Mon,  2 Jun 2025 14:50:52 +0000 (UTC)
+	 MIME-Version; b=WlSra9RImAk0XZhtQVPDoBEDWNT/xYjoWafXa7lEYJd/Y10vP8e59TkrnPiR5smQnIB2zBIq4lB9l6WukeBTnUWzszInt6g83Ao6unWSSOw9XYlPlhMtNi+ormpOZN6T6mLkBAmdByhDN0b78JpHSSjGTiNylWqyu2pKgbI/EJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUZ2FTnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17318C4CEEB;
+	Mon,  2 Jun 2025 15:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875853;
-	bh=Y+MQ63rIJ+Fw2Flpb2vxLe6M2i9iPIj+VYA2kYIW7DY=;
+	s=korg; t=1748876424;
+	bh=1Ftr4HdEkH2n7WhLDwFywThCnnyq+z0QeULipoHnY8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDJpFcFNlvsfu6F44we8nZr183rxnTy3HgxYqUMQiEpJPpP1THz+h3SK8uygMuoGm
-	 +SwEauXxS7jVHDXoVvDpZuWPzB8cEMuDGb+ZrcjlXjPMGdya6e5tN6SMZ/9fdic+Be
-	 lZ908ot07gsoCaYsUvLUGaGkUFetj1tu/M0poB0A=
+	b=QUZ2FTnAeWLKxSsF68NQeivcKI6Tz1AKTBYzXOv5bcNdGGmn6VFz27mAk5hTsVqJ/
+	 cfxB+DDRg0P9I4ZpwxLK+QuouQZpmlubYRX2kVd431r1ot1AobPf0rXP/IKDmH0lie
+	 5A9HMjnXv2n9tVQdp6astGgVMf5d0KQ2t6LaPrX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 257/270] coredump: fix error handling for replace_fd()
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 170/207] crypto: algif_hash - fix double free in hash_accept
 Date: Mon,  2 Jun 2025 15:49:02 +0200
-Message-ID: <20250602134317.842297154@linuxfoundation.org>
+Message-ID: <20250602134305.403178530@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
+commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
 
-The replace_fd() helper returns the file descriptor number on success
-and a negative error code on failure. The current error handling in
-umh_pipe_setup() only works because the file descriptor that is replaced
-is zero but that's pretty volatile. Explicitly check for a negative
-error code.
+If accept(2) is called on socket type algif_hash with
+MSG_MORE flag set and crypto_ahash_import fails,
+sk2 is freed. However, it is also freed in af_alg_release,
+leading to slab-use-after-free error.
 
-Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/coredump.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ crypto/algif_hash.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -564,7 +564,9 @@ static int umh_pipe_setup(struct subproc
- {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
--	int err = create_pipe_files(files, 0);
-+	int err;
-+
-+	err = create_pipe_files(files, 0);
- 	if (err)
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -262,10 +262,6 @@ static int hash_accept(struct socket *so
  		return err;
  
-@@ -572,10 +574,13 @@ static int umh_pipe_setup(struct subproc
+ 	err = crypto_ahash_import(&ctx2->req, state);
+-	if (err) {
+-		sock_orphan(sk2);
+-		sock_put(sk2);
+-	}
  
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
-+	if (err < 0)
-+		return err;
-+
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
- 
--	return err;
-+	return 0;
+ 	return err;
  }
- 
- void do_coredump(const kernel_siginfo_t *siginfo)
 
 
 
