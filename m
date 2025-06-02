@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F79EACB54C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C531ACB326
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517574C1995
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0986D160A34
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67AA223324;
-	Mon,  2 Jun 2025 14:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6336C1F4165;
+	Mon,  2 Jun 2025 14:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RULbEyJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPjlVfEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DDB221F11;
-	Mon,  2 Jun 2025 14:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2146F2248B3;
+	Mon,  2 Jun 2025 14:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875633; cv=none; b=IeRWTLoZ/QgOTvLq272Jo/T4LnxAi0tUXMHhdNk0fUQpLZYODHE50VEUQX/cB0ryREVCI7ZuJz0ZQb9kuV/1pU8Pebgods8SmEpS98phcbzo+cq4nxA5R5GEGQQZF+IXMKCEATJMQs4JqkrAFlkttZE9+UjEJufJX5NjqecrAZQ=
+	t=1748874184; cv=none; b=ILT9iYdcDCoVBULI6RtkOzXIWu7+0aXoh4Ls8kghXRX7W1ptVkS/a5fN7xcaWSFb4ASiOUuBrJZxdVkgmD0X5fKIdJ98+Hvc7tmYf9rxEjn7kjDS+9x300Qk6QnDnozvWAjRh3m8aOgpKafkWsA/TOWzjdf1iN5pKRj/VJVoUdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875633; c=relaxed/simple;
-	bh=sobLZK2PnT1+e2O3SrO7WDNrz4c04NX8vJYILtyb1C4=;
+	s=arc-20240116; t=1748874184; c=relaxed/simple;
+	bh=XHnSjZqrYd4C3WJNQEPJKsL3WvBUBV0+ld05yPYbHv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRhY0KlCF7RjLTZ8oG/IrXp3P98dm/ncb3vDdIuermKIuQWCmHHyShGzdt4DARR+6IgzNGxhxh9ofBHxxxKYI7z3ARYxm95Sp1qdyNBILpwYn6riv6bzEZfGtef2dcTWig5b7U6EdtlLGwABviOk7ggWGOubuwSK3/H5eYTvqIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RULbEyJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB44C4CEEB;
-	Mon,  2 Jun 2025 14:47:12 +0000 (UTC)
+	 MIME-Version; b=pqiLGYs9NZ7c9ew6iOflbezF6hq/vrEVW2jwNrOQs5omnbBubISX7EkFaCqZkAAC3PnwvMqP/netZhmOLsqNXxF1CDYxmRudhTbtF5QHb6PyFYvwqYdAe3WGWhVK8/1QJ8YpWU2UEc/vXkTrTw1rc+SgFqlpLMdbKdraWgiLCvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPjlVfEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA0AC4CEF0;
+	Mon,  2 Jun 2025 14:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875633;
-	bh=sobLZK2PnT1+e2O3SrO7WDNrz4c04NX8vJYILtyb1C4=;
+	s=korg; t=1748874184;
+	bh=XHnSjZqrYd4C3WJNQEPJKsL3WvBUBV0+ld05yPYbHv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RULbEyJcb3NHIqkVFZ50NIyym0zrCRWgDx13PEyzDPODfJzN8SOQwUOZf0dqZqQ54
-	 i/+6KeEDQybI3qNaZRrE36Gn4LG+Uk/hTlF7s6wnxIneDMP9do6AISaypaaQYt15Kd
-	 Mh4kOKeog+i3FB4GYsAj5P+C986alc/kOb+WOQPw=
+	b=WPjlVfEPp+NMjh5+zUF611e9l2DIuirLThobjJQXRLcw3acqx0FHRvWhz1ngFdZJj
+	 jXRsuFlT1KZqNewjLQmihz82N5q6Gy0WwFXiA/JBtmvXAgM7k8LNE1gGaG9+0+iaVR
+	 q0+vMYVVn7mDrXS6tQb8yqsBJY3aYdDjVF/AMxdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 165/270] pinctrl: bcm281xx: Use "unsigned int" instead of bare "unsigned"
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.6 386/444] serial: sh-sci: Save and restore more registers
 Date: Mon,  2 Jun 2025 15:47:30 +0200
-Message-ID: <20250602134313.970573964@linuxfoundation.org>
+Message-ID: <20250602134356.576019461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,182 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 07b5a2a13f4704c5eae3be7277ec54ffdba45f72 ]
+commit 81100b9a7b0515132996d62a7a676a77676cb6e3 upstream.
 
-Replace uses of bare "unsigned" with "unsigned int" to fix checkpatch
-warnings. No functional change.
+On (H)SCIF with a Baud Rate Generator for External Clock (BRG), there
+are multiple ways to configure the requested serial speed.  If firmware
+uses a different method than Linux, and if any debug info is printed
+after the Bit Rate Register (SCBRR) is restored, but before termios is
+reconfigured (which configures the alternative method), the system may
+lock-up during resume.
 
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/20250303-bcm21664-pinctrl-v3-2-5f8b80e4ab51@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by saving and restoring the contents of the BRG Frequency
+Division (SCDL) and Clock Select (SCCKS) registers as well.
+
+Also save and restore the HSCIF's Sampling Rate Register (HSSRR), which
+configures the sampling point, and the SCIFA/SCIFB's Serial Port Control
+and Data Registers (SCPCR/SCPDR), which configure the optional control
+flow signals.
+
+After this, all registers that are not saved/restored are either:
+  - read-only,
+  - write-only,
+  - status registers containing flags with clear-after-set semantics,
+  - FIFO Data Count Trigger registers, which do not matter much for
+    the serial console.
+
+Fixes: 22a6984c5b5df8ea ("serial: sh-sci: Update the suspend/resume support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/11c2eab45d48211e75d8b8202cce60400880fe55.1741114989.git.geert+renesas@glider.be
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 44 +++++++++++++-------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/tty/serial/sh-sci.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-index fbfddcc39d5cc..6ab3481ba902a 100644
---- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-@@ -79,7 +79,7 @@ static enum bcm281xx_pin_type hdmi_pin = BCM281XX_PIN_TYPE_HDMI;
- struct bcm281xx_pin_function {
- 	const char *name;
- 	const char * const *groups;
--	const unsigned ngroups;
-+	const unsigned int ngroups;
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -105,10 +105,15 @@ struct plat_sci_reg {
  };
  
- /*
-@@ -91,10 +91,10 @@ struct bcm281xx_pinctrl_data {
- 
- 	/* List of all pins */
- 	const struct pinctrl_pin_desc *pins;
--	const unsigned npins;
-+	const unsigned int npins;
- 
- 	const struct bcm281xx_pin_function *functions;
--	const unsigned nfunctions;
-+	const unsigned int nfunctions;
- 
- 	struct regmap *regmap;
+ struct sci_suspend_regs {
++	u16 scdl;
++	u16 sccks;
+ 	u16 scsmr;
+ 	u16 scscr;
+ 	u16 scfcr;
+ 	u16 scsptr;
++	u16 hssrr;
++	u16 scpcr;
++	u16 scpdr;
+ 	u8 scbrr;
+ 	u8 semr;
  };
-@@ -948,7 +948,7 @@ static struct bcm281xx_pinctrl_data bcm281xx_pinctrl = {
- };
+@@ -3491,6 +3496,10 @@ static void sci_console_save(struct sci_
+ 	struct sci_suspend_regs *regs = &s->suspend_regs;
+ 	struct uart_port *port = &s->port;
  
- static inline enum bcm281xx_pin_type pin_type_get(struct pinctrl_dev *pctldev,
--						  unsigned pin)
-+						  unsigned int pin)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -992,7 +992,7 @@ static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
++	if (sci_getreg(port, SCDL)->size)
++		regs->scdl = sci_serial_in(port, SCDL);
++	if (sci_getreg(port, SCCKS)->size)
++		regs->sccks = sci_serial_in(port, SCCKS);
+ 	if (sci_getreg(port, SCSMR)->size)
+ 		regs->scsmr = sci_serial_in(port, SCSMR);
+ 	if (sci_getreg(port, SCSCR)->size)
+@@ -3501,6 +3510,12 @@ static void sci_console_save(struct sci_
+ 		regs->scsptr = sci_serial_in(port, SCSPTR);
+ 	if (sci_getreg(port, SCBRR)->size)
+ 		regs->scbrr = sci_serial_in(port, SCBRR);
++	if (sci_getreg(port, HSSRR)->size)
++		regs->hssrr = sci_serial_in(port, HSSRR);
++	if (sci_getreg(port, SCPCR)->size)
++		regs->scpcr = sci_serial_in(port, SCPCR);
++	if (sci_getreg(port, SCPDR)->size)
++		regs->scpdr = sci_serial_in(port, SCPDR);
+ 	if (sci_getreg(port, SEMR)->size)
+ 		regs->semr = sci_serial_in(port, SEMR);
  }
+@@ -3510,6 +3525,10 @@ static void sci_console_restore(struct s
+ 	struct sci_suspend_regs *regs = &s->suspend_regs;
+ 	struct uart_port *port = &s->port;
  
- static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
--						   unsigned group)
-+						   unsigned int group)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1000,9 +1000,9 @@ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
++	if (sci_getreg(port, SCDL)->size)
++		sci_serial_out(port, SCDL, regs->scdl);
++	if (sci_getreg(port, SCCKS)->size)
++		sci_serial_out(port, SCCKS, regs->sccks);
+ 	if (sci_getreg(port, SCSMR)->size)
+ 		sci_serial_out(port, SCSMR, regs->scsmr);
+ 	if (sci_getreg(port, SCSCR)->size)
+@@ -3520,6 +3539,12 @@ static void sci_console_restore(struct s
+ 		sci_serial_out(port, SCSPTR, regs->scsptr);
+ 	if (sci_getreg(port, SCBRR)->size)
+ 		sci_serial_out(port, SCBRR, regs->scbrr);
++	if (sci_getreg(port, HSSRR)->size)
++		sci_serial_out(port, HSSRR, regs->hssrr);
++	if (sci_getreg(port, SCPCR)->size)
++		sci_serial_out(port, SCPCR, regs->scpcr);
++	if (sci_getreg(port, SCPDR)->size)
++		sci_serial_out(port, SCPDR, regs->scpdr);
+ 	if (sci_getreg(port, SEMR)->size)
+ 		sci_serial_out(port, SEMR, regs->semr);
  }
- 
- static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
--					   unsigned group,
-+					   unsigned int group,
- 					   const unsigned **pins,
--					   unsigned *num_pins)
-+					   unsigned int *num_pins)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1014,7 +1014,7 @@ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
- 
- static void bcm281xx_pinctrl_pin_dbg_show(struct pinctrl_dev *pctldev,
- 					  struct seq_file *s,
--					  unsigned offset)
-+					  unsigned int offset)
- {
- 	seq_printf(s, " %s", dev_name(pctldev->dev));
- }
-@@ -1036,7 +1036,7 @@ static int bcm281xx_pinctrl_get_fcns_count(struct pinctrl_dev *pctldev)
- }
- 
- static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
--						 unsigned function)
-+						 unsigned int function)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1044,9 +1044,9 @@ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
--					   unsigned function,
-+					   unsigned int function,
- 					   const char * const **groups,
--					   unsigned * const num_groups)
-+					   unsigned int * const num_groups)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1057,8 +1057,8 @@ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinmux_set(struct pinctrl_dev *pctldev,
--			       unsigned function,
--			       unsigned group)
-+			       unsigned int function,
-+			       unsigned int group)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 	const struct bcm281xx_pin_function *f = &pdata->functions[function];
-@@ -1089,7 +1089,7 @@ static const struct pinmux_ops bcm281xx_pinctrl_pinmux_ops = {
- };
- 
- static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
--					   unsigned pin,
-+					   unsigned int pin,
- 					   unsigned long *config)
- {
- 	return -ENOTSUPP;
-@@ -1098,9 +1098,9 @@ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_std_pin_update(struct pinctrl_dev *pctldev,
--				   unsigned pin,
-+				   unsigned int pin,
- 				   unsigned long *configs,
--				   unsigned num_configs,
-+				   unsigned int num_configs,
- 				   u32 *val,
- 				   u32 *mask)
- {
-@@ -1214,9 +1214,9 @@ static const u16 bcm281xx_pullup_map[] = {
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
--				   unsigned pin,
-+				   unsigned int pin,
- 				   unsigned long *configs,
--				   unsigned num_configs,
-+				   unsigned int num_configs,
- 				   u32 *val,
- 				   u32 *mask)
- {
-@@ -1284,9 +1284,9 @@ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
--				    unsigned pin,
-+				    unsigned int pin,
- 				    unsigned long *configs,
--				    unsigned num_configs,
-+				    unsigned int num_configs,
- 				    u32 *val,
- 				    u32 *mask)
- {
-@@ -1328,9 +1328,9 @@ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_pin_config_set(struct pinctrl_dev *pctldev,
--					   unsigned pin,
-+					   unsigned int pin,
- 					   unsigned long *configs,
--					   unsigned num_configs)
-+					   unsigned int num_configs)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 	enum bcm281xx_pin_type pin_type;
--- 
-2.39.5
-
 
 
 
