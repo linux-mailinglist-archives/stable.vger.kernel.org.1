@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE98FACB495
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B42AEACB2F7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32B5D4A7BFF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FF764A2BA8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DC722E3E0;
-	Mon,  2 Jun 2025 14:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAED2367AE;
+	Mon,  2 Jun 2025 14:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeUTFlz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vK2Ud7B2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7479820E6E3;
-	Mon,  2 Jun 2025 14:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6B222259F;
+	Mon,  2 Jun 2025 14:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875280; cv=none; b=Z2V6GleJGYQx9wVVhEwExP/D3cdHzcX7mhOHUInlGX8aNVEEdZQYYHd03d9kno6DeiceYBdZdk75Nr79vjBl7cA7pyEkUBdFfrZpMmWBAHXufNjFRPDQ3Xi2wLxvrtmlsFOdOFWcQk9X+OpSpRMrsdw2QRRoGaZuJdrMt6xIsIk=
+	t=1748873996; cv=none; b=LXnYs0MolWD9Dac3rVSRNWHS9DgPsDH4Bt/QQ3nl58Xbij+889I/bdpwRiymjNp+7Tv1sYEHe9+5Tkbbp7QwUJ55PlYQq3+wLKynuJKDygTiwUm/mq85GCWtqOk0W5YIT4oe6FRLCHkfL0NmVXUtvsCb4nJX3IU8sqnAXydSYPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875280; c=relaxed/simple;
-	bh=bh06JSWt7SdChSAX4StFTv6dvFa2AtQIaMoNeqM+8E4=;
+	s=arc-20240116; t=1748873996; c=relaxed/simple;
+	bh=dEFYs1z6m+ZdQD+RPLYtu025eJnhZLmu9MuYPV9uVfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ianwgq174jYBc+8ILOff9lgfqXaaFL6t+KG+RaxQ+URI5tUjBYpQuUEIYwCK9oF/1Q+TZdXeIGHKM9r1D7n4tysEADv0oJLlSF4dd406ivxJcaQJ3u90tPLM+bbCbHxoTtkwL31sI3grTRwdU9jypbA9Wy11r+fDOoL77Y/Aqyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeUTFlz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E162EC4CEEB;
-	Mon,  2 Jun 2025 14:41:19 +0000 (UTC)
+	 MIME-Version; b=rzUK4dg2WoHx89GYxg7WgYL7bHVN/4b12C8zRi1uOIp7Jh1WILR3Kuj0Yr3sEHR6t2ntQgnmh9AGH2eR+7iDaRkwD4MG+tP3cCA3kwgoF7Lc/2YV1+2QsHIx1tS20lIwMl122JC8mgtKjTGrBwbZQQMs+waddp3YRK47c6bXN3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vK2Ud7B2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F5BC4CEEB;
+	Mon,  2 Jun 2025 14:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875280;
-	bh=bh06JSWt7SdChSAX4StFTv6dvFa2AtQIaMoNeqM+8E4=;
+	s=korg; t=1748873996;
+	bh=dEFYs1z6m+ZdQD+RPLYtu025eJnhZLmu9MuYPV9uVfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeUTFlz8GeO9bjybTE0ESlKCb4D3xeF8UBwSA4MWy+jmbiPF19EbPL7d4QE5lX+vt
-	 iHyz5qkeBjWJdLyD/cmETQp0GbGzgrxO0bOBQxRm9nNBtbYq3VzlKY0azYhxW3buu6
-	 g58cvXxC8n47Gp9e7V2h1xx0HsaGIPy6sLUXrhjw=
+	b=vK2Ud7B26LEPqepW2gcHAnJjjvuAT8TdynQvKN9/my7XQpljLAso8xsrpkQHc5L35
+	 YaXf6sU1y0SiT4YauWfjbvu8NzewMnn2JhOC6x2brd01JHmF777ZdfJynb1eTFGxvq
+	 SHFGv6kWHP8OkwgAMjPCCcesqJBuWOhz/LqIAnGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/270] iio: adc: ad7768-1: Fix insufficient alignment of timestamp.
+Subject: [PATCH 6.6 305/444] accel/qaic: Mask out SR-IOV PCI resources
 Date: Mon,  2 Jun 2025 15:46:09 +0200
-Message-ID: <20250602134310.604246370@linuxfoundation.org>
+Message-ID: <20250602134353.314148773@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Youssef Samir <quic_yabdulra@quicinc.com>
 
-[ Upstream commit ffbc26bc91c1f1eb3dcf5d8776e74cbae21ee13a ]
+[ Upstream commit 8685520474bfc0fe4be83c3cbfe3fb3e1ca1514a ]
 
-On architectures where an s64 is not 64-bit aligned, this may result
-insufficient alignment of the timestamp and the structure being too small.
-Use aligned_s64 to force the alignment.
+During the initialization of the qaic device, pci_select_bars() is
+used to fetch a bitmask of the BARs exposed by the device. On devices
+that have Virtual Functions capabilities, the bitmask includes SR-IOV
+BARs.
 
-Fixes: a1caeebab07e ("iio: adc: ad7768-1: Fix too small buffer passed to iio_push_to_buffers_with_timestamp()") # aligned_s64 newer
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-3-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Use a mask to filter out SR-IOV BARs if they exist.
+
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250117170943.2643280-6-quic_jhugo@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 2 +-
+ drivers/accel/qaic/qaic_drv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 2445ebc551dd1..9580a7f7f73d2 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -168,7 +168,7 @@ struct ad7768_state {
- 	union {
- 		struct {
- 			__be32 chan;
--			s64 timestamp;
-+			aligned_s64 timestamp;
- 		} scan;
- 		__be32 d32;
- 		u8 d8[2];
+diff --git a/drivers/accel/qaic/qaic_drv.c b/drivers/accel/qaic/qaic_drv.c
+index b5de82e6eb4d5..e69bfb30b44e0 100644
+--- a/drivers/accel/qaic/qaic_drv.c
++++ b/drivers/accel/qaic/qaic_drv.c
+@@ -400,7 +400,7 @@ static int init_pci(struct qaic_device *qdev, struct pci_dev *pdev)
+ 	int bars;
+ 	int ret;
+ 
+-	bars = pci_select_bars(pdev, IORESOURCE_MEM);
++	bars = pci_select_bars(pdev, IORESOURCE_MEM) & 0x3f;
+ 
+ 	/* make sure the device has the expected BARs */
+ 	if (bars != (BIT(0) | BIT(2) | BIT(4))) {
 -- 
 2.39.5
 
