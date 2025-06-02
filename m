@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF50ACB5EA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:11:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E79ACB73E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D02F1BC6261
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21E204A6FF0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75C922D4C5;
-	Mon,  2 Jun 2025 14:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F14222DF96;
+	Mon,  2 Jun 2025 15:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUPsOqkT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZWXNcdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DF522259C;
-	Mon,  2 Jun 2025 14:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5989E22DF98;
+	Mon,  2 Jun 2025 15:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875904; cv=none; b=OrzAQcC+BAtPrtsKmfzvFWZrVpgoRDHYhSH9BmzIV/+CkuNVTnTErGSHKS/qoU7nTsd7aQPq3t1mpH6TBNGyuuJOcoKqChyU4f+urAeju3zPYHIY1F+wX2j6a1qENy2b/Z3BLzCfPnlcF/4XxdeECJR0wX32MuNj4gqh8Bb4xTs=
+	t=1748876913; cv=none; b=ETsk5DhhjhvkyqVV6lpmJdlE2knUROk8Gr4FzMNjxhj3JtHnE4IBtz0keEqEmgPSAjm+4X1qBSmdfrfQxY3H/xs1DMDedbsFZPqMCn1xU7GqqJ7wl96zerOYeA9xnEUQG0cGlBdYQ39dj8RQ4n/EKHB7r3j1KaWdVuKWkN09sLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875904; c=relaxed/simple;
-	bh=zx380mY845MMqH8il66VkZ6B2QsigzvUQjbMYpZsnog=;
+	s=arc-20240116; t=1748876913; c=relaxed/simple;
+	bh=VoSDwwplAS+0AIYvfTfkiJUP2WSP81Cyaj3KmGVKQdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BV8j2Aec/128StazZvSIZHhiTVorGM3rkBIhbnPJGBtz41SYmErUWRu+gBdkH5bco/8a/h4pTWAcPrtt1eAKUvtVRhV/08+Z2zhN6h/XkXPxCFZmeBB+DIw1DsOfNisIGqFzPp4g5nOGn5/XtLxdaCYi1nE+cTbASU5RC+nYwx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUPsOqkT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861BAC4CEEB;
-	Mon,  2 Jun 2025 14:51:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BY/9m8ZxZV55ZhF/PL+7n/fgw9Cl6l5kVa1FWKfip0s19zE3Jl79kKkLg3nipHhCMmHp1tn+5iVOeceyiRlL33wzIvNUdIL0iLW3V6aWvrtl8zD45EbBidE25aCg2TsBWUsdWq/yIwq8KQ+Lz2OljK9TfSom19KELNkF6N/GOJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZWXNcdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF50BC4CEEB;
+	Mon,  2 Jun 2025 15:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875903;
-	bh=zx380mY845MMqH8il66VkZ6B2QsigzvUQjbMYpZsnog=;
+	s=korg; t=1748876913;
+	bh=VoSDwwplAS+0AIYvfTfkiJUP2WSP81Cyaj3KmGVKQdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUPsOqkT2uxSqIr8relFu5lwdL1Cm50mA9p9wPScJExW0IBKYMX1eSLQyEPbLY6Ie
-	 rXnObOkdteDPj3mQ99elr5vw6JqooV/MO71o2jfap6dT5KSWYbQK1JH+mynBeDcliY
-	 o1WeSNPDaTJydTxzX0lnXHK7IpnU5EAA3rlzx1mE=
+	b=CZWXNcdq3+9SPoJ0yOzRpWkjcUnhj+2yTwDLmvtMRSPaiAzS+W6OmAqe3Kzvcm3Eu
+	 EOhLeitLT0xANRSw4CBR0dV8WwCo8hFEzuVrlL/nBqYERf/Z5zygp7JqUbTziYw8El
+	 23d+xKjoolZejJ7v1LFWgvkSv9EslXoF1aYiIYRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/207] tracing: Mark binary printing functions with __printf() attribute
+Subject: [PATCH 6.1 106/325] remoteproc: qcom_wcnss: Handle platforms with only single power domain
 Date: Mon,  2 Jun 2025 15:46:22 +0200
-Message-ID: <20250602134259.172670246@linuxfoundation.org>
+Message-ID: <20250602134324.090902557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +64,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-[ Upstream commit 196a062641fe68d9bfe0ad36b6cd7628c99ad22c ]
+[ Upstream commit 65991ea8a6d1e68effdc01d95ebe39f1653f7b71 ]
 
-Binary printing functions are using printf() type of format, and compiler
-is not happy about them as is:
+Both MSM8974 and MSM8226 have only CX as power domain with MX & PX being
+handled as regulators. Handle this case by reodering pd_names to have CX
+first, and handling that the driver core will already attach a single
+power domain internally.
 
-kernel/trace/trace.c:3292:9: error: function ‘trace_vbprintk’ might be a candidate for ‘gnu_printf’ format attribute [-Werror=suggest-attribute=format]
-kernel/trace/trace_seq.c:182:9: error: function ‘trace_seq_bprintf’ might be a candidate for ‘gnu_printf’ format attribute [-Werror=suggest-attribute=format]
-
-Fix the compilation errors by adding __printf() attribute.
-
-While at it, move existing __printf() attributes from the implementations
-to the declarations. IT also fixes incorrect attribute parameters that are
-used for trace_array_printk().
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20250321144822.324050-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+[luca: minor changes]
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Link: https://lore.kernel.org/r/20250206-wcnss-singlepd-v2-2-9a53ee953dee@lucaweiss.eu
+[bjorn: Added missing braces to else after multi-statement if]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace.h     |  4 ++--
- include/linux/trace_seq.h |  8 ++++----
- kernel/trace/trace.c      | 11 +++--------
- kernel/trace/trace.h      | 16 +++++++++-------
- 4 files changed, 18 insertions(+), 21 deletions(-)
+ drivers/remoteproc/qcom_wcnss.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/trace.h b/include/linux/trace.h
-index 2a70a447184c9..bb4d84f1c58cc 100644
---- a/include/linux/trace.h
-+++ b/include/linux/trace.h
-@@ -72,8 +72,8 @@ static inline int unregister_ftrace_export(struct trace_export *export)
- static inline void trace_printk_init_buffers(void)
- {
- }
--static inline int trace_array_printk(struct trace_array *tr, unsigned long ip,
--				     const char *fmt, ...)
-+static inline __printf(3, 4)
-+int trace_array_printk(struct trace_array *tr, unsigned long ip, const char *fmt, ...)
- {
- 	return 0;
- }
-diff --git a/include/linux/trace_seq.h b/include/linux/trace_seq.h
-index 5a2c650d9e1c1..c230cbd25aee8 100644
---- a/include/linux/trace_seq.h
-+++ b/include/linux/trace_seq.h
-@@ -77,8 +77,8 @@ extern __printf(2, 3)
- void trace_seq_printf(struct trace_seq *s, const char *fmt, ...);
- extern __printf(2, 0)
- void trace_seq_vprintf(struct trace_seq *s, const char *fmt, va_list args);
--extern void
--trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary);
-+extern __printf(2, 0)
-+void trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary);
- extern int trace_print_seq(struct seq_file *m, struct trace_seq *s);
- extern int trace_seq_to_user(struct trace_seq *s, char __user *ubuf,
- 			     int cnt);
-@@ -100,8 +100,8 @@ extern int trace_seq_hex_dump(struct trace_seq *s, const char *prefix_str,
- static inline void trace_seq_printf(struct trace_seq *s, const char *fmt, ...)
- {
- }
--static inline void
--trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary)
-+static inline __printf(2, 0)
-+void trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary)
- {
- }
+diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+index 68f37296b1516..ce61e0e7cbeb8 100644
+--- a/drivers/remoteproc/qcom_wcnss.c
++++ b/drivers/remoteproc/qcom_wcnss.c
+@@ -117,10 +117,10 @@ static const struct wcnss_data pronto_v1_data = {
+ 	.pmu_offset = 0x1004,
+ 	.spare_offset = 0x1088,
  
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index baf2867e6dbe4..c4fd5deca4a07 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3402,10 +3402,9 @@ int trace_vbprintk(unsigned long ip, const char *fmt, va_list args)
- }
- EXPORT_SYMBOL_GPL(trace_vbprintk);
+-	.pd_names = { "mx", "cx" },
++	.pd_names = { "cx", "mx" },
+ 	.vregs = (struct wcnss_vreg_info[]) {
+-		{ "vddmx", 950000, 1150000, 0 },
+ 		{ "vddcx", .super_turbo = true},
++		{ "vddmx", 950000, 1150000, 0 },
+ 		{ "vddpx", 1800000, 1800000, 0 },
+ 	},
+ 	.num_pd_vregs = 2,
+@@ -131,10 +131,10 @@ static const struct wcnss_data pronto_v2_data = {
+ 	.pmu_offset = 0x1004,
+ 	.spare_offset = 0x1088,
  
--__printf(3, 0)
--static int
--__trace_array_vprintk(struct trace_buffer *buffer,
--		      unsigned long ip, const char *fmt, va_list args)
-+static __printf(3, 0)
-+int __trace_array_vprintk(struct trace_buffer *buffer,
-+			  unsigned long ip, const char *fmt, va_list args)
+-	.pd_names = { "mx", "cx" },
++	.pd_names = { "cx", "mx" },
+ 	.vregs = (struct wcnss_vreg_info[]) {
+-		{ "vddmx", 1287500, 1287500, 0 },
+ 		{ "vddcx", .super_turbo = true },
++		{ "vddmx", 1287500, 1287500, 0 },
+ 		{ "vddpx", 1800000, 1800000, 0 },
+ 	},
+ 	.num_pd_vregs = 2,
+@@ -386,8 +386,17 @@ static irqreturn_t wcnss_stop_ack_interrupt(int irq, void *dev)
+ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ 			  const char * const pd_names[WCNSS_MAX_PDS])
  {
- 	struct trace_event_call *call = &event_print;
- 	struct ring_buffer_event *event;
-@@ -3458,7 +3457,6 @@ __trace_array_vprintk(struct trace_buffer *buffer,
- 	return len;
- }
++	struct device *dev = wcnss->dev;
+ 	int i, ret;
  
--__printf(3, 0)
- int trace_array_vprintk(struct trace_array *tr,
- 			unsigned long ip, const char *fmt, va_list args)
- {
-@@ -3485,7 +3483,6 @@ int trace_array_vprintk(struct trace_array *tr,
-  * Note, trace_array_init_printk() must be called on @tr before this
-  * can be used.
-  */
--__printf(3, 0)
- int trace_array_printk(struct trace_array *tr,
- 		       unsigned long ip, const char *fmt, ...)
- {
-@@ -3530,7 +3527,6 @@ int trace_array_init_printk(struct trace_array *tr)
- }
- EXPORT_SYMBOL_GPL(trace_array_init_printk);
- 
--__printf(3, 4)
- int trace_array_printk_buf(struct trace_buffer *buffer,
- 			   unsigned long ip, const char *fmt, ...)
- {
-@@ -3546,7 +3542,6 @@ int trace_array_printk_buf(struct trace_buffer *buffer,
- 	return ret;
- }
- 
--__printf(2, 0)
- int trace_vprintk(unsigned long ip, const char *fmt, va_list args)
- {
- 	return trace_array_vprintk(&global_trace, ip, fmt, args);
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 449a8bd873cf7..49b4353997fad 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -781,13 +781,15 @@ static inline void __init disable_tracing_selftest(const char *reason)
- 
- extern void *head_page(struct trace_array_cpu *data);
- extern unsigned long long ns2usecs(u64 nsec);
--extern int
--trace_vbprintk(unsigned long ip, const char *fmt, va_list args);
--extern int
--trace_vprintk(unsigned long ip, const char *fmt, va_list args);
--extern int
--trace_array_vprintk(struct trace_array *tr,
--		    unsigned long ip, const char *fmt, va_list args);
++	/* Handle single power domain */
++	if (dev->pm_domain) {
++		wcnss->pds[0] = dev;
++		wcnss->num_pds = 1;
++		pm_runtime_enable(dev);
++		return 0;
++	}
 +
-+__printf(2, 0)
-+int trace_vbprintk(unsigned long ip, const char *fmt, va_list args);
-+__printf(2, 0)
-+int trace_vprintk(unsigned long ip, const char *fmt, va_list args);
-+__printf(3, 0)
-+int trace_array_vprintk(struct trace_array *tr,
-+			unsigned long ip, const char *fmt, va_list args);
-+__printf(3, 4)
- int trace_array_printk_buf(struct trace_buffer *buffer,
- 			   unsigned long ip, const char *fmt, ...);
- void trace_printk_seq(struct trace_seq *s);
+ 	for (i = 0; i < WCNSS_MAX_PDS; i++) {
+ 		if (!pd_names[i])
+ 			break;
+@@ -407,8 +416,15 @@ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ 
+ static void wcnss_release_pds(struct qcom_wcnss *wcnss)
+ {
++	struct device *dev = wcnss->dev;
+ 	int i;
+ 
++	/* Handle single power domain */
++	if (wcnss->num_pds == 1 && dev->pm_domain) {
++		pm_runtime_disable(dev);
++		return;
++	}
++
+ 	for (i = 0; i < wcnss->num_pds; i++)
+ 		dev_pm_domain_detach(wcnss->pds[i], false);
+ }
+@@ -426,10 +442,13 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
+ 	 * the regulators for the power domains. For old device trees we need to
+ 	 * reserve extra space to manage them through the regulator interface.
+ 	 */
+-	if (wcnss->num_pds)
+-		info += num_pd_vregs;
+-	else
++	if (wcnss->num_pds) {
++		info += wcnss->num_pds;
++		/* Handle single power domain case */
++		num_vregs += num_pd_vregs - wcnss->num_pds;
++	} else {
+ 		num_vregs += num_pd_vregs;
++	}
+ 
+ 	bulk = devm_kcalloc(wcnss->dev,
+ 			    num_vregs, sizeof(struct regulator_bulk_data),
 -- 
 2.39.5
 
