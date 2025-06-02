@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81ADCACB5D6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87683ACB439
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BECD74C3CD9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EB291946B76
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FC122F762;
-	Mon,  2 Jun 2025 14:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60446223DFA;
+	Mon,  2 Jun 2025 14:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJbuLsR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnqLWOfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27330233707;
-	Mon,  2 Jun 2025 14:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE9E1EDA02;
+	Mon,  2 Jun 2025 14:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875970; cv=none; b=cNUBiroC56glEGlVMFsOxghmxs3O5gK5PLOca3Kkk7j0hkBnrqWsJTccGq8KoWHP33Nz2J4n6TfMo8XtxJCEKCaclPuE2I219UcwAOfUwinNQOkPg18/YZtvqLbK7s2l9prHseT8yu6nHw314XrKhsAvzpTs2UGXWRATOHCrC+4=
+	t=1748874708; cv=none; b=ChUDP8hf9HI+Y+PpXQVxJbrV34fy00LCj3tO4M4IOtGqcJ+ZMHWG7BHsAt3aRpmW/Hius785Bz9HbZSS46suRVNFdnF431RtuYqzaOZa/d854rDkF/8ni3U7v26tqLNWj0bTX9dHAdFuh5RZPwEiEM/zCboz4C8PDEzSSLwl5b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875970; c=relaxed/simple;
-	bh=ygpdVUGxGaE1immIxmAhPfLc/jykg8uXLka6PEDPO7s=;
+	s=arc-20240116; t=1748874708; c=relaxed/simple;
+	bh=83IlbeoAHsUtQ2/vNtks+VbFOHcmRtYWsm7ch2WE67c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zsiu+8tLiH1EgkRQryt9YyZ2euLdlFsrhgeqOJoP+33za6mzoEnuT62TKdRBPRIMdW8jftspmLkuNdsmzooUy6ffIVtC4EV/2Ka2EldzfhTkXJUfgLSugAyG6OqXBqe7FFiO3FHI/84ccGuJei9TxPed6tDF5uuNiMpCG13LEa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJbuLsR8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89946C4CEEE;
-	Mon,  2 Jun 2025 14:52:49 +0000 (UTC)
+	 MIME-Version; b=KvIXZuKIs1DsPyXhYCljkOkThOu36XPkexV4crkVLOKDKWxtwA16bDUgszojGinFbV3xC7EH9RDW6qXOKDnts8QNpKDgl8BAvjJtWtqdw9TKaTtId/RPIKKck6MarAshJlyqhbFhDffpf4KAt3BqGA+kO3VLd4ExbweWh5qHxSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnqLWOfj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD73C4CEEB;
+	Mon,  2 Jun 2025 14:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875970;
-	bh=ygpdVUGxGaE1immIxmAhPfLc/jykg8uXLka6PEDPO7s=;
+	s=korg; t=1748874707;
+	bh=83IlbeoAHsUtQ2/vNtks+VbFOHcmRtYWsm7ch2WE67c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJbuLsR8X3HF81WWyhjgHTkcPLwFRurJ6fglNFKRt1qb/C0+C1i8wJyvo9VziH3pB
-	 godfH7knDhTBY2txmDwLITv1GR0qG0g3ULS798IVxgHvaMrvxh+itZz7932n+BWSXv
-	 kyCOxhk1EalnH7CAJUFhmXnVOyo2KlbUOK7LJa3A=
+	b=BnqLWOfjVmBkdAfgM6f0uK77f3YqosRl+5L/hypnwPd4nz9myp38/mubO9jTebOWa
+	 TKPfbUSh0JwuFwmPjXa5DTL2KTeOIxvPDkp5++bNzZ6oQ0rRephwsMXXmHekbAMIzB
+	 EnELHwU3bPZDuodzpp6JPiQMiSSs7qWj8oiW/T7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/207] btrfs: avoid linker error in btrfs_find_create_tree_block()
+Subject: [PATCH 5.4 070/204] nfs: handle failure of nfs_get_lock_context in unlock path
 Date: Mon,  2 Jun 2025 15:46:43 +0200
-Message-ID: <20250602134259.984801433@linuxfoundation.org>
+Message-ID: <20250602134258.431245473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
+[ Upstream commit c457dc1ec770a22636b473ce5d35614adfe97636 ]
 
-The inline function btrfs_is_testing() is hardcoded to return 0 if
-CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
-the compiler optimizing out the call to alloc_test_extent_buffer() in
-btrfs_find_create_tree_block(), as it's not been defined (it's behind an
- #ifdef).
+When memory is insufficient, the allocation of nfs_lock_context in
+nfs_get_lock_context() fails and returns -ENOMEM. If we mistakenly treat
+an nfs4_unlockdata structure (whose l_ctx member has been set to -ENOMEM)
+as valid and proceed to execute rpc_run_task(), this will trigger a NULL
+pointer dereference in nfs4_locku_prepare. For example:
 
-Add a stub version of alloc_test_extent_buffer() to avoid linker errors
-on non-standard optimization levels. This problem was seen on GCC 14
-with -O0 and is helps to see symbols that would be otherwise optimized
-out.
+BUG: kernel NULL pointer dereference, address: 000000000000000c
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 15 UID: 0 PID: 12 Comm: kworker/u64:0 Not tainted 6.15.0-rc2-dirty #60
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40
+Workqueue: rpciod rpc_async_schedule
+RIP: 0010:nfs4_locku_prepare+0x35/0xc2
+Code: 89 f2 48 89 fd 48 c7 c7 68 69 ef b5 53 48 8b 8e 90 00 00 00 48 89 f3
+RSP: 0018:ffffbbafc006bdb8 EFLAGS: 00010246
+RAX: 000000000000004b RBX: ffff9b964fc1fa00 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: fffffffffffffff4 RDI: ffff9ba53fddbf40
+RBP: ffff9ba539934000 R08: 0000000000000000 R09: ffffbbafc006bc38
+R10: ffffffffb6b689c8 R11: 0000000000000003 R12: ffff9ba539934030
+R13: 0000000000000001 R14: 0000000004248060 R15: ffffffffb56d1c30
+FS: 0000000000000000(0000) GS:ffff9ba5881f0000(0000) knlGS:00000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000000000c CR3: 000000093f244000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __rpc_execute+0xbc/0x480
+ rpc_async_schedule+0x2f/0x40
+ process_one_work+0x232/0x5d0
+ worker_thread+0x1da/0x3d0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x10d/0x240
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Modules linked in:
+CR2: 000000000000000c
+---[ end trace 0000000000000000 ]---
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Free the allocated nfs4_unlockdata when nfs_get_lock_context() fails and
+return NULL to terminate subsequent rpc_run_task, preventing NULL pointer
+dereference.
+
+Fixes: f30cb757f680 ("NFS: Always wait for I/O completion before unlock")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20250417072508.3850532-1-lilingfeng3@huawei.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index a1946d62911c9..39619fd6d6aae 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -6024,10 +6024,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
- 	return eb;
- }
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 632cea3fb91da..3477da3c2190e 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6573,10 +6573,18 @@ static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
+ 	struct nfs4_unlockdata *p;
+ 	struct nfs4_state *state = lsp->ls_state;
+ 	struct inode *inode = state->inode;
++	struct nfs_lock_context *l_ctx;
  
--#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- 					u64 start)
- {
-+#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- 	struct extent_buffer *eb, *exists = NULL;
- 	int ret;
- 
-@@ -6063,8 +6063,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- free_eb:
- 	btrfs_release_extent_buffer(eb);
- 	return exists;
--}
-+#else
-+	/* Stub to avoid linker error when compiled with optimizations turned off. */
-+	return NULL;
- #endif
-+}
- 
- static struct extent_buffer *grab_extent_buffer(
- 		struct btrfs_fs_info *fs_info, struct page *page)
+ 	p = kzalloc(sizeof(*p), GFP_NOFS);
+ 	if (p == NULL)
+ 		return NULL;
++	l_ctx = nfs_get_lock_context(ctx);
++	if (!IS_ERR(l_ctx)) {
++		p->l_ctx = l_ctx;
++	} else {
++		kfree(p);
++		return NULL;
++	}
+ 	p->arg.fh = NFS_FH(inode);
+ 	p->arg.fl = &p->fl;
+ 	p->arg.seqid = seqid;
+@@ -6584,7 +6592,6 @@ static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
+ 	p->lsp = lsp;
+ 	/* Ensure we don't close file until we're done freeing locks! */
+ 	p->ctx = get_nfs_open_context(ctx);
+-	p->l_ctx = nfs_get_lock_context(ctx);
+ 	locks_init_lock(&p->fl);
+ 	locks_copy_lock(&p->fl, fl);
+ 	p->server = NFS_SERVER(inode);
 -- 
 2.39.5
 
