@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9A8ACB338
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C82ACB084
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827CA4A113F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 569C8176346
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFE9226D19;
-	Mon,  2 Jun 2025 14:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD216224AF2;
+	Mon,  2 Jun 2025 14:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/wz5vc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcD8jXvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D112222CA;
-	Mon,  2 Jun 2025 14:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6832248B3;
+	Mon,  2 Jun 2025 14:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874280; cv=none; b=FRPZEgv42Xe1cPNkGNB9ngwIMLHBGkSbjJQVmxevfXoodD+gd7J8700+nCdyqGglfr5LtA5EYEXiV0lHkbQtki87ILUEsut0lXmtXAay8R8NSGsuVNz13+i58Z2W/VxNJxay0sn/Cd1fVcfR9WMhujOt3ulSYbVeomYpfIosX98=
+	t=1748872944; cv=none; b=EKTq4ML34IONOcIAKC08a4UCPbJsIoQivxJxeqtb7zgUoSp+wwCPo4CDWJ/FK1XrT5tvFdZ4F3lx2HJ68A7CnNMrELyjzd3yG3FEsa0iuVVzTc0KNaepbY0W/VeBCuK7pYlXqsmmq+2RAeLgr5CNuR7A97WPfkxUzMKtkBN0lJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874280; c=relaxed/simple;
-	bh=INvF3psh6b0Q74LMvaI+nxlRDdlPett82R+NJjcnW+o=;
+	s=arc-20240116; t=1748872944; c=relaxed/simple;
+	bh=d7elWOw1LXkDbgdBq0m2EPpbNVp2vG5sYJ+XFpEXssg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AObHFEbFAVHwA6vOM50TgXMIPoqGs7AV31EaDcQMCHJslYaMW8MFkKPDNmR8PjQfMOM2YyRaok6sE5vK3Wm8DThkaDCtxcW59ESdpsMJQkDX2FLmQxbqRlfk4S7yOE8aw/GJ0UfjaAWxBzRrRKYtevwHyNdPbJCV4vGXQ0GtCgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/wz5vc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483C5C4CEEB;
-	Mon,  2 Jun 2025 14:24:40 +0000 (UTC)
+	 MIME-Version; b=AONUd8VWCt7xUvpW0XnwLOW9J57mEyAcmLg33fNyOR5aAs7XElK3oh+YK6PBxbyPp40l443cMq/hw9Scwr7lpqHaNtDGMnM+dkPmgn7b/TQCrmClAYuoHN3xGS3K9q1L5j/v3r/sx/+xVFEz0T+/piyES3j8oyezFz+qbZMw4fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OcD8jXvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0165EC4CEEE;
+	Mon,  2 Jun 2025 14:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874280;
-	bh=INvF3psh6b0Q74LMvaI+nxlRDdlPett82R+NJjcnW+o=;
+	s=korg; t=1748872944;
+	bh=d7elWOw1LXkDbgdBq0m2EPpbNVp2vG5sYJ+XFpEXssg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/wz5vc39gnlJb9R5/cSAytDV8udfudLsqg07Hai3ADRdkDCs7NVUM2hKqWvMPeWL
-	 GPOPCkq23jSAxj/Uudt8XpjYy0PB/LTR771S4hwTyUvMw8VDqCJLFvdKck9WcLoffm
-	 ya6/rkxIFWisNe7jaCWPex26c+kYduH7o1kbOdwc=
+	b=OcD8jXvSec8ELIBIH33K3gySp65FhSpE3e8WoBUSnJ0dXh02bp/3c+nJlMtE9WIYy
+	 fsUChQ/kG/Ue2Lyg6PpjN78/GTjVOuo3wEoCQnBw6hbx1DJxFuBoc83fcJYqYcIjVV
+	 sDvZSRmGjOnBp08ZMNDHgVKRUd0zibEppFOyZCs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 418/444] af_unix: Add dead flag to struct scm_fp_list.
+	Alessandro Grassi <alessandro.grassi@mailbox.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 45/55] spi: spi-sun4i: fix early activation
 Date: Mon,  2 Jun 2025 15:48:02 +0200
-Message-ID: <20250602134357.908089166@linuxfoundation.org>
+Message-ID: <20250602134240.055385114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Alessandro Grassi <alessandro.grassi@mailbox.org>
 
-commit 7172dc93d621d5dc302d007e95ddd1311ec64283 upstream.
+[ Upstream commit fb98bd0a13de2c9d96cb5c00c81b5ca118ac9d71 ]
 
-Commit 1af2dface5d2 ("af_unix: Don't access successor in unix_del_edges()
-during GC.") fixed use-after-free by avoid accessing edge->successor while
-GC is in progress.
+The SPI interface is activated before the CPOL setting is applied. In
+that moment, the clock idles high and CS goes low. After a short delay,
+CPOL and other settings are applied, which may cause the clock to change
+state and idle low. This transition is not part of a clock cycle, and it
+can confuse the receiving device.
 
-However, there could be a small race window where another process could
-call unix_del_edges() while gc_in_progress is true and __skb_queue_purge()
-is on the way.
+To prevent this unexpected transition, activate the interface while CPOL
+and the other settings are being applied.
 
-So, we need another marker for struct scm_fp_list which indicates if the
-skb is garbage-collected.
-
-This patch adds dead flag in struct scm_fp_list and set it true before
-calling __skb_queue_purge().
-
-Fixes: 1af2dface5d2 ("af_unix: Don't access successor in unix_del_edges() during GC.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240508171150.50601-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alessandro Grassi <alessandro.grassi@mailbox.org>
+Link: https://patch.msgid.link/20250502095520.13825-1-alessandro.grassi@mailbox.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/scm.h  |    1 +
- net/core/scm.c     |    1 +
- net/unix/garbage.c |   14 ++++++++++----
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sun4i.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -32,6 +32,7 @@ struct scm_fp_list {
- 	short			max;
- #ifdef CONFIG_UNIX
- 	bool			inflight;
-+	bool			dead;
- 	struct list_head	vertices;
- 	struct unix_edge	*edges;
- #endif
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -91,6 +91,7 @@ static int scm_fp_copy(struct cmsghdr *c
- 		fpl->user = NULL;
- #if IS_ENABLED(CONFIG_UNIX)
- 		fpl->inflight = false;
-+		fpl->dead = false;
- 		fpl->edges = NULL;
- 		INIT_LIST_HEAD(&fpl->vertices);
- #endif
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -158,13 +158,11 @@ static void unix_add_edge(struct scm_fp_
- 	unix_update_graph(unix_edge_successor(edge));
- }
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index 2ee6755b43f54..3019f57e65841 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -264,6 +264,9 @@ static int sun4i_spi_transfer_one(struct spi_controller *host,
+ 	else
+ 		reg |= SUN4I_CTL_DHB;
  
--static bool gc_in_progress;
--
- static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
- 	struct unix_vertex *vertex = edge->predecessor->vertex;
++	/* Now that the settings are correct, enable the interface */
++	reg |= SUN4I_CTL_ENABLE;
++
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
  
--	if (!gc_in_progress)
-+	if (!fpl->dead)
- 		unix_update_graph(unix_edge_successor(edge));
- 
- 	list_del(&edge->vertex_entry);
-@@ -240,7 +238,7 @@ void unix_del_edges(struct scm_fp_list *
- 		unix_del_edge(fpl, edge);
- 	} while (i < fpl->count_unix);
- 
--	if (!gc_in_progress) {
-+	if (!fpl->dead) {
- 		receiver = fpl->edges[0].successor;
- 		receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
+ 	/* Ensure that we have a parent clock fast enough */
+@@ -404,7 +407,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
  	}
-@@ -559,9 +557,12 @@ static void unix_walk_scc_fast(struct sk
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- }
  
-+static bool gc_in_progress;
-+
- static void __unix_gc(struct work_struct *work)
- {
- 	struct sk_buff_head hitlist;
-+	struct sk_buff *skb;
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
+-			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
++			SUN4I_CTL_MASTER | SUN4I_CTL_TP);
  
- 	spin_lock(&unix_gc_lock);
+ 	return 0;
  
-@@ -579,6 +580,11 @@ static void __unix_gc(struct work_struct
- 
- 	spin_unlock(&unix_gc_lock);
- 
-+	skb_queue_walk(&hitlist, skb) {
-+		if (UNIXCB(skb).fp)
-+			UNIXCB(skb).fp->dead = true;
-+	}
-+
- 	__skb_queue_purge(&hitlist);
- skip_gc:
- 	WRITE_ONCE(gc_in_progress, false);
+-- 
+2.39.5
+
 
 
 
