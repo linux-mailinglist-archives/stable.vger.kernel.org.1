@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC5DACB775
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829C6ACB324
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB929E3BAB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89FE11942010
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C3C221DB7;
-	Mon,  2 Jun 2025 14:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E11423BF8F;
+	Mon,  2 Jun 2025 14:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TB4oRWcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvbP7X21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90B02C324F;
-	Mon,  2 Jun 2025 14:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3953B223DD1;
+	Mon,  2 Jun 2025 14:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875982; cv=none; b=XJjjHRIg0fovM5ikn8dXCEvdwQEJrfkFSechf7xvCvIb+z7Z/fj/Ybk9wgVGoCSEw5kWxxG4YJM6ajcdRhLzRZhv6mi77OUYA7OIAOfZsm5nih2IDZUf8p82Ngtnw95XvMYpg6Dg9bOD2WbYNwC9lCuSylq2cMrI0SM3y4xeGb4=
+	t=1748874148; cv=none; b=iQsk5Y1VOPsjCGURFlue9j7SBOwKwBJpqlNL18jL+LGAplaWSqS+0AWj5d8JAxBQ+d5ZsL4EiA0pOQWTg/wIgl7AKzfj3wPq4KK4cRdNv7bUE8rPKi8kWrpM5eVrBUGWe2jXZCsBwQarETSlAnsmoTbr6dIV7lS0Z3LuDWlbhkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875982; c=relaxed/simple;
-	bh=hMIuOp2NPGJnK+KPHbrvlFc5qaBDqhbEpyZAngcr1CM=;
+	s=arc-20240116; t=1748874148; c=relaxed/simple;
+	bh=1oa70gD1QiTB9V25h6rJOxpTu0M4YBzMnMO/f8iRc5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuRftR7omrUzO+8BJof2op95HesfPSToOPBN9DpNvNjPc7WliI7ZzUOyFaywIUfH3pvUoIXbrnuDzKBxZZib1Zen3A9Tbw2g8l2P2D7BI+mFxOalsvZIzIKlBrFHF4Aln9cFlbF/2D9OLwsmT4T6aeE4r/QXxD/Rq4RRbvNQIgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TB4oRWcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1D0C4CEEB;
-	Mon,  2 Jun 2025 14:53:02 +0000 (UTC)
+	 MIME-Version; b=aIsb1eT1EBO1qEFjR6eAh4CJQdHQeT7uby8FX/vqGX/mJE/y3mbQFLSFwP2B/S7kaTUYcXRhSUIF58wL0H/56s025TjZi6Wq4YRkEkTjbzte9m8Xzz2/6d2OqXw2TTxTEWVjy20S1aeywEguEhtTr7TX7egr0KgnGIfY1L7OKvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvbP7X21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB01CC4CEEB;
+	Mon,  2 Jun 2025 14:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875982;
-	bh=hMIuOp2NPGJnK+KPHbrvlFc5qaBDqhbEpyZAngcr1CM=;
+	s=korg; t=1748874148;
+	bh=1oa70gD1QiTB9V25h6rJOxpTu0M4YBzMnMO/f8iRc5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TB4oRWcNIqoynR7QeJ4ESFxGP3ejyDG7uFXp8LewtksD+VVSMnHgW3oFVwUy7skDk
-	 WaeaHe4ilJmDMMOn+JE+ZDHk+RfC1rVTW7HBk3dir7DE4Kpp+EAoWEsSRPwyrPdov7
-	 CMswaJpWg6sfPEH89bgc0d4DJV0Pw2usraWeu318=
+	b=xvbP7X210XS+APgVWdsmHD7+DV3DmdWaJSMiJ0YelGvXm37x63OLXHqRtK9Wr7PW0
+	 +jFvWKDzKa5AoGmUIy00pBBcmfP6zpLQX2T3XzOyqsXG7FOol6Jb8Irg5zcincjBtb
+	 KhiTX6091z5ymUG+RLDhqTZzdJRYuSSJcmWjy6Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	David Teigland <teigland@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/207] dlm: make tcp still work in multi-link env
+Subject: [PATCH 6.6 343/444] ice: fix vf->num_mac count with port representors
 Date: Mon,  2 Jun 2025 15:46:47 +0200
-Message-ID: <20250602134300.138225488@linuxfoundation.org>
+Message-ID: <20250602134354.860902083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
+[ Upstream commit bbd95160a03dbfcd01a541f25c27ddb730dfbbd5 ]
 
-This patch bypasses multi-link errors in TCP mode, allowing dlm
-to operate on the first tcp link.
+The ice_vc_repr_add_mac() function indicates that it does not store the MAC
+address filters in the firmware. However, it still increments vf->num_mac.
+This is incorrect, as vf->num_mac should represent the number of MAC
+filters currently programmed to firmware.
 
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Indeed, we only perform this increment if the requested filter is a unicast
+address that doesn't match the existing vf->hw_lan_addr. In addition,
+ice_vc_repr_del_mac() does not decrement the vf->num_mac counter. This
+results in the counter becoming out of sync with the actual count.
+
+As it turns out, vf->num_mac is currently only used in legacy made without
+port representors. The single place where the value is checked is for
+enforcing a filter limit on untrusted VFs.
+
+Upcoming patches to support VF Live Migration will use this value when
+determining the size of the TLV for MAC address filters. Fix the
+representor mode function to stop incrementing the counter incorrectly.
+
+Fixes: ac19e03ef780 ("ice: allow process VF opcodes in different ways")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lowcomms.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 1eb95ba7e7772..5b53425554077 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1852,8 +1852,8 @@ static int dlm_tcp_listen_validate(void)
- {
- 	/* We don't support multi-homed hosts */
- 	if (dlm_local_count > 1) {
--		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
--		return -EINVAL;
-+		log_print("Detect multi-homed hosts but use only the first IP address.");
-+		log_print("Try SCTP, if you want to enable multi-link.");
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index e709b10a29761..1edcf93031831 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -3769,7 +3769,6 @@ static int ice_vc_repr_add_mac(struct ice_vf *vf, u8 *msg)
+ 		}
+ 
+ 		ice_vfhw_mac_add(vf, &al->list[i]);
+-		vf->num_mac++;
+ 		break;
  	}
  
- 	return 0;
 -- 
 2.39.5
 
