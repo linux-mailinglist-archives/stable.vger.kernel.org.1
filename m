@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89904ACB64D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5DEACB786
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 889CF1C20AE8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BEA91BC3593
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F293B2367BA;
-	Mon,  2 Jun 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889D222ACF2;
+	Mon,  2 Jun 2025 15:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwuTZKIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpfch5Nt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076122A7F2;
-	Mon,  2 Jun 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4586922A801;
+	Mon,  2 Jun 2025 15:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876271; cv=none; b=uZf6CW2wwUL2f5yUbhcX4mCRMYlnf6WTfXBkf+lS+rF0QIYe1E1SwfaKy+hVPHVc+zoQpr6ntPCwoEZzDk8tfMzL+QVbZKpQHG43jLRlWli70BtyX495Cvfye9//0wf2pD93XnvxEc+7pUIhKIEyArHleNgPCmpTQhOhjDvr6nk=
+	t=1748877260; cv=none; b=DRAKsHPz+U/NV385bqD16rQaFvKtZJmjPrTkBPN1fSd38tJeK93gaQBq2i0DyY0n4kIHKdO8VxkcWIu7ILs0zrdkZ3lc693ZPsFdHhqsQxp9a3Qhoxo/e6qrKEdMzN2Zg7W67uzYhZLekuckF0iRBWFgqKxh9ifeqwGlRafAOPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876271; c=relaxed/simple;
-	bh=+0Vt8okLqDVmuZhdKWFCUromc5PVZPzsU5F2jGzxp+E=;
+	s=arc-20240116; t=1748877260; c=relaxed/simple;
+	bh=vO8yvVDe4BUgpM2LdLSxiDNlUF/vmEOBur2ZBg6ii0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCGUDeM033hD9MgmLSugt3IDurFlA4WYIWf5iClUcULxMA7k0TkuL7hE+ck0VO3zL+RYvagnt3MwBTdD/PiXfZlMz0Mvk94frOhgYMGdpRzgTTAXbdJiNnOECO2G9ZcGJsimEghGTPDjaM7l3O0qct8arEtTumr2Xjm9CTWYfgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwuTZKIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F56C4CEEB;
-	Mon,  2 Jun 2025 14:57:51 +0000 (UTC)
+	 MIME-Version; b=Tzqay7KSI5ILChJHnGxUZOLAj6z92PMrz1arRu+rycHfJQPgvVO5H/zgl+Ssgc6Fl2YeHnzNtFPZepoXmiHftKKeWb4GvrmNDph3JUjXmxiUZ7rq1etjacz6X+ALxqmQ4GXXPo9er2xMJYK9REegP+25llT9JSrOOXYb7eHPm/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpfch5Nt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4E3C4CEEE;
+	Mon,  2 Jun 2025 15:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876271;
-	bh=+0Vt8okLqDVmuZhdKWFCUromc5PVZPzsU5F2jGzxp+E=;
+	s=korg; t=1748877260;
+	bh=vO8yvVDe4BUgpM2LdLSxiDNlUF/vmEOBur2ZBg6ii0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwuTZKIMxL2liUh6sAC/5GXsgWcf5f5rRwiPW+mZNRGyvj7y1ZE1dsbwHbWyM/Kbm
-	 Y/pRxwvFaq8ufsQw9d14Wj2IS5nnuj9pYUhHD6f/hM23EMnQFhrQOa0cgiow125u1J
-	 QxrR2SNh+CAKKzPy4noXl+mHlRfMuA3Ayc3HjJ2A=
+	b=gpfch5NtP07Xy94k5aixj1ezh0WCI9T0fWV+/Ahm8z3TWP7sOPvmktz+DUHoivM/K
+	 Fm96mYJ8sGpVDWtAMVkb5Ktc+zdFE2qOOxzEL+op9nThRNqGWwpzSQDVZuW8ouTPoI
+	 kInWjRjzU6Bz46ToInYgxRCBNt+sRv5bZ3pS49Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/207] net/mlx5e: set the tx_queue_len for pfifo_fast
+Subject: [PATCH 6.1 222/325] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
 Date: Mon,  2 Jun 2025 15:48:18 +0200
-Message-ID: <20250602134303.647228058@linuxfoundation.org>
+Message-ID: <20250602134328.808568941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a38cc5706fb9f7dc4ee3a443f61de13ce1e410ed ]
+[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
 
-By default, the mq netdev creates a pfifo_fast qdisc. On a
-system with 16 core, the pfifo_fast with 3 bands consumes
-16 * 3 * 8 (size of pointer) * 1024 (default tx queue len)
-= 393KB. The patch sets the tx qlen to representor default
-value, 128 (1<<MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE), which
-consumes 16 * 3 * 8 * 128 = 49KB, saving 344KB for each
-representor at ECPF.
+Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
+model for making it working.
 
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index de168d8cf33f7..3c8bfedeafffd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -642,6 +642,8 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev,
- 	netdev->ethtool_ops = &mlx5e_rep_ethtool_ops;
- 
- 	netdev->watchdog_timeo    = 15 * HZ;
-+	if (mlx5_core_is_ecpf(mdev))
-+		netdev->tx_queue_len = 1 << MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE;
- 
- #if IS_ENABLED(CONFIG_MLX5_CLS_ACT)
- 	netdev->hw_features    |= NETIF_F_HW_TC;
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 67b343632a10d..b00a9fdd7a9cc 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -576,6 +576,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{       /* Acer Aspire SW3-013 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
++		},
++		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
 -- 
 2.39.5
 
