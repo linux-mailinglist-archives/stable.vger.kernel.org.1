@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-149504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308B1ACB378
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF20ACB347
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51E6717372A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D021A40066B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4A823C4E5;
-	Mon,  2 Jun 2025 14:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75682224AEE;
+	Mon,  2 Jun 2025 14:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmhTQ5N/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuccScZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99007221D92;
-	Mon,  2 Jun 2025 14:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EB92248BF;
+	Mon,  2 Jun 2025 14:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874157; cv=none; b=f9hEPnj9cXf8nP93tJjOzVop+Ip5NJzCDzh+sIFVzZz7HzOAyYVGQCiIjmTZ1mzrY98N7x762dfg9JPcnAVCl0XPJS+SJsQSSD2tZ/04i0rEtQ1If1q8eSQyiaebqABbsjV5ihamhRmCJCtTEaB7WZZBRCm42aIQz1simmW0ZLY=
+	t=1748874190; cv=none; b=JswGrkmHD8Fss8GrJNm/f3Wkh/XC1+a95brlXyaIND/BUdX0SK35sK/Z8bLnVX9PiCyBd22GYgiOYrrcUh+6lHXYOv0UD6gwJL4RpQI3iap5EfS3nfkuRywSl9C7UgCb7aCJSz1fK5Cr6iZPt0pE2URD5zuy6xYwfaQBKZ7WQAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874157; c=relaxed/simple;
-	bh=G/pfVWXN0n5gH6NOSqfr+mXc26ga0G6m1JVIStRnGbg=;
+	s=arc-20240116; t=1748874190; c=relaxed/simple;
+	bh=YDDY2OozsnRD1puk4lm86axl98AwVhtRmoRFMjRO2EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RugESR9B/d6cqHaExkXHJnOrVNH0bYQf7qJhUhLKs+ZwbdnbOmXiDOU5qkb+cHaeqlnd+WCR+4ZZ2y/S1ZYcJEuOQ14bFjI6GByOehd/PMVsxkG5OvnbaN14typTIlpU6h+zK25WpBbvR5nH+bqFtSKKN/Adbrhjo1en+xLs1jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmhTQ5N/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5275C4CEEB;
-	Mon,  2 Jun 2025 14:22:36 +0000 (UTC)
+	 MIME-Version; b=lFpAcCAiWYCjzxkCjIWo3CGhVs70zBLRrK5UZ20Y4YgXXD/uIIvC2FQx7hthJT9L6VbwfVMnBEeOiaDFsUM+XjGpbtXtB7dmIUVn0gNK6VgxRW1e4zOD7DBMvNbL3BuGeXAEPhaPOxfOEjkqGNAnifSyohijp5M2uO1KvbcZNbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuccScZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56279C4CEEB;
+	Mon,  2 Jun 2025 14:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874157;
-	bh=G/pfVWXN0n5gH6NOSqfr+mXc26ga0G6m1JVIStRnGbg=;
+	s=korg; t=1748874189;
+	bh=YDDY2OozsnRD1puk4lm86axl98AwVhtRmoRFMjRO2EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NmhTQ5N/1J1uKVXT5/Mbi+KOiU4oO5aDbCrXU4NqwW9NW9NMmo3bV/bo/SZvxiG4U
-	 KIKyF/YNUAw0K3Fz/RaQ+rgzOEkDUlswuLCmOkZBA3KVnrlBreWW2dhXTkq80VvJnS
-	 mjdXGAeFKKGPLO40Q3dTS2QcxK9qw15uArrOG4Sc=
+	b=MuccScZi4LpEthB5JKCUD5sIk8GeTRY6JmKxQgWB7AURXtG3cC7CsrduCo6SkWPNN
+	 39GMFNWD5/S2LTABW+EillLKDtnmimOEIwTpNmqz4um8/dT71HLnnN1uMCkaSNy51R
+	 u2XnpZmjBfuuwTPW622OtDB3CzKFiR5rczc4r+HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	zhang ning <zhangn1985@outlook.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 369/444] thermal: intel: x86_pkg_temp_thermal: Fix bogus trip temperature
-Date: Mon,  2 Jun 2025 15:47:13 +0200
-Message-ID: <20250602134355.896454348@linuxfoundation.org>
+	"feijuan.li" <feijuan.li@samsung.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 370/444] drm/edid: fixed the bug that hdr metadata was not reset
+Date: Mon,  2 Jun 2025 15:47:14 +0200
+Message-ID: <20250602134355.936785348@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -66,40 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: feijuan.li <feijuan.li@samsung.com>
 
-commit cf948c8e274e8b406e846cdf6cc48fe47f98cf57 upstream.
+commit 6692dbc15e5ed40a3aa037aced65d7b8826c58cd upstream.
 
-The tj_max value obtained from the Intel TCC library are in Celsius,
-whereas the thermal subsystem operates in milli-Celsius.
+When DP connected to a device with HDR capability,
+the hdr structure was filled.Then connected to another
+sink device without hdr capability, but the hdr info
+still exist.
 
-This discrepancy leads to incorrect trip temperature calculations.
-
-Fix bogus trip temperature by converting tj_max to milli-Celsius Unit.
-
-Fixes: 8ef0ca4a177d ("Merge back other thermal control material for 6.3.")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Reported-by: zhang ning <zhangn1985@outlook.com>
-Closes: https://lore.kernel.org/all/TY2PR01MB3786EF0FE24353026293F5ACCD97A@TY2PR01MB3786.jpnprd01.prod.outlook.com/
-Tested-by: zhang ning <zhangn1985@outlook.com>
-Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
-Link: https://patch.msgid.link/20250519070901.1031233-1-rui.zhang@intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: e85959d6cbe0 ("drm: Parse HDR metadata info from EDID")
+Cc: <stable@vger.kernel.org> # v5.3+
+Signed-off-by: "feijuan.li" <feijuan.li@samsung.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20250514063511.4151780-1-feijuan.li@samsung.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/intel/x86_pkg_temp_thermal.c |    1 +
+ drivers/gpu/drm/drm_edid.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/thermal/intel/x86_pkg_temp_thermal.c
-+++ b/drivers/thermal/intel/x86_pkg_temp_thermal.c
-@@ -331,6 +331,7 @@ static int pkg_temp_thermal_device_add(u
- 	tj_max = intel_tcc_get_tjmax(cpu);
- 	if (tj_max < 0)
- 		return tj_max;
-+	tj_max *= 1000;
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -6471,6 +6471,7 @@ static void drm_reset_display_info(struc
+ 	info->has_hdmi_infoframe = false;
+ 	info->rgb_quant_range_selectable = false;
+ 	memset(&info->hdmi, 0, sizeof(info->hdmi));
++	memset(&connector->hdr_sink_metadata, 0, sizeof(connector->hdr_sink_metadata));
  
- 	zonedev = kzalloc(sizeof(*zonedev), GFP_KERNEL);
- 	if (!zonedev)
+ 	info->edid_hdmi_rgb444_dc_modes = 0;
+ 	info->edid_hdmi_ycbcr444_dc_modes = 0;
 
 
 
