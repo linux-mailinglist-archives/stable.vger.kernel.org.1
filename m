@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A239ACB478
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DB6ACB754
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E727E4A5103
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F9D81776F7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559BD227B88;
-	Mon,  2 Jun 2025 14:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B5D230BF8;
+	Mon,  2 Jun 2025 15:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW53O+AI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmGpLhk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417F221FC9;
-	Mon,  2 Jun 2025 14:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7D8230BD9;
+	Mon,  2 Jun 2025 15:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875150; cv=none; b=D6yT3fIPduC/MbUCBnjTBsKgTOA4Pgh0ABiij1Gg8m3ggGbehMjwvp6dIBC5zE1jyVuwYWY/Vcq9pTJy2GlcL5xVHnzSNo/x1ouEFvS7cUecBjkXjq3YmnIJAc39PakSrUMA9NKqu+iHEuW7Pe5lnxaIsEWPIuhgJYjil4cDOsQ=
+	t=1748876724; cv=none; b=Y77meRkvXluS0bgqKLSFPDCzWaqVA1uy/eMi2tY/gLYdPX8LxS4f0eQRoyUdisENsMs4QgCRy3m0/cNNccpnjMt/2hK2SQJE1QP6USyGIh/XZW2/ZJnanvXpmlW6z2MdsnwnFBqYWk/h2nrkTn/qAK5dnAlwdhxOsvykksAN5pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875150; c=relaxed/simple;
-	bh=HohY1lfyStTsulG0XlqK5P1iotVznXSdSWdO1FtILtI=;
+	s=arc-20240116; t=1748876724; c=relaxed/simple;
+	bh=a1maBjJ89L4+5wRlRHVMfZyG/gWb5+ThfNEZLPsK/LE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVzcFBEYfTrrg3CULltSL7iEFSeTTXdmzfW4eQmdbBiEtlEJRiabQfGf++HadihFK1/w+q1KqaZkEyPqgUxmSpdrAoBf0SXPbvJB8I1GiliErtHiW8lHPAeQ8g4dP3ygiVc8op9dbYsK2Y6O11NSI3PKEJSwC6ecYG+iQ98IhKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW53O+AI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043BCC4CEEB;
-	Mon,  2 Jun 2025 14:39:08 +0000 (UTC)
+	 MIME-Version; b=ey7CPW3MgPr/3Pl8kbu7gfYWgysdV1zXcDbNlI8d1MIkc+XKlHIGqtfb1S6pzkms2kK4RtvJgT3iS/Z3P59pDADyX4qrK9VN8QLOlWeAVPx7WO+NLI/zrMVZVRHHIifFOhkmtz1ILtHmogE2Su0IyJMYE4QXAW+u/JOUYLxfaGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmGpLhk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB9EC4CEEB;
+	Mon,  2 Jun 2025 15:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875149;
-	bh=HohY1lfyStTsulG0XlqK5P1iotVznXSdSWdO1FtILtI=;
+	s=korg; t=1748876723;
+	bh=a1maBjJ89L4+5wRlRHVMfZyG/gWb5+ThfNEZLPsK/LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PW53O+AIzc3hGwgX6wftFbeu/RgKBO2fjbNqeYFfiWZSOlya9miiEJqIBKxwC2+nx
-	 lFWxThmU89Lwz8gTPt6nUU883wGbbOhhECe/qfBJYjNmftnadVTCSZwjpaT8r57uDv
-	 1oNBnk5itr0GQYtlPYpfZmBLW1HV7BmmTJzAq3fI=
+	b=kmGpLhk2/VGwUkwRSWDk0VFPnVGfnUDFpuIoFhNV7RVK47G+/gsw3m7RsKVDxsmUv
+	 ZqZB0jzBXbqVqdbAM2c10BkVZJMB9/JA3SuqGIjHjTflOFf5hHh8u1zJCEwqm+7UbU
+	 9sq2qFuNvLt6kFKQlGNl3Qy8+Yxq89ZjNZv31EBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	David Sterba <dsterba@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/270] can: gw: use call_rcu() instead of costly synchronize_rcu()
-Date: Mon,  2 Jun 2025 15:45:29 +0200
-Message-ID: <20250602134308.994775292@linuxfoundation.org>
+Subject: [PATCH 6.1 054/325] btrfs: fix non-empty delayed iputs list on unmount due to async workers
+Date: Mon,  2 Jun 2025 15:45:30 +0200
+Message-ID: <20250602134321.959863998@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 181d4447905d551cc664f1e7e796b482c1eec992 ]
+[ Upstream commit cda76788f8b0f7de3171100e3164ec1ce702292e ]
 
-Commit fb8696ab14ad ("can: gw: synchronize rcu operations
-before removing gw job entry") added three synchronize_rcu() calls
-to make sure one rcu grace period was observed before freeing
-a "struct cgw_job" (which are tiny objects).
+At close_ctree() after we have ran delayed iputs either explicitly through
+calling btrfs_run_delayed_iputs() or later during the call to
+btrfs_commit_super() or btrfs_error_commit_super(), we assert that the
+delayed iputs list is empty.
 
-This should be converted to call_rcu() to avoid adding delays
-in device / network dismantles.
+We have (another) race where this assertion might fail because we have
+queued an async write into the fs_info->workers workqueue. Here's how it
+happens:
 
-Use the rcu_head that was already in struct cgw_job,
-not yet used.
+1) We are submitting a data bio for an inode that is not the data
+   relocation inode, so we call btrfs_wq_submit_bio();
 
-Link: https://lore.kernel.org/all/20220207190706.1499190-1-eric.dumazet@gmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>
-Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 511e64e13d8c ("can: gw: fix RCU/BH usage in cgw_create_job()")
+2) btrfs_wq_submit_bio() submits a work for the fs_info->workers queue
+   that will run run_one_async_done();
+
+3) We enter close_ctree(), flush several work queues except
+   fs_info->workers, explicitly run delayed iputs with a call to
+   btrfs_run_delayed_iputs() and then again shortly after by calling
+   btrfs_commit_super() or btrfs_error_commit_super(), which also run
+   delayed iputs;
+
+4) run_one_async_done() is executed in the work queue, and because there
+   was an IO error (bio->bi_status is not 0) it calls btrfs_bio_end_io(),
+   which drops the final reference on the associated ordered extent by
+   calling btrfs_put_ordered_extent() - and that adds a delayed iput for
+   the inode;
+
+5) At close_ctree() we find that after stopping the cleaner and
+   transaction kthreads the delayed iputs list is not empty, failing the
+   following assertion:
+
+      ASSERT(list_empty(&fs_info->delayed_iputs));
+
+Fix this by flushing the fs_info->workers workqueue before running delayed
+iputs at close_ctree().
+
+David reported this when running generic/648, which exercises IO error
+paths by using the DM error table.
+
+Reported-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/gw.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ fs/btrfs/disk-io.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/can/gw.c b/net/can/gw.c
-index cbb46d3aa9634..59ce23996c6e0 100644
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -515,6 +515,13 @@ static inline void cgw_unregister_filter(struct net *net, struct cgw_job *gwj)
- 			  gwj->ccgw.filter.can_mask, can_can_gw_rcv, gwj);
- }
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 6670188b9eb6b..8c0da0025bc71 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4669,6 +4669,19 @@ void __cold close_ctree(struct btrfs_fs_info *fs_info)
+ 	 */
+ 	btrfs_flush_workqueue(fs_info->delalloc_workers);
  
-+static void cgw_job_free_rcu(struct rcu_head *rcu_head)
-+{
-+	struct cgw_job *gwj = container_of(rcu_head, struct cgw_job, rcu);
++	/*
++	 * We can have ordered extents getting their last reference dropped from
++	 * the fs_info->workers queue because for async writes for data bios we
++	 * queue a work for that queue, at btrfs_wq_submit_bio(), that runs
++	 * run_one_async_done() which calls btrfs_bio_end_io() in case the bio
++	 * has an error, and that later function can do the final
++	 * btrfs_put_ordered_extent() on the ordered extent attached to the bio,
++	 * which adds a delayed iput for the inode. So we must flush the queue
++	 * so that we don't have delayed iputs after committing the current
++	 * transaction below and stopping the cleaner and transaction kthreads.
++	 */
++	btrfs_flush_workqueue(fs_info->workers);
 +
-+	kmem_cache_free(cgw_cache, gwj);
-+}
-+
- static int cgw_notifier(struct notifier_block *nb,
- 			unsigned long msg, void *ptr)
- {
-@@ -534,8 +541,7 @@ static int cgw_notifier(struct notifier_block *nb,
- 			if (gwj->src.dev == dev || gwj->dst.dev == dev) {
- 				hlist_del(&gwj->list);
- 				cgw_unregister_filter(net, gwj);
--				synchronize_rcu();
--				kmem_cache_free(cgw_cache, gwj);
-+				call_rcu(&gwj->rcu, cgw_job_free_rcu);
- 			}
- 		}
- 	}
-@@ -1093,8 +1099,7 @@ static void cgw_remove_all_jobs(struct net *net)
- 	hlist_for_each_entry_safe(gwj, nx, &net->can.cgw_list, list) {
- 		hlist_del(&gwj->list);
- 		cgw_unregister_filter(net, gwj);
--		synchronize_rcu();
--		kmem_cache_free(cgw_cache, gwj);
-+		call_rcu(&gwj->rcu, cgw_job_free_rcu);
- 	}
- }
- 
-@@ -1162,8 +1167,7 @@ static int cgw_remove_job(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 		hlist_del(&gwj->list);
- 		cgw_unregister_filter(net, gwj);
--		synchronize_rcu();
--		kmem_cache_free(cgw_cache, gwj);
-+		call_rcu(&gwj->rcu, cgw_job_free_rcu);
- 		err = 0;
- 		break;
- 	}
+ 	/*
+ 	 * When finishing a compressed write bio we schedule a work queue item
+ 	 * to finish an ordered extent - btrfs_finish_compressed_write_work()
 -- 
 2.39.5
 
