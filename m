@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8A4ACB319
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C761BACB43E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39D9716905F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 401D64A2D50
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA891239085;
-	Mon,  2 Jun 2025 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CA723237B;
+	Mon,  2 Jun 2025 14:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBdQD4VZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+fjmXbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6931B22331C;
-	Mon,  2 Jun 2025 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFF4225791;
+	Mon,  2 Jun 2025 14:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874037; cv=none; b=YJnyGx1cwhgYHbFqvTIqHmVVdskd6qH//jIcIz9eOo2U2pZtkRI4kGlJYJ4St/cB4ZiYGnqkybzYJcy+LUdremnv1DmsfwwBg6jsdkx7KQIhz4OueKM5B21lDUpWkYWvdIdb7PHdZaYVOJHXbKwynSdT7yMbKO/Uc0yzExJo53M=
+	t=1748874606; cv=none; b=B+J/NYFoRmFmsZIzq238Icd9GiG4ftozdHFi5DS4XNnzzcUaBrkRxbfhKpmtzdEsLg8SCvDyaShW2K00+dpIVWd1OSLt/gI/i9TSHQq6MzbE3iUloo5Q1e155WfmXGH0qKllsnIo62cD3Qt8i8x+PQ5GVwlLyQ3LLaxF9+LluJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874037; c=relaxed/simple;
-	bh=/JYOIh6B8BW9AYBY/SlC1pkFJpT5jJ+CwQIeO5TwTkY=;
+	s=arc-20240116; t=1748874606; c=relaxed/simple;
+	bh=+kLxYBbs8OFlhHwCGdPQn2Joa0FP3jv4KbrAVRwt+70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELllUCm45btn/6bs7l4hpJ+9CLyUYURBAZSjPpZ36Zwzl/roy+ckl9hIuXbNcdOYzRrPPbsQiZtibebLzlE7hx1OvDEapy9elsIUsMIH9bi5eR8largF3K9X8JDM7ju8AyxM9yFcyv4EzRpQ7yjtQm6j20J7NiC55LTH9PTc53o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBdQD4VZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0983C4CEEB;
-	Mon,  2 Jun 2025 14:20:36 +0000 (UTC)
+	 MIME-Version; b=ilCI8IP8TEmexQeOzel1YMzFBNBGy65YM7TbnVr1PjzXRhag4bRTxgGbGDVAaKwchOAKneTfTKUd4Xvh/LsVcE0pI4v/he4hNWuF2lNIXj1eDn59tOPZ0Pna+Dlyu5PH1j4G+aTSRbksv47QscmDY9a8ru1zuUiwpO1deIBg5uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+fjmXbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21DCC4CEEE;
+	Mon,  2 Jun 2025 14:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874037;
-	bh=/JYOIh6B8BW9AYBY/SlC1pkFJpT5jJ+CwQIeO5TwTkY=;
+	s=korg; t=1748874606;
+	bh=+kLxYBbs8OFlhHwCGdPQn2Joa0FP3jv4KbrAVRwt+70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBdQD4VZ4UiqcZ83IP6kVZXlhVsutBdhBHyn6pBP8sKVlZy4H9oBDnr/qNxMYpiVP
-	 CnedQCb/fV78bNqWByfljG+gfxikOOYIBsHzFryAeECTITMeZNqElbKVkD+QKA0Ini
-	 MU6IA+ATnaK/wT+IUcUHTEl0y1c7LN0m1vsD78RY=
+	b=r+fjmXbHJx+yfcYuz9Fj1csbEObZ9yBVjopoCHqSKTvDodWIico8CCjyVwH6fnaq1
+	 39fc+sl3mPnoPMDChzU7FHqzkBWkWy/e/dxA4CFdbgFFo2wDZfiQMQel4Bc2gWyDh0
+	 F4uoKJQahGH8Xd7U5RT47nFmEaZ90Qh3dQqurXoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/444] wifi: ath12k: Fix end offset bit definition in monitor ring descriptor
+	Xuntao Chi <chotaotao1qaz2wsx@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 038/204] Input: synaptics - enable InterTouch on Dynabook Portege X30L-G
 Date: Mon,  2 Jun 2025 15:46:11 +0200
-Message-ID: <20250602134353.393449043@linuxfoundation.org>
+Message-ID: <20250602134257.174363544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit 6788a666000d600bd8f2e9f991cad9cc805e7f01 ]
+commit 47d768b32e644b56901bb4bbbdb1feb01ea86c85 upstream.
 
-End offset for the monitor destination ring descriptor is defined as
-16 bits, while the firmware definition specifies only 12 bits.
-The remaining bits (bit 12 to bit 15) are reserved and may contain
-junk values, leading to invalid information retrieval. Fix this issue
-by updating the correct genmask values.
+Enable InterTouch mode on Dynabook Portege X30L-G by adding "TOS01f6" to
+the list of SMBus-enabled variants.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-8-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Xuntao Chi <chotaotao1qaz2wsx@gmail.com>
+Tested-by: Xuntao Chi <chotaotao1qaz2wsx@gmail.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Link: https://lore.kernel.org/r/PN3PR01MB959786E4AC797160CDA93012B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/mouse/synaptics.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 6c17adc6d60b5..1bb840c2bef57 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -2918,7 +2918,7 @@ struct hal_mon_buf_ring {
- 
- #define HAL_MON_DEST_COOKIE_BUF_ID      GENMASK(17, 0)
- 
--#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(15, 0)
-+#define HAL_MON_DEST_INFO0_END_OFFSET		GENMASK(11, 0)
- #define HAL_MON_DEST_INFO0_FLUSH_DETECTED	BIT(16)
- #define HAL_MON_DEST_INFO0_END_OF_PPDU		BIT(17)
- #define HAL_MON_DEST_INFO0_INITIATOR		BIT(18)
--- 
-2.39.5
-
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -189,6 +189,7 @@ static const char * const smbus_pnp_ids[
+ 	"SYN3221", /* HP 15-ay000 */
+ 	"SYN323d", /* HP Spectre X360 13-w013dx */
+ 	"SYN3257", /* HP Envy 13-ad105ng */
++	"TOS01f6", /* Dynabook Portege X30L-G */
+ 	"TOS0213", /* Dynabook Portege X30-D */
+ 	NULL
+ };
 
 
 
