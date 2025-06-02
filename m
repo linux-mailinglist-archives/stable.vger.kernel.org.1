@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22004ACB2EE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB69ACB4BB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2244194131E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94F1D7B1F50
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1CC239E8A;
-	Mon,  2 Jun 2025 14:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476C322A801;
+	Mon,  2 Jun 2025 14:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CC1LJeLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvo7udkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781E1239E7B;
-	Mon,  2 Jun 2025 14:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F402147E7;
+	Mon,  2 Jun 2025 14:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874079; cv=none; b=cPNe7+W2RjrnV6418U41lY3ZDGTgFftaZ4xEb0xp2MB4FIdPHMS9tVxZFSrpJx2tpnTSgLtVMm4oMYcZ6MDKB+jpHS6+r4EwJZE6EDveSNXc4wptNj9soJgeoU6RdTSVzFQAskGQ2W8LHPdwHBWn/hY2WmKBXjQuWFpW3+N6ObU=
+	t=1748875521; cv=none; b=IRQ8qZS7C/to2Xa9oKdtOTUvhTgJ7bAX86xwymFjx9OwPstfon09E4mMj6bSyRndmW+CjJ4FCjob2eyCe3+jiy9ACe5HvXflWxCP/7gVBts4vYo+crc7TBCcSELJrOy7ZxaZFUyxOLlqTBFUSLuawTRHOH9/XlHvi1THQLKac8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874079; c=relaxed/simple;
-	bh=aJEbamDNI1mToeu3k3XiXrMHdh5JydhRzGRjvyAc87U=;
+	s=arc-20240116; t=1748875521; c=relaxed/simple;
+	bh=RMjXY7BNgDQ5YdJKYBF5QskQxSBHpuc4TPE7hShoyAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsbPUhLXZlDwlQXuOWX9Jubh3CjfRcwPXynZlmDmIzzQrXmoY5tJ7aK/bCfJLpkVayUtD91ARm8+5RfjapgU3M75qQ9wrdaIrbT5CQFmA59K9Uig6InXFefl6ATEllCUjXlciPNDgeTzvZ6BXT1h/iCLSZjzhUWtWAvVp60RzlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CC1LJeLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0685BC4CEEB;
-	Mon,  2 Jun 2025 14:21:18 +0000 (UTC)
+	 MIME-Version; b=WysHNq+YnTPFs8mHdGKENtkOcltUKp3CApD92O0MXZGkSqh8npNQQGNlMH3w64J3SNYABsvNbZN5oqPPqy3umHWut0yGOLkfe79c+R7ExWgoCWmMItQHqkVNVMIVj7Mz+grQwj7vRNnvJBRi7cSyern2YvjBfqbVoODcjU/n6dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvo7udkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68065C4CEEB;
+	Mon,  2 Jun 2025 14:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874079;
-	bh=aJEbamDNI1mToeu3k3XiXrMHdh5JydhRzGRjvyAc87U=;
+	s=korg; t=1748875520;
+	bh=RMjXY7BNgDQ5YdJKYBF5QskQxSBHpuc4TPE7hShoyAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CC1LJeLHe4J7vvF3Y/Y8GlSolLYo5y3dIUyCEE1pdkFUdhVL8ey04Yn7aLN48Z9R8
-	 ifU8n+UN6+btP9bGC44yH8LAULKSRvKfYIX82EPPGz1qojcA8oYgutjSB4mOI8C27u
-	 VmueCySqK7NcW6y2aACN7dgx/XGzfiKieNwnrRj4=
+	b=cvo7udkmALxW1EG2sFS3rJ1nVA1qM3FmZAhl0tlLN6u32Jts5XkWNpe/wPs3Cb20l
+	 BhqfyG189+Jktf1TFNBRmBR4QItwSMpGFC5HMzbgGzuqW6HXFfbPUvy+rVeKM4shkE
+	 kskrWZ9XG/rqxkhAKdoMHyouhoYscQd6TkNf53Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 351/444] octeontx2-pf: Add AF_XDP non-zero copy support
+Subject: [PATCH 5.10 130/270] tools/build: Dont pass test log files to linker
 Date: Mon,  2 Jun 2025 15:46:55 +0200
-Message-ID: <20250602134355.178904508@linuxfoundation.org>
+Message-ID: <20250602134312.545408610@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit b4164de5041b51cda3438e75bce668e2556057c3 ]
+[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
 
-Set xdp rx ring memory type as MEM_TYPE_PAGE_POOL for
-af-xdp to work. This is needed since xdp_return_frame
-internally will use page pools.
+Separate test log files from object files. Depend on test log output
+but don't pass to the linker.
 
-Fixes: 06059a1a9a4a ("octeontx2-pf: Add XDP support to netdev PF")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/build/Makefile.build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 47adccf7a7776..1999918ca500f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -988,6 +988,7 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
- 	int err, pool_id, non_xdp_queues;
- 	struct nix_aq_enq_req *aq;
- 	struct otx2_cq_queue *cq;
-+	struct otx2_pool *pool;
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index cd72016c3cfa7..ab0630ae6be85 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -130,6 +130,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
+ obj-y        := $(addprefix $(objprefix),$(obj-y))
+ subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
  
- 	cq = &qset->cq[qidx];
- 	cq->cq_idx = qidx;
-@@ -996,8 +997,13 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
- 		cq->cq_type = CQ_RX;
- 		cq->cint_idx = qidx;
- 		cq->cqe_cnt = qset->rqe_cnt;
--		if (pfvf->xdp_prog)
-+		if (pfvf->xdp_prog) {
-+			pool = &qset->pool[qidx];
- 			xdp_rxq_info_reg(&cq->xdp_rxq, pfvf->netdev, qidx, 0);
-+			xdp_rxq_info_reg_mem_model(&cq->xdp_rxq,
-+						   MEM_TYPE_PAGE_POOL,
-+						   pool->page_pool);
-+		}
- 	} else if (qidx < non_xdp_queues) {
- 		cq->cq_type = CQ_TX;
- 		cq->cint_idx = qidx - pfvf->hw.rx_queues;
++# Separate out test log files from real build objects.
++test-y       := $(filter %_log, $(obj-y))
++obj-y        := $(filter-out %_log, $(obj-y))
++
+ # Final '$(obj)-in.o' object
+ in-target := $(objprefix)$(obj)-in.o
+ 
+@@ -140,7 +144,7 @@ $(subdir-y):
+ 
+ $(sort $(subdir-obj-y)): $(subdir-y) ;
+ 
+-$(in-target): $(obj-y) FORCE
++$(in-target): $(obj-y) $(test-y) FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed,$(host)ld_multi)
+ 
 -- 
 2.39.5
 
