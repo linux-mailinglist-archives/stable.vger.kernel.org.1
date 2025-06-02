@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D088ACB43B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675BAACB7CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE96C1BC06C5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799679E5933
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D3E223707;
-	Mon,  2 Jun 2025 14:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A25F239E95;
+	Mon,  2 Jun 2025 14:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvNG6SNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b48Kr/K8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FE02236E3;
-	Mon,  2 Jun 2025 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929022A808;
+	Mon,  2 Jun 2025 14:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874988; cv=none; b=vGtd5ZXXwW+YP4zGgVH4eBgeSf4s9ONsVc/FtlTo3Z9B7HBgXTyE1ObXf731y1ZgbPp0phkvEKam5exjnJ8ASKkGkkn8C0QOuPRygW29Ebej5V1w0YVuIlqd/rnDtUtHKZ8sQBpaXe4KgIBAbMOw34i/DRFMIZWROvguE/gw/P4=
+	t=1748876379; cv=none; b=QiHtirqz+EKe45qrdVz6u4kG0EohRTsDcCxYDa5Yjm30qKJQGH7CC8PrVwni4gcn8qrkzUGDPEkFYX8xCOV21EDiZb9xF0+XkfBGmCtKi6AiZpiwID57BVZcrPgR0V+0gvGtJUS0z1E7A21mgdEiMrEX0Ac4yEAGv3pIlOEZFRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874988; c=relaxed/simple;
-	bh=FHPghbNRxzZH8vlmZzL1U1T2cG0jxMtOltrGPRKMOCM=;
+	s=arc-20240116; t=1748876379; c=relaxed/simple;
+	bh=hRIpSpSiVzt+lWjxJtRtjKagjdlWgqOl5be7CpTLPIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDTk07nDJzE3Wij8m1ljcOHHtdp4JTWNu9wfez9XdZA3Ky8V23bs6ItLMkncjuGQGEWHWm6ezxbyfCgKsu2DrBP5H4EK3auObalQ4/JPkft0VP2j5i8h/29RwhnmV/fXDg3yvXpFFbBtFlKFTSWj0t/5YcdM4rAe7eE+XklUCP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvNG6SNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F615C4CEEE;
-	Mon,  2 Jun 2025 14:36:27 +0000 (UTC)
+	 MIME-Version; b=OX5wLAlQ+fMTnkRlJAsXke794Er28KtsNO4y48L88MBQdYspeqCegkeUAQNYhZSzerA1FJTrd8ZBHDSyCqpC4X9G0AcFOXxhiK+S375SgNXG19X9gvtV4CeS+yMQ8hGAf/OpJiR1M/bz6EZgNFker5xZsxvyqE2eofiAeNlpmZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b48Kr/K8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28964C4CEF0;
+	Mon,  2 Jun 2025 14:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874987;
-	bh=FHPghbNRxzZH8vlmZzL1U1T2cG0jxMtOltrGPRKMOCM=;
+	s=korg; t=1748876379;
+	bh=hRIpSpSiVzt+lWjxJtRtjKagjdlWgqOl5be7CpTLPIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvNG6SNUqMqniTJ1TbCl5n3pKg4m2RllvjgulxNEtT0+hqPUNncw7J081KodCxEJb
-	 URJXDNOiF8YvB/FP1MSNSdjcROabXLGwmdKia9S/ikVmaqzu0fTg1AAQP+Kqr8XaDW
-	 jp4R8qNIfU71Wc/2yUkShOwy4mvYsSwGZSkcrPMw=
+	b=b48Kr/K8YttcfbPLar7Cnbn3PluSJ5hXR0P7CzoY/+z32wyuWo2mJITq4NiQF/Io4
+	 HqqZhREob8MInnLHiw+nRHfTzHxquPZlQraB9JpD4uTDXuf8x80R55UKfINB8+2cQX
+	 vVyOrPjalnnf8vPST9nyLA+5fSJGOeC7vUFqk4i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milton Barrera <miltonjosue2001@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 197/204] HID: quirks: Add ADATA XPG alpha wireless mouse support
-Date: Mon,  2 Jun 2025 15:48:50 +0200
-Message-ID: <20250602134303.412660599@linuxfoundation.org>
+Subject: [PATCH 5.15 159/207] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
+Date: Mon,  2 Jun 2025 15:48:51 +0200
+Message-ID: <20250602134304.949351304@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Milton Barrera <miltonjosue2001@gmail.com>
+From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 
-[ Upstream commit fa9fdeea1b7d6440c22efa6d59a769eae8bc89f1 ]
+[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
 
-This patch adds HID_QUIRK_ALWAYS_POLL for the ADATA XPG wireless gaming mouse (USB ID 125f:7505) and its USB dongle (USB ID 125f:7506). Without this quirk, the device does not generate input events properly.
+btrfs_prelim_ref() calls the old and new reference variables in the
+incorrect order. This causes a NULL pointer dereference because oldref
+is passed as NULL to trace_btrfs_prelim_ref_insert().
 
-Signed-off-by: Milton Barrera <miltonjosue2001@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Note, trace_btrfs_prelim_ref_insert() is being called with newref as
+oldref (and oldref as NULL) on purpose in order to print out
+the values of newref.
+
+To reproduce:
+echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
+
+Perform some writeback operations.
+
+Backtrace:
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
+ Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
+ RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
+ RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
+ RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
+ RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
+ R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
+ R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
+ FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  prelim_ref_insert+0x1c1/0x270
+  find_parent_nodes+0x12a6/0x1ee0
+  ? __entry_text_end+0x101f06/0x101f09
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  btrfs_is_data_extent_shared+0x167/0x640
+  ? fiemap_process_hole+0xd0/0x2c0
+  extent_fiemap+0xa5c/0xbc0
+  ? __entry_text_end+0x101f05/0x101f09
+  btrfs_fiemap+0x7e/0xd0
+  do_vfs_ioctl+0x425/0x9d0
+  __x64_sys_ioctl+0x75/0xc0
+
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 4 ++++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 6 insertions(+)
+ include/trace/events/btrfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index d5369577b4755..356916608cc49 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -40,6 +40,10 @@
- #define USB_VENDOR_ID_ACTIONSTAR	0x2101
- #define USB_DEVICE_ID_ACTIONSTAR_1011	0x1011
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 9271b5dfae4c4..a5f77b685c55f 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -1788,7 +1788,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
+ 	TP_PROTO(const struct btrfs_fs_info *fs_info,
+ 		 const struct prelim_ref *oldref,
+ 		 const struct prelim_ref *newref, u64 tree_size),
+-	TP_ARGS(fs_info, newref, oldref, tree_size),
++	TP_ARGS(fs_info, oldref, newref, tree_size),
  
-+#define USB_VENDOR_ID_ADATA_XPG 0x125f
-+#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE 0x7505
-+#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE 0x7506
-+
- #define USB_VENDOR_ID_ADS_TECH		0x06e1
- #define USB_DEVICE_ID_ADS_TECH_RADIO_SI470X	0xa155
- 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 9b375ca53946e..ff1a9d142cddf 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -27,6 +27,8 @@
- static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AFATECH, USB_DEVICE_ID_AFATECH_AF9016), HID_QUIRK_FULLSPEED_INTERVAL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AIREN, USB_DEVICE_ID_AIREN_SLIMPLUS), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI_09E8, USB_DEVICE_ID_AKAI_09E8_MIDIMIX), HID_QUIRK_NO_INIT_REPORTS },
+ 	TP_STRUCT__entry_btrfs(
+ 		__field(	u64,  root_id		)
 -- 
 2.39.5
 
