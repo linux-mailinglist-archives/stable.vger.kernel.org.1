@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C83AACB71C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC16ACB2EB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21704943295
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97A51946D3E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424192153CB;
-	Mon,  2 Jun 2025 15:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558DA239E6D;
+	Mon,  2 Jun 2025 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8IEHSPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHPG0u63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1FA2C327E;
-	Mon,  2 Jun 2025 15:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF61E0DD8;
+	Mon,  2 Jun 2025 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876988; cv=none; b=tVbxvm8DyzGSdAZ7+q4PnD60GtRujlOUdcycK7rimxelwZMGW20iLD/LbguziN11P2kngeQEWTS27iMCBLlD+fWMgOyCIaIcUTQghz2i52wJ4lvWJbGoE7ho8t/HXyAk0moFlNpPBTo7YKA/oUaYcLChfAPOHla19Tevwiw1b8I=
+	t=1748874070; cv=none; b=nAm/aqHOCFyv8O4ISH94nzMRHi52o/Qa9OG8oq+SR6tS2H2drXNGBtomahpO+t8NRkeEp+KRbS36MhMRjBH6mThB+08SgDEQ9AhFmoVAii2K3j/ecKV/Liz98Eyp5mtN+kI6DUx9cwa4YnpYsLbkizbgRAi6FhnpQvxYY266xOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876988; c=relaxed/simple;
-	bh=+Tx0kbOmkXm7LgNt+n7NagG0r8WKlSvBNxp+IF74blA=;
+	s=arc-20240116; t=1748874070; c=relaxed/simple;
+	bh=F/L1PelHYQF6PMp2dPrDk48Nrk8hzOTAL5zz30HGJjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHWeA95Ljc33T0SPLr6ohk6bfkyyRwq9JWuGGDjww34o7sesynorbj357KtEC219y54QTYxXUswUAnIKcY0daPRl/GBhq3lVorxer+WkXqQ356sTAJpEpozusTMIlAKrOeGO36HPPaWLJchTbepRdNhH59wGyv4lRRi8RqLvbCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8IEHSPr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D62C4CEEB;
-	Mon,  2 Jun 2025 15:09:47 +0000 (UTC)
+	 MIME-Version; b=RVM0XzguIeijTrSi/Z5EFqwQ7C964bb/iDpIvfnPbku2QhEWhW+li8VLJQvHlE4QLwzcdWU01tL8hyYI9XaNh/CnnCA1+Vc3Fb80jiuLpHEB+ZW5PZM+CJCAH2lb83W6SrM24lr67XLu8YT5kWwJ8hmjlO7P1e98SdMmaNwAQaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHPG0u63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931D9C4CEEB;
+	Mon,  2 Jun 2025 14:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876987;
-	bh=+Tx0kbOmkXm7LgNt+n7NagG0r8WKlSvBNxp+IF74blA=;
+	s=korg; t=1748874069;
+	bh=F/L1PelHYQF6PMp2dPrDk48Nrk8hzOTAL5zz30HGJjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8IEHSPr9sPUXDxcyn+YmleCnNoc3zHjn5kjAca0HkrxiZfgtCyudVVXso1GUFHtw
-	 XgDujTTZV26/0d0pUAbv5ydFOC6IR8k/hcYC1en5WR4A8k52WrQoiHOyf4FSEHnP7h
-	 5T9t+BTknAZFS+8AT+9/Xy1SWPKZizrnMZHeUBlc=
+	b=bHPG0u63rIBVKqPKTNYCoy4YcD6W1TLU1eLuj3f6f9jVqjOkHEK8lVzZyD6EvmF3q
+	 kbCp6N6x4KvhHycGyAPszR51jpC6QIAyEWiKu2QgXCwADCKf8PaRfj7x0RzGn/+CpN
+	 QHF3rzCoOR6SQkYDLOctHCGtl8qPoP4928T4KDOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/325] soc: ti: k3-socinfo: Do not use syscon helper to build regmap
-Date: Mon,  2 Jun 2025 15:46:51 +0200
-Message-ID: <20250602134325.293677514@linuxfoundation.org>
+Subject: [PATCH 6.6 348/444] net: lan743x: Restore SGMII CTRL register on resume
+Date: Mon,  2 Jun 2025 15:46:52 +0200
+Message-ID: <20250602134355.061514301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit a5caf03188e44388e8c618dcbe5fffad1a249385 ]
+[ Upstream commit 293e38ff4e4c2ba53f3fd47d8a4a9f0f0414a7a6 ]
 
-The syscon helper device_node_to_regmap() is used to fetch a regmap
-registered to a device node. It also currently creates this regmap
-if the node did not already have a regmap associated with it. This
-should only be used on "syscon" nodes. This driver is not such a
-device and instead uses device_node_to_regmap() on its own node as
-a hacky way to create a regmap for itself.
+SGMII_CTRL register, which specifies the active interface, was not
+properly restored when resuming from suspend. This led to incorrect
+interface selection after resume particularly in scenarios involving
+the FPGA.
 
-This will not work going forward and so we should create our regmap
-the normal way by defining our regmap_config, fetching our memory
-resource, then using the normal regmap_init_mmio() function.
+To fix this:
+- Move the SGMII_CTRL setup out of the probe function.
+- Initialize the register in the hardware initialization helper function,
+which is called during both device initialization and resume.
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20250123181726.597144-1-afd@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+This ensures the interface configuration is consistently restored after
+suspend/resume cycles.
+
+Fixes: a46d9d37c4f4f ("net: lan743x: Add support for SGMII interface")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Link: https://patch.msgid.link/20250516035719.117960-1-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/k3-socinfo.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/soc/ti/k3-socinfo.c b/drivers/soc/ti/k3-socinfo.c
-index 91f441ee61752..5b0d8260918d2 100644
---- a/drivers/soc/ti/k3-socinfo.c
-+++ b/drivers/soc/ti/k3-socinfo.c
-@@ -60,6 +60,12 @@ k3_chipinfo_partno_to_names(unsigned int partno,
- 	return -EINVAL;
- }
- 
-+static const struct regmap_config k3_chipinfo_regmap_cfg = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.reg_stride = 4,
-+};
-+
- static int k3_chipinfo_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 5d2ceff72784f..f971d60484f06 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -3259,6 +3259,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 				 struct pci_dev *pdev)
  {
- 	struct device_node *node = pdev->dev.of_node;
-@@ -67,13 +73,18 @@ static int k3_chipinfo_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct soc_device *soc_dev;
- 	struct regmap *regmap;
-+	void __iomem *base;
- 	u32 partno_id;
- 	u32 variant;
- 	u32 jtag_id;
- 	u32 mfg;
+ 	struct lan743x_tx *tx;
++	u32 sgmii_ctl;
+ 	int index;
  	int ret;
  
--	regmap = device_node_to_regmap(node);
-+	base = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	regmap = regmap_init_mmio(dev, base, &k3_chipinfo_regmap_cfg);
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
+@@ -3271,6 +3272,15 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 		spin_lock_init(&adapter->eth_syslock_spinlock);
+ 		mutex_init(&adapter->sgmii_rw_lock);
+ 		pci11x1x_set_rfe_rd_fifo_threshold(adapter);
++		sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
++		if (adapter->is_sgmii_en) {
++			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
++			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
++		} else {
++			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
++			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
++		}
++		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 	} else {
+ 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
+ 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
+@@ -3319,7 +3329,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
  
+ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ {
+-	u32 sgmii_ctl;
+ 	int ret;
+ 
+ 	adapter->mdiobus = devm_mdiobus_alloc(&adapter->pdev->dev);
+@@ -3331,10 +3340,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ 	adapter->mdiobus->priv = (void *)adapter;
+ 	if (adapter->is_pci11x1x) {
+ 		if (adapter->is_sgmii_en) {
+-			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+-			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
+-			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
+-			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "SGMII operation\n");
+ 			adapter->mdiobus->read = lan743x_mdiobus_read_c22;
+@@ -3345,10 +3350,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "lan743x-mdiobus-c45\n");
+ 		} else {
+-			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+-			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
+-			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
+-			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "RGMII operation\n");
+ 			// Only C22 support when RGMII I/F
 -- 
 2.39.5
 
