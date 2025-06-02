@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3952ACB74A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FDE4ACB4C2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000B8A40297
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6FE21BC123E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53120225A23;
-	Mon,  2 Jun 2025 15:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DF72248B0;
+	Mon,  2 Jun 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVFcSjwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VHdESFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2831221FC3;
-	Mon,  2 Jun 2025 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD162C327E;
+	Mon,  2 Jun 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876623; cv=none; b=meu1xtyYOhyGnv0yVaLw1iUImecJgEhynR2JqnELvtLXxixlkrxmxscDwH+0sDEI7kuCnXQBrwUFg90pd0XRIui1IewuAYy6EJyjDHznKKgJ+M2UXTHejaCOxiFtXFX4IQFVnoFApnJEsFLgttqhGYqqfwigIaRug1hi3pBj7yE=
+	t=1748875051; cv=none; b=OzweKARPWWhjIGHRXWABDU1LGU0qbe81YoUEWA+Ryd16X3nvMo24xogiIyy9ypEAZ8izPFPFzWh4T1XfdhO3p3VVgbeLGNN1CNLe/y3cqPUsekAsxJarfmZrq4XkioFTU7CWYpL2Gnd5bWAdnYGZDxGWxcw7QzU+D08HVQgLDxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876623; c=relaxed/simple;
-	bh=xioZo/0u7p4RLFCfRTzh8MaiFq8ogMghp0p45IRiMW0=;
+	s=arc-20240116; t=1748875051; c=relaxed/simple;
+	bh=YGBQZ0ercwvq9nryMwW/x6sYNQLzze1SF6iyWW9Vm0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SzjtYtHRDXDgPER8tYL9VNA74x4/5wpeFagiIPhmn12qMNceanTcQX0OWArod8epHC59DDnCf64sNv5P/Vz/uvMINENKbVdLweQoHNfaKErejUdLR/zcBo4ymd3BjW68dup7cfChmsTBenMtTU9sdlPFPoV3mJFOwYBPkgRxLeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVFcSjwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA17C4CEEB;
-	Mon,  2 Jun 2025 15:03:42 +0000 (UTC)
+	 MIME-Version; b=UXFxSR5TgtJL6FHbwy4y5KSVMFDrEBcdGdiFCopnxUVsyMR8OmYy4L6JvnYQeqyfHNGuiQMyCMKv+6/A7Fj6ovm+gw9v5sr7DdDzi4FtH5wMq3omeXWLK7hC03bqF21fIOnolD76Z3vHsArN7Zfqmu5YKKPSswGxeR+giMAQi58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VHdESFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE161C4CEEB;
+	Mon,  2 Jun 2025 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876622;
-	bh=xioZo/0u7p4RLFCfRTzh8MaiFq8ogMghp0p45IRiMW0=;
+	s=korg; t=1748875051;
+	bh=YGBQZ0ercwvq9nryMwW/x6sYNQLzze1SF6iyWW9Vm0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVFcSjwIKqLYB/Xw6oVYUpBOG4AOoFJxAmB8L9oaEB2Lw4JKeb3/6lmvbUsc6N0KI
-	 QbGqC/A0Qilo53b5VDL7Qx5982azqC5ntdToGYn087OuWLjGlKaNvGH3L5n5pObkSU
-	 crx5VPn7NcUkXMuXETePXbQ6725FVdx0SbmnlVuU=
+	b=0VHdESFZCzOo0CoB3EY3Cxy/QCUaR8erUpuL9DRC5isvTbwDKZr8XtVtTesF/gfXm
+	 Rl3EFvCXsRYx0GZ9Us9hN0ohW+LXZ0RR4oADKJHddABedcML4ScDaL15r4pdNmsuBD
+	 i7RhsxfiuWRjjlstV9n06gLHo3IVnu/am5p8aCfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/325] cifs: Fix querying and creating MF symlinks over SMB1
+	Wenhao Sun <weiguangtwk@outlook.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 5.10 013/270] iommu/vt-d: Apply quirk_iommu_igfx for 8086:0044 (QM57/QS57)
 Date: Mon,  2 Jun 2025 15:44:58 +0200
-Message-ID: <20250602134320.640051186@linuxfoundation.org>
+Message-ID: <20250602134307.737129711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +61,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-[ Upstream commit 4236ac9fe5b8b42756070d4abfb76fed718e87c2 ]
+commit 2c8a7c66c90832432496616a9a3c07293f1364f3 upstream.
 
-Old SMB1 servers without CAP_NT_SMBS do not support CIFS_open() function
-and instead SMBLegacyOpen() needs to be used. This logic is already handled
-in cifs_open_file() function, which is server->ops->open callback function.
+On the Lenovo ThinkPad X201, when Intel VT-d is enabled in the BIOS, the
+kernel boots with errors related to DMAR, the graphical interface appeared
+quite choppy, and the system resets erratically within a minute after it
+booted:
 
-So for querying and creating MF symlinks use open callback function instead
-of CIFS_open() function directly.
+DMAR: DRHD: handling fault status reg 3
+DMAR: [DMA Write NO_PASID] Request device [00:02.0] fault addr 0xb97ff000
+[fault reason 0x05] PTE Write access is not set
 
-This change fixes querying and creating new MF symlinks on Windows 98.
-Currently cifs_query_mf_symlink() is not able to detect MF symlink and
-cifs_create_mf_symlink() is failing with EIO error.
+Upon comparing boot logs with VT-d on/off, I found that the Intel Calpella
+quirk (`quirk_calpella_no_shadow_gtt()') correctly applied the igfx IOMMU
+disable/quirk correctly:
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+pci 0000:00:00.0: DMAR: BIOS has allocated no shadow GTT; disabling IOMMU
+for graphics
+
+Whereas with VT-d on, it went into the "else" branch, which then
+triggered the DMAR handling fault above:
+
+... else if (!disable_igfx_iommu) {
+	/* we have to ensure the gfx device is idle before we flush */
+	pci_info(dev, "Disabling batched IOTLB flush on Ironlake\n");
+	iommu_set_dma_strict();
+}
+
+Now, this is not exactly scientific, but moving 0x0044 to quirk_iommu_igfx
+seems to have fixed the aforementioned issue. Running a few `git blame'
+runs on the function, I have found that the quirk was originally
+introduced as a fix specific to ThinkPad X201:
+
+commit 9eecabcb9a92 ("intel-iommu: Abort IOMMU setup for igfx if BIOS gave
+no shadow GTT space")
+
+Which was later revised twice to the "else" branch we saw above:
+
+- 2011: commit 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on
+  Ironlake GPU")
+- 2024: commit ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic
+  identity mapping")
+
+I'm uncertain whether further testings on this particular laptops were
+done in 2011 and (honestly I'm not sure) 2024, but I would be happy to do
+some distro-specific testing if that's what would be required to verify
+this patch.
+
+P.S., I also see IDs 0x0040, 0x0062, and 0x006a listed under the same
+`quirk_calpella_no_shadow_gtt()' quirk, but I'm not sure how similar these
+chipsets are (if they share the same issue with VT-d or even, indeed, if
+this issue is specific to a bug in the Lenovo BIOS). With regards to
+0x0062, it seems to be a Centrino wireless card, but not a chipset?
+
+I have also listed a couple (distro and kernel) bug reports below as
+references (some of them are from 7-8 years ago!), as they seem to be
+similar issue found on different Westmere/Ironlake, Haswell, and Broadwell
+hardware setups.
+
+Cc: stable@vger.kernel.org
+Fixes: 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on Ironlake GPU")
+Fixes: ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic identity mapping")
+Link: https://groups.google.com/g/qubes-users/c/4NP4goUds2c?pli=1
+Link: https://bugs.archlinux.org/task/65362
+Link: https://bbs.archlinux.org/viewtopic.php?id=230323
+Reported-by: Wenhao Sun <weiguangtwk@outlook.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=197029
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Link: https://lore.kernel.org/r/20250415133330.12528-1-jeffbai@aosc.io
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/link.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iommu/intel/iommu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/link.c b/fs/smb/client/link.c
-index c0f101fc1e5d0..d71feb3fdbd2c 100644
---- a/fs/smb/client/link.c
-+++ b/fs/smb/client/link.c
-@@ -269,7 +269,7 @@ cifs_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 	struct cifs_open_parms oparms;
- 	struct cifs_io_parms io_parms = {0};
- 	int buf_type = CIFS_NO_BUFFER;
--	FILE_ALL_INFO file_info;
-+	struct cifs_open_info_data query_data;
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -6234,6 +6234,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e40, quirk_iommu_igfx);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e90, quirk_iommu_igfx);
  
- 	oparms = (struct cifs_open_parms) {
- 		.tcon = tcon,
-@@ -281,11 +281,11 @@ cifs_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 		.fid = &fid,
- 	};
++/* QM57/QS57 integrated gfx malfunctions with dmar */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_iommu_igfx);
++
+ /* Broadwell igfx malfunctions with dmar */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x1606, quirk_iommu_igfx);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x160B, quirk_iommu_igfx);
+@@ -6311,7 +6314,6 @@ static void quirk_calpella_no_shadow_gtt
+        }
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0040, quirk_calpella_no_shadow_gtt);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_calpella_no_shadow_gtt);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0062, quirk_calpella_no_shadow_gtt);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x006a, quirk_calpella_no_shadow_gtt);
  
--	rc = CIFS_open(xid, &oparms, &oplock, &file_info);
-+	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, &query_data);
- 	if (rc)
- 		return rc;
- 
--	if (file_info.EndOfFile != cpu_to_le64(CIFS_MF_SYMLINK_FILE_SIZE)) {
-+	if (query_data.fi.EndOfFile != cpu_to_le64(CIFS_MF_SYMLINK_FILE_SIZE)) {
- 		rc = -ENOENT;
- 		/* it's not a symlink */
- 		goto out;
-@@ -324,7 +324,7 @@ cifs_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 		.fid = &fid,
- 	};
- 
--	rc = CIFS_open(xid, &oparms, &oplock, NULL);
-+	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, NULL);
- 	if (rc)
- 		return rc;
- 
--- 
-2.39.5
-
 
 
 
