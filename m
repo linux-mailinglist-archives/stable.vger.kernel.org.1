@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E389ACB416
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A05ACB46E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816423A87A6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0075D166541
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B7822A4E5;
-	Mon,  2 Jun 2025 14:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7201222DA19;
+	Mon,  2 Jun 2025 14:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FklCd7FL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCmIpjZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741CD222560;
-	Mon,  2 Jun 2025 14:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF501CBA18;
+	Mon,  2 Jun 2025 14:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874363; cv=none; b=L9S23YmOv3oeqDdpa2N9wM54i3ERv6GctKRYYe5Wh3efiLjWEZ7p9sXnNWVbg7DC88oi9KnucZIz4BpMOyoMHs6tMsLy09DSEWfFXFVP3p/PBux+flTjMo+kcaZ9I1EHTd/T8GpZXaCWSKlLjr3O6v6LzZKYzpS9VXZIv0Vsa28=
+	t=1748874888; cv=none; b=AfbFqEGuwo7mVF+Cw0bZQECz+6xVv1DbawpQwYN18Nbtk8dr5ntk+K1WoIb5fxRjzBFpStya/p3aF7OzoYzw9c+LHV7JXgl42PtHOss8p5JrbTQ7+wMtsdElBYmm5FAWIIOA8Bp0Wz8//xtERaB0y1fN1cRCdVWV+f8sQlxpSmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874363; c=relaxed/simple;
-	bh=3viyCCI5H1Y6uw1MO0DUld2JrCReVMZyOztqTiazXwU=;
+	s=arc-20240116; t=1748874888; c=relaxed/simple;
+	bh=W+zD5hMoZdw1r2fwoAFJeZeByBNNh2PaZEiiHzyR9Ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHdLbQF0wmxS134FCu49NLMV0inXhTjjWcwYozuxKYorJMqemg2D78P/RsxF5R/ZR6YNpGbYNU1/rEC1JfuMkqkh/N2dle5i5hAb8QvWo16tcvsGcd8tjF8z7zpH7F8UMiXnzm2XXiQe27y3AdruZnECkTFnORoiWv4pCHYSQas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FklCd7FL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C37C4CEEB;
-	Mon,  2 Jun 2025 14:26:02 +0000 (UTC)
+	 MIME-Version; b=TLO3CPMGVd2ZNK9jw6K0/Pp7KK7mRskqXQXuFZ/U8Zee8fbCQQIIklqQnzM9D2CsxIO3KaMNaXUfZzlTd7iIusFFTdUii46Pq7sn6+bFfxVeWNJDgoSTAn/JNJ8iKAQRNzdy2fiM3YQ9HnQQn9tdhgmoLxSSNNzdccNkXip2D0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCmIpjZ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8178C4CEEB;
+	Mon,  2 Jun 2025 14:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874363;
-	bh=3viyCCI5H1Y6uw1MO0DUld2JrCReVMZyOztqTiazXwU=;
+	s=korg; t=1748874888;
+	bh=W+zD5hMoZdw1r2fwoAFJeZeByBNNh2PaZEiiHzyR9Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FklCd7FL70ZmoTtB5Xrst5CcYAPVP+L5BB+fwE8eUOXA5Px3kMnf0Bjb0D9O1BIau
-	 1HmWtPu4sxi8jNcpwgGNbJtkcUlPz+b5n6/cz+eq2At4QsVhxNlGOW2Pdmt//9ChBy
-	 chnULVDrT2kP7Jni66oCi3tmje6+cwOos1EcOTIQ=
+	b=dCmIpjZ2xXgFC7k4HgUvq5bC45jIDeDGz9a9zQ73BmgTEIfB9wvGikq647P5dx0FN
+	 KwRbDS1HW1GG2KReqiNCyI0LNlmQjJuZfu43hR+taVzXpVR0H7sL8a4yNDQiaFMH4N
+	 HvvLJbOPFqxfKE6iXqTtZ+6IJ0MLeoCHTxh28w1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	David Gow <davidgow@google.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 435/444] um: let make clean properly clean underlying SUBARCH as well
+Subject: [PATCH 5.4 166/204] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
 Date: Mon,  2 Jun 2025 15:48:19 +0200
-Message-ID: <20250602134358.594930414@linuxfoundation.org>
+Message-ID: <20250602134302.180726053@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
+[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
 
-Building the kernel with O= is affected by stale in-tree build artifacts.
+Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
+model for making it working.
 
-So, if the source tree is not clean, Kbuild displays the following:
-
-  $ make ARCH=um O=build defconfig
-  make[1]: Entering directory '/.../linux/build'
-  ***
-  *** The source tree is not clean, please run 'make ARCH=um mrproper'
-  *** in /.../linux
-  ***
-  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
-  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
-  make[1]: Leaving directory '/.../linux/build'
-  make: *** [Makefile:248: __sub-make] Error 2
-
-Usually, running 'make mrproper' is sufficient for cleaning the source
-tree for out-of-tree builds.
-
-However, building UML generates build artifacts not only in arch/um/,
-but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
-files remain under arch/x86/, Kbuild will reuse them instead of creating
-new ones under the specified build directory.
-
-This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
-
-Reported-by: Shuah Khan <skhan@linuxfoundation.org>
-Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 34957dcb88b9c..744c5d0bdeb8f 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -151,5 +151,6 @@ MRPROPER_FILES += $(HOST_DIR)/include/generated
- archclean:
- 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
- 		-o -name '*.gcov' \) -type f -print | xargs rm -f
-+	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
- 
- export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING DEV_NULL_PATH
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 104cfb56d225f..5a8e86ba29004 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -428,6 +428,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{       /* Acer Aspire SW3-013 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
++		},
++		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
 -- 
 2.39.5
 
