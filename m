@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-149709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6389ACB30F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8873BACB640
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23A817A472C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37F8E1C20117
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E953222564;
-	Mon,  2 Jun 2025 14:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1CA229B18;
+	Mon,  2 Jun 2025 14:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soMxtBs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHy2p1C9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBE2221558;
-	Mon,  2 Jun 2025 14:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19831227E95;
+	Mon,  2 Jun 2025 14:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874789; cv=none; b=I70zqVpeYVGqWcwbJVmtwzIHYr+YOUqeHHtYfrt3P3O8oOuZTSfnMF4I4lVFo2VTRd8IZoyyTd+Iszi7cNf7n46eJmrKjrS+EZe5/DcisX/clX1x8cftddi6LSQbGYqFrSBgq7zBi5LohcYFpBS8w7OeF1Iek7eZLiZImcZcXLQ=
+	t=1748876177; cv=none; b=d9wj+E2RSmizsH0hyxk3j7q3+EztUu58YfX6dD8nYZfp7k5HetdJ2IwKxX6x07c7bd0s3E0LHY5vRu0zG1inXdVBb9Ee+iittdN3i1xcUEmmxdxCGuQzJYjqvFb0hLJoOLYL366rTJT0/h0L2FzFcgcgyAn3+8+cXofz6cGEPcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874789; c=relaxed/simple;
-	bh=q4P3/VnEmaUyrBZ/IP3Fj4KJQoqdSazeLgXcaMYH8i0=;
+	s=arc-20240116; t=1748876177; c=relaxed/simple;
+	bh=A0orepzcDd03DCJV6S8ZlEj9VhESrpIY8Hnsn84HjoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXGt2h1inEnSzfeHYmvRgMrCx+m0jVdtRNt4RVML6NqMO7mNldfzHLGXUPOOxSp2lrp1e7eQI9ucaIt28lhiIPdhcl1aw/gfzYkT3JqdpV7kc9gbSij3I91B7ALrVquN5CD9bY4lVyE56EOhJeVxRpn8Cvv26Dlmprdrx1SJ8yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soMxtBs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4547FC4CEEB;
-	Mon,  2 Jun 2025 14:33:09 +0000 (UTC)
+	 MIME-Version; b=DI1oan/2tZ0j4vz22FNUNDgTCy+ySo2GdOlcMl0w0CswtFne2ix3sHU2c1EN5EC/shtj5aiglOgLTd1oHJo+3u2aYKUDpVdSGJdFYHfbKzBF6zK6GRME7zmxavSZS3GpTdT0UpugPutpivAaejw5A5PdS3FnZTm+mXLWde2S07g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHy2p1C9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D34AC4CEEB;
+	Mon,  2 Jun 2025 14:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874789;
-	bh=q4P3/VnEmaUyrBZ/IP3Fj4KJQoqdSazeLgXcaMYH8i0=;
+	s=korg; t=1748876177;
+	bh=A0orepzcDd03DCJV6S8ZlEj9VhESrpIY8Hnsn84HjoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soMxtBs4qzjudKgpHDm0sXYdkMVljkWt2lUjf6xNmJuyFabEqznWdZOeKZ3FHhBtw
-	 vI2SNbYP4b/WGlPvXhqzSPSZrLIDhnCxOO0bsRqjojy0VPwyrOmLA3Hyqv4y1XxSTO
-	 F2bITxM9BDAE0+rj7Q8ar9CzpDZ2wpUJVc87RP/I=
+	b=IHy2p1C9ccFDom4m0s52lYVagaFkrRQn1HjP4lukdgxXeEuVYjGsKgz1x5IK38duN
+	 tH1WGIw1FjOOscjyqq+AtZhzi8c5VrbprJjM9jHj7hc1sY0pBEQx4dBziiUVKQi4Rw
+	 3hNH59yAW5q25ICDK/pKNUbm07fR+HBkzbslmX2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Burton <paulburton@kernel.org>,
-	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 135/204] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
+Subject: [PATCH 5.15 096/207] cpuidle: menu: Avoid discarding useful information
 Date: Mon,  2 Jun 2025 15:47:48 +0200
-Message-ID: <20250602134300.959517154@linuxfoundation.org>
+Message-ID: <20250602134302.499395142@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,130 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paulburton@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
+[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
 
-The pm-cps code has up until now used per-CPU variables indexed by core,
-rather than CPU number, in order to share data amongst sibling CPUs (ie.
-VPs/threads in a core). This works fine for single cluster systems, but
-with multi-cluster systems a core number is no longer unique in the
-system, leading to sharing between CPUs that are not actually siblings.
+When giving up on making a high-confidence prediction,
+get_typical_interval() always returns UINT_MAX which means that the
+next idle interval prediction will be based entirely on the time till
+the next timer.  However, the information represented by the most
+recent intervals may not be completely useless in those cases.
 
-Avoid this issue by using per-CPU variables as they are more generally
-used - ie. access them using CPU numbers rather than core numbers.
-Sharing between siblings is then accomplished by:
- - Assigning the same pointer to entries for each sibling CPU for the
-   nc_asm_enter & ready_count variables, which allow this by virtue of
-   being per-CPU pointers.
+Namely, the largest recent idle interval is an upper bound on the
+recently observed idle duration, so it is reasonable to assume that
+the next idle duration is unlikely to exceed it.  Moreover, this is
+still true after eliminating the suspected outliers if the sample
+set still under consideration is at least as large as 50% of the
+maximum sample set size.
 
- - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
-   of pm_barrier, for which we can't use the previous approach because
-   the per-CPU variable is not a pointer.
+Accordingly, make get_typical_interval() return the current maximum
+recent interval value in that case instead of UINT_MAX.
 
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
-Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index a26f40db15d00..cb09536fb986b 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -56,10 +56,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
- /* Indicates online CPUs coupled with the current CPU */
- static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
- 
--/*
-- * Used to synchronize entry to deep idle states. Actually per-core rather
-- * than per-CPU.
-- */
-+/* Used to synchronize entry to deep idle states */
- static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
- 
- /* Saved CPU state across the CPS_PM_POWER_GATED state */
-@@ -118,9 +115,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	cps_nc_entry_fn entry;
- 	struct core_boot_config *core_cfg;
- 	struct vpe_boot_config *vpe_cfg;
-+	atomic_t *barrier;
- 
- 	/* Check that there is an entry function for this state */
--	entry = per_cpu(nc_asm_enter, core)[state];
-+	entry = per_cpu(nc_asm_enter, cpu)[state];
- 	if (!entry)
- 		return -EINVAL;
- 
-@@ -156,7 +154,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	smp_mb__after_atomic();
- 
- 	/* Create a non-coherent mapping of the core ready_count */
--	core_ready_count = per_cpu(ready_count, core);
-+	core_ready_count = per_cpu(ready_count, cpu);
- 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
- 				   (unsigned long)core_ready_count);
- 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
-@@ -164,7 +162,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 
- 	/* Ensure ready_count is zero-initialised before the assembly runs */
- 	WRITE_ONCE(*nc_core_ready_count, 0);
--	coupled_barrier(&per_cpu(pm_barrier, core), online);
-+	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
-+	coupled_barrier(barrier, online);
- 
- 	/* Run the generated entry code */
- 	left = entry(online, nc_core_ready_count);
-@@ -635,12 +634,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
- 
- static int cps_pm_online_cpu(unsigned int cpu)
- {
--	enum cps_pm_state state;
--	unsigned core = cpu_core(&cpu_data[cpu]);
-+	unsigned int sibling, core;
- 	void *entry_fn, *core_rc;
-+	enum cps_pm_state state;
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index 2e5670446991f..e1e2721beb75b 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -249,8 +249,19 @@ static unsigned int get_typical_interval(struct menu_device *data,
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
+ 	 */
+-	if ((divisor * 4) <= INTERVALS * 3)
++	if (divisor * 4 <= INTERVALS * 3) {
++		/*
++		 * If there are sufficiently many data points still under
++		 * consideration after the outliers have been eliminated,
++		 * returning without a prediction would be a mistake because it
++		 * is likely that the next interval will not exceed the current
++		 * maximum, so return the latter in that case.
++		 */
++		if (divisor >= INTERVALS / 2)
++			return max;
 +
-+	core = cpu_core(&cpu_data[cpu]);
+ 		return UINT_MAX;
++	}
  
- 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
--		if (per_cpu(nc_asm_enter, core)[state])
-+		if (per_cpu(nc_asm_enter, cpu)[state])
- 			continue;
- 		if (!test_bit(state, state_support))
- 			continue;
-@@ -652,16 +653,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
- 			clear_bit(state, state_support);
- 		}
- 
--		per_cpu(nc_asm_enter, core)[state] = entry_fn;
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
- 	}
- 
--	if (!per_cpu(ready_count, core)) {
-+	if (!per_cpu(ready_count, cpu)) {
- 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
- 		if (!core_rc) {
- 			pr_err("Failed allocate core %u ready_count\n", core);
- 			return -ENOMEM;
- 		}
--		per_cpu(ready_count, core) = core_rc;
-+
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(ready_count, sibling) = core_rc;
- 	}
- 
- 	return 0;
+ 	thresh = max - 1;
+ 	goto again;
 -- 
 2.39.5
 
