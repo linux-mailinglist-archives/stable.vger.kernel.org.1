@@ -1,159 +1,79 @@
-Return-Path: <stable+bounces-150616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A29ACBA69
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 19:42:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6C2ACBA74
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 19:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 019EB1773FF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1943B7ACCD6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE476225A23;
-	Mon,  2 Jun 2025 17:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NgMsJHGd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A7322157E;
+	Mon,  2 Jun 2025 17:47:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.aaazen.com (99-33-87-210.lightspeed.sntcca.sbcglobal.net [99.33.87.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE561925AB;
-	Mon,  2 Jun 2025 17:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4B21A28D;
+	Mon,  2 Jun 2025 17:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.33.87.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748886144; cv=none; b=ZbTWP0d48c5OppPcK+J90vMTqDsSc0YYuST0JVFxBCXJJUypc7CXtBrU3BYMJl1+ZHz/aBViJ8WKclzlwu1sBvq0KGk25BN15SsGpTGyHICaqTj/I1l4GxiDv4dDsSK24Y/04nCQs6roBaIbNKOW6668Xij6BVCFgj30bNU4fBE=
+	t=1748886422; cv=none; b=a/5QknkWoAXkEQFO8L2ytPCD4MOp+qdPvhiXuLxWjrbMlheOqmKmpagDaPsi+/YCHhm59wySgA/fPs8hLKgBu55PKOvTyKv0QJB8ewsV0sBln7klbi2Cw5zOyRz4cm7tDAW/0APyXWWdzgt2EyAeIqbJEUODWQQiRcV+20ClTIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748886144; c=relaxed/simple;
-	bh=U7CAb8BnAtTJFCli7APtV6H+DEmqqsPJrtdC7ZKPIKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JEexje9jUjcfJBkpX80H2l+JrlaMHToZeDUJE/SKF3iN4BKiZdRf8oQncqf02ItcjGy0vINbz9/RpWADWuk8PixJHly6DagfPujnagls5l57FAhZSawKcQtf+EUnNvhs2IqgzLUJbN0GtDTysdbniIezrVGcXf3oWEU/mOY+VXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NgMsJHGd; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-742c73f82dfso3740339b3a.2;
-        Mon, 02 Jun 2025 10:42:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748886142; x=1749490942; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=l/N8ZuvbAgzSK+DMiDG8OUbVN0w+Ue+YmvcUiQqN7lA=;
-        b=NgMsJHGdmVb5hJce48fs/v33QjZzs1CbvyzjkSzHAKqBjEjPh/SJIZiSERPnVoUEyu
-         7I3WcKokFPpA5XrXlWUaStK49IWzvKQ3llZ+iOZAmTVg34x0jhRSXZNpFtPQWGI4g9U4
-         zxdoJ2cepIdcRjEsTmoJBCxkfQbZFCMmoL4NU17M456vFRNbTz5S8G8tY/T2JRbVFRED
-         PRXO+k1aG5oxNPmRAtTooABSaP3ksSIT+7Vp0t97uZhaoSlOEkGXjXm7z54MmRgDn94+
-         kVbgZXzJYuq0C6liNazcq2jbmGfcP8gDdhyMENKN+Q+sXJgRYihBfcznMCq5bwCXxBpJ
-         /Y9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748886142; x=1749490942;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l/N8ZuvbAgzSK+DMiDG8OUbVN0w+Ue+YmvcUiQqN7lA=;
-        b=pfJrZfLfjny/kYc63RM5HZCZTu1WixaQA5IGAOZKd8XXTWcZrR0PrMA9EGwARUx40u
-         wD5UGLH3t0UY7UsFGHLnWl4ID1duLjIHGLbDDqRLyzgp7/Cj19OX9yCR+42/ZE6qdXZ5
-         yqVKHVN3INoo+XNSSQtE86iqZNSta3VhXFy1Pqfn1YVBkfTrDeGcfWsn8ImFHOptxtOt
-         bIBA8MmjHMINBOZoNHp1IG81LbBTNBs1LRQ/UF0xh4J4uZk0arNW+capuKS4iQi/uwUq
-         L5hSLXLdily+9hTOHjeUfeSBJbjTg9uHNhoX3ajV3vimUkRUSgDzM65gV5dLQupy7Lnd
-         hoqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVotZss/9ivSpkaL7QPy1ybDSLQOoFV05PBoitsluGmt/f6U8qZ8NJ13Qca1jdDgMJ3HnypuqhtH/a2o4k=@vger.kernel.org, AJvYcCWX4QA7647Biq/KCoVB1kqydZm8+gIExNGRm+vKIZTTzS5azJssiT4lcrCjqH6My/D6SMn2aEeQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoDsSzCCt4XH8AYpV4jB105TIzHMZ9G0c0cR9aKrpdbPFwuytI
-	XoIDMfYoSNIHbFZcIijG2g4vl3f4M/VkDefThR3vgdpX5gBPAQjZFLtmbxcNeGRC
-X-Gm-Gg: ASbGncuO0tegVwlhF7fAQK50/H5+yd5TfC38Vyfhw+fCcPogDlkhkohB37g8iZ8W+gg
-	UFDt+62uk1STKy6JOdpZvy4RWjYJbu4cnDlowfKrm9F20aEYUTIhyEjvqfPQwYXzZNtzLRSQljH
-	pJjguU25FvUnAEJgvcnQ8R6iFI0k0ESTuNrZ2lfkOBteOgE5OvpFBQaRadm8c3EQMkgxcgu0fHW
-	DltHIM+5sm6qH3DIFpdZ3jsMvVRlQ+NWGVjvfdqqTzagnrDdi7QxmdWr5Sg/6X4o6Q7pp+3AUaK
-	XqD+KinUIQ8v53QXfJDVvdw9lCBMtu6siobJgDw2ryeXNMC/XXyTxsWtMzKmKHaBdEhMRi8eYGv
-	zEBRy5ecH3ixtXRh1VeE/hukK
-X-Google-Smtp-Source: AGHT+IEQWDi4+hbXVMyn9KwRlZNfzc6/xaqK0KRvAu1NW5sDJHhXGRjAq2vxR+Fr0ZCfivfFEqMBpg==
-X-Received: by 2002:a05:6a00:10c8:b0:742:ae7e:7da8 with SMTP id d2e1a72fcca58-747d1831959mr13852223b3a.8.1748886142304;
-        Mon, 02 Jun 2025 10:42:22 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747affd441asm7927087b3a.153.2025.06.02.10.42.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Jun 2025 10:42:21 -0700 (PDT)
-Message-ID: <8f790a6c-bbd0-4f6d-8c13-3bce2b050fee@gmail.com>
-Date: Mon, 2 Jun 2025 10:42:19 -0700
+	s=arc-20240116; t=1748886422; c=relaxed/simple;
+	bh=ZRP8C5tV4Lf4EEr8yH2sse5dwTbENYOSXQ8PYBVP9j0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Ck5PfzeyWFRhCO/dD8Ref3Mfbcr4SW428J4Zh0pvhWpIjSngHzQP/UrWmtO1cZBeZc0i0l/lu2pLxqD4PbTTwNmQZQJgR0EHo2NlI5/icyvj3DepleLxiO9EZvAi2xgr/dvaN9s1AUrkHEhqGJwuV4+/YhwPqWp3glADhALeqlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com; spf=pass smtp.mailfrom=aaazen.com; arc=none smtp.client-ip=99.33.87.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaazen.com
+Received: from localhost (localhost [127.0.0.1])
+	by thursday.test (OpenSMTPD) with ESMTP id b6d5fd31;
+	Mon, 2 Jun 2025 10:46:54 -0700 (PDT)
+Date: Mon, 2 Jun 2025 10:46:54 -0700 (PDT)
+From: Richard Narron <richard@aaazen.com>
+X-X-Sender: richard@thursday.test
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cc: Linux stable <stable@vger.kernel.org>, 
+    Linux kernel <linux-kernel@vger.kernel.org>, 
+    Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 5.15 000/207] 5.15.185-rc1 review
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+Message-ID: <2cb71dc9-a16b-5694-cb3-60a1815bdd84@aaazen.com>
+References: <20250602134258.769974467@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 00/55] 6.12.32-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250602134238.271281478@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-On 6/2/25 06:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.32 release.
-> There are 55 patches in this series, all will be posted as a response
+On Mon, 2 Jun 2025, Greg Kroah-Hartman wrote:
+
+> This is the start of the stable review cycle for the 5.15.185 release.
+> There are 207 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
+>
 > Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
 > Anything received after that time might be too late.
-> 
+>
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.32-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.185-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
 > and the diffstat can be found below.
-> 
+>
 > thanks,
-> 
+>
 > greg k-h
+>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The new kernel works fine on my miscellaneous Intel and AMD machines
+running Slackware 15.0 both 32-bit and 64-bit.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Tested-by: Richard Narron <richard@aaazen.com>
 
