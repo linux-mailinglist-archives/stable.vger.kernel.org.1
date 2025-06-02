@@ -1,171 +1,338 @@
-Return-Path: <stable+bounces-150496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606BEACB7F3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F25ACB7E7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDD5F1BC6BC6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4794C80AB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A952B22DF8B;
-	Mon,  2 Jun 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866E4221714;
+	Mon,  2 Jun 2025 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="FEcLL2Yj"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="W/Q7jVF1";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3XPLPLW2";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="W/Q7jVF1";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3XPLPLW2"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CB223182B
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 15:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B46221D92
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 15:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877309; cv=none; b=YSERAuX4NDi/lytb4FxcfS7k59FwTCpsWE/LNQMsXXwiQbloWrjWVDbmwc4ASGnQieFn+RKTj+0Olrxr/baoU6fDHLQCgkmtlPa6++Q1YnJiW/nUwyWKkUxSuBK9mpejvMYcEK7D8qmoarpb9ntMqQzO6kVh5s4kWclo80l6abU=
+	t=1748877363; cv=none; b=KpkLUSXQXWKkOScWxa9Zb6DzHvi1qfy1dS1EXhKcQnreKQOvM62DxLsph4A71SDlytKj49keC25CpQ3F+LK7BnBGGZ35Y3Bft44+jNgyv0LU6qzbsj2cfaYnWjFIsE1IGMY8RZgPVJwpjeGhbG5BZJebLoTmmJ+lQ9KrVaUczyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877309; c=relaxed/simple;
-	bh=78miCybR8LU8CmkvXnZZg09JgO6HjiNj8BFjAGMPWgI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bmoMoX/JtHlkFV6ZXPN1zZIku86uyVaOXdoFsQA9XQREO3pK+1YDG/LhJ5hz+tqVG1cm8m3Pwi/EGDywegkRFRjykKuQryWkYV1pXfCsJarnrxkbcvF/4GKq0wXOPVDnUDSN3mxGZScuSeU9jnth87i0HV6hV9w7CRTUHN5lpSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=FEcLL2Yj; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=iI9F9bA71hdn1cl7Zfr8EmWR5mdqdnC5kqujwPShxtw=; b=FEcLL2YjljKJcj4Q0pfIJ79yU4
-	OZvBzQjZwv5K9y2hxzSSkSZxzrrOmY/P6KgNq07CayQsagZV8A364/W83sftgf396fdVx61hOK4Og
-	LjJ8HySoalKrvnufoyFJA3HBLSOnkHSZb1c7oxrfBCnbGtBDyjOChpcClXs/oIYofXxQzF9xGkMb3
-	ZhXyDW1sTTwP0P0eNhz7n4pLtTgTmrG6L0qhSJAArOqivy/Z571zlGFgtZQ5qua2S4FktKtmTAOwY
-	cN1kxO0LFRtoS6Cs2RTkGXSbKcFi9cgrQMbbedJZMdPmlnpcvt37ZHfNKhB+nmAjhk7apUXFBY/Gi
-	OYZTIrDw==;
-Received: from [189.7.87.52] (helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256) (Exim)
-	id 1uM6sN-00GK49-LV; Mon, 02 Jun 2025 17:15:00 +0200
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-To: Melissa Wen <mwen@igalia.com>,
-	Iago Toral <itoral@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Cc: dri-devel@lists.freedesktop.org,
-	kernel-dev@igalia.com,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/v3d: Avoid NULL pointer dereference in `v3d_job_update_stats()`
-Date: Mon,  2 Jun 2025 12:14:02 -0300
-Message-ID: <20250602151451.10161-1-mcanal@igalia.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1748877363; c=relaxed/simple;
+	bh=SFloAUEohhBOXBbfaAfipU5NdrKw1jg8DyuE1DeNTUI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZodcLRhpPUhxa0ksi1vMyYbvvPrjVCWnBcn0xtqFwO82RXF5ib9yt24I+gUOvw87922mzMG2BptjXWZES736bSjPj1LB85BWHFLstmkjzDcecSzXPW6iTs9qMgSsdWc7w0NVXraFHiZBNg+dEYYv3L1uj4hbHo1TI8HORgMzJAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=W/Q7jVF1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3XPLPLW2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=W/Q7jVF1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3XPLPLW2; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5A43D1F796;
+	Mon,  2 Jun 2025 15:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748877359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qtlP8eL0MrIX0LBZ8b22H0m7Pr4zNJQhTbAot7s86E4=;
+	b=W/Q7jVF1xbHj3dhcFmxUYej5eNqJL3P6qAihFXR8qOyso8G4cpXb7YaZy+lwt0wl9HKyza
+	ZN44hbBBKrnAwbrtRQkaQ3m2lyufg37HV3NuX6RaEX6K06VLURtQp9kXAq2rrV0jJEedTj
+	xRvekpIMF69c1m6xl7Hl4LklNGSNuw8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748877359;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qtlP8eL0MrIX0LBZ8b22H0m7Pr4zNJQhTbAot7s86E4=;
+	b=3XPLPLW2wNhaXOZvxvO7lwL8+R8D2EixIk74mOU+qqaqJwhWugrBUo/AwGMaFmLuX8fndA
+	oC7QrWSc5Jn8VMDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="W/Q7jVF1";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3XPLPLW2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748877359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qtlP8eL0MrIX0LBZ8b22H0m7Pr4zNJQhTbAot7s86E4=;
+	b=W/Q7jVF1xbHj3dhcFmxUYej5eNqJL3P6qAihFXR8qOyso8G4cpXb7YaZy+lwt0wl9HKyza
+	ZN44hbBBKrnAwbrtRQkaQ3m2lyufg37HV3NuX6RaEX6K06VLURtQp9kXAq2rrV0jJEedTj
+	xRvekpIMF69c1m6xl7Hl4LklNGSNuw8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748877359;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qtlP8eL0MrIX0LBZ8b22H0m7Pr4zNJQhTbAot7s86E4=;
+	b=3XPLPLW2wNhaXOZvxvO7lwL8+R8D2EixIk74mOU+qqaqJwhWugrBUo/AwGMaFmLuX8fndA
+	oC7QrWSc5Jn8VMDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 05FB613A63;
+	Mon,  2 Jun 2025 15:15:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gjBVOy7APWgeZgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 02 Jun 2025 15:15:58 +0000
+Message-ID: <2e60074d-8efd-4880-8620-9d9572583c88@suse.de>
+Date: Mon, 2 Jun 2025 17:15:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
+To: Simona Vetter <simona.vetter@ffwll.ch>,
+ DRI Development <dri-devel@lists.freedesktop.org>
+Cc: intel-xe@lists.freedesktop.org,
+ Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+ stable@vger.kernel.org, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Simona Vetter <simona.vetter@intel.com>
+References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
+ <20250528091307.1894940-2-simona.vetter@ffwll.ch>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250528091307.1894940-2-simona.vetter@ffwll.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 5A43D1F796
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,linux.intel.com,vger.kernel.org,kernel.org,gmail.com,ffwll.ch,intel.com];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ffwll.ch:email,suse.de:mid,suse.de:dkim,suse.de:email,intel.com:email];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -4.51
+X-Spam-Level: 
 
-The following kernel Oops was recently reported by Mesa CI:
+Hi
 
-[  800.139824] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000588
-[  800.148619] Mem abort info:
-[  800.151402]   ESR = 0x0000000096000005
-[  800.155141]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  800.160444]   SET = 0, FnV = 0
-[  800.163488]   EA = 0, S1PTW = 0
-[  800.166619]   FSC = 0x05: level 1 translation fault
-[  800.171487] Data abort info:
-[  800.174357]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[  800.179832]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  800.184873]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  800.190176] user pgtable: 4k pages, 39-bit VAs, pgdp=00000001014c2000
-[  800.196607] [0000000000000588] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
-[  800.205305] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-[  800.211564] Modules linked in: vc4 snd_soc_hdmi_codec drm_display_helper v3d cec gpu_sched drm_dma_helper drm_shmem_helper drm_kms_helper drm drm_panel_orientation_quirks snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm i2c_brcmstb snd_timer snd backlight
-[  800.234448] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.25+rpt-rpi-v8 #1  Debian 1:6.12.25-1+rpt1
-[  800.244182] Hardware name: Raspberry Pi 4 Model B Rev 1.4 (DT)
-[  800.250005] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  800.256959] pc : v3d_job_update_stats+0x60/0x130 [v3d]
-[  800.262112] lr : v3d_job_update_stats+0x48/0x130 [v3d]
-[  800.267251] sp : ffffffc080003e60
-[  800.270555] x29: ffffffc080003e60 x28: ffffffd842784980 x27: 0224012000000000
-[  800.277687] x26: ffffffd84277f630 x25: ffffff81012fd800 x24: 0000000000000020
-[  800.284818] x23: ffffff8040238b08 x22: 0000000000000570 x21: 0000000000000158
-[  800.291948] x20: 0000000000000000 x19: ffffff8040238000 x18: 0000000000000000
-[  800.299078] x17: ffffffa8c1bd2000 x16: ffffffc080000000 x15: 0000000000000000
-[  800.306208] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[  800.313338] x11: 0000000000000040 x10: 0000000000001a40 x9 : ffffffd83b39757c
-[  800.320468] x8 : ffffffd842786420 x7 : 7fffffffffffffff x6 : 0000000000ef32b0
-[  800.327598] x5 : 00ffffffffffffff x4 : 0000000000000015 x3 : ffffffd842784980
-[  800.334728] x2 : 0000000000000004 x1 : 0000000000010002 x0 : 000000ba4c0ca382
-[  800.341859] Call trace:
-[  800.344294]  v3d_job_update_stats+0x60/0x130 [v3d]
-[  800.349086]  v3d_irq+0x124/0x2e0 [v3d]
-[  800.352835]  __handle_irq_event_percpu+0x58/0x218
-[  800.357539]  handle_irq_event+0x54/0xb8
-[  800.361369]  handle_fasteoi_irq+0xac/0x240
-[  800.365458]  handle_irq_desc+0x48/0x68
-[  800.369200]  generic_handle_domain_irq+0x24/0x38
-[  800.373810]  gic_handle_irq+0x48/0xd8
-[  800.377464]  call_on_irq_stack+0x24/0x58
-[  800.381379]  do_interrupt_handler+0x88/0x98
-[  800.385554]  el1_interrupt+0x34/0x68
-[  800.389123]  el1h_64_irq_handler+0x18/0x28
-[  800.393211]  el1h_64_irq+0x64/0x68
-[  800.396603]  default_idle_call+0x3c/0x168
-[  800.400606]  do_idle+0x1fc/0x230
-[  800.403827]  cpu_startup_entry+0x40/0x50
-[  800.407742]  rest_init+0xe4/0xf0
-[  800.410962]  start_kernel+0x5e8/0x790
-[  800.414616]  __primary_switched+0x80/0x90
-[  800.418622] Code: 8b170277 8b160296 11000421 b9000861 (b9401ac1)
-[  800.424707] ---[ end trace 0000000000000000 ]---
-[  800.457313] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+Am 28.05.25 um 11:12 schrieb Simona Vetter:
+> Object creation is a careful dance where we must guarantee that the
+> object is fully constructed before it is visible to other threads, and
+> GEM buffer objects are no difference.
+>
+> Final publishing happens by calling drm_gem_handle_create(). After
+> that the only allowed thing to do is call drm_gem_object_put() because
+> a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
+> (which is trivial since we have a linear allocator) can already tear
+> down the object again.
+>
+> Luckily most drivers get this right, the very few exceptions I've
+> pinged the relevant maintainers for. Unfortunately we also need
+> drm_gem_handle_create() when creating additional handles for an
+> already existing object (e.g. GETFB ioctl or the various bo import
+> ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
+> the only exported function to stop these issues from happening.
+>
+> Now unfortunately the implementation of drm_gem_handle_create() isn't
+> living up to standards: It does correctly finishe object
+> initialization at the global level, and hence is safe against a
+> concurrent tear down. But it also sets up the file-private aspects of
+> the handle, and that part goes wrong: We fully register the object in
+> the drm_file.object_idr before calling drm_vma_node_allow() or
+> obj->funcs->open, which opens up races against concurrent removal of
+> that handle in drm_gem_handle_delete().
+>
+> Fix this with the usual two-stage approach of first reserving the
+> handle id, and then only registering the object after we've completed
+> the file-private setup.
+>
+> Jacek reported this with a testcase of concurrently calling GEM_CLOSE
+> on a freshly-created object (which also destroys the object), but it
+> should be possible to hit this with just additional handles created
+> through import or GETFB without completed destroying the underlying
+> object with the concurrent GEM_CLOSE ioctl calls.
+>
+> Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
+> Release driver references to handle before making it available
+> again"), which means a cool 9 years have passed until someone noticed
+> that we need to make this symmetry or there's still gaps left :-/
+> Without the 2-stage close approach we'd still have a race, therefore
+> that's an integral part of this bugfix.
+>
+> More importantly, this means we can have NULL pointers behind
+> allocated id in our drm_file.object_idr. We need to check for that
+> now:
+>
+> - drm_gem_handle_delete() checks for ERR_OR_NULL already
+>
+> - drm_gem.c:object_lookup() also chekcs for NULL
+>
+> - drm_gem_release() should never be called if there's another thread
+>    still existing that could call into an IOCTL that creates a new
+>    handle, so cannot race. For paranoia I added a NULL check to
+>    drm_gem_object_release_handle() though.
+>
+> - most drivers (etnaviv, i915, msm) are find because they use
+>    idr_find, which maps both ENOENT and NULL to NULL.
+>
+> - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
+>    pointers might exist due to drm_gem_handle_delete(). This needs a
+>    separate patch. This is because idr_for_each_entry terminates on the
+>    first NULL entry and so might not iterate over everything.
+>
+> - similar for amd in amdgpu_debugfs_gem_info_show() and
+>    amdgpu_gem_force_release(). The latter is really questionable though
+>    since it's a best effort hack and there's no way to close all the
+>    races. Needs separate patches.
+>
+> - xe is really broken because it not uses idr_for_each_entry() but
+>    also drops the drm_file.table_lock, which can wreak the idr iterator
+>    state if you're unlucky enough. Maybe another reason to look into
+>    the drm fdinfo memory stats instead of hand-rolling too much.
+>
+> - drm_show_memory_stats() is also broken since it uses
+>    idr_for_each_entry. But since that's a preexisting bug I'll follow
+>    up with a separate patch.
+>
+> Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> Cc: stable@vger.kernel.org
+> Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+> Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+> ---
+>   drivers/gpu/drm/drm_gem.c | 10 +++++++++-
+>   include/drm/drm_file.h    |  3 +++
+>   2 files changed, 12 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> index 1e659d2660f7..e4e20dda47b1 100644
+> --- a/drivers/gpu/drm/drm_gem.c
+> +++ b/drivers/gpu/drm/drm_gem.c
+> @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
+>   	struct drm_file *file_priv = data;
+>   	struct drm_gem_object *obj = ptr;
+>   
+> +	if (WARN_ON(!data))
+> +		return 0;
+> +
+>   	if (obj->funcs->close)
+>   		obj->funcs->close(obj, file_priv);
+>   
+> @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+>   	idr_preload(GFP_KERNEL);
+>   	spin_lock(&file_priv->table_lock);
+>   
+> -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
+> +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
+>   
+>   	spin_unlock(&file_priv->table_lock);
+>   	idr_preload_end();
+> @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+>   			goto err_revoke;
+>   	}
+>   
+> +	/* mirrors drm_gem_handle_delete to avoid races */
+> +	spin_lock(&file_priv->table_lock);
+> +	obj = idr_replace(&file_priv->object_idr, obj, handle);
+> +	WARN_ON(obj != NULL);
 
-This issue happens when the file descriptor is closed before the jobs
-submitted by it are completed. When the job completes, we update the
-global GPU stats and the per-fd GPU stats, which are exposed through
-fdinfo. If the file descriptor was closed, then the struct `v3d_file_priv`
-and its stats were already freed and we can't update the per-fd stats.
+A DRM print function would be preferable. The obj here is an errno 
+pointer. Should the errno code be part of the error message?
 
-Therefore, if the file descriptor was already closed, don't update the
-per-fd GPU stats, only update the global ones.
+If it fails, why does the function still succeed?
 
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
----
- drivers/gpu/drm/v3d/v3d_sched.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Best regards
+Thomas
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 466d28ceee28..5ed676304964 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -199,7 +199,6 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_dev *v3d = job->v3d;
- 	struct v3d_file_priv *file = job->file->driver_priv;
- 	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
--	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
- 	unsigned long flags;
- 
-@@ -209,7 +208,12 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
- 	else
- 		preempt_disable();
- 
--	v3d_stats_update(local_stats, now);
-+	/* Don't update the local stats if the file context has already closed */
-+	if (file)
-+		v3d_stats_update(&file->stats[queue], now);
-+	else
-+		drm_dbg(&v3d->drm, "The file descriptor was closed before job completion\n");
-+
- 	v3d_stats_update(global_stats, now);
- 
- 	if (IS_ENABLED(CONFIG_LOCKDEP))
+> +	spin_unlock(&file_priv->table_lock);
+>   	*handlep = handle;
+>   	return 0;
+>   
+> diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
+> index 5c3b2aa3e69d..d344d41e6cfe 100644
+> --- a/include/drm/drm_file.h
+> +++ b/include/drm/drm_file.h
+> @@ -300,6 +300,9 @@ struct drm_file {
+>   	 *
+>   	 * Mapping of mm object handles to object pointers. Used by the GEM
+>   	 * subsystem. Protected by @table_lock.
+> +	 *
+> +	 * Note that allocated entries might be NULL as a transient state when
+> +	 * creating or deleting a handle.
+>   	 */
+>   	struct idr object_idr;
+>   
+
 -- 
-2.49.0
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
 
