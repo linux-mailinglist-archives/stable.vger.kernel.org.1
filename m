@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-149016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B63FACAFCE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:57:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1891ACAFEA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 054B7480F4B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7381BA226F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73371DE881;
-	Mon,  2 Jun 2025 13:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C533921FF39;
+	Mon,  2 Jun 2025 13:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brYVmyLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbOLwTyn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AC52C327B;
-	Mon,  2 Jun 2025 13:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ABE1A3A80;
+	Mon,  2 Jun 2025 13:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872621; cv=none; b=AYv7FZqDionHgfFlZ0pVwQVX666iRHE8S8gBd7Q1/NBtB6RNT3FIqSsMFO6WgAXV6Xg/uBSbwIRUJEvVzrbtjZb6LlK+Y2BrjtIwIXavCWJN6w/KGkxt5wApX+AaFScn9zjBCbT+dlthyeg/7ttLZ8oC8XCD1HZgEtwDnRwB7Us=
+	t=1748872656; cv=none; b=qJO+7dH+tN04W6KMkcNwY1t9wCtJC2bL7y7dfqWUzUEaSFmOv4lcVtdy50lP6qN6FniQ0xLuANVX42rvyuRnwhDpwZ3jZ2JoWUxekSIGysNmZNax9xqEWU2EnR8Gp0vlTtROB9Cm54pEdgGQtTfXbuv0bWE8EO1eV+6Et5MQg9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872621; c=relaxed/simple;
-	bh=iAx4e+fb88pMnfpqYYiA8OBldNQ+YUlqePvnj2SJEOU=;
+	s=arc-20240116; t=1748872656; c=relaxed/simple;
+	bh=uInEME8PQWncujzeFyrLnJeatIpgSk1R70QTJmtNKNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCHn63KHfKbALEdSlSLL+TigAW7CUJcmGKVShqbZNMaYE47zlELy/GLb1KcAywJcEqMR72dl9PtaN0lS1RDdv6mqe/Y0N9oEkEKyTnJ3INYU09Vjy6A3aozEiIi9jYrEiZWYOliRLlp277ftKAitgOHE/K1TkosUS8sfK/l3oFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brYVmyLF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3515C4CEEB;
-	Mon,  2 Jun 2025 13:57:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HVgNegONlaCJNmKA/49bWwVARjb0L/Rnay4zHFIu3zHOlif4WhZIW2KKclnRJtKqAskg2Tz1VUashPXlpbXgUpf6J94zV8ueMQihUlAD5+f6Ddtz3qZpLpJoqU2k6wJgxyz1R3bEDRu6RQCkThdqgW6x6vjKx37Upy8aBZ6DcyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbOLwTyn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8195C4CEEB;
+	Mon,  2 Jun 2025 13:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872621;
-	bh=iAx4e+fb88pMnfpqYYiA8OBldNQ+YUlqePvnj2SJEOU=;
+	s=korg; t=1748872656;
+	bh=uInEME8PQWncujzeFyrLnJeatIpgSk1R70QTJmtNKNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brYVmyLFKKZPUt6Y3/jfFrTJX10026sfYnzUfjh0nDhnAhhisvCj0OMEZYshT6cnZ
-	 S/Cht3LDw9W7ezPlek83wJqwrI9Ud8POoTNeuq1hn4dmPQeM0FBJ7j1lPiGt87H8xL
-	 Ck+OgeM5wB1F959QQRXBzCaQYHR1RqbEXpw077dY=
+	b=pbOLwTynu/P3eeAtvFzKctfmoBq9G673GshYwu1aULYVzEM6oBFLH3pFitWoq2x5O
+	 /Kwnf7XPZ5arNGFmAoLopPnQK3St/eGCGR2bGCoZf0IVgi+6Wsxx0AVOmF0N4RsllI
+	 YMPBb9qdv6Uo3E6K0bkNYeX/ehH1gR/fCFWdo8qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.14 02/73] arm64: dts: socfpga: agilex5: fix gpio0 address
-Date: Mon,  2 Jun 2025 15:46:48 +0200
-Message-ID: <20250602134241.773062075@linuxfoundation.org>
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.14 03/73] arm64: dts: rockchip: fix internal USB hub instability on RK3399 Puma
+Date: Mon,  2 Jun 2025 15:46:49 +0200
+Message-ID: <20250602134241.813122646@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
 References: <20250602134241.673490006@linuxfoundation.org>
@@ -60,47 +59,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 
-commit a6c9896e65e555d679a4bc71c3cdfce6df4b2343 upstream.
+commit d7cc532df95f7f159e40595440e4e4b99481457b upstream.
 
-Use the correct gpio0 address for Agilex5.
+Currently, the onboard Cypress CYUSB3304 USB hub is not defined in
+the device tree, and hub reset pin is provided as vcc5v0_host
+regulator to usb phy. This causes instability issues, as a result
+of improper reset duration.
 
-Fixes: 3f7c869e143a ("arm64: dts: socfpga: agilex5: Add gpio0 node and spi dma handshake id")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+The fixed regulator device requests the GPIO during probe in its
+inactive state (except if regulator-boot-on property is set, in
+which case it is requested in the active state). Considering gpio
+is GPIO_ACTIVE_LOW for Puma, it means it’s driving it high. Then
+the regulator gets enabled (because regulator-always-on property),
+which drives it to its active state, meaning driving it low.
+
+The Cypress CYUSB3304 USB hub actually requires the reset to be
+asserted for at least 5 ms, which we cannot guarantee right now
+since there's no delay in the current config, meaning the hub may
+sometimes work or not. We could add delay as offered by
+fixed-regulator but let's rather fix this by using the proper way
+to model onboard USB hubs.
+
+Define hub_2_0 and hub_3_0 nodes, as the onboard Cypress hub
+consist of two 'logical' hubs, for USB2.0 and USB3.0.
+Use the 'reset-gpios' property of hub to assign reset pin instead
+of using regulator. Rename the vcc5v0_host regulator to
+cy3304_reset to be more meaningful. Pin is configured to
+output-high by default, which sets the hub in reset state
+during pin controller initialization. This allows to avoid double
+enumeration of devices in case the bootloader has setup the USB
+hub before the kernel.
+The vdd-supply and vdd2-supply properties in hub nodes are
+added to provide correct dt-bindings, although power supplies are
+always enabled based on HW design.
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Cc: stable@vger.kernel.org # 6.6
+Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table in drivers/usb/misc/onboard_usb_dev.c driver
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-3-4a76a474a010@thaumatec.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   40 ++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi b/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-index 51c6e19e40b8..7d9394a04302 100644
---- a/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-+++ b/arch/arm64/boot/dts/intel/socfpga_agilex5.dtsi
-@@ -222,9 +222,9 @@ i3c1: i3c@10da1000 {
- 			status = "disabled";
- 		};
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -60,16 +60,6 @@
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
  
--		gpio0: gpio@ffc03200 {
-+		gpio0: gpio@10c03200 {
- 			compatible = "snps,dw-apb-gpio";
--			reg = <0xffc03200 0x100>;
-+			reg = <0x10c03200 0x100>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			resets = <&rst GPIO0_RESET>;
--- 
-2.49.0
-
+-	vcc5v0_host: regulator-vcc5v0-host {
+-		compatible = "regulator-fixed";
+-		gpio = <&gpio4 RK_PA3 GPIO_ACTIVE_LOW>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&vcc5v0_host_en>;
+-		regulator-name = "vcc5v0_host";
+-		regulator-always-on;
+-		vin-supply = <&vcc5v0_sys>;
+-	};
+-
+ 	vcc5v0_sys: regulator-vcc5v0-sys {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc5v0_sys";
+@@ -521,10 +511,10 @@
+ 		};
+ 	};
+ 
+-	usb2 {
+-		vcc5v0_host_en: vcc5v0-host-en {
++	usb {
++		cy3304_reset: cy3304-reset {
+ 			rockchip,pins =
+-			  <4 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
++			  <4 RK_PA3 RK_FUNC_GPIO &pcfg_output_high>;
+ 		};
+ 	};
+ 
+@@ -591,7 +581,6 @@
+ 	};
+ 
+ 	u2phy1_host: host-port {
+-		phy-supply = <&vcc5v0_host>;
+ 		status = "okay";
+ 	};
+ };
+@@ -603,6 +592,29 @@
+ &usbdrd_dwc3_1 {
+ 	status = "okay";
+ 	dr_mode = "host";
++	pinctrl-names = "default";
++	pinctrl-0 = <&cy3304_reset>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	hub_2_0: hub@1 {
++		compatible = "usb4b4,6502", "usb4b4,6506";
++		reg = <1>;
++		peer-hub = <&hub_3_0>;
++		reset-gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
++		vdd-supply = <&vcc1v2_phy>;
++		vdd2-supply = <&vcc3v3_sys>;
++
++	};
++
++	hub_3_0: hub@2 {
++		compatible = "usb4b4,6500", "usb4b4,6504";
++		reg = <2>;
++		peer-hub = <&hub_2_0>;
++		reset-gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
++		vdd-supply = <&vcc1v2_phy>;
++		vdd2-supply = <&vcc3v3_sys>;
++	};
+ };
+ 
+ &usb_host1_ehci {
 
 
 
