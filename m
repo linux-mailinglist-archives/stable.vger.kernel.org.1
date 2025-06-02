@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-148956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5E5ACAF6D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F53ACAFCA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39DAC7ADC84
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:46:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81F2E4810EC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BCE221723;
-	Mon,  2 Jun 2025 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614F22C327B;
+	Mon,  2 Jun 2025 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQ4+Sqt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRhpnVTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7275A22129E;
-	Mon,  2 Jun 2025 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7B51A01C6;
+	Mon,  2 Jun 2025 13:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872074; cv=none; b=svG8g7agFvajZ0hKmF0vpO7MTrSUJe4Za57fEibCRwIZxXZCSyHH2tHjTqLOCT6W5pqVRcSg0+OYcctUOa7MmGoi20YI0CMJ/QalsHC4d1DqsRlSATqge+a5dGdQmku1eYoUBcz5g2LsVaBwUgeVB/AJRnNDORCSFl37Y2zaOZY=
+	t=1748872609; cv=none; b=LzGkoQbFERiMb5+qhp8czFReIFDU+rtDeIEBzozm24yBfeK3lpGCdX5wCMVILemC0Du5KlwZEY861A8KTZMQtF7fPHChHq2UNtmlnvdepCcRPC6K1TAS8UXfUFu99C+sLB4jCR2rqAwXgrxtYqUQO2rYg6HqUkc09CKWPFuwo6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872074; c=relaxed/simple;
-	bh=Yv1VqGyyMvrA0x6VnuBUZjEQ4l4J4B1UCd0Sq1YY8C4=;
+	s=arc-20240116; t=1748872609; c=relaxed/simple;
+	bh=x1alF1XZJH5Z7h83y9rLnKQUJJsI+y+KQfkyoygREYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWIv/BzQSa2jD68QbmPPcMEc1f/ay7D/uVJhq7FUatq6anACR9RIoZ2qd6t22qPlMhUC5A3BplRMancdEcLKPR0RgkKLvgqM1HruYrldKYek89PN4dCWfQVv0tCgZLsT8KTYL6CiCveb0NiTldKmL7p9s//Hc/dnyiRrj1nAt0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQ4+Sqt0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789F2C4CEEB;
-	Mon,  2 Jun 2025 13:47:53 +0000 (UTC)
+	 MIME-Version; b=CLk08O7hilNA6GO9Nou+yLhQq/0pFHTBjVpzDYWVRzebiv5/5ggDkzueAvajDP35nLn5Kvf9TYFRtblhTSa/RYeOeysiKVJEQBDVpKv6O3fvZUnS5xxrIMgzVN4XfjFuLpPWHbJv2Dei7/e21U/z8jRjyQ4lVyCNsd6CbATWO2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRhpnVTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB057C4CEEB;
+	Mon,  2 Jun 2025 13:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872074;
-	bh=Yv1VqGyyMvrA0x6VnuBUZjEQ4l4J4B1UCd0Sq1YY8C4=;
+	s=korg; t=1748872608;
+	bh=x1alF1XZJH5Z7h83y9rLnKQUJJsI+y+KQfkyoygREYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQ4+Sqt06k1Mx3w6JWrdeoxfIqWW7YL+orv3ltfZm5GN4vMw3OY4ele8KAdZ1oHZI
-	 q4drpXDedm7BU/5oq3BFABZu5R8VRTT33ousmIPAGyNGpc4tobh3IaJ9Ai5Zu/qFFz
-	 mz2L87JdgzcEba6CJbPJueXclDz2iaZF7k7Bjkds=
+	b=ZRhpnVTGMlyh2OAf0yPZdotSlhSxK+0Zj20aviNw4MCTMVJa7K+UK2vLtVHqvRId1
+	 x0JuviX+tLgE2MjHaPqqByVJMeElDnT4PP5BAeaTPNxp3guZ3uB+jUOjvIbmMLJvLi
+	 cnlxF+8FZaXsg+OxKcyE5vCZUVnTBX2pUSuOsiAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Juerg Haefliger <juerg.haefliger@canonical.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 10/49] arm64: dts: qcom: sm8550: Add missing properties for cryptobam
+Subject: [PATCH 6.14 16/73] arm64: dts: qcom: x1e80100-hp-omnibook-x14: Enable SMB2360 0 and 1
 Date: Mon,  2 Jun 2025 15:47:02 +0200
-Message-ID: <20250602134238.345143876@linuxfoundation.org>
+Message-ID: <20250602134242.339872832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Juerg Haefliger <juerg.haefliger@canonical.com>
 
-commit 663cd2cad36da23cf1a3db7868fce9f1a19b2d61 upstream.
+commit 48274b40a3719a950b1062f8125c972a2df5c083 upstream.
 
-num-channels and qcom,num-ees are required for BAM nodes without clock,
-because the driver cannot ensure the hardware is powered on when trying to
-obtain the information from the hardware registers. Specifying the node
-without these properties is unsafe and has caused early boot crashes for
-other SoCs before [1, 2].
+Commit d37e2646c8a5 ("arm64: dts: qcom: x1e80100-pmics: Enable all SMB2360
+separately") disables all SMB2360s and let the board DTS explicitly enable
+them. The HP OmniBook DTS is from before this change and is missing the
+explicit enabling. Add that to get all USB root ports.
 
-Add the missing information from the hardware registers to ensure the
-driver can probe successfully without causing crashes.
-
-[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
-[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
-
-Cc: stable@vger.kernel.org
-Fixes: 433477c3bf0b ("arm64: dts: qcom: sm8550: add QCrypto nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-3-f560889e65d8@linaro.org
+Fixes: 6f18b8d4142c ("arm64: dts: qcom: x1e80100-hp-x14: dt for HP Omnibook X Laptop 14")
+Cc: stable@vger.kernel.org      # 6.14
+Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20250319160509.1812805-1-juerg.haefliger@canonical.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -1957,6 +1957,8 @@
- 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <20>;
- 			qcom,controlled-remotely;
- 			iommus = <&apps_smmu 0x480 0x0>,
- 				 <&apps_smmu 0x481 0x0>;
+--- a/arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts
+@@ -1352,18 +1352,22 @@
+ 	status = "okay";
+ };
+ 
++&smb2360_0 {
++	status = "okay";
++};
++
+ &smb2360_0_eusb2_repeater {
+ 	vdd18-supply = <&vreg_l3d_1p8>;
+ 	vdd3-supply = <&vreg_l2b_3p0>;
++};
+ 
++&smb2360_1 {
+ 	status = "okay";
+ };
+ 
+ &smb2360_1_eusb2_repeater {
+ 	vdd18-supply = <&vreg_l3d_1p8>;
+ 	vdd3-supply = <&vreg_l14b_3p0>;
+-
+-	status = "okay";
+ };
+ 
+ &swr0 {
 
 
 
