@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-149491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D556ACB30C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E541ACB678
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7702419470D3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11E65A21519
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00712236FB;
-	Mon,  2 Jun 2025 14:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5520B227B81;
+	Mon,  2 Jun 2025 14:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRo8/rRS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoPhOBlF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4881A01C6;
-	Mon,  2 Jun 2025 14:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128CE226D1E;
+	Mon,  2 Jun 2025 14:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874118; cv=none; b=nulPAlDl+2h6q42ollqs+MUXcU9T0casU+s8ksQK6Ai4XRzkiRo4N9XbRiuRty2LhjszzWyDCNOZt75WSQ/5yvEFheDxD6Yik3NfHKOECIvl8ZsA/2gLDbG8PQj/FJFNQpDvUDQ9oGkoD29vlHjKWXPL0uMyqS3TUMAeZlYwIhU=
+	t=1748876146; cv=none; b=JsEJQc4rIowj1bY3OLzRM/4uVaY6xkLxD0rHiCRuVPfAbC3qlg/WhyfGMLontGNF624VSgOLY3OKUCsUr4d/lGKzeDp752uA2iOJEyDz1+mvzmQjafFU8WILpI5eBV487h/+ZhI09Ecf9DNXFBvtNj7fs93XZDcyccydA0Vi/0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874118; c=relaxed/simple;
-	bh=z8+MHRszgzoCW7edxDHxWf36lSw9OFTkEQd1pv6yGzI=;
+	s=arc-20240116; t=1748876146; c=relaxed/simple;
+	bh=1Z2M4LcKPNs3n7jSMWeQ9+wBKw5Xvezp0x7hKU8rIM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JgkFgU2bgQrlq2G8xK8H6AOgut9rTCsWPvJZETOow2CRQ7p9pL9h+vQqrhZ0ErbxDqmQcTn6VA7O8ILDyQe1nACIwcr1VQyaeYsTe7OBuEFmd9x/WiBZRqL/Hm4U+oZsRH0pgNG8JESeDFhgJiXHk6fAcLSo2OIec0rTcGDeJNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRo8/rRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C81C4CEEB;
-	Mon,  2 Jun 2025 14:21:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s94mlgYGXubRc7r3vy0OG2T5mVqjBgiCOF8CaSGy+8XTwsMVjtlxpJ045VE3aJ0W87eT2AV34SH1LuX1AkvwiKJsqJR0apeI/n5/ezH32JvoiMOszqkRSJrojtr/ti+jqi6l8aYAYpyYp6MzrvlWRXuKP42NB5Ps8hGbgBWhpAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoPhOBlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A12C4CEEB;
+	Mon,  2 Jun 2025 14:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874118;
-	bh=z8+MHRszgzoCW7edxDHxWf36lSw9OFTkEQd1pv6yGzI=;
+	s=korg; t=1748876145;
+	bh=1Z2M4LcKPNs3n7jSMWeQ9+wBKw5Xvezp0x7hKU8rIM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRo8/rRSggDdxTpIo7Ej2nA2oO2A/bymFlKsCTKokvmHpINjjgAOXkowrQiNewaZs
-	 FCyb8ykQ7hrrhF77D4AWZm+Tk48yeZgQE7PvjqhbzNE0zC4nw1GxoeiIAXQWV7sZnT
-	 9LRZfzVJT1gYmbO2vgjodjz1eGAkNZJ2HbeM4Fxk=
+	b=MoPhOBlFCiVToDZqOufZnG5+lfTAIpKqKhqpdSuNNie/ODuKXDL4NZwT9tDzgVfsB
+	 cXkx8lUcL8UfJFet5NcwZJStr9g2mv4sk3H9ofrW66ljtZSPRfMt7F3sZU/sMp2xce
+	 bNEaIBInHfbwf8laGMECUCCsLT6+qMk4blGgoBAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 363/444] ASoC: SOF: ipc4-pcm: Delay reporting is only supported for playback direction
+	Kyle Roeschley <kyle.roeschley@ni.com>,
+	Brad Mouring <brad.mouring@ni.com>,
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 055/207] mmc: sdhci: Disable SD card clock before changing parameters
 Date: Mon,  2 Jun 2025 15:47:07 +0200
-Message-ID: <20250602134355.648312718@linuxfoundation.org>
+Message-ID: <20250602134300.907972382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-commit 98db16f314b3a0d6e5acd94708ea69751436467f upstream.
+[ Upstream commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc ]
 
-The firmware does not provide any information for capture streams via the
-shared pipeline registers.
+Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
+the SD card clock parameters only after first disabling the external card
+clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
+SD controllers which otherwise breaks voltage switching with a specific
+Swissbit SD card.
 
-To avoid reporting invalid delay value for capture streams to user space
-we need to disable it.
-
-Fixes: af74dbd0dbcf ("ASoC: SOF: ipc4-pcm: allocate time info for pcm delay feature")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://patch.msgid.link/20250509085951.15696-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
+Signed-off-by: Brad Mouring <brad.mouring@ni.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250211214645.469279-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-pcm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/sound/soc/sof/ipc4-pcm.c
-+++ b/sound/soc/sof/ipc4-pcm.c
-@@ -621,7 +621,8 @@ static int sof_ipc4_pcm_setup(struct snd
- 			return -ENOMEM;
- 		}
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index c0900b2f7b5c8..97eeb0c61baec 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2009,10 +2009,15 @@ void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
  
--		if (!support_info)
-+		/* Delay reporting is only supported on playback */
-+		if (!support_info || stream == SNDRV_PCM_STREAM_CAPTURE)
- 			continue;
+ 	host->mmc->actual_clock = 0;
  
- 		stream_info = kzalloc(sizeof(*stream_info), GFP_KERNEL);
+-	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
++	if (clk & SDHCI_CLOCK_CARD_EN)
++		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
++			SDHCI_CLOCK_CONTROL);
+ 
+-	if (clock == 0)
++	if (clock == 0) {
++		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 		return;
++	}
+ 
+ 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
+ 	sdhci_enable_clk(host, clk);
+-- 
+2.39.5
+
 
 
 
