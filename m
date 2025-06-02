@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-150490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CE7ACB78A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61625ACB342
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C797E164874
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA561944E4C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393EE22D9EB;
-	Mon,  2 Jun 2025 15:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D606E22A4E4;
+	Mon,  2 Jun 2025 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2aakXVP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK6b6dbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93F922D795;
-	Mon,  2 Jun 2025 15:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CC9222560;
+	Mon,  2 Jun 2025 14:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877294; cv=none; b=gPYtDMKhcgYmeWNiHBQILIN0MmKBDudYsuMGn0DB7wX5BKR+QqlnTsOApZaplztmKwn4y7PqlRVArSBRjdw9FVSpXVPXuYo+fTefJUC0c3uNCfSEg+R8niTjVstNE3QKRBVYXk05cK8M5pRiD9m9XQwxH90ucHsSRRvPAcR/Rm8=
+	t=1748874357; cv=none; b=NOGqxZfHkA+haM2kEqoVfZASp5SiF+wLQY587vAqSU5QJShMCigENuByTkurBUmMcj+yY/MuSTVrf/L+apVJhOfT5jLP91byrZMTJTGNGk7c4pwYA3F4kQYtWievm+WMBzuoLCzY655qORN+RNNIaI0gXbnKm60esQE7qs2sLKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877294; c=relaxed/simple;
-	bh=eqp6bGq1HCLu2rTTk8Y0qr+2m5BOptoH8vKOduRa9Hc=;
+	s=arc-20240116; t=1748874357; c=relaxed/simple;
+	bh=+t1JVm3AOBTRaOHgnhYUhKH2qPZ9IbPLWkDwI+CP5/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ip2GcWuyhsbScUrZo2dw5lJZhz0Uau7QPHFuMhxwfrmGEoO17xczkL91u8DddCDsDGPO4VKThMAIEsz4epq8pPMFBKvdhKaEU3F5sRf03HR0O7bqg2HHoBfsGyXpoHJJIehftodntxWAvdMXUeYfjNbHTV6sRt1inu9b09PtknA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2aakXVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED06FC4CEEB;
-	Mon,  2 Jun 2025 15:14:51 +0000 (UTC)
+	 MIME-Version; b=GEYXzmc8Vt4Jt8JKdBsFwn7G7vuPlvOAd6g55tnbBXg5trfazlM/EcxTj+eC36u9tyHtKVM1VLOjxqqdiPEOaGbQetelp/u8NDg6wYcB/ZUAFhJbK39PdYMt8/nCOV20V3KDyyT6fTt4HL38jmuJTKXouwZJsA2qCWAMFzGuF0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK6b6dbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1838EC4CEEE;
+	Mon,  2 Jun 2025 14:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877292;
-	bh=eqp6bGq1HCLu2rTTk8Y0qr+2m5BOptoH8vKOduRa9Hc=;
+	s=korg; t=1748874357;
+	bh=+t1JVm3AOBTRaOHgnhYUhKH2qPZ9IbPLWkDwI+CP5/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2aakXVPdwldxAcldWfsCmzlvh56X6S1m+25sEIaT5CnCWEvQu5wzI2w4mU3Yh2cA
-	 twq8OX+lETaCRWNWrmW65Ljmw8WuUBFXefrJJlnvDc+/le+F6iCGdqCFNYjQiJiqXd
-	 zBbSvI1B5DX4nVdEy86nWt2T1UQFKWY5Q5eW5iEk=
+	b=sK6b6dbQ+XcEr9sGHTtIooQz71IkYZr18LM9p8Eft3QnNyuqNnTPCCM3afFgihRxS
+	 FI9G5hG+uhoSoCOyKw+7mYkgm6jyFXwOUx/NpD+ukrwU51SdAQz9uV0869+sME5JpX
+	 CzHdQMqpaLNXpKgcPiG11qW1IgUuDJsFjNyvZGBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Zhu <tony.zhu@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 231/325] dmaengine: idxd: add per DSA wq workqueue for processing cr faults
+Subject: [PATCH 6.6 443/444] net: ethernet: ti: am65-cpsw: Lower random mac address error print to info
 Date: Mon,  2 Jun 2025 15:48:27 +0200
-Message-ID: <20250602134329.168547077@linuxfoundation.org>
+Message-ID: <20250602134358.921448392@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 2f30decd2f23a376d2ed73dfe4c601421edf501a ]
+[ Upstream commit 50980d8da71a0c2e045e85bba93c0099ab73a209 ]
 
-Add a workqueue for user submitted completion record fault processing.
-The workqueue creation and destruction lifetime will be tied to the user
-sub-driver since it will only be used when the wq is a user type.
+Using random mac address is not an error since the driver continues to
+function, it should be informative that the system has not assigned
+a MAC address. This is inline with other drivers such as ax88796c,
+dm9051 etc. Drop the error level to info level.
 
-Tested-by: Tony Zhu <tony.zhu@intel.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Co-developed-by: Fenghua Yu <fenghua.yu@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Link: https://lore.kernel.org/r/20230407203143.2189681-7-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8dfa57aabff6 ("dmaengine: idxd: Fix allowing write() from different address spaces")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://patch.msgid.link/20250516122655.442808-1-nm@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/cdev.c | 11 +++++++++++
- drivers/dma/idxd/idxd.h |  1 +
- 2 files changed, 12 insertions(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index 9f8adb7013eba..e2a89873c6e1a 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -408,6 +408,13 @@ static int idxd_user_drv_probe(struct idxd_dev *idxd_dev)
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 9c8376b271891..c379a958380ce 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2095,7 +2095,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 							port->slave.mac_addr);
+ 			if (!is_valid_ether_addr(port->slave.mac_addr)) {
+ 				eth_random_addr(port->slave.mac_addr);
+-				dev_err(dev, "Use random MAC address\n");
++				dev_info(dev, "Use random MAC address\n");
+ 			}
+ 		}
  	}
- 
- 	mutex_lock(&wq->wq_lock);
-+
-+	wq->wq = create_workqueue(dev_name(wq_confdev(wq)));
-+	if (!wq->wq) {
-+		rc = -ENOMEM;
-+		goto wq_err;
-+	}
-+
- 	wq->type = IDXD_WQT_USER;
- 	rc = drv_enable_wq(wq);
- 	if (rc < 0)
-@@ -426,7 +433,9 @@ static int idxd_user_drv_probe(struct idxd_dev *idxd_dev)
- err_cdev:
- 	drv_disable_wq(wq);
- err:
-+	destroy_workqueue(wq->wq);
- 	wq->type = IDXD_WQT_NONE;
-+wq_err:
- 	mutex_unlock(&wq->wq_lock);
- 	return rc;
- }
-@@ -439,6 +448,8 @@ static void idxd_user_drv_remove(struct idxd_dev *idxd_dev)
- 	idxd_wq_del_cdev(wq);
- 	drv_disable_wq(wq);
- 	wq->type = IDXD_WQT_NONE;
-+	destroy_workqueue(wq->wq);
-+	wq->wq = NULL;
- 	mutex_unlock(&wq->wq_lock);
- }
- 
-diff --git a/drivers/dma/idxd/idxd.h b/drivers/dma/idxd/idxd.h
-index 14c6ef987fede..5dbb67ff1c0cb 100644
---- a/drivers/dma/idxd/idxd.h
-+++ b/drivers/dma/idxd/idxd.h
-@@ -185,6 +185,7 @@ struct idxd_wq {
- 	struct idxd_dev idxd_dev;
- 	struct idxd_cdev *idxd_cdev;
- 	struct wait_queue_head err_queue;
-+	struct workqueue_struct *wq;
- 	struct idxd_device *idxd;
- 	int id;
- 	struct idxd_irq_entry ie;
 -- 
 2.39.5
 
