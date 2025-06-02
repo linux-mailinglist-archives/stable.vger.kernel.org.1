@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-149745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C47ACB35C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC26ACB839
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B83457ACAE7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A461BC7E28
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303620E6E3;
-	Mon,  2 Jun 2025 14:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC48229B13;
+	Mon,  2 Jun 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz8dVtbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fo5RUlrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8188B22F384;
-	Mon,  2 Jun 2025 14:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0898C228CA5;
+	Mon,  2 Jun 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874910; cv=none; b=KlBtooNQZTUZoxxwRiMRrCXeM7LCOAUs1T2SPsSc0ejHQLkF48h/vmjybEJ+hxoILq6Vfcr1KkCitFu7EKr89abrpiI2jKE1DQ1p9KW66OInYqeGCyJAkohdonAB82KaiOvA+3YY7NNsg01azmgLSVeHQ7NNbtMXinXd3nWuFs8=
+	t=1748877189; cv=none; b=gRo+2NsshtFlzADxsx07Iw3b1URwrzX8UAaUClnysmmB67ecosMca711j7+u8frPJYiImIbfs2L0lM1zFhpTKiqHQM8ClJe3SGVlnhEeEAqt9Z6kct2AzsFbsR7TGBdYq9IFqZTLCR+hWghpLugwlgjsIePjpuWyM3/+U0uf1l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874910; c=relaxed/simple;
-	bh=zMh2v1Q+tM8dlcKaXzAMpIWLv2PltfJJl8lYzUyNQJs=;
+	s=arc-20240116; t=1748877189; c=relaxed/simple;
+	bh=OIKwZu5IpdlHe/xcAp9x/+B+LTDn5sTk3S7Z37R8IDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGZepuD/b7NHFOPbg5agG7cfFlPXWL6gkiLLlvJwadrQb6GYFf/W1VDOGBFEkimO6fOL+nzDJ3Qg8KJp5LKHtx2+9qXLYI+Nfw5n5LSoFW3pcpIoVcOVIzgdWhoDxP7ZY6kd6ZBxdJY5APWyNeQlIqsHRV4vp0SsmVmSHVD7PDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz8dVtbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2816C4CEEB;
-	Mon,  2 Jun 2025 14:35:09 +0000 (UTC)
+	 MIME-Version; b=c9SvoU7gFCC985j0Ky+amlGNZl1/JmxAb4Yzd6LX8puPDwa3RTL8dOKTeQn2kC+ZjJWnOhs0dnMA2WpdMp4mCtnBfPAOR1tTeLqaBRfpMBMLP0inOwAkuQQXCpDYR+Bk0sgNCZKAmt5Is6gf8/RtjUQUnUadQPc/OHv5WXCu1Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fo5RUlrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4D9C4CEEB;
+	Mon,  2 Jun 2025 15:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874910;
-	bh=zMh2v1Q+tM8dlcKaXzAMpIWLv2PltfJJl8lYzUyNQJs=;
+	s=korg; t=1748877188;
+	bh=OIKwZu5IpdlHe/xcAp9x/+B+LTDn5sTk3S7Z37R8IDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kz8dVtbn8zsV+mVm6sPkRfG7sqpST7A5dTFvcEcrq3kInr8ZdfgQXICK00kU/bx5X
-	 w/mfOxH6hfkTPjDdWAGoJmFRdaE+j99R3+eYh9SjZ5P5ftqy5QvaE7hRJSmFbVe3mD
-	 THlgC0rrITwMdQQAutRHoKzLmqkGdX8N3tBoa2j8=
+	b=Fo5RUlrW6LgqoYbb8+tcTaI41ULNWctkHC/UR/xfCl68DMMu6kZkApGmYX+nDiM63
+	 3Lu+kzhR0iqollXntkui+Okk1Qvu4PPub0vkWXPLqtwGzZQ7rAgo28dvt/VWrsH73x
+	 sRZgwrYm6FPx8NxNLfvvyzQd//yvtAjBiRZVsvAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/204] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
+Subject: [PATCH 6.1 199/325] rcu: fix header guard for rcu_all_qs()
 Date: Mon,  2 Jun 2025 15:47:55 +0200
-Message-ID: <20250602134301.226703830@linuxfoundation.org>
+Message-ID: <20250602134327.884148366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
+[ Upstream commit ad6b5b73ff565e88aca7a7d1286788d80c97ba71 ]
 
-In the sensor_count field of the MTEWE register, bits 1-62 are
-supported only for unmanaged switches, not for NICs, and bit 63
-is reserved for internal use.
+rcu_all_qs() is defined for !CONFIG_PREEMPT_RCU but the declaration
+is conditioned on CONFIG_PREEMPTION.
 
-To prevent confusing output that may include set bits that are
-not relevant to NIC sensors, we update the bitmask to retain only
-the first bit, which corresponds to the sensor ASIC.
+With CONFIG_PREEMPT_LAZY, CONFIG_PREEMPTION=y does not imply
+CONFIG_PREEMPT_RCU=y.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Decouple the two.
+
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/rcutree.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 3ce17c3d7a001..9d7b0a4cc48a9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -156,6 +156,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	u64 value_msb;
+diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
+index 5efb51486e8af..54483d5e6f918 100644
+--- a/include/linux/rcutree.h
++++ b/include/linux/rcutree.h
+@@ -105,7 +105,7 @@ extern int rcu_scheduler_active;
+ void rcu_end_inkernel_boot(void);
+ bool rcu_inkernel_boot_has_ended(void);
+ bool rcu_is_watching(void);
+-#ifndef CONFIG_PREEMPTION
++#ifndef CONFIG_PREEMPT_RCU
+ void rcu_all_qs(void);
+ #endif
  
- 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
-+	/* bit 1-63 are not supported for NICs,
-+	 * hence read only bit 0 (asic) from lsb.
-+	 */
-+	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
- 
- 	mlx5_core_warn(events->dev,
 -- 
 2.39.5
 
