@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-149756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302C1ACB440
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2869ACB87B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978EE486BFB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1811BC3E90
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3489122F769;
-	Mon,  2 Jun 2025 14:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B7B225766;
+	Mon,  2 Jun 2025 15:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2EdATgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2/F8NS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28092C3247;
-	Mon,  2 Jun 2025 14:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FA91FF61E;
+	Mon,  2 Jun 2025 15:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874943; cv=none; b=nteJllgmTQdktD9xWlQgZxHE94cZck7Uv2XwUf4S4keO8B6/Dg8yFOwiEGwGLUj2RvJOsqMAf/3sGhiKg0FsqjEBhydxdMoHC4wMurXvi/C0o7Oi+iMb1SIL7EIK4cymq/C3pTPHOScdUZ6rhG674ymlPGJgiHWJPQYf0HTgwvk=
+	t=1748877418; cv=none; b=Z9W8a/n80eGhRejAlie6J7nyZ/chxEgo2a6zIIy/cbiPFXtBM/0qgY8fpcE+th7rtSv4acXDWfzLj1cVMjM7F8STU2gb7CCfSPNvhhKtSRCkWeKQBG0beycmhWgtuE2CKz6C4CTh1XqEvlo3W5ra9buM8eOw0TaOum3tJYDu/v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874943; c=relaxed/simple;
-	bh=n0MXz1pUsTbOJKHUEWiXiOXalrG/q401Zk/VzndRgr0=;
+	s=arc-20240116; t=1748877418; c=relaxed/simple;
+	bh=k9mc60W2B7ng2q+5Fh8fgROGyWuCoikzHsvAoL+alLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JC9KBZBJ8McouS42dZnchjKTLVwTRFN/MzOjDPrBgcIRIZDSA7a/pFwIAkeyORIYEB3XlUK7yUULLKdaCYFXpVOUVs8ExZGLC2cMqS6m/SSsGRFhmHaCtUKNTdhnlG4rac0+/IN5BgUDulUika+JreaZDSHszlo+TvStqT174tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2EdATgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E474DC4CEEB;
-	Mon,  2 Jun 2025 14:35:40 +0000 (UTC)
+	 MIME-Version; b=Jn0yGsTiw4M7Re9BXjiIJv+vR2vKDNy/Ku11Ewx9Ji32uFvDEpJgl3d58YzWACR+orOEUHp3BQC8S+XxIVn0seS7gUGJCQjN19bQ9ZfDFShM/rhP3/aQG83a2SmvtzPWX1rfQR8D8zzHpO7bq8g1fSb6Auw/viRVquU9VMp9Iug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2/F8NS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1C0C4CEEE;
+	Mon,  2 Jun 2025 15:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874941;
-	bh=n0MXz1pUsTbOJKHUEWiXiOXalrG/q401Zk/VzndRgr0=;
+	s=korg; t=1748877417;
+	bh=k9mc60W2B7ng2q+5Fh8fgROGyWuCoikzHsvAoL+alLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2EdATgzs89WVw/+64MFLX/WlfVZj5Du3LmS9vZdtNWS53SkhtCfeLgCUqwCuLqTJ
-	 0nIWIkHzos14wXkn0TjrmtOMuRixi2nngg/YJZgKXIVdNMqpFu/gHXPXeC7rK4n+aN
-	 oJcN0OOc8hhWHN1u+kasytiLkv1jCGplBvpHKESU=
+	b=X2/F8NS+KjZTo6gYAWJ/KyMPupg/dGazpFbilb45FVmJXEEgit1YhN6iNPqrO5sZn
+	 XXfU0zDFuQlcNicNzPm9NTSKm2ZBqFsoiBExvgYVIDzpP4OVT8EGNVYXvxCjb7Hd93
+	 BvR0zxUC5nHK3Y1ThllSB78mNwGJF+zADSabKrUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xulin Sun <xulin.sun@windriver.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Corentin LABBE <clabbe.montjoie@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 183/204] spi: spi-fsl-dspi: restrict register range for regmap access
-Date: Mon,  2 Jun 2025 15:48:36 +0200
-Message-ID: <20250602134302.850364361@linuxfoundation.org>
+Subject: [PATCH 6.1 241/325] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+Date: Mon,  2 Jun 2025 15:48:37 +0200
+Message-ID: <20250602134329.581122217@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
+[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
 
-DSPI registers are NOT continuous, some registers are reserved and
-accessing them from userspace will trigger external abort, add regmap
-register access table to avoid below abort.
+While the MDIO address of the internal PHY on Allwinner sun8i chips is
+generally 1, of_mdio_parse_addr is used to cleanly parse the address
+from the device-tree instead of hardcoding it.
 
-  For example on S32G:
+A commit reworking the code ditched the parsed value and hardcoded the
+value 1 instead, which didn't really break anything but is more fragile
+and not future-proof.
 
-  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+Restore the initial behavior using the parsed address returned from the
+helper.
 
-  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
-  ...
-  Call trace:
-  regmap_mmio_read32le+0x24/0x48
-  regmap_mmio_read+0x48/0x70
-  _regmap_bus_reg_read+0x38/0x48
-  _regmap_read+0x68/0x1b0
-  regmap_read+0x50/0x78
-  regmap_read_debugfs+0x120/0x338
-
-Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
-Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 351b2989db071..1d94fc89602f2 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0+
- //
- // Copyright 2013 Freescale Semiconductor, Inc.
--// Copyright 2020 NXP
-+// Copyright 2020-2025 NXP
- //
- // Freescale DSPI driver
- // This file contains a driver for the Freescale DSPI
-@@ -946,6 +946,20 @@ static int dspi_resume(struct device *dev)
- 
- static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
- 
-+static const struct regmap_range dspi_yes_ranges[] = {
-+	regmap_reg_range(SPI_MCR, SPI_MCR),
-+	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
-+	regmap_reg_range(SPI_SR, SPI_TXFR3),
-+	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
-+	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
-+	regmap_reg_range(SPI_SREX, SPI_SREX),
-+};
-+
-+static const struct regmap_access_table dspi_access_table = {
-+	.yes_ranges	= dspi_yes_ranges,
-+	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
-+};
-+
- static const struct regmap_range dspi_volatile_ranges[] = {
- 	regmap_reg_range(SPI_MCR, SPI_TCR),
- 	regmap_reg_range(SPI_SR, SPI_SR),
-@@ -963,6 +977,8 @@ static const struct regmap_config dspi_regmap_config = {
- 	.reg_stride	= 4,
- 	.max_register	= 0x88,
- 	.volatile_table	= &dspi_volatile_table,
-+	.rd_table	= &dspi_access_table,
-+	.wr_table	= &dspi_access_table,
- };
- 
- static const struct regmap_range dspi_xspi_volatile_ranges[] = {
-@@ -984,6 +1000,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 		.reg_stride	= 4,
- 		.max_register	= 0x13c,
- 		.volatile_table	= &dspi_xspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
- 	},
- 	{
- 		.name		= "pushr",
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index f834472599f75..0921b78c6244f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -948,7 +948,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
+ 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
+ 		 * address. No need to mask it again.
+ 		 */
+-		reg |= 1 << H3_EPHY_ADDR_SHIFT;
++		reg |= ret << H3_EPHY_ADDR_SHIFT;
+ 	} else {
+ 		/* For SoCs without internal PHY the PHY selection bit should be
+ 		 * set to 0 (external PHY).
 -- 
 2.39.5
 
