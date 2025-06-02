@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A213ACB637
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48993ACB34D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17F8D9E286E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 198C517D31E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C90221F29;
-	Mon,  2 Jun 2025 14:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AAD227B88;
+	Mon,  2 Jun 2025 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vnxbj6xX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiIbbcCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307F2290F;
-	Mon,  2 Jun 2025 14:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F383C1EA65;
+	Mon,  2 Jun 2025 14:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875652; cv=none; b=WkXSboRXxfu4sa6K+Be8uung5p8PVxsYl1LkNM+l6x/CeW8sh6u9QguiVfDzx76JljpqSihMmTjJ/nN0Fiw+WYb1Tm2G7B07xxMnM8uWOdZ6tMRBiyomKoFOEdzeazSVk2OUMqqeUkFSznaGnS+CsaV7wiZ8TKZh6ck7APALRpg=
+	t=1748874298; cv=none; b=MU16U9k5wHyvuVUtGrhxSnL/xaOSyic2jZRKHGDVyihleQVZ+NlkWRZwZlKHIGOKO9+qyeBiAsPzD4X4jbgaEBJ1I67yPsHOqNooilHZafwW20vnJ7VWR8J6hXrq51f1NqsXFAHN6ZXtNKDOozXcH+bBufo8vAHtdKZ+CztlmUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875652; c=relaxed/simple;
-	bh=WuNHufv3msuwLcX3jjhjIzS5GPQe56aadzczzgnaB80=;
+	s=arc-20240116; t=1748874298; c=relaxed/simple;
+	bh=RFEIngUKqySNzpEOvb70LeWaUvL8OCMw+3vjiEmGrZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAypQPcwExbNWc3vhNE+Dw7EZbE8AfXmMdvUzqNZ2QnGysgIWJF5pxMV+mwX+f3PyacCINglQg9dM9JcajKehYgXmrJGAcREhTJ/fC93dYX6dA8eiaQeYQRUQ7QC5WhzD8knItUT7lK81ZqtFb4bz39UzJzbr77xVman+3ClCOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vnxbj6xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A373AC4CEEB;
-	Mon,  2 Jun 2025 14:47:31 +0000 (UTC)
+	 MIME-Version; b=DBBWYYVeXb+0mRFCI9zQbmXcgXK53cNosIG8dPnBZrnQ7OI803sOOWrnQ7hMDKNVCHcLFA8wUvgkRLoVJPOUOYObX+i5LX2mnHFUvyArWzBY/L1rUGNSH6v0A17+fMaUTrkX2NBdFpU5gbXbZOYjMwbet4BTm+QEywghEfTZFDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiIbbcCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6D2C4CEEB;
+	Mon,  2 Jun 2025 14:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875652;
-	bh=WuNHufv3msuwLcX3jjhjIzS5GPQe56aadzczzgnaB80=;
+	s=korg; t=1748874297;
+	bh=RFEIngUKqySNzpEOvb70LeWaUvL8OCMw+3vjiEmGrZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vnxbj6xXfG7AJ7XDY40gOZSEQhSM+tn2j3UTV+kV74OfohhUw5Z/hfJCc4fc3D2Im
-	 WipZ98gICnX0Xb9KtcUEyO0H+NojtvfnecGMA428AShcMFuhwe/yenOQnfrXQyo6bX
-	 l/wfUCNvswsRb/ONfAVKMyTuMtiywmw6o0YEd5xA=
+	b=WiIbbcCyxiAfgllhHekAuiBNl7N6/BL3GCDwnefKZDX35vWpz7DXVRwPhMNEFiNcW
+	 kRkeWXcsmBP4e1J0WkoDT9nNntb0FM59C2ZVls3L2JH0uFXKpY9KFvk5u2+EtT9c04
+	 m3q8hTN0ra8gKdyNT4Sc/UkfrC5S0cKZwT8XeehQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 202/270] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 423/444] arm64: dts: qcom: sm8450: Add missing properties for cryptobam
 Date: Mon,  2 Jun 2025 15:48:07 +0200
-Message-ID: <20250602134315.444266363@linuxfoundation.org>
+Message-ID: <20250602134358.111711160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
+commit 0fe6357229cb15a64b6413c62f1c3d4de68ce55f upstream.
 
-Cross case in pinctrl framework make impossible to an hogged pin and
-another, not hogged, used within the same device-tree node. For example
-with this simplified device-tree :
+num-channels and qcom,num-ees are required for BAM nodes without clock,
+because the driver cannot ensure the hardware is powered on when trying to
+obtain the information from the hardware registers. Specifying the node
+without these properties is unsafe and has caused early boot crashes for
+other SoCs before [1, 2].
 
-  &pinctrl {
-    pinctrl_pin_1: pinctrl-pin-1 {
-      pins = "dummy-pinctrl-pin";
-    };
-  };
+Add the missing information from the hardware registers to ensure the
+driver can probe successfully without causing crashes.
 
-  &rtc {
-    pinctrl-names = "default"
-    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
 
-    rtc_pin_1: rtc-pin-1 {
-      pins = "dummy-rtc-pin";
-    };
-  };
-
-"pinctrl_pin_1" configuration is never set. This produces this path in
-the code:
-
-  really_probe()
-    pinctrl_bind_pins()
-    | devm_pinctrl_get()
-    |   pinctrl_get()
-    |     create_pinctrl()
-    |       pinctrl_dt_to_map()
-    |         // Hog pin create an abort for all pins of the node
-    |         ret = dt_to_map_one_config()
-    |         | /* Do not defer probing of hogs (circular loop) */
-    |         | if (np_pctldev == p->dev->of_node)
-    |         |   return -ENODEV;
-    |         if (ret)
-    |           goto err
-    |
-    call_driver_probe()
-      stm32_rtc_probe()
-        pinctrl_enable()
-          pinctrl_claim_hogs()
-            create_pinctrl()
-              for_each_maps(maps_node, i, map)
-                // Not hog pin is skipped
-                if (pctldev && strcmp(dev_name(pctldev->dev),
-                                      map->ctrl_dev_name))
-                  continue;
-
-At the first call of create_pinctrl() the hogged pin produces an abort to
-avoid a defer of hogged pins. All other pin configurations are trashed.
-
-At the second call, create_pinctrl is now called with pctldev parameter to
-get hogs, but in this context only hogs are set. And other pins are
-skipped.
-
-To handle this, do not produce an abort in the first call of
-create_pinctrl(). Classic pin configuration will be set in
-pinctrl_bind_pins() context. And the hogged pin configuration will be set
-in pinctrl_claim_hogs() context.
-
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b92b0d2f7582 ("arm64: dts: qcom: sm8450: add crypto nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-2-f560889e65d8@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 0220228c50404..d9279fc7be832 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
- 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
- 		if (pctldev)
- 			break;
--		/* Do not defer probing of hogs (circular loop) */
-+		/*
-+		 * Do not defer probing of hogs (circular loop)
-+		 *
-+		 * Return 1 to let the caller catch the case.
-+		 */
- 		if (np_pctldev == p->dev->of_node) {
- 			of_node_put(np_pctldev);
--			return -ENODEV;
-+			return 1;
- 		}
- 	}
- 	of_node_put(np_pctldev);
-@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 			ret = dt_to_map_one_config(p, pctldev, statename,
- 						   np_config);
- 			of_node_put(np_config);
-+			if (ret == 1)
-+				continue;
- 			if (ret < 0)
- 				goto err;
- 		}
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -4233,6 +4233,8 @@
+ 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,num-ees = <4>;
++			num-channels = <16>;
+ 			qcom,controlled-remotely;
+ 			iommus = <&apps_smmu 0x584 0x11>,
+ 				 <&apps_smmu 0x588 0x0>,
 
 
 
