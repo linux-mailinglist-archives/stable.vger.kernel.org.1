@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-149620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD6DACB3C1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E24FACB2BE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 013624A1AB3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF854A28EA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392D722DFAD;
-	Mon,  2 Jun 2025 14:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB47235050;
+	Mon,  2 Jun 2025 14:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVwLizfW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRDbDFSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3931A4F12;
-	Mon,  2 Jun 2025 14:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2CB231857;
+	Mon,  2 Jun 2025 14:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874513; cv=none; b=eESXB1tvXtixGxdgRicpOr2RCs5wTBPr7jLDlPobFNU8iLJqW2aGNYIpwHdZXST+ZUFEetERaKBn1C1JgngHl+ARZRfSozTWiEsRwsS5SRBdmuN+LznJutFXLuh1oXSNgA8OKkZqr+ODAU8e/pv5iTNaR1qLIvA2MDIYDyfrlUo=
+	t=1748873978; cv=none; b=mFn0bBbmC0bTXsTTGWG+DgOGvH+cHbsSpAPhXfz9uZu40MV4Fvz3z8jEg8XbYNeYtcCVWMAhIJ8EtC/hOYzH+KrGsxK4MIZ6EUVOvD9Ol6NCb6czM+Kzz+gvgwXvy4MYw+GVZd3bPYGllGCownovVvCvrG1rIeHPg1DOL9NR5io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874513; c=relaxed/simple;
-	bh=4DIsT4gFcO9p4mlB7Z8qNPjzd8qVrO8ESCtweEA5ooo=;
+	s=arc-20240116; t=1748873978; c=relaxed/simple;
+	bh=mhcaeDYtoXFIo6WXb3F9n8rX5myVsV5D4OhTYbfL+Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzZ4KM8UYY8pSZwdZ65WdkoqXZEhsgUTVcfmIKlFeGWXHAgKzIr7IJmXGng4Qm+a+wVdUjpkpLSsiMbyD0zfc2WE+PyQrvW6jTlzXJUDP3rUk9Hm7JoSU6ZruA6RsvOeH82lDQtoXjgGfwPGlT5bHKt8KtNYJj9R7xZH489EdI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVwLizfW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8961C4CEEB;
-	Mon,  2 Jun 2025 14:28:30 +0000 (UTC)
+	 MIME-Version; b=sWCh/YzL3qHXzg+Q+nN8gEE0Cg0rr/9+BA/H3VAnmCy9oDH4ptkalLQ+kls1c2gpaWarEp7C/8acy2ZZNGT2z7ert6JfbUhLpEwZD5dqavzd+iqNK3AOLe176fr9kCm+6PVXl8p5Z/miDbhp9zQSYRGx2v0GYhwScINgojs9i1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRDbDFSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E177C4CEF0;
+	Mon,  2 Jun 2025 14:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874511;
-	bh=4DIsT4gFcO9p4mlB7Z8qNPjzd8qVrO8ESCtweEA5ooo=;
+	s=korg; t=1748873978;
+	bh=mhcaeDYtoXFIo6WXb3F9n8rX5myVsV5D4OhTYbfL+Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVwLizfWVLfvDd4zjdqa/SZiu8BJ5MgC4fBVyD7iTpm742ZW+WFLyYq8DdBulb7VV
-	 KFyvEcPdVNz5p+R6TaUbzQTxAg6O7rNypSK2ZOApN9Qj2oInkE0vF/j6KQmsrV9642
-	 d87CMOLRBQvu6grgJOliM69XdyUlN0lsw8pdPY/8=
+	b=oRDbDFSWjxSgQ3DViM+Zx/liqwgJzrF3bZ0RLGNNvQGBsgGOq0fGYTx+5GvLTCQXx
+	 KtrbidoOImGlh5X0gfUjJv56Diw/JtzBsHj3zV3AjxCEapzSrDs7kPBcgf2lqa3pcl
+	 bWbzOwuUI4YFrQQXVytk3LUYIRNxCAN5vTUQvCY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Shichangkuo <shi.changkuo@h3c.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 048/204] ocfs2: switch osb->disable_recovery to enum
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 317/444] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
 Date: Mon,  2 Jun 2025 15:46:21 +0200
-Message-ID: <20250602134257.570842811@linuxfoundation.org>
+Message-ID: <20250602134353.803498489@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,112 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c0fb83088f0cc4ee4706e0495ee8b06f49daa716 upstream.
+[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
 
-Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
+HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
+workarounds that were applied to another HP Spectre x360 models;
+it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
+seup.
 
-This implements another approach to fixing quota recovery deadlocks.  We
-avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
-and instead stop quota recovery early in ocfs2_dismount_volume().
-
-
-This patch (of 3):
-
-We will need more recovery states than just pure enable / disable to fix
-deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
-
-Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
-Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Tested-by: Heming Zhao <heming.zhao@suse.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Murad Masimov <m.masimov@mt-integration.ru>
-Cc: Shichangkuo <shi.changkuo@h3c.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
+Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/journal.c |   14 ++++++++------
- fs/ocfs2/ocfs2.h   |    7 ++++++-
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -175,7 +175,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
- 	struct ocfs2_recovery_map *rm;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a13795e405a4d..77e9c7a928efe 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6790,6 +6790,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
+ 	}
+ }
  
- 	mutex_init(&osb->recovery_lock);
--	osb->disable_recovery = 0;
-+	osb->recovery_state = OCFS2_REC_ENABLED;
- 	osb->recovery_thread_task = NULL;
- 	init_waitqueue_head(&osb->recovery_event);
- 
-@@ -210,7 +210,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
- 	/* disable any new recovery threads and wait for any currently
- 	 * running ones to exit. Do this before setting the vol_state. */
- 	mutex_lock(&osb->recovery_lock);
--	osb->disable_recovery = 1;
-+	osb->recovery_state = OCFS2_REC_DISABLED;
- 	mutex_unlock(&osb->recovery_lock);
- 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
- 
-@@ -1504,14 +1504,16 @@ bail:
- 
- void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
++/* GPIO1 = amplifier on/off */
++static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
++					     const struct hda_fixup *fix,
++					     int action)
++{
++	struct alc_spec *spec = codec->spec;
++	static const hda_nid_t conn[] = { 0x02 };
++	static const struct hda_pintbl pincfgs[] = {
++		{ 0x14, 0x90170110 },  /* front/high speakers */
++		{ 0x17, 0x90170130 },  /* back/bass speakers */
++		{ }
++	};
++
++	// enable mute led
++	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
++
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		/* needed for amp of back speakers */
++		spec->gpio_mask |= 0x01;
++		spec->gpio_dir |= 0x01;
++		snd_hda_apply_pincfgs(codec, pincfgs);
++		/* share DAC to have unified volume control */
++		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
++		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
++		break;
++	case HDA_FIXUP_ACT_INIT:
++		/* need to toggle GPIO to enable the amp of back speakers */
++		alc_update_gpio_data(codec, 0x01, true);
++		msleep(100);
++		alc_update_gpio_data(codec, 0x01, false);
++		break;
++	}
++}
++
+ static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
+ 					  const struct hda_fixup *fix, int action)
  {
-+	int was_set = -1;
-+
- 	mutex_lock(&osb->recovery_lock);
-+	if (osb->recovery_state < OCFS2_REC_DISABLED)
-+		was_set = ocfs2_recovery_map_set(osb, node_num);
- 
- 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
--		osb->disable_recovery, osb->recovery_thread_task,
--		osb->disable_recovery ?
--		-1 : ocfs2_recovery_map_set(osb, node_num));
-+		osb->recovery_state, osb->recovery_thread_task, was_set);
- 
--	if (osb->disable_recovery)
-+	if (osb->recovery_state == OCFS2_REC_DISABLED)
- 		goto out;
- 
- 	if (osb->recovery_thread_task)
---- a/fs/ocfs2/ocfs2.h
-+++ b/fs/ocfs2/ocfs2.h
-@@ -286,6 +286,11 @@ enum ocfs2_mount_options
- #define OCFS2_OSB_ERROR_FS	0x0004
- #define OCFS2_DEFAULT_ATIME_QUANTUM	60
- 
-+enum ocfs2_recovery_state {
-+	OCFS2_REC_ENABLED = 0,
-+	OCFS2_REC_DISABLED,
-+};
-+
- struct ocfs2_journal;
- struct ocfs2_slot_info;
- struct ocfs2_recovery_map;
-@@ -348,7 +353,7 @@ struct ocfs2_super
- 	struct ocfs2_recovery_map *recovery_map;
- 	struct ocfs2_replay_map *replay_map;
- 	struct task_struct *recovery_thread_task;
--	int disable_recovery;
-+	enum ocfs2_recovery_state recovery_state;
- 	wait_queue_head_t checkpoint_event;
- 	struct ocfs2_journal *journal;
- 	unsigned long osb_commit_interval;
+@@ -7401,6 +7436,7 @@ enum {
+ 	ALC280_FIXUP_HP_9480M,
+ 	ALC245_FIXUP_HP_X360_AMP,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
++	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
+ 	ALC285_FIXUP_HP_ENVY_X360,
+ 	ALC288_FIXUP_DELL_HEADSET_MODE,
+ 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -9439,6 +9475,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_eb1
+ 	},
++	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_hp_spectre_x360_df1
++	},
+ 	[ALC285_FIXUP_HP_ENVY_X360] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_envy_x360,
+@@ -10038,6 +10078,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
++	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+@@ -10786,6 +10827,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
+ 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
++	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
+ 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
+ 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
+ 	{.id = ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN, .name = "alc287-yoga9-bass-spk-pin"},
+-- 
+2.39.5
+
 
 
 
