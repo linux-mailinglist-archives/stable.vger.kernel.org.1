@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-149993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF218ACB5A1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E389ACB416
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58FFA21DB3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816423A87A6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97D7224882;
-	Mon,  2 Jun 2025 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B7822A4E5;
+	Mon,  2 Jun 2025 14:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xop0m7U3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FklCd7FL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7560922425B;
-	Mon,  2 Jun 2025 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741CD222560;
+	Mon,  2 Jun 2025 14:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875693; cv=none; b=AYi4Nwk4M2teQlmZvEJ0zIS30EtlM3lDw2/TaADK2XGh84p9nDlDKxYzLkgGAeQoD3lgMPLXx1Cvh+hzuyRovlabXWXVQFTrFaVPzGFb/zvfcQnsxMbMduHEQDwXtHSQcslelddBr18Hwu0OyyhK8Vetk1wp2wz3ywu1Vrqd07E=
+	t=1748874363; cv=none; b=L9S23YmOv3oeqDdpa2N9wM54i3ERv6GctKRYYe5Wh3efiLjWEZ7p9sXnNWVbg7DC88oi9KnucZIz4BpMOyoMHs6tMsLy09DSEWfFXFVP3p/PBux+flTjMo+kcaZ9I1EHTd/T8GpZXaCWSKlLjr3O6v6LzZKYzpS9VXZIv0Vsa28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875693; c=relaxed/simple;
-	bh=EBQPP0iKave2d/rwo+OL0su0EKRbeUKV4sLyzKEgurc=;
+	s=arc-20240116; t=1748874363; c=relaxed/simple;
+	bh=3viyCCI5H1Y6uw1MO0DUld2JrCReVMZyOztqTiazXwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCYGHCKETMGxpHrJQYLCnlIXevjX9A34uuDAOWWTK/2y2OvjAr5QSB8BQ9qjy0kx7ZThTeb8/GSBlaaFeqQHagiPXdx5db5VPZYVPtxOMmVpOfPCQXGIuaEwBhZ+NljLt4lrsANB0GC11kcqMNF42rmXYbMD1V/otTnc1qaMx4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xop0m7U3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C2C4CEEB;
-	Mon,  2 Jun 2025 14:48:12 +0000 (UTC)
+	 MIME-Version; b=qHdLbQF0wmxS134FCu49NLMV0inXhTjjWcwYozuxKYorJMqemg2D78P/RsxF5R/ZR6YNpGbYNU1/rEC1JfuMkqkh/N2dle5i5hAb8QvWo16tcvsGcd8tjF8z7zpH7F8UMiXnzm2XXiQe27y3AdruZnECkTFnORoiWv4pCHYSQas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FklCd7FL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C37C4CEEB;
+	Mon,  2 Jun 2025 14:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875693;
-	bh=EBQPP0iKave2d/rwo+OL0su0EKRbeUKV4sLyzKEgurc=;
+	s=korg; t=1748874363;
+	bh=3viyCCI5H1Y6uw1MO0DUld2JrCReVMZyOztqTiazXwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xop0m7U3aRddmVbgYtSHgA53oMsTxMLWMOyimGk0AgN9xDNJ88ZNwVmWVgyNpZYJ0
-	 /1t3asC+g1I4W8GH72QZFFQRFuA6BZiNmh+dKd8lRc80f/Sx01oa7pdm8fxkhMbouk
-	 xhWIuvidbBfd1Wwjg7DIQYd+Apc5SxaVq9rsiIek=
+	b=FklCd7FL70ZmoTtB5Xrst5CcYAPVP+L5BB+fwE8eUOXA5Px3kMnf0Bjb0D9O1BIau
+	 1HmWtPu4sxi8jNcpwgGNbJtkcUlPz+b5n6/cz+eq2At4QsVhxNlGOW2Pdmt//9ChBy
+	 chnULVDrT2kP7Jni66oCi3tmje6+cwOos1EcOTIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Gow <davidgow@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 214/270] vxlan: Annotate FDB data races
+Subject: [PATCH 6.6 435/444] um: let make clean properly clean underlying SUBARCH as well
 Date: Mon,  2 Jun 2025 15:48:19 +0200
-Message-ID: <20250602134315.927055798@linuxfoundation.org>
+Message-ID: <20250602134358.594930414@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,146 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
+[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
 
-The 'used' and 'updated' fields in the FDB entry structure can be
-accessed concurrently by multiple threads, leading to reports such as
-[1]. Can be reproduced using [2].
+Building the kernel with O= is affected by stale in-tree build artifacts.
 
-Suppress these reports by annotating these accesses using
-READ_ONCE() / WRITE_ONCE().
+So, if the source tree is not clean, Kbuild displays the following:
 
-[1]
-BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+  $ make ARCH=um O=build defconfig
+  make[1]: Entering directory '/.../linux/build'
+  ***
+  *** The source tree is not clean, please run 'make ARCH=um mrproper'
+  *** in /.../linux
+  ***
+  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
+  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
+  make[1]: Leaving directory '/.../linux/build'
+  make: *** [Makefile:248: __sub-make] Error 2
 
-write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
- vxlan_xmit+0xb29/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Usually, running 'make mrproper' is sufficient for cleaning the source
+tree for out-of-tree builds.
 
-read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
- vxlan_xmit+0xadf/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+However, building UML generates build artifacts not only in arch/um/,
+but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
+files remain under arch/x86/, Kbuild will reuse them instead of creating
+new ones under the specified build directory.
 
-value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-
-[2]
- #!/bin/bash
-
- set +H
- echo whitelist > /sys/kernel/debug/kcsan
- echo !vxlan_xmit > /sys/kernel/debug/kcsan
-
- ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
- taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
- taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Shuah Khan <skhan@linuxfoundation.org>
+Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/um/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index ec67d2eb05ecd..7d7aa7d768804 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -333,9 +333,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
- 			be32_to_cpu(fdb->vni)))
- 		goto nla_put_failure;
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 34957dcb88b9c..744c5d0bdeb8f 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -151,5 +151,6 @@ MRPROPER_FILES += $(HOST_DIR)/include/generated
+ archclean:
+ 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
+ 		-o -name '*.gcov' \) -type f -print | xargs rm -f
++	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
  
--	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
-+	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
- 	ci.ndm_confirmed = 0;
--	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
-+	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
- 	ci.ndm_refcnt	 = 0;
- 
- 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
-@@ -541,8 +541,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
- 	struct vxlan_fdb *f;
- 
- 	f = __vxlan_find_mac(vxlan, mac, vni);
--	if (f && f->used != jiffies)
--		f->used = jiffies;
-+	if (f && READ_ONCE(f->used) != jiffies)
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	return f;
- }
-@@ -1072,12 +1072,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
- 		if (f->state != state) {
- 			f->state = state;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 		if (f->flags != fdb_flags) {
- 			f->flags = fdb_flags;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 	}
-@@ -1111,7 +1111,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	}
- 
- 	if (ndm_flags & NTF_USE)
--		f->used = jiffies;
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	if (notify) {
- 		if (rd == NULL)
-@@ -1524,7 +1524,7 @@ static bool vxlan_snoop(struct net_device *dev,
- 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
- 
- 		rdst->remote_ip = *src_ip;
--		f->updated = jiffies;
-+		WRITE_ONCE(f->updated, jiffies);
- 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
- 	} else {
- 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
-@@ -2999,7 +2999,7 @@ static void vxlan_cleanup(struct timer_list *t)
- 			if (f->flags & NTF_EXT_LEARNED)
- 				continue;
- 
--			timeout = f->used + vxlan->cfg.age_interval * HZ;
-+			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
- 			if (time_before_eq(timeout, jiffies)) {
- 				netdev_dbg(vxlan->dev,
- 					   "garbage collect %pM\n",
+ export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING DEV_NULL_PATH
 -- 
 2.39.5
 
