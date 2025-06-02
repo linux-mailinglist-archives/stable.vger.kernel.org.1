@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4FEACB49C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30EEACB7CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85B9F4A12AE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6954C3FA0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2DF22A1D5;
-	Mon,  2 Jun 2025 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C24C236A99;
+	Mon,  2 Jun 2025 15:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VruEDQFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xO/jo3gg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3739E2AE9A;
-	Mon,  2 Jun 2025 14:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC492367D7;
+	Mon,  2 Jun 2025 15:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875193; cv=none; b=HbjCM1PjjNnfUZc1Y4wx2GExjI3lsMZ+sOQMf8ZaoXABwlaFLcIjROwgbsVSdCSbUCBLQJO95mRswFWK3+bx1rPKqzHBwNQGz3fy4ustXEPgroWyD5lkfFRg9OXqMA4cYB0xMYfQdb7gs2IgFxds/+w29gmnd/rBbgpVPqXisXw=
+	t=1748876804; cv=none; b=TUagJ/smlLlUGnRQ0ct6SqFzcXtg+5/6sf6OCB3v+9gAj+5xlXr+rwWR65ZGsuvTTMMMDsKiOKHcAo+yWYBhbB4R9RfNo4ZpaMmp6TPzEw4zo5PBP0VDZEbKNKhRTL612uY19hVuL3Q3uCqeVxWcLTbSWLLV5M3FASTeoi62MJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875193; c=relaxed/simple;
-	bh=wnkJi5WXucgkmFPxg8jnIRHKjoLI95DoefCdDUoRsmE=;
+	s=arc-20240116; t=1748876804; c=relaxed/simple;
+	bh=2UIZO8Fe2jHMw4L7LRbhwPBOP186wahZCjQ9p+dpdXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hMiTVY+hRDzSmygfn9tuI1ZeLlGC5V1csNr/NvaKfZC401hIce4Fvr0iKL2Xp+U8sjiqh4oMrBfwIrr3XxNQGToANk2cvN6FY1FrE3gnDqXdIscrAyowl6Qubce0EDqV66r9ZY0oO5wwqWvilMKTON7y7gOp3pMlDrB9gK7PLC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VruEDQFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3A5C4CEEB;
-	Mon,  2 Jun 2025 14:39:52 +0000 (UTC)
+	 MIME-Version; b=dC4OZDBSJZZD8jtN0mXc8/EbMR6RklucmhM0OwNUWG2jKR9A40JiQMufWmUBft0mGMSyJamnv8kaHrSZsdDY8N2hTNrz/DPrSJ95NvHryDjNtneoM2qXc6cZ/8M2MPIOJUvNn/ADOvdL7LI4DvC1xL/hzYrkgulBxR69JkbxHb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xO/jo3gg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E63EC4CEEB;
+	Mon,  2 Jun 2025 15:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875193;
-	bh=wnkJi5WXucgkmFPxg8jnIRHKjoLI95DoefCdDUoRsmE=;
+	s=korg; t=1748876804;
+	bh=2UIZO8Fe2jHMw4L7LRbhwPBOP186wahZCjQ9p+dpdXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VruEDQFnKrhMJP70808mm+rid0HcE0jjqdV5tBrgZb854leCIRDOuqmvizrLxc5Wg
-	 2aWLCd7WBdEpzy483optHpH9C5u4J7Mf5NWiNCwpx0pW+NP1nISiRYsgnJK+RK1jut
-	 Q0xwYkYAY6PcThIH8AP8t+u4bHHzU4ff8duQYUuE=
+	b=xO/jo3ggD1besv0Z3QMohA4ipmzB/EKjNkhh6o+L97advSaMd4lR69dVyvlmEI1x7
+	 +E7OPcMCXhiSDHnKU5a3ZC7rwZ11yCkLmpEX4Szh87x/00fKamlDR1nFtlQp8ykpFb
+	 EDoD5g3S6YXBfAX2+IZr6p3hDXco61iMxlYXoXsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Rob Herring <robh@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>
-Subject: [PATCH 5.10 030/270] of: module: add buffer overflow check in of_modalias()
+	Jing Su <jingsusu@didiglobal.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 039/325] dql: Fix dql->limit value when reset.
 Date: Mon,  2 Jun 2025 15:45:15 +0200
-Message-ID: <20250602134308.431943747@linuxfoundation.org>
+Message-ID: <20250602134321.342947345@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Jing Su <jingsusu@didiglobal.com>
 
-commit cf7385cb26ac4f0ee6c7385960525ad534323252 upstream.
+[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
 
-In of_modalias(), if the buffer happens to be too small even for the 1st
-snprintf() call, the len parameter will become negative and str parameter
-(if not NULL initially) will point beyond the buffer's end. Add the buffer
-overflow check after the 1st snprintf() call and fix such check after the
-strlen() call (accounting for the terminating NUL char).
+Executing dql_reset after setting a non-zero value for limit_min can
+lead to an unreasonable situation where dql->limit is less than
+dql->limit_min.
 
-Fixes: bc575064d688 ("of/device: use of_property_for_each_string to parse compatible strings")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/bbfc6be0-c687-62b6-d015-5141b93f313e@omp.ru
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: "Uwe Kleine-König" <ukleinek@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For instance, after setting
+/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
+an ifconfig down/up operation might cause the ethernet driver to call
+netdev_tx_reset_queue, which in turn invokes dql_reset.
+
+In this case, dql->limit is reset to 0 while dql->limit_min remains
+non-zero value, which is unexpected. The limit should always be
+greater than or equal to limit_min.
+
+Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/device.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ lib/dynamic_queue_limits.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/of/device.c
-+++ b/drivers/of/device.c
-@@ -231,14 +231,15 @@ static ssize_t of_device_get_modalias(st
- 	csize = snprintf(str, len, "of:N%pOFn%c%s", dev->of_node, 'T',
- 			 of_node_get_device_type(dev->of_node));
- 	tsize = csize;
-+	if (csize >= len)
-+		csize = len > 0 ? len - 1 : 0;
- 	len -= csize;
--	if (str)
--		str += csize;
-+	str += csize;
- 
- 	of_property_for_each_string(dev->of_node, "compatible", p, compat) {
- 		csize = strlen(compat) + 1;
- 		tsize += csize;
--		if (csize > len)
-+		if (csize >= len)
- 			continue;
- 
- 		csize = snprintf(str, len, "C%s", compat);
+diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
+index fde0aa2441480..a75a9ca46b594 100644
+--- a/lib/dynamic_queue_limits.c
++++ b/lib/dynamic_queue_limits.c
+@@ -116,7 +116,7 @@ EXPORT_SYMBOL(dql_completed);
+ void dql_reset(struct dql *dql)
+ {
+ 	/* Reset all dynamic values */
+-	dql->limit = 0;
++	dql->limit = dql->min_limit;
+ 	dql->num_queued = 0;
+ 	dql->num_completed = 0;
+ 	dql->last_obj_cnt = 0;
+-- 
+2.39.5
+
 
 
 
