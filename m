@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-149010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB8FACAFDF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FF5ACAF87
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEDF81BA3B05
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 879E6188905D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894441F4165;
-	Mon,  2 Jun 2025 13:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970B8221299;
+	Mon,  2 Jun 2025 13:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0A644/4C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph4bFK23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CD02576;
-	Mon,  2 Jun 2025 13:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8E1A3A80;
+	Mon,  2 Jun 2025 13:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872600; cv=none; b=mHEgD6SrRAlUxuhwrj5jb1FaHCBuKtmLCGHz7FLNvH8CSDSg/lYLMmSZFrSzmMW25KhV+U1VFCQl2q1bhNFD5Hlb9cIl6FojUWJNiSCIOpsWg7opW4YIr4ddGmErgblH3Y8QfuYAJwHG3H6ptuIGYbE7muy5RfPlPmiLpeWS9Eg=
+	t=1748872159; cv=none; b=J9+JF9YdJbedQSK/YBTVpoxFnSrqaNZtKtxRW33m/K2dHQAr4EshaV41cQ8vcortlAHbh6LgokvydLUAKqoijkJ4znUgSOTTs7j12GPVXcNZyGo2WEGAcIE1USM67BOJO0z8cUQgqvpVoLUO6DOw2LLXzCo/2YPEaP7Eqa9grmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872600; c=relaxed/simple;
-	bh=q7MDp/jwZy4lvBBB2RyWtVFvgwns/+ifao1OT5bUIDc=;
+	s=arc-20240116; t=1748872159; c=relaxed/simple;
+	bh=rffd3203g1cFgfDD2WpLeV19H7Unz5lOXHJBEkle9a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rocPERxI9KjagS5nisQiOtLB+0IzexNDGKua7h/SBT5zeDlEhsTBKUXUqkNAeghwgBzoEZIvoIBVGdWS8cKWTPnVt4mQcHpzcsQr5eZaaFL7xV7idindqcr3l29HMQoHIvpA5hWaBxDNdLhvON68PLvZX+HOMEbpLBROuflzyt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0A644/4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C10C4CEEB;
-	Mon,  2 Jun 2025 13:56:38 +0000 (UTC)
+	 MIME-Version; b=E7xfHFeXPkvPWFNakT2EyfAxDGUrXNgJDxUKO3o98QLpbLFW+TDI0KS0x+ilEcTJp53/ozA4MuRFTuF95J4JZe86X7nrvRNyntOiqFFJ30tPp0qL35UI5ZeKZg13qMm85MdAFfurTJUTiGGR5aV12CLmLuTLJ8EFz8G9XC50TkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph4bFK23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A931CC4CEEE;
+	Mon,  2 Jun 2025 13:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872600;
-	bh=q7MDp/jwZy4lvBBB2RyWtVFvgwns/+ifao1OT5bUIDc=;
+	s=korg; t=1748872159;
+	bh=rffd3203g1cFgfDD2WpLeV19H7Unz5lOXHJBEkle9a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0A644/4Cw6M28upefISq6ZStD2/jjp5unlkpfRiLLCR61eXQW7ft3SzPoKqoX8deC
-	 bjakgBJkonhv53rgYrXhVnrEF4wi1K0u0LBGTDSOsT5pnWJQxAoX0dwU6Dhg34LnEe
-	 45xzxfTkCZyx5Yugmx82Pv9cA2oM0pAmmkj5xJ6s=
+	b=Ph4bFK23f5h2/34oTHF39roQdjy83G0EgmtdzYZm/HGAlOq9f8Sy0BDmGsa1OdVEl
+	 YFu28FmPoNVncCs4AJ4a7+JDg9CyEbHmIVaPC8kCW3Q6lrG90a0SErMDwxpUdr4Jyx
+	 zpW1xI/5iXRo9CP18dRF9qKNnGkNSi1D4fNoekz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 14/73] arm64: dts: qcom: x1e80100-asus-vivobook-s15: Fix vreg_l2j_1p2 voltage
+Subject: [PATCH 6.15 08/49] arm64: dts: qcom: sm8350: Fix typo in pil_camera_mem node
 Date: Mon,  2 Jun 2025 15:47:00 +0200
-Message-ID: <20250602134242.258838918@linuxfoundation.org>
+Message-ID: <20250602134238.269363133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 0fb9ecf8713a7a458f7378c86e0703467db2ad22 upstream.
+commit 295217420a44403a33c30f99d8337fe7b07eb02b upstream.
 
-In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
-uV instead of the 1200000 uV we have currently in the device tree. Use the
-same for consistency and correctness.
+There is a typo in sm8350.dts where the node label
+mmeory@85200000 should be memory@85200000.
+This patch corrects the typo for clarity and consistency.
 
+Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
 Cc: stable@vger.kernel.org
-Fixes: d0e2f8f62dff ("arm64: dts: qcom: Add device tree for ASUS Vivobook S 15")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-3-24b6a2043025@linaro.org
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://lore.kernel.org/r/20250514114656.2307828-1-alok.a.tiwari@oracle.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-asus-vivobook-s15.dts
-@@ -330,8 +330,8 @@
- 
- 		vreg_l2j_1p2: ldo2 {
- 			regulator-name = "vreg_l2j_1p2";
--			regulator-min-microvolt = <1200000>;
--			regulator-max-microvolt = <1200000>;
-+			regulator-min-microvolt = <1256000>;
-+			regulator-max-microvolt = <1256000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -455,7 +455,7 @@
+ 			no-map;
  		};
  
+-		pil_camera_mem: mmeory@85200000 {
++		pil_camera_mem: memory@85200000 {
+ 			reg = <0x0 0x85200000 0x0 0x500000>;
+ 			no-map;
+ 		};
 
 
 
