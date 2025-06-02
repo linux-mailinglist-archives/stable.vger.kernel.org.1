@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-149780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD493ACB47F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C340ACB6A6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 684CD18920AB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08E954C4F05
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6814E230BE3;
-	Mon,  2 Jun 2025 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6A323816A;
+	Mon,  2 Jun 2025 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+p+x1tc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3qzVNQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257DA226CFB;
-	Mon,  2 Jun 2025 14:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2D81A83E8;
+	Mon,  2 Jun 2025 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875016; cv=none; b=goEiC1XjLAZ6FVE6N+h8H/RZpd3y/TCs8DX9Oc7UvILyPDy1pbXPeMfDp2ABqUVgFfOSKLGqbGzMW9LgJvQhgucB3VFUgHUgxUlp+QVoB2n+Uk0C4aWVq2cvCawUid6nBO43eZN9mMMtwpdewsU5/YN3H5Z3fbJQVAGNLYuZ134=
+	t=1748876312; cv=none; b=jjafLwaFk4sHcmzWQqSlxI0uexV0Q2OuudqYcxdJKlbjjAu8F4hZIz9mvpLwITJM9SE74aVOFpuXJysaRFmGYAG3ZLwPKIp9kwATL9JPEEiafENRVoD5Nrci4c5e7LyJTIgDZeIDu73VoN+B3yLnRQsaJc+JzAAWq+WadfRHPaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875016; c=relaxed/simple;
-	bh=R2wdLxGPtkz3cfInEHzYwOT7uNpnLzaCTfbE2VUSzPM=;
+	s=arc-20240116; t=1748876312; c=relaxed/simple;
+	bh=ODbnimPEz8u2yvPlzb4OmUEVOxmEYnjKu2h2c3Enjjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trh2zNdpaO7zbZCs6ueLeEZe8WVn1GhQYEP9Ww1hWGpXTA0q05UCUncB8aMG4LrOraJVx2kpTaTLHQ9WdJr3hckp+j31WiEk27cjKa66OyCrKPeoghZ0vz9V1N11B0XoGIwLT1qnOGVS6RnAGXP8YNg6foN4HUx+YxcIh89KKz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+p+x1tc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A980FC4CEF2;
-	Mon,  2 Jun 2025 14:36:55 +0000 (UTC)
+	 MIME-Version; b=tIsGImMjjKlq4uAm0LG56J6IjZmSo0ES4pDSi9jDyNp8IGwinc/tXOycKm3RisAkIKQ9cFARdLTtVt/XsnsJsLVoo4jKtHiOWsAt5MKI1VnoIHezy32ExttoyGDvaQYbAjlR+kBpXG8VjX0amaW8Oce6kh/7XerJNBiTOVF6uLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3qzVNQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4A9C4CEEB;
+	Mon,  2 Jun 2025 14:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875016;
-	bh=R2wdLxGPtkz3cfInEHzYwOT7uNpnLzaCTfbE2VUSzPM=;
+	s=korg; t=1748876312;
+	bh=ODbnimPEz8u2yvPlzb4OmUEVOxmEYnjKu2h2c3Enjjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X+p+x1tcMiod8Ew9JTbQtJrAl83A6o2AtpgNTMjOEt0m0mA6IN5xOuENqM5bQz1iy
-	 VgOd8V2WLuFbFCdGARfUJ3dZdQqUuJhwbnN/rywxLGO/ST7d+M9Qx8Z31rk7SJEzmi
-	 Sva04TuBQSyWf91YC6rLnz7+I/gJhRVoQPzzKRm4=
+	b=N3qzVNQXv05xsMaEj/6lOn1H8Jvz1XdvJDA7un0U0hcEjaqlxwI/GP2IxTkrP6Hef
+	 0NVd8VIE9VlgqHNDAlgDdc30i4fT2mhzTOJ/X6nPJscRzWzuY/0HK0yp0tuEXyM56E
+	 umDmTUt1LAEvr6ZutjuTQDMdxYb7HG7Gl4/9Q5Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH 5.4 176/204] can: bcm: add locking for bcm_op runtime updates
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 137/207] vxlan: Annotate FDB data races
 Date: Mon,  2 Jun 2025 15:48:29 +0200
-Message-ID: <20250602134302.565492651@linuxfoundation.org>
+Message-ID: <20250602134304.093473851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,197 +65,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit c2aba69d0c36a496ab4f2e81e9c2b271f2693fd7 upstream.
+[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
 
-The CAN broadcast manager (CAN BCM) can send a sequence of CAN frames via
-hrtimer. The content and also the length of the sequence can be changed
-resp reduced at runtime where the 'currframe' counter is then set to zero.
+The 'used' and 'updated' fields in the FDB entry structure can be
+accessed concurrently by multiple threads, leading to reports such as
+[1]. Can be reproduced using [2].
 
-Although this appeared to be a safe operation the updates of 'currframe'
-can be triggered from user space and hrtimer context in bcm_can_tx().
-Anderson Nascimento created a proof of concept that triggered a KASAN
-slab-out-of-bounds read access which can be prevented with a spin_lock_bh.
+Suppress these reports by annotating these accesses using
+READ_ONCE() / WRITE_ONCE().
 
-At the rework of bcm_can_tx() the 'count' variable has been moved into
-the protected section as this variable can be modified from both contexts
-too.
+[1]
+BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
 
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250519125027.11900-1-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
+ vxlan_xmit+0xb29/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
+ vxlan_xmit+0xadf/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+
+[2]
+ #!/bin/bash
+
+ set +H
+ echo whitelist > /sys/kernel/debug/kcsan
+ echo !vxlan_xmit > /sys/kernel/debug/kcsan
+
+ ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
+ taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+ taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   66 +++++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 21 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -58,6 +58,7 @@
- #include <linux/can/skb.h>
- #include <linux/can/bcm.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <net/sock.h>
- #include <net/net_namespace.h>
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 65a2f4ab89970..9c4d7bedc7641 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -334,9 +334,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 			be32_to_cpu(fdb->vni)))
+ 		goto nla_put_failure;
  
-@@ -122,6 +123,7 @@ struct bcm_op {
- 	struct canfd_frame last_sframe;
- 	struct sock *sk;
- 	struct net_device *rx_reg_dev;
-+	spinlock_t bcm_tx_lock; /* protect currframe/count in runtime updates */
- };
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
  
- struct bcm_sock {
-@@ -275,13 +277,18 @@ static void bcm_can_tx(struct bcm_op *op
- {
- 	struct sk_buff *skb;
- 	struct net_device *dev;
--	struct canfd_frame *cf = op->frames + op->cfsiz * op->currframe;
-+	struct canfd_frame *cf;
- 	int err;
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+@@ -542,8 +542,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
  
- 	/* no target device? => exit */
- 	if (!op->ifindex)
- 		return;
+ 	f = __vxlan_find_mac(vxlan, mac, vni);
+-	if (f && f->used != jiffies)
+-		f->used = jiffies;
++	if (f && READ_ONCE(f->used) != jiffies)
++		WRITE_ONCE(f->used, jiffies);
  
-+	/* read currframe under lock protection */
-+	spin_lock_bh(&op->bcm_tx_lock);
-+	cf = op->frames + op->cfsiz * op->currframe;
-+	spin_unlock_bh(&op->bcm_tx_lock);
-+
- 	dev = dev_get_by_index(sock_net(op->sk), op->ifindex);
- 	if (!dev) {
- 		/* RFC: should this bcm_op remove itself here? */
-@@ -302,6 +309,10 @@ static void bcm_can_tx(struct bcm_op *op
- 	skb->dev = dev;
- 	can_skb_set_owner(skb, op->sk);
- 	err = can_send(skb, 1);
-+
-+	/* update currframe and count under lock protection */
-+	spin_lock_bh(&op->bcm_tx_lock);
-+
- 	if (!err)
- 		op->frames_abs++;
- 
-@@ -310,6 +321,11 @@ static void bcm_can_tx(struct bcm_op *op
- 	/* reached last frame? */
- 	if (op->currframe >= op->nframes)
- 		op->currframe = 0;
-+
-+	if (op->count > 0)
-+		op->count--;
-+
-+	spin_unlock_bh(&op->bcm_tx_lock);
- out:
- 	dev_put(dev);
+ 	return f;
  }
-@@ -406,7 +422,7 @@ static enum hrtimer_restart bcm_tx_timeo
- 	struct bcm_msg_head msg_head;
- 
- 	if (op->kt_ival1 && (op->count > 0)) {
--		op->count--;
-+		bcm_can_tx(op);
- 		if (!op->count && (op->flags & TX_COUNTEVT)) {
- 
- 			/* create notification to user */
-@@ -421,7 +437,6 @@ static enum hrtimer_restart bcm_tx_timeo
- 
- 			bcm_send_to_user(op, &msg_head, NULL, 0);
+@@ -1073,12 +1073,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+ 		if (f->state != state) {
+ 			f->state = state;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
  		}
--		bcm_can_tx(op);
- 
- 	} else if (op->kt_ival2) {
- 		bcm_can_tx(op);
-@@ -911,6 +926,27 @@ static int bcm_tx_setup(struct bcm_msg_h
+ 		if (f->flags != fdb_flags) {
+ 			f->flags = fdb_flags;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
  		}
- 		op->flags = msg_head->flags;
- 
-+		/* only lock for unlikely count/nframes/currframe changes */
-+		if (op->nframes != msg_head->nframes ||
-+		    op->flags & TX_RESET_MULTI_IDX ||
-+		    op->flags & SETTIMER) {
-+
-+			spin_lock_bh(&op->bcm_tx_lock);
-+
-+			if (op->nframes != msg_head->nframes ||
-+			    op->flags & TX_RESET_MULTI_IDX) {
-+				/* potentially update changed nframes */
-+				op->nframes = msg_head->nframes;
-+				/* restart multiple frame transmission */
-+				op->currframe = 0;
-+			}
-+
-+			if (op->flags & SETTIMER)
-+				op->count = msg_head->count;
-+
-+			spin_unlock_bh(&op->bcm_tx_lock);
-+		}
-+
- 	} else {
- 		/* insert new BCM operation for the given can_id */
- 
-@@ -918,9 +954,14 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		if (!op)
- 			return -ENOMEM;
- 
-+		spin_lock_init(&op->bcm_tx_lock);
- 		op->can_id = msg_head->can_id;
- 		op->cfsiz = CFSIZ(msg_head->flags);
- 		op->flags = msg_head->flags;
-+		op->nframes = msg_head->nframes;
-+
-+		if (op->flags & SETTIMER)
-+			op->count = msg_head->count;
- 
- 		/* create array for CAN frames and copy the data */
- 		if (msg_head->nframes > 1) {
-@@ -979,22 +1020,8 @@ static int bcm_tx_setup(struct bcm_msg_h
- 
- 	} /* if ((op = bcm_find_op(&bo->tx_ops, msg_head->can_id, ifindex))) */
- 
--	if (op->nframes != msg_head->nframes) {
--		op->nframes   = msg_head->nframes;
--		/* start multiple frame transmission with index 0 */
--		op->currframe = 0;
--	}
--
--	/* check flags */
--
--	if (op->flags & TX_RESET_MULTI_IDX) {
--		/* start multiple frame transmission with index 0 */
--		op->currframe = 0;
--	}
--
- 	if (op->flags & SETTIMER) {
- 		/* set timer values */
--		op->count = msg_head->count;
- 		op->ival1 = msg_head->ival1;
- 		op->ival2 = msg_head->ival2;
- 		op->kt_ival1 = bcm_timeval_to_ktime(msg_head->ival1);
-@@ -1011,11 +1038,8 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		op->flags |= TX_ANNOUNCE;
+ 	}
+@@ -1112,7 +1112,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
  	}
  
--	if (op->flags & TX_ANNOUNCE) {
-+	if (op->flags & TX_ANNOUNCE)
- 		bcm_can_tx(op);
--		if (op->count)
--			op->count--;
--	}
+ 	if (ndm_flags & NTF_USE)
+-		f->used = jiffies;
++		WRITE_ONCE(f->used, jiffies);
  
- 	if (op->flags & STARTTIMER)
- 		bcm_tx_start_timer(op);
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1525,7 +1525,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 
+ 		rdst->remote_ip = *src_ip;
+-		f->updated = jiffies;
++		WRITE_ONCE(f->updated, jiffies);
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
+ 	} else {
+ 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+@@ -3000,7 +3000,7 @@ static void vxlan_cleanup(struct timer_list *t)
+ 			if (f->flags & NTF_EXT_LEARNED)
+ 				continue;
+ 
+-			timeout = f->used + vxlan->cfg.age_interval * HZ;
++			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
+ 			if (time_before_eq(timeout, jiffies)) {
+ 				netdev_dbg(vxlan->dev,
+ 					   "garbage collect %pM\n",
+-- 
+2.39.5
+
 
 
 
