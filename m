@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEBCACB725
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66E7ACB081
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2644019475DC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB6AF1BA4D89
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1853722FDE8;
-	Mon,  2 Jun 2025 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F09B223DCC;
+	Mon,  2 Jun 2025 14:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beWwjZgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgivJZMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70EF22FAF4;
-	Mon,  2 Jun 2025 15:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBC7223DCD;
+	Mon,  2 Jun 2025 14:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877231; cv=none; b=LggwRVQyoIs8iaSeeQ4JM3oM8UqmJymZbPYE+KkwgGfVzsWs/7Zj+Ol+esMqAJMBTnHlshh5gQ+uoHwHA8FO5IB8y701iw8eF4ANlnCDphqUGvxXOonjmwF8WegAIG+pEJoF3fd//sfl5U2bHuU/aTHl1hB7CLldLVbcRNSDEVE=
+	t=1748872938; cv=none; b=mo4B3gBmt62po4spLt6r1m9E2H+K93QmXZRyGTpZDwca7c7HWKyFRWdhffiuBT0K9VPCdfHcacTGCwwp0mcXL3WK3UQFZuWiHWJoXak/ZQKKlJhiBAZ9SigQAlFO0cZniQfHhMlKUfoA6B4joIZd5Ky1pRZEHk9jycaZWEbDv/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877231; c=relaxed/simple;
-	bh=7jg+1zPSO6cwyiQMBiNqG4ziDr/AT5Jm2bVloOPZJrg=;
+	s=arc-20240116; t=1748872938; c=relaxed/simple;
+	bh=9Gn6K/4/YaFpK3abtoa3PMvOlZ7KKL1XU/9iDlBw2YM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ntquzgWsXWopOvBpkRzhshOiHUUSgNIyautLCdOOH4MMpwfMo+c838PC0irnZ4EW/BJ6WXMO3R00QGfsRP6o7uBO42mKdj9VwYlkh6eVuFFX0+/ZLp3V9biocaD2DThOswa2leCN/xYHYIc0J57D33HpeQaeNW5e/8jrUfjoL84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beWwjZgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCE1C4CEEB;
-	Mon,  2 Jun 2025 15:13:50 +0000 (UTC)
+	 MIME-Version; b=RD1lpFadje7hDGOzYwIczF3X2+dg/ywixIGduI1nfl0G8iNfae0qFU7Xmhg+sXSWRNen+vHQ8yBXJo3dyirK8xXKNj37hn1Uf/szwQkQJ/BQz1lx9vddjSqSpi0vuMYRfj55d7F/4JdDQxRE1dE/aAF0xnuEIec5HS4EUDvT0z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgivJZMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B39C4CEEB;
+	Mon,  2 Jun 2025 14:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877231;
-	bh=7jg+1zPSO6cwyiQMBiNqG4ziDr/AT5Jm2bVloOPZJrg=;
+	s=korg; t=1748872938;
+	bh=9Gn6K/4/YaFpK3abtoa3PMvOlZ7KKL1XU/9iDlBw2YM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=beWwjZgsZ6SI7tYkhRUCHZ3JmnbUgLXimXetPyWz9njwL2ekaFNWi3py4A9G72jsB
-	 JYSI2HYVz/QggngygTAtzMLRmjfgbyJgzws+LjZRyU4zVr88qRhyIgIEJg/rVNctxU
-	 rmjOXcEPRXio1o15+wfzi1XPQkUhBCE9a4NgX3S8=
+	b=LgivJZMfW2k2+8md+4raG/9rvH00pDdDKhEoHRl0jcC1YPMhqk8jhOSoSNiRsCc4E
+	 KCXS1gu/GsYkd+WBpilh5FSnZaSUTQiod8uSDZ5Ocf3EM0Zac8YWDHLJ7arL8wRBe2
+	 qb0t6LHrDdJXNSOddv84mFZTX6+VqR1wliIn87+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Algea Cao <algea.cao@rock-chips.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/325] scsi: st: Restore some drive settings after reset
+Subject: [PATCH 6.12 44/55] phy: phy-rockchip-samsung-hdptx: Fix PHY PLL output 50.25MHz error
 Date: Mon,  2 Jun 2025 15:48:01 +0200
-Message-ID: <20250602134328.120010638@linuxfoundation.org>
+Message-ID: <20250602134240.016984871@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Algea Cao <algea.cao@rock-chips.com>
 
-[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
+[ Upstream commit f9475055b11c0c70979bd1667a76b2ebae638eb7 ]
 
-Some of the allowed operations put the tape into a known position to
-continue operation assuming only the tape position has changed.  But reset
-sets partition, density and block size to drive default values. These
-should be restored to the values before reset.
+When using HDMI PLL frequency division coefficient at 50.25MHz
+that is calculated by rk_hdptx_phy_clk_pll_calc(), it fails to
+get PHY LANE lock. Although the calculated values are within the
+allowable range of PHY PLL configuration.
 
-Normally the current block size and density are stored by the drive.  If
-the settings have been changed, the changed values have to be saved by the
-driver across reset.
+In order to fix the PHY LANE lock error and provide the expected
+50.25MHz output, manually compute the required PHY PLL frequency
+division coefficient and add it to ropll_tmds_cfg configuration
+table.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
+Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250427095124.3354439-1-algea.cao@rock-chips.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 24 +++++++++++++++++++++---
- drivers/scsi/st.h |  2 ++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 3ff4e6d44db88..9ba5ad106b653 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -950,7 +950,6 @@ static void reset_state(struct scsi_tape *STp)
- 		STp->partition = find_partition(STp);
- 		if (STp->partition < 0)
- 			STp->partition = 0;
--		STp->new_partition = STp->partition;
- 	}
- }
- 
-@@ -2919,14 +2918,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 		if (cmd_in == MTSETDENSITY) {
- 			(STp->buffer)->b_data[4] = arg;
- 			STp->density_changed = 1;	/* At least we tried ;-) */
-+			STp->changed_density = arg;
- 		} else if (cmd_in == SET_DENS_AND_BLK)
- 			(STp->buffer)->b_data[4] = arg >> 24;
- 		else
- 			(STp->buffer)->b_data[4] = STp->density;
- 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
- 			ltmp = arg & MT_ST_BLKSIZE_MASK;
--			if (cmd_in == MTSETBLK)
-+			if (cmd_in == MTSETBLK) {
- 				STp->blksize_changed = 1; /* At least we tried ;-) */
-+				STp->changed_blksize = arg;
-+			}
- 		} else
- 			ltmp = STp->block_size;
- 		(STp->buffer)->b_data[9] = (ltmp >> 16);
-@@ -3627,9 +3629,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 				retval = (-EIO);
- 				goto out;
- 			}
--			reset_state(STp);
-+			reset_state(STp); /* Clears pos_unknown */
- 			/* remove this when the midlevel properly clears was_reset */
- 			STp->device->was_reset = 0;
-+
-+			/* Fix the device settings after reset, ignore errors */
-+			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
-+				mtc.mt_op == MTEOM) {
-+				if (STp->can_partitions) {
-+					/* STp->new_partition contains the
-+					 *  latest partition set
-+					 */
-+					STp->partition = 0;
-+					switch_partition(STp);
-+				}
-+				if (STp->density_changed)
-+					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
-+				if (STp->blksize_changed)
-+					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
-+			}
- 		}
- 
- 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
-diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
-index 7a68eaba7e810..2105c6a5b4586 100644
---- a/drivers/scsi/st.h
-+++ b/drivers/scsi/st.h
-@@ -165,12 +165,14 @@ struct scsi_tape {
- 	unsigned char compression_changed;
- 	unsigned char drv_buffer;
- 	unsigned char density;
-+	unsigned char changed_density;
- 	unsigned char door_locked;
- 	unsigned char autorew_dev;   /* auto-rewind device */
- 	unsigned char rew_at_close;  /* rewind necessary at close */
- 	unsigned char inited;
- 	unsigned char cleaning_req;  /* cleaning requested? */
- 	int block_size;
-+	int changed_blksize;
- 	int min_block;
- 	int max_block;
- 	int recover_count;     /* From tape opening */
+diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+index dc6e01dff5c74..9b99fdd43f5f5 100644
+--- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
++++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
+@@ -328,6 +328,8 @@ static const struct ropll_config ropll_tmds_cfg[] = {
+ 	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
+ 	{ 650000, 162, 162, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 54, 0, 16, 4, 1,
+ 	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
++	{ 502500, 84, 84, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 11, 1, 4, 5,
++	  4, 11, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
+ 	{ 337500, 0x70, 0x70, 1, 1, 0xf, 1, 1, 1, 1, 1, 1, 1, 0x2, 0, 0x01, 5,
+ 	  1, 1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
+ 	{ 400000, 100, 100, 1, 1, 11, 1, 1, 0, 1, 0, 1, 1, 0x9, 0, 0x05, 0,
 -- 
 2.39.5
 
