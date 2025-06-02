@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D967ACB07E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C96ACB70E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 494621BA625F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D698F1940FC3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C369C2236F2;
-	Mon,  2 Jun 2025 14:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F7F233D9E;
+	Mon,  2 Jun 2025 14:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnrVSjgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMmPlh82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB2C22333B;
-	Mon,  2 Jun 2025 14:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0048A230BD9;
+	Mon,  2 Jun 2025 14:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872922; cv=none; b=uirNazy4zs910KfvRN2oBg2Hs/jETaR59PhKqKoSAd+XI6Unf+OW/SWZH22ZBdoZREjsjHG+yXKvMpJSmaQlE4f9jd8L3f/TtwSwJ+q0hZAu0K2Nr9hkFG8UmZhWfQxifUKLgggbXww6MSEeukn2RSSnfxzMY3oXlVlVEXRG1YA=
+	t=1748876205; cv=none; b=pPOPfgNIkIZfy69KzlA9dkRLVD+8yC4DreTpkgkWf3hrs5qaHO9/GAj7ZZis0h5WJ1Py2/aATopaPvqV9YHVxTnh0meJI/qI19163WfEW+g+WF2TO63RyRJoGqentLcTY0fY97hvOERkPqn2m5Yj114ZsTOHWCvC5G66jzjhn5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872922; c=relaxed/simple;
-	bh=ZQbJytnudT4UJZrgJPgHjQDI6ugBvNSENqyNllMf/RI=;
+	s=arc-20240116; t=1748876205; c=relaxed/simple;
+	bh=wX6mRc528Ev+ZmmYvwQybgZzpfyu7RPHcC9E/d5AIQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hz/WE2ZpUl3LT/8QMVIKUvTF57miAlkldIoCNgv40/V43+faEmrLQFfDDOCerCj9+QQYJ/rlqrghIqYu5rdyTLnikzfZ0WZezrgcgQl+djjOrxI+ue4jK3RIsku6o6OyDGYPCgYPvvK/4rx0+y/27MMkdxFyTswWehjQn0FR6pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnrVSjgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B79C4CEEB;
-	Mon,  2 Jun 2025 14:02:01 +0000 (UTC)
+	 MIME-Version; b=JFCRXSEBLc6ulglJT+dmk2/dz/k5dLK/EPUFcUiflTYGiuz1OE6Hang5Hu3sfiEy0QsDOsQAE8xNV/JtVlL/gxqVvD2AR46excM6GQykdPifxZY5AoMZKXuupVPnHSjCVUCQnh8PjvwdQpbYJJFy+QBwp22kz9abbuIy4n/xhgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMmPlh82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC89C4CEEB;
+	Mon,  2 Jun 2025 14:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872922;
-	bh=ZQbJytnudT4UJZrgJPgHjQDI6ugBvNSENqyNllMf/RI=;
+	s=korg; t=1748876204;
+	bh=wX6mRc528Ev+ZmmYvwQybgZzpfyu7RPHcC9E/d5AIQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnrVSjgjyoXalwrW7MOt8ymAy4Rrxz7BrLKksXFRNxoYn++DDpAyHd2gcP5yiFssE
-	 9PTZTNfVmJZKw/V/tWuZFQUyoRzeiiSwGa7WNoaXzTIWfLgvdRSTGNA9KO4ARjZMbY
-	 WbI4pZkAaxT2Gnf7A5NX9ByZvOuomzwJP0zsQQvs=
+	b=TMmPlh826iLAburmh6WDzN0F0J9eg6GTY3fihs3Hmc6kz5nOxd1sPjHUzRQShv6qC
+	 TCbo0zEspzZxWgDNn3UpsOG967oqavZJ+R3tZCEDj0WM/cXnDHpRHEK8kCpmUSk1TD
+	 mltff/xG+f8WXwieBoIRedrS9YoCA2Fzk6O5eD1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	David Gow <davidgow@google.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 39/55] um: let make clean properly clean underlying SUBARCH as well
+Subject: [PATCH 5.15 104/207] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
 Date: Mon,  2 Jun 2025 15:47:56 +0200
-Message-ID: <20250602134239.820707279@linuxfoundation.org>
+Message-ID: <20250602134302.810440379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
+[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
 
-Building the kernel with O= is affected by stale in-tree build artifacts.
+Set the RX mask and the highest RX rate according to the number of
+spatial streams the chip can receive. For RTL8814AU that is 3.
 
-So, if the source tree is not clean, Kbuild displays the following:
-
-  $ make ARCH=um O=build defconfig
-  make[1]: Entering directory '/.../linux/build'
-  ***
-  *** The source tree is not clean, please run 'make ARCH=um mrproper'
-  *** in /.../linux
-  ***
-  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
-  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
-  make[1]: Leaving directory '/.../linux/build'
-  make: *** [Makefile:248: __sub-make] Error 2
-
-Usually, running 'make mrproper' is sufficient for cleaning the source
-tree for out-of-tree builds.
-
-However, building UML generates build artifacts not only in arch/um/,
-but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
-files remain under arch/x86/, Kbuild will reuse them instead of creating
-new ones under the specified build directory.
-
-This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
-
-Reported-by: Shuah Khan <skhan@linuxfoundation.org>
-Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 00b63bac5effb..3317d87e20920 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -151,5 +151,6 @@ MRPROPER_FILES += $(HOST_DIR)/include/generated
- archclean:
- 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
- 		-o -name '*.gcov' \) -type f -print | xargs rm -f
-+	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index c5d0b213a3546..5101db5ab6d27 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1330,6 +1330,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 			    struct ieee80211_sta_ht_cap *ht_cap)
+ {
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	int i;
  
- export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING DEV_NULL_PATH
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -1349,17 +1350,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+ 	ht_cap->ampdu_density = IEEE80211_HT_MPDU_DENSITY_16;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+-	if (efuse->hw_cap.nss > 1) {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0xFF;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(300);
+-	} else {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0x00;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(150);
+-	}
++
++	for (i = 0; i < efuse->hw_cap.nss; i++)
++		ht_cap->mcs.rx_mask[i] = 0xFF;
++	ht_cap->mcs.rx_mask[4] = 0x01;
++	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+ }
+ 
+ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
