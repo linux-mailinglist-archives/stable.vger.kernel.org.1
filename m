@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B184DACB3BE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9E8ACB811
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389E21944307
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52A201BA5C55
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6D722A7E2;
-	Mon,  2 Jun 2025 14:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC49B231828;
+	Mon,  2 Jun 2025 15:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcW8aE+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuQ8CmDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D49E222587;
-	Mon,  2 Jun 2025 14:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AC8231827;
+	Mon,  2 Jun 2025 15:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874391; cv=none; b=sTe3C7nRTqnn3KCxZtt7DIlkvlunaF4e0i7shP4AhQUOc3eXNeL6gz3YXShEtQK4hIigH/hQ0/XFZiAewAaSiYAWMdlAcHlp0BdsehFhuLOxvUo3EYY9NhK12QiZ2Zq3t6iYjw7+FnY7ENg/oat5fl51pBogqMBdtmfrFH7oOhk=
+	t=1748876736; cv=none; b=j9XTByKq/tc1vlSOBwPo+4m2A3hIOJH12Xjdqh3xiIus/CJaw4R6l/IjdAf7kh9PPDW41W1pgM8LEXMN3j2e2uCXZ84ikasGDdS1oOFeBQHGO6wFpYGKtltwroVE5N0+uwHNBGcRtXQFVUUx7ve9QnnJexo9VDLOefnUYINYvfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874391; c=relaxed/simple;
-	bh=RwuYqXo9v28kRb6qLbUpR9HBdeAuawuimMQ92sAxwew=;
+	s=arc-20240116; t=1748876736; c=relaxed/simple;
+	bh=0b+ghnFYw7Q8Vo07dT3T0RVpezYROHc81qY29JhYyyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzm/+W029oFcO+vi0IEpJ4LLhwwQkUc69gTp93otGSJgGATn/868dXfmsPtXbZ9jUh9SK1pKtwc8XWfLBWVfILQY4e23rn+KWTOnezSVVsMDpg43D0y9XleMIy875rPOMTLdQfxPAx1CwPsK5HMdPQKXDKRDaSVZiZPveEBRW6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcW8aE+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3ABC4CEEB;
-	Mon,  2 Jun 2025 14:26:30 +0000 (UTC)
+	 MIME-Version; b=anSx3C3rCbnGgyZ09e5K+Az+nBrjL/v8YSHoczDcI1AcchBqV2IouO8220NmKRCLRTJHtR+svxx3yPCSwvKqBMTGEhtO9Z62ADK2mY+oneZaWNXiV+glRlHkgfgGI/IVOiL2kyjQfp1jWSrsiVF8UihuMevTMZV7zS3oBZIUYdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuQ8CmDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA49FC4CEEB;
+	Mon,  2 Jun 2025 15:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874391;
-	bh=RwuYqXo9v28kRb6qLbUpR9HBdeAuawuimMQ92sAxwew=;
+	s=korg; t=1748876736;
+	bh=0b+ghnFYw7Q8Vo07dT3T0RVpezYROHc81qY29JhYyyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcW8aE+/EiOPvi/X73qUdUFJ3ikGxpS09eyCobLd7LzjukOv6WQQyjjY+MUoqn5VP
-	 zgkjCabT183D+kbjUd29cWkunpRHRTJ0LE0LjXQZyiaUS4Q/I2yzsHkenvXjbpeOWB
-	 1gNvkrkt3RS9cks5SPmPCux/eIibkAwNKCZG/ng4=
+	b=JuQ8CmDT2ghHCfU/BOyIQms4qFla3GNFoHNL3be2TBUFGt9tjLapzXvEe01LU6rgm
+	 r4gR1SC96pENtBjj6dO7ERPndXQKDKRD019JUYpyxvM/uNp+1eAurA1wLDlDcIYKel
+	 ZtNt0KC7t/IP4Qgl6tUk32UURLElC2EhhLFY/iec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 5.4 001/204] EDAC/altera: Test the correct error reg offset
+	Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 058/325] i3c: master: svc: Fix missing STOP for master request
 Date: Mon,  2 Jun 2025 15:45:34 +0200
-Message-ID: <20250602134255.521463824@linuxfoundation.org>
+Message-ID: <20250602134322.115431379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+From: Stanley Chu <yschu@nuvoton.com>
 
-commit 4fb7b8fceb0beebbe00712c3daf49ade0386076a upstream.
+[ Upstream commit 0430bf9bc1ac068c8b8c540eb93e5751872efc51 ]
 
-Test correct structure member, ecc_cecnt_offset, before using it.
+The controller driver nacked the master request but didn't emit a
+STOP to end the transaction. The driver shall refuse the unsupported
+requests and return the controller state to IDLE by emitting a STOP.
 
-  [ bp: Massage commit message. ]
-
-Fixes: 73bcc942f427 ("EDAC, altera: Add Arria10 EDAC support")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250425142640.33125-2-matthew.gerlach@altera.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-4-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/altera_edac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -96,7 +96,7 @@ static irqreturn_t altr_sdram_mc_err_han
- 	if (status & priv->ecc_stat_ce_mask) {
- 		regmap_read(drvdata->mc_vbase, priv->ecc_saddr_offset,
- 			    &err_addr);
--		if (priv->ecc_uecnt_offset)
-+		if (priv->ecc_cecnt_offset)
- 			regmap_read(drvdata->mc_vbase,  priv->ecc_cecnt_offset,
- 				    &err_count);
- 		edac_mc_handle_error(HW_EVENT_ERR_CORRECTED, mci, err_count,
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 38095649ed276..cf0550c6e95f0 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -495,6 +495,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 			queue_work(master->base.wq, &master->hj_work);
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
++		svc_i3c_master_emit_stop(master);
+ 	default:
+ 		break;
+ 	}
+-- 
+2.39.5
+
 
 
 
