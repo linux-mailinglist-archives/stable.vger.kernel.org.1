@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6D1ACB8A7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:44:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE5BACB56C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A30943F63
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92AE37AD02A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21517224228;
-	Mon,  2 Jun 2025 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E40223714;
+	Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXVYcDtW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMeSbft7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FAB1FF61E;
-	Mon,  2 Jun 2025 15:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FE617BBF;
+	Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877070; cv=none; b=VlAubzU8BWyhFKvgXMyQojDv40G3JNKEDoEYjuN3d9m6LVUYOwPcEIl5rglhQhX9XGT3UIpXKgc3YBW/SOtl6wJc5y1+xSliXLsZIZQdw4v6drSc2hAoq8c16TWzglwIpM+lgFUM4ik+8L0uJ5mhQ5EX++9olmXXKiwS5SzfJVA=
+	t=1748876082; cv=none; b=um0tg+90dgZx22Lw9Q+P+8QK3YV5bRE7muQYX0RtSns1Dyoed+ebqd9/J7yNeTIBhPovnRO/werDefeGAtycb2ntW2nYOvU1zhNHSHV7QXPNYwQMO9zChOYEWUGE9qdWDNoCMsJ6LB9UeQG/vV2lYsp4/Dd2mTlYEgXYoTm410A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877070; c=relaxed/simple;
-	bh=/4vE8x2rNwu3LhVcQ2SbZNAVx/VNUiKMsVlSI2Jyirg=;
+	s=arc-20240116; t=1748876082; c=relaxed/simple;
+	bh=cU6IiZyKiTDepseXrZGdgGjKmaAdOBWUwWjpBvX5Odw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzszLICk+0jy0v2raK3gmjcuY44SmvkzllClEICmHFLeWl0QCOOvuBmKWlFGY+UtNVjuwuNzk4zVMLbaQqLW7w3tk9WYwWW6cINp2Rvau6Ravvc6ldtgib/1vJvwC+zFf1vc5Ogts5mxWQTtNgJbymaJ5irNb61GVnKGASH8cgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXVYcDtW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0D3C4CEEB;
-	Mon,  2 Jun 2025 15:11:10 +0000 (UTC)
+	 MIME-Version; b=jUN1gUn5Iznuk1ELSuhpd0YarectSEKvKzvz0z7OrMAIsA+c5N8gKLTmXwDGqm4bqicUlC2+cEtfaDQq7XNInQmVrN1F7iBsdXPvWr7JWvs2XeCL4VvGtODi1HWQ0bZv3mO/VtrXPZP8jgC7WSIA6kD36Kx3gqDmThUGKp5eghc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMeSbft7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ED1C4CEEB;
+	Mon,  2 Jun 2025 14:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877070;
-	bh=/4vE8x2rNwu3LhVcQ2SbZNAVx/VNUiKMsVlSI2Jyirg=;
+	s=korg; t=1748876082;
+	bh=cU6IiZyKiTDepseXrZGdgGjKmaAdOBWUwWjpBvX5Odw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXVYcDtW8J/keYNtInkFG9A8b+8KiSbZokJ36+bmX+OAMcDSOOZUiykOoQ/XDsFtp
-	 Fc0rObQyYl4zXkvRgeR1/NN/MiyCPnYA+cCx72l7zsaGv4WIrds1sx7tDlTC30OCQm
-	 5LfgHo2DpJavHxQh/lTEHgtWTFUQYQ/PhpWsclnY=
+	b=CMeSbft7lHSz8Zt9v6ImMmLyzPQ4dMXGIoduGzI6unsougiEvvxTH30mrRwvEq9QS
+	 1mUjO8qNZl20mO+xZRPWYYSl5jxblzWu61IeIDxs9I+m9wS6BNKHtT4OYx4fcG5ohN
+	 BhsHM9wQyv/1YavMe9JkkpzSjPehdY+XH7J3idoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/325] ACPI: HED: Always initialize before evged
+Subject: [PATCH 5.15 066/207] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
 Date: Mon,  2 Jun 2025 15:47:18 +0200
-Message-ID: <20250602134326.384344247@linuxfoundation.org>
+Message-ID: <20250602134301.327793970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaofei Tan <tanxiaofei@huawei.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
+[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
 
-When the HED driver is built-in, it initializes after evged because they
-both are at the same initcall level, so the initialization ordering
-depends on the Makefile order.  However, this prevents RAS records
-coming in between the evged driver initialization and the HED driver
-initialization from being handled.
+PLLD is usually used as parent clock for internal video devices, like
+DSI for example, while PLLD2 is used as parent for HDMI.
 
-If the number of such RAS records is above the APEI HEST error source
-number, the HEST resources may be exhausted, and that may affect
-subsequent RAS error reporting.
-
-To fix this issue, change the initcall level of HED to subsys_initcall
-and prevent the driver from being built as a module by changing ACPI_HED
-in Kconfig from "tristate" to "bool".
-
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/Kconfig | 2 +-
- drivers/acpi/hed.c   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/tegra114.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index 473241b5193fa..596e96d3b3bdb 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -438,7 +438,7 @@ config ACPI_SBS
- 	  the modules will be called sbs and sbshc.
- 
- config ACPI_HED
--	tristate "Hardware Error Device"
-+	bool "Hardware Error Device"
- 	help
- 	  This driver supports the Hardware Error Device (PNP0C33),
- 	  which is used to report some hardware errors notified via
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index 60a2939cde6c5..e8e9b1ac06b88 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
- 		.notify = acpi_hed_notify,
- 	},
- };
--module_acpi_driver(acpi_hed_driver);
-+
-+static int __init acpi_hed_driver_init(void)
-+{
-+	return acpi_bus_register_driver(&acpi_hed_driver);
-+}
-+subsys_initcall(acpi_hed_driver_init);
- 
- MODULE_AUTHOR("Huang Ying");
- MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
+diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
+index fb99b3e971c3b..c00097794dab1 100644
+--- a/arch/arm/boot/dts/tegra114.dtsi
++++ b/arch/arm/boot/dts/tegra114.dtsi
+@@ -126,7 +126,7 @@ dsi@54400000 {
+ 			reg = <0x54400000 0x00040000>;
+ 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
+ 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
+-				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
++				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
+ 			clock-names = "dsi", "lp", "parent";
+ 			resets = <&tegra_car 82>;
+ 			reset-names = "dsi";
 -- 
 2.39.5
 
