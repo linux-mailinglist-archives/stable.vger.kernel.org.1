@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-149715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7DCACB45E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C63ACB06A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A85F9E20E3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D4818972D9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFCE227B8C;
-	Mon,  2 Jun 2025 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A93221FA4;
+	Mon,  2 Jun 2025 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+2V6vPW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Qlyoh0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F5021882B;
-	Mon,  2 Jun 2025 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB8C1DED64;
+	Mon,  2 Jun 2025 14:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874808; cv=none; b=iHViqArRnlURm5ZbZOtPkd0Kjp4kAtsEkqinDnN0lLfd8s+Go679Ai5jR4iLv5+LpIMW4RJL8nv+nMg22Ahx7ktR7yV1sgLJyGLQqosTt2ZVsEGMQ3+cIgf0aXbmkxehbJFt2oMsqUdHNsidfF2qlc7wWj0YbLmg6Al0m4DQ59E=
+	t=1748872895; cv=none; b=IhYFJ0wrrCuEiJV7DirWTMswPD5oHUxnMrwNzg3AIqKfUrSybJo+9k8+Na5Jnx+BnqUnUOSlSIkZlDcrJjBHqOMe1DSrUstLxdYookq0yOSYnpWNJqoAVl2vGT4J/WCclFwC1LjzdUGF+JBnMUbxGdY5Zg6K8i4YoTgs3sJE/f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874808; c=relaxed/simple;
-	bh=zE74Qtg+P3cPP5ujGmmZGKKVfq7G8zKruiFCN53DPIk=;
+	s=arc-20240116; t=1748872895; c=relaxed/simple;
+	bh=14xDnfdgyyiIHbcKnWE2zjQCbbtFAhkwkb9K2gsAXCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBe2dUxYg88uJSaO9ywV7Wn9AAQSRxa8r4EhLoTE97rIDTsGLoJBDxUDmFogjXy9K4z3G192bSuD/1mS8ydWb0cAR7YZYiEmpJkNvbUmEunVPiZvgn+lF/rbGjUyy9nBI73nRim2PrgKkHO7U8En0G1ln/SJrLgGWjXoDcIFOPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+2V6vPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D804C4CEEB;
-	Mon,  2 Jun 2025 14:33:27 +0000 (UTC)
+	 MIME-Version; b=WiSBHkU/vsef/TKP7Vf7m/MGWt0GwC6/zJ6BHUH/AaXPAA6p9RtrL9RxkOujgvyfoZjIXsdLDNXMg5Yqt3VOBmEwktlU1mxPG/3NXBYCRRCxJj3vF2qR62cOR6rpz7W4xzrMGYBgP9y5tG/CWEa05FEOsON5UD7zBAaUkIU4Nlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Qlyoh0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901E0C4CEF0;
+	Mon,  2 Jun 2025 14:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874808;
-	bh=zE74Qtg+P3cPP5ujGmmZGKKVfq7G8zKruiFCN53DPIk=;
+	s=korg; t=1748872895;
+	bh=14xDnfdgyyiIHbcKnWE2zjQCbbtFAhkwkb9K2gsAXCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+2V6vPWHpCQrQLkVhO7KGit/YTWl/rXTvEUGb5xcKQITJCciqxUnVhQdaF4mlIyl
-	 8PWIKfQ/Q6j17xp/woKVnBCqkMSxl0ITSYJWZDPFw3VO+sVMuiiG1ujp4OtjivCsDG
-	 C2Fl190rOmb3na6c7Zghwq5UG5W9Ngyw33pUAq8g=
+	b=1Qlyoh0wYwCWXCo5gWl7xbNWX7n1DmmSNpiSkJf0LTJOODkVho7BrOVmgMbcReJqE
+	 0dFvlZ+D0TycAz3rNFMS+iNxkGRdbcOEGZ5dplaZjwuSaSzR8XhQpMwkFskZ84pYY/
+	 Sw7Dr2zSlAoMagD9t62MfGJrvI6k8+Pvm47TNPGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/204] posix-timers: Add cond_resched() to posix_timer_add() search loop
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 07/55] arm64: dts: qcom: sm8550: Add missing properties for cryptobam
 Date: Mon,  2 Jun 2025 15:47:24 +0200
-Message-ID: <20250602134300.023325185@linuxfoundation.org>
+Message-ID: <20250602134238.558774473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 5f2909c6cd13564a07ae692a95457f52295c4f22 ]
+commit 663cd2cad36da23cf1a3db7868fce9f1a19b2d61 upstream.
 
-With a large number of POSIX timers the search for a valid ID might cause a
-soft lockup on PREEMPT_NONE/VOLUNTARY kernels.
+num-channels and qcom,num-ees are required for BAM nodes without clock,
+because the driver cannot ensure the hardware is powered on when trying to
+obtain the information from the hardware registers. Specifying the node
+without these properties is unsafe and has caused early boot crashes for
+other SoCs before [1, 2].
 
-Add cond_resched() to the loop to prevent that.
+Add the missing information from the hardware registers to ensure the
+driver can probe successfully without causing crashes.
 
-[ tglx: Split out from Eric's series ]
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/all/20250214135911.2037402-2-edumazet@google.com
-Link: https://lore.kernel.org/all/20250308155623.635612865@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 433477c3bf0b ("arm64: dts: qcom: sm8550: add QCrypto nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-3-f560889e65d8@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/posix-timers.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index f3b8313475acd..2a2e4f6622ae7 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -159,6 +159,7 @@ static int posix_timer_add(struct k_itimer *timer)
- 			return id;
- 		}
- 		spin_unlock(&hash_lock);
-+		cond_resched();
- 	}
- 	/* POSIX return code when no timer ID could be allocated */
- 	return -EAGAIN;
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -1952,6 +1952,8 @@
+ 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,num-ees = <4>;
++			num-channels = <20>;
+ 			qcom,controlled-remotely;
+ 			iommus = <&apps_smmu 0x480 0x0>,
+ 				 <&apps_smmu 0x481 0x0>;
 
 
 
