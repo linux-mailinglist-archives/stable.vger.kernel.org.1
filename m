@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84E1ACB059
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:04:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6625ACB038
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 141BD3B9692
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214EB189557F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC11223708;
-	Mon,  2 Jun 2025 14:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3C0221FC3;
+	Mon,  2 Jun 2025 14:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6Fe+ApT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGZc0Dez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F7C223322;
-	Mon,  2 Jun 2025 14:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CE62222CA;
+	Mon,  2 Jun 2025 14:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872925; cv=none; b=XMEsDIcunmFKtFZ2AZn5T6LYconZxq0MOnOAoye1zK2BSBRF0tSHJOUJyZrmINw9nO++37mKCVOZF5umz3rL8Xl3NuJMPm8OQGz1ZwDJvE+wnzi8RjlfibaVpmD/G9I2qbRlOzhCGRf6mXuzkgrzqQChcKn9rR8GwKTvwVIiQX0=
+	t=1748872820; cv=none; b=Pru5EJswc+/lGPP8UDfue5Xjm+yY9HpSS1xBmB3JDliNy2QfS8EqjIezTdqnpuxEEGRxkuPLusa22QsRzjGXVN5ESa0FYVRssFRmBRIJAahWpZgJzPhZnEwZxb71tz+HfljFaWPtg0PiE1ur95N8FuxBntB7Yw6DMbwcGcs1j3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872925; c=relaxed/simple;
-	bh=JorqdC9NRfMJ1tlIqPH1bI40xnedU0sI9gfKXjRIZEo=;
+	s=arc-20240116; t=1748872820; c=relaxed/simple;
+	bh=DxQ/bz9XDPkNv13V7uqtTL6UNJdlxmT1fkVEYXVHXKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GwYEuEsXRQLUhkSJqrDQSfHQcElWTY5TB7TLJdH6g093VCwirS3Zs0LjMfpIeT0gvAr66b+3ZOoBLwxBDyISY2SFJ7Fy+2rnyHVUMNfwG0jZT2ReWpqHqC9OH2N4Smn2UKtA1lKWU5xWw3W1dZHtF+DTR7wkmRTXDWYTdOsH6Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6Fe+ApT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E13C4CEEB;
-	Mon,  2 Jun 2025 14:02:04 +0000 (UTC)
+	 MIME-Version; b=MX7W7pmh+F87BiHHY2HVUVEZkjbtRcnOe2acUGfhbXmRnnILLrEu/hTYLJA/dmqARX6uWAcPi5dp8i2sxOvyQ1d0dnj9Ua2KvLcIHAs4tkZJWi8p1AetkExHXDoK0qsWiSTKEyiMQseVK/jtDOscQTzlO3eIkQlD3lU3d4pt0fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGZc0Dez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315DBC4CEEE;
+	Mon,  2 Jun 2025 14:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872924;
-	bh=JorqdC9NRfMJ1tlIqPH1bI40xnedU0sI9gfKXjRIZEo=;
+	s=korg; t=1748872820;
+	bh=DxQ/bz9XDPkNv13V7uqtTL6UNJdlxmT1fkVEYXVHXKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6Fe+ApT7nS3LJecGWz6mUp5ccYgRAZy9+pCPdDQ5NvrNaiLP48whNrjIozuN9giq
-	 fWjv6Dso3eqPFyZ695DnNr505JhJPedgPzLLXk1G0JV9CpC8tk8E1kPlz185pojstj
-	 x/L2zb0LveyZkZmL3lV8G+Me3GgSRLRqB1tJDOmE=
+	b=RGZc0DezsJ7kTTgD2A27mKrvTFdDuYVgGjnyHwahMdxQYSLpetf0Wqayu86S9p74c
+	 d6H7R/7u3pVNosLTh8gF/yKHj3Y5zxEqE9nLOxbuVljbHpA3l1U518awG4ncTpFuCo
+	 hyVY25BZiBV1STrLUbM7vB+mjeS3Z9rR5Zq0wXC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Markus Burri <markus.burri@mt.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Nishanth Menon <nm@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 40/55] gpio: virtuser: fix potential out-of-bound write
-Date: Mon,  2 Jun 2025 15:47:57 +0200
-Message-ID: <20250602134239.857486404@linuxfoundation.org>
+Subject: [PATCH 6.14 72/73] net: ethernet: ti: am65-cpsw: Lower random mac address error print to info
+Date: Mon,  2 Jun 2025 15:47:58 +0200
+Message-ID: <20250602134244.520440326@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Burri <markus.burri@mt.com>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit 7118be7c6072f40391923543fdd1563b8d56377c ]
+[ Upstream commit 50980d8da71a0c2e045e85bba93c0099ab73a209 ]
 
-If the caller wrote more characters, count is truncated to the max
-available space in "simple_write_to_buffer". Check that the input
-size does not exceed the buffer size. Write a zero termination
-afterwards.
+Using random mac address is not an error since the driver continues to
+function, it should be informative that the system has not assigned
+a MAC address. This is inline with other drivers such as ax88796c,
+dm9051 etc. Drop the error level to info level.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505091754.285hHbr2-lkp@intel.com/
-Signed-off-by: Markus Burri <markus.burri@mt.com>
-Link: https://lore.kernel.org/r/20250509150459.115489-1-markus.burri@mt.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://patch.msgid.link/20250516122655.442808-1-nm@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-virtuser.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-virtuser.c b/drivers/gpio/gpio-virtuser.c
-index e89f299f21400..dcecb7a259117 100644
---- a/drivers/gpio/gpio-virtuser.c
-+++ b/drivers/gpio/gpio-virtuser.c
-@@ -400,10 +400,15 @@ static ssize_t gpio_virtuser_direction_do_write(struct file *file,
- 	char buf[32], *trimmed;
- 	int ret, dir, val = 0;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index cac67babe4559..1141107407165 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2775,7 +2775,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 							port->slave.mac_addr);
+ 			if (!is_valid_ether_addr(port->slave.mac_addr)) {
+ 				eth_random_addr(port->slave.mac_addr);
+-				dev_err(dev, "Use random MAC address\n");
++				dev_info(dev, "Use random MAC address\n");
+ 			}
+ 		}
  
--	ret = simple_write_to_buffer(buf, sizeof(buf), ppos, user_buf, count);
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
-+
-+	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
- 	if (ret < 0)
- 		return ret;
- 
-+	buf[ret] = '\0';
-+
- 	trimmed = strim(buf);
- 
- 	if (strcmp(trimmed, "input") == 0) {
-@@ -622,12 +627,15 @@ static ssize_t gpio_virtuser_consumer_write(struct file *file,
- 	char buf[GPIO_VIRTUSER_NAME_BUF_LEN + 2];
- 	int ret;
- 
-+	if (count >= sizeof(buf))
-+		return -EINVAL;
-+
- 	ret = simple_write_to_buffer(buf, GPIO_VIRTUSER_NAME_BUF_LEN, ppos,
- 				     user_buf, count);
- 	if (ret < 0)
- 		return ret;
- 
--	buf[strlen(buf) - 1] = '\0';
-+	buf[ret] = '\0';
- 
- 	ret = gpiod_set_consumer_name(data->ad.desc, buf);
- 	if (ret)
 -- 
 2.39.5
 
