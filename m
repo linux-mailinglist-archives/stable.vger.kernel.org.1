@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DFCACB541
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EE5ACB6B8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 828124A4E66
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD7C4A7E1F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582D6221714;
-	Mon,  2 Jun 2025 14:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF73235066;
+	Mon,  2 Jun 2025 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQ1A27mN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXR84YHY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F42A1FCFE2;
-	Mon,  2 Jun 2025 14:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF43423183D;
+	Mon,  2 Jun 2025 14:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875649; cv=none; b=IRVtN77kJLn3xF6Rw/ApKdN77hh2SjPp3zuNrZJwPqEZ8MmeVTwEksuWJVQKutkfV0dFjrtISXP2zN2E9nyy5eZX01rki/1HF94N2aDk1bXYc8Rbe0IegXeNdmQsxueKgUtH9IJ+HG02c5zZqL47AI91DyvL+cr/QZNNDWh5b2w=
+	t=1748876239; cv=none; b=Kto59gtaJedxi8fN5ZmHVUh+h235qoLKSfR9gvMENXyjfvwXlrVqCNCFi98ZNF0EziQ5fG1hsYBFMvGeNeFIxc6HZC6Fk536buBsk7JY6kMEwAJYbqfae7OKaCkN7fOhC9XLCmEKPO4wMHMN+SZwHryaSmQCc3eua3urwlz3Ro0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875649; c=relaxed/simple;
-	bh=RWc7VnWpyilLxWVL/SoalTiWIC7C+vQ1Qaq3a5Eim9Y=;
+	s=arc-20240116; t=1748876239; c=relaxed/simple;
+	bh=dQFMnJZX9jpFtvFvEVEmPCSuhtM1I6A/c4eRExKwm1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIi4h9TyYA3bay+napCUZjxXOfAG0RyR+s/a6BOGEfpzBrfCt/2SBT0wPeMFTuoAzP/9WkuhBW9VTGklSP4LzzgNIemXMYf6ntYw0DUWyvWM6n4ImT+q8RKtA906m7AXZBEMXosmD9+FMzMOiD/mPMgb9QE3Z+gn1tkKZkMZT5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQ1A27mN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81877C4CEEB;
-	Mon,  2 Jun 2025 14:47:28 +0000 (UTC)
+	 MIME-Version; b=QfFOdbgyO5KLPWh92c2kIQOm5R1k8DtVozuLhj71Q9R0cQe/yrMDdhNYzvTu5fg4uLZkcCgl9F7/Qr2mg1PzSOspbUCsX93ocMLwWQUJKzU8Nylj7U/5HTqHQtlcFmFo3PlWxIkseaNHsIcnFwcjndDUJERLEin6HX5WDe5E2KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXR84YHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C785C4CEEB;
+	Mon,  2 Jun 2025 14:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875648;
-	bh=RWc7VnWpyilLxWVL/SoalTiWIC7C+vQ1Qaq3a5Eim9Y=;
+	s=korg; t=1748876239;
+	bh=dQFMnJZX9jpFtvFvEVEmPCSuhtM1I6A/c4eRExKwm1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQ1A27mNzuafmse6TzaJQMIQYCqovHVdZFSjsdxzRLNKvzBLtsysMRonRkrpMnZk8
-	 cOEHfO5N9TLN2n0BQ91tNep0k+FFxh/uoTDExIWb76sjIaWcqUqfGv9Bqhzf4DtXUy
-	 GqKbqN7GdhdaFzsKJwocx1uGO1I4FKM0rHQlHqNc=
+	b=kXR84YHY82xTofbNcFA0y3HHrfDNH9F7zeSFk+WTq9PR5HdmTx9lyAVd6Oc8r+JrX
+	 99BDNzbnnoj+8m/BaGe1kKDhxSTjVetGOE6Oe3A6+m3t+Ybo50O+/xTtnyZdB6+mjv
+	 K9Va1uYemNg6ZrHKwqzJvD+Ge9J+RkOCJnFgWuNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 201/270] ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()
+Subject: [PATCH 5.15 114/207] net/mlx5: Apply rate-limiting to high temperature warning
 Date: Mon,  2 Jun 2025 15:48:06 +0200
-Message-ID: <20250602134315.404617669@linuxfoundation.org>
+Message-ID: <20250602134303.191361687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 7f1186a8d738661b941b298fd6d1d5725ed71428 ]
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-snd_soc_dai_set_tdm_slot() calls .xlate_tdm_slot_mask() or
-snd_soc_xlate_tdm_slot_mask(), but didn't check its return value.
-Let's check it.
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
 
-This patch might break existing driver. In such case, let's makes
-each func to void instead of int.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87o6z7yk61.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index 4705c3da6280f..f9aba413e4952 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -208,10 +208,11 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 080aee3e3f9bb..15d90d68b1ffd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -166,9 +166,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- 	if (dai->driver->ops &&
- 	    dai->driver->ops->xlate_tdm_slot_mask)
--		dai->driver->ops->xlate_tdm_slot_mask(slots,
--						      &tx_mask, &rx_mask);
-+		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
- 	else
--		snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+	if (ret)
-+		goto err;
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
  
- 	dai->tx_mask = tx_mask;
- 	dai->rx_mask = rx_mask;
-@@ -220,6 +221,7 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- 	    dai->driver->ops->set_tdm_slot)
- 		ret = dai->driver->ops->set_tdm_slot(dai, tx_mask, rx_mask,
- 						      slots, slot_width);
-+err:
- 	return soc_dai_ret(dai, ret);
+ 	return NOTIFY_OK;
  }
- EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
 -- 
 2.39.5
 
