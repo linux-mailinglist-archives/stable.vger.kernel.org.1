@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-149267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C25AACB1E8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:25:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7869AACB1ED
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:25:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE0A4856A5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE4B03AA8C7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057BC21CA07;
-	Mon,  2 Jun 2025 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36DB239090;
+	Mon,  2 Jun 2025 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUI/7Ofx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3vBUuD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58122C3247;
-	Mon,  2 Jun 2025 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B211223316;
+	Mon,  2 Jun 2025 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873436; cv=none; b=vCpxc2swCRLqGA4d6BfZCoMEHEGqlr/SE7oQxj7jyU9j22mWtAUdUMIcDZr3PQRjydeB2oOxeiq1GiG3e+dDoEm07Cmw5NqiJ6QFKPJNZPjfoiqBmhbn1Q+CxjyIYYvhcONpvxr7ZPAdT17196ofSUjlozwsQrsell/b/jdnr90=
+	t=1748873440; cv=none; b=e2myJyQa1g5a7+L9j+Gl8ombrKfk4JZyGEj7txXm8naHdVVjlwoopcAa8Kkn1qrq4b2Z9Wh1wo8LeLpBZtE9bG8Dj50a8Ms3chdSPueBuJJYVqwBYVBPzWjRlCR8rhYw7Z3L1S5bbeByDmKk53DBRMb/uT0DChvEnjbfp6kuUhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873436; c=relaxed/simple;
-	bh=dUWuVWuH9kCmNgpX6x1/HzcaPH709x4sRRKTY0nrE4I=;
+	s=arc-20240116; t=1748873440; c=relaxed/simple;
+	bh=Hu+s/zgQLApmuDmJ20XvE4Hi/Xc1unjvKp9DyTuvnE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2lkrlsySBb3L0fcC2jb3ECh2wObK9JgP6TVVJuLjBrssIrVHRp2Nk8EsHEDqJ095bjy63rvIIYQtpQ4gSiNlR9Dr46g0/o6ilzFeyiGShhTcjX9n6V4dXdgLOJScDvnyjicyJlfjJzYuE4YsGwBaPLME7i+peO9DySAu2RD3O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUI/7Ofx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FE6C4CEEB;
-	Mon,  2 Jun 2025 14:10:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KGRMTDpPIMtdfeBDM6rLOwsAH0qYjA1sC8nBX1kMVQyJaV793jJw+YtA/u4dAwShaW8tf2D3fumGGE8Z+O+I6QzZseoPIDFtqBFWuNJS0ZM1tFqLbZXc5MolICDsElS0Tk+Ue7hHHpY7kyfdR8WGpnCo+SafBTmPMiYcrSTbrcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3vBUuD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CC3C4CEEB;
+	Mon,  2 Jun 2025 14:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873436;
-	bh=dUWuVWuH9kCmNgpX6x1/HzcaPH709x4sRRKTY0nrE4I=;
+	s=korg; t=1748873439;
+	bh=Hu+s/zgQLApmuDmJ20XvE4Hi/Xc1unjvKp9DyTuvnE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUI/7OfxGIx0dgQbxzhNZCW+W7ZFJ9gw9eFaTtBcUx7eN2GkU8Lw/ZRF/ipVRjDF6
-	 ilmb+YhpTqkTArPDKmh5qUZO6cECaC6MAMQyfWLKP2I1pzMMeiXpVneeJH9iuxMT4M
-	 sOyCfEjB68uuqS4JVzbx7hUEJNhC90RQ2C98iTaM=
+	b=s3vBUuD9EtgXEzUkhLbIBA3T38P/quSRB9BYss+9VSN0JhmA/Az3adsNwp5ji6h55
+	 y6SLTV19jJr4WZMYeees25u3MZXxBYcoOPG4C2LMZSby+AF/t5gNrGpVaaBebtyW0q
+	 XOXtshzb134vdg3XA/8mTjVyc37w15g1bv7I/O4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/444] posix-timers: Add cond_resched() to posix_timer_add() search loop
-Date: Mon,  2 Jun 2025 15:42:55 +0200
-Message-ID: <20250602134345.402611116@linuxfoundation.org>
+Subject: [PATCH 6.6 112/444] timer_list: Dont use %pK through printk()
+Date: Mon,  2 Jun 2025 15:42:56 +0200
+Message-ID: <20250602134345.440685003@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -61,45 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 5f2909c6cd13564a07ae692a95457f52295c4f22 ]
+[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
 
-With a large number of POSIX timers the search for a valid ID might cause a
-soft lockup on PREEMPT_NONE/VOLUNTARY kernels.
+This reverts commit f590308536db ("timer debug: Hide kernel addresses via
+%pK in /proc/timer_list")
 
-Add cond_resched() to the loop to prevent that.
+The timer list helper SEQ_printf() uses either the real seq_printf() for
+procfs output or vprintk() to print to the kernel log, when invoked from
+SysRq-q. It uses %pK for printing pointers.
 
-[ tglx: Split out from Eric's series ]
+In the past %pK was prefered over %p as it would not leak raw pointer
+values into the kernel log. Since commit ad67b74d2469 ("printk: hash
+addresses printed with %p") the regular %p has been improved to avoid this
+issue.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping looks in atomic contexts.
+
+Switch to the regular pointer formatting which is safer, easier to reason
+about and sufficient here.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/all/20250214135911.2037402-2-edumazet@google.com
-Link: https://lore.kernel.org/all/20250308155623.635612865@linutronix.de
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-timers.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/timer_list.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index b924f0f096fa4..7534069f60333 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -118,6 +118,7 @@ static int posix_timer_add(struct k_itimer *timer)
- 			return id;
- 		}
- 		spin_unlock(&hash_lock);
-+		cond_resched();
- 	}
- 	/* POSIX return code when no timer ID could be allocated */
- 	return -EAGAIN;
+diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
+index ed7d6ad694fba..20a5e6962b696 100644
+--- a/kernel/time/timer_list.c
++++ b/kernel/time/timer_list.c
+@@ -46,7 +46,7 @@ static void
+ print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
+ 	    int idx, u64 now)
+ {
+-	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
++	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
+ 	SEQ_printf(m, ", S:%02x", timer->state);
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
+@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
+ static void
+ print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
+ {
+-	SEQ_printf(m, "  .base:       %pK\n", base);
++	SEQ_printf(m, "  .base:       %p\n", base);
+ 	SEQ_printf(m, "  .index:      %d\n", base->index);
+ 
+ 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
 -- 
 2.39.5
 
