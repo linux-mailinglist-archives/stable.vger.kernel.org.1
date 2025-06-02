@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09AEACB64A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C702ACB475
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C2244A5DA7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366F69E4A1D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6522238166;
-	Mon,  2 Jun 2025 14:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329E9221DB7;
+	Mon,  2 Jun 2025 14:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWlFUfCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KF/AGSEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADA721B9F6;
-	Mon,  2 Jun 2025 14:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E521519EEBD;
+	Mon,  2 Jun 2025 14:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876302; cv=none; b=V+3TOuVfpErOeejX4hOz9Mc2PkRU0+WlMOx9jjs8zYYrOVppHzhzPJHrbKJj9xYCyj5F8wq8ESPXjnH0wMnVb9lqTT0+dTjICWKy8j4rNamZyRPT0+nDv2ND/gS+de+uJOw7sFl1Sfc/ECkm0xArihNw/bYShOMxQ2ez0BVM5uw=
+	t=1748875010; cv=none; b=FWdQWaNMb+4T+QNLz4aZUw4j96nFANQmvEd1JxqGm95KIgnugGUu8kaSqR4z642d1rlVO7ZtkzcunPRNiBmlLt8i3C8QqYffmZfElg+dEc6aiIHkatLFWcf7m3/3I9dQrv+83EWRtNForZEPTRvLYHTWrHAz/CFJL8brHMW0Ioo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876302; c=relaxed/simple;
-	bh=vRl7iyBlBP17GGiOf0XWOXVenQGmBBzrrpj214AigOo=;
+	s=arc-20240116; t=1748875010; c=relaxed/simple;
+	bh=ee77+F6RjBX9dTRqgitOIsCYkNr/01SaQpknEb8dvAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEE+s55BluhbjN5yWhTyFTsMsOZGa8m78RYESO6ZIeFpTAvrPom7Q1S8ugsjGeoAFOw3nS4yFJOWp1/0VUNNBTvXhYtevqFk0qU5oN+DnHVybO7wIZ2UWlsuK9P576a6jlTODbCYVBcOIdh4hFtIssyykLA0j1riQdoW/38N1lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWlFUfCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A2DC4CEEB;
-	Mon,  2 Jun 2025 14:58:21 +0000 (UTC)
+	 MIME-Version; b=l4RoEEnEcPiLzvVBowO3GHOkRZbmOF/A42ILa8BQ8IsfbKA3tnYSYlamFLgJl83nXuI/gjEhxIxkd2pf8U+n3FTkOLFQHwUuWMNAQXvdZGcUBOVUl5f+s4hg4gEvmFK+yafHiI8viwc0NGmuDHqw4nw2S/umsIcSKra9ilxOG8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KF/AGSEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A40FC4CEEB;
+	Mon,  2 Jun 2025 14:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876302;
-	bh=vRl7iyBlBP17GGiOf0XWOXVenQGmBBzrrpj214AigOo=;
+	s=korg; t=1748875009;
+	bh=ee77+F6RjBX9dTRqgitOIsCYkNr/01SaQpknEb8dvAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWlFUfCNATGgapkdTg9tgIwxK7z8s8a1NGOBBBTBx8SR3El9HKgostJ6YCbj1FAm5
-	 krxWOrkk8DjF/VH6rXIdFGc0lWUyZywVv/UOzUaxINB7cJ3x9K//Gaqo5yFskfJ8PX
-	 h2VIzzxM2KrdNDTEVqHQyQEksH1tlkv6Gnjd5p4k=
+	b=KF/AGSEfWwU62FmCEpJsdyMvFllTO+P+KpcsLnZgT9oGFIprARgwYiF716rvLZZpO
+	 3hQONoaVYP+DTfvrwtFFLCw8IHI+mznfxbCpQY36BJv+sCfNzzdDpt8TPX4w+goACW
+	 XRfiA6SnqcxtrryiCZ5oHRUpjzJLEwzX1sP0qoHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/207] hwmon: (xgene-hwmon) use appropriate type for the latency value
+Subject: [PATCH 5.4 174/204] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
 Date: Mon,  2 Jun 2025 15:48:27 +0200
-Message-ID: <20250602134304.007159488@linuxfoundation.org>
+Message-ID: <20250602134302.487311645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
+[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
 
-The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
-evaluated using 32-bit arithmetic.
+When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
+child qdisc's peek() operation before incrementing sch->q.qlen and
+sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
+trigger an immediate dequeue and potential packet drop. In such cases,
+qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
+have not yet been updated, leading to inconsistent queue accounting. This
+can leave an empty HFSC class in the active list, causing further
+consequences like use-after-free.
 
-Since a value of type 'u64' is used to store the eventual result,
-and this result is later sent to the function usecs_to_jiffies with
-input parameter unsigned int, the current data type is too wide to
-store the value of ctx->usecs_lat.
+This patch fixes the bug by moving the increment of sch->q.qlen and
+sch->qstats.backlog before the call to the child qdisc's peek() operation.
+This ensures that queue length and backlog are always accurate when packet
+drops or dequeues are triggered during the peek.
 
-Change the data type of "usecs_lat" to a more suitable (narrower) type.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_hfsc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 60a8ff56c38e9..9e82ba43f5cd2 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -110,7 +110,7 @@ struct xgene_hwmon_dev {
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index 5d73d02b8dce7..66c33d7e243d5 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1573,6 +1573,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 		return err;
+ 	}
  
- 	phys_addr_t		comm_base_addr;
- 	void			*pcc_comm_addr;
--	u64			usecs_lat;
-+	unsigned int		usecs_lat;
- };
++	sch->qstats.backlog += len;
++	sch->q.qlen++;
++
+ 	if (first && !cl->cl_nactive) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+@@ -1588,9 +1591,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
  
- /*
+ 	}
+ 
+-	sch->qstats.backlog += len;
+-	sch->q.qlen++;
+-
+ 	return NET_XMIT_SUCCESS;
+ }
+ 
 -- 
 2.39.5
 
