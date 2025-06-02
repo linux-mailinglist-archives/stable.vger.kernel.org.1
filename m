@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC28ACB515
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BDCACB3A1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80B261BC2F96
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFBD03A78F4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444FB22ACF3;
-	Mon,  2 Jun 2025 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79502288D2;
+	Mon,  2 Jun 2025 14:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mY7iuF2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg5N1rpn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DFA1A4F12;
-	Mon,  2 Jun 2025 14:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E7F227EAE;
+	Mon,  2 Jun 2025 14:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875593; cv=none; b=pJmP/ZPYiBveZK4k861H+TR2gacuaPeJ0bSCf4KjEe8hi3tMHXhhPigKqG+olzEMRk5QFhHsVpWgU1Z4UURe5ZrepZE+AyN7/6o9B2Eh8XkFetAYePaqF8acycsd8DbXCiRvE8jdy6rZWR1aRsclv2Ejq7jUqWxKgSr9jftnlkA=
+	t=1748874318; cv=none; b=ee+cTIzGyNG6yVZvlCPLhFRPYnl7nYBkAy/d2/kbISh/TIlDM1zwPn+EZ1OH+KqVGwz+Ooz+6A2gri4SlETnxe10QDzE1sOmhHITdoUniZkN8OWpj0NT9JyFhir8TwRSM3KaubcfSO4ZodygNGUHoGqepIm+Gvbistas9eR20P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875593; c=relaxed/simple;
-	bh=C2J1sop2g1Ruw5XtbLohdgLPHLl0EszdJBguUEkfH1k=;
+	s=arc-20240116; t=1748874318; c=relaxed/simple;
+	bh=O6QBmoUs91I/ooxZB544U6IBp0YqqKF4J4l3bhADRqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWBBu2ubAEe4Px+9ezcQaac17aVlN5eftr0YMphzscn7Bn1WGrNyGLz4PIv4P6e0tXl2aJfA/kOCNlr0475BwD2V2YrYwpRudZL4tRKUGtm8OGRGi+ePbSIG00EdYBmzoqXh3iTJ03pUZpN00Q1jAZe6VZ6LIf6DX32xHPgtAP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mY7iuF2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABC8C4CEEB;
-	Mon,  2 Jun 2025 14:46:31 +0000 (UTC)
+	 MIME-Version; b=ILud9eTjX3Pw6WasVmPGgfyTWg/LUcGmtA230wvci9hxoB698Mx2W3TBfmdmY0grew/pcFcFrN3Y0IsWJ/a0lgmbkuvt1PWvltw+jS2vS8S5TVY3ea7hOtIZteYwM++svUVjCrxNfijjl6XrfdrWCxcjx+PuIe/BsfYk6iEiQbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg5N1rpn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28AEC4CEEB;
+	Mon,  2 Jun 2025 14:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875592;
-	bh=C2J1sop2g1Ruw5XtbLohdgLPHLl0EszdJBguUEkfH1k=;
+	s=korg; t=1748874318;
+	bh=O6QBmoUs91I/ooxZB544U6IBp0YqqKF4J4l3bhADRqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mY7iuF2Koyg/0UnlAztrrCWYv6ZhbZ4l9dNIe2NIEi6BOBqYQU1yFNLUYSOXiyTUt
-	 V1YWbIhlfV2spZTEeoqOa5pCScW4Wtac/JnPUvZK8pgoqcRv6M9NsPIUcHfFvLVWoH
-	 ehJyYAgwja/0GqX+waEZKsrVS6r8JaPZjHsFshHE=
+	b=fg5N1rpnWfPW3MaK+CrLqoPhdohUAQNPu72YDunZKwXPOKoEpce44rtzD8IMZ2My7
+	 F2EbQa0Ur+g7N9KS4RGTk81/0tNbftDAVCFv69C9JZbNhanUkUlfJHQ9I2yTfO3iZD
+	 y2OaCAO4zlqxe5RbhvEovICtK0U8TGLwO3lXXSaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 182/270] cpuidle: menu: Avoid discarding useful information
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 403/444] af_unix: Link struct unix_edge when queuing skb.
 Date: Mon,  2 Jun 2025 15:47:47 +0200
-Message-ID: <20250602134314.654661545@linuxfoundation.org>
+Message-ID: <20250602134357.275411832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,261 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
+commit 42f298c06b30bfe0a8cbee5d38644e618699e26e upstream.
 
-When giving up on making a high-confidence prediction,
-get_typical_interval() always returns UINT_MAX which means that the
-next idle interval prediction will be based entirely on the time till
-the next timer.  However, the information represented by the most
-recent intervals may not be completely useless in those cases.
+Just before queuing skb with inflight fds, we call scm_stat_add(),
+which is a good place to set up the preallocated struct unix_vertex
+and struct unix_edge in UNIXCB(skb).fp.
 
-Namely, the largest recent idle interval is an upper bound on the
-recently observed idle duration, so it is reasonable to assume that
-the next idle duration is unlikely to exceed it.  Moreover, this is
-still true after eliminating the suspected outliers if the sample
-set still under consideration is at least as large as 50% of the
-maximum sample set size.
+Then, we call unix_add_edges() and construct the directed graph
+as follows:
 
-Accordingly, make get_typical_interval() return the current maximum
-recent interval value in that case instead of UINT_MAX.
+  1. Set the inflight socket's unix_sock to unix_edge.predecessor.
+  2. Set the receiver's unix_sock to unix_edge.successor.
+  3. Set the preallocated vertex to inflight socket's unix_sock.vertex.
+  4. Link inflight socket's unix_vertex.entry to unix_unvisited_vertices.
+  5. Link unix_edge.vertex_entry to the inflight socket's unix_vertex.edges.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's say we pass the fd of AF_UNIX socket A to B and the fd of B
+to C.  The graph looks like this:
+
+  +-------------------------+
+  | unix_unvisited_vertices | <-------------------------.
+  +-------------------------+                           |
+  +                                                     |
+  |     +--------------+             +--------------+   |         +--------------+
+  |     |  unix_sock A | <---. .---> |  unix_sock B | <-|-. .---> |  unix_sock C |
+  |     +--------------+     | |     +--------------+   | | |     +--------------+
+  | .-+ |    vertex    |     | | .-+ |    vertex    |   | | |     |    vertex    |
+  | |   +--------------+     | | |   +--------------+   | | |     +--------------+
+  | |                        | | |                      | | |
+  | |   +--------------+     | | |   +--------------+   | | |
+  | '-> |  unix_vertex |     | | '-> |  unix_vertex |   | | |
+  |     +--------------+     | |     +--------------+   | | |
+  `---> |    entry     | +---------> |    entry     | +-' | |
+        |--------------|     | |     |--------------|     | |
+        |    edges     | <-. | |     |    edges     | <-. | |
+        +--------------+   | | |     +--------------+   | | |
+                           | | |                        | | |
+    .----------------------' | | .----------------------' | |
+    |                        | | |                        | |
+    |   +--------------+     | | |   +--------------+     | |
+    |   |   unix_edge  |     | | |   |   unix_edge  |     | |
+    |   +--------------+     | | |   +--------------+     | |
+    `-> | vertex_entry |     | | `-> | vertex_entry |     | |
+        |--------------|     | |     |--------------|     | |
+        |  predecessor | +---' |     |  predecessor | +---' |
+        |--------------|       |     |--------------|       |
+        |   successor  | +-----'     |   successor  | +-----'
+        +--------------+             +--------------+
+
+Henceforth, we denote such a graph as A -> B (-> C).
+
+Now, we can express all inflight fd graphs that do not contain
+embryo sockets.  We will support the particular case later.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-4-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ include/net/af_unix.h |    2 +
+ include/net/scm.h     |    1 
+ net/core/scm.c        |    2 +
+ net/unix/af_unix.c    |    8 +++-
+ net/unix/garbage.c    |   90 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 5 files changed, 100 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index b0a7ad566081a..a95cc8f024fde 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -249,8 +249,19 @@ static unsigned int get_typical_interval(struct menu_device *data,
- 	 * This can deal with workloads that have long pauses interspersed
- 	 * with sporadic activity with a bunch of short pauses.
- 	 */
--	if ((divisor * 4) <= INTERVALS * 3)
-+	if (divisor * 4 <= INTERVALS * 3) {
-+		/*
-+		 * If there are sufficiently many data points still under
-+		 * consideration after the outliers have been eliminated,
-+		 * returning without a prediction would be a mistake because it
-+		 * is likely that the next interval will not exceed the current
-+		 * maximum, so return the latter in that case.
-+		 */
-+		if (divisor >= INTERVALS / 2)
-+			return max;
-+
- 		return UINT_MAX;
-+	}
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -22,6 +22,8 @@ extern unsigned int unix_tot_inflight;
  
- 	thresh = max - 1;
- 	goto again;
--- 
-2.39.5
-
+ void unix_inflight(struct user_struct *user, struct file *fp);
+ void unix_notinflight(struct user_struct *user, struct file *fp);
++void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver);
++void unix_del_edges(struct scm_fp_list *fpl);
+ int unix_prepare_fpl(struct scm_fp_list *fpl);
+ void unix_destroy_fpl(struct scm_fp_list *fpl);
+ void unix_gc(void);
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -31,6 +31,7 @@ struct scm_fp_list {
+ 	short			count_unix;
+ 	short			max;
+ #ifdef CONFIG_UNIX
++	bool			inflight;
+ 	struct list_head	vertices;
+ 	struct unix_edge	*edges;
+ #endif
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -90,6 +90,7 @@ static int scm_fp_copy(struct cmsghdr *c
+ 		fpl->max = SCM_MAX_FD;
+ 		fpl->user = NULL;
+ #if IS_ENABLED(CONFIG_UNIX)
++		fpl->inflight = false;
+ 		fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&fpl->vertices);
+ #endif
+@@ -384,6 +385,7 @@ struct scm_fp_list *scm_fp_dup(struct sc
+ 		new_fpl->max = new_fpl->count;
+ 		new_fpl->user = get_uid(fpl->user);
+ #if IS_ENABLED(CONFIG_UNIX)
++		new_fpl->inflight = false;
+ 		new_fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&new_fpl->vertices);
+ #endif
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1920,8 +1920,10 @@ static void scm_stat_add(struct sock *sk
+ 	struct scm_fp_list *fp = UNIXCB(skb).fp;
+ 	struct unix_sock *u = unix_sk(sk);
+ 
+-	if (unlikely(fp && fp->count))
++	if (unlikely(fp && fp->count)) {
+ 		atomic_add(fp->count, &u->scm_stat.nr_fds);
++		unix_add_edges(fp, u);
++	}
+ }
+ 
+ static void scm_stat_del(struct sock *sk, struct sk_buff *skb)
+@@ -1929,8 +1931,10 @@ static void scm_stat_del(struct sock *sk
+ 	struct scm_fp_list *fp = UNIXCB(skb).fp;
+ 	struct unix_sock *u = unix_sk(sk);
+ 
+-	if (unlikely(fp && fp->count))
++	if (unlikely(fp && fp->count)) {
+ 		atomic_sub(fp->count, &u->scm_stat.nr_fds);
++		unix_del_edges(fp);
++	}
+ }
+ 
+ /*
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -101,6 +101,38 @@ struct unix_sock *unix_get_socket(struct
+ 	return NULL;
+ }
+ 
++static LIST_HEAD(unix_unvisited_vertices);
++
++static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
++{
++	struct unix_vertex *vertex = edge->predecessor->vertex;
++
++	if (!vertex) {
++		vertex = list_first_entry(&fpl->vertices, typeof(*vertex), entry);
++		vertex->out_degree = 0;
++		INIT_LIST_HEAD(&vertex->edges);
++
++		list_move_tail(&vertex->entry, &unix_unvisited_vertices);
++		edge->predecessor->vertex = vertex;
++	}
++
++	vertex->out_degree++;
++	list_add_tail(&edge->vertex_entry, &vertex->edges);
++}
++
++static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
++{
++	struct unix_vertex *vertex = edge->predecessor->vertex;
++
++	list_del(&edge->vertex_entry);
++	vertex->out_degree--;
++
++	if (!vertex->out_degree) {
++		edge->predecessor->vertex = NULL;
++		list_move_tail(&vertex->entry, &fpl->vertices);
++	}
++}
++
+ static void unix_free_vertices(struct scm_fp_list *fpl)
+ {
+ 	struct unix_vertex *vertex, *next_vertex;
+@@ -111,6 +143,60 @@ static void unix_free_vertices(struct sc
+ 	}
+ }
+ 
++DEFINE_SPINLOCK(unix_gc_lock);
++
++void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
++{
++	int i = 0, j = 0;
++
++	spin_lock(&unix_gc_lock);
++
++	if (!fpl->count_unix)
++		goto out;
++
++	do {
++		struct unix_sock *inflight = unix_get_socket(fpl->fp[j++]);
++		struct unix_edge *edge;
++
++		if (!inflight)
++			continue;
++
++		edge = fpl->edges + i++;
++		edge->predecessor = inflight;
++		edge->successor = receiver;
++
++		unix_add_edge(fpl, edge);
++	} while (i < fpl->count_unix);
++
++out:
++	spin_unlock(&unix_gc_lock);
++
++	fpl->inflight = true;
++
++	unix_free_vertices(fpl);
++}
++
++void unix_del_edges(struct scm_fp_list *fpl)
++{
++	int i = 0;
++
++	spin_lock(&unix_gc_lock);
++
++	if (!fpl->count_unix)
++		goto out;
++
++	do {
++		struct unix_edge *edge = fpl->edges + i++;
++
++		unix_del_edge(fpl, edge);
++	} while (i < fpl->count_unix);
++
++out:
++	spin_unlock(&unix_gc_lock);
++
++	fpl->inflight = false;
++}
++
+ int unix_prepare_fpl(struct scm_fp_list *fpl)
+ {
+ 	struct unix_vertex *vertex;
+@@ -141,11 +227,13 @@ err:
+ 
+ void unix_destroy_fpl(struct scm_fp_list *fpl)
+ {
++	if (fpl->inflight)
++		unix_del_edges(fpl);
++
+ 	kvfree(fpl->edges);
+ 	unix_free_vertices(fpl);
+ }
+ 
+-DEFINE_SPINLOCK(unix_gc_lock);
+ unsigned int unix_tot_inflight;
+ static LIST_HEAD(gc_candidates);
+ static LIST_HEAD(gc_inflight_list);
 
 
 
