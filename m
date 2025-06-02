@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962BEACB6B2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43397ACB47C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BF2E16CB04
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E08519443D7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9E22FE0A;
-	Mon,  2 Jun 2025 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE461FBC90;
+	Mon,  2 Jun 2025 14:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLSowmgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoNvlkSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED09227EB2;
-	Mon,  2 Jun 2025 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DD11B81DC;
+	Mon,  2 Jun 2025 14:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876660; cv=none; b=hasZkJuJU5lXgiPDDtPW4NoA/dMmTqNW3hqzQbFf19GuWSpDxtvM83Tg9cPozXTCZOzxQfmxbt8K2NfOKOkS7GCZcXwYnp8UIgx6DyAG0uLH7ivj3mZMpr493b5QL4+rDICasbflepQYB4/hzVQuuMxg+9RVNQu38bi1rqlCt8k=
+	t=1748875089; cv=none; b=pL8bgbWdAlGIzlekbJ+r0fXCgiq+hna1W+ynAQfo/57Er9bxcPeKPPHmCeRvuhtI90Cw/+GQ5tnD+ba+3mWdsOEoSVnzJ6vVm6Pe5302Zq0OzMJfdKlsOEGFMmgvW6YDDFj7vfthJupOaB8i3LYaVfa2mfGjysFY7p8VjULmE/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876660; c=relaxed/simple;
-	bh=1Td+ixyU4yJAHvh3cDR9ZbYC71ycnBTkmCSVf9VMAHc=;
+	s=arc-20240116; t=1748875089; c=relaxed/simple;
+	bh=qeHGn7k4T3Fw+GU2J73t1Ycrl0v3Srj5cm0E4K2ivzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WsZY01BNWMWdz9rorgw3N9HI/etjWkzUr90tnr4/9vzUJ+mg2mOEoI7d/ExT6tClbnId81jGWZ+3Cj6tObktgN1cIrSIU6/D2NUaAK9xBmAn5mK0eyoJ+l12WShYfPt1wHBJFFtaXPsAg+mSnHTvQ3jT8lrW3PKXKqJRZZe9wcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLSowmgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA5FC4CEEB;
-	Mon,  2 Jun 2025 15:04:19 +0000 (UTC)
+	 MIME-Version; b=UR6IUd+kiKI8GcgtlysTLShBhI8OcwpM+gpwx2NijIhPfBRgyIsLrK3LFPnNw3FqqBg1faMtLKCUOgW9FnWae5tfGFBhKn8RHSOPIchUh3k9I4DVDW5n0ueu2EhWQVHPPr0Z89R5NpLtnr9ADU8aYY6SyDxU0+oqKFvZFe1q0Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoNvlkSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6014CC4CEEB;
+	Mon,  2 Jun 2025 14:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876659;
-	bh=1Td+ixyU4yJAHvh3cDR9ZbYC71ycnBTkmCSVf9VMAHc=;
+	s=korg; t=1748875088;
+	bh=qeHGn7k4T3Fw+GU2J73t1Ycrl0v3Srj5cm0E4K2ivzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLSowmgd5GmlvOz1wWjOesWNdGMX2fJfoShjEEguigLNmsYExbPQFxJxngIV8gwSA
-	 pYanXLyAsQRTUESeJ7k85J9g0gphBL7AmFaBVaPYbq5FWUD4D4orWbn2I+fxpwhqvH
-	 wmE9M/drXN3RmIhxVP6rFvOBUtLzS8XbFcK2fRY4=
+	b=MoNvlkShs3vPR3MaUC8+MzYccPaDccHhkbq2CurPO5K3+O/SQfBuPRx2gyGKQP8FG
+	 myzpn3YOWl3TVGR8p48BN9H17+sSTLPoH2fpc+tQfHuwItd+QTyIP9TajK0i6EerDj
+	 gp6erv59yR/u+dcKQp7Yh8VUl2sHNyWFtDw5UPzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zsolt Kajtar <soci@c64.rulez.org>,
-	Helge Deller <deller@gmx.de>,
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/325] fbdev: core: tileblit: Implement missing margin clearing for tileblit
+Subject: [PATCH 5.10 024/270] net: ipv6: fix UDPv6 GSO segmentation with NAT
 Date: Mon,  2 Jun 2025 15:45:09 +0200
-Message-ID: <20250602134321.090289094@linuxfoundation.org>
+Message-ID: <20250602134308.187284265@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zsolt Kajtar <soci@c64.rulez.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 76d3ca89981354e1f85a3e0ad9ac4217d351cc72 ]
+[ Upstream commit b936a9b8d4a585ccb6d454921c36286bfe63e01d ]
 
-I was wondering why there's garbage at the bottom of the screen when
-tile blitting is used with an odd mode like 1080, 600 or 200. Sure there's
-only space for half a tile but the same area is clean when the buffer
-is bitmap.
+If any address or port is changed, update it in all packets and recalculate
+checksum.
 
-Then later I found that it's supposed to be cleaned but that's not
-implemented. So I took what's in bitblit and adapted it for tileblit.
-
-This implementation was tested for both the horizontal and vertical case,
-and now does the same as what's done for bitmap buffers.
-
-If anyone is interested to reproduce the problem then I could bet that'd
-be on a S3 or Ark. Just set up a mode with an odd line count and make
-sure that the virtual size covers the complete tile at the bottom. E.g.
-for 600 lines that's 608 virtual lines for a 16 tall tile. Then the
-bottom area should be cleaned.
-
-For the right side it's more difficult as there the drivers won't let an
-odd size happen, unless the code is modified. But once it reports back a
-few pixel columns short then fbcon won't use the last column. With the
-patch that column is now clean.
-
-Btw. the virtual size should be rounded up by the driver for both axes
-(not only the horizontal) so that it's dividable by the tile size.
-That's a driver bug but correcting it is not in scope for this patch.
-
-Implement missing margin clearing for tileblit
-
-Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250426153210.14044-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/tileblit.c | 37 ++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
-index 674ca6a410ec8..b3aa0c6620c7d 100644
---- a/drivers/video/fbdev/core/tileblit.c
-+++ b/drivers/video/fbdev/core/tileblit.c
-@@ -74,7 +74,42 @@ static void tile_putcs(struct vc_data *vc, struct fb_info *info,
- static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
- 			       int color, int bottom_only)
- {
--	return;
-+	unsigned int cw = vc->vc_font.width;
-+	unsigned int ch = vc->vc_font.height;
-+	unsigned int rw = info->var.xres - (vc->vc_cols*cw);
-+	unsigned int bh = info->var.yres - (vc->vc_rows*ch);
-+	unsigned int rs = info->var.xres - rw;
-+	unsigned int bs = info->var.yres - bh;
-+	unsigned int vwt = info->var.xres_virtual / cw;
-+	unsigned int vht = info->var.yres_virtual / ch;
-+	struct fb_tilerect rect;
-+
-+	rect.index = vc->vc_video_erase_char &
-+		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
-+	rect.fg = color;
-+	rect.bg = color;
-+
-+	if ((int) rw > 0 && !bottom_only) {
-+		rect.sx = (info->var.xoffset + rs + cw - 1) / cw;
-+		rect.sy = 0;
-+		rect.width = (rw + cw - 1) / cw;
-+		rect.height = vht;
-+		if (rect.width + rect.sx > vwt)
-+			rect.width = vwt - rect.sx;
-+		if (rect.sx < vwt)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
-+
-+	if ((int) bh > 0) {
-+		rect.sx = info->var.xoffset / cw;
-+		rect.sy = (info->var.yoffset + bs) / ch;
-+		rect.width = rs / cw;
-+		rect.height = (bh + ch - 1) / ch;
-+		if (rect.height + rect.sy > vht)
-+			rect.height = vht - rect.sy;
-+		if (rect.sy < vht)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index b6952b88b5051..73beaa7e2d703 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -242,6 +242,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
+ 	return segs;
  }
  
- static void tile_cursor(struct vc_data *vc, struct fb_info *info, int mode,
++static void __udpv6_gso_segment_csum(struct sk_buff *seg,
++				     struct in6_addr *oldip,
++				     const struct in6_addr *newip,
++				     __be16 *oldport, __be16 newport)
++{
++	struct udphdr *uh = udp_hdr(seg);
++
++	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
++		return;
++
++	if (uh->check) {
++		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
++					  newip->s6_addr32, true);
++
++		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
++					 false);
++		if (!uh->check)
++			uh->check = CSUM_MANGLED_0;
++	}
++
++	*oldip = *newip;
++	*oldport = newport;
++}
++
++static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
++{
++	const struct ipv6hdr *iph;
++	const struct udphdr *uh;
++	struct ipv6hdr *iph2;
++	struct sk_buff *seg;
++	struct udphdr *uh2;
++
++	seg = segs;
++	uh = udp_hdr(seg);
++	iph = ipv6_hdr(seg);
++	uh2 = udp_hdr(seg->next);
++	iph2 = ipv6_hdr(seg->next);
++
++	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
++	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
++	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
++		return segs;
++
++	while ((seg = seg->next)) {
++		uh2 = udp_hdr(seg);
++		iph2 = ipv6_hdr(seg);
++
++		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
++					 &uh2->source, uh->source);
++		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
++					 &uh2->dest, uh->dest);
++	}
++
++	return segs;
++}
++
+ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 					      netdev_features_t features,
+ 					      bool is_ipv6)
+@@ -254,7 +310,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 
+ 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
+ 
+-	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
++	if (is_ipv6)
++		return __udpv6_gso_segment_list_csum(skb);
++	else
++		return __udpv4_gso_segment_list_csum(skb);
+ }
+ 
+ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
 -- 
 2.39.5
 
