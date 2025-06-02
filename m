@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAA1ACB44C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239A0ACB83B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 661384A6DBF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86D159481CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5C222F766;
-	Mon,  2 Jun 2025 14:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE26B225A47;
+	Mon,  2 Jun 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7uNJp3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgiWfgrO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D0B225388;
-	Mon,  2 Jun 2025 14:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFD6225791;
+	Mon,  2 Jun 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874932; cv=none; b=dnzH94OGbSDNRIRxe3KntvGivJe0KC2bNiXkGtrFI2l9QK1k4f4XdGeWFPAy+42AzacSVssW97sTjqCw2I5gEal+0PcLv2dEX0n2utKslVWeWKhtcFKKAjymG3fqHIIsOs/Eyyfs2HnPgbmmfXy4kuJVRtPhYXlbNDdrlo7UEMI=
+	t=1748877437; cv=none; b=e3ZmtinlUTnoa+C9kxdw/J/d0Iclzl6BNr+uLoQkHOFXprPNLzUNgWu00IFTF3i1Js5/vwgrBHBcTWS0brckYoZBSZTA3jnpmeivf2R0H8VUVNC2j5fQPdiI3NrEBuf2MQrEZBsAGhkcXI9qiBKO9YNDEb6U0wiZd87NgeqMEuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874932; c=relaxed/simple;
-	bh=jzsqS2wX8lXaM7c2M28ILPetPD5yt67G0zAom1yMPLk=;
+	s=arc-20240116; t=1748877437; c=relaxed/simple;
+	bh=YSS5d3cjVWAI58Vg9ddrk3uNTfNq7avB5EI21uxFfSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4fzUNAcs5XkIiuuYpqm4VSQywg65pcaWp/bi3OEZkNJsxM1N5qw9KQ8xjnqAgGUExo96VvwoOFQ3gqGolxom1w3GfnTIMfwXpF+PNNusEIjud7N2RofMGOUPue0GIWllMCdhcBTw2bb0o0JzDDyH3x39CXzlA/eK+vMAX6koBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7uNJp3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653EBC4CEEB;
-	Mon,  2 Jun 2025 14:35:31 +0000 (UTC)
+	 MIME-Version; b=ZFUE4YAEx0d3G8m3LHX6vg/1D3VqKqKMugm67wj1A05+ClDE8pK3okPt97RpStZvvhgtXijnt5WffgkMsnid4GWwrEVPT826AVma7I9UYTWE2QRRgDnZaUVStXQKCaIhI46sUUJ2Dzs3V7XBN+VNWAt1ULlNhYtS6wKEHLFAHj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgiWfgrO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED943C4CEEB;
+	Mon,  2 Jun 2025 15:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874931;
-	bh=jzsqS2wX8lXaM7c2M28ILPetPD5yt67G0zAom1yMPLk=;
+	s=korg; t=1748877437;
+	bh=YSS5d3cjVWAI58Vg9ddrk3uNTfNq7avB5EI21uxFfSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7uNJp3rR26cuPgMZWUoBPPSGGhCajzr7vJIc76Nrs8lQYPsVyjNzfLO3DP2cFZxp
-	 53vb+60sHk+oB00w1hB6mnsIG1JMzsQaPj03t2mwvhx7puMk6Hj9DsXwOzlEridrBE
-	 bbrjhbxesua5ycX8VkmSo+5CaHBh8+8qgPilGZQE=
+	b=MgiWfgrO+d2IA1z6ka8wFLpRKdb0ViGSY+oPcLjYf9P9YX78X4h+WzsBmzECBQolt
+	 YsuT74FKBGTMJOM3AVSurs7t3h7SXCRZa2ToSoMwi/Vo/OIWABXjayb0SPdMbiak/2
+	 EaccVKs4IZRmwCfhQc5fC22p0WBeZR2mOOsQebg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"feijuan.li" <feijuan.li@samsung.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 5.4 180/204] drm/edid: fixed the bug that hdr metadata was not reset
+	kernel test robot <lkp@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 237/325] dmaengine: idxd: Fix ->poll() return value
 Date: Mon,  2 Jun 2025 15:48:33 +0200
-Message-ID: <20250602134302.721660415@linuxfoundation.org>
+Message-ID: <20250602134329.414155224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: feijuan.li <feijuan.li@samsung.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-commit 6692dbc15e5ed40a3aa037aced65d7b8826c58cd upstream.
+[ Upstream commit ae74cd15ade833adc289279b5c6f12e78f64d4d7 ]
 
-When DP connected to a device with HDR capability,
-the hdr structure was filled.Then connected to another
-sink device without hdr capability, but the hdr info
-still exist.
+The fix to block access from different address space did not return a
+correct value for ->poll() change.  kernel test bot reported that a
+return value of type __poll_t is expected rather than int. Fix to return
+POLLNVAL to indicate invalid request.
 
-Fixes: e85959d6cbe0 ("drm: Parse HDR metadata info from EDID")
-Cc: <stable@vger.kernel.org> # v5.3+
-Signed-off-by: "feijuan.li" <feijuan.li@samsung.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://lore.kernel.org/r/20250514063511.4151780-1-feijuan.li@samsung.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8dfa57aabff6 ("dmaengine: idxd: Fix allowing write() from different address spaces")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505081851.rwD7jVxg-lkp@intel.com/
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250508170548.2747425-1-dave.jiang@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_edid.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/idxd/cdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -4629,6 +4629,7 @@ drm_reset_display_info(struct drm_connec
- 	info->has_hdmi_infoframe = false;
- 	info->rgb_quant_range_selectable = false;
- 	memset(&info->hdmi, 0, sizeof(info->hdmi));
-+	memset(&connector->hdr_sink_metadata, 0, sizeof(connector->hdr_sink_metadata));
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 186f005bfa8fd..d736ab15ade24 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -333,7 +333,7 @@ static __poll_t idxd_cdev_poll(struct file *filp,
+ 	__poll_t out = 0;
  
- 	info->non_desktop = 0;
- }
+ 	if (current->mm != ctx->mm)
+-		return -EPERM;
++		return POLLNVAL;
+ 
+ 	poll_wait(filp, &wq->err_queue, wait);
+ 	spin_lock(&idxd->dev_lock);
+-- 
+2.39.5
+
 
 
 
