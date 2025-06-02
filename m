@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAD5ACB327
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC79ACB4FF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8E484A3440
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA6A4A2FC5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934C6239E67;
-	Mon,  2 Jun 2025 14:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DB1224AF1;
+	Mon,  2 Jun 2025 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oCk+z7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvAZU3bE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504171E0DD8;
-	Mon,  2 Jun 2025 14:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6A5225776;
+	Mon,  2 Jun 2025 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874067; cv=none; b=QIzGa4RuIaZF19NzFIk7sDjQM2GGhYQznRfpD7ZDuxlAZF65+353uSyyo1var0hvPmAQvVSSu9BZVeDXcBFKnVrLjtuWKJe0047Gf2EO4tnZBKuUU8AUHKJQsHTWFtZWfIhDl6SySJiScpiifGypNBRCDrtc998AuFk9L0ItLkI=
+	t=1748875434; cv=none; b=eMcdGhOfSEfoN1DGG4ORIgl8uJDu0swIFFuy4gmtgzFVegciIYjsPD3arXkueh6Ypjx2bI3saoEYVN0wsfXr1LWJfLUJ+S1T0oTt2iS6aXRSQOoi4znZ2778bvAW/75199EFckO0i8n5JCNWYlrx7HC3c01IsE60buImEDcWXjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874067; c=relaxed/simple;
-	bh=XOxsM/af8fEGG+BELj1zLsbrZFiENL74phBn/42PMCg=;
+	s=arc-20240116; t=1748875434; c=relaxed/simple;
+	bh=B/poK+rMq01ikgysjMtaXkYDBqRat6ngN8rUFeWaVJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJDZnyypbyb86QvJdDgcjdS05OxgummMGY3ajHOcrGrMPKH8RLC6LXNQPjhCTTltSNMwarwjE7B4AjGe0wjpjJ+1lMQsuOs7OkDUBhatCG6F5rIsDZz7tBeGj4rGfN35149a2h7n65JYrtugembPUV/hCizxe2ksIGdgzlCNk4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oCk+z7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D779DC4CEEB;
-	Mon,  2 Jun 2025 14:21:06 +0000 (UTC)
+	 MIME-Version; b=H1PlLawrveM0ekd7TEWo3VyuHHWDwq7eqiR3Bja5DAa18ev7PsALLyHU8doInB+ng+0ne8IvkOeMvDxycQSWsZG5FQ/tl0XjUxU6WlWiTZ7Om6TSZ6TvaJNXGZ+spCRNCMy4nrSlyPwRsYhUCMaFyNCwhl3za7DbzuX/fQC7ru0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvAZU3bE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34C3C4CEEB;
+	Mon,  2 Jun 2025 14:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874067;
-	bh=XOxsM/af8fEGG+BELj1zLsbrZFiENL74phBn/42PMCg=;
+	s=korg; t=1748875434;
+	bh=B/poK+rMq01ikgysjMtaXkYDBqRat6ngN8rUFeWaVJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oCk+z7IYX6TD7FeSCPJysmhOrB2JdrXACIxrvTK+T/3MLLorCnznEl2pBv6NqkQA
-	 DiC5OF1bhrUNIPGBoh2vp7GxlNbf9Ot2U+icvb043QwVXhXrOdZBImyES01pKAkgGP
-	 1PfU2J5uBplMGpeCMyZMsfWaheVo3Jum8grASLQ4=
+	b=BvAZU3bEXfaOYg0nZL6rApUUfRhfG+qb1VqfZtm1RX9EDBn0PeItvVOy+fOOGF59R
+	 eKJZfZ7ImZOX9URpYNDCE0xYSrkmwz/LZDKMjFFnnBwxWz5QxDlDVN65+OVI4T/wN3
+	 x03VldZIDd4CaxJ/zn+GRDyc2+9hYhUoimqfr0H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 347/444] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+Subject: [PATCH 5.10 126/270] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
 Date: Mon,  2 Jun 2025 15:46:51 +0200
-Message-ID: <20250602134355.021705817@linuxfoundation.org>
+Message-ID: <20250602134312.380952599@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-While the MDIO address of the internal PHY on Allwinner sun8i chips is
-generally 1, of_mdio_parse_addr is used to cleanly parse the address
-from the device-tree instead of hardcoding it.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-A commit reworking the code ditched the parsed value and hardcoded the
-value 1 instead, which didn't really break anything but is more fragile
-and not future-proof.
-
-Restore the initial behavior using the parsed address returned from the
-helper.
-
-Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 63998d65fef8e..9377b05bfc71e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -966,7 +966,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
- 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
- 		 * address. No need to mask it again.
- 		 */
--		reg |= 1 << H3_EPHY_ADDR_SHIFT;
-+		reg |= ret << H3_EPHY_ADDR_SHIFT;
- 	} else {
- 		/* For SoCs without internal PHY the PHY selection bit should be
- 		 * set to 0 (external PHY).
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 7ec5b0bc48ebf..0a4b4870c4d99 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -273,9 +273,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
+ 
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
