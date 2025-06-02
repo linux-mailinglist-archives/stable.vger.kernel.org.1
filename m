@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A59ACB803
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7D2ACB675
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB3A1C242A6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52B881BA4F87
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E240B223DFA;
-	Mon,  2 Jun 2025 15:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673752236F8;
+	Mon,  2 Jun 2025 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXA6jtVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyRE/kUI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F808223DF6;
-	Mon,  2 Jun 2025 15:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DDA17BBF;
+	Mon,  2 Jun 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877064; cv=none; b=NNt5rx+4fx6FOC/6CvP3VkKmslIaimB6iWvvF967PMnepBMJifxR8/6dTlMRNkMoWpFrEA5+G8a9V5KYOJFId6PuOoyXE0Z+PwyI5L6d9RaM2UvrfA7FhDr3qPWlLSWFgPIAxT6ZHhUxwMgLwhmsaVu9Jz3XWkciddd+CgZJQew=
+	t=1748876076; cv=none; b=Xf/5aVPJ5yhVnFdYuovicphZK7Qm48NTFuuA3RsJlWaqWla4HrH8G2SDtBOmFRlqHl3btfO7HERY9S1/zfR2CH7Qg6zEu3AimTYgcBxkz74aQvD5lkM0JCV8DzmR0VRPFxbZxHCl1XvuG35N2+peC2DKm0rT8Zi2xFJ7ajKayj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877064; c=relaxed/simple;
-	bh=tJs7AfAwYkF2PTS9AM+4t24WaAxX/sAAPHsjtMPmJbE=;
+	s=arc-20240116; t=1748876076; c=relaxed/simple;
+	bh=BmBHhTneHEx7z6vCgj1q6+YnJ2epAHUtYG++9CnBAIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkRAvwcRuqwoFyCOBNNRq50JYEIv6ptt3bDDAGW9m7XI9W/9n/SoG+T59lJtBlDxW6eXHkKqRBg+KPx31UvxReO8d5hMleRoMimIOY0z8WxhTmWKckEQ5l809hJd+Pk4kshQe2dQfL8E3OqGHOxsWoPQixwzLT7QlHGbReB2+Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXA6jtVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242B3C4CEEB;
-	Mon,  2 Jun 2025 15:11:03 +0000 (UTC)
+	 MIME-Version; b=K/9OoaaKKrbctnXcQ9tUFrheRkZL61maS8hRbQwu/tzkVN3goUBX+/Pj3FUpcreFGB7cqcRlvp/+e9+FfKSlCvw74iIPl2R47jLKPRBWH2ElQXsRzBA2fnlowfE1xvxV61+8diqzMh8nZyeakvKdYlMVGGHwpUqm+mYmfYbJ/Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyRE/kUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08067C4CEEB;
+	Mon,  2 Jun 2025 14:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877064;
-	bh=tJs7AfAwYkF2PTS9AM+4t24WaAxX/sAAPHsjtMPmJbE=;
+	s=korg; t=1748876075;
+	bh=BmBHhTneHEx7z6vCgj1q6+YnJ2epAHUtYG++9CnBAIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXA6jtVUifZv6k7SsefzIcwn8CY43KbZ4wKuNdjPhp3/Bp9jgtaTnJuHXraZDEKEl
-	 NCO2rGPTREALTnt8OUBRjzD1c7ucIh66SiYM68xHE26mzkU+rTDTkhUDALH/ke/Zxq
-	 ALOjFTZbebTq/jO6ySuBwxrjhQx11rtVvF2WzOMk=
+	b=pyRE/kUIyiv1ZsHFy71OdiE4QUgxt5v9UwfSbouQKzKogBl+J9h+H6g0QkFEVv7MY
+	 +G37Q+/2ZLLWTQANTQCT8KtgomZYrbBfxbOJiz58TnVP94ybF3t+XcYKSC7YC9LJjv
+	 7ev/X2iNvNAjJY1YoluU624cun31kcvX2h2PAfwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/325] eth: mlx4: dont try to complete XDP frames in netpoll
+Subject: [PATCH 5.15 064/207] rtc: ds1307: stop disabling alarms on probe
 Date: Mon,  2 Jun 2025 15:47:16 +0200
-Message-ID: <20250602134326.305412615@linuxfoundation.org>
+Message-ID: <20250602134301.252554491@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 8fdeafd66edaf420ea0063a1f13442fe3470fe70 ]
+[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
 
-mlx4 doesn't support ndo_xdp_xmit / XDP_REDIRECT and wasn't
-using page pool until now, so it could run XDP completions
-in netpoll (NAPI budget == 0) just fine. Page pool has calling
-context requirements, make sure we don't try to call it from
-what is potentially HW IRQ context.
+It is a bad practice to disable alarms on probe or remove as this will
+prevent alarms across reboots.
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250213010635.1354034-3-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_tx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-index 7fccf1a79f09b..95eae224bbb4a 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-@@ -446,6 +446,8 @@ int mlx4_en_process_tx_cq(struct net_device *dev,
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 336cb9aa5e336..d5a7a377e4a61 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1802,10 +1802,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		 * For some variants, be sure alarms can trigger when we're
+ 		 * running on Vbackup (BBSQI/BBSQW)
+ 		 */
+-		if (want_irq || ds1307_can_wakeup_device) {
++		if (want_irq || ds1307_can_wakeup_device)
+ 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
+-			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+-		}
  
- 	if (unlikely(!priv->port_up))
- 		return 0;
-+	if (unlikely(!napi_budget) && cq->type == TX_XDP)
-+		return 0;
- 
- 	netdev_txq_bql_complete_prefetchw(ring->tx_queue);
- 
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
 -- 
 2.39.5
 
