@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B612ACB5F9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96726ACB753
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DD97A235C7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33DBC1947741
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA5C23F271;
-	Mon,  2 Jun 2025 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27BD22A1FA;
+	Mon,  2 Jun 2025 14:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOD34fqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHkFh69g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D67C23A98D;
-	Mon,  2 Jun 2025 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C24C231A4D;
+	Mon,  2 Jun 2025 14:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875850; cv=none; b=hMikyYMpTlDE2tbNraDRMsRi4Jr+Uv7FtkMFfo9TPFrTkrNM32iIfooankWoUlZaQ//ktkHhfC0HJT1AHOzSNcvjIx8E0SormcVO8itWd1YFFu8Puml14vZpQhPbMUtd44+7dbpopR+dVjgKwJeMnk0+bYzvw5wv99+CzgERDNw=
+	t=1748876315; cv=none; b=HaFU2AVABVcvZyFqUioueKkJ8JiiQH+P3GGvk+A2tLRnHne/bnz1rK5/EC3yj/qyC4thPahKdFvgPiv1BMO1VEfr0Hxj61mT4++6mprqSbdknF08P6i4X3OZ0HxE1T0XzLNYm2CFiBs6s/p6E1XoBvow7qEcq0SEA8949qD9cnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875850; c=relaxed/simple;
-	bh=1V8nWfJzjW8BYxxqmv89rIGohr9n9b/yuuN7W/1fzEA=;
+	s=arc-20240116; t=1748876315; c=relaxed/simple;
+	bh=J+NPXfEMCUSd4H35pAGiH1AyTw1USeQifUQivPkzMlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cH1JbFTBmPmS2HOb4ItbP89T0kpt7MklQ6Nprk48WecaMrEVhjQLSrjv2T7xNFYGoQfY33g75mWzFez3UO8kSiZ23/DK1TcZVcWcphIfS9izxg6MhP1cU+undzQ98+LHlor/Ex+JAPiI9J5XEKc5XfBewUDCbBkXAPX5OaIUuGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOD34fqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED654C4CEEB;
-	Mon,  2 Jun 2025 14:50:49 +0000 (UTC)
+	 MIME-Version; b=OHVd/3qiXlPjBnem3jbgCqvrII2yvO905D2VIjVEIwmkITKBy2Mb+gK6vkCXEQU9C7eMxMB1iWUpJL+tGY7QmLIgIiamc+oW+B/kWLdYRDrmzk3qnx889gB9jlscTmY/P2P+bVOd50UjZYv7p4rrsryHRipv+W2dh323st4FTFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHkFh69g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A32C4CEEB;
+	Mon,  2 Jun 2025 14:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875850;
-	bh=1V8nWfJzjW8BYxxqmv89rIGohr9n9b/yuuN7W/1fzEA=;
+	s=korg; t=1748876315;
+	bh=J+NPXfEMCUSd4H35pAGiH1AyTw1USeQifUQivPkzMlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOD34fqPtZJHWXMziKJRNJBiLiiXwIxuF5GMCnCYCNoi+6OhLBUBqh/BjhaAZbmFh
-	 XkuEWNN+8qbOIeC292+lGB0fjBkzKOY8zzBeR018GqWRNhO4lWsUNu5YqbQwlewlC2
-	 hPXO/HU2exmmnS6OF0Sc9+gEjPFNdxZTGmzkIGLs=
+	b=ZHkFh69gXe1jzvicd0V6wnkTLk1al2ZF6a2hKzIux0a0f7Nmqlxx8pSnHn+hf1zCo
+	 ewDGHLRL4t3Q3LbDjSODOeLgTNpzK5nRmbfTuvDXHBhdVOFgGHqYLJgenF/0lr2PF8
+	 dqErYepCxQWCPedN6ucCNB88patrkSYRqxOTC1xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 224/270] spi: zynqmp-gqspi: Always acknowledge interrupts
-Date: Mon,  2 Jun 2025 15:48:29 +0200
-Message-ID: <20250602134316.332865417@linuxfoundation.org>
+Subject: [PATCH 5.15 138/207] r8169: dont scan PHY addresses > 0
+Date: Mon,  2 Jun 2025 15:48:30 +0200
+Message-ID: <20250602134304.131363299@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
+[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
 
-RXEMPTY can cause an IRQ, even though we may not do anything about it
-(such as if we are waiting for more received data). We must still handle
-these IRQs because we can tell they were caused by the device.
+The PHY address is a dummy, because r8169 PHY access registers
+don't support a PHY address. Therefore scan address 0 only.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 3d3ac48243ebd..408b83882dae2 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -689,7 +689,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
- static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- {
- 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
--	irqreturn_t ret = IRQ_NONE;
- 	u32 status, mask, dma_status = 0;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index d9d19ea77d20b..1ea30c9b8c07c 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5185,6 +5185,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 	new_bus->priv = tp;
+ 	new_bus->parent = &pdev->dev;
+ 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
++	new_bus->phy_mask = GENMASK(31, 1);
+ 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
+ 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
  
- 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
-@@ -704,27 +703,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- 				   dma_status);
- 	}
- 
--	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
-+	if (!mask && !dma_status)
-+		return IRQ_NONE;
-+
-+	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
- 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
--	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
-+	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
- 		zynqmp_process_dma_irq(xqspi);
--		ret = IRQ_HANDLED;
--	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
--			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
-+	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
-+			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
- 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
- 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
- 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
- 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
- 		complete(&xqspi->data_completion);
--		ret = IRQ_HANDLED;
- 	}
--	return ret;
-+	return IRQ_HANDLED;
- }
- 
- /**
 -- 
 2.39.5
 
