@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B95BACB889
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE6DACB2A0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45E7C94201F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92DFF168747
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C711522A801;
-	Mon,  2 Jun 2025 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F922231A30;
+	Mon,  2 Jun 2025 14:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXNbNOss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbE3ydX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847F9225785;
-	Mon,  2 Jun 2025 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD11231854;
+	Mon,  2 Jun 2025 14:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876827; cv=none; b=QCuiwWW1/N03lPdg66wVywJ6u755TAX52MoqawjWFr2v8XGAsK2jtZg2f7U5i+XWa47oz30BI0bptacMSJexcO+JUvatpSGrzwu7vcJUi6bLtPRfyek47YsnmGmMf4qyWRAoeAeEDMKQ/QtRe9QqLc/YwleqtR2olk+MHmiLFxw=
+	t=1748873927; cv=none; b=nHdWdIqwuBf3DwSpGyEJt2Pf3XC2wyC2mcphAyjy557coGZ4aZe7CV0HzjyCsGVmZQlEt2s09EUiwC5ZNi3HPoJ53Hm8VbcBdGlz+J5UzmkhqZEC9/fe3LnSkPkKW4qnbmflbVR3ILEts6pib/djd3zHdAzliM2KQT//VqdqmAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876827; c=relaxed/simple;
-	bh=vBynjrK7gHOJZMNajzBQ4G2URj/JkMPbhKGIyKOZr0s=;
+	s=arc-20240116; t=1748873927; c=relaxed/simple;
+	bh=clwd3Ld7TWLE3VN0G/hzlE9+st6xKmv4cTt2o996oA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=do28zxhVCRiuz3rIODO+dMYmXN7FYvsMLYGgR43SifU3eVQ+JUsRsSH4U0UzYyhD7DFfXE8kawQuGxQ+cIAMX68dk6sKPSQZjPby6qry05/TRBsSsnG+R3EA8uKTQA9tkV8Hsp81Kj3Tc5euNH7n3jGVT9R4DWzYcS2jc5aWLtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXNbNOss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886D9C4CEEE;
-	Mon,  2 Jun 2025 15:07:06 +0000 (UTC)
+	 MIME-Version; b=m/YoTdGRJO3e2odQkUm/IGWXUg0XrAuQSZc5jm2lmZRYj/lT50SV6WiQZJrTVXC8HjBxDGcMc5Hj5NMSAJRlkYDP7nT9f7DaYmFiWQDzkntxja6B4lRGSaCiILDiSs2nghpppXcMqWam6cKEovGOwTtcb5WU89rIJEjV9jWjgR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbE3ydX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF68FC4CEEB;
+	Mon,  2 Jun 2025 14:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876827;
-	bh=vBynjrK7gHOJZMNajzBQ4G2URj/JkMPbhKGIyKOZr0s=;
+	s=korg; t=1748873927;
+	bh=clwd3Ld7TWLE3VN0G/hzlE9+st6xKmv4cTt2o996oA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXNbNOss+uikWMSw9c+qjTm4s4CvIFPrNoint4wxIV252THgCTaJlvLLRkcQMQdNk
-	 AtkAPgeHN0DFS/pToq0ISchoNfuHfEmOOXAAb3TOGjdDSPGWrGQVwBkE7BCfVusIdA
-	 huQ08MPAxT9I0M9d9NDayUOO2JbXrlCMh1SbIEvs=
+	b=hbE3ydX39/UvK74pBOfLSn+6GwZCGS5XsZtbtLRgyL+bi3B3Q9pS8X40fa56brh38
+	 IbM0qqw3P87AYmQPhscprEJX00fhSro1bacwsHTmvThdtGAlwlqkDsW+bw3/22BLFa
+	 Ujmp3jFqdRkaK/hxSy8c/5sHIvOYop7cLQhBZi6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Soeren Moch <smoch@web.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/325] ipv6: save dontfrag in cork
+Subject: [PATCH 6.6 299/444] wifi: rtl8xxxu: retry firmware download on error
 Date: Mon,  2 Jun 2025 15:46:03 +0200
-Message-ID: <20250602134323.315624215@linuxfoundation.org>
+Message-ID: <20250602134353.082807622@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Soeren Moch <smoch@web.de>
 
-[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
+[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
 
-When spanning datagram construction over multiple send calls using
-MSG_MORE, per datagram settings are configured on the first send.
+Occasionally there is an EPROTO error during firmware download.
+This error is converted to EAGAIN in the download function.
+But nobody tries again and so device probe fails.
 
-That is when ip(6)_setup_cork stores these settings for subsequent use
-in __ip(6)_append_data and others.
+Implement download retry to fix this.
 
-The only flag that escaped this was dontfrag. As a result, a datagram
-could be constructed with df=0 on the first sendmsg, but df=1 on a
-next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
-the "diff" scenario.
+This error was observed (and fix tested) on a tbs2910 board [1]
+with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
 
-Changing datagram conditions in the middle of constructing an skb
-makes this already complex code path even more convoluted. It is here
-unintentional. Bring this flag in line with expected sockopt/cmsg
-behavior.
+[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
 
-And stop passing ipc6 to __ip6_append_data, to avoid such issues
-in the future. This is already the case for __ip_append_data.
-
-inet6_cork had a 6 byte hole, so the 1B flag has no impact.
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Soeren Moch <smoch@web.de>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ipv6.h  | 1 +
- net/ipv6/ip6_output.c | 9 +++++----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c   | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index 9a44de45cc1f2..9f27e004127bb 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -199,6 +199,7 @@ struct inet6_cork {
- 	struct ipv6_txoptions *opt;
- 	u8 hop_limit;
- 	u8 tclass;
-+	u8 dontfrag:1;
- };
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 6e47dde938909..05e77d2bda373 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -900,9 +900,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
+ 	return len;
  
- /**
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index f7a225da8525b..cfc276e5a249f 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1450,6 +1450,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
- 	}
- 	v6_cork->hop_limit = ipc6->hlimit;
- 	v6_cork->tclass = ipc6->tclass;
-+	v6_cork->dontfrag = ipc6->dontfrag;
- 	if (rt->dst.flags & DST_XFRM_TUNNEL)
- 		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
- 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1483,7 +1484,7 @@ static int __ip6_append_data(struct sock *sk,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
- 			     void *from, size_t length, int transhdrlen,
--			     unsigned int flags, struct ipcm6_cookie *ipc6)
-+			     unsigned int flags)
- {
- 	struct sk_buff *skb, *skb_prev = NULL;
- 	struct inet_cork *cork = &cork_full->base;
-@@ -1539,7 +1540,7 @@ static int __ip6_append_data(struct sock *sk,
- 	if (headersize + transhdrlen > mtu)
- 		goto emsgsize;
- 
--	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
-+	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
- 	    (sk->sk_protocol == IPPROTO_UDP ||
- 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
- 	     sk->sk_protocol == IPPROTO_RAW)) {
-@@ -1884,7 +1885,7 @@ int ip6_append_data(struct sock *sk,
- 
- 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
- 				 &np->cork, sk_page_frag(sk), getfrag,
--				 from, length, transhdrlen, flags, ipc6);
-+				 from, length, transhdrlen, flags);
+ write_error:
+-	dev_info(&udev->dev,
+-		 "%s: Failed to write block at addr: %04x size: %04x\n",
+-		 __func__, addr, blocksize);
++	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
++		dev_info(&udev->dev,
++			 "%s: Failed to write block at addr: %04x size: %04x\n",
++			 __func__, addr, blocksize);
+ 	return -EAGAIN;
  }
- EXPORT_SYMBOL_GPL(ip6_append_data);
  
-@@ -2089,7 +2090,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
- 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
- 				&current->task_frag, getfrag, from,
- 				length + exthdrlen, transhdrlen + exthdrlen,
--				flags, ipc6);
-+				flags);
- 	if (err) {
- 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
- 		return ERR_PTR(err);
+@@ -4073,8 +4074,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
+ 	 */
+ 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
+ 
+-	ret = rtl8xxxu_download_firmware(priv);
+-	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++	for (int retry = 5; retry >= 0 ; retry--) {
++		ret = rtl8xxxu_download_firmware(priv);
++		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
++		if (ret != -EAGAIN)
++			break;
++		if (retry)
++			dev_dbg(dev, "%s: retry firmware download\n", __func__);
++	}
+ 	if (ret)
+ 		goto exit;
+ 	ret = rtl8xxxu_start_firmware(priv);
 -- 
 2.39.5
 
