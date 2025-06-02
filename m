@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02A79ACB4CD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A13ACB761
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A844A1E96
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4FB1BC71FB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18AB224224;
-	Mon,  2 Jun 2025 14:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912742222BF;
+	Mon,  2 Jun 2025 14:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmFrltEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFWT9cct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7832619EEBD;
-	Mon,  2 Jun 2025 14:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500622222B0;
+	Mon,  2 Jun 2025 14:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875365; cv=none; b=RERfTGK1k4hQUWrg1Iv8vj75ri1SLr0TPSfIlWOQ08KXl3Moig+n5Ta5/66/PqRSMiY1zaTbWM6IPcQDQfB4wuwMaK8Vp7Yq94F/C0+Yp0nPG9OkZ5cumVUHbkdiD5/R6jyTXQgy4X5CA1O6KHqMZNNMa5p4vRheSUA+s/QHrqk=
+	t=1748876053; cv=none; b=tIjRNfoyDt9UhkjIYGm90jQo89xhR1Ei6n8oJZadWjrMoMQL1IVOXLEG7CdhiWYKhiuxgmSBs5OslhJ5bcaC1BlUH61DGEnm4PRzg9DA6Cy6Y988yA+wmUYs9ij6QxrwdBRr4stedUAF3SShBc+0c6of+khaSfxie+VYXIeG+go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875365; c=relaxed/simple;
-	bh=wt0UFp8oqSRy9+00gXPjK15Qu6RLJ0ZPmyuZ/CDOjg8=;
+	s=arc-20240116; t=1748876053; c=relaxed/simple;
+	bh=1fXhPbpv/aTsxA1t5fxUaKAgER7rdBMgCq7Hrl45eCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBAWMcHjVeMULJFVUDXOlP08IDPcpKQ+ICaopsIuvlY8KJYsWZ8Lgu2PSdHdWs7eKNQit6cqt8B19cNsd2xsBgbDWy/8CmF/AE51EyaRFyqsw88B1jQ7nKb6Yp43wIDO8dcaaNCs0YeGGcSuZ9CQLKTPsHgR9ZEwX0VtMyH8bdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZmFrltEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407E7C4CEEB;
-	Mon,  2 Jun 2025 14:42:44 +0000 (UTC)
+	 MIME-Version; b=pu8I+sAjySG9M5IlO4QS/OXyYO9dba5W9Tv8Mb9qB8IufLuCaFqKLKcpbJDbixgEW3OXXkKeCRSfmwAQUmaqeCFHydKvMj+FadGc9UD8En9Y5IJGqofe/VH5H+TlMPnKdeBWf590lckSJ+sqTJmWRZoTtdVdefAHqxx4bU59rds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFWT9cct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6456C4CEEB;
+	Mon,  2 Jun 2025 14:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875364;
-	bh=wt0UFp8oqSRy9+00gXPjK15Qu6RLJ0ZPmyuZ/CDOjg8=;
+	s=korg; t=1748876053;
+	bh=1fXhPbpv/aTsxA1t5fxUaKAgER7rdBMgCq7Hrl45eCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZmFrltEWkH6YQkzSf1fg/bbR4f5Y0UVjhGj1bhmsh8ll0iHmG/US77ZyyEpHZSoOG
-	 cP9as/IefvEmTTb/Fq/Ks+OfYJ+4FHnVSO3gcRLEsqxCYY+9O5zMRMLe/IDhW59Fe3
-	 2r7SDBdu8NVf1S5a3pVYXPTUHyOSRGtIn8yYBoTI=
+	b=nFWT9cctJCFzDsRTtaZnOqXBjPKZ6U3RMnI7wyPj+sTAKB7uTdLPo8QuQ8ukVCarP
+	 Tappp1Q8hExzoBpRLUSRpDhUDIVDceZty1c5gfd4egGPSHEsr/9kvlxy/UqWDATOxj
+	 zCKtrpJT4Gioke3uj0vjm/hrvvomo7dmLR0LRv/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 112/270] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+	Robert Richter <rrichter@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 025/207] libnvdimm/labels: Fix divide error in nd_label_data_init()
 Date: Mon,  2 Jun 2025 15:46:37 +0200
-Message-ID: <20250602134311.809717208@linuxfoundation.org>
+Message-ID: <20250602134259.756948963@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Robert Richter <rrichter@amd.com>
 
-commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd upstream.
+[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
 
-It would be better to not store nft_ctx inside nft_trans object,
-the netlink ctx strucutre is huge and most of its information is
-never needed in places that use trans->ctx.
+If a faulty CXL memory device returns a broken zero LSA size in its
+memory device information (Identify Memory Device (Opcode 4000h), CXL
+spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
+driver:
 
-Avoid/reduce its usage if possible, no runtime behaviour change
-intended.
+ Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Code and flow:
+
+1) CXL Command 4000h returns LSA size = 0
+2) config_size is assigned to zero LSA size (CXL pmem driver):
+
+drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
+
+3) max_xfer is set to zero (nvdimm driver):
+
+drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
+
+4) A subsequent DIV_ROUND_UP() causes a division by zero:
+
+drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
+drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
+drivers/nvdimm/label.c-                 config_size);
+
+Fix this by checking the config size parameter by extending an
+existing check.
+
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |    2 +-
- net/netfilter/nf_tables_api.c     |   17 ++++++++---------
- net/netfilter/nft_immediate.c     |    2 +-
- 3 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/nvdimm/label.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1018,7 +1018,7 @@ static inline bool nft_chain_is_bound(st
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 7f473f9db300d..e1b511d09295f 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -437,7 +437,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
+ 	if (ndd->data)
+ 		return 0;
  
- int nft_chain_add(struct nft_table *table, struct nft_chain *chain);
- void nft_chain_del(struct nft_chain *chain);
--void nf_tables_chain_destroy(struct nft_ctx *ctx);
-+void nf_tables_chain_destroy(struct nft_chain *chain);
- 
- struct nft_stats {
- 	u64			bytes;
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1911,9 +1911,9 @@ static void nf_tables_chain_free_chain_r
- 	kvfree(chain->rules_next);
- }
- 
--void nf_tables_chain_destroy(struct nft_ctx *ctx)
-+void nf_tables_chain_destroy(struct nft_chain *chain)
- {
--	struct nft_chain *chain = ctx->chain;
-+	const struct nft_table *table = chain->table;
- 	struct nft_hook *hook, *next;
- 
- 	if (WARN_ON(chain->use > 0))
-@@ -1925,7 +1925,7 @@ void nf_tables_chain_destroy(struct nft_
- 	if (nft_is_base_chain(chain)) {
- 		struct nft_base_chain *basechain = nft_base_chain(chain);
- 
--		if (nft_base_chain_netdev(ctx->family, basechain->ops.hooknum)) {
-+		if (nft_base_chain_netdev(table->family, basechain->ops.hooknum)) {
- 			list_for_each_entry_safe(hook, next,
- 						 &basechain->hook_list, list) {
- 				list_del_rcu(&hook->list);
-@@ -2367,7 +2367,7 @@ err_unregister_hook:
- err_use:
- 	nf_tables_unregister_hook(net, table, chain);
- err_destroy_chain:
--	nf_tables_chain_destroy(ctx);
-+	nf_tables_chain_destroy(chain);
- 
- 	return err;
- }
-@@ -7999,7 +7999,7 @@ static void nft_commit_release(struct nf
- 		kfree(nft_trans_chain_name(trans));
- 		break;
- 	case NFT_MSG_DELCHAIN:
--		nf_tables_chain_destroy(&trans->ctx);
-+		nf_tables_chain_destroy(nft_trans_chain(trans));
- 		break;
- 	case NFT_MSG_DELRULE:
- 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
-@@ -8840,7 +8840,7 @@ static void nf_tables_abort_release(stru
- 		nf_tables_table_destroy(&trans->ctx);
- 		break;
- 	case NFT_MSG_NEWCHAIN:
--		nf_tables_chain_destroy(&trans->ctx);
-+		nf_tables_chain_destroy(nft_trans_chain(trans));
- 		break;
- 	case NFT_MSG_NEWRULE:
- 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
-@@ -9574,7 +9574,7 @@ int __nft_release_basechain(struct nft_c
- 	}
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
--	nf_tables_chain_destroy(ctx);
-+	nf_tables_chain_destroy(ctx->chain);
- 
- 	return 0;
- }
-@@ -9646,10 +9646,9 @@ static void __nft_release_table(struct n
- 		nft_obj_destroy(&ctx, obj);
- 	}
- 	list_for_each_entry_safe(chain, nc, &table->chains, list) {
--		ctx.chain = chain;
- 		nft_chain_del(chain);
- 		nft_use_dec(&table->use);
--		nf_tables_chain_destroy(&ctx);
-+		nf_tables_chain_destroy(chain);
- 	}
- 	list_del(&table->list);
- 	nf_tables_table_destroy(&ctx);
---- a/net/netfilter/nft_immediate.c
-+++ b/net/netfilter/nft_immediate.c
-@@ -221,7 +221,7 @@ static void nft_immediate_destroy(const
- 			list_del(&rule->list);
- 			nf_tables_rule_destroy(&chain_ctx, rule);
- 		}
--		nf_tables_chain_destroy(&chain_ctx);
-+		nf_tables_chain_destroy(chain);
- 		break;
- 	default:
- 		break;
+-	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
++	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
++	    ndd->nsarea.config_size == 0) {
+ 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
+ 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
+ 		return -ENXIO;
+-- 
+2.39.5
+
 
 
 
