@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-149779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12615ACB458
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9486ACB383
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015971BC0C8A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2318A3AB52E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CE1221FD2;
-	Mon,  2 Jun 2025 14:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA12022A4E8;
+	Mon,  2 Jun 2025 14:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyaa93YC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PfhI8R+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018832C324F;
-	Mon,  2 Jun 2025 14:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93E6222560;
+	Mon,  2 Jun 2025 14:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875013; cv=none; b=TLhMH5alKMX1BxkwMqGM+Dx/6V5m6e94dqr6/7qZK/VHY4uQozz9KiPbWnGJfXX2sOTuS7hrvzG4jcC3Jgq0pmfpoIlV9a9VKRRgFrVlPZpnVlKTpfGyyHfkmGF9enXpVeboRGdDsDtk/OTFPFl64at8l1W6YRIdUe5EvX44nnQ=
+	t=1748874360; cv=none; b=QM1KBmIk8OL7JTUuRXtqE9WIrbfZVs3lmMWU2Vbmdu6l/QJ2xwvlHRoARC5zBOoFPvwf2QbXwiOZjmF/iP3bLGqB+js7CleEyHCqTH79H+2jcFO9gaMm5DKYq0Be0dgp+F+lLL8q0Iy/WR7lg1Ipym6/8S75wAPFBf8rhkL642A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875013; c=relaxed/simple;
-	bh=PM/2+2q4xCmDXHzeWyW3UWSl5/hPWrYbqqarT+80irg=;
+	s=arc-20240116; t=1748874360; c=relaxed/simple;
+	bh=1Y0MfoAawkbBSYGJhkyJtwVVMuAhxQQ1J1O29tLL7Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7wmdd/P63gescVeTadUKYX3tlacqSkmdqZNSx4F2N2FDKScI1WH7bB8ysprfr4I+m8gov1ya2JsQWu5xVu3FLjPcNlTcuWgmkUwMPFoGRcmG4kxe+YxXRQ2kHRqz795aMHNar9pkiYlEvb6g6ggJfDLwM4klhXWtSIeS90O5f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyaa93YC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC7DC4CEF0;
-	Mon,  2 Jun 2025 14:36:52 +0000 (UTC)
+	 MIME-Version; b=eD9BTeJ4w2CbsjcySoQ5VvH0yp07mYIf7940L/1J5YrWGzlLuMq5DwBsWPB+sKqHNxGhJEyXn5TGFWM/rCQEpX9rLfWJh+N/jZ8iTWznOqzMiudTVxTsMnYPV+2yGlSZfSOQF78TEJ1PLM5IArqyMqcYZ6bOqqFDXYluX5JIt88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PfhI8R+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B231C4CEEB;
+	Mon,  2 Jun 2025 14:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875012;
-	bh=PM/2+2q4xCmDXHzeWyW3UWSl5/hPWrYbqqarT+80irg=;
+	s=korg; t=1748874360;
+	bh=1Y0MfoAawkbBSYGJhkyJtwVVMuAhxQQ1J1O29tLL7Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyaa93YCfs18VO0r9hr0sUhCKcNYE9AqEoTztRnqkdqeA+nB3SwRnIMZkeXg6M3nb
-	 V/XKiVKBBCsCKX/4t0DKYvKgYrIy971Sz8DJQ/YLIvtNLj0FyUw5m7BYWw/zBFrjQ2
-	 cK8+pKsMZaNdqcXl2oH1n//YD6NJb3X2mqJL/Ye4=
+	b=0PfhI8R+FfKk0roMXe1C9VMd1jKfFXoboJSXRDp9XWXPtohr0EWhhaWkT3liV05MO
+	 j/V49B73aHzSvn2k/3m8ia3Jo6ZqQ4dgPdjarXeEpJTssDZ9KvZqV271OA+tpX/VXc
+	 T9ZbQgQcUDuWjtFzlmA5jxcXMytkMIhtLBPf5WJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 175/204] crypto: algif_hash - fix double free in hash_accept
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 444/444] ksmbd: use list_first_entry_or_null for opinfo_get_list()
 Date: Mon,  2 Jun 2025 15:48:28 +0200
-Message-ID: <20250602134302.525812388@linuxfoundation.org>
+Message-ID: <20250602134358.960657491@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
+[ Upstream commit 10379171f346e6f61d30d9949500a8de4336444a ]
 
-If accept(2) is called on socket type algif_hash with
-MSG_MORE flag set and crypto_ahash_import fails,
-sk2 is freed. However, it is also freed in af_alg_release,
-leading to slab-use-after-free error.
+The list_first_entry() macro never returns NULL.  If the list is
+empty then it returns an invalid pointer.  Use list_first_entry_or_null()
+to check if the list is empty.
 
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202505080231.7OXwq4Te-lkp@intel.com/
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algif_hash.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/smb/server/oplock.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -262,10 +262,6 @@ static int hash_accept(struct socket *so
- 		return err;
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 72294764d4c20..e564432643ea3 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -146,12 +146,9 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
+ {
+ 	struct oplock_info *opinfo;
  
- 	err = crypto_ahash_import(&ctx2->req, state);
--	if (err) {
--		sock_orphan(sk2);
--		sock_put(sk2);
--	}
- 
- 	return err;
- }
+-	if (list_empty(&ci->m_op_list))
+-		return NULL;
+-
+ 	down_read(&ci->m_lock);
+-	opinfo = list_first_entry(&ci->m_op_list, struct oplock_info,
+-					op_entry);
++	opinfo = list_first_entry_or_null(&ci->m_op_list, struct oplock_info,
++					  op_entry);
+ 	if (opinfo) {
+ 		if (opinfo->conn == NULL ||
+ 		    !atomic_inc_not_zero(&opinfo->refcount))
+-- 
+2.39.5
+
 
 
 
