@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23025ACB3CD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C051ACB7E5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE4E19411B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 082F91BC3181
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079C2221DB3;
-	Mon,  2 Jun 2025 14:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1721422A7F9;
+	Mon,  2 Jun 2025 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDAKvbya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0mt5fvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99371D516F;
-	Mon,  2 Jun 2025 14:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C055B22A4E5;
+	Mon,  2 Jun 2025 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874716; cv=none; b=NzQTyLi4SFAu2ekDhWOaYDGF07tZeABaMS4CDmVTecFKjx00wjIruk/r7g5DRncWji82CLivS1TXNgkUXoLPLdKwzhGPzuGDvbfviGJrW0dAwNrzk4RPA3wzaCpxmWTDvHODn8I/JgRvpKd4/OP+kLVI2VcBfPeY2Ub9MMtyEaA=
+	t=1748877228; cv=none; b=aqpJMLoJeLMO8ga8nQwXp2f+hKw3eN7xivZGS9aaT3xoNiEPy8McCPQP4Z2ga4yXypgpSJffAK8Sm/3LgryCV/fb14bNiP7vBSPKBHD+ureGhF/d25bo5MMcd66tJIZM5rvNXWZeBA5SQDtbWAS9xRDo8M4eln6iWb5EErfMOdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874716; c=relaxed/simple;
-	bh=/ytuouzGczHGeKcy9tzsQfEhkQh3ZIzzr3a9opPA6mw=;
+	s=arc-20240116; t=1748877228; c=relaxed/simple;
+	bh=BJMVxnrfcKeUn/XuxeMtnCnxF+X/vMlUhIuIwen+K6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6UvdkJxE7aTW48rFF2wBf5JdahR2zZIk61N5MWAnKrGnirGwbvOdTLHj/DT+P+VyJ2l9jcONA2bH4KHCLyzsv2Nkh7Xx0hD2vtUx0oH1eguNdS42Ldv2xzeM2yx3yeBsUvY0W3RAhxnWmvbnLDbkk9bZ5fEEKlH10X86rCh1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDAKvbya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4255AC4CEEB;
-	Mon,  2 Jun 2025 14:31:56 +0000 (UTC)
+	 MIME-Version; b=u8GGE7qaCGCX8WM038Mw6nj8ApiUchIXXqi10p4YzgSVaaX9lFk1n0x85CIlQ3D509+TW4BKUtNzMg0c8xD5L54ARgJCTwx/HyT8jSM/O0Lqag//VyiLJoVxG6Sa17RZTixUxKs0kK7gmaYx60zZmLKUkYZmFM75Yld11wdT+so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0mt5fvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C24C4CEEB;
+	Mon,  2 Jun 2025 15:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874716;
-	bh=/ytuouzGczHGeKcy9tzsQfEhkQh3ZIzzr3a9opPA6mw=;
+	s=korg; t=1748877228;
+	bh=BJMVxnrfcKeUn/XuxeMtnCnxF+X/vMlUhIuIwen+K6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDAKvbyaN+/1EIwouXry01KnfDdl/cNt1d0TVhk98WVe+npic6KPdWJ0UFc92jleK
-	 F4Cnxn6o1VVp0w/EXijMAr+ssYo+rs3xAi2md/s6oslITAl1cqQc8weMNtTMczenM2
-	 kmXpM70jyN6Tt7o7+ku8KezBcmaSMIewDeRgMhMA=
+	b=j0mt5fvwWxNw4TBqBRNovd1ravm7zsTxqUDyXn/7obIoDaY7u4C6DJ5YAiRcN7UaK
+	 RRfIUP+b3VuVnW6N9jLQchxiNdAt/knNV4Nw4HPOZKhSGJgIWB/obNJt+ddnQG125y
+	 7Lu2004em96XygI06URZQO0vBeUB6D5lRRQ1sTmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@linux-m68k.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 114/204] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
+Subject: [PATCH 6.1 171/325] ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()
 Date: Mon,  2 Jun 2025 15:47:27 +0200
-Message-ID: <20250602134300.138849573@linuxfoundation.org>
+Message-ID: <20250602134326.765092042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Schwab <schwab@linux-m68k.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
+[ Upstream commit 7f1186a8d738661b941b298fd6d1d5725ed71428 ]
 
-Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
-property on the i2s node.
+snd_soc_dai_set_tdm_slot() calls .xlate_tdm_slot_mask() or
+snd_soc_xlate_tdm_slot_mask(), but didn't check its return value.
+Let's check it.
 
-Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-[maddy: added "commit" work in depends-on to avoid checkpatch error]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
+This patch might break existing driver. In such case, let's makes
+each func to void instead of int.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87o6z7yk61.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/soc-dai.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index b7ef63614417d..e0abb13b5806a 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2906,11 +2906,11 @@ static void __init fixup_device_tree_pmac(void)
- 	char type[8];
- 	phandle node;
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index 49752af0e205d..ba38b6e6b2649 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -270,10 +270,11 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
  
--	// Some pmacs are missing #size-cells on escc nodes
-+	// Some pmacs are missing #size-cells on escc or i2s nodes
- 	for (node = 0; prom_next_node(&node); ) {
- 		type[0] = '\0';
- 		prom_getprop(node, "device_type", type, sizeof(type));
--		if (prom_strcmp(type, "escc"))
-+		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
- 			continue;
+ 	if (dai->driver->ops &&
+ 	    dai->driver->ops->xlate_tdm_slot_mask)
+-		dai->driver->ops->xlate_tdm_slot_mask(slots,
+-						      &tx_mask, &rx_mask);
++		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
+ 	else
+-		snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++	if (ret)
++		goto err;
  
- 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+ 	dai->tx_mask = tx_mask;
+ 	dai->rx_mask = rx_mask;
+@@ -282,6 +283,7 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+ 	    dai->driver->ops->set_tdm_slot)
+ 		ret = dai->driver->ops->set_tdm_slot(dai, tx_mask, rx_mask,
+ 						      slots, slot_width);
++err:
+ 	return soc_dai_ret(dai, ret);
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
 -- 
 2.39.5
 
