@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-150337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC43ACB7D2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6306ACB287
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C35B84C0E7A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5BB9405C0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2064E2356DB;
-	Mon,  2 Jun 2025 15:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924CC22D9EE;
+	Mon,  2 Jun 2025 14:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnmepT5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06eoYKNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1322A1FA;
-	Mon,  2 Jun 2025 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD49221299;
+	Mon,  2 Jun 2025 14:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876801; cv=none; b=ncPA1+LgfhZ/O74stq4NXhGpdZ8BwbLJWN6OW6NvwJL71AgiyVUh+vQsJEPpsKPYAekFV+XSq3IelhXrf/h9uPkFlFei43HF7JIhNTQM9WrnxXULZxlRDshSnt1FesmrZnvbyh/3jSt+TETN5q+7rHx1/+aGOym0w7XaVU489eU=
+	t=1748873811; cv=none; b=lPMw0IZQnaYPlwWEYOCS66TUNcGpjorEbPRk9co5IH/Hj1I3z6DUEB/+Xv41uZMo5XEI7ZiQczNdDJs0HDSjj3zUEHx60C945V0yht2kDPaGFThjivwdn1mQttfbWxes3yjjLa7rZ5yemsiDpt3g9dw5gUj2ggzcHNHP+aopbmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876801; c=relaxed/simple;
-	bh=GxqlEod7fic2CsfbN9VO4O9ldAT7n2jYT+Fu6d6vVzc=;
+	s=arc-20240116; t=1748873811; c=relaxed/simple;
+	bh=eu+lBNnz6cpTUOwpwn63mQ4+VJ3W2UtqALDpc+uu8a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zwe0hmMvV2DxcRHiOJ8Sel7BMjjk5SMJaP1DQjpkapHRC9L+sKVNU+uc9XVKmk8sP5cCLs9saODcF84a6F8p0naurmwOso4qBnXP3K3SpGcdJCmxxUJMpkANB88cYW/JBBxX/ic/a9P4EB7YDQrNNzuOcLIfiIovUg9+9r1UYLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnmepT5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275C1C4CEEE;
-	Mon,  2 Jun 2025 15:06:40 +0000 (UTC)
+	 MIME-Version; b=qCZqYnLckGTizjAjhRqtuZpzmHLjZjExd9SrNv4DSCBuyuNeEEDNP4AOSJDkhooVQwbBuVNNyIb0ed9LdcHjJFwowrbpz8t2tys/yosBVLZoTnf1UJVc4Y2w71GkdIg7ODcYg8EEXxwGEu8ocImL3QyjAfU2gzwOnjSRkhq0BDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06eoYKNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFF7C4CEEB;
+	Mon,  2 Jun 2025 14:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876801;
-	bh=GxqlEod7fic2CsfbN9VO4O9ldAT7n2jYT+Fu6d6vVzc=;
+	s=korg; t=1748873811;
+	bh=eu+lBNnz6cpTUOwpwn63mQ4+VJ3W2UtqALDpc+uu8a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnmepT5Z9NG8NOsINIt3gQNeaQgm+oikdTAm/KDko3s1EXUiKjG4WjpoYGe+JIBBs
-	 qXJV+WPvSK7XpaGu+H4iWCEnsf/sWNxP9qRkjRr8AuUmkXwxuQbLmz5QZN8EvChFW/
-	 p3hyVrq5lHixZIGMWquCcG1ODl8yxNUwfanv+c4U=
+	b=06eoYKNrCZ2SyhbBq92GfI13SAkcXpP88FPtFlBStXksjUcyLyRu1lfHTgd/ovDKI
+	 4Oq7ccYSK0b/ooWXN+GgKKP7H6m9wT1n7ASzN2d/uvja9CYxrmRY8y2bmrJDqj4qgf
+	 xu55U6fLvzZ4B+R7qFX71mdlM33X7fWiwuPAMKmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Redkin <me@rarity.fan>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Gaurav Batra <gbatra@linux.ibm.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/325] x86/mm: Check return value from memblock_phys_alloc_range()
+Subject: [PATCH 6.6 260/444] powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory
 Date: Mon,  2 Jun 2025 15:45:24 +0200
-Message-ID: <20250602134321.708807885@linuxfoundation.org>
+Message-ID: <20250602134351.482556456@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Redkin <me@rarity.fan>
+From: Gaurav Batra <gbatra@linux.ibm.com>
 
-[ Upstream commit 631ca8909fd5c62b9fda9edda93924311a78a9c4 ]
+[ Upstream commit 6aa989ab2bd0d37540c812b4270006ff794662e7 ]
 
-At least with CONFIG_PHYSICAL_START=0x100000, if there is < 4 MiB of
-contiguous free memory available at this point, the kernel will crash
-and burn because memblock_phys_alloc_range() returns 0 on failure,
-which leads memblock_phys_free() to throw the first 4 MiB of physical
-memory to the wolves.
+iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
+notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
+(DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
+for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
+dynamically mapped when the device driver instructs to do so.
 
-At a minimum it should fail gracefully with a meaningful diagnostic,
-but in fact everything seems to work fine without the weird reserve
-allocation.
+The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
+after LPAR boot. The command to do so is -
 
-Signed-off-by: Philip Redkin <me@rarity.fan>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/94b3e98f-96a7-3560-1f76-349eb95ccf7f@rarity.fan
+daxctl reconfigure-device --mode=system-ram dax0.0 --force
+
+This will dynamically add pmemory range to LPAR RAM eventually invoking
+iommu_mem_notifier(). The address range of pmemory is way beyond the Max
+RAM that the LPAR can have. Which means, this range is beyond the DDW
+created for the device, at device initialization time.
+
+As a result when TCEs are pre-mapped for the pmemory range, by
+iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
+command, daxctl, to add pmemory as RAM.
+
+The solution is to not pre-map TCEs for pmemory.
+
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+Tested-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250130183854.92258-1-gbatra@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/init.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/mmzone.h      |  1 +
+ arch/powerpc/mm/numa.c                 |  2 +-
+ arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
+ 3 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index ab697ee645288..446bf7fbc3250 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -654,8 +654,13 @@ static void __init memory_map_top_down(unsigned long map_start,
- 	 */
- 	addr = memblock_phys_alloc_range(PMD_SIZE, PMD_SIZE, map_start,
- 					 map_end);
--	memblock_phys_free(addr, PMD_SIZE);
--	real_end = addr + PMD_SIZE;
-+	if (!addr) {
-+		pr_warn("Failed to release memory for alloc_low_pages()");
-+		real_end = max(map_start, ALIGN_DOWN(map_end, PMD_SIZE));
-+	} else {
-+		memblock_phys_free(addr, PMD_SIZE);
-+		real_end = addr + PMD_SIZE;
-+	}
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index da827d2d08666..f2c4457c94c39 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -35,6 +35,7 @@ extern cpumask_var_t node_to_cpumask_map[];
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ extern unsigned long max_pfn;
+ u64 memory_hotplug_max(void);
++u64 hot_add_drconf_memory_max(void);
+ #else
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index f6c4ace3b2219..65a9df0b9e5a0 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1342,7 +1342,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
+ 	return nid;
+ }
  
- 	/* step_size need to be small so pgt_buf from BRK could cover it */
- 	step_size = PMD_SIZE;
+-static u64 hot_add_drconf_memory_max(void)
++u64 hot_add_drconf_memory_max(void)
+ {
+ 	struct device_node *memory = NULL;
+ 	struct device_node *dn = NULL;
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index b1e6d275cda9e..bf02f94a973db 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1183,17 +1183,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
+ 
+ static phys_addr_t ddw_memory_hotplug_max(void)
+ {
+-	resource_size_t max_addr = memory_hotplug_max();
+-	struct device_node *memory;
++	resource_size_t max_addr;
+ 
+-	for_each_node_by_type(memory, "memory") {
+-		struct resource res;
+-
+-		if (of_address_to_resource(memory, 0, &res))
+-			continue;
+-
+-		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
+-	}
++#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
++	max_addr = hot_add_drconf_memory_max();
++#else
++	max_addr = memblock_end_of_DRAM();
++#endif
+ 
+ 	return max_addr;
+ }
+@@ -1471,7 +1467,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 		window->direct = true;
+ 
+ 		/* DDW maps the whole partition, so enable direct DMA mapping */
+-		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
++		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
+ 					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+ 		if (ret) {
+ 			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+@@ -1658,11 +1654,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 	struct memory_notify *arg = data;
+ 	int ret = 0;
+ 
++	/* This notifier can get called when onlining persistent memory as well.
++	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
++	 * always be above ddw_memory_hotplug_max()
++	 */
++
+ 	switch (action) {
+ 	case MEM_GOING_ONLINE:
+ 		spin_lock(&dma_win_list_lock);
+ 		list_for_each_entry(window, &dma_win_list, list) {
+-			if (window->direct) {
++			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
++				ddw_memory_hotplug_max()) {
+ 				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+ 						arg->nr_pages, window->prop);
+ 			}
+@@ -1674,7 +1676,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+ 	case MEM_OFFLINE:
+ 		spin_lock(&dma_win_list_lock);
+ 		list_for_each_entry(window, &dma_win_list, list) {
+-			if (window->direct) {
++			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
++				ddw_memory_hotplug_max()) {
+ 				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+ 						arg->nr_pages, window->prop);
+ 			}
 -- 
 2.39.5
 
