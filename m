@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903A5ACB8E7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5504ACB757
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD791942362
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E760F3B5DF8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC15A22CBE9;
-	Mon,  2 Jun 2025 15:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8319E22B8B6;
+	Mon,  2 Jun 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxfIePFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhWhhwyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957E522C32D;
-	Mon,  2 Jun 2025 15:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401C222A814;
+	Mon,  2 Jun 2025 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877534; cv=none; b=sh0HvtSgYxRlg5GODt+L9ZJ63dNovUj96YQ8N3PMmo2e0u6Sy3K3j/596qA7DspgyzMKZByRDdka959oEVY1erMQcc57gs+JGWo1FLYoHG026iE3riTFBqFg+g2yOw2RoRxzIe0GKPkVdIv4kyZGDxTmjORQSjskCfTqxvCcca4=
+	t=1748875867; cv=none; b=G4DfA8KCMQ+IUi1A2Y4meyyY2yJ7jjc3Q5Kdv2z/tC/YadqnGq1blyw72xOm9k2lyVCN7lpeFejBMYD2kuaE1b2yy+TjOqz0+4jDwrZx6vhwonGb9+njirg+5BVLz5lmCfCG3mxyRyLxHEHiBkVKW0zVWpxHR4qipjgwguZDTDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877534; c=relaxed/simple;
-	bh=de0ABO8qU0MkIQYJQZtYKRaUOxDhyM/Tuj68PUVkNOQ=;
+	s=arc-20240116; t=1748875867; c=relaxed/simple;
+	bh=Jxiow02KoGX1/qBbPZN38c4c7a3iPLW2p0COstzJZWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4uUYh6DaC6+6kwKNr0b6aNv6Y37CMhv1aP0UC0jRC9KTta/dL/38BWvb7WHmK7AzDeMVaZiDBSXyC1qWcDcKiDXM3byP9Yb+w5lbeZlEwOqNY5H9Ti0WV27EppJ6uVssQqDJO8+cMZ/l1Afb3PHQU0ewowOE5pM13TiywAkcrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxfIePFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFBFC4CEEB;
-	Mon,  2 Jun 2025 15:18:53 +0000 (UTC)
+	 MIME-Version; b=WmaXOmbvmy35rii7tDlPYugF6ESF6U5Q0I2Fh8WBUJN9dvfhYCeG94MN2Ggt7qsa3jOLg2GvUJBG5NAd6Ztz6ax2GFbiLg+t/Xl3nd3XAyorA/7gG3w/em1dSdT9NlS2hJizuvYnmxBtrk8bJ7f3bt2qObT1zDGttsiMo3Qp2MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhWhhwyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C10C4CEEB;
+	Mon,  2 Jun 2025 14:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877534;
-	bh=de0ABO8qU0MkIQYJQZtYKRaUOxDhyM/Tuj68PUVkNOQ=;
+	s=korg; t=1748875867;
+	bh=Jxiow02KoGX1/qBbPZN38c4c7a3iPLW2p0COstzJZWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZxfIePFffTjlHaXWPUnB/SAzFF0tzFvIcoWle0r03cD/SRhuvR8wbfXdRECwTocud
-	 v2ebDIjR4nUD4+4he8suvdFZWvGnauUDwrV9SfRgtyDOiQPjRv06OoNkGR+1cIQOdp
-	 IRmVuLEDIinXVMk7b9vz7mVDu12ziLV310MedOgk=
+	b=HhWhhwyIz7GFEwXTb6XiWCA3VXNSjeRSHfRqynG2yJxuFeFtQSPoD0ctg/eMDOWzF
+	 m8X06+vS70KSSB1VTNi+nrVEZ2WetMusGxIk8tE+AdBqsEqC2TgidV5aK2TyqsTP43
+	 IQ8601OpZBVWoSEYcQuVPiciGhWwpy3Lv0WI66bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 278/325] octeontx2-pf: Fix page pool frag allocation warning
+	Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.10 269/270] xen/swiotlb: relax alignment requirements
 Date: Mon,  2 Jun 2025 15:49:14 +0200
-Message-ID: <20250602134331.058626242@linuxfoundation.org>
+Message-ID: <20250602134318.332879880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 50e492143374c17ad89c865a1a44837b3f5c8226 upstream.
+commit 85fcb57c983f423180ba6ec5d0034242da05cc54 upstream.
 
-Since page pool param's "order" is set to 0, will result
-in below warn message if interface is configured with higher
-rx buffer size.
+When mapping a buffer for DMA via .map_page or .map_sg DMA operations,
+there is no need to check the machine frames to be aligned according
+to the mapped areas size. All what is needed in these cases is that the
+buffer is contiguous at machine level.
 
-Steps to reproduce the issue.
-1. devlink dev param set pci/0002:04:00.0 name receive_buffer_size \
-   value 8196 cmode runtime
-2. ifconfig eth0 up
+So carve out the alignment check from range_straddles_page_boundary()
+and move it to a helper called by xen_swiotlb_alloc_coherent() and
+xen_swiotlb_free_coherent() directly.
 
-[   19.901356] ------------[ cut here ]------------
-[   19.901361] WARNING: CPU: 11 PID: 12331 at net/core/page_pool.c:567 page_pool_alloc_frag+0x3c/0x230
-[   19.901449] pstate: 82401009 (Nzcv daif +PAN -UAO +TCO -DIT +SSBS BTYPE=--)
-[   19.901451] pc : page_pool_alloc_frag+0x3c/0x230
-[   19.901453] lr : __otx2_alloc_rbuf+0x60/0xbc [rvu_nicpf]
-[   19.901460] sp : ffff80000f66b970
-[   19.901461] x29: ffff80000f66b970 x28: 0000000000000000 x27: 0000000000000000
-[   19.901464] x26: ffff800000d15b68 x25: ffff000195b5c080 x24: ffff0002a5a32dc0
-[   19.901467] x23: ffff0001063c0878 x22: 0000000000000100 x21: 0000000000000000
-[   19.901469] x20: 0000000000000000 x19: ffff00016f781000 x18: 0000000000000000
-[   19.901472] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-[   19.901474] x14: 0000000000000000 x13: ffff0005ffdc9c80 x12: 0000000000000000
-[   19.901477] x11: ffff800009119a38 x10: 4c6ef2e3ba300519 x9 : ffff800000d13844
-[   19.901479] x8 : ffff0002a5a33cc8 x7 : 0000000000000030 x6 : 0000000000000030
-[   19.901482] x5 : 0000000000000005 x4 : 0000000000000000 x3 : 0000000000000a20
-[   19.901484] x2 : 0000000000001080 x1 : ffff80000f66b9d4 x0 : 0000000000001000
-[   19.901487] Call trace:
-[   19.901488]  page_pool_alloc_frag+0x3c/0x230
-[   19.901490]  __otx2_alloc_rbuf+0x60/0xbc [rvu_nicpf]
-[   19.901494]  otx2_rq_aura_pool_init+0x1c4/0x240 [rvu_nicpf]
-[   19.901498]  otx2_open+0x228/0xa70 [rvu_nicpf]
-[   19.901501]  otx2vf_open+0x20/0xd0 [rvu_nicvf]
-[   19.901504]  __dev_open+0x114/0x1d0
-[   19.901507]  __dev_change_flags+0x194/0x210
-[   19.901510]  dev_change_flags+0x2c/0x70
-[   19.901512]  devinet_ioctl+0x3a4/0x6c4
-[   19.901515]  inet_ioctl+0x228/0x240
-[   19.901518]  sock_ioctl+0x2ac/0x480
-[   19.901522]  __arm64_sys_ioctl+0x564/0xe50
-[   19.901525]  invoke_syscall.constprop.0+0x58/0xf0
-[   19.901529]  do_el0_svc+0x58/0x150
-[   19.901531]  el0_svc+0x30/0x140
-[   19.901533]  el0t_64_sync_handler+0xe8/0x114
-[   19.901535]  el0t_64_sync+0x1a0/0x1a4
-[   19.901537] ---[ end trace 678c0bf660ad8116 ]---
-
-Fixes: b2e3406a38f0 ("octeontx2-pf: Add support for page pool")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Reviewed-by: Yunsheng Lin <linyunsheng@huawei.com>
-Link: https://lore.kernel.org/r/20231010034842.3807816-1-rkannoth@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
+Reported-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
+Tested-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/xen/swiotlb-xen.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1402,6 +1402,7 @@ int otx2_pool_init(struct otx2_nic *pfvf
- 		return 0;
- 	}
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -87,19 +87,21 @@ static inline dma_addr_t xen_virt_to_bus
+ 	return xen_phys_to_dma(dev, virt_to_phys(address));
+ }
  
-+	pp_params.order = get_order(buf_size);
- 	pp_params.flags = PP_FLAG_PAGE_FRAG | PP_FLAG_DMA_MAP;
- 	pp_params.pool_size = min(OTX2_PAGE_POOL_SZ, numptrs);
- 	pp_params.nid = NUMA_NO_NODE;
++static inline bool range_requires_alignment(phys_addr_t p, size_t size)
++{
++	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
++	phys_addr_t bus_addr = pfn_to_bfn(XEN_PFN_DOWN(p)) << XEN_PAGE_SHIFT;
++
++	return IS_ALIGNED(p, algn) && !IS_ALIGNED(bus_addr, algn);
++}
++
+ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
+ {
+ 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
+ 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
+-	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
+ 
+ 	next_bfn = pfn_to_bfn(xen_pfn);
+ 
+-	/* If buffer is physically aligned, ensure DMA alignment. */
+-	if (IS_ALIGNED(p, algn) &&
+-	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
+-		return 1;
+-
+ 	for (i = 1; i < nr_pages; i++)
+ 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
+ 			return 1;
+@@ -321,7 +323,8 @@ xen_swiotlb_alloc_coherent(struct device
+ 	phys = dma_to_phys(hwdev, *dma_handle);
+ 	dev_addr = xen_phys_to_dma(hwdev, phys);
+ 	if (((dev_addr + size - 1 <= dma_mask)) &&
+-	    !range_straddles_page_boundary(phys, size))
++	    !range_straddles_page_boundary(phys, size) &&
++	    !range_requires_alignment(phys, size))
+ 		*dma_handle = dev_addr;
+ 	else {
+ 		if (xen_create_contiguous_region(phys, order,
+@@ -362,6 +365,7 @@ xen_swiotlb_free_coherent(struct device
+ 
+ 	if (!WARN_ON((dev_addr + size - 1 > dma_mask) ||
+ 		     range_straddles_page_boundary(phys, size)) &&
++	    !range_requires_alignment(phys, size) &&
+ 	    TestClearPageXenRemapped(page))
+ 		xen_destroy_contiguous_region(phys, order);
+ 
 
 
 
