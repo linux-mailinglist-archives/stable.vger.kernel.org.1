@@ -1,204 +1,188 @@
-Return-Path: <stable+bounces-148949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2891ACAE60
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:58:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EABACAE6A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601641BA006B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:58:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D8707ABED9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9664321B9F8;
-	Mon,  2 Jun 2025 12:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD621F4165;
+	Mon,  2 Jun 2025 13:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HpZVY6n0"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="T9HGC4tt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8A186344
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 12:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C99AC8CE;
+	Mon,  2 Jun 2025 13:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748869093; cv=none; b=oFBw9Ghw/bUNWsQBDoprjDDTQ3K+lhqQ94iAqZap8cTX9gXlURwsXoUH/tVQ0m1qznuUn7elZ0MrKL71YyAOuB1qcfY5d/iP03rcDuchAqNz7SeennTtWNUM47pMhPmpoU+kCW41MsaMbnkrsKbMOZL02hLPFzHAhoXuVUeMNZg=
+	t=1748869249; cv=none; b=XDWbAvFS2Q7BTwl+qYF1uzj+6bwY54pIrID/gyVY3ZUwrD2ffDZW+gyJm8CmhJjPy++S14AhW7U/WVDx6bFs4sjdWCsPNhV4NB0p6cuo2Kt25+RI+eoSKiew8cR+Q5NOOK2phCosUcuo63FE525B6cHzDiEpSSu8UuHh/BUUal4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748869093; c=relaxed/simple;
-	bh=oilxkc6DzN2cbvWSWKB25ul1D8zwWWt/1iUwtIntcJ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uee4tRUU0rj6ZS9E07fMPBeE6soClDK09rLsNv3zWePf5ZkfBzfLHteTPPWq3PsW6PbguiJVBBqHZs9tKGkZKszF/gcL80df0FivJx3Sqeu6peOaDDYM51gaPjmXUzkoP5o4s4H2nUf9sfJHyots1gKEXqQVYNSFE1tSKKnlnXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HpZVY6n0; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748869092; x=1780405092;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=oilxkc6DzN2cbvWSWKB25ul1D8zwWWt/1iUwtIntcJ0=;
-  b=HpZVY6n0nZYrZS5oEfRa9xbOMNbgSddAIRd4j5RUg3UN9wCFp6lBjApb
-   r8XtMd/xS1idMAwMd0lu2WIJpau++jRAHjUl6uLZCVcCmMIqmsxjgxSTT
-   W/DpA/0e9whie39dG93rwSDMiSt+YJKYlC/kzTBz2egN63pSNBTIQHYmo
-   kq7nfcDCrBSbRTM8+QVebDcZSVFZP3EHu88LXPGv7LbUUG0eCVONsziRJ
-   0YYrqbYlcXD04yfuikIJCjbuxHVjfe1DLoKiwX4q511hU81+6g1Ol4Rbu
-   CoNT4BWz0cjAxdrjXFp90Hg92yLgnq9hyVLxNtuW2XN4ZtZOYdgAy0XL1
-   w==;
-X-CSE-ConnectionGUID: 255IIEgEQPqKISv08lVGpQ==
-X-CSE-MsgGUID: pq1ftFeIQeuPU6/+Ox1wwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="61925824"
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="61925824"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 05:58:11 -0700
-X-CSE-ConnectionGUID: GqIhOtykTW6ytS3iJyaKlA==
-X-CSE-MsgGUID: /PHzulLTT2q+HKeMQ1gj8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="144413332"
-Received: from vmusin-mobl1.ger.corp.intel.com (HELO [10.245.112.120]) ([10.245.112.120])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 05:58:10 -0700
-Message-ID: <a52588be-b487-433a-a74f-eaa1d7a88654@linux.intel.com>
-Date: Mon, 2 Jun 2025 14:58:08 +0200
+	s=arc-20240116; t=1748869249; c=relaxed/simple;
+	bh=ujsjFmfmKNY3XZSEPL45VVklZB5mdxfIdwBl8x+CdSw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YC9T+PgHLX5B0ParW88Iv2CI1cqrj+Se2OSPG350xEiORbxRxgMt8Gw3ua9IcDSGkaARO3D75l8gPv4SOGqvRMMVPEE1jGFoQuvXeLWRCPEnkFpeXMGigungvfdkAF81V9iL8SOufIE7iQTyhOnPGyLK1xAVseQPz98v0xPpHrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=T9HGC4tt; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1748869240;
+	bh=ujsjFmfmKNY3XZSEPL45VVklZB5mdxfIdwBl8x+CdSw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=T9HGC4ttEOut4U5T98eg8qP2EaOlhNuuiQkfOgbQNPK6+DQapTUSxzlb5OK3ATb0M
+	 OaTzO64G77yCGN/dk+E6bxaArLjh1pPQXrV5zTf4t2+Di+Fk1yb8WLWSi2JRnA85zv
+	 6MmAOq/zEDfHYoe3M1Xv2/oGT1j43UJNdrmX7/X2xl+/VaoTG/sZ5O6HpEssEvvn28
+	 NYwhMFAFSFletYthThItKCxaoAImwRAsn4vDmBnFKrVp+s9Bqh2kIhOdnGJJ09aoyA
+	 jMXXlvIhQc8Cw2u1bY0z/WiXBFtp1+V/X8Zadvy86eL0aEb2HKP+dGiHEhQs/anCPQ
+	 obYtdpp99cWuw==
+Received: from [IPv6:2606:6d00:10:5285::5ac] (unknown [IPv6:2606:6d00:10:5285::5ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1CCD017E01FD;
+	Mon,  2 Jun 2025 15:00:39 +0200 (CEST)
+Message-ID: <4d34103cf31df1cf10dd95f33a285c54249d6e3b.camel@collabora.com>
+Subject: Re: [PATCH AUTOSEL 6.15 054/110] media: rkvdec: Initialize the m2m
+ context before the controls
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, 
+	stable@vger.kernel.org
+Cc: Hans Verkuil <hverkuil@xs4all.nl>, ezequiel@vanguardiasur.com.ar, 
+	mchehab@kernel.org, gregkh@linuxfoundation.org,
+ linux-media@vger.kernel.org, 	linux-rockchip@lists.infradead.org,
+ linux-staging@lists.linux.dev, 	linux-kernel@vger.kernel.org
+Date: Mon, 02 Jun 2025 09:00:37 -0400
+In-Reply-To: <20250601232435.3507697-54-sashal@kernel.org>
+References: <20250601232435.3507697-1-sashal@kernel.org>
+	 <20250601232435.3507697-54-sashal@kernel.org>
+Organization: Collabora Canada
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
-To: Lizhi Hou <lizhi.hou@amd.com>, dri-devel@lists.freedesktop.org
-Cc: jeff.hugo@oss.qualcomm.com, stable@vger.kernel.org
-References: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
- <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
-Content-Language: en-US
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi,
-
-On 5/28/2025 7:50 PM, Lizhi Hou wrote:
+Le dimanche 01 juin 2025 à 19:23 -0400, Sasha Levin a écrit :
+> From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 > 
-> On 5/28/25 08:43, Jacek Lawrynowicz wrote:
->> This fixes a potential race conditions in:
->>   - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
->>     holding the dma_resv_lock().
->>   - ivpu_bo_print_info() where we read the shmem->pages without
->>     holding the dma_resv_lock().
->>
->> Using dma_resv_lock() also protects against future syncronisation
->> issues that may arise when accessing drm_gem_shmem_object or
->> drm_gem_object members.
->>
->> Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
->> Cc: <stable@vger.kernel.org> # v6.9+
->> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->> ---
->>   drivers/accel/ivpu/ivpu_gem.c | 63 +++++++++++++++++++----------------
->>   drivers/accel/ivpu/ivpu_gem.h |  1 -
->>   2 files changed, 34 insertions(+), 30 deletions(-)
->>
->> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
->> index c193a80241f5f..5908268ca45e9 100644
->> --- a/drivers/accel/ivpu/ivpu_gem.c
->> +++ b/drivers/accel/ivpu/ivpu_gem.c
->> @@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->>            (bool)bo->base.base.import_attach);
->>   }
->>   +static inline int ivpu_bo_lock(struct ivpu_bo *bo)
->> +{
->> +    return dma_resv_lock(bo->base.base.resv, NULL);
->> +}
->> +
->> +static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
->> +{
->> +    dma_resv_unlock(bo->base.base.resv);
->> +}
->> +
->>   /*
->>    * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
->>    *
->> @@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->>   int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
->>   {
->>       struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
->> +    struct sg_table *sgt;
->>       int ret = 0;
->>   -    mutex_lock(&bo->lock);
->> -
->>       ivpu_dbg_bo(vdev, bo, "pin");
->> -    drm_WARN_ON(&vdev->drm, !bo->ctx);
->>   -    if (!bo->mmu_mapped) {
->> -        struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
->> +    sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
->> +    if (IS_ERR(sgt)) {
->> +        ret = PTR_ERR(sgt);
->> +        ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
->> +        return ret;
->> +    }
->>   -        if (IS_ERR(sgt)) {
->> -            ret = PTR_ERR(sgt);
->> -            ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
->> -            goto unlock;
->> -        }
->> +    ivpu_bo_lock(bo);
->>   +    if (!bo->mmu_mapped) {
->> +        drm_WARN_ON(&vdev->drm, !bo->ctx);
->>           ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
->>                              ivpu_bo_is_snooped(bo));
->>           if (ret) {
->> @@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
->>       }
->>     unlock:
->> -    mutex_unlock(&bo->lock);
->> +    ivpu_bo_unlock(bo);
->>         return ret;
->>   }
->> @@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->>       if (!drm_dev_enter(&vdev->drm, &idx))
->>           return -ENODEV;
->>   -    mutex_lock(&bo->lock);
->> +    ivpu_bo_lock(bo);
->>         ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
->>       if (!ret) {
->> @@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->>           ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
->>       }
->>   -    mutex_unlock(&bo->lock);
->> +    ivpu_bo_unlock(bo);
->>         drm_dev_exit(idx);
->>   @@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
->>   {
->>       struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
->>   -    lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
->> +    lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
->>         if (bo->mmu_mapped) {
->>           drm_WARN_ON(&vdev->drm, !bo->ctx);
->> @@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
->>       if (bo->base.base.import_attach)
->>           return;
->>   -    dma_resv_lock(bo->base.base.resv, NULL);
->>       if (bo->base.sgt) {
->>           dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
->>           sg_free_table(bo->base.sgt);
->>           kfree(bo->base.sgt);
->>           bo->base.sgt = NULL;
+> [ Upstream commit d43d7db3c8a1868dcbc6cb8de90a3cdf309d6cbb ]
 > 
-> Maybe not directly modify sgt but use drm_gem_shmem_purge()?
+> Setting up the control handler calls into .s_ctrl ops. While validating
+> the controls the ops may need to access some of the context state, which
+> could lead to a crash if not properly initialized.
+> 
+> Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> 
+> Now let me analyze the specific changes proposed in the commit: ##
+> Analysis **YES** This commit should be backported to stable kernel
+> trees. Here's my extensive analysis: ### Core Issue Analysis The commit
+> addresses a critical initialization order bug that can lead to crashes.
 
-drm_gem_shmem_purge() also removes user mapping and backing pages.
-In ivpu_bo_unbind_locked() we only want to unmap the buffer from the device as it being turned off.
-We don't want to crash user process in this case and this will probably be the result of drm_gem_shmem_purge() na mmpapped buffer.
+"While validating the controls the ops **may** need"
 
-> Will it potentially memleak without calling drm_gem_shmem_put_pages()? (if the bo is mmap, vmap etc)
+It wasn't the case yet, so its not as critical as this analyses made
+it sound like. The changes that came next, removes superfluous branches
+that was only there for the purpose of avoiding the crash.
 
-There is no memory leak. We are calling drm_gem_shmem_get_pages_sgt() only once per object and drm_gem_shmem_free() frees all backing memory.
+It is harmless otherwise, the change is good practice and at best may
+help people backportin more patches. But not worth "Fixes:" and
+"CC: Stable" in my opinion. You are free to proceed.
 
-Regards,
-Jacek
+> The problem occurs in the `rkvdec_open()` function at lines 822-830 in
+> the current code: 1. **Current problematic order:** - Line 822:
+> `rkvdec_init_ctrls(ctx)` is called first - Line 826-830:
+> `v4l2_m2m_ctx_init()` is called second 2. **The problem:** According to
+> the commit message and my analysis of the kernel documentation,
+> `v4l2_ctrl_handler_setup()` (called inside `rkvdec_init_ctrls()`) calls
+> `.s_ctrl` for all controls unconditionally to initialize hardware to
+> default values. The `.s_ctrl` handlers may need to access the m2m
+> context state, but if the m2m context (`ctx->fh.m2m_ctx`) isn't
+> initialized yet, this can cause a crash or undefined behavior. ### Code
+> Changes Analysis The fix is minimal and surgical: - **Lines moved:** The
+> initialization order is swapped - m2m context initialization moves
+> before control handler setup - **Error handling updated:** The error
+> handling paths are correctly updated to match the new initialization
+> order - **No functional changes:** The fix doesn't change driver
+> functionality, only initialization sequence ### Why This Should Be
+> Backported 1. **Fixes a real crash bug:** This addresses a potential
+> crash scenario that affects users 2. **Small and contained:** The change
+> is minimal - just reordering initialization and updating error paths 3.
+> **Low regression risk:** Moving m2m init before control init is safer
+> since m2m context doesn't depend on controls, but controls may depend on
+> m2m context 4. **Follows established patterns:** Similar commit #2 in
+> the historical examples shows a "YES" backport for proper initialization
+> order in V4L2 drivers 5. **Critical subsystem:** Media drivers crashing
+> can affect user applications ### Comparison with Historical Commits -
+> **Similar to commit #2 (YES):** Also fixes initialization order in V4L2
+> media driver to prevent crashes - **Similar to commit #4 (YES):** Media
+> driver fix that's low-risk and contained - **Unlike commits #1, #3, #5
+> (NO):** This actually fixes a bug rather than just cleanup/code style
+> improvements ### Stable Tree Criteria Met ✅ **Important bugfix:**
+> Prevents crashes ✅ **Minimal risk:** Simple reordering with no side
+> effects ✅ **Small change:** Only affects initialization sequence ✅ **No
+> architectural changes:** Pure bug fix ✅ **Confined to subsystem:** Only
+> affects rkvdec driver The fix follows the stable tree rules perfectly -
+> it's an important crash prevention fix with minimal regression risk,
+> making it an ideal backport candidate.
+
+Suggestion for improving the report, perhaps adding line breaks for
+each items ?
+
+best regards,
+Nicolas
+
+> 
+>  drivers/staging/media/rkvdec/rkvdec.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+> index f9bef5173bf25..4702df5b095b7 100644
+> --- a/drivers/staging/media/rkvdec/rkvdec.c
+> +++ b/drivers/staging/media/rkvdec/rkvdec.c
+> @@ -819,24 +819,24 @@ static int rkvdec_open(struct file *filp)
+>  	rkvdec_reset_decoded_fmt(ctx);
+>  	v4l2_fh_init(&ctx->fh, video_devdata(filp));
+>  
+> -	ret = rkvdec_init_ctrls(ctx);
+> -	if (ret)
+> -		goto err_free_ctx;
+> -
+>  	ctx->fh.m2m_ctx = v4l2_m2m_ctx_init(rkvdec->m2m_dev, ctx,
+>  					    rkvdec_queue_init);
+>  	if (IS_ERR(ctx->fh.m2m_ctx)) {
+>  		ret = PTR_ERR(ctx->fh.m2m_ctx);
+> -		goto err_cleanup_ctrls;
+> +		goto err_free_ctx;
+>  	}
+>  
+> +	ret = rkvdec_init_ctrls(ctx);
+> +	if (ret)
+> +		goto err_cleanup_m2m_ctx;
+> +
+>  	filp->private_data = &ctx->fh;
+>  	v4l2_fh_add(&ctx->fh);
+>  
+>  	return 0;
+>  
+> -err_cleanup_ctrls:
+> -	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+> +err_cleanup_m2m_ctx:
+> +	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+>  
+>  err_free_ctx:
+>  	kfree(ctx);
 
