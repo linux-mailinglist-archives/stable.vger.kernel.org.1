@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-150564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1FCACB882
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5889CACB6FF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD8D4C0198
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B591BC5E96
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C662367C9;
-	Mon,  2 Jun 2025 15:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEDB22ACEF;
+	Mon,  2 Jun 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZdG4Idw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDYUfOss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C1423645F;
-	Mon,  2 Jun 2025 15:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAA522A7E4;
+	Mon,  2 Jun 2025 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877521; cv=none; b=pSc685W1kcLhs46xGkwdH8Y/Hj/1XdfNCn2OSut17WTaQte/GT1h/oxahW8JcsvKKfybFGrXHndhIDBkfPgrfSdtD/98qV6Rmgdg4yUR8hL3bOmmJf8NOtG2ADqsPOfkMkZwJrIgOsmf3bflXfo31d3nCm1Q4jsK8yDLizSzbnU=
+	t=1748875857; cv=none; b=cAtXCjw5pUOtIQ6LjRimmzU1i6ihTTRqN5GX6Dauy3iAxJz+41KeW2bc+YAMIB4KBpMR2woL8GTDlT++9cA9jx3syPCr26CbNT2MNfphrksqBNV0D5HrjxuVzkDaIMNZFotrKiYHXkMt0Sb8U2ZI1F6dk2YBMF6zH83BaiAE6zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877521; c=relaxed/simple;
-	bh=xyb8a7VBaR+kJL69E5DxKNbWVOzbl/VPL1rvwifDYR8=;
+	s=arc-20240116; t=1748875857; c=relaxed/simple;
+	bh=Ub55TsO7yi5Pt5qg7DpJJipWijefFk7HTEEkeTgTEzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V26olgmavOeASMKlOivbcSmw0xDVaoLGUv3K7bivJvcBn6i1kAydlJgdTVJOFcMF3Srjg2eMOHLBKblRXzpsNGt+k919xkwceOHCd8lcPWh2b7k5HDyHdZuKyoi26D5tOrAucFVFcXafTixQY8OkLnvYqkOwpwQqzhZcnuBSLgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZdG4Idw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B479C4CEEE;
-	Mon,  2 Jun 2025 15:18:40 +0000 (UTC)
+	 MIME-Version; b=Kp6dDd0PTu2SfKJEQQmIk5iI9ZM7Q9Z4W1ZFPd1rHVYuqEZjtrIj6rGx/f0gS2UUoiJpEpM30tlHY8K/23Q1NQbWLBsRNV6zlNMM97XNpAKWRCaL53h5B9BvfHyaW9rgsritS+xekSAgOpJEcLbi41pJ1hJMa+JzLaLGu7mQZLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDYUfOss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24D3C4CEF2;
+	Mon,  2 Jun 2025 14:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877521;
-	bh=xyb8a7VBaR+kJL69E5DxKNbWVOzbl/VPL1rvwifDYR8=;
+	s=korg; t=1748875857;
+	bh=Ub55TsO7yi5Pt5qg7DpJJipWijefFk7HTEEkeTgTEzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZdG4IdwkdZnGRRn+ClrWukOsL1lbc5a1rlwh8BAC/O8oEtQLryEirqzBzeDBP/14
-	 4AXgpZtsKdtfs0waksp21bi1pbObwIMJjO+j1qRSHPwbwwFMIr9oG2ieQfD9h0Q5hN
-	 iMKbxebO8EkDtHIPwLfQCiQ4Lq+03M6vYpTTeFYA=
+	b=SDYUfOssw4Xlk+0HbsTQ93T4P3HCNQASs2ot2RilMgLyvRfYf+djqgO2A8DjWhCc5
+	 GTI9dh411Ez4LqZHrCNHKddVMfsXQEEL+H/Hvguq92VsLpMoYGd8W3UGSajgm8knMg
+	 F1gNrMVA9nhxgWaEzkHh2a0k1nISu5ogbo6h6D5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Juergen Gross <jgross@suse.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Subject: [PATCH 6.1 274/325] x86/mm/init: Handle the special case of device private pages in add_pages(), to not increase max_pfn and trigger dma_addressing_limited() bounce buffers bounce buffers
-Date: Mon,  2 Jun 2025 15:49:10 +0200
-Message-ID: <20250602134330.898123708@linuxfoundation.org>
+	Michal Suchanek <msuchanek@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 266/270] tpm: tis: Double the timeout B to 4s
+Date: Mon,  2 Jun 2025 15:49:11 +0200
+Message-ID: <20250602134318.214137566@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,110 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balbir Singh <balbirs@nvidia.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-commit 7170130e4c72ce0caa0cb42a1627c635cc262821 upstream.
+[ Upstream commit 2f661f71fda1fc0c42b7746ca5b7da529eb6b5be ]
 
-As Bert Karwatzki reported, the following recent commit causes a
-performance regression on AMD iGPU and dGPU systems:
+With some Infineon chips the timeouts in tpm_tis_send_data (both B and
+C) can reach up to about 2250 ms.
 
-  7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+Timeout C is retried since
+commit de9e33df7762 ("tpm, tpm_tis: Workaround failed command reception on Infineon devices")
 
-It exposed a bug with nokaslr and zone device interaction.
+Timeout B still needs to be extended.
 
-The root cause of the bug is that, the GPU driver registers a zone
-device private memory region. When KASLR is disabled or the above commit
-is applied, the direct_map_physmem_end is set to much higher than 10 TiB
-typically to the 64TiB address. When zone device private memory is added
-to the system via add_pages(), it bumps up the max_pfn to the same
-value. This causes dma_addressing_limited() to return true, since the
-device cannot address memory all the way up to max_pfn.
+The problem is most commonly encountered with context related operation
+such as load context/save context. These are issued directly by the
+kernel, and there is no retry logic for them.
 
-This caused a regression for games played on the iGPU, as it resulted in
-the DMA32 zone being used for GPU allocations.
+When a filesystem is set up to use the TPM for unlocking the boot fails,
+and restarting the userspace service is ineffective. This is likely
+because ignoring a load context/save context result puts the real TPM
+state and the TPM state expected by the kernel out of sync.
 
-Fix this by not bumping up max_pfn on x86 systems, when pgmap is passed
-into add_pages(). The presence of pgmap is used to determine if device
-private memory is being added via add_pages().
+Chips known to be affected:
+tpm_tis IFX1522:00: 2.0 TPM (device-id 0x1D, rev-id 54)
+Description: SLB9672
+Firmware Revision: 15.22
 
-More details:
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1B, rev-id 22)
+Firmware Revision: 7.83
 
-devm_request_mem_region() and request_free_mem_region() request for
-device private memory. iomem_resource is passed as the base resource
-with start and end parameters. iomem_resource's end depends on several
-factors, including the platform and virtualization. On x86 for example
-on bare metal, this value is set to boot_cpu_data.x86_phys_bits.
-boot_cpu_data.x86_phys_bits can change depending on support for MKTME.
-By default it is set to the same as log2(direct_map_physmem_end) which
-is 46 to 52 bits depending on the number of levels in the page table.
-The allocation routines used iomem_resource's end and
-direct_map_physmem_end to figure out where to allocate the region.
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1A, rev-id 16)
+Firmware Revision: 5.63
 
-[ arch/powerpc is also impacted by this problem, but this patch does not fix
-  the issue for PowerPC. ]
-
-Testing:
-
- 1. Tested on a virtual machine with test_hmm for zone device inseration
-
- 2. A previous version of this patch was tested by Bert, please see:
-    https://lore.kernel.org/lkml/d87680bab997fdc9fb4e638983132af235d9a03a.camel@web.de/
-
-[ mingo: Clarified the comments and the changelog. ]
-
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Tested-by: Bert Karwatzki <spasswolf@web.de>
-Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Link: https://lore.kernel.org/r/20250401000752.249348-1-balbirs@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-integrity/Z5pI07m0Muapyu9w@kitsune.suse.cz/
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/init_64.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/char/tpm/tpm_tis_core.h | 2 +-
+ include/linux/tpm.h             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -959,9 +959,18 @@ int add_pages(int nid, unsigned long sta
- 	ret = __add_pages(nid, start_pfn, nr_pages, params);
- 	WARN_ON_ONCE(ret);
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index 464ed352ab2e8..ed7b2caa9ebbd 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -53,7 +53,7 @@ enum tis_int_flags {
+ enum tis_defaults {
+ 	TIS_MEM_LEN = 0x5000,
+ 	TIS_SHORT_TIMEOUT = 750,	/* ms */
+-	TIS_LONG_TIMEOUT = 2000,	/* 2 sec */
++	TIS_LONG_TIMEOUT = 4000,	/* 4 secs */
+ 	TIS_TIMEOUT_MIN_ATML = 14700,	/* usecs */
+ 	TIS_TIMEOUT_MAX_ATML = 15000,	/* usecs */
+ };
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 95c3069823f9b..7868e847eee0e 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -174,7 +174,7 @@ enum tpm2_const {
  
--	/* update max_pfn, max_low_pfn and high_memory */
--	update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
--				  nr_pages << PAGE_SHIFT);
-+	/*
-+	 * Special case: add_pages() is called by memremap_pages() for adding device
-+	 * private pages. Do not bump up max_pfn in the device private path,
-+	 * because max_pfn changes affect dma_addressing_limited().
-+	 *
-+	 * dma_addressing_limited() returning true when max_pfn is the device's
-+	 * addressable memory can force device drivers to use bounce buffers
-+	 * and impact their performance negatively:
-+	 */
-+	if (!params->pgmap)
-+		/* update max_pfn, max_low_pfn and high_memory */
-+		update_end_of_memory_vars(start_pfn << PAGE_SHIFT, nr_pages << PAGE_SHIFT);
- 
- 	return ret;
- }
+ enum tpm2_timeouts {
+ 	TPM2_TIMEOUT_A          =    750,
+-	TPM2_TIMEOUT_B          =   2000,
++	TPM2_TIMEOUT_B          =   4000,
+ 	TPM2_TIMEOUT_C          =    200,
+ 	TPM2_TIMEOUT_D          =     30,
+ 	TPM2_DURATION_SHORT     =     20,
+-- 
+2.39.5
+
 
 
 
