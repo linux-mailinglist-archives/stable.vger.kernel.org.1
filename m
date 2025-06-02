@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-149754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F126ACB4C4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A1FACB75B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802CC1947B06
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330D14A6589
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C85E22F76E;
-	Mon,  2 Jun 2025 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424191C5D72;
+	Mon,  2 Jun 2025 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjZezdrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tl4wgic1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B5C225388;
-	Mon,  2 Jun 2025 14:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A144A1E;
+	Mon,  2 Jun 2025 15:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874936; cv=none; b=gs/1bZd/1yPxyhwIOayXjHMfnUaqSKf3h14PYz6sx1pxcaZ8zj2aJ9G/PyZ/s0ABCb23jf1N11uT5edlUKasCkMyHIxyRAMyxnE6SPIBpZYalx+OZqmXidsUtSejSsUvPLFA0sUSrAjV/1Og7vW6ZsYsGk52PedWFQ++nERkeEs=
+	t=1748877337; cv=none; b=CNAmNWkj7P1Zk+TAef58eV/TvLZOvEodO/7a8RU03iPW7uUXj2oRLdoQHXFHCMwJdwkLlyYjxCMPQLzb41ILl/5b+mdIpGJdowpaPQ98sAyYDULAw2R+FiXUYWxeGS1aG4QT1ug3OxlCY2KA/sk1u5plsbbWPcDQ3HTZLGacLLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874936; c=relaxed/simple;
-	bh=KGaqco5ZG0f3F7umkwTDZNaqIUOS178yhtIkT6kwqg8=;
+	s=arc-20240116; t=1748877337; c=relaxed/simple;
+	bh=FTAFpcCxrNgTlDOFVc5jG1WWPzTd7xhlWtSCvjvX97I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUr4mvT56n1GDdNzACFgdASH7a2rHhWPswyUT/8OUP2g3pwirdkaVMIM4jrCCLpIDtN5h3n4bzOTkbii3ivmsChugwtsOE7yc2vsZLYNZR5b68map8C5CC2DPN5WmOucQeDpkNnbwH3D4EBGzhb3ckyADyly0BzRMN95z0Eo4g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjZezdrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AA0C4CEEB;
-	Mon,  2 Jun 2025 14:35:34 +0000 (UTC)
+	 MIME-Version; b=sS8J7SEq6uHa74vCTChDTs2pQf8yRNsAKbw2QcV740ln8BhFmqhDf4ji3DLLRWd9ZjTO3d4qG7644LqnwWS2m2GD9QV5z3mumujNAxeBowO7vXfbr1owrY/dgCqs/VLqpjzGkmRhm6q6eAqTJOxEwnT7G6yN3V4suxCc3GeVJt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tl4wgic1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FB9C4CEEB;
+	Mon,  2 Jun 2025 15:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874934;
-	bh=KGaqco5ZG0f3F7umkwTDZNaqIUOS178yhtIkT6kwqg8=;
+	s=korg; t=1748877336;
+	bh=FTAFpcCxrNgTlDOFVc5jG1WWPzTd7xhlWtSCvjvX97I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjZezdrsmsxHxuNJUFu3xqTb3xmqIb/8rzrCqbM1yJW3+OqfMitO+wagC2a2I7n8V
-	 FfbC2j2d5/JLRjJHn0GqO5ObB6noSIfkdVlz3jVXl3rznqUToQ3BSLPgtqUPbm3/Nj
-	 ac9qnOrTrkj3n3QSDXX5bdg8jDWbjk3ilHKLc300=
+	b=Tl4wgic1Jt1CwtFb+UbSU1hsTuNgmEC+46ob6dD1mY0PcL2Y8uc5P+wFzqNbjfqH5
+	 7H8dpEsd5MLvkpVsCucUvO5Rg7oPsInwWpdl83hSAHNEsJmjCvt01ldmh8zB3yfwM2
+	 Bsd8FzwIdZyNsWUzsorkcb7X/qibl8qJg0dQ5St4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 181/204] memcg: always call cond_resched() after fn()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 238/325] Bluetooth: L2CAP: Fix not checking l2cap_chan security level
 Date: Mon,  2 Jun 2025 15:48:34 +0200
-Message-ID: <20250602134302.771882417@linuxfoundation.org>
+Message-ID: <20250602134329.455126969@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
+[ Upstream commit 7af8479d9eb4319b4ba7b47a8c4d2c55af1c31e1 ]
 
-I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
-is happening because killing the process in certain machine might be very
-slow, which causes the soft lockup and RCU stalls.  This happens usually
-when the cgroup has MANY processes and memory.oom.group is set.
+l2cap_check_enc_key_size shall check the security level of the
+l2cap_chan rather than the hci_conn since for incoming connection
+request that may be different as hci_conn may already been
+encrypted using a different security level.
 
-Example I am seeing in real production:
-
-       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
-       ....
-       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
-       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
-       ....
-
-Quick look at why this is so slow, it seems to be related to serial flush
-for certain machine types.  For all the crashes I saw, the target CPU was
-at console_flush_all().
-
-In the case above, there are thousands of processes in the cgroup, and it
-is soft locking up before it reaches the 1024 limit in the code (which
-would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
-sufficient.
-
-Remove the counter-based conditional rescheduling logic and call
-cond_resched() unconditionally after each task iteration, after fn() is
-called.  This avoids the lockup independently of how slow fn() is.
-
-Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
-Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michael van der Westhuizen <rmikey@meta.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Chen Ridong <chenridong@huawei.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 522e9ed157e3 ("Bluetooth: l2cap: Check encryption key size on incoming connection")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/bluetooth/l2cap_core.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1221,7 +1221,6 @@ int mem_cgroup_scan_tasks(struct mem_cgr
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 222105e24d2d8..cb9b1edfcea2a 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -1561,7 +1561,8 @@ static void l2cap_request_info(struct l2cap_conn *conn)
+ 		       sizeof(req), &req);
+ }
+ 
+-static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
++static bool l2cap_check_enc_key_size(struct hci_conn *hcon,
++				     struct l2cap_chan *chan)
  {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
--	int i = 0;
+ 	/* The minimum encryption key size needs to be enforced by the
+ 	 * host stack before establishing any L2CAP connections. The
+@@ -1575,7 +1576,7 @@ static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
+ 	int min_key_size = hcon->hdev->min_enc_key_size;
  
- 	BUG_ON(memcg == root_mem_cgroup);
+ 	/* On FIPS security level, key size must be 16 bytes */
+-	if (hcon->sec_level == BT_SECURITY_FIPS)
++	if (chan->sec_level == BT_SECURITY_FIPS)
+ 		min_key_size = 16;
  
-@@ -1231,10 +1230,9 @@ int mem_cgroup_scan_tasks(struct mem_cgr
+ 	return (!test_bit(HCI_CONN_ENCRYPT, &hcon->flags) ||
+@@ -1603,7 +1604,7 @@ static void l2cap_do_start(struct l2cap_chan *chan)
+ 	    !__l2cap_no_conn_pending(chan))
+ 		return;
  
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			/* Avoid potential softlockup warning */
--			if ((++i & 1023) == 0)
--				cond_resched();
- 			ret = fn(task, arg);
-+			/* Avoid potential softlockup warning */
-+			cond_resched();
+-	if (l2cap_check_enc_key_size(conn->hcon))
++	if (l2cap_check_enc_key_size(conn->hcon, chan))
+ 		l2cap_start_connection(chan);
+ 	else
+ 		__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
+@@ -1685,7 +1686,7 @@ static void l2cap_conn_start(struct l2cap_conn *conn)
+ 				continue;
+ 			}
+ 
+-			if (l2cap_check_enc_key_size(conn->hcon))
++			if (l2cap_check_enc_key_size(conn->hcon, chan))
+ 				l2cap_start_connection(chan);
+ 			else
+ 				l2cap_chan_close(chan, ECONNREFUSED);
+@@ -4187,7 +4188,7 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+ 	/* Check if the ACL is secure enough (if not SDP) */
+ 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
+ 	    (!hci_conn_check_link_mode(conn->hcon) ||
+-	    !l2cap_check_enc_key_size(conn->hcon))) {
++	    !l2cap_check_enc_key_size(conn->hcon, pchan))) {
+ 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
+ 		result = L2CAP_CR_SEC_BLOCK;
+ 		goto response;
+@@ -8418,7 +8419,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
  		}
- 		css_task_iter_end(&it);
- 		if (ret) {
+ 
+ 		if (chan->state == BT_CONNECT) {
+-			if (!status && l2cap_check_enc_key_size(hcon))
++			if (!status && l2cap_check_enc_key_size(hcon, chan))
+ 				l2cap_start_connection(chan);
+ 			else
+ 				__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
+@@ -8428,7 +8429,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
+ 			struct l2cap_conn_rsp rsp;
+ 			__u16 res, stat;
+ 
+-			if (!status && l2cap_check_enc_key_size(hcon)) {
++			if (!status && l2cap_check_enc_key_size(hcon, chan)) {
+ 				if (test_bit(FLAG_DEFER_SETUP, &chan->flags)) {
+ 					res = L2CAP_CR_PEND;
+ 					stat = L2CAP_CS_AUTHOR_PEND;
+-- 
+2.39.5
+
 
 
 
