@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-149058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B754BACB00C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E938ACB01A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E07C481A23
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B70F18930B2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BCB221299;
-	Mon,  2 Jun 2025 13:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F94A21C190;
+	Mon,  2 Jun 2025 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ib6tNQ4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC6KeYa2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18601A3A80;
-	Mon,  2 Jun 2025 13:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB241DE881;
+	Mon,  2 Jun 2025 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872765; cv=none; b=Rs8zN03I542ogGNyNRWdFD6Q/kMq74hA1IjFKi0Q1peY4cPZZaW4+myWwR5H6aCcJzLsQLp98F2+WLZPq9rhICeVYsS3J1CF12hsXSbxLNqfnWx520K+Wlh4Zo6Sn0Hne4Z+261XjG/JvoBYwqnCC8gcxt88dvr7H5P59CjBTWM=
+	t=1748872771; cv=none; b=L/JegbJ1fiIHF37ke/MA4ia0Ku2/Ild85XBoEOP0ZdR40ifzosoznK1u5z/evgvf7ffWWSortaca69BgWooIhWTZLDPnysMetXR4d4+M18+vUufmZezHwn5VYdevt28Z15fTMjQ9SUK7ZPBrP1/MVcrQ49wE0tTcc5Z8o6IQesI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872765; c=relaxed/simple;
-	bh=hSdEFRhWxTvsmkn3m7jnutgkQWLFyTno9BQbXBaF4e4=;
+	s=arc-20240116; t=1748872771; c=relaxed/simple;
+	bh=gbZtnsvllV5Ceqy+uuGWvs6jMm4MghHqX3mxiLgN9JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwDaHHkrqkVDYBNHghdu/AdAvbXmp5DCWIK5bZ351WqE0pPVFdY2FZBCpXzeos/Nn+nIEfezwGu/BL0/Ab3+YkEmxDwqgWNO/IEnS+EJClyr+VI481lVMRtSz5YW1bkrkkQcaeWnDaBWHHVGKx+KyMMY9gmc+P6mZQOYsUtDFPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ib6tNQ4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707A0C4CEEB;
-	Mon,  2 Jun 2025 13:59:24 +0000 (UTC)
+	 MIME-Version; b=bXJdyIZlWBz1+EOakprHgErYKFVeCHmCz3opK+gnv6LBtmtdFsXfcZSacLrSQBte17hjHDETHNZ3DMB1CSRK3Nh2v1+e3YA2SV90aEZqu7vRgxEgWAC6Dpl1BfWaxF0laSbT00X1WdFC7rjKKvtOKu3Q1UiFtyFKXtg8VEPVFmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC6KeYa2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59E5C4CEEB;
+	Mon,  2 Jun 2025 13:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872764;
-	bh=hSdEFRhWxTvsmkn3m7jnutgkQWLFyTno9BQbXBaF4e4=;
+	s=korg; t=1748872771;
+	bh=gbZtnsvllV5Ceqy+uuGWvs6jMm4MghHqX3mxiLgN9JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ib6tNQ4HqKBH6/NBvEGl2toDtj+gl7EKHTfjzWysvbhxl3op/HMtgAglUba8vb6eX
-	 9UBg4uzlY7AzNCpsHsQVqjdq4AW8rTmZJ1itaBJORBt6d5oDgq9ul1rogu0wcb0wUi
-	 Eu9OJ6Fy3BBWBR9eqIQ0vJ/G+NDUg/Dxv608JWjo=
+	b=nC6KeYa2bC4Zi5AFdXlEhf63iMP6BEkDtMG7L38TG8/OZOphI9UbFxBjuYYldT3Ye
+	 HqvFq2sTao5q5tdnTEqtY1hVZVVgnpvnhcCN37jSyszyMezPnuIBbqohTJvS9vI6qY
+	 sWLxT5XO2rx2s2mJJ1z6yvwU8OQEburW3Ax8Nu/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Algea Cao <algea.cao@rock-chips.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alessandro Grassi <alessandro.grassi@mailbox.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 61/73] phy: phy-rockchip-samsung-hdptx: Fix PHY PLL output 50.25MHz error
-Date: Mon,  2 Jun 2025 15:47:47 +0200
-Message-ID: <20250602134244.092998272@linuxfoundation.org>
+Subject: [PATCH 6.14 62/73] spi: spi-sun4i: fix early activation
+Date: Mon,  2 Jun 2025 15:47:48 +0200
+Message-ID: <20250602134244.133334460@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
 References: <20250602134241.673490006@linuxfoundation.org>
@@ -68,43 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Algea Cao <algea.cao@rock-chips.com>
+From: Alessandro Grassi <alessandro.grassi@mailbox.org>
 
-[ Upstream commit f9475055b11c0c70979bd1667a76b2ebae638eb7 ]
+[ Upstream commit fb98bd0a13de2c9d96cb5c00c81b5ca118ac9d71 ]
 
-When using HDMI PLL frequency division coefficient at 50.25MHz
-that is calculated by rk_hdptx_phy_clk_pll_calc(), it fails to
-get PHY LANE lock. Although the calculated values are within the
-allowable range of PHY PLL configuration.
+The SPI interface is activated before the CPOL setting is applied. In
+that moment, the clock idles high and CS goes low. After a short delay,
+CPOL and other settings are applied, which may cause the clock to change
+state and idle low. This transition is not part of a clock cycle, and it
+can confuse the receiving device.
 
-In order to fix the PHY LANE lock error and provide the expected
-50.25MHz output, manually compute the required PHY PLL frequency
-division coefficient and add it to ropll_tmds_cfg configuration
-table.
+To prevent this unexpected transition, activate the interface while CPOL
+and the other settings are being applied.
 
-Signed-off-by: Algea Cao <algea.cao@rock-chips.com>
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250427095124.3354439-1-algea.cao@rock-chips.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alessandro Grassi <alessandro.grassi@mailbox.org>
+Link: https://patch.msgid.link/20250502095520.13825-1-alessandro.grassi@mailbox.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-sun4i.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-index 920abf6fa9bdd..28a4235bfd5fb 100644
---- a/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-+++ b/drivers/phy/rockchip/phy-rockchip-samsung-hdptx.c
-@@ -325,6 +325,8 @@ static const struct ropll_config ropll_tmds_cfg[] = {
- 	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
- 	{ 650000, 162, 162, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 54, 0, 16, 4, 1,
- 	  1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
-+	{ 502500, 84, 84, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 11, 1, 4, 5,
-+	  4, 11, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
- 	{ 337500, 0x70, 0x70, 1, 1, 0xf, 1, 1, 1, 1, 1, 1, 1, 0x2, 0, 0x01, 5,
- 	  1, 1, 1, 0, 0x20, 0x0c, 1, 0x0e, 0, 0, },
- 	{ 400000, 100, 100, 1, 1, 11, 1, 1, 0, 1, 0, 1, 1, 0x9, 0, 0x05, 0,
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index fcbe864c9b7d6..4b070377e3d1d 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -264,6 +264,9 @@ static int sun4i_spi_transfer_one(struct spi_controller *host,
+ 	else
+ 		reg |= SUN4I_CTL_DHB;
+ 
++	/* Now that the settings are correct, enable the interface */
++	reg |= SUN4I_CTL_ENABLE;
++
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
+ 
+ 	/* Ensure that we have a parent clock fast enough */
+@@ -404,7 +407,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
+ 	}
+ 
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
+-			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
++			SUN4I_CTL_MASTER | SUN4I_CTL_TP);
+ 
+ 	return 0;
+ 
 -- 
 2.39.5
 
