@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4134DACB7AD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CCCACB555
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C129E5724
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2813AD84B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAF517BB6;
-	Mon,  2 Jun 2025 14:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA90223DD4;
+	Mon,  2 Jun 2025 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpxlEj+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUWmM6Jh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B3421CA1E;
-	Mon,  2 Jun 2025 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86A52C324F;
+	Mon,  2 Jun 2025 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876041; cv=none; b=QU26sxLy0qd1WUuKFfmjVJ6QO4Nr8NwrUX615QX5371UlG8NV2nFXYghUQ7cDQr+tXfcvcJVCaRgYbqls8pYKzxVusZrzT8Gc+8Yd+5yVvHgwlxgnJOUJ8iX2EvajDB2i8EOYynI6FeRurMt3gb9ROZhxLiRNLT0a2ilIIazppA=
+	t=1748875352; cv=none; b=kFMXYD+ST86tiJc79B/fHBVBT81ByH4hOXxGReCoVLx/sF99lA2pSKlOlp5PjfjcQ51I1Mu7K91sDoBo6ARinIIjihhAo4Y1MwecAwufTRlecEu9hXbb9MzC0MjNniMTfAVTw+XZIIG9+pVlEobR8YNAoUMCOg2QxSkb+6FHznQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876041; c=relaxed/simple;
-	bh=9PuzkWJsLpjlJeseVI3zaSaj5sthibD3oQXnRJNsP+A=;
+	s=arc-20240116; t=1748875352; c=relaxed/simple;
+	bh=v4F2fbw99f765ZhLoGIQxbkGYx25eYUQkLdFXYFXBiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5mvUtBew8tpxMGVNi5uw3O7AHkw5xzsnjF3rTA80lCjgvbYO9qSpaq5uOxo60Aq2ff7LID4cJnlEPQi7unaHc9Us8XAEUrC2ojuRp54kMv1zDR0G1rw+U20HIEvda9ICa3wl3fyqibva2ASsylUiwex/4He/PKjNSflFRPj1/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpxlEj+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD49C4CEEB;
-	Mon,  2 Jun 2025 14:53:59 +0000 (UTC)
+	 MIME-Version; b=bEppAdS6elO0wFIg66SxcLwLJI6IwZt7dqN7plpLtBBEuOzLEYZn9HvEgcVhGfa1DHX8+jcCVr5vl28thZ4Tk2YQ0q0hnSf5MZEjihU9RbKQc04oKifkeFe+i2AjuTdQVXOYoVvGC4cmg5v0U5NTYHizq4tLNOdGMLmjcM8N0uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUWmM6Jh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A349DC4CEEB;
+	Mon,  2 Jun 2025 14:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876040;
-	bh=9PuzkWJsLpjlJeseVI3zaSaj5sthibD3oQXnRJNsP+A=;
+	s=korg; t=1748875352;
+	bh=v4F2fbw99f765ZhLoGIQxbkGYx25eYUQkLdFXYFXBiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BpxlEj+Gf43UZKXkKUgamGRtVNqQb1gFw3c6PCYqUi0m/Rq0GAElJlw+EoJTs2nnz
-	 TnLIotH/KEKPaN1SxKBYenB9I/Zn+/YcloLktVD/P2K0q8Du1lUZQh/2ZUn/ONVaSz
-	 pxNlHaO7o6ipdl+lAtYO1gwEqVruDaFpS69u0zDc=
+	b=UUWmM6JhASoazrIk1MB/6AncR85ZnOiGDjZCj2AFe7GVH8wNYcPOp3JZKKRllnk5c
+	 eTBt6brjsntq+GgxVB3c5WkOO+1uZqDQvR1dCOnglfUadabKVZ/GKrzN0PX86YCc7j
+	 qEXKgJptkaDSlFQFyKtd/v7aStAIDdYyeqzAp7ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/207] PCI: dwc: ep: Ensure proper iteration over outbound map windows
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 108/270] usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
 Date: Mon,  2 Jun 2025 15:46:33 +0200
-Message-ID: <20250602134259.606633254@linuxfoundation.org>
+Message-ID: <20250602134311.651310179@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f3e1dccba0a0833fc9a05fb838ebeb6ea4ca0e1a ]
+commit e56aac6e5a25630645607b6856d4b2a17b2311a5 upstream.
 
-Most systems' PCIe outbound map windows have non-zero physical addresses,
-but the possibility of encountering zero increased after following commit
-("PCI: dwc: Use parent_bus_offset").
+The "command" variable can be controlled by the user via debugfs.  The
+worry is that if con_index is zero then "&uc->ucsi->connector[con_index
+- 1]" would be an array underflow.
 
-'ep->outbound_addr[n]', representing 'parent_bus_address', might be 0 on
-some hardware, which trims high address bits through bus fabric before
-sending to the PCIe controller.
-
-Replace the iteration logic with 'for_each_set_bit()' to ensure only
-allocated map windows are iterated when determining the ATU index from a
-given address.
-
-Link: https://lore.kernel.org/r/20250315201548.858189-12-helgaas@kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/c69ef0b3-61b0-4dde-98dd-97b97f81d912@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ The function ucsi_ccg_sync_write() is renamed to ucsi_ccg_sync_control()
+  in commit 13f2ec3115c8 ("usb: typec: ucsi:simplify command sending API").
+  Apply this patch to ucsi_ccg_sync_write() in 6.1.y accordingly. ]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index fc92d30a0ad99..5502751334cc6 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -267,7 +267,7 @@ static int dw_pcie_find_index(struct dw_pcie_ep *ep, phys_addr_t addr,
- 	u32 index;
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -573,6 +573,10 @@ static int ucsi_ccg_sync_write(struct uc
+ 		    uc->has_multiple_dp) {
+ 			con_index = (uc->last_cmd_sent >> 16) &
+ 				    UCSI_CMD_CONNECTOR_MASK;
++			if (con_index == 0) {
++				ret = -EINVAL;
++				goto unlock;
++			}
+ 			con = &uc->ucsi->connector[con_index - 1];
+ 			ucsi_ccg_update_set_new_cam_cmd(uc, con, (u64 *)val);
+ 		}
+@@ -588,6 +592,7 @@ static int ucsi_ccg_sync_write(struct uc
+ err_clear_bit:
+ 	clear_bit(DEV_CMD_PENDING, &uc->flags);
+ 	pm_runtime_put_sync(uc->dev);
++unlock:
+ 	mutex_unlock(&uc->lock);
  
--	for (index = 0; index < pci->num_ob_windows; index++) {
-+	for_each_set_bit(index, ep->ob_window_map, pci->num_ob_windows) {
- 		if (ep->outbound_addr[index] != addr)
- 			continue;
- 		*atu_index = index;
--- 
-2.39.5
-
+ 	return ret;
 
 
 
