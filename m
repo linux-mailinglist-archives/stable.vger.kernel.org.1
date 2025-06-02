@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-148992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80876ACAFA5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:52:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06762ACAFF7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69BE57A5CA6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D419B401DFB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962E7221734;
-	Mon,  2 Jun 2025 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA8B21FF39;
+	Mon,  2 Jun 2025 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpggZF7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azsq5p7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53067221703;
-	Mon,  2 Jun 2025 13:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9792576;
+	Mon,  2 Jun 2025 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872187; cv=none; b=uMbKr6NABUDgyxtJy2LAYB8ubzyDP19FEiWQT7Jthmh6zOD9ln45uzuncM4zfkT0hYT6DkSmD0NtAfVN7a7fwgVK7GbOE3eRFioUKR6YJ5DM5CKTeFzPkpxHRtzeRGPWVdth4yIsTFypGncQy7RwndM7IRmEjUTjO1OP4WoxgkM=
+	t=1748872736; cv=none; b=hve7u1sFZAlUoPetrUlAVSJqu8gSBKftyAjg3jWzXAnk9Vjsg08PyZtUls3tOmHSDN1YAQwGdEjq7SQ2D9DYew7O3SdTJhIALsd4kJfLt9A5LDFnJSwCN1ah6DLbzDnJidlbY61mB0iw0KIzxn5NSLKI5KbiaXYYCxWns5D7lhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872187; c=relaxed/simple;
-	bh=+49BgIVsAaK60vS4R/p8hWgZmbygTJo9bsYDwgDNvBA=;
+	s=arc-20240116; t=1748872736; c=relaxed/simple;
+	bh=DnT7CygK/AKDW3OHTvz3ruUukYNz3ZSRAFS8HJoXQt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXw0lBr1sdAOa+p9WxZWZHrXimBugWLPJscLZoPNIZNMtfmsQvnR8Ru5UXAe73sjLlZC35++wxbFiAzNTEdTqc1brTPqYMPSFmL2LkZtqKQ3OBqcVy3HnDa06SP7bgaANwMa4peQCslGxoJd7hcfjkobVGKU4/PloCfHIBXc7XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpggZF7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE116C4CEEB;
-	Mon,  2 Jun 2025 13:49:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ik6k0HADhoYW3Z0JjNkoZOTPQ/aEnhwbRkGCpEA6BpiANDo/gFt5VECRVPyHLQscmLuPFQbFLWJuDEm7kvzw1HH4tbwoeClYNRZACl2/OLdm39nPeqPziN4TzAX9s8B+jiIxy565J8wwFa2gs2spiqmLFykJDo1e0bGD1EYP1N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azsq5p7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7D7C4CEEB;
+	Mon,  2 Jun 2025 13:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872187;
-	bh=+49BgIVsAaK60vS4R/p8hWgZmbygTJo9bsYDwgDNvBA=;
+	s=korg; t=1748872736;
+	bh=DnT7CygK/AKDW3OHTvz3ruUukYNz3ZSRAFS8HJoXQt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpggZF7IKWHoIiMcF7+rLUZ0+Jpn6klbPD3oWnrm9rXDnLTYBz6zjJKWyLLoFtGtD
-	 rx7T5k7oSUw2Y90M6JhRCeubDncdqrflsv/bbpue0i09JMiSX9fop/iUAXRbw8d4Fd
-	 OgFF2yUeHfGys16GuzDk7CwkJwel7uegAYDoGjWI=
+	b=azsq5p7o1Y3Ht2SgVMluOWZLUvnqtuPW7E1DLwWA/GFt+x46COjib9JsQrcU/uPfy
+	 ImZWOUpzOF7ScFPRHBr2A29O26UnNlukLe+LsdJyVseDYDsl2fgicOsB0jK8XdAGeH
+	 vaI5Mar7gRvLIWH84fhLd3rtZ1sjkRhExh+SwSq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.15 46/49] coredump: fix error handling for replace_fd()
+	John Chau <johnchau@0atlas.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 52/73] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
 Date: Mon,  2 Jun 2025 15:47:38 +0200
-Message-ID: <20250602134239.749802437@linuxfoundation.org>
+Message-ID: <20250602134243.746577791@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: John Chau <johnchau@0atlas.com>
 
-commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
+[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
 
-The replace_fd() helper returns the file descriptor number on success
-and a negative error code on failure. The current error handling in
-umh_pipe_setup() only works because the file descriptor that is replaced
-is zero but that's pretty volatile. Explicitly check for a negative
-error code.
+Change get_thinkpad_model_data() to check for additional vendor name
+"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
+more).
 
-Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The reason of this works with minimal changes is because NEC Lavie
+X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
+"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
+the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
+
+I compiled and tested with my own machine, attached the dmesg
+below as proof of work:
+[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
+[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
+[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
+[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
+[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
+[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
+[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
+[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
+[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
+[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
+
+Signed-off-by: John Chau <johnchau@0atlas.com>
+Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -507,7 +507,9 @@ static int umh_pipe_setup(struct subproc
- {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
--	int err = create_pipe_files(files, 0);
-+	int err;
-+
-+	err = create_pipe_files(files, 0);
- 	if (err)
- 		return err;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 2ff38ca9ddb40..ace1cd14d4ba3 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -11481,6 +11481,8 @@ static int __must_check __init get_thinkpad_model_data(
+ 		tp->vendor = PCI_VENDOR_ID_IBM;
+ 	else if (dmi_name_in_vendors("LENOVO"))
+ 		tp->vendor = PCI_VENDOR_ID_LENOVO;
++	else if (dmi_name_in_vendors("NEC"))
++		tp->vendor = PCI_VENDOR_ID_LENOVO;
+ 	else
+ 		return 0;
  
-@@ -515,10 +517,13 @@ static int umh_pipe_setup(struct subproc
- 
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
-+	if (err < 0)
-+		return err;
-+
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
- 
--	return err;
-+	return 0;
- }
- 
- void do_coredump(const kernel_siginfo_t *siginfo)
+-- 
+2.39.5
+
 
 
 
