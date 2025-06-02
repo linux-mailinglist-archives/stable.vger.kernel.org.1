@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-149489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F81ACB30E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 914CEACB530
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E1B61941BA6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 619C8A20241
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3EF23AE93;
-	Mon,  2 Jun 2025 14:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69001225A59;
+	Mon,  2 Jun 2025 14:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iOPrAzv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G63UkiOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C0E1A01C6;
-	Mon,  2 Jun 2025 14:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2589A2236F4;
+	Mon,  2 Jun 2025 14:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874112; cv=none; b=T5PQOBzHmuCQYM+86EvNde/FABBZASYapYkQgp7En+K+zU9xwwkg7Z9ZLhurNJ24pOluECyoNTF3k0Npik+8jG0KC8bPxYN0xL2KmY76zKPA8tDin8H/YJ3vXynCiQizvAvRI5rHoWEB2xivQnvpbzWdrRvpenehJUUaNLoq4EI=
+	t=1748875457; cv=none; b=ZtGaGGa+S768bSZNqI8+NC/paNoKF4bRhgaR6ispJWYrv3M6XLf5312G4/QfDEf++pd533BbNk3y4g0ik+wY6YlyE7IYwC2pT4lNAcZ58DxW0+pEBnLqi3Jm0oXgEKi19VwKl0oOJpNyJgQ5DMdVKbYFVR32z8SLxcOvnnvf1Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874112; c=relaxed/simple;
-	bh=vPfezUKTEFYhc1cQAyNjL3s8Sf35igCmhWoOSEj0lgs=;
+	s=arc-20240116; t=1748875457; c=relaxed/simple;
+	bh=7uwTWWAyD+Z0Nw9S75Bwp/g7/sKexDOPXRasxRQxyA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cM+Ezv0aQEcOHv9QDr8UoFSZpEJpAvtJLrXGEEClANoukSP8Lmlqn0skCuziWmz3KC/vaHy0iAu9ETaLIzH1Hwu2AvsoZTUSgAJbZj6FM34Tg7BhV5bLPsYO+ainPyXZtGM6bXXtUQ27SnT1fGgDN5ab86COnp1pHCvS62VCLhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iOPrAzv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEF1C4CEEB;
-	Mon,  2 Jun 2025 14:21:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YAatD2itLdfR2YfkYRmzgthUC6GSn1rTNyH6kqIvnsF90eZUpoot8lMeBD02maRLG5gIVV3B+51M44IoDklTO0LIYkKa/JaMiGy44q4zLys0dOg/Wu534+qH3IKH0BPb1rbVc5iVPRMpR+ZH3vEn/mGRpRgwsucEVhkUfLCgtNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G63UkiOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8131CC4CEEB;
+	Mon,  2 Jun 2025 14:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874112;
-	bh=vPfezUKTEFYhc1cQAyNjL3s8Sf35igCmhWoOSEj0lgs=;
+	s=korg; t=1748875457;
+	bh=7uwTWWAyD+Z0Nw9S75Bwp/g7/sKexDOPXRasxRQxyA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iOPrAzvCCLYskqbmn4uO9m4rxiLVczJlfZxFRwetuOpE1IeR92fvPl2jIDAuHX5C
-	 /sfIJ9bSl8N6yELk3L+UWkOSfLnJtKcfPe5KSVHplTmDSi8GpzuVAVGDNCCGaVv9pt
-	 1cWlvmexYgAWQtaX9VqZbRfpB6GRYvghDuVTe3Us=
+	b=G63UkiOYPb6TD/m6dHlzN7fbqoCU0NvK4Rs/DMMf1Zs3q1j6iTX+k2cibvEZUdDz7
+	 GIwyZMUMrQH91KXaHe5XbHlf5AF9ut6jivZZ4eNyrE84UuYU+zqlfrzkBiN1rOjpP7
+	 5x3STA9Jx/CmGhyFj72hxoDOWWJz94QUHHhgW2Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 361/444] ASoC: SOF: ipc4-control: Use SOF_CTRL_CMD_BINARY as numid for bytes_ext
-Date: Mon,  2 Jun 2025 15:47:05 +0200
-Message-ID: <20250602134355.572735939@linuxfoundation.org>
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 141/270] ext4: reorder capability check last
+Date: Mon,  2 Jun 2025 15:47:06 +0200
+Message-ID: <20250602134312.999013740@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Christian Göttsche <cgzones@googlemail.com>
 
-commit 4d14b1069e9e672dbe1adab52594076da6f4a62d upstream.
+[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
 
-The header.numid is set to scontrol->comp_id in bytes_ext_get and it is
-ignored during bytes_ext_put.
-The use of comp_id is not quite great as it is kernel internal
-identification number.
+capable() calls refer to enabled LSMs whether to permit or deny the
+request.  This is relevant in connection with SELinux, where a
+capability check results in a policy decision and by default a denial
+message on insufficient permission is issued.
+It can lead to three undesired cases:
+  1. A denial message is generated, even in case the operation was an
+     unprivileged one and thus the syscall succeeded, creating noise.
+  2. To avoid the noise from 1. the policy writer adds a rule to ignore
+     those denial messages, hiding future syscalls, where the task
+     performs an actual privileged operation, leading to hidden limited
+     functionality of that task.
+  3. To avoid the noise from 1. the policy writer adds a rule to permit
+     the task the requested capability, while it does not need it,
+     violating the principle of least privilege.
 
-Set the header.numid to SOF_CTRL_CMD_BINARY during get and validate the
-numid during put to provide consistent and compatible identification
-number as IPC3.
-
-For IPC4 existing tooling also ignored the numid but with the use of
-SOF_CTRL_CMD_BINARY the different handling of the blobs can be dropped,
-providing better user experience.
-
-Reported-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Closes: https://github.com/thesofproject/linux/issues/5282
-Fixes: a062c8899fed ("ASoC: SOF: ipc4-control: Add support for bytes control get and put")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Link: https://patch.msgid.link/20250509085633.14930-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4-control.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/ext4/balloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/sof/ipc4-control.c
-+++ b/sound/soc/sof/ipc4-control.c
-@@ -483,6 +483,14 @@ static int sof_ipc4_bytes_ext_put(struct
- 		return -EINVAL;
- 	}
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index bdbf130416c73..be267cd9dea75 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -637,8 +637,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
+ 	/* Hm, nope.  Are (enough) root reserved clusters available? */
+ 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
+ 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
+-	    capable(CAP_SYS_RESOURCE) ||
+-	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
++	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
++	    capable(CAP_SYS_RESOURCE)) {
  
-+	/* Check header id */
-+	if (header.numid != SOF_CTRL_CMD_BINARY) {
-+		dev_err_ratelimited(scomp->dev,
-+				    "Incorrect numid for bytes put %d\n",
-+				    header.numid);
-+		return -EINVAL;
-+	}
-+
- 	/* Verify the ABI header first */
- 	if (copy_from_user(&abi_hdr, tlvd->tlv, sizeof(abi_hdr)))
- 		return -EFAULT;
-@@ -565,7 +573,8 @@ static int _sof_ipc4_bytes_ext_get(struc
- 	if (data_size > size)
- 		return -ENOSPC;
- 
--	header.numid = scontrol->comp_id;
-+	/* Set header id and length */
-+	header.numid = SOF_CTRL_CMD_BINARY;
- 	header.length = data_size;
- 
- 	if (copy_to_user(tlvd, &header, sizeof(struct snd_ctl_tlv)))
+ 		if (free_clusters >= (nclusters + dirty_clusters +
+ 				      resv_clusters))
+-- 
+2.39.5
+
 
 
 
