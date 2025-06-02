@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E37ACB2DC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06962ACB7AA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62A7E7A137F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00BA19445AF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2671223DC0;
-	Mon,  2 Jun 2025 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDF4225771;
+	Mon,  2 Jun 2025 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAl2wWn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lm+TyYuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8004319EEBD;
-	Mon,  2 Jun 2025 14:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1991C225776;
+	Mon,  2 Jun 2025 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874634; cv=none; b=Sm6AIsOmLI7zemQlXCKxJD+dAgEBhPw8MQjIdrG/z3coO/bZ9q7vdCFNjH3ewz+A3VYb4PpRV8Sw7a3tIF2tHaaOeKl8SASjj94Wz2PJ3KuA3HV49Rzm6DHwww/bQCI4rEbb74V24U2f8dX9efk23BhUTe9nklm4jOiUh2HplRk=
+	t=1748877108; cv=none; b=KXWbjsNCqts+Kd+GwAZOR6FIUjC6oIV0wNopO4Rfrmmb83CLywdOaeM96plO7TKzTschskXOSJNEL0mcyHBk4cpIvzWF+iDQQ1b+TUQqj7WyHAMh2Xp9GHv9roVfpMOAN5ApsyJINIbKhPiSiqpIK+m3Ft4aAb5A+awnOgzrYGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874634; c=relaxed/simple;
-	bh=7lDCS/Y6Tk1/nCNEgk0Owe9OPNpKVt5CkLdgbM55bYE=;
+	s=arc-20240116; t=1748877108; c=relaxed/simple;
+	bh=fcshhMaRTgCJ1unKaimbBKYWK+gidpZKV3oc5HXfR18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxOK1P+BIaizhkcWLHc9fij5ib+MJYxzC3SBpWFxusvfrMZZXdcJOYayjuBoVv7eXMQih+3+eIXeoOjAgO36fvoimItHvIZg54ctSc7zMm5qR+EQ4ylVkuPolAVwJwp2gtSMWKaGgt/JQaR1cEt1RuukYNIUrKSHk4mrs4CNJ1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAl2wWn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49F5C4CEEB;
-	Mon,  2 Jun 2025 14:30:33 +0000 (UTC)
+	 MIME-Version; b=eFOdF6cVnqss+e7g/PyLa5eaVGZms/oCezHj6l0WmBInpzy8t+qyqZrvq0leR4a+Xf8fc9YaXw8pjsu7y7zHcfO2PGFYIaahXTrAO0EF/pO/sUinw+cCDF9nn9pSZsaVDPeFaiUpVFIHJ2hyBexiWpLniRBM/rJCY0evBHznzIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lm+TyYuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17ADC4CEEB;
+	Mon,  2 Jun 2025 15:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874634;
-	bh=7lDCS/Y6Tk1/nCNEgk0Owe9OPNpKVt5CkLdgbM55bYE=;
+	s=korg; t=1748877108;
+	bh=fcshhMaRTgCJ1unKaimbBKYWK+gidpZKV3oc5HXfR18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAl2wWn7KAmyd1Hxms/sd6q+hA1ZWTOrjIcQFbUspyaLma+2IXjSUJyTJZR5/nR9g
-	 loB6Bswwo+8QCGogaboCgxoSZlMJgmUwODD1NDPCl9DVMOCDrPzVoB1WefCqN/1SMc
-	 6jG78wbuN5McpCwCZNRLmOkmFZzUpXqHON2mXzYs=
+	b=lm+TyYuTj5QlFgXrXu5kolW0jK4zj9sYr9QkQsDbGhx83oVDWsM1qjCYVo0e7mRH4
+	 U+6UpJVNohxbzBR6lCKhe9g+7HHoPuv4ValTBvomlapqFV4yyQpc2gD/MkaKG80uNe
+	 8D4Dy+r7ohuOreZb/hMuZuWh/r95k3gOfdYooG2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 087/204] dma-mapping: avoid potential unused data compilation warning
+Subject: [PATCH 6.1 144/325] MIPS: Use arch specific syscall name match function
 Date: Mon,  2 Jun 2025 15:47:00 +0200
-Message-ID: <20250602134259.083584363@linuxfoundation.org>
+Message-ID: <20250602134325.667006626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit c9b19ea63036fc537a69265acea1b18dabd1cbd3 ]
+[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
 
-When CONFIG_NEED_DMA_MAP_STATE is not defined, dma-mapping clients might
-report unused data compilation warnings for dma_unmap_*() calls
-arguments. Redefine macros for those calls to let compiler to notice that
-it is okay when the provided arguments are not used.
+On MIPS system, most of the syscall function name begin with prefix
+sys_. Some syscalls are special such as clone/fork, function name of
+these begin with __sys_. Since scratch registers need be saved in
+stack when these system calls happens.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250415075659.428549-1-m.szyprowski@samsung.com
+With ftrace system call method, system call functions are declared with
+SYSCALL_DEFINEx, metadata of the system call symbol name begins with
+sys_. Here mips specific function arch_syscall_match_sym_name is used to
+compare function name between sys_call_table[] and metadata of syscall
+symbol.
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 87cbae4b051f1..ead09620e2138 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -895,10 +895,14 @@ static inline int dma_mmap_wc(struct device *dev,
- #else
- #define DEFINE_DMA_UNMAP_ADDR(ADDR_NAME)
- #define DEFINE_DMA_UNMAP_LEN(LEN_NAME)
--#define dma_unmap_addr(PTR, ADDR_NAME)           (0)
--#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  do { } while (0)
--#define dma_unmap_len(PTR, LEN_NAME)             (0)
--#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    do { } while (0)
-+#define dma_unmap_addr(PTR, ADDR_NAME)           \
-+	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
-+#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  \
-+	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
-+#define dma_unmap_len(PTR, LEN_NAME)             \
-+	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
-+#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    \
-+	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
- #endif
- 
- #endif
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index db497a8167da2..e3212f44446fa 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -87,4 +87,20 @@ struct dyn_arch_ftrace {
+ #endif /*  CONFIG_DYNAMIC_FTRACE */
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
++
++#ifdef CONFIG_FTRACE_SYSCALLS
++#ifndef __ASSEMBLY__
++/*
++ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
++ * for instance). We should also match the sys_ variant with those.
++ */
++#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
++static inline bool arch_syscall_match_sym_name(const char *sym,
++					       const char *name)
++{
++	return !strcmp(sym, name) ||
++		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
++}
++#endif /* __ASSEMBLY__ */
++#endif /* CONFIG_FTRACE_SYSCALLS */
+ #endif /* _ASM_MIPS_FTRACE_H */
 -- 
 2.39.5
 
