@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92AEACAFDE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:57:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C724AACAF93
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B61188AA1F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CE927A1E60
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6DF1401B;
-	Mon,  2 Jun 2025 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8E7221734;
+	Mon,  2 Jun 2025 13:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/u/BYx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGZ1f4fx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872A91A01C6;
-	Mon,  2 Jun 2025 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E16E2C3247;
+	Mon,  2 Jun 2025 13:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872594; cv=none; b=VOPKYOl5eH47YeyCwKjYfdopJ/djA645qerDwS2jn7SDlmKUMw3Y7pm8ah6zfDRgdpv4z6DDBv7jwgTwvVzHbBZzZpVsCWQEiv+yidT7MelQz2LFMoYh5hyST74UGS00ogH/wqFBJE9uoovRjZdZET4WCulH7NqBGXTxiXNiOqM=
+	t=1748872160; cv=none; b=hJ7jf6fxS8s5i60UJclusp23YvdhtXNW6qm/7xmaJql6ZgFj1sYmWkMu08cX7/AotTZeOXyQ2WHug3oEEvRlr5+4aBiB6TWW37/kf+9R7OuvDX7JuE9K1QILTTR1OTVf/86HOqZMwGHa8dP5qvcNxeCdY7N0iyGiWp/7rU+a0LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872594; c=relaxed/simple;
-	bh=qKgwV7Lm4VZvSqsz7vPLGz66hifvEbE7o1czTx5sftQ=;
+	s=arc-20240116; t=1748872160; c=relaxed/simple;
+	bh=Bg/TzFxg+k3NNiAbFRHVRS/gD7AePoDhKk9VQjrGTZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIYe01PpMDSKxv16zbT1oUozka+HrXQ7EkAq7O1zWfHtXaKCB+bX4SbxVhz3+HGSfPifxLYbal8NgP8Zwb3NIvFBnTJSa0KRCC2ULAu3YSkRKaGJJDFu1nw3CvjOxfR2V79I6KyopDKQiLaWz5cujF2op5E2ptIQIUAzZS6v+fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/u/BYx5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1870CC4CEEB;
-	Mon,  2 Jun 2025 13:56:33 +0000 (UTC)
+	 MIME-Version; b=DEj3FibReTDGx+A6efqHR9w+0ZqpaDWL4DrjJwhppER+KBVDUnGS6jn6YAL56ywTGZs6LERhSyV/7IkE3BVrhH3bsw0Q5RnpoF6JmVJfBO2ibgJQ7LZLOh/MkvoyZGCZUDe80UgtDX2iFq02hjpULqqn/dyd1NmGmPRlXHpghUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGZ1f4fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836E0C4CEEB;
+	Mon,  2 Jun 2025 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872594;
-	bh=qKgwV7Lm4VZvSqsz7vPLGz66hifvEbE7o1czTx5sftQ=;
+	s=korg; t=1748872156;
+	bh=Bg/TzFxg+k3NNiAbFRHVRS/gD7AePoDhKk9VQjrGTZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/u/BYx5hsze18I4SFP2IhI+gSI25dJKwmqLp8Dg8sAUDHtRiXI4t6nPt965s97Fb
-	 HdhnW/jP8bgyDnivegW8X9dt2xC0vvaqyMVbvYGeADa209N2ISsXgRdXseJcRJEJed
-	 VzxX45tV94aI/EUYTehY6s+2YSWV61P7PP6eAJzs=
+	b=MGZ1f4fxf/NMYbzTflIx4/y9s1UHvybSKEUiCoP6Up9pp8mlGDGs+wEf86+8Bm77f
+	 RL3okz/sfCvUMk3CSItNTPJJQqZguVFyOUdQW/qmnEcdbMNHiH/kWUt5jbBJrT+jTS
+	 B/SG8jVvCSwxVF68gHF2tuLJ6NxvUM9K6Vd0YbPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
+	stable@kernel.org,
+	Karthik Sanagavarapu <quic_kartsana@quicinc.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 13/73] arm64: dts: qcom: x1e001de-devkit: mark l12b and l15b always-on
+Subject: [PATCH 6.15 07/49] arm64: dts: qcom: sa8775p: Remove cdsp compute-cb@10
 Date: Mon,  2 Jun 2025 15:46:59 +0200
-Message-ID: <20250602134242.217221531@linuxfoundation.org>
+Message-ID: <20250602134238.232289649@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Karthik Sanagavarapu <quic_kartsana@quicinc.com>
 
-commit 7d328cc134f7db1e062f616a30cffe96fbc43abb upstream.
+commit d180c2bd3b43d55f30c9b99de68bc6bb8420d1c1 upstream.
 
-The l12b and l15b supplies are used by components that are not (fully)
-described (and some never will be) and must never be disabled.
+Remove the context bank compute-cb@10 because these SMMU ids are S2-only
+which is not used for S1 transaction.
 
-Mark the regulators as always-on to prevent them from being disabled,
-for example, when consumers probe defer or suspend.
-
-Fixes: 7b8a31e82b87 ("arm64: dts: qcom: Add X1E001DE Snapdragon Devkit for Windows")
-Cc: stable@vger.kernel.org	# 6.14
-Cc: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-4-johan+linaro@kernel.org
+Fixes: f7b01bfb4b47 ("arm64: qcom: sa8775p: Add ADSP and CDSP0 fastrpc nodes")
+Cc: stable@kernel.org
+Signed-off-by: Karthik Sanagavarapu <quic_kartsana@quicinc.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Link: https://lore.kernel.org/r/4c9de858fda7848b77ea8c528c9b9d53600ad21a.1739260973.git.quic_lxu5@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e001de-devkit.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi |    8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts b/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
-index f87730f4b63f..b133302bf846 100644
---- a/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e001de-devkit.dts
-@@ -507,6 +507,7 @@ vreg_l12b_1p2: ldo12 {
- 			regulator-min-microvolt = <1200000>;
- 			regulator-max-microvolt = <1200000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -4973,14 +4973,6 @@
+ 						dma-coherent;
+ 					};
  
- 		vreg_l13b_3p0: ldo13 {
-@@ -528,6 +529,7 @@ vreg_l15b_1p8: ldo15 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l16b_2p9: ldo16 {
--- 
-2.49.0
-
+-					compute-cb@10 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <10>;
+-						iommus = <&apps_smmu 0x214a 0x04a0>,
+-							 <&apps_smmu 0x218a 0x0400>;
+-						dma-coherent;
+-					};
+-
+ 					compute-cb@11 {
+ 						compatible = "qcom,fastrpc-compute-cb";
+ 						reg = <11>;
 
 
 
