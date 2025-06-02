@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09169ACB368
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F74ACB82F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A174A5342
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A74ED9408CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDB222A801;
-	Mon,  2 Jun 2025 14:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB102233738;
+	Mon,  2 Jun 2025 15:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4dO4YtF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hH2mVt1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A068022A7F1;
-	Mon,  2 Jun 2025 14:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EBC233D64;
+	Mon,  2 Jun 2025 15:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874405; cv=none; b=iaatMwzYHHllh+6pyUZe96se2pd5emoaltIElDs73TTd4i0lmWgtaxjyUf2QZUSbY5WFEoU6E6TqT+9ua5QJpLRAPGz7A9fYYy/3LCuN2tDATcspBex4VMid7kH9BZjke9X372q5fy4cyAFZVbJKsAct6hD3wcNv0CAeAA+msb0=
+	t=1748876753; cv=none; b=MH1oQQiPksxhfD065YjbIBHMH6jR7G8HCjqgGw9G8hnN0N6SQOmrV/BDFrGwFFzJrFnmtCLdSRI5xRURP+MJSHeEtRkSFxGx0kwgQW3TLXnsp+MKx1QK53mLmGqKj/O4632Ng5q7J4YqHNa308/CvHRNvBVSC6ON9zEl2g9qpTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874405; c=relaxed/simple;
-	bh=tzcmqE3N9sbY0RMnxR+gQCwi4Dmw1AKHEerPQ7cc9qc=;
+	s=arc-20240116; t=1748876753; c=relaxed/simple;
+	bh=hHhqeot/t7UTXSd1n2tTXx6gO2cM7r9ZQod3YUopgfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqQmvqF8H8EJPvPNyvyivHTkGdQlgzZoz+BefEMi2IHLclab8kFv3Tjt7oOpTeO/ew8GpK6jZ6DvDImQ6fKgB2VQPCFa5RQJcbikc7FVRpawg8ofgSu6elzFNOJ8IPGg904KwzltgUOnz4Ck+pIJ44Od7NRWTbk9gXNur2qI2/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4dO4YtF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A56C4CEEB;
-	Mon,  2 Jun 2025 14:26:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MQHkxFtGnA3qTkbnvkx8MXmqseYBVdFu1I+F7KENEU3GQweFrQuMYm/yj9BZMfPZJE9XW8mKRxFAsJvphZBFem4rId9XsO7q50vlddB9W4BtDiC8Biv1bPaIXieJYrOtQdh4SAB6Bwbu9vJyMMgn5p/NSB04Y/LQPRKAZX9ed/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hH2mVt1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE8AC4CEEE;
+	Mon,  2 Jun 2025 15:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874404;
-	bh=tzcmqE3N9sbY0RMnxR+gQCwi4Dmw1AKHEerPQ7cc9qc=;
+	s=korg; t=1748876751;
+	bh=hHhqeot/t7UTXSd1n2tTXx6gO2cM7r9ZQod3YUopgfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4dO4YtFPvT9nV8xEYWw1qc+KexuSHhA7RquuR+x2ZO/Y2OR0yXGBg/Sb4xW2SwhH
-	 qx8M1v2OzbLY0wuBd+MWnPDu+XLtUgo9WRr7Ye0/LQZX4sGlUdHlUOeWHNfgAJvYwl
-	 wVRy/oHBsyW9PSOI+FElpNTukDmDCSjImTopwDos=
+	b=hH2mVt1XooV5Qq2D/1X2bqBMqvcnw5KwL1j+w1wvzr8xrsTXdai9YHyuRegL+iaKK
+	 WSpz3zp4cuAUDXhmDITaWfR2mIGWEL6TEFjHRfAPPDkXBI624ri+bLNy7DV8LPmSie
+	 9ahTkdDk8rY+KwLNJuk6FkHDwsQQvFV00CNVO17s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Badole <Vishal.Badole@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 005/204] amd-xgbe: Fix to ensure dependent features are toggled with RX checksum offload
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/325] ext4: reorder capability check last
 Date: Mon,  2 Jun 2025 15:45:38 +0200
-Message-ID: <20250602134255.678896688@linuxfoundation.org>
+Message-ID: <20250602134322.283466003@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,142 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Badole <Vishal.Badole@amd.com>
+From: Christian Göttsche <cgzones@googlemail.com>
 
-commit f04dd30f1bef1ed2e74a4050af6e5e5e3869bac3 upstream.
+[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
 
-According to the XGMAC specification, enabling features such as Layer 3
-and Layer 4 Packet Filtering, Split Header and Virtualized Network support
-automatically selects the IPC Full Checksum Offload Engine on the receive
-side.
+capable() calls refer to enabled LSMs whether to permit or deny the
+request.  This is relevant in connection with SELinux, where a
+capability check results in a policy decision and by default a denial
+message on insufficient permission is issued.
+It can lead to three undesired cases:
+  1. A denial message is generated, even in case the operation was an
+     unprivileged one and thus the syscall succeeded, creating noise.
+  2. To avoid the noise from 1. the policy writer adds a rule to ignore
+     those denial messages, hiding future syscalls, where the task
+     performs an actual privileged operation, leading to hidden limited
+     functionality of that task.
+  3. To avoid the noise from 1. the policy writer adds a rule to permit
+     the task the requested capability, while it does not need it,
+     violating the principle of least privilege.
 
-When RX checksum offload is disabled, these dependent features must also
-be disabled to prevent abnormal behavior caused by mismatched feature
-dependencies.
-
-Ensure that toggling RX checksum offload (disabling or enabling) properly
-disables or enables all dependent features, maintaining consistent and
-expected behavior in the network device.
-
-Cc: stable@vger.kernel.org
-Fixes: 1a510ccf5869 ("amd-xgbe: Add support for VXLAN offload capabilities")
-Signed-off-by: Vishal Badole <Vishal.Badole@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250424130248.428865-1-Vishal.Badole@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-desc.c |    9 +++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-dev.c  |   24 ++++++++++++++++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  |   11 +++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe.h      |    4 ++++
- 4 files changed, 42 insertions(+), 6 deletions(-)
+ fs/ext4/balloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-@@ -373,8 +373,13 @@ static int xgbe_map_rx_buffer(struct xgb
- 	}
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index fbd0329cf254e..9efe97f3721bc 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -638,8 +638,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
+ 	/* Hm, nope.  Are (enough) root reserved clusters available? */
+ 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
+ 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
+-	    capable(CAP_SYS_RESOURCE) ||
+-	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
++	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
++	    capable(CAP_SYS_RESOURCE)) {
  
- 	/* Set up the header page info */
--	xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
--			     XGBE_SKB_ALLOC_SIZE);
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     XGBE_SKB_ALLOC_SIZE);
-+	} else {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     pdata->rx_buf_size);
-+	}
- 
- 	/* Set up the buffer page info */
- 	xgbe_set_buffer_data(&rdata->rx.buf, &ring->rx_buf_pa,
---- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-@@ -320,6 +320,18 @@ static void xgbe_config_sph_mode(struct
- 	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, HDSMS, XGBE_SPH_HDSMS_SIZE);
- }
- 
-+static void xgbe_disable_sph_mode(struct xgbe_prv_data *pdata)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < pdata->channel_count; i++) {
-+		if (!pdata->channel[i]->rx_ring)
-+			break;
-+
-+		XGMAC_DMA_IOWRITE_BITS(pdata->channel[i], DMA_CH_CR, SPH, 0);
-+	}
-+}
-+
- static int xgbe_write_rss_reg(struct xgbe_prv_data *pdata, unsigned int type,
- 			      unsigned int index, unsigned int val)
- {
-@@ -3495,8 +3507,12 @@ static int xgbe_init(struct xgbe_prv_dat
- 	xgbe_config_tx_coalesce(pdata);
- 	xgbe_config_rx_buffer_size(pdata);
- 	xgbe_config_tso_mode(pdata);
--	xgbe_config_sph_mode(pdata);
--	xgbe_config_rss(pdata);
-+
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_config_sph_mode(pdata);
-+		xgbe_config_rss(pdata);
-+	}
-+
- 	desc_if->wrapper_tx_desc_init(pdata);
- 	desc_if->wrapper_rx_desc_init(pdata);
- 	xgbe_enable_dma_interrupts(pdata);
-@@ -3650,5 +3666,9 @@ void xgbe_init_function_ptrs_dev(struct
- 	hw_if->disable_vxlan = xgbe_disable_vxlan;
- 	hw_if->set_vxlan_id = xgbe_set_vxlan_id;
- 
-+	/* For Split Header*/
-+	hw_if->enable_sph = xgbe_config_sph_mode;
-+	hw_if->disable_sph = xgbe_disable_sph_mode;
-+
- 	DBGPR("<--xgbe_init_function_ptrs\n");
- }
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2372,10 +2372,17 @@ static int xgbe_set_features(struct net_
- 	if (ret)
- 		return ret;
- 
--	if ((features & NETIF_F_RXCSUM) && !rxcsum)
-+	if ((features & NETIF_F_RXCSUM) && !rxcsum) {
-+		hw_if->enable_sph(pdata);
-+		hw_if->enable_vxlan(pdata);
- 		hw_if->enable_rx_csum(pdata);
--	else if (!(features & NETIF_F_RXCSUM) && rxcsum)
-+		schedule_work(&pdata->restart_work);
-+	} else if (!(features & NETIF_F_RXCSUM) && rxcsum) {
-+		hw_if->disable_sph(pdata);
-+		hw_if->disable_vxlan(pdata);
- 		hw_if->disable_rx_csum(pdata);
-+		schedule_work(&pdata->restart_work);
-+	}
- 
- 	if ((features & NETIF_F_HW_VLAN_CTAG_RX) && !rxvlan)
- 		hw_if->enable_rx_vlan_stripping(pdata);
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -834,6 +834,10 @@ struct xgbe_hw_if {
- 	void (*enable_vxlan)(struct xgbe_prv_data *);
- 	void (*disable_vxlan)(struct xgbe_prv_data *);
- 	void (*set_vxlan_id)(struct xgbe_prv_data *);
-+
-+	/* For Split Header */
-+	void (*enable_sph)(struct xgbe_prv_data *pdata);
-+	void (*disable_sph)(struct xgbe_prv_data *pdata);
- };
- 
- /* This structure represents implementation specific routines for an
+ 		if (free_clusters >= (nclusters + dirty_clusters +
+ 				      resv_clusters))
+-- 
+2.39.5
+
 
 
 
