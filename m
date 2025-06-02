@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F9FACB67A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2145ACB0E3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C5331C21078
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C82716C10C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94CF239E74;
-	Mon,  2 Jun 2025 14:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CB523507B;
+	Mon,  2 Jun 2025 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHdcEqcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EN9eCoLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A806B239E6B;
-	Mon,  2 Jun 2025 14:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EE9235061;
+	Mon,  2 Jun 2025 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876356; cv=none; b=BX/aN5ZZvmMiCo2zSRmG0cdQStv5rZGeCPLDF7iO/4czWK17mYpwBePTQ1MdwHexHARFx8cfJC/MFpsbXDt/KVL1m2gaqwBi2kOo1HFwDtfLZn8uXytKBYY/4rPf7V5g0b4zN9aEU++xYcADmKtM8GHACAsNTtxnOkacLC9C/5Q=
+	t=1748872979; cv=none; b=nPSP26f6h5V5TLqVL5jg0Oy+6TTDpGnkQzFJzHaNEkc78ptQlWm6WTvY9wMtpD12QQJjNf55bjZU2ld3TTUTrvhPmOiYOWgVsHAYuhWkChukpReA+az1e5/pzQnhCo/XJ+lWQ4z6nVGIEvpY7HX17K/8nxWG9pzUAqrxILPMSlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876356; c=relaxed/simple;
-	bh=cnTpDVKZfSSjS5P5BzGwJMnWy0Fy4HJbpd9+Tz8BtTo=;
+	s=arc-20240116; t=1748872979; c=relaxed/simple;
+	bh=yGEXisPko5+PnaMR00b3V66jFaHp6TT57hwnxVU1d2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktwCpUCm+0CYUTBsMySRRJ49zILhnFQjH5ibEmmCIUXspkTln7+8jpCN6inXTNu6+wzSZCX13KO42qWoTsSR+lZyubAAYg4BVHWncUyUSXBllERRq7zmxh2lwxp0aYkotiQvJ6w4heTh9FwE842KjLgC17OPiP8kF2ZnnA6Pe+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHdcEqcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332EC4CEEB;
-	Mon,  2 Jun 2025 14:59:13 +0000 (UTC)
+	 MIME-Version; b=kiOQgMQzIaCjHldJphbD/yqnZLhw/IWrcAn9KmGyR0FG/mjuPi5DHRlWIv6yGYZdVvYrne/RWpGlvmVwouV2a0Uz15v0HP2uQGjsTb8o7qsh9o/UcPfudQU3tE4ROR0x11/FwDcJ4xrrJn/SEKHvvtVX03dGmT5cemZL4toX1WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EN9eCoLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE918C4CEEE;
+	Mon,  2 Jun 2025 14:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876354;
-	bh=cnTpDVKZfSSjS5P5BzGwJMnWy0Fy4HJbpd9+Tz8BtTo=;
+	s=korg; t=1748872979;
+	bh=yGEXisPko5+PnaMR00b3V66jFaHp6TT57hwnxVU1d2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHdcEqcfWTzmzsBgQDDWOEx0WjedEx2BxlaTH8xZd3KkZOwErQ85PIE06EdXsD/XM
-	 wbJyRyXHUPyCKGNhLOGwclDfI7N0XJDAyOB1CX5gkF30KtSIG7L7uqxEqd+6bl66DK
-	 MSyS7I7Nybeid6YhBZciP/ROYcZ7+iI2EyqdvlcM=
+	b=EN9eCoLOOASTghk80KFkjkbkG1ZnucjAdHneQLabcNFQ/Oi+GqkP+8OUmsA7Gsebq
+	 dlfu8e25pukv2M5abPflP17RiTBjrK48xGpnBXPVYmZTywYebsreRT2rSZ9XhvAEa1
+	 4b/xGmQlr0SJlxp7zFCMFkSpUoBy9mg0wactKXUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/207] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
+Subject: [PATCH 6.12 55/55] ksmbd: use list_first_entry_or_null for opinfo_get_list()
 Date: Mon,  2 Jun 2025 15:48:12 +0200
-Message-ID: <20250602134303.419675295@linuxfoundation.org>
+Message-ID: <20250602134240.441210028@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
+[ Upstream commit 10379171f346e6f61d30d9949500a8de4336444a ]
 
-Memset the config argument to get_mbus_config V4L2 sub-device pad
-operation to zero before calling the operation. This ensures the callers
-don't need to bother with it nor the implementations need to set all
-fields that may not be relevant to them.
+The list_first_entry() macro never returns NULL.  If the list is
+empty then it returns an invalid pointer.  Use list_first_entry_or_null()
+to check if the list is empty.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202505080231.7OXwq4Te-lkp@intel.com/
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- include/media/v4l2-subdev.h           | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/server/oplock.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 5d27a27cc2f24..6f2267625c7ea 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -314,6 +314,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
- static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
- 				struct v4l2_mbus_config *config)
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 03f606afad93a..d7a8a580d0136 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -146,12 +146,9 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
  {
-+	memset(config, 0, sizeof(*config));
-+
- 	return check_pad(sd, pad) ? :
- 	       sd->ops->pad->get_mbus_config(sd, pad, config);
- }
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index 9a476f902c425..262b5e5cebc4c 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -714,7 +714,9 @@ struct v4l2_subdev_state {
-  *		     possible configuration from the remote end, likely calling
-  *		     this operation as close as possible to stream on time. The
-  *		     operation shall fail if the pad index it has been called on
-- *		     is not valid or in case of unrecoverable failures.
-+ *		     is not valid or in case of unrecoverable failures. The
-+ *		     config argument has been memset to 0 just before calling
-+ *		     the op.
-  *
-  * @set_mbus_config: set the media bus configuration of a remote sub-device.
-  *		     This operations is intended to allow, in combination with
+ 	struct oplock_info *opinfo;
+ 
+-	if (list_empty(&ci->m_op_list))
+-		return NULL;
+-
+ 	down_read(&ci->m_lock);
+-	opinfo = list_first_entry(&ci->m_op_list, struct oplock_info,
+-					op_entry);
++	opinfo = list_first_entry_or_null(&ci->m_op_list, struct oplock_info,
++					  op_entry);
+ 	if (opinfo) {
+ 		if (opinfo->conn == NULL ||
+ 		    !atomic_inc_not_zero(&opinfo->refcount))
 -- 
 2.39.5
 
