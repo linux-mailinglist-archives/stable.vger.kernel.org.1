@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDF0ACB7C0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77771ACB605
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B864A4BA9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74934C4FEA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D92122FF58;
-	Mon,  2 Jun 2025 15:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD79E238C27;
+	Mon,  2 Jun 2025 14:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gVXoN2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pyx9q0Xr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A371F4165;
-	Mon,  2 Jun 2025 15:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8959823644F;
+	Mon,  2 Jun 2025 14:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877236; cv=none; b=fA0y9mknaOgr75VjfXeoEeOGtaQ1THOU41m75R7oCXp3lyWlFUmo2orybyHaSfyKr256UGUWLnCwzJbuUg/dl/PvNnDunfbqP8rS8D2o9MpufE7Ubfru6CmMvPbKxdf1QW7EeaPenJdNnUndE3YHDukbsaZUdiYZWZqXElSzjwE=
+	t=1748876341; cv=none; b=cPPJr9e893F/3AZaDYPd9tgA+NorZpsVg4XOFtC3U4Vz0V9CWC+jQCGiTeDLngJ59jHSsirkWxTLK+GNY+uoMC+CFn+NnvtEeJlijXQ5E7r31kp+snd06/7X90i3jO/XLCu0yr+5CiMCfNWeS24hISWiq+uaMnMiraR+KBaawWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877236; c=relaxed/simple;
-	bh=c2zGEQkI+I9sRXmwZguQFgJO7GiZQGo8XuXH2+T5QRw=;
+	s=arc-20240116; t=1748876341; c=relaxed/simple;
+	bh=6NllfDimlhC3DGdzoDaqah3uZ5xNszKGgEolTOBiveM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ypbm/JMnSCH+RLUNKkQTkNRj818tE2g9lzbNBX/gvP1ZEH+/0zMZZeFKNr9HYF2Em61cJG/kPbZtVd4SuAnMmgz+fZ/DNmfCNFGe7+vFB5C6QviU7kjXaOqyAQ6wSeamglvlmxoQZ1BmyyElrAGsNsoUDZ/0nk8NtjaupwB2kLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gVXoN2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356B9C4CEEB;
-	Mon,  2 Jun 2025 15:13:54 +0000 (UTC)
+	 MIME-Version; b=EfWWs52xzvGJDtE0DnqrhAdO9PanAuOZVZj3nNUXlS4y23tn4e7QtdLjxwtiHKJy+Ggv1l1gawOQpwPRIMW9osXQZQFGAh2qT1kH3eiTq/wli60D2Zu8JeqpqNWxXardhgs5q4Si07ih62/Tuw7yF/wKNsM0e6D4N7ih9dEHA8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pyx9q0Xr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5FDC4CEEB;
+	Mon,  2 Jun 2025 14:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877234;
-	bh=c2zGEQkI+I9sRXmwZguQFgJO7GiZQGo8XuXH2+T5QRw=;
+	s=korg; t=1748876341;
+	bh=6NllfDimlhC3DGdzoDaqah3uZ5xNszKGgEolTOBiveM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gVXoN2yLvfhJSTeYX6+0IXQZgztNu77Y8iIymXuSgE1aW1S1sFY8KDfTDIwZu9M0
-	 ZIgQJqWgw8vjvOBNaws0QxwU0H6eX7QGMLGWa1nP+Z6AVBEZ1/xEONc6qC2E9y7SzW
-	 V7uReT8fJ2ehGLGV+LpArL0CK0cdTAwDAkY9gdb0=
+	b=Pyx9q0Xrj+JoXLaolyl9QxEzQOwYh3jTjjsKpxNnYTuPKCOro0S4qmoyGMsA+RtjP
+	 W2r5wl25xs7ECyAveZeUsCTQhl7CIRk1pLxDCQEhdJGMUwVmPElw0gjiDEBH+L//iw
+	 5/U984pf2T1QPRTj1Do1O4WZ+JU0MwulCAWh+5JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 214/325] spi: zynqmp-gqspi: Always acknowledge interrupts
-Date: Mon,  2 Jun 2025 15:48:10 +0200
-Message-ID: <20250602134328.492805435@linuxfoundation.org>
+Subject: [PATCH 5.15 119/207] smack: recognize ipv4 CIPSO w/o categories
+Date: Mon,  2 Jun 2025 15:48:11 +0200
+Message-ID: <20250602134303.381785207@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
+[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
 
-RXEMPTY can cause an IRQ, even though we may not do anything about it
-(such as if we are waiting for more received data). We must still handle
-these IRQs because we can tell they were caused by the device.
+If SMACK label has CIPSO representation w/o categories, e.g.:
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
-Signed-off-by: Mark Brown <broonie@kernel.org>
+| # cat /smack/cipso2
+| foo  10
+| @ 250/2
+| ...
+
+then SMACK does not recognize such CIPSO in input ipv4 packets
+and substitues '*' label instead. Audit records may look like
+
+| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
+|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
+
+This happens in two steps:
+
+1) security/smack/smackfs.c`smk_set_cipso
+   does not clear NETLBL_SECATTR_MLS_CAT
+   from (struct smack_known *)skp->smk_netlabel.flags
+   on assigning CIPSO w/o categories:
+
+| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
+| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+
+2) security/smack/smack_lsm.c`smack_from_secattr
+   can not match skp->smk_netlabel with input packet's
+   struct netlbl_lsm_secattr *sap
+   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
+   but skp->smk_netlabel.flags have (what is incorrect):
+
+| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
+| 	if ((skp->smk_netlabel.flags &
+| 		 NETLBL_SECATTR_MLS_CAT) == 0)
+| 		found = 1;
+| 	break;
+| }
+
+This commit sets/clears NETLBL_SECATTR_MLS_CAT in
+skp->smk_netlabel.flags according to the presense of CIPSO categories.
+The update of smk_netlabel is not atomic, so input packets processing
+still may be incorrect during short time while update proceeds.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ security/smack/smackfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index c89544ae5ed91..fde7c38103596 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -698,7 +698,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
- static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- {
- 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
--	irqreturn_t ret = IRQ_NONE;
- 	u32 status, mask, dma_status = 0;
- 
- 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
-@@ -713,27 +712,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- 				   dma_status);
- 	}
- 
--	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
-+	if (!mask && !dma_status)
-+		return IRQ_NONE;
-+
-+	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
- 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
--	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
-+	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
- 		zynqmp_process_dma_irq(xqspi);
--		ret = IRQ_HANDLED;
--	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
--			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
-+	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
-+			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
- 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
- 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
- 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
- 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
- 		complete(&xqspi->data_completion);
--		ret = IRQ_HANDLED;
- 	}
--	return ret;
-+	return IRQ_HANDLED;
- }
- 
- /**
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index f6961a8895296..0feaa29cc0243 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 	if (rc >= 0) {
+ 		old_cat = skp->smk_netlabel.attr.mls.cat;
+ 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
++		if (ncats.attr.mls.cat)
++			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
++		else
++			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
+ 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
+ 		synchronize_rcu();
+ 		netlbl_catmap_free(old_cat);
 -- 
 2.39.5
 
