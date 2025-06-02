@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB41ACB2E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7568DACB77B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 604411945824
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2344BA2436D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD77E238C25;
-	Mon,  2 Jun 2025 14:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B7421CA1E;
+	Mon,  2 Jun 2025 14:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSXshH6J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znCNj+MD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3A1238C19;
-	Mon,  2 Jun 2025 14:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4D1EA65;
+	Mon,  2 Jun 2025 14:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874026; cv=none; b=oLkDHaFmU1zF2qczasCprajw36kI9/MmHsSZZ2MOsfUJIo2J+IUiu76DSwB+bI2VHO6ec0crLNZmTuIGLlgEq/tuim+o27hoeajds7pelhmGj39V0a3fq4AH8E1gUrJ0+2JsjF4qgkoGY3Al/+f1SPSlxQzsVNHNbz2AoSvCmG8=
+	t=1748876052; cv=none; b=Xz+5+7qTW5xSdYAngoz257DVr/0ZACnmQDTM/VGN/iBR/vv/BAjdjifOHce0XB1s0vlamODO40QelJnF5pKfZc6EL9DFFlKVD3D/1usHBPxuGCFF5RzF09X0OZjErUZAwO3t9QU8uCl+Ouyi6/dI6WYFenON1Izho37975wZqa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874026; c=relaxed/simple;
-	bh=iWa8X9JJob96vUF8zTPt2U9wVjYti/GbCRadAoklaYg=;
+	s=arc-20240116; t=1748876052; c=relaxed/simple;
+	bh=Q4IkQdrjWsBivqZwbPn7fvxaeY17FoOcXe/ufM9xg2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSYyimMcs+TsDNTmjquEEVrl9NOFiIIk1xoi+c3OH0tq+hsmQcJ1DRCLe8BsyzOjAhtRPaAX06ku/XUBSfq5zuREkJoMK6orineWwrKZu38S1jWuTOsd5qdxD8CQYNhSgCBgPjbDDgxi8ZwDnyy0t1dinUllgC0eGxmyzL6amTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSXshH6J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8ECC4CEF3;
-	Mon,  2 Jun 2025 14:20:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kAjQcjBGC15+k1qK7mfDPrOhXyjEoRZm+a1BaWo8roTxKZ9pTG3f7YPNT2YsvUJ8xS3SG7oZ0W5CaKodw7x8fA5+ySAnkepC60kpVXIb6gAhXd1bGEGhA49DpTZbq61uEqxDh203PfcXq/uo8HvJtNigye4wIA2JSvGGS++UlVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znCNj+MD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6AAC4CEEB;
+	Mon,  2 Jun 2025 14:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874026;
-	bh=iWa8X9JJob96vUF8zTPt2U9wVjYti/GbCRadAoklaYg=;
+	s=korg; t=1748876050;
+	bh=Q4IkQdrjWsBivqZwbPn7fvxaeY17FoOcXe/ufM9xg2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSXshH6JlMr06vdIKsIuKBl5UE3kBpDnhzFqx4V08BlJF6MWZRIYfcSXGd7bMg3ha
-	 5ImbPaIs08kxlp6chgvWmUePAIk3SdfvMypTNOHszkYd/23kK0KaWQg59D7ZIuO5dq
-	 xx/oPkBkWU9r8UpVvpmg2F38S/wCsRgBMFHNOcgc=
+	b=znCNj+MDWqTQlhpvgY8dOu9kxtgoluyPpXVNkmlusMmTDPjHfBsPfP8Qc7C/lPw+0
+	 LVb8bJ9jrkwEuh2c+RgVA5b8Hge+qupvX+FfujC2tWAfs+7Xasmkm6jjQ7fpiUpV3p
+	 YgtpVYnQK5vFwro+PTAa0+zkbl3Q6AOF+ZmfTiyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 332/444] dmaengine: idxd: add wq driver name support for accel-config user tool
+Subject: [PATCH 5.15 024/207] PCI: vmd: Disable MSI remapping bypass under Xen
 Date: Mon,  2 Jun 2025 15:46:36 +0200
-Message-ID: <20250602134354.407619362@linuxfoundation.org>
+Message-ID: <20250602134259.719310894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,196 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit 7af1e0aceeb321cbc90fcf6fa0bec8870290377f ]
+[ Upstream commit 6c4d5aadf5df31ea0ac025980670eee9beaf466b ]
 
-With the possibility of multiple wq drivers that can be bound to the wq,
-the user config tool accel-config needs a way to know which wq driver to
-bind to the wq. Introduce per wq driver_name sysfs attribute where the user
-can indicate the driver to be bound to the wq. This allows accel-config to
-just bind to the driver using wq->driver_name.
+MSI remapping bypass (directly configuring MSI entries for devices on the
+VMD bus) won't work under Xen, as Xen is not aware of devices in such bus,
+and hence cannot configure the entries using the pIRQ interface in the PV
+case, and in the PVH case traps won't be setup for MSI entries for such
+devices.
 
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Acked-by: Vinod Koul <vkoul@kernel.org>
-Link: https://lore.kernel.org/r/20230908201045.4115614-1-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8dfa57aabff6 ("dmaengine: idxd: Fix allowing write() from different address spaces")
+Until Xen is aware of devices in the VMD bus prevent the
+VMD_FEAT_CAN_BYPASS_MSI_REMAP capability from being used when running as
+any kind of Xen guest.
+
+The MSI remapping bypass is an optional feature of VMD bridges, and hence
+when running under Xen it will be masked and devices will be forced to
+redirect its interrupts from the VMD bridge.  That mode of operation must
+always be supported by VMD bridges and works when Xen is not aware of
+devices behind the VMD bridge.
+
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Message-ID: <20250219092059.90850-3-roger.pau@citrix.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ABI/stable/sysfs-driver-dma-idxd          |  6 ++++
- drivers/dma/idxd/cdev.c                       |  7 ++++
- drivers/dma/idxd/dma.c                        |  6 ++++
- drivers/dma/idxd/idxd.h                       |  9 +++++
- drivers/dma/idxd/sysfs.c                      | 34 +++++++++++++++++++
- include/uapi/linux/idxd.h                     |  1 +
- 6 files changed, 63 insertions(+)
+ drivers/pci/controller/vmd.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/Documentation/ABI/stable/sysfs-driver-dma-idxd b/Documentation/ABI/stable/sysfs-driver-dma-idxd
-index 825e619250bf2..f2ec42949a54d 100644
---- a/Documentation/ABI/stable/sysfs-driver-dma-idxd
-+++ b/Documentation/ABI/stable/sysfs-driver-dma-idxd
-@@ -270,6 +270,12 @@ Description:	Shows the operation capability bits displayed in bitmap format
- 		correlates to the operations allowed. It's visible only
- 		on platforms that support the capability.
+diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
+index 1195c570599c0..846590706a384 100644
+--- a/drivers/pci/controller/vmd.c
++++ b/drivers/pci/controller/vmd.c
+@@ -17,6 +17,8 @@
+ #include <linux/rculist.h>
+ #include <linux/rcupdate.h>
  
-+What:		/sys/bus/dsa/devices/wq<m>.<n>/driver_name
-+Date:		Sept 8, 2023
-+KernelVersion:	6.7.0
-+Contact:	dmaengine@vger.kernel.org
-+Description:	Name of driver to be bounded to the wq.
++#include <xen/xen.h>
 +
- What:           /sys/bus/dsa/devices/engine<m>.<n>/group_id
- Date:           Oct 25, 2019
- KernelVersion:  5.6.0
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index c18633ad8455f..7ddf5f933475d 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -584,6 +584,7 @@ void idxd_wq_del_cdev(struct idxd_wq *wq)
+ #include <asm/irqdomain.h>
+ #include <asm/device.h>
+ #include <asm/msi.h>
+@@ -826,6 +828,24 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	struct vmd_dev *vmd;
+ 	int err;
  
- static int idxd_user_drv_probe(struct idxd_dev *idxd_dev)
- {
-+	struct device *dev = &idxd_dev->conf_dev;
- 	struct idxd_wq *wq = idxd_dev_to_wq(idxd_dev);
- 	struct idxd_device *idxd = wq->idxd;
- 	int rc;
-@@ -611,6 +612,12 @@ static int idxd_user_drv_probe(struct idxd_dev *idxd_dev)
- 
- 	mutex_lock(&wq->wq_lock);
- 
-+	if (!idxd_wq_driver_name_match(wq, dev)) {
-+		idxd->cmd_status = IDXD_SCMD_WQ_NO_DRV_NAME;
-+		rc = -ENODEV;
-+		goto wq_err;
++	if (xen_domain()) {
++		/*
++		 * Xen doesn't have knowledge about devices in the VMD bus
++		 * because the config space of devices behind the VMD bridge is
++		 * not known to Xen, and hence Xen cannot discover or configure
++		 * them in any way.
++		 *
++		 * Bypass of MSI remapping won't work in that case as direct
++		 * write by Linux to the MSI entries won't result in functional
++		 * interrupts, as Xen is the entity that manages the host
++		 * interrupt controller and must configure interrupts.  However
++		 * multiplexing of interrupts by the VMD bridge will work under
++		 * Xen, so force the usage of that mode which must always be
++		 * supported by VMD bridges.
++		 */
++		features &= ~VMD_FEAT_CAN_BYPASS_MSI_REMAP;
 +	}
 +
- 	wq->wq = create_workqueue(dev_name(wq_confdev(wq)));
- 	if (!wq->wq) {
- 		rc = -ENOMEM;
-diff --git a/drivers/dma/idxd/dma.c b/drivers/dma/idxd/dma.c
-index 07623fb0f52fc..47a01893cfdbf 100644
---- a/drivers/dma/idxd/dma.c
-+++ b/drivers/dma/idxd/dma.c
-@@ -306,6 +306,12 @@ static int idxd_dmaengine_drv_probe(struct idxd_dev *idxd_dev)
- 		return -ENXIO;
+ 	if (resource_size(&dev->resource[VMD_CFGBAR]) < (1 << 20))
+ 		return -ENOMEM;
  
- 	mutex_lock(&wq->wq_lock);
-+	if (!idxd_wq_driver_name_match(wq, dev)) {
-+		idxd->cmd_status = IDXD_SCMD_WQ_NO_DRV_NAME;
-+		rc = -ENODEV;
-+		goto err;
-+	}
-+
- 	wq->type = IDXD_WQT_KERNEL;
- 
- 	rc = drv_enable_wq(wq);
-diff --git a/drivers/dma/idxd/idxd.h b/drivers/dma/idxd/idxd.h
-index bea10c5cdb76b..fcbb8caea8995 100644
---- a/drivers/dma/idxd/idxd.h
-+++ b/drivers/dma/idxd/idxd.h
-@@ -159,6 +159,8 @@ struct idxd_cdev {
- 	int minor;
- };
- 
-+#define DRIVER_NAME_SIZE		128
-+
- #define IDXD_ALLOCATED_BATCH_SIZE	128U
- #define WQ_NAME_SIZE   1024
- #define WQ_TYPE_SIZE   10
-@@ -227,6 +229,8 @@ struct idxd_wq {
- 	/* Lock to protect upasid_xa access. */
- 	struct mutex uc_lock;
- 	struct xarray upasid_xa;
-+
-+	char driver_name[DRIVER_NAME_SIZE + 1];
- };
- 
- struct idxd_engine {
-@@ -648,6 +652,11 @@ static inline void idxd_wqcfg_set_max_batch_shift(int idxd_type, union wqcfg *wq
- 		wqcfg->max_batch_shift = max_batch_shift;
- }
- 
-+static inline int idxd_wq_driver_name_match(struct idxd_wq *wq, struct device *dev)
-+{
-+	return (strncmp(wq->driver_name, dev->driver->name, strlen(dev->driver->name)) == 0);
-+}
-+
- int __must_check __idxd_driver_register(struct idxd_device_driver *idxd_drv,
- 					struct module *module, const char *mod_name);
- #define idxd_driver_register(driver) \
-diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-index 1fd5a93045f79..3a5ce477a81ad 100644
---- a/drivers/dma/idxd/sysfs.c
-+++ b/drivers/dma/idxd/sysfs.c
-@@ -1282,6 +1282,39 @@ static ssize_t wq_op_config_store(struct device *dev, struct device_attribute *a
- static struct device_attribute dev_attr_wq_op_config =
- 		__ATTR(op_config, 0644, wq_op_config_show, wq_op_config_store);
- 
-+static ssize_t wq_driver_name_show(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	struct idxd_wq *wq = confdev_to_wq(dev);
-+
-+	return sysfs_emit(buf, "%s\n", wq->driver_name);
-+}
-+
-+static ssize_t wq_driver_name_store(struct device *dev, struct device_attribute *attr,
-+				    const char *buf, size_t count)
-+{
-+	struct idxd_wq *wq = confdev_to_wq(dev);
-+	char *input, *pos;
-+
-+	if (wq->state != IDXD_WQ_DISABLED)
-+		return -EPERM;
-+
-+	if (strlen(buf) > DRIVER_NAME_SIZE || strlen(buf) == 0)
-+		return -EINVAL;
-+
-+	input = kstrndup(buf, count, GFP_KERNEL);
-+	if (!input)
-+		return -ENOMEM;
-+
-+	pos = strim(input);
-+	memset(wq->driver_name, 0, DRIVER_NAME_SIZE + 1);
-+	sprintf(wq->driver_name, "%s", pos);
-+	kfree(input);
-+	return count;
-+}
-+
-+static struct device_attribute dev_attr_wq_driver_name =
-+		__ATTR(driver_name, 0644, wq_driver_name_show, wq_driver_name_store);
-+
- static struct attribute *idxd_wq_attributes[] = {
- 	&dev_attr_wq_clients.attr,
- 	&dev_attr_wq_state.attr,
-@@ -1301,6 +1334,7 @@ static struct attribute *idxd_wq_attributes[] = {
- 	&dev_attr_wq_occupancy.attr,
- 	&dev_attr_wq_enqcmds_retries.attr,
- 	&dev_attr_wq_op_config.attr,
-+	&dev_attr_wq_driver_name.attr,
- 	NULL,
- };
- 
-diff --git a/include/uapi/linux/idxd.h b/include/uapi/linux/idxd.h
-index 606b52e88ce33..3d1987e1bb2dd 100644
---- a/include/uapi/linux/idxd.h
-+++ b/include/uapi/linux/idxd.h
-@@ -31,6 +31,7 @@ enum idxd_scmd_stat {
- 	IDXD_SCMD_WQ_IRQ_ERR = 0x80100000,
- 	IDXD_SCMD_WQ_USER_NO_IOMMU = 0x80110000,
- 	IDXD_SCMD_DEV_EVL_ERR = 0x80120000,
-+	IDXD_SCMD_WQ_NO_DRV_NAME = 0x80200000,
- };
- 
- #define IDXD_SCMD_SOFTERR_MASK	0x80000000
 -- 
 2.39.5
 
