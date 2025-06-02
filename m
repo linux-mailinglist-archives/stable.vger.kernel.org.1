@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-150129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503DCACB6D6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 894E0ACB563
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0517C1BC23F4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F5CB165FA1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D36225A3D;
-	Mon,  2 Jun 2025 14:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98350221F3E;
+	Mon,  2 Jun 2025 14:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6fimMjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmH31pH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CE1221727;
-	Mon,  2 Jun 2025 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DEA20E6E3;
+	Mon,  2 Jun 2025 14:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876127; cv=none; b=pGok7v0wzZ3ilO+zNwoJLorQ2y0MghjwHAInYi1yKHYxRGufQVxeVSt0g8cqIp9/ycIDW4AUaMmsD0xybMSaW7wxfrwy1X0vNE5Thf8OtPs1e8s/9c9EYHWguz/I9iWXySGrFQ+UD2qPYM+a25xik/nXWVESkGZnnnO95MXWQq4=
+	t=1748875639; cv=none; b=ONfBsKgyRlus5P0Zc1cLP76dU7JnrOxeZfeTHBx1fEo+RNe/IH6pKestkeACDdagHTeUZ2TMMBl4lgMhseWILwdM2ePszpFT7qNgZl01kfhyRK3kjaFjdXKy+Et6MJncangE6X3SIKE58fUby2LOdhZ2ZtRcWG5wW9gejzQeLsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876127; c=relaxed/simple;
-	bh=7NfbzEc6UHcl1WO4+MdZaL2pF2e8qzJTWm1fAuq/VOA=;
+	s=arc-20240116; t=1748875639; c=relaxed/simple;
+	bh=gibBI0+kI+CS0VQTCFmXQSQ0c8XXFIZIggIVS7Pta7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yp7qZDPj3hNaPXkCKYzzBy+K//5AmYIfgPqlt0NW0ftdyWzocTSgCahvLbGlrveIyjtX561vxHJv1mToMOSlWqUbAd8l2Ayuz6XF7hntgT3fc0waBIwjkbdtC0rhM0Uf0XXP/1sdMqAuRff5nW7jiuxEgMivbaKg7O0LLfZDPQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6fimMjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DBCC4CEEB;
-	Mon,  2 Jun 2025 14:55:26 +0000 (UTC)
+	 MIME-Version; b=EbGQtKYZ9SSxEIQuJGaaWo3WqHhf0uZtGmAu34ZvoUKEiiUZS8I6K/QjFr6mcJzZZlrU3f2Vp5eZNr+GMH8IFIGUwnzVcmECqTgmc3nrZq6v4LVOacsLmE/oUi+T3Jkqrl13+E7xQSFonWTsuvFGBAWxnZHn7o33a3WcunGRp9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmH31pH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94EBC4CEF0;
+	Mon,  2 Jun 2025 14:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876126;
-	bh=7NfbzEc6UHcl1WO4+MdZaL2pF2e8qzJTWm1fAuq/VOA=;
+	s=korg; t=1748875639;
+	bh=gibBI0+kI+CS0VQTCFmXQSQ0c8XXFIZIggIVS7Pta7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6fimMjMeanCUrwNowqcSBlA9un2++lD6JtLfKycUSE975Vuv/aV7lXLuZ9ObwOcW
-	 LO2CyjrlhvDh/RCtCPcHf+4zSyY4Cjx7/2RR3cwQVXXghnchUjYtJ0uKOW1mWZAPHv
-	 Fm6bIKnvTVLONpA9wXv2qSRZxMjUFYTswo98gCCs=
+	b=qmH31pH3UyJYyhHTGDw7CzNvDWgfs09sRIgMlO0WGbikdhG+/hUIMgdynGw9dRJct
+	 6W5I8IsShTEYvUuUq5IgVQ0+zWvkjeemkOveW8uFYfnXW7Am/6LrbZ/8UIi0edKftl
+	 uTRg0olSVrEXZx+8Ud9HCw8GM84Fd9vb7/0mlGv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	David Kaplan <David.Kaplan@amd.com>,
+	Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/207] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
-Date: Mon,  2 Jun 2025 15:47:31 +0200
-Message-ID: <20250602134301.829509606@linuxfoundation.org>
+Subject: [PATCH 5.10 167/270] net: pktgen: fix mpls maximum labels list parsing
+Date: Mon,  2 Jun 2025 15:47:32 +0200
+Message-ID: <20250602134314.049847821@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
+[ Upstream commit 2b15a0693f70d1e8119743ee89edbfb1271b3ea8 ]
 
-Change the default value of spectre v2 in user mode to respect the
-CONFIG_MITIGATION_SPECTRE_V2 config option.
+Fix mpls maximum labels list parsing up to MAX_MPLS_LABELS entries (instead
+of up to MAX_MPLS_LABELS - 1).
 
-Currently, user mode spectre v2 is set to auto
-(SPECTRE_V2_USER_CMD_AUTO) by default, even if
-CONFIG_MITIGATION_SPECTRE_V2 is disabled.
+Addresses the following:
 
-Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
-Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
-set the value to none (SPECTRE_V2_USER_CMD_NONE).
+	$ echo "mpls 00000f00,00000f01,00000f02,00000f03,00000f04,00000f05,00000f06,00000f07,00000f08,00000f09,00000f0a,00000f0b,00000f0c,00000f0d,00000f0e,00000f0f" > /proc/net/pktgen/lo\@0
+	-bash: echo: write error: Argument list too long
 
-Important to say the command line argument "spectre_v2_user" overwrites
-the default value in both cases.
-
-When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
-to opt-in for specific mitigations independently. In this scenario,
-setting spectre_v2= will not enable spectre_v2_user=, and command line
-options spectre_v2_user and spectre_v2 are independent when
-CONFIG_MITIGATION_SPECTRE_V2=n.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: David Kaplan <David.Kaplan@amd.com>
-Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |  2 ++
- arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ net/core/pktgen.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 4bc5d8c97d097..e0670357d23f8 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5445,6 +5445,8 @@
- 
- 			Selecting 'on' will also enable the mitigation
- 			against user space to user space task attacks.
-+			Selecting specific mitigation does not force enable
-+			user mitigations.
- 
- 			Selecting 'off' will disable both the kernel and
- 			the user space protections.
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 63af3d73d19e5..30b9292ac58fd 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1382,9 +1382,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
- static enum spectre_v2_user_cmd __init
- spectre_v2_parse_user_cmdline(void)
- {
-+	enum spectre_v2_user_cmd mode;
- 	char arg[20];
- 	int ret, i;
- 
-+	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
-+		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index c1e3d3bea1286..c2b3c454eddd9 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -805,6 +805,10 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 	pkt_dev->nr_labels = 0;
+ 	do {
+ 		__u32 tmp;
 +
- 	switch (spectre_v2_cmd) {
- 	case SPECTRE_V2_CMD_NONE:
- 		return SPECTRE_V2_USER_CMD_NONE;
-@@ -1397,7 +1401,7 @@ spectre_v2_parse_user_cmdline(void)
- 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
- 				  arg, sizeof(arg));
- 	if (ret < 0)
--		return SPECTRE_V2_USER_CMD_AUTO;
-+		return mode;
++		if (n >= MAX_MPLS_LABELS)
++			return -E2BIG;
++
+ 		len = hex32_arg(&buffer[i], 8, &tmp);
+ 		if (len <= 0)
+ 			return len;
+@@ -816,8 +820,6 @@ static ssize_t get_labels(const char __user *buffer, struct pktgen_dev *pkt_dev)
+ 			return -EFAULT;
+ 		i++;
+ 		n++;
+-		if (n >= MAX_MPLS_LABELS)
+-			return -E2BIG;
+ 	} while (c == ',');
  
- 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
- 		if (match_option(arg, ret, v2_user_options[i].option)) {
-@@ -1407,8 +1411,8 @@ spectre_v2_parse_user_cmdline(void)
- 		}
- 	}
- 
--	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
--	return SPECTRE_V2_USER_CMD_AUTO;
-+	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
-+	return mode;
- }
- 
- static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
+ 	pkt_dev->nr_labels = n;
 -- 
 2.39.5
 
