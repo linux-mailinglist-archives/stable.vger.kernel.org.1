@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-150131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF30ACB77F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82075ACB2E3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F6FF1BA5AF9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF5097A7580
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5701B22652D;
-	Mon,  2 Jun 2025 14:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8798F223DEE;
+	Mon,  2 Jun 2025 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhZ+/M83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gfncotJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1330A225419;
-	Mon,  2 Jun 2025 14:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F1F1C5D72;
+	Mon,  2 Jun 2025 14:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876133; cv=none; b=DSDO4J0rg49hF4JqeNgxmvtf4OVXPNXx6ACUNC3XPU0LkAF+ErLXNmB6AMwJeAVsGCqXU6swLRhc0bhVPqWr2G8e0tuvETupNEd7aqklO3Ken/w00Eya66K681pAeWl46Drf5uCkjNt/vvavz8et9Xs61X55mgb5VUQ+sfh4+4I=
+	t=1748874659; cv=none; b=frpUusmpi26csT7bqSHJWYwu1vV7oAujkLgRrKKWDdNEnYei5aLqgs83B/grTfQqG33Wdq6H1tgw38dJzoRcWQqja1koTps++F4KU4r/k+VqhxnnkW4V9hTz0Rkucq3ReP8Q9TY1et5wB9CMGoGALeSgQKNEgCKqJOrMgNct2vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876133; c=relaxed/simple;
-	bh=n7FXRIlvdX+k0OorLeiytXznOYDzrxzd4eMJQ/3DAf4=;
+	s=arc-20240116; t=1748874659; c=relaxed/simple;
+	bh=GCpHXEOv6HedqR63cwiYRLgnhO/c5RxOfLKKb3OWSIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/3Eid5nXOkD8ulZByEhxX40WMxdgSpGB7KP/QtENW7EuwyOd2OcfPHma2dNsB4vd+3jwL9U3TiR5OwDzcVh9Qiq9iAgpAsl7nvZ8NHUdxYe+lvT6krOobRl6T/yWq3M96nO/hWYJnc6QWTP3jbM22tCyWh1Sjpj/xYKRQmPx8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhZ+/M83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED7CC4CEEB;
-	Mon,  2 Jun 2025 14:55:32 +0000 (UTC)
+	 MIME-Version; b=krq/R2cYh1cFSu7MzmlNPChjUhadXAWCT+0YM21AGH2HtQiz1oxfyGPpq5pxjYAYE77/L9Ex7fl+2h6zffRDhkkCpi9wepXxbxwQkiV1dT//+gaCPbDbgrgklYfFHK2/PulHucNg6hFucdxWuzW4FyYO2JpAtdThjlvJrebX9uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gfncotJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD89EC4CEEB;
+	Mon,  2 Jun 2025 14:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876132;
-	bh=n7FXRIlvdX+k0OorLeiytXznOYDzrxzd4eMJQ/3DAf4=;
+	s=korg; t=1748874659;
+	bh=GCpHXEOv6HedqR63cwiYRLgnhO/c5RxOfLKKb3OWSIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhZ+/M83l5jfTtYQWIVovTJmFdu26ho4fmt7Ium+mKlm74M+P7i7IEm20pPQLSX6p
-	 jOnYvzqEU9WHefaJuvdjfSNhfyau2F7HYpss0l/EfIrE6TM/5o3ymGyjdUe2o/oTFU
-	 DwbOGo9WRde/uOMfijAMc00mmTW80i6HmQr7A7hI=
+	b=1gfncotJT9dv18AbXA21+UKFnNv5sBoWwcPtgfJOrm/JSlbdWLExZyqDiupsqMCel
+	 mix++gihlb9ryn81opIYzTle8EsJOd2WxlQHqhkouQIMyuw+JOzoffmXExxqCqboa0
+	 4hMZGfmtAF5rvEMwe0c1T3J3c8RdK005rJi6W3Ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/207] arm64/mm: Check PUD_TYPE_TABLE in pud_bad()
-Date: Mon,  2 Jun 2025 15:47:06 +0200
-Message-ID: <20250602134300.870526061@linuxfoundation.org>
+Subject: [PATCH 5.4 094/204] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
+Date: Mon,  2 Jun 2025 15:47:07 +0200
+Message-ID: <20250602134259.353057312@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit bfb1d2b9021c21891427acc86eb848ccedeb274e ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-pud_bad() is currently defined in terms of pud_table(). Although for some
-configs, pud_table() is hard-coded to true i.e. when using 64K base pages
-or when page table levels are less than 3.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-pud_bad() is intended to check that the pud is configured correctly. Hence
-let's open-code the same check that the full version of pud_table() uses
-into pud_bad(). Then it always performs the check regardless of the config.
-
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-7-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index b5e969bc074d3..a0bfa9cd76dab 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -623,7 +623,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- 	pr_err("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index f689c7b0c304d..d67cb10a11db6 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -277,9 +277,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
- #define pud_none(pud)		(!pud_val(pud))
--#define pud_bad(pud)		(!pud_table(pud))
-+#define pud_bad(pud)		((pud_val(pud) & PUD_TYPE_MASK) != \
-+				 PUD_TYPE_TABLE)
- #define pud_present(pud)	pte_present(pud_pte(pud))
- #define pud_leaf(pud)		(pud_present(pud) && !pud_table(pud))
- #define pud_valid(pud)		pte_valid(pud_pte(pud))
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
