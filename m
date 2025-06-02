@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-149663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB949ACB2E1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7609DACB708
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00AB87A5F77
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2760F1C246E5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CBC225A31;
-	Mon,  2 Jun 2025 14:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6796E226CFB;
+	Mon,  2 Jun 2025 15:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EppcpbKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPfH1Xql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E41290F;
-	Mon,  2 Jun 2025 14:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FD9226CE4;
+	Mon,  2 Jun 2025 15:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874647; cv=none; b=tIFlwX0MH0b1lVaYtGWUBlJItC1m4lDxjskaWOsFm2+WG7hacVfkjLTtWjDTtm/UHjuUYSaAeMgU0E7EsLelUPzZgIDFu0I7UboraPq/1HdSclAOc0JXuL3GVXSnz7mYJ2uDR0IE6h+OkYcNI3lEKRtRAug4bs0Zwh3YlhS8NfM=
+	t=1748877117; cv=none; b=iXRq223uHwU21RzY1mMy31WE8qZ2hpkMuk1913ZG1Dd8iV+Z7uwS2t6m2eK0UqzdR1pEkyD7xNg5odndbfIpNrcDg2RLJcwKENxYA/Z8n4RWJicCR6zy2twDcRCfg9NolPukOQQaowa0WaR9k0u8/5kiUFj4YX6gtXhGQzfR/Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874647; c=relaxed/simple;
-	bh=WQgfgAoj0EDU+hxLDexSV/1XMvNsrmiTru1CYIhlJoY=;
+	s=arc-20240116; t=1748877117; c=relaxed/simple;
+	bh=DdeYCVmIjsaHCXJTq7YhEBKHt/8X2c9vMLuNE+qxi5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMyejWSAnR7AFnvMAj/6IVbgD0rgIIrgSBes4FxU1g7CJRqXyF0EJeX4WEX3CGsKNuI4iMyKTHMV734QQSbprJTJK/dNeCbu3DaJclqMxYy+kkV8lBu5llaRVlKLk4MjTYBIMx3tItYZt2EqUc+uD0H2N6ZBj07SiewGM6U3z1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EppcpbKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8C3C4CEEB;
-	Mon,  2 Jun 2025 14:30:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NlHh4X8a7qSXpMT7QltoGCqhVAGARwIlR7GGtRob92cnQZWpR9B0TjlRvsC9iFDyJEBZnLW+Fac0ukaldt28KKzQR+X5rwnGegKnYAkLwwddbkvCXualcFtA5faa4O95Y5bQ0skmu9CaeEOFMD7L2k60AjB8ntzTxXaJ3iWUVqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPfH1Xql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622FDC4CEEB;
+	Mon,  2 Jun 2025 15:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874647;
-	bh=WQgfgAoj0EDU+hxLDexSV/1XMvNsrmiTru1CYIhlJoY=;
+	s=korg; t=1748877117;
+	bh=DdeYCVmIjsaHCXJTq7YhEBKHt/8X2c9vMLuNE+qxi5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EppcpbKGeAK6YW03se5Lpz0HrcHxKl1osNFHAuUhP2/DE7j748zIAW9Dh2xlA00+U
-	 6f4vP072OeSLBznG+4ThajfHwi2l0mIm7FDbnAthRdlvBgMEhx3kPsL1wLpyB7WQH+
-	 Z6G5iM3hG/Aemo8Nd9GdHO/hjW44oBKYphOjx/0w=
+	b=JPfH1XqlNPU5cJs0wuFEnJpNgQ0uBIowoj897sPRupor4Neq2VjNJXhMYkgonhXVi
+	 QyiJb5WFFmWtdnKpJiccKLzMfQSN+SofulBy1qeS3UutlSWnOrTKotk9vkmH5RpKWY
+	 WqbIobMPQoSTIlhlWqPmU4RpCD82d/Etr7a4n1R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Paul Burton <paulburton@kernel.org>,
+	Chao-ying Fu <cfu@wavecomp.com>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/204] mailbox: use error ret code of of_parse_phandle_with_args()
+Subject: [PATCH 6.1 147/325] clocksource: mips-gic-timer: Enable counter when CPUs start
 Date: Mon,  2 Jun 2025 15:47:03 +0200
-Message-ID: <20250602134259.198800184@linuxfoundation.org>
+Message-ID: <20250602134325.784688630@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +67,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Paul Burton <paulburton@kernel.org>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit 3128b0a2e0cf6e07aa78e5f8cf7dd9cd59dc8174 ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+In multi-cluster MIPS I6500 systems there is a GIC in each cluster,
+each with its own counter. When a cluster powers up the counter will
+be stopped, with the COUNTSTOP bit set in the GIC_CONFIG register.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+In single cluster systems, it has been fine to clear COUNTSTOP once
+in gic_clocksource_of_init() to start the counter. In multi-cluster
+systems, this will only have started the counter in the boot cluster,
+and any CPUs in other clusters will find their counter stopped which
+will break the GIC clock_event_device.
+
+Resolve this by having CPUs clear the COUNTSTOP bit when they come
+online, using the existing gic_starting_cpu() CPU hotplug callback. This
+will allow CPUs in secondary clusters to ensure that the cluster's GIC
+counter is running as expected.
+
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Signed-off-by: Chao-ying Fu <cfu@wavecomp.com>
+Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
+Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/clocksource/mips-gic-timer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 4229b9b5da98f..6f54501dc7762 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index b3ae38f367205..39c70b5ac44c9 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -114,6 +114,9 @@ static void gic_update_frequency(void *data)
  
- 	mutex_lock(&con_mutex);
- 
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
+ static int gic_starting_cpu(unsigned int cpu)
+ {
++	/* Ensure the GIC counter is running */
++	clear_gic_config(GIC_CONFIG_COUNTSTOP);
++
+ 	gic_clockevent_cpu_init(cpu, this_cpu_ptr(&gic_clockevent_device));
+ 	return 0;
+ }
+@@ -248,9 +251,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 			pr_warn("Unable to register clock notifier\n");
  	}
  
- 	chan = ERR_PTR(-EPROBE_DEFER);
+-	/* And finally start the counter */
+-	clear_gic_config(GIC_CONFIG_COUNTSTOP);
+-
+ 	/*
+ 	 * It's safe to use the MIPS GIC timer as a sched clock source only if
+ 	 * its ticks are stable, which is true on either the platforms with
 -- 
 2.39.5
 
