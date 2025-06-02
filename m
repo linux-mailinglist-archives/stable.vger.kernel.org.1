@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50A5ACB799
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51237ACB257
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4392A3A24EC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26B7A1942495
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415D42253AE;
-	Mon,  2 Jun 2025 15:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BAD22576E;
+	Mon,  2 Jun 2025 14:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs0NoVGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzvJM5KL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AA224B0D;
-	Mon,  2 Jun 2025 15:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654241DED64;
+	Mon,  2 Jun 2025 14:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876604; cv=none; b=jQXfmcH4kFQcqNcxmjv+fLutKlho3d5lSTQdovcwOKs4cPVBgEw51wBhhFqxv/wVy4B/oslmCaenBQXuwV4nvj75kev3ZwTlMeGPn7ODmjeLSjSt9dJmnrIPgHQ/Eo9LU9+gnJswXF5En/cqCY3twz+hYBlPefG3svxq7A/vPIA=
+	t=1748873721; cv=none; b=ZrgflePqKWlsQMVpxygmsKXcoAstmSghLBA0YHGuLUbiYKwAAdehcqZciykBsrWNE7ZbMk8VFbNCHQV5re2vlzvtx6Xp0flKtJJ3pkJu0JQCSDiKxf06pMnnERNtTOp3xJUd/zDhk50t/JIzYfLVtXaGapP8sDR+lWwACkqDMwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876604; c=relaxed/simple;
-	bh=xC6FO8ACBQZ+5eYRH1JNRHrIxYHJNw7CkuINHSJqvUE=;
+	s=arc-20240116; t=1748873721; c=relaxed/simple;
+	bh=7RM8QdCW02l+uQq1wEick6ptOaJGNp/FQYuDnShxRzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4Y0M3uICJYWAAnaEyzWa607JMZU/uvup3F4OnpQzoesVCiLD7tAT5MSlMCgvFBUusG36goyfCwFMgip35q2rnMLkKca/gnecSEhCqgWmGYCNkZlQacdSAJxZ4FjiREH2CdaIA6lE5LyznqWJ3jYarny6QZeVlcKZZYxuttZNYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs0NoVGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDE1C4CEEB;
-	Mon,  2 Jun 2025 15:03:22 +0000 (UTC)
+	 MIME-Version; b=AfBa3cxywKuJfFjy3NY16NiALB3RClJjvA2BTvzglgQZL9Il1A4+yZ9S9t1bTZs4a0KLfaIkCaB+R5SdA0KPl+etVVCNxxOLUR8UdAL53jPQUX/KA7GYvMXWhXtkWBaV3P7LQ8Ip7FEL4w9Lgk2QA5cAxEIQCoin2T4swDhVPu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzvJM5KL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA141C4CEEB;
+	Mon,  2 Jun 2025 14:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876603;
-	bh=xC6FO8ACBQZ+5eYRH1JNRHrIxYHJNw7CkuINHSJqvUE=;
+	s=korg; t=1748873721;
+	bh=7RM8QdCW02l+uQq1wEick6ptOaJGNp/FQYuDnShxRzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fs0NoVGdeeFZF6ypCYaXc453xP8TrDUObojls12VLtggQmmtUdVKxdMnaPt3pGQti
-	 aex4jNC0mwvXu71GBrEmseUy9EisqXNE6Ux1MQLV78NS5ZaEGGDPi8j0mK7RRoLsTI
-	 z4JqWv8PEHvIo0qI0v48uQXJEbV6aX0qRl1ZM9I8=
+	b=jzvJM5KLPnT6q77W/9utg9I5ucVjc+33JAdtp90/lITCARnHf5ynfmE611ISaMkzc
+	 0odUM6Fx+luElI+NXqADO23jZhhqtdMEH/MXDMBI402b+WeuQOmgc27PMWD+uDKUOE
+	 J5F9aoKm9fW92gIuaC701IjXfH3+upfr0Ea1PUKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/325] selftests/bpf: Mitigate sockmap_ktls disconnect_after_delete failure
-Date: Mon,  2 Jun 2025 15:44:52 +0200
-Message-ID: <20250602134320.399277303@linuxfoundation.org>
+Subject: [PATCH 6.6 229/444] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+Date: Mon,  2 Jun 2025 15:44:53 +0200
+Message-ID: <20250602134350.210525902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
+From: Valentin Caron <valentin.caron@foss.st.com>
 
-[ Upstream commit f2858f308131a09e33afb766cd70119b5b900569 ]
+[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
 
-"sockmap_ktls disconnect_after_delete" test has been failing on BPF CI
-after recent merges from netdev:
-* https://github.com/kernel-patches/bpf/actions/runs/14458537639
-* https://github.com/kernel-patches/bpf/actions/runs/14457178732
+Cross case in pinctrl framework make impossible to an hogged pin and
+another, not hogged, used within the same device-tree node. For example
+with this simplified device-tree :
 
-It happens because disconnect has been disabled for TLS [1], and it
-renders the test case invalid.
+  &pinctrl {
+    pinctrl_pin_1: pinctrl-pin-1 {
+      pins = "dummy-pinctrl-pin";
+    };
+  };
 
-Removing all the test code creates a conflict between bpf and
-bpf-next, so for now only remove the offending assert [2].
+  &rtc {
+    pinctrl-names = "default"
+    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
 
-The test will be removed later on bpf-next.
+    rtc_pin_1: rtc-pin-1 {
+      pins = "dummy-rtc-pin";
+    };
+  };
 
-[1] https://lore.kernel.org/netdev/20250404180334.3224206-1-kuba@kernel.org/
-[2] https://lore.kernel.org/bpf/cfc371285323e1a3f3b006bfcf74e6cf7ad65258@linux.dev/
+"pinctrl_pin_1" configuration is never set. This produces this path in
+the code:
 
-Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/bpf/20250416170246.2438524-1-ihor.solodrai@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+  really_probe()
+    pinctrl_bind_pins()
+    | devm_pinctrl_get()
+    |   pinctrl_get()
+    |     create_pinctrl()
+    |       pinctrl_dt_to_map()
+    |         // Hog pin create an abort for all pins of the node
+    |         ret = dt_to_map_one_config()
+    |         | /* Do not defer probing of hogs (circular loop) */
+    |         | if (np_pctldev == p->dev->of_node)
+    |         |   return -ENODEV;
+    |         if (ret)
+    |           goto err
+    |
+    call_driver_probe()
+      stm32_rtc_probe()
+        pinctrl_enable()
+          pinctrl_claim_hogs()
+            create_pinctrl()
+              for_each_maps(maps_node, i, map)
+                // Not hog pin is skipped
+                if (pctldev && strcmp(dev_name(pctldev->dev),
+                                      map->ctrl_dev_name))
+                  continue;
+
+At the first call of create_pinctrl() the hogged pin produces an abort to
+avoid a defer of hogged pins. All other pin configurations are trashed.
+
+At the second call, create_pinctrl is now called with pctldev parameter to
+get hogs, but in this context only hogs are set. And other pins are
+skipped.
+
+To handle this, do not produce an abort in the first call of
+create_pinctrl(). Classic pin configuration will be set in
+pinctrl_bind_pins() context. And the hogged pin configuration will be set
+in pinctrl_claim_hogs() context.
+
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pinctrl/devicetree.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
-index 2d0796314862a..0a99fd404f6dc 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
-@@ -68,7 +68,6 @@ static void test_sockmap_ktls_disconnect_after_delete(int family, int map)
- 		goto close_cli;
- 
- 	err = disconnect(cli);
--	ASSERT_OK(err, "disconnect");
- 
- close_cli:
- 	close(cli);
+diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
+index 5ee746cb81f59..6520b88db1105 100644
+--- a/drivers/pinctrl/devicetree.c
++++ b/drivers/pinctrl/devicetree.c
+@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
+ 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
+ 		if (pctldev)
+ 			break;
+-		/* Do not defer probing of hogs (circular loop) */
++		/*
++		 * Do not defer probing of hogs (circular loop)
++		 *
++		 * Return 1 to let the caller catch the case.
++		 */
+ 		if (np_pctldev == p->dev->of_node) {
+ 			of_node_put(np_pctldev);
+-			return -ENODEV;
++			return 1;
+ 		}
+ 	}
+ 	of_node_put(np_pctldev);
+@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ 			ret = dt_to_map_one_config(p, pctldev, statename,
+ 						   np_config);
+ 			of_node_put(np_config);
++			if (ret == 1)
++				continue;
+ 			if (ret < 0)
+ 				goto err;
+ 		}
 -- 
 2.39.5
 
