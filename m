@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786D5ACB534
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F74ACB3EA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A9954A6A3A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78899940437
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260B8234977;
-	Mon,  2 Jun 2025 14:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FCC2576;
+	Mon,  2 Jun 2025 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5jsXaaD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czA7DSuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79AF22F177;
-	Mon,  2 Jun 2025 14:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D87521882B;
+	Mon,  2 Jun 2025 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875608; cv=none; b=YqR6i2RDKzYPhZzaj+oYDhasPPyrXOJTg3he8Y2Jk8fqNc27L13cipiR/OZezK5FGUUBbVgqp51ZO0gAy5GVi7/XBslMLYm1eAb63jQ6hyWwGncdO2LFPN1FQwETSUe6hJe+MoY1S3OcfUhHaHX2DsW9/AJnlQ77pFTfGzF2p6w=
+	t=1748874346; cv=none; b=cQaprk4Y6wd4AoFE1MMDj/xn9H7SHBCjpCnA82oA0emvL+OOtXtOa9Dp3NSXdNEj+KW4f2J1kaRTohrLOUR/lpl65L3s5gdBG0R3li4M+q1QoHQ/J+4gsMOZbKOOdREHoTEDqBAxMqbunUxPd4h0nT3cp6Ty5aAuQ0vnXxk+E+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875608; c=relaxed/simple;
-	bh=Cg+p8wJF+lGw3k1I0GPnsaOChf6t3ojS7oLlg7IMl0o=;
+	s=arc-20240116; t=1748874346; c=relaxed/simple;
+	bh=L1dHXAr1QS3fTKSXodcLHKj3nRFHHRR2DBLEVgtycA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtblUmJJe62J4J2QNolNIkYmUKeiYgWPIOMG//2QoKwBpHMDUaom8hVBhyMAOJWRCk9YDY9DZFKqSKmAN5zfveAQfut6L2Dhm/8W/rvZPOMr2L7LNHHs2iMIJiRIGcMeX1a3iNqRj6RnJ8mi+sXauWTi1mMfmScbl0vvPYUwbYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5jsXaaD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF127C4CEEB;
-	Mon,  2 Jun 2025 14:46:47 +0000 (UTC)
+	 MIME-Version; b=NWHxIJQnixYnaSMj6uE6OrcWEMAb9XAKopiSfmI9Dc6wHrnsU85kYV9M79nD93t/+CRabIF6dLqk3lEtnx1talsn6G/ru1hKZVr6IZQQhpXFIK9Z3RxrTIA16BoaPSInn4xlRWFY/Lbj7wZA3zt3+ITShh5DJz4XLb3JP3+Ljkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czA7DSuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E582C4CEEB;
+	Mon,  2 Jun 2025 14:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875608;
-	bh=Cg+p8wJF+lGw3k1I0GPnsaOChf6t3ojS7oLlg7IMl0o=;
+	s=korg; t=1748874346;
+	bh=L1dHXAr1QS3fTKSXodcLHKj3nRFHHRR2DBLEVgtycA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5jsXaaDkxJ+ER3Io9/mMp+e+xbJ2A7Ynv/fETKiv9QwJEOy0r0U5EeEGwU6AhvgP
-	 4aOcQrw+Y85agfHY9l+i6q3GNI9ojh8rq1ovhUUho7oJwcpkkbsR2LdGe9RiLluTDk
-	 yWe+8rcd6STDEImZ0Eh2ND9V75gngcqHZDOtdB+g=
+	b=czA7DSuofCMMFwUBnieywzWkOoNWfuEV+wDRiVnSnluryY0XNGwAnaV3dVhtjCED3
+	 oK0h4RX71C6NcLwPyheM8WPYcbAzYeIswKMpaiO0QAVfrByl9WxqNl9yK/tMd1EIpF
+	 0mke6Ly1rTmGo+UDBKv7kUCX7lJOhrux01EMU+Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 187/270] scsi: mpt3sas: Send a diag reset if target reset fails
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 408/444] af_unix: Fix up unix_edge.successor for embryo socket.
 Date: Mon,  2 Jun 2025 15:47:52 +0200
-Message-ID: <20250602134314.852092292@linuxfoundation.org>
+Message-ID: <20250602134357.488827091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 5612d6d51ed2634a033c95de2edec7449409cbb9 ]
+commit dcf70df2048d27c5d186f013f101a4aefd63aa41 upstream.
 
-When an IOCTL times out and driver issues a target reset, if firmware
-fails the task management elevate the recovery by issuing a diag reset to
-controller.
+To garbage collect inflight AF_UNIX sockets, we must define the
+cyclic reference appropriately.  This is a bit tricky if the loop
+consists of embryo sockets.
 
-Signed-off-by: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
-Link: https://lore.kernel.org/r/1739410016-27503-5-git-send-email-shivasharan.srikanteshwara@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suppose that the fd of AF_UNIX socket A is passed to D and the fd B
+to C and that C and D are embryo sockets of A and B, respectively.
+It may appear that there are two separate graphs, A (-> D) and
+B (-> C), but this is not correct.
+
+     A --. .-- B
+          X
+     C <-' `-> D
+
+Now, D holds A's refcount, and C has B's refcount, so unix_release()
+will never be called for A and B when we close() them.  However, no
+one can call close() for D and C to free skbs holding refcounts of A
+and B because C/D is in A/B's receive queue, which should have been
+purged by unix_release() for A and B.
+
+So, here's another type of cyclic reference.  When a fd of an AF_UNIX
+socket is passed to an embryo socket, the reference is indirectly held
+by its parent listening socket.
+
+  .-> A                            .-> B
+  |   `- sk_receive_queue          |   `- sk_receive_queue
+  |      `- skb                    |      `- skb
+  |         `- sk == C             |         `- sk == D
+  |            `- sk_receive_queue |           `- sk_receive_queue
+  |               `- skb +---------'               `- skb +-.
+  |                                                         |
+  `---------------------------------------------------------'
+
+Technically, the graph must be denoted as A <-> B instead of A (-> D)
+and B (-> C) to find such a cyclic reference without touching each
+socket's receive queue.
+
+  .-> A --. .-- B <-.
+  |        X        |  ==  A <-> B
+  `-- C <-' `-> D --'
+
+We apply this fixup during GC by fetching the real successor by
+unix_edge_successor().
+
+When we call accept(), we clear unix_sock.listener under unix_gc_lock
+not to confuse GC.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-9-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_ctl.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/net/af_unix.h |    1 +
+ net/unix/af_unix.c    |    2 +-
+ net/unix/garbage.c    |   20 +++++++++++++++++++-
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-index edd26a2570fa8..8ce77fbe4e3fc 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-@@ -676,6 +676,7 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 	size_t data_in_sz = 0;
- 	long ret;
- 	u16 device_handle = MPT3SAS_INVALID_DEVICE_HANDLE;
-+	int tm_ret;
- 
- 	issue_reset = 0;
- 
-@@ -1107,18 +1108,25 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 			if (pcie_device && (!ioc->tm_custom_handling) &&
- 			    (!(mpt3sas_scsih_is_pcie_scsi_device(
- 			    pcie_device->device_info))))
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, 0, 0,
- 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, pcie_device->reset_timeout,
- 			MPI26_SCSITASKMGMT_MSGFLAGS_PROTOCOL_LVL_RST_PCIE);
- 			else
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, 0, 0,
- 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, 30, MPI2_SCSITASKMGMT_MSGFLAGS_LINK_RESET);
-+
-+			if (tm_ret != SUCCESS) {
-+				ioc_info(ioc,
-+					 "target reset failed, issue hard reset: handle (0x%04x)\n",
-+					 le16_to_cpu(mpi_request->FunctionDependent1));
-+				mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
-+			}
- 		} else
- 			mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -24,6 +24,7 @@ void unix_inflight(struct user_struct *u
+ void unix_notinflight(struct user_struct *user, struct file *fp);
+ void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver);
+ void unix_del_edges(struct scm_fp_list *fpl);
++void unix_update_edges(struct unix_sock *receiver);
+ int unix_prepare_fpl(struct scm_fp_list *fpl);
+ void unix_destroy_fpl(struct scm_fp_list *fpl);
+ void unix_gc(void);
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1705,7 +1705,7 @@ static int unix_accept(struct socket *so
  	}
--- 
-2.39.5
-
+ 
+ 	tsk = skb->sk;
+-	unix_sk(tsk)->listener = NULL;
++	unix_update_edges(unix_sk(tsk));
+ 	skb_free_datagram(sk, skb);
+ 	wake_up_interruptible(&unix_sk(sk)->peer_wait);
+ 
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -101,6 +101,17 @@ struct unix_sock *unix_get_socket(struct
+ 	return NULL;
+ }
+ 
++static struct unix_vertex *unix_edge_successor(struct unix_edge *edge)
++{
++	/* If an embryo socket has a fd,
++	 * the listener indirectly holds the fd's refcnt.
++	 */
++	if (edge->successor->listener)
++		return unix_sk(edge->successor->listener)->vertex;
++
++	return edge->successor->vertex;
++}
++
+ static LIST_HEAD(unix_unvisited_vertices);
+ 
+ enum unix_vertex_index {
+@@ -209,6 +220,13 @@ out:
+ 	fpl->inflight = false;
+ }
+ 
++void unix_update_edges(struct unix_sock *receiver)
++{
++	spin_lock(&unix_gc_lock);
++	receiver->listener = NULL;
++	spin_unlock(&unix_gc_lock);
++}
++
+ int unix_prepare_fpl(struct scm_fp_list *fpl)
+ {
+ 	struct unix_vertex *vertex;
+@@ -268,7 +286,7 @@ next_vertex:
+ 
+ 	/* Explore neighbour vertices (receivers of the current vertex's fd). */
+ 	list_for_each_entry(edge, &vertex->edges, vertex_entry) {
+-		struct unix_vertex *next_vertex = edge->successor->vertex;
++		struct unix_vertex *next_vertex = unix_edge_successor(edge);
+ 
+ 		if (!next_vertex)
+ 			continue;
 
 
 
