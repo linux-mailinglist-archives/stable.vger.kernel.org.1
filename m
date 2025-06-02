@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD5AACB333
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE1EACB741
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 398C83BA75A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0B723B0281
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291D223327;
-	Mon,  2 Jun 2025 14:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5FD227586;
+	Mon,  2 Jun 2025 14:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPI4POp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDmXXYgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0E6223323;
-	Mon,  2 Jun 2025 14:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF088226D1D;
+	Mon,  2 Jun 2025 14:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874121; cv=none; b=Ao9D+QXlXxKbK9qXKHa6rIjCpee1+iyJa95Hk79fTDVphF7slU7tRtNdIGfHCoFGvpcb1nasp01jBN2mnb8dV5woPkC10RmvTcu5bUffEwUBj8Sj5kkBjSLnhJ/g/ItFMkf/1kVsMuCtfvWH3w3frwhFRQ51NDmQHyN8iiwJOYs=
+	t=1748876148; cv=none; b=IyJqUNYkSwViVsZE87JsoODU2yKMHSZokWCn/uk8F03VRAdOKMpCyTlzq3YQ7FPt0L1+PQDLQIXlbCmQM2p+XhSxVkUGTaumxMQZbMLRzUxvpc3E7/vMWzVZ8oLqZ7bGQSinU225hhLz/9E1VMaQ9BqP45chbaJaMfRF6XTTvlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874121; c=relaxed/simple;
-	bh=ISzk6EN/tq/fplxF9sNIXZ4yOI29m5tGBeSuWuFw+M8=;
+	s=arc-20240116; t=1748876148; c=relaxed/simple;
+	bh=sH1nSFdTKzFODSKSfkjwHOlu0yRPMF4SqGtyoY/kI/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ab8qh7VyRqr3HWXxfX9/asHi/y9+rBTF73WHV3/sMZpBy4Z4z8kUiA93rTiK1tI4lVR8La5Ihxm4Niprnohz2787K1XCwzo5vyWnBzSDI5jQtmSyrw7Rico2IsIfDrfjmLTNdDNA9KFMyKgtIeko/UEnJsqPFqmP/kkg4BOi05k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPI4POp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DEEC4CEEB;
-	Mon,  2 Jun 2025 14:22:00 +0000 (UTC)
+	 MIME-Version; b=OeMYMVK/yyPrvNcVrw+oA7fmeUjMauwBzP4gbudgKgbW1r0qUgh7laLuRp5lyil/QJU7wASV9YEjvLyrDKn706MLb+jTYVsow/tY5LK8uqAH9vqlBJUL+o9rmyF6tVi9WdZLFtUlgC+GkqxtwfiykD4aGbBXTiU7varDqBzkPE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDmXXYgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56897C4CEEB;
+	Mon,  2 Jun 2025 14:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874121;
-	bh=ISzk6EN/tq/fplxF9sNIXZ4yOI29m5tGBeSuWuFw+M8=;
+	s=korg; t=1748876148;
+	bh=sH1nSFdTKzFODSKSfkjwHOlu0yRPMF4SqGtyoY/kI/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPI4POp3OxykOYnG/CslUoQ3CHg7hDA+CwK4pyqljmggtv3+ppPn3maDT/6j9e9qL
-	 c+O9+NKcf3zRqMIWB731X0CzpuCvX9kU1Qty1MbpdglR8b6g0Q8GMc281LGo2GyV+F
-	 aMVYcKFq/IHhI107UCtcOIsJDNajTeSFPl3TuO84=
+	b=qDmXXYgJ9gwoncy3QuiLbWoAtyRDKF4ng7w/SvMY0KwEuykKC3Rxy3qu1mn7PRa6G
+	 Pdz0OFqcL/cBWiBhLdl2opw4bnr0awWr+fI4v5hfeLCLai/91t0vfhMtilrcZcQ9zp
+	 M54c1acUHiENHE5pv83woSf0l3MS0TKUbvgifMKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32d4647f551007595173@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 364/444] ALSA: pcm: Fix race of buffer access at PCM OSS layer
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 056/207] ipv6: save dontfrag in cork
 Date: Mon,  2 Jun 2025 15:47:08 +0200
-Message-ID: <20250602134355.687106469@linuxfoundation.org>
+Message-ID: <20250602134300.946704384@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 93a81ca0657758b607c3f4ba889ae806be9beb73 upstream.
+[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
 
-The PCM OSS layer tries to clear the buffer with the silence data at
-initialization (or reconfiguration) of a stream with the explicit call
-of snd_pcm_format_set_silence() with runtime->dma_area.  But this may
-lead to a UAF because the accessed runtime->dma_area might be freed
-concurrently, as it's performed outside the PCM ops.
+When spanning datagram construction over multiple send calls using
+MSG_MORE, per datagram settings are configured on the first send.
 
-For avoiding it, move the code into the PCM core and perform it inside
-the buffer access lock, so that it won't be changed during the
-operation.
+That is when ip(6)_setup_cork stores these settings for subsequent use
+in __ip(6)_append_data and others.
 
-Reported-by: syzbot+32d4647f551007595173@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/68164d8e.050a0220.11da1b.0019.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250516080817.20068-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The only flag that escaped this was dontfrag. As a result, a datagram
+could be constructed with df=0 on the first sendmsg, but df=1 on a
+next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
+the "diff" scenario.
+
+Changing datagram conditions in the middle of constructing an skb
+makes this already complex code path even more convoluted. It is here
+unintentional. Bring this flag in line with expected sockopt/cmsg
+behavior.
+
+And stop passing ipc6 to __ip6_append_data, to avoid such issues
+in the future. This is already the case for __ip_append_data.
+
+inet6_cork had a 6 byte hole, so the 1B flag has no impact.
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/pcm.h      |    2 ++
- sound/core/oss/pcm_oss.c |    3 +--
- sound/core/pcm_native.c  |   11 +++++++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ include/linux/ipv6.h  | 1 +
+ net/ipv6/ip6_output.c | 9 +++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1427,6 +1427,8 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
- #endif
+diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
+index b6fb76568b01a..5dfd663b70a26 100644
+--- a/include/linux/ipv6.h
++++ b/include/linux/ipv6.h
+@@ -195,6 +195,7 @@ struct inet6_cork {
+ 	struct ipv6_txoptions *opt;
+ 	u8 hop_limit;
+ 	u8 tclass;
++	u8 dontfrag:1;
+ };
  
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+
  /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
-  * @dma: DMA number
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1085,8 +1085,7 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	if (runtime->dma_area)
--		snd_pcm_format_set_silence(runtime->format, runtime->dma_area, bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_runtime_buffer_set_silence(runtime);
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 4fcff4fe5a98f..a71b7a1069958 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1428,6 +1428,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
+ 	cork->fl.u.ip6 = *fl6;
+ 	v6_cork->hop_limit = ipc6->hlimit;
+ 	v6_cork->tclass = ipc6->tclass;
++	v6_cork->dontfrag = ipc6->dontfrag;
+ 	if (rt->dst.flags & DST_XFRM_TUNNEL)
+ 		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
+ 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
+@@ -1462,7 +1463,7 @@ static int __ip6_append_data(struct sock *sk,
+ 			     int getfrag(void *from, char *to, int offset,
+ 					 int len, int odd, struct sk_buff *skb),
+ 			     void *from, size_t length, int transhdrlen,
+-			     unsigned int flags, struct ipcm6_cookie *ipc6)
++			     unsigned int flags)
+ {
+ 	struct sk_buff *skb, *skb_prev = NULL;
+ 	unsigned int maxfraglen, fragheaderlen, mtu, orig_mtu, pmtu;
+@@ -1519,7 +1520,7 @@ static int __ip6_append_data(struct sock *sk,
+ 	if (headersize + transhdrlen > mtu)
+ 		goto emsgsize;
  
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
+-	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
++	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
+ 	    (sk->sk_protocol == IPPROTO_UDP ||
+ 	     sk->sk_protocol == IPPROTO_RAW)) {
+ 		ipv6_local_rxpmtu(sk, fl6, mtu - headersize +
+@@ -1836,7 +1837,7 @@ int ip6_append_data(struct sock *sk,
  
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -703,6 +703,17 @@ static void snd_pcm_buffer_access_unlock
- 	atomic_inc(&runtime->buffer_accessing);
+ 	return __ip6_append_data(sk, fl6, &sk->sk_write_queue, &inet->cork.base,
+ 				 &np->cork, sk_page_frag(sk), getfrag,
+-				 from, length, transhdrlen, flags, ipc6);
++				 from, length, transhdrlen, flags);
  }
+ EXPORT_SYMBOL_GPL(ip6_append_data);
  
-+/* fill the PCM buffer with the current silence format; called from pcm_oss.c */
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+{
-+	snd_pcm_buffer_access_lock(runtime);
-+	if (runtime->dma_area)
-+		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
-+					   bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_buffer_access_unlock(runtime);
-+}
-+EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
-+
- #if IS_ENABLED(CONFIG_SND_PCM_OSS)
- #define is_oss_stream(substream)	((substream)->oss.oss)
- #else
+@@ -2031,7 +2032,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 	err = __ip6_append_data(sk, fl6, &queue, &cork->base, &v6_cork,
+ 				&current->task_frag, getfrag, from,
+ 				length + exthdrlen, transhdrlen + exthdrlen,
+-				flags, ipc6);
++				flags);
+ 	if (err) {
+ 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
+ 		return ERR_PTR(err);
+-- 
+2.39.5
+
 
 
 
