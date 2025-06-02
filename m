@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A48ACB80E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F86ACB6ED
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6CE1C25C80
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81F69E48D1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21B2224893;
-	Mon,  2 Jun 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6DB1CBA18;
+	Mon,  2 Jun 2025 14:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xV7tTTFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJbadVhf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0CD223DC0;
-	Mon,  2 Jun 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C920F07C;
+	Mon,  2 Jun 2025 14:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877398; cv=none; b=oAuZYO7uHsyN/k9Zb4cWFWr/8k2gBZDKdZNpZrrpIqpjmV9fgSSDfCmyBxvZan4owreMBk0z3rx43dKV7Imo0dLPhXWfLLZ+aUQSpCrByNRWkg6x9Xn7DuwMyud1oPp06cMnZm4KPfm59fiZ5q1vENuOTKd9v1qGQnXJGqex1So=
+	t=1748875898; cv=none; b=suY5lPron7caq1J3JlbUK2JrYhqa/Lwimi2lvaTZh5qwzZDciH1To82z/29HEJpxBHG0gWPVJ7BhgbmdTBqYNpfiDkO8pR7LXc9+Xr2jbUFILbnnXbiFe7taMXoy2G3aPKJRUiXdryT9CLPs3iPG8vzyV4d9HYQRFCXrTdiq+Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877398; c=relaxed/simple;
-	bh=qbexh9BaOn1zFGKfAzFm7DkzIDbsKOuQMk3I8I4hRPw=;
+	s=arc-20240116; t=1748875898; c=relaxed/simple;
+	bh=/rkTPRJud5DJJmgcy6ZicMFA8lp2Ydd6TSHs+G4G6oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jswlcf5E9JzMTe4BzAWpI0hK+FbVnvbPaI7sv7Z0hH/LAa9xW4Z1UJ3cCvgk6rbBEs/vszWTrH98QCo1f28+Rth9m5JF1uvH5J+gS63CSWlYqu9xzEYWD/qtZ79L4w3IINyEn21wYtfb2gAG/BjjbZbiWvanlg9QiayYuiEEzxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xV7tTTFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CC7C4CEEB;
-	Mon,  2 Jun 2025 15:16:37 +0000 (UTC)
+	 MIME-Version; b=Ay+TzSzYrpYpQRAUCybSCXGLvjiz71YZKjWOIgSQTuhtUgxzyjSO/ogrJNmkfBRRcmXGZy5sRJs7U/S/n3ZCrZQnI1SHiy/65C5TOKmJXZkxnga2Sou0kMj+32dJR0Jq2rPwvu304E2D4s/s1NSbemE/9K+kafQgXXqg6ae1zPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJbadVhf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F54C4CEEB;
+	Mon,  2 Jun 2025 14:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877398;
-	bh=qbexh9BaOn1zFGKfAzFm7DkzIDbsKOuQMk3I8I4hRPw=;
+	s=korg; t=1748875898;
+	bh=/rkTPRJud5DJJmgcy6ZicMFA8lp2Ydd6TSHs+G4G6oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xV7tTTFUKUdn648R+Uznwplca5+HCaFzC8j/chLi4iAWsL+297f4YPO1OIUxZcxSd
-	 TOhleo6jxIyxijox050nZjYy4s6j1mVGsz3aBpPAbZmNKAqUXmQiaCJ0JWDtsA0oOx
-	 O+SaMxMpBzLeaQKuRw8HFcInDnFRTpYd5AmIR3uQ=
+	b=MJbadVhf6Xb4gPQ4nJ9fgtoLDt6XMYqnhO0X7BEH1FtD8jBvK79VyT2rNieFmmKKk
+	 +74FR3VaWpS/2bE9X0oksjbvJy2+9GCtol3yiC+ZS9bRldrn2dc6XkesxShq5UzOlp
+	 Iv3iSa1bFAnO8bA+xL5qahUWifaIuiJOPW6xM1Ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 265/325] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	William Liu <will@willsroot.io>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 256/270] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
 Date: Mon,  2 Jun 2025 15:49:01 +0200
-Message-ID: <20250602134330.544379504@linuxfoundation.org>
+Message-ID: <20250602134317.799955151@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
+commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
 
-This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
+Savino says:
+    "We are writing to report that this recent patch
+    (141d34391abbb315d68556b7c67ad97885407547) [1]
+    can be bypassed, and a UAF can still occur when HFSC is utilized with
+    NETEM.
 
-Hardware that uses I2C wasn't designed with high speeds in mind, so
-communication with PMIC via RSB can intermittently fail. Go back to I2C
-as higher speed and efficiency isn't worth the trouble.
+    The patch only checks the cl->cl_nactive field to determine whether
+    it is the first insertion or not [2], but this field is only
+    incremented by init_vf [3].
 
-Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
-Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
+    check and insert the class twice in the eltree.
+    Under normal conditions, this would lead to an infinite loop in
+    hfsc_dequeue for the reasons we already explained in this report [5].
+
+    However, if TBF is added as root qdisc and it is configured with a
+    very low rate,
+    it can be utilized to prevent packets from being dequeued.
+    This behavior can be exploited to perform subsequent insertions in the
+    HFSC eltree and cause a UAF."
+
+To fix both the UAF and the infinite loop, with netem as an hfsc child,
+check explicitly in hfsc_enqueue whether the class is already in the eltree
+whenever the HFSC_RSC flag is set.
+
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
+[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
+[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
+[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
+[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Reported-by: William Liu <will@willsroot.io>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
- .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
- .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
- 3 files changed, 37 insertions(+), 37 deletions(-)
+ net/sched/sch_hfsc.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-index 381d58cea092d..c854c7e310519 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-@@ -151,28 +151,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -176,6 +176,11 @@ struct hfsc_sched {
  
--&r_ir {
--	linux,rc-map-name = "rc-beelink-gs1";
--	status = "okay";
--};
--
--&r_pio {
--	/*
--	 * FIXME: We can't add that supply for now since it would
--	 * create a circular dependency between pinctrl, the regulator
--	 * and the RSB Bus.
--	 *
--	 * vcc-pl-supply = <&reg_aldo1>;
--	 */
--	vcc-pm-supply = <&reg_aldo1>;
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
+ #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
  
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -290,6 +274,22 @@
- 	};
- };
++static bool cl_in_el_or_vttree(struct hfsc_class *cl)
++{
++	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
++		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
++}
  
-+&r_ir {
-+	linux,rc-map-name = "rc-beelink-gs1";
-+	status = "okay";
-+};
+ /*
+  * eligible tree holds backlogged classes being sorted by their eligible times.
+@@ -1038,6 +1043,8 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 	if (cl == NULL)
+ 		return -ENOBUFS;
+ 
++	RB_CLEAR_NODE(&cl->el_node);
 +
-+&r_pio {
-+	/*
-+	 * PL0 and PL1 are used for PMIC I2C
-+	 * don't enable the pl-supply else
-+	 * it will fail at boot
-+	 *
-+	 * vcc-pl-supply = <&reg_aldo1>;
-+	 */
-+	vcc-pm-supply = <&reg_aldo1>;
-+};
-+
- &spdif {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&spdif_tx_pin>;
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-index 6fc65e8db2206..8c476e089185b 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-@@ -175,16 +175,12 @@
- 	vcc-pg-supply = <&reg_vcc_wifi_io>;
- };
+ 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
+ 	if (err) {
+ 		kfree(cl);
+@@ -1574,7 +1581,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
+ 	sch->qstats.backlog += len;
+ 	sch->q.qlen++;
  
--&r_ir {
--	status = "okay";
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
- 
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -295,6 +291,10 @@
- 	};
- };
- 
-+&r_ir {
-+	status = "okay";
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-index 92745128fcfeb..4ec4996592bef 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-@@ -112,20 +112,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
- 
--&r_ir {
--	status = "okay";
--};
--
--&r_pio {
--	vcc-pm-supply = <&reg_bldo3>;
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
- 
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -240,6 +232,14 @@
- 	};
- };
- 
-+&r_ir {
-+	status = "okay";
-+};
-+
-+&r_pio {
-+	vcc-pm-supply = <&reg_bldo3>;
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
--- 
-2.39.5
-
+-	if (first && !cl->cl_nactive) {
++	if (first && !cl_in_el_or_vttree(cl)) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+ 		if (cl->cl_flags & HFSC_FSC)
 
 
 
