@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A99ACB438
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5908CACB544
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D143A1946BE7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D331B1947311
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B67223DFC;
-	Mon,  2 Jun 2025 14:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4772A20E026;
+	Mon,  2 Jun 2025 14:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxkGneZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6AP7AVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88941C5D72;
-	Mon,  2 Jun 2025 14:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D082222CA;
+	Mon,  2 Jun 2025 14:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874677; cv=none; b=raXTA3mxSp6Qyy4dkWsXSiW2JcTYKQHNjSzwTxbLDi6nnQZ/7s75UBtZkITxCrZlyx+uFVErR1m3CYYAeAFL6LFE77BhDy2P2GwUVl1GqKcBOmf0gfI2BJvfHRHdIdmf4mwEuwWFUWsp07hNubfy63SECjSLqWja6iWiLsCKT8M=
+	t=1748875400; cv=none; b=D3lGTUHNg0W6gLFrrZ9pSYmtYQsnyrEBFxT0Wg/qyS4IXzwnn1sSzgzSHr++0yB7unZv8RVLtHAOzBmM8E16epcqI0poPcowXUxA4e7fuuaPSHw0GgJgpaVJD1ZCGB3ydvP2/FhvW44ee+fofjJ60yswDCKI8yTItYusL+mgLeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874677; c=relaxed/simple;
-	bh=wzVDEEWGkoeyVMetQqPYKrUu5q08gDEr25xz5XZpHb0=;
+	s=arc-20240116; t=1748875400; c=relaxed/simple;
+	bh=lOrVRUN5nXCnCknhC3ynTERNeAWgrfDBlW3MUEyRNM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSXfD6CzsJyl2PY6B3EYv1LSBaWy2K59D88Mx8OYatm51GlJtwDylzu+y0KN9sN822kx/a7NQCDo40tP+nYcz30dN+tKZyu0KFxfpKE32xZoRj+NmaHc2Qw2cIDtzx0fKv6LMABaWvPuBu/2bKUtj7sMV8ZwDKCgLn87gE6dxf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxkGneZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26139C4CEEB;
-	Mon,  2 Jun 2025 14:31:16 +0000 (UTC)
+	 MIME-Version; b=h9aJQfIRSDSvafplVOq6Hn5ZmKZoNixfkvbDfldzcH2SohmXnMEwPLx/F/ahAneUgdQqLDzSwEbDHE4+QsFZmP4Jq8+XN88tUatMPtC7bejUsfkS09wNSqWXVoa3/IhPlXXyyu4IwGPvmJ54S0pwb4atG5vXZLT55MRpUKMHzLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6AP7AVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02726C4CEEE;
+	Mon,  2 Jun 2025 14:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874677;
-	bh=wzVDEEWGkoeyVMetQqPYKrUu5q08gDEr25xz5XZpHb0=;
+	s=korg; t=1748875396;
+	bh=lOrVRUN5nXCnCknhC3ynTERNeAWgrfDBlW3MUEyRNM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxkGneZPOV/lUAQxZqnQcU5fKDB/HNZxo0WlE1aKYfakspdltpdoPsmElK2MSCKGR
-	 fypB8IERAXx6MIcOLlUkla5L2X0jixIW+aJM6XHZkf+8dcPRNwu0bWKyPG6TDpCNUv
-	 huWJkTIUqXMJOIHt74mGvdfVRDtvTA+64H4s5dZw=
+	b=l6AP7AVEL/ujNUWwULb4waobsMI4L28Fo1gz8Yq6/fmQbTqVdrBx5Fd8GGhfcdI0J
+	 FYG/bLUqwj7T4r+hyFmX6rhUEVKLgxw3P29u96gjdeK9LM3I6GCI6XeTMQ+DkhSMnS
+	 wlDm9twLD4CX9q4VrRn28lQD93PuTuAYFRvS0Ev8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Takashi Iwai <tiwai@suse.de>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/204] ALSA: sh: SND_AICA should depend on SH_DMA_API
+Subject: [PATCH 5.10 121/270] mailbox: use error ret code of of_parse_phandle_with_args()
 Date: Mon,  2 Jun 2025 15:46:46 +0200
-Message-ID: <20250602134258.549991807@linuxfoundation.org>
+Message-ID: <20250602134312.171959812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
+[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
 
-If CONFIG_SH_DMA_API=n:
+In case of error, of_parse_phandle_with_args() returns -EINVAL when the
+passed index is negative, or -ENOENT when the index is for an empty
+phandle. The mailbox core overwrote the error return code with a less
+precise -ENODEV. Use the error returned code from
+of_parse_phandle_with_args().
 
-    WARNING: unmet direct dependencies detected for G2_DMA
-      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
-      Selected by [y]:
-      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
-
-SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
-former should depend on SH_DMA_API, too.
-
-Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/sh/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/mailbox.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
-index b75fbb3236a7b..f5fa09d740b4c 100644
---- a/sound/sh/Kconfig
-+++ b/sound/sh/Kconfig
-@@ -14,7 +14,7 @@ if SND_SUPERH
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 4229b9b5da98f..6f54501dc7762 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
  
- config SND_AICA
- 	tristate "Dreamcast Yamaha AICA sound"
--	depends on SH_DREAMCAST
-+	depends on SH_DREAMCAST && SH_DMA_API
- 	select SND_PCM
- 	select G2_DMA
- 	help
+ 	mutex_lock(&con_mutex);
+ 
+-	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", index, &spec)) {
++	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
++					 index, &spec);
++	if (ret) {
+ 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
+ 		mutex_unlock(&con_mutex);
+-		return ERR_PTR(-ENODEV);
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	chan = ERR_PTR(-EPROBE_DEFER);
 -- 
 2.39.5
 
