@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56122ACB538
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82642ACB716
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D40DA9E3C81
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C774C446C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C5F22F744;
-	Mon,  2 Jun 2025 14:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77D422A1D5;
+	Mon,  2 Jun 2025 15:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdzbhuZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eupp8r5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EC15CD55;
-	Mon,  2 Jun 2025 14:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D336228CA5;
+	Mon,  2 Jun 2025 15:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874916; cv=none; b=QOJE8KtgqgPGA3JMLdetpT556s7mVwfIKmZPly0t12vwOMBApAHRCMUYjFDCwwlHRun8SfAeHPEkQk7StxhAapZDyEvdN6df59BEFsEbad7J8eJWvwWfb74N/rLFM4tQIMcWE8FeJbUQPF8nCiP30QQRGXwjgc2JmAgHO63VgXI=
+	t=1748877199; cv=none; b=jNru3Fim0YRe+aN104WJ0Ksm1itlTseHLOXEhENET6dtkmUpnOY5Hy0Gc0kaIYxYNUWRd2Qhg6HS9zcll0SqT8HqH6oRy26DFWmjJrJAndCxUVgoDodtYHocg4UCHaE9bsDAqINPsu1G1/4ydSMPciv7mh+0aGjf3lAMaT7gEmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874916; c=relaxed/simple;
-	bh=R17vjGMkdCQD8uSe2lK5hAcvrIVuUClZe0MXvyixHXw=;
+	s=arc-20240116; t=1748877199; c=relaxed/simple;
+	bh=Ubpzr/p84I9E+mJQIQWEKk59IvHPEn/Fr6WlJx2NgDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uZkpAUZUEEAEB3TrabE2xNzpfAJUup0yvcb3dedKb3nmoQQmbwZZUvrnI23wgZd2ealah95fjZUjifgaDBloGO61bg5ILRsK9HqjbTZjCD2I8kqR4nvuUNxu5MooCunBePqtrb3IhbfPFB31/+mgWD/ccnanEDaMlCyhvMDjY7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdzbhuZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF8EC4CEEB;
-	Mon,  2 Jun 2025 14:35:15 +0000 (UTC)
+	 MIME-Version; b=ikA1Zmvqmj20uQzQZKrgF1kehoTJMU32luaPWeVRf4hZ4560MZgl0VuI5JEBVx1/AwUOfEKgm5b5lZS09jhaPql7hrTergufUfJvcIzk/EwQ8johHVEz/5vaoBWHJxPnpiy7A1iQq+9kXozVh7yteajKPE3zttn1GbH9X8s+wJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eupp8r5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7987C4CEEB;
+	Mon,  2 Jun 2025 15:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874916;
-	bh=R17vjGMkdCQD8uSe2lK5hAcvrIVuUClZe0MXvyixHXw=;
+	s=korg; t=1748877199;
+	bh=Ubpzr/p84I9E+mJQIQWEKk59IvHPEn/Fr6WlJx2NgDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdzbhuZwjaAo+4UiIIt9oiJUTt0pVDyEu24ferkiG91hiT4UZ/m1TlG1PA2uEnpUi
-	 BMaokwNPFZw4JG6tCR/txliUITjhunjD3nKtdX8eB7wb+zJiaEjigevvFDheOkRNPl
-	 S31Imjr7YZCY/C1DBSEUrSvaggps6HDBckKXdmss=
+	b=Eupp8r5J5UqwbSE/RFef07i+4YwwFk0ptgBz7cHSTCBDxlZhBr2+Y4NRUMUVU1tA4
+	 5fPSp1MDPFufJRz0WUxcgzGJzL/RWuqz8Iz0OeXG8fg53wMyUes1hm7ulqrUB4FdDs
+	 i8Oa+7u/r6RfWypVEKyRJCe6NaLxH0nHUgkTRCwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	Mark Brown <broonie@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 144/204] ASoC: ops: Enforce platform maximum on initial value
+Subject: [PATCH 6.1 201/325] ice: count combined queues using Rx/Tx count
 Date: Mon,  2 Jun 2025 15:47:57 +0200
-Message-ID: <20250602134301.313582739@linuxfoundation.org>
+Message-ID: <20250602134327.965247771@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 783db6851c1821d8b983ffb12b99c279ff64f2ee ]
+[ Upstream commit c3a392bdd31adc474f1009ee85c13fdd01fe800d ]
 
-Lower the volume if it is violating the platform maximum at its initial
-value (i.e. at the time of the 'snd_soc_limit_volume' call).
+Previous implementation assumes that there is 1:1 matching between
+vectors and queues. It isn't always true.
 
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-[Cherry picked from the Asahi kernel with fixups -- broonie]
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-volume-limit-v1-1-b98fcf4cdbad@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Get minimum value from Rx/Tx queues to determine combined queues number.
+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index 08ed973b2d975..a3b1f1c064ddc 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -635,6 +635,33 @@ int snd_soc_get_volsw_range(struct snd_kcontrol *kcontrol,
- }
- EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index a163e7717a534..1f62d11831567 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3373,8 +3373,7 @@ static u32 ice_get_combined_cnt(struct ice_vsi *vsi)
+ 	ice_for_each_q_vector(vsi, q_idx) {
+ 		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
  
-+static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
-+{
-+	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
-+	struct snd_ctl_elem_value uctl;
-+	int ret;
-+
-+	if (!mc->platform_max)
-+		return 0;
-+
-+	ret = kctl->get(kctl, &uctl);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (uctl.value.integer.value[0] > mc->platform_max)
-+		uctl.value.integer.value[0] = mc->platform_max;
-+
-+	if (snd_soc_volsw_is_stereo(mc) &&
-+	    uctl.value.integer.value[1] > mc->platform_max)
-+		uctl.value.integer.value[1] = mc->platform_max;
-+
-+	ret = kctl->put(kctl, &uctl);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- /**
-  * snd_soc_limit_volume - Set new limit to an existing volume control.
-  *
-@@ -667,7 +694,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
- 		mc = (struct soc_mixer_control *)kctl->private_value;
- 		if (max <= mc->max) {
- 			mc->platform_max = max;
--			ret = 0;
-+			ret = snd_soc_clip_to_platform_max(kctl);
- 		}
+-		if (q_vector->rx.rx_ring && q_vector->tx.tx_ring)
+-			combined++;
++		combined += min(q_vector->num_ring_tx, q_vector->num_ring_rx);
  	}
- 	return ret;
+ 
+ 	return combined;
 -- 
 2.39.5
 
