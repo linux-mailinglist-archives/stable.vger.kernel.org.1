@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-148990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34E3ACAF9C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF02DACB051
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C5BF1BA274E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:50:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100D2188A644
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E8222259E;
-	Mon,  2 Jun 2025 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAC8221FCC;
+	Mon,  2 Jun 2025 14:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjZcb1Yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjGQEKdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8D3221F0C;
-	Mon,  2 Jun 2025 13:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE5E1D8DFB;
+	Mon,  2 Jun 2025 14:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872182; cv=none; b=dEWIB7Zfdn5V8QW1T0Z1l33OLe6YTTsZKzNPhDEVzbGV0XCKV7vF6Oa90+oYbGavS1/JNrmTM6mvJop11RjeOFH7hZeLwCB/xOU0C2g6Lz18Y485IjWiTPDbOpUguJ3BjJHcFk+iM758Y2JsADUyVxVufDiV8spAQa8XA4FUr7I=
+	t=1748872860; cv=none; b=gu5FWCA6T34p9JmfsvmZnQz77Zizt3Qj0KLjfLUd6+Vr1OEM9UgnVNgn9vq7lmF8p+XFnHzWQJkerL6LqLrDu83NgTilaKIaNKR2PvPWqW0eahvLYyiw91z+X87ZldE+xacu5wyjil+NQ2UVCKqvTYd41Bbkr+NnYiW8wMSeJw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872182; c=relaxed/simple;
-	bh=bscFpz+XabX3jpKovWD4/q7PWEokMLZeKGRnYz83hBI=;
+	s=arc-20240116; t=1748872860; c=relaxed/simple;
+	bh=19O+b9yMRuLRIGtt+vzNf2mZSLE6GHG9e5FmACkrDbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUtKGF4Zasa2GDfJSsHhdT8hgd81B+xgHZIc2uIAXunhbf/P46itnRVkFg4M4HiGQiNhv/lJ21b5aNWG2BBbGdM7Ddzs9ioKnRVSmeHH8n67qDt39gDtEyxCMaZoxWtmV6lg09uriEAAVHBR7Y7EB7ug/QTs+p+w9SIVYgufzko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjZcb1Yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935A7C4CEEB;
-	Mon,  2 Jun 2025 13:49:40 +0000 (UTC)
+	 MIME-Version; b=rBq6dKoFhKralTRUYWhyOs+8kG28kGL0oBs2nu55/dlaBM+iH0Z1NhlxQF2zzqVJJ1EGKMbErerdOMJXGmG8Jz5FCQ0IoOv1qsfRyvnlFIRn29Vw5+e7d47NMrI7T/Ucl60rC+d3hM4PQgrC/glabmnHl1/IIbYjonUhDvnMGpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjGQEKdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD9AC4CEEB;
+	Mon,  2 Jun 2025 14:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872181;
-	bh=bscFpz+XabX3jpKovWD4/q7PWEokMLZeKGRnYz83hBI=;
+	s=korg; t=1748872860;
+	bh=19O+b9yMRuLRIGtt+vzNf2mZSLE6GHG9e5FmACkrDbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjZcb1YljAnioG+R3w9SXCXqPOlQVVwwTTc7iCPZxWDD5WCbnsqur4i12zSEFk1rH
-	 qrxg0zGaCYJZSY6uXGm/b9ZLqafyXJPxwetO2+ja5hbXjkpD512bVpaiIAQz3993yX
-	 3NEA9u1BNn4M5gXgEzDJqtnYYI0x/niO9VGMeJlA=
+	b=kjGQEKdPI6wpBRCUkQ6xVYZRrCF7ZW5hnZ4Jek8p7fMfdTZy6KS6T7EBcILkFJRfh
+	 DwXfODX1hPGXSJsaP7SEhmNCzhm6XN8VZaAHgkr9l3XzE5wRmom3oLIuQ+spu1CwL1
+	 LvPjHZv6HlH5eYwD0SL/Ohgt8r+X3viaZ/VurBXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.15 44/49] perf/arm-cmn: Add CMN S3 ACPI binding
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Neha Malcom Francis <n-francis@ti.com>,
+	Jai Luthra <jai.luthra@linux.dev>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 19/55] arm64: dts: ti: k3-am62x: Rename I2C switch to I2C mux in IMX219 overlay
 Date: Mon,  2 Jun 2025 15:47:36 +0200
-Message-ID: <20250602134239.672339078@linuxfoundation.org>
+Message-ID: <20250602134239.038815369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-commit 8c138a189f6db295ceb32258d46ac061df0823e5 upstream.
+commit 7b75dd2029ee01a8c11fcf4d97f3ccebbef9f8eb upstream.
 
-An ACPI binding for CMN S3 was not yet finalised when the driver support
-was originally written, but v1.2 of DEN0093 "ACPI for Arm Components"
-has at last been published; support ACPI systems using the proper HID.
+The IMX219 device tree overlay incorrectly defined an I2C switch
+instead of an I2C mux. According to the DT bindings, the correct
+terminology and node definition should use "i2c-mux" instead of
+"i2c-switch". Hence, update the same to avoid dtbs_check warnings.
 
+Fixes: 4111db03dc05 ("arm64: dts: ti: k3-am62x: Add overlay for IMX219")
 Cc: stable@vger.kernel.org
-Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/7dafe147f186423020af49d7037552ee59c60e97.1747652164.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
+Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
+Link: https://lore.kernel.org/r/20250415111328.3847502-7-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm-cmn.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2651,6 +2651,7 @@ static const struct acpi_device_id arm_c
- 	{ "ARMHC600", PART_CMN600 },
- 	{ "ARMHC650" },
- 	{ "ARMHC700" },
-+	{ "ARMHC003" },
- 	{}
- };
- MODULE_DEVICE_TABLE(acpi, arm_cmn_acpi_match);
+--- a/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
++++ b/arch/arm64/boot/dts/ti/k3-am62x-sk-csi2-imx219.dtso
+@@ -22,7 +22,7 @@
+ 	#size-cells = <0>;
+ 	status = "okay";
+ 
+-	i2c-switch@71 {
++	i2c-mux@71 {
+ 		compatible = "nxp,pca9543";
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
 
 
 
