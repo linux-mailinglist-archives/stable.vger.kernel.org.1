@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35354ACB03D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:02:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80876ACAFA5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9B0D482692
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69BE57A5CA6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09122222AF;
-	Mon,  2 Jun 2025 14:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962E7221734;
+	Mon,  2 Jun 2025 13:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn48JH3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpggZF7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF922153CB;
-	Mon,  2 Jun 2025 14:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53067221703;
+	Mon,  2 Jun 2025 13:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872870; cv=none; b=uVY/M/Juk8ixGNkwka2Jz6FsZA24rzSIvOm3S7nSCovVqkLUDuP1Gd/LTJUYN2X4AHAFuRs0JiZUI03TI/iM4ZcruJgjHHm/ztE/Ee/k4KZPUfdaaexM+4VhitempSMl0by1jPDz0OPcWCsZcCcTz5qD8WZWVycJ092AqD6VwKE=
+	t=1748872187; cv=none; b=uMbKr6NABUDgyxtJy2LAYB8ubzyDP19FEiWQT7Jthmh6zOD9ln45uzuncM4zfkT0hYT6DkSmD0NtAfVN7a7fwgVK7GbOE3eRFioUKR6YJ5DM5CKTeFzPkpxHRtzeRGPWVdth4yIsTFypGncQy7RwndM7IRmEjUTjO1OP4WoxgkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872870; c=relaxed/simple;
-	bh=OkCP4hXjH4E5MLABl+/UVJS7tZ4kNUyQAff06a+afdw=;
+	s=arc-20240116; t=1748872187; c=relaxed/simple;
+	bh=+49BgIVsAaK60vS4R/p8hWgZmbygTJo9bsYDwgDNvBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoVb021Qjr4YlhFkYktEoey0wVOxWzF5Y4JVRhsmWi7uflSRu4RPuLG2Z7ZNF5or/84Dwo4v+03whbc9koT7CbSO19QVP7Z4Vxw7Br4Bt5ATfMh48DeoPKMOnIHOGXF84Fc1/1+wgKechpql/QpX0j+7t58U929LfO3c0OcugfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn48JH3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDCCC4CEF2;
-	Mon,  2 Jun 2025 14:01:09 +0000 (UTC)
+	 MIME-Version; b=CXw0lBr1sdAOa+p9WxZWZHrXimBugWLPJscLZoPNIZNMtfmsQvnR8Ru5UXAe73sjLlZC35++wxbFiAzNTEdTqc1brTPqYMPSFmL2LkZtqKQ3OBqcVy3HnDa06SP7bgaANwMa4peQCslGxoJd7hcfjkobVGKU4/PloCfHIBXc7XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpggZF7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE116C4CEEB;
+	Mon,  2 Jun 2025 13:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872870;
-	bh=OkCP4hXjH4E5MLABl+/UVJS7tZ4kNUyQAff06a+afdw=;
+	s=korg; t=1748872187;
+	bh=+49BgIVsAaK60vS4R/p8hWgZmbygTJo9bsYDwgDNvBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kn48JH3lMSzRkMU+tSRy3kz6bPiHh7+pYbjuxIQq9NA4vw5QSKmG0ZRwIWnJAUnBA
-	 8eR+Zg/OoPKyC6qHOVae3evyssPAvk6OyjeG/q7hbOZcFqapvGfMmDcrM7DsoDscUd
-	 ZNVEWtcej38udujY7+MJTOa97hnVYVn7R+/o1Bes=
+	b=bpggZF7IKWHoIiMcF7+rLUZ0+Jpn6klbPD3oWnrm9rXDnLTYBz6zjJKWyLLoFtGtD
+	 rx7T5k7oSUw2Y90M6JhRCeubDncdqrflsv/bbpue0i09JMiSX9fop/iUAXRbw8d4Fd
+	 OgFF2yUeHfGys16GuzDk7CwkJwel7uegAYDoGjWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Moteen Shah <m-shah@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.12 21/55] arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.15 46/49] coredump: fix error handling for replace_fd()
 Date: Mon,  2 Jun 2025 15:47:38 +0200
-Message-ID: <20250602134239.113111254@linuxfoundation.org>
+Message-ID: <20250602134239.749802437@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit f55c9f087cc2e2252d44ffd9d58def2066fc176e upstream.
+commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
 
-For am65x, add missing ITAPDLYSEL values for Default Speed and High
-Speed SDR modes to sdhci0 node according to the device datasheet [0].
+The replace_fd() helper returns the file descriptor number on success
+and a negative error code on failure. The current error handling in
+umh_pipe_setup() only works because the file descriptor that is replaced
+is zero but that's pretty volatile. Explicitly check for a negative
+error code.
 
-[0] https://www.ti.com/lit/gpn/am6548
-
-Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Moteen Shah <m-shah@ti.com>
-Link: https://lore.kernel.org/r/20250429173009.33994-1-jm@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/coredump.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -449,6 +449,8 @@
- 		ti,otap-del-sel-mmc-hs = <0x0>;
- 		ti,otap-del-sel-ddr52 = <0x5>;
- 		ti,otap-del-sel-hs200 = <0x5>;
-+		ti,itap-del-sel-legacy = <0xa>;
-+		ti,itap-del-sel-mmc-hs = <0x1>;
- 		ti,itap-del-sel-ddr52 = <0x0>;
- 		dma-coherent;
- 		status = "disabled";
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -507,7 +507,9 @@ static int umh_pipe_setup(struct subproc
+ {
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+-	int err = create_pipe_files(files, 0);
++	int err;
++
++	err = create_pipe_files(files, 0);
+ 	if (err)
+ 		return err;
+ 
+@@ -515,10 +517,13 @@ static int umh_pipe_setup(struct subproc
+ 
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
++	if (err < 0)
++		return err;
++
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return err;
++	return 0;
+ }
+ 
+ void do_coredump(const kernel_siginfo_t *siginfo)
 
 
 
