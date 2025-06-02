@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-150227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CB0ACB6B1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38680ACB5F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 590534A4B8A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2887E4C153B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E45722D9F1;
-	Mon,  2 Jun 2025 15:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF44122CBD8;
+	Mon,  2 Jun 2025 14:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBG+wzj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMUJIz0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA7322D9E7;
-	Mon,  2 Jun 2025 15:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1AA20F07C;
+	Mon,  2 Jun 2025 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876448; cv=none; b=DHC8T591lHyHjgDFhqmBDdDY/HPVdDpWLx8uynNdqEFK6bp4AG9uKcZnehIUPdIG0jCTMAuK2pSAn7pTArNDEHc6pu6di4L67+no/vamNAUAG9cBTGI+jFSgRGV/vOoVWRG3EWVv3rCgjpJFNkuGuW16HVITfh2nKFltINjqHdQ=
+	t=1748875893; cv=none; b=GST1zz5buufmucISywrhjWAis6XrsCpFvji7jf4PmF4xQN0ie7xj3MfKHjGht9msljZQfSqaHVr9gIADQ3XnFdhjYd3CgFLmY7zfUhChXVEjdTmw11Dt+bDhHe4S86O/qcXEqx8/INP7NYI3mFB2ZCmh4ne68nVfjoBtXT6xrgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876448; c=relaxed/simple;
-	bh=no9o5Sr86GQCLXqRtmtYfH0aUmMOCiUmzYSFJnoaguE=;
+	s=arc-20240116; t=1748875893; c=relaxed/simple;
+	bh=EBc6JPifpOeAFd8pWl/SNVXWkRqQyVwyl0Sp2UMYY+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQ6yAUuWjrSsL2vl4J+56Ydskm2b2pIHmPf14D2+IoFcHYlO2VvFqvXAnUIiLz3P3M6JctWA7UG4Rxk/Ds29wyEqe808FHuIdydjTXFT/ozvF0o02oIzwVtJkXdot/wb7vQh1khT2JO++h7bFzEsic88cG9q/Iak4bRSk5wZIVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBG+wzj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0BBC4CEEB;
-	Mon,  2 Jun 2025 15:00:48 +0000 (UTC)
+	 MIME-Version; b=pz2ELA2G5yAPpe8auIXGHojQiay6pjjzMx5CZnTQG8hcUR/qP7XsUdT3aSHve5X3ATlZvF2O0I0QqDS/hlwhp2UJPiQh5kkeGguDSE79Az1+++ZaJ47vUz9H5pcJo6kVsZsHJ/fFAJnEYIrJtoL1FlJFsvkDnLYKhVHgiUW1T9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMUJIz0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72991C4CEEB;
+	Mon,  2 Jun 2025 14:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876448;
-	bh=no9o5Sr86GQCLXqRtmtYfH0aUmMOCiUmzYSFJnoaguE=;
+	s=korg; t=1748875891;
+	bh=EBc6JPifpOeAFd8pWl/SNVXWkRqQyVwyl0Sp2UMYY+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBG+wzj3vPaptF1m47nCVRMzvMz5FpKzf+xseRM8/4ctTLbTy0p+dDW+zFW2woWUY
-	 nPHUWG7+QfSVxCNSTVFYHR202YFptgm2sdQZH+zExmhsEkuhi0Ob4YF91zEaCLvSgH
-	 ELH42fhdRNHGGW7DF8nhkCKllSAeA4MpcD6gjhL0=
+	b=oMUJIz0f0VgalBzNNLoyamUSSg7ZovOFQwDlim/k64KKqq3uonXtGQEBQoq2dZRbM
+	 tPpSeGEWFSrux6MQ28l+fDMZ26ADG0HgKwB1g6JPJ6/+4g1rmYiO7MAY+l8fBFdtee
+	 3R1sSHbMBtSSo64FUKMB85EbwvmkQxoUmoo0hil4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"feijuan.li" <feijuan.li@samsung.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 5.15 177/207] drm/edid: fixed the bug that hdr metadata was not reset
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Gow <davidgow@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 264/270] um: let make clean properly clean underlying SUBARCH as well
 Date: Mon,  2 Jun 2025 15:49:09 +0200
-Message-ID: <20250602134305.682724801@linuxfoundation.org>
+Message-ID: <20250602134318.129737946@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: feijuan.li <feijuan.li@samsung.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 6692dbc15e5ed40a3aa037aced65d7b8826c58cd upstream.
+[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
 
-When DP connected to a device with HDR capability,
-the hdr structure was filled.Then connected to another
-sink device without hdr capability, but the hdr info
-still exist.
+Building the kernel with O= is affected by stale in-tree build artifacts.
 
-Fixes: e85959d6cbe0 ("drm: Parse HDR metadata info from EDID")
-Cc: <stable@vger.kernel.org> # v5.3+
-Signed-off-by: "feijuan.li" <feijuan.li@samsung.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://lore.kernel.org/r/20250514063511.4151780-1-feijuan.li@samsung.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, if the source tree is not clean, Kbuild displays the following:
+
+  $ make ARCH=um O=build defconfig
+  make[1]: Entering directory '/.../linux/build'
+  ***
+  *** The source tree is not clean, please run 'make ARCH=um mrproper'
+  *** in /.../linux
+  ***
+  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
+  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
+  make[1]: Leaving directory '/.../linux/build'
+  make: *** [Makefile:248: __sub-make] Error 2
+
+Usually, running 'make mrproper' is sufficient for cleaning the source
+tree for out-of-tree builds.
+
+However, building UML generates build artifacts not only in arch/um/,
+but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
+files remain under arch/x86/, Kbuild will reuse them instead of creating
+new ones under the specified build directory.
+
+This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
+
+Reported-by: Shuah Khan <skhan@linuxfoundation.org>
+Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_edid.c |    1 +
+ arch/um/Makefile | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -5172,6 +5172,7 @@ drm_reset_display_info(struct drm_connec
- 	info->has_hdmi_infoframe = false;
- 	info->rgb_quant_range_selectable = false;
- 	memset(&info->hdmi, 0, sizeof(info->hdmi));
-+	memset(&connector->hdr_sink_metadata, 0, sizeof(connector->hdr_sink_metadata));
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 4211e23a2f68f..e2caca06c1553 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -153,5 +153,6 @@ MRPROPER_FILES += $(HOST_DIR)/include/generated
+ archclean:
+ 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
+ 		-o -name '*.gcov' \) -type f -print | xargs rm -f
++	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
  
- 	info->non_desktop = 0;
- 	memset(&info->monitor_range, 0, sizeof(info->monitor_range));
+ export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING OS DEV_NULL_PATH
+-- 
+2.39.5
+
 
 
 
