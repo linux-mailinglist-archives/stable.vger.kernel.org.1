@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA412ACB823
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93CCACB3C4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FD0940344
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A688405B1C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C416231837;
-	Mon,  2 Jun 2025 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138C535968;
+	Mon,  2 Jun 2025 14:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDfbgVQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jQ+ft3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1CC1C8605;
-	Mon,  2 Jun 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45E52236F4;
+	Mon,  2 Jun 2025 14:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876742; cv=none; b=mVYKAjc5zHmTG8RcOV/QyfVw6sqFdBV0EgOAGXXerXHeLfcFCV9LXADvLOPmTxetmoiou0CH5oUZ2gvUYcUgG67TpCZ206KPv9gD6GmdLQdVJvXByFSvLCLztpYHOb0ykAcpk0vr6joY8xBHXbNMFuBtPF7//hAKMhiuTgltbRg=
+	t=1748874394; cv=none; b=LMeSKeXoSEg6kA1Ir7ZoIZaVrXrXR7hKrXKXABQc+NPri+KqQLXu5r2FEUQRu+oChb40WnzgEMNJq0oqMAiqFGu+QnC0FlgH9oww9pyQefRzZGdxNUXiTyd5Rn6q5+XMYwBi4h2h+hYNdmWi/nwpJ3JhPsgnpd5OFrnPHZcSKr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876742; c=relaxed/simple;
-	bh=QvwM22mt262tzKThy73afqUyEnzul4v0XAxAbFp6LF4=;
+	s=arc-20240116; t=1748874394; c=relaxed/simple;
+	bh=CWTqSjeBhLuhlyBdj0nBgcIFvANMx6Zn2Vo1sMnfyRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlKPnxoBKhY2KL4fepKYeh529C28kvb74EQmIHC5znsqmFEJ8en8KzEmZjrLToBrySEAhGMkiiJvCgUoPq03H7RnPRJyvhHzNwDmlzwn/ainApd9kQQsWQJt75fGm/M9rjEaldu/YyFFzGeeVh78Qbh/zYnwvhyYk1Pz18SKlS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDfbgVQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE2C4CEEB;
-	Mon,  2 Jun 2025 15:05:42 +0000 (UTC)
+	 MIME-Version; b=H0ym6iX7QrECqYUwAIqKvtHJIV18F9TcuV+i/frA492j3vl2vtqv9DvBeC6Z4j0GYBoryMaOqsqq6fCz/UC1NHYCZNfyBj4w54dNQrvY/+22fnA9RJfPE9zT3FhPodWG1NnX0gVMWqsYp6f8d0biewiptrdBZ6jrftljKGI54yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jQ+ft3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4686CC4CEEB;
+	Mon,  2 Jun 2025 14:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876742;
-	bh=QvwM22mt262tzKThy73afqUyEnzul4v0XAxAbFp6LF4=;
+	s=korg; t=1748874394;
+	bh=CWTqSjeBhLuhlyBdj0nBgcIFvANMx6Zn2Vo1sMnfyRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yDfbgVQ8XR6F5egFEbfmObhNPsoPsVcqxTtiMJwoFqpsBwBY0lk/hqEdqmUdB9aa3
-	 1LxS0uiGk3YwH0S9CSJThcg3DLwF5NldbDLcWNM+Kku6BZWEYfethRqwY3nAKNhQho
-	 Y9zpxr/UM1U+QftBj3qJGnTDfObWPIlRr4qYpIZQ=
+	b=1jQ+ft3lvteZYj5xWkbUcw5FsrtWoPFWrCB/Yj404y1AFkIzFvdiDWyhym1ZokPv9
+	 jtT/rSbLQ5Dtd5pI/fjJtv6yJgfzRMC5h9bOqTwq0nWHV02ZEuLn2Rp2Ig/on2ZKyp
+	 7iJzUFl23NEScvtH9P5iLQPUYiSur/JlRmkEqtzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	David Teigland <teigland@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/325] dlm: make tcp still work in multi-link env
+	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.4 002/204] EDAC/altera: Set DDR and SDMMC interrupt mask before registration
 Date: Mon,  2 Jun 2025 15:45:35 +0200
-Message-ID: <20250602134322.154951964@linuxfoundation.org>
+Message-ID: <20250602134255.559431001@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
 
-[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
+commit 6dbe3c5418c4368e824bff6ae4889257dd544892 upstream.
 
-This patch bypasses multi-link errors in TCP mode, allowing dlm
-to operate on the first tcp link.
+Mask DDR and SDMMC in probe function to avoid spurious interrupts before
+registration.  Removed invalid register write to system manager.
 
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1166fde93d5b ("EDAC, altera: Add Arria10 ECC memory init functions")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250425142640.33125-3-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lowcomms.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/edac/altera_edac.c |    7 ++++---
+ drivers/edac/altera_edac.h |    2 ++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 2c797eb519da9..51a641822d6c4 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1863,8 +1863,8 @@ static int dlm_tcp_listen_validate(void)
- {
- 	/* We don't support multi-homed hosts */
- 	if (dlm_local_count > 1) {
--		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
--		return -EINVAL;
-+		log_print("Detect multi-homed hosts but use only the first IP address.");
-+		log_print("Try SCTP, if you want to enable multi-link.");
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1103,9 +1103,6 @@ altr_init_a10_ecc_block(struct device_no
+ 		}
  	}
  
- 	return 0;
--- 
-2.39.5
-
+-	/* Interrupt mode set to every SBERR */
+-	regmap_write(ecc_mgr_map, ALTR_A10_ECC_INTMODE_OFST,
+-		     ALTR_A10_ECC_INTMODE);
+ 	/* Enable ECC */
+ 	ecc_set_bits(ecc_ctrl_en_mask, (ecc_block_base +
+ 					ALTR_A10_ECC_CTRL_OFST));
+@@ -2213,6 +2210,10 @@ static int altr_edac_a10_probe(struct pl
+ 		return PTR_ERR(edac->ecc_mgr_map);
+ 	}
+ 
++	/* Set irq mask for DDR SBE to avoid any pending irq before registration */
++	regmap_write(edac->ecc_mgr_map, A10_SYSMGR_ECC_INTMASK_SET_OFST,
++		     (A10_SYSMGR_ECC_INTMASK_SDMMCB | A10_SYSMGR_ECC_INTMASK_DDR0));
++
+ 	edac->irq_chip.name = pdev->dev.of_node->name;
+ 	edac->irq_chip.irq_mask = a10_eccmgr_irq_mask;
+ 	edac->irq_chip.irq_unmask = a10_eccmgr_irq_unmask;
+--- a/drivers/edac/altera_edac.h
++++ b/drivers/edac/altera_edac.h
+@@ -249,6 +249,8 @@ struct altr_sdram_mc_data {
+ #define A10_SYSMGR_ECC_INTMASK_SET_OFST   0x94
+ #define A10_SYSMGR_ECC_INTMASK_CLR_OFST   0x98
+ #define A10_SYSMGR_ECC_INTMASK_OCRAM      BIT(1)
++#define A10_SYSMGR_ECC_INTMASK_SDMMCB     BIT(16)
++#define A10_SYSMGR_ECC_INTMASK_DDR0       BIT(17)
+ 
+ #define A10_SYSMGR_ECC_INTSTAT_SERR_OFST  0x9C
+ #define A10_SYSMGR_ECC_INTSTAT_DERR_OFST  0xA0
 
 
 
