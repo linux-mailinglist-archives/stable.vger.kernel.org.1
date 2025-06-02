@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24ED9ACB442
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A9BACB746
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6962487D05
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 391A84A6173
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8FD224B15;
-	Mon,  2 Jun 2025 14:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D409F229B18;
+	Mon,  2 Jun 2025 15:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcxZtny0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMhrsbUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FEA224B0C;
-	Mon,  2 Jun 2025 14:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905472288F4;
+	Mon,  2 Jun 2025 15:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874723; cv=none; b=CyNfNrGgU7FLST61tUJNzNWXNARDSDu+q1CFSCz/fE3KNvvqjGIR8s33qZgqB1DLVBq1v1ZK31WOEFRSxhe3vG8oY/8rMHAEpNVgZU057ICUyqKsBQ1s6byWm4MMf2RcLfaYPJ3Al8340/YTKzSINPdNY9J0Hw/918nfHztfIeM=
+	t=1748877195; cv=none; b=IliNavWzsYaiOX3/dANTOq3XlBICSqzBZcjxtOcLy9/9HyEoJNa6GFV8aCdAeMZEzrfkXMBsRcPB76RiT54pBGZTl/xbyzqTRjaHnoLszzh2hC9lx8BHbDmyriGTPmW0VYM/i5ESF66rRFSPNXH3Jysv1eBeH/E7Tly2tSqBqfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874723; c=relaxed/simple;
-	bh=u8sgfCEHs5W+YHke4n/kDPI89M3EpCtTjM9x24hcwqg=;
+	s=arc-20240116; t=1748877195; c=relaxed/simple;
+	bh=gTCgi4AxJQog4MxJat/Isovv3gR+RauP6nqrJL2vXC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYOqabA5uFPtFgsKmlE6RMroXT2dXLCYa2uBEc0LXmyiL7bOpzm5M5SHNoffrg3atxpIbqEaOWBTEEqPqlS0jiHCqE3w5LtOFYvk2gOY1Rd2umGM7CylQu1/0wuT9wbygyEwpzWGA7xVXzUXMeGmTRUqheW4y480kSwWZZjRlAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcxZtny0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3277DC4CEEB;
-	Mon,  2 Jun 2025 14:32:02 +0000 (UTC)
+	 MIME-Version; b=LQJ25CuovggoRAP/YBqynBWAMSWTNX+oZxFZtLVTJBHSfIKR0UesX86bh4TQqbz89YbADhi/XLz3yRutOHtEuMXukutruE0BrlsCdekVUXMSp01USnamznX6tcOkI6b/mqaRk9v3WOW6Tf3xlsFRbCX7u+MOlrlsisnyg1sC9D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMhrsbUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32DDC4CEEB;
+	Mon,  2 Jun 2025 15:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874722;
-	bh=u8sgfCEHs5W+YHke4n/kDPI89M3EpCtTjM9x24hcwqg=;
+	s=korg; t=1748877195;
+	bh=gTCgi4AxJQog4MxJat/Isovv3gR+RauP6nqrJL2vXC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcxZtny0P6wX6y/p5mQIV4w682AoQFIsTa3N7isd5Na4qLe2etT22m8kYZF9epPA5
-	 s+OedbWQWP6e3+InhoQUphCPq0Cza7O0+JWQRUMIZyUmqmp1lbn7+7Drjnv83izkfR
-	 9S95rxPynUaFgEYpCuIRm0nitX7iCskqHY7ElcWw=
+	b=SMhrsbUr5pYVp4x6bd6ltIZQHLccjgHhRBEPYrHo1mQU8+/ELXVyrXq/I+iA4JsES
+	 g6CELxytEkinl7TyfLzWZ+ZANaQDeg6GZp/bsXw8vkGJgB9dL0SGmK8YO21095iqVi
+	 3Syzy9h2R/xdHqLFKASt6WJzrOs5TEG+0BagoN0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 116/204] ieee802154: ca8210: Use proper setters and getters for bitwise types
-Date: Mon,  2 Jun 2025 15:47:29 +0200
-Message-ID: <20250602134300.216483894@linuxfoundation.org>
+Subject: [PATCH 6.1 174/325] kunit: tool: Use qboot on QEMU x86_64
+Date: Mon,  2 Jun 2025 15:47:30 +0200
+Message-ID: <20250602134326.892756308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Brendan Jackman <jackmanb@google.com>
 
-[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
+[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
 
-Sparse complains that the driver doesn't respect the bitwise types:
+As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
+qboot does not.
 
-drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
-drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
-drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
-drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
-drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
-drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
-drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
-drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
-drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
+It turns out this is actually useful with kunit.py, since the user is
+exposed to this issue if they set --raw_output=all.
 
-Use proper setters and getters for bitwise types.
+qboot is also faster than SeaBIOS, but it's is marginal for this
+usecase.
 
-Note, in accordance with [1] the protocol is little endian.
+[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
 
-Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Both SeaBIOS and qboot are x86-specific.
+
+Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/ca8210.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index d394e2b65054d..d99976034027c 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -1487,8 +1487,7 @@ static u8 mcps_data_request(
- 	command.pdata.data_req.src_addr_mode = src_addr_mode;
- 	command.pdata.data_req.dst.mode = dst_address_mode;
- 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
--		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
--		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
-+		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
- 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
- 			command.pdata.data_req.dst.address[0] = LS_BYTE(
- 				dst_addr->short_address
-@@ -1837,12 +1836,12 @@ static int ca8210_skb_rx(
- 	}
- 	hdr.source.mode = data_ind[0];
- 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
--	hdr.source.pan_id = *(u16 *)&data_ind[1];
-+	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
- 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
- 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
- 	hdr.dest.mode = data_ind[11];
- 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
--	hdr.dest.pan_id = *(u16 *)&data_ind[12];
-+	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
- 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
- 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
- 
-@@ -1969,7 +1968,7 @@ static int ca8210_skb_tx(
- 	status =  mcps_data_request(
- 		header.source.mode,
- 		header.dest.mode,
--		header.dest.pan_id,
-+		le16_to_cpu(header.dest.pan_id),
- 		(union macaddr *)&header.dest.extended_addr,
- 		skb->len - mac_len,
- 		&skb->data[mac_len],
+diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
+index dc79490768630..4a6bf4e048f5b 100644
+--- a/tools/testing/kunit/qemu_configs/x86_64.py
++++ b/tools/testing/kunit/qemu_configs/x86_64.py
+@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
+ 			   qemu_arch='x86_64',
+ 			   kernel_path='arch/x86/boot/bzImage',
+ 			   kernel_command_line='console=ttyS0',
+-			   extra_qemu_params=[])
++			   # qboot is faster than SeaBIOS and doesn't mess up
++			   # the terminal.
++			   extra_qemu_params=['-bios', 'qboot.rom'])
 -- 
 2.39.5
 
