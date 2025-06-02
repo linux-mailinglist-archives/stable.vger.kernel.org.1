@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223C9ACB749
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E998ACB791
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C4E1C20373
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D394C7B02
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE474233D91;
-	Mon,  2 Jun 2025 14:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D278227B88;
+	Mon,  2 Jun 2025 15:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eg483RmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkf+2fVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A1230BD9;
-	Mon,  2 Jun 2025 14:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A197226D1D;
+	Mon,  2 Jun 2025 15:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876201; cv=none; b=ETSRpD+211MuCqFLoPKAffNnQSqGyXjRcrYzDZ9jttfX5MV9X4/W75bkTjyf6AJkoK8N4WugC7WFCr/QsM+WKiiLEka69j7k460+zRPu63Wom8DhyfVL2XX7i56WOKZJuJt4WzDxKhFDWuyCyxG2rYOhFb8w4ufUU4MBc1zsGLM=
+	t=1748877133; cv=none; b=dpszgfFJs4J8xfv1x3uJ0EeOs4HimikhWSK/uMxeuPIBoz8/dLzBU1ZzxkIKBmZoQp1etNdLScQ36aFQviXfUQq3oUmmbjlp2u9YVtSpgGFdmmLGQCtoA0YzOH2deoaJgEGbfJb/OCoVE3ej5c/iglAgzrNlngy2qrIRqa0UJyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876201; c=relaxed/simple;
-	bh=b3bqMtt9jWyiyoPaZQqZv3RBGSbe9VljxicAH7xe9Dw=;
+	s=arc-20240116; t=1748877133; c=relaxed/simple;
+	bh=HtVIZBYqu/aS1XkNp9KVS0eJQb/nNtlpzjFmIzt1hCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntxQMJkQJF3YJ84H18w1oMAtgo3l9LAq9HAXqF3pn395U/6NCqH7OQFQodvPX0bcLFqxX5RjD9FI4mzjawphC1VUN3mDZZvT/rquSY6WHlSvuORDoQnEsMIIar3L1lu7GD9VIwUUW7+UvJwXvCG7YKLtmQNgpEzHvF9CYjq21X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eg483RmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05173C4CEEB;
-	Mon,  2 Jun 2025 14:56:40 +0000 (UTC)
+	 MIME-Version; b=p8BCxFSEP1hi7zU8wqQaeiCvAZen035wXjZjRN4o2OKYGBgKftOfiKIL8W+hMNAhgFDMGZTsuuCDgr0tAJ92tS/gU6W1bixF3Snn299C7rzH+GGKcAyswZR9RY+A8+vH6CSGnVCEKb0c/oVwr3dF4S/TPk5ZDApaYQtTWTpbyjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkf+2fVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4974C4CEEB;
+	Mon,  2 Jun 2025 15:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876201;
-	bh=b3bqMtt9jWyiyoPaZQqZv3RBGSbe9VljxicAH7xe9Dw=;
+	s=korg; t=1748877133;
+	bh=HtVIZBYqu/aS1XkNp9KVS0eJQb/nNtlpzjFmIzt1hCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eg483RmHN/FXRUW4Fydee0nq51Aly1oH3+OIagezGe2GO7ZHqvVT5janqIx4WMNZC
-	 ydRiopMt9WXWju6YN206YWCpdjaiu2zCONfWP04OXif40zcduozdZ+0aXHjgeS06Cl
-	 G4GsOoQBzKOSJfo7+1vamydtOUQdf1xIEZ1f52cc=
+	b=kkf+2fVu+VGw5A4DDMr5TKkD5n54NPK0Ff4UNk3wTta3pjLe5aYPGcW1v0n8userm
+	 mzQ5Xe/8Otz3ew/kFdVi1mxksrpGJvSNkTuVU3xxVL3FR3h5adHaFsOHIe6AOxBk8Y
+	 WaH0XZloyOh3b6WzKzLOGLCk97x8kiZtQB4F0Svc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/207] firmware: arm_ffa: Set dma_mask for ffa devices
-Date: Mon,  2 Jun 2025 15:47:38 +0200
-Message-ID: <20250602134302.105058988@linuxfoundation.org>
+Subject: [PATCH 6.1 183/325] net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB
+Date: Mon,  2 Jun 2025 15:47:39 +0200
+Message-ID: <20250602134327.247331715@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit cc0aac7ca17e0ea3ca84b552fc79f3e86fd07f53 ]
+[ Upstream commit 95b9606b15bb3ce1198d28d2393dd0e1f0a5f3e9 ]
 
-Set dma_mask for FFA devices, otherwise DMA allocation using the device pointer
-lead to following warning:
+Current loopback test validation ignores non-linear SKB case in
+the SKB access, which can lead to failures in scenarios such as
+when HW GRO is enabled.
+Linearize the SKB so both cases will be handled.
 
-WARNING: CPU: 1 PID: 1 at kernel/dma/mapping.c:597 dma_alloc_attrs+0xe0/0x124
-
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Message-Id: <e3dd8042ac680bd74b6580c25df855d092079c18.1737107520.git.viresh.kumar@linaro.org>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250209101716.112774-15-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
-index f79ba6f733ba4..27820a59ce25e 100644
---- a/drivers/firmware/arm_ffa/bus.c
-+++ b/drivers/firmware/arm_ffa/bus.c
-@@ -190,6 +190,7 @@ struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id)
- 	dev = &ffa_dev->dev;
- 	dev->bus = &ffa_bus_type;
- 	dev->release = ffa_release_device;
-+	dev->dma_mask = &dev->coherent_dma_mask;
- 	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
+index 08a75654f5f18..c170503b3aace 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
+@@ -165,6 +165,9 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
+ 	struct udphdr *udph;
+ 	struct iphdr *iph;
  
- 	ffa_dev->id = id;
++	if (skb_linearize(skb))
++		goto out;
++
+ 	/* We are only going to peek, no need to clone the SKB */
+ 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
+ 		goto out;
 -- 
 2.39.5
 
