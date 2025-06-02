@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914D3ACB65A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0A0ACB80F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F5DA4A2C10
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5340F945C67
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D1D22A7F9;
-	Mon,  2 Jun 2025 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4778D22ACEE;
+	Mon,  2 Jun 2025 15:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROPdSQ3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARkUMSWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E02E21B9F6;
-	Mon,  2 Jun 2025 14:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0432122A4EA;
+	Mon,  2 Jun 2025 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876286; cv=none; b=qskHzgFvwKzj52Dy6IxhZuqlhXLspwaYE3L6MWj0lmbX9q7Ga2KVK4Yja6vSkGzIca36nNJTWIok5TWIQtJh2rsAfrDPCi+WaoqCOWo4slA4EOi0XKzUD3ta9UcGoK7rErcrceGwICPwauczANiyFNs7boR7H6UX9/N3sCX66fA=
+	t=1748877277; cv=none; b=lUAwbLaBBMY5OQrHZSkk/u49uklSUkrvAhqAbqUYIADVRFlR8ZdlYaZTFnzXcQaanENxYAenqeS2FygecRd2wd3G31RlSPEm+k9KePoZAAo55GRrT6ePtloLOxwPSreH6GZZZwld/EoiG7304sw5ap9kxXMkPmWHUdW4s3ZLqlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876286; c=relaxed/simple;
-	bh=oK4bdxny30xHD3rBjIdH8zHn2d7qxay5Uoq6YhLhWpA=;
+	s=arc-20240116; t=1748877277; c=relaxed/simple;
+	bh=0+2LinNPIkpe6PqGOkkXlHBCxTfAD9N48Cjup16C8yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJLF/SjEgxU6kLjd14DonAZxByaMS81oi4CfRZn/wu1xZCP8Tkfgi8+LzspaSZDm/YiixvpjhWKRalmTAWgEFSwjbb+VwUUjnSP1lkn6sicl2R0hd5uteAkF/JbzIVtxnNy6cvv/3nAi3FG+PQRlQ/Ffvkwy8KnBcdb5GWFb2eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROPdSQ3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506D7C4CEEE;
-	Mon,  2 Jun 2025 14:58:05 +0000 (UTC)
+	 MIME-Version; b=aZ873Hn7MK9A5ZycVf0dAO7C77tXA2BVn0eRBljkrA90mK/0SY1A9iV1JawjLz4mVnb2lPXVgvsd0iFWI63D8+XO1p2a3CZ+y8ewAef5lur7P0wgyZAqB9JIk7HxTwBD6IUv3hF5yjhRLtISWm4VO6nQe1e3TQUhLIsF+Jn60NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARkUMSWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042ACC4CEEB;
+	Mon,  2 Jun 2025 15:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876285;
-	bh=oK4bdxny30xHD3rBjIdH8zHn2d7qxay5Uoq6YhLhWpA=;
+	s=korg; t=1748877276;
+	bh=0+2LinNPIkpe6PqGOkkXlHBCxTfAD9N48Cjup16C8yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROPdSQ3HPIP+pzUDdGjiaPSYJL6DAhjIICRhN0QPloNMzE/kdhNQHdT/FQuwTVjuk
-	 1ApPBDwD4+1S/BhCvRJGWMutpdpClwtgdrlNMoQ1OqVxuIlu8i2L8D3uhTegKb8st3
-	 oelXR61o68RN1f92WTWkz3TzrXvAmWVy3jSTRZhI=
+	b=ARkUMSWRPjVJG1uwdFoMpfMbDppiM0GFYIQu1hP+1E9RQxCpsLK+ikeIxEh5kNYwU
+	 Q6R/N102itpX+pzAY4Aa+wkrRT4tobOW7be+1N0pWizSMkHaVyXwxbUw4nq6Yx5rKz
+	 nshMHgka3RjgR48Bn3H1vFI7yAyn/HQJ2tnFxBQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/207] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
+Subject: [PATCH 6.1 226/325] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
 Date: Mon,  2 Jun 2025 15:48:22 +0200
-Message-ID: <20250602134303.810215528@linuxfoundation.org>
+Message-ID: <20250602134328.966034057@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 
-[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
+[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
 
-perf mem report aborts as below sometimes (during some corner
-case) in powerpc:
+btrfs_prelim_ref() calls the old and new reference variables in the
+incorrect order. This causes a NULL pointer dereference because oldref
+is passed as NULL to trace_btrfs_prelim_ref_insert().
 
-   # ./perf mem report 1>out
-   *** stack smashing detected ***: terminated
-   Aborted (core dumped)
+Note, trace_btrfs_prelim_ref_insert() is being called with newref as
+oldref (and oldref as NULL) on purpose in order to print out
+the values of newref.
 
-The backtrace is as below:
-   __pthread_kill_implementation ()
-   raise ()
-   abort ()
-   __libc_message
-   __fortify_fail
-   __stack_chk_fail
-   hist_entry.lvl_snprintf
-   __sort__hpp_entry
-   __hist_entry__snprintf
-   hists.fprintf
-   cmd_report
-   cmd_mem
+To reproduce:
+echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
 
-Snippet of code which triggers the issue
-from tools/perf/util/sort.c
+Perform some writeback operations.
 
-   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
-                                    size_t size, unsigned int width)
-   {
-        char out[64];
+Backtrace:
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
+ Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
+ RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
+ RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
+ RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
+ RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
+ R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
+ R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
+ FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  prelim_ref_insert+0x1c1/0x270
+  find_parent_nodes+0x12a6/0x1ee0
+  ? __entry_text_end+0x101f06/0x101f09
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  btrfs_is_data_extent_shared+0x167/0x640
+  ? fiemap_process_hole+0xd0/0x2c0
+  extent_fiemap+0xa5c/0xbc0
+  ? __entry_text_end+0x101f05/0x101f09
+  btrfs_fiemap+0x7e/0xd0
+  do_vfs_ioctl+0x425/0x9d0
+  __x64_sys_ioctl+0x75/0xc0
 
-        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
-        return repsep_snprintf(bf, size, "%-*s", width, out);
-   }
-
-The value of "out" is filled from perf_mem_data_src value.
-Debugging this further showed that for some corner cases, the
-value of "data_src" was pointing to wrong value. This resulted
-in bigger size of string and causing stack check fail.
-
-The perf mem data source values are captured in the sample via
-isa207_get_mem_data_src function. The initial check is to fetch
-the type of sampled instruction. If the type of instruction is
-not valid (not a load/store instruction), the function returns.
-
-Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
-data_src field is not initialized by the perf_sample_data_init()
-function. If the PMU driver doesn't set the data_src value to zero if
-type is not valid, this will result in uninitailised value for data_src.
-The uninitailised value of data_src resulted in stack check fail
-followed by abort for "perf mem report".
-
-When requesting for data source information in the sample, the
-instruction type is expected to be load or store instruction.
-In ISA v3.0, due to hardware limitation, there are corner cases
-where the instruction type other than load or store is observed.
-In ISA v3.0 and before values "0" and "7" are considered reserved.
-In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-Drop the sample if instruction type has reserved values for this
-field with a ISA version check. Initialize data_src to zero in
-isa207_get_mem_data_src if the instruction type is not load/store.
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
- arch/powerpc/perf/isa207-common.c |  4 +++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ include/trace/events/btrfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index c9fc0edf56b1c..c6d083a82d80a 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2183,6 +2183,10 @@ static struct pmu power_pmu = {
- #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
- 				PERF_SAMPLE_PHYS_ADDR |		\
- 				PERF_SAMPLE_DATA_PAGE_SIZE)
-+
-+#define SIER_TYPE_SHIFT	15
-+#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
-+
- /*
-  * A counter has overflowed; update its count and record
-  * things if requested.  Note that interrupts are hard-disabled
-@@ -2251,6 +2255,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 	    is_kernel_addr(mfspr(SPRN_SIAR)))
- 		record = 0;
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 7a6c5a870d33c..31847ccae4936 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -1847,7 +1847,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
+ 	TP_PROTO(const struct btrfs_fs_info *fs_info,
+ 		 const struct prelim_ref *oldref,
+ 		 const struct prelim_ref *newref, u64 tree_size),
+-	TP_ARGS(fs_info, newref, oldref, tree_size),
++	TP_ARGS(fs_info, oldref, newref, tree_size),
  
-+	/*
-+	 * SIER[46-48] presents instruction type of the sampled instruction.
-+	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
-+	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-+	 * Drop the sample if "type" has reserved values for this field with a
-+	 * ISA version check.
-+	 */
-+	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
-+			ppmu->get_mem_data_src) {
-+		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
-+		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
-+			record = 0;
-+			atomic64_inc(&event->lost_samples);
-+		}
-+	}
-+
- 	/*
- 	 * Finally record data if requested.
- 	 */
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 027a2add780e8..9ffe3106c9b10 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -275,8 +275,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
- 
- 	sier = mfspr(SPRN_SIER);
- 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
--	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
-+	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
-+		dsrc->val = 0;
- 		return;
-+	}
- 
- 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
- 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
+ 	TP_STRUCT__entry_btrfs(
+ 		__field(	u64,  root_id		)
 -- 
 2.39.5
 
