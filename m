@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23670ACB026
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1411AACAFA2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7496F7A55F5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC2A1BA2489
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3BE221737;
-	Mon,  2 Jun 2025 14:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334B8221FD0;
+	Mon,  2 Jun 2025 13:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBIpLjUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SfCRv/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7C4221DA8;
-	Mon,  2 Jun 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D772A221FBF;
+	Mon,  2 Jun 2025 13:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872845; cv=none; b=gsy+khTmyU9IN9LbtZ4UAXfnlJh3fYkpuZyZDj/KsbuWIKEVPG467wivOP9dMrvd+kruVIgOoOsWbRvCTiX4l/MEsu0d4ZNrfpIyKTgD+RSokF5mNOdGgdnTwDqKAPegQ6rhHwaR1yY0SU3jZSqYU1s/HJprMm7YkqH+w4E/M9I=
+	t=1748872228; cv=none; b=iMpdEtxQP9Voktxx7OfruQnG0BUXxtySudBhgfsFUMGwRSdwQmiqkCg0hcAlwbbQ9Bs7sV51XjQS8oHgEigw9QJh0OKD5hHHNQXT0C04/fPxUjvgmsiMOLp1ouCDdQb7Ui3gP3Hgm4xKYF/aJLg1c4dxCu7dnO1eUSKAIwb3zOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872845; c=relaxed/simple;
-	bh=o2KCyplHZIW5JWL248OgzrvlWvdV03CzrQIZmj0b6hM=;
+	s=arc-20240116; t=1748872228; c=relaxed/simple;
+	bh=mVCZeY6NnvTUzCBV4GiRN9MQ8FhatX/VDZJhylXUra4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KH3RQeugpOUAmgtdxHyQLVRGX3MOyDhN4S8Y+EKwHvfH+lROcoFjsCua0t48VgZ+0pT1dxITl1xAGVPvyrOwOL1JVJgk8mIY9isFJe156z/tWeXioOP3wFI5SRN+uGEPNMi6aNJvvaf9P8FDT44ZyFUVN8m5igB3MDMbdDUOwdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBIpLjUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E89DC4CEEB;
-	Mon,  2 Jun 2025 14:00:44 +0000 (UTC)
+	 MIME-Version; b=o4YDkOAiEyc7JnK6hDReJPrliQ9p/UEOA1ydeTA5kYcCSe80nTHg0CJ0PhRcEl1OPp6LH73P1qWcH5ueKy7G9GnFQh22ZIz4n4Npjkc8qoJol57txIGa4E54JavLwWm0Ow4msZpe+y/Fqpz92Ijd0IIREKxibxHtLT3KTsaQTxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SfCRv/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE4BC4CEEB;
+	Mon,  2 Jun 2025 13:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872845;
-	bh=o2KCyplHZIW5JWL248OgzrvlWvdV03CzrQIZmj0b6hM=;
+	s=korg; t=1748872228;
+	bh=mVCZeY6NnvTUzCBV4GiRN9MQ8FhatX/VDZJhylXUra4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBIpLjUfaL49beMA8zsxlNXaXfmrLsmwo6D3Wr1f6lm/D96kgV/jtWVi7eWbT2Gl6
-	 ydb2NjH24qY0/bEjKTrRo3AFT/Ox4uk8pwvp5L56Pj/juy0dXt70CZ9fNq/xk3TBd+
-	 s0fLNa2rA1kFPjd3xUOV77Vs+tLqeJlhj023u930=
+	b=1SfCRv/akCDH4aKXGIAaI3oVHrIogHahOCxXXGQIQEYce7LNCNdXRCAJdr6JpRolx
+	 0I7KwVEv/oxSdqRRh/D/qljP3m+WlFucvGyJDyjxzHabbA+5QNIbH/FA7xR4LemfV0
+	 3kComYXI06msx+NIdZhbR/NeEOHfcFd2ro1/JVCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 14/55] arm64: dts: qcom: x1e80100: Fix video thermal zone
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.15 39/49] arm64: dts: ti: k3-j722s-main: Disable "serdes_wiz0" and "serdes_wiz1"
 Date: Mon,  2 Jun 2025 15:47:31 +0200
-Message-ID: <20250602134238.845478175@linuxfoundation.org>
+Message-ID: <20250602134239.476843080@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 801befff4c827aa72e3698367c5afc18987a6a3f upstream.
+commit 320d8a84f6f045dc876d4c2983f9024c7ac9d6df upstream.
 
-A passive trip point at 125°C is pretty high, this is usually the
-temperature for the critical shutdown trip point. Also, we don't have any
-passive cooling devices attached to the video thermal zone.
+Since "serdes0" and "serdes1" which are the sub-nodes of "serdes_wiz0"
+and "serdes_wiz1" respectively, have been disabled in the SoC file already,
+and, given that these sub-nodes will only be enabled in a board file if the
+board utilizes any of the SERDES instances and the peripherals bound to
+them, we end up in a situation where the board file doesn't explicitly
+disable "serdes_wiz0" and "serdes_wiz1". As a consequence of this, the
+following errors show up when booting Linux:
 
-Change this to be a critical trip point, and add a "hot" trip point at
-90°C for consistency with the other thermal zones.
+  wiz bus@f0000:phy@f000000: probe with driver wiz failed with error -12
+  ...
+  wiz bus@f0000:phy@f010000: probe with driver wiz failed with error -12
 
+To not only fix the above, but also, in order to follow the convention of
+disabling device-tree nodes in the SoC file and enabling them in the board
+files for those boards which require them, disable "serdes_wiz0" and
+"serdes_wiz1" device-tree nodes.
+
+Fixes: 628e0a0118e6 ("arm64: dts: ti: k3-j722s-main: Add SERDES and PCIe support")
 Cc: stable@vger.kernel.org
-Fixes: 4e915987ff5b ("arm64: dts: qcom: x1e80100: Enable tsens and thermal zone nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250219-x1e80100-thermal-fixes-v1-1-d110e44ac3f9@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250417123246.2733923-3-s-vadapalli@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-main.dtsi |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -6682,15 +6682,19 @@
- 		};
+--- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+@@ -32,6 +32,8 @@
+ 		assigned-clocks = <&k3_clks 279 1>;
+ 		assigned-clock-parents = <&k3_clks 279 5>;
  
- 		video-thermal {
--			polling-delay-passive = <250>;
--
- 			thermal-sensors = <&tsens0 12>;
- 
- 			trips {
- 				trip-point0 {
-+					temperature = <90000>;
-+					hysteresis = <2000>;
-+					type = "hot";
-+				};
++		status = "disabled";
 +
-+				video-critical {
- 					temperature = <125000>;
- 					hysteresis = <1000>;
--					type = "passive";
-+					type = "critical";
- 				};
- 			};
- 		};
+ 		serdes0: serdes@f000000 {
+ 			compatible = "ti,j721e-serdes-10g";
+ 			reg = <0x0f000000 0x00010000>;
+@@ -70,6 +72,8 @@
+ 		assigned-clocks = <&k3_clks 280 1>;
+ 		assigned-clock-parents = <&k3_clks 280 5>;
+ 
++		status = "disabled";
++
+ 		serdes1: serdes@f010000 {
+ 			compatible = "ti,j721e-serdes-10g";
+ 			reg = <0x0f010000 0x00010000>;
 
 
 
