@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F70ACB6C0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367B5ACB84F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFA944C0662
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C46172B3F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81BB239E99;
-	Mon,  2 Jun 2025 14:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87993225A3D;
+	Mon,  2 Jun 2025 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BjETFwX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOx6NxF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7428E239E95;
-	Mon,  2 Jun 2025 14:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F00225771;
+	Mon,  2 Jun 2025 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876376; cv=none; b=HbGDAiLNzjEwTw2Iz5v3lk5Gonn3/cBtMNVIlIYS7zufhF4ng1eXhZR38W0kBZw90CxmbCSiPllzEqQ3zghySuJbz3Rtv4zJW14+vUHsO4vQ53yaKkrw407sC+Ti2pNcxppbzMEL4rovkwoad1zVyWxWyAlS66D61KhXQkl3yDM=
+	t=1748877434; cv=none; b=gaXTguxiHhDy1IITwFTiCsxee/Dt8T2P1Tz7V3MAIErk7N12wGS0Xtp+p9zxLMV6N4Sa8Z9Rfr3t5qjswJfwR+0kvVUp+VaAwWWJ6limhR9V+IKfvJF0tQXTn6d5NTe7uyoUOGTVXOym/3l0EWE+XYogNGtwNWAEsyLh3JzARO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876376; c=relaxed/simple;
-	bh=FNPfN3MCDltyu+j5LSJZHWNp2E4ubFgvZO8/s9pWaHE=;
+	s=arc-20240116; t=1748877434; c=relaxed/simple;
+	bh=pU3zvxMHfuJUT0PIGhhzhazXFJGhqYZLml4DNT9pPqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btf/bVGy3UUfLIlDroocDVrdIZxdEUw8KEIJJpRrGDueuyx8+RKdb+AofV7WeUXIGy3awYpqX5ZTkz8Nbk9FnAtxUhAxgufy4cW6yDKUOGB3bVPWZEIl26LzMtT5DB6cAqr27RVnOmBF8Xete2n+2QU0wRYalx9Lv/EcrRhtIb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BjETFwX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2CD1C4CEEE;
-	Mon,  2 Jun 2025 14:59:35 +0000 (UTC)
+	 MIME-Version; b=i9I4K1/2UpcjVJTGrlp8sPM5EhJjOga0u+fIH1mmdoG4o4KNaa+oqUumCp+m58GyJBm4jpkPpHZnF9Hjne9jq8HP8JYGzu5J/iBf6zcvaWg1V1zGBydwPTeNqtgAaerZNjT8qvl/GB1cAMaBd5rZoUPA4JBM70L3kGXe14Sgun8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOx6NxF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4B8C4CEEE;
+	Mon,  2 Jun 2025 15:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876376;
-	bh=FNPfN3MCDltyu+j5LSJZHWNp2E4ubFgvZO8/s9pWaHE=;
+	s=korg; t=1748877434;
+	bh=pU3zvxMHfuJUT0PIGhhzhazXFJGhqYZLml4DNT9pPqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0BjETFwXOAanqvqS3P0b/+n3XuRWr8syaCThjkJlGKJmokZ4ldUVA5at1zJKIZPWS
-	 rmTmE1IzBP7/MwM7vs9eVDVzNJochvHLGeMH3IeW5kS9iUh/IG4qdTaTYaCIZpt8GZ
-	 eX7+9070/SpRVS98qyOfUOR+c+ADrceCCixXP2zo=
+	b=xOx6NxF5FARL2Jk7wbezNIaVobV7TD5/pw3HK4U98u8a9OVrhJ+2LHsSWSxAPSftA
+	 a7W8OL34ZUvRa5sT4lR3nEt8hHbX0a7pqiyiSYgVvK6/XNbupXr2jqyVOqwIKhA1MB
+	 ChtAVixJTf2mpv536yQdTtHVFetK1JbEFY1aTbZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+	Suman Ghosh <sumang@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/207] regulator: ad5398: Add device tree support
+Subject: [PATCH 6.1 246/325] octeontx2-pf: Add AF_XDP non-zero copy support
 Date: Mon,  2 Jun 2025 15:48:42 +0200
-Message-ID: <20250602134304.596453398@linuxfoundation.org>
+Message-ID: <20250602134329.776953528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Suman Ghosh <sumang@marvell.com>
 
-[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
+[ Upstream commit b4164de5041b51cda3438e75bce668e2556057c3 ]
 
-Previously, the ad5398 driver used only platform_data, which is
-deprecated in favour of device tree. This caused the AD5398 to fail to
-probe as it could not load its init_data. If the AD5398 has a device
-tree node, pull the init_data from there using
-of_get_regulator_init_data.
+Set xdp rx ring memory type as MEM_TYPE_PAGE_POOL for
+af-xdp to work. This is needed since xdp_return_frame
+internally will use page pools.
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 06059a1a9a4a ("octeontx2-pf: Add XDP support to netdev PF")
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/ad5398.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
-index 75f432f61e919..f4d6e62bd963e 100644
---- a/drivers/regulator/ad5398.c
-+++ b/drivers/regulator/ad5398.c
-@@ -14,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-+#include <linux/regulator/of_regulator.h>
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 5e11599d13223..59a7e6f376f47 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -988,6 +988,7 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
+ 	int err, pool_id, non_xdp_queues;
+ 	struct nix_aq_enq_req *aq;
+ 	struct otx2_cq_queue *cq;
++	struct otx2_pool *pool;
  
- #define AD5398_CURRENT_EN_MASK	0x8000
- 
-@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
- 	const struct ad5398_current_data_format *df =
- 			(struct ad5398_current_data_format *)id->driver_data;
- 
--	if (!init_data)
--		return -EINVAL;
--
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
- 	config.dev = &client->dev;
-+	if (client->dev.of_node)
-+		init_data = of_get_regulator_init_data(&client->dev,
-+						       client->dev.of_node,
-+						       &ad5398_reg);
-+	if (!init_data)
-+		return -EINVAL;
-+
- 	config.init_data = init_data;
-+	config.of_node = client->dev.of_node;
- 	config.driver_data = chip;
- 
- 	chip->client = client;
+ 	cq = &qset->cq[qidx];
+ 	cq->cq_idx = qidx;
+@@ -996,8 +997,13 @@ static int otx2_cq_init(struct otx2_nic *pfvf, u16 qidx)
+ 		cq->cq_type = CQ_RX;
+ 		cq->cint_idx = qidx;
+ 		cq->cqe_cnt = qset->rqe_cnt;
+-		if (pfvf->xdp_prog)
++		if (pfvf->xdp_prog) {
++			pool = &qset->pool[qidx];
+ 			xdp_rxq_info_reg(&cq->xdp_rxq, pfvf->netdev, qidx, 0);
++			xdp_rxq_info_reg_mem_model(&cq->xdp_rxq,
++						   MEM_TYPE_PAGE_POOL,
++						   pool->page_pool);
++		}
+ 	} else if (qidx < non_xdp_queues) {
+ 		cq->cq_type = CQ_TX;
+ 		cq->cint_idx = qidx - pfvf->hw.rx_queues;
 -- 
 2.39.5
 
