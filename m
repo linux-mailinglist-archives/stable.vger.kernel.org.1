@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616E8ACB417
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D12ACB52F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CCBC1896B48
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7701946FFB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A232236F3;
-	Mon,  2 Jun 2025 14:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BD722759C;
+	Mon,  2 Jun 2025 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxhZ1gYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrSPql8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF66421CC59;
-	Mon,  2 Jun 2025 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E27821516E;
+	Mon,  2 Jun 2025 14:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874704; cv=none; b=KfDTpfRqALsWGJyPEjOW1nAqf/qjgWtVacCA6YRJ8DHCJ734of31BZtDiBpo0iwR8GQYKmIa4Mp+WVhhMLiIrYH0WQ2maDQU2vDvEymhNFYot/jGyCEtFUF6ydl/QzGHTr9L0j3+ETPu1Gh1qH31a1XoVeAqUkA3swWEH2pNTTo=
+	t=1748875470; cv=none; b=ZSr8pznP3pbdRDmDoLXzK+LAGoG/ppU4yYZO7qG8hqP8ydAsCUq9w3+HYbku5BaslKjVr0BB9bmqR1DQ9RXpkownjnO6OzPXSa7FUXYcV17ZQa/X6PJbDrx6CsGvQ9i7qTsxqkMiDxVxslHNlksHebE+Ha5yDAnTJCFdlmRgLU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874704; c=relaxed/simple;
-	bh=PdFiBNIlQeBYHf1TmsKXRHJOXlOhmSdCJ5quqBXrWrE=;
+	s=arc-20240116; t=1748875470; c=relaxed/simple;
+	bh=c+cYTeMDis26MORFk2tcc5264TUUgLRXR2KSL0pp4q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hL8Pk9Xl0irsw96GJA6wDCYBLaUaJfXkGu1825ME09iZQI8pdU9gqetYiGlVC/TaNcZdmHHPXUyQTC5nljU/7wT4PXIgkQoLFALdzNHoAhfS0WgELgcz93edk0kV/hZIgVc7XKgnH7ycl3oGB6rjFY4y2M9/emDCvZ/jrQDmnqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxhZ1gYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD44C4CEEB;
-	Mon,  2 Jun 2025 14:31:44 +0000 (UTC)
+	 MIME-Version; b=oRr+GNUwxfJR+jVx/II7ASTB/f3Is+V7RPgAnbW74JeXvLBrYBvPXxj6VrurBlYjchr+WYp/yEiOpH6J59zmD/Ut9EpeeEXdVGg1iE8MCrxvu+j2hV5mEuXWLleSWT3pqC5wHEDzhy1W4UVuFSPzu1YstzomaXahvWbFKbRlty4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrSPql8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB3FC4CEEB;
+	Mon,  2 Jun 2025 14:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874704;
-	bh=PdFiBNIlQeBYHf1TmsKXRHJOXlOhmSdCJ5quqBXrWrE=;
+	s=korg; t=1748875470;
+	bh=c+cYTeMDis26MORFk2tcc5264TUUgLRXR2KSL0pp4q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxhZ1gYjo6iGutJnt/WyBns+wwC83A3GlU98Ilen5tkOCyutuR6SnBWGmsF4rVV0F
-	 8/ArjuEUB+OrWPq7kcC3/ulDCuy5hzOxXDnyBhJkJEXsR1x771575z8ZXDfh7ohZeF
-	 +xYJIuiIG8hWMCaZ/Cn94naIcd/dljYFiIooUoyU=
+	b=zrSPql8J+MajeQW0wQ1bWtb/MMIqLPJ9XM3FqAJRcTJCv31og2GA50KECtaGbGrz7
+	 jWYiXJwcKEwAVsijV/NFntfxAPG9FJmZU4xPee4pt8Q7QslROiP3Q1EcI0Wz3vqd5v
+	 DvG/iFsCOPxBVsLwFGc0Dg2JL1ydhXNSTFIMLa3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 079/204] ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 127/270] SUNRPC: rpcbind should never reset the port to the value 0
 Date: Mon,  2 Jun 2025 15:46:52 +0200
-Message-ID: <20250602134258.778512110@linuxfoundation.org>
+Message-ID: <20250602134312.419448172@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 9e000f1b7f31684cc5927e034360b87ac7919593 upstream.
+[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
 
-The function snd_es1968_capture_open() calls the function
-snd_pcm_hw_constraint_pow2(), but does not check its return
-value. A proper implementation can be found in snd_cx25821_pcm_open().
+If we already had a valid port number for the RPC service, then we
+should not allow the rpcbind client to set it to the invalid value '0'.
 
-Add error handling for snd_pcm_hw_constraint_pow2() and propagate its
-error code.
-
-Fixes: b942cf815b57 ("[ALSA] es1968 - Fix stuttering capture")
-Cc: stable@vger.kernel.org # v2.6.22
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250514092444.331-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/es1968.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/sunrpc/rpcb_clnt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/pci/es1968.c
-+++ b/sound/pci/es1968.c
-@@ -1575,7 +1575,7 @@ static int snd_es1968_capture_open(struc
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct es1968 *chip = snd_pcm_substream_chip(substream);
- 	struct esschan *es;
--	int apu1, apu2;
-+	int err, apu1, apu2;
+diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
+index 8fad45320e1b9..f1bb4fd2a2707 100644
+--- a/net/sunrpc/rpcb_clnt.c
++++ b/net/sunrpc/rpcb_clnt.c
+@@ -794,9 +794,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
+ 	}
  
- 	apu1 = snd_es1968_alloc_apu_pair(chip, ESM_APU_PCM_CAPTURE);
- 	if (apu1 < 0)
-@@ -1618,7 +1618,9 @@ static int snd_es1968_capture_open(struc
- 	runtime->hw = snd_es1968_capture;
- 	runtime->hw.buffer_bytes_max = runtime->hw.period_bytes_max =
- 		calc_available_memory_size(chip) - 1024; /* keep MIXBUF size */
--	snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
-+	err = snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
-+	if (err < 0)
-+		return err;
+ 	trace_rpcb_setport(child, map->r_status, map->r_port);
+-	xprt->ops->set_port(xprt, map->r_port);
+-	if (map->r_port)
++	if (map->r_port) {
++		xprt->ops->set_port(xprt, map->r_port);
+ 		xprt_set_bound(xprt);
++	}
+ }
  
- 	spin_lock_irq(&chip->substream_lock);
- 	list_add(&es->list, &chip->substream_list);
+ /*
+-- 
+2.39.5
+
 
 
 
