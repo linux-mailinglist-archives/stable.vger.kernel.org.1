@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4D7ACB4CC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AF8ACB6E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100714A25B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04FA81889844
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD7B22D78A;
-	Mon,  2 Jun 2025 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46BF22DF8B;
+	Mon,  2 Jun 2025 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ml/+LWwx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AMc3Xe4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ABA22A804;
-	Mon,  2 Jun 2025 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED1222D4CE;
+	Mon,  2 Jun 2025 15:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875238; cv=none; b=pFsoVWLGmkTIkNiqayp+/MtuopktX9ALGnRj2KC1jtawdTijVbfCvZvYaT5plhZk/3qGqnjSZ5Lq+/nJNFNq/NOoJzBAmxMwXiFb41qkM3EctdJEkbyes0sNtSYc2w2AIEFUp0RQ5TvV88zSujVUQXrMbup6u2VPpHkf9wwbFq8=
+	t=1748876907; cv=none; b=hoRbL7LAYyja4bqxoV+jR0zG9HAKGgkoBpVCktFl8vu9epwni4KZZ4oKPkuV6dkfaPvr8t5XN/R66bkH3dfhCOthCmSiXBL47OKeDx1UmZ36+7/RgKXDRyl4hyu1+Dr6VdupvDL3pVWZoNpjyzXMiWJ4RAyfhflUXZoUT0aTLgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875238; c=relaxed/simple;
-	bh=4IQJTkr2a6uvdWEXrzM+0SljnCPjv0QzIBVWkv3zJRg=;
+	s=arc-20240116; t=1748876907; c=relaxed/simple;
+	bh=67ozSBmzhS7zpZCxkXKXifaBRI2OAzCGN7a/N6kUSbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwmwVr+eGewPwOPV3QX8NyP28XEPQhQwcZeVtkhvqcGO+l/OVoDPUxwzxMtR0f3hbaAnXGtqmTBvV+dKDchN7qsQU4gi2bgWw5RWoObpY0N0bfUdQIQlJt0XSQ1f7/mrMVAVFnRYbadXfGIN0h+ixkyozsglD8WOFnyA89C9MAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ml/+LWwx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2D6C4CEEB;
-	Mon,  2 Jun 2025 14:40:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NFLenlcxkxg0zmd8Y7/0/LWS5PjwbXEu8n0WKABixhCZOdnt30QWsPPSsDNFaRulhXxvkniGqJ+iP21JAyVem83v7HRqjZSfWkuITU7aa41HFjG+hfTsVvH+4TXdrk/5ePGIbG3KQF6ph+cciG3vr7JoiZ1flCh2Y8FnKAkMMaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AMc3Xe4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69488C4CEEB;
+	Mon,  2 Jun 2025 15:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875238;
-	bh=4IQJTkr2a6uvdWEXrzM+0SljnCPjv0QzIBVWkv3zJRg=;
+	s=korg; t=1748876906;
+	bh=67ozSBmzhS7zpZCxkXKXifaBRI2OAzCGN7a/N6kUSbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ml/+LWwxIkklNGYP9frbirZ9MDNcPaCg2azZN4pOsn0sTyHqSFpR+HiBvOsX+TE62
-	 BgNvz8sAKfGJDkBZY7U303knSeG9W67jddWDmNYrg9DDGMOHwuPH8DG8ipyVjboOQ0
-	 W8dHyfNCRAwlgr49EKxiHtuHablXUUdklMKlhtjM=
+	b=1AMc3Xe4hPL7kfWZmK3AVmsg6EDvNlzOC4eXQsmPCmsSZ/TW05pAicqzTOyL7DCZQ
+	 Lib8E0JSv9MS7zR3N83qgbyTg+22qC6AR313L0Q4K8Vcgwhq33w7Hbc2wkyfEyTF+F
+	 Ocb9JECChv+wGuN51nD4fWNNyWg7uJb/9/tRRRC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>
-Subject: [PATCH 5.10 072/270] usb: typec: ucsi: displayport: Fix NULL pointer access
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/325] timer_list: Dont use %pK through printk()
 Date: Mon,  2 Jun 2025 15:45:57 +0200
-Message-ID: <20250602134310.128431453@linuxfoundation.org>
+Message-ID: <20250602134323.070686724@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 312d79669e71283d05c05cc49a1a31e59e3d9e0e upstream.
+[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
 
-This patch ensures that the UCSI driver waits for all pending tasks in the
-ucsi_displayport_work workqueue to finish executing before proceeding with
-the partner removal.
+This reverts commit f590308536db ("timer debug: Hide kernel addresses via
+%pK in /proc/timer_list")
 
-Cc: stable <stable@kernel.org>
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250424084429.3220757-3-akuchynski@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The timer list helper SEQ_printf() uses either the real seq_printf() for
+procfs output or vprintk() to print to the kernel log, when invoked from
+SysRq-q. It uses %pK for printing pointers.
+
+In the past %pK was prefered over %p as it would not leak raw pointer
+values into the kernel log. Since commit ad67b74d2469 ("printk: hash
+addresses printed with %p") the regular %p has been improved to avoid this
+issue.
+
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping looks in atomic contexts.
+
+Switch to the regular pointer formatting which is safer, easier to reason
+about and sufficient here.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/time/timer_list.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -270,6 +270,8 @@ void ucsi_displayport_remove_partner(str
- 	if (!dp)
- 		return;
+diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
+index ed7d6ad694fba..20a5e6962b696 100644
+--- a/kernel/time/timer_list.c
++++ b/kernel/time/timer_list.c
+@@ -46,7 +46,7 @@ static void
+ print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
+ 	    int idx, u64 now)
+ {
+-	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
++	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
+ 	SEQ_printf(m, ", S:%02x", timer->state);
+ 	SEQ_printf(m, "\n");
+ 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
+@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
+ static void
+ print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
+ {
+-	SEQ_printf(m, "  .base:       %pK\n", base);
++	SEQ_printf(m, "  .base:       %p\n", base);
+ 	SEQ_printf(m, "  .index:      %d\n", base->index);
  
-+	cancel_work_sync(&dp->work);
-+
- 	dp->data.conf = 0;
- 	dp->data.status = 0;
- 	dp->initialized = false;
+ 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
+-- 
+2.39.5
+
 
 
 
