@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2145ACB0E3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:12:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B047ACB375
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C82716C10C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25BA317EAE3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CB523507B;
-	Mon,  2 Jun 2025 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC442227EB6;
+	Mon,  2 Jun 2025 14:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EN9eCoLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lqx6kphq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EE9235061;
-	Mon,  2 Jun 2025 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8369227EAE;
+	Mon,  2 Jun 2025 14:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872979; cv=none; b=nPSP26f6h5V5TLqVL5jg0Oy+6TTDpGnkQzFJzHaNEkc78ptQlWm6WTvY9wMtpD12QQJjNf55bjZU2ld3TTUTrvhPmOiYOWgVsHAYuhWkChukpReA+az1e5/pzQnhCo/XJ+lWQ4z6nVGIEvpY7HX17K/8nxWG9pzUAqrxILPMSlg=
+	t=1748874312; cv=none; b=ge2LBhdxRXmChboXZTZ5cdWKtaSjEaKVLHwJV2XRM1lGewBLVMVLsTehzJBoWog7vIB7hURvk75SOT37oUNKXmhYfsxQioMpATg3AWzhzsuB0qx5Lf7DRkBIqVh5Z1W+9C8RZ+mk83rdY+22aqBcB/t3WZ1GBW8YNtabL+fLU/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872979; c=relaxed/simple;
-	bh=yGEXisPko5+PnaMR00b3V66jFaHp6TT57hwnxVU1d2A=;
+	s=arc-20240116; t=1748874312; c=relaxed/simple;
+	bh=ReZ0c26bDKqNXsbs3K5puNg07W/ctmtT40MEsEwaSVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kiOQgMQzIaCjHldJphbD/yqnZLhw/IWrcAn9KmGyR0FG/mjuPi5DHRlWIv6yGYZdVvYrne/RWpGlvmVwouV2a0Uz15v0HP2uQGjsTb8o7qsh9o/UcPfudQU3tE4ROR0x11/FwDcJ4xrrJn/SEKHvvtVX03dGmT5cemZL4toX1WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EN9eCoLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE918C4CEEE;
-	Mon,  2 Jun 2025 14:02:58 +0000 (UTC)
+	 MIME-Version; b=HQJ8iVSo5eyounUz2c8y3/m7EiBja+PLGuxg9RH2JVNllu7mAsgbl/YFboIISHIwHV9vf4N0qSdw1q7qsMo9b1Eq+1nAetF+TWywLuiXvYZm63iAIWbF6+xhiXkBGLqE+kWCLVfNe8Z1NzecLHf5Njf7MPAsx76Z3/HbZ2SX+lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lqx6kphq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F93C4CEEB;
+	Mon,  2 Jun 2025 14:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872979;
-	bh=yGEXisPko5+PnaMR00b3V66jFaHp6TT57hwnxVU1d2A=;
+	s=korg; t=1748874312;
+	bh=ReZ0c26bDKqNXsbs3K5puNg07W/ctmtT40MEsEwaSVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EN9eCoLOOASTghk80KFkjkbkG1ZnucjAdHneQLabcNFQ/Oi+GqkP+8OUmsA7Gsebq
-	 dlfu8e25pukv2M5abPflP17RiTBjrK48xGpnBXPVYmZTywYebsreRT2rSZ9XhvAEa1
-	 4b/xGmQlr0SJlxp7zFCMFkSpUoBy9mg0wactKXUA=
+	b=Lqx6kphqkS5WNxO7rjtyMAnwhREUQqm03gBKgJs1rhTzol9HoePrg/TYRQecnMPTE
+	 ng8W/Z5xwvr0D2JGo274XSWTbW/18UtYl6eRKOi6jM9tYAJ8iqJQSVuduzXjb2Ia/g
+	 +53tm7d1I3iG6mcfb4pS/WY72c+55+CdGuZP3Tuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 55/55] ksmbd: use list_first_entry_or_null for opinfo_get_list()
+	Robin Murphy <robin.murphy@arm.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 428/444] perf/arm-cmn: Initialise cmn->cpu earlier
 Date: Mon,  2 Jun 2025 15:48:12 +0200
-Message-ID: <20250602134240.441210028@linuxfoundation.org>
+Message-ID: <20250602134358.312650575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 10379171f346e6f61d30d9949500a8de4336444a ]
+commit 597704e201068db3d104de3c7a4d447ff8209127 upstream.
 
-The list_first_entry() macro never returns NULL.  If the list is
-empty then it returns an invalid pointer.  Use list_first_entry_or_null()
-to check if the list is empty.
+For all the complexity of handling affinity for CPU hotplug, what we've
+apparently managed to overlook is that arm_cmn_init_irqs() has in fact
+always been setting the *initial* affinity of all IRQs to CPU 0, not the
+CPU we subsequently choose for event scheduling. Oh dear.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202505080231.7OXwq4Te-lkp@intel.com/
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/perf/arm-cmn.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 03f606afad93a..d7a8a580d0136 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -146,12 +146,9 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
- {
- 	struct oplock_info *opinfo;
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2443,6 +2443,7 @@ static int arm_cmn_probe(struct platform
  
--	if (list_empty(&ci->m_op_list))
--		return NULL;
--
- 	down_read(&ci->m_lock);
--	opinfo = list_first_entry(&ci->m_op_list, struct oplock_info,
--					op_entry);
-+	opinfo = list_first_entry_or_null(&ci->m_op_list, struct oplock_info,
-+					  op_entry);
- 	if (opinfo) {
- 		if (opinfo->conn == NULL ||
- 		    !atomic_inc_not_zero(&opinfo->refcount))
--- 
-2.39.5
-
+ 	cmn->dev = &pdev->dev;
+ 	cmn->part = (unsigned long)device_get_match_data(cmn->dev);
++	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
+ 	platform_set_drvdata(pdev, cmn);
+ 
+ 	if (cmn->part == PART_CMN600 && has_acpi_companion(cmn->dev)) {
+@@ -2470,7 +2471,6 @@ static int arm_cmn_probe(struct platform
+ 	if (err)
+ 		return err;
+ 
+-	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
+ 	cmn->pmu = (struct pmu) {
+ 		.module = THIS_MODULE,
+ 		.attr_groups = arm_cmn_attr_groups,
 
 
 
