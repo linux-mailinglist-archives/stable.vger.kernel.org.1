@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-150586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768F4ACB7FF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1506ACB2E4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B214A6D2B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:27:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF1C1946E19
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E97D1CAA7D;
-	Mon,  2 Jun 2025 15:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6CF239E97;
+	Mon,  2 Jun 2025 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTJMb1w7"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="C7Z5KcZQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00DA2576;
-	Mon,  2 Jun 2025 15:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEFF1E0DD8;
+	Mon,  2 Jun 2025 14:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877592; cv=none; b=fJ1JtOYpbr1N2zETMtSB/5TrQQHBd4nXkHdlcdgunrzDkM0mzFgqcdpgrPgRj0fOlrMQjALkXyiiPZLo3mho8s9MHhJY28SMghgHeJALY+eaEA+MtqDFVtjNwrFjvKgbBRxdViro4Sy9d1kHZO9pBykyUGijauIZKrA7htDU7/4=
+	t=1748874088; cv=none; b=OdVqP1kq8ovqHEDVtVMwgG2R5eLKt+BxIutqHv+I4h4i3lBC+fVgRN0yB1lywEPad3C1nW9kEI3EzHdb0ewhRuQ0ZZxsiZfPylgNpE1AF170PomidibFV35oaUi0t7OTeH70+cV+vq0YZJXYUEieBBXEZEXm8qUeAVJrXiliA/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877592; c=relaxed/simple;
-	bh=hwh/NkDhypaV0bOqljlQSffYOHy4Ih5AYdFgmnMmxXI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ct2jAnrt+/o7FLFqqnjdzNhNTctmJtekb04+Ud1Cp3kdcUzS3sCMWqDHdqPiFUrUysKNfR64l7HC0xK7Ig7rb8sb4W0DNohgrW/000jCwa/QqbSN/8O6XAySNlbt8avT8L2Oj/44+xTOlz5KWQjwKDfWcSlGFKB2BTZRxd4P2uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTJMb1w7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF56C4CEEB;
-	Mon,  2 Jun 2025 15:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877591;
-	bh=hwh/NkDhypaV0bOqljlQSffYOHy4Ih5AYdFgmnMmxXI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTJMb1w79gRkls//Rlqi2Xu0U7lqbcZQZxjqw4cbWbt4kyBuQW6CNc263I4p9w7GC
-	 y7zSd+7MJDYhq0lfJhrJa3fcil8yJgfCZh56PjxWQpGD2hV10Z7iDpMeSQaRsn5sH9
-	 051IkvYygi7lJhMNRLRjJBKU+q72WC5OenjQOjyw=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Nishanth Menon <nm@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 325/325] net: ethernet: ti: am65-cpsw: Lower random mac address error print to info
-Date: Mon,  2 Jun 2025 15:50:01 +0200
-Message-ID: <20250602134333.145555321@linuxfoundation.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1748874088; c=relaxed/simple;
+	bh=aJSb9PmeEEKVMNDeRlwAav1QVCTH6xqnxDLJofN6fhA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gl6BAsGXVOVddGRYqo/MDwGNrCIgFkDuJ+DxLmT/O5LexBoJQSGX7NkSQUtM6Og3Tzr0ldSlOK6RtSMyY7AC6egcOQ7LQCbAjUGwyboNW2tfnVzjeMZnMs7ipkQw2HcWtF+dttDqcBGSsASqCI3lbvBxhdNgIa/1tUZdbZG9lMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=C7Z5KcZQ; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1748874082;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kgQPI+dNQX5S/d0yPfZSHZR915JjJBF9kW4q/ixBVA0=;
+	b=C7Z5KcZQCaOB+ldk8UgL6UvcJUJWh4vMjC/cyhywjJhOR3NiEbHA2lREht4+ZLp3QthIyv
+	4m9pz6505g21a1ZZhRbSZYVj5n7QFR17R8Zq5YnRPZEbuMRtjwB2JwdaMO9qwdQF3Vp4uV
+	AQH9UKhhQ8X/xj7/6IHll91usFDFIpw=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Amir Goldstein <amir73il@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	lei lu <llfamsec@gmail.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 5.10] xfs: add bounds checking to xlog_recover_process_data
+Date: Mon,  2 Jun 2025 17:21:21 +0300
+Message-ID: <20250602142122.82111-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,45 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+From: lei lu <llfamsec@gmail.com>
 
-------------------
+commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
 
-From: Nishanth Menon <nm@ti.com>
+There is a lack of verification of the space occupied by fixed members
+of xlog_op_header in the xlog_recover_process_data.
 
-[ Upstream commit 50980d8da71a0c2e045e85bba93c0099ab73a209 ]
+We can create a crafted image to trigger an out of bounds read by
+following these steps:
+    1) Mount an image of xfs, and do some file operations to leave records
+    2) Before umounting, copy the image for subsequent steps to simulate
+       abnormal exit. Because umount will ensure that tail_blk and
+       head_blk are the same, which will result in the inability to enter
+       xlog_recover_process_data
+    3) Write a tool to parse and modify the copied image in step 2
+    4) Make the end of the xlog_op_header entries only 1 byte away from
+       xlog_rec_header->h_size
+    5) xlog_rec_header->h_num_logops++
+    6) Modify xlog_rec_header->h_crc
 
-Using random mac address is not an error since the driver continues to
-function, it should be informative that the system has not assigned
-a MAC address. This is inline with other drivers such as ax88796c,
-dm9051 etc. Drop the error level to info level.
+Fix:
+Add a check to make sure there is sufficient space to access fixed members
+of xlog_op_header.
 
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://patch.msgid.link/20250516122655.442808-1-nm@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Backport fix for CVE-2024-41014
+Link: https://nvd.nist.gov/vuln/detail/cve-2024-41014
+---
+ fs/xfs/xfs_log_recover.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 32828d4ac64ce..a0a9e4e13e77b 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -1918,7 +1918,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 							port->slave.mac_addr);
- 			if (!is_valid_ether_addr(port->slave.mac_addr)) {
- 				eth_random_addr(port->slave.mac_addr);
--				dev_err(dev, "Use random MAC address\n");
-+				dev_info(dev, "Use random MAC address\n");
- 			}
- 		}
- 	}
+diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
+index e61f28ce3e44..eafe76f304ef 100644
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2419,7 +2419,10 @@ xlog_recover_process_data(
+ 
+ 		ohead = (struct xlog_op_header *)dp;
+ 		dp += sizeof(*ohead);
+-		ASSERT(dp <= end);
++		if (dp > end) {
++			xfs_warn(log->l_mp, "%s: op header overrun", __func__);
++			return -EFSCORRUPTED;
++		}
+ 
+ 		/* errors will abort recovery */
+ 		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
 -- 
-2.39.5
-
-
+2.43.0
 
 
