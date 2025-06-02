@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-150600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5016AACB95A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8DBACB95B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7638118990A6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:14:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EF7218991FD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6A2224228;
-	Mon,  2 Jun 2025 16:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0152224240;
+	Mon,  2 Jun 2025 16:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="swBuh40/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPhndRfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAFD1D6DB6
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 16:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CE5223323
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 16:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748880875; cv=none; b=FjB5EF/NOt9HUA6TkQcUBVP5Ps332OF0sU58tSCt3v3YN5d0hOTLlELLKYaYXB7U013EQadJzEELubdRuU76u7lH8i40z4rt7CfSC4Gzvf65ln+4ztFJvQJR4+nnGlWCeMkK5yOffJR1NQYUesL+1r04ijo+SalauP6UnE2Ml8U=
+	t=1748880877; cv=none; b=tuWsyESLfRhD5eOHFdQqjKQ6Qdeh09nAOHAXz/G1XmAvecIYdWZzwAp3zKr8DeQBiE1H5GS2GoNSgBzUcFIGroxgfiJCGUEjAQ7GUOJB78+iX8kabajgiX6JKaL82bJcmu7Jmk2uEd8l2lGHAPI+P0nZKx3288kPG2kUB15ohHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748880875; c=relaxed/simple;
-	bh=/6WzksVyAX6jRF9APOJmKvmdzi3pqVHCWbCrLNNUWP4=;
+	s=arc-20240116; t=1748880877; c=relaxed/simple;
+	bh=oVB7DxziXDCVeUa2IvM7ieKhoP+KCqi23gwLzESXbNU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cqwJbQ0sJijFh5PBgXWacPi5A37Hb8p1YTEunvZK+0dY2ncwhWicEKkZ0S63w8eQwQzmxlKEKJXk1dZgwFUfj8/Zk/wGd92J+8ndWAC3JqGu+L3clepPcQqx5wBTGmuaoMrGZVj47LDZlYetXMIF+GFWnaoRbAOst4rTnntwV7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=swBuh40/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B29C4CEEB;
-	Mon,  2 Jun 2025 16:14:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HG+xEAUJlyj2hhWfkcqkkeNw+TP+VGhoefAJOy05jiuEqjYCOMbomUmcS+OICkSLFCs0xhnqM2G+8dhaaXpxVK9ESQDNFhLNq1ThqgCO+m58XJQuy69jcpc1sZjHmwsnCDwofcvM67B/39DP+MuKqx6x9dDMZ9A8Z2H5UXSm31s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPhndRfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7A2C4CEEB;
+	Mon,  2 Jun 2025 16:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748880875;
-	bh=/6WzksVyAX6jRF9APOJmKvmdzi3pqVHCWbCrLNNUWP4=;
+	s=k20201202; t=1748880876;
+	bh=oVB7DxziXDCVeUa2IvM7ieKhoP+KCqi23gwLzESXbNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swBuh40/qGxj2IxYrr9b2UfwB/bYr9R0cV+Fsr4da5MCDQcsrgk6sz4HX7LMmos4p
-	 zjSqFBuJtZcDzZsC6UTxMPKXO0IecP4KUPNIgsI3Qq/uCZTksgFuAQSbelqvABgYGq
-	 zVwTGgOBAhEWKEE0b/vRkOCSogHtJlCbJ/g/7TbIwaETyf8ANUHqKYU2UXWXov2cgz
-	 laOGfNpWzSzivrBC93Rmf1lQqoqoX4h9pT7B1MlJHPSkU7lOb4kTgD01KAJomIeCmZ
-	 ViWxTvEVyMefAzLX+PbWQoXFAoADsCE9JGhSilqgVTSGxE7b6lGDFaYmr/9XkUdXNi
-	 qbWaklsB82qDQ==
+	b=aPhndRfN1OTCmUTMZkfQPNQByfoO1DKlC0GqHRO1ln1iH3jgQsi6jJSPChSq1AYSe
+	 i37ITWnIofRd5S+wpnMWTw7XVHQKCvNIg6cJHxv/TMr1FYVlk6w8lvxSgQnqjimtdw
+	 D8+TtJqW02YvZGlUdAZJyB6v/Y5cPG0Wjvz8VUENhqK8ZfZVsWS5I8IZmC0M/mMlma
+	 DUrOpuyUlpYhkeVi5Pl3jnlVQKccSdPz0nZgwm2ZhG7lzAdeR2pR+7qwRRzzUQwCqB
+	 y8afTFmRyoHkl3XONeBOGbFpxnQp5rQHSlTuXeCb/oLRHJWy25J3x9wuv+A0/s5dG3
+	 d7WX5nctxcrzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y 1/1] xen/swiotlb: relax alignment requirements
-Date: Mon,  2 Jun 2025 12:14:33 -0400
-Message-Id: <20250602093143-43d78c125dfd17b0@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y 1/1] xen/swiotlb: relax alignment requirements
+Date: Mon,  2 Jun 2025 12:14:35 -0400
+Message-Id: <20250602092810-27d2e33939217c53@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250602113301.3475805-2-harshvardhan.j.jha@oracle.com>
+In-Reply-To:  <20250602113308.3475836-2-harshvardhan.j.jha@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,10 +80,11 @@ Status in newer kernel trees:
 6.6.y | Present (different SHA1: 461d9e8acaa4)
 6.1.y | Present (different SHA1: 099606a7b2d5)
 5.15.y | Present (different SHA1: 688cc08c2cb0)
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  85fcb57c983f4 ! 1:  d274de5e155e1 xen/swiotlb: relax alignment requirements
+1:  85fcb57c983f4 ! 1:  e8a1898ab6dcf xen/swiotlb: relax alignment requirements
     @@
       ## Metadata ##
     -Author: Juergen Gross <jgross@suse.com>
@@ -105,15 +106,14 @@ Note: The patch differs from the upstream commit:
     -    Tested-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
     -    Signed-off-by: Juergen Gross <jgross@suse.com>
     -    Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-    +
          Signed-off-by: Juergen Gross <jgross@suse.com>
     +    Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
      
       ## drivers/xen/swiotlb-xen.c ##
     -@@ drivers/xen/swiotlb-xen.c: static inline phys_addr_t xen_dma_to_phys(struct device *dev,
     - 	return xen_bus_to_phys(dev, dma_to_phys(dev, dma_addr));
-    +@@ drivers/xen/swiotlb-xen.c: static inline dma_addr_t xen_virt_to_bus(struct device *dev, void *address)
-    + 	return xen_phys_to_dma(dev, virt_to_phys(address));
+    +@@ drivers/xen/swiotlb-xen.c: static inline dma_addr_t xen_virt_to_bus(void *address)
+    + 	return xen_phys_to_bus(virt_to_phys(address));
       }
       
      +static inline bool range_requires_alignment(phys_addr_t p, size_t size)
@@ -134,8 +134,8 @@ Note: The patch differs from the upstream commit:
     -@@ drivers/xen/swiotlb-xen.c: xen_swiotlb_free_coherent(struct device *dev, size_t size, void *vaddr,
     - 	size = ALIGN(size, XEN_PAGE_SIZE);
     +@@ drivers/xen/swiotlb-xen.c: xen_swiotlb_alloc_coherent(struct device *hwdev, size_t size,
-    + 	phys = dma_to_phys(hwdev, *dma_handle);
-    + 	dev_addr = xen_phys_to_dma(hwdev, phys);
+    + 	phys = *dma_handle;
+    + 	dev_addr = xen_phys_to_bus(phys);
     + 	if (((dev_addr + size - 1 <= dma_mask)) &&
     +-	    !range_straddles_page_boundary(phys, size))
     ++	    !range_straddles_page_boundary(phys, size) &&
@@ -163,5 +163,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
