@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1931ACB389
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61AEFACB5B8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08AC84A4206
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EE414002EF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB99D223DE1;
-	Mon,  2 Jun 2025 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBD622A4F6;
+	Mon,  2 Jun 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0xwWqJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6hUUVYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C3B23C518;
-	Mon,  2 Jun 2025 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694492147E7;
+	Mon,  2 Jun 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874160; cv=none; b=ZOO8M9KeHpcFa94rL3Zqig5CQJvDVSaG9l4RpLsKmBGNcV2x0xLiasmLcsRi1WbWdy0Lkp8uJiSMdtDAKLfhWnyf+xlZ1rq8scIkvsSUDDWLsCPuISysEiZw17exfa2uSwGrXeClcTQQ5pH1NefjdHm5BwUxmkQiFVCo5+LYopA=
+	t=1748875514; cv=none; b=Ug0CEz/6vKhJ+3kL6qnIy8HX4iZrXYYu5e4Sb8vjCnAH6suEEVUgNJPwahmZVI7SjmBLmHP3nmzRamdeDOdghf6+A3ES9O3CU92l/wi4mlp4dZATRlOW1zyYCLyjUINaLnKOYG+x8qUhZTaf4nOuBi2ykuiLJ7QMq/TqHw4ta78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874160; c=relaxed/simple;
-	bh=RYPVR28hMBlh3cnCeqxgABmamXke4NRtwz7/r8sSeuM=;
+	s=arc-20240116; t=1748875514; c=relaxed/simple;
+	bh=o/3WzLnwKaMcBnfo95/Ugu6C0f0VwsjJZGrVgksiXLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEYbUGU7Rm0y8GKFt0L6s8Eh/ff5NfAqmxfv1DDQKWQBwLmM/7lUCKWTp9ouSRiy/DFZIgJRuaU36TxO299qW4inykbuYkmJnH6k0glIgAfkqJb1jJmaTgcFtSGqCb3MI9+ThXvdRf899lY3BCKXZcjJSZmJQ5M2gIEJNCIAAwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0xwWqJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9E7C4CEEB;
-	Mon,  2 Jun 2025 14:22:39 +0000 (UTC)
+	 MIME-Version; b=H446j4m+7aeRXLsndz7c3xXVBpJMs6OQHh9nPYxGONmlBfDh3jx1v7x6JY95kpdH8mY18hswKh18NQUeAaGRDC/huW1NQkXRvwP087FgBFRI+3iIi/LnGu4dJ32rf9mNrE/C/7OcL4nOdy4h5PT2BCo+JgGHfHFjEk+ohkOTn2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6hUUVYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB23C4CEEB;
+	Mon,  2 Jun 2025 14:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874160;
-	bh=RYPVR28hMBlh3cnCeqxgABmamXke4NRtwz7/r8sSeuM=;
+	s=korg; t=1748875514;
+	bh=o/3WzLnwKaMcBnfo95/Ugu6C0f0VwsjJZGrVgksiXLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0xwWqJ7a3rUKLvhVFT9mbgMNdWbx1dC84rKSjblTF3RY2ixCGdkmPc6j7ltcWhkF
-	 VbK6iVWHahhfulr76Gb6uSZwboiWyctB28Q5WrnZNLKgdR2nU2QObFnYPmrptWRV4m
-	 S2YAceA3k2ler8jtHxEGa95esBOz1kKIhmhKH4HA=
+	b=s6hUUVYvE/Jt2Sm0iA6dZxgAyb6uUr0g237T4FGMVn3HkbQiVXVIwI5XR03BPeT6/
+	 sPw4PFKV5BLX/TN7pO4fJtZwA5Uoi96dUw55Ji6OSJTgyMWeVv3iElJbv9J2dOc9h3
+	 /9eo0qgsscowz4/Z6wok7/HhZTwDSCf/soAMi0pU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 378/444] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
+Subject: [PATCH 5.10 157/270] rtc: ds1307: stop disabling alarms on probe
 Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134356.255483007@linuxfoundation.org>
+Message-ID: <20250602134313.631899346@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,169 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
+[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
 
-This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
+It is a bad practice to disable alarms on probe or remove as this will
+prevent alarms across reboots.
 
-Hardware that uses I2C wasn't designed with high speeds in mind, so
-communication with PMIC via RSB can intermittently fail. Go back to I2C
-as higher speed and efficiency isn't worth the trouble.
-
-Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
-Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
- .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
- .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
- 3 files changed, 37 insertions(+), 37 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-index 381d58cea092d..c854c7e310519 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-@@ -151,28 +151,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 07a9cc91671b0..3a2401ce2ec9c 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1864,10 +1864,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		 * For some variants, be sure alarms can trigger when we're
+ 		 * running on Vbackup (BBSQI/BBSQW)
+ 		 */
+-		if (want_irq || ds1307_can_wakeup_device) {
++		if (want_irq || ds1307_can_wakeup_device)
+ 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
+-			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+-		}
  
--&r_ir {
--	linux,rc-map-name = "rc-beelink-gs1";
--	status = "okay";
--};
--
--&r_pio {
--	/*
--	 * FIXME: We can't add that supply for now since it would
--	 * create a circular dependency between pinctrl, the regulator
--	 * and the RSB Bus.
--	 *
--	 * vcc-pl-supply = <&reg_aldo1>;
--	 */
--	vcc-pm-supply = <&reg_aldo1>;
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
- 
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -290,6 +274,22 @@
- 	};
- };
- 
-+&r_ir {
-+	linux,rc-map-name = "rc-beelink-gs1";
-+	status = "okay";
-+};
-+
-+&r_pio {
-+	/*
-+	 * PL0 and PL1 are used for PMIC I2C
-+	 * don't enable the pl-supply else
-+	 * it will fail at boot
-+	 *
-+	 * vcc-pl-supply = <&reg_aldo1>;
-+	 */
-+	vcc-pm-supply = <&reg_aldo1>;
-+};
-+
- &spdif {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&spdif_tx_pin>;
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-index 6fc65e8db2206..8c476e089185b 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-@@ -175,16 +175,12 @@
- 	vcc-pg-supply = <&reg_vcc_wifi_io>;
- };
- 
--&r_ir {
--	status = "okay";
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
- 
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -295,6 +291,10 @@
- 	};
- };
- 
-+&r_ir {
-+	status = "okay";
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-index 92745128fcfeb..4ec4996592bef 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-@@ -112,20 +112,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
- 
--&r_ir {
--	status = "okay";
--};
--
--&r_pio {
--	vcc-pm-supply = <&reg_bldo3>;
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
- 
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -240,6 +232,14 @@
- 	};
- };
- 
-+&r_ir {
-+	status = "okay";
-+};
-+
-+&r_pio {
-+	vcc-pm-supply = <&reg_bldo3>;
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
 -- 
 2.39.5
 
