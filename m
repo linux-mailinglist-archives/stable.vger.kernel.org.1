@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D63ACB437
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70120ACB712
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 906DD406762
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0578F1BC6465
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E40722F164;
-	Mon,  2 Jun 2025 14:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B2422D9EE;
+	Mon,  2 Jun 2025 14:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsKp1BAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HP5c/C+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6C122E3E3;
-	Mon,  2 Jun 2025 14:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E324722D7B1;
+	Mon,  2 Jun 2025 14:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874521; cv=none; b=Gmeh424ZegK0sXvoBSlgh0UMuGhTrDF+EcseJ8walh0VRw5VojtX743mL1egjTyzYk3hMS5vppXOmKojSoKDbLVsCZEpIrf0LyDxn/vvXa4eCJTownkyn9AxB63EfiycRkSJQSSZNiCcefIejAZ5w/P1rwkVPYffNyFsLb1IsZU=
+	t=1748875910; cv=none; b=oduanmNRPKpRASpI7/ouIkneO945BJ+LACMd6qdya4vnNib2IezjUJcIkIiYrm/kz8DL0Q8EcnORAF5PEBjfORvPcWNam/Y9WWNFA8d4OCzclj8lRuVpgxWA2u+EXW76OSMCsIvKym+1CFhOfQPgTwe+ObFwJ+iBrV2Z8q4gzlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874521; c=relaxed/simple;
-	bh=TtZ1zSe7BH9+kyLCX7QOt/IczzUV9WVFKo9pHdKq0yI=;
+	s=arc-20240116; t=1748875910; c=relaxed/simple;
+	bh=ZFBYgt01kfQNj03TI7oktYMairHo9giHeiCnI8e6a8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DprC97sd4X3gUyqD1mXGpHMJbNCcQMLYB56P1uxFkwT0eauIDmhzafY0i1Ympme89p1Tn/roqxKLJg0yIphUq6qT7/TqGWRSBElfzg7l0qHBa2w52rE035FRwrIlLj5eMeE+n+2knOIOt4KYDQV3fgnjqETWLjWpy5kKLe5wMeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsKp1BAN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0BFC4CEEB;
-	Mon,  2 Jun 2025 14:28:40 +0000 (UTC)
+	 MIME-Version; b=YRRjxYMFjwD5+IVACcnr5HYxX/sFxls86Bf+HJS9q44ucCOP6RaeEd2u07zTI8TUGqDVxwLqd55WaTNfkTkZL8ORjMBEc81BMccfivw1j21ErKkV9qQj3jXYaOk8VbGYip1a1js8lF1+S1ZCZlKZrMYsGjw1+U7+nHNrGYlOjo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HP5c/C+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54990C4CEEB;
+	Mon,  2 Jun 2025 14:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874521;
-	bh=TtZ1zSe7BH9+kyLCX7QOt/IczzUV9WVFKo9pHdKq0yI=;
+	s=korg; t=1748875909;
+	bh=ZFBYgt01kfQNj03TI7oktYMairHo9giHeiCnI8e6a8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsKp1BANh+ZAVQ4B9aniyyiVVSQuHjVjbVn98zNZ7eUH+BUTpLHsfOF1Sv5l5P0Ob
-	 6is0s60ffCBHt4BRv5EQhevp79+8wsQa/c/I+Nxyd1ke4sVeuhh4doGw2ehMhg7UY2
-	 piaIFdxjwWqMskxeO7ZbPcMvtuwIYPYC6pAGy39o=
+	b=HP5c/C+DZFgBihk8ePoee02hpq3/P8a3uQo2ZK95/EAQLg9vwJvYhiSfrhii2RmvG
+	 PoyUtetfYNRKDJyAmsouyNun2NEeSWj1pboMCVzniVKwS/XC3F7gOiXoNOwVPpWxUN
+	 Yh14a/dO6P8RFrZdmQDxG9lvoJYqUSNBuLkVx5mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 051/204] usb: typec: tcpm: delay SNK_TRY_WAIT_DEBOUNCE to SRC_TRYWAIT transition
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 012/207] fbdev: fsl-diu-fb: add missing device_remove_file()
 Date: Mon,  2 Jun 2025 15:46:24 +0200
-Message-ID: <20250602134257.689749732@linuxfoundation.org>
+Message-ID: <20250602134259.255178578@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Shixiong Ou <oushixiong@kylinos.cn>
 
-commit e918d3959b5ae0e793b8f815ce62240e10ba03a4 upstream.
+[ Upstream commit 86d16cd12efa547ed43d16ba7a782c1251c80ea8 ]
 
-This patch fixes Type-C Compliance Test TD 4.7.6 - Try.SNK DRP Connect
-SNKAS.
+Call device_remove_file() when driver remove.
 
-The compliance tester moves into SNK_UNATTACHED during toggling and
-expects the PUT to apply Rp after tPDDebounce of detection. If the port
-is in SNK_TRY_WAIT_DEBOUNCE, it will move into SRC_TRYWAIT immediately
-and apply Rp. This violates TD 4.7.5.V.3, where the tester confirms that
-the PUT attaches Rp after the transitions to Unattached.SNK for
-tPDDebounce.
-
-Change the tcpm_set_state delay between SNK_TRY_WAIT_DEBOUNCE and
-SRC_TRYWAIT to tPDDebounce.
-
-Fixes: a0a3e04e6b2c ("staging: typec: tcpm: Check for Rp for tPDDebounce")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250429234703.3748506-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/fsl-diu-fb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3787,7 +3787,7 @@ static void _tcpm_cc_change(struct tcpm_
- 	case SNK_TRY_WAIT_DEBOUNCE:
- 		if (!tcpm_port_is_sink(port)) {
- 			port->max_wait = 0;
--			tcpm_set_state(port, SRC_TRYWAIT, 0);
-+			tcpm_set_state(port, SRC_TRYWAIT, PD_T_PD_DEBOUNCE);
- 		}
- 		break;
- 	case SRC_TRY_WAIT:
+diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
+index ce3c5b0b8f4ef..53be4ab374cc3 100644
+--- a/drivers/video/fbdev/fsl-diu-fb.c
++++ b/drivers/video/fbdev/fsl-diu-fb.c
+@@ -1829,6 +1829,7 @@ static int fsl_diu_remove(struct platform_device *pdev)
+ 	int i;
+ 
+ 	data = dev_get_drvdata(&pdev->dev);
++	device_remove_file(&pdev->dev, &data->dev_attr);
+ 	disable_lcdc(&data->fsl_diu_info[0]);
+ 
+ 	free_irq(data->irq, data->diu_reg);
+-- 
+2.39.5
+
 
 
 
