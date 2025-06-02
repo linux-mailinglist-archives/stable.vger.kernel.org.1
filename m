@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-149634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00ED9ACB3AE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE5EACB6FB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66AF3486642
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7539116DDEC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70A2309B3;
-	Mon,  2 Jun 2025 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0484422DFE8;
+	Mon,  2 Jun 2025 15:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMRIjc5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNmawUED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C49230981;
-	Mon,  2 Jun 2025 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EF0188907;
+	Mon,  2 Jun 2025 15:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874556; cv=none; b=gy2rGWhlQoxG6hM/AZZB7T/9Ehd/tdBEGh/ZnhqemUgL96j6ZzL5lYjVTY5E6UEvlkvX6CHPJn1DAHSn19jMrRMce/7gc6gzsIcOVhElnGGSWokxx892yP7OzF2hH4W0Kt4mGdQ92+yM5e05Ue6nX8K1nInNcfoy7CtxHyUVXeY=
+	t=1748876926; cv=none; b=AOIcfGRs7U8EMdAgpCDqWfv9i+EOeUtHVPmd6lH4fftvwJf1p92ZZ4U+6LqoPCzTNN4mudkrFByq/gfFsOf3Q+v6YaYksV4C6UD3OtFpLUdGUpYQlViD0wSNkNa90v50WaxHO4HGIfSgbRRbBsbirwiYW/9T8kPgsEEXbUYV5uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874556; c=relaxed/simple;
-	bh=qzlZ8KlSrcevxiBjlcK4pd1tZhikZOZF/oi5no+O1Cc=;
+	s=arc-20240116; t=1748876926; c=relaxed/simple;
+	bh=WPkxpTgKmvn9jQ6lW4V2iqddcvNZY+4+ddOIidcJh5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMiw1MxLbao3Ec073Nb+nNfRCNeue0awNoVz/eBtPDgoekuukyh/0DkRN0qewcb4EC0Hbvdv/mzerjHzJlRO2b8Xg4HmkJ7vZSSEZ3phcu8hF3IPiI0JzyOg2Zf1lo846+wQaivLBDRBhVJXATvExn5Vn9Xwf5yJD6ph0fj3kFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMRIjc5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F77C4CEEB;
-	Mon,  2 Jun 2025 14:29:15 +0000 (UTC)
+	 MIME-Version; b=SLSZaz95mv6yFYHHuRhHbB9mJ4/M6SrJK+bmuPmZtapIqRrG76/aznZCorXzpZJL0Y/088ERStsoYlUzTsZYPAgq/YKiyhZkNPRrl6eOfJHzyUkOv2e8ONnekVqG8zkOdg8klDhJRbLn2RJS66fRN21kFMxQaBmkcpi9Tr9/nR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNmawUED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16609C4CEEB;
+	Mon,  2 Jun 2025 15:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874556;
-	bh=qzlZ8KlSrcevxiBjlcK4pd1tZhikZOZF/oi5no+O1Cc=;
+	s=korg; t=1748876926;
+	bh=WPkxpTgKmvn9jQ6lW4V2iqddcvNZY+4+ddOIidcJh5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMRIjc5l5UJzig6veXZhLPXVBAtqKb8uuckjhWb/4J3csakiDzw9PXBJL/aA9NOsk
-	 deNJ+spANp5+1DAJBT/OfDuucBmm5nLWobFcpCuglu9Ye/1bL46g25igTwP04UcdB5
-	 xkg/mmzHmnKPnvAULTkDF/1gQR6caIgESwueVXc8=
+	b=MNmawUEDCAWr9JMZ62lXH/G2EiUwFOSLrFFjYwgl+tGeqULsR1W40E2xeRv7RGRFp
+	 rcXrLDUVbARdFISwAc/lFLnP8ZjEZAuOsV92u+0so6ArrYHKnQOtDnquDjkh5143Wr
+	 XARjOltL74XLraCIbv5mjwgq3xHCzeOEHglaiNe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Kaplan <David.Kaplan@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/204] do_umount(): add missing barrier before refcount checks in sync case
+Subject: [PATCH 6.1 118/325] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
 Date: Mon,  2 Jun 2025 15:46:34 +0200
-Message-ID: <20250602134258.077341688@linuxfoundation.org>
+Message-ID: <20250602134324.576054077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 65781e19dcfcb4aed1167d87a3ffcc2a0c071d47 ]
+[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
 
-do_umount() analogue of the race fixed in 119e1ef80ecf "fix
-__legitimize_mnt()/mntput() race".  Here we want to make sure that
-if __legitimize_mnt() doesn't notice our lock_mount_hash(), we will
-notice their refcount increment.  Harder to hit than mntput_no_expire()
-one, fortunately, and consequences are milder (sync umount acting
-like umount -l on a rare race with RCU pathwalk hitting at just the
-wrong time instead of use-after-free galore mntput_no_expire()
-counterpart used to be hit).  Still a bug...
+Change the default value of spectre v2 in user mode to respect the
+CONFIG_MITIGATION_SPECTRE_V2 config option.
 
-Fixes: 48a066e72d97 ("RCU'd vfsmounts")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Currently, user mode spectre v2 is set to auto
+(SPECTRE_V2_USER_CMD_AUTO) by default, even if
+CONFIG_MITIGATION_SPECTRE_V2 is disabled.
+
+Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
+Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
+set the value to none (SPECTRE_V2_USER_CMD_NONE).
+
+Important to say the command line argument "spectre_v2_user" overwrites
+the default value in both cases.
+
+When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
+to opt-in for specific mitigations independently. In this scenario,
+setting spectre_v2= will not enable spectre_v2_user=, and command line
+options spectre_v2_user and spectre_v2 are independent when
+CONFIG_MITIGATION_SPECTRE_V2=n.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: David Kaplan <David.Kaplan@amd.com>
+Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 281f08eaba5b9..809ec3acb147c 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -569,7 +569,7 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 		return 0;
- 	mnt = real_mount(bastard);
- 	mnt_add_count(mnt, 1);
--	smp_mb();			// see mntput_no_expire()
-+	smp_mb();		// see mntput_no_expire() and do_umount()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
- 	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
-@@ -1588,6 +1588,7 @@ static int do_umount(struct mount *mnt, int flags)
- 			umount_tree(mnt, UMOUNT_PROPAGATE);
- 		retval = 0;
- 	} else {
-+		smp_mb(); // paired with __legitimize_mnt()
- 		shrink_submounts(mnt);
- 		retval = -EBUSY;
- 		if (!propagate_mount_busy(mnt, 2)) {
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6938c8cd7a6f6..15e40774e9bc9 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5780,6 +5780,8 @@
+ 
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
++			Selecting specific mitigation does not force enable
++			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 766cee7fa9056..7233474c798f7 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1382,9 +1382,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
++	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
++	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
++		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
++
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1397,7 +1401,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return SPECTRE_V2_USER_CMD_AUTO;
++		return mode;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1407,8 +1411,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
+-	return SPECTRE_V2_USER_CMD_AUTO;
++	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
++	return mode;
+ }
+ 
+ static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
 -- 
 2.39.5
 
