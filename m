@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A364FACB7BD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57B8ACB4A0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB1A84C7AFC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49D967B1A02
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3225122759C;
-	Mon,  2 Jun 2025 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607D822D4E5;
+	Mon,  2 Jun 2025 14:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOHNZC6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8a/zO56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C40226D02;
-	Mon,  2 Jun 2025 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE6F22ACEE;
+	Mon,  2 Jun 2025 14:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877130; cv=none; b=bwtxxm7kdziTSmUiNz5Ik8PlNI2CDnse/0AA6L+9cmSCwFUQih/9qRpSm1/VbL2/TebuG6SRsZvOpR99Oa/TqrIuzACLX0uOmf0PzKQPCmHb2NorB8jt8N6uS4NGOh8B+jrn5n9Zw+ZYd4vBva7FCd7RiwwjJpdZnUW0dvk4Jd8=
+	t=1748875559; cv=none; b=DoXVAUW2oJrrz64NXC/gapiBJrGAp3lqJP9sCqJ82xMXcRx4m8lDeqGtGxYCy7m/VGP2yShz2PwEp1FDD4NxJeNxr5x7LK4d68U3WV+BUzlTr0B2mayqt6jvtPECSoMt8csx4k0nA1Kuhhgok7Y3A2ZGgKyEHjDgme4kbqFFN/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877130; c=relaxed/simple;
-	bh=mdxvWaKEyj0mWhZN4iF03Oc6ApABz5m4Pn8IBKF2m5M=;
+	s=arc-20240116; t=1748875559; c=relaxed/simple;
+	bh=BLAxL9x/guuc9bBvGXx3TAD2K0RKO9eJUQGdbQMFmYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=If1b07yYpsMbljNLUsoga7Y0GbGEzRnEjkbeXoiQZKtNmUYfFroEWfo4QKLRvnyQO0fQUfF64oXqdLnhgvqp+JCW0Jo1YkXjXeeinYWwDwATEPi08KHpLj/N11v8PPQ+BVVRv53BZEi2FiPo3SHJPPTFgKd7Pr66u9lec3PA6J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOHNZC6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B5AC4CEEB;
-	Mon,  2 Jun 2025 15:12:09 +0000 (UTC)
+	 MIME-Version; b=SQddAS22KJRSwhTy/xPn7Q8Gyy5XWTUjyzD/aqseciph5GBO1baoQtCISP/dsdpfmAaebJyHbRcbrgOO7o08Px6OCAfujBV6a8H7qLdOs8MmwrBnEoWODr6wQsFFiU+iLEF2BSS3tFmpPqbLcBSmKbtG28s93A8GTgv2U1Bt2jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8a/zO56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB06C4CEEB;
+	Mon,  2 Jun 2025 14:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877129;
-	bh=mdxvWaKEyj0mWhZN4iF03Oc6ApABz5m4Pn8IBKF2m5M=;
+	s=korg; t=1748875558;
+	bh=BLAxL9x/guuc9bBvGXx3TAD2K0RKO9eJUQGdbQMFmYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOHNZC6EmdjTXT3V+n1iD//18z2LbTfBeb/upU3W389RYE769XRhiFrDPOG47hy6G
-	 GKFLbgoiqslLAZ3ZchyUvmrzp/H8XLR/HTXvvfwhMfN5qgXoFNv17P8p6lv0jUO/Rx
-	 SH9GXSPOuZ08PlOMDm73MPQrtHSOwdzJ41VLkMms=
+	b=d8a/zO56YccQUZMaeM1aqNblrUeRJvS39XvkFapU0vKY4YwTVSZEUO+bDQ5CR5X7W
+	 8qOuuVa9L15jt0vZBQ0p2k6yGpEZKfPv1VZ33gRcecW0OZmjAsZnpQibF9JVeXhE2Z
+	 97JScNu6NsDpnmY298cigdttWGsAFlLEcTi1dznM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ang Tien Sung <tien.sung.ang@intel.com>,
+	Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/325] drm/amd/display/dm: drop hw_support check in amdgpu_dm_i2c_xfer()
+Subject: [PATCH 5.10 173/270] fpga: altera-cvp: Increase credit timeout
 Date: Mon,  2 Jun 2025 15:47:38 +0200
-Message-ID: <20250602134327.207663100@linuxfoundation.org>
+Message-ID: <20250602134314.291697495@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
 
-[ Upstream commit 33da70bd1e115d7d73f45fb1c09f5ecc448f3f13 ]
+[ Upstream commit 0f05886a40fdc55016ba4d9ae0a9c41f8312f15b ]
 
-DC supports SW i2c as well.  Drop the check.
+Increase the timeout for SDM (Secure device manager) data credits from
+20ms to 40ms. Internal stress tests running at 500 loops failed with the
+current timeout of 20ms. At the start of a FPGA configuration, the CVP
+host driver reads the transmit credits from SDM. It then sends bitstream
+FPGA data to SDM based on the total credits. Each credit allows the
+CVP host driver to send 4kBytes of data. There are situations whereby,
+the SDM did not respond in time during testing.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ang Tien Sung <tien.sung.ang@intel.com>
+Signed-off-by: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
+Acked-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20250212221249.2715929-1-tien.sung.ang@intel.com
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ drivers/fpga/altera-cvp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 0d8c020cd1216..998dde73ecc67 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7281,7 +7281,7 @@ static int amdgpu_dm_i2c_xfer(struct i2c_adapter *i2c_adap,
- 	int i;
- 	int result = -EIO;
+diff --git a/drivers/fpga/altera-cvp.c b/drivers/fpga/altera-cvp.c
+index 4e0edb60bfba6..d107ad73a188c 100644
+--- a/drivers/fpga/altera-cvp.c
++++ b/drivers/fpga/altera-cvp.c
+@@ -52,7 +52,7 @@
+ /* V2 Defines */
+ #define VSE_CVP_TX_CREDITS		0x49	/* 8bit */
  
--	if (!ddc_service->ddc_pin || !ddc_service->ddc_pin->hw_info.hw_supported)
-+	if (!ddc_service->ddc_pin)
- 		return result;
- 
- 	cmd.payloads = kcalloc(num, sizeof(struct i2c_payload), GFP_KERNEL);
+-#define V2_CREDIT_TIMEOUT_US		20000
++#define V2_CREDIT_TIMEOUT_US		40000
+ #define V2_CHECK_CREDIT_US		10
+ #define V2_POLL_TIMEOUT_US		1000000
+ #define V2_USER_TIMEOUT_US		500000
 -- 
 2.39.5
 
