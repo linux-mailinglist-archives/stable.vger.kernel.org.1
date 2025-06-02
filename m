@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD30ACB6CF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEBCACB725
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944E23A8031
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2644019475DC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618CE234964;
-	Mon,  2 Jun 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1853722FDE8;
+	Mon,  2 Jun 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLBTGxqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beWwjZgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDFA230D0E;
-	Mon,  2 Jun 2025 14:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70EF22FAF4;
+	Mon,  2 Jun 2025 15:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876220; cv=none; b=Jf51Ud70WSFo8vgwP3TTEX6/LYJYLHl98RSIxMsVDnEB1NZxXfg9leiZ+DRu/dksG1kg3B9pSJQ2jl7D5QKTij67DhOpqupFr2SpO0JvjwEzYa2A25aNnBxPg6ritSUxpBdq1RMWjHHbyX3MWYZs7xG9LI6eU8dizwlKed/BTb0=
+	t=1748877231; cv=none; b=LggwRVQyoIs8iaSeeQ4JM3oM8UqmJymZbPYE+KkwgGfVzsWs/7Zj+Ol+esMqAJMBTnHlshh5gQ+uoHwHA8FO5IB8y701iw8eF4ANlnCDphqUGvxXOonjmwF8WegAIG+pEJoF3fd//sfl5U2bHuU/aTHl1hB7CLldLVbcRNSDEVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876220; c=relaxed/simple;
-	bh=qv6qpCdalm8PfkBheaFurgR2DcgbOlTKQA0hXZRVMSA=;
+	s=arc-20240116; t=1748877231; c=relaxed/simple;
+	bh=7jg+1zPSO6cwyiQMBiNqG4ziDr/AT5Jm2bVloOPZJrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VY3o5DcJHP03+vF8MfBK3sg4Nv0FtJDBa+5D77Fx911UtlEaKpXQPxA9liiRqXINglDBmMsERYIglkcsYsFQF/4Ye/9+6lh2swWRZUSjJj0+GXyrnKtN7ug/HscWaMJSLYM496m+Rkx+BwLyMSV3tJOWoemXwF0Qv8wwmOWEQ0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLBTGxqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98376C4CEEB;
-	Mon,  2 Jun 2025 14:56:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ntquzgWsXWopOvBpkRzhshOiHUUSgNIyautLCdOOH4MMpwfMo+c838PC0irnZ4EW/BJ6WXMO3R00QGfsRP6o7uBO42mKdj9VwYlkh6eVuFFX0+/ZLp3V9biocaD2DThOswa2leCN/xYHYIc0J57D33HpeQaeNW5e/8jrUfjoL84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beWwjZgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCE1C4CEEB;
+	Mon,  2 Jun 2025 15:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876219;
-	bh=qv6qpCdalm8PfkBheaFurgR2DcgbOlTKQA0hXZRVMSA=;
+	s=korg; t=1748877231;
+	bh=7jg+1zPSO6cwyiQMBiNqG4ziDr/AT5Jm2bVloOPZJrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLBTGxqfpU1rrBSskVXBD+TBP0pJPUhx6yM9KDnz4HN9FywR8ut7Hw3V9rvRlPEf0
-	 zFXLzVFcXwHw1IExgWfFWMYnj48nEnQ58DMS1tjfMmajzUpUigf1EOOAE/x6Df2GtW
-	 4WGDlZfPjnzXWPOq+LdBpAcKVQkHccrYTOxK8kGw=
+	b=beWwjZgsZ6SI7tYkhRUCHZ3JmnbUgLXimXetPyWz9njwL2ekaFNWi3py4A9G72jsB
+	 JYSI2HYVz/QggngygTAtzMLRmjfgbyJgzws+LjZRyU4zVr88qRhyIgIEJg/rVNctxU
+	 rmjOXcEPRXio1o15+wfzi1XPQkUhBCE9a4NgX3S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/207] can: c_can: Use of_property_present() to test existence of DT property
+Subject: [PATCH 6.1 205/325] scsi: st: Restore some drive settings after reset
 Date: Mon,  2 Jun 2025 15:48:01 +0200
-Message-ID: <20250602134302.999754837@linuxfoundation.org>
+Message-ID: <20250602134328.120010638@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
+[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
 
-of_property_read_bool() should be used only on boolean properties.
+Some of the allowed operations put the tape into a known position to
+continue operation assuming only the tape position has changed.  But reset
+sets partition, density and block size to drive default values. These
+should be restored to the values before reset.
 
-Cc: Rob Herring <robh@kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Normally the current block size and density are stored by the drive.  If
+the settings have been changed, the changed values have to be saved by the
+driver across reset.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/st.c | 24 +++++++++++++++++++++---
+ drivers/scsi/st.h |  2 ++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
-index c5d7093d54133..c29862b3bb1f3 100644
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -334,7 +334,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
- 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
- 		 * platforms. Only supported with DT boot.
- 		 */
--		if (np && of_property_read_bool(np, "syscon-raminit")) {
-+		if (np && of_property_present(np, "syscon-raminit")) {
- 			u32 id;
- 			struct c_can_raminit *raminit = &priv->raminit_sys;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 3ff4e6d44db88..9ba5ad106b653 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -950,7 +950,6 @@ static void reset_state(struct scsi_tape *STp)
+ 		STp->partition = find_partition(STp);
+ 		if (STp->partition < 0)
+ 			STp->partition = 0;
+-		STp->new_partition = STp->partition;
+ 	}
+ }
+ 
+@@ -2919,14 +2918,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 		if (cmd_in == MTSETDENSITY) {
+ 			(STp->buffer)->b_data[4] = arg;
+ 			STp->density_changed = 1;	/* At least we tried ;-) */
++			STp->changed_density = arg;
+ 		} else if (cmd_in == SET_DENS_AND_BLK)
+ 			(STp->buffer)->b_data[4] = arg >> 24;
+ 		else
+ 			(STp->buffer)->b_data[4] = STp->density;
+ 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
+ 			ltmp = arg & MT_ST_BLKSIZE_MASK;
+-			if (cmd_in == MTSETBLK)
++			if (cmd_in == MTSETBLK) {
+ 				STp->blksize_changed = 1; /* At least we tried ;-) */
++				STp->changed_blksize = arg;
++			}
+ 		} else
+ 			ltmp = STp->block_size;
+ 		(STp->buffer)->b_data[9] = (ltmp >> 16);
+@@ -3627,9 +3629,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 				retval = (-EIO);
+ 				goto out;
+ 			}
+-			reset_state(STp);
++			reset_state(STp); /* Clears pos_unknown */
+ 			/* remove this when the midlevel properly clears was_reset */
+ 			STp->device->was_reset = 0;
++
++			/* Fix the device settings after reset, ignore errors */
++			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
++				mtc.mt_op == MTEOM) {
++				if (STp->can_partitions) {
++					/* STp->new_partition contains the
++					 *  latest partition set
++					 */
++					STp->partition = 0;
++					switch_partition(STp);
++				}
++				if (STp->density_changed)
++					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
++				if (STp->blksize_changed)
++					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
++			}
+ 		}
  
+ 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
+diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
+index 7a68eaba7e810..2105c6a5b4586 100644
+--- a/drivers/scsi/st.h
++++ b/drivers/scsi/st.h
+@@ -165,12 +165,14 @@ struct scsi_tape {
+ 	unsigned char compression_changed;
+ 	unsigned char drv_buffer;
+ 	unsigned char density;
++	unsigned char changed_density;
+ 	unsigned char door_locked;
+ 	unsigned char autorew_dev;   /* auto-rewind device */
+ 	unsigned char rew_at_close;  /* rewind necessary at close */
+ 	unsigned char inited;
+ 	unsigned char cleaning_req;  /* cleaning requested? */
+ 	int block_size;
++	int changed_blksize;
+ 	int min_block;
+ 	int max_block;
+ 	int recover_count;     /* From tape opening */
 -- 
 2.39.5
 
