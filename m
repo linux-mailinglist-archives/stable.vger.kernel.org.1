@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-150076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7FDACB5DC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33950ACB31F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173214A1516
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A28754A3E8A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E8E232785;
-	Mon,  2 Jun 2025 14:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868B023C384;
+	Mon,  2 Jun 2025 14:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffVMRq6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnxM+FI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FBB232368;
-	Mon,  2 Jun 2025 14:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43093223DDF;
+	Mon,  2 Jun 2025 14:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875957; cv=none; b=Ps2k6RcRxP/TqoflyvW9tboUNCDtE7hFGiU7zzmRNk94x8c3JETA18xqwgPN0q49+wCAJGC58BkEL9XgcmCbHZevrj0AxlQ/e0ZllQetBeXvymv8mz0YJEAI/oBWr1Pxu9w332ppx6viZys3Eu6sT9sqC9G7hPsFSrDb9vu55Ng=
+	t=1748874154; cv=none; b=RvqmDLxmz+hVCK4GJI+1ASynOrRLThpb08fD2g9j+YjTEp0IFG+rrWoM6ZCTxomx0pmjaV8JiCNPn+fstxTYyOFWiiHyxaaNLqBCMYC904soySH9PN+th6ViziBKslEgez+jh8bxLPAyYAlcW3KAiQoVfPCcnuOgSfinMOs7glo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875957; c=relaxed/simple;
-	bh=MmiQW32QBguyznkgPcieA+53rLTbWUJy1835+c2Cvyo=;
+	s=arc-20240116; t=1748874154; c=relaxed/simple;
+	bh=WRpdCB97+5nLzpW415M0DMqkXUZcvjZ7MtvdtxagAyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBv9VgnYdk1aXWowEU0F6jKuGVQH6SZqM/MnmY5VBSithDC15qAnOgJV5U4Ww6PzI9NAR0JXeKIhXTWnHTvEC4J5vTHAfWIIEVNaSF3IYLql7voAcO2t+81GQovTIlLpYlnDwwSpVdJe0dOLQsYr2VQhpFUrtfS+iOpXF5y8VIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffVMRq6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCE6C4CEEB;
-	Mon,  2 Jun 2025 14:52:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tLJUOGZ+7NBj9Xt+63LLNScqfHNotW7jrbCXQdqjJGos6MOql08VpLUmEAMUylk+lj5wmAtXB7inI0BnB2Mf0V32gp5y6/p8fezUank25R99mMRYGK0d6FD7N4T6MkwWeQo/CWdaVCmzM6ZRVZR+LwoNNHH4xbmEQIVIUNxzm/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnxM+FI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5935C4CEEB;
+	Mon,  2 Jun 2025 14:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875957;
-	bh=MmiQW32QBguyznkgPcieA+53rLTbWUJy1835+c2Cvyo=;
+	s=korg; t=1748874154;
+	bh=WRpdCB97+5nLzpW415M0DMqkXUZcvjZ7MtvdtxagAyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ffVMRq6SzT+miErxYJjKCzmbi2TQzusdd7WlQzHpeaJg7eyNSGwAidURuZTzgMsBQ
-	 KcBUaF13su+5CmfMsVttZTTSETTaOqi/pXVb98p5mBPons4JH1KR2lLIK1RA5laGSf
-	 +KmgypUB9FqSWeoufScG0tlIlBsRxDTdazgzrwIs=
+	b=RnxM+FI9+PcLxNn6uScnzUG+ZwaIMUjPkOyYq8OC/E146lRWt6elMJo0a7uMSrKE2
+	 u7gYXmVhF/6l0cbeXYGTCN+s1XU1uIGUNL5Owi47uw6sC5T4BMueG7I8kfRjDSLr4k
+	 vcLGyi6GfHzGA/Jz5SjRzmaqfb6aAGaeJG4U12DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/207] wifi: mt76: only mark tx-status-failed frames as ACKed on mt76x0/2
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 6.6 335/444] remoteproc: qcom_wcnss: Fix on platforms without fallback regulators
 Date: Mon,  2 Jun 2025 15:46:39 +0200
-Message-ID: <20250602134259.833871418@linuxfoundation.org>
+Message-ID: <20250602134354.526383757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,115 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-[ Upstream commit 0c5a89ceddc1728a40cb3313948401dd70e3c649 ]
+[ Upstream commit 4ca45af0a56d00b86285d6fdd720dca3215059a7 ]
 
-The interrupt status polling is unreliable, which can cause status events
-to get lost. On all newer chips, txs-timeout is an indication that the
-packet was either never sent, or never acked.
-Fixes issues with inactivity polling.
+Recent change to handle platforms with only single power domain broke
+pronto-v3 which requires power domains and doesn't have fallback voltage
+regulators in case power domains are missing. Add a check to verify
+the number of fallback voltage regulators before using the code which
+handles single power domain situation.
 
-Link: https://patch.msgid.link/20250311103646.43346-6-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Tested-by: Luca Weiss <luca.weiss@fairphone.com> # sdm632-fairphone-fp3
+Link: https://lore.kernel.org/r/20250511234026.94735-1-matti.lehtimaki@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h       | 1 +
- drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x2/pci.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 3 ++-
- drivers/net/wireless/mediatek/mt76/tx.c         | 3 ++-
- 6 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/remoteproc/qcom_wcnss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 27f04fb2796d7..5a90fa556203f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -345,6 +345,7 @@ struct mt76_hw_cap {
- #define MT_DRV_RX_DMA_HDR		BIT(3)
- #define MT_DRV_HW_MGMT_TXQ		BIT(4)
- #define MT_DRV_AMSDU_OFFLOAD		BIT(5)
-+#define MT_DRV_IGNORE_TXS_FAILED	BIT(6)
- 
- struct mt76_driver_ops {
- 	u32 drv_flags;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-index b795e7245c075..3255f9c0ef71f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
-@@ -151,7 +151,8 @@ mt76x0e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	static const struct mt76_driver_ops drv_ops = {
- 		.txwi_size = sizeof(struct mt76x02_txwi),
- 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
--			     MT_DRV_SW_RX_AIRTIME,
-+			     MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.tx_prepare_skb = mt76x02_tx_prepare_skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-index f2b2fa7338457..7a4d62bff28ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
-@@ -209,7 +209,8 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
- 			 const struct usb_device_id *id)
- {
- 	static const struct mt76_driver_ops drv_ops = {
--		.drv_flags = MT_DRV_SW_RX_AIRTIME,
-+		.drv_flags = MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.tx_prepare_skb = mt76x02u_tx_prepare_skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-index 5cd0379d86de8..4e369bd87c900 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
-@@ -22,7 +22,8 @@ mt76x2e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	static const struct mt76_driver_ops drv_ops = {
- 		.txwi_size = sizeof(struct mt76x02_txwi),
- 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
--			     MT_DRV_SW_RX_AIRTIME,
-+			     MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.tx_prepare_skb = mt76x02_tx_prepare_skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 9369515f36a3a..09b01e09bcfe0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-@@ -29,7 +29,8 @@ static int mt76x2u_probe(struct usb_interface *intf,
- 			 const struct usb_device_id *id)
- {
- 	static const struct mt76_driver_ops drv_ops = {
--		.drv_flags = MT_DRV_SW_RX_AIRTIME,
-+		.drv_flags = MT_DRV_SW_RX_AIRTIME |
-+			     MT_DRV_IGNORE_TXS_FAILED,
- 		.survey_flags = SURVEY_INFO_TIME_TX,
- 		.update_survey = mt76x02_update_channel,
- 		.tx_prepare_skb = mt76x02u_tx_prepare_skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 134a735a06329..3fbf0153d13ca 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -93,7 +93,8 @@ __mt76_tx_status_skb_done(struct mt76_dev *dev, struct sk_buff *skb, u8 flags,
- 	__skb_unlink(skb, &dev->status_list);
- 
- 	/* Tx status can be unreliable. if it fails, mark the frame as ACKed */
--	if (flags & MT_TX_CB_TXS_FAILED) {
-+	if (flags & MT_TX_CB_TXS_FAILED &&
-+	    (dev->drv->drv_flags & MT_DRV_IGNORE_TXS_FAILED)) {
- 		info->status.rates[0].count = 0;
- 		info->status.rates[0].idx = -1;
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+index 153260b4e2eb4..37174b544113f 100644
+--- a/drivers/remoteproc/qcom_wcnss.c
++++ b/drivers/remoteproc/qcom_wcnss.c
+@@ -456,7 +456,8 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
+ 	if (wcnss->num_pds) {
+ 		info += wcnss->num_pds;
+ 		/* Handle single power domain case */
+-		num_vregs += num_pd_vregs - wcnss->num_pds;
++		if (wcnss->num_pds < num_pd_vregs)
++			num_vregs += num_pd_vregs - wcnss->num_pds;
+ 	} else {
+ 		num_vregs += num_pd_vregs;
+ 	}
 -- 
 2.39.5
 
