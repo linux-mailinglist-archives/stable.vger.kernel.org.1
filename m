@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-149964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55FD2ACB4E2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8781DACB3B9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C19737B1B84
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A791943D63
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC14F22F16C;
-	Mon,  2 Jun 2025 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1363022A1CF;
+	Mon,  2 Jun 2025 14:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN6MZ+cq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yqx0gSsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DBC22F14D;
-	Mon,  2 Jun 2025 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F1B221299;
+	Mon,  2 Jun 2025 14:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875602; cv=none; b=buGZ3JYXKXge7ILFj37T9AfBJNZxpCTUzgHtVIawvGlTAsvSYCogZy3VczQId3RJuJ0ZcTQZBliQov57VBcB1Kb8WmGHMdS9zTa7k6ZuZ2mgUXsj0chBQpVyQ8gkcqfNxhlytp2MWYJ1qw643E6YctfBb/meFPGEnNHbYi8QJtY=
+	t=1748874340; cv=none; b=d4pY22+6yYEZZ0UPOGiflVK15PIkM00biQgFKfEyFCPdYDA+UHCACKg+m85qekrOhKn9exz+Wm1C0PSl4aI8iOglxtWVRly9ZybVznyIlrk1GEasIt8UD8Kkn8AQKWcgjWPRxb5GC59HFJvNQWzuJQprmrWYY/gqq9yrSb3R/hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875602; c=relaxed/simple;
-	bh=aLhERqS9yvB/OH7lIGDWG8p5YF9XFep2MO9AR9ZbNWA=;
+	s=arc-20240116; t=1748874340; c=relaxed/simple;
+	bh=6Y3L89GqaJNuDcgU5G6jPWt0hmRIYlgmJJi4Ec/aGzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ros4RITKyRuMxFJ6JcY3doN22BjbKfNiEi6EZ0+QZ+Tlsk13gzO8xbGJ5Vv8HeIUmxAx5l3octzLgOpGArBmE97pXXIK+m/W6t3ewsRqDqgN8AoUQHUlphoo/fG/bNfd4ttHgmjeLr9+RG0f66tVhSDlf6Sh+Ys7/tJtehv3z1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN6MZ+cq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E4EC4CEEB;
-	Mon,  2 Jun 2025 14:46:41 +0000 (UTC)
+	 MIME-Version; b=epVUlG7T9jI5pTCOq8wZFuFfyPKfnacqvL9UQL5WH6tOnfboZgF7u2JahrrfAlP7H7xDkpKZ58bjtRtMvsX1KWGl7tFxiNvFcjZySYkYUuD0E0N3Esgwkibahl1mHkHLLJMipCsnV/V223ZytqMTh6dZGj1U7Xu14tDqWJfZF8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yqx0gSsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E79C4CEEB;
+	Mon,  2 Jun 2025 14:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875602;
-	bh=aLhERqS9yvB/OH7lIGDWG8p5YF9XFep2MO9AR9ZbNWA=;
+	s=korg; t=1748874340;
+	bh=6Y3L89GqaJNuDcgU5G6jPWt0hmRIYlgmJJi4Ec/aGzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZN6MZ+cqOSpzXNDV7ilR6Sg1OODikG7Nxond19Bfi6nzYFeWrfoHPzKysjbZk27Z+
-	 jKooyX52wiaTbMPm8kIiDzgUURQ2a9kQXXOEzt/oeSk2IwUoRcClQisiMqEUGLWZl9
-	 hoohqODOsUqyi5kw3e28fs6hTAAtFuF/tqgZioSc=
+	b=Yqx0gSsACc6naOWcxVFrNFuTfw/2qVqSBTjzL3Nzn9ybWOlIkX3Z7uaY8ytpikhwN
+	 Mrl2Vk6G/8/r3f29PC7X9CMXvfSiOQBE4DomVFzJuHLhuMtU/OyC72kD2ISq/ntaZt
+	 +MFmot6RlFI/DINowiOZdH0ec5jddeDc+X4XWP0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Burton <paulburton@kernel.org>,
-	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
-	Aleksandar Rikalo <arikalo@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/270] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 406/444] af_unix: Detect Strongly Connected Components.
 Date: Mon,  2 Jun 2025 15:47:50 +0200
-Message-ID: <20250602134314.773935895@linuxfoundation.org>
+Message-ID: <20250602134357.407345608@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,133 +63,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Burton <paulburton@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
+commit 3484f063172dd88776b062046d721d7c2ae1af7c upstream.
 
-The pm-cps code has up until now used per-CPU variables indexed by core,
-rather than CPU number, in order to share data amongst sibling CPUs (ie.
-VPs/threads in a core). This works fine for single cluster systems, but
-with multi-cluster systems a core number is no longer unique in the
-system, leading to sharing between CPUs that are not actually siblings.
+In the new GC, we use a simple graph algorithm, Tarjan's Strongly
+Connected Components (SCC) algorithm, to find cyclic references.
 
-Avoid this issue by using per-CPU variables as they are more generally
-used - ie. access them using CPU numbers rather than core numbers.
-Sharing between siblings is then accomplished by:
- - Assigning the same pointer to entries for each sibling CPU for the
-   nc_asm_enter & ready_count variables, which allow this by virtue of
-   being per-CPU pointers.
+The algorithm visits every vertex exactly once using depth-first
+search (DFS).
 
- - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
-   of pm_barrier, for which we can't use the previous approach because
-   the per-CPU variable is not a pointer.
+DFS starts by pushing an input vertex to a stack and assigning it
+a unique number.  Two fields, index and lowlink, are initialised
+with the number, but lowlink could be updated later during DFS.
 
-Signed-off-by: Paul Burton <paulburton@kernel.org>
-Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
-Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If a vertex has an edge to an unvisited inflight vertex, we visit
+it and do the same processing.  So, we will have vertices in the
+stack in the order they appear and number them consecutively in
+the same order.
+
+If a vertex has a back-edge to a visited vertex in the stack,
+we update the predecessor's lowlink with the successor's index.
+
+After iterating edges from the vertex, we check if its index
+equals its lowlink.
+
+If the lowlink is different from the index, it shows there was a
+back-edge.  Then, we go backtracking and propagate the lowlink to
+its predecessor and resume the previous edge iteration from the
+next edge.
+
+If the lowlink is the same as the index, we pop vertices before
+and including the vertex from the stack.  Then, the set of vertices
+is SCC, possibly forming a cycle.  At the same time, we move the
+vertices to unix_visited_vertices.
+
+When we finish the algorithm, all vertices in each SCC will be
+linked via unix_vertex.scc_entry.
+
+Let's take an example.  We have a graph including five inflight
+vertices (F is not inflight):
+
+  A -> B -> C -> D -> E (-> F)
+       ^         |
+       `---------'
+
+Suppose that we start DFS from C.  We will visit C, D, and B first
+and initialise their index and lowlink.  Then, the stack looks like
+this:
+
+  > B = (3, 3)  (index, lowlink)
+    D = (2, 2)
+    C = (1, 1)
+
+When checking B's edge to C, we update B's lowlink with C's index
+and propagate it to D.
+
+    B = (3, 1)  (index, lowlink)
+  > D = (2, 1)
+    C = (1, 1)
+
+Next, we visit E, which has no edge to an inflight vertex.
+
+  > E = (4, 4)  (index, lowlink)
+    B = (3, 1)
+    D = (2, 1)
+    C = (1, 1)
+
+When we leave from E, its index and lowlink are the same, so we
+pop E from the stack as single-vertex SCC.  Next, we leave from
+B and D but do nothing because their lowlink are different from
+their index.
+
+    B = (3, 1)  (index, lowlink)
+    D = (2, 1)
+  > C = (1, 1)
+
+Then, we leave from C, whose index and lowlink are the same, so
+we pop B, D and C as SCC.
+
+Last, we do DFS for the rest of vertices, A, which is also a
+single-vertex SCC.
+
+Finally, each unix_vertex.scc_entry is linked as follows:
+
+  A -.  B -> C -> D  E -.
+  ^  |  ^         |  ^  |
+  `--'  `---------'  `--'
+
+We use SCC later to decide whether we can garbage-collect the
+sockets.
+
+Note that we still cannot detect SCC properly if an edge points
+to an embryo socket.  The following two patches will sort it out.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-7-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ include/net/af_unix.h |    3 +++
+ net/unix/garbage.c    |   46 ++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
-index 9bf60d7d44d36..a7bcf2b814c86 100644
---- a/arch/mips/kernel/pm-cps.c
-+++ b/arch/mips/kernel/pm-cps.c
-@@ -56,10 +56,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
- /* Indicates online CPUs coupled with the current CPU */
- static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -32,8 +32,11 @@ void wait_for_unix_gc(struct scm_fp_list
+ struct unix_vertex {
+ 	struct list_head edges;
+ 	struct list_head entry;
++	struct list_head scc_entry;
+ 	unsigned long out_degree;
+ 	unsigned long index;
++	unsigned long lowlink;
++	bool on_stack;
+ };
  
--/*
-- * Used to synchronize entry to deep idle states. Actually per-core rather
-- * than per-CPU.
-- */
-+/* Used to synchronize entry to deep idle states */
- static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
- 
- /* Saved CPU state across the CPS_PM_POWER_GATED state */
-@@ -118,9 +115,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	cps_nc_entry_fn entry;
- 	struct core_boot_config *core_cfg;
- 	struct vpe_boot_config *vpe_cfg;
-+	atomic_t *barrier;
- 
- 	/* Check that there is an entry function for this state */
--	entry = per_cpu(nc_asm_enter, core)[state];
-+	entry = per_cpu(nc_asm_enter, cpu)[state];
- 	if (!entry)
- 		return -EINVAL;
- 
-@@ -156,7 +154,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 	smp_mb__after_atomic();
- 
- 	/* Create a non-coherent mapping of the core ready_count */
--	core_ready_count = per_cpu(ready_count, core);
-+	core_ready_count = per_cpu(ready_count, cpu);
- 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
- 				   (unsigned long)core_ready_count);
- 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
-@@ -164,7 +162,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
- 
- 	/* Ensure ready_count is zero-initialised before the assembly runs */
- 	WRITE_ONCE(*nc_core_ready_count, 0);
--	coupled_barrier(&per_cpu(pm_barrier, core), online);
-+	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
-+	coupled_barrier(barrier, online);
- 
- 	/* Run the generated entry code */
- 	left = entry(online, nc_core_ready_count);
-@@ -635,12 +634,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
- 
- static int cps_pm_online_cpu(unsigned int cpu)
+ struct unix_edge {
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -251,11 +251,19 @@ static LIST_HEAD(unix_visited_vertices);
+ static void __unix_walk_scc(struct unix_vertex *vertex)
  {
--	enum cps_pm_state state;
--	unsigned core = cpu_core(&cpu_data[cpu]);
-+	unsigned int sibling, core;
- 	void *entry_fn, *core_rc;
-+	enum cps_pm_state state;
+ 	unsigned long index = UNIX_VERTEX_INDEX_START;
++	LIST_HEAD(vertex_stack);
+ 	struct unix_edge *edge;
+ 	LIST_HEAD(edge_stack);
+ 
+ next_vertex:
++	/* Push vertex to vertex_stack.
++	 * The vertex will be popped when finalising SCC later.
++	 */
++	vertex->on_stack = true;
++	list_add(&vertex->scc_entry, &vertex_stack);
 +
-+	core = cpu_core(&cpu_data[cpu]);
+ 	vertex->index = index;
++	vertex->lowlink = index;
+ 	index++;
  
- 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
--		if (per_cpu(nc_asm_enter, core)[state])
-+		if (per_cpu(nc_asm_enter, cpu)[state])
- 			continue;
- 		if (!test_bit(state, state_support))
- 			continue;
-@@ -652,16 +653,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
- 			clear_bit(state, state_support);
+ 	/* Explore neighbour vertices (receivers of the current vertex's fd). */
+@@ -283,12 +291,46 @@ prev_vertex:
+ 			edge = list_first_entry(&edge_stack, typeof(*edge), stack_entry);
+ 			list_del_init(&edge->stack_entry);
+ 
++			next_vertex = vertex;
+ 			vertex = edge->predecessor->vertex;
++
++			/* If the successor has a smaller lowlink, two vertices
++			 * are in the same SCC, so propagate the smaller lowlink
++			 * to skip SCC finalisation.
++			 */
++			vertex->lowlink = min(vertex->lowlink, next_vertex->lowlink);
++		} else if (next_vertex->on_stack) {
++			/* Loop detected by a back/cross edge.
++			 *
++			 * The successor is on vertex_stack, so two vertices are
++			 * in the same SCC.  If the successor has a smaller index,
++			 * propagate it to skip SCC finalisation.
++			 */
++			vertex->lowlink = min(vertex->lowlink, next_vertex->index);
++		} else {
++			/* The successor was already grouped as another SCC */
  		}
- 
--		per_cpu(nc_asm_enter, core)[state] = entry_fn;
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
  	}
  
--	if (!per_cpu(ready_count, core)) {
-+	if (!per_cpu(ready_count, cpu)) {
- 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
- 		if (!core_rc) {
- 			pr_err("Failed allocate core %u ready_count\n", core);
- 			return -ENOMEM;
- 		}
--		per_cpu(ready_count, core) = core_rc;
+-	/* Don't restart DFS from this vertex in unix_walk_scc(). */
+-	list_move_tail(&vertex->entry, &unix_visited_vertices);
++	if (vertex->index == vertex->lowlink) {
++		struct list_head scc;
 +
-+		for_each_cpu(sibling, &cpu_sibling_map[cpu])
-+			per_cpu(ready_count, sibling) = core_rc;
- 	}
++		/* SCC finalised.
++		 *
++		 * If the lowlink was not updated, all the vertices above on
++		 * vertex_stack are in the same SCC.  Group them using scc_entry.
++		 */
++		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
++
++		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
++			/* Don't restart DFS from this vertex in unix_walk_scc(). */
++			list_move_tail(&vertex->entry, &unix_visited_vertices);
++
++			vertex->on_stack = false;
++		}
++
++		list_del(&scc);
++	}
  
- 	return 0;
--- 
-2.39.5
-
+ 	/* Need backtracking ? */
+ 	if (!list_empty(&edge_stack))
 
 
 
