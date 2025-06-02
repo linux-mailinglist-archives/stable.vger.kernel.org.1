@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-149660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93C8ACB434
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8722ACB35D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ACDE1946A52
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F396294282A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38125223DD0;
-	Mon,  2 Jun 2025 14:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3EF23A9B4;
+	Mon,  2 Jun 2025 14:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUswH/51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXuqujZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE2221FB8;
-	Mon,  2 Jun 2025 14:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A48223323;
+	Mon,  2 Jun 2025 14:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874638; cv=none; b=gC8+aYiOgZwxmQwXQoVqr1gsIf0R3BmIuy75o0M9JpWrPi3YhLs+w4KSLCfN6r7q/dxea1lAG0PbiFhO1aTzM2SbGfCMxJxbsEUFgFZyNdFyoNpOl4bABRSiICgUyo7iGAvmWUlXS2lVgrwmK9AyU2QD8AIjUpOIoTsK+unxALk=
+	t=1748874100; cv=none; b=nw7OGnpaKdTEbgXY0kwyrxwfQOVPoCV+T9V/sQBlMohBnI05fx4FaZlixJ/lNtBHjxcxXEowDgnwG+1yptaqpGEoa1SJwWHC+VxTysL6YzEIDn14d+GVH4cFoceRYIbfpLsWohqxeJ38kkzaa1WFOBy6Z6EU/X/XfcnNAzjnunA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874638; c=relaxed/simple;
-	bh=4L7bdygLLnDB3NEP8fXbTbXEguhqj1gXJ8VLIc2WqNI=;
+	s=arc-20240116; t=1748874100; c=relaxed/simple;
+	bh=L92dkW4BlmsSbqTDgzg+KwxNK4jAevkf+i5Z3VAwDJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SxBdYwwaIDqf2OXK1YTVBNeo95+28W/W5CthxAexfyNNr2zaLGamSGZPdAzmW7sx+Su7R2Zbwybu/xP3OTy8nLQ8t77v6zUUAakZMikhXW4xem/cQvnVmF/c95x4SIZ2SQVg1v7eaTDrUcXlOwt7NJqsjIfJ5c+HMbSJ0EpiSvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUswH/51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAEEC4CEEB;
-	Mon,  2 Jun 2025 14:30:37 +0000 (UTC)
+	 MIME-Version; b=rvBsEjkFqRUOGGoSWrYQcWjTYaarmax7PI9l2wvcmr3FFgCpPDoFhvz92MlC3y6knROW3dliOTyGQ8j0BcFv5Go4QDdGtuFaqq0JaPJpOV2t6JnohRvTG23FbjJfXW1rdqJ8YlOsY54QhgrD/CGpvtjk5ntLl6raKGksIDwyqWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXuqujZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C855CC4CEEB;
+	Mon,  2 Jun 2025 14:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874637;
-	bh=4L7bdygLLnDB3NEP8fXbTbXEguhqj1gXJ8VLIc2WqNI=;
+	s=korg; t=1748874100;
+	bh=L92dkW4BlmsSbqTDgzg+KwxNK4jAevkf+i5Z3VAwDJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUswH/51Hrlq/0Q54uzEL759fPKJsZYAPv2/b68A3pBFcJu4E1EoFkxuKwcBveapY
-	 aod5oIz5jlgvpEPekEAnynYlgVAWfwGaub2+ly1t/1MKeNbGHvOnhvraKkcq6VW2FR
-	 RUBtlXhfki3Rr4xBecbWlneT4mLlzNyAAEBtZLDs=
+	b=hXuqujZuUc+O6imDZ7QHiUaxvIBGDVxdz5ofg88bZUqHdZ5AaGqGi9LacKZsH9XvT
+	 tH8BsdtTSXA6K96rcapwJTScSsFCm41VKJCNj8sgYm6yIngmnekExPmOZbrFdPyrow
+	 d8TmjQQxH8xM+QkivwKrPMkY96cL8ofkTjREFXtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gao xu <gaoxu2@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 088/204] cgroup: Fix compilation issue due to cgroup_mutex not being exported
+	Dominik Grzegorzek <dominik.grzegorzek@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 357/444] padata: do not leak refcount in reorder_work
 Date: Mon,  2 Jun 2025 15:47:01 +0200
-Message-ID: <20250602134259.121981338@linuxfoundation.org>
+Message-ID: <20250602134355.414365367@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxu <gaoxu2@honor.com>
+From: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
 
-[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
+commit d6ebcde6d4ecf34f8495fb30516645db3aea8993 upstream.
 
-When adding folio_memcg function call in the zram module for
-Android16-6.12, the following error occurs during compilation:
-ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
+A recent patch that addressed a UAF introduced a reference count leak:
+the parallel_data refcount is incremented unconditionally, regardless
+of the return value of queue_work(). If the work item is already queued,
+the incremented refcount is never decremented.
 
-This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
-within folio_memcg. The export setting for cgroup_mutex is controlled by
-the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
-CONFIG_PROVE_RCU is not, this compilation error will occur.
+Fix this by checking the return value of queue_work() and decrementing
+the refcount when necessary.
 
-To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
-ensure cgroup_mutex is properly exported when needed.
+Resolves:
 
-Signed-off-by: gao xu <gaoxu2@honor.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unreferenced object 0xffff9d9f421e3d80 (size 192):
+  comm "cryptomgr_probe", pid 157, jiffies 4294694003
+  hex dump (first 32 bytes):
+    80 8b cf 41 9f 9d ff ff b8 97 e0 89 ff ff ff ff  ...A............
+    d0 97 e0 89 ff ff ff ff 19 00 00 00 1f 88 23 00  ..............#.
+  backtrace (crc 838fb36):
+    __kmalloc_cache_noprof+0x284/0x320
+    padata_alloc_pd+0x20/0x1e0
+    padata_alloc_shell+0x3b/0xa0
+    0xffffffffc040a54d
+    cryptomgr_probe+0x43/0xc0
+    kthread+0xf6/0x1f0
+    ret_from_fork+0x2f/0x50
+    ret_from_fork_asm+0x1a/0x30
+
+Fixes: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 273a8a42cb721..801022a8899b5 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -81,7 +81,7 @@
- DEFINE_MUTEX(cgroup_mutex);
- DEFINE_SPINLOCK(css_set_lock);
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -358,7 +358,8 @@ static void padata_reorder(struct parall
+ 		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
+ 		 */
+ 		padata_get_pd(pd);
+-		queue_work(pinst->serial_wq, &pd->reorder_work);
++		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
++			padata_put_pd(pd);
+ 	}
+ }
  
--#ifdef CONFIG_PROVE_RCU
-+#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
- EXPORT_SYMBOL_GPL(cgroup_mutex);
- EXPORT_SYMBOL_GPL(css_set_lock);
- #endif
--- 
-2.39.5
-
 
 
 
