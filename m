@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1163ACB3D8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C083ACB4B6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E577F19456F4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017A57A1BEB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5D4224244;
-	Mon,  2 Jun 2025 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D880122689C;
+	Mon,  2 Jun 2025 14:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZHArqtv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmjMoINS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF30223DFD;
-	Mon,  2 Jun 2025 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BC621516E;
+	Mon,  2 Jun 2025 14:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874662; cv=none; b=nrcRWzm9IothR19bZPk9mUSQuUZoFkeBRnYsB1VntSMVSHg46hoQ1j1iAYsjbmgmugKpx3gH8fMpJzq2Apql+H/bxTYz/Th7h8SLbiO3fZQHYjZPFLO2Eh/GNyMfAcbr1imZebtK3Ny7JRp9l2mSSciOdpymx5VxFU8xA+Tbxgo=
+	t=1748875464; cv=none; b=NVdRv5o39E7n3lnE4X9INbRCGXjRwSIIQXflkAeLbFPMRVvnrWt5HC12peq19qhlZMSFZ+K6dY1nM3ex2ohEJAmsZb9LTzskO2hlO4IXTsuaL2WCKgjT45CsclPCXo1P11qdeuav2P8i3Q7jQdSCisT/d8k9kEdEzNG/80yPeac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874662; c=relaxed/simple;
-	bh=56S1dU18OmZ5BOM3+ARh5SjyJ6ab2bbr3B1iq9Vtwto=;
+	s=arc-20240116; t=1748875464; c=relaxed/simple;
+	bh=dteQeIK5F40Iqpj63kEObBbTlsyw7ziqz9lsaCjTxfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arSrfr5rFLr5rImkYLBkAzJ68g8/VzkjA8eUfAHeeskNjy7M66r5937/fgU0/a0wcZrYxoLUKrIr1pLToVCZYk2rDCTMfu4eUnaQ2O1QeAy/54VQ0WKZcyGxm/UX5pFpfC5Xligh+m+KSpIfxX/SklNOS4a3m0qT2sl3Lfc9Rpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZHArqtv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02C6C4CEEB;
-	Mon,  2 Jun 2025 14:31:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XcKbOqmUzTR4O7WktDESk3yOxon1mUtUX6QRyG5yqEoMcxNtjJE8mu5TSYaS4ODvuUebsjgI/LYsNKxY4QiFoeHbDhCjU5ohRk69xi0uhyTIzTYIvvBsd2WLZhluiEXocCCepv6pKOzSwenag1Bq2e004U4NIO2RyunwtE7gNQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmjMoINS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C588C4CEEB;
+	Mon,  2 Jun 2025 14:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874662;
-	bh=56S1dU18OmZ5BOM3+ARh5SjyJ6ab2bbr3B1iq9Vtwto=;
+	s=korg; t=1748875464;
+	bh=dteQeIK5F40Iqpj63kEObBbTlsyw7ziqz9lsaCjTxfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZHArqtv9/qx+G3i28Of8MeefbVEV5LK+QoW2Mi+Qq8R3uLoeMBaMdj0ywjNDKjB4
-	 uJZR5YMmKSAkyx+0z8z04U8GKKutli7b7w3VbrVzOo/KboZQsiGdA9OHty/ZudNCwS
-	 wZBgs/06sZyilACDQi6U6v+dkvrI2CFASEtnxs5w=
+	b=dmjMoINSUfpB14NXaNi4E2sqId/Q/4v5tmYKQsf8WxNjxCcmm+XlSlpAqtRiVs62w
+	 /IkxffxQr7YqXSbBeLLUgUOOykCfqBVq8ujgdb753Aq/fh5DMf4jUQ5HZRPP0nj5cF
+	 6goHR+xjQdrkh5SoMFhLJ3ItyU5O1Y91aeirzI/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jing Su <jingsusu@didiglobal.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 095/204] dql: Fix dql->limit value when reset.
+Subject: [PATCH 5.10 143/270] scsi: st: ERASE does not change tape location
 Date: Mon,  2 Jun 2025 15:47:08 +0200
-Message-ID: <20250602134259.391392166@linuxfoundation.org>
+Message-ID: <20250602134313.078343968@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jing Su <jingsusu@didiglobal.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
+[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
 
-Executing dql_reset after setting a non-zero value for limit_min can
-lead to an unreasonable situation where dql->limit is less than
-dql->limit_min.
+The SCSI ERASE command erases from the current position onwards.  Don't
+clear the position variables.
 
-For instance, after setting
-/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
-an ifconfig down/up operation might cause the ethernet driver to call
-netdev_tx_reset_queue, which in turn invokes dql_reset.
-
-In this case, dql->limit is reset to 0 while dql->limit_min remains
-non-zero value, which is unexpected. The limit should always be
-greater than or equal to limit_min.
-
-Signed-off-by: Jing Su <jingsusu@didiglobal.com>
-Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/dynamic_queue_limits.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/st.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
-index e659a027036ec..f6807062b32a3 100644
---- a/lib/dynamic_queue_limits.c
-+++ b/lib/dynamic_queue_limits.c
-@@ -116,7 +116,7 @@ EXPORT_SYMBOL(dql_completed);
- void dql_reset(struct dql *dql)
- {
- 	/* Reset all dynamic values */
--	dql->limit = 0;
-+	dql->limit = dql->min_limit;
- 	dql->num_queued = 0;
- 	dql->num_completed = 0;
- 	dql->last_obj_cnt = 0;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 47e59b74c09d2..747e69abfcfce 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -2889,7 +2889,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			timeout = STp->long_timeout * 8;
+ 
+ 		DEBC_printk(STp, "Erasing tape.\n");
+-		fileno = blkno = at_sm = 0;
+ 		break;
+ 	case MTSETBLK:		/* Set block length */
+ 	case MTSETDENSITY:	/* Set tape density */
 -- 
 2.39.5
 
