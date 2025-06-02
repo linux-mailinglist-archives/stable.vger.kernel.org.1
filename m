@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-149607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4771CACB3AB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7867AACB2D3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF6BE9439A5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 996C44863B8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AE722D4F9;
-	Mon,  2 Jun 2025 14:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF89233704;
+	Mon,  2 Jun 2025 14:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNgiAlth"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpNA88gs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117B122259A;
-	Mon,  2 Jun 2025 14:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F225C233149;
+	Mon,  2 Jun 2025 14:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874471; cv=none; b=ui3UvZinfLw3DQ3Wy2CTXvVi37c9GcRUNKFfCLvx2bYmUh6w6p9iQAExXAWWAcTPnYEKkbB1RBWg7AHAwlOOw+TurH3GT+6Q2l6zgWepD1Xof/frpBcuDT/lKgD5eQY3sJF4RjKzVnWOqwrX7DxmD74nty/AWp4M+/JxOz8g7TM=
+	t=1748873948; cv=none; b=pJSUJFV23gfKShwM/AtuF0Z6M+p822maBhNRWQe+MoprPwGGXZTFc/fY0vCjU0eGIlU3hK1BseAG03dHmqf/7qWVrIpqRomz05hKBpbsC/rt+GPQ1Kgx6A2LNeaAEyz6rbZfXhNKUUwRv/rULm0AhlH28dhH28PVv7wWdizJYFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874471; c=relaxed/simple;
-	bh=lCyrTtxCHY/wdr4+1WjL1/xz3kG67B3Nep8yJwBtQW0=;
+	s=arc-20240116; t=1748873948; c=relaxed/simple;
+	bh=9IaX5VL4cT2dViwlk6qnHGau4p/rC1+fprix7iEc2AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5sLFxt/4PQmd08b6imS1EFKrUEqMsQ3Ef2ytGtK0Ar09UyCvIIFsbKyvSIRlkfn6ihj6LJmlfpl0lUD+kuMUHIti/3HjUbIkfrT6XHC3rLJQtLOwmWMJEtojUTWcWueP6HuUHw9yWppNe6MR07JlgCr9+KuEkbCb0E/y3wC5hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNgiAlth; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B42AC4CEEB;
-	Mon,  2 Jun 2025 14:27:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gIjhWOL939lCvC/jczH8Ypaz1Pdd+5VR91fwAeymSg01yDVgiGLOsvdPyGmvhYQcLt2l/k+FvS+FrnomAy0C4drm8kLvtwbwPl6GjMhQaOaR06gTx+v0dWBB+UXJHfFIOiOrC/OvGJsL5tQ8VBPvqn0YxwddbHPfwRncCAqU9rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpNA88gs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79802C4CEEB;
+	Mon,  2 Jun 2025 14:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874470;
-	bh=lCyrTtxCHY/wdr4+1WjL1/xz3kG67B3Nep8yJwBtQW0=;
+	s=korg; t=1748873947;
+	bh=9IaX5VL4cT2dViwlk6qnHGau4p/rC1+fprix7iEc2AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNgiAlthSeLZeCUVOaXTKsj3LGblnMpZ3RieUiepoEOZ+ZImZjzvTUfcxtZv8FJTL
-	 bZw1c3tqGHBLuCB86wsCmhMnGO4JzJpjlvk7aMzJkiXUc3Zra4iCQFcMAjAUdp/Bch
-	 ukHx+Cl7eWyTPCLU7EAV9PAmDqXStZgvtidPWpDU=
+	b=wpNA88gsru4kkISZB79nDDJpdBnlYzyGJ6EKp9mCn3LgJ3OSMXcyXIQNttKR5R51x
+	 rfehYOeVBc8e/cTrVU9voJFlk+7mSmBlBAekrqewUYHdBkTm1uj2gBF55k0k0RiYWY
+	 vyE/0YOJoroU1+/Ss0hFsgK9DsCw0sA5+XpaQPRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.4 007/204] dm-integrity: fix a warning on invalid table line
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 276/444] ipv4: ip_gre: Fix set but not used warning in ipgre_err() if IPv4-only
 Date: Mon,  2 Jun 2025 15:45:40 +0200
-Message-ID: <20250602134255.762726380@linuxfoundation.org>
+Message-ID: <20250602134352.160265531@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,38 +62,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-commit 0a533c3e4246c29d502a7e0fba0e86d80a906b04 upstream.
+[ Upstream commit 50f37fc2a39c4a8cc4813629b4cf239b71c6097d ]
 
-If we use the 'B' mode and we have an invalit table line,
-cancel_delayed_work_sync would trigger a warning. This commit avoids the
-warning.
+if CONFIG_NET_IPGRE is enabled, but CONFIG_IPV6 is disabled:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    net/ipv4/ip_gre.c: In function ‘ipgre_err’:
+    net/ipv4/ip_gre.c:144:22: error: variable ‘data_len’ set but not used [-Werror=unused-but-set-variable]
+      144 |         unsigned int data_len = 0;
+	  |                      ^~~~~~~~
+
+Fix this by moving all data_len processing inside the IPV6-only section
+that uses its result.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501121007.2GofXmh5-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/d09113cfe2bfaca02f3dddf832fb5f48dd20958b.1738704881.git.geert@linux-m68k.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/ip_gre.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -4199,7 +4199,7 @@ static void dm_integrity_dtr(struct dm_t
- 	BUG_ON(!RB_EMPTY_ROOT(&ic->in_progress));
- 	BUG_ON(!list_empty(&ic->wait_list));
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 890c15510b421..f261e29adc7c2 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -140,7 +140,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	const struct iphdr *iph;
+ 	const int type = icmp_hdr(skb)->type;
+ 	const int code = icmp_hdr(skb)->code;
+-	unsigned int data_len = 0;
+ 	struct ip_tunnel *t;
  
--	if (ic->mode == 'B')
-+	if (ic->mode == 'B' && ic->bitmap_flush_work.work.func)
- 		cancel_delayed_work_sync(&ic->bitmap_flush_work);
- 	if (ic->metadata_wq)
- 		destroy_workqueue(ic->metadata_wq);
+ 	if (tpi->proto == htons(ETH_P_TEB))
+@@ -181,7 +180,6 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	case ICMP_TIME_EXCEEDED:
+ 		if (code != ICMP_EXC_TTL)
+ 			return 0;
+-		data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
+ 		break;
+ 
+ 	case ICMP_REDIRECT:
+@@ -189,10 +187,16 @@ static int ipgre_err(struct sk_buff *skb, u32 info,
+ 	}
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (tpi->proto == htons(ETH_P_IPV6) &&
+-	    !ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
+-					type, data_len))
+-		return 0;
++	if (tpi->proto == htons(ETH_P_IPV6)) {
++		unsigned int data_len = 0;
++
++		if (type == ICMP_TIME_EXCEEDED)
++			data_len = icmp_hdr(skb)->un.reserved[1] * 4; /* RFC 4884 4.1 */
++
++		if (!ip6_err_gen_icmpv6_unreach(skb, iph->ihl * 4 + tpi->hdr_len,
++						type, data_len))
++			return 0;
++	}
+ #endif
+ 
+ 	if (t->parms.iph.daddr == 0 ||
+-- 
+2.39.5
+
 
 
 
