@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFD0ACB290
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA412ACB823
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6AAD1945165
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FD0940344
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3CE22FDE8;
-	Mon,  2 Jun 2025 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C416231837;
+	Mon,  2 Jun 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLeBvrys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDfbgVQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E4221297;
-	Mon,  2 Jun 2025 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1CC1C8605;
+	Mon,  2 Jun 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873866; cv=none; b=jOanzNXI+wJlGPS91AuSBms7gxqHC99xj6t631EpgpO3xj8s/lXQmoE53qc4QAHNsFZI98dVgxLmgNJ406XRv/AW3cCxiUP9yB2ArbXjahDrR+Lg60NlCe3JR7+j6gVFh5aqWQt4MlmSjAWNDBGVbl2rVbBAE4FPG3DGzDQOB5I=
+	t=1748876742; cv=none; b=mVYKAjc5zHmTG8RcOV/QyfVw6sqFdBV0EgOAGXXerXHeLfcFCV9LXADvLOPmTxetmoiou0CH5oUZ2gvUYcUgG67TpCZ206KPv9gD6GmdLQdVJvXByFSvLCLztpYHOb0ykAcpk0vr6joY8xBHXbNMFuBtPF7//hAKMhiuTgltbRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873866; c=relaxed/simple;
-	bh=NMJEitYzklJ1YHe2qgS2VPqpyGaV0PfP+nEqDJVyDTg=;
+	s=arc-20240116; t=1748876742; c=relaxed/simple;
+	bh=QvwM22mt262tzKThy73afqUyEnzul4v0XAxAbFp6LF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4HRhJBkpQ/BKukgyeq3Ul+nq9I2EUmgQNwTFpyYzABnQ6wJuUFNMMSeHXV14mt57slZHYfoC+GUrMpjo/iWMOQsYLBTPwwfCFtWcsXJfsblvMPsKrUe16zUrY44QWDfu7veoOeOoADij2NI4WHpHXPYZhLufRRR6GvLgwnOnUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLeBvrys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F0EC4CEEB;
-	Mon,  2 Jun 2025 14:17:43 +0000 (UTC)
+	 MIME-Version; b=MlKPnxoBKhY2KL4fepKYeh529C28kvb74EQmIHC5znsqmFEJ8en8KzEmZjrLToBrySEAhGMkiiJvCgUoPq03H7RnPRJyvhHzNwDmlzwn/ainApd9kQQsWQJt75fGm/M9rjEaldu/YyFFzGeeVh78Qbh/zYnwvhyYk1Pz18SKlS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDfbgVQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE2C4CEEB;
+	Mon,  2 Jun 2025 15:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873864;
-	bh=NMJEitYzklJ1YHe2qgS2VPqpyGaV0PfP+nEqDJVyDTg=;
+	s=korg; t=1748876742;
+	bh=QvwM22mt262tzKThy73afqUyEnzul4v0XAxAbFp6LF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLeBvrys17SwZLsrVM8XGFOdpuVXA9b2K2DEq+z3FSZxZpmqvnQIUPZ25Ek8SEuto
-	 V/8U9KTYI+BG4Kc6aLxB5tQqlTSKs03mIe2bGoBedef/dvd0ctomZzQoCjrNSAas9y
-	 V/U5tbqSuBuMtUxOl1LLKnlIY3rGRz12uq3HtktI=
+	b=yDfbgVQ8XR6F5egFEbfmObhNPsoPsVcqxTtiMJwoFqpsBwBY0lk/hqEdqmUdB9aa3
+	 1LxS0uiGk3YwH0S9CSJThcg3DLwF5NldbDLcWNM+Kku6BZWEYfethRqwY3nAKNhQho
+	 Y9zpxr/UM1U+QftBj3qJGnTDfObWPIlRr4qYpIZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Heming Zhao <heming.zhao@suse.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/444] hwmon: (xgene-hwmon) use appropriate type for the latency value
+Subject: [PATCH 6.1 059/325] dlm: make tcp still work in multi-link env
 Date: Mon,  2 Jun 2025 15:45:35 +0200
-Message-ID: <20250602134351.962436902@linuxfoundation.org>
+Message-ID: <20250602134322.154951964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Heming Zhao <heming.zhao@suse.com>
 
-[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
+[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
 
-The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
-evaluated using 32-bit arithmetic.
+This patch bypasses multi-link errors in TCP mode, allowing dlm
+to operate on the first tcp link.
 
-Since a value of type 'u64' is used to store the eventual result,
-and this result is later sent to the function usecs_to_jiffies with
-input parameter unsigned int, the current data type is too wide to
-store the value of ctx->usecs_lat.
-
-Change the data type of "usecs_lat" to a more suitable (narrower) type.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/dlm/lowcomms.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 207084d55044a..6768dbf390390 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -111,7 +111,7 @@ struct xgene_hwmon_dev {
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 2c797eb519da9..51a641822d6c4 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1863,8 +1863,8 @@ static int dlm_tcp_listen_validate(void)
+ {
+ 	/* We don't support multi-homed hosts */
+ 	if (dlm_local_count > 1) {
+-		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
+-		return -EINVAL;
++		log_print("Detect multi-homed hosts but use only the first IP address.");
++		log_print("Try SCTP, if you want to enable multi-link.");
+ 	}
  
- 	phys_addr_t		comm_base_addr;
- 	void			*pcc_comm_addr;
--	u64			usecs_lat;
-+	unsigned int		usecs_lat;
- };
- 
- /*
+ 	return 0;
 -- 
 2.39.5
 
