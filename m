@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA9FACB74C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739A6ACB4C7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D96A1BA4ECF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA13D9E789D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AD72576;
-	Mon,  2 Jun 2025 14:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35E6221DB7;
+	Mon,  2 Jun 2025 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJGdG76Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoSPBY8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FD717BB6;
-	Mon,  2 Jun 2025 14:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8002C290F;
+	Mon,  2 Jun 2025 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876025; cv=none; b=JX2fga6s09iFHd/GeFqQeLcQIAQXG1mjr+0LQLmvxxszJSxIQRYL4n1CAt6Dh1mzWZk3ujLbGZTkXCZS2ZUilaFrAWT/QdfZG0KCbb1JXuyRsH1EO6bU7+6LhiHJKXLhmoOnNJ8l9kDT+EXD9Gkt9wErggdYZePB7dz3EKDrwlc=
+	t=1748875349; cv=none; b=n9iDkvDnOxRsVtc2VkPQUo4orOohb0dEueFP/eMN0JP6vNsK17GCS2QNw+If4WJTlSbVQK3OidA4TWH5dL5mh64vtD5Xv60NNfd7U0Zy+LeBezxX1wp4u7JCDyo/5jfWwQ4cbu5RmTT58zUWtSJSyU0hCFefwBfXoRaqHfvQYg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876025; c=relaxed/simple;
-	bh=SJHH0fU1AibIgHiYRV2p/8sS/5nTUNlTAJ1NH/hy/ds=;
+	s=arc-20240116; t=1748875349; c=relaxed/simple;
+	bh=nnIjt+JqNQvrerXqJPb2N0yI/djW8RwuwIZknJa8Rn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEpmSX93d6gzBZU8RmIihJ223df4i2L1fNqxaVyOkrc6XhxN588h+5/SaKNDV7WbTeFBBu6qFHkW2y1+JCtx8CF3m5ZZjDOHRqlKE5oI/MAj0hVOvxJ+FyGo295nKvnC+sW9mqRKbVJOgv7TyiCf4QkpanpPHQ0hvqRC9kAen+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJGdG76Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DC3C4CEEB;
-	Mon,  2 Jun 2025 14:53:44 +0000 (UTC)
+	 MIME-Version; b=LfszwNxZezYu23I628WljJqov5W7r+YQoHUsTboQ05m+WN5orehak2rNhONfm9uTY92Fnnv+mEboifluqcQ/jIHcIqFg/V0BTaReYkwIzuZjtc1ob7bsbj9ht6Tsc+67VTj5GydqihmKybLViHqDHvcCFw3WShJ3UDWDlb8SU7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoSPBY8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790E6C4CEEB;
+	Mon,  2 Jun 2025 14:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876025;
-	bh=SJHH0fU1AibIgHiYRV2p/8sS/5nTUNlTAJ1NH/hy/ds=;
+	s=korg; t=1748875349;
+	bh=nnIjt+JqNQvrerXqJPb2N0yI/djW8RwuwIZknJa8Rn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJGdG76QUUSWAsxF4Hqf7qQIaz1cSTI2mbke1fy3ddUt0/DPHNwWjYaxXxzw9lgJ7
-	 eWSGwqHD7AaTQVlgNyTHwW63/kOAz6/2F93qmxazo3h2WNjUWtwovFWCvD7Exsot7O
-	 E2DBMWXq/SRVCqo9ECpN1O8WbmTITC4a5fs+4JtA=
+	b=ZoSPBY8KlSR90rW43Um1QjH6N8KPJQLweGPq0Z4t0dJ5qFJ6Em8YoJkQv2Sg/FRF3
+	 C/bfNY7yofL9nn2K55UbKcNgcvh+KLQPUqQlkq+HarINO3LdUeckujBhuMx7aF7+kx
+	 9WNizsW8oJYQu0TWXaURHEqr5y76uMWwgiH1KiLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/207] lockdep: Fix wait context check on softirq for PREEMPT_RT
+	RD Babiera <rdbabiera@google.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 107/270] usb: typec: altmodes/displayport: create sysfs nodes as drivers default device attribute group
 Date: Mon,  2 Jun 2025 15:46:32 +0200
-Message-ID: <20250602134259.561959939@linuxfoundation.org>
+Message-ID: <20250602134311.604737229@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 61c39d8c83e2077f33e0a2c8980a76a7f323f0ce ]
+commit 165376f6b23e9a779850e750fb2eb06622e5a531 upstream.
 
-Since:
+The DisplayPort driver's sysfs nodes may be present to the userspace before
+typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
+a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
+hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
+NULL in those cases.
 
-  0c1d7a2c2d32 ("lockdep: Remove softirq accounting on PREEMPT_RT.")
+Remove manual sysfs node creation in favor of adding attribute group as
+default for devices bound to the driver. The ATTRIBUTE_GROUPS() macro is
+not used here otherwise the path to the sysfs nodes is no longer compliant
+with the ABI.
 
-the wait context test for mutex usage within "in softirq context" fails
-as it references @softirq_context:
-
-    | wait context tests |
-    --------------------------------------------------------------------------
-                                   | rcu  | raw  | spin |mutex |
-    --------------------------------------------------------------------------
-                 in hardirq context:  ok  |  ok  |  ok  |  ok  |
-  in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
-                 in softirq context:  ok  |  ok  |  ok  |FAILED|
-
-As a fix, add lockdep map for BH disabled section. This fixes the
-issue by letting us catch cases when local_bh_disable() gets called
-with preemption disabled where local_lock doesn't get acquired.
-In the case of "in softirq context" selftest, local_bh_disable() was
-being called with preemption disable as it's early in the boot.
-
-[ boqun: Move the lockdep annotations into __local_bh_*() to avoid false
-         positives because of unpaired local_bh_disable() reported by
-	 Borislav Petkov and Peter Zijlstra, and make bh_lock_map
-	 only exist for PREEMPT_RT. ]
-
-[ mingo: Restored authorship and improved the bh_lock_map definition. ]
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250321143322.79651-1-boqun.feng@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Link: https://lore.kernel.org/r/20240229001101.3889432-2-rdbabiera@google.com
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/softirq.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/usb/typec/altmodes/displayport.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index dc60f0c66a25f..d63d827da2d6a 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -140,6 +140,18 @@ static DEFINE_PER_CPU(struct softirq_ctrl, softirq_ctrl) = {
- 	.lock	= INIT_LOCAL_LOCK(softirq_ctrl.lock),
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -527,15 +527,20 @@ static ssize_t pin_assignment_show(struc
+ }
+ static DEVICE_ATTR_RW(pin_assignment);
+ 
+-static struct attribute *dp_altmode_attrs[] = {
++static struct attribute *displayport_attrs[] = {
+ 	&dev_attr_configuration.attr,
+ 	&dev_attr_pin_assignment.attr,
+ 	NULL
  };
  
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+static struct lock_class_key bh_lock_key;
-+struct lockdep_map bh_lock_map = {
-+	.name			= "local_bh",
-+	.key			= &bh_lock_key,
-+	.wait_type_outer	= LD_WAIT_FREE,
-+	.wait_type_inner	= LD_WAIT_CONFIG, /* PREEMPT_RT makes BH preemptible. */
-+	.lock_type		= LD_LOCK_PERCPU,
+-static const struct attribute_group dp_altmode_group = {
++static const struct attribute_group displayport_group = {
+ 	.name = "displayport",
+-	.attrs = dp_altmode_attrs,
++	.attrs = displayport_attrs,
 +};
-+EXPORT_SYMBOL_GPL(bh_lock_map);
-+#endif
 +
- /**
-  * local_bh_blocked() - Check for idle whether BH processing is blocked
-  *
-@@ -162,6 +174,8 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
++static const struct attribute_group *displayport_groups[] = {
++	&displayport_group,
++	NULL,
+ };
  
- 	WARN_ON_ONCE(in_hardirq());
+ int dp_altmode_probe(struct typec_altmode *alt)
+@@ -543,7 +548,6 @@ int dp_altmode_probe(struct typec_altmod
+ 	const struct typec_altmode *port = typec_altmode_get_partner(alt);
+ 	struct fwnode_handle *fwnode;
+ 	struct dp_altmode *dp;
+-	int ret;
  
-+	lock_map_acquire_read(&bh_lock_map);
-+
- 	/* First entry of a task into a BH disabled section? */
- 	if (!current->softirq_disable_cnt) {
- 		if (preemptible()) {
-@@ -225,6 +239,8 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- 	WARN_ON_ONCE(in_irq());
- 	lockdep_assert_irqs_enabled();
+ 	/* FIXME: Port can only be DFP_U. */
  
-+	lock_map_release(&bh_lock_map);
-+
- 	local_irq_save(flags);
- 	curcnt = __this_cpu_read(softirq_ctrl.cnt);
+@@ -554,10 +558,6 @@ int dp_altmode_probe(struct typec_altmod
+ 	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
+ 		return -ENODEV;
  
-@@ -275,6 +291,8 @@ static inline void ksoftirqd_run_begin(void)
- /* Counterpart to ksoftirqd_run_begin() */
- static inline void ksoftirqd_run_end(void)
+-	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
+-	if (ret)
+-		return ret;
+-
+ 	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
+ 	if (!dp)
+ 		return -ENOMEM;
+@@ -588,7 +588,6 @@ void dp_altmode_remove(struct typec_altm
  {
-+	/* pairs with the lock_map_acquire_read() in ksoftirqd_run_begin() */
-+	lock_map_release(&bh_lock_map);
- 	__local_bh_enable(SOFTIRQ_OFFSET, true);
- 	WARN_ON_ONCE(in_interrupt());
- 	local_irq_enable();
--- 
-2.39.5
-
+ 	struct dp_altmode *dp = typec_altmode_get_drvdata(alt);
+ 
+-	sysfs_remove_group(&alt->dev.kobj, &dp_altmode_group);
+ 	cancel_work_sync(&dp->work);
+ 
+ 	if (dp->connector_fwnode) {
+@@ -613,6 +612,7 @@ static struct typec_altmode_driver dp_al
+ 	.driver = {
+ 		.name = "typec_displayport",
+ 		.owner = THIS_MODULE,
++		.dev_groups = displayport_groups,
+ 	},
+ };
+ module_typec_altmode_driver(dp_altmode_driver);
 
 
 
