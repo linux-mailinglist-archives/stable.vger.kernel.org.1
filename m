@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4881ACB2B9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B85ACB6C7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56F0D940F1A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AFD94C73E9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46002231A42;
-	Mon,  2 Jun 2025 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2A022B586;
+	Mon,  2 Jun 2025 15:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoBJHKTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIjOZIgC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B8422FE18;
-	Mon,  2 Jun 2025 14:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8A222ACD1;
+	Mon,  2 Jun 2025 15:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873939; cv=none; b=XaNWgiLB0kMH5mRK3YuyHrFKIavnbj/xIiXRyvltqUZh05os6BhiexO95ZeB0t7UBpnSl9tdUBY+V76etu0DF3YvB3PNR+6fm695mZs+dHzkrZ/g9jYzQ7Z/wwZ3yvZAi+UMg5RYRxdqjGQTQIWF9EbuGXTxU5gDObASE52kw7k=
+	t=1748876837; cv=none; b=WtUXa7o9dhjfT5nvZxKQ71yJS1nSptPk1Q5SVDT5qSP7uLtDETI6vI4YKRatLzptcc+ldWXFavA9PTWz/sSlOeWfQsHFZQp8U2HaycslEyQP56F5bwbc4MeFZzKz3uJjlvxtUgd9tZEB5442cauRFLUEhq+yukT8kquyrP/E2NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873939; c=relaxed/simple;
-	bh=vlsLGK3C+Ap8FFKJ83PAvcxKXKOqkRHypu0r0zBPItQ=;
+	s=arc-20240116; t=1748876837; c=relaxed/simple;
+	bh=QtICOPl33NNRBRGQ9iScADKAwhvI8MByRtvR3SUV+Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgrptFAINOnCGM/SgkjkoOgTot6Z4bNf/UM+XahvMYHxDBPeYYDXIQTUPCw7T3tS3dRbo1xiVWoGHyPBVfcbTsx28YQvyh5/tMB2w+BfgRklov6nmzfgOasDz0weA+KO/j95P6ddac8fsR4odw5qZkXg1V/2TKfx+lCDIsqOb4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoBJHKTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8399FC4CEEB;
-	Mon,  2 Jun 2025 14:18:58 +0000 (UTC)
+	 MIME-Version; b=qYqAPTBREHMHTjwKYGE66XfissJyTYmTgSLF+p3hF+dJhZHt1AmewKz/7MTguVvbaFz5IpHg+AB1dVRvQnL4U8IDcuCrN/RzP6+QIDqykjZnFDBgwcn4wHFb/w4B66ff/0Zrq+jCl7uJVl1AOxpIdbH5V1q3rFGq6Fm7uoRLZrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIjOZIgC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C58AC4CEEB;
+	Mon,  2 Jun 2025 15:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873938;
-	bh=vlsLGK3C+Ap8FFKJ83PAvcxKXKOqkRHypu0r0zBPItQ=;
+	s=korg; t=1748876836;
+	bh=QtICOPl33NNRBRGQ9iScADKAwhvI8MByRtvR3SUV+Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OoBJHKTah00o5BsDfLPaxIQ0FEIw0k1HZ63BrzH8eClLytm+olnYxwSyDdQjUvJNQ
-	 CquAl5anE5FgFaly4WMZzsNomeQDPp1QrUiXg3KOW7/1WX+BY+zTNrOLvapDrmly2H
-	 BbwHU77O79CDhj0kY+x/cCc6e+UYoaf2bZReYh7A=
+	b=FIjOZIgCDWUMKWWAJZHoz5qRIRXQ9xhYSEK+Dwy4nxHqsBdBT40j2OD10NWj/GasH
+	 mFpIrO6R51lLUMSXh5Y0xAkdmnHEYwhqQJZQrF6q7AN10hrZnXfvPn+RYZlBNgvcyy
+	 CO0bJA3DEINH+VQtGSr6WU5ExngSd1M72VQqh4fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/444] spi: zynqmp-gqspi: Always acknowledge interrupts
+Subject: [PATCH 6.1 090/325] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
 Date: Mon,  2 Jun 2025 15:46:06 +0200
-Message-ID: <20250602134353.198953439@linuxfoundation.org>
+Message-ID: <20250602134323.440104234@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
+[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
 
-RXEMPTY can cause an IRQ, even though we may not do anything about it
-(such as if we are waiting for more received data). We must still handle
-these IRQs because we can tell they were caused by the device.
+Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
+hd44780_common") makes charlcd_alloc() argument-less effectively dropping
+the single allocation for the struct charlcd_priv object along with
+the driver specific one. Restore that behaviour here.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/auxdisplay/charlcd.c | 5 +++--
+ drivers/auxdisplay/charlcd.h | 5 +++--
+ drivers/auxdisplay/hd44780.c | 2 +-
+ drivers/auxdisplay/lcd2s.c   | 2 +-
+ drivers/auxdisplay/panel.c   | 2 +-
+ 5 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 3503e6c0a5c98..b5deb4fe3b832 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -799,7 +799,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
- static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- {
- 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
--	irqreturn_t ret = IRQ_NONE;
- 	u32 status, mask, dma_status = 0;
- 
- 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
-@@ -814,27 +813,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
- 				   dma_status);
- 	}
- 
--	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
-+	if (!mask && !dma_status)
-+		return IRQ_NONE;
-+
-+	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
- 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
--	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
-+	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
- 		zynqmp_process_dma_irq(xqspi);
--		ret = IRQ_HANDLED;
--	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
--			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
-+	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
-+			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
- 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
--		ret = IRQ_HANDLED;
--	}
- 
- 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
- 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
- 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
- 		complete(&xqspi->data_completion);
--		ret = IRQ_HANDLED;
- 	}
--	return ret;
-+	return IRQ_HANDLED;
+diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
+index 6d309e4971b61..e243291a7e77c 100644
+--- a/drivers/auxdisplay/charlcd.c
++++ b/drivers/auxdisplay/charlcd.c
+@@ -594,18 +594,19 @@ static int charlcd_init(struct charlcd *lcd)
+ 	return 0;
  }
  
+-struct charlcd *charlcd_alloc(void)
++struct charlcd *charlcd_alloc(unsigned int drvdata_size)
+ {
+ 	struct charlcd_priv *priv;
+ 	struct charlcd *lcd;
+ 
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
+ 	if (!priv)
+ 		return NULL;
+ 
+ 	priv->esc_seq.len = -1;
+ 
+ 	lcd = &priv->lcd;
++	lcd->drvdata = priv->drvdata;
+ 
+ 	return lcd;
+ }
+diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
+index eed80063a6d20..4bbf106b2dd8a 100644
+--- a/drivers/auxdisplay/charlcd.h
++++ b/drivers/auxdisplay/charlcd.h
+@@ -49,7 +49,7 @@ struct charlcd {
+ 		unsigned long y;
+ 	} addr;
+ 
+-	void *drvdata;
++	void *drvdata;			/* Set by charlcd_alloc() */
+ };
+ 
  /**
+@@ -93,7 +93,8 @@ struct charlcd_ops {
+ };
+ 
+ void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
+-struct charlcd *charlcd_alloc(void);
++
++struct charlcd *charlcd_alloc(unsigned int drvdata_size);
+ void charlcd_free(struct charlcd *lcd);
+ 
+ int charlcd_register(struct charlcd *lcd);
+diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
+index 8b690f59df27d..ebaf0ff518f4c 100644
+--- a/drivers/auxdisplay/hd44780.c
++++ b/drivers/auxdisplay/hd44780.c
+@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
+ 	if (!hdc)
+ 		return -ENOMEM;
+ 
+-	lcd = charlcd_alloc();
++	lcd = charlcd_alloc(0);
+ 	if (!lcd)
+ 		goto fail1;
+ 
+diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
+index 135831a165149..2b597f226c0c0 100644
+--- a/drivers/auxdisplay/lcd2s.c
++++ b/drivers/auxdisplay/lcd2s.c
+@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c)
+ 	if (err < 0)
+ 		return err;
+ 
+-	lcd = charlcd_alloc();
++	lcd = charlcd_alloc(0);
+ 	if (!lcd)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
+index eba04c0de7eb3..0f3999b665e70 100644
+--- a/drivers/auxdisplay/panel.c
++++ b/drivers/auxdisplay/panel.c
+@@ -835,7 +835,7 @@ static void lcd_init(void)
+ 	if (!hdc)
+ 		return;
+ 
+-	charlcd = charlcd_alloc();
++	charlcd = charlcd_alloc(0);
+ 	if (!charlcd) {
+ 		kfree(hdc);
+ 		return;
 -- 
 2.39.5
 
