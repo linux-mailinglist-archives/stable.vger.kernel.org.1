@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D89EACB5CF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92570ACB3C0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2479A1BC6F63
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B223170CB8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E186F221FC7;
-	Mon,  2 Jun 2025 14:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A94223707;
+	Mon,  2 Jun 2025 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK7xJlRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+pMulRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F9F17BBF;
-	Mon,  2 Jun 2025 14:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3357619EEBD;
+	Mon,  2 Jun 2025 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876018; cv=none; b=Kj3yTD5/gMxO0e79XRyfE+5FSfzSqhWpMR9CE1bVFbsTH5PaCr6XMqCxLhmNVWQLFoNR+pxgCHV27oeUcex56l76lqXcJosf/mjzTkEwdncJx/oxItT2kziHsSFnLGyjWOTbTV11ErtEK5KtJbCpmD/fJjVn2VqdB7DWqgUNNAA=
+	t=1748874628; cv=none; b=nVdHddPjO9M5GAD43L9zwNXhMKyaXQiHlAbtb/Yomf4397Pgz5Me/TIzayUJ2FjK6VW5I4H2ag8JfqSMYnmm5OvA6i5YtSJiH6vwAeviM7pWDaI4dq243cLrZWclH3h964QjTg5BDo+6GqO0v92iE7ePUPoWZ1/fkeycUglzCTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876018; c=relaxed/simple;
-	bh=c7c9orpvvcZHBDMTaxBle9PMb3+SPo4tuE2LxhsuFT8=;
+	s=arc-20240116; t=1748874628; c=relaxed/simple;
+	bh=MnRwMwDhaI9ATDka1u3mNK8o2I3CB4FcE3Vy8plc8Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B76BCJTc1t5D89mdFeKW+WO0tqV9SpuLzhxf8E7Dr+sPn71l9tVXxj/N/RZnllaYxsRxNbiS30hArDrRMHki7jbUGwEiGm7NSxfiuuG8Gh4zFjvQE8zBoPZZtVgMQBb0VhxfbP2rENA3qd7UlW2wmdylTrMLDT/4SqAPv8o+mC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK7xJlRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DF7C4CEEB;
-	Mon,  2 Jun 2025 14:53:37 +0000 (UTC)
+	 MIME-Version; b=YBWVCWoLwRaI1mt0LT5RGdyQI6us4NhToxq+ZVqUdoiUJvPwMGtMfbI/dbebWdR0YHVDOgM+1e26RKOVcwATtrVQue/5zuywt7jXj320zFXQxi0IILvZc2E6pc/XAb40QPORDAwD+j/tjqquiyreXYuGR5buo4CtBHLEZsODz3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+pMulRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD6FC4CEEB;
+	Mon,  2 Jun 2025 14:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876018;
-	bh=c7c9orpvvcZHBDMTaxBle9PMb3+SPo4tuE2LxhsuFT8=;
+	s=korg; t=1748874628;
+	bh=MnRwMwDhaI9ATDka1u3mNK8o2I3CB4FcE3Vy8plc8Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hK7xJlRpNJmqxMmIArflP+4mm3KLEILWagMx5wJf+MEyBBpbHDqLz3+F44Jc9MYW3
-	 6OOfzueSlUUPiiZ7PQZNvbTu8IgC+U/hbK16K9M5Vo9SH0wMIu/gLJm0c8qPLAnPNj
-	 fk0+D2mmjASOap6RHNXe207zYHEFQnHLdnkbr+I8=
+	b=0+pMulRpJCeSVrM8ezfWfy8OimYAZlNA0BuiWX5EHCznYN02WEuJQdYWZjYWDnQEO
+	 zxa3rGMka3vyqnP+wFI7hkTAUNDzN+Pt3ugsFZVetrI1HYA+7h5uQXzDd1xYCaQ11s
+	 bXcNQcJ86AtEwzgiXSzgnzNrxX8M7O1XhfBtTyJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/207] ASoC: mediatek: mt6359: Add stub for mt6359_accdet_enable_jack_detect
-Date: Mon,  2 Jun 2025 15:46:57 +0200
-Message-ID: <20250602134300.521482077@linuxfoundation.org>
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 085/204] openvswitch: Fix unsafe attribute parsing in output_userspace()
+Date: Mon,  2 Jun 2025 15:46:58 +0200
+Message-ID: <20250602134259.006515719@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Eelco Chaudron <echaudro@redhat.com>
 
-[ Upstream commit 0116a7d84b32537a10d9bea1fd1bfc06577ef527 ]
+commit 6beb6835c1fbb3f676aebb51a5fee6b77fed9308 upstream.
 
-Add a stub for mt6359_accdet_enable_jack_detect() to prevent linker
-failures in the machine sound drivers calling it when
-CONFIG_SND_SOC_MT6359_ACCDET is not enabled.
+This patch replaces the manual Netlink attribute iteration in
+output_userspace() with nla_for_each_nested(), which ensures that only
+well-formed attributes are processed.
 
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://patch.msgid.link/20250306-mt8188-accdet-v3-3-7828e835ff4b@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/mt6359-accdet.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/openvswitch/actions.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/mt6359-accdet.h b/sound/soc/codecs/mt6359-accdet.h
-index c234f2f4276a1..78ada3a5bfae5 100644
---- a/sound/soc/codecs/mt6359-accdet.h
-+++ b/sound/soc/codecs/mt6359-accdet.h
-@@ -123,6 +123,15 @@ struct mt6359_accdet {
- 	struct workqueue_struct *jd_workqueue;
- };
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -967,8 +967,7 @@ static int output_userspace(struct datap
+ 	upcall.cmd = OVS_PACKET_CMD_ACTION;
+ 	upcall.mru = OVS_CB(skb)->mru;
  
-+#if IS_ENABLED(CONFIG_SND_SOC_MT6359_ACCDET)
- int mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
- 				     struct snd_soc_jack *jack);
-+#else
-+static inline int
-+mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
-+				 struct snd_soc_jack *jack)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
- #endif
--- 
-2.39.5
-
+-	for (a = nla_data(attr), rem = nla_len(attr); rem > 0;
+-		 a = nla_next(a, &rem)) {
++	nla_for_each_nested(a, attr, rem) {
+ 		switch (nla_type(a)) {
+ 		case OVS_USERSPACE_ATTR_USERDATA:
+ 			upcall.userdata = a;
 
 
 
