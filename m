@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D994DACB8B1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:44:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC76ACB658
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C4B39E2ECD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:22:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 164C44C37CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9931422F74F;
-	Mon,  2 Jun 2025 15:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6478F221714;
+	Mon,  2 Jun 2025 15:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvyYccn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HINQVssv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A4122A7E3;
-	Mon,  2 Jun 2025 15:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227CB1FBC8C;
+	Mon,  2 Jun 2025 15:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877492; cv=none; b=M8RWQfRs15Jh+dcVT02SnKXZPTCgrBcDmN+daXfg4fXa1WTBh8qxwMT7UDMA2Ij2b3I1swRl+uo04V88BTP34YmUdQyY+eMcM/PvmVbaGVMbYzjS1jhDDZZnSZo3dbnFE5yG3+i7XdGQ8QHljmjb4NMCcZIyP7Iu1lYMcJX0Rfk=
+	t=1748876511; cv=none; b=U89kVAYEn8UMAkqR97IHCRMWM8PKuHacKfHUazr0B5fIa9PuYFrDo0aGHlygHBUsiuj9VudtcE+KO/6sDtdoVkrTFOBAyB0wd9df6qcno0YxfLabOkujGT+gYuUKnqw+/nNDiJLbWUV5ktnMxD27/HpXRZlpQWWjZCUuU6clmIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877492; c=relaxed/simple;
-	bh=UgXNus/fmwSAp9CFlV3RGejxKaovbXT+FOjGyNnhtaM=;
+	s=arc-20240116; t=1748876511; c=relaxed/simple;
+	bh=hJ4Ivg2gHF6M2xGPGDeiu1syUBTqxk2q3BhmdmyuDWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tzk7fJMTIJQKVElc37gLAMBPwiOvsXfNQZ5Y3tVwHG6gW7+ZG4jKfFwYVtq4rrK0n41Dtw3yrVRlMjJQl7HdprBLLtHrQK/d2tMmGNmqeXr8/4rMl3p6iM6UimrdyCF7lIzklGv1Isp1PmkYR5HDoHxYr1Sf44urr1XxUga6PYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvyYccn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFC9C4CEEB;
-	Mon,  2 Jun 2025 15:18:11 +0000 (UTC)
+	 MIME-Version; b=uTo6rPkvCYOHEuqxiflffgFeF+zm6uScpnOdsCFDs/EElqUwRgclJwYymU5zn00Y3LeZVwwugbf0Db7WBj4WLdGS2XO4bJq7rv8XpIC814ErOsPag6lPbGURz4/MruZgv0m5DUl2zq6yeyzMV72wrS5mc1VJ89sU6W/gD9ZPjzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HINQVssv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91635C4CEEB;
+	Mon,  2 Jun 2025 15:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877492;
-	bh=UgXNus/fmwSAp9CFlV3RGejxKaovbXT+FOjGyNnhtaM=;
+	s=korg; t=1748876511;
+	bh=hJ4Ivg2gHF6M2xGPGDeiu1syUBTqxk2q3BhmdmyuDWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvyYccn+8Ty9ayF7xyhjLE4bJWGq5+2iQkfxVryE6X+sAjZKBr57XWBYVWD3tDkSw
-	 kYVBhRh91iALO/UbtqqbW29Zv7VUl4ddS7OtdMtJfGeSspbI7KmNv7KilivMgdJCkM
-	 kXWr7xY3eGxKauImQZAsHeuJ0aB/oE2n6KQljEzU=
+	b=HINQVssvNO9a3aKKcJLZzRu4SNLeh0YJ9j/eKG97tn17Vw91ic5BjkovfVd7g+Bkb
+	 IOaEeaHqVOpeu7TlK3K9HLPktz0DvuZcjKBGO8EfIOcFtdFxdHJHUnpXIFnR9hMSZb
+	 meiduMezJaApF2zbRJW0ZLGZxEgE6rLvUbUiW/nI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 294/325] af_unix: Save listener for embryo socket.
+	Milton Barrera <miltonjosue2001@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 198/207] HID: quirks: Add ADATA XPG alpha wireless mouse support
 Date: Mon,  2 Jun 2025 15:49:30 +0200
-Message-ID: <20250602134331.848558755@linuxfoundation.org>
+Message-ID: <20250602134306.533363114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Milton Barrera <miltonjosue2001@gmail.com>
 
-commit aed6ecef55d70de3762ce41c561b7f547dbaf107 upstream.
+[ Upstream commit fa9fdeea1b7d6440c22efa6d59a769eae8bc89f1 ]
 
-This is a prep patch for the following change, where we need to
-fetch the listening socket from the successor embryo socket
-during GC.
+This patch adds HID_QUIRK_ALWAYS_POLL for the ADATA XPG wireless gaming mouse (USB ID 125f:7505) and its USB dongle (USB ID 125f:7506). Without this quirk, the device does not generate input events properly.
 
-We add a new field to struct unix_sock to save a pointer to a
-listening socket.
-
-We set it when connect() creates a new socket, and clear it when
-accept() is called.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-8-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Milton Barrera <miltonjosue2001@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |    1 +
- net/unix/af_unix.c    |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    | 4 ++++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 6 insertions(+)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -83,6 +83,7 @@ struct unix_sock {
- 	struct path		path;
- 	struct mutex		iolock, bindlock;
- 	struct sock		*peer;
-+	struct sock		*listener;
- 	struct unix_vertex	*vertex;
- 	struct list_head	link;
- 	unsigned long		inflight;
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -954,6 +954,7 @@ static struct sock *unix_create1(struct
- 	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
- 	sk->sk_destruct		= unix_sock_destructor;
- 	u = unix_sk(sk);
-+	u->listener = NULL;
- 	u->inflight = 0;
- 	u->vertex = NULL;
- 	u->path.dentry = NULL;
-@@ -1558,6 +1559,7 @@ restart:
- 	newsk->sk_type		= sk->sk_type;
- 	init_peercred(newsk);
- 	newu = unix_sk(newsk);
-+	newu->listener = other;
- 	RCU_INIT_POINTER(newsk->sk_wq, &newu->peer_wq);
- 	otheru = unix_sk(other);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 44825a916eeb2..08494eb652091 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -41,6 +41,10 @@
+ #define USB_VENDOR_ID_ACTIONSTAR	0x2101
+ #define USB_DEVICE_ID_ACTIONSTAR_1011	0x1011
  
-@@ -1651,8 +1653,8 @@ static int unix_accept(struct socket *so
- 		       bool kern)
- {
- 	struct sock *sk = sock->sk;
--	struct sock *tsk;
- 	struct sk_buff *skb;
-+	struct sock *tsk;
- 	int err;
++#define USB_VENDOR_ID_ADATA_XPG 0x125f
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE 0x7505
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE 0x7506
++
+ #define USB_VENDOR_ID_ADS_TECH		0x06e1
+ #define USB_DEVICE_ID_ADS_TECH_RADIO_SI470X	0xa155
  
- 	err = -EOPNOTSUPP;
-@@ -1677,6 +1679,7 @@ static int unix_accept(struct socket *so
- 	}
- 
- 	tsk = skb->sk;
-+	unix_sk(tsk)->listener = NULL;
- 	skb_free_datagram(sk, skb);
- 	wake_up_interruptible(&unix_sk(sk)->peer_wait);
- 
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index b5ad4c87daacf..126cadb117fef 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -27,6 +27,8 @@
+ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AFATECH, USB_DEVICE_ID_AFATECH_AF9016), HID_QUIRK_FULLSPEED_INTERVAL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AIREN, USB_DEVICE_ID_AIREN_SLIMPLUS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI_09E8, USB_DEVICE_ID_AKAI_09E8_MIDIMIX), HID_QUIRK_NO_INIT_REPORTS },
+-- 
+2.39.5
+
 
 
 
