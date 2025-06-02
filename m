@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F149ACB49E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFD0ACB290
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690364A5A42
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6AAD1945165
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0594B227EA7;
-	Mon,  2 Jun 2025 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3CE22FDE8;
+	Mon,  2 Jun 2025 14:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jFQaGb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLeBvrys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E4C227E97;
-	Mon,  2 Jun 2025 14:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E4221297;
+	Mon,  2 Jun 2025 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875171; cv=none; b=YdVOPKd/kovkQZ1H6FVjZHMC8iE+G3EVMmYZU8yywWSx76ZHtsiSUJrUt90I8Edl/nSjRdfc+URWWd6+rwWceFu/C5ANJierp6ZCT5cqp0NGK8icw3OldbQUB2mdjK0fFUuNR6GdLoZUvRIEsSK8XLzjdFQn5HT0Fq/SDJnbWtY=
+	t=1748873866; cv=none; b=jOanzNXI+wJlGPS91AuSBms7gxqHC99xj6t631EpgpO3xj8s/lXQmoE53qc4QAHNsFZI98dVgxLmgNJ406XRv/AW3cCxiUP9yB2ArbXjahDrR+Lg60NlCe3JR7+j6gVFh5aqWQt4MlmSjAWNDBGVbl2rVbBAE4FPG3DGzDQOB5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875171; c=relaxed/simple;
-	bh=zNg8NsBxzUrNiL81PTeKYeZD/ovLIfj5NQk3xUCF8p8=;
+	s=arc-20240116; t=1748873866; c=relaxed/simple;
+	bh=NMJEitYzklJ1YHe2qgS2VPqpyGaV0PfP+nEqDJVyDTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhnXJuSf3ZcLUIdtbdHH2BC53cPDWw+CKRNmek8DFrGi6SFbkqTKTG/1BG19VVPVoHdMJU4vfVNZeIs/Ycwi6JEnhen8HBzjKEn5LktEGKzJ+ydM7k7v4DsOhUlvF1xT3R5wIQAwDs2NUT/sflW6qOHP0zp2+9y14ERIT3cYPXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jFQaGb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2916C4CEEB;
-	Mon,  2 Jun 2025 14:39:30 +0000 (UTC)
+	 MIME-Version; b=W4HRhJBkpQ/BKukgyeq3Ul+nq9I2EUmgQNwTFpyYzABnQ6wJuUFNMMSeHXV14mt57slZHYfoC+GUrMpjo/iWMOQsYLBTPwwfCFtWcsXJfsblvMPsKrUe16zUrY44QWDfu7veoOeOoADij2NI4WHpHXPYZhLufRRR6GvLgwnOnUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLeBvrys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F0EC4CEEB;
+	Mon,  2 Jun 2025 14:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875171;
-	bh=zNg8NsBxzUrNiL81PTeKYeZD/ovLIfj5NQk3xUCF8p8=;
+	s=korg; t=1748873864;
+	bh=NMJEitYzklJ1YHe2qgS2VPqpyGaV0PfP+nEqDJVyDTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jFQaGb6h+w1B8GcUC4nQI9Z0DRB0DOLFzkeKM/+Cem9lo/WbfnpZYLceNKFiz5Dn
-	 MwVbFqANKMhXX3W7eSpTGAhLPsc4eU1aqAoU/vkjijWDegn7ceZlKsm+2/yVvtMbSJ
-	 lgNXwUkK/nsWI8KJZjLozYrcUNCTXpLpyP+LWI2I=
+	b=xLeBvrys17SwZLsrVM8XGFOdpuVXA9b2K2DEq+z3FSZxZpmqvnQIUPZ25Ek8SEuto
+	 V/8U9KTYI+BG4Kc6aLxB5tQqlTSKs03mIe2bGoBedef/dvd0ctomZzQoCjrNSAas9y
+	 V/U5tbqSuBuMtUxOl1LLKnlIY3rGRz12uq3HtktI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/270] net: dsa: b53: fix learning on VLAN unaware bridges
+Subject: [PATCH 6.6 271/444] hwmon: (xgene-hwmon) use appropriate type for the latency value
 Date: Mon,  2 Jun 2025 15:45:35 +0200
-Message-ID: <20250602134309.243541732@linuxfoundation.org>
+Message-ID: <20250602134351.962436902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit 9f34ad89bcf0e6df6f8b01f1bdab211493fc66d1 ]
+[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
 
-When VLAN filtering is off, we configure the switch to forward, but not
-learn on VLAN table misses. This effectively disables learning while not
-filtering.
+The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
+evaluated using 32-bit arithmetic.
 
-Fix this by switching to forward and learn. Setting the learning disable
-register will still control whether learning actually happens.
+Since a value of type 'u64' is used to store the eventual result,
+and this result is later sent to the function usecs_to_jiffies with
+input parameter unsigned int, the current data type is too wide to
+store the value of ctx->usecs_lat.
 
-Fixes: dad8d7c6452b ("net: dsa: b53: Properly account for VLAN filtering")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250429201710.330937-11-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change the data type of "usecs_lat" to a more suitable (narrower) type.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
+ drivers/hwmon/xgene-hwmon.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 0914982a80c11..39a56cedbc1f4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -383,7 +383,7 @@ static void b53_enable_vlan(struct b53_device *dev, bool enable,
- 			vc4 |= VC4_ING_VID_VIO_DROP << VC4_ING_VID_CHECK_S;
- 			vc5 |= VC5_DROP_VTABLE_MISS;
- 		} else {
--			vc4 |= VC4_ING_VID_VIO_FWD << VC4_ING_VID_CHECK_S;
-+			vc4 |= VC4_NO_ING_VID_CHK << VC4_ING_VID_CHECK_S;
- 			vc5 &= ~VC5_DROP_VTABLE_MISS;
- 		}
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index 207084d55044a..6768dbf390390 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -111,7 +111,7 @@ struct xgene_hwmon_dev {
  
+ 	phys_addr_t		comm_base_addr;
+ 	void			*pcc_comm_addr;
+-	u64			usecs_lat;
++	unsigned int		usecs_lat;
+ };
+ 
+ /*
 -- 
 2.39.5
 
