@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-150032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C0EACB580
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7ABACB6E2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684B59E5B15
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236DEA2295D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45201231832;
-	Mon,  2 Jun 2025 14:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0E42397A4;
+	Mon,  2 Jun 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IApfpOh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKk1X0H/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0205741C71;
-	Mon,  2 Jun 2025 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A45422AE5D;
+	Mon,  2 Jun 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875819; cv=none; b=gzZgStMC/hIbUkQni2+eGwa8IWIginkowJ1Ra9gn+rCkTSzaZ5fHKLjwIy0dDRPUwTvDBwtTmmymP2qXPQs3SFAouAy1ae0Tg15nCPPTCL8m46CYNo9mesnTTbrTLjZ4fZgmFfcXlVeIKDZ/MM2g7CBvDJ3GDrGv2HCTwvvDe5A=
+	t=1748876403; cv=none; b=WVotm1en5MfkxU1B6MhEBBOU7sY52hKNZRzsGjrr4ntCVWZUlwb4q/iRKUuB1vN5SjN+++5rkHHAg8Nvg0NprYqQiQkikYlewxXbwUWREbG4PgB6yk2xMcKU4K0EXfUf9GcrqzSYdpnolQR+JAZN79vZ3OlsS2zifdFa5Cg3JNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875819; c=relaxed/simple;
-	bh=ko2il6OnvEjKxYzGtcOpEv75dnGrYNV8UNomT7vcGVY=;
+	s=arc-20240116; t=1748876403; c=relaxed/simple;
+	bh=noHCdlg77Xv/tonY2RLxtr3/z/rDcrhkjSqy8Ur59H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8qimo4W5rucCLxMDieEsEpD7JCtfcXcVqW5Bm/LtARWSNgWiGY/tutdzofoFOlSpDMMYSqXMzCEVPOkH9nSzHW6qpMSTG1W/MTrdyG5hNofNvJQLzCqc83pPL3DnjLnhZykixj7PWTzRlIfM1nhZiBRv2iuKQNoCY7RY2Qh4cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IApfpOh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F42C4CEEB;
-	Mon,  2 Jun 2025 14:50:18 +0000 (UTC)
+	 MIME-Version; b=OQaJ1pa+C570d+0v91lwG7MYxDtx807q/dBc0DMrlfNnGwQL6vn6LPJt0JB3sxZtHmxxMJLFBymCVWDvnfo4ciqREUNMrJDWsrD0+jgbEaV+WRPmsi+q0aVXsie1CgK+ay/7TDA0QyKaRJuzapRCymIc5penMy5NUE6S7l/NNQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKk1X0H/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75787C4CEEB;
+	Mon,  2 Jun 2025 15:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875818;
-	bh=ko2il6OnvEjKxYzGtcOpEv75dnGrYNV8UNomT7vcGVY=;
+	s=korg; t=1748876403;
+	bh=noHCdlg77Xv/tonY2RLxtr3/z/rDcrhkjSqy8Ur59H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IApfpOh5JeNpW3Obi+4xhtZBMZLJiXIS0dDTTjHzo7OX8uvlZAO8BlHfhQZ47cCQI
-	 K1etnXf864VLiNI66E1OcEw0OeMscFRTaKfZMp197J67VcUbWA2kXmZCSr7Dv9bxKv
-	 M+OOUnooY3njn+jv0apZOz6tZXSLUs0i1V2vlTw0=
+	b=UKk1X0H/9ULm3UOFlfpSE58Axfw7T6rbwEOx+3P/s87211li1EtBqDSsN+99ib6gO
+	 AiQVCiRjBGLarCUzdoMp36R7kqodEjxm90S3HykihwUpds95HDgf4Yo2dI24fSyRTC
+	 LJtHW5BY6xrRXBtrTaGaOzzL6YDwbHStUq9Et0QI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10 253/270] drm/i915/gvt: fix unterminated-string-initialization warning
-Date: Mon,  2 Jun 2025 15:48:58 +0200
-Message-ID: <20250602134317.679903957@linuxfoundation.org>
+	Mingi Cho <mincho@theori.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 167/207] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
+Date: Mon,  2 Jun 2025 15:48:59 +0200
+Message-ID: <20250602134305.279725802@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
 
-Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-(which is "IntelGraphicsMem") drops the NUL termination of the
-string. This is intentional, but the compiler doesn't know this.
+When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
+child qdisc's peek() operation before incrementing sch->q.qlen and
+sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
+trigger an immediate dequeue and potential packet drop. In such cases,
+qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
+have not yet been updated, leading to inconsistent queue accounting. This
+can leave an empty HFSC class in the active list, causing further
+consequences like use-after-free.
 
-Switch to initializing header->signature directly from the string
-litaral, with sizeof destination rather than source. We don't treat the
-signature as a string other than for initialization; it's really just a
-blob of binary data.
+This patch fixes the bug by moving the increment of sch->q.qlen and
+sch->qstats.backlog before the call to the child qdisc's peek() operation.
+This ensures that queue length and backlog are always accurate when packet
+drops or dequeues are triggered during the peek.
 
-Add a static assert for good measure to cross-check the sizes.
-
-Reported-by: Kees Cook <kees@kernel.org>
-Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-Tested-by: Damian Tometzki <damian@riscv-rocks.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
-Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-[nathan: Move static_assert() to top of function to avoid instance of
-         -Wdeclaration-after-statement due to lack of b5ec6fd286df]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
+Reported-by: Mingi Cho <mincho@theori.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gvt/opregion.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ net/sched/sch_hfsc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/gvt/opregion.c
-+++ b/drivers/gpu/drm/i915/gvt/opregion.c
-@@ -222,7 +222,8 @@ int intel_vgpu_init_opregion(struct inte
- 	u8 *buf;
- 	struct opregion_header *header;
- 	struct vbt v;
--	const char opregion_signature[16] = OPREGION_SIGNATURE;
-+
-+	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index d6c5fc543f652..05ac7d55482b8 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1572,6 +1572,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 		return err;
+ 	}
  
- 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
- 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-@@ -236,8 +237,9 @@ int intel_vgpu_init_opregion(struct inte
- 	/* emulated opregion with VBT mailbox only */
- 	buf = (u8 *)vgpu_opregion(vgpu)->va;
- 	header = (struct opregion_header *)buf;
--	memcpy(header->signature, opregion_signature,
--	       sizeof(opregion_signature));
++	sch->qstats.backlog += len;
++	sch->q.qlen++;
 +
-+	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
-+
- 	header->size = 0x8;
- 	header->opregion_ver = 0x02000000;
- 	header->mboxes = MBOX_VBT;
+ 	if (first && !cl->cl_nactive) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+@@ -1587,9 +1590,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 
+ 	}
+ 
+-	sch->qstats.backlog += len;
+-	sch->q.qlen++;
+-
+ 	return NET_XMIT_SUCCESS;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
