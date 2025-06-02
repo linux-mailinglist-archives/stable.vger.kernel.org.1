@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-149369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EFEACB278
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7D5ACB67B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801BB17BFDC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29ED4C3E60
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D102288E3;
-	Mon,  2 Jun 2025 14:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB2C22424C;
+	Mon,  2 Jun 2025 15:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIT8OtIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwpKKDLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DF32288C0;
-	Mon,  2 Jun 2025 14:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0A6223DD1;
+	Mon,  2 Jun 2025 15:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873761; cv=none; b=a2Astlc0nYi4zwvLmi0hzKSvH5EDvhE3e5N5hI0GSvMmv/EFhys5wCp6YF6nXo02bkN+4oIFcZNtEMkn1tIOwJeewpEgIGJP8uMDQgPeU5iwh7MULUwk8EeDT/ah3rOtBc1rYyEQ3W/CUJfar4SCkJe/0NuYe8Lgyulp8cQ5HfA=
+	t=1748876576; cv=none; b=ZJiPa035sQc67Uoq6M+815JMHZMj3RKiQvDbzNOD7i3FOZLaLkTYIx0VfdAneQZQGA3JYMJBMkEFfNrzX2DVbV4OSC1sYbiLS61LXhSF3KftPjoKqgk0oizKNXP5qw9DUOfHqDXK5LSAuU0O6Y4F7fkIJX3F7WzU8awdLEbKOto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873761; c=relaxed/simple;
-	bh=RtBwJS0XlzQNe5/GAcc68kHvg5t3WT3SuumNQzdmbLY=;
+	s=arc-20240116; t=1748876576; c=relaxed/simple;
+	bh=eKKR/IDrvZboDhiEKnhidrP6e14d+BE2MmuZF7KllRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcZOCcwVzZXpGXhJ/xopA470X64OHRhS60gwko5eiE5VFM5a1ehst/EkrMKZvwKSh94dfk+KHIWB8c24PLCWAQju4uT25sVQa9Ivhqv28EADtkwOMF2NyixpPpOuQIT+hDrscLdQs6MzrVQDmeNXxIPR+m7r6C2Wh2kBhoktS+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIT8OtIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4DBC4CEEB;
-	Mon,  2 Jun 2025 14:16:00 +0000 (UTC)
+	 MIME-Version; b=AYjWwY+3TYgfVWtfxduaaVfKZ6XLJb81zRUXHanwKWYz4b4G9YmWIQbLW00E8gcFtFD0CWjTCh+fZFq2Sd1NDASPvkbFgLrxtBVvQBADeT5xUVngFYl0IoKqJVw1fHU3GCjIt+SACWn5dyxYXdYwWlh8wl93SF5RdY3v+h4IoWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwpKKDLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F067BC4CEEB;
+	Mon,  2 Jun 2025 15:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873760;
-	bh=RtBwJS0XlzQNe5/GAcc68kHvg5t3WT3SuumNQzdmbLY=;
+	s=korg; t=1748876576;
+	bh=eKKR/IDrvZboDhiEKnhidrP6e14d+BE2MmuZF7KllRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIT8OtIieFvkBr7kBG1wuJ4wRak5hJxv+yVOhKHUYZ1OdzH4EKB30lqO91bFx0AG5
-	 yLEJUZ7hbqava5XnF05Af7Uog3b0aH57FjOBPIYiGwRwgrd7+q2jZLVFk9d8MML1f6
-	 Gvdj0+K8Vbgrlvj2khPqc/fEaoKlj0h2YM6VBc5M=
+	b=gwpKKDLzJkLhSwa929cf7DzemZx2UjKT4y8KPBcT7wiI3975NIUQlMhigrQSbLFLH
+	 bDloezx+1aqDXQH0e3l6fyaSJdYzTp4XHX9M0o0ydup4TWYvK9ZjSdbQDo2Eoy7RGr
+	 p/9naJ0SBS7E23GD4am0RJ0rAL6vJXsuWwl8GRHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Firas Jahjah <firasj@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/444] RDMA/core: Fix best page size finding when it can cross SG entries
-Date: Mon,  2 Jun 2025 15:44:36 +0200
-Message-ID: <20250602134349.514922765@linuxfoundation.org>
+Subject: [PATCH 6.1 001/325] gpio: pca953x: Add missing header(s)
+Date: Mon,  2 Jun 2025 15:44:37 +0200
+Message-ID: <20250602134319.787894318@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,141 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 486055f5e09df959ad4e3aa4ee75b5c91ddeec2e ]
+[ Upstream commit c20a395f9bf939ef0587ce5fa14316ac26252e9b ]
 
-A single scatter-gather entry is limited by a 32 bits "length" field
-that is practically 4GB - PAGE_SIZE. This means that even when the
-memory is physically contiguous, we might need more than one entry to
-represent it. Additionally when using dmabuf, the sg_table might be
-originated outside the subsystem and optimized for other needs.
+Do not imply that some of the generic headers may be always included.
+Instead, include explicitly what we are direct user of.
 
-For instance an SGT of 16GB GPU continuous memory might look like this:
-(a real life example)
+While at it, sort headers alphabetically.
 
-dma_address 34401400000, length fffff000
-dma_address 345013ff000, length fffff000
-dma_address 346013fe000, length fffff000
-dma_address 347013fd000, length fffff000
-dma_address 348013fc000, length 4000
-
-Since ib_umem_find_best_pgsz works within SG entries, in the above case
-we will result with the worst possible 4KB page size.
-
-Fix this by taking into consideration only the alignment of addresses of
-real discontinuity points rather than treating SG entries as such, and
-adjust the page iterator to correctly handle cross SG entry pages.
-
-There is currently an assumption that drivers do not ask for pages
-bigger than maximal DMA size supported by their devices.
-
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Link: https://patch.msgid.link/20250217141623.12428-1-mrgolin@amazon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 3e38f946062b ("gpio: pca953x: fix IRQ storm on system wake up")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem.c  | 36 ++++++++++++++++++++++++---------
- drivers/infiniband/core/verbs.c | 11 +++++-----
- 2 files changed, 32 insertions(+), 15 deletions(-)
+ drivers/gpio/gpio-pca953x.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index 07c571c7b6999..c5b6863947605 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -80,9 +80,12 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 				     unsigned long pgsz_bitmap,
- 				     unsigned long virt)
- {
--	struct scatterlist *sg;
-+	unsigned long curr_len = 0;
-+	dma_addr_t curr_base = ~0;
- 	unsigned long va, pgoff;
-+	struct scatterlist *sg;
- 	dma_addr_t mask;
-+	dma_addr_t end;
- 	int i;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 262b3d276df78..caf3bb6cb6b9f 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -10,8 +10,8 @@
  
- 	umem->iova = va = virt;
-@@ -107,17 +110,30 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 	pgoff = umem->address & ~PAGE_MASK;
+ #include <linux/acpi.h>
+ #include <linux/bitmap.h>
+-#include <linux/gpio/driver.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/gpio/driver.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+@@ -20,6 +20,7 @@
+ #include <linux/platform_data/pca953x.h>
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
++#include <linux/seq_file.h>
+ #include <linux/slab.h>
  
- 	for_each_sgtable_dma_sg(&umem->sgt_append.sgt, sg, i) {
--		/* Walk SGL and reduce max page size if VA/PA bits differ
--		 * for any address.
-+		/* If the current entry is physically contiguous with the previous
-+		 * one, no need to take its start addresses into consideration.
- 		 */
--		mask |= (sg_dma_address(sg) + pgoff) ^ va;
-+		if (check_add_overflow(curr_base, curr_len, &end) ||
-+		    end != sg_dma_address(sg)) {
-+
-+			curr_base = sg_dma_address(sg);
-+			curr_len = 0;
-+
-+			/* Reduce max page size if VA/PA bits differ */
-+			mask |= (curr_base + pgoff) ^ va;
-+
-+			/* The alignment of any VA matching a discontinuity point
-+			* in the physical memory sets the maximum possible page
-+			* size as this must be a starting point of a new page that
-+			* needs to be aligned.
-+			*/
-+			if (i != 0)
-+				mask |= va;
-+		}
-+
-+		curr_len += sg_dma_len(sg);
- 		va += sg_dma_len(sg) - pgoff;
--		/* Except for the last entry, the ending iova alignment sets
--		 * the maximum possible page size as the low bits of the iova
--		 * must be zero when starting the next chunk.
--		 */
--		if (i != (umem->sgt_append.sgt.nents - 1))
--			mask |= va;
-+
- 		pgoff = 0;
- 	}
- 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index ba05de0380e96..6567d43751280 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -3029,22 +3029,23 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
- bool __rdma_block_iter_next(struct ib_block_iter *biter)
- {
- 	unsigned int block_offset;
--	unsigned int sg_delta;
-+	unsigned int delta;
- 
- 	if (!biter->__sg_nents || !biter->__sg)
- 		return false;
- 
- 	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
- 	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
--	sg_delta = BIT_ULL(biter->__pg_bit) - block_offset;
-+	delta = BIT_ULL(biter->__pg_bit) - block_offset;
- 
--	if (sg_dma_len(biter->__sg) - biter->__sg_advance > sg_delta) {
--		biter->__sg_advance += sg_delta;
--	} else {
-+	while (biter->__sg_nents && biter->__sg &&
-+	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
-+		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
- 		biter->__sg_advance = 0;
- 		biter->__sg = sg_next(biter->__sg);
- 		biter->__sg_nents--;
- 	}
-+	biter->__sg_advance += delta;
- 
- 	return true;
- }
+ #include <asm/unaligned.h>
 -- 
 2.39.5
 
