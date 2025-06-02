@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A08ACB2D8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D101ACB5D1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C1019415EA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE0333AB0EF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F06F239561;
-	Mon,  2 Jun 2025 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F263B233133;
+	Mon,  2 Jun 2025 14:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KPEtxEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eR9Z4Tdn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078F1E0DD8;
-	Mon,  2 Jun 2025 14:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DB422F764;
+	Mon,  2 Jun 2025 14:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874059; cv=none; b=lKNRz/UKr+LlxoUiqHGUQeVcHubYShI7K6hccJaWwLd//1DWuA+GeZlzbgBRGaixEFP5t3bxIO3iB65mqNR6iZnsH5OG4w1AGr2drmq3c/vkvPJAs9HlTKPOAt2GMcrswv+Z+zD22xpgp/3VhY+kekY2Pmc/c2FZ76MAxQA8a1k=
+	t=1748875960; cv=none; b=N5vD5dwzVWlPKoJ8+dxNneWtiE6YnqodzTQ9JjklWo4YwyFj0pQPRg3jKw1Awi9F2malj+bcWK60Y6NmbSN5UhSPYguxdyoMeNtfW6EilaGlTNja5ZyE8CTJvy0qkh9uauWHCpeqi+hnDntoL3jbM+NBk8XD4Wo0/TzaWVeP0eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874059; c=relaxed/simple;
-	bh=exr8vI+faovxTHgTjQsoneWpyOx/EP2vj5/WMzcJmJY=;
+	s=arc-20240116; t=1748875960; c=relaxed/simple;
+	bh=lwGicsb6PTuwmKgem0y9+gGanliVb9qxXVDAqhxWKGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PcNRrlYAz7T1rprLm2wq/n2asemmBd1OqwQtDWOAodaYIN3aXFbgNQnWhtWrJbbiWrG6XZKn9yjgT4JIYNuHN51C46ayiS52IfIX1dBI/j231ZvGcqhh4p3TMh6Ts+JN2tkFFlGYYnYk+QDLrFJMek3A/3Oa5DVltjBE4E0ye5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KPEtxEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D86AC4CEEB;
-	Mon,  2 Jun 2025 14:20:56 +0000 (UTC)
+	 MIME-Version; b=q00WA4CKCfUSeZT0cK0Z33XO1SXIdw+ASex2jWI/67t1a3kNKmhZW+2cHte0HsNFid9urLeykHBYiIBcltz78YmxKZMzO9wTj8I4LqdQDQsBoOQNjFr2hCSj5uA86P+2AHMPcAqxp1nHQ3I8iCL4MDxzMPovC7ufHrD4ixtEPy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eR9Z4Tdn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C52C4CEEB;
+	Mon,  2 Jun 2025 14:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874057;
-	bh=exr8vI+faovxTHgTjQsoneWpyOx/EP2vj5/WMzcJmJY=;
+	s=korg; t=1748875960;
+	bh=lwGicsb6PTuwmKgem0y9+gGanliVb9qxXVDAqhxWKGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KPEtxECGHdUBjnZwGXIu6DjRrcqrIxpqF02i9ZcBisHBbdJRQ/BZqC/i0xxWE7QZ
-	 pUyBqNetFusGE6WHIHnv7QxtvHmfnUktZUSSZmOswWXuaYrWj3yB0ukwdf7MXyiK/C
-	 3oxwgd0BVOPizd18O5qy811Oxrl7n0C5bWJJZheY=
+	b=eR9Z4TdnFEViNzSNf/+7uY8+mkS7ThSJGgHY5mg/cKl64ZLZpJFIk17+dA2AlcVzc
+	 C7HSCGkDU3qa9PWDEHEhhN2HrloeIF7AXOtGWfl0H5bAc8sH0t4a1zFj5o6FLI26vn
+	 1l4Ur8K6Q24UFsfp+fKuooeBDc8sJUcZFcrBwaFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kuba=20Szczodrzy=C5=84ski?= <kuba@szczodrzynski.pl>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 336/444] clk: sunxi-ng: d1: Add missing divider for MMC mod clocks
+Subject: [PATCH 5.15 028/207] i2c: qup: Vote for interconnect bandwidth to DRAM
 Date: Mon,  2 Jun 2025 15:46:40 +0200
-Message-ID: <20250602134354.567015424@linuxfoundation.org>
+Message-ID: <20250602134259.871798825@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +60,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit 98e6da673cc6dd46ca9a599802bd2c8f83606710 ]
+[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
 
-The D1/R528/T113 SoCs have a hidden divider of 2 in the MMC mod clocks,
-just as other recent SoCs. So far we did not describe that, which led
-to the resulting MMC clock rate to be only half of its intended value.
+When the I2C QUP controller is used together with a DMA engine it needs
+to vote for the interconnect path to the DRAM. Otherwise it may be
+unable to access the memory quickly enough.
 
-Use a macro that allows to describe a fixed post-divider, to compensate
-for that divisor.
+The requested peak bandwidth is dependent on the I2C core clock.
 
-This brings the MMC performance on those SoCs to its expected level,
-so about 23 MB/s for SD cards, instead of the 11 MB/s measured so far.
+To avoid sending votes too often the bandwidth is always requested when
+a DMA transfer starts, but dropped only on runtime suspend. Runtime
+suspend should only happen if no transfer is active. After resumption we
+can defer the next vote until the first DMA transfer actually happens.
 
-Fixes: 35b97bb94111 ("clk: sunxi-ng: Add support for the D1 SoC clocks")
-Reported-by: Kuba Szczodrzyński <kuba@szczodrzynski.pl>
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Link: https://patch.msgid.link/20250501120631.837186-1-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+The implementation is largely identical to the one introduced for
+spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
+bandwidth to DRAM") since both drivers represent the same hardware
+block.
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun20i-d1.c | 44 ++++++++++++++++------------
- drivers/clk/sunxi-ng/ccu_mp.h        | 22 ++++++++++++++
- 2 files changed, 47 insertions(+), 19 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun20i-d1.c b/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
-index f95c3615ca772..98f107e96317e 100644
---- a/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
-@@ -412,19 +412,23 @@ static const struct clk_parent_data mmc0_mmc1_parents[] = {
- 	{ .hw = &pll_periph0_2x_clk.common.hw },
- 	{ .hw = &pll_audio1_div2_clk.common.hw },
- };
--static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc0_clk, "mmc0", mmc0_mmc1_parents, 0x830,
--				       0, 4,	/* M */
--				       8, 2,	/* P */
--				       24, 3,	/* mux */
--				       BIT(31),	/* gate */
--				       0);
--
--static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc1_clk, "mmc1", mmc0_mmc1_parents, 0x834,
--				       0, 4,	/* M */
--				       8, 2,	/* P */
--				       24, 3,	/* mux */
--				       BIT(31),	/* gate */
--				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc0_clk, "mmc0",
-+					       mmc0_mmc1_parents, 0x830,
-+					       0, 4,		/* M */
-+					       8, 2,		/* P */
-+					       24, 3,		/* mux */
-+					       BIT(31),		/* gate */
-+					       2,		/* post-div */
-+					       0);
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index b89eca2398d90..a2fb9dd58c95d 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -14,6 +14,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -150,6 +151,8 @@
+ /* TAG length for DATA READ in RX FIFO  */
+ #define READ_RX_TAGS_LEN		2
+ 
++#define QUP_BUS_WIDTH			8
 +
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1",
-+					       mmc0_mmc1_parents, 0x834,
-+					       0, 4,		/* M */
-+					       8, 2,		/* P */
-+					       24, 3,		/* mux */
-+					       BIT(31),		/* gate */
-+					       2,		/* post-div */
-+					       0);
+ static unsigned int scl_freq;
+ module_param_named(scl_freq, scl_freq, uint, 0444);
+ MODULE_PARM_DESC(scl_freq, "SCL frequency override");
+@@ -227,6 +230,7 @@ struct qup_i2c_dev {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct clk		*pclk;
++	struct icc_path		*icc_path;
+ 	struct i2c_adapter	adap;
  
- static const struct clk_parent_data mmc2_parents[] = {
- 	{ .fw_name = "hosc" },
-@@ -433,12 +437,14 @@ static const struct clk_parent_data mmc2_parents[] = {
- 	{ .hw = &pll_periph0_800M_clk.common.hw },
- 	{ .hw = &pll_audio1_div2_clk.common.hw },
- };
--static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc2_clk, "mmc2", mmc2_parents, 0x838,
--				       0, 4,	/* M */
--				       8, 2,	/* P */
--				       24, 3,	/* mux */
--				       BIT(31),	/* gate */
--				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc2_parents,
-+					       0x838,
-+					       0, 4,		/* M */
-+					       8, 2,		/* P */
-+					       24, 3,		/* mux */
-+					       BIT(31),		/* gate */
-+					       2,		/* post-div */
-+					       0);
+ 	int			clk_ctl;
+@@ -255,6 +259,10 @@ struct qup_i2c_dev {
+ 	/* To configure when bus is in run state */
+ 	u32			config_run;
  
- static SUNXI_CCU_GATE_HWS(bus_mmc0_clk, "bus-mmc0", psi_ahb_hws,
- 			  0x84c, BIT(0), 0);
-diff --git a/drivers/clk/sunxi-ng/ccu_mp.h b/drivers/clk/sunxi-ng/ccu_mp.h
-index 6e50f3728fb5f..7d836a9fb3db3 100644
---- a/drivers/clk/sunxi-ng/ccu_mp.h
-+++ b/drivers/clk/sunxi-ng/ccu_mp.h
-@@ -52,6 +52,28 @@ struct ccu_mp {
- 		}							\
++	/* bandwidth votes */
++	u32			src_clk_freq;
++	u32			cur_bw_clk_freq;
++
+ 	/* dma parameters */
+ 	bool			is_dma;
+ 	/* To check if the current transfer is using DMA */
+@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 	return ret;
+ }
+ 
++static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
++{
++	u32 needed_peak_bw;
++	int ret;
++
++	if (qup->cur_bw_clk_freq == clk_freq)
++		return 0;
++
++	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
++	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
++	if (ret)
++		return ret;
++
++	qup->cur_bw_clk_freq = clk_freq;
++	return 0;
++}
++
+ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ {
+ 	struct qup_i2c_block *blk = &qup->blk;
+@@ -840,6 +865,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
+ 	int ret = 0;
+ 	int idx = 0;
+ 
++	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
++	if (ret)
++		return ret;
++
+ 	enable_irq(qup->irq);
+ 	ret = qup_i2c_req_dma(qup);
+ 
+@@ -1645,6 +1674,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 	config = readl(qup->base + QUP_CONFIG);
+ 	config |= QUP_CLOCK_AUTO_GATE;
+ 	writel(config, qup->base + QUP_CONFIG);
++	qup_i2c_vote_bw(qup, 0);
+ 	clk_disable_unprepare(qup->pclk);
+ }
+ 
+@@ -1745,6 +1775,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 			goto fail_dma;
+ 		}
+ 		qup->is_dma = true;
++
++		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
++		if (IS_ERR(qup->icc_path))
++			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
++					     "failed to get interconnect path\n");
  	}
  
-+#define SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(_struct, _name, _parents, \
-+						_reg,			\
-+						_mshift, _mwidth,	\
-+						_pshift, _pwidth,	\
-+						_muxshift, _muxwidth,	\
-+						_gate, _postdiv, _flags)\
-+	struct ccu_mp _struct = {					\
-+		.enable	= _gate,					\
-+		.m	= _SUNXI_CCU_DIV(_mshift, _mwidth),		\
-+		.p	= _SUNXI_CCU_DIV(_pshift, _pwidth),		\
-+		.mux	= _SUNXI_CCU_MUX(_muxshift, _muxwidth),		\
-+		.fixed_post_div	= _postdiv,				\
-+		.common	= {						\
-+			.reg		= _reg,				\
-+			.features	= CCU_FEATURE_FIXED_POSTDIV,	\
-+			.hw.init	= CLK_HW_INIT_PARENTS_DATA(_name, \
-+							_parents,	\
-+							&ccu_mp_ops,	\
-+							_flags),	\
-+		}							\
-+	}
-+
- #define SUNXI_CCU_MP_WITH_MUX_GATE(_struct, _name, _parents, _reg,	\
- 				   _mshift, _mwidth,			\
- 				   _pshift, _pwidth,			\
+ nodma:
+@@ -1793,6 +1828,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup->clk);
+ 	}
++	qup->src_clk_freq = src_clk_freq;
+ 
+ 	/*
+ 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
 2.39.5
 
