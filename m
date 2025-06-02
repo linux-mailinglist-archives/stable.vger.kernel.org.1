@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B7CACB60D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA5AACB50C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7074C274E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B2571BA41E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1B4223DED;
-	Mon,  2 Jun 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D144226556;
+	Mon,  2 Jun 2025 14:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dv7TgKbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFqvPCju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254CB1EA65;
-	Mon,  2 Jun 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD47722576E;
+	Mon,  2 Jun 2025 14:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876098; cv=none; b=r04ju0k57SNN1yWnuBB1VAiXjHR4tJ5CR1SSqD30iNr8YoPteXC4kFUhJeE9lLI44OAJrTKYFHChh4fEX19tDZUvNYlxyTg2y1lc6NZvoTn6p8Dssh0TFyexpBRdb1uH6AmlwSRPncrnhOPLNOQ/yRtOXFPBF+AH1+1QmI1PohM=
+	t=1748875454; cv=none; b=bZYfndOo3nkfl4I8fx9BVenQ2V/3tEzdm4W+5Mp0QDnSyE8hv+e6c5/uPdTRXVYpMntCTF5nGyn8/wRsWAOCP2EOnf85YGC91rsbWLNK5/BhzZIjIRYcKSLHR8rk9c1KH5HB4O1NW9aJIo36dxoodM75sqhF0rdoIPeSh3U36y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876098; c=relaxed/simple;
-	bh=OvWqsjDufIMPSvE6dSeBnuiQXaEdDRJI83KAWH5v/bc=;
+	s=arc-20240116; t=1748875454; c=relaxed/simple;
+	bh=Qo2yZUOIXEXrdYx+JeaOAllACj4ElIpo4LFq7qjH120=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0cvdFoQDGvwgMEeGiQAQdbyO3fm6r9SJrDqrU6zZkfQuE9m/JfVUDr8Dux/blKGtgglIOO+KznOqWumREsflLiYp5xyN9P8JkqgJISHJs0NlqDcXLlrEB+ZZ5pfQDhJUu1GMk0lt/qMIqpYLPwq/VwcqadsYn1VPZ3ZCepc6Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dv7TgKbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89887C4CEEB;
-	Mon,  2 Jun 2025 14:54:57 +0000 (UTC)
+	 MIME-Version; b=pkj66U1Ori4Vt0Nrr8XMLJUkGohy/fLCzfxYpeN3gozupTNtNoi7r1vA4ZtF5FPqWDJxqLfCGvJssqHShTwfZtYCVf0fiacNJ4YQkwVDs5EsKdNQGAZ7Fg+Cq7v5ECUldIstddw87c8pejgnOV1J7dqgus5cd++7vBUu1CdKJqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFqvPCju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA66C4CEEB;
+	Mon,  2 Jun 2025 14:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876098;
-	bh=OvWqsjDufIMPSvE6dSeBnuiQXaEdDRJI83KAWH5v/bc=;
+	s=korg; t=1748875453;
+	bh=Qo2yZUOIXEXrdYx+JeaOAllACj4ElIpo4LFq7qjH120=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dv7TgKbPMhgWVKO1/j4xxaDRDPx7IenW/9sPx7DQ2TLjj4Iw9X1wZjllmCFVxCPj8
-	 z41NC6W3pfS/rksZXkhC3ftQx/RMGY/jGmRvFCLENEyHBLdSJ2QP9KSB3SEDg79eov
-	 v8Q1SBnmIdsIcWqmMg4FP9M19Tz5xVhpl/L2uAL4=
+	b=JFqvPCjudaemWQyK0dVNTIm+sKnfw4yFJ8Bh9HxiEgwWqR7vWPYVIPfAsRGIAQyy4
+	 u8PFCOcov/B+KxE/NuBWBG4XHUBvIja1wkZC4vGwnD2zqfdNRa4xKoeYLUceO4cTkp
+	 xo3f47vx6/hqNEvwy2foERzsKRWVsahEXTy4d6cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/207] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Subject: [PATCH 5.10 140/270] um: Update min_low_pfn to match changes in uml_reserved
 Date: Mon,  2 Jun 2025 15:47:05 +0200
-Message-ID: <20250602134300.830073794@linuxfoundation.org>
+Message-ID: <20250602134312.950760832@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
+[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
 
-nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
-be written any negative value, which would then be stored in the
-unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
+When uml_reserved is updated, min_low_pfn must also be updated
+accordingly. Otherwise, min_low_pfn will not accurately reflect
+the lowest available PFN.
 
-While the do_proc_dointvec_conv function is supposed to limit writing
-handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
-being written in an unsigned int leads to a very high value, exceeding
-this limit.
-
-Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
-minimum value is 1.
-
-The proc_handlers have thus been updated to proc_dointvec_minmax in
-order to specify the following write bounds :
-
-* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
-  and SYSCTL_INT_MAX.
-
-* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
-  and SYSCTL_INT_MAX as defined in the sysctl documentation.
-
-With this patch applied, sysctl writes outside the defined in the bound
-will thus lead to a write error :
-
-```
-sysctl -w net.netfilter.nf_conntrack_expect_max=-1
-sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
-```
-
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/um/kernel/mem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index 7515705583bcf..770590041c549 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -629,7 +629,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_COUNT] = {
- 		.procname	= "nf_conntrack_count",
-@@ -665,7 +667,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_ct_expect_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_ACCT] = {
- 		.procname	= "nf_conntrack_acct",
-@@ -976,7 +980,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	{ }
- };
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index 9242dc91d7519..268a238f4f9cf 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -49,6 +49,7 @@ void __init mem_init(void)
+ 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
+ 	memblock_free(__pa(brk_end), uml_reserved - brk_end);
+ 	uml_reserved = brk_end;
++	min_low_pfn = PFN_UP(__pa(uml_reserved));
+ 
+ 	/* this will put all low memory onto the freelists */
+ 	memblock_free_all();
 -- 
 2.39.5
 
