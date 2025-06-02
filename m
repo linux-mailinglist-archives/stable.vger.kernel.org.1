@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCBAACB54F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE02EACB7A0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 883603ABDE2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02DA894136A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89522687C;
-	Mon,  2 Jun 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DFE2356C3;
+	Mon,  2 Jun 2025 15:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRGbkpdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpgR/iXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E8E225A3E;
-	Mon,  2 Jun 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C2822A4F6;
+	Mon,  2 Jun 2025 15:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875127; cv=none; b=syQ+VCj5NDw2UfDzYBaA33wMGRPcytYAy8DSeiDTXY0mZmfzsliqwTaZCHyRUze8s/ovzaib+jOfca/s9I99NlCzSWa9Y6+SSIa5uOJtkj2w23FkdENBgXnYBnUhaBl1wd6LnPsMxKv1L3hQ4ahJL8+QigbePBgkcSKgZRStkL0=
+	t=1748876795; cv=none; b=hFjt8RrZAUQIDNafU2/EREhctmXaQYiFD2bOVFPZPCEPORG0DPS9mcxqDQYCHPEw0wvMsxBSEzwkAk3h0oFW4rZqW55LyUhODAcFqHR5Bh/WGeEunmQSTixKAZ2LhRtM4Jh6AFT0vjdk0/bcQZxYK8dvMkUIvV2dTJavPctz60Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875127; c=relaxed/simple;
-	bh=vWuhXWNW3C25OP5HVLYOgHNulUCkv0PHrp6whIGhsbc=;
+	s=arc-20240116; t=1748876795; c=relaxed/simple;
+	bh=RHP75X0N3J5Cr4YkJo3owl1wyHjPDX1PTqO/vS7avFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgoFKdTO33BgENAPPU7PDw8GSYWsdAEKixEwsQgV/2RLkFkKiWIuHrz9FPs2L9WzAfurSdSasFI0ZxL9FERYatyc+A22gkzZy+jgJfhrQiE88O9URMPdvlvCAqz2gYuZMD2fh3rdJhNqdNxVULsS5vMoDVSunqJ+KXHcybP3DUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRGbkpdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8603C4CEF0;
-	Mon,  2 Jun 2025 14:38:46 +0000 (UTC)
+	 MIME-Version; b=BLf4x4xxfO0ahzjpF5mmaUW6TKH4QYhOGSGv4QUy4/RWtpaBgupA3eq3rQqB1CWOX4r+mUrZsIpri3UJXPTk1wnAfnoGtPbtTFPoRDlJEZVgZpQBHWSrlwB3POdu2kjD8ZdL0gHypDLtktxfbAtfpamdFG+/Ml4RCPu8Fxx2hLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpgR/iXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04977C4CEEB;
+	Mon,  2 Jun 2025 15:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875127;
-	bh=vWuhXWNW3C25OP5HVLYOgHNulUCkv0PHrp6whIGhsbc=;
+	s=korg; t=1748876795;
+	bh=RHP75X0N3J5Cr4YkJo3owl1wyHjPDX1PTqO/vS7avFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRGbkpdtU2uVNGmdYRxRWuZDBuFB3bJC5O5b2ySBAIwV+atkwBLuYX+P9dCAnwx9x
-	 BIPOMDHH10lc7YosRRs9INOXE3CnuP+BX8q4H1+4nrjorHcngxHLXjch1bGV89wcKR
-	 k76BqAYDmqoPzEjmllCZwYr0gTdL3cyMez106y7w=
+	b=XpgR/iXTOCnadNktkXTOAITuu0eO3v0exLm4uQkitS0L2cGPdh1eYjpBv5fJUJmsJ
+	 YvGVbXi0zXI8teE6oXlfGj+e0DqODs56+UgX+w06sn8JsVok/fe0/C7Q4WsAmXkZE8
+	 WrZuVspU/1fZZ0lQB2z0x3ZIOHsiMLtP0UEaQc98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
+	Robert Richter <rrichter@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/270] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
+Subject: [PATCH 6.1 046/325] libnvdimm/labels: Fix divide error in nd_label_data_init()
 Date: Mon,  2 Jun 2025 15:45:22 +0200
-Message-ID: <20250602134308.708333024@linuxfoundation.org>
+Message-ID: <20250602134321.623085585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 ]
+[ Upstream commit ef1d3455bbc1922f94a91ed58d3d7db440652959 ]
 
-With ACPI in place, gicv2m_get_fwnode() is registered with the pci
-subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
-during a PCI host bridge probe. But, the call back is wrongly marked as
-__init, causing it to be freed, while being registered with the PCI
-subsystem and could trigger:
+If a faulty CXL memory device returns a broken zero LSA size in its
+memory device information (Identify Memory Device (Opcode 4000h), CXL
+spec. 3.1, 8.2.9.9.1.1), a divide error occurs in the libnvdimm
+driver:
 
- Unable to handle kernel paging request at virtual address ffff8000816c0400
-  gicv2m_get_fwnode+0x0/0x58 (P)
-  pci_set_bus_msi_domain+0x74/0x88
-  pci_register_host_bridge+0x194/0x548
+ Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:nd_label_data_init+0x10e/0x800 [libnvdimm]
 
-This is easily reproducible on a Juno board with ACPI boot.
+Code and flow:
 
-Retain the function for later use.
+1) CXL Command 4000h returns LSA size = 0
+2) config_size is assigned to zero LSA size (CXL pmem driver):
 
-Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
+drivers/cxl/pmem.c:             .config_size = mds->lsa_size,
+
+3) max_xfer is set to zero (nvdimm driver):
+
+drivers/nvdimm/label.c: max_xfer = min_t(size_t, ndd->nsarea.max_xfer, config_size);
+
+4) A subsequent DIV_ROUND_UP() causes a division by zero:
+
+drivers/nvdimm/label.c: /* Make our initial read size a multiple of max_xfer size */
+drivers/nvdimm/label.c: read_size = min(DIV_ROUND_UP(read_size, max_xfer) * max_xfer,
+drivers/nvdimm/label.c-                 config_size);
+
+Fix this by checking the config size parameter by extending an
+existing check.
+
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250320112223.608320-1-rrichter@amd.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvdimm/label.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 0b57ac48e18b6..b17deec1c5d4d 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -458,7 +458,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- #ifdef CONFIG_ACPI
- static int acpi_num_msi;
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 082253a3a9560..04f4a049599a1 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -442,7 +442,8 @@ int nd_label_data_init(struct nvdimm_drvdata *ndd)
+ 	if (ndd->data)
+ 		return 0;
  
--static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
-+static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
- {
- 	struct v2m_data *data;
- 
+-	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0) {
++	if (ndd->nsarea.status || ndd->nsarea.max_xfer == 0 ||
++	    ndd->nsarea.config_size == 0) {
+ 		dev_dbg(ndd->dev, "failed to init config data area: (%u:%u)\n",
+ 			ndd->nsarea.max_xfer, ndd->nsarea.config_size);
+ 		return -ENXIO;
 -- 
 2.39.5
 
