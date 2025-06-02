@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-149934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC94DACB536
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058DEACB8B5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21BBE4A662F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DB494332F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BF6231A21;
-	Mon,  2 Jun 2025 14:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3AD1B81DC;
+	Mon,  2 Jun 2025 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVE0w6/0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuvP01KZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8F023184E;
-	Mon,  2 Jun 2025 14:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2870817BB6;
+	Mon,  2 Jun 2025 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875505; cv=none; b=BInFD9TjG/FtQNyK6KNdWNgslBpdR1plAm4AY8K6GkLH+uPSDSrsr18KsBuq/syjO81EjoUrYomR2NW3Kuv4y3bHvcjWtuR6gZi9pqxyY+f71prQ6AWcYLVpqG22yba9Dfri3A3U7WKOm1uC6kBTI1mEXfe0b+uKaMuYVL1jWUQ=
+	t=1748876994; cv=none; b=L6bN1S1Y9AcP6wPbKewXBVmj0A3LZXIti2RQzDgcgrxYsIIGWlnQq5K8De3tdV9uhuPbqV0quiYA0ijaT1LYqa7dPXoEKtGl+mvB0l5MFRAdT/QrD2CmrUSxS0Nj2btqoCCtVto+L7IrP5sCv3/acb385XKvTq51Jjgqg7bhWQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875505; c=relaxed/simple;
-	bh=yAFbNqrzatFuxwSQ6fHBjfhV7PdoD5zc4uSc8GVhk8k=;
+	s=arc-20240116; t=1748876994; c=relaxed/simple;
+	bh=JI7A3MlkYdLxBJ7QhScfVXF3s2XR2jMS+sYfpC+ZLjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Woprs13RGUiCMjWddfXIIGXpyUr8/Uu7u2gkN71ZLDeojP3YYIja9OhZxaTNsW8wdvIoQha4tDASOH43RFCF4hwlkfY/+7BNdB4eKFnwvQvAon5qfueFTLQf7y+qo4P/8GGS+5kFjaptT1v87KioetID52Bp8QKU0ritXujfwl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVE0w6/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875B8C4CEEB;
-	Mon,  2 Jun 2025 14:45:04 +0000 (UTC)
+	 MIME-Version; b=f6L4KEw7UTplBc8S4WfRV7MM3B5xTUumNtiSOVFA+r02osZVvyGXZsN5jbl0KSWvRXhbTXVdOkMQQqhB/am44t6Hunz4DHl/OBzDa8IkCeMiRTI6OhegjDrdmtclFg6ctkVwFKA9vljZMeCedt9Zdk74iKCy7Z1hcSXOTGqKImQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuvP01KZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27DEC4CEEE;
+	Mon,  2 Jun 2025 15:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875505;
-	bh=yAFbNqrzatFuxwSQ6fHBjfhV7PdoD5zc4uSc8GVhk8k=;
+	s=korg; t=1748876994;
+	bh=JI7A3MlkYdLxBJ7QhScfVXF3s2XR2jMS+sYfpC+ZLjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVE0w6/0XwS4EDU3SGIqUXKlIXhzM2XLdcf1AeJuk0i2lL6dfn7gELukPDf4IDQlE
-	 PKp/ncqW0V/gzU3UeTtcuQwIVRl4ySlTsr+e21wwVxyzi+UzEZcup/XSPTljLJ30Pm
-	 N9CgMTK7R0g3ggZN+z0TcIcckTOKryMz/Bd9eR+4=
+	b=RuvP01KZkKJJrh7ky5J7PrZj2sGKNq1y+LtcqOu6ix9qzDEv5c6xd2yGkggKFJpBZ
+	 /Wv7I2SviYG++jx0ZIK6c/iUXxKVf02HnSyG8faqXp8FgMLEAbpoYoS31v9uMYEsXK
+	 F5ZAH8BuBobuTjzKDpXJoiuKMFp42y2VNQloDyJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Guo <alice.guo@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Samson Tam <samson.tam@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/270] thermal/drivers/qoriq: Power down TMU on system suspend
+Subject: [PATCH 6.1 137/325] drm/amd/display: handle max_downscale_src_width fail check
 Date: Mon,  2 Jun 2025 15:46:53 +0200
-Message-ID: <20250602134312.461537027@linuxfoundation.org>
+Message-ID: <20250602134325.371830682@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Guo <alice.guo@nxp.com>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
+[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
 
-Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
-system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
-i.MX93 platforms.
+[WHY]
+If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
+value to the scaling data structure to cause the zero divide in the DML validation.
 
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+[HOW]
+Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
+max downscale limit exceed.
+
+Reviewed-by: Samson Tam <samson.tam@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
-index 73049f9bea252..34a5fbcc3d200 100644
---- a/drivers/thermal/qoriq_thermal.c
-+++ b/drivers/thermal/qoriq_thermal.c
-@@ -19,6 +19,7 @@
- #define SITES_MAX		16
- #define TMR_DISABLE		0x0
- #define TMR_ME			0x80000000
-+#define TMR_CMD			BIT(29)
- #define TMR_ALPF		0x0c000000
- #define TMR_ALPF_V2		0x03000000
- #define TMTMIR_DEFAULT	0x0000000f
-@@ -345,6 +346,12 @@ static int __maybe_unused qoriq_tmu_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
+index 50dc834046446..4ce45f1bdac0f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
+@@ -392,11 +392,6 @@ bool dpp3_get_optimal_number_of_taps(
+ 	int min_taps_y, min_taps_c;
+ 	enum lb_memory_config lb_config;
  
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
+-	if (scl_data->viewport.width > scl_data->h_active &&
+-		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
+-		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
+-		return false;
+-
+ 	/*
+ 	 * Set default taps if none are provided
+ 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
+@@ -434,6 +429,12 @@ bool dpp3_get_optimal_number_of_taps(
+ 	else
+ 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
+ 
++	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
++	if (scl_data->viewport.width > scl_data->h_active &&
++		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
++		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
++		return false;
 +
- 	clk_disable_unprepare(data->clk);
- 
- 	return 0;
-@@ -359,6 +366,12 @@ static int __maybe_unused qoriq_tmu_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Enable monitoring */
- 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
- }
+ 	/*Ensure we can support the requested number of vtaps*/
+ 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
+ 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
 -- 
 2.39.5
 
