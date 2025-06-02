@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F1CFACB4AE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD441ACB66A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71BB47B3F9F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0050019452DC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0E71FCFE2;
-	Mon,  2 Jun 2025 14:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC50232392;
+	Mon,  2 Jun 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2mCEhmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFJy/yz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87667221F10;
-	Mon,  2 Jun 2025 14:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9122A7E7;
+	Mon,  2 Jun 2025 14:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875658; cv=none; b=p0HDES+NDWsvRh/IfsX+3v8HtedAegv4eLMMCiqBxWOsfD0nkQLR5mfEG8Z/RyB66ftrOP+2WWXY1x9rTd6qZEH8OWV/Ze0w22p8nUX5aeq+nmmZULfnt/LrQwGnOSMAPyZXOtgAJdv7OwizYtEaY3X/iyOEV/G+x/xRCp2S8ck=
+	t=1748876268; cv=none; b=FAi6kOrt1mEXCrrQkGrO9hMt/Q/cqoqGUxOOF7Njk3Z61L1ElCpB7Fdg+7O4+HArbtIy/DBRqniyygZVuFHClOlEDvdISlCmbEzZiehQOrOK+ExKuuzeMBRqyhPZ0ySDB8y1R3EUgj/oEov2L9Vw5U6MO5TYlLyKeyKwQ/hs/vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875658; c=relaxed/simple;
-	bh=XXKSI4YsTKBusbXPVHpky3Y5C7chFvZw2AdvYVPVR0c=;
+	s=arc-20240116; t=1748876268; c=relaxed/simple;
+	bh=vHdqaLieYETDPTbIRgxiLbUFyeX70+a6BWWiXCgd1GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHMituBejeSYw/X6JkOAICWZ046JrR8gUJ+i6oFFFtmdETL1LkugYrn1+IZuFkm7xZdtXJi/2uu9BZD7rhl05BndG9o6hpBFS72AYWX5DB/ML/HmECsSInXO/PCHMbhH2IB2Tey6XUvyynSqqlL9SrygwZdPFwk+ky45LZ82yG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2mCEhmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C9CC4CEEB;
-	Mon,  2 Jun 2025 14:47:37 +0000 (UTC)
+	 MIME-Version; b=BnHLWXHP9VcxA9XYOEu14uvWRvwKyJzgPB5fFKqpSAnBJuC9DMwya3sqr+Y1Fn6tuGZoAbOgdrLU4cA7858pSX1c0qkNuVY4e56fB4NtAjLrt4QsEqRWAP4P9QVigPp9dn89NrXmtbwdh4o6tX/+5Hc4p00pgwFD47MruDY0iBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFJy/yz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12D9C4CEF0;
+	Mon,  2 Jun 2025 14:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875658;
-	bh=XXKSI4YsTKBusbXPVHpky3Y5C7chFvZw2AdvYVPVR0c=;
+	s=korg; t=1748876268;
+	bh=vHdqaLieYETDPTbIRgxiLbUFyeX70+a6BWWiXCgd1GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2mCEhmRVpQe+WWYhBCYnWlF6+fzKO8GcfsehJ9Et70LPO7CNMKJ22xmyrgpViYL0
-	 0b5CDU9dShkNWnVY6WtG1sGDfFsWCpXqH6/1/MNu7TOtCo0bcmFAEN+v+YPLDOfHGP
-	 gT+/XQoeFXiCWi33tUpjZkKvBT8e4bdHM6YNrZPY=
+	b=lFJy/yz+lmiCNbW9ux8tKq4BN3hlxJyjClcSYjbX+o8XoGcYcYRqDmFKzOm1iO1vc
+	 xUsBqQfndENZv/cY7JUIkuqUkrxw7VK9vsdGEZtj1xiFuwHsnHtEuiJMNfLoNifIr/
+	 nEbS6Oz0eMmWBZ8meCVR+I9e4r278BCSW2t6M4a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/270] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
+Subject: [PATCH 5.15 117/207] ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()
 Date: Mon,  2 Jun 2025 15:48:09 +0200
-Message-ID: <20250602134315.535773508@linuxfoundation.org>
+Message-ID: <20250602134303.305098669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
+[ Upstream commit 7f1186a8d738661b941b298fd6d1d5725ed71428 ]
 
-Memset the config argument to get_mbus_config V4L2 sub-device pad
-operation to zero before calling the operation. This ensures the callers
-don't need to bother with it nor the implementations need to set all
-fields that may not be relevant to them.
+snd_soc_dai_set_tdm_slot() calls .xlate_tdm_slot_mask() or
+snd_soc_xlate_tdm_slot_mask(), but didn't check its return value.
+Let's check it.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This patch might break existing driver. In such case, let's makes
+each func to void instead of int.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87o6z7yk61.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- include/media/v4l2-subdev.h           | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/soc-dai.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index fbf0dcb313c82..67d3e6511a146 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -312,6 +312,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
- static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
- 				struct v4l2_mbus_config *config)
- {
-+	memset(config, 0, sizeof(*config));
-+
- 	return check_pad(sd, pad) ? :
- 	       sd->ops->pad->get_mbus_config(sd, pad, config);
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index 3db0fcf24385a..05a9404544de9 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -271,10 +271,11 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+ 
+ 	if (dai->driver->ops &&
+ 	    dai->driver->ops->xlate_tdm_slot_mask)
+-		dai->driver->ops->xlate_tdm_slot_mask(slots,
+-						      &tx_mask, &rx_mask);
++		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
+ 	else
+-		snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++	if (ret)
++		goto err;
+ 
+ 	dai->tx_mask = tx_mask;
+ 	dai->rx_mask = rx_mask;
+@@ -283,6 +284,7 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+ 	    dai->driver->ops->set_tdm_slot)
+ 		ret = dai->driver->ops->set_tdm_slot(dai, tx_mask, rx_mask,
+ 						      slots, slot_width);
++err:
+ 	return soc_dai_ret(dai, ret);
  }
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index 73150520c02d4..ffc6d122f91e5 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -676,7 +676,9 @@ struct v4l2_subdev_pad_config {
-  *		     possible configuration from the remote end, likely calling
-  *		     this operation as close as possible to stream on time. The
-  *		     operation shall fail if the pad index it has been called on
-- *		     is not valid or in case of unrecoverable failures.
-+ *		     is not valid or in case of unrecoverable failures. The
-+ *		     config argument has been memset to 0 just before calling
-+ *		     the op.
-  *
-  * @set_mbus_config: set the media bus configuration of a remote sub-device.
-  *		     This operations is intended to allow, in combination with
+ EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
 -- 
 2.39.5
 
