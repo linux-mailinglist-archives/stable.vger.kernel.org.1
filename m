@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647C3ACB284
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:32:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B158ACB55A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B59371943819
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDDC9E6D58
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E7F22D4F2;
-	Mon,  2 Jun 2025 14:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8C622A7EA;
+	Mon,  2 Jun 2025 14:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y41zyaJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM3Mjjyd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF5022D9E7;
-	Mon,  2 Jun 2025 14:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FB52147E7;
+	Mon,  2 Jun 2025 14:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873794; cv=none; b=Ze8LgCx3B74Kgi+tKNGWXvLQDr7KhiqoV4TEvAdVsM+FhSQ9zp3SGDQFuHlE0pb2jZNJCwWFr2n7c9OOhl42WsHiafc1VaJ+R7AIwGzQlAcCXVJvs7Li6f+Y6qLFgnnHgvcRITUVsWvZ+fH7Hvd0sJIa6kILQz3dUqQOUcppU/o=
+	t=1748875215; cv=none; b=GlnpJe51+6RY87b1RGhbbBFci3vgefF0SFFzUvXF8V4KB9Fr9Sz7BoviK8jrGG6PgF/VbO03OHF3tGf5zLQXyi/gfaNbazjG92qREMc+PnqCcLiMAr9AC/91w3ZyRFPYSwT+AThEHjsiUULt45GcTUfz6gTMiqQpIW2UXWxcPPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873794; c=relaxed/simple;
-	bh=VHzKz9N2WMK51JieCXLd6b7DCngHpEmtD5PB6RdWPcQ=;
+	s=arc-20240116; t=1748875215; c=relaxed/simple;
+	bh=X5nO/zXARPiZLmSpkC/nAhiAItWXmtHB6QnOeH0ABKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFOm9EHywQPXPsXVDNumPQSpMs5WqNIz/bRgF5KSlOC0fXnNpmQOWTKlZlkESeGvLgO5YdKb36CI3Hz1WqztVe1vAaCsz3zFtSUHIlnhalKacH2RW3bvvf2jZl4rz2LWMnBWngSIfjTjf6ahnIavHVfkrYTozYxlw3ohlD223PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y41zyaJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9DCC4CEEB;
-	Mon,  2 Jun 2025 14:16:33 +0000 (UTC)
+	 MIME-Version; b=kqP60OwxDtCJRx783lJOJKAwNep41HYiV4XShAM6qv2oCiyCVPh/D46ebCFW6ELohJKMwrk1C618gflAmt9tgoJiXxAglzTqAc1V3XZSTN88ib3T41qdNUsNIuS3lEEml6hdalbkzOuz0J+pjvH2qLnDqnKCn7sVr6Hk7/4OiyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM3Mjjyd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14245C4CEEB;
+	Mon,  2 Jun 2025 14:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873794;
-	bh=VHzKz9N2WMK51JieCXLd6b7DCngHpEmtD5PB6RdWPcQ=;
+	s=korg; t=1748875215;
+	bh=X5nO/zXARPiZLmSpkC/nAhiAItWXmtHB6QnOeH0ABKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y41zyaJPhUA0bsSJrmW93yxjItHrm+Qsq372o2XgllVs3I0zcG7JSQLN+VIuZwpUE
-	 dNryRl4nhVz/xN7BcgpO0oMNAfPddjePl9zmHT3y7OvcfiR7t7WUVJmLRtnL/RhDgn
-	 3zyrXO2rbhtm6Elm7jt1BhMN9DyRGg+QMmfF5r1Y=
+	b=xM3Mjjyd8bs9ucQAn9jhgw+f2/jT4m3knXbB5BtL7HyJ2rb7D9oRu93NUunEWieEo
+	 ypnUfbk4TdER0f8EmdZnz8xKx55QZj58SLL6jYtloEFY2v4vCBPMXYE5daio473eoK
+	 tV7c2FQRFgytZ2ed1VmS2MoVJS831aa1z5vHw1tI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/444] net/mlx5e: reduce the max log mpwrq sz for ECPF and reps
+Subject: [PATCH 5.10 034/270] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
 Date: Mon,  2 Jun 2025 15:45:19 +0200
-Message-ID: <20250602134351.280144602@linuxfoundation.org>
+Message-ID: <20250602134308.591700894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit e1d68ea58c7e9ebacd9ad7a99b25a3578fa62182 ]
+[ Upstream commit f37bb5486ea536c1d61df89feeaeff3f84f0b560 ]
 
-For the ECPF and representors, reduce the max MPWRQ size from 256KB (18)
-to 128KB (17). This prepares the later patch for saving representor
-memory.
+This reverts commit bfbc68e.
 
-With Striding RQ, there is a minimum of 4 MPWQEs. So with 128KB of max
-MPWRQ size, the minimal memory is 4 * 128KB = 512KB. When creating page
-pool, consider 1500 mtu, the minimal page pool size will be 512KB/4KB =
-128 pages = 256 rx ring entries (2 entries per page).
+The patch does permit the offending YUV420 @ 59.94 phy_freq and
+vclk_freq mode to match in calculations. It also results in all
+fractional rates being unavailable for use. This was unintended
+and requires the patch to be reverted.
 
-Before this patch, setting RX ringsize (ethtool -G rx) to 256 causes
-driver to allocate page pool size more than it needs due to max MPWRQ
-is 256KB (18). Ex: 4 * 256KB = 1MB, 1MB/4KB = 256 pages, but actually
-128 pages is good enough. Reducing the max MPWRQ to 128KB fixes the
-limitation.
-
-Signed-off-by: William Tu <witu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-7-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en.h      |  2 --
- .../net/ethernet/mellanox/mlx5/core/en/params.c   | 15 +++++++++++----
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index 20a6bc1a234f4..9cf33ae48c216 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -93,8 +93,6 @@ struct page_pool;
- #define MLX5_MPWRQ_DEF_LOG_STRIDE_SZ(mdev) \
- 	MLX5_MPWRQ_LOG_STRIDE_SZ(mdev, order_base_2(MLX5E_RX_MAX_HEAD))
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 37127ba40aa97..0eb86943a3588 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
++				 FREQ_1000_1001(params[i].phy_freq/10)*10);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
  
--#define MLX5_MPWRQ_MAX_LOG_WQE_SZ 18
--
- /* Keep in sync with mlx5e_mpwrq_log_wqe_sz.
-  * These are theoretical maximums, which can be further restricted by
-  * capabilities. These values are used for static resource allocations and
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 775010e94cb7c..dcd5db907f102 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -9,6 +9,9 @@
- #include <net/page_pool/types.h>
- #include <net/xdp_sock_drv.h>
- 
-+#define MLX5_MPWRQ_MAX_LOG_WQE_SZ 18
-+#define MLX5_REP_MPWRQ_MAX_LOG_WQE_SZ 17
-+
- static u8 mlx5e_mpwrq_min_page_shift(struct mlx5_core_dev *mdev)
- {
- 	u8 min_page_shift = MLX5_CAP_GEN_2(mdev, log_min_mkey_entity_size);
-@@ -102,18 +105,22 @@ u8 mlx5e_mpwrq_log_wqe_sz(struct mlx5_core_dev *mdev, u8 page_shift,
- 			  enum mlx5e_mpwrq_umr_mode umr_mode)
- {
- 	u8 umr_entry_size = mlx5e_mpwrq_umr_entry_size(umr_mode);
--	u8 max_pages_per_wqe, max_log_mpwqe_size;
-+	u8 max_pages_per_wqe, max_log_wqe_size_calc;
-+	u8 max_log_wqe_size_cap;
- 	u16 max_wqe_size;
- 
- 	/* Keep in sync with MLX5_MPWRQ_MAX_PAGES_PER_WQE. */
- 	max_wqe_size = mlx5e_get_max_sq_aligned_wqebbs(mdev) * MLX5_SEND_WQE_BB;
- 	max_pages_per_wqe = ALIGN_DOWN(max_wqe_size - sizeof(struct mlx5e_umr_wqe),
- 				       MLX5_UMR_FLEX_ALIGNMENT) / umr_entry_size;
--	max_log_mpwqe_size = ilog2(max_pages_per_wqe) + page_shift;
-+	max_log_wqe_size_calc = ilog2(max_pages_per_wqe) + page_shift;
-+
-+	WARN_ON_ONCE(max_log_wqe_size_calc < MLX5E_ORDER2_MAX_PACKET_MTU);
- 
--	WARN_ON_ONCE(max_log_mpwqe_size < MLX5E_ORDER2_MAX_PACKET_MTU);
-+	max_log_wqe_size_cap = mlx5_core_is_ecpf(mdev) ?
-+			   MLX5_REP_MPWRQ_MAX_LOG_WQE_SZ : MLX5_MPWRQ_MAX_LOG_WQE_SZ;
- 
--	return min_t(u8, max_log_mpwqe_size, MLX5_MPWRQ_MAX_LOG_WQE_SZ);
-+	return min_t(u8, max_log_wqe_size_calc, max_log_wqe_size_cap);
- }
- 
- u8 mlx5e_mpwrq_pages_per_wqe(struct mlx5_core_dev *mdev, u8 page_shift,
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
 -- 
 2.39.5
 
