@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0A0ACB80F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD2CACB7EA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5340F945C67
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5EA1BC2C1C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4778D22ACEE;
-	Mon,  2 Jun 2025 15:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5360238141;
+	Mon,  2 Jun 2025 14:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARkUMSWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb+UxeEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0432122A4EA;
-	Mon,  2 Jun 2025 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8489422A4EB;
+	Mon,  2 Jun 2025 14:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877277; cv=none; b=lUAwbLaBBMY5OQrHZSkk/u49uklSUkrvAhqAbqUYIADVRFlR8ZdlYaZTFnzXcQaanENxYAenqeS2FygecRd2wd3G31RlSPEm+k9KePoZAAo55GRrT6ePtloLOxwPSreH6GZZZwld/EoiG7304sw5ap9kxXMkPmWHUdW4s3ZLqlA=
+	t=1748876289; cv=none; b=NrEbdG8zI+f53DSKRcS8eAQ+a+be7VXBD8CRK5AHbYoSDyxiGYjH581F6oVEsfohe7p6cQLB/01iwyEpjNsD8Obwn+tm8GmTS5BX0jgZajnk2QlfnfCpEM9lkzAKPL0a+Z4211hNgBV0y6R2Tou04asEEQR2mv+j/Y3SXE9vhGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877277; c=relaxed/simple;
-	bh=0+2LinNPIkpe6PqGOkkXlHBCxTfAD9N48Cjup16C8yo=;
+	s=arc-20240116; t=1748876289; c=relaxed/simple;
+	bh=ci6orBNni8iDOZzpFYHq8Q0WHA5ZXIvO4evw9nMXsWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ873Hn7MK9A5ZycVf0dAO7C77tXA2BVn0eRBljkrA90mK/0SY1A9iV1JawjLz4mVnb2lPXVgvsd0iFWI63D8+XO1p2a3CZ+y8ewAef5lur7P0wgyZAqB9JIk7HxTwBD6IUv3hF5yjhRLtISWm4VO6nQe1e3TQUhLIsF+Jn60NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARkUMSWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042ACC4CEEB;
-	Mon,  2 Jun 2025 15:14:35 +0000 (UTC)
+	 MIME-Version; b=gAwJiN1+6BdcUqAGLT1tI98pSaanRuFQ1Q4xMVfHX6QiugPxEJ4hm0H6bLrEsshxyOIphSIpc35KeoP/R2d74nHCfB71JG4i4QF4ahj1hxEpFFcJFcFAq8fIQulC6qrzo6Uos5Q1EPebLhs8AXBVnnzSylYffbHGFsGfLfhfO0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb+UxeEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82B8C4CEEB;
+	Mon,  2 Jun 2025 14:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877276;
-	bh=0+2LinNPIkpe6PqGOkkXlHBCxTfAD9N48Cjup16C8yo=;
+	s=korg; t=1748876289;
+	bh=ci6orBNni8iDOZzpFYHq8Q0WHA5ZXIvO4evw9nMXsWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARkUMSWRPjVJG1uwdFoMpfMbDppiM0GFYIQu1hP+1E9RQxCpsLK+ikeIxEh5kNYwU
-	 Q6R/N102itpX+pzAY4Aa+wkrRT4tobOW7be+1N0pWizSMkHaVyXwxbUw4nq6Yx5rKz
-	 nshMHgka3RjgR48Bn3H1vFI7yAyn/HQJ2tnFxBQ0=
+	b=wb+UxeENRZctKq9XAXgjBhERK9uXLhOGmmRZnqR03mu2HD1ddnqgSAA561qNQzXLg
+	 UKU1Y0R3bodJ9397ZVvvWXXrwWq9oDUO19PwkP/24kkRkp3qzFhriz7FQzGxu5owkr
+	 jiTahI8uVejgDwSInVS8HCLOHOvZSVQDfPJmVZmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Goldwyn Rodrigues <rgoldwyn@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 226/325] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
-Date: Mon,  2 Jun 2025 15:48:22 +0200
-Message-ID: <20250602134328.966034057@linuxfoundation.org>
+Subject: [PATCH 5.15 131/207] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
+Date: Mon,  2 Jun 2025 15:48:23 +0200
+Message-ID: <20250602134303.848574783@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
+[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
 
-btrfs_prelim_ref() calls the old and new reference variables in the
-incorrect order. This causes a NULL pointer dereference because oldref
-is passed as NULL to trace_btrfs_prelim_ref_insert().
+The following patch will not set skb->sk from VRF path.
 
-Note, trace_btrfs_prelim_ref_insert() is being called with newref as
-oldref (and oldref as NULL) on purpose in order to print out
-the values of newref.
+Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
+in fib[46]_rule_configure().
 
-To reproduce:
-echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
-
-Perform some writeback operations.
-
-Backtrace:
-BUG: kernel NULL pointer dereference, address: 0000000000000018
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
- RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
- Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
- RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
- RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
- RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
- RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
- R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
- R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
- FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  prelim_ref_insert+0x1c1/0x270
-  find_parent_nodes+0x12a6/0x1ee0
-  ? __entry_text_end+0x101f06/0x101f09
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  btrfs_is_data_extent_shared+0x167/0x640
-  ? fiemap_process_hole+0xd0/0x2c0
-  extent_fiemap+0xa5c/0xbc0
-  ? __entry_text_end+0x101f05/0x101f09
-  btrfs_fiemap+0x7e/0xd0
-  do_vfs_ioctl+0x425/0x9d0
-  __x64_sys_ioctl+0x75/0xc0
-
-Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/btrfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/fib_rules.c  | 4 ++--
+ net/ipv6/fib6_rules.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index 7a6c5a870d33c..31847ccae4936 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -1847,7 +1847,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
- 	TP_PROTO(const struct btrfs_fs_info *fs_info,
- 		 const struct prelim_ref *oldref,
- 		 const struct prelim_ref *newref, u64 tree_size),
--	TP_ARGS(fs_info, newref, oldref, tree_size),
-+	TP_ARGS(fs_info, oldref, newref, tree_size),
+diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+index d279cb8ac1584..a270951386e19 100644
+--- a/net/ipv4/fib_rules.c
++++ b/net/ipv4/fib_rules.c
+@@ -226,9 +226,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
+-	struct net *net = sock_net(skb->sk);
++	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
  
- 	TP_STRUCT__entry_btrfs(
- 		__field(	u64,  root_id		)
+ 	if (frh->tos & ~IPTOS_TOS_MASK) {
+ 		NL_SET_ERR_MSG(extack, "Invalid tos");
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index a4caaead74c1d..a20ef3ab059ca 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -353,9 +353,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
++	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct net *net = sock_net(skb->sk);
+-	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
+ 
+ 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
+ 		if (rule->table == RT6_TABLE_UNSPEC) {
 -- 
 2.39.5
 
