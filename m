@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 829C6ACB324
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DC4ACB57D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89FE11942010
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CDD89E06F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E11423BF8F;
-	Mon,  2 Jun 2025 14:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7099C22425B;
+	Mon,  2 Jun 2025 14:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvbP7X21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuDik9MQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3953B223DD1;
-	Mon,  2 Jun 2025 14:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD161B81DC;
+	Mon,  2 Jun 2025 14:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874148; cv=none; b=iQsk5Y1VOPsjCGURFlue9j7SBOwKwBJpqlNL18jL+LGAplaWSqS+0AWj5d8JAxBQ+d5ZsL4EiA0pOQWTg/wIgl7AKzfj3wPq4KK4cRdNv7bUE8rPKi8kWrpM5eVrBUGWe2jXZCsBwQarETSlAnsmoTbr6dIV7lS0Z3LuDWlbhkM=
+	t=1748875401; cv=none; b=HM8+9KaiTgyxUtdwpuuzy6XT+FRH8VdbRZDrMW1rp2hP6dW6eEz5gDscCnRqcVcT5y4K3YY/YipyWEepTB3HqhX1G2D9/DDEbR8lDG8Rk5FO7BK3MPVkK+DCvFC6StupFMwxLhBXqwHpzosZPNe/Cw/XwYu0NwpWqw7WTdAmzZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874148; c=relaxed/simple;
-	bh=1oa70gD1QiTB9V25h6rJOxpTu0M4YBzMnMO/f8iRc5Y=;
+	s=arc-20240116; t=1748875401; c=relaxed/simple;
+	bh=RmdtY+JQQtr39gkhUI1kjIsE/3XmQaIeJYd+0dY3omY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIsb1eT1EBO1qEFjR6eAh4CJQdHQeT7uby8FX/vqGX/mJE/y3mbQFLSFwP2B/S7kaTUYcXRhSUIF58wL0H/56s025TjZi6Wq4YRkEkTjbzte9m8Xzz2/6d2OqXw2TTxTEWVjy20S1aeywEguEhtTr7TX7egr0KgnGIfY1L7OKvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvbP7X21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB01CC4CEEB;
-	Mon,  2 Jun 2025 14:22:27 +0000 (UTC)
+	 MIME-Version; b=HZRnmN0WBjyzhHznOsV7Y/85W2iVx/OeVa1HJLwn1VDjdpdMQPxEr6YG4m2Y3St15ZAclW0u1QQPLzh/3rcgcJlfa8niX/DkoNxQgjjNzqYlxkTWi3jM1V+hoOJRzTSQQEMW5uv6kVboWLttl4EABG3JIA/Z8Wnm+J5a3+XKGzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuDik9MQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D316C4CEEB;
+	Mon,  2 Jun 2025 14:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874148;
-	bh=1oa70gD1QiTB9V25h6rJOxpTu0M4YBzMnMO/f8iRc5Y=;
+	s=korg; t=1748875399;
+	bh=RmdtY+JQQtr39gkhUI1kjIsE/3XmQaIeJYd+0dY3omY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvbP7X210XS+APgVWdsmHD7+DV3DmdWaJSMiJ0YelGvXm37x63OLXHqRtK9Wr7PW0
-	 +jFvWKDzKa5AoGmUIy00pBBcmfP6zpLQX2T3XzOyqsXG7FOol6Jb8Irg5zcincjBtb
-	 KhiTX6091z5ymUG+RLDhqTZzdJRYuSSJcmWjy6Jg=
+	b=iuDik9MQLHgYAiI6GHB5gsbpGHvGJ31GDv7drzSU8JyGcRJ/5Lc62tXw4e0zC8Hvh
+	 wCbBufxbRwNpYUax5vNA4ayMNM7JyzG8kOskp5Lljo7fC6H7xNNGH4jgd5k9zbdSpd
+	 yH8xetvn2ukXvHR86X9Q7J1rfKxSdpJLHRaTmf44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Shixiong Ou <oushixiong@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 343/444] ice: fix vf->num_mac count with port representors
+Subject: [PATCH 5.10 122/270] fbdev: fsl-diu-fb: add missing device_remove_file()
 Date: Mon,  2 Jun 2025 15:46:47 +0200
-Message-ID: <20250602134354.860902083@linuxfoundation.org>
+Message-ID: <20250602134312.211548376@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Shixiong Ou <oushixiong@kylinos.cn>
 
-[ Upstream commit bbd95160a03dbfcd01a541f25c27ddb730dfbbd5 ]
+[ Upstream commit 86d16cd12efa547ed43d16ba7a782c1251c80ea8 ]
 
-The ice_vc_repr_add_mac() function indicates that it does not store the MAC
-address filters in the firmware. However, it still increments vf->num_mac.
-This is incorrect, as vf->num_mac should represent the number of MAC
-filters currently programmed to firmware.
+Call device_remove_file() when driver remove.
 
-Indeed, we only perform this increment if the requested filter is a unicast
-address that doesn't match the existing vf->hw_lan_addr. In addition,
-ice_vc_repr_del_mac() does not decrement the vf->num_mac counter. This
-results in the counter becoming out of sync with the actual count.
-
-As it turns out, vf->num_mac is currently only used in legacy made without
-port representors. The single place where the value is checked is for
-enforcing a filter limit on untrusted VFs.
-
-Upcoming patches to support VF Live Migration will use this value when
-determining the size of the TLV for MAC address filters. Fix the
-representor mode function to stop incrementing the counter incorrectly.
-
-Fixes: ac19e03ef780 ("ice: allow process VF opcodes in different ways")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/video/fbdev/fsl-diu-fb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index e709b10a29761..1edcf93031831 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -3769,7 +3769,6 @@ static int ice_vc_repr_add_mac(struct ice_vf *vf, u8 *msg)
- 		}
+diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
+index 5d564e8670c52..6f2606932867d 100644
+--- a/drivers/video/fbdev/fsl-diu-fb.c
++++ b/drivers/video/fbdev/fsl-diu-fb.c
+@@ -1830,6 +1830,7 @@ static int fsl_diu_remove(struct platform_device *pdev)
+ 	int i;
  
- 		ice_vfhw_mac_add(vf, &al->list[i]);
--		vf->num_mac++;
- 		break;
- 	}
+ 	data = dev_get_drvdata(&pdev->dev);
++	device_remove_file(&pdev->dev, &data->dev_attr);
+ 	disable_lcdc(&data->fsl_diu_info[0]);
  
+ 	free_irq(data->irq, data->diu_reg);
 -- 
 2.39.5
 
