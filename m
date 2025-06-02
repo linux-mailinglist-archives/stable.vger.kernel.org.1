@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-150420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EE6ACB7DF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C515FACB518
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57193943F49
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8311946D1B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C758223DFC;
-	Mon,  2 Jun 2025 15:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3506D23182D;
+	Mon,  2 Jun 2025 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUrxqyBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYDWBZKw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC77F223DC0;
-	Mon,  2 Jun 2025 15:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AFE2AE9A;
+	Mon,  2 Jun 2025 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877067; cv=none; b=UEtoF3snfLfypcg2hkrllEuVKESv20dhvo54ko975QsKXQD5Rx1WJaB0RBueR6njh7+MQfZ+uQKIIPUpLKLZhBfaPL3nxAS0YbW5DwbYWL39GGZoUL10zyzrxb8Yzx66KN/lCptMHLyPPRW7UpGO53iQaazHoL4CGwxmY3auS/4=
+	t=1748875496; cv=none; b=ZSa9bXlJf8HVI7Koew74znX1vPaJnX7t1+CZ2sj68Flhncd8tRrHl4cem7/R3QfAvxqZjWu4DFZc/GFm6w4B+GRAS/Lt3iwqN8/Jyw9gu30YZEhpdltxlFkSjq/vfnIhStXhASaTDYIbSJ/D45nmXGubh27SOJQC0NYpk+TKERc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877067; c=relaxed/simple;
-	bh=42TchODPCXmY1npgxP7PdxgPqY0664nqfLpjwr1kB2k=;
+	s=arc-20240116; t=1748875496; c=relaxed/simple;
+	bh=7sDEC8hg29sIwhau3z9cv71VUoIEBBz8p93DrFMrWuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r+QHAFXgnb7/eAXov0m+BPIc6JbBEbo0/w8IdqWd52yLW8kzB6q/tqaUt0IyI9Xu1llyoaKOBr5veEF3jmexhakl+9sG98N1mFkrfxQty0OjvC2Z79qy0kEsZQDrxcjZzzsi+jobSLLD2ZVP2CeddIYrPUAkdZe/CbKXXH6EUg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUrxqyBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181CCC4CEEB;
-	Mon,  2 Jun 2025 15:11:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sQwIZrD0V4rSRtfKDY+5LrQ5iy+FzkA7CIPCcA2lAKlxrK890Q/Y6enmViFSMH6LcOjgHTSIyXxx79+rr40W6syK8mdIQDFgtAjV+793dHVtnkjCvD1Rg7nlvEZGlxRfWe1TkO68WL1lnK6cL1njNy4UZOyuRKGLcrLDlS/aMCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYDWBZKw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9F0C4CEEB;
+	Mon,  2 Jun 2025 14:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877067;
-	bh=42TchODPCXmY1npgxP7PdxgPqY0664nqfLpjwr1kB2k=;
+	s=korg; t=1748875495;
+	bh=7sDEC8hg29sIwhau3z9cv71VUoIEBBz8p93DrFMrWuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUrxqyByibIfyjIu6SnkagrkwTMhBh7ARv/v0yI0DJogacdQaPpcgUi+6xpuyMu1O
-	 i+gIeHZ/zyvbdqtX+s/RMidaVVxH9xOtn5dwQCSD7CTKZ8sg0tJrCl/iFs+yalyiQo
-	 mdqOz5hzr7vEIdqV8rmAn9AYh8PkRPNh8R24LFP0=
+	b=sYDWBZKwgd/KsQ61+gKAnBZax72Tu/Xf9FSPNu7c1LpYJWmlaQ/3owj+PlSfuUtMZ
+	 0fJ9VVUz2x0IHCTzAV7bvrKHMwur1me9wJasDftWrfoE4hISfC6yZWjrU1B0Q/WNM+
+	 T2n8Z+ngmZBG4iOwwrjfG7F+G2tfQplaU56mOgLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Xiaochun Lee <lixc17@lenovo.com>,
+	Kyle Roeschley <kyle.roeschley@ni.com>,
+	Brad Mouring <brad.mouring@ni.com>,
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/325] PCI: Fix old_size lower bound in calculate_iosize() too
+Subject: [PATCH 5.10 152/270] mmc: sdhci: Disable SD card clock before changing parameters
 Date: Mon,  2 Jun 2025 15:47:17 +0200
-Message-ID: <20250602134326.345633845@linuxfoundation.org>
+Message-ID: <20250602134313.436379076@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +66,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
+[ Upstream commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc ]
 
-Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
-rescan") fixed double counting of mem resources because of old_size being
-applied too early.
+Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
+the SD card clock parameters only after first disabling the external card
+clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
+SD controllers which otherwise breaks voltage switching with a specific
+Swissbit SD card.
 
-Fix a similar counting bug on the io resource side.
-
-Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Xiaochun Lee <lixc17@lenovo.com>
+Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
+Signed-off-by: Brad Mouring <brad.mouring@ni.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250211214645.469279-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 8c1ad20a21ec5..3ce68adda9b7c 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -806,11 +806,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
- 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
- #endif
- 	size = size + size1;
--	if (size < old_size)
--		size = old_size;
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index 9091930f58591..3d601a3f31c1e 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2010,10 +2010,15 @@ void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
  
--	size = ALIGN(max(size, add_size) + children_add_size, align);
--	return size;
-+	size = max(size, add_size) + children_add_size;
-+	return ALIGN(max(size, old_size), align);
- }
+ 	host->mmc->actual_clock = 0;
  
- static resource_size_t calculate_memsize(resource_size_t size,
+-	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
++	if (clk & SDHCI_CLOCK_CARD_EN)
++		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
++			SDHCI_CLOCK_CONTROL);
+ 
+-	if (clock == 0)
++	if (clock == 0) {
++		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 		return;
++	}
+ 
+ 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
+ 	sdhci_enable_clk(host, clk);
 -- 
 2.39.5
 
