@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3189ACB325
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9BFACB2FD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EFDD1947699
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 476697A657A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73A82248B3;
-	Mon,  2 Jun 2025 14:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2375422541B;
+	Mon,  2 Jun 2025 14:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8Hi2iFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FGQDu45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EC9224AE8;
-	Mon,  2 Jun 2025 14:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53181D516F;
+	Mon,  2 Jun 2025 14:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874187; cv=none; b=QuF+EQmK5f5OXGfhRzLUD4rrI7+K5w7mXM/xEw0Jz8EW6uC08A2FGTJaJbUOkETi7QxT2G5u7Yhe7exhQC2FcwDCGmDTr/at3NvvG4A+hAEi8Ov8XCBaFEHRVVmqkAGGdCYuWwkN0XtEzfbzj+iOuze/dplFHlkiGdBwj40ofV8=
+	t=1748874728; cv=none; b=sm0wyUCCSoZEyLJEMWYwJiVt1XQVDc9BWH9OuO0aJ0YZ2RTM7Hqb885NqTsBfeaYs4Cz4/sqFjt6kJAYUV58UdCOMPJatXbSEecL5KvePb7i1gX0CQ4W8yC/wbsSMcqLG1gn+rDoieSj/+sbREpvCRsPTObh4zEl9G1U7DmwDCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874187; c=relaxed/simple;
-	bh=T0YWtduzRksNYlm0vkrrGfonc03TrQBiPlFrQ1BTZjs=;
+	s=arc-20240116; t=1748874728; c=relaxed/simple;
+	bh=AwW4NVGptndbvEijpHxTHpFw4FTqw9datH4Z0cGJ6cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZsMcBahQak3ds10e5+olzy2rDuEDVaZq+xdhBr1gw0ccEaOKePj/mjU7LCZRoH45cYyeQBzN3nbArKQIc7XgrXMoZ9ASgpqJhrbyFsRJK6PviuV+pztC9NpT6NAq1JeoPyShbOqHUr5BDbRut2JrHSVtQiAaaL9gPmryXf+Ke0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8Hi2iFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98235C4CEEB;
-	Mon,  2 Jun 2025 14:23:06 +0000 (UTC)
+	 MIME-Version; b=ewbFuBbab8mM/xWzQpkGA5aSFxGxQ5NCDVdaadP36xbLsJFGXE4xPqb5VYe2fOP7J3hbhuNaJ1aYofgwFAbE5HLb4ZN3Y4tg9lGdSb2LPlKlO1Fjop6sa0rmf0NQ+OT7ihGf8vcX0zjaoUBNfZY8nHSPxS95SUgDO4RQrjgvIrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FGQDu45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CDCC4CEEB;
+	Mon,  2 Jun 2025 14:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874187;
-	bh=T0YWtduzRksNYlm0vkrrGfonc03TrQBiPlFrQ1BTZjs=;
+	s=korg; t=1748874728;
+	bh=AwW4NVGptndbvEijpHxTHpFw4FTqw9datH4Z0cGJ6cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8Hi2iFUp6egjQMN0yDrAEarVri/bMknCe6YHC6X3KB08R7sW02MAlPBzMDQa2HEf
-	 3x4Ijv505ORmiPb9DQFE/Tm4z8PfZwt3aYjPhvsB2DRvfYcn4tkoFownZ0YqA9DsrV
-	 ofEA0PRM2Y0yZbE7sdi+qH4NCf+RyUeA0BQszPuU=
+	b=1FGQDu45WJk1tc9KQBXAdyM1RMYZPdrWKR6dyhM+TFzBwJl2HmScMNpv8yqLy+jg9
+	 nxFW8LMyrD5NPe0Lz5qzIc7OivVDGE0Qvyd23QYKBTMYmPMIBD4E0Rs/yH89Ssc+pm
+	 /XqtzTqDEJnHNMOidJMq+IhQVpI+H2eFz2ywH2SE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>
-Subject: [PATCH 6.6 387/444] watchdog: aspeed: fix 64-bit division
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 118/204] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
 Date: Mon,  2 Jun 2025 15:47:31 +0200
-Message-ID: <20250602134356.617283794@linuxfoundation.org>
+Message-ID: <20250602134300.292015270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-commit 48a136639ec233614a61653e19f559977d5da2b5 upstream.
+[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
 
-On 32-bit architectures, the new calculation causes a build failure:
+An of_node_put(i2c_bus) call was immediately used after a pointer check
+for an of_find_i2c_adapter_by_node() call in this function implementation.
+Thus call such a function only once instead directly before the check.
 
-ld.lld-21: error: undefined symbol: __aeabi_uldivmod
+This issue was transformed by using the Coccinelle software.
 
-Since neither value is ever larger than a register, cast both
-sides into a uintptr_t.
-
-Fixes: 5c03f9f4d362 ("watchdog: aspeed: Update bootstatus handling")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250314160248.502324-1-arnd@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/aspeed_wdt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/watchdog/aspeed_wdt.c
-+++ b/drivers/watchdog/aspeed_wdt.c
-@@ -252,7 +252,7 @@ static void aspeed_wdt_update_bootstatus
+diff --git a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+index 69070b7068318..8229fbb88a8db 100644
+--- a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
++++ b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+@@ -813,13 +813,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
+ 		}
+ 		tsin->i2c_adapter =
+ 			of_find_i2c_adapter_by_node(i2c_bus);
++		of_node_put(i2c_bus);
+ 		if (!tsin->i2c_adapter) {
+ 			dev_err(&pdev->dev, "No i2c adapter found\n");
+-			of_node_put(i2c_bus);
+ 			ret = -ENODEV;
+ 			goto err_clk_disable;
+ 		}
+-		of_node_put(i2c_bus);
  
- 	if (!of_device_is_compatible(pdev->dev.of_node, "aspeed,ast2400-wdt")) {
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--		idx = ((intptr_t)wdt->base & 0x00000fff) / resource_size(res);
-+		idx = ((intptr_t)wdt->base & 0x00000fff) / (uintptr_t)resource_size(res);
- 	}
+ 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
  
- 	scu_base = syscon_regmap_lookup_by_compatible(scu.compatible);
+-- 
+2.39.5
+
 
 
 
