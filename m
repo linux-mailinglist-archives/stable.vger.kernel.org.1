@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-149867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BB6ACB55B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B029ACB315
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 852C919451B6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C3C394212D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797FB22F14C;
-	Mon,  2 Jun 2025 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07ED239099;
+	Mon,  2 Jun 2025 14:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dh7PLlsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Svc4GVMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AF72248A4;
-	Mon,  2 Jun 2025 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E02F1ACEAF;
+	Mon,  2 Jun 2025 14:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875295; cv=none; b=mAf86geODg4KTzf/MCYezAiqivAqfErnWsloOlozT2aWi0b/sbw2+yoeDps8SE7wq96moulFLjkNHQTnd9tk3+j1uX00e14RuGf/OCrlTnIZaUdMiRPccwcvWarzuZswSqTnKiTV0NjczhBrFoKNKffhjAZn1VpD2VTJylsENeQ=
+	t=1748874043; cv=none; b=M6vcO3NAubD3pS2lNJj+Xpb0TqMryiLwIs08Y3YnvDOVY51pX3amMEmBwgTMvd+Eo0kkTLbnZ04+qQYF7ppCAW18PriQ8/Q3yI+8JKklxoTmiUGyIs1ywWIP9AWJ04MFRRyUjHUDUug7sDamSs3miuo1c3CLwgg4oYptfVyDQdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875295; c=relaxed/simple;
-	bh=0aZtuPOuGT4haS8Lu+lw34bQpO7BpzWaZo6ErhP9qFI=;
+	s=arc-20240116; t=1748874043; c=relaxed/simple;
+	bh=4DzaQ49ylBo/U2hjq4Xj9moQQLDkkO6q7wdfi0aBbrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntanMTB2mxNyzM9FmlIH+827JG847kISly/NvXbNVgIPwTKJ8TdpN9oLz5NHEET9UE/dCMkBU1vNDoKiQ2DJ0hB+yuqPwMYmXJt+Jy7+pzmHGYHygtMNuZfiplkCPLIoIhYcP0hckM/j2gi52Qvg5Ngl4FZfQR6+08FBKK21EmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dh7PLlsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AEBC4CEEB;
-	Mon,  2 Jun 2025 14:41:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FDbxLuEVMqsu+KTMXBdF/ZKEn6saz4QDVkqDS4B5DdDa4HaheZrPo/O9BT1tpHEa0ZAkeXG2YbMqh1i38qEUWdYSJWH/mXYngjTC+ZQ9DIM2gzLaQRfU+5nPmvWc0tM+ElLk4WBrT+VsO07+qoFLtfh0KX4AXiPK26lWS1WiRsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Svc4GVMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93F0C4CEEB;
+	Mon,  2 Jun 2025 14:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875295;
-	bh=0aZtuPOuGT4haS8Lu+lw34bQpO7BpzWaZo6ErhP9qFI=;
+	s=korg; t=1748874043;
+	bh=4DzaQ49ylBo/U2hjq4Xj9moQQLDkkO6q7wdfi0aBbrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dh7PLlsugcbyjGruNh2v52LHiF3F+hKTFOhx8EENOYNdJh1PGo6vQF3/BlFNJLZP0
-	 qK0t2jcXaerlssQ9BEz40ieRVrvhOVWqaVfT4JG91Gw3fJZ3BQlBNQFSDH8by43vez
-	 YqoNzZ8MjVHn0v0Lw1WWu2S2sMLVNUHC5XSMZyjU=
+	b=Svc4GVMp6iOdgg2BJ544KbpauzTiv60DOni0ANV5vMdd/YXbQdRUZKSK1FLZVzMS9
+	 EsT9peeGYXFJ0Eb7RI4GjKOGtJXgVStTjDzRXupY1DPNDdTFYDLXnzcAxpHudRoxBj
+	 Vt+tzVF+T5laWN0un3NVaeEuHCmAoJEiu1iNh19U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Clark <robdclark@gmail.com>,
+	Simon Ser <contact@emersion.fr>,
+	Manasi Navare <navaremanasi@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simona Vetter <simona.vetter@intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/270] spi: loopback-test: Do not split 1024-byte hexdumps
+Subject: [PATCH 6.6 309/444] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
 Date: Mon,  2 Jun 2025 15:46:13 +0200
-Message-ID: <20250602134310.759091345@linuxfoundation.org>
+Message-ID: <20250602134353.475637171@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +72,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit a73fa3690a1f3014d6677e368dce4e70767a6ba2 ]
+[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
 
-spi_test_print_hex_dump() prints buffers holding less than 1024 bytes in
-full.  Larger buffers are truncated: only the first 512 and the last 512
-bytes are printed, separated by a truncation message.  The latter is
-confusing in case the buffer holds exactly 1024 bytes, as all data is
-printed anyway.
+msm is automagically upgrading normal commits to full modesets, and
+that's a big no-no:
 
-Fix this by printing buffers holding up to and including 1024 bytes in
-full.
+- for one this results in full on->off->on transitions on all these
+  crtc, at least if you're using the usual helpers. Which seems to be
+  the case, and is breaking uapi
 
-Fixes: 84e0c4e5e2c4ef42 ("spi: add loopback test driver to allow for spi_master regression tests")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/37ee1bc90c6554c9347040adabf04188c8f704aa.1746184171.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+- further even if the ctm change itself would not result in flicker,
+  this can hide modesets for other reasons. Which again breaks the
+  uapi
+
+v2: I forgot the case of adding unrelated crtc state. Add that case
+and link to the existing kerneldoc explainers. This has come up in an
+irc discussion with Manasi and Ville about intel's bigjoiner mode.
+Also cc everyone involved in the msm irc discussion, more people
+joined after I sent out v1.
+
+v3: Wording polish from Pekka and Thomas
+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 4d4f77a186a98..89fccb9da1b8e 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -383,7 +383,7 @@ MODULE_LICENSE("GPL");
- static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
- {
- 	/* limit the hex_dump */
--	if (len < 1024) {
-+	if (len <= 1024) {
- 		print_hex_dump(KERN_INFO, pre,
- 			       DUMP_PREFIX_OFFSET, 16, 1,
- 			       ptr, len, 0);
+diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
+index 9a022caacf936..f3e7e3e5078db 100644
+--- a/include/drm/drm_atomic.h
++++ b/include/drm/drm_atomic.h
+@@ -372,8 +372,27 @@ struct drm_atomic_state {
+ 	 *
+ 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
+ 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
+-	 * never consult this flag, instead looking at the output of
+-	 * drm_atomic_crtc_needs_modeset().
++	 * generally not consult this flag, but instead look at the output of
++	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
++	 *
++	 * - Drivers must not consult @allow_modeset in the atomic commit path.
++	 *   Use drm_atomic_crtc_needs_modeset() instead.
++	 *
++	 * - Drivers must consult @allow_modeset before adding unrelated struct
++	 *   drm_crtc_state to this commit by calling
++	 *   drm_atomic_get_crtc_state(). See also the warning in the
++	 *   documentation for that function.
++	 *
++	 * - Drivers must never change this flag, it is under the exclusive
++	 *   control of userspace.
++	 *
++	 * - Drivers may consult @allow_modeset in the atomic check path, if
++	 *   they have the choice between an optimal hardware configuration
++	 *   which requires a modeset, and a less optimal configuration which
++	 *   can be committed without a modeset. An example would be suboptimal
++	 *   scanout FIFO allocation resulting in increased idle power
++	 *   consumption. This allows userspace to avoid flickering and delays
++	 *   for the normal composition loop at reasonable cost.
+ 	 */
+ 	bool allow_modeset : 1;
+ 	/**
 -- 
 2.39.5
 
