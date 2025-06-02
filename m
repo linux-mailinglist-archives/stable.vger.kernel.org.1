@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-149804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69387ACB4E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65AEACB2AE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C491BC148E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58728168500
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBE82576;
-	Mon,  2 Jun 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24BE22F763;
+	Mon,  2 Jun 2025 14:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7FAcwFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqO38wQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227721B81DC;
-	Mon,  2 Jun 2025 14:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5681DE881;
+	Mon,  2 Jun 2025 14:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875092; cv=none; b=WRCUs18zI2oMU97yc2eBcmZfTRLAJQNcyV4XOAiPAFMn6i6EuyVz8J//4HyFnw81e1iv3/W1eRuaQ5u/mIwf52yG+f+tzcZAAWoETRuDEZy1rTf0wjPlSYZUDoOzVJVxxNbpkhL/OsHRXyBsQc5eTCP7/KN9s167duY4e2Vjarw=
+	t=1748873858; cv=none; b=Yjnvj5yhNdxfhXd0B2AVWP1OXjTGz0P8tYtEb5iswy8V9n3OtXbEbPrxkqAGejiK5Cb/bq7G2DhXUXjiu3UcvgDjj6Vdx/kGW6eSQgX0H0cX/H5Mnbe0xPLZ1Cuvw3ktHqSS1iI91l493zCO/S9KDwQN6L2Mh4jcxzNmGFqknjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875092; c=relaxed/simple;
-	bh=3McPEy8KOvNmN4PWMaJofUOE41t1Ho9iY/OM4TGGATU=;
+	s=arc-20240116; t=1748873858; c=relaxed/simple;
+	bh=Vsm+ynkPJzTMBzIsJ356KaoSR6oQWO/UBmTOunqgRVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwQLpCC19sffaGM+BZ3HVEAf5MYj4EDBWkfsjEYKJgi7+Z17S1EKkkMkBbh0U1FE7MQQdTPotLtzEMngvTIghCGdjvIa/wRM4btdDebFXQCTQh3+YOe0yVcBkttov/HcsfGqPoFsUC22q7pAWnnX1kST/EcP6tgj0hBdaVckk+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7FAcwFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E26C4CEEB;
-	Mon,  2 Jun 2025 14:38:11 +0000 (UTC)
+	 MIME-Version; b=jQMLrw2B7J9JEQoRHs0p7KUAqjZh5wrMmZ7B1o9jMRrqcE8SdB6VSHF5g4lg70dcxQB1n2KwBZouvg+mN5A4TO+ckgW0xEq5Cs6udz4RRDJZi8EjAsaklqJArdf8SolZaH7qYW/EDOBh+fvL5gcMGuWDV8K0ngOrYPNwFqX858I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqO38wQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DA2C4CEEB;
+	Mon,  2 Jun 2025 14:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875092;
-	bh=3McPEy8KOvNmN4PWMaJofUOE41t1Ho9iY/OM4TGGATU=;
+	s=korg; t=1748873858;
+	bh=Vsm+ynkPJzTMBzIsJ356KaoSR6oQWO/UBmTOunqgRVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7FAcwFvQqV4yg8kSxGM9vzzsJHzbhVQzp1zONDLjXMo8nQQYeRX3DxV53abhjzP5
-	 Dr5EKiTmrejBufBgeda5IvDe31GHUYrCfi9Tc9c9HGmX0OPtc+7m1pc2BOKoIZkiyO
-	 up+d26tNqGc+Y6tBxvOCKTzP7DujOUYnsKZTcCbk=
+	b=YqO38wQPQpD+/LXw86SsSKKaAyXKWW9FFvsqkgoDar+mRQJ14oid3C/tSPG7PWoUa
+	 vEpBVDgA1shXHmSwJVGet9pGgAXSqUavMXQcmhh/rJ6JrXWuyJK3WH7ikSXsfC9vBD
+	 8lyacXmH8y6jMnSr3XEuOKryljyaboCWZHgK9KbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shruti Parab <shruti.parab@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/270] bnxt_en: Fix ethtool -d byte order for 32-bit values
+Subject: [PATCH 6.6 246/444] drm/amd/display: Update CR AUX RD interval interpretation
 Date: Mon,  2 Jun 2025 15:45:10 +0200
-Message-ID: <20250602134308.230069075@linuxfoundation.org>
+Message-ID: <20250602134350.903951107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit 02e8be5a032cae0f4ca33c6053c44d83cf4acc93 ]
+[ Upstream commit 6a7fde433231c18164c117592d3e18ced648ad58 ]
 
-For version 1 register dump that includes the PCIe stats, the existing
-code incorrectly assumes that all PCIe stats are 64-bit values.  Fix it
-by using an array containing the starting and ending index of the 32-bit
-values.  The loop in bnxt_get_regs() will use the array to do proper
-endian swap for the 32-bit values.
+[Why]
+DP spec updated to have the CR AUX RD interval match the EQ AUX RD
+interval interpretation of DPCD 0000Eh/0220Eh for 8b/10b non-LTTPR mode
+and LTTPR transparent mode cases.
 
-Fixes: b5d600b027eb ("bnxt_en: Add support for 'ethtool -d'")
-Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[How]
+Update interpretation of DPCD 0000Eh/0220Eh for CR AUX RD interval
+during 8b/10b link training.
+
+Reviewed-by: Michael Strauss <michael.strauss@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 36 ++++++++++++++++---
- 1 file changed, 31 insertions(+), 5 deletions(-)
+ .../display/dc/link/protocols/link_dp_training_8b_10b.c    | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 2984234df67eb..4dfb65b0bf1c6 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -1344,6 +1344,17 @@ static int bnxt_get_regs_len(struct net_device *dev)
- 	return reg_len;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
+index 2b4c15b0b4070..52261e7c11c0b 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
+@@ -36,7 +36,8 @@
+ 	link->ctx->logger
+ 
+ static int32_t get_cr_training_aux_rd_interval(struct dc_link *link,
+-		const struct dc_link_settings *link_settings)
++		const struct dc_link_settings *link_settings,
++		enum lttpr_mode lttpr_mode)
+ {
+ 	union training_aux_rd_interval training_rd_interval;
+ 	uint32_t wait_in_micro_secs = 100;
+@@ -49,6 +50,8 @@ static int32_t get_cr_training_aux_rd_interval(struct dc_link *link,
+ 				DP_TRAINING_AUX_RD_INTERVAL,
+ 				(uint8_t *)&training_rd_interval,
+ 				sizeof(training_rd_interval));
++		if (lttpr_mode != LTTPR_MODE_NON_TRANSPARENT)
++			wait_in_micro_secs = 400;
+ 		if (training_rd_interval.bits.TRAINIG_AUX_RD_INTERVAL)
+ 			wait_in_micro_secs = training_rd_interval.bits.TRAINIG_AUX_RD_INTERVAL * 4000;
+ 	}
+@@ -110,7 +113,6 @@ void decide_8b_10b_training_settings(
+ 	 */
+ 	lt_settings->link_settings.link_spread = link->dp_ss_off ?
+ 			LINK_SPREAD_DISABLED : LINK_SPREAD_05_DOWNSPREAD_30KHZ;
+-	lt_settings->cr_pattern_time = get_cr_training_aux_rd_interval(link, link_setting);
+ 	lt_settings->eq_pattern_time = get_eq_training_aux_rd_interval(link, link_setting);
+ 	lt_settings->pattern_for_cr = decide_cr_training_pattern(link_setting);
+ 	lt_settings->pattern_for_eq = decide_eq_training_pattern(link, link_setting);
+@@ -119,6 +121,7 @@ void decide_8b_10b_training_settings(
+ 	lt_settings->disallow_per_lane_settings = true;
+ 	lt_settings->always_match_dpcd_with_hw_lane_settings = true;
+ 	lt_settings->lttpr_mode = dp_decide_8b_10b_lttpr_mode(link);
++	lt_settings->cr_pattern_time = get_cr_training_aux_rd_interval(link, link_setting, lt_settings->lttpr_mode);
+ 	dp_hw_to_dpcd_lane_settings(lt_settings, lt_settings->hw_lane_settings, lt_settings->dpcd_lane_settings);
  }
  
-+#define BNXT_PCIE_32B_ENTRY(start, end)			\
-+	 { offsetof(struct pcie_ctx_hw_stats, start),	\
-+	   offsetof(struct pcie_ctx_hw_stats, end) }
-+
-+static const struct {
-+	u16 start;
-+	u16 end;
-+} bnxt_pcie_32b_entries[] = {
-+	BNXT_PCIE_32B_ENTRY(pcie_ltssm_histogram[0], pcie_ltssm_histogram[3]),
-+};
-+
- static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
- 			  void *_p)
- {
-@@ -1372,12 +1383,27 @@ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
- 	mutex_lock(&bp->hwrm_cmd_lock);
- 	rc = _hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
- 	if (!rc) {
--		__le64 *src = (__le64 *)hw_pcie_stats;
--		u64 *dst = (u64 *)(_p + BNXT_PXP_REG_LEN);
--		int i;
-+		u8 *dst = (u8 *)(_p + BNXT_PXP_REG_LEN);
-+		u8 *src = (u8 *)hw_pcie_stats;
-+		int i, j;
-+
-+		for (i = 0, j = 0; i < sizeof(*hw_pcie_stats); ) {
-+			if (i >= bnxt_pcie_32b_entries[j].start &&
-+			    i <= bnxt_pcie_32b_entries[j].end) {
-+				u32 *dst32 = (u32 *)(dst + i);
-+
-+				*dst32 = le32_to_cpu(*(__le32 *)(src + i));
-+				i += 4;
-+				if (i > bnxt_pcie_32b_entries[j].end &&
-+				    j < ARRAY_SIZE(bnxt_pcie_32b_entries) - 1)
-+					j++;
-+			} else {
-+				u64 *dst64 = (u64 *)(dst + i);
- 
--		for (i = 0; i < sizeof(*hw_pcie_stats) / sizeof(__le64); i++)
--			dst[i] = le64_to_cpu(src[i]);
-+				*dst64 = le64_to_cpu(*(__le64 *)(src + i));
-+				i += 8;
-+			}
-+		}
- 	}
- 	mutex_unlock(&bp->hwrm_cmd_lock);
- 	dma_free_coherent(&bp->pdev->dev, sizeof(*hw_pcie_stats), hw_pcie_stats,
 -- 
 2.39.5
 
