@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9F9ACB5D0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECFFACB2C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560D84C39ED
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71822170FF3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86E122DFAD;
-	Mon,  2 Jun 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAA1225A40;
+	Mon,  2 Jun 2025 14:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PBt1Y3sp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDqnnpaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8434D22259C;
-	Mon,  2 Jun 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBCB22259C;
+	Mon,  2 Jun 2025 14:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875935; cv=none; b=cPgSsp8kCc6+oeHnGmWqEPym7zwhc7wpzZUJkJpJGas1Wboj/USHV4uyAsmG5eb5w/BGQzx5XcnSzifxTyoO7CQ3MMN9MS7hxUtnxCYD5s+n017fxPoKf03MVWePkW+5GI/iZaBqz+wgWRuGUEkIYOBmmTqX0MffmPTTb5V1zKM=
+	t=1748873966; cv=none; b=h6xflDm7lazlIvoRZOAacCsNOTaPk4LzYV9Gn1wFgCoQJ3GkVQ/Vs5FW7tnCvm78Sqf8heZB/69H7Zc9dXph0hSd9v89WxvGifBtVEuo2VOKWdftB6E/kGox8L0Dzoyl4Ld9iNcp2oBMs7KzWdDoe72Bzw8bSxFP9g2sKXjEoUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875935; c=relaxed/simple;
-	bh=0VMqUYP1PsWb5yId+rVoBG/+JBqBCRTzKKneINtk2OM=;
+	s=arc-20240116; t=1748873966; c=relaxed/simple;
+	bh=wux90AhSUybHxPzR0ElyAjFOa45C0fWaXA8sA0jng50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3/DawgHFc1JcavrypjRZjNBliidIJxNwkbjg0jhYCdv6JJ8F14WmObiCctyjw/RaYinhikgqbkAQEygVVadkr7dk05euQSddtDLo0YJyQnTZI0nM3P3x3OldTjvrDpkf3w2PBSh5fDmCWyAmoNgc31tQsTpw0a8ilsxG0on/BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PBt1Y3sp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0B8C4CEEB;
-	Mon,  2 Jun 2025 14:52:14 +0000 (UTC)
+	 MIME-Version; b=g1PAFWLx80bwQkOkAAzAOsFHz2qPhB1EpYv5s1mg9VxEqSWIna1nu5Hf4PXSzuwLcsaZRWq5xZvP1dGwTjnVDbgmAsyufRsAyC81iF/AX3uhX8Y/+TV27Z9sTwpcSoSXgBXdGSRifpz7dM2nLROWPVxxN7QFFhQ+4UwrsC5hbmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDqnnpaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4560C4CEEB;
+	Mon,  2 Jun 2025 14:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875935;
-	bh=0VMqUYP1PsWb5yId+rVoBG/+JBqBCRTzKKneINtk2OM=;
+	s=korg; t=1748873966;
+	bh=wux90AhSUybHxPzR0ElyAjFOa45C0fWaXA8sA0jng50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBt1Y3spvrGXPV6WObz5Ms22e+Ll457qwXDJTfm5pmcoakswaDdSoX2l92rlFhJDa
-	 vYQWAi0yZZYieUgSp3ulpZ+ZoH2aSms6YKQ4h3hapluwii66YsZ7tAFj3LbblMm3Fs
-	 0A3W/IleaEhr80H2l/BgVUYEIxnKjHH0K03bOLx0=
+	b=zDqnnpaPrYLVSXkHai7e8VjtCPjrj7i+zKj7kSD3eUO1t5iMmy+tbUDLVIv741+bo
+	 +jLlOfy8olZYmeyYLkyUoqUULaOqR3m3tBSjRmPyuEiRWnstr9UYrL+YpzrsmaxQaR
+	 KnWrwiZi1t7QhIyUoVeZ31eIjuNHJsIiIcLwz3kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 005/207] net: enetc: refactor bulk flipping of RX buffers to separate function
+Subject: [PATCH 6.6 313/444] book3s64/radix: Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
 Date: Mon,  2 Jun 2025 15:46:17 +0200
-Message-ID: <20250602134258.981555242@linuxfoundation.org>
+Message-ID: <20250602134353.641751272@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 1d587faa5be7e9785b682cc5f58ba8f4100c13ea ]
+[ Upstream commit 29bdc1f1c1df80868fb35bc69d1f073183adc6de ]
 
-This small snippet of code ensures that we do something with the array
-of RX software buffer descriptor elements after passing the skb to the
-stack. In this case, we see if the other half of the page is reusable,
-and if so, we "turn around" the buffers, making them directly usable by
-enetc_refill_rx_ring() without going to enetc_new_page().
+Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
 
-We will need to perform this kind of buffer flipping from a new code
-path, i.e. from XDP_PASS. Currently, enetc_build_skb() does it there
-buffer by buffer, but in a subsequent change we will stop using
-enetc_build_skb() for XDP_PASS.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250417120005.3288549-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/8231763344223c193e3452eab0ae8ea966aff466.1741609795.git.donettom@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 612872c8c8e3c..1068a5ea17b7a 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1264,6 +1264,16 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
- 	}
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 28460e3340808..aff3b37e32d64 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -912,7 +912,7 @@ int __meminit radix__vmemmap_create_mapping(unsigned long start,
+ 	return 0;
  }
  
-+static void enetc_bulk_flip_buff(struct enetc_bdr *rx_ring, int rx_ring_first,
-+				 int rx_ring_last)
-+{
-+	while (rx_ring_first != rx_ring_last) {
-+		enetc_flip_rx_buff(rx_ring,
-+				   &rx_ring->rx_swbd[rx_ring_first]);
-+		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
-+	}
-+}
-+
- static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 				   struct napi_struct *napi, int work_limit,
- 				   struct bpf_prog *prog)
-@@ -1379,11 +1389,7 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
- 				enetc_xdp_drop(rx_ring, orig_i, i);
- 				rx_ring->stats.xdp_redirect_failures++;
- 			} else {
--				while (orig_i != i) {
--					enetc_flip_rx_buff(rx_ring,
--							   &rx_ring->rx_swbd[orig_i]);
--					enetc_bdr_idx_inc(rx_ring, &orig_i);
--				}
-+				enetc_bulk_flip_buff(rx_ring, orig_i, i);
- 				xdp_redirect_frm_cnt++;
- 				rx_ring->stats.xdp_redirect++;
- 			}
+-
++#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+ {
+ 	if (radix_enabled())
+@@ -920,6 +920,7 @@ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+ 
+ 	return false;
+ }
++#endif
+ 
+ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+ 				unsigned long addr, unsigned long next)
 -- 
 2.39.5
 
