@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383C8ACB4D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA02ACB070
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5131945B46
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0E537AA89D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D5522ACD6;
-	Mon,  2 Jun 2025 14:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E30122A7F4;
+	Mon,  2 Jun 2025 14:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ji2tIZ+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7aFsHOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB01227E9B;
-	Mon,  2 Jun 2025 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4705222A1FA;
+	Mon,  2 Jun 2025 14:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874840; cv=none; b=mMHOz/O0XsEHAK0Yz4ye0proa+hOevWDk/uMJSA8tQBLBGMQD1RK6PnqrPlZpFXSuCB3L+iB5BfxHRIyZ5vo9Dr5/pEzjspK62AflPos/HKZBL3hR13RgUcAxtRJHjngqFRurnzFZ8ALYcPlK4hX+kcN3ob0bmJw+iNQ5Wd8JHM=
+	t=1748872957; cv=none; b=jMMWXxBAiHTP8mpOU68gtb/ThI4aAQhMBgFWio11pQVt+zvLwcXcQjZlr6LHS1IfSMq9ThRneTdfMJTKB89JBJhRrvylDl/aaUVhk72Hl8WAm4UhWzR2/82BZYG6s6YJscPvrZRDA8qBRQuX8GwhV2Vns/uR3jCNJS1GY6jHyys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874840; c=relaxed/simple;
-	bh=8U7ocd3ZVxduwDHstB9+54pXkMBgiZ+4FZq711ZkVOw=;
+	s=arc-20240116; t=1748872957; c=relaxed/simple;
+	bh=vPXc9xDxvjYXDkaZRGacFv53luI/X1pz+8qIq1Mz2Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0H5c1RD/PuAHnUmbTVMgzCwxOTk849qeVtpD1t3Kq7wgwtGVZD8hIFjvIY0kvWEuQi+2jJGwNYg4sD4saUfdNRt+M/P138QUyQlPdXbT5uHsF0ApGZaZQAOBHm7PFkP1ifIo7OGl3ZhuHe3bHb0jRKmZ4HY1HBp9r6DIlGMtK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ji2tIZ+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35E4C4CEEE;
-	Mon,  2 Jun 2025 14:33:59 +0000 (UTC)
+	 MIME-Version; b=Q+yqTEhRTAzAxnjBwGrb7E4y6DLsqShAuXXcoSDabrcU8AcRES6VY/bWwEF2pagP4s3bquLlyoA0JzVUNWhMrYWUG8U8XWQW1F/FWeN2am8GZ+vd+eJ5zQXC2SY5npsKZr5OKDoVkanq4C0HqrdM6zanpEGmm5hCTQPpIGJDTic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7aFsHOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BF7C4CEEB;
+	Mon,  2 Jun 2025 14:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874840;
-	bh=8U7ocd3ZVxduwDHstB9+54pXkMBgiZ+4FZq711ZkVOw=;
+	s=korg; t=1748872957;
+	bh=vPXc9xDxvjYXDkaZRGacFv53luI/X1pz+8qIq1Mz2Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ji2tIZ+2Dr9WdbHsbyQiXX1VPYKscIoD7frus1nFX9lHAtrTdkM3NNbU7aKC8JnJA
-	 KxRjhybAZVYznTDEfpB4Q8ldUirxuBF3zDdgxqgF2QVvurpO/FscBFj7NFxCnzEZQK
-	 1E+lOT1sAzgTgfW0qyQGBZTVKkKF680PrPLZA32A=
+	b=q7aFsHOBO8Ary/OiNC40fbfjy+IBmb72LgzY7dSQnqsIYE0XWbY0+eEBbxsSv/bzn
+	 akzzRuf1uXVr0pSDeWfuVYuHwiSvpJJavwIou2WVZzvEZ9Rcc04Jgm0z8+QEZquSJf
+	 4Tr5AzraT+F6EiRavUaxcZw67EHcT+1B35/U/+YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 153/204] hwmon: (xgene-hwmon) use appropriate type for the latency value
+Subject: [PATCH 6.12 49/55] char: tpm: tpm-buf: Add sanity check fallback in read helpers
 Date: Mon,  2 Jun 2025 15:48:06 +0200
-Message-ID: <20250602134301.661346584@linuxfoundation.org>
+Message-ID: <20250602134240.207828274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
+[ Upstream commit 32d495b384a2db7d23c2295e03e6b6edb1c0db8d ]
 
-The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
-evaluated using 32-bit arithmetic.
+Fix Smatch-detected issue:
 
-Since a value of type 'u64' is used to store the eventual result,
-and this result is later sent to the function usecs_to_jiffies with
-input parameter unsigned int, the current data type is too wide to
-store the value of ctx->usecs_lat.
+drivers/char/tpm/tpm-buf.c:208 tpm_buf_read_u8() error:
+uninitialized symbol 'value'.
+drivers/char/tpm/tpm-buf.c:225 tpm_buf_read_u16() error:
+uninitialized symbol 'value'.
+drivers/char/tpm/tpm-buf.c:242 tpm_buf_read_u32() error:
+uninitialized symbol 'value'.
 
-Change the data type of "usecs_lat" to a more suitable (narrower) type.
+Zero-initialize the return values in tpm_buf_read_u8(), tpm_buf_read_u16(),
+and tpm_buf_read_u32() to guard against uninitialized data in case of a
+boundary overflow.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add defensive initialization ensures the return values are always defined,
+preventing undefined behavior if the unexpected happens.
 
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/xgene-hwmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/tpm/tpm-buf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 559a73bab51e8..15889bcc85875 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -110,7 +110,7 @@ struct xgene_hwmon_dev {
+diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
+index e49a19fea3bdf..dc882fc9fa9ef 100644
+--- a/drivers/char/tpm/tpm-buf.c
++++ b/drivers/char/tpm/tpm-buf.c
+@@ -201,7 +201,7 @@ static void tpm_buf_read(struct tpm_buf *buf, off_t *offset, size_t count, void
+  */
+ u8 tpm_buf_read_u8(struct tpm_buf *buf, off_t *offset)
+ {
+-	u8 value;
++	u8 value = 0;
  
- 	phys_addr_t		comm_base_addr;
- 	void			*pcc_comm_addr;
--	u64			usecs_lat;
-+	unsigned int		usecs_lat;
- };
+ 	tpm_buf_read(buf, offset, sizeof(value), &value);
  
- /*
+@@ -218,7 +218,7 @@ EXPORT_SYMBOL_GPL(tpm_buf_read_u8);
+  */
+ u16 tpm_buf_read_u16(struct tpm_buf *buf, off_t *offset)
+ {
+-	u16 value;
++	u16 value = 0;
+ 
+ 	tpm_buf_read(buf, offset, sizeof(value), &value);
+ 
+@@ -235,7 +235,7 @@ EXPORT_SYMBOL_GPL(tpm_buf_read_u16);
+  */
+ u32 tpm_buf_read_u32(struct tpm_buf *buf, off_t *offset)
+ {
+-	u32 value;
++	u32 value = 0;
+ 
+ 	tpm_buf_read(buf, offset, sizeof(value), &value);
+ 
 -- 
 2.39.5
 
