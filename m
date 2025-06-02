@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D774ACB12B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:16:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C62BACB565
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24821941A8C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:11:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA5EA21892
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0718823BF8F;
-	Mon,  2 Jun 2025 14:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48756221F00;
+	Mon,  2 Jun 2025 14:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPCFfSt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2KMc0fK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF65523C50F;
-	Mon,  2 Jun 2025 14:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065381A4F12;
+	Mon,  2 Jun 2025 14:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872992; cv=none; b=u9bm/QtEr4YcvWbPS+ksqTTbKbY6LgCFD/E6uBzelqi9hB8jcDQQwCcpRNkZvbircNiiL66vbyRj3cKUZi1iJFozgZUawuxN+LKzN4khe1NbzJvET/0GaB7vP/DTI+IjW2WnohXIbv3cMRWtqkXX+6dT0J0RTlMxUx+FN1iDD5k=
+	t=1748875599; cv=none; b=gjARGMLgVwWvP1JY5MuSfAIV9VkK0FNy92KckMRMxodeq6j2QnfxBoitC0Ziok9KwJgXCiTZf9ex66CShw3SrB3EX7zM2GwuOjV1g20llcjZAWMSk8WPgwonMCAt2ZhJt7BAxQA0dyKvJL16GlVfSc1EZ6itXHn14fH7j4GVkk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872992; c=relaxed/simple;
-	bh=6wulQ6QChfk79ln1HPofSLVQZXaX66rrofmJIGsLtxc=;
+	s=arc-20240116; t=1748875599; c=relaxed/simple;
+	bh=UIBVo/CWmB6ZkIMx+IJOkAf5JPwrhHWZWGk2m5ANiNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9aLzyi8YoWiKX3S1LlOvsIzlp4b5Jw9GmslKR8fELE8PNPWtqj/LHWxqnyZpcMRfLnj+gs0LcElmGJx/nvaYRGRK3RTo1/4Oo1bLFcVyJEgSvfYcxM5GHYXiktR6uOIgpxpnvaITPbxyGXuY8FwVoLsNSiW0VWJtLeHOrBmtY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPCFfSt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B136AC4CEEE;
-	Mon,  2 Jun 2025 14:03:11 +0000 (UTC)
+	 MIME-Version; b=QU6hXJP0dKNw4luZ37HFC/rpRC3BcINTdgkx0zRCeVIgBKobfCyAkrlnWOiZh9mGrcP0tqHmeEM64XS/iN2TOwG9mHSjOsHL4vKibziWtq4YyQNeml/lDWBYbv1SM7Yk4jX3iLpRjFQtVBMD+tE0j6BxyQWlsPloQpUaEGMDDJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2KMc0fK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE7DC4CEEB;
+	Mon,  2 Jun 2025 14:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872992;
-	bh=6wulQ6QChfk79ln1HPofSLVQZXaX66rrofmJIGsLtxc=;
+	s=korg; t=1748875598;
+	bh=UIBVo/CWmB6ZkIMx+IJOkAf5JPwrhHWZWGk2m5ANiNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPCFfSt6849nzR0JGYprKyc+fb4BgzrGkiuBiPKx9CBWxB/DftupuHXb1HvEupmUm
-	 nE314BnrLEbSdp0mzFVCeEtOFui9dxtbx+Ce63bOuXtII+PHy+DauCLoev7GAMaP2p
-	 WFuVYFU6H45ilFstyqSsW40BtzE3/3mgbaJLj6Nc=
+	b=m2KMc0fKJvNhvJtT4OTb+El9Itw6mwSTmSDlc3g3aRmQ95wHmjC5Qbml/EjCqaOTG
+	 59i66ZBFpaUHYQnO0Dj/9R/YrN3MmcJ9gvPztAcVvOKNz7+3RAZ+GIP4QRxVlNOFzi
+	 sNoKy/HBH84PgObhCXcNZq2E8acJqBn6h22bBgu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 32/55] perf/arm-cmn: Add CMN S3 ACPI binding
+	Bibo Mao <maobibo@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 184/270] MIPS: Use arch specific syscall name match function
 Date: Mon,  2 Jun 2025 15:47:49 +0200
-Message-ID: <20250602134239.547594053@linuxfoundation.org>
+Message-ID: <20250602134314.734435689@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 8c138a189f6db295ceb32258d46ac061df0823e5 upstream.
+[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
 
-An ACPI binding for CMN S3 was not yet finalised when the driver support
-was originally written, but v1.2 of DEN0093 "ACPI for Arm Components"
-has at last been published; support ACPI systems using the proper HID.
+On MIPS system, most of the syscall function name begin with prefix
+sys_. Some syscalls are special such as clone/fork, function name of
+these begin with __sys_. Since scratch registers need be saved in
+stack when these system calls happens.
 
-Cc: stable@vger.kernel.org
-Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/7dafe147f186423020af49d7037552ee59c60e97.1747652164.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With ftrace system call method, system call functions are declared with
+SYSCALL_DEFINEx, metadata of the system call symbol name begins with
+sys_. Here mips specific function arch_syscall_match_sym_name is used to
+compare function name between sys_call_table[] and metadata of syscall
+symbol.
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2650,6 +2650,7 @@ static const struct acpi_device_id arm_c
- 	{ "ARMHC600", PART_CMN600 },
- 	{ "ARMHC650" },
- 	{ "ARMHC700" },
-+	{ "ARMHC003" },
- 	{}
- };
- MODULE_DEVICE_TABLE(acpi, arm_cmn_acpi_match);
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index b463f2aa5a613..7acbe701afd69 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -87,4 +87,20 @@ struct dyn_arch_ftrace {
+ #endif /*  CONFIG_DYNAMIC_FTRACE */
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
++
++#ifdef CONFIG_FTRACE_SYSCALLS
++#ifndef __ASSEMBLY__
++/*
++ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
++ * for instance). We should also match the sys_ variant with those.
++ */
++#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
++static inline bool arch_syscall_match_sym_name(const char *sym,
++					       const char *name)
++{
++	return !strcmp(sym, name) ||
++		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
++}
++#endif /* __ASSEMBLY__ */
++#endif /* CONFIG_FTRACE_SYSCALLS */
+ #endif /* _ASM_MIPS_FTRACE_H */
+-- 
+2.39.5
+
 
 
 
