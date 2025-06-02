@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0414EACB877
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A69ACB6A2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 634EF173421
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:24:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E8664C5F2C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B0D2367A0;
-	Mon,  2 Jun 2025 15:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA8B23C4FC;
+	Mon,  2 Jun 2025 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2Bmb4pV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhFs44zW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A88233140;
-	Mon,  2 Jun 2025 15:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2A42222AA;
+	Mon,  2 Jun 2025 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877515; cv=none; b=cG2A6Qw0lpJK8k1QBLYvooL+N2dgaG1txFbw7dl+EQoSwVHnkC46zHvFqZ+TFwSN7wgrIR7cJFA6AWkoakxrVclIZqAP2jHBerixLTx7uLDZsCcT8JY9l3mt95A8UC4q7TwROu9ztUDbfyhbgLAAMHLs3lvjp2de/EUUVrdy3+M=
+	t=1748876533; cv=none; b=Kz0LvLZcWLXsuA/ZhTuM5gbxRX87A2bQ++MmPxsgoBDXLRhv+2QjIUMAxVRH99T4EcBc/VG6+2fru7DUbBqctQb1v9frz8hPS10cuCJEMQhq4euiFMKtG4Y4Eif1q0nDiAKDtEVrzo0FF6A9l7Nzpfambpm5A1ryIj78N8nmUG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877515; c=relaxed/simple;
-	bh=sAJB5BqDSKNc7EIhcCtWgeHzBEAIBS/RzF188DWURhc=;
+	s=arc-20240116; t=1748876533; c=relaxed/simple;
+	bh=YUH4gcqDSmBa2wA22jg3mDvGquOZIj4fo9giFjAJGkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOewRBjd/ZXHmNRbPzTgVB5HP1y4Z0IA8nH2Hre7IoylkfLrE5AjmAfJ2BMEFXLTAHmwGdDwUaZZnEfbMs3tv3rsAuNXZAIVufg5ZZWh2x8fnFApWsDzmlCOo3xGwzX7gemgApTEjwR6nQCAqnjvOBadwWOBAZQCZAMcWqzgGgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2Bmb4pV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDD8C4CEEB;
-	Mon,  2 Jun 2025 15:18:34 +0000 (UTC)
+	 MIME-Version; b=Ag6nmTo5hnuPMVjiBN0Adnu5xmW9OhLYPnenhvaTZ4mgtHD9Af5M+57njjYuAf1f8snq3aksM4JpSWgeQpkfavaUwnQKfxdqL22p8cQztQUPiC3LMi2xzT4wta0cIICjH+LvaLpPjhiLLiBi7AhPJs7e7cStlJ0GWyDcdPznZ84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhFs44zW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E26C4CEEB;
+	Mon,  2 Jun 2025 15:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877514;
-	bh=sAJB5BqDSKNc7EIhcCtWgeHzBEAIBS/RzF188DWURhc=;
+	s=korg; t=1748876533;
+	bh=YUH4gcqDSmBa2wA22jg3mDvGquOZIj4fo9giFjAJGkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2Bmb4pV9i1CZNl9UdUl6wIaVJ0Ov0fO2KisGO7CTVMO+NzaoZUdnIdjksgpMYv+H
-	 HRfBTfOSvbm2hHjfMLROl/DCUl1HeenHznCCPE8EbLLzhN0+s0BJFScVWUNiDv9bz/
-	 XMlcJdReDjqlwIud66qLfuigtaaaHP7T4GMhRABg=
+	b=IhFs44zWdnkbpB8FtvqNi2YM2/Dn6+abSzALCFuzXKUJ+4RuUSDFmUR0nLp5ioi99
+	 bnKKuk8X1hnwDYkH92Vh7S0fUjIKXAIerflVUSiWZ6Pc2Qy7Ow6iBY6kZZgnkVU5s0
+	 8dtsKxDtKaDp1dHxxdIfsuI+ZaxUNyGOwboNtnqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 300/325] af_unix: Detect dead SCC.
+	Michal Suchanek <msuchanek@suse.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 204/207] tpm: tis: Double the timeout B to 4s
 Date: Mon,  2 Jun 2025 15:49:36 +0200
-Message-ID: <20250602134332.103344192@linuxfoundation.org>
+Message-ID: <20250602134306.782973887@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-commit a15702d8b3aad8ce5268c565bd29f0e02fd2db83 upstream.
+[ Upstream commit 2f661f71fda1fc0c42b7746ca5b7da529eb6b5be ]
 
-When iterating SCC, we call unix_vertex_dead() for each vertex
-to check if the vertex is close()d and has no bridge to another
-SCC.
+With some Infineon chips the timeouts in tpm_tis_send_data (both B and
+C) can reach up to about 2250 ms.
 
-If both conditions are true for every vertex in SCC, we can
-execute garbage collection for all skb in the SCC.
+Timeout C is retried since
+commit de9e33df7762 ("tpm, tpm_tis: Workaround failed command reception on Infineon devices")
 
-The actual garbage collection is done in the following patch,
-replacing the old implementation.
+Timeout B still needs to be extended.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-14-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem is most commonly encountered with context related operation
+such as load context/save context. These are issued directly by the
+kernel, and there is no retry logic for them.
+
+When a filesystem is set up to use the TPM for unlocking the boot fails,
+and restarting the userspace service is ineffective. This is likely
+because ignoring a load context/save context result puts the real TPM
+state and the TPM state expected by the kernel out of sync.
+
+Chips known to be affected:
+tpm_tis IFX1522:00: 2.0 TPM (device-id 0x1D, rev-id 54)
+Description: SLB9672
+Firmware Revision: 15.22
+
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1B, rev-id 22)
+Firmware Revision: 7.83
+
+tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1A, rev-id 16)
+Firmware Revision: 5.63
+
+Link: https://lore.kernel.org/linux-integrity/Z5pI07m0Muapyu9w@kitsune.suse.cz/
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/garbage.c |   44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm_tis_core.h | 2 +-
+ include/linux/tpm.h             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -289,6 +289,39 @@ void unix_destroy_fpl(struct scm_fp_list
- 	unix_free_vertices(fpl);
- }
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index 464ed352ab2e8..ed7b2caa9ebbd 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -53,7 +53,7 @@ enum tis_int_flags {
+ enum tis_defaults {
+ 	TIS_MEM_LEN = 0x5000,
+ 	TIS_SHORT_TIMEOUT = 750,	/* ms */
+-	TIS_LONG_TIMEOUT = 2000,	/* 2 sec */
++	TIS_LONG_TIMEOUT = 4000,	/* 4 secs */
+ 	TIS_TIMEOUT_MIN_ATML = 14700,	/* usecs */
+ 	TIS_TIMEOUT_MAX_ATML = 15000,	/* usecs */
+ };
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index 12d827734686d..2652de93e97b2 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -181,7 +181,7 @@ enum tpm2_const {
  
-+static bool unix_vertex_dead(struct unix_vertex *vertex)
-+{
-+	struct unix_edge *edge;
-+	struct unix_sock *u;
-+	long total_ref;
-+
-+	list_for_each_entry(edge, &vertex->edges, vertex_entry) {
-+		struct unix_vertex *next_vertex = unix_edge_successor(edge);
-+
-+		/* The vertex's fd can be received by a non-inflight socket. */
-+		if (!next_vertex)
-+			return false;
-+
-+		/* The vertex's fd can be received by an inflight socket in
-+		 * another SCC.
-+		 */
-+		if (next_vertex->scc_index != vertex->scc_index)
-+			return false;
-+	}
-+
-+	/* No receiver exists out of the same SCC. */
-+
-+	edge = list_first_entry(&vertex->edges, typeof(*edge), vertex_entry);
-+	u = edge->predecessor;
-+	total_ref = file_count(u->sk.sk_socket->file);
-+
-+	/* If not close()d, total_ref > out_degree. */
-+	if (total_ref != vertex->out_degree)
-+		return false;
-+
-+	return true;
-+}
-+
- static bool unix_scc_cyclic(struct list_head *scc)
- {
- 	struct unix_vertex *vertex;
-@@ -377,6 +410,7 @@ prev_vertex:
- 
- 	if (vertex->index == vertex->scc_index) {
- 		struct list_head scc;
-+		bool scc_dead = true;
- 
- 		/* SCC finalised.
- 		 *
-@@ -391,6 +425,9 @@ prev_vertex:
- 
- 			/* Mark vertex as off-stack. */
- 			vertex->index = unix_vertex_grouped_index;
-+
-+			if (scc_dead)
-+				scc_dead = unix_vertex_dead(vertex);
- 		}
- 
- 		if (!unix_graph_maybe_cyclic)
-@@ -431,13 +468,18 @@ static void unix_walk_scc_fast(void)
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
- 		struct list_head scc;
-+		bool scc_dead = true;
- 
- 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
- 		list_add(&scc, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(vertex, &scc, scc_entry)
-+		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
- 			list_move_tail(&vertex->entry, &unix_visited_vertices);
- 
-+			if (scc_dead)
-+				scc_dead = unix_vertex_dead(vertex);
-+		}
-+
- 		list_del(&scc);
- 	}
- 
+ enum tpm2_timeouts {
+ 	TPM2_TIMEOUT_A          =    750,
+-	TPM2_TIMEOUT_B          =   2000,
++	TPM2_TIMEOUT_B          =   4000,
+ 	TPM2_TIMEOUT_C          =    200,
+ 	TPM2_TIMEOUT_D          =     30,
+ 	TPM2_DURATION_SHORT     =     20,
+-- 
+2.39.5
+
 
 
 
