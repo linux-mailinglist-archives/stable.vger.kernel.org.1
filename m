@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD5DACB5D2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1931ACB389
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3684C122D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08AC84A4206
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A51223DE9;
-	Mon,  2 Jun 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB99D223DE1;
+	Mon,  2 Jun 2025 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTFHViAe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0xwWqJ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D981A223DD0;
-	Mon,  2 Jun 2025 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C3B23C518;
+	Mon,  2 Jun 2025 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876094; cv=none; b=LJRzbEQr699TDfNNSTjmqnzP49oLMPIv8+5pB6BC2I9RRLw0ZkDwim99CXJAxq97ZgfSDzuCF7v9hYD07q3WPTOhVs4gfHFUbBInZBSnQB+FiLbsxcFM4NoZZSRtBAt9Svtsd+LxUrGWV3tU0izEih6g4QfoSqSV7SFL2hIvFrI=
+	t=1748874160; cv=none; b=ZOO8M9KeHpcFa94rL3Zqig5CQJvDVSaG9l4RpLsKmBGNcV2x0xLiasmLcsRi1WbWdy0Lkp8uJiSMdtDAKLfhWnyf+xlZ1rq8scIkvsSUDDWLsCPuISysEiZw17exfa2uSwGrXeClcTQQ5pH1NefjdHm5BwUxmkQiFVCo5+LYopA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876094; c=relaxed/simple;
-	bh=T9jYIa/Lpr1bZWZP/9il6aQZUl/KzdJfSLSj4KF8rbE=;
+	s=arc-20240116; t=1748874160; c=relaxed/simple;
+	bh=RYPVR28hMBlh3cnCeqxgABmamXke4NRtwz7/r8sSeuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eojaTmkDR9ApvkEQRuBmpYFn78kaIO4sprnZloUDDwDi57RLHG4P+6/F+x8malp4Otow+jbfGTv6Fn5wBYc+evXnpUf/OeAW31x/dHwaU22mHWicOy3Ib0VmYUzCOcgRfwqpjbdI84UNUdapbQASFKUPaqt6Cgwdo4/djlVOq0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTFHViAe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EC1C4CEF0;
-	Mon,  2 Jun 2025 14:54:54 +0000 (UTC)
+	 MIME-Version; b=ZEYbUGU7Rm0y8GKFt0L6s8Eh/ff5NfAqmxfv1DDQKWQBwLmM/7lUCKWTp9ouSRiy/DFZIgJRuaU36TxO299qW4inykbuYkmJnH6k0glIgAfkqJb1jJmaTgcFtSGqCb3MI9+ThXvdRf899lY3BCKXZcjJSZmJQ5M2gIEJNCIAAwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0xwWqJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9E7C4CEEB;
+	Mon,  2 Jun 2025 14:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876094;
-	bh=T9jYIa/Lpr1bZWZP/9il6aQZUl/KzdJfSLSj4KF8rbE=;
+	s=korg; t=1748874160;
+	bh=RYPVR28hMBlh3cnCeqxgABmamXke4NRtwz7/r8sSeuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JTFHViAeaa1Ctaed/H3rzZlA9LuuONABrail6RvV1Y98gQKsyYnN/RrNUcxSSwPg/
-	 7YtT4KaUcEVTwehMPiJDaiL7Y1prZmSRKeBiWo3jdZAJpems/89/Mz/Zuy026AqbfT
-	 /EnoeGK6JDrV6ndHN4x5qh4btj6R4snfejkMr0EI=
+	b=M0xwWqJ7a3rUKLvhVFT9mbgMNdWbx1dC84rKSjblTF3RY2ixCGdkmPc6j7ltcWhkF
+	 VbK6iVWHahhfulr76Gb6uSZwboiWyctB28Q5WrnZNLKgdR2nU2QObFnYPmrptWRV4m
+	 S2YAceA3k2ler8jtHxEGa95esBOz1kKIhmhKH4HA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Luca Weiss <luca@lucaweiss.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/207] remoteproc: qcom_wcnss: Handle platforms with only single power domain
+Subject: [PATCH 6.6 378/444] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
 Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134301.480624689@linuxfoundation.org>
+Message-ID: <20250602134356.255483007@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +60,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit 65991ea8a6d1e68effdc01d95ebe39f1653f7b71 ]
+[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
 
-Both MSM8974 and MSM8226 have only CX as power domain with MX & PX being
-handled as regulators. Handle this case by reodering pd_names to have CX
-first, and handling that the driver core will already attach a single
-power domain internally.
+This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-[luca: minor changes]
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-Link: https://lore.kernel.org/r/20250206-wcnss-singlepd-v2-2-9a53ee953dee@lucaweiss.eu
-[bjorn: Added missing braces to else after multi-statement if]
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Hardware that uses I2C wasn't designed with high speeds in mind, so
+communication with PMIC via RSB can intermittently fail. Go back to I2C
+as higher speed and efficiency isn't worth the trouble.
+
+Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
+Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_wcnss.c | 33 ++++++++++++++++++++++++++-------
- 1 file changed, 26 insertions(+), 7 deletions(-)
+ .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
+ .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
+ .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
+ 3 files changed, 37 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-index 97a0c0dc4c77a..3e07f5621d0f2 100644
---- a/drivers/remoteproc/qcom_wcnss.c
-+++ b/drivers/remoteproc/qcom_wcnss.c
-@@ -118,10 +118,10 @@ static const struct wcnss_data pronto_v1_data = {
- 	.pmu_offset = 0x1004,
- 	.spare_offset = 0x1088,
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+index 381d58cea092d..c854c7e310519 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+@@ -151,28 +151,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
  
--	.pd_names = { "mx", "cx" },
-+	.pd_names = { "cx", "mx" },
- 	.vregs = (struct wcnss_vreg_info[]) {
--		{ "vddmx", 950000, 1150000, 0 },
- 		{ "vddcx", .super_turbo = true},
-+		{ "vddmx", 950000, 1150000, 0 },
- 		{ "vddpx", 1800000, 1800000, 0 },
- 	},
- 	.num_pd_vregs = 2,
-@@ -132,10 +132,10 @@ static const struct wcnss_data pronto_v2_data = {
- 	.pmu_offset = 0x1004,
- 	.spare_offset = 0x1088,
+-&r_ir {
+-	linux,rc-map-name = "rc-beelink-gs1";
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	/*
+-	 * FIXME: We can't add that supply for now since it would
+-	 * create a circular dependency between pinctrl, the regulator
+-	 * and the RSB Bus.
+-	 *
+-	 * vcc-pl-supply = <&reg_aldo1>;
+-	 */
+-	vcc-pm-supply = <&reg_aldo1>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
  
--	.pd_names = { "mx", "cx" },
-+	.pd_names = { "cx", "mx" },
- 	.vregs = (struct wcnss_vreg_info[]) {
--		{ "vddmx", 1287500, 1287500, 0 },
- 		{ "vddcx", .super_turbo = true },
-+		{ "vddmx", 1287500, 1287500, 0 },
- 		{ "vddpx", 1800000, 1800000, 0 },
- 	},
- 	.num_pd_vregs = 2,
-@@ -387,8 +387,17 @@ static irqreturn_t wcnss_stop_ack_interrupt(int irq, void *dev)
- static int wcnss_init_pds(struct qcom_wcnss *wcnss,
- 			  const char * const pd_names[WCNSS_MAX_PDS])
- {
-+	struct device *dev = wcnss->dev;
- 	int i, ret;
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -290,6 +274,22 @@
+ 	};
+ };
  
-+	/* Handle single power domain */
-+	if (dev->pm_domain) {
-+		wcnss->pds[0] = dev;
-+		wcnss->num_pds = 1;
-+		pm_runtime_enable(dev);
-+		return 0;
-+	}
++&r_ir {
++	linux,rc-map-name = "rc-beelink-gs1";
++	status = "okay";
++};
 +
- 	for (i = 0; i < WCNSS_MAX_PDS; i++) {
- 		if (!pd_names[i])
- 			break;
-@@ -408,8 +417,15 @@ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
- 
- static void wcnss_release_pds(struct qcom_wcnss *wcnss)
- {
-+	struct device *dev = wcnss->dev;
- 	int i;
- 
-+	/* Handle single power domain */
-+	if (wcnss->num_pds == 1 && dev->pm_domain) {
-+		pm_runtime_disable(dev);
-+		return;
-+	}
++&r_pio {
++	/*
++	 * PL0 and PL1 are used for PMIC I2C
++	 * don't enable the pl-supply else
++	 * it will fail at boot
++	 *
++	 * vcc-pl-supply = <&reg_aldo1>;
++	 */
++	vcc-pm-supply = <&reg_aldo1>;
++};
 +
- 	for (i = 0; i < wcnss->num_pds; i++)
- 		dev_pm_domain_detach(wcnss->pds[i], false);
- }
-@@ -427,10 +443,13 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
- 	 * the regulators for the power domains. For old device trees we need to
- 	 * reserve extra space to manage them through the regulator interface.
- 	 */
--	if (wcnss->num_pds)
--		info += num_pd_vregs;
--	else
-+	if (wcnss->num_pds) {
-+		info += wcnss->num_pds;
-+		/* Handle single power domain case */
-+		num_vregs += num_pd_vregs - wcnss->num_pds;
-+	} else {
- 		num_vregs += num_pd_vregs;
-+	}
+ &spdif {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spdif_tx_pin>;
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+index 6fc65e8db2206..8c476e089185b 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+@@ -175,16 +175,12 @@
+ 	vcc-pg-supply = <&reg_vcc_wifi_io>;
+ };
  
- 	bulk = devm_kcalloc(wcnss->dev,
- 			    num_vregs, sizeof(struct regulator_bulk_data),
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -295,6 +291,10 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+index 92745128fcfeb..4ec4996592bef 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+@@ -112,20 +112,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	vcc-pm-supply = <&reg_bldo3>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -240,6 +232,14 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
++&r_pio {
++	vcc-pm-supply = <&reg_bldo3>;
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
 -- 
 2.39.5
 
