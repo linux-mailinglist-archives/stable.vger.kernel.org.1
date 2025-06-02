@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-149346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C92ACB24D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6CDACB6FD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9E1116A4DB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6AB4C32B6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B90221714;
-	Mon,  2 Jun 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854C5226861;
+	Mon,  2 Jun 2025 15:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs2XT+II"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8nkcwzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF632C327E;
-	Mon,  2 Jun 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4023B1DF73C;
+	Mon,  2 Jun 2025 15:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873690; cv=none; b=IL8IcMX2eUkxQ8N7dwcsaBFRp+X8voXa8QRqjkx/TyQe8qkglfpho5bIzyX7kiQgCW+/riJzKrJmBvg8xY0T1XqnOt/Jdy8/9+myaAUHr2232walCPZJRnDljxOqgffL6E3dBAoLYhZj8EgkpI4E9gJrthGeJwS6YZJq2z28AJU=
+	t=1748876635; cv=none; b=c0RXuWeU3U7DcvSjdlTip72iCHJrMKRl0xLIurzZzn32R65hPeFozVkIG3jynhe0M9i5AS/JJFQX9hRmbgapPerybaKRI5caSulJMjG8P1npGJeuVKk8qLGDsYcbi2lMksX+Pz3XAdwynLgDcutUJU+gRYqxCFJ7GOpYh71+Qq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873690; c=relaxed/simple;
-	bh=h36Mtz8DRZ8vuVClU52hBZHwhNbjNmR0+YsnTmYjyiw=;
+	s=arc-20240116; t=1748876635; c=relaxed/simple;
+	bh=cpK3IXFm6UA+yYH1mOnn4T4ZLH5XANfJ/VA0x+BFG78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnJFJsUn+esgCbpcjDG4xwD9hXpcMzbgjZVfBaKQh5D6GTz+W8l2RBCt+yHprRdujtV6K9yID0Y0vIWvN482RmyX1SUnv7fHo/yuz6HzPHDAcQigT1BvpXwSkZyG5v1ZKxzSAaLi9lPeYCpAkwkkE99h+RIJqgn27aZSwbVLjrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs2XT+II; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915DAC4CEEB;
-	Mon,  2 Jun 2025 14:14:49 +0000 (UTC)
+	 MIME-Version; b=XawodKh8fyUiqfJiWjoa+MDsaNg1IRxJ25puIzpip2RTPNsKd86I2EX5d9o8cChOsbeQxYTE/RKBJv/7HXIrXntaR+WEG25OiGuU+CnQZQpyEeHb5stO3N0wNycls8RI7YBbX+mdN8Ftv0lwbRCxHON9KjigUGXWhoUIj5OLJUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8nkcwzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09F5C4CEEB;
+	Mon,  2 Jun 2025 15:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873689;
-	bh=h36Mtz8DRZ8vuVClU52hBZHwhNbjNmR0+YsnTmYjyiw=;
+	s=korg; t=1748876635;
+	bh=cpK3IXFm6UA+yYH1mOnn4T4ZLH5XANfJ/VA0x+BFG78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vs2XT+IIMNNPgUIihPd3C+fQ8j75MKqnfF9Uo+W2emsBBh4ZIV2DfWJgNRWzRGCjT
-	 lmCtTK+ID6W8rJ6qbDPOL5lWa6YRzzCvKO8eF2Dw5WdIPA3a0yOyUCYErq6oT/mhgX
-	 RxbmMCrM9xka+2CcND0Zd5MBQnau2bAz9wiSB2tc=
+	b=c8nkcwzNQM8t1zPy69uZrmqdRGWqSE3GggrTLCgWuQigA+TivUWKlAaiKubvpDNG3
+	 7r07Q0WCRvClHxr1xo2Q0nchYjZOjMXkVsA1a5yarQAQG/V4Pnbf08gWNxh7L9NpSZ
+	 KbsuNf5oNHEGtG2/UkW3IVH7Xmpg7YHABb4eEBnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	"Artem S. Tashkinov" <aros@gmx.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/444] media: test-drivers: vivid: dont call schedule in loop
+Subject: [PATCH 6.1 008/325] phy: renesas: rcar-gen3-usb2: Assert PLL reset on PHY power off
 Date: Mon,  2 Jun 2025 15:44:44 +0200
-Message-ID: <20250602134349.838182368@linuxfoundation.org>
+Message-ID: <20250602134320.077519995@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit e4740118b752005cbed339aec9a1d1c43620e0b9 ]
+[ Upstream commit 9ce71e85b29eb63e48e294479742e670513f03a0 ]
 
-Artem reported that the CPU load was 100% when capturing from
-vivid at low resolution with ffmpeg.
+Assert PLL reset on PHY power off. This saves power.
 
-This was caused by:
-
-while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
-       !kthread_should_stop())
-        schedule();
-
-If there are no other processes running that can be scheduled,
-then this is basically a busy-loop.
-
-Change it to wait_event_interruptible_timeout() which doesn't
-have that problem.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reported-by: Artem S. Tashkinov <aros@gmx.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219570
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250507125032.565017-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-kthread-cap.c  | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-kthread-out.c  | 11 ++++++++---
- .../media/test-drivers/vivid/vivid-kthread-touch.c    | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-sdr-cap.c      | 11 ++++++++---
- 4 files changed, 32 insertions(+), 12 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-index 42048727d7ff3..b8cdffc9a1e9e 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-@@ -765,9 +765,14 @@ static int vivid_thread_vid_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 8b1280cdbcef8..024cc5ce68a37 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -539,9 +539,17 @@ static int rcar_gen3_phy_usb2_power_off(struct phy *p)
+ 	struct rcar_gen3_chan *channel = rphy->ch;
+ 	int ret = 0;
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-out.c b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-index fac6208b51da8..015a7b166a1e6 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-@@ -235,9 +235,14 @@ static int vivid_thread_vid_out(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+-	scoped_guard(spinlock_irqsave, &channel->lock)
++	scoped_guard(spinlock_irqsave, &channel->lock) {
+ 		rphy->powered = false;
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
++		if (rcar_gen3_are_all_rphys_power_off(channel)) {
++			u32 val = readl(channel->base + USB2_USBCTR);
 +
-+		wait_queue_head_t wait;
++			val |= USB2_USBCTR_PLL_RST;
++			writel(val, channel->base + USB2_USBCTR);
++		}
++	}
 +
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Output Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-index fa711ee36a3fb..c862689786b69 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-@@ -135,9 +135,14 @@ static int vivid_thread_touch_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+ 	if (channel->vbus)
+ 		ret = regulator_disable(channel->vbus);
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Touch Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-index a81f26b769883..1dd59c710dae7 100644
---- a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-@@ -206,9 +206,14 @@ static int vivid_thread_sdr_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
- 
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "SDR Capture Thread End\n");
- 	return 0;
 -- 
 2.39.5
 
