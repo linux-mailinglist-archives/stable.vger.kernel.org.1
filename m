@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B85ACB6C7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B19D3ACB3DC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AFD94C73E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A589439BD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2A022B586;
-	Mon,  2 Jun 2025 15:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8880222D4F6;
+	Mon,  2 Jun 2025 14:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIjOZIgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCd4gYRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8A222ACD1;
-	Mon,  2 Jun 2025 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AFF22259A;
+	Mon,  2 Jun 2025 14:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876837; cv=none; b=WtUXa7o9dhjfT5nvZxKQ71yJS1nSptPk1Q5SVDT5qSP7uLtDETI6vI4YKRatLzptcc+ldWXFavA9PTWz/sSlOeWfQsHFZQp8U2HaycslEyQP56F5bwbc4MeFZzKz3uJjlvxtUgd9tZEB5442cauRFLUEhq+yukT8kquyrP/E2NQ=
+	t=1748874474; cv=none; b=eyiyjc/X8Stgxvr2tfz9KZx0IoG5Ou2qnMCdY24/31qD170CWHYbdUz8l5ckKZ8ZLmmimvQfLxLHR3GrIHg6BNhuyIyVhF0osbnqKZqBEpHObVzd7FWPigCpWCC+61C2sS4lr7SeCTVTQ+y/J461RuDdQw6lemGXVAcbaD0Oh/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876837; c=relaxed/simple;
-	bh=QtICOPl33NNRBRGQ9iScADKAwhvI8MByRtvR3SUV+Mc=;
+	s=arc-20240116; t=1748874474; c=relaxed/simple;
+	bh=cxF6jzlPc+/9ATTepx79oco4VnIl4Uc1KHAjSGnObYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYqAPTBREHMHTjwKYGE66XfissJyTYmTgSLF+p3hF+dJhZHt1AmewKz/7MTguVvbaFz5IpHg+AB1dVRvQnL4U8IDcuCrN/RzP6+QIDqykjZnFDBgwcn4wHFb/w4B66ff/0Zrq+jCl7uJVl1AOxpIdbH5V1q3rFGq6Fm7uoRLZrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIjOZIgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C58AC4CEEB;
-	Mon,  2 Jun 2025 15:07:15 +0000 (UTC)
+	 MIME-Version; b=APeUPteXOYd7id1GNo+tfOo/FnzCCnu2Uh5w4sbKe+N4K1+EMDfHoRbvbOXA+qpyatnwrhSCApxDjQj8Wl8yojbCZW5F4f+qPk3ThjZIfSf6OeMDzyxzmgu+masTTwcxIKffWKtwpZ6tb3NHl9Qg3DVaUlajXDY0ezk70kImaz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCd4gYRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61AFC4CEEB;
+	Mon,  2 Jun 2025 14:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876836;
-	bh=QtICOPl33NNRBRGQ9iScADKAwhvI8MByRtvR3SUV+Mc=;
+	s=korg; t=1748874474;
+	bh=cxF6jzlPc+/9ATTepx79oco4VnIl4Uc1KHAjSGnObYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIjOZIgCDWUMKWWAJZHoz5qRIRXQ9xhYSEK+Dwy4nxHqsBdBT40j2OD10NWj/GasH
-	 mFpIrO6R51lLUMSXh5Y0xAkdmnHEYwhqQJZQrF6q7AN10hrZnXfvPn+RYZlBNgvcyy
-	 CO0bJA3DEINH+VQtGSr6WU5ExngSd1M72VQqh4fE=
+	b=ZCd4gYRrCKj6UQqZDV8miMAWeJOmzQgeZ1osYFC2KpalS3OuQIcgjIYpglxQigU4R
+	 KwXC3blzsAjUjS+60rDuqphfE4HjNEzTIfGB+9YxTRl1Gd8mIGbOC8tr231MXMmAOS
+	 /ugwQHCMg3EDm4mXqH7qOGf6pyRjuh5HDeDvArTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"Alan J. Wylie" <alan@wylie.me.uk>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/325] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
-Date: Mon,  2 Jun 2025 15:46:06 +0200
-Message-ID: <20250602134323.440104234@linuxfoundation.org>
+Subject: [PATCH 5.4 034/204] sch_htb: make htb_deactivate() idempotent
+Date: Mon,  2 Jun 2025 15:46:07 +0200
+Message-ID: <20250602134257.019131293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
+[ Upstream commit 3769478610135e82b262640252d90f6efb05be71 ]
 
-Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
-hd44780_common") makes charlcd_alloc() argument-less effectively dropping
-the single allocation for the struct charlcd_priv object along with
-the driver specific one. Restore that behaviour here.
+Alan reported a NULL pointer dereference in htb_next_rb_node()
+after we made htb_qlen_notify() idempotent.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+It turns out in the following case it introduced some regression:
+
+htb_dequeue_tree():
+  |-> fq_codel_dequeue()
+    |-> qdisc_tree_reduce_backlog()
+      |-> htb_qlen_notify()
+        |-> htb_deactivate()
+  |-> htb_next_rb_node()
+  |-> htb_deactivate()
+
+For htb_next_rb_node(), after calling the 1st htb_deactivate(), the
+clprio[prio]->ptr could be already set to  NULL, which means
+htb_next_rb_node() is vulnerable here.
+
+For htb_deactivate(), although we checked qlen before calling it, in
+case of qlen==0 after qdisc_tree_reduce_backlog(), we may call it again
+which triggers the warning inside.
+
+To fix the issues here, we need to:
+
+1) Make htb_deactivate() idempotent, that is, simply return if we
+   already call it before.
+2) Make htb_next_rb_node() safe against ptr==NULL.
+
+Many thanks to Alan for testing and for the reproducer.
+
+Fixes: 5ba8b837b522 ("sch_htb: make htb_qlen_notify() idempotent")
+Reported-by: Alan J. Wylie <alan@wylie.me.uk>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250428232955.1740419-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/charlcd.c | 5 +++--
- drivers/auxdisplay/charlcd.h | 5 +++--
- drivers/auxdisplay/hd44780.c | 2 +-
- drivers/auxdisplay/lcd2s.c   | 2 +-
- drivers/auxdisplay/panel.c   | 2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ net/sched/sch_htb.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
-index 6d309e4971b61..e243291a7e77c 100644
---- a/drivers/auxdisplay/charlcd.c
-+++ b/drivers/auxdisplay/charlcd.c
-@@ -594,18 +594,19 @@ static int charlcd_init(struct charlcd *lcd)
- 	return 0;
- }
- 
--struct charlcd *charlcd_alloc(void)
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size)
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 9506bf87c66bc..c618aae25b099 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -331,7 +331,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
+  */
+ static inline void htb_next_rb_node(struct rb_node **n)
  {
- 	struct charlcd_priv *priv;
- 	struct charlcd *lcd;
- 
--	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
- 	if (!priv)
- 		return NULL;
- 
- 	priv->esc_seq.len = -1;
- 
- 	lcd = &priv->lcd;
-+	lcd->drvdata = priv->drvdata;
- 
- 	return lcd;
+-	*n = rb_next(*n);
++	if (*n)
++		*n = rb_next(*n);
  }
-diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
-index eed80063a6d20..4bbf106b2dd8a 100644
---- a/drivers/auxdisplay/charlcd.h
-+++ b/drivers/auxdisplay/charlcd.h
-@@ -49,7 +49,7 @@ struct charlcd {
- 		unsigned long y;
- 	} addr;
- 
--	void *drvdata;
-+	void *drvdata;			/* Set by charlcd_alloc() */
- };
  
  /**
-@@ -93,7 +93,8 @@ struct charlcd_ops {
- };
+@@ -573,8 +574,8 @@ static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
+  */
+ static inline void htb_deactivate(struct htb_sched *q, struct htb_class *cl)
+ {
+-	WARN_ON(!cl->prio_activity);
+-
++	if (!cl->prio_activity)
++		return;
+ 	htb_deactivate_prios(q, cl);
+ 	cl->prio_activity = 0;
+ }
+@@ -1173,8 +1174,6 @@ static void htb_qlen_notify(struct Qdisc *sch, unsigned long arg)
+ {
+ 	struct htb_class *cl = (struct htb_class *)arg;
  
- void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
--struct charlcd *charlcd_alloc(void);
-+
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size);
- void charlcd_free(struct charlcd *lcd);
+-	if (!cl->prio_activity)
+-		return;
+ 	htb_deactivate(qdisc_priv(sch), cl);
+ }
  
- int charlcd_register(struct charlcd *lcd);
-diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
-index 8b690f59df27d..ebaf0ff518f4c 100644
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
- 	if (!hdc)
- 		return -ENOMEM;
+@@ -1282,8 +1281,7 @@ static int htb_delete(struct Qdisc *sch, unsigned long arg)
+ 	if (cl->parent)
+ 		cl->parent->children--;
  
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		goto fail1;
+-	if (cl->prio_activity)
+-		htb_deactivate(q, cl);
++	htb_deactivate(q, cl);
  
-diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
-index 135831a165149..2b597f226c0c0 100644
---- a/drivers/auxdisplay/lcd2s.c
-+++ b/drivers/auxdisplay/lcd2s.c
-@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c)
- 	if (err < 0)
- 		return err;
+ 	if (cl->cmode != HTB_CAN_SEND)
+ 		htb_safe_rb_erase(&cl->pq_node,
+@@ -1408,8 +1406,7 @@ static int htb_change_class(struct Qdisc *sch, u32 classid,
+ 			/* turn parent into inner node */
+ 			qdisc_purge_queue(parent->leaf.q);
+ 			parent_qdisc = parent->leaf.q;
+-			if (parent->prio_activity)
+-				htb_deactivate(q, parent);
++			htb_deactivate(q, parent);
  
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		return -ENOMEM;
- 
-diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
-index eba04c0de7eb3..0f3999b665e70 100644
---- a/drivers/auxdisplay/panel.c
-+++ b/drivers/auxdisplay/panel.c
-@@ -835,7 +835,7 @@ static void lcd_init(void)
- 	if (!hdc)
- 		return;
- 
--	charlcd = charlcd_alloc();
-+	charlcd = charlcd_alloc(0);
- 	if (!charlcd) {
- 		kfree(hdc);
- 		return;
+ 			/* remove from evt list because of level change */
+ 			if (parent->cmode != HTB_CAN_SEND) {
 -- 
 2.39.5
 
