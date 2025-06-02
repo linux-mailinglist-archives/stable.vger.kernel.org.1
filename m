@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-150217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3418CACB665
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA8CACB6BF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4364C0C0A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 222457A7D24
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9256523A9AA;
-	Mon,  2 Jun 2025 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DB5221FC3;
+	Mon,  2 Jun 2025 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3S49DHK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rel8KTCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C55D22A4E8;
-	Mon,  2 Jun 2025 15:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DDF223DC0;
+	Mon,  2 Jun 2025 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876406; cv=none; b=ruDs8IwiCDBes15zxpHrGutSHZ9D1qxeFUpJOERMPoWqCwB+GFGJ+r3eFYG19RyB0MZUqJxyu5x5F6T0ss+XsgKDnJASX7bEVLuckV6OMHqS6YJaBy25xdPc5pNFFvUlwpMhxcprpExG5BQykZUddU+fPpC09mIF8KeLirqWnZk=
+	t=1748877395; cv=none; b=EZW6QHQj0B1BVZLFMeM6WywGEOS5+oXWpW90eBKH4I8MbTsDTOBqcrvMvVF89xZl15aXTZMP8x1sHyZVGz43J8uDR73VaW96vBvEkjKTZG3x66TUhl9uXa2TVHvy+JrM/PF9WyUvdbgpVyqs+/iLfH5pJMKJteNoOpcLwI2Ej3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876406; c=relaxed/simple;
-	bh=T1zJ+nBIVmfDof2kFrvUvt+tMacjY5bOm36AuYnNJNQ=;
+	s=arc-20240116; t=1748877395; c=relaxed/simple;
+	bh=ulJ2vLC4i5dYBqEWE2rgxXz7EN1E/XvXMoDWoDlkBUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxHDoDEbc49Q4mR62AwHnZP6HiabgItFUmBZxs8XOscZCwroeh0ifFEmZZjaBsMWVMvAnIOqihXbxTDmZwMWYW4NfeEDhSuRklM7E1Ah5FJoxKp2haCcNgosXVdzr2c+lIyoma1FY7+NO1Jy08Eh/NqQDsJv/p1Hjcg4ga0jiWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3S49DHK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7DBC4CEF0;
-	Mon,  2 Jun 2025 15:00:05 +0000 (UTC)
+	 MIME-Version; b=iBQF07h3pHXXzHq5UnP+BEYevCFQc6ekSTCXTnurhvbsi0pxbroFzFywfj8CqUkb3+kZetOLKN+Y1DfIEsCipPh4JC0MCfWEMnJGMQ+cPEB6UPOZ5+eGOCXDH9GS3FPfwItxuK1XMuI6hRIog/WFDJaeS1yRGn8XOBX+Mrj5VzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rel8KTCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED20C4CEEB;
+	Mon,  2 Jun 2025 15:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876405;
-	bh=T1zJ+nBIVmfDof2kFrvUvt+tMacjY5bOm36AuYnNJNQ=;
+	s=korg; t=1748877395;
+	bh=ulJ2vLC4i5dYBqEWE2rgxXz7EN1E/XvXMoDWoDlkBUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3S49DHKvFP9umFIYCJbYeDHTFigpYbJCIBoju3Eq+pFSLkPZRJ1QYyjfKiFOb+dI
-	 i1j6SmEiNNVjI3f6FZlmOm5DEHzBPLe6nbc+LlWdYIrj8yJQPHMSZaSTdWMhB9JGi1
-	 fEQi+49D3hHE9vqbmwTjyXLeOehgQNUqwOrVC0lI=
+	b=rel8KTChc6aZfJhMdbxYLsAZa6wiqBXZsWM4cEDbIUszapZk42/U2iY9wy3FfBDYK
+	 +cis2up92tjaHS2PsHMuubt5MtO1blZp8SKW5nCrJ8AHXJVi6StIL9pNT9X7YWHGsw
+	 FMLxe2Bb2Ds6wqrcOrJXe3Q482MdSxiaICxIFMGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com,
-	Wang Liang <wangliang74@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/207] net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 264/325] mm/page_alloc.c: avoid infinite retries caused by cpuset race
 Date: Mon,  2 Jun 2025 15:49:00 +0200
-Message-ID: <20250602134305.317887898@linuxfoundation.org>
+Message-ID: <20250602134330.498435748@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-[ Upstream commit e279024617134c94fd3e37470156534d5f2b3472 ]
+commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
 
-Syzbot reported a slab-use-after-free with the following call trace:
+__alloc_pages_slowpath has no change detection for ac->nodemask in the
+part of retry path, while cpuset can modify it in parallel.  For some
+processes that set mempolicy as MPOL_BIND, this results ac->nodemask
+changes, and then the should_reclaim_retry will judge based on the latest
+nodemask and jump to retry, while the get_page_from_freelist only
+traverses the zonelist from ac->preferred_zoneref, which selected by a
+expired nodemask and may cause infinite retries in some cases
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
-  Read of size 8 at addr ffff88807a733000 by task kworker/1:0/25
+cpu 64:
+__alloc_pages_slowpath {
+        /* ..... */
+retry:
+        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
+        if (alloc_flags & ALLOC_KSWAPD)
+                wake_all_kswapds(order, gfp_mask, ac);
+        /* cpu 1:
+        cpuset_write_resmask
+            update_nodemask
+                update_nodemasks_hier
+                    update_tasks_nodemask
+                        mpol_rebind_task
+                         mpol_rebind_policy
+                          mpol_rebind_nodemask
+		// mempolicy->nodes has been modified,
+		// which ac->nodemask point to
 
-  Call Trace:
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
-   crypto_request_complete include/crypto/algapi.h:266
-   aead_request_complete include/crypto/internal/aead.h:85
-   cryptd_aead_crypt+0x3b8/0x750 crypto/cryptd.c:772
-   crypto_request_complete include/crypto/algapi.h:266
-   cryptd_queue_worker+0x131/0x200 crypto/cryptd.c:181
-   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+        */
+        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
+        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+                                 did_some_progress > 0, &no_progress_loops))
+                goto retry;
+}
 
-  Allocated by task 8355:
-   kzalloc_noprof include/linux/slab.h:778
-   tipc_crypto_start+0xcc/0x9e0 net/tipc/crypto.c:1466
-   tipc_init_net+0x2dd/0x430 net/tipc/core.c:72
-   ops_init+0xb9/0x650 net/core/net_namespace.c:139
-   setup_net+0x435/0xb40 net/core/net_namespace.c:343
-   copy_net_ns+0x2f0/0x670 net/core/net_namespace.c:508
-   create_new_namespaces+0x3ea/0xb10 kernel/nsproxy.c:110
-   unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:228
-   ksys_unshare+0x419/0x970 kernel/fork.c:3323
-   __do_sys_unshare kernel/fork.c:3394
+Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
+this issue on a multi node server when the maximum memory pressure is
+reached and the swap is enabled
 
-  Freed by task 63:
-   kfree+0x12a/0x3b0 mm/slub.c:4557
-   tipc_crypto_stop+0x23c/0x500 net/tipc/crypto.c:1539
-   tipc_exit_net+0x8c/0x110 net/tipc/core.c:119
-   ops_exit_list+0xb0/0x180 net/core/net_namespace.c:173
-   cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
-   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
-
-After freed the tipc_crypto tx by delete namespace, tipc_aead_encrypt_done
-may still visit it in cryptd_queue_worker workqueue.
-
-I reproduce this issue by:
-  ip netns add ns1
-  ip link add veth1 type veth peer name veth2
-  ip link set veth1 netns ns1
-  ip netns exec ns1 tipc bearer enable media eth dev veth1
-  ip netns exec ns1 tipc node set key this_is_a_master_key master
-  ip netns exec ns1 tipc bearer disable media eth dev veth1
-  ip netns del ns1
-
-The key of reproduction is that, simd_aead_encrypt is interrupted, leading
-to crypto_simd_usable() return false. Thus, the cryptd_queue_worker is
-triggered, and the tipc_crypto tx will be visited.
-
-  tipc_disc_timeout
-    tipc_bearer_xmit_skb
-      tipc_crypto_xmit
-        tipc_aead_encrypt
-          crypto_aead_encrypt
-            // encrypt()
-            simd_aead_encrypt
-              // crypto_simd_usable() is false
-              child = &ctx->cryptd_tfm->base;
-
-  simd_aead_encrypt
-    crypto_aead_encrypt
-      // encrypt()
-      cryptd_aead_encrypt_enqueue
-        cryptd_aead_enqueue
-          cryptd_enqueue_request
-            // trigger cryptd_queue_worker
-            queue_work_on(smp_processor_id(), cryptd_wq, &cpu_queue->work)
-
-Fix this by holding net reference count before encrypt.
-
-Reported-by: syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=55c12726619ff85ce1f6
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20250520101404.1341730-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
+Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/crypto.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ mm/page_alloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index b09c4a17b283e..35e0ffa1bd84b 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -828,12 +828,16 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
- 		goto exit;
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5195,6 +5195,14 @@ restart:
  	}
  
-+	/* Get net to avoid freed tipc_crypto when delete namespace */
-+	get_net(aead->crypto->net);
+ retry:
++	/*
++	 * Deal with possible cpuset update races or zonelist updates to avoid
++	 * infinite retries.
++	 */
++	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
++	    check_retry_zonelist(zonelist_iter_cookie))
++		goto restart;
 +
- 	/* Now, do encrypt */
- 	rc = crypto_aead_encrypt(req);
- 	if (rc == -EINPROGRESS || rc == -EBUSY)
- 		return rc;
- 
- 	tipc_bearer_put(b);
-+	put_net(aead->crypto->net);
- 
- exit:
- 	kfree(ctx);
-@@ -871,6 +875,7 @@ static void tipc_aead_encrypt_done(struct crypto_async_request *base, int err)
- 	kfree(tx_ctx);
- 	tipc_bearer_put(b);
- 	tipc_aead_put(aead);
-+	put_net(net);
- }
- 
- /**
--- 
-2.39.5
-
+ 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
+ 	if (alloc_flags & ALLOC_KSWAPD)
+ 		wake_all_kswapds(order, gfp_mask, ac);
 
 
 
