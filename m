@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-149063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05CF6ACB020
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:00:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F51CACB05E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:04:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C9D189D22A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AF01482F0B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BFB221DBD;
-	Mon,  2 Jun 2025 13:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAEB2153CB;
+	Mon,  2 Jun 2025 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDHxRHQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCm8Ut7U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA05A1E1A3F;
-	Mon,  2 Jun 2025 13:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBF71E0E08;
+	Mon,  2 Jun 2025 14:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872781; cv=none; b=pQ/j5iPWASmu50DDhCuAR/D4HVkYOPuGVhKqr2ytRZw9uzgrCvD+TxDf3Lupl6ToDQjgpd0Pj7W+Y3lnKiuSrmfx0C/ZSFdxCayEW+6aZh/wFhHw4Bf3nNXeaiKwM6pw0yNfRvq+79MAaxcy4w3lr9z7yoj+M2D7zWJEWg6vYLo=
+	t=1748872893; cv=none; b=MkGq9Ai6vsSpkbGtKToDSa6RtabKiJrC+8htf46bn7kUh6E2baqk1bo/uQed9GphhQV4ZmvaG/NufWmVoYWJPH1MRfCSWiBBSkPMT/FU3acc209CKiJ5Zmlu8qdNapciJUBCim3uOJdBpnXb00LHZLOzNvLj6XSViLca0aGZamM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872781; c=relaxed/simple;
-	bh=Wk7aPHnliwnElzbS4Ph6NfXEen9aqTq6qv4FAATPvJk=;
+	s=arc-20240116; t=1748872893; c=relaxed/simple;
+	bh=4AmJ4A22FZ+996VthMd4qszbsFcxMxVz8d/HKZUaEPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qENrOZcwWYWSgTo+ks2xq5E+Bv8T4dcUlzJ/hSIKrD/3GDcQwEPe32FWMJkuzByaRHTLMJdMxYoThd5BttIWUhmLjzpPGtEZ0GDdnPxhd+6JdfsgQzJN0BBzXf3ctiVPTJYp6N97KuaQLQEWPnR/8W9saQv23ibtUZRnL6Qg/Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDHxRHQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5D2C4CEEB;
-	Mon,  2 Jun 2025 13:59:40 +0000 (UTC)
+	 MIME-Version; b=fBv/Se2ZCrG6A9w5TD1Ntnsqlnr/jNQRCb7QsuxytpdgQcvBl01d2SGnceM87YJnrB0GyRSiETt6nSn3AjEqD7/x+LI3YwWo3XvDp//vAaYcoprwlPT3JMnq8I1NMOZtzsW9jzdXQYX7ITLgG3KIbEVy4hkc7NHZzwNmD6po2ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCm8Ut7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0A9C4CEEE;
+	Mon,  2 Jun 2025 14:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872780;
-	bh=Wk7aPHnliwnElzbS4Ph6NfXEen9aqTq6qv4FAATPvJk=;
+	s=korg; t=1748872892;
+	bh=4AmJ4A22FZ+996VthMd4qszbsFcxMxVz8d/HKZUaEPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDHxRHQMd+tH5/AUR5W6kGNsXSmv3IGww2kFO14T/yIr20gWFs3UrFF4vDYPrftR6
-	 X95s4LB7eydBpZbNDTXb/jC/xYZr+LzHDJjVOiNZ0GUc+GFzTt7rzBIY2jJSXqCxbw
-	 kTWYHZdsM5jPwxiSIsNMJ4RORRi6J66F+ykOZWpM=
+	b=kCm8Ut7UbU62eFeqebnKqLl/FbuFIMqt2iGgScBJ97kCcuUZZuIAQOewGICLM8720
+	 cD1i4eBcq8hbEOoVlICPCYoWvFQ3+JgoBTWistjk3USRtUV2ru5OQKHaWJhItjkqIx
+	 q5e1ls+fJlXunB/H8tYkJd6J8JyMTSUtQmYyeD+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Jai Luthra <jai.luthra@linux.dev>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.14 36/73] arm64: dts: ti: k3-j721e-sk: Remove clock-names property from IMX219 overlay
-Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134243.120258886@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 06/55] arm64: dts: qcom: sm8450: Add missing properties for cryptobam
+Date: Mon,  2 Jun 2025 15:47:23 +0200
+Message-ID: <20250602134238.521946398@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 24ab76e55ef15450c6681a2b5db4d78f45200939 upstream.
+commit 0fe6357229cb15a64b6413c62f1c3d4de68ce55f upstream.
 
-The IMX219 sensor device tree bindings do not include a clock-names
-property. Remove the incorrectly added clock-names entry to avoid
-dtbs_check warnings.
+num-channels and qcom,num-ees are required for BAM nodes without clock,
+because the driver cannot ensure the hardware is powered on when trying to
+obtain the information from the hardware registers. Specifying the node
+without these properties is unsafe and has caused early boot crashes for
+other SoCs before [1, 2].
 
-Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
+Add the missing information from the hardware registers to ensure the
+driver can probe successfully without causing crashes.
+
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
-Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
-Link: https://lore.kernel.org/r/20250415111328.3847502-4-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: b92b0d2f7582 ("arm64: dts: qcom: sm8450: add crypto nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-2-f560889e65d8@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso |    2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
-@@ -34,7 +34,6 @@
- 		reg = <0x10>;
- 
- 		clocks = <&clk_imx219_fixed>;
--		clock-names = "xclk";
- 
- 		port {
- 			csi2_cam0: endpoint {
-@@ -56,7 +55,6 @@
- 		reg = <0x10>;
- 
- 		clocks = <&clk_imx219_fixed>;
--		clock-names = "xclk";
- 
- 		port {
- 			csi2_cam1: endpoint {
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -4553,6 +4553,8 @@
+ 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,num-ees = <4>;
++			num-channels = <16>;
+ 			qcom,controlled-remotely;
+ 			iommus = <&apps_smmu 0x584 0x11>,
+ 				 <&apps_smmu 0x588 0x0>,
 
 
 
