@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248AEACB27B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4FEACB49C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768F21675DD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85B9F4A12AE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0539322A7F2;
-	Mon,  2 Jun 2025 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2DF22A1D5;
+	Mon,  2 Jun 2025 14:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkOlvHFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VruEDQFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F4022A7EA;
-	Mon,  2 Jun 2025 14:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3739E2AE9A;
+	Mon,  2 Jun 2025 14:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873782; cv=none; b=pydywr1luo6Axk8U4EAkmKEA1dXpiLAmH/B9Yu8x9P41TkrKy6Sz2j3186o7+2ZV5SOesx7ckwHa+w+UvBDyfFuurC8EEd4jWO1ZW1gxk4xq6U0O4jWhNsix2cYBBk7tPXJC+yEfIbt0tN1Y3s+2phDAzMwD7IVLPZdbXTxH8TQ=
+	t=1748875193; cv=none; b=HbjCM1PjjNnfUZc1Y4wx2GExjI3lsMZ+sOQMf8ZaoXABwlaFLcIjROwgbsVSdCSbUCBLQJO95mRswFWK3+bx1rPKqzHBwNQGz3fy4ustXEPgroWyD5lkfFRg9OXqMA4cYB0xMYfQdb7gs2IgFxds/+w29gmnd/rBbgpVPqXisXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873782; c=relaxed/simple;
-	bh=lPhLDvBVdQyQo1v/iQ9R+k9bNBliWCxmH/Z0PAPjIaA=;
+	s=arc-20240116; t=1748875193; c=relaxed/simple;
+	bh=wnkJi5WXucgkmFPxg8jnIRHKjoLI95DoefCdDUoRsmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dg274KdtTnJSLcMir9zuQ/vdzU7TmPU36YJJeLnqaz9V//bnEE4BWwmQ64S9j/F2UjGXmiA1+QIeB5X4dLIpYhRsjj/xxEVrQutSLUo+s5Fd+4cTCDQAuXagPFSPK8ehAw+HEG9xjY764Di28rzmhlpfhKXUwjz6N7KpHm/LmG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkOlvHFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344C7C4CEEB;
-	Mon,  2 Jun 2025 14:16:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hMiTVY+hRDzSmygfn9tuI1ZeLlGC5V1csNr/NvaKfZC401hIce4Fvr0iKL2Xp+U8sjiqh4oMrBfwIrr3XxNQGToANk2cvN6FY1FrE3gnDqXdIscrAyowl6Qubce0EDqV66r9ZY0oO5wwqWvilMKTON7y7gOp3pMlDrB9gK7PLC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VruEDQFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3A5C4CEEB;
+	Mon,  2 Jun 2025 14:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873782;
-	bh=lPhLDvBVdQyQo1v/iQ9R+k9bNBliWCxmH/Z0PAPjIaA=;
+	s=korg; t=1748875193;
+	bh=wnkJi5WXucgkmFPxg8jnIRHKjoLI95DoefCdDUoRsmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IkOlvHFndPnhrb9143FzGjI7bJ2V2sYa0fAE1txQaFdmEmNFama/lkVaKFss9oBj7
-	 vQF/m8TufDTT8aWdSyrDNjc+myTIH7wN/g+eEYGvHur5ZavF59PQ9KziKxX3NJtBGr
-	 +1xNWiOzm05xiOWZ4JXl0SOFmaSa5dNwnAUuPd/0=
+	b=VruEDQFnKrhMJP70808mm+rid0HcE0jjqdV5tBrgZb854leCIRDOuqmvizrLxc5Wg
+	 2aWLCd7WBdEpzy483optHpH9C5u4J7Mf5NWiNCwpx0pW+NP1nISiRYsgnJK+RK1jut
+	 Q0xwYkYAY6PcThIH8AP8t+u4bHHzU4ff8duQYUuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaohai Chen <wdhh66@163.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/444] scsi: target: spc: Fix loop traversal in spc_rsoc_get_descr()
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Rob Herring <robh@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>
+Subject: [PATCH 5.10 030/270] of: module: add buffer overflow check in of_modalias()
 Date: Mon,  2 Jun 2025 15:45:15 +0200
-Message-ID: <20250602134351.112505512@linuxfoundation.org>
+Message-ID: <20250602134308.431943747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaohai Chen <wdhh66@163.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 04ad06e41d1c74cc323b20a7bd023c47bd0e0c38 ]
+commit cf7385cb26ac4f0ee6c7385960525ad534323252 upstream.
 
-Stop traversing after finding the appropriate descriptor.
+In of_modalias(), if the buffer happens to be too small even for the 1st
+snprintf() call, the len parameter will become negative and str parameter
+(if not NULL initially) will point beyond the buffer's end. Add the buffer
+overflow check after the 1st snprintf() call and fix such check after the
+strlen() call (accounting for the terminating NUL char).
 
-Signed-off-by: Chaohai Chen <wdhh66@163.com>
-Link: https://lore.kernel.org/r/20250124085542.109088-1-wdhh66@163.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc575064d688 ("of/device: use of_property_for_each_string to parse compatible strings")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/bbfc6be0-c687-62b6-d015-5141b93f313e@omp.ru
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: "Uwe Kleine-König" <ukleinek@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_spc.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/of/device.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
-index f110f932ba054..675f774be1d30 100644
---- a/drivers/target/target_core_spc.c
-+++ b/drivers/target/target_core_spc.c
-@@ -2151,8 +2151,10 @@ spc_rsoc_get_descr(struct se_cmd *cmd, struct target_opcode_descriptor **opcode)
- 			if (descr->serv_action_valid)
- 				return TCM_INVALID_CDB_FIELD;
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -231,14 +231,15 @@ static ssize_t of_device_get_modalias(st
+ 	csize = snprintf(str, len, "of:N%pOFn%c%s", dev->of_node, 'T',
+ 			 of_node_get_device_type(dev->of_node));
+ 	tsize = csize;
++	if (csize >= len)
++		csize = len > 0 ? len - 1 : 0;
+ 	len -= csize;
+-	if (str)
+-		str += csize;
++	str += csize;
  
--			if (!descr->enabled || descr->enabled(descr, cmd))
-+			if (!descr->enabled || descr->enabled(descr, cmd)) {
- 				*opcode = descr;
-+				return TCM_NO_SENSE;
-+			}
- 			break;
- 		case 0x2:
- 			/*
-@@ -2166,8 +2168,10 @@ spc_rsoc_get_descr(struct se_cmd *cmd, struct target_opcode_descriptor **opcode)
- 			if (descr->serv_action_valid &&
- 			    descr->service_action == requested_sa) {
- 				if (!descr->enabled || descr->enabled(descr,
--								      cmd))
-+								      cmd)) {
- 					*opcode = descr;
-+					return TCM_NO_SENSE;
-+				}
- 			} else if (!descr->serv_action_valid)
- 				return TCM_INVALID_CDB_FIELD;
- 			break;
-@@ -2180,13 +2184,15 @@ spc_rsoc_get_descr(struct se_cmd *cmd, struct target_opcode_descriptor **opcode)
- 			 */
- 			if (descr->service_action == requested_sa)
- 				if (!descr->enabled || descr->enabled(descr,
--								      cmd))
-+								      cmd)) {
- 					*opcode = descr;
-+					return TCM_NO_SENSE;
-+				}
- 			break;
- 		}
- 	}
+ 	of_property_for_each_string(dev->of_node, "compatible", p, compat) {
+ 		csize = strlen(compat) + 1;
+ 		tsize += csize;
+-		if (csize > len)
++		if (csize >= len)
+ 			continue;
  
--	return 0;
-+	return TCM_NO_SENSE;
- }
- 
- static sense_reason_t
--- 
-2.39.5
-
+ 		csize = snprintf(str, len, "C%s", compat);
 
 
 
