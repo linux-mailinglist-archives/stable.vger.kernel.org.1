@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA762ACB052
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E11ACAF89
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486C71BA4F3E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DF7D7A4C43
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763B91EA65;
-	Mon,  2 Jun 2025 14:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D112A221DBD;
+	Mon,  2 Jun 2025 13:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPz8NDxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrX3zl3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331C7221F10;
-	Mon,  2 Jun 2025 14:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D883221DB1;
+	Mon,  2 Jun 2025 13:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872864; cv=none; b=Z/1eSKg6V8JTzClvlyzgMLjp7n8mmQKMeQCKuCtOFQT4hoUj1x7c40rXXOV40LOkeGOJyBD5uhRrmOLcruQ0zewaDNv3lyCzZv/ZjViG3TLx4149tmCBsYMX9++++bS7qR2fUUq+6OaHMCfJ7CpVcVDPkecd1uk06WkM2lwsVuY=
+	t=1748872130; cv=none; b=KvV9sys3OWDg2QHOLuzkFBS2L2KSIjr8K7g+V1puChY95ZvcCZSvcBjughsXZafNkb1YmebEZQKrMgVHcJjC8R4V7A5CBTfgzNIlS4AxHr3D9Jkp5OKjAHv0uYhgIpHQHJc9fi9r5k3IXtkq89nrW1QISiL77QroznT+6uHegdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872864; c=relaxed/simple;
-	bh=+M4y1KQkoLjeCWgAxTaEVOTHGyb6fZ9kvzC2blybYZU=;
+	s=arc-20240116; t=1748872130; c=relaxed/simple;
+	bh=urNSXHeBEwwrpWnoPOnb2uxkdflzDQJab11UfUJAi2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDlPnaJrSPr3LXXP72vkM5uBJ9yO8gMJdnjhXMFqfSS6QOs0pnv+jUkfUkZ0Q9tR3hULTph9Uk9ZMLk/N3hT28HOVwNzb7YSHIb77n24TJmbWR0iJVQfB/wD7DTxf6rglaeD0CJvepBG8xxuDKCOoNN3wGovFupcuPbMREYhb9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPz8NDxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6707AC4CEF4;
-	Mon,  2 Jun 2025 14:01:03 +0000 (UTC)
+	 MIME-Version; b=k7usZMrdV+X+SFAG4OUxoE3yjHyPRcFa5WoAv5PkUfFV5JrncVX6Hw4IU82vspFukj+pFYbWWVegoInvP9o1WAA83VHfbpntofxz1svQroZtPXhKPoC3Vr98ylRx4A1Xd6PoC6+TSuf8ljSZGXmOsQGxtbT6P3orHSocC3WriRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrX3zl3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A04C4CEEB;
+	Mon,  2 Jun 2025 13:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872864;
-	bh=+M4y1KQkoLjeCWgAxTaEVOTHGyb6fZ9kvzC2blybYZU=;
+	s=korg; t=1748872130;
+	bh=urNSXHeBEwwrpWnoPOnb2uxkdflzDQJab11UfUJAi2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPz8NDxZpIvYGrjj1w2CDeHjLZxQcS4Btk6x8kys8UGgE8P6trX0V2LwcWC/yLxat
-	 7JgKQW57H1xv/zIgwVxcz/jvRYDVW61vvQ8ur6g86gh5veLZRwnmrHAF7ha0XnzH17
-	 6n57q+hcNS90B5HpWdTZRG9O1m3EBNx/3HEmLP6k=
+	b=UrX3zl3gZG41BUU6mB19lzWAsGSkRxE4bvQO++HDpvJTXOoNEcT/de8yTqjw5Oer+
+	 9c5ltwL95Pae5vr+fhlRwX/e/De2rPPxK/6kHevwUMfaYnYk7pMu8sDj0wLS2sAy3w
+	 j5oj5JTbnWppFpNvxvw3Zwi5u+dJrki2987ZHfYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 02/55] arm64: dts: qcom: ipq9574: Add missing properties for cryptobam
+	Judith Mendez <jm@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.15 27/49] arm64: dts: ti: k3-am62-main: Set eMMC clock parent to default
 Date: Mon,  2 Jun 2025 15:47:19 +0200
-Message-ID: <20250602134238.366639919@linuxfoundation.org>
+Message-ID: <20250602134239.011834967@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Judith Mendez <jm@ti.com>
 
-commit b4cd966edb2deb5c75fe356191422e127445b830 upstream.
+commit 3a71cdfec94436079513d9adf4b1d4f7a7edd917 upstream.
 
-num-channels and qcom,num-ees are required for BAM nodes without clock,
-because the driver cannot ensure the hardware is powered on when trying to
-obtain the information from the hardware registers. Specifying the node
-without these properties is unsafe and has caused early boot crashes for
-other SoCs before [1, 2].
+Set eMMC clock parents to the defaults which is MAIN_PLL0_HSDIV5_CLKOUT
+for eMMC. This change is necessary since DM is not implementing the
+correct procedure to switch PLL clock source for eMMC and MMC CLK mux is
+not glich-free. As a preventative action, lets switch back to the defaults.
 
-Add the missing information from the hardware registers to ensure the
-driver can probe successfully without causing crashes.
-
-[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
-[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
-
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
 Cc: stable@vger.kernel.org
-Tested-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Fixes: ffadc79ed99f ("arm64: dts: qcom: ipq9574: Enable crypto nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-6-f560889e65d8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Udit Kumar <u-kumar1@ti.com>
+Acked-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250429163337.15634-2-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq9574.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-@@ -261,6 +261,8 @@
- 			interrupts = <GIC_SPI 207 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <1>;
-+			qcom,num-ees = <4>;
-+			num-channels = <16>;
- 			qcom,controlled-remotely;
- 		};
- 
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -552,8 +552,6 @@
+ 		power-domains = <&k3_pds 57 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 57 5>, <&k3_clks 57 6>;
+ 		clock-names = "clk_ahb", "clk_xin";
+-		assigned-clocks = <&k3_clks 57 6>;
+-		assigned-clock-parents = <&k3_clks 57 8>;
+ 		bus-width = <8>;
+ 		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
 
 
 
