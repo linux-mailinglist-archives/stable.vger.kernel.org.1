@@ -1,119 +1,133 @@
-Return-Path: <stable+bounces-149481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1506ACB2E4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889BCACB505
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF1C1946E19
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86CF3BE725
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6CF239E97;
-	Mon,  2 Jun 2025 14:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="C7Z5KcZQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D8722F755;
+	Mon,  2 Jun 2025 14:35:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEFF1E0DD8;
-	Mon,  2 Jun 2025 14:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9221CA07;
+	Mon,  2 Jun 2025 14:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874088; cv=none; b=OdVqP1kq8ovqHEDVtVMwgG2R5eLKt+BxIutqHv+I4h4i3lBC+fVgRN0yB1lywEPad3C1nW9kEI3EzHdb0ewhRuQ0ZZxsiZfPylgNpE1AF170PomidibFV35oaUi0t7OTeH70+cV+vq0YZJXYUEieBBXEZEXm8qUeAVJrXiliA/8=
+	t=1748874929; cv=none; b=Xuwg7WYGzln8d7WYhrIsBoIMafA2YD+S9uWqBh1qh5zOnxlQ6hTwYK0ygEKQnQ63xMT2xQ8R58jUznesbOLF0HXOCEtnzqqKuKbMwhdt1jbyOlVP2lX7PaBvZRHz4lRi9JInXJGvpZPJbGgT85mQKTa2DAi8lSZkS59eyd9/QaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874088; c=relaxed/simple;
-	bh=aJSb9PmeEEKVMNDeRlwAav1QVCTH6xqnxDLJofN6fhA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gl6BAsGXVOVddGRYqo/MDwGNrCIgFkDuJ+DxLmT/O5LexBoJQSGX7NkSQUtM6Og3Tzr0ldSlOK6RtSMyY7AC6egcOQ7LQCbAjUGwyboNW2tfnVzjeMZnMs7ipkQw2HcWtF+dttDqcBGSsASqCI3lbvBxhdNgIa/1tUZdbZG9lMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=C7Z5KcZQ; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1748874082;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kgQPI+dNQX5S/d0yPfZSHZR915JjJBF9kW4q/ixBVA0=;
-	b=C7Z5KcZQCaOB+ldk8UgL6UvcJUJWh4vMjC/cyhywjJhOR3NiEbHA2lREht4+ZLp3QthIyv
-	4m9pz6505g21a1ZZhRbSZYVj5n7QFR17R8Zq5YnRPZEbuMRtjwB2JwdaMO9qwdQF3Vp4uV
-	AQH9UKhhQ8X/xj7/6IHll91usFDFIpw=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	lei lu <llfamsec@gmail.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 5.10] xfs: add bounds checking to xlog_recover_process_data
-Date: Mon,  2 Jun 2025 17:21:21 +0300
-Message-ID: <20250602142122.82111-1-arefev@swemel.ru>
+	s=arc-20240116; t=1748874929; c=relaxed/simple;
+	bh=aM5s6ihCADPEh0DrupWzn1vABxJohH6ff7qhayz4gzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IpXO1HKePXikSHWPd/Nll+0TZmLLaFF0YoyDPk2CJ5Vh98NX8titKrQvSAD/J/9XSzg8Rv+H733WtYk4YTJJzzQwJ5iUi0he+NceNg+4oJxVgwkbYFzUmlfl4aziderLqW35uPsduGGqlF/XhA+CZK7LFEeyhlF61wzmjn2DCmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B67C4CEEB;
+	Mon,  2 Jun 2025 14:35:27 +0000 (UTC)
+Date: Mon, 2 Jun 2025 10:36:39 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com, Jeongjun Park
+ <aha310510@gmail.com>
+Subject: Re: [PATCH 5.4 009/204] tracing: Fix oob write in
+ trace_seq_to_buffer()
+Message-ID: <20250602103639.6d9776d5@gandalf.local.home>
+In-Reply-To: <20250602134255.842400124@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
+	<20250602134255.842400124@linuxfoundation.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: lei lu <llfamsec@gmail.com>
+On Mon,  2 Jun 2025 15:45:42 +0200
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
+> 5.4-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Jeongjun Park <aha310510@gmail.com>
+> 
+> commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
+> 
+> syzbot reported this bug:
+> ==================================================================
+> BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
+> BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
+> Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
+> 
+> CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+> Call Trace:
+>  <TASK>
+>  __dump_stack lib/dump_stack.c:94 [inline]
+>  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+>  print_address_description mm/kasan/report.c:408 [inline]
+>  print_report+0xc3/0x670 mm/kasan/report.c:521
+>  kasan_report+0xe0/0x110 mm/kasan/report.c:634
+>  check_region_inline mm/kasan/generic.c:183 [inline]
+>  kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
+>  __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
+>  trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
+>  tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
+>  ....
+> ==================================================================
+> 
+> It has been reported that trace_seq_to_buffer() tries to copy more data
+> than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
+> smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
+> 
+> Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
+> Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
+> Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
+> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  kernel/trace/trace.c |    5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+> @@ -6331,13 +6331,14 @@ static ssize_t tracing_splice_read_pipe(
+>  		/* Copy the data into the page, so we can start over. */
+>  		ret = trace_seq_to_buffer(&iter->seq,
+>  					  page_address(spd.pages[i]),
+> -					  trace_seq_used(&iter->seq));
+> +					  min((size_t)trace_seq_used(&iter->seq),
+> +						  PAGE_SIZE));
 
-There is a lack of verification of the space occupied by fixed members
-of xlog_op_header in the xlog_recover_process_data.
+Note this will require this patch too:
 
-We can create a crafted image to trigger an out of bounds read by
-following these steps:
-    1) Mount an image of xfs, and do some file operations to leave records
-    2) Before umounting, copy the image for subsequent steps to simulate
-       abnormal exit. Because umount will ensure that tail_blk and
-       head_blk are the same, which will result in the inability to enter
-       xlog_recover_process_data
-    3) Write a tool to parse and modify the copied image in step 2
-    4) Make the end of the xlog_op_header entries only 1 byte away from
-       xlog_rec_header->h_size
-    5) xlog_rec_header->h_num_logops++
-    6) Modify xlog_rec_header->h_crc
+   Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
 
-Fix:
-Add a check to make sure there is sufficient space to access fixed members
-of xlog_op_header.
+commit 2fbdb6d8e03b ("tracing: Fix compilation warning on arm32")
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
----
-Backport fix for CVE-2024-41014
-Link: https://nvd.nist.gov/vuln/detail/cve-2024-41014
----
- fs/xfs/xfs_log_recover.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+-- Steve
 
-diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
-index e61f28ce3e44..eafe76f304ef 100644
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2419,7 +2419,10 @@ xlog_recover_process_data(
- 
- 		ohead = (struct xlog_op_header *)dp;
- 		dp += sizeof(*ohead);
--		ASSERT(dp <= end);
-+		if (dp > end) {
-+			xfs_warn(log->l_mp, "%s: op header overrun", __func__);
-+			return -EFSCORRUPTED;
-+		}
- 
- 		/* errors will abort recovery */
- 		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
--- 
-2.43.0
+>  		if (ret < 0) {
+>  			__free_page(spd.pages[i]);
+>  			break;
+>  		}
+>  		spd.partial[i].offset = 0;
+> -		spd.partial[i].len = trace_seq_used(&iter->seq);
+> +		spd.partial[i].len = ret;
+>  
+>  		trace_seq_init(&iter->seq);
+>  	}
+> 
 
 
