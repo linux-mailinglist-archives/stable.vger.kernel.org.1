@@ -1,116 +1,204 @@
-Return-Path: <stable+bounces-148948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91726ACAE46
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2891ACAE60
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A2D87ACC0E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:46:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601641BA006B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70C921A451;
-	Mon,  2 Jun 2025 12:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9664321B9F8;
+	Mon,  2 Jun 2025 12:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="IdN/EfPC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HpZVY6n0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB8838DD1;
-	Mon,  2 Jun 2025 12:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8A186344
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 12:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748868466; cv=none; b=SIbV+O6pMdKQjmuWlll6rQx2LrWK3POYfFCzrZ+Y/NgCLu06+bbZcNxmW+SR7cRiq/5hrGxejKFcvwEx1ehaRpt7t1edz6ra6qPWD9QG8dyPCO00Rs1wXjfvyZLBV2kLu04M0cUpWVY71XMkiU8tEscz3j5/s30rFRcxy6HMnaM=
+	t=1748869093; cv=none; b=oFBw9Ghw/bUNWsQBDoprjDDTQ3K+lhqQ94iAqZap8cTX9gXlURwsXoUH/tVQ0m1qznuUn7elZ0MrKL71YyAOuB1qcfY5d/iP03rcDuchAqNz7SeennTtWNUM47pMhPmpoU+kCW41MsaMbnkrsKbMOZL02hLPFzHAhoXuVUeMNZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748868466; c=relaxed/simple;
-	bh=FJkS0QakWU0n6b1qNi8YVrI4yg158AxwuU8g1LMNaos=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hi16V2fhfKvPA1hvx3A01dGwrv5dY1y2KxKCqQM6zwmbIvJUppP27RAYxlrtgpCSGab3iWshuA6p5d/FGvnFaMj92MuJnA3g/sQcctEeT/sXijLCfoCtnA2jqATY47C8r62lrWE6GJPDh+rQCVf83xF49FS1aU0BGEMVoN1fwPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=IdN/EfPC; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1748867988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=G4+VCuBXlY5f39h1spysLYf7MRhFe7y4qDoXMnXq/a4=;
-	b=IdN/EfPCMarjWDnEMXf0bJPqxwCiB6yyV+w7CV6x7Rk5PaNMxdSbZaCCx9ShJgJaT+Oy9N
-	z6KYriMcnW2HBBEiUtA5B0O6kennx6gxzDYMgn1lJxjCBe38DlODCGDJRqcp4UTqlnavhz
-	bA6fG6jk3GTlrOrdaJ1dWZKeMM6pHSw=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10] netfilter: nft_socket: fix sk refcount leaks
-Date: Mon,  2 Jun 2025 15:39:47 +0300
-Message-ID: <20250602123948.40610-1-arefev@swemel.ru>
+	s=arc-20240116; t=1748869093; c=relaxed/simple;
+	bh=oilxkc6DzN2cbvWSWKB25ul1D8zwWWt/1iUwtIntcJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Uee4tRUU0rj6ZS9E07fMPBeE6soClDK09rLsNv3zWePf5ZkfBzfLHteTPPWq3PsW6PbguiJVBBqHZs9tKGkZKszF/gcL80df0FivJx3Sqeu6peOaDDYM51gaPjmXUzkoP5o4s4H2nUf9sfJHyots1gKEXqQVYNSFE1tSKKnlnXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HpZVY6n0; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748869092; x=1780405092;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=oilxkc6DzN2cbvWSWKB25ul1D8zwWWt/1iUwtIntcJ0=;
+  b=HpZVY6n0nZYrZS5oEfRa9xbOMNbgSddAIRd4j5RUg3UN9wCFp6lBjApb
+   r8XtMd/xS1idMAwMd0lu2WIJpau++jRAHjUl6uLZCVcCmMIqmsxjgxSTT
+   W/DpA/0e9whie39dG93rwSDMiSt+YJKYlC/kzTBz2egN63pSNBTIQHYmo
+   kq7nfcDCrBSbRTM8+QVebDcZSVFZP3EHu88LXPGv7LbUUG0eCVONsziRJ
+   0YYrqbYlcXD04yfuikIJCjbuxHVjfe1DLoKiwX4q511hU81+6g1Ol4Rbu
+   CoNT4BWz0cjAxdrjXFp90Hg92yLgnq9hyVLxNtuW2XN4ZtZOYdgAy0XL1
+   w==;
+X-CSE-ConnectionGUID: 255IIEgEQPqKISv08lVGpQ==
+X-CSE-MsgGUID: pq1ftFeIQeuPU6/+Ox1wwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="61925824"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
+   d="scan'208";a="61925824"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 05:58:11 -0700
+X-CSE-ConnectionGUID: GqIhOtykTW6ytS3iJyaKlA==
+X-CSE-MsgGUID: /PHzulLTT2q+HKeMQ1gj8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
+   d="scan'208";a="144413332"
+Received: from vmusin-mobl1.ger.corp.intel.com (HELO [10.245.112.120]) ([10.245.112.120])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 05:58:10 -0700
+Message-ID: <a52588be-b487-433a-a74f-eaa1d7a88654@linux.intel.com>
+Date: Mon, 2 Jun 2025 14:58:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
+To: Lizhi Hou <lizhi.hou@amd.com>, dri-devel@lists.freedesktop.org
+Cc: jeff.hugo@oss.qualcomm.com, stable@vger.kernel.org
+References: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
+ <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Florian Westphal <fw@strlen.de>             
+Hi,
 
-commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
+On 5/28/2025 7:50 PM, Lizhi Hou wrote:
+> 
+> On 5/28/25 08:43, Jacek Lawrynowicz wrote:
+>> This fixes a potential race conditions in:
+>>   - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
+>>     holding the dma_resv_lock().
+>>   - ivpu_bo_print_info() where we read the shmem->pages without
+>>     holding the dma_resv_lock().
+>>
+>> Using dma_resv_lock() also protects against future syncronisation
+>> issues that may arise when accessing drm_gem_shmem_object or
+>> drm_gem_object members.
+>>
+>> Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
+>> Cc: <stable@vger.kernel.org> # v6.9+
+>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>> ---
+>>   drivers/accel/ivpu/ivpu_gem.c | 63 +++++++++++++++++++----------------
+>>   drivers/accel/ivpu/ivpu_gem.h |  1 -
+>>   2 files changed, 34 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
+>> index c193a80241f5f..5908268ca45e9 100644
+>> --- a/drivers/accel/ivpu/ivpu_gem.c
+>> +++ b/drivers/accel/ivpu/ivpu_gem.c
+>> @@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
+>>            (bool)bo->base.base.import_attach);
+>>   }
+>>   +static inline int ivpu_bo_lock(struct ivpu_bo *bo)
+>> +{
+>> +    return dma_resv_lock(bo->base.base.resv, NULL);
+>> +}
+>> +
+>> +static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
+>> +{
+>> +    dma_resv_unlock(bo->base.base.resv);
+>> +}
+>> +
+>>   /*
+>>    * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
+>>    *
+>> @@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
+>>   int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
+>>   {
+>>       struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
+>> +    struct sg_table *sgt;
+>>       int ret = 0;
+>>   -    mutex_lock(&bo->lock);
+>> -
+>>       ivpu_dbg_bo(vdev, bo, "pin");
+>> -    drm_WARN_ON(&vdev->drm, !bo->ctx);
+>>   -    if (!bo->mmu_mapped) {
+>> -        struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
+>> +    sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
+>> +    if (IS_ERR(sgt)) {
+>> +        ret = PTR_ERR(sgt);
+>> +        ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
+>> +        return ret;
+>> +    }
+>>   -        if (IS_ERR(sgt)) {
+>> -            ret = PTR_ERR(sgt);
+>> -            ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
+>> -            goto unlock;
+>> -        }
+>> +    ivpu_bo_lock(bo);
+>>   +    if (!bo->mmu_mapped) {
+>> +        drm_WARN_ON(&vdev->drm, !bo->ctx);
+>>           ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
+>>                              ivpu_bo_is_snooped(bo));
+>>           if (ret) {
+>> @@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
+>>       }
+>>     unlock:
+>> -    mutex_unlock(&bo->lock);
+>> +    ivpu_bo_unlock(bo);
+>>         return ret;
+>>   }
+>> @@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
+>>       if (!drm_dev_enter(&vdev->drm, &idx))
+>>           return -ENODEV;
+>>   -    mutex_lock(&bo->lock);
+>> +    ivpu_bo_lock(bo);
+>>         ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
+>>       if (!ret) {
+>> @@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
+>>           ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
+>>       }
+>>   -    mutex_unlock(&bo->lock);
+>> +    ivpu_bo_unlock(bo);
+>>         drm_dev_exit(idx);
+>>   @@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
+>>   {
+>>       struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
+>>   -    lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
+>> +    lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
+>>         if (bo->mmu_mapped) {
+>>           drm_WARN_ON(&vdev->drm, !bo->ctx);
+>> @@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
+>>       if (bo->base.base.import_attach)
+>>           return;
+>>   -    dma_resv_lock(bo->base.base.resv, NULL);
+>>       if (bo->base.sgt) {
+>>           dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
+>>           sg_free_table(bo->base.sgt);
+>>           kfree(bo->base.sgt);
+>>           bo->base.sgt = NULL;
+> 
+> Maybe not directly modify sgt but use drm_gem_shmem_purge()?
 
-We must put 'sk' reference before returning.
+drm_gem_shmem_purge() also removes user mapping and backing pages.
+In ivpu_bo_unbind_locked() we only want to unmap the buffer from the device as it being turned off.
+We don't want to crash user process in this case and this will probably be the result of drm_gem_shmem_purge() na mmpapped buffer.
 
-Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[Denis: minor fix to resolve merge conflict.]  
-Signed-off-by: Denis Arefev <arefev@swemel.ru> 
----
-Backport fix for CVE-2024-46855
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-46855
----
- net/netfilter/nft_socket.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+> Will it potentially memleak without calling drm_gem_shmem_put_pages()? (if the bo is mmap, vmap etc)
 
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index 826e5f8c78f3..07e73e50b713 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -88,13 +88,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 			*dest = sk->sk_mark;
- 		} else {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		break;
- 	case NFT_SOCKET_WILDCARD:
- 		if (!sk_fullsock(sk)) {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		nft_socket_wildcard(pkt, regs, sk, dest);
- 		break;
-@@ -103,6 +103,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 		regs->verdict.code = NFT_BREAK;
- 	}
- 
-+out_put_sk:
- 	if (sk != skb->sk)
- 		sock_gen_put(sk);
- }
--- 
-2.43.0
+There is no memory leak. We are calling drm_gem_shmem_get_pages_sgt() only once per object and drm_gem_shmem_free() frees all backing memory.
 
+Regards,
+Jacek
 
