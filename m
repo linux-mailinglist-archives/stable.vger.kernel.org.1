@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B135BACB6CD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11A8ACB68E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D80F4C0213
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4FF47A72C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B3122A7E7;
-	Mon,  2 Jun 2025 14:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA622D4F9;
+	Mon,  2 Jun 2025 15:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSIkwZ+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcukHSyB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FA1238151;
-	Mon,  2 Jun 2025 14:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8C222259C;
+	Mon,  2 Jun 2025 15:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876299; cv=none; b=mS0pPhrFSlqhV/6AD6hIUllhmgTPThT8FRQfEnMHiod4iqPwKoW70YVELSomP1pxTcjaHanI3P/+eWKxtm35SIQg0pJXN5BtlNKfjYIow3Vvr8uASnIBugW2PidDoZE2qz/ePrA52SO9UftAgGOb2CJQ+VhXzYo3TxcKyTfRy4k=
+	t=1748877289; cv=none; b=ClzN9jh6fv4h3yYfuSPrvKX3ZoQZqlXm/CfPH6ETHetiozp3GnDrBdIiI6D1DMGDDs7G1mzzkHXbKM7YQ12kFhAFfLnjBQCI+YPXOVSb2Hrw+7HHIyEeO/r6Q33mnVr0mduegL9v69gHStAdh+4BnLYssD0mCIzUWrVAYsTXy1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876299; c=relaxed/simple;
-	bh=AOdH3d+eKvyd1A4WWKbI95oW7xD+s1uzFJMLq4f9DGA=;
+	s=arc-20240116; t=1748877289; c=relaxed/simple;
+	bh=mAzFEuRHG5IiqCw3cW5aSF/+kgM/F9V19E9dPYmLpkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNoHBUqxI0WVPBCY/moEVnmh/UZpDz3Ti1KhlRJmMy0LsZi8jdEmfuEkbn3F1xLpKsirzm9PMKY3haqFmWL3LIxcx30zOdLD4m/ojBlCY61f3BSm39zl81qjDqfmdW27XuqQbIfyiDc2tNfA47UNyzt7ou396DQ2KB6R5zLl4us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSIkwZ+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755C1C4CEEB;
-	Mon,  2 Jun 2025 14:58:18 +0000 (UTC)
+	 MIME-Version; b=Bg182VJdQsLBrdtkSgT5VjH54SoRaE6wK1FqugDRhKHLatASxmquXdDbPRItKmLG5rg5jMsh11QeilJD/GeNy2w8cfC7FoHEyos8JJrb4gOcacFj6PjBPQVJVL6+OYXNhxTOJCExTZq+9mP3Op2IBlRhpFdlvKeHQmfhzQNYmGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcukHSyB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C30C4CEEB;
+	Mon,  2 Jun 2025 15:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876298;
-	bh=AOdH3d+eKvyd1A4WWKbI95oW7xD+s1uzFJMLq4f9DGA=;
+	s=korg; t=1748877289;
+	bh=mAzFEuRHG5IiqCw3cW5aSF/+kgM/F9V19E9dPYmLpkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSIkwZ+WTB0fh5I9jwxl5SG1SBnEJWfcJpV7DLJuBzP/VT8/D1KUePLBwU3bOd52s
-	 xIrFccmU9MderiyR3PmQ4VeSDdVXfok8FNYPh7uCOsa1iHAMCc4zyzm2GpSsQ4fPQ/
-	 8LNdWG8usdobtQZPZd/BdcqmKxLAw6cCj48rPZB0=
+	b=vcukHSyB3jipxjzRpOTXtwbAxouUpDRPPWU7rp2wg6vIQ60DV4Ogc16pd9gLMYXC0
+	 YLfcQu1nnbwrgTd+eesCqk2VWiKQMjjvUeHrJ9r2DVVIRqOo8UWpx/g1IjmetLSWvm
+	 kmNSM/dv+mTPNoer5Afnps0bBjqs9hQ8EizUGxFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Crouse <jorcrous@amazon.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/207] clk: qcom: camcc-sm8250: Use clk_rcg2_shared_ops for some RCGs
+Subject: [PATCH 6.1 230/325] espintcp: remove encap socket caching to avoid reference leak
 Date: Mon,  2 Jun 2025 15:48:26 +0200
-Message-ID: <20250602134303.970050345@linuxfoundation.org>
+Message-ID: <20250602134329.129206290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,287 +63,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Crouse <jorcrous@amazon.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 52b10b591f83dc6d9a1d6c2dc89433470a787ecd ]
+[ Upstream commit 028363685bd0b7a19b4a820f82dd905b1dc83999 ]
 
-Update some RCGs on the sm8250 camera clock controller to use
-clk_rcg2_shared_ops. The shared_ops ensure the RCGs get parked
-to the XO during clock disable to prevent the clocks from locking up
-when the GDSC is enabled. These mirror similar fixes for other controllers
-such as commit e5c359f70e4b ("clk: qcom: camcc: Update the clock ops for
-the SC7180").
+The current scheme for caching the encap socket can lead to reference
+leaks when we try to delete the netns.
 
-Signed-off-by: Jordan Crouse <jorcrous@amazon.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20250122222612.32351-1-jorcrous@amazon.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The reference chain is: xfrm_state -> enacp_sk -> netns
+
+Since the encap socket is a userspace socket, it holds a reference on
+the netns. If we delete the espintcp state (through flush or
+individual delete) before removing the netns, the reference on the
+socket is dropped and the netns is correctly deleted. Otherwise, the
+netns may not be reachable anymore (if all processes within the ns
+have terminated), so we cannot delete the xfrm state to drop its
+reference on the socket.
+
+This patch results in a small (~2% in my tests) performance
+regression.
+
+A GC-type mechanism could be added for the socket cache, to clear
+references if the state hasn't been used "recently", but it's a lot
+more complex than just not caching the socket.
+
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm8250.c | 56 ++++++++++++++++-----------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ include/net/xfrm.h    |  1 -
+ net/ipv4/esp4.c       | 49 ++++---------------------------------------
+ net/ipv6/esp6.c       | 49 ++++---------------------------------------
+ net/xfrm/xfrm_state.c |  3 ---
+ 4 files changed, 8 insertions(+), 94 deletions(-)
 
-diff --git a/drivers/clk/qcom/camcc-sm8250.c b/drivers/clk/qcom/camcc-sm8250.c
-index 9b32c56a5bc5a..e29706d782870 100644
---- a/drivers/clk/qcom/camcc-sm8250.c
-+++ b/drivers/clk/qcom/camcc-sm8250.c
-@@ -411,7 +411,7 @@ static struct clk_rcg2 cam_cc_bps_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index bf670929622dc..64911162ab5f4 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -212,7 +212,6 @@ struct xfrm_state {
  
-@@ -433,7 +433,7 @@ static struct clk_rcg2 cam_cc_camnoc_axi_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	/* Data for encapsulator */
+ 	struct xfrm_encap_tmpl	*encap;
+-	struct sock __rcu	*encap_sk;
  
-@@ -454,7 +454,7 @@ static struct clk_rcg2 cam_cc_cci_0_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	/* Data for care-of address */
+ 	xfrm_address_t	*coaddr;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index 419969b268225..8f5417ff355d7 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -118,47 +118,16 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+ }
  
-@@ -469,7 +469,7 @@ static struct clk_rcg2 cam_cc_cci_1_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ #ifdef CONFIG_INET_ESPINTCP
+-struct esp_tcp_sk {
+-	struct sock *sk;
+-	struct rcu_head rcu;
+-};
+-
+-static void esp_free_tcp_sk(struct rcu_head *head)
+-{
+-	struct esp_tcp_sk *esk = container_of(head, struct esp_tcp_sk, rcu);
+-
+-	sock_put(esk->sk);
+-	kfree(esk);
+-}
+-
+ static struct sock *esp_find_tcp_sk(struct xfrm_state *x)
+ {
+ 	struct xfrm_encap_tmpl *encap = x->encap;
+ 	struct net *net = xs_net(x);
+-	struct esp_tcp_sk *esk;
+ 	__be16 sport, dport;
+-	struct sock *nsk;
+ 	struct sock *sk;
  
-@@ -490,7 +490,7 @@ static struct clk_rcg2 cam_cc_cphy_rx_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	sk = rcu_dereference(x->encap_sk);
+-	if (sk && sk->sk_state == TCP_ESTABLISHED)
+-		return sk;
+-
+ 	spin_lock_bh(&x->lock);
+ 	sport = encap->encap_sport;
+ 	dport = encap->encap_dport;
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (sk && sk == nsk) {
+-		esk = kmalloc(sizeof(*esk), GFP_ATOMIC);
+-		if (!esk) {
+-			spin_unlock_bh(&x->lock);
+-			return ERR_PTR(-ENOMEM);
+-		}
+-		RCU_INIT_POINTER(x->encap_sk, NULL);
+-		esk->sk = sk;
+-		call_rcu(&esk->rcu, esp_free_tcp_sk);
+-	}
+ 	spin_unlock_bh(&x->lock);
  
-@@ -511,7 +511,7 @@ static struct clk_rcg2 cam_cc_csi0phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	sk = inet_lookup_established(net, net->ipv4.tcp_death_row.hashinfo, x->id.daddr.a4,
+@@ -171,20 +140,6 @@ static struct sock *esp_find_tcp_sk(struct xfrm_state *x)
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
-@@ -526,7 +526,7 @@ static struct clk_rcg2 cam_cc_csi1phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	spin_lock_bh(&x->lock);
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (encap->encap_sport != sport ||
+-	    encap->encap_dport != dport) {
+-		sock_put(sk);
+-		sk = nsk ?: ERR_PTR(-EREMCHG);
+-	} else if (sk == nsk) {
+-		sock_put(sk);
+-	} else {
+-		rcu_assign_pointer(x->encap_sk, sk);
+-	}
+-	spin_unlock_bh(&x->lock);
+-
+ 	return sk;
+ }
  
-@@ -556,7 +556,7 @@ static struct clk_rcg2 cam_cc_csi3phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+@@ -207,6 +162,8 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+ 		err = espintcp_push_skb(sk, skb);
+ 	bh_unlock_sock(sk);
  
-@@ -571,7 +571,7 @@ static struct clk_rcg2 cam_cc_csi4phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++	sock_put(sk);
++
+ out:
+ 	rcu_read_unlock();
+ 	return err;
+@@ -391,6 +348,8 @@ static struct ip_esp_hdr *esp_output_tcp_encap(struct xfrm_state *x,
+ 	if (IS_ERR(sk))
+ 		return ERR_CAST(sk);
  
-@@ -586,7 +586,7 @@ static struct clk_rcg2 cam_cc_csi5phytimer_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++	sock_put(sk);
++
+ 	*lenp = htons(len);
+ 	esph = (struct ip_esp_hdr *)(lenp + 1);
  
-@@ -611,7 +611,7 @@ static struct clk_rcg2 cam_cc_fast_ahb_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index a021c88d3d9b8..085a83b807afd 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -135,47 +135,16 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
+ }
  
-@@ -634,7 +634,7 @@ static struct clk_rcg2 cam_cc_fd_core_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ #ifdef CONFIG_INET6_ESPINTCP
+-struct esp_tcp_sk {
+-	struct sock *sk;
+-	struct rcu_head rcu;
+-};
+-
+-static void esp_free_tcp_sk(struct rcu_head *head)
+-{
+-	struct esp_tcp_sk *esk = container_of(head, struct esp_tcp_sk, rcu);
+-
+-	sock_put(esk->sk);
+-	kfree(esk);
+-}
+-
+ static struct sock *esp6_find_tcp_sk(struct xfrm_state *x)
+ {
+ 	struct xfrm_encap_tmpl *encap = x->encap;
+ 	struct net *net = xs_net(x);
+-	struct esp_tcp_sk *esk;
+ 	__be16 sport, dport;
+-	struct sock *nsk;
+ 	struct sock *sk;
  
-@@ -649,7 +649,7 @@ static struct clk_rcg2 cam_cc_icp_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	sk = rcu_dereference(x->encap_sk);
+-	if (sk && sk->sk_state == TCP_ESTABLISHED)
+-		return sk;
+-
+ 	spin_lock_bh(&x->lock);
+ 	sport = encap->encap_sport;
+ 	dport = encap->encap_dport;
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (sk && sk == nsk) {
+-		esk = kmalloc(sizeof(*esk), GFP_ATOMIC);
+-		if (!esk) {
+-			spin_unlock_bh(&x->lock);
+-			return ERR_PTR(-ENOMEM);
+-		}
+-		RCU_INIT_POINTER(x->encap_sk, NULL);
+-		esk->sk = sk;
+-		call_rcu(&esk->rcu, esp_free_tcp_sk);
+-	}
+ 	spin_unlock_bh(&x->lock);
  
-@@ -673,7 +673,7 @@ static struct clk_rcg2 cam_cc_ife_0_clk_src = {
- 		.parent_data = cam_cc_parent_data_2,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_2),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+ 	sk = __inet6_lookup_established(net, net->ipv4.tcp_death_row.hashinfo, &x->id.daddr.in6,
+@@ -188,20 +157,6 @@ static struct sock *esp6_find_tcp_sk(struct xfrm_state *x)
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
-@@ -710,7 +710,7 @@ static struct clk_rcg2 cam_cc_ife_0_csid_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-	spin_lock_bh(&x->lock);
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (encap->encap_sport != sport ||
+-	    encap->encap_dport != dport) {
+-		sock_put(sk);
+-		sk = nsk ?: ERR_PTR(-EREMCHG);
+-	} else if (sk == nsk) {
+-		sock_put(sk);
+-	} else {
+-		rcu_assign_pointer(x->encap_sk, sk);
+-	}
+-	spin_unlock_bh(&x->lock);
+-
+ 	return sk;
+ }
  
-@@ -734,7 +734,7 @@ static struct clk_rcg2 cam_cc_ife_1_clk_src = {
- 		.parent_data = cam_cc_parent_data_3,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_3),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+@@ -224,6 +179,8 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+ 		err = espintcp_push_skb(sk, skb);
+ 	bh_unlock_sock(sk);
  
-@@ -749,7 +749,7 @@ static struct clk_rcg2 cam_cc_ife_1_csid_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++	sock_put(sk);
++
+ out:
+ 	rcu_read_unlock();
+ 	return err;
+@@ -427,6 +384,8 @@ static struct ip_esp_hdr *esp6_output_tcp_encap(struct xfrm_state *x,
+ 	if (IS_ERR(sk))
+ 		return ERR_CAST(sk);
  
-@@ -771,7 +771,7 @@ static struct clk_rcg2 cam_cc_ife_lite_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
++	sock_put(sk);
++
+ 	*lenp = htons(len);
+ 	esph = (struct ip_esp_hdr *)(lenp + 1);
  
-@@ -786,7 +786,7 @@ static struct clk_rcg2 cam_cc_ife_lite_csid_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 2f4cf976b59a3..b5047a94c7d01 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -694,9 +694,6 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 		net->xfrm.state_num--;
+ 		spin_unlock(&net->xfrm.xfrm_state_lock);
  
-@@ -810,7 +810,7 @@ static struct clk_rcg2 cam_cc_ipe_0_clk_src = {
- 		.parent_data = cam_cc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_4),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
+-		if (x->encap_sk)
+-			sock_put(rcu_dereference_raw(x->encap_sk));
+-
+ 		xfrm_dev_state_delete(x);
  
-@@ -825,7 +825,7 @@ static struct clk_rcg2 cam_cc_jpeg_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -847,7 +847,7 @@ static struct clk_rcg2 cam_cc_mclk0_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -862,7 +862,7 @@ static struct clk_rcg2 cam_cc_mclk1_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -877,7 +877,7 @@ static struct clk_rcg2 cam_cc_mclk2_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -892,7 +892,7 @@ static struct clk_rcg2 cam_cc_mclk3_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -907,7 +907,7 @@ static struct clk_rcg2 cam_cc_mclk4_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -922,7 +922,7 @@ static struct clk_rcg2 cam_cc_mclk5_clk_src = {
- 		.parent_data = cam_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_1),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
-@@ -993,7 +993,7 @@ static struct clk_rcg2 cam_cc_slow_ahb_clk_src = {
- 		.parent_data = cam_cc_parent_data_0,
- 		.num_parents = ARRAY_SIZE(cam_cc_parent_data_0),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_ops,
-+		.ops = &clk_rcg2_shared_ops,
- 	},
- };
- 
+ 		/* All xfrm_state objects are created by xfrm_state_alloc.
 -- 
 2.39.5
 
