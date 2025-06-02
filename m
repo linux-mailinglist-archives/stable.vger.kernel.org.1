@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78027ACB77E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B02DACB492
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4245A1BA42F3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B436F1946E10
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318922A7E5;
-	Mon,  2 Jun 2025 15:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9C722616C;
+	Mon,  2 Jun 2025 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW0HHmGP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY802UL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7BD22A4E5;
-	Mon,  2 Jun 2025 15:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4851B81DC;
+	Mon,  2 Jun 2025 14:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877219; cv=none; b=vAAtKgar55ydIayGp6kIzmI8kTZfYaFXp01EIfcunKxDKetFUn96GKJF5mBc/ToYIir82LpzssA+7fwJAudluxAL/lWfwhOml8aGu4XHQyoWE9/q3UiPmeIBDk+NPwUt/90Zc0QpRaWoztQeJ6FmgFt4scvOpBr6t3JZiQ9Bf2o=
+	t=1748874738; cv=none; b=K9sUdP8zIymfenEU5KjD38nNDKRIjxOq4bCG99fPpqfsSVWJpWnWSes8u63nlNEgJg47JhXV/Wy64ZsrPLKIeTct7ZgX0yId/JPA1ES7Cna/4VHPuh79sI2MFIs91lhlUu7ueg+IDag/4YXmlAU+XNkd9Nojk8u5NoCJr4xN9Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877219; c=relaxed/simple;
-	bh=oTNXPKA3//AuFTXhG3GhsPbVxCzetMPvpPdZH157/UM=;
+	s=arc-20240116; t=1748874738; c=relaxed/simple;
+	bh=249J1jcHF/fJtX+Ux+0ceH+jpeimQBGcW7vvLhDgog8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRNNrg+RRKP8xeZT4RBciRxJnun52n8K+1AvZ6qigt3nynugclH6FuvFHMaOmbHi/8ly9IaFtNiRQ02Z5yNNVFTynWsvEQ873ZJvZMwqlEftheSI4eUaqTyvaz0QOlxLYMuYcXq4dI3wTle0ACdTAgpuXXwi8GGITZF/DVPyhoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW0HHmGP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B27C4CEEB;
-	Mon,  2 Jun 2025 15:13:37 +0000 (UTC)
+	 MIME-Version; b=Zt34l3TtSINK4WlJ441X1LS3nsRFhymBCA3PEwgfA1I07tCZTzygmoZhrmQi1VOmjwOu6HI1CgIcYuuu5PXal92E23Fgko/A1P7kYpu3QIr12ObCR9kpTPvbcGABaZI8YJ8pQ2fyrsQNigQs8lnKeOAGypz6zvEvcPrWc4KAe1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY802UL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9CDC4CEEB;
+	Mon,  2 Jun 2025 14:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877218;
-	bh=oTNXPKA3//AuFTXhG3GhsPbVxCzetMPvpPdZH157/UM=;
+	s=korg; t=1748874738;
+	bh=249J1jcHF/fJtX+Ux+0ceH+jpeimQBGcW7vvLhDgog8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LW0HHmGP4v0z1ux4HpehOnyRRyup+swaAt5Q2Ml3EccXxgnJxG4CZmJoC2SBm6y0T
-	 bRHxHSXSu2LSdF4z2obvtAoddsFYMC00HDYxMmTIWqMNT3FB5TJcxTXVeMro3HrOji
-	 bV4e936CU+w3x46p90LAf6diQvipkXILDVCwc5Vo=
+	b=zY802UL1Odcfbp/V06F1PAKYZRqHHzkYA3NNaxBdWhPINOq/cXj5XRthu+qD/ODwS
+	 ip/nvQ9NqeBWeTsE5UucJ0Lb79qnVpFTFZ5Ta2Z5X90sU+yE7GixDnhLovEZ6ccQrb
+	 usP5IB9wHxeqPxmtbGHq80x0yuktRy1syrkFoleY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damon Ding <damon.ding@rock-chips.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/325] phy: core: dont require set_mode() callback for phy_get_mode() to work
+Subject: [PATCH 5.4 121/204] media: cx231xx: set device_caps for 417
 Date: Mon,  2 Jun 2025 15:47:34 +0200
-Message-ID: <20250602134327.052982163@linuxfoundation.org>
+Message-ID: <20250602134300.406331027@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
+[ Upstream commit a79efc44b51432490538a55b9753a721f7d3ea42 ]
 
-As reported by Damon Ding, the phy_get_mode() call doesn't work as
-expected unless the PHY driver has a .set_mode() call. This prompts PHY
-drivers to have empty stubs for .set_mode() for the sake of being able
-to get the mode.
+The video_device for the MPEG encoder did not set device_caps.
 
-Make .set_mode() callback truly optional and update PHY's mode even if
-it there is none.
+Add this, otherwise the video device can't be registered (you get a
+WARN_ON instead).
 
-Cc: Damon Ding <damon.ding@rock-chips.com>
-Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
-Tested-by: Damon Ding <damon.ding@rock-chips.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Not seen before since currently 417 support is disabled, but I found
+this while experimenting with it.
+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-417.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index 0730fe80dc3c1..069bcf49ee8f7 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -398,13 +398,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
- 
- int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
- {
--	int ret;
-+	int ret = 0;
- 
--	if (!phy || !phy->ops->set_mode)
-+	if (!phy)
- 		return 0;
- 
- 	mutex_lock(&phy->mutex);
--	ret = phy->ops->set_mode(phy, mode, submode);
-+	if (phy->ops->set_mode)
-+		ret = phy->ops->set_mode(phy, mode, submode);
- 	if (!ret)
- 		phy->attrs.mode = mode;
- 	mutex_unlock(&phy->mutex);
+diff --git a/drivers/media/usb/cx231xx/cx231xx-417.c b/drivers/media/usb/cx231xx/cx231xx-417.c
+index 6d218a0369661..a9d080823f10a 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-417.c
++++ b/drivers/media/usb/cx231xx/cx231xx-417.c
+@@ -1966,6 +1966,8 @@ static void cx231xx_video_dev_init(
+ 	vfd->lock = &dev->lock;
+ 	vfd->release = video_device_release_empty;
+ 	vfd->ctrl_handler = &dev->mpeg_ctrl_handler.hdl;
++	vfd->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
++			   V4L2_CAP_VIDEO_CAPTURE;
+ 	video_set_drvdata(vfd, dev);
+ 	if (dev->tuner_type == TUNER_ABSENT) {
+ 		v4l2_disable_ioctl(vfd, VIDIOC_G_FREQUENCY);
 -- 
 2.39.5
 
