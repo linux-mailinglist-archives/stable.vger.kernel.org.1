@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5B6ACB618
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8C0ACB309
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C559E0D6C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642324A050D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AE822330F;
-	Mon,  2 Jun 2025 14:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFFF239570;
+	Mon,  2 Jun 2025 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9PX/mza"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WL0EReSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19D022D785;
-	Mon,  2 Jun 2025 14:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB03B23507C;
+	Mon,  2 Jun 2025 14:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875926; cv=none; b=hi0uCi9V2Vi00TyjILf+Ot/zEJ8JmPUdFRq94Y4kr6YvQojCIwJKHQgoXWilNwxt+S9wfOeNkTEmMKIT0D56pAvzyKiIfELLRU85qS06mFbVPtwe8+PKOu26xMDxgXjeQN+YvXFvTQcu/r7hb3qgMwYeXMK0L30IjTQqL/Ip4LM=
+	t=1748874046; cv=none; b=DFxgDAMoKGhxOQaez2jD9AtDs+1BAoLwPQ+uEn11ga3uqYTNvnw9gKqh2HvLcvBa7PJKC5w2S9WjVH94Moz6/rKZpSXrBUjQMkL67Hfa3Dcy1LsXy1sL1xYXwaxmiPbF7qGFMZNgmAmc2PQeHdwckpN1vn7PHm+0AZX6462AgyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875926; c=relaxed/simple;
-	bh=3l9CEfsskR4zvT1qcI/k8cY5jcVb4x8CpLMYN+xel6w=;
+	s=arc-20240116; t=1748874046; c=relaxed/simple;
+	bh=dVA8fH3+hfbQr0wyriWaQjHxI9G4vg05OOKPRu53G/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uimjQt3Frp/lKhTdfzB6grA1FZ4zAEDgoos3z/dFg2+vbkC18m8z2oAtzgQydhnokfkZL6tjAakR2gL+4/NVYlry15CRzv7LW6Hq8SjBiVwKBowa5Vn4k3c8DLDVIV40Sst5cBp5kWZLRQm0XzsTcQ9vy+DMbU9ICRbhtXGsK2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9PX/mza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6C5C4CEEB;
-	Mon,  2 Jun 2025 14:52:05 +0000 (UTC)
+	 MIME-Version; b=sJpkcpZsDKytEK4vu1MsTNklpQk2rt5X6urvGmR6Ca1QP/uY37XQMI6KunZcms+jJub4X7YKuNEg63hk5uxSGp+9cOqLrOtz8NLGG/JCYM0loO8PTOiOApaPWWWHERtNfKa7/m7OaXmEEY0FM8eM+VdGalzcZFo3vOn/BpUXbrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WL0EReSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD301C4CEEB;
+	Mon,  2 Jun 2025 14:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875925;
-	bh=3l9CEfsskR4zvT1qcI/k8cY5jcVb4x8CpLMYN+xel6w=;
+	s=korg; t=1748874046;
+	bh=dVA8fH3+hfbQr0wyriWaQjHxI9G4vg05OOKPRu53G/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9PX/mzaIIEs0yJN9ovCEQL5Is/7YkdlE3LVa+SZoYr6fRP+iFMxAX6FQ5QjBwsXK
-	 O5Rq3N/31LTOadZYZWuA4q5LyA6gGS2wTirOes2WeKig8T/8+v76FNo1bTpRnX/bk6
-	 VS45Jv70Vr3B4tZ4z/tvMF3wUHNGaQ31O1zc89LM=
+	b=WL0EReSwxsBC9iH4Xc51DbsD6pQDKZPpcwG0bsS1pyTk/Nj7yNYmUeYxSbG+4796q
+	 SD7ma/+B/qZge65JIQOL3/YfaZjla0f2yFS9tl7+tgiuhc1RjSm3JX2aPtHML3+3cr
+	 SlM2qsZNJAO3P8PhsBzcbb8vH0Bk1ZxxM8E4SONQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+efe683d57990864b8c8e@syzkaller.appspotmail.com,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/207] virtio_ring: Fix data race by tagging event_triggered as racy for KCSAN
+Subject: [PATCH 6.6 310/444] drm/panel-edp: Add Starry 116KHD024006
 Date: Mon,  2 Jun 2025 15:46:14 +0200
-Message-ID: <20250602134258.867655972@linuxfoundation.org>
+Message-ID: <20250602134353.514200024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 2e2f925fe737576df2373931c95e1a2b66efdfef ]
+[ Upstream commit 749b5b279e5636cdcef51e15d67b77162cca6caa ]
 
-syzbot reports a data-race when accessing the event_triggered, here is the
-simplified stack when the issue occurred:
+We have a few reports of sc7180-trogdor-pompom devices that have a
+panel in them that IDs as STA 0x0004 and has the following raw EDID:
 
-==================================================================
-BUG: KCSAN: data-race in virtqueue_disable_cb / virtqueue_enable_cb_delayed
+  00 ff ff ff ff ff ff 00  4e 81 04 00 00 00 00 00
+  10 20 01 04 a5 1a 0e 78  0a dc dd 96 5b 5b 91 28
+  1f 52 54 00 00 00 01 01  01 01 01 01 01 01 01 01
+  01 01 01 01 01 01 8e 1c  56 a0 50 00 1e 30 28 20
+  55 00 00 90 10 00 00 18  00 00 00 00 00 00 00 00
+  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 fe
+  00 31 31 36 4b 48 44 30  32 34 30 30 36 0a 00 e6
 
-write to 0xffff8881025bc452 of 1 bytes by task 3288 on cpu 0:
- virtqueue_enable_cb_delayed+0x42/0x3c0 drivers/virtio/virtio_ring.c:2653
- start_xmit+0x230/0x1310 drivers/net/virtio_net.c:3264
- __netdev_start_xmit include/linux/netdevice.h:5151 [inline]
- netdev_start_xmit include/linux/netdevice.h:5160 [inline]
- xmit_one net/core/dev.c:3800 [inline]
+We've been unable to locate a datasheet for this panel and our partner
+has not been responsive, but all Starry eDP datasheets that we can
+find agree on the same timing (delay_100_500_e200) so it should be
+safe to use that here instead of the super conservative timings. We'll
+still go a little extra conservative and allow `hpd_absent` of 200
+instead of 100 because that won't add any real-world delay in most
+cases.
 
-read to 0xffff8881025bc452 of 1 bytes by interrupt on cpu 1:
- virtqueue_disable_cb_split drivers/virtio/virtio_ring.c:880 [inline]
- virtqueue_disable_cb+0x92/0x180 drivers/virtio/virtio_ring.c:2566
- skb_xmit_done+0x5f/0x140 drivers/net/virtio_net.c:777
- vring_interrupt+0x161/0x190 drivers/virtio/virtio_ring.c:2715
- __handle_irq_event_percpu+0x95/0x490 kernel/irq/handle.c:158
- handle_irq_event_percpu kernel/irq/handle.c:193 [inline]
+We'll associate the string from the EDID ("116KHD024006") with this
+panel. Given that the ID is the suspicious value of 0x0004 it seems
+likely that Starry doesn't always update their IDs but the string will
+still work to differentiate if we ever need to in the future.
 
-value changed: 0x01 -> 0x00
-==================================================================
-
-When the data race occurs, the function virtqueue_enable_cb_delayed() sets
-event_triggered to false, and virtqueue_disable_cb_split/packed() reads it
-as false due to the race condition. Since event_triggered is an unreliable
-hint used for optimization, this should only cause the driver temporarily
-suggest that the device not send an interrupt notification when the event
-index is used.
-
-Fix this KCSAN reported data-race issue by explicitly tagging the access as
-data_racy.
-
-Reported-by: syzbot+efe683d57990864b8c8e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67c7761a.050a0220.15b4b9.0018.GAE@google.com/
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Message-Id: <20250312130412.3516307-1-quic_zhonhan@quicinc.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250109142853.1.Ibcc3009933fd19507cc9c713ad0c99c7a9e4fe17@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_ring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-edp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index 067b68168f93e..b541d861475e6 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -2125,7 +2125,7 @@ bool virtqueue_enable_cb_delayed(struct virtqueue *_vq)
- 	struct vring_virtqueue *vq = to_vvq(_vq);
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 94fe2f3836a9a..53b3b24d7d7c0 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1923,6 +1923,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x1523, &sharp_lq140m1jw46.delay, "LQ140M1JW46"),
+ 	EDP_PANEL_ENTRY('S', 'H', 'P', 0x154c, &delay_200_500_p2e100, "LQ116M1JW10"),
  
- 	if (vq->event_triggered)
--		vq->event_triggered = false;
-+		data_race(vq->event_triggered = false);
++	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0004, &delay_200_500_e200, "116KHD024006"),
+ 	EDP_PANEL_ENTRY('S', 'T', 'A', 0x0100, &delay_100_500_e200, "2081116HHD028001-51D"),
  
- 	return vq->packed_ring ? virtqueue_enable_cb_delayed_packed(_vq) :
- 				 virtqueue_enable_cb_delayed_split(_vq);
+ 	{ /* sentinal */ }
 -- 
 2.39.5
 
