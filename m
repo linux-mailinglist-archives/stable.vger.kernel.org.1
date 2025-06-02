@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD24EACB47D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A3AACB58D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3766194313D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 002D87A2919
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA4D22F74A;
-	Mon,  2 Jun 2025 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1702343AF;
+	Mon,  2 Jun 2025 14:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqtKUiL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCruVBXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C72A188907;
-	Mon,  2 Jun 2025 14:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFF322A1EF;
+	Mon,  2 Jun 2025 14:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874919; cv=none; b=jmBfyrpuK6hV2ylZJx0xWah86F6EJ7+qk2BGZd+OerrmujNVb31fay08Te7jwnYZgPKCaXfFNRVEMG+jygmZsZrtUq08NtjUk6uUDZdSc9HAVDYXHSCKMJIor1ebBGNEqp+jNTcQWTGbkVa0qQEn8KFt5BoVffceYigoEkv/S5E=
+	t=1748876210; cv=none; b=RSiJ2xHK3H8vtOFTD5vW8GsifuULUDoaQxSFpJagCdXyfEbk9lpVqu63uIL3EbwMPP4uobBawOEN8yGAnMb7Q9zF9iF0ibFyo/nOgtxXm1N63AlFuUglHZwUgL5/JHeC7N0AyvIKa8rb3ajh6iG+KIhojF7YmpEzBML6pdImxeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874919; c=relaxed/simple;
-	bh=6VS/A7YdtS8LxuVmmkPmTmsvKEbPdS7jZXHOzHMiDYM=;
+	s=arc-20240116; t=1748876210; c=relaxed/simple;
+	bh=rRAFeekxioYgxFCkRzdEGSrIG17WhQq9NbkujgEEsKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjsi2JNUY2GFn2uUTOEteTRi1xdTUaKko9ue0LVYHjvsCEYEoCDbAnXmLgzQ0Lo4z65tvEqRMq2W9Qg9ERcPoGCtiZiyC+NYwrtpDqN77OihAKPfBtYuYJbNSVUZfO/YqinWKzqttuMUUGdV+e72XlJDYTVlddNFdlNFpHQU+KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqtKUiL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05631C4CEEB;
-	Mon,  2 Jun 2025 14:35:18 +0000 (UTC)
+	 MIME-Version; b=UlCL/GJ2DbuAOzTHtkBJkB/E1Rc3oApw3m2hWZDMdXZcJn6oViBOvT79E+yItupq1SBrIhP1dseinqfXURlOYqvmIko7KWgL0PHECbLswX8WBlKdy/h861hvBpCvD8tLW4YfF0X9GPaJxAw9gZLq+7CvrzwMvm4t7aB7dDOUWdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCruVBXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A614C4CEEB;
+	Mon,  2 Jun 2025 14:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874919;
-	bh=6VS/A7YdtS8LxuVmmkPmTmsvKEbPdS7jZXHOzHMiDYM=;
+	s=korg; t=1748876210;
+	bh=rRAFeekxioYgxFCkRzdEGSrIG17WhQq9NbkujgEEsKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqtKUiL+mBrPDyzWt2b2H75oJ4KFr20cbVhSsnsiAL0Rk+AAR7EQ72N5RpBbQlfhV
-	 j6UV6JuJF6ePqjshvPULG+af1d4/aaRh9FAduPDk6NIL5lpiGhYrncNPc5w7tIeKAx
-	 /PU2sOl1HRduNSiOBzymZlJ4bbe1e/D2Qx7fuRtw=
+	b=uCruVBXXjDwfJGxLXZzWzCqk0InRDs9YAV0IlPvO8Ghkvw4mvsz54hcjcmMvAPeJu
+	 x0ZzXnd2yEY7Mg9rh9DJ7Y3PpThLzhSoeP3J5MEPQYR+gejB4l4aRAWsLyGf60aFjJ
+	 c1iSmEFOXrNvZcPhNKXl8loRQeU6/ii9owi1ayKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 145/204] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+Subject: [PATCH 5.15 106/207] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
 Date: Mon,  2 Jun 2025 15:47:58 +0200
-Message-ID: <20250602134301.351436627@linuxfoundation.org>
+Message-ID: <20250602134302.886993319@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
+[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
 
-Cross case in pinctrl framework make impossible to an hogged pin and
-another, not hogged, used within the same device-tree node. For example
-with this simplified device-tree :
+Honour the user given buffer size for the strn_len() calls (otherwise
+strn_len() will access memory outside of the user given buffer).
 
-  &pinctrl {
-    pinctrl_pin_1: pinctrl-pin-1 {
-      pins = "dummy-pinctrl-pin";
-    };
-  };
-
-  &rtc {
-    pinctrl-names = "default"
-    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
-
-    rtc_pin_1: rtc-pin-1 {
-      pins = "dummy-rtc-pin";
-    };
-  };
-
-"pinctrl_pin_1" configuration is never set. This produces this path in
-the code:
-
-  really_probe()
-    pinctrl_bind_pins()
-    | devm_pinctrl_get()
-    |   pinctrl_get()
-    |     create_pinctrl()
-    |       pinctrl_dt_to_map()
-    |         // Hog pin create an abort for all pins of the node
-    |         ret = dt_to_map_one_config()
-    |         | /* Do not defer probing of hogs (circular loop) */
-    |         | if (np_pctldev == p->dev->of_node)
-    |         |   return -ENODEV;
-    |         if (ret)
-    |           goto err
-    |
-    call_driver_probe()
-      stm32_rtc_probe()
-        pinctrl_enable()
-          pinctrl_claim_hogs()
-            create_pinctrl()
-              for_each_maps(maps_node, i, map)
-                // Not hog pin is skipped
-                if (pctldev && strcmp(dev_name(pctldev->dev),
-                                      map->ctrl_dev_name))
-                  continue;
-
-At the first call of create_pinctrl() the hogged pin produces an abort to
-avoid a defer of hogged pins. All other pin configurations are trashed.
-
-At the second call, create_pinctrl is now called with pctldev parameter to
-get hogs, but in this context only hogs are set. And other pins are
-skipped.
-
-To handle this, do not produce an abort in the first call of
-create_pinctrl(). Classic pin configuration will be set in
-pinctrl_bind_pins() context. And the hogged pin configuration will be set
-in pinctrl_claim_hogs() context.
-
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/core/pktgen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 200357094e3be..e9bfb96a2e0e8 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -141,10 +141,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
- 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
- 		if (pctldev)
- 			break;
--		/* Do not defer probing of hogs (circular loop) */
-+		/*
-+		 * Do not defer probing of hogs (circular loop)
-+		 *
-+		 * Return 1 to let the caller catch the case.
-+		 */
- 		if (np_pctldev == p->dev->of_node) {
- 			of_node_put(np_pctldev);
--			return -ENODEV;
-+			return 1;
- 		}
- 	}
- 	of_node_put(np_pctldev);
-@@ -268,6 +272,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 			ret = dt_to_map_one_config(p, pctldev, statename,
- 						   np_config);
- 			of_node_put(np_config);
-+			if (ret == 1)
-+				continue;
- 			if (ret < 0)
- 				goto err;
- 		}
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 28417fe2a7a2a..2b7b1de70cf47 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -1876,8 +1876,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	i = len;
+ 
+ 	/* Read variable name */
+-
+-	len = strn_len(&user_buffer[i], sizeof(name) - 1);
++	max = min(sizeof(name) - 1, count - i);
++	len = strn_len(&user_buffer[i], max);
+ 	if (len < 0)
+ 		return len;
+ 
+@@ -1907,7 +1907,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	if (!strcmp(name, "add_device")) {
+ 		char f[32];
+ 		memset(f, 0, 32);
+-		len = strn_len(&user_buffer[i], sizeof(f) - 1);
++		max = min(sizeof(f) - 1, count - i);
++		len = strn_len(&user_buffer[i], max);
+ 		if (len < 0) {
+ 			ret = len;
+ 			goto out;
 -- 
 2.39.5
 
