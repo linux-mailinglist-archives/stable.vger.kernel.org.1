@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BF7ACB415
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6D1ACB8A7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 044459E1B79
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A30943F63
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247982222CC;
-	Mon,  2 Jun 2025 14:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21517224228;
+	Mon,  2 Jun 2025 15:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2av4/ha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXVYcDtW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16E31B81DC;
-	Mon,  2 Jun 2025 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FAB1FF61E;
+	Mon,  2 Jun 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874744; cv=none; b=L98zeEUGuyY3cBWLm5Cte7IPc0xKvkUqQYFHoO75/wENI0gwg86RAI0sJY7u2voi1L6omaDr2IWiQNGcx+u5AI8FBM7mHXsXetRUah9tOAzo3uzGfEjCYPcFkXfpbEz9eyUNQ5tIJDbw1jwiXqqlZD72focsSzJyOa9yRc3zPp8=
+	t=1748877070; cv=none; b=VlAubzU8BWyhFKvgXMyQojDv40G3JNKEDoEYjuN3d9m6LVUYOwPcEIl5rglhQhX9XGT3UIpXKgc3YBW/SOtl6wJc5y1+xSliXLsZIZQdw4v6drSc2hAoq8c16TWzglwIpM+lgFUM4ik+8L0uJ5mhQ5EX++9olmXXKiwS5SzfJVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874744; c=relaxed/simple;
-	bh=1nAD99Q2V1FFF7BstZt6MEjF8Ksutorul6dIDedL0dA=;
+	s=arc-20240116; t=1748877070; c=relaxed/simple;
+	bh=/4vE8x2rNwu3LhVcQ2SbZNAVx/VNUiKMsVlSI2Jyirg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V6scjtOxGrvdKfNkGzo3Z4yPbs2tUhGWy+qN/kP+pIM98/XGymz/dKcvH2z4MYK4gxAvyANyKA8sk123iQcb6I6gDR+1w25nSw30yRq8PJ3VrOidGGuoCcxMWxoJPDIhbPZSSZH0csO3c9OR+b8vXuNJaqOJoGmY9BqXKRyXrLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2av4/ha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05144C4CEEB;
-	Mon,  2 Jun 2025 14:32:23 +0000 (UTC)
+	 MIME-Version; b=IzszLICk+0jy0v2raK3gmjcuY44SmvkzllClEICmHFLeWl0QCOOvuBmKWlFGY+UtNVjuwuNzk4zVMLbaQqLW7w3tk9WYwWW6cINp2Rvau6Ravvc6ldtgib/1vJvwC+zFf1vc5Ogts5mxWQTtNgJbymaJ5irNb61GVnKGASH8cgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXVYcDtW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0D3C4CEEB;
+	Mon,  2 Jun 2025 15:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874744;
-	bh=1nAD99Q2V1FFF7BstZt6MEjF8Ksutorul6dIDedL0dA=;
+	s=korg; t=1748877070;
+	bh=/4vE8x2rNwu3LhVcQ2SbZNAVx/VNUiKMsVlSI2Jyirg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2av4/hagY9P4LsgwXHetUIMg4VHhYBh6ijoNsHoObgWRdFFtTubdMsTSSCB4JL1B
-	 RYifF+g/1hDWRauJf2q1SSDF1UKnZogorkvyKiaC0wM6es/RaOdXivd1XLjVZ4UESI
-	 qGOPZgdgHMN7mS0XBEemUO7Dzey01rL6n1yLLn3U=
+	b=nXVYcDtW8J/keYNtInkFG9A8b+8KiSbZokJ36+bmX+OAMcDSOOZUiykOoQ/XDsFtp
+	 Fc0rObQyYl4zXkvRgeR1/NN/MiyCPnYA+cCx72l7zsaGv4WIrds1sx7tDlTC30OCQm
+	 5LfgHo2DpJavHxQh/lTEHgtWTFUQYQ/PhpWsclnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/204] ext4: reorder capability check last
+Subject: [PATCH 6.1 162/325] ACPI: HED: Always initialize before evged
 Date: Mon,  2 Jun 2025 15:47:18 +0200
-Message-ID: <20250602134259.785056955@linuxfoundation.org>
+Message-ID: <20250602134326.384344247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
-[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
+[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
 
-capable() calls refer to enabled LSMs whether to permit or deny the
-request.  This is relevant in connection with SELinux, where a
-capability check results in a policy decision and by default a denial
-message on insufficient permission is issued.
-It can lead to three undesired cases:
-  1. A denial message is generated, even in case the operation was an
-     unprivileged one and thus the syscall succeeded, creating noise.
-  2. To avoid the noise from 1. the policy writer adds a rule to ignore
-     those denial messages, hiding future syscalls, where the task
-     performs an actual privileged operation, leading to hidden limited
-     functionality of that task.
-  3. To avoid the noise from 1. the policy writer adds a rule to permit
-     the task the requested capability, while it does not need it,
-     violating the principle of least privilege.
+When the HED driver is built-in, it initializes after evged because they
+both are at the same initcall level, so the initialization ordering
+depends on the Makefile order.  However, this prevents RAS records
+coming in between the evged driver initialization and the HED driver
+initialization from being handled.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+If the number of such RAS records is above the APEI HEST error source
+number, the HEST resources may be exhausted, and that may affect
+subsequent RAS error reporting.
+
+To fix this issue, change the initcall level of HED to subsys_initcall
+and prevent the driver from being built as a module by changing ACPI_HED
+in Kconfig from "tristate" to "bool".
+
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/Kconfig | 2 +-
+ drivers/acpi/hed.c   | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index b68cee75f5c58..a32eb67a8f0e2 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -609,8 +609,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
- 	/* Hm, nope.  Are (enough) root reserved clusters available? */
- 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
- 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
--	    capable(CAP_SYS_RESOURCE) ||
--	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
-+	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
-+	    capable(CAP_SYS_RESOURCE)) {
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 473241b5193fa..596e96d3b3bdb 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -438,7 +438,7 @@ config ACPI_SBS
+ 	  the modules will be called sbs and sbshc.
  
- 		if (free_clusters >= (nclusters + dirty_clusters +
- 				      resv_clusters))
+ config ACPI_HED
+-	tristate "Hardware Error Device"
++	bool "Hardware Error Device"
+ 	help
+ 	  This driver supports the Hardware Error Device (PNP0C33),
+ 	  which is used to report some hardware errors notified via
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index 60a2939cde6c5..e8e9b1ac06b88 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
+ 		.notify = acpi_hed_notify,
+ 	},
+ };
+-module_acpi_driver(acpi_hed_driver);
++
++static int __init acpi_hed_driver_init(void)
++{
++	return acpi_bus_register_driver(&acpi_hed_driver);
++}
++subsys_initcall(acpi_hed_driver_init);
+ 
+ MODULE_AUTHOR("Huang Ying");
+ MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
 -- 
 2.39.5
 
