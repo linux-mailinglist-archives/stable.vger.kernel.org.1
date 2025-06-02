@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-150495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209C5ACB84D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5C8ACB5B1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A591C22DAC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B24D4A42E7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F0821171D;
-	Mon,  2 Jun 2025 15:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793F7229B0D;
+	Mon,  2 Jun 2025 14:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8DwmjT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbSwjh/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BCE231835;
-	Mon,  2 Jun 2025 15:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C33227EA4;
+	Mon,  2 Jun 2025 14:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877308; cv=none; b=P/wD8+YJJn0ef+ssaA5EWJgw9bD4gxdT2+n2a/eG4Igg2ZlTk/Szzqi5WiDlpddowLSEiz9bL0IyD4TJrXYM6iqKpKW+RPFoyg97LYjZwoCFw1P24m09FHXOi6V0dR5SeMGBgaiv/xr0k1WlDVFD4tVinGq/GkgCMtlVWQP7QTY=
+	t=1748875787; cv=none; b=MfZu3UkNLt0RwDfDO2rajjzKTgJQlATIy32OWDPF92HibIM1QthWOhorpi5yGoI0KWRImasZFFurjzY2YJk5nbh7kd+d2J8aMsFlE9R1Ez9DT1818hzqjCc4g8DGhCGXAHdq1+TG0YnXxE0r8pxfiJOcP+uiJgpGUa+qC2tYUc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877308; c=relaxed/simple;
-	bh=xeBuQSACCLreYnDV9pJ44qNUFUAqvjR7lbUxKpU+yZs=;
+	s=arc-20240116; t=1748875787; c=relaxed/simple;
+	bh=AMFicE3E/AjjgkTLG9Osslf17syjGGHVaZCyGfjkz3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T/P6LP3sY/uDg+lcIaJkCiFw/iebCVsRBBDj1TnzlOdHhqfNRl2/5K48VGEqlcLXIG6YcSn4g+jUZ9+8m4PHpHwrI7Yy45ws1/7PWZGCBPUBUOQkjTzZSdB1eCHAQRDryE6WqOi2SpfC4PDc/7Zw/g8pt6lJU0z25VbG0hzcbGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8DwmjT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2531AC4CEEB;
-	Mon,  2 Jun 2025 15:15:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhYATns2bb3NT6soesgTteOUfGLsWrmF85vvjsrImn5AkKFrYKeajlv45oHv2JezoTHo34xZsLhjZy+iW6zPfkaTClYeDpSGmJfu236FFYZ8HiJhz2D2uo3v8iKlt0FVFzKZejmaSsb/0S/9dmlgEKvC9W0dy70phndM0SLT6Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbSwjh/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F29C4CEEB;
+	Mon,  2 Jun 2025 14:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877308;
-	bh=xeBuQSACCLreYnDV9pJ44qNUFUAqvjR7lbUxKpU+yZs=;
+	s=korg; t=1748875786;
+	bh=AMFicE3E/AjjgkTLG9Osslf17syjGGHVaZCyGfjkz3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8DwmjT/ubzf+CR3Uy+/meUjngLwIdE5k3v/HtUcczxBTvayKZ/OwyEHZGMT56uMz
-	 O7rCAtn6YlfCxrdlCWEMcPTLlR9eCsXg36yfL12OBpt6e1I/fp3hhmZNqB0NE63SDn
-	 p1z5ZQymgR9YdKPt/776bGCU03gfITMB4G/1vFLg=
+	b=RbSwjh/nzwdi2weYHWAnDLWS+JcL9W62T9OMF2AvsTNlodAWgRrIzoDYM9PbF/Aa+
+	 MVCSNElBW9090ZMpH9EDj+EAPil0hdGRNwnKkF1jNQ8UP74CB57hH4MbT9oi3b8SnS
+	 KFx+KKBaxYHL6vTwsOa0XK59yoXN37/LwL/mRuyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kuba=20Szczodrzy=C5=84ski?= <kuba@szczodrzynski.pl>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Clark <robdclark@gmail.com>,
+	Simon Ser <contact@emersion.fr>,
+	Manasi Navare <navaremanasi@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simona Vetter <simona.vetter@intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/325] clk: sunxi-ng: d1: Add missing divider for MMC mod clocks
+Subject: [PATCH 5.10 226/270] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
 Date: Mon,  2 Jun 2025 15:48:31 +0200
-Message-ID: <20250602134329.333364597@linuxfoundation.org>
+Message-ID: <20250602134316.556223685@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +75,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit 98e6da673cc6dd46ca9a599802bd2c8f83606710 ]
+[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
 
-The D1/R528/T113 SoCs have a hidden divider of 2 in the MMC mod clocks,
-just as other recent SoCs. So far we did not describe that, which led
-to the resulting MMC clock rate to be only half of its intended value.
+msm is automagically upgrading normal commits to full modesets, and
+that's a big no-no:
 
-Use a macro that allows to describe a fixed post-divider, to compensate
-for that divisor.
+- for one this results in full on->off->on transitions on all these
+  crtc, at least if you're using the usual helpers. Which seems to be
+  the case, and is breaking uapi
 
-This brings the MMC performance on those SoCs to its expected level,
-so about 23 MB/s for SD cards, instead of the 11 MB/s measured so far.
+- further even if the ctm change itself would not result in flicker,
+  this can hide modesets for other reasons. Which again breaks the
+  uapi
 
-Fixes: 35b97bb94111 ("clk: sunxi-ng: Add support for the D1 SoC clocks")
-Reported-by: Kuba Szczodrzyński <kuba@szczodrzynski.pl>
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Link: https://patch.msgid.link/20250501120631.837186-1-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+v2: I forgot the case of adding unrelated crtc state. Add that case
+and link to the existing kerneldoc explainers. This has come up in an
+irc discussion with Manasi and Ville about intel's bigjoiner mode.
+Also cc everyone involved in the msm irc discussion, more people
+joined after I sent out v1.
+
+v3: Wording polish from Pekka and Thomas
+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun20i-d1.c | 44 ++++++++++++++++------------
- drivers/clk/sunxi-ng/ccu_mp.h        | 22 ++++++++++++++
- 2 files changed, 47 insertions(+), 19 deletions(-)
+ include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun20i-d1.c b/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
-index cb4bf038e17f5..89d8bf4a30a26 100644
---- a/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun20i-d1.c
-@@ -412,19 +412,23 @@ static const struct clk_parent_data mmc0_mmc1_parents[] = {
- 	{ .hw = &pll_periph0_2x_clk.common.hw },
- 	{ .hw = &pll_audio1_div2_clk.common.hw },
- };
--static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc0_clk, "mmc0", mmc0_mmc1_parents, 0x830,
--				       0, 4,	/* M */
--				       8, 2,	/* P */
--				       24, 3,	/* mux */
--				       BIT(31),	/* gate */
--				       0);
--
--static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc1_clk, "mmc1", mmc0_mmc1_parents, 0x834,
--				       0, 4,	/* M */
--				       8, 2,	/* P */
--				       24, 3,	/* mux */
--				       BIT(31),	/* gate */
--				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc0_clk, "mmc0",
-+					       mmc0_mmc1_parents, 0x830,
-+					       0, 4,		/* M */
-+					       8, 2,		/* P */
-+					       24, 3,		/* mux */
-+					       BIT(31),		/* gate */
-+					       2,		/* post-div */
-+					       0);
-+
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc1_clk, "mmc1",
-+					       mmc0_mmc1_parents, 0x834,
-+					       0, 4,		/* M */
-+					       8, 2,		/* P */
-+					       24, 3,		/* mux */
-+					       BIT(31),		/* gate */
-+					       2,		/* post-div */
-+					       0);
- 
- static const struct clk_parent_data mmc2_parents[] = {
- 	{ .fw_name = "hosc" },
-@@ -433,12 +437,14 @@ static const struct clk_parent_data mmc2_parents[] = {
- 	{ .hw = &pll_periph0_800M_clk.common.hw },
- 	{ .hw = &pll_audio1_div2_clk.common.hw },
- };
--static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(mmc2_clk, "mmc2", mmc2_parents, 0x838,
--				       0, 4,	/* M */
--				       8, 2,	/* P */
--				       24, 3,	/* mux */
--				       BIT(31),	/* gate */
--				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(mmc2_clk, "mmc2", mmc2_parents,
-+					       0x838,
-+					       0, 4,		/* M */
-+					       8, 2,		/* P */
-+					       24, 3,		/* mux */
-+					       BIT(31),		/* gate */
-+					       2,		/* post-div */
-+					       0);
- 
- static SUNXI_CCU_GATE_HWS(bus_mmc0_clk, "bus-mmc0", psi_ahb_hws,
- 			  0x84c, BIT(0), 0);
-diff --git a/drivers/clk/sunxi-ng/ccu_mp.h b/drivers/clk/sunxi-ng/ccu_mp.h
-index 6e50f3728fb5f..7d836a9fb3db3 100644
---- a/drivers/clk/sunxi-ng/ccu_mp.h
-+++ b/drivers/clk/sunxi-ng/ccu_mp.h
-@@ -52,6 +52,28 @@ struct ccu_mp {
- 		}							\
- 	}
- 
-+#define SUNXI_CCU_MP_DATA_WITH_MUX_GATE_POSTDIV(_struct, _name, _parents, \
-+						_reg,			\
-+						_mshift, _mwidth,	\
-+						_pshift, _pwidth,	\
-+						_muxshift, _muxwidth,	\
-+						_gate, _postdiv, _flags)\
-+	struct ccu_mp _struct = {					\
-+		.enable	= _gate,					\
-+		.m	= _SUNXI_CCU_DIV(_mshift, _mwidth),		\
-+		.p	= _SUNXI_CCU_DIV(_pshift, _pwidth),		\
-+		.mux	= _SUNXI_CCU_MUX(_muxshift, _muxwidth),		\
-+		.fixed_post_div	= _postdiv,				\
-+		.common	= {						\
-+			.reg		= _reg,				\
-+			.features	= CCU_FEATURE_FIXED_POSTDIV,	\
-+			.hw.init	= CLK_HW_INIT_PARENTS_DATA(_name, \
-+							_parents,	\
-+							&ccu_mp_ops,	\
-+							_flags),	\
-+		}							\
-+	}
-+
- #define SUNXI_CCU_MP_WITH_MUX_GATE(_struct, _name, _parents, _reg,	\
- 				   _mshift, _mwidth,			\
- 				   _pshift, _pwidth,			\
+diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
+index d07c851d255b5..4a245d79ba6b4 100644
+--- a/include/drm/drm_atomic.h
++++ b/include/drm/drm_atomic.h
+@@ -332,8 +332,27 @@ struct drm_atomic_state {
+ 	 *
+ 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
+ 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
+-	 * never consult this flag, instead looking at the output of
+-	 * drm_atomic_crtc_needs_modeset().
++	 * generally not consult this flag, but instead look at the output of
++	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
++	 *
++	 * - Drivers must not consult @allow_modeset in the atomic commit path.
++	 *   Use drm_atomic_crtc_needs_modeset() instead.
++	 *
++	 * - Drivers must consult @allow_modeset before adding unrelated struct
++	 *   drm_crtc_state to this commit by calling
++	 *   drm_atomic_get_crtc_state(). See also the warning in the
++	 *   documentation for that function.
++	 *
++	 * - Drivers must never change this flag, it is under the exclusive
++	 *   control of userspace.
++	 *
++	 * - Drivers may consult @allow_modeset in the atomic check path, if
++	 *   they have the choice between an optimal hardware configuration
++	 *   which requires a modeset, and a less optimal configuration which
++	 *   can be committed without a modeset. An example would be suboptimal
++	 *   scanout FIFO allocation resulting in increased idle power
++	 *   consumption. This allows userspace to avoid flickering and delays
++	 *   for the normal composition loop at reasonable cost.
+ 	 */
+ 	bool allow_modeset : 1;
+ 	bool legacy_cursor_update : 1;
 -- 
 2.39.5
 
