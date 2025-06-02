@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4AEACB31E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5492ACB859
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF6361758E5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69824943CEF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A49323BD0E;
-	Mon,  2 Jun 2025 14:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B9B221727;
+	Mon,  2 Jun 2025 15:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFB91P7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygH88uQD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4359D23BD04;
-	Mon,  2 Jun 2025 14:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E20223DC0;
+	Mon,  2 Jun 2025 15:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874133; cv=none; b=ZhQ4GNynWKPU3V5L1FiYb3Uv11g37MQPV6ltMqMRi1NJzbk8sc4xjVZoZsVUjhRKJxxlyypFWoH5hGvhQllbeogsxMIzm8AhJ2pI34La4o4ylIddmZhMgYmk7YbSbRu0btGYis+TmGmCHmCxLoDdtCWTty/vMLeAzOxZL40MWYw=
+	t=1748877045; cv=none; b=ehORj4+utEPoVVI7RG3/e0sBNQES/MLAg+vn3swzOxQ39SBHUQId+ggy85XJCpjg1nCFc95XanzTSdKgWo3mLxZ/8LfodSIVGl4L2IBU0xy7WzByGK0s0syTIhBId5loh/u1/C5f2DjZpziL39Ea6IVpQgG9K1nN3sVmoOYw2j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874133; c=relaxed/simple;
-	bh=YNUEzpCWd1Mjf74kDdMcVLJVkFwfqO0rpxkBAYFGjEM=;
+	s=arc-20240116; t=1748877045; c=relaxed/simple;
+	bh=+PCNIdUm+7mmRdG8CVYJK65PdyNBdknkBgzQgLoXkok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ehrIIrvlpEAj+y0mizobJb1HkUtwmgubYlci9NK4JKrDp9uYEcdAFPmyQAPRP6SEC8CrCCO9KQqxMd2eZK8uILFQAzeCz1+F0yLpjFI0t4lNe44BqY66dngeZZWDD50fkr6jgpxzwfxn9ozlBcjVGypu21UmzeeVLItsR1p2I6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFB91P7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A75C4CEEB;
-	Mon,  2 Jun 2025 14:22:12 +0000 (UTC)
+	 MIME-Version; b=iIaEwsPqWu/qEpAZWcNIfaVd9Pm1AjN+UGtBc1EmSmArDhXwpti8CixdhWr+x2tLxCKKeCSx8epYPA95whGF4TdEmkze+QfoT7Uh+PLRxepq8jc7Q0j29ooZXtMui6AGnYF0ntB23jnWaBjW9IsvP3flZGUdwbBPCYyY3yToocI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygH88uQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFD5C4CEEB;
+	Mon,  2 Jun 2025 15:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874133;
-	bh=YNUEzpCWd1Mjf74kDdMcVLJVkFwfqO0rpxkBAYFGjEM=;
+	s=korg; t=1748877045;
+	bh=+PCNIdUm+7mmRdG8CVYJK65PdyNBdknkBgzQgLoXkok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFB91P7GJzhG5merCh2/rnGyYsQMsH9IuRoxI8nn5K0Zhd+KVYHzARJW1n9t8VeDu
-	 Kgbkc9zgA8bC6osvCtn2eWl2TxHDX6Rc/pzGznEdzJpAC3CYfKzWLcR2sPo5GYkbYk
-	 P6GvLHdWx2WVrxvxt4N4ZedEVjZD9jlrHGrkLjZU=
+	b=ygH88uQDBnK/aSMYRe+XKCs+DEV0WYv0ja5dOtLcjaTzHbN2DMPCavaCz2V1z5WGR
+	 0dcOKPDKJ0jQzMiIc3EDTWViIM1j/74f1/TDPYa83ic8BqiMC4+BsCHAt6/PVcm63x
+	 aMJDi60maiZMJUND4pMBgiOgIpXnr2gpQOl8XRlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Forsman <axfo@kvaser.com>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 367/444] can: kvaser_pciefd: Continue parsing DMA buf after dropped RX
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 155/325] i3c: master: svc: Flush FIFO before sending Dynamic Address Assignment(DAA)
 Date: Mon,  2 Jun 2025 15:47:11 +0200
-Message-ID: <20250602134355.812024067@linuxfoundation.org>
+Message-ID: <20250602134326.111563529@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Axel Forsman <axfo@kvaser.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 6d820b81c4dc4a4023e45c3cd6707a07dd838649 upstream.
+[ Upstream commit a892ee4cf22a50e1d6988d0464a9a421f3e5db2f ]
 
-Going bus-off on a channel doing RX could result in dropped packets.
+Ensure the FIFO is empty before issuing the DAA command to prevent
+incorrect command data from being sent. Align with other data transfers,
+such as svc_i3c_master_start_xfer_locked(), which flushes the FIFO before
+sending a command.
 
-As netif_running() gets cleared before the channel abort procedure,
-the handling of any last RDATA packets would see netif_rx() return
-non-zero to signal a dropped packet. kvaser_pciefd_read_buffer() dealt
-with this "error" by breaking out of processing the remaining DMA RX
-buffer.
-
-Only return an error from kvaser_pciefd_read_buffer() due to packet
-corruption, otherwise handle it internally.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Axel Forsman <axfo@kvaser.com>
-Tested-by: Jimmy Assarsson <extja@kvaser.com>
-Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20250520114332.8961-4-axfo@kvaser.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20250129162250.3629189-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/kvaser_pciefd.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1137,7 +1137,7 @@ static int kvaser_pciefd_handle_data_pac
- 		skb = alloc_canfd_skb(priv->dev, &cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index cf0550c6e95f0..8cf3aa800d89d 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -833,6 +833,8 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
+ 	u32 reg;
+ 	int ret, i;
  
- 		cf->len = can_fd_dlc2len(dlc);
-@@ -1149,7 +1149,7 @@ static int kvaser_pciefd_handle_data_pac
- 		skb = alloc_can_skb(priv->dev, (struct can_frame **)&cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 		can_frame_set_cc_len((struct can_frame *)cf, dlc, priv->ctrlmode);
- 	}
-@@ -1167,7 +1167,9 @@ static int kvaser_pciefd_handle_data_pac
- 	priv->dev->stats.rx_packets++;
- 	kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
- 
--	return netif_rx(skb);
-+	netif_rx(skb);
++	svc_i3c_master_flush_fifo(master);
 +
-+	return 0;
- }
- 
- static void kvaser_pciefd_change_state(struct kvaser_pciefd_can *can,
+ 	while (true) {
+ 		/* Enter/proceed with DAA */
+ 		writel(SVC_I3C_MCTRL_REQUEST_PROC_DAA |
+-- 
+2.39.5
+
 
 
 
