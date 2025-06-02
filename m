@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-150525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA8CACB6BF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6C8ACB5CB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 222457A7D24
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64F244C01D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DB5221FC3;
-	Mon,  2 Jun 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE6522A4E4;
+	Mon,  2 Jun 2025 14:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rel8KTCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZnTVPKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DDF223DC0;
-	Mon,  2 Jun 2025 15:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B102AE9A;
+	Mon,  2 Jun 2025 14:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877395; cv=none; b=EZW6QHQj0B1BVZLFMeM6WywGEOS5+oXWpW90eBKH4I8MbTsDTOBqcrvMvVF89xZl15aXTZMP8x1sHyZVGz43J8uDR73VaW96vBvEkjKTZG3x66TUhl9uXa2TVHvy+JrM/PF9WyUvdbgpVyqs+/iLfH5pJMKJteNoOpcLwI2Ej3E=
+	t=1748875829; cv=none; b=QmoXIqy7JT9XdyZ98P9xRAP5wRfglu4jljVJC5LLxj04+Ahsn9D/97XAFgGk45vPH06DYVA9S1LJbFYrM8dicNkup9vetdYzbiN1C4tShN4dAYPPrVRArMlcUolR7FoymkRSrXxuUJ6mLb8RWGpBg42DF1LXWTISdELLiXDR2I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877395; c=relaxed/simple;
-	bh=ulJ2vLC4i5dYBqEWE2rgxXz7EN1E/XvXMoDWoDlkBUo=;
+	s=arc-20240116; t=1748875829; c=relaxed/simple;
+	bh=8LfElo+kjMH5Y88nYU/666d1gKGchxD4RSlA9iNG+6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBQF07h3pHXXzHq5UnP+BEYevCFQc6ekSTCXTnurhvbsi0pxbroFzFywfj8CqUkb3+kZetOLKN+Y1DfIEsCipPh4JC0MCfWEMnJGMQ+cPEB6UPOZ5+eGOCXDH9GS3FPfwItxuK1XMuI6hRIog/WFDJaeS1yRGn8XOBX+Mrj5VzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rel8KTCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED20C4CEEB;
-	Mon,  2 Jun 2025 15:16:34 +0000 (UTC)
+	 MIME-Version; b=m6+o/aW9uuL16KGCSW1TqqJKGJrdEmQBwrCmRAI8wNFYYspE90tVcbyiujH8nuIcSYd+BEjUwHtifrDH+Zn7TTE+ijbLXlHkIG1fCjPjnYGZUM6R+yj/o7jf4n94hb6TxMOvZgJ27IW512nbgpKHdt0Ru28qzj82MQ3ObIZe3R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZnTVPKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F11C4CEEE;
+	Mon,  2 Jun 2025 14:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877395;
-	bh=ulJ2vLC4i5dYBqEWE2rgxXz7EN1E/XvXMoDWoDlkBUo=;
+	s=korg; t=1748875828;
+	bh=8LfElo+kjMH5Y88nYU/666d1gKGchxD4RSlA9iNG+6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rel8KTChc6aZfJhMdbxYLsAZa6wiqBXZsWM4cEDbIUszapZk42/U2iY9wy3FfBDYK
-	 +cis2up92tjaHS2PsHMuubt5MtO1blZp8SKW5nCrJ8AHXJVi6StIL9pNT9X7YWHGsw
-	 FMLxe2Bb2Ds6wqrcOrJXe3Q482MdSxiaICxIFMGw=
+	b=RZnTVPKb9RIskfezf2ZgCYCjHDcS0EXVznGCmuDMlvdxfJszhfn3uoGqgvHRdTU0U
+	 cgc9xPbaMAGOqPPCqho4Z3CLXCzixbTOjUKeP4mDkIvQnNqIZALuL1GMzbXKb09YIC
+	 M43c1djJSv6fgIfNpQ47bPLGko8j8Ao9VlY9FcbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 264/325] mm/page_alloc.c: avoid infinite retries caused by cpuset race
+	Wang Zhaolong <wangzhaolong1@huawei.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.10 255/270] smb: client: Reset all search buffer pointers when releasing buffer
 Date: Mon,  2 Jun 2025 15:49:00 +0200
-Message-ID: <20250602134330.498435748@linuxfoundation.org>
+Message-ID: <20250602134317.761682406@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
 
-commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
+commit e48f9d849bfdec276eebf782a84fd4dfbe1c14c0 upstream.
 
-__alloc_pages_slowpath has no change detection for ac->nodemask in the
-part of retry path, while cpuset can modify it in parallel.  For some
-processes that set mempolicy as MPOL_BIND, this results ac->nodemask
-changes, and then the should_reclaim_retry will judge based on the latest
-nodemask and jump to retry, while the get_page_from_freelist only
-traverses the zonelist from ac->preferred_zoneref, which selected by a
-expired nodemask and may cause infinite retries in some cases
+Multiple pointers in struct cifs_search_info (ntwrk_buf_start,
+srch_entries_start, and last_entry) point to the same allocated buffer.
+However, when freeing this buffer, only ntwrk_buf_start was set to NULL,
+while the other pointers remained pointing to freed memory.
 
-cpu 64:
-__alloc_pages_slowpath {
-        /* ..... */
-retry:
-        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
-        if (alloc_flags & ALLOC_KSWAPD)
-                wake_all_kswapds(order, gfp_mask, ac);
-        /* cpu 1:
-        cpuset_write_resmask
-            update_nodemask
-                update_nodemasks_hier
-                    update_tasks_nodemask
-                        mpol_rebind_task
-                         mpol_rebind_policy
-                          mpol_rebind_nodemask
-		// mempolicy->nodes has been modified,
-		// which ac->nodemask point to
+This is defensive programming to prevent potential issues with stale
+pointers. While the active UAF vulnerability is fixed by the previous
+patch, this change ensures consistent pointer state and more robust error
+handling.
 
-        */
-        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
-        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-                                 did_some_progress > 0, &no_progress_loops))
-                goto retry;
-}
-
-Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
-this issue on a multi node server when the maximum memory pressure is
-reached and the swap is enabled
-
-Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
-Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/cifs/readdir.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5195,6 +5195,14 @@ restart:
- 	}
- 
- retry:
-+	/*
-+	 * Deal with possible cpuset update races or zonelist updates to avoid
-+	 * infinite retries.
-+	 */
-+	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
-+	    check_retry_zonelist(zonelist_iter_cookie))
-+		goto restart;
-+
- 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
- 	if (alloc_flags & ALLOC_KSWAPD)
- 		wake_all_kswapds(order, gfp_mask, ac);
+--- a/fs/cifs/readdir.c
++++ b/fs/cifs/readdir.c
+@@ -755,7 +755,10 @@ find_cifs_entry(const unsigned int xid,
+ 			else
+ 				cifs_buf_release(cfile->srch_inf.
+ 						ntwrk_buf_start);
++			/* Reset all pointers to the network buffer to prevent stale references */
+ 			cfile->srch_inf.ntwrk_buf_start = NULL;
++			cfile->srch_inf.srch_entries_start = NULL;
++			cfile->srch_inf.last_entry = NULL;
+ 		}
+ 		rc = initiate_cifs_search(xid, file, full_path);
+ 		if (rc) {
 
 
 
