@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36090ACAFF6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2ECACAFAF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B220A481852
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:58:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714617AE5CC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B16F221299;
-	Mon,  2 Jun 2025 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6DF221FC3;
+	Mon,  2 Jun 2025 13:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNI5abqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ8JCh/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F15221DA2;
-	Mon,  2 Jun 2025 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC05C221DB6;
+	Mon,  2 Jun 2025 13:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872697; cv=none; b=sEfwUpqILm9SxOZe+DND0tECMOMeZ+I9Cgs47p91ktn0I+ZBVsEUkxv4UjYFaumNkf42XfM/g82cR0MOvicO000ZFBRp3brKHraZ4s1R1Cmhdjzm3omXjSUP2s67L3yA7Nnzk4T8zV140FoUl3eTfU0ZX8xvwROMlA2v6DI+79E=
+	t=1748872221; cv=none; b=WpjoKqHMgO6IIM+pecjx4CbG5YPqTtCU1vrB0uQFEy5Rge6Q5czQM8giAUf8MSqDYYYRqY4o4g53rM0Cke3PYLyw3Pu/y+QpZW7hOx2vIg9bZFJB/zC/1p1vD9CkYbb3dk74MBdewDyUGaF3rM7yZK4wPB64PXZhXfw5cZQzb2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872697; c=relaxed/simple;
-	bh=LXZRB7P8LBKDgbFyZZR5S6mLlrerVF953sZgx0el2Mg=;
+	s=arc-20240116; t=1748872221; c=relaxed/simple;
+	bh=EIVofoz7x0vOAwfFGo9BH4wU6logjK88mYfdN8Q6j98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPw8LdOMtbuYhvPWoUGErRXjf5wnENzxYfhNLPPHn/KjxYNjzdmUwUgxilGqK1DclBGUQz20UFcRIDd42pQsj2cGMFWqM/EUGKqnHcErYmhpyd7DW8eOhWHsOQoQn4ECtbXGHpTKA4t6VNsGMiq3g6r+X6zBKDRkrAgwj2iSGJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNI5abqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC662C4CEEB;
-	Mon,  2 Jun 2025 13:58:16 +0000 (UTC)
+	 MIME-Version; b=UikHlzpXZ4neRyKhqHuGbxIRf1NeBrsw9VlXDFPdfnucrgYNYarNzb+V8rjG+FbBn8ZaciiGFD8g0dSHsG7R1S0wAPMCROSmMSdeksgSBzIcYYRaBTCS2teyryHzXoJay1PWCoRJh87C/lUvqlGHbblMycKOaaQuoBmAgcuG4KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ8JCh/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7D1C4CEEB;
+	Mon,  2 Jun 2025 13:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872697;
-	bh=LXZRB7P8LBKDgbFyZZR5S6mLlrerVF953sZgx0el2Mg=;
+	s=korg; t=1748872221;
+	bh=EIVofoz7x0vOAwfFGo9BH4wU6logjK88mYfdN8Q6j98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNI5abqX1SJJNNcCMDQznE8tOPL3HsLDLk4Wj4kbtzY5jZ58I2X5BgD+0QbvhVnXb
-	 cLvB/+DTnm8dpVuKHuHa5vDPSAZM+g2jE4NmHcIYfGlyExg82R4YC3TfF2Xv+zwzWx
-	 grLYPnywFNx+tVydz996n6EaE9Q9ntNeiyX+pBk4=
+	b=GZ8JCh/Qe69+sqGDpiX16wCdCrlhSJzT2cg+uloRdZCPgozRoif06nVabZKH+xppl
+	 tqKCCSYwrnqEpIiy3uAG+nH3aUxtFlu8+8kkOkR3Dl/OUoe8n6WMrdaxutotjcnMN8
+	 AyEBvcjQqy3ySTfSZCHz6zlUpV+pdGscJ+qEuJ7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.14 43/73] perf/arm-cmn: Initialise cmn->cpu earlier
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.15 37/49] arm64: dts: ti: k3-j721e-sk: Add requiried voltage supplies for IMX219
 Date: Mon,  2 Jun 2025 15:47:29 +0200
-Message-ID: <20250602134243.386923123@linuxfoundation.org>
+Message-ID: <20250602134239.395867866@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-commit 597704e201068db3d104de3c7a4d447ff8209127 upstream.
+commit c6a20a250200da6fcaf80fe945b7b92cba8cfe0f upstream.
 
-For all the complexity of handling affinity for CPU hotplug, what we've
-apparently managed to overlook is that arm_cmn_init_irqs() has in fact
-always been setting the *initial* affinity of all IRQs to CPU 0, not the
-CPU we subsequently choose for event scheduling. Oh dear.
+The device tree overlay for the IMX219 sensor requires three voltage
+supplies to be defined: VANA (analog), VDIG (digital core), and VDDL
+(digital I/O). Add the corresponding voltage supply definitions to
+avoid dtbs_check warnings.
 
+Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
 Cc: stable@vger.kernel.org
-Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Link: https://lore.kernel.org/r/20250415111328.3847502-5-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm-cmn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso |   33 +++++++++++++++
+ 1 file changed, 33 insertions(+)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2557,6 +2557,7 @@ static int arm_cmn_probe(struct platform
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+@@ -19,6 +19,33 @@
+ 		#clock-cells = <0>;
+ 		clock-frequency = <24000000>;
+ 	};
++
++	reg_2p8v: regulator-2p8v {
++		compatible = "regulator-fixed";
++		regulator-name = "2P8V";
++		regulator-min-microvolt = <2800000>;
++		regulator-max-microvolt = <2800000>;
++		vin-supply = <&vdd_sd_dv>;
++		regulator-always-on;
++	};
++
++	reg_1p8v: regulator-1p8v {
++		compatible = "regulator-fixed";
++		regulator-name = "1P8V";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		vin-supply = <&vdd_sd_dv>;
++		regulator-always-on;
++	};
++
++	reg_1p2v: regulator-1p2v {
++		compatible = "regulator-fixed";
++		regulator-name = "1P2V";
++		regulator-min-microvolt = <1200000>;
++		regulator-max-microvolt = <1200000>;
++		vin-supply = <&vdd_sd_dv>;
++		regulator-always-on;
++	};
+ };
  
- 	cmn->dev = &pdev->dev;
- 	cmn->part = (unsigned long)device_get_match_data(cmn->dev);
-+	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
- 	platform_set_drvdata(pdev, cmn);
+ &csi_mux {
+@@ -34,6 +61,9 @@
+ 		reg = <0x10>;
  
- 	if (cmn->part == PART_CMN600 && has_acpi_companion(cmn->dev)) {
-@@ -2584,7 +2585,6 @@ static int arm_cmn_probe(struct platform
- 	if (err)
- 		return err;
+ 		clocks = <&clk_imx219_fixed>;
++		VANA-supply = <&reg_2p8v>;
++		VDIG-supply = <&reg_1p8v>;
++		VDDL-supply = <&reg_1p2v>;
  
--	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
- 	cmn->pmu = (struct pmu) {
- 		.module = THIS_MODULE,
- 		.parent = cmn->dev,
+ 		port {
+ 			csi2_cam0: endpoint {
+@@ -55,6 +85,9 @@
+ 		reg = <0x10>;
+ 
+ 		clocks = <&clk_imx219_fixed>;
++		VANA-supply = <&reg_2p8v>;
++		VDIG-supply = <&reg_1p8v>;
++		VDDL-supply = <&reg_1p2v>;
+ 
+ 		port {
+ 			csi2_cam1: endpoint {
 
 
 
