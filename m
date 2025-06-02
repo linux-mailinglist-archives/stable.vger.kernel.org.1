@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9BFACB2FD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F524ACB61E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 476697A657A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D58E3A4E93
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2375422541B;
-	Mon,  2 Jun 2025 14:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA1F2222BB;
+	Mon,  2 Jun 2025 14:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FGQDu45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJSkoBeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53181D516F;
-	Mon,  2 Jun 2025 14:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC81FCFE2;
+	Mon,  2 Jun 2025 14:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874728; cv=none; b=sm0wyUCCSoZEyLJEMWYwJiVt1XQVDc9BWH9OuO0aJ0YZ2RTM7Hqb885NqTsBfeaYs4Cz4/sqFjt6kJAYUV58UdCOMPJatXbSEecL5KvePb7i1gX0CQ4W8yC/wbsSMcqLG1gn+rDoieSj/+sbREpvCRsPTObh4zEl9G1U7DmwDCI=
+	t=1748875636; cv=none; b=b8KSwWZzt2lGo2nVmmplk09Z2mcNEcFfcYDMFQPQe+70xRJbrdhKgu0APOa6HFkif8utZJMSjK5E1k8YiNOZyDOooFaEoZGvfzDsf85AzhAkHjn1oQ1ChkuUcP6yzsKGih/FqbE9xJOflI58OOelsOnpfp4vT29Npq9mgDq61eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874728; c=relaxed/simple;
-	bh=AwW4NVGptndbvEijpHxTHpFw4FTqw9datH4Z0cGJ6cc=;
+	s=arc-20240116; t=1748875636; c=relaxed/simple;
+	bh=gy13HvDUyaGPk/foVtk/pWXXzphSBHfahGRpyq0Znd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ewbFuBbab8mM/xWzQpkGA5aSFxGxQ5NCDVdaadP36xbLsJFGXE4xPqb5VYe2fOP7J3hbhuNaJ1aYofgwFAbE5HLb4ZN3Y4tg9lGdSb2LPlKlO1Fjop6sa0rmf0NQ+OT7ihGf8vcX0zjaoUBNfZY8nHSPxS95SUgDO4RQrjgvIrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FGQDu45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CDCC4CEEB;
-	Mon,  2 Jun 2025 14:32:08 +0000 (UTC)
+	 MIME-Version; b=tF8yRiPY6SAf6cFp2VUQgziTVYVuEt6vSexT2C1Y89aVcV/+AkA2pBCf8TXxb+h9/h60Km/W3RtBA5eL32BqGeRRCMl24f+CW26++e63fyHFvF3RGYECjNsgIJ/XCADM4gsFoTW4IDJTGeyloC9WF70cCy/OfCzl4golh/1Yzg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJSkoBeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53BEC4CEF0;
+	Mon,  2 Jun 2025 14:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874728;
-	bh=AwW4NVGptndbvEijpHxTHpFw4FTqw9datH4Z0cGJ6cc=;
+	s=korg; t=1748875636;
+	bh=gy13HvDUyaGPk/foVtk/pWXXzphSBHfahGRpyq0Znd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1FGQDu45WJk1tc9KQBXAdyM1RMYZPdrWKR6dyhM+TFzBwJl2HmScMNpv8yqLy+jg9
-	 nxFW8LMyrD5NPe0Lz5qzIc7OivVDGE0Qvyd23QYKBTMYmPMIBD4E0Rs/yH89Ssc+pm
-	 /XqtzTqDEJnHNMOidJMq+IhQVpI+H2eFz2ywH2SE=
+	b=RJSkoBeEV8znTZkjS6LN7D7eeNw88nY1xypMMZZtqpS7b6T3d87bqRt2R4fuZSMKc
+	 pEcqWNAqgk35Qx8GVBTX6HNpsOpgUx4FISopIHZIvd0QDkWLQJSe7NqqV690rVb8bk
+	 p3vDI25vBGVEUHD3AYlAQGARYVp451UCvt5nqnnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 118/204] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
+Subject: [PATCH 5.10 166/270] net: ethernet: ti: cpsw_new: populate netdev of_node
 Date: Mon,  2 Jun 2025 15:47:31 +0200
-Message-ID: <20250602134300.292015270@linuxfoundation.org>
+Message-ID: <20250602134314.010363976@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
+[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
 
-An of_node_put(i2c_bus) call was immediately used after a pointer check
-for an of_find_i2c_adapter_by_node() call in this function implementation.
-Thus call such a function only once instead directly before the check.
+So that of_find_net_device_by_node() can find CPSW ports and other DSA
+switches can be stacked downstream. Tested in conjunction with KSZ8873.
 
-This issue was transformed by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
-index 69070b7068318..8229fbb88a8db 100644
---- a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
-+++ b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
-@@ -813,13 +813,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
- 		}
- 		tsin->i2c_adapter =
- 			of_find_i2c_adapter_by_node(i2c_bus);
-+		of_node_put(i2c_bus);
- 		if (!tsin->i2c_adapter) {
- 			dev_err(&pdev->dev, "No i2c adapter found\n");
--			of_node_put(i2c_bus);
- 			ret = -ENODEV;
- 			goto err_clk_disable;
- 		}
--		of_node_put(i2c_bus);
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index a1ee205d6a889..d6f8d3e757a25 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1427,6 +1427,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
+ 		ndev->netdev_ops = &cpsw_netdev_ops;
+ 		ndev->ethtool_ops = &cpsw_ethtool_ops;
+ 		SET_NETDEV_DEV(ndev, dev);
++		ndev->dev.of_node = slave_data->slave_node;
  
- 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
- 
+ 		if (!napi_ndev) {
+ 			/* CPSW Host port CPDMA interface is shared between
 -- 
 2.39.5
 
