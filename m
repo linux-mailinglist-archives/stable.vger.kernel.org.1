@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-149360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF19ACB264
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14185ACB6EF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56AE61786C4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A484C3458
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FBE1227E80;
-	Mon,  2 Jun 2025 14:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7FB225792;
+	Mon,  2 Jun 2025 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU5WWRtU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT/Es18D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5801DED64;
-	Mon,  2 Jun 2025 14:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98EA221FC3;
+	Mon,  2 Jun 2025 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873734; cv=none; b=fXpVmxpMAltjGxliC8ILWeZWpcpLzjnr9FSCMQYzyjC5/q2xRQETWEvl/GIMF/thLJ0LeU4W5jp/aEhspokYeENUdPEA2Lhy1zz7JM5kKiUiN/1dmIkrciKiRLzpddb5VGs93EhkCeE3MW8a/wMyBy4/77inmBCESBa/+IA7+u0=
+	t=1748876619; cv=none; b=lmXGBQpEi178UMTzqACvSpF4Gwuyys81mkBkANWq0Tx4wseb2ELtmeWhKFCSJ70TM18YX0PZ8PeQkzNIwKByDnuPM5UTq5KN9XKiTgTTspo19FXBAE9rexLGlLRt5By4U/ScxQBTWNILR8Yn95grfShuHqSKLYtTJ3jw6dSatg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873734; c=relaxed/simple;
-	bh=XnqdrkyseXbfu4yDQSMNvhtO1GcMOrfjEjbWcRVEIko=;
+	s=arc-20240116; t=1748876619; c=relaxed/simple;
+	bh=6XE8YJP8rwOxOkesg4tK3L+iFMb77vrYu7XbTNFVG7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFA0Ztb1a4965yeyZv5GbhCWk60jeiGDUONp+3te0+2vSayjB6ZmSHrfOTvjDrnBywUMN4Pwh4hiX38zbfoxcOexHBbgA2vLppSTJ9FwW5o/+cFnX+9N2LCVqW3TrxXOBQZh0Por0gCiSuDS/KCiIbnay8c4BnxlqVPZ2WjXv1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU5WWRtU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F876C4CEEB;
-	Mon,  2 Jun 2025 14:15:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uPKhW1527BUncQPx0G2rR94tEHD6nQdL34okFruw79fFIv7dLYgw5MBjhOC+ZzveCJ4OiQPLdTGFS3w6WUn6BJ5S74onqJIyRTl4RuLuwUNS811j53Ox42UM5AvE+wP/GCP1qBnxqKuQh7W3TcMYn2eD0/Am7YnNITPnIIzEfF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT/Es18D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16988C4CEEB;
+	Mon,  2 Jun 2025 15:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873734;
-	bh=XnqdrkyseXbfu4yDQSMNvhtO1GcMOrfjEjbWcRVEIko=;
+	s=korg; t=1748876619;
+	bh=6XE8YJP8rwOxOkesg4tK3L+iFMb77vrYu7XbTNFVG7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KU5WWRtUzl1xSNwsEE54SKNtVzQsxBwXmch6iSLSd5Hp6qc05OQpqdiGTiEiPadav
-	 ihacF7gc8AAHxkgjs4kjyfbQGlajFuCEmIDgngRbcrU1DZ/4LuROlv/+TX4e5kP73e
-	 xp6dhELrLHukwChiXIAUukcQTk3beF8u2/J7a1Yo=
+	b=GT/Es18DsOORU4u6d07War+/v/O9i+as/sNLbVKtfgPQ9yxyBI5nwvns22qzppS9F
+	 HGC6Ws1NY+Y440KAnMmWmRWH0+bQIxtvxMQH8bloF4jH+esVKgnMZ6hU+OfAcbd0h+
+	 81QUnnIk/NyMUTrn7+PSTbSnkI1LGJucGUxUol6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Plowman <david.plowman@raspberrypi.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Jai Luthra <jai.luthra@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/444] media: i2c: imx219: Correct the minimum vblanking value
+Subject: [PATCH 6.1 021/325] cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES
 Date: Mon,  2 Jun 2025 15:44:57 +0200
-Message-ID: <20250602134350.367012799@linuxfoundation.org>
+Message-ID: <20250602134320.601098657@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Plowman <david.plowman@raspberrypi.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit e3b82d49bf676f3c873e642038765eac32ab6d39 ]
+[ Upstream commit e255612b5ed9f179abe8196df7c2ba09dd227900 ]
 
-The datasheet for this sensor documents the minimum vblanking as being
-32 lines. It does fix some problems with occasional black lines at the
-bottom of images (tested on Raspberry Pi).
+Some operations, like WRITE, does not require FILE_READ_ATTRIBUTES access.
 
-Signed-off-by: David Plowman <david.plowman@raspberrypi.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+So when FILE_READ_ATTRIBUTES is not explicitly requested for
+smb2_open_file() then first try to do SMB2 CREATE with FILE_READ_ATTRIBUTES
+access (like it was before) and then fallback to SMB2 CREATE without
+FILE_READ_ATTRIBUTES access (less common case).
+
+This change allows to complete WRITE operation to a file when it does not
+grant FILE_READ_ATTRIBUTES permission and its parent directory does not
+grant READ_DATA permission (parent directory READ_DATA is implicit grant of
+child FILE_READ_ATTRIBUTES permission).
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx219.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smb2file.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/imx219.c b/drivers/media/i2c/imx219.c
-index a14e571dc62bc..a3d5a8a7c660b 100644
---- a/drivers/media/i2c/imx219.c
-+++ b/drivers/media/i2c/imx219.c
-@@ -77,7 +77,7 @@
- #define IMX219_VTS_30FPS_640x480	0x06e3
- #define IMX219_VTS_MAX			0xffff
+diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
+index a7475bc05cac0..afdc78e92ee9b 100644
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -108,16 +108,25 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
+ 	int err_buftype = CIFS_NO_BUFFER;
+ 	struct cifs_fid *fid = oparms->fid;
+ 	struct network_resiliency_req nr_ioctl_req;
++	bool retry_without_read_attributes = false;
  
--#define IMX219_VBLANK_MIN		4
-+#define IMX219_VBLANK_MIN		32
+ 	smb2_path = cifs_convert_path_to_utf16(oparms->path, oparms->cifs_sb);
+ 	if (smb2_path == NULL)
+ 		return -ENOMEM;
  
- /*Frame Length Line*/
- #define IMX219_FLL_MIN			0x08a6
+-	oparms->desired_access |= FILE_READ_ATTRIBUTES;
++	if (!(oparms->desired_access & FILE_READ_ATTRIBUTES)) {
++		oparms->desired_access |= FILE_READ_ATTRIBUTES;
++		retry_without_read_attributes = true;
++	}
+ 	smb2_oplock = SMB2_OPLOCK_LEVEL_BATCH;
+ 
+ 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
+ 		       &err_buftype);
++	if (rc == -EACCES && retry_without_read_attributes) {
++		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
++		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
++			       &err_buftype);
++	}
+ 	if (rc && data) {
+ 		struct smb2_hdr *hdr = err_iov.iov_base;
+ 
 -- 
 2.39.5
 
