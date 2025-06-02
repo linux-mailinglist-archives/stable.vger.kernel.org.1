@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F45DACB4E6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6EC4ACB7A3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEE833B7CF4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3661EA27400
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E025A221F3E;
-	Mon,  2 Jun 2025 14:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C5E231854;
+	Mon,  2 Jun 2025 15:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwLDqXLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeL+gU9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDB12C3247;
-	Mon,  2 Jun 2025 14:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F19B21325D;
+	Mon,  2 Jun 2025 15:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874984; cv=none; b=j1r8SzvOMK8b6RrRSebT7av0hs3MPSAjlY0YAVLAG4r5+h3MZp4u4ICRS4PrYH65d92fOaz2jPNTKze0da5oaqGJ/aKfyaqe8GN6UzfY7svOFOKHONDOYaPGvl0+QL6iBw2vGxKPrRJzZOaMUQBeRbKPxxodktTIU7w/Zjz8EFw=
+	t=1748876479; cv=none; b=iFKVO0h64Z+GFIy8h/34czjXkjW1aY39oyxcTOmjIG+G2Y3W547uF172cB6TXDyoIyfD0KPeFDraHKRSE/yssTPPMk9AkPnAJxtw3lLI4MWiRRNFGJhA5JQkZEGNJn5LTUMupgrM7/xC8gHvq672nxZrI9SXpRwh+si5thFDtW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874984; c=relaxed/simple;
-	bh=/YmNfNiDBzMJr8qzoDZRxjqE8pdZnRnryZNgqbCPMvc=;
+	s=arc-20240116; t=1748876479; c=relaxed/simple;
+	bh=FnpscsBzOoa6Xcw4q5OoxSwIeWGStQj222IGiz9WExI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QP7lYP/BNF/H3RqwGwGmTI1Qe99lnG9iDhbi5Jki72zkuCU/5jSuZ+vNITqaFiAMH6lMmcMNx/8jn3v+oF6kAbP41DEb4ZUJVKH7g9YBRml8WOHRnfhmn7WN9ii+7YOgLi7CTuPzAQL6m7MzWL6XotttsH4naTHTaOqEPk60JvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwLDqXLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248BCC4CEEB;
-	Mon,  2 Jun 2025 14:36:23 +0000 (UTC)
+	 MIME-Version; b=IRlNO33ZKruNksM6mchc3o3iY1CUInqx7ICT/7ASRIcN0KwX86O26e+hVdsCwud0puXLjslYZ/Vja1gw5EP8VR+zi3vKdMn7aK4TDPH4jhEBPQxhkg8qlJ073N0mpQzzWckmzO2M+gq0kA/iyODqh3dqWlifz/k4wNsoUT7pwuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeL+gU9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4845C4CEEB;
+	Mon,  2 Jun 2025 15:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874984;
-	bh=/YmNfNiDBzMJr8qzoDZRxjqE8pdZnRnryZNgqbCPMvc=;
+	s=korg; t=1748876479;
+	bh=FnpscsBzOoa6Xcw4q5OoxSwIeWGStQj222IGiz9WExI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwLDqXLtmysPzOP6gv9U1H17Sm9a8nP0yidWsHQn5cmJ/pEE2mIVRZW/jR8XNrSO8
-	 hNVz7jbmVnnSEHGT3H9nSPgXSpC/ohskJ1s2VdrYvuQVnbJDOgf4BKtB3q7pJ9oQrw
-	 StUOfmNX/7C8ZBCToGzE9DLHp0ThWlKXXjONiJPo=
+	b=HeL+gU9vij00lpdup9CX8JJ1RcB+MYExDVbLVLsnWPB6j0bUqCnuzqpGAxLCtP+mI
+	 9wuzVxI+Dua3RTsqePaR9l47ZQ1SmaiKqLYRThtUdMrpjxtvb4EAkYB79PwJfr5LVS
+	 E2jg5vo+EvHa824VnjpMGhazLLzr4ippX1Tkb8JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 196/204] coredump: hand a pidfd to the usermode coredump helper
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 157/207] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
 Date: Mon,  2 Jun 2025 15:48:49 +0200
-Message-ID: <20250602134303.375493176@linuxfoundation.org>
+Message-ID: <20250602134304.869592539@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b5325b2a270fcaf7b2a9a0f23d422ca8a5a8bdea upstream.
+[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
 
-Give userspace a way to instruct the kernel to install a pidfd into the
-usermode helper process. This makes coredump handling a lot more
-reliable for userspace. In parallel with this commit we already have
-systemd adding support for this in [1].
+HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
+workarounds that were applied to another HP Spectre x360 models;
+it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
+seup.
 
-We create a pidfs file for the coredumping process when we process the
-corename pattern. When the usermode helper process is forked we then
-install the pidfs file as file descriptor three into the usermode
-helpers file descriptor table so it's available to the exec'd program.
-
-Since usermode helpers are either children of the system_unbound_wq
-workqueue or kthreadd we know that the file descriptor table is empty
-and can thus always use three as the file descriptor number.
-
-Note, that we'll install a pidfd for the thread-group leader even if a
-subthread is calling do_coredump(). We know that task linkage hasn't
-been removed due to delay_group_leader() and even if this @current isn't
-the actual thread-group leader we know that the thread-group leader
-cannot be reaped until @current has exited.
-
-[brauner: This is a backport for the v5.4 series. Upstream has
-significantly changed and backporting all that infra is a non-starter.
-So simply backport the pidfd_prepare() helper and waste the file
-descriptor we allocated. Then we minimally massage the umh coredump
-setup code.]
-
-Link: https://github.com/systemd/systemd/pull/37125 [1]
-Link: https://lore.kernel.org/20250414-work-coredump-v2-3-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
+Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c           |   77 +++++++++++++++++++++++++++++++++++++++++++-----
- include/linux/binfmts.h |    1 
- 2 files changed, 71 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -52,6 +52,13 @@
- 
- #include <trace/events/sched.h>
- 
-+/*
-+ * File descriptor number for the pidfd for the thread-group leader of
-+ * the coredumping task installed into the usermode helper's file
-+ * descriptor table.
-+ */
-+#define COREDUMP_PIDFD_NUMBER 3
-+
- int core_uses_pid;
- unsigned int core_pipe_limit;
- char core_pattern[CORENAME_MAX_SIZE] = "core";
-@@ -314,6 +321,27 @@ static int format_corename(struct core_n
- 				err = cn_printf(cn, "%lu",
- 					      rlimit(RLIMIT_CORE));
- 				break;
-+			/* pidfd number */
-+			case 'F': {
-+				/*
-+				 * Installing a pidfd only makes sense if
-+				 * we actually spawn a usermode helper.
-+				 */
-+				if (!ispipe)
-+					break;
-+
-+				/*
-+				 * Note that we'll install a pidfd for the
-+				 * thread-group leader. We know that task
-+				 * linkage hasn't been removed yet and even if
-+				 * this @current isn't the actual thread-group
-+				 * leader we know that the thread-group leader
-+				 * cannot be reaped until @current has exited.
-+				 */
-+				cprm->pid = task_tgid(current);
-+				err = cn_printf(cn, "%d", COREDUMP_PIDFD_NUMBER);
-+				break;
-+			}
- 			default:
- 				break;
- 			}
-@@ -537,7 +565,7 @@ static void wait_for_dump_helpers(struct
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index e1de24c9f6265..7a8ac8d3d2175 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6758,6 +6758,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
+ 	}
  }
  
- /*
-- * umh_pipe_setup
-+ * umh_coredump_setup
-  * helper function to customize the process used
-  * to collect the core in userspace.  Specifically
-  * it sets up a pipe and installs it as fd 0 (stdin)
-@@ -547,27 +575,62 @@ static void wait_for_dump_helpers(struct
-  * is a special value that we use to trap recursive
-  * core dumps
-  */
--static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
-+static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
- {
- 	struct file *files[2];
-+	struct file *pidfs_file = NULL;
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
- 	int err;
- 
-+	if (cp->pid) {
-+		int fd;
++/* GPIO1 = amplifier on/off */
++static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
++					     const struct hda_fixup *fix,
++					     int action)
++{
++	struct alc_spec *spec = codec->spec;
++	static const hda_nid_t conn[] = { 0x02 };
++	static const struct hda_pintbl pincfgs[] = {
++		{ 0x14, 0x90170110 },  /* front/high speakers */
++		{ 0x17, 0x90170130 },  /* back/bass speakers */
++		{ }
++	};
 +
-+		fd = pidfd_prepare(cp->pid, 0, &pidfs_file);
-+		if (fd < 0)
-+			return fd;
++	// enable mute led
++	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
 +
-+		/*
-+		 * We don't care about the fd. We also cannot simply
-+		 * replace it below because dup2() will refuse to close
-+		 * this file descriptor if its in a larval state. So
-+		 * close it!
-+		 */
-+		put_unused_fd(fd);
-+
-+		/*
-+		 * Usermode helpers are childen of either
-+		 * system_unbound_wq or of kthreadd. So we know that
-+		 * we're starting off with a clean file descriptor
-+		 * table. So we should always be able to use
-+		 * COREDUMP_PIDFD_NUMBER as our file descriptor value.
-+		 */
-+		err = replace_fd(COREDUMP_PIDFD_NUMBER, pidfs_file, 0);
-+		if (err < 0)
-+			goto out_fail;
-+
-+		pidfs_file = NULL;
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		/* needed for amp of back speakers */
++		spec->gpio_mask |= 0x01;
++		spec->gpio_dir |= 0x01;
++		snd_hda_apply_pincfgs(codec, pincfgs);
++		/* share DAC to have unified volume control */
++		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
++		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
++		break;
++	case HDA_FIXUP_ACT_INIT:
++		/* need to toggle GPIO to enable the amp of back speakers */
++		alc_update_gpio_data(codec, 0x01, true);
++		msleep(100);
++		alc_update_gpio_data(codec, 0x01, false);
++		break;
 +	}
++}
 +
- 	err = create_pipe_files(files, 0);
- 	if (err)
--		return err;
-+		goto out_fail;
- 
- 	cp->file = files[1];
- 
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
- 	if (err < 0)
--		return err;
-+		goto out_fail;
- 
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
- 
--	return 0;
-+	err = 0;
-+
-+out_fail:
-+	if (pidfs_file)
-+		fput(pidfs_file);
-+	return err;
- }
- 
- void do_coredump(const kernel_siginfo_t *siginfo)
-@@ -643,7 +706,7 @@ void do_coredump(const kernel_siginfo_t
- 		}
- 
- 		if (cprm.limit == 1) {
--			/* See umh_pipe_setup() which sets RLIMIT_CORE = 1.
-+			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
- 			 *
- 			 * Normally core limits are irrelevant to pipes, since
- 			 * we're not writing to the file system, but we use
-@@ -688,7 +751,7 @@ void do_coredump(const kernel_siginfo_t
- 		retval = -ENOMEM;
- 		sub_info = call_usermodehelper_setup(helper_argv[0],
- 						helper_argv, NULL, GFP_KERNEL,
--						umh_pipe_setup, NULL, &cprm);
-+						umh_coredump_setup, NULL, &cprm);
- 		if (sub_info)
- 			retval = call_usermodehelper_exec(sub_info,
- 							  UMH_WAIT_EXEC);
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -93,6 +93,7 @@ struct coredump_params {
- 	unsigned long mm_flags;
- 	loff_t written;
- 	loff_t pos;
-+	struct pid *pid;
- };
- 
- /*
+ static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
+ 					  const struct hda_fixup *fix, int action)
+ {
+@@ -7040,6 +7075,7 @@ enum {
+ 	ALC280_FIXUP_HP_9480M,
+ 	ALC245_FIXUP_HP_X360_AMP,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
++	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
+ 	ALC285_FIXUP_HP_ENVY_X360,
+ 	ALC288_FIXUP_DELL_HEADSET_MODE,
+ 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -8881,6 +8917,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_eb1
+ 	},
++	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_hp_spectre_x360_df1
++	},
+ 	[ALC285_FIXUP_HP_ENVY_X360] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_envy_x360,
+@@ -9286,6 +9326,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
++	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+@@ -9832,6 +9873,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
+ 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
++	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
+ 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
+ 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
+ 	{.id = ALC623_FIXUP_LENOVO_THINKSTATION_P340, .name = "alc623-lenovo-thinkstation-p340"},
+-- 
+2.39.5
+
 
 
 
