@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-149887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91E2ACB4CE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356D5ACB5D9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9303117EE2E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189974C1DD1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC1321B9F6;
-	Mon,  2 Jun 2025 14:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950DD221FDD;
+	Mon,  2 Jun 2025 14:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvOIapie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBRQfXSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD94919EEBD;
-	Mon,  2 Jun 2025 14:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493CE17BBF;
+	Mon,  2 Jun 2025 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875356; cv=none; b=E8Wk+VwFMRr1WonRr3TlYJ8bJSh6NAKsKc1LqipOwo7Q8634uDVebmifQDSmExlvcNMAruYBRHz1KmM9cS7/xV1xZS0b8s3tc+h95CjXcY6loCU52e3Y0w8vw0E2DIdyvAmrTJ/UwnVC27i7fVvgvNxoB1mjDkGDPay+t3lBBCQ=
+	t=1748876044; cv=none; b=UKc4fZwZqQ6afepCheWdQ+0lascc+9kwhBMgYTCihp56MAmldnpNIzQJAkr0X4C9t7VrMOCKsyWBGxOVKU4RCil/PoM0hkxsum2+ytHQODqbyjlOZIhfphmfU1YAOTK4fpCGzsre9CZeDXTYeXyh/0zJloJmevnrx7XnqFHuTHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875356; c=relaxed/simple;
-	bh=yvOo1yRqr+9emsZI64UxORIPJBQaXkqpbBYe0jVW5fk=;
+	s=arc-20240116; t=1748876044; c=relaxed/simple;
+	bh=wtni4mSLATK4o4lGmYHSWgT31ftDDsfiG2l4vkcdy30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Shhgiq9sN0hqtKPAW1/V+XR/XRYFkxfsXe6dfDrIDUhO4WHHn1Np+sCjVIhL/k8s0VXQZU7dyEZH6reABb/STKOxK17w7DgZHku9rUoAe0eOqLw0juQf1kvaXfX3+yUgj7xHnS8W+uyLA9S/CWqBfmzrNTzZGGyuf74PoxwpcsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvOIapie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C81C4CEEB;
-	Mon,  2 Jun 2025 14:42:34 +0000 (UTC)
+	 MIME-Version; b=HpYToXpZMsNlXFZaBTgQDxV3bokL1u0s+1QDRIu03Eg/umWha+9cknPd82jCUf9yZyfgEbQe+WzVet0y6h82JEMm2pQpZm97a2s31XoQs+J+XEj3sCRSoRsXnxX57lpkjkWMfKVgmAl1VjN6igfsWOINVUhnQ0PIi40iQSujKQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBRQfXSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A32C4CEEB;
+	Mon,  2 Jun 2025 14:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875355;
-	bh=yvOo1yRqr+9emsZI64UxORIPJBQaXkqpbBYe0jVW5fk=;
+	s=korg; t=1748876043;
+	bh=wtni4mSLATK4o4lGmYHSWgT31ftDDsfiG2l4vkcdy30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvOIapie/ym84LqythNgz80kVTfOfQtZYnophZds40JTpfKOl9glIvkIVthTuNnbD
-	 CJb/Aj799pHngaf+fN8xQOm6Ot5k/Ladl39dKJUsp1KsdM4EDkPPnOaZdTntLohvcL
-	 nNdg4niTKAKqyCZ5bSXETEid1Bu0gWBKgZg2VH+4=
+	b=ZBRQfXSjfWXDnDPFki8F+z1rEJ3X6nv498hQhyAlYofS+/NAfMSjeHIpbSXDRFaRG
+	 Tv9xzYi9B8YnPFq6wYvXOPVGB2Z/rRbsur57afo1i1uBBd3bDpaYO6/UtdtL6B0Z1F
+	 4ywBhuqQl0Ul5B4TaTL7ZzwtrC7C1ELrfj0JCs6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	GONG Ruiqi <gongruiqi1@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 109/270] usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 022/207] tools/build: Dont pass test log files to linker
 Date: Mon,  2 Jun 2025 15:46:34 +0200
-Message-ID: <20250602134311.693079808@linuxfoundation.org>
+Message-ID: <20250602134259.644645850@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GONG Ruiqi <gongruiqi1@huawei.com>
+From: Ian Rogers <irogers@google.com>
 
-commit b0e525d7a22ea350e75e2aec22e47fcfafa4cacd upstream.
+[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
 
-The error handling for the case `con_index == 0` should involve dropping
-the pm usage counter, as ucsi_ccg_sync_control() gets it at the
-beginning. Fix it.
+Separate test log files from object files. Depend on test log output
+but don't pass to the linker.
 
-Cc: stable <stable@kernel.org>
-Fixes: e56aac6e5a25 ("usb: typec: fix potential array underflow in ucsi_ccg_sync_control()")
-Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250107015750.2778646-1-gongruiqi1@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Minor context change fixed.]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/build/Makefile.build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -575,7 +575,7 @@ static int ucsi_ccg_sync_write(struct uc
- 				    UCSI_CMD_CONNECTOR_MASK;
- 			if (con_index == 0) {
- 				ret = -EINVAL;
--				goto unlock;
-+				goto err_put;
- 			}
- 			con = &uc->ucsi->connector[con_index - 1];
- 			ucsi_ccg_update_set_new_cam_cmd(uc, con, (u64 *)val);
-@@ -591,8 +591,8 @@ static int ucsi_ccg_sync_write(struct uc
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index 715092fc6a239..6a043b729b367 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -130,6 +130,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
+ obj-y        := $(addprefix $(objprefix),$(obj-y))
+ subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
  
- err_clear_bit:
- 	clear_bit(DEV_CMD_PENDING, &uc->flags);
-+err_put:
- 	pm_runtime_put_sync(uc->dev);
--unlock:
- 	mutex_unlock(&uc->lock);
++# Separate out test log files from real build objects.
++test-y       := $(filter %_log, $(obj-y))
++obj-y        := $(filter-out %_log, $(obj-y))
++
+ # Final '$(obj)-in.o' object
+ in-target := $(objprefix)$(obj)-in.o
  
- 	return ret;
+@@ -140,7 +144,7 @@ $(subdir-y):
+ 
+ $(sort $(subdir-obj-y)): $(subdir-y) ;
+ 
+-$(in-target): $(obj-y) FORCE
++$(in-target): $(obj-y) $(test-y) FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed,$(host)ld_multi)
+ 
+-- 
+2.39.5
+
 
 
 
