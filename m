@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019BEACB32D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D97ACB641
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA2A31943696
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE871BC33CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC84226D03;
-	Mon,  2 Jun 2025 14:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93122230BD5;
+	Mon,  2 Jun 2025 14:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8lNFEVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT0OX6i4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C044226CF0;
-	Mon,  2 Jun 2025 14:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E47A227BA4;
+	Mon,  2 Jun 2025 14:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874259; cv=none; b=fb3dCa9++4aEhGzOF4h5CF5CCEI+fcJOZQtVFQFPJ5pXFb4A0/s/TAJ0OrXLvwL4+Q8vBq42/JJZNmZX3NDwDoahwoT7H72pTBROi7Z8HlDe+n2Rx3keJwyq3KVkaW3B0n0MwY2WvMrB21twGAaad4JD7pndEDKvWXpFEKyCw+k=
+	t=1748876195; cv=none; b=lGNrRwYsInbgIZTwbwaS9coNMRqvzD/QpHFRvstHBtsyw4FxD4WF3BX98IaLojLzxn4ZoM32yWbglAyCjd6hJGcSfcB5z/rGrRoCrve0UUAyXP4LgIIdKt3ztVyblf/edVTwnJPHLQlh4UmMNmxWO5rG12hH4wNE4jCgPalohK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874259; c=relaxed/simple;
-	bh=9thmBb0HdXF/5srtVzF9ojyONfEz3nmct0lY4zIcKZY=;
+	s=arc-20240116; t=1748876195; c=relaxed/simple;
+	bh=ZpGXfVjqx3wL7WEYOT4O7O6auFDHCPtZQ+ywl8KR0J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmngl2+ALJN+mlJCpQQE/7zoakdIZVx+O8mXe7oqlvDshndc8sAh1g4vVSzSm+eTmmeXAyEh0O+ReRA5+nsMuQZ0wLCYDTkxLycxejVAfe8/ju2imehgy9+y38TJVKKzYW/6IkcP+H6HNYY9FQGlYDjbxtdNS0vs1TVckLB+PzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8lNFEVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749DBC4CEEB;
-	Mon,  2 Jun 2025 14:24:16 +0000 (UTC)
+	 MIME-Version; b=hwEgSYHY0us2RaJHuFO0UQQSGb71d+xlacySCaMDNk/B47Zrm4gHr+4++5Ml/PtxKnHPfdsQ/b8/jaJIMdVGYW3FH9h1pY8AKexGlOLoMDjIdWtqbVivu1qQpL0XOwIO73BcHC94NSyDAVjx/2cb35K+huRVxeOIKu9AFC/91Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT0OX6i4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B873CC4CEEB;
+	Mon,  2 Jun 2025 14:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874256;
-	bh=9thmBb0HdXF/5srtVzF9ojyONfEz3nmct0lY4zIcKZY=;
+	s=korg; t=1748876195;
+	bh=ZpGXfVjqx3wL7WEYOT4O7O6auFDHCPtZQ+ywl8KR0J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8lNFEVDc1eQtDOFwlNq+WkG0Q3oOvRJ4Qk9vZ+T/om5WGS/sagv7+fpZjvJObGCy
-	 8G0ti1/FLtScqeqykM+NRSyMC9Ktqg4E8ZTgU+PdgT2zhs3nHnDtWYUiL7fWpYGuiK
-	 xIKQWSLjfWlEtly+eYfhiznMWSUJG8ASpq1+EBa4=
+	b=AT0OX6i4imFEEcq5XzjxVxdkiev2GU/66eQ35pEPdUFpdJAmJxWnbF+8bSq/UAMPu
+	 /XDsPogQEXpyk5jIQUYBNFUVIAEZ1w/sNnUSn7Lp1jqjK8WhLc0hlCv6y8NBDegSVy
+	 R5Hr32VEBl2EzlzU75KW9FQnfeyuBJGirX3rWCBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 410/444] af_unix: Skip GC if no cycle exists.
+	Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 102/207] scsi: mpt3sas: Send a diag reset if target reset fails
 Date: Mon,  2 Jun 2025 15:47:54 +0200
-Message-ID: <20250602134357.575465324@linuxfoundation.org>
+Message-ID: <20250602134302.734964343@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,159 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
 
-commit 77e5593aebba823bcbcf2c4b58b07efcd63933b8 upstream.
+[ Upstream commit 5612d6d51ed2634a033c95de2edec7449409cbb9 ]
 
-We do not need to run GC if there is no possible cyclic reference.
-We use unix_graph_maybe_cyclic to decide if we should run GC.
+When an IOCTL times out and driver issues a target reset, if firmware
+fails the task management elevate the recovery by issuing a diag reset to
+controller.
 
-If a fd of an AF_UNIX socket is passed to an already inflight AF_UNIX
-socket, they could form a cyclic reference.  Then, we set true to
-unix_graph_maybe_cyclic and later run Tarjan's algorithm to group
-them into SCC.
-
-Once we run Tarjan's algorithm, we are 100% sure whether cyclic
-references exist or not.  If there is no cycle, we set false to
-unix_graph_maybe_cyclic and can skip the entire garbage collection
-next time.
-
-When finalising SCC, we set true to unix_graph_maybe_cyclic if SCC
-consists of multiple vertices.
-
-Even if SCC is a single vertex, a cycle might exist as self-fd passing.
-Given the corner case is rare, we detect it by checking all edges of
-the vertex and set true to unix_graph_maybe_cyclic.
-
-With this change, __unix_gc() is just a spin_lock() dance in the normal
-usage.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-11-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+Link: https://lore.kernel.org/r/1739410016-27503-5-git-send-email-shivasharan.srikanteshwara@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/garbage.c |   48 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_ctl.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -112,6 +112,19 @@ static struct unix_vertex *unix_edge_suc
- 	return edge->successor->vertex;
- }
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+index 20336175c14f5..81cd96b93bdf8 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+@@ -678,6 +678,7 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
+ 	size_t data_in_sz = 0;
+ 	long ret;
+ 	u16 device_handle = MPT3SAS_INVALID_DEVICE_HANDLE;
++	int tm_ret;
  
-+static bool unix_graph_maybe_cyclic;
-+
-+static void unix_update_graph(struct unix_vertex *vertex)
-+{
-+	/* If the receiver socket is not inflight, no cyclic
-+	 * reference could be formed.
-+	 */
-+	if (!vertex)
-+		return;
-+
-+	unix_graph_maybe_cyclic = true;
-+}
-+
- static LIST_HEAD(unix_unvisited_vertices);
+ 	issue_reset = 0;
  
- enum unix_vertex_index {
-@@ -138,12 +151,16 @@ static void unix_add_edge(struct scm_fp_
- 
- 	vertex->out_degree++;
- 	list_add_tail(&edge->vertex_entry, &vertex->edges);
+@@ -1111,18 +1112,25 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
+ 			if (pcie_device && (!ioc->tm_custom_handling) &&
+ 			    (!(mpt3sas_scsih_is_pcie_scsi_device(
+ 			    pcie_device->device_info))))
+-				mpt3sas_scsih_issue_locked_tm(ioc,
++				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
+ 				  le16_to_cpu(mpi_request->FunctionDependent1),
+ 				  0, 0, 0,
+ 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
+ 				  0, pcie_device->reset_timeout,
+ 			MPI26_SCSITASKMGMT_MSGFLAGS_PROTOCOL_LVL_RST_PCIE);
+ 			else
+-				mpt3sas_scsih_issue_locked_tm(ioc,
++				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
+ 				  le16_to_cpu(mpi_request->FunctionDependent1),
+ 				  0, 0, 0,
+ 				  MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
+ 				  0, 30, MPI2_SCSITASKMGMT_MSGFLAGS_LINK_RESET);
 +
-+	unix_update_graph(unix_edge_successor(edge));
- }
- 
- static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
- 	struct unix_vertex *vertex = edge->predecessor->vertex;
- 
-+	unix_update_graph(unix_edge_successor(edge));
-+
- 	list_del(&edge->vertex_entry);
- 	vertex->out_degree--;
- 
-@@ -227,6 +244,7 @@ out:
- void unix_update_edges(struct unix_sock *receiver)
- {
- 	spin_lock(&unix_gc_lock);
-+	unix_update_graph(unix_sk(receiver->listener)->vertex);
- 	receiver->listener = NULL;
- 	spin_unlock(&unix_gc_lock);
- }
-@@ -268,6 +286,26 @@ void unix_destroy_fpl(struct scm_fp_list
- 	unix_free_vertices(fpl);
- }
- 
-+static bool unix_scc_cyclic(struct list_head *scc)
-+{
-+	struct unix_vertex *vertex;
-+	struct unix_edge *edge;
-+
-+	/* SCC containing multiple vertices ? */
-+	if (!list_is_singular(scc))
-+		return true;
-+
-+	vertex = list_first_entry(scc, typeof(*vertex), scc_entry);
-+
-+	/* Self-reference or a embryo-listener circle ? */
-+	list_for_each_entry(edge, &vertex->edges, vertex_entry) {
-+		if (unix_edge_successor(edge) == vertex)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static LIST_HEAD(unix_visited_vertices);
- static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
- 
-@@ -353,6 +391,9 @@ prev_vertex:
- 			vertex->index = unix_vertex_grouped_index;
- 		}
- 
-+		if (!unix_graph_maybe_cyclic)
-+			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-+
- 		list_del(&scc);
++			if (tm_ret != SUCCESS) {
++				ioc_info(ioc,
++					 "target reset failed, issue hard reset: handle (0x%04x)\n",
++					 le16_to_cpu(mpi_request->FunctionDependent1));
++				mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
++			}
+ 		} else
+ 			mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
  	}
- 
-@@ -363,6 +404,8 @@ prev_vertex:
- 
- static void unix_walk_scc(void)
- {
-+	unix_graph_maybe_cyclic = false;
-+
- 	/* Visit every vertex exactly once.
- 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
- 	 */
-@@ -524,6 +567,9 @@ static void __unix_gc(struct work_struct
- 
- 	spin_lock(&unix_gc_lock);
- 
-+	if (!unix_graph_maybe_cyclic)
-+		goto skip_gc;
-+
- 	unix_walk_scc();
- 
- 	/* First, select candidates for garbage collection.  Only
-@@ -633,7 +679,7 @@ static void __unix_gc(struct work_struct
- 
- 	/* All candidates should have been detached by now. */
- 	WARN_ON_ONCE(!list_empty(&gc_candidates));
--
-+skip_gc:
- 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
- 	WRITE_ONCE(gc_in_progress, false);
- 
+-- 
+2.39.5
+
 
 
 
