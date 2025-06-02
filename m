@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B64EACB412
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D04ACB607
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4E3F1BA756A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114C71BA5412
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7367E22DA0B;
-	Mon,  2 Jun 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B83B21B9C7;
+	Mon,  2 Jun 2025 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hb80W/fN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYCW61fu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301041CBA18;
-	Mon,  2 Jun 2025 14:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F992576;
+	Mon,  2 Jun 2025 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874880; cv=none; b=QosLaZ7HIdsHwbADzL5wFwtdJSn7Y6JDFt9ACAdWz06dXxWOu6jAnfvrYqvTjSc3EA+4VtA3WZtCXagLLHRKMsI2QDhlmL79xNOVO2l33237RQ5M+CWWLUylEqlek1ePZVT147v62+3q7SqCM6oMpQPTX0bs/o/FGufCFVhq3hU=
+	t=1748875687; cv=none; b=dqgnoM3Y0nRoG4gCcu+eXK5QXQtupd2tYX055u27DaTht1USH/PHAz5EVV6dC+nAsT45NQKlbdonlPLVu1kxZbiVnU56M3Zl8m+RoDDoeXsDqgbHkZDjG4IW5E8yqvr6hFPitxD7tOcGlWjmifN/HHStwSqJFeTT3PfqZzwROIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874880; c=relaxed/simple;
-	bh=ikDrC/21q3XZVEc1eMj27WvqblkBWCrrzPQBFVskS/g=;
+	s=arc-20240116; t=1748875687; c=relaxed/simple;
+	bh=YXb4IKW4lKuxWy9SPvCV2d/N5BepA67gP9GJqJcN3rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oExRyxfDN1bLk7AShDH/zL91gAFFdaZH1F2uqiLC/Uml+ZbM/sgARhAkUYWPSyDrQY9hzqRLyFk1VNMJ7fPO6ncUspReaAUQIhJojnNGeGxriau64+QchDZ/CAnBGvdS9rbNCRnbRMU3iIuHZNuuhr5IK4EUK7ABSU5spqmS33Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hb80W/fN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B6FC4CEEB;
-	Mon,  2 Jun 2025 14:34:39 +0000 (UTC)
+	 MIME-Version; b=QyNjCcsQMJiRheQSXSV92ANs2uLQrnYbgixhF1R+ZcolL3tTwSzs0v6/G6VGv/687jwL/F2CMxh6CowVsSQm1DZjJdRGcn61Q5+b9gL3Iw+HB9R7CXABgB4lV0HbeaYBFHRUdbPZkuJXc1L3vxfdDjrGhICBAkdxCGtpJye8oPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYCW61fu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6629FC4CEEE;
+	Mon,  2 Jun 2025 14:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874880;
-	bh=ikDrC/21q3XZVEc1eMj27WvqblkBWCrrzPQBFVskS/g=;
+	s=korg; t=1748875686;
+	bh=YXb4IKW4lKuxWy9SPvCV2d/N5BepA67gP9GJqJcN3rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hb80W/fNxi998Qd7PuV4fl42J1hcSUmk0U6TlqDAjxP0Xf7RlF65fgU0yadH55DhS
-	 RnlZpZTLoOSZ+h0HkclPoN19WSvNiwQuJxKKyuSI3VbluhiUwo24oVfoPdXBT9UNNs
-	 lA4O9A/4JJCj1EmH60WCGWf9IBS2H7dFbEn41eIg=
+	b=nYCW61fuQIaXUH0BQE9JsxX7lOGxzzjDRUnJjJbWRCmzABG7+dzXyi9+G4uqD1D1j
+	 8aK8ZuJ3UFqumlRBTqr9yrxKtxND4EVs3kAbLjEYozV0+u7KfEj7GP6mZpngYxT5ZI
+	 fle0iVG3PGvfprfMQIJISPT3cqUBaiqvja1rOcR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/204] drm: Add valid clones check
+Subject: [PATCH 5.10 212/270] wifi: rtw88: Fix download_firmware_validate() for RTL8814AU
 Date: Mon,  2 Jun 2025 15:48:17 +0200
-Message-ID: <20250602134302.103494769@linuxfoundation.org>
+Message-ID: <20250602134315.849723766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit 9e8243025cc06abc975c876dffda052073207ab3 ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+After the firmware is uploaded, download_firmware_validate() checks some
+bits in REG_MCUFW_CTRL to see if everything went okay. The
+RTL8814AU power on sequence sets bits 13 and 12 to 2, which this
+function does not expect, so it thinks the firmware upload failed.
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Make download_firmware_validate() ignore bits 13 and 12.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/049d2887-22fc-47b7-9e59-62627cb525f8@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/net/wireless/realtek/rtw88/reg.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 70d97a7fc6864..678dba387d838 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -561,6 +561,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
+index 9088bfb2a3157..27de6eeb4ad68 100644
+--- a/drivers/net/wireless/realtek/rtw88/reg.h
++++ b/drivers/net/wireless/realtek/rtw88/reg.h
+@@ -107,6 +107,7 @@
+ #define BIT_SHIFT_ROM_PGE	16
+ #define BIT_FW_INIT_RDY		BIT(15)
+ #define BIT_FW_DW_RDY		BIT(14)
++#define BIT_CPU_CLK_SEL		(BIT(12) | BIT(13))
+ #define BIT_RPWM_TOGGLE		BIT(7)
+ #define BIT_RAM_DL_SEL		BIT(7)	/* legacy only */
+ #define BIT_DMEM_CHKSUM_OK	BIT(6)
+@@ -124,7 +125,7 @@
+ 				 BIT_CHECK_SUM_OK)
+ #define FW_READY_LEGACY		(BIT_MCUFWDL_RDY | BIT_FWDL_CHK_RPT |	       \
+ 				 BIT_WINTINI_RDY | BIT_RAM_DL_SEL)
+-#define FW_READY_MASK		0xffff
++#define FW_READY_MASK		(0xffff & ~BIT_CPU_CLK_SEL)
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -724,6 +748,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
- 
- 	/*
+ #define REG_MCU_TST_CFG		0x84
+ #define VAL_FW_TRIGGER		0x1
 -- 
 2.39.5
 
