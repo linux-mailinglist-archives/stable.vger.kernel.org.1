@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D62ACB809
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E13ACB857
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6B72A27233
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25C1D4E0659
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3261B231A51;
-	Mon,  2 Jun 2025 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5143A22B8CF;
+	Mon,  2 Jun 2025 15:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvxR/NEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s40ww+hT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4343231845;
-	Mon,  2 Jun 2025 15:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDC521A444;
+	Mon,  2 Jun 2025 15:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876464; cv=none; b=TOXHL+HYzuJ88VvKZfNNFAZqI7rbb2paPK8HJLj3O425kYnv3xzz5Sc4iHYbCkIqRG426btn1UcSpXLLGxPzxysOA96Tk4r/DSIO3aUSdHriOk753haoa8EM5HD6TnQLSRFkXR46L51mAZ2ozM9n8naVHaa4m0+EwKSZFt3TSXQ=
+	t=1748877531; cv=none; b=ZbztihcBtF5vMKTHNS/q5KoHHfgcQSM6v7JPdQ4Fz3/CTTiiY04S33DOE0VaNP6unOtyqKhAVLX0EjFZL9QytKbr44FoJSRfyTgbfyt5hQ7vV3g0AdDufKLgE2TrDzo2CyoKSosT4MbB0rTiVNWXtgWjT9hLn3wKEzWhe5NoOHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876464; c=relaxed/simple;
-	bh=4q8WCn5EaCAFZwcKIYuFgoU55i7RLm3mXPZHTSVYSUs=;
+	s=arc-20240116; t=1748877531; c=relaxed/simple;
+	bh=i6bq0IK/dBhJwfTIS2GwzShaQyQ3r5CLAmiOPXKgn88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqnLS+jzitOp5qNg6Bd8As6HXUXj68lxUwOCal2+60EAz4YVBTdlf/42W0wzo/Dz3XKBUsDAy+o/dM9ajM4fRNRMNghFawQSQWc7PtUFCbcCRaCr86OLYKg2nI700O8RrfHnIjphLbcyyV2wSeSdxrvv01MwVOVvmv4kvhia688=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvxR/NEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF5EC4CEEB;
-	Mon,  2 Jun 2025 15:01:03 +0000 (UTC)
+	 MIME-Version; b=OXrDHRAuX++doasKn3KYxOIfAHlLwD3YxYLUwHcb9V/1V26P8JnSxQx5DiJHKqXbcU25oNmbu+S/4zpPzra8AZ/LXmRmtqAnp6qKM19qWk1LbkVUScH4zfbB25Tw3YxoXVSCZhdzb+YChyLbnUuLqFoyd4nv8rJjozRb/cd/Ep8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s40ww+hT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EE1C4CEEB;
+	Mon,  2 Jun 2025 15:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876463;
-	bh=4q8WCn5EaCAFZwcKIYuFgoU55i7RLm3mXPZHTSVYSUs=;
+	s=korg; t=1748877530;
+	bh=i6bq0IK/dBhJwfTIS2GwzShaQyQ3r5CLAmiOPXKgn88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvxR/NEW/RInW+ZRqoitLMcLBYhs4dhCKyfwbJn6vGR8qs9I4cmEUTrccELNdbhr2
-	 cKtKEAj+WIsEHMshpYDRw8RlrQhBNfAvA1/1gyHscU6hoIddbuLQT3FNYmGR5Imdvi
-	 /vrzkAV911QDfWyBEGvL2gBDQDpBdxXPa5nAuA6c=
+	b=s40ww+hT/DeSxjPObX4SGGBztsYroA0TPG5AunFvTBFJEooB2ysi+fRsrUVBGCv6M
+	 jdRqx5jVeaQYbsX0nf2npH+44vgVfTvGeEoqMpkqEPz/NoFV8o1WoLQE7FnU9x1fTE
+	 zoDUhlFbbnJKYSt4Uqq9PGHRuV1vh/8ti5exhxNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/207] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
+	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 277/325] octeontx2-pf: Fix page pool cache index corruption.
 Date: Mon,  2 Jun 2025 15:49:13 +0200
-Message-ID: <20250602134305.842535268@linuxfoundation.org>
+Message-ID: <20250602134331.019405883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +62,273 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
+commit 88e69af061f2e061a68751ef9cad47a674527a1b upstream.
 
-This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
+The access to page pool `cache' array and the `count' variable
+is not locked. Page pool cache access is fine as long as there
+is only one consumer per pool.
 
-Hardware that uses I2C wasn't designed with high speeds in mind, so
-communication with PMIC via RSB can intermittently fail. Go back to I2C
-as higher speed and efficiency isn't worth the trouble.
+octeontx2 driver fills in rx buffers from page pool in NAPI context.
+If system is stressed and could not allocate buffers, refiiling work
+will be delegated to a delayed workqueue. This means that there are
+two cosumers to the page pool cache.
 
-Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
-Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Either workqueue or IRQ/NAPI can be run on other CPU. This will lead
+to lock less access, hence corruption of cache pool indexes.
+
+To fix this issue, NAPI is rescheduled from workqueue context to refill
+rx buffers.
+
+Fixes: b2e3406a38f0 ("octeontx2-pf: Add support for page pool")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
- .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
- .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
- 3 files changed, 37 insertions(+), 37 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c       |    6 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h       |    2 
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |   43 ++-------------
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |    3 -
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c     |    7 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c   |   30 ++++++++--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h   |    4 -
+ 7 files changed, 44 insertions(+), 51 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-index 6249e9e029286..f6efa69ce4b75 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
-@@ -150,28 +150,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+@@ -107,12 +107,13 @@ int cn10k_sq_aq_init(void *dev, u16 qidx
+ }
  
--&r_ir {
--	linux,rc-map-name = "rc-beelink-gs1";
--	status = "okay";
--};
+ #define NPA_MAX_BURST 16
+-void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
++int cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
+ {
+ 	struct otx2_nic *pfvf = dev;
++	int cnt = cq->pool_ptrs;
+ 	u64 ptrs[NPA_MAX_BURST];
+-	int num_ptrs = 1;
+ 	dma_addr_t bufptr;
++	int num_ptrs = 1;
+ 
+ 	/* Refill pool with new buffers */
+ 	while (cq->pool_ptrs) {
+@@ -131,6 +132,7 @@ void cn10k_refill_pool_ptrs(void *dev, s
+ 			num_ptrs = 1;
+ 		}
+ 	}
++	return cnt - cq->pool_ptrs;
+ }
+ 
+ void cn10k_sqe_flush(void *dev, struct otx2_snd_queue *sq, int size, int qidx)
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.h
+@@ -24,7 +24,7 @@ static inline int mtu_to_dwrr_weight(str
+ 	return weight;
+ }
+ 
+-void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
++int cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
+ void cn10k_sqe_flush(void *dev, struct otx2_snd_queue *sq, int size, int qidx);
+ int cn10k_sq_aq_init(void *dev, u16 qidx, u16 sqb_aura);
+ int cn10k_lmtst_init(struct otx2_nic *pfvf);
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -567,20 +567,8 @@ int otx2_alloc_rbuf(struct otx2_nic *pfv
+ int otx2_alloc_buffer(struct otx2_nic *pfvf, struct otx2_cq_queue *cq,
+ 		      dma_addr_t *dma)
+ {
+-	if (unlikely(__otx2_alloc_rbuf(pfvf, cq->rbpool, dma))) {
+-		struct refill_work *work;
+-		struct delayed_work *dwork;
 -
--&r_pio {
--	/*
--	 * FIXME: We can't add that supply for now since it would
--	 * create a circular dependency between pinctrl, the regulator
--	 * and the RSB Bus.
--	 *
--	 * vcc-pl-supply = <&reg_aldo1>;
--	 */
--	vcc-pm-supply = <&reg_aldo1>;
--};
+-		work = &pfvf->refill_wrk[cq->cq_idx];
+-		dwork = &work->pool_refill_work;
+-		/* Schedule a task if no other task is running */
+-		if (!cq->refill_task_sched) {
+-			cq->refill_task_sched = true;
+-			schedule_delayed_work(dwork,
+-					      msecs_to_jiffies(100));
+-		}
++	if (unlikely(__otx2_alloc_rbuf(pfvf, cq->rbpool, dma)))
+ 		return -ENOMEM;
+-	}
+ 	return 0;
+ }
+ 
+@@ -1081,39 +1069,20 @@ static int otx2_cq_init(struct otx2_nic
+ static void otx2_pool_refill_task(struct work_struct *work)
+ {
+ 	struct otx2_cq_queue *cq;
+-	struct otx2_pool *rbpool;
+ 	struct refill_work *wrk;
+-	int qidx, free_ptrs = 0;
+ 	struct otx2_nic *pfvf;
+-	dma_addr_t bufptr;
++	int qidx;
+ 
+ 	wrk = container_of(work, struct refill_work, pool_refill_work.work);
+ 	pfvf = wrk->pf;
+ 	qidx = wrk - pfvf->refill_wrk;
+ 	cq = &pfvf->qset.cq[qidx];
+-	rbpool = cq->rbpool;
+-	free_ptrs = cq->pool_ptrs;
 -
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
+-	while (cq->pool_ptrs) {
+-		if (otx2_alloc_rbuf(pfvf, rbpool, &bufptr)) {
+-			/* Schedule a WQ if we fails to free atleast half of the
+-			 * pointers else enable napi for this RQ.
+-			 */
+-			if (!((free_ptrs - cq->pool_ptrs) > free_ptrs / 2)) {
+-				struct delayed_work *dwork;
  
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -289,6 +273,22 @@
- 	};
- };
- 
-+&r_ir {
-+	linux,rc-map-name = "rc-beelink-gs1";
-+	status = "okay";
-+};
+-				dwork = &wrk->pool_refill_work;
+-				schedule_delayed_work(dwork,
+-						      msecs_to_jiffies(100));
+-			} else {
+-				cq->refill_task_sched = false;
+-			}
+-			return;
+-		}
+-		pfvf->hw_ops->aura_freeptr(pfvf, qidx, bufptr + OTX2_HEAD_ROOM);
+-		cq->pool_ptrs--;
+-	}
+ 	cq->refill_task_sched = false;
 +
-+&r_pio {
-+	/*
-+	 * PL0 and PL1 are used for PMIC I2C
-+	 * don't enable the pl-supply else
-+	 * it will fail at boot
-+	 *
-+	 * vcc-pl-supply = <&reg_aldo1>;
-+	 */
-+	vcc-pm-supply = <&reg_aldo1>;
-+};
++	local_bh_disable();
++	napi_schedule(wrk->napi);
++	local_bh_enable();
+ }
+ 
+ int otx2_config_nix_queues(struct otx2_nic *pfvf)
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -280,6 +280,7 @@ struct flr_work {
+ struct refill_work {
+ 	struct delayed_work pool_refill_work;
+ 	struct otx2_nic *pf;
++	struct napi_struct *napi;
+ };
+ 
+ /* PTPv2 originTimestamp structure */
+@@ -347,7 +348,7 @@ struct dev_hw_ops {
+ 	int	(*sq_aq_init)(void *dev, u16 qidx, u16 sqb_aura);
+ 	void	(*sqe_flush)(void *dev, struct otx2_snd_queue *sq,
+ 			     int size, int qidx);
+-	void	(*refill_pool_ptrs)(void *dev, struct otx2_cq_queue *cq);
++	int	(*refill_pool_ptrs)(void *dev, struct otx2_cq_queue *cq);
+ 	void	(*aura_freeptr)(void *dev, int aura, u64 buf);
+ };
+ 
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -2005,6 +2005,10 @@ int otx2_stop(struct net_device *netdev)
+ 
+ 	netif_tx_disable(netdev);
+ 
++	for (wrk = 0; wrk < pf->qset.cq_cnt; wrk++)
++		cancel_delayed_work_sync(&pf->refill_wrk[wrk].pool_refill_work);
++	devm_kfree(pf->dev, pf->refill_wrk);
 +
- &spdif {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-index c45d7b7fb39a8..19339644a68a5 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
-@@ -175,16 +175,12 @@
- 	vcc-pg-supply = <&reg_vcc_wifi_io>;
- };
+ 	otx2_free_hw_resources(pf);
+ 	otx2_free_cints(pf, pf->hw.cint_cnt);
+ 	otx2_disable_napi(pf);
+@@ -2012,9 +2016,6 @@ int otx2_stop(struct net_device *netdev)
+ 	for (qidx = 0; qidx < netdev->num_tx_queues; qidx++)
+ 		netdev_tx_reset_queue(netdev_get_tx_queue(netdev, qidx));
  
--&r_ir {
--	status = "okay";
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
+-	for (wrk = 0; wrk < pf->qset.cq_cnt; wrk++)
+-		cancel_delayed_work_sync(&pf->refill_wrk[wrk].pool_refill_work);
+-	devm_kfree(pf->dev, pf->refill_wrk);
  
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -295,6 +291,10 @@
- 	};
- };
+ 	kfree(qset->sq);
+ 	kfree(qset->cq);
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -428,9 +428,10 @@ process_cqe:
+ 	return processed_cqe;
+ }
  
-+&r_ir {
-+	status = "okay";
-+};
+-void otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
++int otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq)
+ {
+ 	struct otx2_nic *pfvf = dev;
++	int cnt = cq->pool_ptrs;
+ 	dma_addr_t bufptr;
+ 
+ 	while (cq->pool_ptrs) {
+@@ -439,6 +440,8 @@ void otx2_refill_pool_ptrs(void *dev, st
+ 		otx2_aura_freeptr(pfvf, cq->cq_idx, bufptr + OTX2_HEAD_ROOM);
+ 		cq->pool_ptrs--;
+ 	}
 +
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-index 92745128fcfeb..4ec4996592bef 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
-@@ -112,20 +112,12 @@
- 	vcc-pg-supply = <&reg_aldo1>;
- };
++	return cnt - cq->pool_ptrs;
+ }
  
--&r_ir {
--	status = "okay";
--};
--
--&r_pio {
--	vcc-pm-supply = <&reg_bldo3>;
--};
--
--&r_rsb {
-+&r_i2c {
- 	status = "okay";
+ static int otx2_tx_napi_handler(struct otx2_nic *pfvf,
+@@ -532,6 +535,7 @@ int otx2_napi_handler(struct napi_struct
+ 	struct otx2_cq_queue *cq;
+ 	struct otx2_qset *qset;
+ 	struct otx2_nic *pfvf;
++	int filled_cnt = -1;
  
--	axp805: pmic@745 {
-+	axp805: pmic@36 {
- 		compatible = "x-powers,axp805", "x-powers,axp806";
--		reg = <0x745>;
-+		reg = <0x36>;
- 		interrupt-parent = <&r_intc>;
- 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
- 		interrupt-controller;
-@@ -240,6 +232,14 @@
- 	};
- };
+ 	cq_poll = container_of(napi, struct otx2_cq_poll, napi);
+ 	pfvf = (struct otx2_nic *)cq_poll->dev;
+@@ -552,7 +556,7 @@ int otx2_napi_handler(struct napi_struct
+ 	}
  
-+&r_ir {
-+	status = "okay";
-+};
+ 	if (rx_cq && rx_cq->pool_ptrs)
+-		pfvf->hw_ops->refill_pool_ptrs(pfvf, rx_cq);
++		filled_cnt = pfvf->hw_ops->refill_pool_ptrs(pfvf, rx_cq);
+ 	/* Clear the IRQ */
+ 	otx2_write64(pfvf, NIX_LF_CINTX_INT(cq_poll->cint_idx), BIT_ULL(0));
+ 
+@@ -565,9 +569,25 @@ int otx2_napi_handler(struct napi_struct
+ 		if (pfvf->flags & OTX2_FLAG_ADPTV_INT_COAL_ENABLED)
+ 			otx2_adjust_adaptive_coalese(pfvf, cq_poll);
+ 
+-		/* Re-enable interrupts */
+-		otx2_write64(pfvf, NIX_LF_CINTX_ENA_W1S(cq_poll->cint_idx),
+-			     BIT_ULL(0));
++		if (unlikely(!filled_cnt)) {
++			struct refill_work *work;
++			struct delayed_work *dwork;
 +
-+&r_pio {
-+	vcc-pm-supply = <&reg_bldo3>;
-+};
-+
- &rtc {
- 	clocks = <&ext_osc32k>;
- };
--- 
-2.39.5
-
++			work = &pfvf->refill_wrk[cq->cq_idx];
++			dwork = &work->pool_refill_work;
++			/* Schedule a task if no other task is running */
++			if (!cq->refill_task_sched) {
++				work->napi = napi;
++				cq->refill_task_sched = true;
++				schedule_delayed_work(dwork,
++						      msecs_to_jiffies(100));
++			}
++		} else {
++			/* Re-enable interrupts */
++			otx2_write64(pfvf,
++				     NIX_LF_CINTX_ENA_W1S(cq_poll->cint_idx),
++				     BIT_ULL(0));
++		}
+ 	}
+ 	return workdone;
+ }
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.h
+@@ -170,6 +170,6 @@ void cn10k_sqe_flush(void *dev, struct o
+ 		     int size, int qidx);
+ void otx2_sqe_flush(void *dev, struct otx2_snd_queue *sq,
+ 		    int size, int qidx);
+-void otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
+-void cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
++int otx2_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
++int cn10k_refill_pool_ptrs(void *dev, struct otx2_cq_queue *cq);
+ #endif /* OTX2_TXRX_H */
 
 
 
