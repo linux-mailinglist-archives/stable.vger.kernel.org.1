@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-149755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB3CACB48A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF759ACB5A3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F441942A16
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72AB74C2C68
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494922F77B;
-	Mon,  2 Jun 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C3723237B;
+	Mon,  2 Jun 2025 14:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GHXkNzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJQQUrr5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5002322F769;
-	Mon,  2 Jun 2025 14:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D923183A;
+	Mon,  2 Jun 2025 14:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874938; cv=none; b=ivbLk1eYN9rJVdj/2xErJSyAqvKRuWam3rg4JqB8upfmHOVHOtNgrVkCSfxsVAvpLQCuhMb7bI5kkBszwvb4unnlQoDc2bbVvEHpXjQUbr1PYKExWK0jbSzDMHo1ryCraxeVsiJnwPZ85rnRWnEVAlqvRWoK3+ywLDakcn4youo=
+	t=1748875838; cv=none; b=rGR5Sz3kGfbkHSn128FMTICWPGEW4th7znYXNC+1RBCgH48CT0U6u24i2rGWPbAnSqwP4D7nW6huACTJFSEq+smxzThydTF5cTsFTPGfnSxBygHakRzoN4u/1Inrfl1oYyLL5zw3/lpIqywRKCv874PeU9+vYKraJcwVXIqmc4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874938; c=relaxed/simple;
-	bh=fuG5zlERhWmftJSkzPe/NkqM+WKggxFwRTJRTwFR+20=;
+	s=arc-20240116; t=1748875838; c=relaxed/simple;
+	bh=ct535AfbtBL04TpGB/1wre+wJz8hhIUhsrFGTFZgRd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpQU3h0dwk88ZkZHa4l0QYeYEzZbfY9KGEWqfH2BA6+p0Px5eKrLfKWvtGGUkHuFbRlBCyyu7+kv3LJ6fB9elgVQtd6U7r6sC6dyzOU9uv1agnM0ignnjFYy79AYHxjCbMbiPKyJzCz4Asegi5q6S2QMJY1bVLMjTXoPAZI7GoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GHXkNzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA83AC4CEEB;
-	Mon,  2 Jun 2025 14:35:37 +0000 (UTC)
+	 MIME-Version; b=c+xh6UKm61Zo/uRTmmhBRFuBVDEOLJsuxMxwKDMdSgB68bZ3oG4gZ5lxYvn/ZSEGOuOC1g6yZiwS1ChmIAku/4NKvq1zJb2IPmSs554DHm7b4ljxd8cZMwY0BNhjrso67Jsyn0wyHUycKu1AMEUNEAn/waxVUQ7Q1Rbgz7EyyHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJQQUrr5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC107C4CEEE;
+	Mon,  2 Jun 2025 14:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874938;
-	bh=fuG5zlERhWmftJSkzPe/NkqM+WKggxFwRTJRTwFR+20=;
+	s=korg; t=1748875838;
+	bh=ct535AfbtBL04TpGB/1wre+wJz8hhIUhsrFGTFZgRd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2GHXkNzcSg5Kcf9Oy/hStHXS2zArtnBVzco7ZMyoeFOCvCc3A79S8zV18QPJcyPjc
-	 mOaotpcCTNyAYoU2fShuHD7eDr1UVy4jwkWq1cwN5MqrGqwF/6XVf7L8toG5d3rq4G
-	 UNOl5LzPzEov1YGFkRP7UIuyJel55AQQp7Buz6KA=
+	b=TJQQUrr59GGgK48NnDSUmEWQbX87UlODvGeL1mDAG0Ld82I/jawAJeyqdSbyw8/8/
+	 JQLeF57wTOexvapBbJ6CtOC1t94zCqJBO+EOhUF/i/wLL0EXjRBw4y8DLWAP5xPTsI
+	 Mel8cotCYErtKcFhW1eGlL2Ygla6bfCrowW1KSgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 182/204] mm/page_alloc.c: avoid infinite retries caused by cpuset race
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 230/270] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
 Date: Mon,  2 Jun 2025 15:48:35 +0200
-Message-ID: <20250602134302.810945405@linuxfoundation.org>
+Message-ID: <20250602134316.714586634@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
+[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
 
-__alloc_pages_slowpath has no change detection for ac->nodemask in the
-part of retry path, while cpuset can modify it in parallel.  For some
-processes that set mempolicy as MPOL_BIND, this results ac->nodemask
-changes, and then the should_reclaim_retry will judge based on the latest
-nodemask and jump to retry, while the get_page_from_freelist only
-traverses the zonelist from ac->preferred_zoneref, which selected by a
-expired nodemask and may cause infinite retries in some cases
+HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
+workarounds that were applied to another HP Spectre x360 models;
+it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
+seup.
 
-cpu 64:
-__alloc_pages_slowpath {
-        /* ..... */
-retry:
-        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
-        if (alloc_flags & ALLOC_KSWAPD)
-                wake_all_kswapds(order, gfp_mask, ac);
-        /* cpu 1:
-        cpuset_write_resmask
-            update_nodemask
-                update_nodemasks_hier
-                    update_tasks_nodemask
-                        mpol_rebind_task
-                         mpol_rebind_policy
-                          mpol_rebind_nodemask
-		// mempolicy->nodes has been modified,
-		// which ac->nodemask point to
-
-        */
-        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
-        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-                                 did_some_progress > 0, &no_progress_loops))
-                goto retry;
-}
-
-Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
-this issue on a multi node server when the maximum memory pressure is
-reached and the swap is enabled
-
-Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
-Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
+Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4573,6 +4573,14 @@ restart:
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3fdd2337919e1..b2df53215279d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6702,6 +6702,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
  	}
+ }
  
- retry:
-+	/*
-+	 * Deal with possible cpuset update races or zonelist updates to avoid
-+	 * infinite retries.
-+	 */
-+	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
-+	    check_retry_zonelist(zonelist_iter_cookie))
-+		goto restart;
++/* GPIO1 = amplifier on/off */
++static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
++					     const struct hda_fixup *fix,
++					     int action)
++{
++	struct alc_spec *spec = codec->spec;
++	static const hda_nid_t conn[] = { 0x02 };
++	static const struct hda_pintbl pincfgs[] = {
++		{ 0x14, 0x90170110 },  /* front/high speakers */
++		{ 0x17, 0x90170130 },  /* back/bass speakers */
++		{ }
++	};
 +
- 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
- 	if (alloc_flags & ALLOC_KSWAPD)
- 		wake_all_kswapds(order, gfp_mask, ac);
++	// enable mute led
++	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
++
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		/* needed for amp of back speakers */
++		spec->gpio_mask |= 0x01;
++		spec->gpio_dir |= 0x01;
++		snd_hda_apply_pincfgs(codec, pincfgs);
++		/* share DAC to have unified volume control */
++		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
++		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
++		break;
++	case HDA_FIXUP_ACT_INIT:
++		/* need to toggle GPIO to enable the amp of back speakers */
++		alc_update_gpio_data(codec, 0x01, true);
++		msleep(100);
++		alc_update_gpio_data(codec, 0x01, false);
++		break;
++	}
++}
++
+ static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
+ 					  const struct hda_fixup *fix, int action)
+ {
+@@ -6984,6 +7019,7 @@ enum {
+ 	ALC280_FIXUP_HP_9480M,
+ 	ALC245_FIXUP_HP_X360_AMP,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
++	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
+ 	ALC285_FIXUP_HP_ENVY_X360,
+ 	ALC288_FIXUP_DELL_HEADSET_MODE,
+ 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -8818,6 +8854,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_eb1
+ 	},
++	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_hp_spectre_x360_df1
++	},
+ 	[ALC285_FIXUP_HP_ENVY_X360] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_envy_x360,
+@@ -9223,6 +9263,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
+ 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
++	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+@@ -9750,6 +9791,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
+ 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
+ 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
++	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
+ 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
+ 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
+ 	{.id = ALC623_FIXUP_LENOVO_THINKSTATION_P340, .name = "alc623-lenovo-thinkstation-p340"},
+-- 
+2.39.5
+
 
 
 
