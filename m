@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5095CACB8D3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:47:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F72ACB644
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55BED9E3CED
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76F424C5E7E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF12F22B586;
-	Mon,  2 Jun 2025 15:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880D9221FCA;
+	Mon,  2 Jun 2025 15:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am3g96Kv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9WqH1ER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5938023372E;
-	Mon,  2 Jun 2025 15:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1A1221FB1;
+	Mon,  2 Jun 2025 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877505; cv=none; b=OEEdX6fh7BAvA7mg39sIT/e5M6dWXw7HLuAFgzwVbJDqGtC/7ofnf9G97TlOJ20lkATHnfD4BMB7hlAGS2dTANIBfgd/yD7u3N8SJoF+zpYCJOS7479dcRX2PWJZM4Q06ebUSYC5zsfRanhD8kXpdSq3G2UbYBo8uwHVvEX1oj0=
+	t=1748876530; cv=none; b=rOk0JPTtbonMttpQjaqehKPStJVpagDgZVrdRzT7n5hc7nWcnPkYHDUm31aTEDiAyLFIwQ1e4w2VUmwkumVuQ/YE5fykTEt+HtYuvKgofI4yXSOd8LtkwC85DGzd+B4WhXMzsyQhbjQD7UN1qNg5PjeMjaeXRcAuVzFNBXaBpEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877505; c=relaxed/simple;
-	bh=tgcvdyLV0GAiyPg5FyrWFYCTQqnPrCAMKwYcF3pXnns=;
+	s=arc-20240116; t=1748876530; c=relaxed/simple;
+	bh=nFB28ckDhebrYHe5zt7opi74x5C71k6OL8mScw1/EBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tg/P21cg8kkBXk1MhRIgG1ML3+Va7+Wx6zfjui/pIxdtpqA0hjrStJ4jztOPIKVrpPN9Dj9k0eqixm0bFl/BKJ0jxAbmdfhQjCtY0nAbHu95IwwbktXnoHfnd1H6OkhvKFfNeaZblYRXMnQFbeydTJUn3c9Ey++/VtmzfApC7XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am3g96Kv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D323FC4CEEB;
-	Mon,  2 Jun 2025 15:18:24 +0000 (UTC)
+	 MIME-Version; b=FUxnLNhuBt91xMwXFHVQa4RITV9SBjKXeGXyq0dcj9pBAAjp966eqotev1/4z/+HFQUtp68rI03PDghpu1KlxjynnDIePsCDyTDFUVDwhoOr99Zbi+wSIT2HWFrKIMvJMlL4p6rJLAJ4Riyvn6CFsRojH4dGjZSsuJyteoKqDAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9WqH1ER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4AAC4CEEB;
+	Mon,  2 Jun 2025 15:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877505;
-	bh=tgcvdyLV0GAiyPg5FyrWFYCTQqnPrCAMKwYcF3pXnns=;
+	s=korg; t=1748876529;
+	bh=nFB28ckDhebrYHe5zt7opi74x5C71k6OL8mScw1/EBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Am3g96KvmOUa5RYYXPqem+Jb1uM2g8S1l6rXWhxe7V+ynlFRsOykfsbYN6CpcIH6Q
-	 F8Tbjz8C7wwMZv8r6dE6rEKmSWHZo7Cz+iVdAqS3RyCb01vGFXaFgQU5mqrSVPplk4
-	 eWnG9ZON187xUCdxmwKIYzBP6LSZCFvBlBuSWRJQ=
+	b=b9WqH1ERTKEL6ahALnPMxPV2dBpGR57GQNrWZpJ251DtphNgsHQxVhDQQfueHTWKN
+	 pn9aMPOIw0y7m4gblv9IFkgNBWs4RJjAsxfeQc1sYN1K1esX0ce1ftoIWif3DB+1Gw
+	 oVdw3iC1knMnZC4o1cP/aR0M9sS4/+FHpx2iPjVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 298/325] af_unix: Avoid Tarjans algorithm if unnecessary.
-Date: Mon,  2 Jun 2025 15:49:34 +0200
-Message-ID: <20250602134332.017183505@linuxfoundation.org>
+	Ilya Guterman <amfernusus@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 203/207] nvme-pci: add NVME_QUIRK_NO_DEEPEST_PS quirk for SOLIDIGM P44 Pro
+Date: Mon,  2 Jun 2025 15:49:35 +0200
+Message-ID: <20250602134306.734934898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ilya Guterman <amfernusus@gmail.com>
 
-commit ad081928a8b0f57f269df999a28087fce6f2b6ce upstream.
+[ Upstream commit e765bf89f42b5c82132a556b630affeb82b2a21f ]
 
-Once a cyclic reference is formed, we need to run GC to check if
-there is dead SCC.
+This commit adds the NVME_QUIRK_NO_DEEPEST_PS quirk for device
+[126f:2262], which belongs to device SOLIDIGM P44 Pro SSDPFKKW020X7
 
-However, we do not need to run Tarjan's algorithm if we know that
-the shape of the inflight graph has not been changed.
+The device frequently have trouble exiting the deepest power state (5),
+resulting in the entire disk being unresponsive.
 
-If an edge is added/updated/deleted and the edge's successor is
-inflight, we set false to unix_graph_grouped, which means we need
-to re-classify SCC.
+Verified by setting nvme_core.default_ps_max_latency_us=10000 and
+observing the expected behavior.
 
-Once we finalise SCC, we set true to unix_graph_grouped.
-
-While unix_graph_grouped is true, we can iterate the grouped
-SCC using vertex->scc_entry in unix_walk_scc_fast().
-
-list_add() and list_for_each_entry_reverse() uses seem weird, but
-they are to keep the vertex order consistent and make writing test
-easier.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-12-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilya Guterman <amfernusus@gmail.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/garbage.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -113,6 +113,7 @@ static struct unix_vertex *unix_edge_suc
- }
- 
- static bool unix_graph_maybe_cyclic;
-+static bool unix_graph_grouped;
- 
- static void unix_update_graph(struct unix_vertex *vertex)
- {
-@@ -123,6 +124,7 @@ static void unix_update_graph(struct uni
- 		return;
- 
- 	unix_graph_maybe_cyclic = true;
-+	unix_graph_grouped = false;
- }
- 
- static LIST_HEAD(unix_unvisited_vertices);
-@@ -144,6 +146,7 @@ static void unix_add_edge(struct scm_fp_
- 		vertex->index = unix_vertex_unvisited_index;
- 		vertex->out_degree = 0;
- 		INIT_LIST_HEAD(&vertex->edges);
-+		INIT_LIST_HEAD(&vertex->scc_entry);
- 
- 		list_move_tail(&vertex->entry, &unix_unvisited_vertices);
- 		edge->predecessor->vertex = vertex;
-@@ -418,6 +421,26 @@ static void unix_walk_scc(void)
- 
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- 	swap(unix_vertex_unvisited_index, unix_vertex_grouped_index);
-+
-+	unix_graph_grouped = true;
-+}
-+
-+static void unix_walk_scc_fast(void)
-+{
-+	while (!list_empty(&unix_unvisited_vertices)) {
-+		struct unix_vertex *vertex;
-+		struct list_head scc;
-+
-+		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
-+		list_add(&scc, &vertex->scc_entry);
-+
-+		list_for_each_entry_reverse(vertex, &scc, scc_entry)
-+			list_move_tail(&vertex->entry, &unix_visited_vertices);
-+
-+		list_del(&scc);
-+	}
-+
-+	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- }
- 
- static LIST_HEAD(gc_candidates);
-@@ -570,7 +593,10 @@ static void __unix_gc(struct work_struct
- 	if (!unix_graph_maybe_cyclic)
- 		goto skip_gc;
- 
--	unix_walk_scc();
-+	if (unix_graph_grouped)
-+		unix_walk_scc_fast();
-+	else
-+		unix_walk_scc();
- 
- 	/* First, select candidates for garbage collection.  Only
- 	 * in-flight sockets are considered, and from those only ones
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index a3c5af95e8f3e..5f60a6ca247fe 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3448,6 +3448,8 @@ static const struct pci_device_id nvme_id_table[] = {
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0x1e49, 0x0041),   /* ZHITAI TiPro7000 NVMe SSD */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
++	{ PCI_DEVICE(0x025e, 0xf1ac),   /* SOLIDIGM  P44 pro SSDPFKKW020X7  */
++		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0xc0a9, 0x540a),   /* Crucial P2 */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1d97, 0x2263), /* Lexar NM610 */
+-- 
+2.39.5
+
 
 
 
