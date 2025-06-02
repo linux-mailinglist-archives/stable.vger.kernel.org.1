@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-148910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A87DACABBD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 11:45:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9CBACABCF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 11:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF4937ABD33
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 09:43:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CAC117B0E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 09:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE771F4CA1;
-	Mon,  2 Jun 2025 09:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4577B1DFD8F;
+	Mon,  2 Jun 2025 09:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENM0XLuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H94Yhewh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8421E520A
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 09:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3B1DA63D
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 09:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748857432; cv=none; b=S6UdXfWseYjLyNd8tX+VVmjX3P0bzsigX+PgQexBAut8ZaknhCMNCM+T5+R7T4AoDdTXa4AvbJAa2doqH+DuOoYwZoYznhRfPZXzTmjSzc5eb55AKtS0LN40wf3FYDL8Sl0q+HG8SvNxgPfysN2lQg+lbB/RHtJuB7vEONMgweM=
+	t=1748857625; cv=none; b=YZYQsIrLDLdMAgazJCAIrdX4vwJQORfVRDLaZQH07hfed9S3EIH9L1vcQ3v5kOwm3HqRkXBWaWg6xAcWGr+4QEaYac2UlRjjsYyVkpPAU5fwHOL19NczixFymiH+GfdGfuQX5wlk9rWG7JdKaVu1iLNg10aq5Pl1LeWp3Llr/Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748857432; c=relaxed/simple;
-	bh=so1aho2GjgVlT793mIykZo2iom7b1SWrDgK5XbF3Ot0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UyEUI+ksocpKiHVLIakr/AabedyW7cmjChEpV3U2djpQq0zCfosXtCNSqYbk8fXd3GK49vS4sMGwDfDEqfWqaJu1RqeL6FdrN+IqdKAbISX6geVrW+4YarGl4B0b/UHAB6gL4Rx3xqejiJwUIP0usk2NFFKQVNIepHnqPnl4PIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENM0XLuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0DEC4CEEB;
-	Mon,  2 Jun 2025 09:43:51 +0000 (UTC)
+	s=arc-20240116; t=1748857625; c=relaxed/simple;
+	bh=d4MeVZhLYG4QRJDjNtlqAIKALrh4zydVE4qNVr5UAv8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=swMQnYsbTqHurGeBrcc0Nz3qm9kUv11WcLd85FjAqt0QwZd2BdIuG8eNt8DOiKaN+Y4YknuVemKkLtOrefBHide44sG6m3CWxuP6AzaeOFbzB1xkLWXW7q6AKCB9zoSHdXV2d6PswXkPlO/PjksezuTkrAioQ3gBnl0ljyK6UAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H94Yhewh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B11C4CEEB;
+	Mon,  2 Jun 2025 09:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748857432;
-	bh=so1aho2GjgVlT793mIykZo2iom7b1SWrDgK5XbF3Ot0=;
+	s=korg; t=1748857624;
+	bh=d4MeVZhLYG4QRJDjNtlqAIKALrh4zydVE4qNVr5UAv8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ENM0XLuoKwDs7DfAp4KZvQFvTwsiP8RsRJQlFBnFU2/sNINjxyopyHLMJIgpZxUPd
-	 aePUMMy0j/aT0j7xFRQU80bzQpO0hOGsjQYe2tc2kSTMFF6MGGTo3hVUVOkElXRGl5
-	 KT6gWwiN8yWYY24bf2TpS8qeurqXTOpZc+vHTQkw=
-Subject: FAILED: patch "[PATCH] arm64: dts: rockchip: fix internal USB hub instability on" failed to apply to 5.4-stable tree
-To: lukasz.czechowski@thaumatec.com,heiko@sntech.de
+	b=H94YhewhNuXZ64/8SPB+13rxwaHyB9hDxh/qbnMwsp7aeW+8C7olX6vETxLHB9Pbs
+	 yJcM9dMgr0OsQQxXJ0KI8SpRDwgUAX+ZP2JkGObmQGfIiJODVsCaFvFc80bhdjZt0I
+	 oNvn0zx+aCfa+0jtPhBhm+N/vO2Gf6jUuaQ7zT2g=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: x1e80100: Apply consistent critical thermal" failed to apply to 6.12-stable tree
+To: stephan.gerhold@linaro.org,andersson@kernel.org,johan+linaro@kernel.org,konrad.dybcio@oss.qualcomm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Jun 2025 11:43:38 +0200
-Message-ID: <2025060238-graffiti-woof-6b4f@gregkh>
+Date: Mon, 02 Jun 2025 11:47:01 +0200
+Message-ID: <2025060201-critter-racoon-92e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x d7cc532df95f7f159e40595440e4e4b99481457b
+git cherry-pick -x 03f2b8eed73418269a158ccebad5d8d8f2f6daa1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060238-graffiti-woof-6b4f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060201-critter-racoon-92e9@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,126 +77,514 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d7cc532df95f7f159e40595440e4e4b99481457b Mon Sep 17 00:00:00 2001
-From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Date: Fri, 25 Apr 2025 17:18:08 +0200
-Subject: [PATCH] arm64: dts: rockchip: fix internal USB hub instability on
- RK3399 Puma
+From 03f2b8eed73418269a158ccebad5d8d8f2f6daa1 Mon Sep 17 00:00:00 2001
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
+Date: Wed, 19 Feb 2025 12:36:19 +0100
+Subject: [PATCH] arm64: dts: qcom: x1e80100: Apply consistent critical thermal
+ shutdown
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Currently, the onboard Cypress CYUSB3304 USB hub is not defined in
-the device tree, and hub reset pin is provided as vcc5v0_host
-regulator to usb phy. This causes instability issues, as a result
-of improper reset duration.
+The firmware configures the TSENS controller with a maximum temperature of
+120°C. When reaching that temperature, the hardware automatically triggers
+a reset of the entire platform. Some of the thermal zones in x1e80100.dtsi
+use a critical trip point of 125°C. It's impossible to reach those.
 
-The fixed regulator device requests the GPIO during probe in its
-inactive state (except if regulator-boot-on property is set, in
-which case it is requested in the active state). Considering gpio
-is GPIO_ACTIVE_LOW for Puma, it means it’s driving it high. Then
-the regulator gets enabled (because regulator-always-on property),
-which drives it to its active state, meaning driving it low.
+It's preferable to shut down the system cleanly before reaching the
+hardware trip point. Make the critical temperature trip points consistent
+by setting all of them to 115°C and apply a consistent hysteresis.
+The ACPI tables also specify 115°C as critical shutdown temperature.
 
-The Cypress CYUSB3304 USB hub actually requires the reset to be
-asserted for at least 5 ms, which we cannot guarantee right now
-since there's no delay in the current config, meaning the hub may
-sometimes work or not. We could add delay as offered by
-fixed-regulator but let's rather fix this by using the proper way
-to model onboard USB hubs.
+Cc: stable@vger.kernel.org
+Fixes: 4e915987ff5b ("arm64: dts: qcom: x1e80100: Enable tsens and thermal zone nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250219-x1e80100-thermal-fixes-v1-2-d110e44ac3f9@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 
-Define hub_2_0 and hub_3_0 nodes, as the onboard Cypress hub
-consist of two 'logical' hubs, for USB2.0 and USB3.0.
-Use the 'reset-gpios' property of hub to assign reset pin instead
-of using regulator. Rename the vcc5v0_host regulator to
-cy3304_reset to be more meaningful. Pin is configured to
-output-high by default, which sets the hub in reset state
-during pin controller initialization. This allows to avoid double
-enumeration of devices in case the bootloader has setup the USB
-hub before the kernel.
-The vdd-supply and vdd2-supply properties in hub nodes are
-added to provide correct dt-bindings, although power supplies are
-always enabled based on HW design.
-
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Cc: stable@vger.kernel.org # 6.6
-Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table in drivers/usb/misc/onboard_usb_dev.c driver
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-3-4a76a474a010@thaumatec.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-index e00fbaa8acc1..314d9dfdba57 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -60,16 +60,6 @@ vcc3v3_sys: regulator-vcc3v3-sys {
- 		vin-supply = <&vcc5v0_sys>;
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 7d750a899e80..e0ef5665f862 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -8470,8 +8470,8 @@ trip-point0 {
+ 				};
  
--	vcc5v0_host: regulator-vcc5v0-host {
--		compatible = "regulator-fixed";
--		gpio = <&gpio4 RK_PA3 GPIO_ACTIVE_LOW>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&vcc5v0_host_en>;
--		regulator-name = "vcc5v0_host";
--		regulator-always-on;
--		vin-supply = <&vcc5v0_sys>;
--	};
--
- 	vcc5v0_sys: regulator-vcc5v0-sys {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc5v0_sys";
-@@ -527,10 +517,10 @@ pmic_int_l: pmic-int-l {
- 		};
- 	};
+ 				aoss0-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -8496,7 +8496,7 @@ trip-point1 {
+ 				};
  
--	usb2 {
--		vcc5v0_host_en: vcc5v0-host-en {
-+	usb {
-+		cy3304_reset: cy3304-reset {
- 			rockchip,pins =
--			  <4 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
-+			  <4 RK_PA3 RK_FUNC_GPIO &pcfg_output_high>;
- 		};
- 	};
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8522,7 +8522,7 @@ trip-point1 {
+ 				};
  
-@@ -597,7 +587,6 @@ u2phy1_otg: otg-port {
- 	};
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8548,7 +8548,7 @@ trip-point1 {
+ 				};
  
- 	u2phy1_host: host-port {
--		phy-supply = <&vcc5v0_host>;
- 		status = "okay";
- 	};
- };
-@@ -609,6 +598,29 @@ &usbdrd3_1 {
- &usbdrd_dwc3_1 {
- 	status = "okay";
- 	dr_mode = "host";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&cy3304_reset>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	hub_2_0: hub@1 {
-+		compatible = "usb4b4,6502", "usb4b4,6506";
-+		reg = <1>;
-+		peer-hub = <&hub_3_0>;
-+		reset-gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
-+		vdd-supply = <&vcc1v2_phy>;
-+		vdd2-supply = <&vcc3v3_sys>;
-+
-+	};
-+
-+	hub_3_0: hub@2 {
-+		compatible = "usb4b4,6500", "usb4b4,6504";
-+		reg = <2>;
-+		peer-hub = <&hub_2_0>;
-+		reset-gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
-+		vdd-supply = <&vcc1v2_phy>;
-+		vdd2-supply = <&vcc3v3_sys>;
-+	};
- };
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8574,7 +8574,7 @@ trip-point1 {
+ 				};
  
- &usb_host1_ehci {
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8600,7 +8600,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8626,7 +8626,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8652,7 +8652,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8678,7 +8678,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8696,8 +8696,8 @@ trip-point0 {
+ 				};
+ 
+ 				cpuss2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -8714,8 +8714,8 @@ trip-point0 {
+ 				};
+ 
+ 				cpuss2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -8732,7 +8732,7 @@ trip-point0 {
+ 				};
+ 
+ 				mem-critical {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <0>;
+ 					type = "critical";
+ 				};
+@@ -8750,7 +8750,7 @@ trip-point0 {
+ 				};
+ 
+ 				video-critical {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8768,8 +8768,8 @@ trip-point0 {
+ 				};
+ 
+ 				aoss0-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -8794,7 +8794,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8820,7 +8820,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8846,7 +8846,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8872,7 +8872,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8898,7 +8898,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8924,7 +8924,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8950,7 +8950,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8976,7 +8976,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -8994,8 +8994,8 @@ trip-point0 {
+ 				};
+ 
+ 				cpuss2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9012,8 +9012,8 @@ trip-point0 {
+ 				};
+ 
+ 				cpuss2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9030,8 +9030,8 @@ trip-point0 {
+ 				};
+ 
+ 				aoss0-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9056,7 +9056,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9082,7 +9082,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9108,7 +9108,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9134,7 +9134,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9160,7 +9160,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9186,7 +9186,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9212,7 +9212,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9238,7 +9238,7 @@ trip-point1 {
+ 				};
+ 
+ 				cpu-critical {
+-					temperature = <110000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9256,8 +9256,8 @@ trip-point0 {
+ 				};
+ 
+ 				cpuss2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9274,8 +9274,8 @@ trip-point0 {
+ 				};
+ 
+ 				cpuss2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9292,8 +9292,8 @@ trip-point0 {
+ 				};
+ 
+ 				aoss0-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9310,8 +9310,8 @@ trip-point0 {
+ 				};
+ 
+ 				nsp0-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9328,8 +9328,8 @@ trip-point0 {
+ 				};
+ 
+ 				nsp1-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9346,8 +9346,8 @@ trip-point0 {
+ 				};
+ 
+ 				nsp2-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9364,8 +9364,8 @@ trip-point0 {
+ 				};
+ 
+ 				nsp3-critical {
+-					temperature = <125000>;
+-					hysteresis = <0>;
++					temperature = <115000>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9390,7 +9390,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9416,7 +9416,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9442,7 +9442,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9468,7 +9468,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9494,7 +9494,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9520,7 +9520,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9546,7 +9546,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9572,7 +9572,7 @@ trip-point1 {
+ 				};
+ 
+ 				trip-point2 {
+-					temperature = <125000>;
++					temperature = <115000>;
+ 					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+@@ -9591,7 +9591,7 @@ trip-point0 {
+ 
+ 				camera0-critical {
+ 					temperature = <115000>;
+-					hysteresis = <0>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
+@@ -9609,7 +9609,7 @@ trip-point0 {
+ 
+ 				camera0-critical {
+ 					temperature = <115000>;
+-					hysteresis = <0>;
++					hysteresis = <1000>;
+ 					type = "critical";
+ 				};
+ 			};
 
 
