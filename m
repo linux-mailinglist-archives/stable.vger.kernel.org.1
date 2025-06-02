@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319EAACB63A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35F5ACB3E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 900D51BC65AD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D969E4A249C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9E622DF9A;
-	Mon,  2 Jun 2025 14:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5B7231A30;
+	Mon,  2 Jun 2025 14:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLpZLIzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3XCz9gD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAF6214A93;
-	Mon,  2 Jun 2025 14:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF23223321;
+	Mon,  2 Jun 2025 14:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875932; cv=none; b=qOaRDBT33kAqYG8S5vc+A9KVg8OJtAuBxCZZ+slcZCL+/CxmJFr53IA+y9c2eYkC6txYiQmlQr9GrF0yHXae8csT8dAIaXx7hcIPDFONB2giVF9UBs25pIvUnZbXVbLtW/RJXY9RrYkQaKUK523MK7T0z2ZWl90Liot2Pp2ZZwg=
+	t=1748874591; cv=none; b=Oj9VNGqa8sWadrLBGqw4So9Uvceivd1u07Ja7Sm290hte/NixMJVBc05iYTB3ZzOHmtluMxbiYHCBTw59hx94PYxIwzXQBMHFpiYAJXYe5uIGWzaqq8dtaK8PcIdjqjVdY71oq/pcw5llWltMsnTqbv8hAvJ8ts8tMp0bkVaDS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875932; c=relaxed/simple;
-	bh=4BttjvV21wArM7wsmjktHQbi8O9DnwprU1HTY6eBhGs=;
+	s=arc-20240116; t=1748874591; c=relaxed/simple;
+	bh=1xKrNCv+gDCkBeojUsHde/gqdehLUZwPYxYr5OAdZ0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jZ7kGcbPXZEd0q8R4uDiF43hkou/H3w75yi8jm19buiRQwLoRebG5BX6ouT+ctjJ+AmppXCGUhyAI6MqH+W+qm2hjLt1SlsdRQg1Q/IznXLY3EozQf/LE5Jq4MY9UqATXKETGZjils1+l+Tf1lU1sZ0rdJ7UVz3QB7Vu4s67P7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLpZLIzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4A1C4CEEB;
-	Mon,  2 Jun 2025 14:52:11 +0000 (UTC)
+	 MIME-Version; b=O4+AisT1iuHsRPqar6UmuL7aDp3lqKw1ux4kv1RiH5/rGQVfhtGJWcwC4Fmqzo9SKhx5CD28RERtNhuivbxPupKug/5lz0QrFBjBk3oD6Cd+rFv0D+6vEIN+Mb6cY9rTfNKCKDclMPo38COw5YFCdB+SSzeHgwXuM2Z32ZY6z3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3XCz9gD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B36C4CEEB;
+	Mon,  2 Jun 2025 14:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875932;
-	bh=4BttjvV21wArM7wsmjktHQbi8O9DnwprU1HTY6eBhGs=;
+	s=korg; t=1748874590;
+	bh=1xKrNCv+gDCkBeojUsHde/gqdehLUZwPYxYr5OAdZ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLpZLIzV9Ag10ye5hmtZS3xPgEHmL9jljTuRHuYSSkjuJ9Tf8TVCP+fa4JRZM8t6V
-	 8xWmu7C4nrq9BEEPY0pzxN+y8wet/HJz1hy5g+0r/nv04NdZZCfb+i1MYHc1xF9lYI
-	 tcq/196TAC5A2LSZyJJtdiiYkq9w3RjTmZCRhVzQ=
+	b=y3XCz9gDrOhDDUG8FLxFuw+tgp0Yya/9LhkKz8WrLkYmxwIUrrUAFcDpXwgmvdpNj
+	 bYfaegR3w3jiu9rycRbeJ8GeAA7Nm43tsUgka2nbcrcCmzFKHwN6/w1HXLvdU2jkmD
+	 pw3z8iBl3ScMPtdgtPTi3M6Xr0KiutvAVNHGDvUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gao xu <gaoxu2@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/207] cgroup: Fix compilation issue due to cgroup_mutex not being exported
+	Silvano Seva <s.seva@4sigma.it>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 043/204] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
 Date: Mon,  2 Jun 2025 15:46:16 +0200
-Message-ID: <20250602134258.942478694@linuxfoundation.org>
+Message-ID: <20250602134257.373499655@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gaoxu <gaoxu2@honor.com>
+From: Silvano Seva <s.seva@4sigma.it>
 
-[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
+commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
 
-When adding folio_memcg function call in the zram module for
-Android16-6.12, the following error occurs during compilation:
-ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
+Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
+pattern_len is equal to zero and the device FIFO is not empty.
 
-This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
-within folio_memcg. The export setting for cgroup_mutex is controlled by
-the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
-CONFIG_PROVE_RCU is not, this compilation error will occur.
-
-To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
-ensure cgroup_mutex is properly exported when needed.
-
-Signed-off-by: gao xu <gaoxu2@honor.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Silvano Seva <s.seva@4sigma.it>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 1e87257fe4692..1a3b2e1436db0 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -89,7 +89,7 @@
- DEFINE_MUTEX(cgroup_mutex);
- DEFINE_SPINLOCK(css_set_lock);
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -360,6 +360,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
+ 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
+ 		return 0;
  
--#ifdef CONFIG_PROVE_RCU
-+#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
- EXPORT_SYMBOL_GPL(cgroup_mutex);
- EXPORT_SYMBOL_GPL(css_set_lock);
- #endif
--- 
-2.39.5
-
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
++
+ 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
+ 		   ST_LSM6DSX_CHAN_SIZE;
+ 	fifo_len = (fifo_len / pattern_len) * pattern_len;
 
 
 
