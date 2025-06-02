@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CC1ACB65D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C83AACB71C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F421BC6E52
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21704943295
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E871DED64;
-	Mon,  2 Jun 2025 14:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424192153CB;
+	Mon,  2 Jun 2025 15:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvs9ouSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8IEHSPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2181C2C327E;
-	Mon,  2 Jun 2025 14:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1FA2C327E;
+	Mon,  2 Jun 2025 15:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875999; cv=none; b=uVdq+KSLZN/DaqUQrhueH3RLei/zCL1IpXCj/rkQe45e7/6YwxyHhLf2SvnowygLGO2NF4o0nKQCLc70+OjK7MwGgJeGbBmcZyNt6cdPWajIePxf2ZqptpyG1lPyeBSPXQPGLVy9xE6Lqm0+RT9q0gt3g4AQ+cIvjOmsmaWiVYk=
+	t=1748876988; cv=none; b=tVbxvm8DyzGSdAZ7+q4PnD60GtRujlOUdcycK7rimxelwZMGW20iLD/LbguziN11P2kngeQEWTS27iMCBLlD+fWMgOyCIaIcUTQghz2i52wJ4lvWJbGoE7ho8t/HXyAk0moFlNpPBTo7YKA/oUaYcLChfAPOHla19Tevwiw1b8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875999; c=relaxed/simple;
-	bh=KVNdSBSB/gGa84G8yMVo14/BJFUsGp/qDCtnY/q7jRo=;
+	s=arc-20240116; t=1748876988; c=relaxed/simple;
+	bh=+Tx0kbOmkXm7LgNt+n7NagG0r8WKlSvBNxp+IF74blA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LqT8/b0fme9e+b3YnVR33tNKgjoGu0ax+q4qgQMpAvR3gNHhMG2UPUuw7ZRySu2bRxKxJeIKbsdoK14UjBPNqJozELXW9jlRhZ5EIdlS72dYdNp6joE2OSezhWbSXyRb9b4szknZl+TOMp3pBBjEFuKyb8EyZJ8deybD/LQhKfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvs9ouSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83966C4CEEB;
-	Mon,  2 Jun 2025 14:53:18 +0000 (UTC)
+	 MIME-Version; b=BHWeA95Ljc33T0SPLr6ohk6bfkyyRwq9JWuGGDjww34o7sesynorbj357KtEC219y54QTYxXUswUAnIKcY0daPRl/GBhq3lVorxer+WkXqQ356sTAJpEpozusTMIlAKrOeGO36HPPaWLJchTbepRdNhH59wGyv4lRRi8RqLvbCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8IEHSPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D62C4CEEB;
+	Mon,  2 Jun 2025 15:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875999;
-	bh=KVNdSBSB/gGa84G8yMVo14/BJFUsGp/qDCtnY/q7jRo=;
+	s=korg; t=1748876987;
+	bh=+Tx0kbOmkXm7LgNt+n7NagG0r8WKlSvBNxp+IF74blA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvs9ouStQ4cmREnft4NwE84Ly/7K0fObt2UZvhf+OpdFonbkkQQjakJY3nk08cF0L
-	 Wg8SoW8tuikf0+P+2YLQOApqdyhJuFjdJEOk8WIJf6tT9IGXg5zQ+3432xJuqk0wec
-	 jmziq9jymcA0u7TC3n4B8EhZMj7FB6W9k9zLt2co=
+	b=L8IEHSPr9sPUXDxcyn+YmleCnNoc3zHjn5kjAca0HkrxiZfgtCyudVVXso1GUFHtw
+	 XgDujTTZV26/0d0pUAbv5ydFOC6IR8k/hcYC1en5WR4A8k52WrQoiHOyf4FSEHnP7h
+	 5T9t+BTknAZFS+8AT+9/Xy1SWPKZizrnMZHeUBlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Andrew Davis <afd@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/207] ext4: reorder capability check last
+Subject: [PATCH 6.1 135/325] soc: ti: k3-socinfo: Do not use syscon helper to build regmap
 Date: Mon,  2 Jun 2025 15:46:51 +0200
-Message-ID: <20250602134300.290053945@linuxfoundation.org>
+Message-ID: <20250602134325.293677514@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
+[ Upstream commit a5caf03188e44388e8c618dcbe5fffad1a249385 ]
 
-capable() calls refer to enabled LSMs whether to permit or deny the
-request.  This is relevant in connection with SELinux, where a
-capability check results in a policy decision and by default a denial
-message on insufficient permission is issued.
-It can lead to three undesired cases:
-  1. A denial message is generated, even in case the operation was an
-     unprivileged one and thus the syscall succeeded, creating noise.
-  2. To avoid the noise from 1. the policy writer adds a rule to ignore
-     those denial messages, hiding future syscalls, where the task
-     performs an actual privileged operation, leading to hidden limited
-     functionality of that task.
-  3. To avoid the noise from 1. the policy writer adds a rule to permit
-     the task the requested capability, while it does not need it,
-     violating the principle of least privilege.
+The syscon helper device_node_to_regmap() is used to fetch a regmap
+registered to a device node. It also currently creates this regmap
+if the node did not already have a regmap associated with it. This
+should only be used on "syscon" nodes. This driver is not such a
+device and instead uses device_node_to_regmap() on its own node as
+a hacky way to create a regmap for itself.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This will not work going forward and so we should create our regmap
+the normal way by defining our regmap_config, fetching our memory
+resource, then using the normal regmap_init_mmio() function.
+
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20250123181726.597144-1-afd@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/ti/k3-socinfo.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index c23ac149601e5..d6872b71657b6 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -637,8 +637,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
- 	/* Hm, nope.  Are (enough) root reserved clusters available? */
- 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
- 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
--	    capable(CAP_SYS_RESOURCE) ||
--	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
-+	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
-+	    capable(CAP_SYS_RESOURCE)) {
+diff --git a/drivers/soc/ti/k3-socinfo.c b/drivers/soc/ti/k3-socinfo.c
+index 91f441ee61752..5b0d8260918d2 100644
+--- a/drivers/soc/ti/k3-socinfo.c
++++ b/drivers/soc/ti/k3-socinfo.c
+@@ -60,6 +60,12 @@ k3_chipinfo_partno_to_names(unsigned int partno,
+ 	return -EINVAL;
+ }
  
- 		if (free_clusters >= (nclusters + dirty_clusters +
- 				      resv_clusters))
++static const struct regmap_config k3_chipinfo_regmap_cfg = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_stride = 4,
++};
++
+ static int k3_chipinfo_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *node = pdev->dev.of_node;
+@@ -67,13 +73,18 @@ static int k3_chipinfo_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct soc_device *soc_dev;
+ 	struct regmap *regmap;
++	void __iomem *base;
+ 	u32 partno_id;
+ 	u32 variant;
+ 	u32 jtag_id;
+ 	u32 mfg;
+ 	int ret;
+ 
+-	regmap = device_node_to_regmap(node);
++	base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	regmap = regmap_init_mmio(dev, base, &k3_chipinfo_regmap_cfg);
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
 -- 
 2.39.5
 
