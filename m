@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19D3ACB3DC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D68ACB567
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A589439BD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0684D19412A1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8880222D4F6;
-	Mon,  2 Jun 2025 14:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F360D22DF9A;
+	Mon,  2 Jun 2025 14:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCd4gYRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fx02iHdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AFF22259A;
-	Mon,  2 Jun 2025 14:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0544224247;
+	Mon,  2 Jun 2025 14:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874474; cv=none; b=eyiyjc/X8Stgxvr2tfz9KZx0IoG5Ou2qnMCdY24/31qD170CWHYbdUz8l5ckKZ8ZLmmimvQfLxLHR3GrIHg6BNhuyIyVhF0osbnqKZqBEpHObVzd7FWPigCpWCC+61C2sS4lr7SeCTVTQ+y/J461RuDdQw6lemGXVAcbaD0Oh/A=
+	t=1748875272; cv=none; b=Rxi/knYwvY4HNAYTB63wae9j3v38I4mI6DHjuEyN/RMz0WWhFqCz9r5WEHladuCG8rx7NVuW2GDRaq7YiV7tbYdTNQI1tKw5d2VQz5qO2hBkbeCY/sqL8Z7KMo1ogxGpXAkYsXKy8RclOXeKZeflIPkF8RcECKbuVq3Q9QI9InE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874474; c=relaxed/simple;
-	bh=cxF6jzlPc+/9ATTepx79oco4VnIl4Uc1KHAjSGnObYc=;
+	s=arc-20240116; t=1748875272; c=relaxed/simple;
+	bh=U85LASC22LjKEJ25q0YN6rAPF9ca85mjadhb+Y4lGDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APeUPteXOYd7id1GNo+tfOo/FnzCCnu2Uh5w4sbKe+N4K1+EMDfHoRbvbOXA+qpyatnwrhSCApxDjQj8Wl8yojbCZW5F4f+qPk3ThjZIfSf6OeMDzyxzmgu+masTTwcxIKffWKtwpZ6tb3NHl9Qg3DVaUlajXDY0ezk70kImaz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCd4gYRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61AFC4CEEB;
-	Mon,  2 Jun 2025 14:27:53 +0000 (UTC)
+	 MIME-Version; b=AQwaQvdNtXyapogluqtKzk1xJCA9q2B73VgrZvLKYvM/cioHIJ6q/A3636h32gMXOrUr2MTNE38hL11+QOm/GN1V4k7nbOUaoVOBiBZ7+nYTCCLdoeL/C1P2+NsAnMr7x2lai0ahNgntpUbqJjJpq5DAh4sTf6H2KHv/Ccfxk2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fx02iHdg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409C3C4CEEB;
+	Mon,  2 Jun 2025 14:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874474;
-	bh=cxF6jzlPc+/9ATTepx79oco4VnIl4Uc1KHAjSGnObYc=;
+	s=korg; t=1748875272;
+	bh=U85LASC22LjKEJ25q0YN6rAPF9ca85mjadhb+Y4lGDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZCd4gYRrCKj6UQqZDV8miMAWeJOmzQgeZ1osYFC2KpalS3OuQIcgjIYpglxQigU4R
-	 KwXC3blzsAjUjS+60rDuqphfE4HjNEzTIfGB+9YxTRl1Gd8mIGbOC8tr231MXMmAOS
-	 /ugwQHCMg3EDm4mXqH7qOGf6pyRjuh5HDeDvArTU=
+	b=fx02iHdgbwWstpDBgE4xKihiPYGNf3VnzMnYJNLoBO+PiMFzU9P7/R6Q7tfOWmK8G
+	 Ast1DlaC+BwKkGsRcwWhLEJSH3uy8iU+dR/qXTJP/0czeAD3SNBwyMnGpaiiDXxSPA
+	 erfUC8Egku0WCrIbKo2rLunDgJ/XE5wuhUFaWH2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alan J. Wylie" <alan@wylie.me.uk>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/204] sch_htb: make htb_deactivate() idempotent
+Subject: [PATCH 5.10 082/270] do_umount(): add missing barrier before refcount checks in sync case
 Date: Mon,  2 Jun 2025 15:46:07 +0200
-Message-ID: <20250602134257.019131293@linuxfoundation.org>
+Message-ID: <20250602134310.525069482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 3769478610135e82b262640252d90f6efb05be71 ]
+[ Upstream commit 65781e19dcfcb4aed1167d87a3ffcc2a0c071d47 ]
 
-Alan reported a NULL pointer dereference in htb_next_rb_node()
-after we made htb_qlen_notify() idempotent.
+do_umount() analogue of the race fixed in 119e1ef80ecf "fix
+__legitimize_mnt()/mntput() race".  Here we want to make sure that
+if __legitimize_mnt() doesn't notice our lock_mount_hash(), we will
+notice their refcount increment.  Harder to hit than mntput_no_expire()
+one, fortunately, and consequences are milder (sync umount acting
+like umount -l on a rare race with RCU pathwalk hitting at just the
+wrong time instead of use-after-free galore mntput_no_expire()
+counterpart used to be hit).  Still a bug...
 
-It turns out in the following case it introduced some regression:
-
-htb_dequeue_tree():
-  |-> fq_codel_dequeue()
-    |-> qdisc_tree_reduce_backlog()
-      |-> htb_qlen_notify()
-        |-> htb_deactivate()
-  |-> htb_next_rb_node()
-  |-> htb_deactivate()
-
-For htb_next_rb_node(), after calling the 1st htb_deactivate(), the
-clprio[prio]->ptr could be already set to  NULL, which means
-htb_next_rb_node() is vulnerable here.
-
-For htb_deactivate(), although we checked qlen before calling it, in
-case of qlen==0 after qdisc_tree_reduce_backlog(), we may call it again
-which triggers the warning inside.
-
-To fix the issues here, we need to:
-
-1) Make htb_deactivate() idempotent, that is, simply return if we
-   already call it before.
-2) Make htb_next_rb_node() safe against ptr==NULL.
-
-Many thanks to Alan for testing and for the reproducer.
-
-Fixes: 5ba8b837b522 ("sch_htb: make htb_qlen_notify() idempotent")
-Reported-by: Alan J. Wylie <alan@wylie.me.uk>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://patch.msgid.link/20250428232955.1740419-2-xiyou.wangcong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 48a066e72d97 ("RCU'd vfsmounts")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_htb.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ fs/namespace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index 9506bf87c66bc..c618aae25b099 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -331,7 +331,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
-  */
- static inline void htb_next_rb_node(struct rb_node **n)
- {
--	*n = rb_next(*n);
-+	if (*n)
-+		*n = rb_next(*n);
- }
- 
- /**
-@@ -573,8 +574,8 @@ static inline void htb_activate(struct htb_sched *q, struct htb_class *cl)
-  */
- static inline void htb_deactivate(struct htb_sched *q, struct htb_class *cl)
- {
--	WARN_ON(!cl->prio_activity);
--
-+	if (!cl->prio_activity)
-+		return;
- 	htb_deactivate_prios(q, cl);
- 	cl->prio_activity = 0;
- }
-@@ -1173,8 +1174,6 @@ static void htb_qlen_notify(struct Qdisc *sch, unsigned long arg)
- {
- 	struct htb_class *cl = (struct htb_class *)arg;
- 
--	if (!cl->prio_activity)
--		return;
- 	htb_deactivate(qdisc_priv(sch), cl);
- }
- 
-@@ -1282,8 +1281,7 @@ static int htb_delete(struct Qdisc *sch, unsigned long arg)
- 	if (cl->parent)
- 		cl->parent->children--;
- 
--	if (cl->prio_activity)
--		htb_deactivate(q, cl);
-+	htb_deactivate(q, cl);
- 
- 	if (cl->cmode != HTB_CAN_SEND)
- 		htb_safe_rb_erase(&cl->pq_node,
-@@ -1408,8 +1406,7 @@ static int htb_change_class(struct Qdisc *sch, u32 classid,
- 			/* turn parent into inner node */
- 			qdisc_purge_queue(parent->leaf.q);
- 			parent_qdisc = parent->leaf.q;
--			if (parent->prio_activity)
--				htb_deactivate(q, parent);
-+			htb_deactivate(q, parent);
- 
- 			/* remove from evt list because of level change */
- 			if (parent->cmode != HTB_CAN_SEND) {
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 2f97112657adc..e46267e7d29d1 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -569,7 +569,7 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 		return 0;
+ 	mnt = real_mount(bastard);
+ 	mnt_add_count(mnt, 1);
+-	smp_mb();			// see mntput_no_expire()
++	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+ 	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+@@ -1638,6 +1638,7 @@ static int do_umount(struct mount *mnt, int flags)
+ 			umount_tree(mnt, UMOUNT_PROPAGATE);
+ 		retval = 0;
+ 	} else {
++		smp_mb(); // paired with __legitimize_mnt()
+ 		shrink_submounts(mnt);
+ 		retval = -EBUSY;
+ 		if (!propagate_mount_busy(mnt, 2)) {
 -- 
 2.39.5
 
