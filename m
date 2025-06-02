@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD03ACB34E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CF9ACB69B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E0CD7AC18A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 814404C2ED7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370FF22D9F7;
-	Mon,  2 Jun 2025 14:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A5F225785;
+	Mon,  2 Jun 2025 14:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejaPTL61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZTf+rtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65C11D8DFB;
-	Mon,  2 Jun 2025 14:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193EF239E73;
+	Mon,  2 Jun 2025 14:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874874; cv=none; b=aqym/RqHEt4TafiB6vOin2YKnHujPv76ErOy2jyljxMY2lf9VC0jVKevNNslMyDR0EV5lnMJH/IhN6+qt99vDf/9QUhFRxwn7yKlKT/2hKcPM3mZIgRgYhqPR/IvJZ4Hyjuwg9J7VwX8CpsnOqpSq152rTag4ALvRD0K1ydge0I=
+	t=1748876364; cv=none; b=dGcyJegc0wjpuQEenm2i1Q2Js/RMvIp07NsLGLMc1b/awoexUyxjuFg2lY+QMBNI00XAVb/rN9kEAlsyQVOdZtbGc9J4jkUkPL7XRdQ66amPAM+iSTRs295QDwH00WTTuD7kbL4i19FU9MP7hAPeRTEkOQHmZp+Wyqt0pezqR4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874874; c=relaxed/simple;
-	bh=56RYP85K2y+qIgSk6J+pUi/bzWH5E+z6j6WzcXlIyfg=;
+	s=arc-20240116; t=1748876364; c=relaxed/simple;
+	bh=u98jOjoZWWKznEfvWyN/LF1YnA2nWn3Ie9PnyZaBE+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7oO5sZanDfIIXEiKbHeNrF4fOpR7RkHjtisByt4iZIhC1T3pzy8NYF0apW4B85tPikRbYrsrd9yskZMxQY1vgqLn5IIZshEqw+phyXq9XRdgVWPnMJzViyeH+ZWxz7/96qVCesju6WIUOquFth8Ghz8QgbFl6WwV5yDLFPD7No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejaPTL61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604D7C4CEEB;
-	Mon,  2 Jun 2025 14:34:33 +0000 (UTC)
+	 MIME-Version; b=Y0lqB0MIPZAxmyQgqYhBwEHN6j6RvojQvR9eqJyjI/GuF7t4tv99VNGCu1QXHVgK0KZUeS7hSY0FCLIonWec4L/KBibZUTA+RKuAED3JlBU8y3O7RP6ceAMZiXG8V++4YYKB8/ls7SNoW1xLmRWpKGJyOUSLulNqQpNOWRxl7QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZTf+rtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88241C4CEEB;
+	Mon,  2 Jun 2025 14:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874873;
-	bh=56RYP85K2y+qIgSk6J+pUi/bzWH5E+z6j6WzcXlIyfg=;
+	s=korg; t=1748876364;
+	bh=u98jOjoZWWKznEfvWyN/LF1YnA2nWn3Ie9PnyZaBE+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejaPTL61OfKE3WO/Mzjwukl5Ddj+72N+bwToisPnJCxSz2tbgOpAbMhGs8hbVr9bc
-	 bDMjQHqQvXw7iXXpassFS9l6B/tk8FYWNqSmZpHZNBe1OBj+p0jRO3LYhSzYc51SR6
-	 X/virV9DmIDjrO7u6QfVciP4r2I9OqAz7s3LqKGM=
+	b=jZTf+rtgYHWvvNI60sx4yxn7eQAVOhgpmWWFevO4nPHAPp6SDCgT8dY6a5j1L0f/P
+	 4lzUZSqfO5u9U+5780s0fCbBb+lg9c8g4Y4qLUq0aCKK6Mm4thzo78MmzfvJd+gB7V
+	 b3oBkCpP9dPS0aKv6FRJr7sxduc3NEmILDTdO/io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 162/204] regulator: ad5398: Add device tree support
+Subject: [PATCH 5.15 123/207] drm/amdgpu: reset psp->cmd to NULL after releasing the buffer
 Date: Mon,  2 Jun 2025 15:48:15 +0200
-Message-ID: <20250602134302.022321735@linuxfoundation.org>
+Message-ID: <20250602134303.534274119@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
+[ Upstream commit e92f3f94cad24154fd3baae30c6dfb918492278d ]
 
-Previously, the ad5398 driver used only platform_data, which is
-deprecated in favour of device tree. This caused the AD5398 to fail to
-probe as it could not load its init_data. If the AD5398 has a device
-tree node, pull the init_data from there using
-of_get_regulator_init_data.
+Reset psp->cmd to NULL after releasing the buffer in function psp_sw_fini().
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/ad5398.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
-index 75f432f61e919..f4d6e62bd963e 100644
---- a/drivers/regulator/ad5398.c
-+++ b/drivers/regulator/ad5398.c
-@@ -14,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-+#include <linux/regulator/of_regulator.h>
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index a8b7f0aeacf83..64bf24b64446b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -353,7 +353,6 @@ static int psp_sw_fini(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 	struct psp_context *psp = &adev->psp;
+-	struct psp_gfx_cmd_resp *cmd = psp->cmd;
  
- #define AD5398_CURRENT_EN_MASK	0x8000
+ 	psp_memory_training_fini(psp);
+ 	if (psp->sos_fw) {
+@@ -373,8 +372,8 @@ static int psp_sw_fini(void *handle)
+ 	    adev->asic_type == CHIP_SIENNA_CICHLID)
+ 		psp_sysfs_fini(adev);
  
-@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
- 	const struct ad5398_current_data_format *df =
- 			(struct ad5398_current_data_format *)id->driver_data;
+-	kfree(cmd);
+-	cmd = NULL;
++	kfree(psp->cmd);
++	psp->cmd = NULL;
  
--	if (!init_data)
--		return -EINVAL;
--
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
- 	config.dev = &client->dev;
-+	if (client->dev.of_node)
-+		init_data = of_get_regulator_init_data(&client->dev,
-+						       client->dev.of_node,
-+						       &ad5398_reg);
-+	if (!init_data)
-+		return -EINVAL;
-+
- 	config.init_data = init_data;
-+	config.of_node = client->dev.of_node;
- 	config.driver_data = chip;
- 
- 	chip->client = client;
+ 	amdgpu_bo_free_kernel(&psp->fw_pri_bo,
+ 			      &psp->fw_pri_mc_addr, &psp->fw_pri_buf);
 -- 
 2.39.5
 
