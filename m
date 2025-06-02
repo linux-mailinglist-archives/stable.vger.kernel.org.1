@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-149342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB4DACB24C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF47ACB740
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22FBF16947F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7A5A20170
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8D7224B15;
-	Mon,  2 Jun 2025 14:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA1C2248A4;
+	Mon,  2 Jun 2025 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqzRkDc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGYEQlkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D02221F0A;
-	Mon,  2 Jun 2025 14:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBA41FF61E;
+	Mon,  2 Jun 2025 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873673; cv=none; b=oZLc8Kp+riBLIORGz5A6DwOOUaW9Efuk/ADORTkEtGOvVdDnFkbZznmV0S0ZLJVXpfmct/QGDZDY1Z/B+IEkg0/VLZOH9AJl7KAdVwKMcNZs90lxcjEkWFmH1jX1hnyc01ghpLGpeF7yw00v1km1UJJ5mpaNj1FU8XRuzc7GIVM=
+	t=1748876590; cv=none; b=avnKShARo97lXIDH0jAhDvnk29fjBaAFJDF5cdnGrYfEhcB7LG8DFT7uHxRnDhhKCuF/uZxNmF4J0RHgZXTKN7zqgd60R8+WhrlB9T9y8XhQa6nMpi6wj4zOdPjTtisNesSLoR/P8kmb9BlD0oXcYqGDhboA34e58F676PoZ+no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873673; c=relaxed/simple;
-	bh=9JIapGg3+EbwYq+C7pKdh7bPiE7UokvC7Cz3rzv7msw=;
+	s=arc-20240116; t=1748876590; c=relaxed/simple;
+	bh=zoUO5CIQrF8SJX93lIVWyb9yE3XcylewTo/1vNJKh10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWhy+ONAvEziqbI5sue7BwbmPK7CSfQ8eoQUfLHBjxcqs9c9WVjx96Pc9XWKZFQD0Gp+E6R/iOMXhwRsSCKoqwz+9ryXL8DhgZ1QBMud6p8NgPqHaJ/CxOc30ITd/bBPkZ3rK7KC6QINBLdtPGh2z8+qbhuSJb1LuJu4+AU7WO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqzRkDc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5DCC4CEEB;
-	Mon,  2 Jun 2025 14:14:32 +0000 (UTC)
+	 MIME-Version; b=tD3rPW/2IdNpvyHwoOVRNOLRoTbjNF+kxHCR0KL692cBhf4kB+no7PRJ1JJaYnVok2wdN3NFgHgJbt9w5g3uSKreAbpMhshxf2YmP7X4Y5MkL27GT8aRRrJGjWdsDDhleo+ghvhmOqZxgSJzckcLEnHEV/HUYf2xMo0WhsECawk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGYEQlkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45E5C4CEEB;
+	Mon,  2 Jun 2025 15:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873673;
-	bh=9JIapGg3+EbwYq+C7pKdh7bPiE7UokvC7Cz3rzv7msw=;
+	s=korg; t=1748876590;
+	bh=zoUO5CIQrF8SJX93lIVWyb9yE3XcylewTo/1vNJKh10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqzRkDc7liYuUeeQoEigjjWOqX0CfrSLWkJEB46+DWbpbhmjEVhCwLxwM13cTC72P
-	 WoAThacQksWJYP1fxBRqV278T1xAr12d+KamiGayitpqcGb5jVf2XP7VcyHXM9STO5
-	 WWVvxDbA2/6AEAVTxLrcoRVdCw7Ea7TdvBFowmx8=
+	b=WGYEQlkUXXViOXpZNmZpqknyZnt7ZRn7poodXu88QvTkMs3wEqriQg7UFfMwTNmfM
+	 O1M/mpC8lsbRpD8pz+Qb7eNsa2KMTQVK0l+650m3Fvzq4WoMOOgOCTaj2RBqvUh20J
+	 MYzVmlZZxW/PHyqadVTNhXXpxUKEg2I9WMdK1eHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/444] eth: mlx4: dont try to complete XDP frames in netpoll
+Subject: [PATCH 6.1 004/325] gpio: pca953x: fix IRQ storm on system wake up
 Date: Mon,  2 Jun 2025 15:44:40 +0200
-Message-ID: <20250602134349.679158362@linuxfoundation.org>
+Message-ID: <20250602134319.909153272@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 8fdeafd66edaf420ea0063a1f13442fe3470fe70 ]
+[ Upstream commit 3e38f946062b4845961ab86b726651b4457b2af8 ]
 
-mlx4 doesn't support ndo_xdp_xmit / XDP_REDIRECT and wasn't
-using page pool until now, so it could run XDP completions
-in netpoll (NAPI budget == 0) just fine. Page pool has calling
-context requirements, make sure we don't try to call it from
-what is potentially HW IRQ context.
+If an input changes state during wake-up and is used as an interrupt
+source, the IRQ handler reads the volatile input register to clear the
+interrupt mask and deassert the IRQ line. However, the IRQ handler is
+triggered before access to the register is granted, causing the read
+operation to fail.
 
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250213010635.1354034-3-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As a result, the IRQ handler enters a loop, repeatedly printing the
+"failed reading register" message, until `pca953x_resume()` is eventually
+called, which restores the driver context and enables access to
+registers.
+
+Fix by disabling the IRQ line before entering suspend mode, and
+re-enabling it after the driver context is restored in `pca953x_resume()`.
+
+An IRQ can be disabled with disable_irq() and still wake the system as
+long as the IRQ has wake enabled, so the wake-up functionality is
+preserved.
+
+Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_tx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-pca953x.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_tx.c b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-index 65cb63f6c4658..61a0fd8424a2c 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_tx.c
-@@ -450,6 +450,8 @@ int mlx4_en_process_tx_cq(struct net_device *dev,
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index a5be47a916d3a..f81d79a297a5c 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -1241,6 +1241,8 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
  
- 	if (unlikely(!priv->port_up))
- 		return 0;
-+	if (unlikely(!napi_budget) && cq->type == TX_XDP)
-+		return 0;
+ 	guard(mutex)(&chip->i2c_lock);
  
- 	netdev_txq_bql_complete_prefetchw(ring->tx_queue);
++	if (chip->client->irq > 0)
++		enable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, false);
+ 	regcache_mark_dirty(chip->regmap);
+ 	ret = pca953x_regcache_sync(chip);
+@@ -1253,6 +1255,10 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
+ static void pca953x_save_context(struct pca953x_chip *chip)
+ {
+ 	guard(mutex)(&chip->i2c_lock);
++
++	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
++	if (chip->client->irq > 0)
++		disable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, true);
+ }
  
 -- 
 2.39.5
