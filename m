@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-150073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF4BACB64E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE6FACB2B5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E163E1941182
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F7C87A52F2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6373222DFB5;
-	Mon,  2 Jun 2025 14:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F6522E3FD;
+	Mon,  2 Jun 2025 14:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7m0CrAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvQI2Lw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AB222331C;
-	Mon,  2 Jun 2025 14:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB32C1A4F12;
+	Mon,  2 Jun 2025 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875948; cv=none; b=JtqtYfbpo5auyEMqurT93OuryzfwdSKt0mqx3MejT+afg6PCznOd+2cqX1ApEnGqbIsPlYQcc/+3RYwGePqZCM3CNJObwLu44pe82LKpQE4dPGnHcEqXf9Aojz6DWEeoDFZONhqbZext4ATuiYcUrIsV2mB556kXCWdY/IdoAvo=
+	t=1748874514; cv=none; b=TYi5IVPq7HT9+aWcB6obdN2keNHWgoGpUYg57qbxwliRon3dlRZnnpaX55d3T9X5RvDKb9oY11dQBBFeTmzRcrAoj8SFUSAW43gk+fgj/BnD80uIoeRmbPS5vq37OaAJ9VV9JtHbCKEZ7zAKDzj1c2cxWRQqiQdMTcuiftbQXxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875948; c=relaxed/simple;
-	bh=+yh3Na9Duzq2Vt1L5oSEZ9ZBGJr4QqGJz7ixB3niwO8=;
+	s=arc-20240116; t=1748874514; c=relaxed/simple;
+	bh=EYVZtDsVEyKxmxRLXJyJFJzvv42C6+RghEBgWlMZNFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8TAjAXBrc0ADenq+FpIycPsL3FUXa3XopHW0J6UQRXQkOQ3c5+tAKvK2G66W8tFLQyIQus1dPQYFHRdtB5JRUhV8T27DvMqPPnVatkCt0fdyv3S+i8tVU6VdTsWNd8enUNYI6J/zSzdxSAB9WjaM3sl9/fMaY3HGvirj7qoIG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7m0CrAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84723C4CEEB;
-	Mon,  2 Jun 2025 14:52:27 +0000 (UTC)
+	 MIME-Version; b=ciBvRXttLWA6+STqJVZsu2L8R5jAfXwJmuaEPQWpCHt5Rr3ZA9O/EOo4LMc7yB3+NQVmjVVA/KgdDd7KqPxOHWVlfwfmJ2/3ZeE/wMnUZZhCXJTWbYgcBW5DLXF3Yitp4QJCr4V2IfQRqCMoS/jyItmxXWLsm05Z0YYZz1BpmyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvQI2Lw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1FFC4CEEB;
+	Mon,  2 Jun 2025 14:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875948;
-	bh=+yh3Na9Duzq2Vt1L5oSEZ9ZBGJr4QqGJz7ixB3niwO8=;
+	s=korg; t=1748874514;
+	bh=EYVZtDsVEyKxmxRLXJyJFJzvv42C6+RghEBgWlMZNFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7m0CrAze63a1/f8O4B53QsneOFhmbD9W/QUcxiAsNoWZLvRg00VIT/fKpL5KtFt3
-	 mVOSU2ryYEivTMxGweNFpZ4O+RnXzMDrmxCu50ixiRXREZ+Qi7EXiMWY/ZV7SbTnkq
-	 9tMMnBQgUkd3VW3GPwzpM3xbpOTWAgzEV2Op8XEM=
+	b=LvQI2Lw3p81lBcdYIGILc5jTi2rZM1oa9T5S/3vY7+eNgXffRmBtmg1zkCKwMlxo1
+	 RyBrHudreB3/fiGOTW2GiyO/GRrPVHvL63p9EjPeESjyckoFKWyJ75b40RcIC5LTjZ
+	 UsXCaYjF2Sl8YX4QPqU2eVIvIcqNmWsOw0Zb0s7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/207] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
-Date: Mon,  2 Jun 2025 15:46:21 +0200
-Message-ID: <20250602134259.135701942@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Shichangkuo <shi.changkuo@h3c.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 049/204] ocfs2: implement handshaking with ocfs2 recovery thread
+Date: Mon,  2 Jun 2025 15:46:22 +0200
+Message-ID: <20250602134257.609239144@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +70,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
+commit 8f947e0fd595951460f5a6e1ac29baa82fa02eab upstream.
 
-Check that the delegation is still attached after taking the spin lock
-in nfs_start_delegation_return_locked().
+We will need ocfs2 recovery thread to acknowledge transitions of
+recovery_state when disabling particular types of recovery.  This is
+similar to what currently happens when disabling recovery completely, just
+more general.  Implement the handshake and use it for exit from recovery.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250424134515.18933-5-jack@suse.cz
+Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Tested-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Murad Masimov <m.masimov@mt-integration.ru>
+Cc: Shichangkuo <shi.changkuo@h3c.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/delegation.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/journal.c |   52 +++++++++++++++++++++++++++++++++++-----------------
+ fs/ocfs2/ocfs2.h   |    4 ++++
+ 2 files changed, 39 insertions(+), 17 deletions(-)
 
-diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
-index 0c14ff09cfbe3..45ef1b6f868bf 100644
---- a/fs/nfs/delegation.c
-+++ b/fs/nfs/delegation.c
-@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
- 	if (delegation == NULL)
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -194,31 +194,48 @@ int ocfs2_recovery_init(struct ocfs2_sup
+ 	return 0;
+ }
+ 
+-/* we can't grab the goofy sem lock from inside wait_event, so we use
+- * memory barriers to make sure that we'll see the null task before
+- * being woken up */
+ static int ocfs2_recovery_thread_running(struct ocfs2_super *osb)
+ {
+-	mb();
+ 	return osb->recovery_thread_task != NULL;
+ }
+ 
+-void ocfs2_recovery_exit(struct ocfs2_super *osb)
++static void ocfs2_recovery_disable(struct ocfs2_super *osb,
++				   enum ocfs2_recovery_state state)
+ {
+-	struct ocfs2_recovery_map *rm;
+-
+-	/* disable any new recovery threads and wait for any currently
+-	 * running ones to exit. Do this before setting the vol_state. */
+ 	mutex_lock(&osb->recovery_lock);
+-	osb->recovery_state = OCFS2_REC_DISABLED;
++	/*
++	 * If recovery thread is not running, we can directly transition to
++	 * final state.
++	 */
++	if (!ocfs2_recovery_thread_running(osb)) {
++		osb->recovery_state = state + 1;
++		goto out_lock;
++	}
++	osb->recovery_state = state;
++	/* Wait for recovery thread to acknowledge state transition */
++	wait_event_cmd(osb->recovery_event,
++		       !ocfs2_recovery_thread_running(osb) ||
++				osb->recovery_state >= state + 1,
++		       mutex_unlock(&osb->recovery_lock),
++		       mutex_lock(&osb->recovery_lock));
++out_lock:
+ 	mutex_unlock(&osb->recovery_lock);
+-	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
+ 
+-	/* At this point, we know that no more recovery threads can be
+-	 * launched, so wait for any recovery completion work to
+-	 * complete. */
++	/*
++	 * At this point we know that no more recovery work can be queued so
++	 * wait for any recovery completion work to complete.
++	 */
+ 	if (osb->ocfs2_wq)
+ 		flush_workqueue(osb->ocfs2_wq);
++}
++
++void ocfs2_recovery_exit(struct ocfs2_super *osb)
++{
++	struct ocfs2_recovery_map *rm;
++
++	/* disable any new recovery threads and wait for any currently
++	 * running ones to exit. Do this before setting the vol_state. */
++	ocfs2_recovery_disable(osb, OCFS2_REC_WANT_DISABLE);
+ 
+ 	/*
+ 	 * Now that recovery is shut down, and the osb is about to be
+@@ -1488,7 +1505,8 @@ bail:
+ 
+ 	ocfs2_free_replay_slots(osb);
+ 	osb->recovery_thread_task = NULL;
+-	mb(); /* sync with ocfs2_recovery_thread_running */
++	if (osb->recovery_state == OCFS2_REC_WANT_DISABLE)
++		osb->recovery_state = OCFS2_REC_DISABLED;
+ 	wake_up(&osb->recovery_event);
+ 
+ 	mutex_unlock(&osb->recovery_lock);
+@@ -1507,13 +1525,13 @@ void ocfs2_recovery_thread(struct ocfs2_
+ 	int was_set = -1;
+ 
+ 	mutex_lock(&osb->recovery_lock);
+-	if (osb->recovery_state < OCFS2_REC_DISABLED)
++	if (osb->recovery_state < OCFS2_REC_WANT_DISABLE)
+ 		was_set = ocfs2_recovery_map_set(osb, node_num);
+ 
+ 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
+ 		osb->recovery_state, osb->recovery_thread_task, was_set);
+ 
+-	if (osb->recovery_state == OCFS2_REC_DISABLED)
++	if (osb->recovery_state >= OCFS2_REC_WANT_DISABLE)
  		goto out;
- 	spin_lock(&delegation->lock);
--	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
-+	if (delegation->inode &&
-+	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
- 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
- 		/* Refcount matched in nfs_end_delegation_return() */
- 		ret = nfs_get_delegation(delegation);
--- 
-2.39.5
-
+ 
+ 	if (osb->recovery_thread_task)
+--- a/fs/ocfs2/ocfs2.h
++++ b/fs/ocfs2/ocfs2.h
+@@ -288,6 +288,10 @@ enum ocfs2_mount_options
+ 
+ enum ocfs2_recovery_state {
+ 	OCFS2_REC_ENABLED = 0,
++	OCFS2_REC_WANT_DISABLE,
++	/*
++	 * Must be OCFS2_REC_WANT_DISABLE + 1 for ocfs2_recovery_exit() to work
++	 */
+ 	OCFS2_REC_DISABLED,
+ };
+ 
 
 
 
