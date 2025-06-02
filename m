@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-148968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08E9ACAF78
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341E5ACAFF2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF651BA2386
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9CAE7A4FE1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E84221723;
-	Mon,  2 Jun 2025 13:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8986C1F4165;
+	Mon,  2 Jun 2025 13:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeOJ+JYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxOlheu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9460022156B;
-	Mon,  2 Jun 2025 13:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EE11401B;
+	Mon,  2 Jun 2025 13:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872111; cv=none; b=A/pz3als+CaUIDv8CSZ/l0d04Wu/glqfydlbV1QMAYCuephZDQz0eCAGbl7B2mOzRI7dGeLhBUyk3Num8ZMyk+3JSuEg/6FYf1dSeLW0jtNF3IPSK5RM4r2XsVnvyuLcR8WDkGulNM97PmNDTMgncLHonIl2wxOTd5FVGSZi0aY=
+	t=1748872647; cv=none; b=nzr2RlphPbQMaKiVceLQajDEhvvD6JWJCbCNTBjBY6Lb07VXDvTgdjMiBLD05pNypAXFz3RcsEjD4LpXQqx2pw+OapaQq4CX4N//T88Jbsl1sk54S5oy5NP4QLuziI7GoP9WN6UHEpVRZrjSeyI1ed1Vo8lss/Yies5Iz6pRQ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872111; c=relaxed/simple;
-	bh=E7bWldQHf4sGX8xPYKC5m1JJcS0MvS034D9FYhtJAgM=;
+	s=arc-20240116; t=1748872647; c=relaxed/simple;
+	bh=8EdFSnW4jD4t8aZEsOG97p3J+CZja6QgM6QmXxnAjQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwaW2zUqKwSy+bl7AAXkIH4+RYNaEHYBOFzpyp2qoNOXUfu0YEgbDDDUC07x5gvaGzeRzEGZuuLooC7KXbdR7r+LHDF7klDDftjfErU+L1aC1hBMGXmnabmM3VcAHCH0HAZ++9JLeEmqoGH4TysadkVAWpT9BPg5yKgxojuJYOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeOJ+JYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2048C4CEEB;
-	Mon,  2 Jun 2025 13:48:30 +0000 (UTC)
+	 MIME-Version; b=TE1XwQKbdkm6pBUUDxhpMfcQzbSChbeHIsUMuig9i+aj25902PLQj7OqLGwKCq7j0NFI0XKt10e6euViHvp1oD95SEoIHOlKkqEJb+ILqE1Et+TAs9aHeYfy0vM0wLYwaUqHJ0EgJPMjmCSNAfyuK1q3x69CaDFlugw9Lt9BJHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxOlheu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910D4C4CEEB;
+	Mon,  2 Jun 2025 13:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872111;
-	bh=E7bWldQHf4sGX8xPYKC5m1JJcS0MvS034D9FYhtJAgM=;
+	s=korg; t=1748872647;
+	bh=8EdFSnW4jD4t8aZEsOG97p3J+CZja6QgM6QmXxnAjQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeOJ+JYFv6KjTY8ZBOoD4Az+7g6W6lbbk1CwiKTrcqboM1HnkW38uJ8zLJup4g4BQ
-	 UXLKcJzZypwBQoW9Mvldv2emVegYqSoW4woloAcOriarQaADDnO1tMvvlx8sahjb2c
-	 SUSB94UT04hzbp1puJ8PwICopEumrqx7lmQ7hk54=
+	b=JxOlheu3fv4z3bmBaQmhxxYijr7mRAu+gwX+FK61B3+a6l8eAI5g0zzCU9ULo1X43
+	 1EFwakSpZBGvhVFxDMUXmdxVlR/QKn9B/UroF1jDaCqDtfcRsPhmwoB5me8NpD+IZC
+	 PL6dNC8rWA9iPwkCKqD5IXGMofQHVumaznw2S9fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 21/49] arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
+	Judith Mendez <jm@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.14 27/73] arm64: dts: ti: k3-am62-main: Set eMMC clock parent to default
 Date: Mon,  2 Jun 2025 15:47:13 +0200
-Message-ID: <20250602134238.776348770@linuxfoundation.org>
+Message-ID: <20250602134242.767820631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Judith Mendez <jm@ti.com>
 
-commit ff6ba96378367133b66587bd3ee9f068a39ff3a9 upstream.
+commit 3a71cdfec94436079513d9adf4b1d4f7a7edd917 upstream.
 
-The l12b and l15b supplies are used by components that are not (fully)
-described (and some never will be) and must never be disabled.
+Set eMMC clock parents to the defaults which is MAIN_PLL0_HSDIV5_CLKOUT
+for eMMC. This change is necessary since DM is not implementing the
+correct procedure to switch PLL clock source for eMMC and MMC CLK mux is
+not glich-free. As a preventative action, lets switch back to the defaults.
 
-Mark the regulators as always-on to prevent them from being disabled,
-for example, when consumers probe defer or suspend.
-
-Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
-Cc: stable@vger.kernel.org	# 6.8
-Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-8-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: c37c58fdeb8a ("arm64: dts: ti: k3-am62: Add more peripheral nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Acked-by: Udit Kumar <u-kumar1@ti.com>
+Acked-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20250429163337.15634-2-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -437,6 +437,7 @@
- 			regulator-min-microvolt = <1200000>;
- 			regulator-max-microvolt = <1200000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l13b_3p0: ldo13 {
-@@ -458,6 +459,7 @@
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l16b_2p9: ldo16 {
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -552,8 +552,6 @@
+ 		power-domains = <&k3_pds 57 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 57 5>, <&k3_clks 57 6>;
+ 		clock-names = "clk_ahb", "clk_xin";
+-		assigned-clocks = <&k3_clks 57 6>;
+-		assigned-clock-parents = <&k3_clks 57 8>;
+ 		bus-width = <8>;
+ 		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
 
 
 
