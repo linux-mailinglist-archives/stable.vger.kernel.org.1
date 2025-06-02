@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-150483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311E8ACB684
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95830ACB466
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27E0A7A70A0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC5554A3A17
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814042147E7;
-	Mon,  2 Jun 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B362E22F164;
+	Mon,  2 Jun 2025 14:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoJU2nsQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS3SAGcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B82E225785;
-	Mon,  2 Jun 2025 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7026520E6E3;
+	Mon,  2 Jun 2025 14:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877270; cv=none; b=ITMkdexA2z/gOdEiWDpoYay9MCjauK/7CGkTFcs81dsDUR+HqV/0/+Dvz+czTSs2eXfy7gpvBM1qVW+zAGusQsqB/HCKRlxIkZEcTX2pMKZUoPJ7HU4kes4WAWRQspTJXyK6sSbfawAI1rRPUorl0RDWaUvEtEjhWEI+HOtRvHg=
+	t=1748874897; cv=none; b=aHHFPkwOBfZxtSxhrdyeFEwCNVSjcmvzYVinh9y8EybbGWU+zbUdh1SMG9P8Fnga2vs7YB5TG8pkq0bAM9iffPoNGTlTkjhGn1YM2n0breOxy9X1gIi+85cf6Ll1k+H3SC/381HY4PWIeYTgAp7Pmqp/K6f9lv99FqgviHRPhKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877270; c=relaxed/simple;
-	bh=m93Ou1CHg4oR06QKTPHQAxEnz7fBa5hadDik668f06k=;
+	s=arc-20240116; t=1748874897; c=relaxed/simple;
+	bh=95IdMU8ztUf66IA57RYLAB+wXk6NnnpnF8yPNXcROKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyWXDAU050gdoWo/vjOWyNBFFIOg2FuVwkUvu5hQmn0RQx7K1Y6RxytzlOdgu/OLcDXRCQMvSx5au0sTF0o2CirrLVCRttQGv8q1pyDT9U3IK+Eo+qFRWASQL2t5zxBvO/k/9xwQAG6jJuyA2DSVbA/jublEcm1cY7XsIQI9buc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoJU2nsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE90C4CEEE;
-	Mon,  2 Jun 2025 15:14:29 +0000 (UTC)
+	 MIME-Version; b=kti2w7rj/4TtvNhd9x3UqribmWOH5KGU0oQ0dWSnKZ2K0X+xe7ArHXvv7WxDmHTdKPmFfuQ9QD+gxIJoE5273b1Qg7EWs1bbToAw4CEkN3wOrgtwNGeHcRjmYqH+A6pgePlcJoCRbrHKnzKWLg1RRB4UN2rljBOF+tU7JU4wIWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS3SAGcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD265C4CEEB;
+	Mon,  2 Jun 2025 14:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877270;
-	bh=m93Ou1CHg4oR06QKTPHQAxEnz7fBa5hadDik668f06k=;
+	s=korg; t=1748874897;
+	bh=95IdMU8ztUf66IA57RYLAB+wXk6NnnpnF8yPNXcROKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RoJU2nsQaupC4pJA6s2uBscMlgFCQbopzVwrLCfzPhkVNZR9pX2dBF7ZzYOt0EuiP
-	 zMGjKcitU+AKEy8rLKi7E6AH65YF1POBdrapVoUZ9pEQiVmlkd1XsqYT5ZhsQsFvap
-	 pKqhiw+tSXvzY7Z7LG5qeZRR0sHufYHNfXsm9r00=
+	b=lS3SAGcTVcO9lWxxskWDO9MW1mqUZ+ENNHJI8vfB+2wz36J3CosMVdc9CbuIPseK6
+	 HggXcDJjHet/tDTeEP9TeayXhJc3QzhnskkxR4tD/U//xCDIjLySbfK4KcBGQi0NYJ
+	 LlL9sYk62ZNY9ntCfabYF2Z/pRw1QXZ7seI9Tg0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 224/325] nvmet-tcp: dont restore null sk_state_change
+Subject: [PATCH 5.4 167/204] nvmet-tcp: dont restore null sk_state_change
 Date: Mon,  2 Jun 2025 15:48:20 +0200
-Message-ID: <20250602134328.885340109@linuxfoundation.org>
+Message-ID: <20250602134302.218586880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -274,10 +274,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 125e22bd34e2a..eee052dbf80c1 100644
+index 11c8506e04ca3..bac81baa49c13 100644
 --- a/drivers/nvme/target/tcp.c
 +++ b/drivers/nvme/target/tcp.c
-@@ -1417,6 +1417,9 @@ static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
+@@ -1338,6 +1338,9 @@ static void nvmet_tcp_restore_socket_callbacks(struct nvmet_tcp_queue *queue)
  {
  	struct socket *sock = queue->sock;
  
