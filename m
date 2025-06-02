@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8542DACB058
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:04:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBBAACB00E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCEBE482DC4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30921888A40
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B292236F3;
-	Mon,  2 Jun 2025 14:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C771221299;
+	Mon,  2 Jun 2025 13:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+3F7wl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dn4a8YAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8582221FCA;
-	Mon,  2 Jun 2025 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2071C5D72;
+	Mon,  2 Jun 2025 13:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872876; cv=none; b=Nj6j7hnQTieTPeLWLIgwNUdwt11L6mGtqxSpGoR6g9BgyHDhaAHLax2m0Bve4JOUF7fVwM1arCmewcmy9yUCZ0MNQ5cddsay9pLNFK0TTLSk/25WCPWfYymWFMpmP/9PItwKAuLF8krtoOSVFuqM7n80ULKc2XpaEOHdMABTZyI=
+	t=1748872743; cv=none; b=qDeXuGVU/b+g3iQSuhf1xQKWVzYVjb0sbkFsbeGOUsCFnpy8UlinlxVt5rMTF3GHv/mugUhHl1+JpVxeW/XUitsO/vawcboP3gZgydJyaSR++2QqmFYoyhL0lP0qsAu8vq62+8IODK4aKRMs4/UQ0td7uwTowI6VUVL32FtaYww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872876; c=relaxed/simple;
-	bh=JXgCOPmgQ8ZTn41dIqXx/2hXzWtHJTGBoSTkEwilk/s=;
+	s=arc-20240116; t=1748872743; c=relaxed/simple;
+	bh=XMB1wze2nh4HXC1gkmAb9q60bjEyk3KABTi9pC2IVbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1OXR6ZX91Y6YZuviSbkR+VgvovWEhv448MbrODoVRprQlc4dMkcw33AgMFHAd2bw3/QBxkC6ZUkGlBHVuaY+HpdhMY8tMhvBMte1ANSDqmjv7azTsanibMnp7weDBXEmit/UPesiZxkK5V/m5lCMhFl8FcvIF4PA0DbZ9sppBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+3F7wl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED30C4CEEB;
-	Mon,  2 Jun 2025 14:01:15 +0000 (UTC)
+	 MIME-Version; b=f4862BXKuqgzQNEt0ce5M6dtV4daLjOMTi1mDntkbAw4NUe0lFW47eVJIVlK66OhaTEnr43K8Xh/gQaJpIEMzvur5R//K3JgvZ7NnoSQp0Bakdr0/I3diUnf73MInDPmqqlOZQRZK3vko8ukQck6r0qbgWeLuifmVG1JSq+FhrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dn4a8YAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11154C4CEEB;
+	Mon,  2 Jun 2025 13:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872876;
-	bh=JXgCOPmgQ8ZTn41dIqXx/2hXzWtHJTGBoSTkEwilk/s=;
+	s=korg; t=1748872742;
+	bh=XMB1wze2nh4HXC1gkmAb9q60bjEyk3KABTi9pC2IVbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+3F7wl65jl5WdQZtVG9RfUy6mnYeLwj3yCJ5s2tZFKf7G5IqNMEPgg91qsQlYEke
-	 ho7e5u12USow+FTlb3ht9oTnwduVqr/Cxsc6gF8j8CiICwUcRWNKnJfS51lOs6DnNO
-	 Nf8B8o/LW4S//a0TRkNOGl7G9iZ53Wx+UMeAMco8=
+	b=Dn4a8YAAfiaYSh3eB2LbwjvJiWn/K4t9BWZXSMMHRByLcUcXvWmyy/o1vJKEqAXKa
+	 +YZsW5W2yJHf7HCM0nUqa7lt0oUpdMvJL8IvMjmB2zaOy9hvKEUDYirUNNAnz6pWBc
+	 g/NNZBdc/EjQ7hnojxHxLQz1EbgJYeP9Vf7Np1CA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.12 23/55] arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Gow <davidgow@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 54/73] um: let make clean properly clean underlying SUBARCH as well
 Date: Mon,  2 Jun 2025 15:47:40 +0200
-Message-ID: <20250602134239.188995456@linuxfoundation.org>
+Message-ID: <20250602134243.823744355@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 97b67cc102dc2cc8aa39a569c22a196e21af5a21 upstream.
+[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
 
-Add device tree nodes for two power regulators on the J721E SK board.
-vsys_5v0: A fixed regulator representing the 5V supply output from the
-LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
+Building the kernel with O= is affected by stale in-tree build artifacts.
 
-J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
+So, if the source tree is not clean, Kbuild displays the following:
 
-Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250415111328.3847502-2-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ make ARCH=um O=build defconfig
+  make[1]: Entering directory '/.../linux/build'
+  ***
+  *** The source tree is not clean, please run 'make ARCH=um mrproper'
+  *** in /.../linux
+  ***
+  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
+  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
+  make[1]: Leaving directory '/.../linux/build'
+  make: *** [Makefile:248: __sub-make] Error 2
+
+Usually, running 'make mrproper' is sufficient for cleaning the source
+tree for out-of-tree builds.
+
+However, building UML generates build artifacts not only in arch/um/,
+but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
+files remain under arch/x86/, Kbuild will reuse them instead of creating
+new ones under the specified build directory.
+
+This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
+
+Reported-by: Shuah Khan <skhan@linuxfoundation.org>
+Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk.dts |   31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ arch/um/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-@@ -184,6 +184,17 @@
- 		regulator-boot-on;
- 	};
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 1d36a613aad83..9ed792e565c91 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -154,5 +154,6 @@ MRPROPER_FILES += $(HOST_DIR)/include/generated
+ archclean:
+ 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
+ 		-o -name '*.gcov' \) -type f -print | xargs rm -f
++	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
  
-+	vsys_5v0: fixedregulator-vsys5v0 {
-+		/* Output of LM61460 */
-+		compatible = "regulator-fixed";
-+		regulator-name = "vsys_5v0";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vusb_main>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+
- 	vdd_mmc1: fixedregulator-sd {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
-@@ -211,6 +222,20 @@
- 			 <3300000 0x1>;
- 	};
- 
-+	vdd_sd_dv: gpio-regulator-TLV71033 {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&vdd_sd_dv_pins_default>;
-+		regulator-name = "tlv71033";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-boot-on;
-+		vin-supply = <&vsys_5v0>;
-+		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x0>,
-+			 <3300000 0x1>;
-+	};
-+
- 	transceiver1: can-phy1 {
- 		compatible = "ti,tcan1042";
- 		#phy-cells = <0>;
-@@ -608,6 +633,12 @@
- 		>;
- 	};
- 
-+	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
-+		>;
-+	};
-+
- 	wkup_uart0_pins_default: wkup-uart0-default-pins {
- 		pinctrl-single,pins = <
- 			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
+ export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING DEV_NULL_PATH
+-- 
+2.39.5
+
 
 
 
