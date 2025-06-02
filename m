@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12887ACB759
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F47ACB0DA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B01244C7FC0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979A51BA59A1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F6322F3A8;
-	Mon,  2 Jun 2025 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DFE22DF83;
+	Mon,  2 Jun 2025 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xThDa/NM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKGNmHAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A694120B;
-	Mon,  2 Jun 2025 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517BC22D4D7;
+	Mon,  2 Jun 2025 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877324; cv=none; b=QE7f6667fT7oBdoaL2b3f4QNPwU5DOd3vGR65d5faNBCIxOmHjWQ9PMr92Debzt60TWxQvg9dg72q0HkKN+RLefif9WvSA1tCiTkDQfIVXHEtQcyJ6s2VZuvxQwkubmZD3OrCNPiDuloDtwrE6nHM3NsIpEppRmaegzN1ZzBKVs=
+	t=1748872963; cv=none; b=e46ltxPychU6Juay3/2d5irkvUKent9t1ji/IwyuwjGsot4944Mgyu9EESgolK2gzg8UbBQk7gf5Rg3KzcM0pC9GovHL/Z9cqjqUmisVjwm49D0lvucnK6KGCdo9hGEB8pN32cWxrZ7Z3nyUAjWB+tS48jHwndpeJAebOIq5ne8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877324; c=relaxed/simple;
-	bh=t6lYi9uLFfDMu4R3NkyNNwbk8h8bkGlVbL+ytJhttWo=;
+	s=arc-20240116; t=1748872963; c=relaxed/simple;
+	bh=cwRrWUjNbz3FtafeX1Oh6rBvdchcEI+At06vkpHf2V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yk0U0wa3/nvrb/Mc4gMvmfllzu9SzG3cLNsH8hEPezz70WQkl5qy729q4WYC29Q+WsGACC0YNthD6IdnYHcqpFWWGgq/87xJb1VzX0YYJBvU2OyNsx9sbHjFH+SjseO96S+F0pi4MjF7FG8lwJtlCrIbuMP4vShlWyMXVKFlTas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xThDa/NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82A7C4CEF0;
-	Mon,  2 Jun 2025 15:15:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TI9Cev56A32HdkSNoE44C88ymklLxjn2HXJlgEvTBV95vO9Hm/OFagWkow4E9Je94VVNwZ4fjz14jUsIZ+8f9J7G+EfLOKacSztnr2Yit6GJO5JKpdwT7Y5wRhav1ZEJ0wYwUaawBFABTdw1uMZja+vkjQz97BuXCS4Q/QFn03c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKGNmHAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF64AC4CEEB;
+	Mon,  2 Jun 2025 14:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877324;
-	bh=t6lYi9uLFfDMu4R3NkyNNwbk8h8bkGlVbL+ytJhttWo=;
+	s=korg; t=1748872963;
+	bh=cwRrWUjNbz3FtafeX1Oh6rBvdchcEI+At06vkpHf2V0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xThDa/NMcKUqFILjZaLekh3kJH9TwviKE13hzLmSBwZBuI1Xiv1H0JT7bbSHG2qsW
-	 ePGyjCGPsXRCRJPok9/HPH0AMKVIA59RuYZckMPjERwOQ5Tb3LL4AjkXFedurckSMv
-	 LMq7/nT2LwFEROVsmMimhfYF408r+a1UkGsB9Kko=
+	b=bKGNmHAzNjJimP0nFtpwPz2yj4ARpFRU3Ya8u4ib7bqu3leFC07ZY1Qy7CaipsD/5
+	 Zchd5S7p70Av6lzO5oWjftkGHbk4Ba8A8y6b+Tch3tFAUbRJT/UfsAuwZGo41KYuB/
+	 WaR88VxBjlXzXNEBqPaV0OR3gLMv7Ll6Zivuu9LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soeren Moch <smoch@web.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Valtteri Koskivuori <vkoskiv@gmail.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/325] wifi: rtl8xxxu: retry firmware download on error
-Date: Mon,  2 Jun 2025 15:48:07 +0200
-Message-ID: <20250602134328.372329943@linuxfoundation.org>
+Subject: [PATCH 6.12 51/55] platform/x86: fujitsu-laptop: Support Lifebook S2110 hotkeys
+Date: Mon,  2 Jun 2025 15:48:08 +0200
+Message-ID: <20250602134240.286958812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Soeren Moch <smoch@web.de>
+From: Valtteri Koskivuori <vkoskiv@gmail.com>
 
-[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
+[ Upstream commit a7e255ff9fe4d9b8b902023aaf5b7a673786bb50 ]
 
-Occasionally there is an EPROTO error during firmware download.
-This error is converted to EAGAIN in the download function.
-But nobody tries again and so device probe fails.
+The S2110 has an additional set of media playback control keys enabled
+by a hardware toggle button that switches the keys between "Application"
+and "Player" modes. Toggling "Player" mode just shifts the scancode of
+each hotkey up by 4.
 
-Implement download retry to fix this.
+Add defines for new scancodes, and a keymap and dmi id for the S2110.
 
-This error was observed (and fix tested) on a tbs2910 board [1]
-with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
+Tested on a Fujitsu Lifebook S2110.
 
-[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-
-Signed-off-by: Soeren Moch <smoch@web.de>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
+Signed-off-by: Valtteri Koskivuori <vkoskiv@gmail.com>
+Acked-by: Jonathan Woithe <jwoithe@just42.net>
+Link: https://lore.kernel.org/r/20250509184251.713003-1-vkoskiv@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c   | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/platform/x86/fujitsu-laptop.c | 33 +++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 9ccf8550a0679..cd22c756acc69 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -798,9 +798,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
- 	return len;
+diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
+index ae992ac1ab4ac..6d5300c54a421 100644
+--- a/drivers/platform/x86/fujitsu-laptop.c
++++ b/drivers/platform/x86/fujitsu-laptop.c
+@@ -17,13 +17,13 @@
+ /*
+  * fujitsu-laptop.c - Fujitsu laptop support, providing access to additional
+  * features made available on a range of Fujitsu laptops including the
+- * P2xxx/P5xxx/S6xxx/S7xxx series.
++ * P2xxx/P5xxx/S2xxx/S6xxx/S7xxx series.
+  *
+  * This driver implements a vendor-specific backlight control interface for
+  * Fujitsu laptops and provides support for hotkeys present on certain Fujitsu
+  * laptops.
+  *
+- * This driver has been tested on a Fujitsu Lifebook S6410, S7020 and
++ * This driver has been tested on a Fujitsu Lifebook S2110, S6410, S7020 and
+  * P8010.  It should work on most P-series and S-series Lifebooks, but
+  * YMMV.
+  *
+@@ -107,7 +107,11 @@
+ #define KEY2_CODE			0x411
+ #define KEY3_CODE			0x412
+ #define KEY4_CODE			0x413
+-#define KEY5_CODE			0x420
++#define KEY5_CODE			0x414
++#define KEY6_CODE			0x415
++#define KEY7_CODE			0x416
++#define KEY8_CODE			0x417
++#define KEY9_CODE			0x420
  
- write_error:
--	dev_info(&udev->dev,
--		 "%s: Failed to write block at addr: %04x size: %04x\n",
--		 __func__, addr, blocksize);
-+	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
-+		dev_info(&udev->dev,
-+			 "%s: Failed to write block at addr: %04x size: %04x\n",
-+			 __func__, addr, blocksize);
- 	return -EAGAIN;
- }
+ /* Hotkey ringbuffer limits */
+ #define MAX_HOTKEY_RINGBUFFER_SIZE	100
+@@ -560,7 +564,7 @@ static const struct key_entry keymap_default[] = {
+ 	{ KE_KEY, KEY2_CODE,            { KEY_PROG2 } },
+ 	{ KE_KEY, KEY3_CODE,            { KEY_PROG3 } },
+ 	{ KE_KEY, KEY4_CODE,            { KEY_PROG4 } },
+-	{ KE_KEY, KEY5_CODE,            { KEY_RFKILL } },
++	{ KE_KEY, KEY9_CODE,            { KEY_RFKILL } },
+ 	/* Soft keys read from status flags */
+ 	{ KE_KEY, FLAG_RFKILL,          { KEY_RFKILL } },
+ 	{ KE_KEY, FLAG_TOUCHPAD_TOGGLE, { KEY_TOUCHPAD_TOGGLE } },
+@@ -584,6 +588,18 @@ static const struct key_entry keymap_p8010[] = {
+ 	{ KE_END, 0 }
+ };
  
-@@ -3920,8 +3921,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 	 */
- 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
++static const struct key_entry keymap_s2110[] = {
++	{ KE_KEY, KEY1_CODE, { KEY_PROG1 } }, /* "A" */
++	{ KE_KEY, KEY2_CODE, { KEY_PROG2 } }, /* "B" */
++	{ KE_KEY, KEY3_CODE, { KEY_WWW } },   /* "Internet" */
++	{ KE_KEY, KEY4_CODE, { KEY_EMAIL } }, /* "E-mail" */
++	{ KE_KEY, KEY5_CODE, { KEY_STOPCD } },
++	{ KE_KEY, KEY6_CODE, { KEY_PLAYPAUSE } },
++	{ KE_KEY, KEY7_CODE, { KEY_PREVIOUSSONG } },
++	{ KE_KEY, KEY8_CODE, { KEY_NEXTSONG } },
++	{ KE_END, 0 }
++};
++
+ static const struct key_entry *keymap = keymap_default;
  
--	ret = rtl8xxxu_download_firmware(priv);
--	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+	for (int retry = 5; retry >= 0 ; retry--) {
-+		ret = rtl8xxxu_download_firmware(priv);
-+		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+		if (ret != -EAGAIN)
-+			break;
-+		if (retry)
-+			dev_dbg(dev, "%s: retry firmware download\n", __func__);
-+	}
- 	if (ret)
- 		goto exit;
- 	ret = rtl8xxxu_start_firmware(priv);
+ static int fujitsu_laptop_dmi_keymap_override(const struct dmi_system_id *id)
+@@ -621,6 +637,15 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
+ 		},
+ 		.driver_data = (void *)keymap_p8010
+ 	},
++	{
++		.callback = fujitsu_laptop_dmi_keymap_override,
++		.ident = "Fujitsu LifeBook S2110",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU SIEMENS"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK S2110"),
++		},
++		.driver_data = (void *)keymap_s2110
++	},
+ 	{}
+ };
+ 
 -- 
 2.39.5
 
