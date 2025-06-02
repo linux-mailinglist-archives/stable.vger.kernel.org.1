@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-150529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB63ACB851
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF819ACB652
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD044A53DC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E90464A1CA8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24B8224AF1;
-	Mon,  2 Jun 2025 15:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D56F22259F;
+	Mon,  2 Jun 2025 15:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STvk0gIy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIJ9lpTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1392248B3;
-	Mon,  2 Jun 2025 15:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590A922CBEC;
+	Mon,  2 Jun 2025 15:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877408; cv=none; b=o6GNLV8VS87JODKzTeehrMYkwqJiMO/N6fbKERt48YajIlCTOPExULrjqu99qOpnZwJU4GSGhvdtQhgE07RDX1lKhT1ZBWjy6k59pjfnZlfqPbcGrr/q89svReSA9Cfeb4jijZdCEjlWBb8ninULYBml/AurHhhSshlqOM0Mu48=
+	t=1748876428; cv=none; b=sgFVqcysmHn+OdI3vpRs/UG6ZjfKnM284B9yl/coYinz3hJsox+khk6cyw6473HslsCzI8GyfmtuBufbaHrTe2JkOM+37akmmQ3zKX5rxYKW1liGUfG3wDeZHdx0SfRNb0kUz1DIeO1SmMOC8fgX2FNcmraFDTSJI8k0WpX7m2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877408; c=relaxed/simple;
-	bh=gC2wLOM8AFB9mcgVNFMGl1nDLUyGdlHQeAsnOg3Nnqw=;
+	s=arc-20240116; t=1748876428; c=relaxed/simple;
+	bh=fI2NlzGVXG1HClYJwhwOJML6YHiZYwLpg2ZkG4c1erI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACB+EHLxDLv2ZflIE/Qd39hbJH96w3yGbYokHTz77XGuY7BlFkC+WKfVTBqpSgibeDp7aUNaw235JeDL7J16gYIY/r0mPH0+IHx92hD9xj01bvkwKhe3D8ltltr+pS0IwqZtH9DV52zS48EW/J+7Zif1OmhsCjuLnWKgQV2Wt1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STvk0gIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BFAC4CEEB;
-	Mon,  2 Jun 2025 15:16:47 +0000 (UTC)
+	 MIME-Version; b=Qad0QMcVuKtKgHdkd9lzYENL+xWCdo6U2iMdwVUIYkkI27N8Sd+4qhejHkibVo4jgxv5/zDjrM2rP3JNAir+ewRB8nPjN5YbvizYn2VECy2NKMUil53lThPio+LdAZM0hnFkjrGoB5ocM/FV26pFMDQ5PaAB3rRxQtPyjYzpGTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIJ9lpTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65651C4CEEB;
+	Mon,  2 Jun 2025 15:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877408;
-	bh=gC2wLOM8AFB9mcgVNFMGl1nDLUyGdlHQeAsnOg3Nnqw=;
+	s=korg; t=1748876427;
+	bh=fI2NlzGVXG1HClYJwhwOJML6YHiZYwLpg2ZkG4c1erI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STvk0gIyiys1ytp61+FnHH/pSaeORrbyKi5NtOI+Wzcofv964miyf1EEeHYi2Msdx
-	 t1XMrIrIk9rC3vLlTfQJw+cKySOrzVXiw3eCFOH2FV1MquUVmgS0VLLdGGKl/zVX0W
-	 CWFDbGGaSNK4JC3q5mk044naMEjXzpxAEl29H3YU=
+	b=NIJ9lpTQ9jZIBZZ3xoPyiE4g0ZxpTKSW/B4W06s9ilRh89u0BQon5EIxwb9Y+DWfM
+	 dHiH8ZmketBQrfjZPc6bF8HqIMTFei7MRUcpUWE10DEsImNQsqUTCjR5xjosnR8F14
+	 j1jEG8oSMQ1+b+Sro4VOitP6Tbpp3N17DsBmM0dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xulin Sun <xulin.sun@windriver.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 267/325] spi: spi-fsl-dspi: restrict register range for regmap access
+	Dominik Grzegorzek <dominik.grzegorzek@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 171/207] padata: do not leak refcount in reorder_work
 Date: Mon,  2 Jun 2025 15:49:03 +0200
-Message-ID: <20250602134330.622643950@linuxfoundation.org>
+Message-ID: <20250602134305.443662767@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
 
-[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
+commit d6ebcde6d4ecf34f8495fb30516645db3aea8993 upstream.
 
-DSPI registers are NOT continuous, some registers are reserved and
-accessing them from userspace will trigger external abort, add regmap
-register access table to avoid below abort.
+A recent patch that addressed a UAF introduced a reference count leak:
+the parallel_data refcount is incremented unconditionally, regardless
+of the return value of queue_work(). If the work item is already queued,
+the incremented refcount is never decremented.
 
-  For example on S32G:
+Fix this by checking the return value of queue_work() and decrementing
+the refcount when necessary.
 
-  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+Resolves:
 
-  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
-  ...
-  Call trace:
-  regmap_mmio_read32le+0x24/0x48
-  regmap_mmio_read+0x48/0x70
-  _regmap_bus_reg_read+0x38/0x48
-  _regmap_read+0x68/0x1b0
-  regmap_read+0x50/0x78
-  regmap_read_debugfs+0x120/0x338
+Unreferenced object 0xffff9d9f421e3d80 (size 192):
+  comm "cryptomgr_probe", pid 157, jiffies 4294694003
+  hex dump (first 32 bytes):
+    80 8b cf 41 9f 9d ff ff b8 97 e0 89 ff ff ff ff  ...A............
+    d0 97 e0 89 ff ff ff ff 19 00 00 00 1f 88 23 00  ..............#.
+  backtrace (crc 838fb36):
+    __kmalloc_cache_noprof+0x284/0x320
+    padata_alloc_pd+0x20/0x1e0
+    padata_alloc_shell+0x3b/0xa0
+    0xffffffffc040a54d
+    cryptomgr_probe+0x43/0xc0
+    kthread+0xf6/0x1f0
+    ret_from_fork+0x2f/0x50
+    ret_from_fork_asm+0x1a/0x30
 
-Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
-Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ kernel/padata.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 01930b52c4fb8..3f9609edac944 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0+
- //
- // Copyright 2013 Freescale Semiconductor, Inc.
--// Copyright 2020 NXP
-+// Copyright 2020-2025 NXP
- //
- // Freescale DSPI driver
- // This file contains a driver for the Freescale DSPI
-@@ -1128,6 +1128,20 @@ static int dspi_resume(struct device *dev)
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -350,7 +350,8 @@ static void padata_reorder(struct parall
+ 		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
+ 		 */
+ 		padata_get_pd(pd);
+-		queue_work(pinst->serial_wq, &pd->reorder_work);
++		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
++			padata_put_pd(pd);
+ 	}
+ }
  
- static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
- 
-+static const struct regmap_range dspi_yes_ranges[] = {
-+	regmap_reg_range(SPI_MCR, SPI_MCR),
-+	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
-+	regmap_reg_range(SPI_SR, SPI_TXFR3),
-+	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
-+	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
-+	regmap_reg_range(SPI_SREX, SPI_SREX),
-+};
-+
-+static const struct regmap_access_table dspi_access_table = {
-+	.yes_ranges	= dspi_yes_ranges,
-+	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
-+};
-+
- static const struct regmap_range dspi_volatile_ranges[] = {
- 	regmap_reg_range(SPI_MCR, SPI_TCR),
- 	regmap_reg_range(SPI_SR, SPI_SR),
-@@ -1145,6 +1159,8 @@ static const struct regmap_config dspi_regmap_config = {
- 	.reg_stride	= 4,
- 	.max_register	= 0x88,
- 	.volatile_table	= &dspi_volatile_table,
-+	.rd_table	= &dspi_access_table,
-+	.wr_table	= &dspi_access_table,
- };
- 
- static const struct regmap_range dspi_xspi_volatile_ranges[] = {
-@@ -1166,6 +1182,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 		.reg_stride	= 4,
- 		.max_register	= 0x13c,
- 		.volatile_table	= &dspi_xspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
- 	},
- 	{
- 		.name		= "pushr",
--- 
-2.39.5
-
 
 
 
