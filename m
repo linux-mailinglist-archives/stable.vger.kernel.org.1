@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85996ACB3BD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E569ACB55D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0231BA4C3A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530EC19407CC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD572248A0;
-	Mon,  2 Jun 2025 14:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2E7224AFC;
+	Mon,  2 Jun 2025 14:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQwf1Gah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8Lt7qPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA62221FCA;
-	Mon,  2 Jun 2025 14:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C9721CA1E;
+	Mon,  2 Jun 2025 14:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874692; cv=none; b=oSSNgUtX0ikjOD6zC5tWdpT0iA6EMJSmtPKsI8+CMOuFFFS9/zmaIwiPEQp7BFwOP+BY6vhM4lLPz7L+gkWsqDeKiHxLfkh28/ggjiRyhsceFnuS8/wzWgOqIdFRGKAk8KMm3+D8jC0LWH5y06pekqfJhTWU/DQGF50n7tiiUuM=
+	t=1748875406; cv=none; b=LDSWNjOjm8j0z1iR/l7l42/qzRbCW0C5G+gSZxo3PsUOKQpOUm/UuGGUqdWBrAUmDtPlQ5wYnaZkpxR/QZp/XCnNNzQPDkmfQDU4ae/N2Zq0T/QGB7dA4Sv6HR0aBS49UuePQHaOuxzm35gr20qBn6K2iaRPBiAZX/Amxx+PaQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874692; c=relaxed/simple;
-	bh=1yDuNNk7amAoANH6Z2PobwPzwa4oqduI9q6BDGsbl/E=;
+	s=arc-20240116; t=1748875406; c=relaxed/simple;
+	bh=6Kzs0h3HkcDOAgWUUI9QkctC9G8hUqE8/qUXlSRAYis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlBJJ2jNEWxkhOoysUHOVJvpBG8PjtrWGtgKPvKkd4KUxsDBKu0E4GmFmg6c3QvxY9UIWURfof5vEsNYbDXiesucJgf6Urx5fk7IdMJwFsRq1a8bp8QlhIratEB0WemVpLOVF0BtRHna02zNYp8J4Nruzihozby+6ClN7KYgRMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQwf1Gah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64966C4CEEB;
-	Mon,  2 Jun 2025 14:31:32 +0000 (UTC)
+	 MIME-Version; b=Xae9aA+8sXFV2wjzoHR0r+FFO6BGZmVSgZJIhT0XZ5M08pDSE018rqrbuuIyWriiEYzBLPRqw5XA829cUDwcuLOjsP+usOJyK9x0vYJP6+yd6ySpkTgpG0RoubYZfUv3xUujTHVQDWvJcBAAEDlhc2E3E/+NWBvlOkbQq4EhB18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8Lt7qPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC8BC4CEEB;
+	Mon,  2 Jun 2025 14:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874692;
-	bh=1yDuNNk7amAoANH6Z2PobwPzwa4oqduI9q6BDGsbl/E=;
+	s=korg; t=1748875406;
+	bh=6Kzs0h3HkcDOAgWUUI9QkctC9G8hUqE8/qUXlSRAYis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQwf1Gah6xEdZyPb5KsxXMAFbMlo9ZUwyIPgfJTni47J2PJ8feVAn6OiUgLsoJcH5
-	 NCv4SxKkqaaRxzVl/U74JnmmMyuwVCThqWYojtHGcznjwsOh1JyFX3FMlerZJlfIZb
-	 x2K40qOZkz7fbvZox85hgTk63iF8wQ/HXcIhrIj8=
+	b=b8Lt7qPPYx7uYEdnGCuOj2N/YlkMnFghVvA9COM7Kk3rx5sTWabzLcm6Sc4WxNUbO
+	 2C85wCJfWZt4xE38g6cinYQyFTGTbNbm/Cokioq5+t5TRIS1m4pIymxbqt8KDQy7Fd
+	 Hx8QlNWFgsR40UHlIxnwpxALVt5IqUA0h5cKEFpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 075/204] NFSv4/pnfs: pnfs_set_layout_stateid() should update the layout cred
+Subject: [PATCH 5.10 123/270] fbcon: Use correct erase colour for clearing in fbcon
 Date: Mon,  2 Jun 2025 15:46:48 +0200
-Message-ID: <20250602134258.625662552@linuxfoundation.org>
+Message-ID: <20250602134312.253219584@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +62,244 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Zsolt Kajtar <soci@c64.rulez.org>
 
-[ Upstream commit 59b5639490f51aa604d18064dcf0c2d72eb1decf ]
+[ Upstream commit 892c788d73fe4a94337ed092cb998c49fa8ecaf4 ]
 
-If the cred assigned to the layout that we're updating differs from
-the one used to retrieve the new layout segment, then we need to
-update the layout plh_lc_cred field.
+The erase colour calculation for fbcon clearing should use get_color instead
+of attr_col_ec, like everything else. The latter is similar but is not correct.
+For example it's missing the depth dependent remapping and doesn't care about
+blanking.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 6d6d7f91cc8c ("NFSv4/pnfs: Reset the layout state after a layoutreturn")
+The problem can be reproduced by setting up the background colour to grey
+(vt.color=0x70) and having an fbcon console set to 2bpp (4 shades of gray).
+Now the background attribute should be 1 (dark gray) on the console.
+
+If the screen is scrolled when pressing enter in a shell prompt at the bottom
+line then the new line is cleared using colour 7 instead of 1. That's not
+something fillrect likes (at 2bbp it expect 0-3) so the result is interesting.
+
+This patch switches to get_color with vc_video_erase_char to determine the
+erase colour from attr_col_ec. That makes the latter function redundant as
+no other users were left.
+
+Use correct erase colour for clearing in fbcon
+
+Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/callback_proc.c |  2 +-
- fs/nfs/pnfs.c          | 20 ++++++++++++++++----
- fs/nfs/pnfs.h          |  1 +
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/core/bitblit.c   |  5 ++--
+ drivers/video/fbdev/core/fbcon.c     | 10 +++++---
+ drivers/video/fbdev/core/fbcon.h     | 38 +---------------------------
+ drivers/video/fbdev/core/fbcon_ccw.c |  5 ++--
+ drivers/video/fbdev/core/fbcon_cw.c  |  5 ++--
+ drivers/video/fbdev/core/fbcon_ud.c  |  5 ++--
+ drivers/video/fbdev/core/tileblit.c  |  8 +++---
+ 7 files changed, 18 insertions(+), 58 deletions(-)
 
-diff --git a/fs/nfs/callback_proc.c b/fs/nfs/callback_proc.c
-index 31922657e836e..1397e0816ba09 100644
---- a/fs/nfs/callback_proc.c
-+++ b/fs/nfs/callback_proc.c
-@@ -284,7 +284,7 @@ static u32 initiate_file_draining(struct nfs_client *clp,
- 		goto unlock;
- 	}
- 
--	pnfs_set_layout_stateid(lo, &args->cbl_stateid, true);
-+	pnfs_set_layout_stateid(lo, &args->cbl_stateid, NULL, true);
- 	switch (pnfs_mark_matching_lsegs_return(lo, &free_me_list,
- 				&args->cbl_range,
- 				be32_to_cpu(args->cbl_stateid.seqid))) {
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 90961dae4dc3b..a6362c07cff63 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -943,10 +943,21 @@ pnfs_destroy_all_layouts(struct nfs_client *clp)
- 	pnfs_destroy_layouts_byclid(clp, false);
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index 8e095b0982db4..bb821b68f88c0 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -59,12 +59,11 @@ static void bit_bmove(struct vc_data *vc, struct fb_info *info, int sy,
  }
  
-+static void
-+pnfs_set_layout_cred(struct pnfs_layout_hdr *lo, const struct cred *cred)
-+{
-+	const struct cred *old;
-+
-+	if (cred && cred_fscmp(lo->plh_lc_cred, cred) != 0) {
-+		old = xchg(&lo->plh_lc_cred, get_cred(cred));
-+		put_cred(old);
-+	}
-+}
-+
- /* update lo->plh_stateid with new if is more recent */
- void
- pnfs_set_layout_stateid(struct pnfs_layout_hdr *lo, const nfs4_stateid *new,
--			bool update_barrier)
-+			const struct cred *cred, bool update_barrier)
+ static void bit_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		      int sx, int height, int width)
++		      int sx, int height, int width, int fg, int bg)
  {
- 	u32 oldseq, newseq, new_barrier = 0;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	struct fb_fillrect region;
  
-@@ -954,6 +965,7 @@ pnfs_set_layout_stateid(struct pnfs_layout_hdr *lo, const nfs4_stateid *new,
- 	newseq = be32_to_cpu(new->seqid);
+-	region.color = attr_bgcol_ec(bgshift, vc, info);
++	region.color = bg;
+ 	region.dx = sx * vc->vc_font.width;
+ 	region.dy = sy * vc->vc_font.height;
+ 	region.width = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 6d58c8a5cb446..080b615a55810 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1266,7 +1266,7 @@ static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+ {
+ 	struct fb_info *info = registered_fb[con2fb_map[vc->vc_num]];
+ 	struct fbcon_ops *ops = info->fbcon_par;
+-
++	int fg, bg;
+ 	struct fbcon_display *p = &fb_display[vc->vc_num];
+ 	u_int y_break;
  
- 	if (!pnfs_layout_is_valid(lo)) {
-+		pnfs_set_layout_cred(lo, cred);
- 		nfs4_stateid_copy(&lo->plh_stateid, new);
- 		lo->plh_barrier = newseq;
- 		pnfs_clear_layoutreturn_info(lo);
-@@ -1149,7 +1161,7 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
+@@ -1287,16 +1287,18 @@ static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+ 		fbcon_clear_margins(vc, 0);
+ 	}
  
- 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
- 		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
--		pnfs_set_layout_stateid(lo, stateid, true);
-+		pnfs_set_layout_stateid(lo, stateid, NULL, true);
++	fg = get_color(vc, info, vc->vc_video_erase_char, 1);
++	bg = get_color(vc, info, vc->vc_video_erase_char, 0);
+ 	/* Split blits that cross physical y_wrap boundary */
+ 
+ 	y_break = p->vrows - p->yscroll;
+ 	if (sy < y_break && sy + height - 1 >= y_break) {
+ 		u_int b = y_break - sy;
+-		ops->clear(vc, info, real_y(p, sy), sx, b, width);
++		ops->clear(vc, info, real_y(p, sy), sx, b, width, fg, bg);
+ 		ops->clear(vc, info, real_y(p, sy + b), sx, height - b,
+-				 width);
++				 width, fg, bg);
  	} else
- 		pnfs_mark_layout_stateid_invalid(lo, &freeme);
- out_unlock:
-@@ -2382,14 +2394,14 @@ pnfs_layout_process(struct nfs4_layoutget *lgp)
+-		ops->clear(vc, info, real_y(p, sy), sx, height, width);
++		ops->clear(vc, info, real_y(p, sy), sx, height, width, fg, bg);
+ }
  
- 	if (!pnfs_layout_is_valid(lo)) {
- 		/* We have a completely new layout */
--		pnfs_set_layout_stateid(lo, &res->stateid, true);
-+		pnfs_set_layout_stateid(lo, &res->stateid, lgp->cred, true);
- 	} else if (nfs4_stateid_match_other(&lo->plh_stateid, &res->stateid)) {
- 		/* existing state ID, make sure the sequence number matches. */
- 		if (pnfs_layout_stateid_blocked(lo, &res->stateid)) {
- 			dprintk("%s forget reply due to sequence\n", __func__);
- 			goto out_forget;
- 		}
--		pnfs_set_layout_stateid(lo, &res->stateid, false);
-+		pnfs_set_layout_stateid(lo, &res->stateid, lgp->cred, false);
- 	} else {
- 		/*
- 		 * We got an entirely new state ID.  Mark all segments for the
-diff --git a/fs/nfs/pnfs.h b/fs/nfs/pnfs.h
-index 68339680bb7d1..b0f91a4592cb5 100644
---- a/fs/nfs/pnfs.h
-+++ b/fs/nfs/pnfs.h
-@@ -270,6 +270,7 @@ bool nfs4_layout_refresh_old_stateid(nfs4_stateid *dst,
- void pnfs_put_layout_hdr(struct pnfs_layout_hdr *lo);
- void pnfs_set_layout_stateid(struct pnfs_layout_hdr *lo,
- 			     const nfs4_stateid *new,
-+			     const struct cred *cred,
- 			     bool update_barrier);
- int pnfs_mark_matching_lsegs_invalid(struct pnfs_layout_hdr *lo,
- 				struct list_head *tmp_list,
+ static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 0f16cbc99e6a4..3e1ec454b8aa3 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -57,7 +57,7 @@ struct fbcon_ops {
+ 	void (*bmove)(struct vc_data *vc, struct fb_info *info, int sy,
+ 		      int sx, int dy, int dx, int height, int width);
+ 	void (*clear)(struct vc_data *vc, struct fb_info *info, int sy,
+-		      int sx, int height, int width);
++		      int sx, int height, int width, int fb, int bg);
+ 	void (*putcs)(struct vc_data *vc, struct fb_info *info,
+ 		      const unsigned short *s, int count, int yy, int xx,
+ 		      int fg, int bg);
+@@ -118,42 +118,6 @@ static inline int mono_col(const struct fb_info *info)
+ 	return (~(0xfff << max_len)) & 0xff;
+ }
+ 
+-static inline int attr_col_ec(int shift, struct vc_data *vc,
+-			      struct fb_info *info, int is_fg)
+-{
+-	int is_mono01;
+-	int col;
+-	int fg;
+-	int bg;
+-
+-	if (!vc)
+-		return 0;
+-
+-	if (vc->vc_can_do_color)
+-		return is_fg ? attr_fgcol(shift,vc->vc_video_erase_char)
+-			: attr_bgcol(shift,vc->vc_video_erase_char);
+-
+-	if (!info)
+-		return 0;
+-
+-	col = mono_col(info);
+-	is_mono01 = info->fix.visual == FB_VISUAL_MONO01;
+-
+-	if (attr_reverse(vc->vc_video_erase_char)) {
+-		fg = is_mono01 ? col : 0;
+-		bg = is_mono01 ? 0 : col;
+-	}
+-	else {
+-		fg = is_mono01 ? 0 : col;
+-		bg = is_mono01 ? col : 0;
+-	}
+-
+-	return is_fg ? fg : bg;
+-}
+-
+-#define attr_bgcol_ec(bgshift, vc, info) attr_col_ec(bgshift, vc, info, 0)
+-#define attr_fgcol_ec(fgshift, vc, info) attr_col_ec(fgshift, vc, info, 1)
+-
+     /*
+      *  Scroll Method
+      */
+diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
+index f75b24c32d497..40c7d5793ccfe 100644
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
+@@ -78,14 +78,13 @@ static void ccw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void ccw_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dx = sy * vc->vc_font.height;
+ 	region.dy = vyres - ((sx + width) * vc->vc_font.width);
+ 	region.height = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
+index cf03dc62f35d3..933e4ed52d393 100644
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
+@@ -63,14 +63,13 @@ static void cw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void cw_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vxres = GETVXRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dx = vxres - ((sy + height) * vc->vc_font.height);
+ 	region.dy = sx *  vc->vc_font.width;
+ 	region.height = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
+index c5d2da731d686..abd23f37815f5 100644
+--- a/drivers/video/fbdev/core/fbcon_ud.c
++++ b/drivers/video/fbdev/core/fbcon_ud.c
+@@ -64,15 +64,14 @@ static void ud_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void ud_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 	u32 vxres = GETVXRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dy = vyres - ((sy + height) * vc->vc_font.height);
+ 	region.dx = vxres - ((sx + width) *  vc->vc_font.width);
+ 	region.width = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
+index 628fe5e010c08..82e43e82f488e 100644
+--- a/drivers/video/fbdev/core/tileblit.c
++++ b/drivers/video/fbdev/core/tileblit.c
+@@ -33,16 +33,14 @@ static void tile_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void tile_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		       int sx, int height, int width)
++		       int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fb_tilerect rect;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+-	int fgshift = (vc->vc_hi_font_mask) ? 9 : 8;
+ 
+ 	rect.index = vc->vc_video_erase_char &
+ 		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
+-	rect.fg = attr_fgcol_ec(fgshift, vc, info);
+-	rect.bg = attr_bgcol_ec(bgshift, vc, info);
++	rect.fg = fg;
++	rect.bg = bg;
+ 	rect.sx = sx;
+ 	rect.sy = sy;
+ 	rect.width = width;
 -- 
 2.39.5
 
