@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970A1ACB5E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:11:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA678ACB53D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA8281945D7C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783906400F7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C97922D4D7;
-	Mon,  2 Jun 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83E815CD55;
+	Mon,  2 Jun 2025 14:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEuLYQgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMejhAA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A31320F07C;
-	Mon,  2 Jun 2025 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736AE22F16C;
+	Mon,  2 Jun 2025 14:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875901; cv=none; b=nW3eitD+J3Lggyq9nCiPVp/UZMYFaaNjxwCBp8PB1ZGw+uMpmVxNk8uX8u7DDiZNC5UDak/2b3QkamQ+6rwyjmcXDq350uDNGWpH1Fgj3RpRVZ5b2zim2q2E63anA/VF3NH3jrPX3OvQDuUElwD2NLb7iXaGLjXzA/t2aLEuprw=
+	t=1748875298; cv=none; b=FUmzOTxN68EC2j61Z2TZN4VQvPO7ZAjRy83+k3EjX+a4lUkqVDCeDmiv40ao7M4EQh130b+MX4iIn3OX9OpbmE9QxJlWqopyCx+UbFa84a0IE5P2dqjf0HldZ5tKLGXq1KJZ1mfGqOMoTOT+E+frf7Va32wXHOVylIxk8rSx+HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875901; c=relaxed/simple;
-	bh=GNp0JPbwMxaz7x0OONzku5J1G4d/o7bhx7+7rAAZHn8=;
+	s=arc-20240116; t=1748875298; c=relaxed/simple;
+	bh=FRIbkBGrgD2fKopDBpeUzAiy0mUYpULE2QfqrUm7Wmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/gt4SNpn318ekYmS9PAQMHcaxqIlReL8DJyOHTxKgrYEiURUAEkBI5QxY96E8sXqbWuJ1TDWNg8feo4dGCXHXpOddvZ4y94skerNPtek3d8o3TE1j82U5JCPWgfMtOseBOtKCcEy+o0Blcu2khaAqU2BDrJMWg6V6rozR4E0Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEuLYQgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7044C4CEEB;
-	Mon,  2 Jun 2025 14:51:40 +0000 (UTC)
+	 MIME-Version; b=EhL8iNk1ObBKhAGapnUS3GOwFyVVjX78AEW+CG33x6ZQVknZrGsvWYY8R4p+WCQ+Uurc6Eua3OH8O/7eC8OCOqprS6i/Wnlb0GAhHnnztPUBK00CGcRWco/zbfgh61NcCBfjcgm29feMHtxT+QygacGFKL6MPmvYJiaelHfZ/+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMejhAA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033DAC4CEEB;
+	Mon,  2 Jun 2025 14:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875901;
-	bh=GNp0JPbwMxaz7x0OONzku5J1G4d/o7bhx7+7rAAZHn8=;
+	s=korg; t=1748875298;
+	bh=FRIbkBGrgD2fKopDBpeUzAiy0mUYpULE2QfqrUm7Wmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEuLYQgbHu8QIoX4XLre9dYcDv5J3DkIVyYzgO6gQUOiuk4B0HSmhlzTVetDEdY3z
-	 DUEacv1pJCLpadhJ2qbGlIxjO5/W2Tuc9FQ5y/2GRsqd2f0GW/YbfOC9JEuTwDEf3L
-	 8XC2g+MNmc/G+u2vhCZQmdSzrZ9mhCFJw0JIodYY=
+	b=pMejhAA2StBbZgsJNGdWMh8YohK63RznBzT8K0sF2ZAh5QeJ+G4QRUd6who3k+wiq
+	 7TyLVA6X8oDyTwiHdPKwSQORELt5SxlDY8feZdFioc9z4+H5oioe3Ze3n+KZNJDQEZ
+	 E/0FXPzAHjMiz6krK8m5KLQskRmWp/cMjD/jZ4N0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Will <willsroot@protonmail.com>,
+	Savy <savy@syst3mfailure.io>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 001/207] scsi: target: iscsi: Fix timeout on deleted connection
-Date: Mon,  2 Jun 2025 15:46:13 +0200
-Message-ID: <20250602134258.830022963@linuxfoundation.org>
+Subject: [PATCH 5.10 089/270] net_sched: Flush gso_skb list too during ->change()
+Date: Mon,  2 Jun 2025 15:46:14 +0200
+Message-ID: <20250602134310.801776876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 7f533cc5ee4c4436cee51dc58e81dfd9c3384418 ]
+[ Upstream commit 2d3cbfd6d54a2c39ce3244f33f85c595844bd7b8 ]
 
-NOPIN response timer may expire on a deleted connection and crash with
-such logs:
+Previously, when reducing a qdisc's limit via the ->change() operation, only
+the main skb queue was trimmed, potentially leaving packets in the gso_skb
+list. This could result in NULL pointer dereference when we only check
+sch->limit against sch->q.qlen.
 
-Did not receive response to NOPIN on CID: 0, failing connection for I_T Nexus (null),i,0x00023d000125,iqn.2017-01.com.iscsi.target,t,0x3d
+This patch introduces a new helper, qdisc_dequeue_internal(), which ensures
+both the gso_skb list and the main queue are properly flushed when trimming
+excess packets. All relevant qdiscs (codel, fq, fq_codel, fq_pie, hhf, pie)
+are updated to use this helper in their ->change() routines.
 
-BUG: Kernel NULL pointer dereference on read at 0x00000000
-NIP  strlcpy+0x8/0xb0
-LR iscsit_fill_cxn_timeout_err_stats+0x5c/0xc0 [iscsi_target_mod]
-Call Trace:
- iscsit_handle_nopin_response_timeout+0xfc/0x120 [iscsi_target_mod]
- call_timer_fn+0x58/0x1f0
- run_timer_softirq+0x740/0x860
- __do_softirq+0x16c/0x420
- irq_exit+0x188/0x1c0
- timer_interrupt+0x184/0x410
-
-That is because nopin response timer may be re-started on nopin timer
-expiration.
-
-Stop nopin timer before stopping the nopin response timer to be sure
-that no one of them will be re-started.
-
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://lore.kernel.org/r/20241224101757.32300-1-d.bogdanov@yadro.com
-Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+Fixes: afe4fd062416 ("pkt_sched: fq: Fair Queue packet scheduler")
+Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
+Fixes: d4b36210c2e6 ("net: pkt_sched: PIE AQM scheme")
+Reported-by: Will <willsroot@protonmail.com>
+Reported-by: Savy <savy@syst3mfailure.io>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sch_generic.h | 15 +++++++++++++++
+ net/sched/sch_codel.c     |  2 +-
+ net/sched/sch_fq.c        |  2 +-
+ net/sched/sch_fq_codel.c  |  2 +-
+ net/sched/sch_fq_pie.c    |  2 +-
+ net/sched/sch_hhf.c       |  2 +-
+ net/sched/sch_pie.c       |  2 +-
+ 7 files changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
-index 686a9e5918e21..b072718701329 100644
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -4170,8 +4170,8 @@ int iscsit_close_connection(
- 	spin_unlock(&iscsit_global->ts_bitmap_lock);
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 4db11c4695cf6..a4c670ad8c4ac 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1036,6 +1036,21 @@ static inline struct sk_buff *__qdisc_dequeue_head(struct qdisc_skb_head *qh)
+ 	return skb;
+ }
  
- 	iscsit_stop_timers_for_cmds(conn);
--	iscsit_stop_nopin_response_timer(conn);
- 	iscsit_stop_nopin_timer(conn);
-+	iscsit_stop_nopin_response_timer(conn);
++static inline struct sk_buff *qdisc_dequeue_internal(struct Qdisc *sch, bool direct)
++{
++	struct sk_buff *skb;
++
++	skb = __skb_dequeue(&sch->gso_skb);
++	if (skb) {
++		sch->q.qlen--;
++		return skb;
++	}
++	if (direct)
++		return __qdisc_dequeue_head(&sch->q);
++	else
++		return sch->dequeue(sch);
++}
++
+ static inline struct sk_buff *qdisc_dequeue_head(struct Qdisc *sch)
+ {
+ 	struct sk_buff *skb = __qdisc_dequeue_head(&sch->q);
+diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
+index 30169b3adbbb0..d99c7386e24e6 100644
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -174,7 +174,7 @@ static int codel_change(struct Qdisc *sch, struct nlattr *opt,
  
- 	if (conn->conn_transport->iscsit_wait_conn)
- 		conn->conn_transport->iscsit_wait_conn(conn);
+ 	qlen = sch->q.qlen;
+ 	while (sch->q.qlen > sch->limit) {
+-		struct sk_buff *skb = __qdisc_dequeue_head(&sch->q);
++		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
+ 
+ 		dropped += qdisc_pkt_len(skb);
+ 		qdisc_qstats_backlog_dec(sch, skb);
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index 5a1274199fe33..65b12b39e2ec5 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -904,7 +904,7 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		sch_tree_lock(sch);
+ 	}
+ 	while (sch->q.qlen > sch->limit) {
+-		struct sk_buff *skb = fq_dequeue(sch);
++		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
+ 
+ 		if (!skb)
+ 			break;
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 01d6eea5b0ce9..60dbc549e9910 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -429,7 +429,7 @@ static int fq_codel_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	while (sch->q.qlen > sch->limit ||
+ 	       q->memory_usage > q->memory_limit) {
+-		struct sk_buff *skb = fq_codel_dequeue(sch);
++		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
+ 
+ 		q->cstats.drop_len += qdisc_pkt_len(skb);
+ 		rtnl_kfree_skbs(skb, skb);
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index a5b63158f081c..d4bfa3382e118 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -360,7 +360,7 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+ 
+ 	/* Drop excess packets if new limit is lower */
+ 	while (sch->q.qlen > sch->limit) {
+-		struct sk_buff *skb = fq_pie_qdisc_dequeue(sch);
++		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
+ 
+ 		len_dropped += qdisc_pkt_len(skb);
+ 		num_dropped += 1;
+diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+index 420ede8753229..433bddcbc0c72 100644
+--- a/net/sched/sch_hhf.c
++++ b/net/sched/sch_hhf.c
+@@ -563,7 +563,7 @@ static int hhf_change(struct Qdisc *sch, struct nlattr *opt,
+ 	qlen = sch->q.qlen;
+ 	prev_backlog = sch->qstats.backlog;
+ 	while (sch->q.qlen > sch->limit) {
+-		struct sk_buff *skb = hhf_dequeue(sch);
++		struct sk_buff *skb = qdisc_dequeue_internal(sch, false);
+ 
+ 		rtnl_kfree_skbs(skb, skb);
+ 	}
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index c65077f0c0f39..47f5d4adb5a33 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -193,7 +193,7 @@ static int pie_change(struct Qdisc *sch, struct nlattr *opt,
+ 	/* Drop excess packets if new limit is lower */
+ 	qlen = sch->q.qlen;
+ 	while (sch->q.qlen > sch->limit) {
+-		struct sk_buff *skb = __qdisc_dequeue_head(&sch->q);
++		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
+ 
+ 		dropped += qdisc_pkt_len(skb);
+ 		qdisc_qstats_backlog_dec(sch, skb);
 -- 
 2.39.5
 
