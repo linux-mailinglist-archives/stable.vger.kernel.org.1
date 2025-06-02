@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA74ACB591
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DB7ACB4BE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E08939E1CC3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A0AC3B9C27
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E2F226D00;
-	Mon,  2 Jun 2025 14:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45A822FF59;
+	Mon,  2 Jun 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjjRxco3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVTniibX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45A11E3772;
-	Mon,  2 Jun 2025 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9295A2C3247;
+	Mon,  2 Jun 2025 14:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875764; cv=none; b=ulNyPGSz+ZR8TwIX8vohO0ksOHKWlXHESWAfp2mixJldL5JDq4mxHmCWHk9HlsQyL3yXsMqou/nY7cDkNfam6/xp6YdjfprJpIvqcLwIEL/GvD9/VNFeAzb+C21G89L6a7B2zhjdAt9ZzINPrVoRr+SXY7SgXKCH72FTKEFEB7g=
+	t=1748874960; cv=none; b=eCbfM3+yAsv1z/95cAPtVXQufCeHKR5iUIDjACoNapiaUUxdSNRCXipjNtfvMZWyzdvQEoDN5pKDTyMnOsTrkXyi0AqCn1R3OpLqIcm6ntBhZCgwkFIfabNQ/jcKNB809yktw9GFhGWXYVEwqK0F/xJgMHZRZkezW8mXeqNmcy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875764; c=relaxed/simple;
-	bh=fW97tThfnU5fdPi6U4y9dQo8WpnqqsNI9swbIXoxFTk=;
+	s=arc-20240116; t=1748874960; c=relaxed/simple;
+	bh=PaNrrF8FMjmX/iXLTpaXxrFy5zV9ZY6H3+/Kkfp4Z2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjBOGb0TjZ4jf24zAWHXPW2fpWLQiWlzzerB+VoRGI8s5xvZtYQDJN/kdQzL4X0YbwWuG4iGWr1k20JMxc4Pt3Mw5vw4FrFz2EApo/n6RmCPJ+JeSyB77Pp9AmFDnWuscqVKjX2Zqftf++8FYb2jdvecZ+WLcPQWdkp9soY3ylo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjjRxco3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCDEC4CEEB;
-	Mon,  2 Jun 2025 14:49:23 +0000 (UTC)
+	 MIME-Version; b=TnbUDwklCcCMsj8ZA2LGfNmy/RMMEarNX34H15v5eqmTcVr8BEvvn6A6lRsX7Wu0I2qk4Hky/6J+mRHT8KWlYvPJIvOBBNbgfZloMKaYa9vCaIw3qDG02PfpZ/JXoMoIrMp7uWaytZkMgE1XYvGkXg0XbXm6PSBvrGav31MvgIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVTniibX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE6EC4CEEB;
+	Mon,  2 Jun 2025 14:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875764;
-	bh=fW97tThfnU5fdPi6U4y9dQo8WpnqqsNI9swbIXoxFTk=;
+	s=korg; t=1748874960;
+	bh=PaNrrF8FMjmX/iXLTpaXxrFy5zV9ZY6H3+/Kkfp4Z2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjjRxco3HgS79pTNZ4kS9gizvwW8T6G48REWmanQ+4BU0WPLdb5alzP54Co1UoFvp
-	 xZI4/xyCbwjuNl1E0wERL53bMkujJFokT/zhXq4Iv3TyrSPZS2gAr95oBZ/TwGzy/B
-	 VxFBtJtLqlLgqie5gVNlsiL4wWWR/PO0eDxCFGyA=
+	b=hVTniibXhg4wM9zwFr5SULSbidckcfsAcUE8W9V3PyDN0lJiNZDdwCYvVIg7z46XT
+	 HckruWIp0Y3G79pdSNs1eQraVYrflVI8svKQkj0dO0VD7uU4NNjk3rkzGfQYDN3l9k
+	 Mvvf9ZDVFr3pMPxdyatmeJDt0Q0wz/eOqSQO1YCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 237/270] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Wang Zhaolong <wangzhaolong1@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.4 189/204] smb: client: Fix use-after-free in cifs_fill_dirent
 Date: Mon,  2 Jun 2025 15:48:42 +0200
-Message-ID: <20250602134317.003717353@linuxfoundation.org>
+Message-ID: <20250602134303.106620352@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
 
-[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
+commit a7a8fe56e932a36f43e031b398aef92341bf5ea0 upstream.
 
-While the MDIO address of the internal PHY on Allwinner sun8i chips is
-generally 1, of_mdio_parse_addr is used to cleanly parse the address
-from the device-tree instead of hardcoding it.
+There is a race condition in the readdir concurrency process, which may
+access the rsp buffer after it has been released, triggering the
+following KASAN warning.
 
-A commit reworking the code ditched the parsed value and hardcoded the
-value 1 instead, which didn't really break anything but is more fragile
-and not future-proof.
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in cifs_fill_dirent+0xb03/0xb60 [cifs]
+ Read of size 4 at addr ffff8880099b819c by task a.out/342975
 
-Restore the initial behavior using the parsed address returned from the
-helper.
+ CPU: 2 UID: 0 PID: 342975 Comm: a.out Not tainted 6.15.0-rc6+ #240 PREEMPT(full)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x53/0x70
+  print_report+0xce/0x640
+  kasan_report+0xb8/0xf0
+  cifs_fill_dirent+0xb03/0xb60 [cifs]
+  cifs_readdir+0x12cb/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f996f64b9f9
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89
+ f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+ f0 ff ff  0d f7 c3 0c 00 f7 d8 64 89 8
+ RSP: 002b:00007f996f53de78 EFLAGS: 00000207 ORIG_RAX: 000000000000004e
+ RAX: ffffffffffffffda RBX: 00007f996f53ecdc RCX: 00007f996f64b9f9
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+ RBP: 00007f996f53dea0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000207 R12: ffffffffffffff88
+ R13: 0000000000000000 R14: 00007ffc8cd9a500 R15: 00007f996f51e000
+  </TASK>
 
-Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Allocated by task 408:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  __kasan_slab_alloc+0x6e/0x70
+  kmem_cache_alloc_noprof+0x117/0x3d0
+  mempool_alloc_noprof+0xf2/0x2c0
+  cifs_buf_get+0x36/0x80 [cifs]
+  allocate_buffers+0x1d2/0x330 [cifs]
+  cifs_demultiplex_thread+0x22b/0x2690 [cifs]
+  kthread+0x394/0x720
+  ret_from_fork+0x34/0x70
+  ret_from_fork_asm+0x1a/0x30
+
+ Freed by task 342979:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  kasan_save_free_info+0x3b/0x60
+  __kasan_slab_free+0x37/0x50
+  kmem_cache_free+0x2b8/0x500
+  cifs_buf_release+0x3c/0x70 [cifs]
+  cifs_readdir+0x1c97/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents64+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ The buggy address belongs to the object at ffff8880099b8000
+  which belongs to the cache cifs_request of size 16588
+ The buggy address is located 412 bytes inside of
+  freed 16588-byte region [ffff8880099b8000, ffff8880099bc0cc)
+
+ The buggy address belongs to the physical page:
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x99b8
+ head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ anon flags: 0x80000000000040(head|node=0|zone=1)
+ page_type: f5(slab)
+ raw: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ raw: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ head: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000003 ffffea0000266e01 00000000ffffffff 00000000ffffffff
+ head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffff8880099b8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ >ffff8880099b8180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                             ^
+  ffff8880099b8200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ==================================================================
+
+POC is available in the link [1].
+
+The problem triggering process is as follows:
+
+Process 1                       Process 2
+-----------------------------------------------------------------
+cifs_readdir
+  /* file->private_data == NULL */
+  initiate_cifs_search
+    cifsFile = kzalloc(sizeof(struct cifsFileInfo), GFP_KERNEL);
+    smb2_query_dir_first ->query_dir_first()
+      SMB2_query_directory
+        SMB2_query_directory_init
+        cifs_send_recv
+        smb2_parse_query_directory
+          srch_inf->ntwrk_buf_start = (char *)rsp;
+          srch_inf->srch_entries_start = (char *)rsp + ...
+          srch_inf->last_entry = (char *)rsp + ...
+          srch_inf->smallBuf = true;
+  find_cifs_entry
+    /* if (cfile->srch_inf.ntwrk_buf_start) */
+    cifs_small_buf_release(cfile->srch_inf // free
+
+                        cifs_readdir  ->iterate_shared()
+                          /* file->private_data != NULL */
+                          find_cifs_entry
+                            /* in while (...) loop */
+                            smb2_query_dir_next  ->query_dir_next()
+                              SMB2_query_directory
+                                SMB2_query_directory_init
+                                cifs_send_recv
+                                  compound_send_recv
+                                    smb_send_rqst
+                                    __smb_send_rqst
+                                      rc = -ERESTARTSYS;
+                                      /* if (fatal_signal_pending()) */
+                                      goto out;
+                                      return rc
+                            /* if (cfile->srch_inf.last_entry) */
+                            cifs_save_resume_key()
+                              cifs_fill_dirent // UAF
+                            /* if (rc) */
+                            return -ENOENT;
+
+Fix this by ensuring the return code is checked before using pointers
+from the srch_inf.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220131 [1]
+Fixes: a364bc0b37f1 ("[CIFS] fix saving of resume key before CIFSFindNext")
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cifs/readdir.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 958bbcfc2668d..d04bc6597e0f0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -936,7 +936,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
- 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
- 		 * address. No need to mask it again.
- 		 */
--		reg |= 1 << H3_EPHY_ADDR_SHIFT;
-+		reg |= ret << H3_EPHY_ADDR_SHIFT;
- 	} else {
- 		/* For SoCs without internal PHY the PHY selection bit should be
- 		 * set to 0 (external PHY).
--- 
-2.39.5
-
+--- a/fs/cifs/readdir.c
++++ b/fs/cifs/readdir.c
+@@ -644,11 +644,11 @@ find_cifs_entry(const unsigned int xid,
+ 		rc = server->ops->query_dir_next(xid, tcon, &cfile->fid,
+ 						 search_flags,
+ 						 &cfile->srch_inf);
++		if (rc)
++			return -ENOENT;
+ 		/* FindFirst/Next set last_entry to NULL on malformed reply */
+ 		if (cfile->srch_inf.last_entry)
+ 			cifs_save_resume_key(cfile->srch_inf.last_entry, cfile);
+-		if (rc)
+-			return -ENOENT;
+ 	}
+ 	if (index_to_find < cfile->srch_inf.index_of_last_entry) {
+ 		/* we found the buffer that contains the entry */
 
 
 
