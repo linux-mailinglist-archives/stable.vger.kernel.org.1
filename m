@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FCBACB727
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EFBACB2A9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAD564C1509
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9183A940976
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461FD230BC9;
-	Mon,  2 Jun 2025 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72770222587;
+	Mon,  2 Jun 2025 14:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr0bJp98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01tdIEpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0162A22A4DB;
-	Mon,  2 Jun 2025 15:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC81221FAA;
+	Mon,  2 Jun 2025 14:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876727; cv=none; b=Wqth9CNr1Lbbi6C94R4NAF9WLM6F9H4VZTRZFj05DyrdxyLWlybJpjJ0OsUJSrmcoDIHofV3w2CSUaXD8EM582Wm9b+J77XJECnWXOF7ZIqdp1OfZ69SmAiq0TtTAYoiB/kWrqRKxI1AWf0eCSMAkN5uMba0IIx2TPOAc1sQGdI=
+	t=1748873835; cv=none; b=Y0zrLm1uEDX1TpYoJx4Fz5ACgH8/pcmwUOUss3JtXpXaTDK3J8nmsFo8odg6Ttojpp2ZyH6PVuHPF4LtUV/2I75QAh5wXdhh0SwLzfQSEXHsBm1OdumqhFpTc+RLuhoDN+oGb8gM3nutjDQLj11n8KYa768FJEVnXYYr12xHB2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876727; c=relaxed/simple;
-	bh=lT8bJaWEMgt83BdUXZxig3/lBQXn25Gep093hFQf+cc=;
+	s=arc-20240116; t=1748873835; c=relaxed/simple;
+	bh=Y9vDklHa+s8mFb/uYLqprBi40Gp6TAIaRrk1WbSKRs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZAO3JftltdTX2CvoTe4LBNHqoknvJfQkOWkTJhqNP5sQFOilAfZOwJ+1+81IHR8KLIKtOhNADZwym89LVl5WlQ562iA41X9bPRXXFkxecg+dFEnU/2SFGutZl2ytW7tCM1bQOTP+q2frzr0HLfpUNKZCtKwcK3aRJphTiAjOH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr0bJp98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BF6C4CEEB;
-	Mon,  2 Jun 2025 15:05:26 +0000 (UTC)
+	 MIME-Version; b=Lf7Ev+JAAQuWu+sM7EOpl9IWSjhBdL2sg0IOrz6ZpNscaczRqzhR2aI/hk05Rv/R9xnpTduAaNfE2doGlWPbmKYnX5QWFFaXJCgaMA9pQs1ZAa3PYfbkt3QQ4yDGSVDErm8GmLGdprYaKG9phz5RsW4CkSdERek2SXmssIquXYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01tdIEpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78521C4CEEB;
+	Mon,  2 Jun 2025 14:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876726;
-	bh=lT8bJaWEMgt83BdUXZxig3/lBQXn25Gep093hFQf+cc=;
+	s=korg; t=1748873835;
+	bh=Y9vDklHa+s8mFb/uYLqprBi40Gp6TAIaRrk1WbSKRs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sr0bJp98WYaI91tHOnAhzd3ivDf78RAh2xnR+aXJtIZRSNDN7Gac5wVcToIKpONFw
-	 1PNOQM0Pz3c1+VX7+M53wZmSZbhswsFhZHN1s15+OFL1WauXSfp7WeC+ehZkaMG5oI
-	 cXyC3u6Kdx1zPQsaUHbAd8yXeft13+XMzegm0mZY=
+	b=01tdIEpysf/6bpqApX/ilTs8O7ZKidiNHqNtQAKy41ciAHiCt1sY13DAM/Gd+Is/A
+	 iLKm+qigsJ67C7xPuSd3J6/xOeIut+E2Q0ePcsDToCV58YnHrT3Sdiz+GttJmVtO5x
+	 xusUppLuCxWFczg6k/qvQQA4WU+J0qlb7EUBT63A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/325] btrfs: get zone unusable bytes while holding lock at btrfs_reclaim_bgs_work()
+Subject: [PATCH 6.6 267/444] ext4: remove writable userspace mappings before truncating page cache
 Date: Mon,  2 Jun 2025 15:45:31 +0200
-Message-ID: <20250602134321.999764820@linuxfoundation.org>
+Message-ID: <20250602134351.794267197@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 1283b8c125a83bf7a7dbe90c33d3472b6d7bf612 ]
+[ Upstream commit 17207d0bb209e8b40f27d7f3f96e82a78af0bf2c ]
 
-At btrfs_reclaim_bgs_work(), we are grabbing a block group's zone unusable
-bytes while not under the protection of the block group's spinlock, so
-this can trigger race reports from KCSAN (or similar tools) since that
-field is typically updated while holding the lock, such as at
-__btrfs_add_free_space_zoned() for example.
+When zeroing a range of folios on the filesystem which block size is
+less than the page size, the file's mapped blocks within one page will
+be marked as unwritten, we should remove writable userspace mappings to
+ensure that ext4_page_mkwrite() can be called during subsequent write
+access to these partial folios. Otherwise, data written by subsequent
+mmap writes may not be saved to disk.
 
-Fix this by grabbing the zone unusable bytes while we are still in the
-critical section holding the block group's spinlock, which is right above
-where we are currently grabbing it.
+ $mkfs.ext4 -b 1024 /dev/vdb
+ $mount /dev/vdb /mnt
+ $xfs_io -t -f -c "pwrite -S 0x58 0 4096" -c "mmap -rw 0 4096" \
+               -c "mwrite -S 0x5a 2048 2048" -c "fzero 2048 2048" \
+               -c "mwrite -S 0x59 2048 2048" -c "close" /mnt/foo
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+ $od -Ax -t x1z /mnt/foo
+ 000000 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
+ *
+ 000800 59 59 59 59 59 59 59 59 59 59 59 59 59 59 59 59
+ *
+ 001000
+
+ $umount /mnt && mount /dev/vdb /mnt
+ $od -Ax -t x1z /mnt/foo
+ 000000 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58
+ *
+ 000800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ *
+ 001000
+
+Fix this by introducing ext4_truncate_page_cache_block_range() to remove
+writable userspace mappings when truncating a partial folio range.
+Additionally, move the journal data mode-specific handlers and
+truncate_pagecache_range() into this function, allowing it to serve as a
+common helper that correctly manages the page cache in preparation for
+block range manipulations.
+
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20241220011637.1157197-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ fs/ext4/ext4.h    |  2 ++
+ fs/ext4/extents.c | 19 ++++----------
+ fs/ext4/inode.c   | 63 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 70 insertions(+), 14 deletions(-)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 0dcf7fecaf55b..91440ef79a26f 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1678,6 +1678,17 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 			up_write(&space_info->groups_sem);
- 			goto next;
- 		}
-+
-+		/*
-+		 * Cache the zone_unusable value before turning the block group
-+		 * to read only. As soon as the block group is read only it's
-+		 * zone_unusable value gets moved to the block group's read-only
-+		 * bytes and isn't available for calculations anymore. We also
-+		 * cache it before unlocking the block group, to prevent races
-+		 * (reports from KCSAN and such tools) with tasks updating it.
-+		 */
-+		zone_unusable = bg->zone_unusable;
-+
- 		spin_unlock(&bg->lock);
- 
- 		/*
-@@ -1693,13 +1704,6 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
- 			goto next;
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index bf62c3dab4fa2..81fe87fcbfa06 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2995,6 +2995,8 @@ extern int ext4_inode_attach_jinode(struct inode *inode);
+ extern int ext4_can_truncate(struct inode *inode);
+ extern int ext4_truncate(struct inode *);
+ extern int ext4_break_layouts(struct inode *);
++extern int ext4_truncate_page_cache_block_range(struct inode *inode,
++						loff_t start, loff_t end);
+ extern int ext4_punch_hole(struct file *file, loff_t offset, loff_t length);
+ extern void ext4_set_inode_flags(struct inode *, bool init);
+ extern int ext4_alloc_da_blocks(struct inode *inode);
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 32218ac7f50fe..39e3661a80c43 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4660,22 +4660,13 @@ static long ext4_zero_range(struct file *file, loff_t offset,
+ 			goto out_mutex;
  		}
  
 -		/*
--		 * Cache the zone_unusable value before turning the block group
--		 * to read only. As soon as the blog group is read only it's
--		 * zone_unusable value gets moved to the block group's read-only
--		 * bytes and isn't available for calculations anymore.
+-		 * For journalled data we need to write (and checkpoint) pages
+-		 * before discarding page cache to avoid inconsitent data on
+-		 * disk in case of crash before zeroing trans is committed.
 -		 */
--		zone_unusable = bg->zone_unusable;
- 		ret = inc_block_group_ro(bg, 0);
- 		up_write(&space_info->groups_sem);
- 		if (ret < 0)
+-		if (ext4_should_journal_data(inode)) {
+-			ret = filemap_write_and_wait_range(mapping, start,
+-							   end - 1);
+-			if (ret) {
+-				filemap_invalidate_unlock(mapping);
+-				goto out_mutex;
+-			}
++		/* Now release the pages and zero block aligned part of pages */
++		ret = ext4_truncate_page_cache_block_range(inode, start, end);
++		if (ret) {
++			filemap_invalidate_unlock(mapping);
++			goto out_mutex;
+ 		}
+ 
+-		/* Now release the pages and zero block aligned part of pages */
+-		truncate_pagecache_range(inode, start, end - 1);
+ 		inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
+ 
+ 		ret = ext4_alloc_file_blocks(file, lblk, max_blocks, new_size,
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 456f686136fc5..86245e27be18d 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -31,6 +31,7 @@
+ #include <linux/writeback.h>
+ #include <linux/pagevec.h>
+ #include <linux/mpage.h>
++#include <linux/rmap.h>
+ #include <linux/namei.h>
+ #include <linux/uio.h>
+ #include <linux/bio.h>
+@@ -3892,6 +3893,68 @@ int ext4_update_disksize_before_punch(struct inode *inode, loff_t offset,
+ 	return ret;
+ }
+ 
++static inline void ext4_truncate_folio(struct inode *inode,
++				       loff_t start, loff_t end)
++{
++	unsigned long blocksize = i_blocksize(inode);
++	struct folio *folio;
++
++	/* Nothing to be done if no complete block needs to be truncated. */
++	if (round_up(start, blocksize) >= round_down(end, blocksize))
++		return;
++
++	folio = filemap_lock_folio(inode->i_mapping, start >> PAGE_SHIFT);
++	if (IS_ERR(folio))
++		return;
++
++	if (folio_mkclean(folio))
++		folio_mark_dirty(folio);
++	folio_unlock(folio);
++	folio_put(folio);
++}
++
++int ext4_truncate_page_cache_block_range(struct inode *inode,
++					 loff_t start, loff_t end)
++{
++	unsigned long blocksize = i_blocksize(inode);
++	int ret;
++
++	/*
++	 * For journalled data we need to write (and checkpoint) pages
++	 * before discarding page cache to avoid inconsitent data on disk
++	 * in case of crash before freeing or unwritten converting trans
++	 * is committed.
++	 */
++	if (ext4_should_journal_data(inode)) {
++		ret = filemap_write_and_wait_range(inode->i_mapping, start,
++						   end - 1);
++		if (ret)
++			return ret;
++		goto truncate_pagecache;
++	}
++
++	/*
++	 * If the block size is less than the page size, the file's mapped
++	 * blocks within one page could be freed or converted to unwritten.
++	 * So it's necessary to remove writable userspace mappings, and then
++	 * ext4_page_mkwrite() can be called during subsequent write access
++	 * to these partial folios.
++	 */
++	if (!IS_ALIGNED(start | end, PAGE_SIZE) &&
++	    blocksize < PAGE_SIZE && start < inode->i_size) {
++		loff_t page_boundary = round_up(start, PAGE_SIZE);
++
++		ext4_truncate_folio(inode, start, min(page_boundary, end));
++		if (end > page_boundary)
++			ext4_truncate_folio(inode,
++					    round_down(end, PAGE_SIZE), end);
++	}
++
++truncate_pagecache:
++	truncate_pagecache_range(inode, start, end - 1);
++	return 0;
++}
++
+ static void ext4_wait_dax_page(struct inode *inode)
+ {
+ 	filemap_invalidate_unlock(inode->i_mapping);
 -- 
 2.39.5
 
