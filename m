@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8045ACB3E1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E0DACB2A4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D42F67AD23B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325D8188B8A0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213AA22A4DA;
-	Mon,  2 Jun 2025 14:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503D822FE11;
+	Mon,  2 Jun 2025 14:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkDyivcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj1ZtdQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E7F229B2A;
-	Mon,  2 Jun 2025 14:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE06221FAA;
+	Mon,  2 Jun 2025 14:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875202; cv=none; b=hujr5VF5qiAx7e7mUk/s4SsZXEWHEDeLBlPx+EdzDo/T6KS+xt/el0U3gKbV+i7mmYRw+ZIFkalfOQ5zr19cUjIrb4IrY/QYl9kPBK49cqWnLJb6riMoERxi6++cV80qdxA0D36zoYctDVFOSRhOHOFHa01DgT23FQ+iklc3JaI=
+	t=1748873870; cv=none; b=HW+kRZczoB3byYhw8E1CeVs8B606wPnC5IVL9v3bNvoqZoKZPUbxci27I3Wl3y81j0yFZ2aNIh9G5f2/RKT62nw4rkJcO63oUjHS/Njv/L9Jk0XeornaL1tOn7XV3QRiHny5Rz9pmSzlAD7DZOZZRw2C7Vhne1Tnl/Vy6HYAJDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875202; c=relaxed/simple;
-	bh=nxwwf5gbaIsKSis9LXOQ8mtfczdJcD8CfMqeWqLBl+I=;
+	s=arc-20240116; t=1748873870; c=relaxed/simple;
+	bh=qaVQJsmjZ+5UNhzk2W9a+pEKBfERneO2+ZtdIsIBAWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIygVTCsD9JbnuP5WWqUdkpCD6D6O9h209GsN4cqyEFPDmVfXMVug1II43UOcj1x9u1eAs5HkjWDxAj5YycqYGNyvS2Sj27iIsVr/1IcE3zZXPZ/OZMzSjgQDaqpyRUG06WYzw0vXuJrXrVpfPyPd27taNsWNYTm6c95HY2vrO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkDyivcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41527C4CEEB;
-	Mon,  2 Jun 2025 14:40:02 +0000 (UTC)
+	 MIME-Version; b=VU87iqvCf2ZVJIbvH/S40319G3VfjF30rcE1BWNafwy9JNJWHcT25iYGtpl9EWNFvQ5XeuQ15WLha1+zdudBVXuxy9b/NfcyNsh+/cRadh22EPvEa/ITcZRIKBcw3QsD9J4vSYQabZf+1yQsUPK3BTy0oY7VpPAAHYJ4pteVRuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj1ZtdQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866D5C4CEF0;
+	Mon,  2 Jun 2025 14:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875202;
-	bh=nxwwf5gbaIsKSis9LXOQ8mtfczdJcD8CfMqeWqLBl+I=;
+	s=korg; t=1748873869;
+	bh=qaVQJsmjZ+5UNhzk2W9a+pEKBfERneO2+ZtdIsIBAWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkDyivcfRpo3W2PWspu00XLQ6jqCl9GE+W6hxFcVYyxHRaRoGUmr+KFS4HTcb0sy0
-	 zLcx0mZNOoWjC/LRz2TOmx4kbaYWgYXXm9FLqbyIbFjHylTerRtcSKgIStbiv4phe3
-	 +Ie+EsZc7nlpXUshqBR9Mh+728vK3eMo7+0rfAcM=
+	b=Aj1ZtdQ1mO6Z2mDWBgLyU6KJ+dfJqL8Los0GZDLPUAelepytYQ/by7XnX2+NEjkuM
+	 WHW+3480hqce8EyIz2r0XZt1W16sFbfU/2k4cvrIMC0CfWNh8BuABrCTx6jsIU8jjX
+	 QHZYk6m0atll60WlksikXijnu+QP7I0uVF7OTsM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 059/270] iio: adc: ad7606: fix serial register access
-Date: Mon,  2 Jun 2025 15:45:44 +0200
-Message-ID: <20250602134309.607188226@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 281/444] rcu: handle unstable rdp in rcu_read_unlock_strict()
+Date: Mon,  2 Jun 2025 15:45:45 +0200
+Message-ID: <20250602134352.359452478@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-commit f083f8a21cc785ebe3a33f756a3fa3660611f8db upstream.
+[ Upstream commit fcf0e25ad4c8d14d2faab4d9a17040f31efce205 ]
 
-Fix register read/write routine as per datasheet.
+rcu_read_unlock_strict() can be called with preemption enabled
+which can make for an unstable rdp and a racy norm value.
 
-When reading multiple consecutive registers, only the first one is read
-properly. This is due to missing chip select deassert and assert again
-between first and second 16bit transfer, as shown in the datasheet
-AD7606C-16, rev 0, figure 110.
+Fix this by dropping the preempt-count in __rcu_read_unlock()
+after the call to rcu_read_unlock_strict(), adjusting the
+preempt-count check appropriately.
 
-Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250418-wip-bl-ad7606-fix-reg-access-v3-1-d5eeb440c738@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606_spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/rcupdate.h |  2 +-
+ kernel/rcu/tree_plugin.h | 11 ++++++++++-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -127,7 +127,7 @@ static int ad7606_spi_reg_read(struct ad
- 		{
- 			.tx_buf = &st->d16[0],
- 			.len = 2,
--			.cs_change = 0,
-+			.cs_change = 1,
- 		}, {
- 			.rx_buf = &st->d16[1],
- 			.len = 2,
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 72da69cc5764f..27531a0b3a6e7 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -97,9 +97,9 @@ static inline void __rcu_read_lock(void)
+ 
+ static inline void __rcu_read_unlock(void)
+ {
+-	preempt_enable();
+ 	if (IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD))
+ 		rcu_read_unlock_strict();
++	preempt_enable();
+ }
+ 
+ static inline int rcu_preempt_depth(void)
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index dccfc46496393..94b715139f52d 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -821,8 +821,17 @@ void rcu_read_unlock_strict(void)
+ {
+ 	struct rcu_data *rdp;
+ 
+-	if (irqs_disabled() || preempt_count() || !rcu_state.gp_kthread)
++	if (irqs_disabled() || in_atomic_preempt_off() || !rcu_state.gp_kthread)
+ 		return;
++
++	/*
++	 * rcu_report_qs_rdp() can only be invoked with a stable rdp and
++	 * from the local CPU.
++	 *
++	 * The in_atomic_preempt_off() check ensures that we come here holding
++	 * the last preempt_count (which will get dropped once we return to
++	 * __rcu_read_unlock().
++	 */
+ 	rdp = this_cpu_ptr(&rcu_data);
+ 	rdp->cpu_no_qs.b.norm = false;
+ 	rcu_report_qs_rdp(rdp);
+-- 
+2.39.5
+
 
 
 
