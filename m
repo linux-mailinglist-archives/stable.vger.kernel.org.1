@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44AB0ACB3DA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1A2ACB60E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05D1E4A438A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 287C21C207B4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2A8226CFD;
-	Mon,  2 Jun 2025 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4E4232376;
+	Mon,  2 Jun 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lglKV5Bb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtJJiH+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99591EA65;
-	Mon,  2 Jun 2025 14:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688A522A7E3;
+	Mon,  2 Jun 2025 14:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874760; cv=none; b=ny6RaeeH3nzZwNi4OWHA27Qw5YXH/YIiErWkYkoYDiM43XBQcnNnax7Quia0xAgTdxzBb2mEluc9FQQQE/JjGTULHNkOd7O1I3CBuOD+2r4zAfR3sI+MAlrXThgGgVPp95+dqG68l2WoYoSvKW0SnEP1+2P0EA5YLhpqlru6r4A=
+	t=1748876246; cv=none; b=ryKbJ7ALBbw0BYiXJvv0nywmPDFgHiSOZ2w6gsRpaWkOQXvf6Fwsmsym4ODplTSbiAzvRHVIycxsPE475u4WcN6byxmzqmH8aWKw7mVazXapKiiDy9KgSz3vmBSZk7Vx4WAqWE36OF6EMgyw5GnA0vMNXZAy6gQ+0CIZcugZN8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874760; c=relaxed/simple;
-	bh=zqrhbT7wLaF92UF3bG56yNESLMVkGJXtS8JqYtjo6n8=;
+	s=arc-20240116; t=1748876246; c=relaxed/simple;
+	bh=/K7TN5r393MA4OT8eq+ttH1VtCoUvi+ukjGN/30BRZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfMymIwQNM4BxY/mJotMPPTmlGcywbtajxqjmI98/wBSMUyJsVKJKpUv85qKR1sOYvTgSlmikNOqT49L9Ck3zRUMTjSkMH7klhpl7GE4mU2cPXGEjeel3EVWXF7CtpixGfc4S6IPDQyQb+YCODMm5W8pn2GQzBb1Z5NYUuMFY44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lglKV5Bb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9627C4CEEB;
-	Mon,  2 Jun 2025 14:32:39 +0000 (UTC)
+	 MIME-Version; b=TjHHE2DyWjUoZuWZcyiFheVj9SDUQTzF9zMH5TDkDNo5Ajpx+HUP1+NCJ2B0glVeoJ9OJ1+P1YX05ow1o4QFonHuk+jhLcE2/044UqE5giIKHCmU+C+46clxGbPhJKNrkpR+znDJPietXo4yLRZQbOjcsYRVeL1I66MuNZZ07B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtJJiH+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A96FC4CEEE;
+	Mon,  2 Jun 2025 14:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874760;
-	bh=zqrhbT7wLaF92UF3bG56yNESLMVkGJXtS8JqYtjo6n8=;
+	s=korg; t=1748876246;
+	bh=/K7TN5r393MA4OT8eq+ttH1VtCoUvi+ukjGN/30BRZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lglKV5BbJMdf021VsCPI0dTECfESPkFbTsDAhY8RIT2IcgV2WiT2X0JGx9Ca/9Hs4
-	 gRBu3RqBju9N6tvzZssk0a31utgyMfX6X/pGVY3AaO7Rd6WQseSnhSg4TWr1wZ210Z
-	 yUN1Rbpyb7C3POiiK6r48xST0uNodRIRYzVJTsKM=
+	b=AtJJiH+lWY+PcNBYnW39oGtW5Bqmv65VvktNenAYDB3nT2InQmWI2wWsXXd0t/2vY
+	 yWOQNsAxIeYWEeyaulHCSFtXBK+GjLjRO1B9xGZ9dV+AEC4faqr1gMnc+bynh+fb6M
+	 hg+wXCN96bRlkNZgs4afa34pt7HWY4PJyMUuNg0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ang Tien Sung <tien.sung.ang@intel.com>,
-	Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+	Kevin Krakauer <krakauer@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 127/204] fpga: altera-cvp: Increase credit timeout
+Subject: [PATCH 5.15 088/207] selftests/net: have `gro.sh -t` return a correct exit code
 Date: Mon,  2 Jun 2025 15:47:40 +0200
-Message-ID: <20250602134300.636346321@linuxfoundation.org>
+Message-ID: <20250602134302.185624215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
+From: Kevin Krakauer <krakauer@google.com>
 
-[ Upstream commit 0f05886a40fdc55016ba4d9ae0a9c41f8312f15b ]
+[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
 
-Increase the timeout for SDM (Secure device manager) data credits from
-20ms to 40ms. Internal stress tests running at 500 loops failed with the
-current timeout of 20ms. At the start of a FPGA configuration, the CVP
-host driver reads the transmit credits from SDM. It then sends bitstream
-FPGA data to SDM based on the total credits. Each credit allows the
-CVP host driver to send 4kBytes of data. There are situations whereby,
-the SDM did not respond in time during testing.
+Modify gro.sh to return a useful exit code when the -t flag is used. It
+formerly returned 0 no matter what.
 
-Signed-off-by: Ang Tien Sung <tien.sung.ang@intel.com>
-Signed-off-by: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
-Acked-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250212221249.2715929-1-tien.sung.ang@intel.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Tested: Ran `gro.sh -t large` and verified that test failures return 1.
+Signed-off-by: Kevin Krakauer <krakauer@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/altera-cvp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/gro.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/fpga/altera-cvp.c b/drivers/fpga/altera-cvp.c
-index 4e0edb60bfba6..d107ad73a188c 100644
---- a/drivers/fpga/altera-cvp.c
-+++ b/drivers/fpga/altera-cvp.c
-@@ -52,7 +52,7 @@
- /* V2 Defines */
- #define VSE_CVP_TX_CREDITS		0x49	/* 8bit */
- 
--#define V2_CREDIT_TIMEOUT_US		20000
-+#define V2_CREDIT_TIMEOUT_US		40000
- #define V2_CHECK_CREDIT_US		10
- #define V2_POLL_TIMEOUT_US		1000000
- #define V2_USER_TIMEOUT_US		500000
+diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
+index 342ad27f631b1..e771f5f7faa26 100755
+--- a/tools/testing/selftests/net/gro.sh
++++ b/tools/testing/selftests/net/gro.sh
+@@ -95,5 +95,6 @@ trap cleanup EXIT
+ if [[ "${test}" == "all" ]]; then
+   run_all_tests
+ else
+-  run_test "${proto}" "${test}"
++  exit_code=$(run_test "${proto}" "${test}")
++  exit $exit_code
+ fi;
 -- 
 2.39.5
 
