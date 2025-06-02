@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26357ACB364
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB679ACB62C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 574DA7AED32
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DBC49E36B4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA50322FDF2;
-	Mon,  2 Jun 2025 14:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA66239E65;
+	Mon,  2 Jun 2025 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPP9tqXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2zGszsx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8505E1ACEAF;
-	Mon,  2 Jun 2025 14:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1976B239594;
+	Mon,  2 Jun 2025 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874950; cv=none; b=dFlOjiDu2+osxLbX87MRkSCAhLMiAliM8X/ahmYmJWvRcogDruCKEu3Ez93fNJWt5R+t3gMH/7lbby9YjRzYWbfhquSbpQAUQLWojjWH4LrQ9ZnNpm+ub2wx1scprKZHXq3j+01oyQe+7Fk5Y5s0BDUQWZcpcKMi/s9w5kYWDI4=
+	t=1748876351; cv=none; b=fdqslu5URAgCM86IaDs3Zv7KXUriY6J8EfK9prn43JKx0Lftvg/YlXpJqudmGZB80GCXw023qANXeQtHFAcpqIln/EL72Iw+g5cDGZbAtpimQ+prNPoa9Rz43MbtliMrvETFJeE05TtC6TWErypyjwmql7Txzf+fj2Bzs9AuvjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874950; c=relaxed/simple;
-	bh=aQDG8Vgwz6AoMlQ+u1JVL9KPh3DOdUiDplVPcHIQxZo=;
+	s=arc-20240116; t=1748876351; c=relaxed/simple;
+	bh=BYV0xfdzfHJ/wxb8wm300UfB+aCAy4FBTBd5LuClJZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ff4gCN/9SmIT9s3TQHaEQfsVnLEmwrbDpG2rr1kWOqTV8hntx6Ti3c5TXeBl1LZnbIi5n6c19K+XMNt97qTDQ01VJiz3JVDUONP/VkFT3mRNBguwlp9BmFAlby/oBxmIBfXrcSxY5vINRU5qzEr7btDzcuff0d10QBuJ/gvytmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPP9tqXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AE1C4CEEB;
-	Mon,  2 Jun 2025 14:35:49 +0000 (UTC)
+	 MIME-Version; b=H7LFib5jndaiAYxI+i3CPhaEjpELK/hyZBNgG07HamtuGdjYlvAlhJ08LqAjeP/gaLMEUnUZ28HZSlueWeH1bc0MZJQeGVcuy/yNxc4F3yizXHwLW8nW2VxGUjbgkPeYEkwbdOJRoArnAx+oRcW8Ouvw0o3m3FktwVyaRZhn3LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2zGszsx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A03C4CEEB;
+	Mon,  2 Jun 2025 14:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874950;
-	bh=aQDG8Vgwz6AoMlQ+u1JVL9KPh3DOdUiDplVPcHIQxZo=;
+	s=korg; t=1748876351;
+	bh=BYV0xfdzfHJ/wxb8wm300UfB+aCAy4FBTBd5LuClJZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPP9tqXN5WIhhnSDktsG2Zj8WEEucSR8aLc4Uz2akcHoQp9ia+zPqXW1lFDIBsfmR
-	 PnFo31mSt9gMAw88QfCvKjzpSx3th1K8SFnoUCBMSjaaMD0b68NtswZyK+gIYgbaM/
-	 f10+WeX3uj87gs+rtm+Zcu88wksx4gpkUCuqYtmY=
+	b=w2zGszsx+erxZLSNsy4xpbuOn2DW034cWYTJX/fbUuXci3GLLxSKOTQy+lFRRnCHD
+	 CsQeRb6MU7vNtc1Hv/4pGtqRa5JnpYnOdK6gqRfB+IOLlKCjo7yY73pqos4FLACgnt
+	 qxftmNC5hY2P3CAPSVS5g4AXuxrjZew4sp+cJYGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 186/204] netfilter: nf_tables: wait for rcu grace period on net_device removal
-Date: Mon,  2 Jun 2025 15:48:39 +0200
-Message-ID: <20250602134302.987913819@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 148/207] wifi: rtw88: Dont use static local variable in rtw8822b_set_tx_power_index_by_rate
+Date: Mon,  2 Jun 2025 15:48:40 +0200
+Message-ID: <20250602134304.518414811@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit c03d278fdf35e73dd0ec543b9b556876b9d9a8dc upstream.
+[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
 
-8c873e219970 ("netfilter: core: free hooks with call_rcu") removed
-synchronize_net() call when unregistering basechain hook, however,
-net_device removal event handler for the NFPROTO_NETDEV was not updated
-to wait for RCU grace period.
+Some users want to plug two identical USB devices at the same time.
+This static variable could theoretically cause them to use incorrect
+TX power values.
 
-Note that 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks
-on net_device removal") does not remove basechain rules on device
-removal, I was hinted to remove rules on net_device removal later, see
-5ebe0b0eec9d ("netfilter: nf_tables: destroy basechain and rules on
-netdevice removal").
+Move the variable to the caller and pass a pointer to it to
+rtw8822b_set_tx_power_index_by_rate().
 
-Although NETDEV_UNREGISTER event is guaranteed to be handled after
-synchronize_net() call, this path needs to wait for rcu grace period via
-rcu callback to release basechain hooks if netns is alive because an
-ongoing netlink dump could be in progress (sockets hold a reference on
-the netns).
-
-Note that nf_tables_pre_exit_net() unregisters and releases basechain
-hooks but it is possible to see NETDEV_UNREGISTER at a later stage in
-the netns exit path, eg. veth peer device in another netns:
-
- cleanup_net()
-  default_device_exit_batch()
-   unregister_netdevice_many_notify()
-    notifier_call_chain()
-     nf_tables_netdev_event()
-      __nft_release_basechain()
-
-In this particular case, same rule of thumb applies: if netns is alive,
-then wait for rcu grace period because netlink dump in the other netns
-could be in progress. Otherwise, if the other netns is going away then
-no netlink dump can be in progress and basechain hooks can be released
-inmediately.
-
-While at it, turn WARN_ON() into WARN_ON_ONCE() for the basechain
-validation, which should not ever happen.
-
-Fixes: 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks on net_device removal")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |    3 ++
- net/netfilter/nf_tables_api.c     |   41 +++++++++++++++++++++++++++++++-------
- 2 files changed, 37 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -899,6 +899,7 @@ struct nft_chain {
- 	u8				flags:6,
- 					genmask:2;
- 	char				*name;
-+	struct rcu_head			rcu_head;
- 
- 	/* Only used during control plane commit phase: */
- 	struct nft_rule			**rules_next;
-@@ -1015,6 +1016,7 @@ static inline void nft_use_inc_restore(u
-  *	@sets: sets in the table
-  *	@objects: stateful objects in the table
-  *	@flowtables: flow tables in the table
-+ *	@net: netnamespace this table belongs to
-  *	@hgenerator: handle generator state
-  *	@handle: table handle
-  *	@use: number of chain references to this table
-@@ -1030,6 +1032,7 @@ struct nft_table {
- 	struct list_head		sets;
- 	struct list_head		objects;
- 	struct list_head		flowtables;
-+	possible_net_t			net;
- 	u64				hgenerator;
- 	u64				handle;
- 	u32				use;
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1109,6 +1109,7 @@ static int nf_tables_newtable(struct net
- 	INIT_LIST_HEAD(&table->sets);
- 	INIT_LIST_HEAD(&table->objects);
- 	INIT_LIST_HEAD(&table->flowtables);
-+	write_pnet(&table->net, net);
- 	table->family = family;
- 	table->flags = flags;
- 	table->handle = ++table_handle;
-@@ -8216,22 +8217,48 @@ int nft_data_dump(struct sk_buff *skb, i
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 247f26e3e8192..63ecac7201a12 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -954,11 +954,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
  }
- EXPORT_SYMBOL_GPL(nft_data_dump);
  
--int __nft_release_basechain(struct nft_ctx *ctx)
-+static void __nft_release_basechain_now(struct nft_ctx *ctx)
+ static void
+-rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
++rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
++				    u8 rs, u32 *phy_pwr_idx)
  {
- 	struct nft_rule *rule, *nr;
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
+-	static u32 phy_pwr_idx;
+ 	u8 rate, rate_idx, pwr_index, shift;
+ 	int j;
  
--	if (WARN_ON(!nft_is_base_chain(ctx->chain)))
--		return 0;
--
--	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
- 	list_for_each_entry_safe(rule, nr, &ctx->chain->rules, list) {
- 		list_del(&rule->list);
--		nft_use_dec(&ctx->chain->use);
- 		nf_tables_rule_release(ctx, rule);
+@@ -966,12 +966,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ 		rate = rtw_rate_section[rs][j];
+ 		pwr_index = hal->tx_pwr_tbl[path][rate];
+ 		shift = rate & 0x3;
+-		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
++		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
+ 		if (shift == 0x3) {
+ 			rate_idx = rate & 0xfc;
+ 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
+-				    phy_pwr_idx);
+-			phy_pwr_idx = 0;
++				    *phy_pwr_idx);
++			*phy_pwr_idx = 0;
+ 		}
  	}
-+	nf_tables_chain_destroy(ctx->chain);
-+}
-+
-+static void nft_release_basechain_rcu(struct rcu_head *head)
-+{
-+	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
-+	struct nft_ctx ctx = {
-+		.family	= chain->table->family,
-+		.chain	= chain,
-+		.net	= read_pnet(&chain->table->net),
-+	};
-+
-+	__nft_release_basechain_now(&ctx);
-+	put_net(ctx.net);
-+}
-+
-+int __nft_release_basechain(struct nft_ctx *ctx)
-+{
-+	struct nft_rule *rule;
-+
-+	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain)))
-+		return 0;
-+
-+	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
-+	list_for_each_entry(rule, &ctx->chain->rules, list)
-+		nft_use_dec(&ctx->chain->use);
-+
- 	nft_chain_del(ctx->chain);
- 	nft_use_dec(&ctx->table->use);
--	nf_tables_chain_destroy(ctx->chain);
-+
-+	if (maybe_get_net(ctx->net))
-+		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
-+	else
-+		__nft_release_basechain_now(ctx);
- 
- 	return 0;
  }
+@@ -979,11 +979,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
++	u32 phy_pwr_idx = 0;
+ 	int rs, path;
+ 
+ 	for (path = 0; path < hal->rf_path_num; path++) {
+ 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
+-			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
++			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
++							    &phy_pwr_idx);
+ 	}
+ }
+ 
+-- 
+2.39.5
+
 
 
 
