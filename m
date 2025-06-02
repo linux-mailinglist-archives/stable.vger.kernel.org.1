@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA5BACB6E8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4C2ACB89F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5FBB9E3FD9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3676F1945E3A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D16D1C5D72;
-	Mon,  2 Jun 2025 15:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4E0232785;
+	Mon,  2 Jun 2025 15:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLPx7H2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIqgK0CP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB172C325E;
-	Mon,  2 Jun 2025 15:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEC823024D;
+	Mon,  2 Jun 2025 15:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876517; cv=none; b=BR+dMleT5i0QEN0prpMHOk7arZm8qJN781lG2/XNq5VNyGL9UsDKKDOjLL3qyCKQMlvatNnDZ96bnboQgvz2H9a62+n8BmYc6Tg60CnF3nfOm3+kpi5gtnQDSaLwSozWicwqXq79uznxAjWniuyXZaSya8EF4xQ42Z2o4Q7P+6U=
+	t=1748877502; cv=none; b=F2qrT0CLbJ/irQN3dXXTrrLOc4tq43PXBX4MiMPJ/7xSLkvfX2h/PQU6xLcyO9VUnk6nbG58H56T0KQzYABQ9EqWczblUwvYBbQH34QRd5G6YAst4/lXeadUhCG7QhLCdmUHACUM3cR2Jn8QgQKrWKznLjNUOqB3E0DJOVlqKKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876517; c=relaxed/simple;
-	bh=KoCHj/LMcjkcQv5yYQI/NX7FYQCns1CtO9P6xmOkBTE=;
+	s=arc-20240116; t=1748877502; c=relaxed/simple;
+	bh=4OpAi8ZU2xFbT9+pXpZCLotOHYI+QPRvzQA9r5Q8M4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lU6StSknBpD3aULebW4zIsSotDDxct0rFxQwORJlRuUWTVh5H0ye+5dOE2z3EjcyFH98ghR9RFfn3MMwUYgWcQwUD/WBPDTBw3pbGSyXr9h/049QzfT7I3az0p2etXZvVJ46OqVsboZllHduUdhlhcLnR6kcAGVq6zmnc1w22m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLPx7H2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E74C4CEEB;
-	Mon,  2 Jun 2025 15:01:56 +0000 (UTC)
+	 MIME-Version; b=skOOEU6oSCoWkGHLaY5qOFBRScGftUE5ENi4AnnV7O3YnC5eTsyRVkFaz+sEaq0N00fXmNjwAfw3Ktf7cT59/VSYLBC2cwIYc0x2y0DOWdSKIS4mUtx1M00/wRncqxSep41RraD0p014jmuIe9aYquRK4M8uZPFbZ0HaAX5dk4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIqgK0CP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903CBC4CEEE;
+	Mon,  2 Jun 2025 15:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876517;
-	bh=KoCHj/LMcjkcQv5yYQI/NX7FYQCns1CtO9P6xmOkBTE=;
+	s=korg; t=1748877502;
+	bh=4OpAi8ZU2xFbT9+pXpZCLotOHYI+QPRvzQA9r5Q8M4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLPx7H2V8sgh57XmvtK0h9O03jvo0ingsDVNa09x9b93LN2w+BD79ofKuxdd+oObV
-	 pX/tgV4PCVvXKs59Wgsu6ZahqTUpE2182PyleiAs1gQkEVJuaqOoOQwgCy2Qz3jznn
-	 tGEeQEB/+YIO49U1FmPzCPGZQjaf/lNa6sy/2/so=
+	b=pIqgK0CPlpecKnWpM6pgkHDlxrI8N4cO+riCyD9c6kxk4tI7B1PL7Yf1nJpVyZnrn
+	 zGOcGreFO22qGl9mAE2obnK4BAMACzezm1NV7i6LTG9Yan00vM70KLSqsQEt/Gt18m
+	 5b5lJxV45hGC39NiP0Q6vDzcYLSI+5mlSvzYxECA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Chau <johnchau@0atlas.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 200/207] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
-Date: Mon,  2 Jun 2025 15:49:32 +0200
-Message-ID: <20250602134306.617046677@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 297/325] af_unix: Skip GC if no cycle exists.
+Date: Mon,  2 Jun 2025 15:49:33 +0200
+Message-ID: <20250602134331.973810349@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Chau <johnchau@0atlas.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
+commit 77e5593aebba823bcbcf2c4b58b07efcd63933b8 upstream.
 
-Change get_thinkpad_model_data() to check for additional vendor name
-"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
-more).
+We do not need to run GC if there is no possible cyclic reference.
+We use unix_graph_maybe_cyclic to decide if we should run GC.
 
-The reason of this works with minimal changes is because NEC Lavie
-X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
-"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
-the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
+If a fd of an AF_UNIX socket is passed to an already inflight AF_UNIX
+socket, they could form a cyclic reference.  Then, we set true to
+unix_graph_maybe_cyclic and later run Tarjan's algorithm to group
+them into SCC.
 
-I compiled and tested with my own machine, attached the dmesg
-below as proof of work:
-[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
-[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
-[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
-[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
-[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
-[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
-[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
-[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
-[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
-[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
+Once we run Tarjan's algorithm, we are 100% sure whether cyclic
+references exist or not.  If there is no cycle, we set false to
+unix_graph_maybe_cyclic and can skip the entire garbage collection
+next time.
 
-Signed-off-by: John Chau <johnchau@0atlas.com>
-Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When finalising SCC, we set true to unix_graph_maybe_cyclic if SCC
+consists of multiple vertices.
+
+Even if SCC is a single vertex, a cycle might exist as self-fd passing.
+Given the corner case is rare, we detect it by checking all edges of
+the vertex and set true to unix_graph_maybe_cyclic.
+
+With this change, __unix_gc() is just a spin_lock() dance in the normal
+usage.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-11-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/unix/garbage.c |   48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 47 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 5e44a4338706a..b994e07a61111 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10935,6 +10935,8 @@ static int __must_check __init get_thinkpad_model_data(
- 		tp->vendor = PCI_VENDOR_ID_IBM;
- 	else if (dmi_name_in_vendors("LENOVO"))
- 		tp->vendor = PCI_VENDOR_ID_LENOVO;
-+	else if (dmi_name_in_vendors("NEC"))
-+		tp->vendor = PCI_VENDOR_ID_LENOVO;
- 	else
- 		return 0;
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -112,6 +112,19 @@ static struct unix_vertex *unix_edge_suc
+ 	return edge->successor->vertex;
+ }
  
--- 
-2.39.5
-
++static bool unix_graph_maybe_cyclic;
++
++static void unix_update_graph(struct unix_vertex *vertex)
++{
++	/* If the receiver socket is not inflight, no cyclic
++	 * reference could be formed.
++	 */
++	if (!vertex)
++		return;
++
++	unix_graph_maybe_cyclic = true;
++}
++
+ static LIST_HEAD(unix_unvisited_vertices);
+ 
+ enum unix_vertex_index {
+@@ -138,12 +151,16 @@ static void unix_add_edge(struct scm_fp_
+ 
+ 	vertex->out_degree++;
+ 	list_add_tail(&edge->vertex_entry, &vertex->edges);
++
++	unix_update_graph(unix_edge_successor(edge));
+ }
+ 
+ static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+ {
+ 	struct unix_vertex *vertex = edge->predecessor->vertex;
+ 
++	unix_update_graph(unix_edge_successor(edge));
++
+ 	list_del(&edge->vertex_entry);
+ 	vertex->out_degree--;
+ 
+@@ -227,6 +244,7 @@ out:
+ void unix_update_edges(struct unix_sock *receiver)
+ {
+ 	spin_lock(&unix_gc_lock);
++	unix_update_graph(unix_sk(receiver->listener)->vertex);
+ 	receiver->listener = NULL;
+ 	spin_unlock(&unix_gc_lock);
+ }
+@@ -268,6 +286,26 @@ void unix_destroy_fpl(struct scm_fp_list
+ 	unix_free_vertices(fpl);
+ }
+ 
++static bool unix_scc_cyclic(struct list_head *scc)
++{
++	struct unix_vertex *vertex;
++	struct unix_edge *edge;
++
++	/* SCC containing multiple vertices ? */
++	if (!list_is_singular(scc))
++		return true;
++
++	vertex = list_first_entry(scc, typeof(*vertex), scc_entry);
++
++	/* Self-reference or a embryo-listener circle ? */
++	list_for_each_entry(edge, &vertex->edges, vertex_entry) {
++		if (unix_edge_successor(edge) == vertex)
++			return true;
++	}
++
++	return false;
++}
++
+ static LIST_HEAD(unix_visited_vertices);
+ static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
+ 
+@@ -353,6 +391,9 @@ prev_vertex:
+ 			vertex->index = unix_vertex_grouped_index;
+ 		}
+ 
++		if (!unix_graph_maybe_cyclic)
++			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
++
+ 		list_del(&scc);
+ 	}
+ 
+@@ -363,6 +404,8 @@ prev_vertex:
+ 
+ static void unix_walk_scc(void)
+ {
++	unix_graph_maybe_cyclic = false;
++
+ 	/* Visit every vertex exactly once.
+ 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
+ 	 */
+@@ -524,6 +567,9 @@ static void __unix_gc(struct work_struct
+ 
+ 	spin_lock(&unix_gc_lock);
+ 
++	if (!unix_graph_maybe_cyclic)
++		goto skip_gc;
++
+ 	unix_walk_scc();
+ 
+ 	/* First, select candidates for garbage collection.  Only
+@@ -633,7 +679,7 @@ static void __unix_gc(struct work_struct
+ 
+ 	/* All candidates should have been detached by now. */
+ 	WARN_ON_ONCE(!list_empty(&gc_candidates));
+-
++skip_gc:
+ 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
+ 	WRITE_ONCE(gc_in_progress, false);
+ 
 
 
 
