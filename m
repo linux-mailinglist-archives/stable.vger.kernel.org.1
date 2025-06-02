@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDBB6ACB462
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAE0ACB767
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7105A4A37C4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA21B4A5E85
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B4522A814;
-	Mon,  2 Jun 2025 14:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4FB231826;
+	Mon,  2 Jun 2025 15:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ID05kyYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5f8yZZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49E622A80F;
-	Mon,  2 Jun 2025 14:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2DB230BEF;
+	Mon,  2 Jun 2025 15:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874831; cv=none; b=OsHsoggUoojLa8hiIe3fjQW0AJ/gBmvci1zDMiv+OlYN1OyG6VVIIlmP8TTxcOHxHzl3NVPkrlOzgHI7rJgYCGMtnvNNsOf97BKAxo5WW4Ah/Kn4zdVIab1WTiLkwJgWf12guevK97J/lN2PNssR06fi9xJODyt3xzZlq8Nzd4M=
+	t=1748877302; cv=none; b=lw29XdNTD7yQ/yVUtyHgxtbsGLUI1i5g6ZTu72Ce/JVOlFYQP765dljLHwYIdFDu1DeZhMuIq/PPJ2idB7Z6AcKaxCdnpr0o7ZTfZ6Zw+jBIiwkiMPEmpDauWGxt4gwKJVrNZ0mKdSQFn35ijqAiFzzWA1o2kVq88JgXTeQMV2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874831; c=relaxed/simple;
-	bh=WePdrfWOR/qalEZlePtkgZ4aVYD8Dt9aKOWQu9l+odU=;
+	s=arc-20240116; t=1748877302; c=relaxed/simple;
+	bh=tfdSYgE0R2zIbxngj4KBpGeMelKp6tlJbsjb00xBC3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzukXJeRkHwQn3aRnEeMG2glyi9cd9A6devjSw/DvmW++xis6AUOtSN/v1qsAB2i1683fn+O7Tcj3maVfOYpsJjbJdjNg8/5KPapsvGNs8of60vsMUoJMuUBuqTt+QlC20BA+I3bSu52dKHifO9Ep/wbT3rdfjWaO+su+04nzM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ID05kyYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541CFC4CEEB;
-	Mon,  2 Jun 2025 14:33:50 +0000 (UTC)
+	 MIME-Version; b=fxGsiYoTjI9hNbTf7wpshhyoAMEM/zeXzrYhLBWT5z/jXPkhdXJtKMKRntexsoDk6DDNS0a6qdaIoLPy8I662tyU2a2hQM8sAS9tPXTatVqaEk4+55a8gzmX960t3SaLbmTa1JlpxfrB4RAzYfq8gUHPjNS/uphbnm6yGQxOsBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5f8yZZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B43C4CEEB;
+	Mon,  2 Jun 2025 15:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874830;
-	bh=WePdrfWOR/qalEZlePtkgZ4aVYD8Dt9aKOWQu9l+odU=;
+	s=korg; t=1748877302;
+	bh=tfdSYgE0R2zIbxngj4KBpGeMelKp6tlJbsjb00xBC3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ID05kyYZlxkK3fz04qflCyufQNsM0baZHLeWwF7VDTZcxerNqf9/cGq4AjIk0yiDl
-	 wwqo8p7X+19q5VwQSePuD7Wf57YRRYpskm1f+83g+Zy9OnwUC1lo1iAVL44DdLfZ/P
-	 G6d5B/IzZec56Wc3Vuzxcaw4I20moJ/Er+6+o5QM=
+	b=w5f8yZZSj7CtC+gFqz5BHMWKHYHm34O3a5vLmpdj7nEwFp1xSm1eHFu0IX9N/pI2e
+	 brD927pOcg468bvmDi2P5HstJ6QBNCctYMy6N0ckggJ86Qx0Yo5NachkApEumWcOA/
+	 /VwokC8CaYhtFnYCuw4VeeTm60AthJewSfgnFZ7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 150/204] net/mlx5e: set the tx_queue_len for pfifo_fast
+Subject: [PATCH 6.1 207/325] ASoC: codecs: pcm3168a: Allow for 24-bit in provider mode
 Date: Mon,  2 Jun 2025 15:48:03 +0200
-Message-ID: <20250602134301.544590005@linuxfoundation.org>
+Message-ID: <20250602134328.201367611@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit a38cc5706fb9f7dc4ee3a443f61de13ce1e410ed ]
+[ Upstream commit 7d92a38d67e5d937b64b20aa4fd14451ee1772f3 ]
 
-By default, the mq netdev creates a pfifo_fast qdisc. On a
-system with 16 core, the pfifo_fast with 3 bands consumes
-16 * 3 * 8 (size of pointer) * 1024 (default tx queue len)
-= 393KB. The patch sets the tx qlen to representor default
-value, 128 (1<<MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE), which
-consumes 16 * 3 * 8 * 128 = 49KB, saving 344KB for each
-representor at ECPF.
+As per codec device specification, 24-bit is allowed in provider mode.
+Update the code to reflect that.
 
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250203141051.2361323-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/pcm3168a.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index a40fecfdb10ca..26a9d38d1e2a7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -1470,6 +1470,8 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev)
- 	}
- 
- 	netdev->watchdog_timeo    = 15 * HZ;
-+	if (mlx5_core_is_ecpf(mdev))
-+		netdev->tx_queue_len = 1 << MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE;
- 
- 	netdev->features       |= NETIF_F_NETNS_LOCAL;
- 
+diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
+index 9d6431338fb71..329549936bd5c 100644
+--- a/sound/soc/codecs/pcm3168a.c
++++ b/sound/soc/codecs/pcm3168a.c
+@@ -494,9 +494,9 @@ static int pcm3168a_hw_params(struct snd_pcm_substream *substream,
+ 		}
+ 		break;
+ 	case 24:
+-		if (provider_mode || (format == SND_SOC_DAIFMT_DSP_A) ||
+-		    		     (format == SND_SOC_DAIFMT_DSP_B)) {
+-			dev_err(component->dev, "24-bit slots not supported in provider mode, or consumer mode using DSP\n");
++		if (!provider_mode && ((format == SND_SOC_DAIFMT_DSP_A) ||
++				       (format == SND_SOC_DAIFMT_DSP_B))) {
++			dev_err(component->dev, "24-bit slots not supported in consumer mode using DSP\n");
+ 			return -EINVAL;
+ 		}
+ 		break;
 -- 
 2.39.5
 
