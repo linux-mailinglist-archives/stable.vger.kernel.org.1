@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B8DACB346
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721D3ACB357
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99E047AAE04
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228BA1940236
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F2322D7A6;
-	Mon,  2 Jun 2025 14:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33B8227E95;
+	Mon,  2 Jun 2025 14:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAtGm4x8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMHHT6/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AD222259A;
-	Mon,  2 Jun 2025 14:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6045B227EAC;
+	Mon,  2 Jun 2025 14:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874861; cv=none; b=Hyx0U3CE4sAZqpOMtbWF2WUOjumCQ0pKiuYlFEfaKx5INzUOg/0Z3BlaNT4qgGNmLlix01ONsA+vOsFLLHxq84AcIC/b5mvoKZveeNZV1R/zOTCQwb1xly5qS95VeHyCqjxDWJMf1/b9X8R7wsSKLDmMWkAE08F94Y/GQ/oErkA=
+	t=1748874315; cv=none; b=hSBbsUaS4Eyv6lnzoU7EYcUhD8Au7y8M9ys7ad6PjX2zc++uY3K0GkV4QTrK6eJ+jv3lnm76TInQ0v14Ki/K4c6OGdqnkVEaU8qint04hU7aYs2jNMCou7w6K9yx6dMEH4Mjye/lMHFV6QEMDAtTN8mlQFJ34Mx1DQ+N57XQIfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874861; c=relaxed/simple;
-	bh=Y9SUu7yuj84pqayxDy40huYVHRmDKAZ3b5I3z6ONlKQ=;
+	s=arc-20240116; t=1748874315; c=relaxed/simple;
+	bh=5tM/DkmY+unEo8OdpkyprjElyk0LPluSl6dAob2Eqc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWAcVD9XgicgRYg89dprmq1TzpzaTaN1+qQCs0v89UQA24lna4C08xu14C7mZ5cRSADRvusKDJM0+wTtLKY3cbjuExQiuwN4T+NN00mOv+XVzbEVE62JeX3t3oUw7wzf5PXjYVlu21ojWu02r6QkxxhL305adL0rbTj1eZhkaHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAtGm4x8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2F7C4CEEB;
-	Mon,  2 Jun 2025 14:34:21 +0000 (UTC)
+	 MIME-Version; b=jzPmLGjC+lpcKTvSHmSeIX1tB/KPMAnhOe/B7AKMcj4/Vk1A6D3/p5EcATzMODkoIb6mq11IO/5nZhHs3lzRRL++geXS7gQNgRomPdwBnp0sNrvpH+hSz0kQEImOD+VzdBl3/7N1j4d7DKoQXtgK0nUUK/xDsgJSx6OH2Pq3q1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMHHT6/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5A0C4CEEB;
+	Mon,  2 Jun 2025 14:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874861;
-	bh=Y9SUu7yuj84pqayxDy40huYVHRmDKAZ3b5I3z6ONlKQ=;
+	s=korg; t=1748874315;
+	bh=5tM/DkmY+unEo8OdpkyprjElyk0LPluSl6dAob2Eqc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAtGm4x8XWZZIcyEMDZegvqwSfpMPOki22l/XqM03V7e4BIiW99IWQmUbzBOPYqND
-	 /czLQ9Fjq0ThQjNUMw71v38MK5zag9QZ1fiv1SN6nMrPiEk4vnWA7TFywRlMQk1XGR
-	 E7mmpz3hILGbqFFyKAcD5t9zeSmPt11MDPz7g2QY=
+	b=AMHHT6/y/5jCRbJL8jz4Kw5ORmJWReoLiRc/zmywWUwSX61TxNI0NEvRm/wUUrGUN
+	 OJHC038LE5AhUXIEG16OqW9zLpTTlChlVboDkSw73+K8LjQl8yv0lbbp9j0VQKXQAQ
+	 HqSy2fIWOnFie2vJ3ilE4P/7RD3ZUWKd5REKJBDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	junan <junan76@163.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 159/204] HID: usbkbd: Fix the bit shift number for LED_KANA
-Date: Mon,  2 Jun 2025 15:48:12 +0200
-Message-ID: <20250602134301.903762061@linuxfoundation.org>
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 429/444] coredump: fix error handling for replace_fd()
+Date: Mon,  2 Jun 2025 15:48:13 +0200
+Message-ID: <20250602134358.352312860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junan <junan76@163.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
+commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
 
-Since "LED_KANA" was defined as "0x04", the shift number should be "4".
+The replace_fd() helper returns the file descriptor number on success
+and a negative error code on failure. The current error handling in
+umh_pipe_setup() only works because the file descriptor that is replaced
+is zero but that's pretty volatile. Explicitly check for a negative
+error code.
 
-Signed-off-by: junan <junan76@163.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/usbkbd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/coredump.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
-index d5b7a696a68c5..50c5b204bf04c 100644
---- a/drivers/hid/usbhid/usbkbd.c
-+++ b/drivers/hid/usbhid/usbkbd.c
-@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
- 		return -1;
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -502,7 +502,9 @@ static int umh_pipe_setup(struct subproc
+ {
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+-	int err = create_pipe_files(files, 0);
++	int err;
++
++	err = create_pipe_files(files, 0);
+ 	if (err)
+ 		return err;
  
- 	spin_lock_irqsave(&kbd->leds_lock, flags);
--	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
-+	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
- 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
- 		       (!!test_bit(LED_NUML,    dev->led));
+@@ -510,10 +512,13 @@ static int umh_pipe_setup(struct subproc
  
--- 
-2.39.5
-
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
++	if (err < 0)
++		return err;
++
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return err;
++	return 0;
+ }
+ 
+ void do_coredump(const kernel_siginfo_t *siginfo)
 
 
 
