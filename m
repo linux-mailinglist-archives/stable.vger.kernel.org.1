@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E6FACB572
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A017ACB48F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B6BA20D1B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FB19E1EB8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588081C6FE9;
-	Mon,  2 Jun 2025 14:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9375422541F;
+	Mon,  2 Jun 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBuG3cAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yugXi2ro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A6C23184A;
-	Mon,  2 Jun 2025 14:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E95821882B;
+	Mon,  2 Jun 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875502; cv=none; b=Kh1RrsVMttUvnhpOOFlxfq016+E34/S5r1YhuDx5GhGuA/Cad59zPgqqy1kMHO00ihsPpwv9rnv8xsgaacAmjn6q1LOSvaGBSJpR5BtOjJ8eTXPmB/7KLTRKJN4d+IoaI+g1yvt1VU2x8DiUPAUq5kAsidjfudOGrPKGE/R+Np8=
+	t=1748874780; cv=none; b=io0guIS4u2zxbf3Pd2o30Na9QD4bRww2wSUYgtbPJxKoBVLUacOsJslUcH3p3G1VLzALvopzLIltypepgtGfD0JST+sOF8xjtlvTAl8BdA/mDqYtlpd5kbP2sP1mG/H9Q/Q6jZ+YBAtdpA0tSPh0+qFdjoF8K9bMOdjam51vFGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875502; c=relaxed/simple;
-	bh=K0hwO6lk8IsvL+qrfjJrQJhaesRUy8W4bEP7/0N0rX8=;
+	s=arc-20240116; t=1748874780; c=relaxed/simple;
+	bh=HU7HTt4EGikjshpirHO029ynR1FwZBlSgJdB/plR4S0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLBCX7qP3lyPaHzACmK/sRlARYzNobq3DgGjjqYOPE1FWmzwCwYVzUuFS5kEINKyI1VJ3tAkjFBtmk2UnO3xEwE/5IO4G0EWtUfqOiTB6gphJGprYGRjJchUfTmXeJAk2tgsIUuGYlS4be9NmG2bahhIdMF6oi+IlxF8GjP/+X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBuG3cAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB69C4CEEB;
-	Mon,  2 Jun 2025 14:45:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pANsUxpy7BKS7VfCn15Uq/E5u4Ry0E77faqBfh9ZSz/ofN6ypqGm2Mt/CMcKvVniBrIjFgelSuk3yHKZxxePzXzTxM/r4BO7+rlrGkEXgbcH0QJJPxbVxSXHCxAryfUBdRYuuFjedXVFEPYZbmm2V0vmUHZPQWB0OlRAMMIrmgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yugXi2ro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD8C4CEEB;
+	Mon,  2 Jun 2025 14:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875501;
-	bh=K0hwO6lk8IsvL+qrfjJrQJhaesRUy8W4bEP7/0N0rX8=;
+	s=korg; t=1748874780;
+	bh=HU7HTt4EGikjshpirHO029ynR1FwZBlSgJdB/plR4S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBuG3cAP10j/2+HANHbgOO/wmu1OpzETkfJ499baJqPTEDODeKgvn2tWjjvzlC4fs
-	 7rZ0hf0gORwl9Zy3UGI8Xh2t4RbpyT0DDI6pnlL3nm82V8WRKhX0/LvvbEFay/0Hf0
-	 N0IIhWc/RyYlYK2LA+KsmhTXy67QtWSCwU+9PT3s=
+	b=yugXi2roxoOZF19hngmTPpD0XWqG4/m0D94PN6jy8gT3zWOCgQKQmxE4UgBl9Wq64
+	 aB4zz8RqvYBUQRd9+nAEVUoxu91GGXd7Je0ShsEdU2tZ8hjaRzdDCCIoGImH9dGho0
+	 c8cBM01r17zVeVhJ6AMLu+QabdCI4FSa741huk24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Thierry Reding <treding@nvidia.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 154/270] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
+Subject: [PATCH 5.4 106/204] scsi: st: Tighten the page format heuristics with MODE SELECT
 Date: Mon,  2 Jun 2025 15:47:19 +0200
-Message-ID: <20250602134313.513745188@linuxfoundation.org>
+Message-ID: <20250602134259.830399745@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
+[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
 
-According to the board schematics the enable pin of this regulator is
-connected to gpio line #9 of the first instance of the TCA9539
-GPIO expander, so adjust it.
+In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
+not correctly implement it. The st driver first tries MODE SELECT with the
+page format bit set to set the block descriptor.  If not successful, the
+non-page format is tried.
 
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+The test only tests the sense code and this triggers also from illegal
+parameter in the parameter list. The test is limited to "old" devices and
+made more strict to remove false alarms.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/st.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
-index a9caaf7c0d67e..c04772a9740ec 100644
---- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
-@@ -1638,7 +1638,7 @@ vdd_1v8_dis: regulator@7 {
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <1800000>;
- 		regulator-always-on;
--		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
-+		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 		vin-supply = <&vdd_1v8>;
- 	};
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 2b5e3e2ba3b8b..8f927851ccf86 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3076,7 +3076,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			   cmd_in == MTSETDRVBUFFER ||
+ 			   cmd_in == SET_DENS_AND_BLK) {
+ 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
+-			    !(STp->use_pf & PF_TESTED)) {
++				cmdstatp->sense_hdr.asc == 0x24 &&
++				(STp->device)->scsi_level <= SCSI_2 &&
++				!(STp->use_pf & PF_TESTED)) {
+ 				/* Try the other possible state of Page Format if not
+ 				   already tried */
+ 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
 -- 
 2.39.5
 
