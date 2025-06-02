@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B25ACB862
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D89EACB5CF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79E741BC4AD0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2479A1BC6F63
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4282248B0;
-	Mon,  2 Jun 2025 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E186F221FC7;
+	Mon,  2 Jun 2025 14:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FsHiIyoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK7xJlRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698131DF73C;
-	Mon,  2 Jun 2025 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F9F17BBF;
+	Mon,  2 Jun 2025 14:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877089; cv=none; b=OGz3rh3Y9rkr234+i4yT1mwoEb1GcCyfyQIQpSI6bsdHhmf8YCxe+m2nkWmduMiBlICMZ3FTabmvgfFtg+4WIrB1SVPA2XTu2Lmd+2Fx81KRsCeyG1zLhzSr9GCkIuUrSk21DLnUpyWecz0J1LxhEz/NeRPks1aempSrKcatOLU=
+	t=1748876018; cv=none; b=Kj3yTD5/gMxO0e79XRyfE+5FSfzSqhWpMR9CE1bVFbsTH5PaCr6XMqCxLhmNVWQLFoNR+pxgCHV27oeUcex56l76lqXcJosf/mjzTkEwdncJx/oxItT2kziHsSFnLGyjWOTbTV11ErtEK5KtJbCpmD/fJjVn2VqdB7DWqgUNNAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877089; c=relaxed/simple;
-	bh=DOTQOcgx5/2LnSs66q6DEuP607uuEEHz4wTF2/o7ABQ=;
+	s=arc-20240116; t=1748876018; c=relaxed/simple;
+	bh=c7c9orpvvcZHBDMTaxBle9PMb3+SPo4tuE2LxhsuFT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GR/ZGouMpBBDrDClBzpzt84XDqzalIbSiW0KNlQ0a+j6bm4+qEFHDjv8JZ4smy1aVYr025lMMV2e47qLGppI2nNbcmW73W9LPbMlW3/uZTxyDBUaeZV9t31UcdYezlrlPZ9y4BTsWJFHsJx2uUI1YDbq0Dim4ABiINftCZ0nix0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FsHiIyoO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD875C4CEEB;
-	Mon,  2 Jun 2025 15:11:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B76BCJTc1t5D89mdFeKW+WO0tqV9SpuLzhxf8E7Dr+sPn71l9tVXxj/N/RZnllaYxsRxNbiS30hArDrRMHki7jbUGwEiGm7NSxfiuuG8Gh4zFjvQE8zBoPZZtVgMQBb0VhxfbP2rENA3qd7UlW2wmdylTrMLDT/4SqAPv8o+mC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK7xJlRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DF7C4CEEB;
+	Mon,  2 Jun 2025 14:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877089;
-	bh=DOTQOcgx5/2LnSs66q6DEuP607uuEEHz4wTF2/o7ABQ=;
+	s=korg; t=1748876018;
+	bh=c7c9orpvvcZHBDMTaxBle9PMb3+SPo4tuE2LxhsuFT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsHiIyoO+zLSgt3ASxhdtcUVBE458Oz3IU31svJS7Us5BZ8BMrf6dnr7YKTdAMy4Q
-	 oOvtEQBNQfbSPpjcLk00qN+JV2DuyZxnBPJ32uVUsCrXQ2FIeB+0RoIJFJ26+DiauL
-	 IudzzDheLaAkaacB6EjDi2r94AJPfPQt0WGbt3Rc=
+	b=hK7xJlRpNJmqxMmIArflP+4mm3KLEILWagMx5wJf+MEyBBpbHDqLz3+F44Jc9MYW3
+	 6OOfzueSlUUPiiZ7PQZNvbTu8IgC+U/hbK16K9M5Vo9SH0wMIu/gLJm0c8qPLAnPNj
+	 fk0+D2mmjASOap6RHNXe207zYHEFQnHLdnkbr+I8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/325] libbpf: Fix out-of-bound read
+Subject: [PATCH 5.15 045/207] ASoC: mediatek: mt6359: Add stub for mt6359_accdet_enable_jack_detect
 Date: Mon,  2 Jun 2025 15:46:57 +0200
-Message-ID: <20250602134325.530389669@linuxfoundation.org>
+Message-ID: <20250602134300.521482077@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
+[ Upstream commit 0116a7d84b32537a10d9bea1fd1bfc06577ef527 ]
 
-In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
-that it will be at least two characters long due to the presence of checks for
-opening and closing quotes. But the check for the closing quote
-(value[len - 1] != '"') misses the fact that it could be checking the opening
-quote itself in case of an invalid input that consists of just the opening
-quote.
+Add a stub for mt6359_accdet_enable_jack_detect() to prevent linker
+failures in the machine sound drivers calling it when
+CONFIG_SND_SOC_MT6359_ACCDET is not enabled.
 
-This commit adds an explicit check to make sure the string is at least two
-characters long.
-
-Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://patch.msgid.link/20250306-mt8188-accdet-v3-3-7828e835ff4b@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/mt6359-accdet.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index a0fb50718daef..98d5e566e0582 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -1751,7 +1751,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
- 	}
+diff --git a/sound/soc/codecs/mt6359-accdet.h b/sound/soc/codecs/mt6359-accdet.h
+index c234f2f4276a1..78ada3a5bfae5 100644
+--- a/sound/soc/codecs/mt6359-accdet.h
++++ b/sound/soc/codecs/mt6359-accdet.h
+@@ -123,6 +123,15 @@ struct mt6359_accdet {
+ 	struct workqueue_struct *jd_workqueue;
+ };
  
- 	len = strlen(value);
--	if (value[len - 1] != '"') {
-+	if (len < 2 || value[len - 1] != '"') {
- 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
- 			ext->name, value);
- 		return -EINVAL;
++#if IS_ENABLED(CONFIG_SND_SOC_MT6359_ACCDET)
+ int mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
+ 				     struct snd_soc_jack *jack);
++#else
++static inline int
++mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
++				 struct snd_soc_jack *jack)
++{
++	return -EOPNOTSUPP;
++}
++#endif
+ #endif
 -- 
 2.39.5
 
