@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C96ACB70E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78037ACB491
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D698F1940FC3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C5619460DE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F7F233D9E;
-	Mon,  2 Jun 2025 14:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C88422F740;
+	Mon,  2 Jun 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMmPlh82"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fl4pEZyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0048A230BD9;
-	Mon,  2 Jun 2025 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A72022F384;
+	Mon,  2 Jun 2025 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876205; cv=none; b=pPOPfgNIkIZfy69KzlA9dkRLVD+8yC4DreTpkgkWf3hrs5qaHO9/GAj7ZZis0h5WJ1Py2/aATopaPvqV9YHVxTnh0meJI/qI19163WfEW+g+WF2TO63RyRJoGqentLcTY0fY97hvOERkPqn2m5Yj114ZsTOHWCvC5G66jzjhn5k=
+	t=1748874913; cv=none; b=cpPdNoc/O4xQQ/NRpix6XM5WfPt6BzyGJ+Wku15dUoxmd3dFyTAq7lQCtlAg100w4CvtXSE44VvL0oO08tzWJbp61JzZg8nhDNmzxVwZFDmqOlxe1vv1+YLMxEJwzvxzcUAhYug0WsKTS2+kfyi4rm+XpZMYx4tf9ZpIVnXgG1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876205; c=relaxed/simple;
-	bh=wX6mRc528Ev+ZmmYvwQybgZzpfyu7RPHcC9E/d5AIQ0=;
+	s=arc-20240116; t=1748874913; c=relaxed/simple;
+	bh=kLlPayZcd4sPh4PsUNeszn0yi5JuDyKgs09dswKNtxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFCRXSEBLc6ulglJT+dmk2/dz/k5dLK/EPUFcUiflTYGiuz1OE6Hang5Hu3sfiEy0QsDOsQAE8xNV/JtVlL/gxqVvD2AR46excM6GQykdPifxZY5AoMZKXuupVPnHSjCVUCQnh8PjvwdQpbYJJFy+QBwp22kz9abbuIy4n/xhgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMmPlh82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC89C4CEEB;
-	Mon,  2 Jun 2025 14:56:43 +0000 (UTC)
+	 MIME-Version; b=CRnmk8p3YZS/uFYu+znIl07WgQPj4gpXoR8mg3QHeTyBV8DvJ1dHM0HTAbkRnIRCOiM1TTtZ0xp8cq6dFUBtgz6n9Ns94Eycmv5spDCXAWjk1JCEyOImLYDLlePDbAxs8vbcOEp6WTNRIdq+2zlXre2ZpGFp2LmrO/ThQfbYn7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fl4pEZyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F75C4CEEB;
+	Mon,  2 Jun 2025 14:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876204;
-	bh=wX6mRc528Ev+ZmmYvwQybgZzpfyu7RPHcC9E/d5AIQ0=;
+	s=korg; t=1748874913;
+	bh=kLlPayZcd4sPh4PsUNeszn0yi5JuDyKgs09dswKNtxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMmPlh826iLAburmh6WDzN0F0J9eg6GTY3fihs3Hmc6kz5nOxd1sPjHUzRQShv6qC
-	 TCbo0zEspzZxWgDNn3UpsOG967oqavZJ+R3tZCEDj0WM/cXnDHpRHEK8kCpmUSk1TD
-	 mltff/xG+f8WXwieBoIRedrS9YoCA2Fzk6O5eD1o=
+	b=fl4pEZyJxQKYWZC1dEHcHog0CnUQNSAKMmbVr2bubux3jhY1KRtcNexZdQg2Gj7xT
+	 7F/jfJDGHmiAn/TUJdFyWFnOV/Ka2i3sWUPyA4hWCr13ayQvG1AZcXomXaGFlg5ceZ
+	 mkZGq4rzvBGkYUhFVAKMMgelE2WtjdjjfLMm3wAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/207] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
+Subject: [PATCH 5.4 143/204] net/mlx5: Apply rate-limiting to high temperature warning
 Date: Mon,  2 Jun 2025 15:47:56 +0200
-Message-ID: <20250602134302.810440379@linuxfoundation.org>
+Message-ID: <20250602134301.264221721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
+[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
 
-Set the RX mask and the highest RX rate according to the number of
-spatial streams the chip can receive. For RTL8814AU that is 3.
+Wrap the high temperature warning in a temperature event with
+a call to net_ratelimit() to prevent flooding the kernel log
+with repeated warning messages when temperature exceeds the
+threshold multiple times within a short duration.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index c5d0b213a3546..5101db5ab6d27 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1330,6 +1330,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
- 			    struct ieee80211_sta_ht_cap *ht_cap)
- {
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
-+	int i;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 9d7b0a4cc48a9..5e8db7a6185a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -162,9 +162,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- 	ht_cap->ht_supported = true;
- 	ht_cap->cap = 0;
-@@ -1349,17 +1350,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
- 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
- 	ht_cap->ampdu_density = IEEE80211_HT_MPDU_DENSITY_16;
- 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
--	if (efuse->hw_cap.nss > 1) {
--		ht_cap->mcs.rx_mask[0] = 0xFF;
--		ht_cap->mcs.rx_mask[1] = 0xFF;
--		ht_cap->mcs.rx_mask[4] = 0x01;
--		ht_cap->mcs.rx_highest = cpu_to_le16(300);
--	} else {
--		ht_cap->mcs.rx_mask[0] = 0xFF;
--		ht_cap->mcs.rx_mask[1] = 0x00;
--		ht_cap->mcs.rx_mask[4] = 0x01;
--		ht_cap->mcs.rx_highest = cpu_to_le16(150);
--	}
-+
-+	for (i = 0; i < efuse->hw_cap.nss; i++)
-+		ht_cap->mcs.rx_mask[i] = 0xFF;
-+	ht_cap->mcs.rx_mask[4] = 0x01;
-+	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+-	mlx5_core_warn(events->dev,
+-		       "High temperature on sensors with bit set %llx %llx",
+-		       value_msb, value_lsb);
++	if (net_ratelimit())
++		mlx5_core_warn(events->dev,
++			       "High temperature on sensors with bit set %llx %llx",
++			       value_msb, value_lsb);
+ 
+ 	return NOTIFY_OK;
  }
- 
- static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
