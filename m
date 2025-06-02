@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 391E8ACB474
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBD3ACB2CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E19347A5EEA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A72D9416D0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0B4221F1C;
-	Mon,  2 Jun 2025 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1986320F07C;
+	Mon,  2 Jun 2025 14:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxYj6mD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxJomZWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805219EEBD;
-	Mon,  2 Jun 2025 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEDE2343C7;
+	Mon,  2 Jun 2025 14:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875368; cv=none; b=hptU8NXF/Zx4QWjacQl/gwxGe4Cm/qEbOSlJrNBO9ngMDApc2VOvqJ/ZOBLJcxGLy8hWOlj1i310FdymIbts0tFXTZH/wLUTGNWq7pN3zEPfL57BaPNnQjs5h9WCopsGs5V15PbxbJHDVbHtsAJvEWxx1KLHt7acaQQeix5AMk0=
+	t=1748873975; cv=none; b=qlxDh0pb7xx3Z6DI/d7yYNhLPr1qlWiPevs2pRNvACfARLwI1tDVNWmrJmk0BYaOfulSR/JCxsT5nQj60j4t4IjK/NC7Gh9qnQ0mZH5eRNXwuc7wqp+d89nwFZgilrqxXn3JD4WtkuAkXnhyiBy0wbtYqL13VHJdwi9S8kv4SUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875368; c=relaxed/simple;
-	bh=7H85x1unmjANEZ9lrm01GebyVNaB+jv1F+Z17sVLZ28=;
+	s=arc-20240116; t=1748873975; c=relaxed/simple;
+	bh=l7qeHle0m+4sfaug0WsrKiBBLxSkJY46N/t6aHyomg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVIo8XZE+xiqSdp7d1S7H3MEEjggafytb+Qoqt7oWzAAyEYrME/Mt3wtc6O+MKR4rn0t+cANQ7olYPlS80tkMBaWDV3Up4fyp1V0X1H08EhSjWlMkiTddxOMMRV6nux0FaxRjdM4fgpnRGk2UC47sYuaI67kidlx7+MjGHikKHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxYj6mD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB35C4CEEE;
-	Mon,  2 Jun 2025 14:42:47 +0000 (UTC)
+	 MIME-Version; b=s8gQVawDsZaXefSejHiBmcUTdi0bNydyV0+PJiEltzUkZenye2dHlwAO6KasjMkkyEgrJb1OQ3r6bgaLGVL8C5RTh/Xt5r6Nb5z+ZDRxpV4Craqt0H3///P9qIh2vDLVa+0h17wy7cfIWrK5tLFlDiUQjOFoZvTE8lxyAPNvirw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxJomZWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2392C4CEEB;
+	Mon,  2 Jun 2025 14:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875367;
-	bh=7H85x1unmjANEZ9lrm01GebyVNaB+jv1F+Z17sVLZ28=;
+	s=korg; t=1748873975;
+	bh=l7qeHle0m+4sfaug0WsrKiBBLxSkJY46N/t6aHyomg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxYj6mD4fQT6X4MK9nUm74dQ3eYZZJ9skGiAS/SVSoopKX+3QdzCn2GKrM63L2XKQ
-	 b4svYcWySJVD3bLv/Ce387Byqneq9XtaQY/aDIhZ4lqZ44GbkN34HGc6BW9BS0W3lI
-	 N15UfKWeEtKFZTjlvmicoZR7cIdgLqb3YLgvTgRU=
+	b=mxJomZWVMtius9pMhBzrChiJYgo6665CcWXPLtj+eD6PrlrZzzl5x4GiObEDzO/vr
+	 uXmjUXMkCDSnlMfY0ykdagXNxTYIsr67p5xU0ngHSJpFQ8r8NtoTqpRhHNVLNv7zCN
+	 UVQJXTcXjqPb0Uvb/fBqOdvIuFD0WfInHtcQSiRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 095/270] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 316/444] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
 Date: Mon,  2 Jun 2025 15:46:20 +0200
-Message-ID: <20250602134311.060723797@linuxfoundation.org>
+Message-ID: <20250602134353.763067890@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathan.lynch@amd.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
+[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
 
-Several issues with this change:
+Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
+model for making it working.
 
-* The analysis is flawed and it's unclear what problem is being
-  fixed. There is no difference between wait_event_freezable_timeout()
-  and wait_event_timeout() with respect to device interrupts. And of
-  course "the interrupt notifying the finish of an operation happens
-  during wait_event_freezable_timeout()" -- that's how it's supposed
-  to work.
-
-* The link at the "Closes:" tag appears to be an unrelated
-  use-after-free in idxd.
-
-* It introduces a regression: dmatest threads are meant to be
-  freezable and this change breaks that.
-
-See discussion here:
-https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
-
-Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
-Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
-Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmatest.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -825,9 +825,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
- 
--			wait_event_timeout(thread->done_wait,
--					   done->done,
--					   msecs_to_jiffies(params->timeout));
-+			wait_event_freezable_timeout(thread->done_wait,
-+					done->done,
-+					msecs_to_jiffies(params->timeout));
- 
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index ce80adc30fe94..6a85e8fdcae64 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -576,6 +576,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{       /* Acer Aspire SW3-013 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
++		},
++		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+-- 
+2.39.5
+
 
 
 
