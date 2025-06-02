@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8585BACB2F8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8B7ACB3B0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96BB84A3D88
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ED301BA4608
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BC523BD14;
-	Mon,  2 Jun 2025 14:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A2823236F;
+	Mon,  2 Jun 2025 14:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+ybl3mp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aN+HZjed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32ADA223715;
-	Mon,  2 Jun 2025 14:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43977225A31;
+	Mon,  2 Jun 2025 14:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874139; cv=none; b=NcN7WyjcD1BnSqJqO6t3MUhoH45Kpd1Cta1uP76OJIDu+m6DoFP/5uFkeJOrOLDEJSnCg0xUPQd+9U5Keu19DqL8NK+vigO9yI+3BmX/H9xLsWwC/k3ZUJKdPe8XQOLUb72U9ZiFAR5N6Hi6kecXJjK768LmoZb2hJFX2qCpp64=
+	t=1748874609; cv=none; b=D3yVCMW9aIQiAhWL2Q1FJU769YMgjUsJMA764QX0U/OdLBqFDBohdJIvcj+0e8pH3FIczH8ht+iZ3Zq4ZdB4WWvDOfol1dWUhhDln+mqAVUlZOVGDytdcYdhoq63d0wKzy1MiyTN4qseF7WIxxJTZt9pffj0qv2zaZk0cpgdsB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874139; c=relaxed/simple;
-	bh=B+Ze7zziEfeHsXhzNwB4rNvB/4qkPWIpInz+Hd2+F94=;
+	s=arc-20240116; t=1748874609; c=relaxed/simple;
+	bh=UbOOaz+ZVTQkkwVI+fEdfhYEGwIRb/qNuy3NvHAZ4KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYrL6nfWo9XF8Sga1uAsLzzodHLWmkMb5PRAxd2wF/iVuHRQJtICKP4rllP/+7DOOxstKlgcja9i6AdhQtapr+7xZtsR8aRL4PNrW+yxpf7zGL+stuDfHs2ohfS8s//FYPzOE6CT22S4c2BvAcNpbCdnV1hgA3xpd7nqlE7uBF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+ybl3mp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12E8C4CEEB;
-	Mon,  2 Jun 2025 14:22:18 +0000 (UTC)
+	 MIME-Version; b=tO9qsp4Ts3pTDQ+i+k6BVWXKZqtQ4WGm6MTA1QfjUGWgq5rKLHLzi7GALvJ82XmmmY5Dt/Pyj3Kvl/SIVghBa7zop5KdCVP39CHkV8+OzmHkzdSOSc9USpONTxY6Szgwi0+KNQnAXmfXUuLg3Wciv9LScE2YhyBbDyKH+NfuWW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aN+HZjed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD22C4CEEE;
+	Mon,  2 Jun 2025 14:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874139;
-	bh=B+Ze7zziEfeHsXhzNwB4rNvB/4qkPWIpInz+Hd2+F94=;
+	s=korg; t=1748874609;
+	bh=UbOOaz+ZVTQkkwVI+fEdfhYEGwIRb/qNuy3NvHAZ4KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+ybl3mpZF5R24Dn/+ncoRua2zXvqPZMcmBRfVum36sLgRdICwyw/e1dZOX4altsQ
-	 0kTU9tORDonBQp7Br5hvuyysigofzPW8KUr2I7Ep6UIhXLTCTdDp5a80732TgIhin7
-	 nA5yJyZh2w/l/6mN2iGfG+yFwRinrr9CmNRfPU/E=
+	b=aN+HZjedHsep5szWQ0jhbSn8SEN926oP3SF0ecE4buzB+kuby42SBYk+AzL+f6ePY
+	 FJOz5rQSDZov3qAr0/DL8ERtv3qPKmBQXOXC0OQnhOY8bIoLesASn6JV/7RfLkmOZz
+	 mQyfOvy2n6ipVx0ZImlijKrVnmffePC0dsVQUowg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/444] Bluetooth: L2CAP: Fix not checking l2cap_chan security level
+Subject: [PATCH 5.4 071/204] spi: loopback-test: Do not split 1024-byte hexdumps
 Date: Mon,  2 Jun 2025 15:46:44 +0200
-Message-ID: <20250602134354.736980318@linuxfoundation.org>
+Message-ID: <20250602134258.472359645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 7af8479d9eb4319b4ba7b47a8c4d2c55af1c31e1 ]
+[ Upstream commit a73fa3690a1f3014d6677e368dce4e70767a6ba2 ]
 
-l2cap_check_enc_key_size shall check the security level of the
-l2cap_chan rather than the hci_conn since for incoming connection
-request that may be different as hci_conn may already been
-encrypted using a different security level.
+spi_test_print_hex_dump() prints buffers holding less than 1024 bytes in
+full.  Larger buffers are truncated: only the first 512 and the last 512
+bytes are printed, separated by a truncation message.  The latter is
+confusing in case the buffer holds exactly 1024 bytes, as all data is
+printed anyway.
 
-Fixes: 522e9ed157e3 ("Bluetooth: l2cap: Check encryption key size on incoming connection")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix this by printing buffers holding up to and including 1024 bytes in
+full.
+
+Fixes: 84e0c4e5e2c4ef42 ("spi: add loopback test driver to allow for spi_master regression tests")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/37ee1bc90c6554c9347040adabf04188c8f704aa.1746184171.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 72ee41b894a52..1c54e812ef1f7 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -1411,7 +1411,8 @@ static void l2cap_request_info(struct l2cap_conn *conn)
- 		       sizeof(req), &req);
- }
- 
--static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
-+static bool l2cap_check_enc_key_size(struct hci_conn *hcon,
-+				     struct l2cap_chan *chan)
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 69a9df2cbbcf2..0f571ff132377 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -377,7 +377,7 @@ MODULE_LICENSE("GPL");
+ static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
  {
- 	/* The minimum encryption key size needs to be enforced by the
- 	 * host stack before establishing any L2CAP connections. The
-@@ -1425,7 +1426,7 @@ static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
- 	int min_key_size = hcon->hdev->min_enc_key_size;
- 
- 	/* On FIPS security level, key size must be 16 bytes */
--	if (hcon->sec_level == BT_SECURITY_FIPS)
-+	if (chan->sec_level == BT_SECURITY_FIPS)
- 		min_key_size = 16;
- 
- 	return (!test_bit(HCI_CONN_ENCRYPT, &hcon->flags) ||
-@@ -1453,7 +1454,7 @@ static void l2cap_do_start(struct l2cap_chan *chan)
- 	    !__l2cap_no_conn_pending(chan))
- 		return;
- 
--	if (l2cap_check_enc_key_size(conn->hcon))
-+	if (l2cap_check_enc_key_size(conn->hcon, chan))
- 		l2cap_start_connection(chan);
- 	else
- 		__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
-@@ -1528,7 +1529,7 @@ static void l2cap_conn_start(struct l2cap_conn *conn)
- 				continue;
- 			}
- 
--			if (l2cap_check_enc_key_size(conn->hcon))
-+			if (l2cap_check_enc_key_size(conn->hcon, chan))
- 				l2cap_start_connection(chan);
- 			else
- 				l2cap_chan_close(chan, ECONNREFUSED);
-@@ -3955,7 +3956,7 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- 	/* Check if the ACL is secure enough (if not SDP) */
- 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
- 	    (!hci_conn_check_link_mode(conn->hcon) ||
--	    !l2cap_check_enc_key_size(conn->hcon))) {
-+	    !l2cap_check_enc_key_size(conn->hcon, pchan))) {
- 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
- 		result = L2CAP_CR_SEC_BLOCK;
- 		goto response;
-@@ -7323,7 +7324,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
- 		}
- 
- 		if (chan->state == BT_CONNECT) {
--			if (!status && l2cap_check_enc_key_size(hcon))
-+			if (!status && l2cap_check_enc_key_size(hcon, chan))
- 				l2cap_start_connection(chan);
- 			else
- 				__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
-@@ -7333,7 +7334,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
- 			struct l2cap_conn_rsp rsp;
- 			__u16 res, stat;
- 
--			if (!status && l2cap_check_enc_key_size(hcon)) {
-+			if (!status && l2cap_check_enc_key_size(hcon, chan)) {
- 				if (test_bit(FLAG_DEFER_SETUP, &chan->flags)) {
- 					res = L2CAP_CR_PEND;
- 					stat = L2CAP_CS_AUTHOR_PEND;
+ 	/* limit the hex_dump */
+-	if (len < 1024) {
++	if (len <= 1024) {
+ 		print_hex_dump(KERN_INFO, pre,
+ 			       DUMP_PREFIX_OFFSET, 16, 1,
+ 			       ptr, len, 0);
 -- 
 2.39.5
 
