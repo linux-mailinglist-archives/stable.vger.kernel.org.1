@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451A3ACB35B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00DEACB41E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C24C188BEE2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 787B87B03B7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D900522B59D;
-	Mon,  2 Jun 2025 14:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0EB22FF2D;
+	Mon,  2 Jun 2025 14:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NJPPPl2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9r//w0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960DC1DD543;
-	Mon,  2 Jun 2025 14:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA69225397;
+	Mon,  2 Jun 2025 14:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874416; cv=none; b=qbPPmRFwe8q0IIZRr7H4Oq9QeviZ10qeCAGSpZxYmbHCM7SgMggGfMvfdTCukpwrx6+fJ+0Hi4Q0a5tRtpMyfDZakH/lWbYFIU4V8aAKzDe85C6yErLUM4tKFQWwCgWPlZxYRLfYtFaAJaVI8UF20JYan75RYinF6Qvl/4KaIVY=
+	t=1748875316; cv=none; b=Y7D4qhCuf7WXOuS9HSNU+Qj4aMCxoatJSysDp2M8BGMjIYuqbw5INCw1yZtYPmEJlusAmjPcQNRZJeMBNMPh9TZ8wgWD3Do7yaysaBqe1v4sUcQzH7eQeFwsoqtK7S0ruqtj/Pf5EPWxKz1+MYpLIW3aP5gq3jDHLtegRp1HS0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874416; c=relaxed/simple;
-	bh=emQtoiGrWemjLPpZxxUZ+++EgCC2PCVYLQM9SFkwm60=;
+	s=arc-20240116; t=1748875316; c=relaxed/simple;
+	bh=7F2v1DodzmSEU+zAi5DK2FN6RgJY1QdCXZfoo5QRPgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItDheVkp7dEMXQYdLbhNbHREq0eRxzgHHMJRIwp3z2Z5dbO/8s1rKKpqxrPrAobwU2knhTQRpEjz+Hetpv+tRSvD0graLRi8FkU6RNxRbu5f4X0m1B375RpvuZmTWOjVtBrjxuatV4sRA5uGLCIospboqJpGWCXnlkXBZ/aHBd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NJPPPl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEA6C4CEEB;
-	Mon,  2 Jun 2025 14:26:55 +0000 (UTC)
+	 MIME-Version; b=UCWN1dnw5/3DrUV8moJSGaekzKDcdIdPgTvJZ54GI42K/Bj/VXrQw2Ymf5nyNpUDGAONYZSqnJM0jtXegTy7+K0brbYIz27iZ5Dtps0uGPQXzC3mAIXM5l0M/YqmrLPG6FM2lEBkfivEEPjbmvOuCTpC6IjgSC5vNPlWTbZs9tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9r//w0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6AAC4CEEB;
+	Mon,  2 Jun 2025 14:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874416;
-	bh=emQtoiGrWemjLPpZxxUZ+++EgCC2PCVYLQM9SFkwm60=;
+	s=korg; t=1748875315;
+	bh=7F2v1DodzmSEU+zAi5DK2FN6RgJY1QdCXZfoo5QRPgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NJPPPl2IOcJwVC1OCXTQKAVn8qF3hxvBd+16DwgF/KxLc+iZroBk4n8UfVDT0s3O
-	 srZjKJ6SkTMDMX65/BgPErPLO2oj1LT1fhNM1D01tkFFNd1K7GbNm9VZ4ShggeVJ14
-	 TZIlIJkdMbq+hFxu8+tBj7oKR3xB9iwZNRDXve+0=
+	b=v9r//w0hxJA0SaZisY2m4I+5XKFlsqKrObwXicjCYfnfnvXgkG+CcjmjHbzkWuXOh
+	 yzZISQZsL0B9fHEFXS4JAm5al5unFQuKPTsZO0DJf+6zSeLWBLOHtP6V39Txj0VW0d
+	 Fq3wK1j5KNNoLJmTXB1+g/ZkZVvF8vMfpXbY9hEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Denisov <rtgbnm@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/204] lan743x: fix endianness when accessing descriptors
+	syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 5.10 065/270] module: ensure that kobject_put() is safe for module type kobjects
 Date: Mon,  2 Jun 2025 15:45:50 +0200
-Message-ID: <20250602134256.170104183@linuxfoundation.org>
+Message-ID: <20250602134309.845992602@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,278 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Denisov <rtgbnm@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 462512824f902a24de794290dd622e664587da1d ]
+commit a6aeb739974ec73e5217c75a7c008a688d3d5cf1 upstream.
 
-TX/RX descriptor ring fields are always little-endian, but conversion
-wasn't performed for big-endian CPUs, so the driver failed to work.
+In 'lookup_or_create_module_kobject()', an internal kobject is created
+using 'module_ktype'. So call to 'kobject_put()' on error handling
+path causes an attempt to use an uninitialized completion pointer in
+'module_kobject_release()'. In this scenario, we just want to release
+kobject without an extra synchronization required for a regular module
+unloading process, so adding an extra check whether 'complete()' is
+actually required makes 'kobject_put()' safe.
 
-This patch makes the driver work on big-endian CPUs. It was tested and
-confirmed to work on NXP P1010 processor (PowerPC).
-
-Signed-off-by: Alexey Denisov <rtgbnm@gmail.com>
-Link: https://lore.kernel.org/r/20210128044859.280219-1-rtgbnm@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2d52e2e38b85 ("net: lan743x: Fix memleak issue when GSO enabled")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7fb8a372e1f6add936dd
+Fixes: 942e443127e9 ("module: Fix mod->mkobj.kobj potentially freed too early")
+Cc: stable@vger.kernel.org
+Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://lore.kernel.org/r/20250507065044.86529-1-dmantipov@yandex.ru
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 66 +++++++++----------
- drivers/net/ethernet/microchip/lan743x_main.h | 20 +++---
- 2 files changed, 43 insertions(+), 43 deletions(-)
+ kernel/params.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 5d539e4e942cc..ebcbb719e9002 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1221,7 +1221,7 @@ static void lan743x_tx_release_desc(struct lan743x_tx *tx,
- 	if (!(buffer_info->flags & TX_BUFFER_INFO_FLAG_ACTIVE))
- 		goto done;
- 
--	descriptor_type = (descriptor->data0) &
-+	descriptor_type = le32_to_cpu(descriptor->data0) &
- 			  TX_DESC_DATA0_DTYPE_MASK_;
- 	if (descriptor_type == TX_DESC_DATA0_DTYPE_DATA_)
- 		goto clean_up_data_descriptor;
-@@ -1281,7 +1281,7 @@ static int lan743x_tx_next_index(struct lan743x_tx *tx, int index)
- 
- static void lan743x_tx_release_completed_descriptors(struct lan743x_tx *tx)
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -947,7 +947,9 @@ int module_sysfs_initialized;
+ static void module_kobj_release(struct kobject *kobj)
  {
--	while ((*tx->head_cpu_ptr) != (tx->last_head)) {
-+	while (le32_to_cpu(*tx->head_cpu_ptr) != (tx->last_head)) {
- 		lan743x_tx_release_desc(tx, tx->last_head, false);
- 		tx->last_head = lan743x_tx_next_index(tx, tx->last_head);
- 	}
-@@ -1367,10 +1367,10 @@ static int lan743x_tx_frame_start(struct lan743x_tx *tx,
- 	if (dma_mapping_error(dev, dma_ptr))
- 		return -ENOMEM;
- 
--	tx_descriptor->data1 = DMA_ADDR_LOW32(dma_ptr);
--	tx_descriptor->data2 = DMA_ADDR_HIGH32(dma_ptr);
--	tx_descriptor->data3 = (frame_length << 16) &
--		TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_;
-+	tx_descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(dma_ptr));
-+	tx_descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(dma_ptr));
-+	tx_descriptor->data3 = cpu_to_le32((frame_length << 16) &
-+		TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_);
- 
- 	buffer_info->skb = NULL;
- 	buffer_info->dma_ptr = dma_ptr;
-@@ -1411,7 +1411,7 @@ static void lan743x_tx_frame_add_lso(struct lan743x_tx *tx,
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
- 	}
- 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
--	tx_descriptor->data0 = tx->frame_data0;
-+	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 
- 	/* move to next descriptor */
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
-@@ -1455,7 +1455,7 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
- 
- 	/* wrap up previous descriptor */
- 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
--	tx_descriptor->data0 = tx->frame_data0;
-+	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 
- 	/* move to next descriptor */
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
-@@ -1481,10 +1481,10 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
- 		return -ENOMEM;
- 	}
- 
--	tx_descriptor->data1 = DMA_ADDR_LOW32(dma_ptr);
--	tx_descriptor->data2 = DMA_ADDR_HIGH32(dma_ptr);
--	tx_descriptor->data3 = (frame_length << 16) &
--			       TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_;
-+	tx_descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(dma_ptr));
-+	tx_descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(dma_ptr));
-+	tx_descriptor->data3 = cpu_to_le32((frame_length << 16) &
-+			       TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_);
- 
- 	buffer_info->skb = NULL;
- 	buffer_info->dma_ptr = dma_ptr;
-@@ -1528,7 +1528,7 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
- 	if (ignore_sync)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
- 
--	tx_descriptor->data0 = tx->frame_data0;
-+	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
- 	tx->last_tail = tx->frame_tail;
- 
-@@ -1946,11 +1946,11 @@ static int lan743x_rx_init_ring_element(struct lan743x_rx *rx, int index,
- 	}
- 
- 	buffer_info->buffer_length = length;
--	descriptor->data1 = DMA_ADDR_LOW32(buffer_info->dma_ptr);
--	descriptor->data2 = DMA_ADDR_HIGH32(buffer_info->dma_ptr);
-+	descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(buffer_info->dma_ptr));
-+	descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(buffer_info->dma_ptr));
- 	descriptor->data3 = 0;
--	descriptor->data0 = (RX_DESC_DATA0_OWN_ |
--			    (length & RX_DESC_DATA0_BUF_LENGTH_MASK_));
-+	descriptor->data0 = cpu_to_le32((RX_DESC_DATA0_OWN_ |
-+			    (length & RX_DESC_DATA0_BUF_LENGTH_MASK_)));
- 	skb_reserve(buffer_info->skb, RX_HEAD_PADDING);
- 	lan743x_rx_update_tail(rx, index);
- 
-@@ -1965,12 +1965,12 @@ static void lan743x_rx_reuse_ring_element(struct lan743x_rx *rx, int index)
- 	descriptor = &rx->ring_cpu_ptr[index];
- 	buffer_info = &rx->buffer_info[index];
- 
--	descriptor->data1 = DMA_ADDR_LOW32(buffer_info->dma_ptr);
--	descriptor->data2 = DMA_ADDR_HIGH32(buffer_info->dma_ptr);
-+	descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(buffer_info->dma_ptr));
-+	descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(buffer_info->dma_ptr));
- 	descriptor->data3 = 0;
--	descriptor->data0 = (RX_DESC_DATA0_OWN_ |
-+	descriptor->data0 = cpu_to_le32((RX_DESC_DATA0_OWN_ |
- 			    ((buffer_info->buffer_length) &
--			    RX_DESC_DATA0_BUF_LENGTH_MASK_));
-+			    RX_DESC_DATA0_BUF_LENGTH_MASK_)));
- 	lan743x_rx_update_tail(rx, index);
+ 	struct module_kobject *mk = to_module_kobject(kobj);
+-	complete(mk->kobj_completion);
++
++	if (mk->kobj_completion)
++		complete(mk->kobj_completion);
  }
  
-@@ -2004,7 +2004,7 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
- {
- 	struct skb_shared_hwtstamps *hwtstamps = NULL;
- 	int result = RX_PROCESS_RESULT_NOTHING_TO_DO;
--	int current_head_index = *rx->head_cpu_ptr;
-+	int current_head_index = le32_to_cpu(*rx->head_cpu_ptr);
- 	struct lan743x_rx_buffer_info *buffer_info;
- 	struct lan743x_rx_descriptor *descriptor;
- 	int extension_index = -1;
-@@ -2019,14 +2019,14 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
- 
- 	if (rx->last_head != current_head_index) {
- 		descriptor = &rx->ring_cpu_ptr[rx->last_head];
--		if (descriptor->data0 & RX_DESC_DATA0_OWN_)
-+		if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_OWN_)
- 			goto done;
- 
--		if (!(descriptor->data0 & RX_DESC_DATA0_FS_))
-+		if (!(le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_FS_))
- 			goto done;
- 
- 		first_index = rx->last_head;
--		if (descriptor->data0 & RX_DESC_DATA0_LS_) {
-+		if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_LS_) {
- 			last_index = rx->last_head;
- 		} else {
- 			int index;
-@@ -2034,10 +2034,10 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
- 			index = lan743x_rx_next_index(rx, first_index);
- 			while (index != current_head_index) {
- 				descriptor = &rx->ring_cpu_ptr[index];
--				if (descriptor->data0 & RX_DESC_DATA0_OWN_)
-+				if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_OWN_)
- 					goto done;
- 
--				if (descriptor->data0 & RX_DESC_DATA0_LS_) {
-+				if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_LS_) {
- 					last_index = index;
- 					break;
- 				}
-@@ -2046,17 +2046,17 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
- 		}
- 		if (last_index >= 0) {
- 			descriptor = &rx->ring_cpu_ptr[last_index];
--			if (descriptor->data0 & RX_DESC_DATA0_EXT_) {
-+			if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_EXT_) {
- 				/* extension is expected to follow */
- 				int index = lan743x_rx_next_index(rx,
- 								  last_index);
- 				if (index != current_head_index) {
- 					descriptor = &rx->ring_cpu_ptr[index];
--					if (descriptor->data0 &
-+					if (le32_to_cpu(descriptor->data0) &
- 					    RX_DESC_DATA0_OWN_) {
- 						goto done;
- 					}
--					if (descriptor->data0 &
-+					if (le32_to_cpu(descriptor->data0) &
- 					    RX_DESC_DATA0_EXT_) {
- 						extension_index = index;
- 					} else {
-@@ -2109,7 +2109,7 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
- 			}
- 			buffer_info->skb = NULL;
- 			packet_length =	RX_DESC_DATA0_FRAME_LENGTH_GET_
--					(descriptor->data0);
-+					(le32_to_cpu(descriptor->data0));
- 			skb_put(skb, packet_length - 4);
- 			skb->protocol = eth_type_trans(skb,
- 						       rx->adapter->netdev);
-@@ -2147,8 +2147,8 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
- 			descriptor = &rx->ring_cpu_ptr[extension_index];
- 			buffer_info = &rx->buffer_info[extension_index];
- 
--			ts_sec = descriptor->data1;
--			ts_nsec = (descriptor->data2 &
-+			ts_sec = le32_to_cpu(descriptor->data1);
-+			ts_nsec = (le32_to_cpu(descriptor->data2) &
- 				  RX_DESC_DATA2_TS_NS_MASK_);
- 			lan743x_rx_reuse_ring_element(rx, extension_index);
- 			real_last_index = extension_index;
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 1fbcef3910989..a7b97287d84ba 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -655,7 +655,7 @@ struct lan743x_tx {
- 
- 	struct lan743x_tx_buffer_info *buffer_info;
- 
--	u32		*head_cpu_ptr;
-+	__le32		*head_cpu_ptr;
- 	dma_addr_t	head_dma_ptr;
- 	int		last_head;
- 	int		last_tail;
-@@ -685,7 +685,7 @@ struct lan743x_rx {
- 
- 	struct lan743x_rx_buffer_info *buffer_info;
- 
--	u32		*head_cpu_ptr;
-+	__le32		*head_cpu_ptr;
- 	dma_addr_t	head_dma_ptr;
- 	u32		last_head;
- 	u32		last_tail;
-@@ -769,10 +769,10 @@ struct lan743x_adapter {
- #define TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_	(0x3FFF0000)
- 
- struct lan743x_tx_descriptor {
--	u32     data0;
--	u32     data1;
--	u32     data2;
--	u32     data3;
-+	__le32     data0;
-+	__le32     data1;
-+	__le32     data2;
-+	__le32     data3;
- } __aligned(DEFAULT_DMA_DESCRIPTOR_SPACING);
- 
- #define TX_BUFFER_INFO_FLAG_ACTIVE		BIT(0)
-@@ -807,10 +807,10 @@ struct lan743x_tx_buffer_info {
- #define RX_HEAD_PADDING		NET_IP_ALIGN
- 
- struct lan743x_rx_descriptor {
--	u32     data0;
--	u32     data1;
--	u32     data2;
--	u32     data3;
-+	__le32     data0;
-+	__le32     data1;
-+	__le32     data2;
-+	__le32     data3;
- } __aligned(DEFAULT_DMA_DESCRIPTOR_SPACING);
- 
- #define RX_BUFFER_INFO_FLAG_ACTIVE      BIT(0)
--- 
-2.39.5
-
+ struct kobj_type module_ktype = {
 
 
 
