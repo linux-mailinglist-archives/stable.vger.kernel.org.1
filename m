@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAB8ACB592
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01B0ACB632
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CBA1947BBF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C10194372E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291BD229B05;
-	Mon,  2 Jun 2025 14:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EB62236F2;
+	Mon,  2 Jun 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8aiQH7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWkn2gU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8A6227BA4;
-	Mon,  2 Jun 2025 14:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ED1222562;
+	Mon,  2 Jun 2025 14:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875489; cv=none; b=A3QD7I5f3Q53v6QfB/Fj5EEFetJPoRipuhyWuCI3w38ee0b0rQhUE4N7y4tYYl7VNnnzxPN3IU5+GTB9CF0c9clgEo0+zIF5YvP19LQMJtN5JlVREiYrPeyFvJh3gVQOMXz0SHt4VqVaNSyxln7kRNIRDo+BFJCNDtSQL2Qw3DQ=
+	t=1748876072; cv=none; b=eHMUoQ7RYj4IIjWKLw4+4pOcrqmcESWhDDwuIVXga/MFMmLBYa7H4WuUBvhtbBW53eo4GuCj1dV227GlRZNpjXo5eIsCnmXY2RBFnq8qcUuWbf8uYJNtcOGxyWMafOLgRrzzsEle0ZBXa/E83PJCdP+QAc/8YV7vOnMKXtLKC6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875489; c=relaxed/simple;
-	bh=VXpBokGVLs5g2KT+b3yzLvFYwvtGlgk8pP31jGgZ3tw=;
+	s=arc-20240116; t=1748876072; c=relaxed/simple;
+	bh=rJw7xNl7UXNQNQdD35kpoiDptj55FVrZM95xCIcbkY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2piA6/h925xKTBdsZw6cFygBoFWpBvhDyq+9gtASykXDPBBWpDDKYpcOSbqjR5iXa6rS8jxaHCSmqB8WnvtAiw+rg+7QIH0+sSCC7BzRE8qndc9+lbf4hzB4dqUowTNZ9P5jx5sxCsGftSQZyG4vraxqgvF2wUvByvM/WgHDd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8aiQH7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48425C4CEEB;
-	Mon,  2 Jun 2025 14:44:49 +0000 (UTC)
+	 MIME-Version; b=Q1FF/DbvE2qAxFKQFoDXtf4sF50KyT5TaKLXIyllqjt5HEkqyI1m/9mhHtiwJZNa7shjjWyVeMJW2UtjJpOF4/v1Vscsm6VMrdCIQ23qvJ7SLFq8IxV0oVyvxiQtqjL8ZjPbBDrNqOHwmapcQXMkeVtAL418Pc0TWrosEEh0fKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWkn2gU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB08EC4CEEB;
+	Mon,  2 Jun 2025 14:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875489;
-	bh=VXpBokGVLs5g2KT+b3yzLvFYwvtGlgk8pP31jGgZ3tw=;
+	s=korg; t=1748876072;
+	bh=rJw7xNl7UXNQNQdD35kpoiDptj55FVrZM95xCIcbkY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8aiQH7kX2u4hF0rq/juoHLPa+F2QIfAihCNOCMghHik24HhpZ65zYZnu4QXWa/ZX
-	 o8Lqt1Q6C+J62KXw+orKYykh+CohuLpWXBvU/EFu4CUZ55g3mui2VX/JL0eUH8kBqd
-	 WMBe3zb4M/TKjrxZSAMgXnjLbFEi15ded7osPe6o=
+	b=KWkn2gU5lKb/JFudLUt2dWOhs3HpbDOG002X/LIaOxMw4kdb39BfHlmDn0XO58+dD
+	 zOjPkFktNapW4gky3XCUTidQfOgvouWA6beRzbQ8vNTMAugvVOy+3APoxtdZx5d8us
+	 Y3xtfZKzPZhR9tFQgAst3mtr/swZZYkHWGmoCnLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 150/270] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Subject: [PATCH 5.15 063/207] tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
 Date: Mon,  2 Jun 2025 15:47:15 +0200
-Message-ID: <20250602134313.352048326@linuxfoundation.org>
+Message-ID: <20250602134301.214842372@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
+[ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
 
-nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
-be written any negative value, which would then be stored in the
-unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
+We have platforms with 6 NUMA nodes and 480 cpus.
 
-While the do_proc_dointvec_conv function is supposed to limit writing
-handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
-being written in an unsigned int leads to a very high value, exceeding
-this limit.
+inet_ehash_locks_alloc() currently allocates a single 64KB page
+to hold all ehash spinlocks. This adds more pressure on a single node.
 
-Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
-minimum value is 1.
+Change inet_ehash_locks_alloc() to use vmalloc() to spread
+the spinlocks on all online nodes, driven by NUMA policies.
 
-The proc_handlers have thus been updated to proc_dointvec_minmax in
-order to specify the following write bounds :
+At boot time, NUMA policy is interleave=all, meaning that
+tcp_hashinfo.ehash_locks gets hash dispersion on all nodes.
 
-* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
-  and SYSCTL_INT_MAX.
+Tested:
 
-* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
-  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+lack5:~# grep inet_ehash_locks_alloc /proc/vmallocinfo
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
 
-With this patch applied, sysctl writes outside the defined in the bound
-will thus lead to a write error :
+lack5:~# echo 8192 >/proc/sys/net/ipv4/tcp_child_ehash_entries
+lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
+0x000000004e99d30c-0x00000000763f3279   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=1 N1=2 N2=2 N3=1 N4=1 N5=1
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
 
-```
-sysctl -w net.netfilter.nf_conntrack_expect_max=-1
-sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
-```
+lack5:~# numactl --interleave=0,5 unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
+0x00000000fd73a33e-0x0000000004b9a177   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=4 N5=4
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
 
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+lack5:~# echo 1024 >/proc/sys/net/ipv4/tcp_child_ehash_entries
+lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
+0x00000000db07d7a2-0x00000000ad697d29    8192 inet_ehash_locks_alloc+0x90/0x100 pages=1 vmalloc N2=1
+0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250305130550.1865988-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/ipv4/inet_hashtables.c | 37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index 8498bf27a3531..abf558868db11 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -613,7 +613,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_COUNT] = {
- 		.procname	= "nf_conntrack_count",
-@@ -652,7 +654,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_ct_expect_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_ACCT] = {
- 		.procname	= "nf_conntrack_acct",
-@@ -931,7 +935,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	{ }
- };
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index a2ab164e815a6..7d2c21c3cfd4a 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -879,22 +879,37 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
+ {
+ 	unsigned int locksz = sizeof(spinlock_t);
+ 	unsigned int i, nblocks = 1;
++	spinlock_t *ptr = NULL;
+ 
+-	if (locksz != 0) {
+-		/* allocate 2 cache lines or at least one spinlock per cpu */
+-		nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U);
+-		nblocks = roundup_pow_of_two(nblocks * num_possible_cpus());
++	if (locksz == 0)
++		goto set_mask;
+ 
+-		/* no more locks than number of hash buckets */
+-		nblocks = min(nblocks, hashinfo->ehash_mask + 1);
++	/* Allocate 2 cache lines or at least one spinlock per cpu. */
++	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
+ 
+-		hashinfo->ehash_locks = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
+-		if (!hashinfo->ehash_locks)
+-			return -ENOMEM;
++	/* At least one page per NUMA node. */
++	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
++
++	nblocks = roundup_pow_of_two(nblocks);
++
++	/* No more locks than number of hash buckets. */
++	nblocks = min(nblocks, hashinfo->ehash_mask + 1);
+ 
+-		for (i = 0; i < nblocks; i++)
+-			spin_lock_init(&hashinfo->ehash_locks[i]);
++	if (num_online_nodes() > 1) {
++		/* Use vmalloc() to allow NUMA policy to spread pages
++		 * on all available nodes if desired.
++		 */
++		ptr = vmalloc_array(nblocks, locksz);
++	}
++	if (!ptr) {
++		ptr = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
++		if (!ptr)
++			return -ENOMEM;
+ 	}
++	for (i = 0; i < nblocks; i++)
++		spin_lock_init(&ptr[i]);
++	hashinfo->ehash_locks = ptr;
++set_mask:
+ 	hashinfo->ehash_locks_mask = nblocks - 1;
+ 	return 0;
+ }
 -- 
 2.39.5
 
