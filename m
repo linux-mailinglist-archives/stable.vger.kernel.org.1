@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D73ACB83E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:38:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51581ACB30D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63F7919452E6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE006166861
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602D0226888;
-	Mon,  2 Jun 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2EC2C3247;
+	Mon,  2 Jun 2025 14:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUMIGNgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U84FPuC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF9CEEBD;
-	Mon,  2 Jun 2025 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F4F1ACEAF;
+	Mon,  2 Jun 2025 14:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876859; cv=none; b=HckdzqNELalx9ZYSS3yJT8cHunQG3sNF8JmUyclD7PUg6FpceR9v/XAEQXCPe6uV6+hDYPosQbNUO6hOHEYgzjdU6w5XNHxH6ozs2g5+57aDiZ/AvvE2RtakRAyi+UIzRmXpkQdVy2Jz3PHp0sGXAxlrsV491PBkA7+9JgQ7S6c=
+	t=1748874040; cv=none; b=dGHuh9I8bhi82jmS8RrJ+zjF584ewwAgt4O69/59l0yl7PH7GS655Q7B4MXu2HHJcWuCB9Tj/NE+QaFqEy25i6oiMVBgjdBn8kOK0s/RZhsGOdKzkm/bSIJsqmRvyBjm8I1S56cKzl74ZNB2S+O0f2bZouSnZCYH/XwxnMR8vcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876859; c=relaxed/simple;
-	bh=dkMCt2fkf1aUEPg9rhuKbqot2vBRLyCrlqF8IA5STGY=;
+	s=arc-20240116; t=1748874040; c=relaxed/simple;
+	bh=D+IlwVwPeozDg76rCC7Oz7BDDUsfzllc9Gg1S+uBb1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ji+juW3eXMf4gXS3zBznOdb9WjaGh78K0EU1m079PptXT9Dkpo8J/8eh351RsrZTVx55/MfQ2BVBr0UOrevtkHgKe1rV4jdHNu7kkt1SByUBgh4uXqCleZPRWGY1kMZPxXoMBmrDr7hjkVYwSVMh3OJ42StAAdSDzGny6LP1vEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUMIGNgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE6FC4CEEB;
-	Mon,  2 Jun 2025 15:07:38 +0000 (UTC)
+	 MIME-Version; b=O/PsgQ+axcMkmVzDCBdJIjYcOj7xfQdANMFkCcRiBZXNYQI6ec11Lg1P4JFitLzCFxjZUbXZI1vursE9N2JE1T5Sc96/lluYGexSmJX8m+8g/ljc2MnbwAAo2e19IR/ZbchIzgkrKinwypw+2SVRs6TekVSUntnjNQqQLhrCQZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U84FPuC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30E7C4CEEB;
+	Mon,  2 Jun 2025 14:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876859;
-	bh=dkMCt2fkf1aUEPg9rhuKbqot2vBRLyCrlqF8IA5STGY=;
+	s=korg; t=1748874040;
+	bh=D+IlwVwPeozDg76rCC7Oz7BDDUsfzllc9Gg1S+uBb1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUMIGNgIBPaU4aTGiW69AAKctW6ePC8ESFtE+RZ/ErgUnGuH4EiiDG8mukFK7vVC1
-	 WZ6GIOtKUZOL6KGUNzLHf83jFMdhCW7MB//QNlj0a4XgvNBLCVMi8yNeId1fd8ki4M
-	 sEs+lD9OxsqG8pUtacKqZWu2DVM2Z4gm4XpA8a64=
+	b=U84FPuC+nMlNj/77JXN3UJuPHsmumrlb2u4RMG8P8w7GgXpj5gx1IyUU34jBhhrht
+	 DsR9OlqCJ0+rEv8fOgg+zbiPpamddFmHYAIxSoKftGZz/Gv+Lqh9ZiHx3QtunUpeFz
+	 XsDazwAXODv4fpvAEF+0YoN+2GCO080o0+KvNnYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Schwab <schwab@linux-m68k.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/325] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
+Subject: [PATCH 6.6 308/444] drm: bridge: adv7511: fill stream capabilities
 Date: Mon,  2 Jun 2025 15:46:12 +0200
-Message-ID: <20250602134323.688782938@linuxfoundation.org>
+Message-ID: <20250602134353.433267397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Schwab <schwab@linux-m68k.org>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
+[ Upstream commit c852646f12d4cd5b4f19eeec2976c5d98c0382f8 ]
 
-Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
-property on the i2s node.
+Set no_i2s_capture and no_spdif_capture flags in hdmi_codec_pdata structure
+to report that the ADV7511 HDMI bridge does not support i2s or spdif audio
+capture.
 
-Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-[maddy: added "commit" work in depends-on to avoid checkpatch error]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-2-olivier.moysan@foss.st.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index a6090896f7497..ac669e58e2023 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2974,11 +2974,11 @@ static void __init fixup_device_tree_pmac(void)
- 	char type[8];
- 	phandle node;
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index 8f786592143b6..24e1e11acf697 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -244,7 +244,9 @@ static const struct hdmi_codec_pdata codec_data = {
+ 	.ops = &adv7511_codec_ops,
+ 	.max_i2s_channels = 2,
+ 	.i2s = 1,
++	.no_i2s_capture = 1,
+ 	.spdif = 1,
++	.no_spdif_capture = 1,
+ };
  
--	// Some pmacs are missing #size-cells on escc nodes
-+	// Some pmacs are missing #size-cells on escc or i2s nodes
- 	for (node = 0; prom_next_node(&node); ) {
- 		type[0] = '\0';
- 		prom_getprop(node, "device_type", type, sizeof(type));
--		if (prom_strcmp(type, "escc"))
-+		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
- 			continue;
- 
- 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+ int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511)
 -- 
 2.39.5
 
