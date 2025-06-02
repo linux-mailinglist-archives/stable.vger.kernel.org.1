@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D101ACB5D1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634F8ACB78B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE0333AB0EF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F3C1BC4464
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F263B233133;
-	Mon,  2 Jun 2025 14:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E00A22F389;
+	Mon,  2 Jun 2025 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eR9Z4Tdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5bUkqWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DB422F764;
-	Mon,  2 Jun 2025 14:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1E62253A7;
+	Mon,  2 Jun 2025 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875960; cv=none; b=N5vD5dwzVWlPKoJ8+dxNneWtiE6YnqodzTQ9JjklWo4YwyFj0pQPRg3jKw1Awi9F2malj+bcWK60Y6NmbSN5UhSPYguxdyoMeNtfW6EilaGlTNja5ZyE8CTJvy0qkh9uauWHCpeqi+hnDntoL3jbM+NBk8XD4Wo0/TzaWVeP0eg=
+	t=1748876946; cv=none; b=Pc07kedJH14zradZ/OZwhaRLXFZ14IXj741ghfWAVcwbWkRt9+n0MC49cysRKIBPrFp9mCa6zdr5UgZhueQEy0xahA8dG4Lh3qq4Hs2Cb7eWV8XqeD1PcuFLEq+vPTWT/SJbbW1XmX3o+iIggC1n+swR0ox7Evk4QtBI40CIsAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875960; c=relaxed/simple;
-	bh=lwGicsb6PTuwmKgem0y9+gGanliVb9qxXVDAqhxWKGA=;
+	s=arc-20240116; t=1748876946; c=relaxed/simple;
+	bh=GNnm36nhNI0Jk9SRSMYbRisruegk+DJ5PTP9ERV8OIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q00WA4CKCfUSeZT0cK0Z33XO1SXIdw+ASex2jWI/67t1a3kNKmhZW+2cHte0HsNFid9urLeykHBYiIBcltz78YmxKZMzO9wTj8I4LqdQDQsBoOQNjFr2hCSj5uA86P+2AHMPcAqxp1nHQ3I8iCL4MDxzMPovC7ufHrD4ixtEPy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eR9Z4Tdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C52C4CEEB;
-	Mon,  2 Jun 2025 14:52:39 +0000 (UTC)
+	 MIME-Version; b=Bc5RkjhQep9y2tQzd30wKvOcyoav3jjSp1Zq41qEVf12eWe8JcUObv9UIXxTgpvaRyhrMCJTdFGaLMzogIjoIGAKXNKQ+pIw2OGQZ7l8EgAqSGuejZmmfP4OlBK10p90Jg+pDkddP0RVcwjHSFKmqU69+FzTMmiw65+2zApxAGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5bUkqWn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E81FC4CEEB;
+	Mon,  2 Jun 2025 15:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875960;
-	bh=lwGicsb6PTuwmKgem0y9+gGanliVb9qxXVDAqhxWKGA=;
+	s=korg; t=1748876946;
+	bh=GNnm36nhNI0Jk9SRSMYbRisruegk+DJ5PTP9ERV8OIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eR9Z4TdnFEViNzSNf/+7uY8+mkS7ThSJGgHY5mg/cKl64ZLZpJFIk17+dA2AlcVzc
-	 C7HSCGkDU3qa9PWDEHEhhN2HrloeIF7AXOtGWfl0H5bAc8sH0t4a1zFj5o6FLI26vn
-	 1l4Ur8K6Q24UFsfp+fKuooeBDc8sJUcZFcrBwaFM=
+	b=k5bUkqWn1GPKdWFMwRwDsganrEW6j2dtJ/8ctTtYoSu5jZCEZSCdlebCsARgywWhZ
+	 UVBpfrK1prAcvMdMlF0jR0cYD6erePDDZ0tnIRg5VUHBabE4oOnwMk7fPtPVCBkiUa
+	 S3EFUCqxU44FXX+HTSlAxDSGRWxc3QM43pNfjRjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Sven Peter <sven@svenpeter.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/207] i2c: qup: Vote for interconnect bandwidth to DRAM
+Subject: [PATCH 6.1 124/325] soc: apple: rtkit: Implement OSLog buffers properly
 Date: Mon,  2 Jun 2025 15:46:40 +0200
-Message-ID: <20250602134259.871798825@linuxfoundation.org>
+Message-ID: <20250602134324.830745224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +63,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
+[ Upstream commit a06398687065e0c334dc5fc4d2778b5b87292e43 ]
 
-When the I2C QUP controller is used together with a DMA engine it needs
-to vote for the interconnect path to the DRAM. Otherwise it may be
-unable to access the memory quickly enough.
+Apparently nobody can figure out where the old logic came from, but it
+seems like it has never been actually used on any supported firmware to
+this day. OSLog buffers were apparently never requested.
 
-The requested peak bandwidth is dependent on the I2C core clock.
+But starting with 13.3, we actually need this implemented properly for
+MTP (and later AOP) to work, so let's actually do that.
 
-To avoid sending votes too often the bandwidth is always requested when
-a DMA transfer starts, but dropped only on runtime suspend. Runtime
-suspend should only happen if no transfer is active. After resumption we
-can defer the next vote until the first DMA transfer actually happens.
-
-The implementation is largely identical to the one introduced for
-spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
-bandwidth to DRAM") since both drivers represent the same hardware
-block.
-
-Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-2-c3ec37f9021b@svenpeter.dev
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/soc/apple/rtkit-internal.h |  1 +
+ drivers/soc/apple/rtkit.c          | 56 ++++++++++++++++++------------
+ 2 files changed, 35 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
-index b89eca2398d90..a2fb9dd58c95d 100644
---- a/drivers/i2c/busses/i2c-qup.c
-+++ b/drivers/i2c/busses/i2c-qup.c
-@@ -14,6 +14,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/i2c.h>
-+#include <linux/interconnect.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
-@@ -150,6 +151,8 @@
- /* TAG length for DATA READ in RX FIFO  */
- #define READ_RX_TAGS_LEN		2
+diff --git a/drivers/soc/apple/rtkit-internal.h b/drivers/soc/apple/rtkit-internal.h
+index 24bd619ec5e48..1da1dfd9cb199 100644
+--- a/drivers/soc/apple/rtkit-internal.h
++++ b/drivers/soc/apple/rtkit-internal.h
+@@ -48,6 +48,7 @@ struct apple_rtkit {
  
-+#define QUP_BUS_WIDTH			8
-+
- static unsigned int scl_freq;
- module_param_named(scl_freq, scl_freq, uint, 0444);
- MODULE_PARM_DESC(scl_freq, "SCL frequency override");
-@@ -227,6 +230,7 @@ struct qup_i2c_dev {
- 	int			irq;
- 	struct clk		*clk;
- 	struct clk		*pclk;
-+	struct icc_path		*icc_path;
- 	struct i2c_adapter	adap;
+ 	struct apple_rtkit_shmem ioreport_buffer;
+ 	struct apple_rtkit_shmem crashlog_buffer;
++	struct apple_rtkit_shmem oslog_buffer;
  
- 	int			clk_ctl;
-@@ -255,6 +259,10 @@ struct qup_i2c_dev {
- 	/* To configure when bus is in run state */
- 	u32			config_run;
+ 	struct apple_rtkit_shmem syslog_buffer;
+ 	char *syslog_msg_buffer;
+diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
+index 1ec0c3ba0be22..968f9f6333936 100644
+--- a/drivers/soc/apple/rtkit.c
++++ b/drivers/soc/apple/rtkit.c
+@@ -65,8 +65,9 @@ enum {
+ #define APPLE_RTKIT_SYSLOG_MSG_SIZE  GENMASK_ULL(31, 24)
  
-+	/* bandwidth votes */
-+	u32			src_clk_freq;
-+	u32			cur_bw_clk_freq;
-+
- 	/* dma parameters */
- 	bool			is_dma;
- 	/* To check if the current transfer is using DMA */
-@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
- 	return ret;
- }
+ #define APPLE_RTKIT_OSLOG_TYPE GENMASK_ULL(63, 56)
+-#define APPLE_RTKIT_OSLOG_INIT	1
+-#define APPLE_RTKIT_OSLOG_ACK	3
++#define APPLE_RTKIT_OSLOG_BUFFER_REQUEST 1
++#define APPLE_RTKIT_OSLOG_SIZE GENMASK_ULL(55, 36)
++#define APPLE_RTKIT_OSLOG_IOVA GENMASK_ULL(35, 0)
  
-+static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
-+{
-+	u32 needed_peak_bw;
-+	int ret;
-+
-+	if (qup->cur_bw_clk_freq == clk_freq)
-+		return 0;
-+
-+	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
-+	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
-+	if (ret)
-+		return ret;
-+
-+	qup->cur_bw_clk_freq = clk_freq;
-+	return 0;
-+}
-+
- static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ #define APPLE_RTKIT_MIN_SUPPORTED_VERSION 11
+ #define APPLE_RTKIT_MAX_SUPPORTED_VERSION 12
+@@ -255,15 +256,21 @@ static int apple_rtkit_common_rx_get_buffer(struct apple_rtkit *rtk,
+ 					    struct apple_rtkit_shmem *buffer,
+ 					    u8 ep, u64 msg)
  {
- 	struct qup_i2c_block *blk = &qup->blk;
-@@ -840,6 +865,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
- 	int ret = 0;
- 	int idx = 0;
+-	size_t n_4kpages = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_SIZE, msg);
+ 	u64 reply;
+ 	int err;
  
-+	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
-+	if (ret)
-+		return ret;
++	/* The different size vs. IOVA shifts look odd but are indeed correct this way */
++	if (ep == APPLE_RTKIT_EP_OSLOG) {
++		buffer->size = FIELD_GET(APPLE_RTKIT_OSLOG_SIZE, msg);
++		buffer->iova = FIELD_GET(APPLE_RTKIT_OSLOG_IOVA, msg) << 12;
++	} else {
++		buffer->size = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_SIZE, msg) << 12;
++		buffer->iova = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_IOVA, msg);
++	}
 +
- 	enable_irq(qup->irq);
- 	ret = qup_i2c_req_dma(qup);
+ 	buffer->buffer = NULL;
+ 	buffer->iomem = NULL;
+ 	buffer->is_mapped = false;
+-	buffer->iova = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_IOVA, msg);
+-	buffer->size = n_4kpages << 12;
  
-@@ -1645,6 +1674,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
- 	config = readl(qup->base + QUP_CONFIG);
- 	config |= QUP_CLOCK_AUTO_GATE;
- 	writel(config, qup->base + QUP_CONFIG);
-+	qup_i2c_vote_bw(qup, 0);
- 	clk_disable_unprepare(qup->pclk);
+ 	dev_dbg(rtk->dev, "RTKit: buffer request for 0x%zx bytes at %pad\n",
+ 		buffer->size, &buffer->iova);
+@@ -288,11 +295,21 @@ static int apple_rtkit_common_rx_get_buffer(struct apple_rtkit *rtk,
+ 	}
+ 
+ 	if (!buffer->is_mapped) {
+-		reply = FIELD_PREP(APPLE_RTKIT_SYSLOG_TYPE,
+-				   APPLE_RTKIT_BUFFER_REQUEST);
+-		reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_SIZE, n_4kpages);
+-		reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_IOVA,
+-				    buffer->iova);
++		/* oslog uses different fields and needs a shifted IOVA instead of size */
++		if (ep == APPLE_RTKIT_EP_OSLOG) {
++			reply = FIELD_PREP(APPLE_RTKIT_OSLOG_TYPE,
++					   APPLE_RTKIT_OSLOG_BUFFER_REQUEST);
++			reply |= FIELD_PREP(APPLE_RTKIT_OSLOG_SIZE, buffer->size);
++			reply |= FIELD_PREP(APPLE_RTKIT_OSLOG_IOVA,
++					    buffer->iova >> 12);
++		} else {
++			reply = FIELD_PREP(APPLE_RTKIT_SYSLOG_TYPE,
++					   APPLE_RTKIT_BUFFER_REQUEST);
++			reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_SIZE,
++					    buffer->size >> 12);
++			reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_IOVA,
++					    buffer->iova);
++		}
+ 		apple_rtkit_send_message(rtk, ep, reply, NULL, false);
+ 	}
+ 
+@@ -474,25 +491,18 @@ static void apple_rtkit_syslog_rx(struct apple_rtkit *rtk, u64 msg)
+ 	}
  }
  
-@@ -1745,6 +1775,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
- 			goto fail_dma;
- 		}
- 		qup->is_dma = true;
-+
-+		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
-+		if (IS_ERR(qup->icc_path))
-+			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
-+					     "failed to get interconnect path\n");
- 	}
+-static void apple_rtkit_oslog_rx_init(struct apple_rtkit *rtk, u64 msg)
+-{
+-	u64 ack;
+-
+-	dev_dbg(rtk->dev, "RTKit: oslog init: msg: 0x%llx\n", msg);
+-	ack = FIELD_PREP(APPLE_RTKIT_OSLOG_TYPE, APPLE_RTKIT_OSLOG_ACK);
+-	apple_rtkit_send_message(rtk, APPLE_RTKIT_EP_OSLOG, ack, NULL, false);
+-}
+-
+ static void apple_rtkit_oslog_rx(struct apple_rtkit *rtk, u64 msg)
+ {
+ 	u8 type = FIELD_GET(APPLE_RTKIT_OSLOG_TYPE, msg);
  
- nodma:
-@@ -1793,6 +1828,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
- 		qup_i2c_enable_clocks(qup);
- 		src_clk_freq = clk_get_rate(qup->clk);
+ 	switch (type) {
+-	case APPLE_RTKIT_OSLOG_INIT:
+-		apple_rtkit_oslog_rx_init(rtk, msg);
++	case APPLE_RTKIT_OSLOG_BUFFER_REQUEST:
++		apple_rtkit_common_rx_get_buffer(rtk, &rtk->oslog_buffer,
++						 APPLE_RTKIT_EP_OSLOG, msg);
+ 		break;
+ 	default:
+-		dev_warn(rtk->dev, "RTKit: Unknown oslog message: %llx\n", msg);
++		dev_warn(rtk->dev, "RTKit: Unknown oslog message: %llx\n",
++			 msg);
  	}
-+	qup->src_clk_freq = src_clk_freq;
+ }
  
- 	/*
- 	 * Bootloaders might leave a pending interrupt on certain QUP's,
+@@ -773,6 +783,7 @@ int apple_rtkit_reinit(struct apple_rtkit *rtk)
+ 
+ 	apple_rtkit_free_buffer(rtk, &rtk->ioreport_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->crashlog_buffer);
++	apple_rtkit_free_buffer(rtk, &rtk->oslog_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->syslog_buffer);
+ 
+ 	kfree(rtk->syslog_msg_buffer);
+@@ -935,6 +946,7 @@ static void apple_rtkit_free(void *data)
+ 
+ 	apple_rtkit_free_buffer(rtk, &rtk->ioreport_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->crashlog_buffer);
++	apple_rtkit_free_buffer(rtk, &rtk->oslog_buffer);
+ 	apple_rtkit_free_buffer(rtk, &rtk->syslog_buffer);
+ 
+ 	kfree(rtk->syslog_msg_buffer);
 -- 
 2.39.5
 
