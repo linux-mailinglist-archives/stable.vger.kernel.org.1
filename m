@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-149761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451C7ACB444
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA74ACB591
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF771BC028A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E08939E1CC3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C8222FE17;
-	Mon,  2 Jun 2025 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E2F226D00;
+	Mon,  2 Jun 2025 14:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV8rmafY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjjRxco3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D122C3247;
-	Mon,  2 Jun 2025 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45A11E3772;
+	Mon,  2 Jun 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874957; cv=none; b=k7aj23M4I0P6fPLxUyzUVCI0cWKDUsmXHXdemB4DlYOtAP1LUxgXzeq/3zIl7RaGu0+2tPcPhU30I8ekNb8PJYPagqtbHNNyjPB098yTsCn/OzKU7F8g+PSO44k+Z0BT6MvkgDT7rOJeSSfapMZkAzrP699du6VoD33a4Fx6qCI=
+	t=1748875764; cv=none; b=ulNyPGSz+ZR8TwIX8vohO0ksOHKWlXHESWAfp2mixJldL5JDq4mxHmCWHk9HlsQyL3yXsMqou/nY7cDkNfam6/xp6YdjfprJpIvqcLwIEL/GvD9/VNFeAzb+C21G89L6a7B2zhjdAt9ZzINPrVoRr+SXY7SgXKCH72FTKEFEB7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874957; c=relaxed/simple;
-	bh=xCHGzJxzVe9x8z9R+s+3+x+cFASDtWorr/Q25oO17yY=;
+	s=arc-20240116; t=1748875764; c=relaxed/simple;
+	bh=fW97tThfnU5fdPi6U4y9dQo8WpnqqsNI9swbIXoxFTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6p8xCyvmPKIKtiGC7wjV8TE+uknXietRDWoaEPZ62kyQpWjCPvSlacsw8kXz0zzySA0doJa0Gc9ROL/kFoxPqMv0OT1zN1GZQFFOZDCg4IkeLD8/Lar5XTzG0NI7khqs8lgavrEaThP8HXC7Pp2fzl3l5Dj/zHv0QOMz4tEB9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV8rmafY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C58C4CEEB;
-	Mon,  2 Jun 2025 14:35:56 +0000 (UTC)
+	 MIME-Version; b=sjBOGb0TjZ4jf24zAWHXPW2fpWLQiWlzzerB+VoRGI8s5xvZtYQDJN/kdQzL4X0YbwWuG4iGWr1k20JMxc4Pt3Mw5vw4FrFz2EApo/n6RmCPJ+JeSyB77Pp9AmFDnWuscqVKjX2Zqftf++8FYb2jdvecZ+WLcPQWdkp9soY3ylo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjjRxco3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCDEC4CEEB;
+	Mon,  2 Jun 2025 14:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874957;
-	bh=xCHGzJxzVe9x8z9R+s+3+x+cFASDtWorr/Q25oO17yY=;
+	s=korg; t=1748875764;
+	bh=fW97tThfnU5fdPi6U4y9dQo8WpnqqsNI9swbIXoxFTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aV8rmafY5Ymk4jCHAoVoOhH9qIor8Tl9n8NjnuvHRhMP/C76fPZ//e3eWO0HpBLk7
-	 xaW67kV+CZ/ly4E0gZI7DnB147Ta39lML1z8uT0ASAVRv1pDOr8yKT6JtsvQi9tWe6
-	 cjCjg9zuynaS+mQsr3Y4RKfFXvjuSun5oRn08/O4=
+	b=pjjRxco3HgS79pTNZ4kS9gizvwW8T6G48REWmanQ+4BU0WPLdb5alzP54Co1UoFvp
+	 xZI4/xyCbwjuNl1E0wERL53bMkujJFokT/zhXq4Iv3TyrSPZS2gAr95oBZ/TwGzy/B
+	 VxFBtJtLqlLgqie5gVNlsiL4wWWR/PO0eDxCFGyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 188/204] drm/i915/gvt: fix unterminated-string-initialization warning
-Date: Mon,  2 Jun 2025 15:48:41 +0200
-Message-ID: <20250602134303.068114449@linuxfoundation.org>
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Corentin LABBE <clabbe.montjoie@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 237/270] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+Date: Mon,  2 Jun 2025 15:48:42 +0200
+Message-ID: <20250602134317.003717353@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
 
-Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-(which is "IntelGraphicsMem") drops the NUL termination of the
-string. This is intentional, but the compiler doesn't know this.
+While the MDIO address of the internal PHY on Allwinner sun8i chips is
+generally 1, of_mdio_parse_addr is used to cleanly parse the address
+from the device-tree instead of hardcoding it.
 
-Switch to initializing header->signature directly from the string
-litaral, with sizeof destination rather than source. We don't treat the
-signature as a string other than for initialization; it's really just a
-blob of binary data.
+A commit reworking the code ditched the parsed value and hardcoded the
+value 1 instead, which didn't really break anything but is more fragile
+and not future-proof.
 
-Add a static assert for good measure to cross-check the sizes.
+Restore the initial behavior using the parsed address returned from the
+helper.
 
-Reported-by: Kees Cook <kees@kernel.org>
-Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-Tested-by: Damian Tometzki <damian@riscv-rocks.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
-Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-[nathan: Move static_assert() to top of function to avoid instance of
-         -Wdeclaration-after-statement due to lack of b5ec6fd286df]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gvt/opregion.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gvt/opregion.c
-+++ b/drivers/gpu/drm/i915/gvt/opregion.c
-@@ -223,7 +223,8 @@ int intel_vgpu_init_opregion(struct inte
- 	u8 *buf;
- 	struct opregion_header *header;
- 	struct vbt v;
--	const char opregion_signature[16] = OPREGION_SIGNATURE;
-+
-+	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
- 
- 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
- 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-@@ -237,8 +238,9 @@ int intel_vgpu_init_opregion(struct inte
- 	/* emulated opregion with VBT mailbox only */
- 	buf = (u8 *)vgpu_opregion(vgpu)->va;
- 	header = (struct opregion_header *)buf;
--	memcpy(header->signature, opregion_signature,
--	       sizeof(opregion_signature));
-+
-+	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
-+
- 	header->size = 0x8;
- 	header->opregion_ver = 0x02000000;
- 	header->mboxes = MBOX_VBT;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index 958bbcfc2668d..d04bc6597e0f0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -936,7 +936,7 @@ static int sun8i_dwmac_set_syscon(struct device *dev,
+ 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
+ 		 * address. No need to mask it again.
+ 		 */
+-		reg |= 1 << H3_EPHY_ADDR_SHIFT;
++		reg |= ret << H3_EPHY_ADDR_SHIFT;
+ 	} else {
+ 		/* For SoCs without internal PHY the PHY selection bit should be
+ 		 * set to 0 (external PHY).
+-- 
+2.39.5
+
 
 
 
