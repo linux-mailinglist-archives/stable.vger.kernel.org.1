@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0C8ACB8BF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DC9ACB49D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3056947491
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00794A1312
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27B42236F2;
-	Mon,  2 Jun 2025 15:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CF9221DBD;
+	Mon,  2 Jun 2025 14:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN73QNol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hW/KuTfJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E58C223327;
-	Mon,  2 Jun 2025 15:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5287D2153CB;
+	Mon,  2 Jun 2025 14:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877386; cv=none; b=mJMKrAmiRye0OzippkjzUMXC0d3h+0jLbhJshd7NrgN0WQPnaUw9GBcj2FJv2C2La3FExQY+IelZPLIJBhSVj8fqAuW8DZ1yXzIeqA87pDZ/JofTyGYif/o1xiSzTCvQVx3dG+GciYk7jkcykr8u8RsNqZQkWKZT10kPSl3bBKw=
+	t=1748875032; cv=none; b=gqRS0CCkDwwkw2ZlbsvPSXGTDg1batJ9f2w50JXMSQyP+G3Tiy8D3zJpaehPK8IBeDMrH5+SGHI6YLgVdBV3NS02DI4VTz0UQf3gY7fJkhi0XFBNgFlZl7DaBtVW3jnVKoEyUoY2i2XT/UEKXyYrgW5HF4Vv//Vqpit6TpRaJiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877386; c=relaxed/simple;
-	bh=p6mOEcFfkWQLR7RtEt+7YjiKJ1mKDJyMBmz1Msz0YmQ=;
+	s=arc-20240116; t=1748875032; c=relaxed/simple;
+	bh=31hDpCvfpUhPgUT9gMGEcdMNuNsXxjok3vqOIBJnejI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6I3oKmvgYtBRbRLiq0b5GHkf1Z04Nft5NsRYMAUx6U6JEXwIAmTYQd2vlaBXtwdO5us8cA/CzCRnod0+Gt6Xuxlo/iSEFiJEd8sESTPXnm8DM+pado060U58YTPmYvYFcBFjjuad27PV8l9xSN561uIKg5wz1IXU7qgRiasFk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN73QNol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BCBC4CEEB;
-	Mon,  2 Jun 2025 15:16:25 +0000 (UTC)
+	 MIME-Version; b=R0XqyiHC/Tx/psyhekSOpQvcUOpFqQnAOziWL44ry1771Y1ZEz5aaiXXEDFu37kggPav0nxYTZgKdqyaKny6gfwyxCCc4cQAKVfkoWMIllSrA5+m3PZGQlxSPEJSYV0Jlor2RXWom0s69lEtX6gfhVsL9t0OUBx4Tl1Fpza7k9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hW/KuTfJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704C5C4CEEB;
+	Mon,  2 Jun 2025 14:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877385;
-	bh=p6mOEcFfkWQLR7RtEt+7YjiKJ1mKDJyMBmz1Msz0YmQ=;
+	s=korg; t=1748875031;
+	bh=31hDpCvfpUhPgUT9gMGEcdMNuNsXxjok3vqOIBJnejI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sN73QNolYzNGxC6c69VzVuITLf1PKFuONTp6TvhYcDlsSGR1Ce+8kISaZzIXF5JcR
-	 XZVM1ebIy1evZmWUKeN1Gm6XV9eLP2kS7P0af4iiUXB/3czcaMVqfzs3HvV0nkRqVy
-	 Ez0tAgjYE264rPgYDtohqyNK8IgxpkiX359tHYYw=
+	b=hW/KuTfJGP7riqaSY7AiiKN3Pzi6OAIsXzUHvDlJwCiQ6IpdNDh2v+1kqt2pUu2Wz
+	 9Jpgl4tqgbUwfgQBtOeHV6gz/E/HSmSCPp+3ztSiCB9o8L0yHQ+C6iU6E0W/KNfwzx
+	 O2+Ca4Ar7II9gZ106NP9iUVrVqG1joZb6FSIgwDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 261/325] smb: client: Reset all search buffer pointers when releasing buffer
+	Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Subject: [PATCH 5.4 204/204] xen/swiotlb: relax alignment requirements
 Date: Mon,  2 Jun 2025 15:48:57 +0200
-Message-ID: <20250602134330.381807127@linuxfoundation.org>
+Message-ID: <20250602134303.685893829@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit e48f9d849bfdec276eebf782a84fd4dfbe1c14c0 upstream.
+commit 85fcb57c983f423180ba6ec5d0034242da05cc54 upstream.
 
-Multiple pointers in struct cifs_search_info (ntwrk_buf_start,
-srch_entries_start, and last_entry) point to the same allocated buffer.
-However, when freeing this buffer, only ntwrk_buf_start was set to NULL,
-while the other pointers remained pointing to freed memory.
+When mapping a buffer for DMA via .map_page or .map_sg DMA operations,
+there is no need to check the machine frames to be aligned according
+to the mapped areas size. All what is needed in these cases is that the
+buffer is contiguous at machine level.
 
-This is defensive programming to prevent potential issues with stale
-pointers. While the active UAF vulnerability is fixed by the previous
-patch, this change ensures consistent pointer state and more robust error
-handling.
+So carve out the alignment check from range_straddles_page_boundary()
+and move it to a helper called by xen_swiotlb_alloc_coherent() and
+xen_swiotlb_free_coherent() directly.
 
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 9f40ec84a797 ("xen/swiotlb: add alignment check for dma buffers")
+Reported-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
+Tested-by: Jan Vejvalka <jan.vejvalka@lfmotol.cuni.cz>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/readdir.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/xen/swiotlb-xen.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -765,7 +765,10 @@ find_cifs_entry(const unsigned int xid,
- 			else
- 				cifs_buf_release(cfile->srch_inf.
- 						ntwrk_buf_start);
-+			/* Reset all pointers to the network buffer to prevent stale references */
- 			cfile->srch_inf.ntwrk_buf_start = NULL;
-+			cfile->srch_inf.srch_entries_start = NULL;
-+			cfile->srch_inf.last_entry = NULL;
- 		}
- 		rc = initiate_cifs_search(xid, file, full_path);
- 		if (rc) {
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -85,19 +85,21 @@ static inline dma_addr_t xen_virt_to_bus
+ 	return xen_phys_to_bus(virt_to_phys(address));
+ }
+ 
++static inline bool range_requires_alignment(phys_addr_t p, size_t size)
++{
++	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
++	phys_addr_t bus_addr = pfn_to_bfn(XEN_PFN_DOWN(p)) << XEN_PAGE_SHIFT;
++
++	return IS_ALIGNED(p, algn) && !IS_ALIGNED(bus_addr, algn);
++}
++
+ static inline int range_straddles_page_boundary(phys_addr_t p, size_t size)
+ {
+ 	unsigned long next_bfn, xen_pfn = XEN_PFN_DOWN(p);
+ 	unsigned int i, nr_pages = XEN_PFN_UP(xen_offset_in_page(p) + size);
+-	phys_addr_t algn = 1ULL << (get_order(size) + PAGE_SHIFT);
+ 
+ 	next_bfn = pfn_to_bfn(xen_pfn);
+ 
+-	/* If buffer is physically aligned, ensure DMA alignment. */
+-	if (IS_ALIGNED(p, algn) &&
+-	    !IS_ALIGNED((phys_addr_t)next_bfn << XEN_PAGE_SHIFT, algn))
+-		return 1;
+-
+ 	for (i = 1; i < nr_pages; i++)
+ 		if (pfn_to_bfn(++xen_pfn) != ++next_bfn)
+ 			return 1;
+@@ -320,7 +322,8 @@ xen_swiotlb_alloc_coherent(struct device
+ 	phys = *dma_handle;
+ 	dev_addr = xen_phys_to_bus(phys);
+ 	if (((dev_addr + size - 1 <= dma_mask)) &&
+-	    !range_straddles_page_boundary(phys, size))
++	    !range_straddles_page_boundary(phys, size) &&
++	    !range_requires_alignment(phys, size))
+ 		*dma_handle = dev_addr;
+ 	else {
+ 		if (xen_create_contiguous_region(phys, order,
+@@ -360,6 +363,7 @@ xen_swiotlb_free_coherent(struct device
+ 
+ 	if (!WARN_ON((dev_addr + size - 1 > dma_mask) ||
+ 		     range_straddles_page_boundary(phys, size)) &&
++	    !range_requires_alignment(phys, size) &&
+ 	    TestClearPageXenRemapped(page))
+ 		xen_destroy_contiguous_region(phys, order);
+ 
 
 
 
