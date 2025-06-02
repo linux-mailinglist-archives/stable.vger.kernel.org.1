@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385CDACB766
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195FAACB4EE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4C01C23234
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6BA1946736
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244B523536A;
-	Mon,  2 Jun 2025 15:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6665122A7F2;
+	Mon,  2 Jun 2025 14:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDIy51Io"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oD+sOss9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D655322A4EB;
-	Mon,  2 Jun 2025 15:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2315B17BBF;
+	Mon,  2 Jun 2025 14:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876785; cv=none; b=MozpuE5r2yUQo00EJJH2SGhNJFMjKS8dxP1Atvrgj5qVGddHXH/KP5Y4FZ5FAQJnUa2u0qRsbE4A6ANmnc3diD2ihG/zrRqvEIJi5TjW4Z6vGmVNAg5lAR8SeMGcJJRjcFNOv5VW/qbq3a+N5l/haEtu1P43OYRQw7nyyaBeBQ8=
+	t=1748875221; cv=none; b=BpBB5bnXPqE7IRl+F5ztf28w8JDWSocydXmMuUnu80teQAi8hzbbKvmscoOfQXRIjlFVbmW93PnhKptOdxmekvl5bP6S/AlPN9ww6uRgkyJa4cWrkRJQi92YsHMV+TwJQgxCvVL2EiEHzM9KZqMVFUUobPG+E+d3tK74Q0ADybY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876785; c=relaxed/simple;
-	bh=KYkYWdEmBe77EdLxcWFEYLCseUN4XUFmfWlIj6nQHEA=;
+	s=arc-20240116; t=1748875221; c=relaxed/simple;
+	bh=2xaeAaM3ENmeMu6WTVyHWW3h+5Q79m0qJf1L4KRDyCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjgdrLWdBLu9ECNfwG7SqLueHmXUO394VwyKi+TZ3pd0B9p/b11A1gmMlFS3HVaZSNrBkS0g3ExUBHg9XmuRkD5RV/wgd+/j1YP+7dPaOJRsEPC8+wijsH8Ngvkgb5qQ9QSGJf1XighW5E4W9LbRMvJuFjBpkFfLdVyRBXY6lSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDIy51Io; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C49C4CEF0;
-	Mon,  2 Jun 2025 15:06:25 +0000 (UTC)
+	 MIME-Version; b=sZvQju48j8kEzx5TPpTtBRgLyBzueh8Uvw2uESBiEzIbREC0Va4Un3Tf4/tZ0MTKs+VZnXJ4CGwHlh39v11fg1qoQyPvhu/bcg+IED8OzHMRApc7rtu3mf0hU2U9rBk6yUtcslt86XRaH73JvBsdCaKLplCakSmxfY6qIa16QRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oD+sOss9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B19CC4CEEB;
+	Mon,  2 Jun 2025 14:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876785;
-	bh=KYkYWdEmBe77EdLxcWFEYLCseUN4XUFmfWlIj6nQHEA=;
+	s=korg; t=1748875218;
+	bh=2xaeAaM3ENmeMu6WTVyHWW3h+5Q79m0qJf1L4KRDyCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDIy51IoDicZz13eDD2U5noLNuK2WLnNPTVdwil5y+xhV8RtLY9KWA8eEmSg9zJqH
-	 u4t1N9G0tjbnW/rj/NDuNS1Ius7eml3ctG/Kpll9eK+CIwokFhNpu1OgyhIorSL4fM
-	 42KqNwKgBVuNjf5lJd/sJ5mhqB04gTTIiq1JJOtY=
+	b=oD+sOss9wmbEf8jBGWm3YIc5F8TClHV3+FBRHP+YuA4th1VaV/KbcPXgQvSo5y31p
+	 tZ3j0EYsZc4AoS0kkJbDVRqx0w9TpBq48mXlA+m5p+Kp8PFOFcamd6QUzNOxXDRJLB
+	 mvNlzcDAC8qJyqORK0CTeR35kdXkSH+uF3kCb5WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Xiang wangx <wangxiang@cdjrlc.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/325] tools/build: Dont pass test log files to linker
-Date: Mon,  2 Jun 2025 15:45:19 +0200
-Message-ID: <20250602134321.501414564@linuxfoundation.org>
+Subject: [PATCH 5.10 035/270] irqchip/gic-v2m: Add const to of_device_id
+Date: Mon,  2 Jun 2025 15:45:20 +0200
+Message-ID: <20250602134308.630696802@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Xiang wangx <wangxiang@cdjrlc.com>
 
-[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
+[ Upstream commit c10f2f8b5d8027c1ea77f777f2d16cb9043a6c09 ]
 
-Separate test log files from object files. Depend on test log output
-but don't pass to the linker.
+struct of_device_id should normally be const.
 
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20211209132453.25623-1-wangxiang@cdjrlc.com
+Stable-dep-of: 3318dc299b07 ("irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/Makefile.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v2m.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
-index 715092fc6a239..6a043b729b367 100644
---- a/tools/build/Makefile.build
-+++ b/tools/build/Makefile.build
-@@ -130,6 +130,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
- obj-y        := $(addprefix $(objprefix),$(obj-y))
- subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 205a275196074..6a7551fd91a05 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -408,7 +408,7 @@ static int __init gicv2m_init_one(struct fwnode_handle *fwnode,
+ 	return ret;
+ }
  
-+# Separate out test log files from real build objects.
-+test-y       := $(filter %_log, $(obj-y))
-+obj-y        := $(filter-out %_log, $(obj-y))
-+
- # Final '$(obj)-in.o' object
- in-target := $(objprefix)$(obj)-in.o
- 
-@@ -140,7 +144,7 @@ $(subdir-y):
- 
- $(sort $(subdir-obj-y)): $(subdir-y) ;
- 
--$(in-target): $(obj-y) FORCE
-+$(in-target): $(obj-y) $(test-y) FORCE
- 	$(call rule_mkdir)
- 	$(call if_changed,$(host)ld_multi)
- 
+-static struct of_device_id gicv2m_device_id[] = {
++static const struct of_device_id gicv2m_device_id[] = {
+ 	{	.compatible	= "arm,gic-v2m-frame",	},
+ 	{},
+ };
 -- 
 2.39.5
 
