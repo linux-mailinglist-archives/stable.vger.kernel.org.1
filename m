@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-149454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3351AACB2EA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD09ACB87A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C5C140831E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE741947ED9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E81D224247;
-	Mon,  2 Jun 2025 14:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E6722DF9A;
+	Mon,  2 Jun 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6fUssOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPfprNLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FE238C06;
-	Mon,  2 Jun 2025 14:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC95D188907;
+	Mon,  2 Jun 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874012; cv=none; b=CgYLi9WmmHMlzE5RmMNbVSRA04hkS/gScyxww+bEcyh9zFFEDYooojrzwN4KvcY1t0LbMT3rQgKNZQ9N0S1DryYDp1jWXIO7nMWKJ/MaprhkSXjNCkffNhilc2zOsS8fylCGI+2CxKfJDW9x2Iy78J9DFyqCON8GPuWeT4cN//4=
+	t=1748876916; cv=none; b=hlLnk0UlW0rTcLujAUnlj2lhvT4prbSIYQcyBrsNo2xmRFGQuX9Wr0c5pM2IgLB9SOuo5bWSiROwgpVrnXIhfOa5PGkcLINbt4yX3yAGqgTx6C0lsQuVPm7d/ntYxYoGbf+BjMpCSfYpVxrj+K/XjdOiktm/MrOUiXlwGKvBJxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874012; c=relaxed/simple;
-	bh=NJ5Id5A87l1Jiitzv0URgDPyMadpmLMlveAM2DMR/iU=;
+	s=arc-20240116; t=1748876916; c=relaxed/simple;
+	bh=7kjJRdOek0Wg21cqq4xfU0CnTw0zvjU85i/XjE/E8Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXd9NbNN13KZ3ocMexyX349yFJJHhHkZihoIzx2AwAAVIfQwuCDuu00CG5KmEKoluvKj95kp3MAwWfCbYNz7+diDQE3MmulKEO1RSvzaQNUGFXJdGYtyLQOYATQuLDQNAhv5tn4S5Uk/Vh6PeNyjLkzaFoxIYZEOKlAeacAS28w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6fUssOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89A3C4CEEB;
-	Mon,  2 Jun 2025 14:20:11 +0000 (UTC)
+	 MIME-Version; b=nb1N3AJldRwuyVFyd09EQa0rGWn9V6Bh8lSi5q1DnEKFi0B8bEfLE1nVza1x6glqdeM5stLnnfWx1YHFMYAl9iA6Drzoj5hHJ+jHPp3kjcP41bfMVnmqRv329N2MAyyI9cA3JUeEQ1/pot/tR11hdZXGOZVrbPFXdShPVy41Wdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPfprNLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E200C4CEEB;
+	Mon,  2 Jun 2025 15:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874012;
-	bh=NJ5Id5A87l1Jiitzv0URgDPyMadpmLMlveAM2DMR/iU=;
+	s=korg; t=1748876916;
+	bh=7kjJRdOek0Wg21cqq4xfU0CnTw0zvjU85i/XjE/E8Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6fUssOU1RNDgj+R/nMDANLOWM6sywGp+Ss0t6Ipb+gBZao/bfC33crNx1d8Lu8TE
-	 xXdDtV0r0Pm1dmJOJ6IRyagv3Jh2pdRuUxlD8Vruu9mUbtGlNtGJwORmPHiSWcvLBi
-	 ttowgM1NMoT6k17s5hgDIF7Xip8KiYomRKqVRi4U=
+	b=KPfprNLyP3eRI+w0Syvd4YQL+StXyQkoPkNw+8js2bEn3E1rBM/twVBjrRE1msJx8
+	 xjh4K5i0KhP8l3k/JbQ69tp6wKy0E5GZuyeKl8GcGGeSWYVMLh/DQCz5ngZNjypCxN
+	 KpIrIckjfRu2ys2YL0Kz/fOjqWjQ/tkuCJunCMdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/444] wifi: iwlwifi: add support for Killer on MTL
+	Andy Yan <andy.yan@rock-chips.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Michael Riesch <michael.riesch@wolfvision.net>
+Subject: [PATCH 6.1 115/325] drm/rockchip: vop2: Add uv swap for cluster window
 Date: Mon,  2 Jun 2025 15:46:31 +0200
-Message-ID: <20250602134354.215227591@linuxfoundation.org>
+Message-ID: <20250602134324.452427860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
+[ Upstream commit e7aae9f6d762139f8d2b86db03793ae0ab3dd802 ]
 
-For now, we need another entry for these devices, this
-will be changed completely for 6.16.
+The Cluster windows of upcoming VOP on rk3576 also support
+linear YUV support, we need to set uv swap bit for it.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
-Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+As the VOP2_WIN_UV_SWA register defined on rk3568/rk3588 is
+0xffffffff, so this register will not be touched on these
+two platforms.
+
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Tested-by: Michael Riesch <michael.riesch@wolfvision.net> # on RK3568
+Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250303034436.192400-4-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 4a2de79f2e864..c01a9a6f06a4d 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -580,6 +580,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
- 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
-+	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
-+	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 955ef2caac89f..6efa0a51b7d65 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1289,10 +1289,8 @@ static void vop2_plane_atomic_update(struct drm_plane *plane,
  
- 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
- 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma, iwl_ax411_killer_1690s_name),
+ 	rb_swap = vop2_win_rb_swap(fb->format->format);
+ 	vop2_win_write(win, VOP2_WIN_RB_SWAP, rb_swap);
+-	if (!vop2_cluster_window(win)) {
+-		uv_swap = vop2_win_uv_swap(fb->format->format);
+-		vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
+-	}
++	uv_swap = vop2_win_uv_swap(fb->format->format);
++	vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
+ 
+ 	if (fb->format->is_yuv) {
+ 		vop2_win_write(win, VOP2_WIN_UV_VIR, DIV_ROUND_UP(fb->pitches[1], 4));
 -- 
 2.39.5
 
