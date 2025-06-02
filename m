@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB50ACB696
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349FBACB87C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA464A5273
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF221BC1CAE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6CA23315E;
-	Mon,  2 Jun 2025 15:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA342229B37;
+	Mon,  2 Jun 2025 15:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcNYz2Ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwMfqJVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E42233712;
-	Mon,  2 Jun 2025 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D6220E026;
+	Mon,  2 Jun 2025 15:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876499; cv=none; b=UWe6uba9hkiHyKn1+RXJie9XIr1skP/P2KA05nZ2o+Xu9cpsI1ccQ4nLNZ2MxCpfa5GX14iO8wgZA5rPWX1t+1uMxpD8qSyaf0aZWi/f7ngA00G4etnc4pi/HMhZeFaCNfmkLZkJG6yPVEqRSdh7i+dvVM9cIcq67jl4AF6mjEU=
+	t=1748877482; cv=none; b=tCaSC3FS+g9km0N+dJFAtrI0dq8E3WigEDLZALtfTPlh2ryonSDZ0xgmA3VQgfoMHws0VHhiQaZLzHF152deuXeirc5HYvjBaT7wbNc4TCuSVozwuyVOGen3HcJdbmMUMy1oFFAsidvIVP7bVHlONJ6r8o5i0ASxAsQU4aEx/O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876499; c=relaxed/simple;
-	bh=+8vvHsGEHtrJ3/lIs4E8kaGnVXIHoBeK4daoXxOBeFc=;
+	s=arc-20240116; t=1748877482; c=relaxed/simple;
+	bh=sFzijGUe2J1e43mYV73sPgCAyUjf14rasx9eBRe+/aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=om/saGKr92HYzQIIGEs7/FWRvuRHYDEMUrKXhwwJDRFAq285chBVqpNnbQd81O43Y/K8hlMclG5xeXkkl3TLUdAFsYVnX9KacqgTG9FE61Gp47juI24fRQKKg0YYbH0GLNJC3i/SEylsiqkgMbztcSYCY1CrZAGlj5EXc4DPohk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcNYz2Ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369A9C4CEEB;
-	Mon,  2 Jun 2025 15:01:38 +0000 (UTC)
+	 MIME-Version; b=SliF4cIiQLdyH3rSxZ3+lamBUaM6x7Vfbs1attAl/znwaZqdO6ira4SsBqk2BFhXytBgV/p5hGeUza9OHASl+ABR+vTExnccPsuUXIGYk4HA4d0j1LLBGoAROEQBOVnyqKTj3ClVhcok5m0byyjS0Y46Xx/ZecCAeGgRfy4ZtZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwMfqJVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D76C4CEEE;
+	Mon,  2 Jun 2025 15:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876498;
-	bh=+8vvHsGEHtrJ3/lIs4E8kaGnVXIHoBeK4daoXxOBeFc=;
+	s=korg; t=1748877482;
+	bh=sFzijGUe2J1e43mYV73sPgCAyUjf14rasx9eBRe+/aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcNYz2Ibn9jfok3Zs+uOsz2sZl4BfbJbJt0PdIegocf7ROytGm8ZX9gHY70qz3MEB
-	 8zm0zl+K1FTJWq7j3Ra56ngFQW8JUCO7w5JZaFCmYdmfBrK2FFHB3lrb4X8sPdXW0c
-	 v7ajyD1+6LTxaDs0AbEjdPHhiWPeJrHv16t2MN6c=
+	b=lwMfqJVV1tJOeD8gErmZy2VwiFSqZ7+jRJHRq5Ly9IoQbhbkA2gZpBIdw7qqCWZSl
+	 kTz6zNJbjv6ZdZpVfgCygTbxchh+F0y1w/ZLJUW6TBUyTee6xBNcSMHO63OWA6xX0Z
+	 FyXvU/aLlVDDffznxhHfJ+o/gXwJC9LyWduq92So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15 194/207] coredump: fix error handling for replace_fd()
-Date: Mon,  2 Jun 2025 15:49:26 +0200
-Message-ID: <20250602134306.372923932@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 291/325] af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
+Date: Mon,  2 Jun 2025 15:49:27 +0200
+Message-ID: <20250602134331.728639079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
+commit 22c3c0c52d32f41cc38cd936ea0c93f22ced3315 upstream.
 
-The replace_fd() helper returns the file descriptor number on success
-and a negative error code on failure. The current error handling in
-umh_pipe_setup() only works because the file descriptor that is replaced
-is zero but that's pretty volatile. Explicitly check for a negative
-error code.
+Currently, we track the number of inflight sockets in two variables.
+unix_tot_inflight is the total number of inflight AF_UNIX sockets on
+the host, and user->unix_inflight is the number of inflight fds per
+user.
 
-Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+We update them one by one in unix_inflight(), which can be done once
+in batch.  Also, sendmsg() could fail even after unix_inflight(), then
+we need to acquire unix_gc_lock only to decrement the counters.
+
+Let's bulk update the counters in unix_add_edges() and unix_del_edges(),
+which is called only for successfully passed fds.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-5-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/coredump.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/unix/garbage.c |   18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -564,7 +564,9 @@ static int umh_pipe_setup(struct subproc
- {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
--	int err = create_pipe_files(files, 0);
-+	int err;
-+
-+	err = create_pipe_files(files, 0);
- 	if (err)
- 		return err;
- 
-@@ -572,10 +574,13 @@ static int umh_pipe_setup(struct subproc
- 
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
-+	if (err < 0)
-+		return err;
-+
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
- 
--	return err;
-+	return 0;
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -144,6 +144,7 @@ static void unix_free_vertices(struct sc
  }
  
- void do_coredump(const kernel_siginfo_t *siginfo)
+ DEFINE_SPINLOCK(unix_gc_lock);
++unsigned int unix_tot_inflight;
+ 
+ void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
+ {
+@@ -168,7 +169,10 @@ void unix_add_edges(struct scm_fp_list *
+ 		unix_add_edge(fpl, edge);
+ 	} while (i < fpl->count_unix);
+ 
++	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + fpl->count_unix);
+ out:
++	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight + fpl->count);
++
+ 	spin_unlock(&unix_gc_lock);
+ 
+ 	fpl->inflight = true;
+@@ -191,7 +195,10 @@ void unix_del_edges(struct scm_fp_list *
+ 		unix_del_edge(fpl, edge);
+ 	} while (i < fpl->count_unix);
+ 
++	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - fpl->count_unix);
+ out:
++	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight - fpl->count);
++
+ 	spin_unlock(&unix_gc_lock);
+ 
+ 	fpl->inflight = false;
+@@ -234,7 +241,6 @@ void unix_destroy_fpl(struct scm_fp_list
+ 	unix_free_vertices(fpl);
+ }
+ 
+-unsigned int unix_tot_inflight;
+ static LIST_HEAD(gc_candidates);
+ static LIST_HEAD(gc_inflight_list);
+ 
+@@ -255,13 +261,8 @@ void unix_inflight(struct user_struct *u
+ 			WARN_ON_ONCE(list_empty(&u->link));
+ 		}
+ 		u->inflight++;
+-
+-		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+-		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
+ 	}
+ 
+-	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
+-
+ 	spin_unlock(&unix_gc_lock);
+ }
+ 
+@@ -278,13 +279,8 @@ void unix_notinflight(struct user_struct
+ 		u->inflight--;
+ 		if (!u->inflight)
+ 			list_del_init(&u->link);
+-
+-		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+-		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
+ 	}
+ 
+-	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
+-
+ 	spin_unlock(&unix_gc_lock);
+ }
+ 
 
 
 
