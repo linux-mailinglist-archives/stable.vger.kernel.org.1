@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70786ACB358
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2789ACB072
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C0B17AE158
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B257816B743
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDDF22E3FD;
-	Mon,  2 Jun 2025 14:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212FE223339;
+	Mon,  2 Jun 2025 14:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaQsHDT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLgBKXat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3937C22DF92;
-	Mon,  2 Jun 2025 14:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0439223327;
+	Mon,  2 Jun 2025 14:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874893; cv=none; b=FZiLyXsslVX2Lb5oZCyVaQaXvKzKPLN5ZJZRJ4Ogs+agz52cDWkd/2xTxjyy8SiBWiM7Aalz/BgYeVXzqsRkJ2IrHrpGHKy7zs/QMUvY4CztlUINH+b52zq+2MPu1aUDSURsBnqYWf/gTVM4VikYelOcCm+MC6yoscqPDK8u8Jc=
+	t=1748872912; cv=none; b=ghR4rj2zBz5D0TbkeeLXoL/9dnOHL3ZG11318TJzdRsgSMCZnUNKnVPKRYgxcqkUcgTp3lIuSbybyPJp6L6ADfeg6vyBLOALg1+90zc9CBufhOTNYZEsgb98dfjnehK+Y5Wk3Yj812/QrShk/G4Ac7w8POEElBLWMR93BHiZNkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874893; c=relaxed/simple;
-	bh=tRRAGWuybInMft8cMvRwwZZlKC4DlVyo3ziunZm/+D8=;
+	s=arc-20240116; t=1748872912; c=relaxed/simple;
+	bh=eEeXQ43vtY/W7vvaJHDC/Gx17tltqAQgNxUm/P46lpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UZUGQCPRWxEluo/ZFrH+SiICWXhwLouicEQ7apPsKIsOqlcdZVrmzsu7MQ4VNlflvoTLkT3+FnNdHApXczOwm5kzUl/YBa8gKVY5rw/YZNm0eItW5aoYq7a9fgqPxQjhtY4PCaFfHNQe3wv8icDCxTZNeFphCR3e0IKZ6yCVaqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaQsHDT5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64EFC4CEEB;
-	Mon,  2 Jun 2025 14:34:52 +0000 (UTC)
+	 MIME-Version; b=k18xS29judbz/IrFZLtoTJqEeSvOcL5AwrrY7u0vj7zTIW5vOF4CN7OPVlMuknpth6QKOl8qCPTC4gq90tYKsik0FkadBuFmPH1iMGEbw5PNiFWAi3snHV/iborDVhAM0ydxk3HN7MyEXSEVI6E1r1K212KjNMT6db15DplOwNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLgBKXat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59000C4CEEB;
+	Mon,  2 Jun 2025 14:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874893;
-	bh=tRRAGWuybInMft8cMvRwwZZlKC4DlVyo3ziunZm/+D8=;
+	s=korg; t=1748872912;
+	bh=eEeXQ43vtY/W7vvaJHDC/Gx17tltqAQgNxUm/P46lpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NaQsHDT5GtOUkqkNq0M1isZeQK+6eQxjWD1OzmdlRhN9W2iZvOFzA+R6Myvy4M0fF
-	 JLJFkSMMlO02tNNvJYTYEAMlrW8uY8lmGOSaHZsHmf4/NX1bJR5VHuTal0WGds/ULj
-	 y0xKPcYujgIfg3EbJ+ARe0YWk1H6oAQ7mdc/XIG0=
+	b=iLgBKXatbxCybUx4UAwTJcMSoWENIcb3aNOXgewXo4JjrhDg2ieU6bzu4a2IzqOXG
+	 7AlReTapRWyjl4RqK5aGDHjiJ2bsZbpZWbPJ/CpgRsyln89WwJsTGLdnhL4xa4FrLv
+	 GEjQGflQqh2RI5no/Y/OkHlX+o7f6dGDoH8jERhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Xiaochun Lee <lixc17@lenovo.com>,
+	Milton Barrera <miltonjosue2001@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 140/204] PCI: Fix old_size lower bound in calculate_iosize() too
+Subject: [PATCH 6.12 36/55] HID: quirks: Add ADATA XPG alpha wireless mouse support
 Date: Mon,  2 Jun 2025 15:47:53 +0200
-Message-ID: <20250602134301.151599081@linuxfoundation.org>
+Message-ID: <20250602134239.704007462@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Milton Barrera <miltonjosue2001@gmail.com>
 
-[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
+[ Upstream commit fa9fdeea1b7d6440c22efa6d59a769eae8bc89f1 ]
 
-Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
-rescan") fixed double counting of mem resources because of old_size being
-applied too early.
+This patch adds HID_QUIRK_ALWAYS_POLL for the ADATA XPG wireless gaming mouse (USB ID 125f:7505) and its USB dongle (USB ID 125f:7506). Without this quirk, the device does not generate input events properly.
 
-Fix a similar counting bug on the io resource side.
-
-Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Xiaochun Lee <lixc17@lenovo.com>
+Signed-off-by: Milton Barrera <miltonjosue2001@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/hid/hid-ids.h    | 4 ++++
+ drivers/hid/hid-quirks.c | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 32e34ade736c3..1793e1084aeb3 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -800,11 +800,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
- 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
- #endif
- 	size = size + size1;
--	if (size < old_size)
--		size = old_size;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 92baa34f42f28..c6424f6259487 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -41,6 +41,10 @@
+ #define USB_VENDOR_ID_ACTIONSTAR	0x2101
+ #define USB_DEVICE_ID_ACTIONSTAR_1011	0x1011
  
--	size = ALIGN(max(size, add_size) + children_add_size, align);
--	return size;
-+	size = max(size, add_size) + children_add_size;
-+	return ALIGN(max(size, old_size), align);
- }
++#define USB_VENDOR_ID_ADATA_XPG 0x125f
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE 0x7505
++#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE 0x7506
++
+ #define USB_VENDOR_ID_ADS_TECH		0x06e1
+ #define USB_DEVICE_ID_ADS_TECH_RADIO_SI470X	0xa155
  
- static resource_size_t calculate_memsize(resource_size_t size,
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 5d7a418ccdbec..73979643315bf 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -27,6 +27,8 @@
+ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AFATECH, USB_DEVICE_ID_AFATECH_AF9016), HID_QUIRK_FULLSPEED_INTERVAL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AIREN, USB_DEVICE_ID_AIREN_SLIMPLUS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI_09E8, USB_DEVICE_ID_AKAI_09E8_MIDIMIX), HID_QUIRK_NO_INIT_REPORTS },
 -- 
 2.39.5
 
