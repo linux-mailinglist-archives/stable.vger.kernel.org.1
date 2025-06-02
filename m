@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA77ACB316
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E76EACB639
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70CBD4A3DE7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A18BA7A5FA4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D85223DC0;
-	Mon,  2 Jun 2025 14:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49590221DB7;
+	Mon,  2 Jun 2025 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUY8uHMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaD88U4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DB71C5D72;
-	Mon,  2 Jun 2025 14:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D11219A9B;
+	Mon,  2 Jun 2025 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874145; cv=none; b=MbV4TsanvP4b2T3+wBC+k9/IsbmhGMVGUws7vvbbJDZOKEASIJ7UZSIgbziX+z8NG+j/hP9KlVxYunW7CXYr3pX9FhnWJNLnAxaqn1D9FsRuL0XguIpjqgvCtYtnejTt7kfOJIvtaX+CRb7fvqBmoNicEily4rZKlCYB7AOLLDc=
+	t=1748876969; cv=none; b=MOkSpY8YFQnmrO1YibYEvJcrCtc9hYWKHjprg9QarpZPDH8vegY465TbXPdRoP2SAxAtA2c5I2e5LHiVpz0xYAzlRRGMJ/h43qLiiHkVoh13VascqqJM61cc10/saMfiiRm1N1MOcNAECQXbqegtworLm35XG9m62iXpI5dd+X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874145; c=relaxed/simple;
-	bh=PZQy/Vz8ONP5pLpqDVpZzyqVOeUoYoAAjrSbLYgvj/E=;
+	s=arc-20240116; t=1748876969; c=relaxed/simple;
+	bh=pmemskVAXDsO5CafZ+yQqz/241LuKQur6jphmlxovvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3slChd0+VKiuFaGJWx3qIc//bXXIfuke7I89N5YZbaxCwoJC/Srr8oNG4wRcIdggNHJy2ul908u2zVcy5rwnwvrOt5zMql2aZjwqpa4Cjt3atW7FJxLOKSn6MwzKrk9lT8cM3JrJ1aw+WENVhxqvgyZdque8Vd3Q9Q2KPpbmZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUY8uHMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF95C4CEF0;
-	Mon,  2 Jun 2025 14:22:24 +0000 (UTC)
+	 MIME-Version; b=XnSu5mlwLpCw89DBBVgHI1hLQeJaOluNrAtNSo2ilgS7lVR/6v5df6tm8prN9C0GZ9uT6zSww9+WCjpsmh9EcSILyAeJQBxjpjOeI9OQa3NhSAPPaipFIVZJ42ymLUCMR8o4g+dRzACx2EaNuQJZBswK9IGIkSum/MnYfedUra4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaD88U4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8F5C4CEEB;
+	Mon,  2 Jun 2025 15:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874145;
-	bh=PZQy/Vz8ONP5pLpqDVpZzyqVOeUoYoAAjrSbLYgvj/E=;
+	s=korg; t=1748876968;
+	bh=pmemskVAXDsO5CafZ+yQqz/241LuKQur6jphmlxovvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUY8uHMgZ+yEm2WAMxY5lQpCfmEir5fqbgX06V7jEEd5jCwBgYVeZJYjOWQu1Y6vm
-	 7FXCUnfGuM7SJm26HQMQRaQ3G57Kb1kY8pjXQVS5aUG19aOCsX2ts3zUa7ivOKSRP2
-	 Y31VEi+2p9Fx9QXIyot2U6msE38f9PWxK87Dbfgo=
+	b=QaD88U4gVrqDrfb56eVq7XUqbSCzxw5uWKA/fLwid0ftnqbxa9z9eCBIFYFCyUtzL
+	 UIEDW2WCBEzYG1JIMfcWUR7C3tXVjImyYgoDW/K6ztpf6MLSF3JWi/C+VO3CAMEZOZ
+	 Hv4+RJOpmzARxoXvxVIfwR8KKh7xNAS53R0ubkKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 342/444] bridge: netfilter: Fix forwarding of fragmented packets
+Subject: [PATCH 6.1 130/325] drm/amdkfd: KFD release_work possible circular locking
 Date: Mon,  2 Jun 2025 15:46:46 +0200
-Message-ID: <20250602134354.817569698@linuxfoundation.org>
+Message-ID: <20250602134325.089991555@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
+[ Upstream commit 1b9366c601039d60546794c63fbb83ce8e53b978 ]
 
-When netfilter defrag hooks are loaded (due to the presence of conntrack
-rules, for example), fragmented packets entering the bridge will be
-defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
-ipv4_conntrack_defrag()).
+If waiting for gpu reset done in KFD release_work, thers is WARNING:
+possible circular locking dependency detected
 
-Later on, in the bridge's post-routing hook, the defragged packet will
-be fragmented again. If the size of the largest fragment is larger than
-what the kernel has determined as the destination MTU (using
-ip_skb_dst_mtu()), the defragged packet will be dropped.
+  #2  kfd_create_process
+        kfd_process_mutex
+          flush kfd release work
 
-Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
-the destination MTU. Assuming the dst entry attached to the packet is
-the bridge's fake rtable one, this would simply be the bridge's MTU (see
-fake_mtu()).
+  #1  kfd release work
+        wait for amdgpu reset work
 
-However, after above mentioned commit, ip_skb_dst_mtu() ends up
-returning the route's MTU stored in the dst entry's metrics. Ideally, in
-case the dst entry is the bridge's fake rtable one, this should be the
-bridge's MTU as the bridge takes care of updating this metric when its
-MTU changes (see br_change_mtu()).
+  #0  amdgpu_device_gpu_reset
+        kgd2kfd_pre_reset
+          kfd_process_mutex
 
-Unfortunately, the last operation is a no-op given the metrics attached
-to the fake rtable entry are marked as read-only. Therefore,
-ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
-defragged packets are dropped during fragmentation when dealing with
-large fragments and high MTU (e.g., 9k).
+  Possible unsafe locking scenario:
 
-Fix by moving the fake rtable entry's metrics to be per-bridge (in a
-similar fashion to the fake rtable entry itself) and marking them as
-writable, thereby allowing MTU changes to be reflected.
+        CPU0                    CPU1
+        ----                    ----
+   lock((work_completion)(&p->release_work));
+                  lock((wq_completion)kfd_process_wq);
+                  lock((work_completion)(&p->release_work));
+   lock((wq_completion)amdgpu-reset-dev);
 
-Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
-Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
-Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
-Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this, KFD create process move flush release work outside
+kfd_process_mutex.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_nf_core.c | 7 ++-----
- net/bridge/br_private.h | 1 +
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
-index 98aea5485aaef..a8c67035e23c0 100644
---- a/net/bridge/br_nf_core.c
-+++ b/net/bridge/br_nf_core.c
-@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
-  * ipt_REJECT needs it.  Future netfilter modules might
-  * require us to fill additional fields.
-  */
--static const u32 br_dst_default_metrics[RTAX_MAX] = {
--	[RTAX_MTU - 1] = 1500,
--};
--
- void br_netfilter_rtable_init(struct net_bridge *br)
- {
- 	struct rtable *rt = &br->fake_rtable;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index bc01c5173ab9a..fd7fecaa9254b 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -813,6 +813,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
+ 	if (thread->group_leader->mm != thread->mm)
+ 		return ERR_PTR(-EINVAL);
  
- 	rcuref_init(&rt->dst.__rcuref, 1);
- 	rt->dst.dev = br->dev;
--	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
-+	dst_init_metrics(&rt->dst, br->metrics, false);
-+	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
- 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
- 	rt->dst.ops = &fake_dst_ops;
- }
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 72d80fd943a8a..9197b511e4597 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -502,6 +502,7 @@ struct net_bridge {
- 		struct rtable		fake_rtable;
- 		struct rt6_info		fake_rt6_info;
- 	};
-+	u32				metrics[RTAX_MAX];
- #endif
- 	u16				group_fwd_mask;
- 	u16				group_fwd_mask_required;
++	/* If the process just called exec(3), it is possible that the
++	 * cleanup of the kfd_process (following the release of the mm
++	 * of the old process image) is still in the cleanup work queue.
++	 * Make sure to drain any job before trying to recreate any
++	 * resource for this process.
++	 */
++	flush_workqueue(kfd_process_wq);
++
+ 	/*
+ 	 * take kfd processes mutex before starting of process creation
+ 	 * so there won't be a case where two threads of the same process
+@@ -825,14 +833,6 @@ struct kfd_process *kfd_create_process(struct file *filep)
+ 	if (process) {
+ 		pr_debug("Process already found\n");
+ 	} else {
+-		/* If the process just called exec(3), it is possible that the
+-		 * cleanup of the kfd_process (following the release of the mm
+-		 * of the old process image) is still in the cleanup work queue.
+-		 * Make sure to drain any job before trying to recreate any
+-		 * resource for this process.
+-		 */
+-		flush_workqueue(kfd_process_wq);
+-
+ 		process = create_process(thread);
+ 		if (IS_ERR(process))
+ 			goto out;
 -- 
 2.39.5
 
