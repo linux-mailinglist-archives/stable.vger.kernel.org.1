@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA02ACB070
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A213ACB637
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0E537AA89D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:04:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17F8D9E286E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E30122A7F4;
-	Mon,  2 Jun 2025 14:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C90221F29;
+	Mon,  2 Jun 2025 14:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7aFsHOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vnxbj6xX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4705222A1FA;
-	Mon,  2 Jun 2025 14:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307F2290F;
+	Mon,  2 Jun 2025 14:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872957; cv=none; b=jMMWXxBAiHTP8mpOU68gtb/ThI4aAQhMBgFWio11pQVt+zvLwcXcQjZlr6LHS1IfSMq9ThRneTdfMJTKB89JBJhRrvylDl/aaUVhk72Hl8WAm4UhWzR2/82BZYG6s6YJscPvrZRDA8qBRQuX8GwhV2Vns/uR3jCNJS1GY6jHyys=
+	t=1748875652; cv=none; b=WkXSboRXxfu4sa6K+Be8uung5p8PVxsYl1LkNM+l6x/CeW8sh6u9QguiVfDzx76JljpqSihMmTjJ/nN0Fiw+WYb1Tm2G7B07xxMnM8uWOdZ6tMRBiyomKoFOEdzeazSVk2OUMqqeUkFSznaGnS+CsaV7wiZ8TKZh6ck7APALRpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872957; c=relaxed/simple;
-	bh=vPXc9xDxvjYXDkaZRGacFv53luI/X1pz+8qIq1Mz2Ck=;
+	s=arc-20240116; t=1748875652; c=relaxed/simple;
+	bh=WuNHufv3msuwLcX3jjhjIzS5GPQe56aadzczzgnaB80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+yqTEhRTAzAxnjBwGrb7E4y6DLsqShAuXXcoSDabrcU8AcRES6VY/bWwEF2pagP4s3bquLlyoA0JzVUNWhMrYWUG8U8XWQW1F/FWeN2am8GZ+vd+eJ5zQXC2SY5npsKZr5OKDoVkanq4C0HqrdM6zanpEGmm5hCTQPpIGJDTic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7aFsHOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BF7C4CEEB;
-	Mon,  2 Jun 2025 14:02:36 +0000 (UTC)
+	 MIME-Version; b=oAypQPcwExbNWc3vhNE+Dw7EZbE8AfXmMdvUzqNZ2QnGysgIWJF5pxMV+mwX+f3PyacCINglQg9dM9JcajKehYgXmrJGAcREhTJ/fC93dYX6dA8eiaQeYQRUQ7QC5WhzD8knItUT7lK81ZqtFb4bz39UzJzbr77xVman+3ClCOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vnxbj6xX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A373AC4CEEB;
+	Mon,  2 Jun 2025 14:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872957;
-	bh=vPXc9xDxvjYXDkaZRGacFv53luI/X1pz+8qIq1Mz2Ck=;
+	s=korg; t=1748875652;
+	bh=WuNHufv3msuwLcX3jjhjIzS5GPQe56aadzczzgnaB80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7aFsHOBO8Ary/OiNC40fbfjy+IBmb72LgzY7dSQnqsIYE0XWbY0+eEBbxsSv/bzn
-	 akzzRuf1uXVr0pSDeWfuVYuHwiSvpJJavwIou2WVZzvEZ9Rcc04Jgm0z8+QEZquSJf
-	 4Tr5AzraT+F6EiRavUaxcZw67EHcT+1B35/U/+YI=
+	b=Vnxbj6xXfG7AJ7XDY40gOZSEQhSM+tn2j3UTV+kV74OfohhUw5Z/hfJCc4fc3D2Im
+	 WipZ98gICnX0Xb9KtcUEyO0H+NojtvfnecGMA428AShcMFuhwe/yenOQnfrXQyo6bX
+	 l/wfUCNvswsRb/ONfAVKMyTuMtiywmw6o0YEd5xA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 49/55] char: tpm: tpm-buf: Add sanity check fallback in read helpers
-Date: Mon,  2 Jun 2025 15:48:06 +0200
-Message-ID: <20250602134240.207828274@linuxfoundation.org>
+Subject: [PATCH 5.10 202/270] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+Date: Mon,  2 Jun 2025 15:48:07 +0200
+Message-ID: <20250602134315.444266363@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Valentin Caron <valentin.caron@foss.st.com>
 
-[ Upstream commit 32d495b384a2db7d23c2295e03e6b6edb1c0db8d ]
+[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
 
-Fix Smatch-detected issue:
+Cross case in pinctrl framework make impossible to an hogged pin and
+another, not hogged, used within the same device-tree node. For example
+with this simplified device-tree :
 
-drivers/char/tpm/tpm-buf.c:208 tpm_buf_read_u8() error:
-uninitialized symbol 'value'.
-drivers/char/tpm/tpm-buf.c:225 tpm_buf_read_u16() error:
-uninitialized symbol 'value'.
-drivers/char/tpm/tpm-buf.c:242 tpm_buf_read_u32() error:
-uninitialized symbol 'value'.
+  &pinctrl {
+    pinctrl_pin_1: pinctrl-pin-1 {
+      pins = "dummy-pinctrl-pin";
+    };
+  };
 
-Zero-initialize the return values in tpm_buf_read_u8(), tpm_buf_read_u16(),
-and tpm_buf_read_u32() to guard against uninitialized data in case of a
-boundary overflow.
+  &rtc {
+    pinctrl-names = "default"
+    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
 
-Add defensive initialization ensures the return values are always defined,
-preventing undefined behavior if the unexpected happens.
+    rtc_pin_1: rtc-pin-1 {
+      pins = "dummy-rtc-pin";
+    };
+  };
 
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+"pinctrl_pin_1" configuration is never set. This produces this path in
+the code:
+
+  really_probe()
+    pinctrl_bind_pins()
+    | devm_pinctrl_get()
+    |   pinctrl_get()
+    |     create_pinctrl()
+    |       pinctrl_dt_to_map()
+    |         // Hog pin create an abort for all pins of the node
+    |         ret = dt_to_map_one_config()
+    |         | /* Do not defer probing of hogs (circular loop) */
+    |         | if (np_pctldev == p->dev->of_node)
+    |         |   return -ENODEV;
+    |         if (ret)
+    |           goto err
+    |
+    call_driver_probe()
+      stm32_rtc_probe()
+        pinctrl_enable()
+          pinctrl_claim_hogs()
+            create_pinctrl()
+              for_each_maps(maps_node, i, map)
+                // Not hog pin is skipped
+                if (pctldev && strcmp(dev_name(pctldev->dev),
+                                      map->ctrl_dev_name))
+                  continue;
+
+At the first call of create_pinctrl() the hogged pin produces an abort to
+avoid a defer of hogged pins. All other pin configurations are trashed.
+
+At the second call, create_pinctrl is now called with pctldev parameter to
+get hogs, but in this context only hogs are set. And other pins are
+skipped.
+
+To handle this, do not produce an abort in the first call of
+create_pinctrl(). Classic pin configuration will be set in
+pinctrl_bind_pins() context. And the hogged pin configuration will be set
+in pinctrl_claim_hogs() context.
+
+Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm-buf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pinctrl/devicetree.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
-index e49a19fea3bdf..dc882fc9fa9ef 100644
---- a/drivers/char/tpm/tpm-buf.c
-+++ b/drivers/char/tpm/tpm-buf.c
-@@ -201,7 +201,7 @@ static void tpm_buf_read(struct tpm_buf *buf, off_t *offset, size_t count, void
-  */
- u8 tpm_buf_read_u8(struct tpm_buf *buf, off_t *offset)
- {
--	u8 value;
-+	u8 value = 0;
- 
- 	tpm_buf_read(buf, offset, sizeof(value), &value);
- 
-@@ -218,7 +218,7 @@ EXPORT_SYMBOL_GPL(tpm_buf_read_u8);
-  */
- u16 tpm_buf_read_u16(struct tpm_buf *buf, off_t *offset)
- {
--	u16 value;
-+	u16 value = 0;
- 
- 	tpm_buf_read(buf, offset, sizeof(value), &value);
- 
-@@ -235,7 +235,7 @@ EXPORT_SYMBOL_GPL(tpm_buf_read_u16);
-  */
- u32 tpm_buf_read_u32(struct tpm_buf *buf, off_t *offset)
- {
--	u32 value;
-+	u32 value = 0;
- 
- 	tpm_buf_read(buf, offset, sizeof(value), &value);
- 
+diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
+index 0220228c50404..d9279fc7be832 100644
+--- a/drivers/pinctrl/devicetree.c
++++ b/drivers/pinctrl/devicetree.c
+@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
+ 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
+ 		if (pctldev)
+ 			break;
+-		/* Do not defer probing of hogs (circular loop) */
++		/*
++		 * Do not defer probing of hogs (circular loop)
++		 *
++		 * Return 1 to let the caller catch the case.
++		 */
+ 		if (np_pctldev == p->dev->of_node) {
+ 			of_node_put(np_pctldev);
+-			return -ENODEV;
++			return 1;
+ 		}
+ 	}
+ 	of_node_put(np_pctldev);
+@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
+ 			ret = dt_to_map_one_config(p, pctldev, statename,
+ 						   np_config);
+ 			of_node_put(np_config);
++			if (ret == 1)
++				continue;
+ 			if (ret < 0)
+ 				goto err;
+ 		}
 -- 
 2.39.5
 
