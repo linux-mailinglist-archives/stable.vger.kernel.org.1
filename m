@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD2F9ACB731
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F7CACB880
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9822B7A9112
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 086299E30C9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AB12367A9;
-	Mon,  2 Jun 2025 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E1E221FDD;
+	Mon,  2 Jun 2025 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbV7We+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwK84/qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEF21A83E8;
-	Mon,  2 Jun 2025 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050912C3267;
+	Mon,  2 Jun 2025 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877518; cv=none; b=f+eKTP4yrVkuQMRV7DpeIMW98klr0F0gOY8MlUTopx4Wp+WBr/gA5NsTxFey5rStdIdrM4SQ5f3PBGUw8hdxp0pECShVQtu2Z/UnWCt+0e25aUwtTjPPZlXw+yPDXR5qo51oIzuICsolcqqw9Q0IU8R+PtDO7k+WcLLNdJPNgow=
+	t=1748876536; cv=none; b=n0hNlrJX7zfnKwg18wugUDsDKKYomWdUna6ZS4xhUpMymj0MOHQcnmF/g1d3cW52rq3Ml3HFO1LPING9uH0AwNKQiJGEXvC0iPS4KTNjUvMKuwei+mpmf8xqRFka3ia6y4qBpp7dN4KU4EzS4dwzv5OMkMMLuMcjvFojaInuuuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877518; c=relaxed/simple;
-	bh=xSuiGaZS3aaADsjdutROqyFuyP/Vr1cg2jXgAqE7cG8=;
+	s=arc-20240116; t=1748876536; c=relaxed/simple;
+	bh=y0vtApMwNeKPhI/hrKOrTyaYFCgFCUfrWwzTi2Ln2fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnAoagjuGLbbz6kvNmx3QN2qVIGBuX4Xq3Wu8EwWoi/W8of390ckjuD0HbaNK+hJ3ov4yY+84uGk7/lG/Ix/UXZKqMVoutLm6KRJrGmFfipzaLJvAb9vJqMoQYdp+5IC5H/j6af1MmknU/i1paIdSRWdNIlpPtcRlpk+MlMdm9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbV7We+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89291C4CEEB;
-	Mon,  2 Jun 2025 15:18:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OcfGe7RTDkgrHHH+toLgCtuevA5P92YYHZuQr3uQhRyCjvIEf4/xBSbEKlW9A+JWxmHReux4YVVG1iqsIl+rPRrCOl+YceRpZdWD2kwmRMhVlk+rtCxVbkq+Ht8o7qYet3myb6r42JovsHinXMUlZZPl1MR6t/GUIdgJzFA4L20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwK84/qe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754D3C4CEEB;
+	Mon,  2 Jun 2025 15:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877518;
-	bh=xSuiGaZS3aaADsjdutROqyFuyP/Vr1cg2jXgAqE7cG8=;
+	s=korg; t=1748876535;
+	bh=y0vtApMwNeKPhI/hrKOrTyaYFCgFCUfrWwzTi2Ln2fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WbV7We+ocJ09Rl1TeRbvfpk/Zr4FjoQUb+pFClDqNq/zd5r28018AaPDI9/lp3CYp
-	 KgvE0kKD+L/HqmO5ayDuC8HyBi+l+7+1OpnN34onJuqV2dL6g0M/fTpkZuAP0p8cSE
-	 4GBDS73j44pgozg4RJ5WBMuUUZdz5mrmiGhwWuYU=
+	b=rwK84/qepznqTXMPHd6aC/d9z+hl14g59LD9MvcDo/Fv6lMeG2EPrhqAq+zUQdQuV
+	 /7flr7ecd1Cqzpyo1Fe+6fgTWudJij9QcEih7Q5H2vt75fIIB7PIHjFKmUhkkZ577K
+	 SgSSDeZGkzCGwUKEki1EAXM60LoD5UPOqLGRNgR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 301/325] af_unix: Replace garbage collection algorithm.
+	Valtteri Koskivuori <vkoskiv@gmail.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 205/207] platform/x86: fujitsu-laptop: Support Lifebook S2110 hotkeys
 Date: Mon,  2 Jun 2025 15:49:37 +0200
-Message-ID: <20250602134332.147479461@linuxfoundation.org>
+Message-ID: <20250602134306.822923308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,501 +61,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Valtteri Koskivuori <vkoskiv@gmail.com>
 
-commit 4090fa373f0e763c43610853d2774b5979915959 upstream.
+[ Upstream commit a7e255ff9fe4d9b8b902023aaf5b7a673786bb50 ]
 
-If we find a dead SCC during iteration, we call unix_collect_skb()
-to splice all skb in the SCC to the global sk_buff_head, hitlist.
+The S2110 has an additional set of media playback control keys enabled
+by a hardware toggle button that switches the keys between "Application"
+and "Player" modes. Toggling "Player" mode just shifts the scancode of
+each hotkey up by 4.
 
-After iterating all SCC, we unlock unix_gc_lock and purge the queue.
+Add defines for new scancodes, and a keymap and dmi id for the S2110.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-15-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested on a Fujitsu Lifebook S2110.
+
+Signed-off-by: Valtteri Koskivuori <vkoskiv@gmail.com>
+Acked-by: Jonathan Woithe <jwoithe@just42.net>
+Link: https://lore.kernel.org/r/20250509184251.713003-1-vkoskiv@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |    8 -
- net/unix/af_unix.c    |   12 -
- net/unix/garbage.c    |  318 ++++++++++----------------------------------------
- 3 files changed, 64 insertions(+), 274 deletions(-)
+ drivers/platform/x86/fujitsu-laptop.c | 33 +++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -19,9 +19,6 @@ static inline struct unix_sock *unix_get
+diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
+index 80929380ec7e3..04ccfdd99e277 100644
+--- a/drivers/platform/x86/fujitsu-laptop.c
++++ b/drivers/platform/x86/fujitsu-laptop.c
+@@ -17,13 +17,13 @@
+ /*
+  * fujitsu-laptop.c - Fujitsu laptop support, providing access to additional
+  * features made available on a range of Fujitsu laptops including the
+- * P2xxx/P5xxx/S6xxx/S7xxx series.
++ * P2xxx/P5xxx/S2xxx/S6xxx/S7xxx series.
+  *
+  * This driver implements a vendor-specific backlight control interface for
+  * Fujitsu laptops and provides support for hotkeys present on certain Fujitsu
+  * laptops.
+  *
+- * This driver has been tested on a Fujitsu Lifebook S6410, S7020 and
++ * This driver has been tested on a Fujitsu Lifebook S2110, S6410, S7020 and
+  * P8010.  It should work on most P-series and S-series Lifebooks, but
+  * YMMV.
+  *
+@@ -102,7 +102,11 @@
+ #define KEY2_CODE			0x411
+ #define KEY3_CODE			0x412
+ #define KEY4_CODE			0x413
+-#define KEY5_CODE			0x420
++#define KEY5_CODE			0x414
++#define KEY6_CODE			0x415
++#define KEY7_CODE			0x416
++#define KEY8_CODE			0x417
++#define KEY9_CODE			0x420
  
- extern spinlock_t unix_gc_lock;
- extern unsigned int unix_tot_inflight;
--
--void unix_inflight(struct user_struct *user, struct file *fp);
--void unix_notinflight(struct user_struct *user, struct file *fp);
- void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver);
- void unix_del_edges(struct scm_fp_list *fpl);
- void unix_update_edges(struct unix_sock *receiver);
-@@ -85,12 +82,7 @@ struct unix_sock {
- 	struct sock		*peer;
- 	struct sock		*listener;
- 	struct unix_vertex	*vertex;
--	struct list_head	link;
--	unsigned long		inflight;
- 	spinlock_t		lock;
--	unsigned long		gc_flags;
--#define UNIX_GC_CANDIDATE	0
--#define UNIX_GC_MAYBE_CYCLE	1
- 	struct socket_wq	peer_wq;
- 	wait_queue_entry_t	peer_wake;
- 	struct scm_stat		scm_stat;
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -955,12 +955,10 @@ static struct sock *unix_create1(struct
- 	sk->sk_destruct		= unix_sock_destructor;
- 	u = unix_sk(sk);
- 	u->listener = NULL;
--	u->inflight = 0;
- 	u->vertex = NULL;
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
- 	spin_lock_init(&u->lock);
--	INIT_LIST_HEAD(&u->link);
- 	mutex_init(&u->iolock); /* single task reading lock */
- 	mutex_init(&u->bindlock); /* single task binding lock */
- 	init_waitqueue_head(&u->peer_wait);
-@@ -1744,8 +1742,6 @@ static inline bool too_many_unix_fds(str
+ /* Hotkey ringbuffer limits */
+ #define MAX_HOTKEY_RINGBUFFER_SIZE	100
+@@ -450,7 +454,7 @@ static const struct key_entry keymap_default[] = {
+ 	{ KE_KEY, KEY2_CODE,            { KEY_PROG2 } },
+ 	{ KE_KEY, KEY3_CODE,            { KEY_PROG3 } },
+ 	{ KE_KEY, KEY4_CODE,            { KEY_PROG4 } },
+-	{ KE_KEY, KEY5_CODE,            { KEY_RFKILL } },
++	{ KE_KEY, KEY9_CODE,            { KEY_RFKILL } },
+ 	/* Soft keys read from status flags */
+ 	{ KE_KEY, FLAG_RFKILL,          { KEY_RFKILL } },
+ 	{ KE_KEY, FLAG_TOUCHPAD_TOGGLE, { KEY_TOUCHPAD_TOGGLE } },
+@@ -474,6 +478,18 @@ static const struct key_entry keymap_p8010[] = {
+ 	{ KE_END, 0 }
+ };
  
- static int unix_attach_fds(struct scm_cookie *scm, struct sk_buff *skb)
- {
--	int i;
--
- 	if (too_many_unix_fds(current))
- 		return -ETOOMANYREFS;
- 
-@@ -1757,9 +1753,6 @@ static int unix_attach_fds(struct scm_co
- 	if (!UNIXCB(skb).fp)
- 		return -ENOMEM;
- 
--	for (i = scm->fp->count - 1; i >= 0; i--)
--		unix_inflight(scm->fp->user, scm->fp->fp[i]);
--
- 	if (unix_prepare_fpl(UNIXCB(skb).fp))
- 		return -ENOMEM;
- 
-@@ -1768,15 +1761,10 @@ static int unix_attach_fds(struct scm_co
- 
- static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
- {
--	int i;
--
- 	scm->fp = UNIXCB(skb).fp;
- 	UNIXCB(skb).fp = NULL;
- 
- 	unix_destroy_fpl(scm->fp);
--
--	for (i = scm->fp->count - 1; i >= 0; i--)
--		unix_notinflight(scm->fp->user, scm->fp->fp[i]);
- }
- 
- static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -322,6 +322,52 @@ static bool unix_vertex_dead(struct unix
- 	return true;
- }
- 
-+enum unix_recv_queue_lock_class {
-+	U_RECVQ_LOCK_NORMAL,
-+	U_RECVQ_LOCK_EMBRYO,
++static const struct key_entry keymap_s2110[] = {
++	{ KE_KEY, KEY1_CODE, { KEY_PROG1 } }, /* "A" */
++	{ KE_KEY, KEY2_CODE, { KEY_PROG2 } }, /* "B" */
++	{ KE_KEY, KEY3_CODE, { KEY_WWW } },   /* "Internet" */
++	{ KE_KEY, KEY4_CODE, { KEY_EMAIL } }, /* "E-mail" */
++	{ KE_KEY, KEY5_CODE, { KEY_STOPCD } },
++	{ KE_KEY, KEY6_CODE, { KEY_PLAYPAUSE } },
++	{ KE_KEY, KEY7_CODE, { KEY_PREVIOUSSONG } },
++	{ KE_KEY, KEY8_CODE, { KEY_NEXTSONG } },
++	{ KE_END, 0 }
 +};
 +
-+static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
-+{
-+	struct unix_vertex *vertex;
-+
-+	list_for_each_entry_reverse(vertex, scc, scc_entry) {
-+		struct sk_buff_head *queue;
-+		struct unix_edge *edge;
-+		struct unix_sock *u;
-+
-+		edge = list_first_entry(&vertex->edges, typeof(*edge), vertex_entry);
-+		u = edge->predecessor;
-+		queue = &u->sk.sk_receive_queue;
-+
-+		spin_lock(&queue->lock);
-+
-+		if (u->sk.sk_state == TCP_LISTEN) {
-+			struct sk_buff *skb;
-+
-+			skb_queue_walk(queue, skb) {
-+				struct sk_buff_head *embryo_queue = &skb->sk->sk_receive_queue;
-+
-+				/* listener -> embryo order, the inversion never happens. */
-+				spin_lock_nested(&embryo_queue->lock, U_RECVQ_LOCK_EMBRYO);
-+				skb_queue_splice_init(embryo_queue, hitlist);
-+				spin_unlock(&embryo_queue->lock);
-+			}
-+		} else {
-+			skb_queue_splice_init(queue, hitlist);
-+
-+#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-+			if (u->oob_skb) {
-+				kfree_skb(u->oob_skb);
-+				u->oob_skb = NULL;
-+			}
-+#endif
-+		}
-+
-+		spin_unlock(&queue->lock);
-+	}
-+}
-+
- static bool unix_scc_cyclic(struct list_head *scc)
- {
- 	struct unix_vertex *vertex;
-@@ -345,7 +391,8 @@ static bool unix_scc_cyclic(struct list_
- static LIST_HEAD(unix_visited_vertices);
- static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
+ static const struct key_entry *keymap = keymap_default;
  
--static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_index)
-+static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_index,
-+			    struct sk_buff_head *hitlist)
- {
- 	LIST_HEAD(vertex_stack);
- 	struct unix_edge *edge;
-@@ -430,7 +477,9 @@ prev_vertex:
- 				scc_dead = unix_vertex_dead(vertex);
- 		}
+ static int fujitsu_laptop_dmi_keymap_override(const struct dmi_system_id *id)
+@@ -511,6 +527,15 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
+ 		},
+ 		.driver_data = (void *)keymap_p8010
+ 	},
++	{
++		.callback = fujitsu_laptop_dmi_keymap_override,
++		.ident = "Fujitsu LifeBook S2110",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU SIEMENS"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK S2110"),
++		},
++		.driver_data = (void *)keymap_s2110
++	},
+ 	{}
+ };
  
--		if (!unix_graph_maybe_cyclic)
-+		if (scc_dead)
-+			unix_collect_skb(&scc, hitlist);
-+		else if (!unix_graph_maybe_cyclic)
- 			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
- 
- 		list_del(&scc);
-@@ -441,7 +490,7 @@ prev_vertex:
- 		goto prev_vertex;
- }
- 
--static void unix_walk_scc(void)
-+static void unix_walk_scc(struct sk_buff_head *hitlist)
- {
- 	unsigned long last_index = UNIX_VERTEX_INDEX_START;
- 
-@@ -454,7 +503,7 @@ static void unix_walk_scc(void)
- 		struct unix_vertex *vertex;
- 
- 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
--		__unix_walk_scc(vertex, &last_index);
-+		__unix_walk_scc(vertex, &last_index, hitlist);
- 	}
- 
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
-@@ -463,7 +512,7 @@ static void unix_walk_scc(void)
- 	unix_graph_grouped = true;
- }
- 
--static void unix_walk_scc_fast(void)
-+static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- {
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
-@@ -480,279 +529,40 @@ static void unix_walk_scc_fast(void)
- 				scc_dead = unix_vertex_dead(vertex);
- 		}
- 
-+		if (scc_dead)
-+			unix_collect_skb(&scc, hitlist);
-+
- 		list_del(&scc);
- 	}
- 
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- }
- 
--static LIST_HEAD(gc_candidates);
--static LIST_HEAD(gc_inflight_list);
--
--/* Keep the number of times in flight count for the file
-- * descriptor if it is for an AF_UNIX socket.
-- */
--void unix_inflight(struct user_struct *user, struct file *filp)
--{
--	struct unix_sock *u = unix_get_socket(filp);
--
--	spin_lock(&unix_gc_lock);
--
--	if (u) {
--		if (!u->inflight) {
--			WARN_ON_ONCE(!list_empty(&u->link));
--			list_add_tail(&u->link, &gc_inflight_list);
--		} else {
--			WARN_ON_ONCE(list_empty(&u->link));
--		}
--		u->inflight++;
--	}
--
--	spin_unlock(&unix_gc_lock);
--}
--
--void unix_notinflight(struct user_struct *user, struct file *filp)
--{
--	struct unix_sock *u = unix_get_socket(filp);
--
--	spin_lock(&unix_gc_lock);
--
--	if (u) {
--		WARN_ON_ONCE(!u->inflight);
--		WARN_ON_ONCE(list_empty(&u->link));
--
--		u->inflight--;
--		if (!u->inflight)
--			list_del_init(&u->link);
--	}
--
--	spin_unlock(&unix_gc_lock);
--}
--
--static void scan_inflight(struct sock *x, void (*func)(struct unix_sock *),
--			  struct sk_buff_head *hitlist)
--{
--	struct sk_buff *skb;
--	struct sk_buff *next;
--
--	spin_lock(&x->sk_receive_queue.lock);
--	skb_queue_walk_safe(&x->sk_receive_queue, skb, next) {
--		/* Do we have file descriptors ? */
--		if (UNIXCB(skb).fp) {
--			bool hit = false;
--			/* Process the descriptors of this socket */
--			int nfd = UNIXCB(skb).fp->count;
--			struct file **fp = UNIXCB(skb).fp->fp;
--
--			while (nfd--) {
--				/* Get the socket the fd matches if it indeed does so */
--				struct unix_sock *u = unix_get_socket(*fp++);
--
--				/* Ignore non-candidates, they could have been added
--				 * to the queues after starting the garbage collection
--				 */
--				if (u && test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
--					hit = true;
--
--					func(u);
--				}
--			}
--			if (hit && hitlist != NULL) {
--				__skb_unlink(skb, &x->sk_receive_queue);
--				__skb_queue_tail(hitlist, skb);
--			}
--		}
--	}
--	spin_unlock(&x->sk_receive_queue.lock);
--}
--
--static void scan_children(struct sock *x, void (*func)(struct unix_sock *),
--			  struct sk_buff_head *hitlist)
--{
--	if (x->sk_state != TCP_LISTEN) {
--		scan_inflight(x, func, hitlist);
--	} else {
--		struct sk_buff *skb;
--		struct sk_buff *next;
--		struct unix_sock *u;
--		LIST_HEAD(embryos);
--
--		/* For a listening socket collect the queued embryos
--		 * and perform a scan on them as well.
--		 */
--		spin_lock(&x->sk_receive_queue.lock);
--		skb_queue_walk_safe(&x->sk_receive_queue, skb, next) {
--			u = unix_sk(skb->sk);
--
--			/* An embryo cannot be in-flight, so it's safe
--			 * to use the list link.
--			 */
--			WARN_ON_ONCE(!list_empty(&u->link));
--			list_add_tail(&u->link, &embryos);
--		}
--		spin_unlock(&x->sk_receive_queue.lock);
--
--		while (!list_empty(&embryos)) {
--			u = list_entry(embryos.next, struct unix_sock, link);
--			scan_inflight(&u->sk, func, hitlist);
--			list_del_init(&u->link);
--		}
--	}
--}
--
--static void dec_inflight(struct unix_sock *usk)
--{
--	usk->inflight--;
--}
--
--static void inc_inflight(struct unix_sock *usk)
--{
--	usk->inflight++;
--}
--
--static void inc_inflight_move_tail(struct unix_sock *u)
--{
--	u->inflight++;
--
--	/* If this still might be part of a cycle, move it to the end
--	 * of the list, so that it's checked even if it was already
--	 * passed over
--	 */
--	if (test_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags))
--		list_move_tail(&u->link, &gc_candidates);
--}
--
- static bool gc_in_progress;
- 
- static void __unix_gc(struct work_struct *work)
- {
- 	struct sk_buff_head hitlist;
--	struct unix_sock *u, *next;
--	LIST_HEAD(not_cycle_list);
--	struct list_head cursor;
- 
- 	spin_lock(&unix_gc_lock);
- 
--	if (!unix_graph_maybe_cyclic)
-+	if (!unix_graph_maybe_cyclic) {
-+		spin_unlock(&unix_gc_lock);
- 		goto skip_gc;
--
--	if (unix_graph_grouped)
--		unix_walk_scc_fast();
--	else
--		unix_walk_scc();
--
--	/* First, select candidates for garbage collection.  Only
--	 * in-flight sockets are considered, and from those only ones
--	 * which don't have any external reference.
--	 *
--	 * Holding unix_gc_lock will protect these candidates from
--	 * being detached, and hence from gaining an external
--	 * reference.  Since there are no possible receivers, all
--	 * buffers currently on the candidates' queues stay there
--	 * during the garbage collection.
--	 *
--	 * We also know that no new candidate can be added onto the
--	 * receive queues.  Other, non candidate sockets _can_ be
--	 * added to queue, so we must make sure only to touch
--	 * candidates.
--	 *
--	 * Embryos, though never candidates themselves, affect which
--	 * candidates are reachable by the garbage collector.  Before
--	 * being added to a listener's queue, an embryo may already
--	 * receive data carrying SCM_RIGHTS, potentially making the
--	 * passed socket a candidate that is not yet reachable by the
--	 * collector.  It becomes reachable once the embryo is
--	 * enqueued.  Therefore, we must ensure that no SCM-laden
--	 * embryo appears in a (candidate) listener's queue between
--	 * consecutive scan_children() calls.
--	 */
--	list_for_each_entry_safe(u, next, &gc_inflight_list, link) {
--		struct sock *sk = &u->sk;
--		long total_refs;
--
--		total_refs = file_count(sk->sk_socket->file);
--
--		WARN_ON_ONCE(!u->inflight);
--		WARN_ON_ONCE(total_refs < u->inflight);
--		if (total_refs == u->inflight) {
--			list_move_tail(&u->link, &gc_candidates);
--			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
--			__set_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
--
--			if (sk->sk_state == TCP_LISTEN) {
--				unix_state_lock_nested(sk, U_LOCK_GC_LISTENER);
--				unix_state_unlock(sk);
--			}
--		}
--	}
--
--	/* Now remove all internal in-flight reference to children of
--	 * the candidates.
--	 */
--	list_for_each_entry(u, &gc_candidates, link)
--		scan_children(&u->sk, dec_inflight, NULL);
--
--	/* Restore the references for children of all candidates,
--	 * which have remaining references.  Do this recursively, so
--	 * only those remain, which form cyclic references.
--	 *
--	 * Use a "cursor" link, to make the list traversal safe, even
--	 * though elements might be moved about.
--	 */
--	list_add(&cursor, &gc_candidates);
--	while (cursor.next != &gc_candidates) {
--		u = list_entry(cursor.next, struct unix_sock, link);
--
--		/* Move cursor to after the current position. */
--		list_move(&cursor, &u->link);
--
--		if (u->inflight) {
--			list_move_tail(&u->link, &not_cycle_list);
--			__clear_bit(UNIX_GC_MAYBE_CYCLE, &u->gc_flags);
--			scan_children(&u->sk, inc_inflight_move_tail, NULL);
--		}
- 	}
--	list_del(&cursor);
- 
--	/* Now gc_candidates contains only garbage.  Restore original
--	 * inflight counters for these as well, and remove the skbuffs
--	 * which are creating the cycle(s).
--	 */
--	skb_queue_head_init(&hitlist);
--	list_for_each_entry(u, &gc_candidates, link) {
--		scan_children(&u->sk, inc_inflight, &hitlist);
--
--#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--		if (u->oob_skb) {
--			kfree_skb(u->oob_skb);
--			u->oob_skb = NULL;
--		}
--#endif
--	}
-+	__skb_queue_head_init(&hitlist);
- 
--	/* not_cycle_list contains those sockets which do not make up a
--	 * cycle.  Restore these to the inflight list.
--	 */
--	while (!list_empty(&not_cycle_list)) {
--		u = list_entry(not_cycle_list.next, struct unix_sock, link);
--		__clear_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
--		list_move_tail(&u->link, &gc_inflight_list);
--	}
-+	if (unix_graph_grouped)
-+		unix_walk_scc_fast(&hitlist);
-+	else
-+		unix_walk_scc(&hitlist);
- 
- 	spin_unlock(&unix_gc_lock);
- 
--	/* Here we are. Hitlist is filled. Die. */
- 	__skb_queue_purge(&hitlist);
--
--	spin_lock(&unix_gc_lock);
--
--	/* All candidates should have been detached by now. */
--	WARN_ON_ONCE(!list_empty(&gc_candidates));
- skip_gc:
--	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
- 	WRITE_ONCE(gc_in_progress, false);
--
--	spin_unlock(&unix_gc_lock);
- }
- 
- static DECLARE_WORK(unix_gc_work, __unix_gc);
+-- 
+2.39.5
+
 
 
 
