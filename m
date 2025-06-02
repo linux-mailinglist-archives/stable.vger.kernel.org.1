@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-150481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C3EACB683
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF218ACB5A1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9F437A7075
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58FFA21DB3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A9E22A801;
-	Mon,  2 Jun 2025 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97D7224882;
+	Mon,  2 Jun 2025 14:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTVqmIdu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xop0m7U3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7547C21CA07;
-	Mon,  2 Jun 2025 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7560922425B;
+	Mon,  2 Jun 2025 14:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877263; cv=none; b=AQily8Ofo/g7m84sRHUy0J/aLwmibzqUoddS3XWwrg5YzRXElk4VKjS/pEtgc58Lxis0dKl8UxPz6fZo32hJw7xP991k2R7p63MGXFwlQawzrxiiOjotfhmyQxOWrGErf60Bgc05DnGtRaokCz5JStV1OpkQ0/ob4uv470XP0R0=
+	t=1748875693; cv=none; b=AYi4Nwk4M2teQlmZvEJ0zIS30EtlM3lDw2/TaADK2XGh84p9nDlDKxYzLkgGAeQoD3lgMPLXx1Cvh+hzuyRovlabXWXVQFTrFaVPzGFb/zvfcQnsxMbMduHEQDwXtHSQcslelddBr18Hwu0OyyhK8Vetk1wp2wz3ywu1Vrqd07E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877263; c=relaxed/simple;
-	bh=eDW3cKcM2Ps7fk/8kufLYGfPUsmgX2MOVGyHwTwmHXo=;
+	s=arc-20240116; t=1748875693; c=relaxed/simple;
+	bh=EBQPP0iKave2d/rwo+OL0su0EKRbeUKV4sLyzKEgurc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CS/yxfd5hs99lFdXds94+/qrCdyIkunQtoV05hkn6WmVoNBSqTFJhvHuLxxjtGjgKmKTzvINl4Md9Mf0l4AKrjup3z4NmR+WRLP1MMb8Z4WKXNoJaCd+EC2DFMWZMnj7+71ulrbYKT7Vke/OPnsNN3tRj5thF6BSPWpF8jCxOxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTVqmIdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9036C4CEEB;
-	Mon,  2 Jun 2025 15:14:22 +0000 (UTC)
+	 MIME-Version; b=sCYGHCKETMGxpHrJQYLCnlIXevjX9A34uuDAOWWTK/2y2OvjAr5QSB8BQ9qjy0kx7ZThTeb8/GSBlaaFeqQHagiPXdx5db5VPZYVPtxOMmVpOfPCQXGIuaEwBhZ+NljLt4lrsANB0GC11kcqMNF42rmXYbMD1V/otTnc1qaMx4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xop0m7U3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C2C4CEEB;
+	Mon,  2 Jun 2025 14:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877263;
-	bh=eDW3cKcM2Ps7fk/8kufLYGfPUsmgX2MOVGyHwTwmHXo=;
+	s=korg; t=1748875693;
+	bh=EBQPP0iKave2d/rwo+OL0su0EKRbeUKV4sLyzKEgurc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTVqmIdu5WE4VB5DA8APa/KnXO/VxPSTWaE4et0l9ikjKa+MbaJC6UPc/HH5/HNCG
-	 KiopgyK5a9Ap7mhnfWtbncFZiUjQI+QUvY6ZxOLt6gA0gvOX6Ad98lrSbbZd1NDpHm
-	 lCp1y1gpcQCtpIrHkkDCWsLWFLYULB3oIqPiE6Sk=
+	b=xop0m7U3aRddmVbgYtSHgA53oMsTxMLWMOyimGk0AgN9xDNJ88ZNwVmWVgyNpZYJ0
+	 /1t3asC+g1I4W8GH72QZFFQRFuA6BZiNmh+dKd8lRc80f/Sx01oa7pdm8fxkhMbouk
+	 xhWIuvidbBfd1Wwjg7DIQYd+Apc5SxaVq9rsiIek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/325] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
+Subject: [PATCH 5.10 214/270] vxlan: Annotate FDB data races
 Date: Mon,  2 Jun 2025 15:48:19 +0200
-Message-ID: <20250602134328.845781095@linuxfoundation.org>
+Message-ID: <20250602134315.927055798@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +65,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
+[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
 
-HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
-workarounds that were applied to another HP Spectre x360 models;
-it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
-seup.
+The 'used' and 'updated' fields in the FDB entry structure can be
+accessed concurrently by multiple threads, leading to reports such as
+[1]. Can be reproduced using [2].
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
-Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Suppress these reports by annotating these accesses using
+READ_ONCE() / WRITE_ONCE().
+
+[1]
+BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+
+write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
+ vxlan_xmit+0xb29/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
+ vxlan_xmit+0xadf/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+
+[2]
+ #!/bin/bash
+
+ set +H
+ echo whitelist > /sys/kernel/debug/kcsan
+ echo !vxlan_xmit > /sys/kernel/debug/kcsan
+
+ ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
+ taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+ taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2f67cd955d651..682ae18e211c5 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6787,6 +6787,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
- 	}
- }
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index ec67d2eb05ecd..7d7aa7d768804 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -333,9 +333,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 			be32_to_cpu(fdb->vni)))
+ 		goto nla_put_failure;
  
-+/* GPIO1 = amplifier on/off */
-+static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
-+					     const struct hda_fixup *fix,
-+					     int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const hda_nid_t conn[] = { 0x02 };
-+	static const struct hda_pintbl pincfgs[] = {
-+		{ 0x14, 0x90170110 },  /* front/high speakers */
-+		{ 0x17, 0x90170130 },  /* back/bass speakers */
-+		{ }
-+	};
-+
-+	// enable mute led
-+	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		/* needed for amp of back speakers */
-+		spec->gpio_mask |= 0x01;
-+		spec->gpio_dir |= 0x01;
-+		snd_hda_apply_pincfgs(codec, pincfgs);
-+		/* share DAC to have unified volume control */
-+		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
-+		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
-+		break;
-+	case HDA_FIXUP_ACT_INIT:
-+		/* need to toggle GPIO to enable the amp of back speakers */
-+		alc_update_gpio_data(codec, 0x01, true);
-+		msleep(100);
-+		alc_update_gpio_data(codec, 0x01, false);
-+		break;
-+	}
-+}
-+
- static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
- 					  const struct hda_fixup *fix, int action)
- {
-@@ -7326,6 +7361,7 @@ enum {
- 	ALC280_FIXUP_HP_9480M,
- 	ALC245_FIXUP_HP_X360_AMP,
- 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
-+	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
- 	ALC285_FIXUP_HP_ENVY_X360,
- 	ALC288_FIXUP_DELL_HEADSET_MODE,
- 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -9322,6 +9358,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_spectre_x360_eb1
- 	},
-+	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc285_fixup_hp_spectre_x360_df1
-+	},
- 	[ALC285_FIXUP_HP_ENVY_X360] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_envy_x360,
-@@ -9882,6 +9922,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-+	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
- 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
-@@ -10591,6 +10632,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
- 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
- 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
-+	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
- 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
- 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
- 	{.id = ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN, .name = "alc287-yoga9-bass-spk-pin"},
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
+ 
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+@@ -541,8 +541,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
+ 
+ 	f = __vxlan_find_mac(vxlan, mac, vni);
+-	if (f && f->used != jiffies)
+-		f->used = jiffies;
++	if (f && READ_ONCE(f->used) != jiffies)
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	return f;
+ }
+@@ -1072,12 +1072,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+ 		if (f->state != state) {
+ 			f->state = state;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 		if (f->flags != fdb_flags) {
+ 			f->flags = fdb_flags;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 	}
+@@ -1111,7 +1111,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	}
+ 
+ 	if (ndm_flags & NTF_USE)
+-		f->used = jiffies;
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1524,7 +1524,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 
+ 		rdst->remote_ip = *src_ip;
+-		f->updated = jiffies;
++		WRITE_ONCE(f->updated, jiffies);
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
+ 	} else {
+ 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+@@ -2999,7 +2999,7 @@ static void vxlan_cleanup(struct timer_list *t)
+ 			if (f->flags & NTF_EXT_LEARNED)
+ 				continue;
+ 
+-			timeout = f->used + vxlan->cfg.age_interval * HZ;
++			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
+ 			if (time_before_eq(timeout, jiffies)) {
+ 				netdev_dbg(vxlan->dev,
+ 					   "garbage collect %pM\n",
 -- 
 2.39.5
 
