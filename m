@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-149456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFD5ACB317
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00ED9ACB3AE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B93487DFD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66AF3486642
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6706823717C;
-	Mon,  2 Jun 2025 14:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A70A2309B3;
+	Mon,  2 Jun 2025 14:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqtULLU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMRIjc5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24945238176;
-	Mon,  2 Jun 2025 14:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C49230981;
+	Mon,  2 Jun 2025 14:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874018; cv=none; b=QDhCZiJZJccm+mtVARpvYlc/HrCc7yQ6t+OIeiFNFin6nKzEq2HdIkdvDVAS7IS5sGBOLWAR3U3Skwjqrel0CaWnHUzNSX9nbSKE4Ya9CZOxJ6Tb3Ey7xvOmcH/uxR7l5DI9+PWjmRxoL13r/6t6NYTTZcTa+Teru5SRsEdf9xU=
+	t=1748874556; cv=none; b=gy2rGWhlQoxG6hM/AZZB7T/9Ehd/tdBEGh/ZnhqemUgL96j6ZzL5lYjVTY5E6UEvlkvX6CHPJn1DAHSn19jMrRMce/7gc6gzsIcOVhElnGGSWokxx892yP7OzF2hH4W0Kt4mGdQ92+yM5e05Ue6nX8K1nInNcfoy7CtxHyUVXeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874018; c=relaxed/simple;
-	bh=gI4SSs3iY7poogC3AVSQVpVljpdrEhDBhTEsSQb2P0o=;
+	s=arc-20240116; t=1748874556; c=relaxed/simple;
+	bh=qzlZ8KlSrcevxiBjlcK4pd1tZhikZOZF/oi5no+O1Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtBJF/FO/BS7jabDQSV7gh4bpMiDcFXSd/AgWWFzWyJXSNoWec++yfNPdC5H3tFIeth/rn0NCjIVHTbvlnIqBo3z933aC7xugYzgYoNKaK9AyMRxsiAq4jSEDltij55D05HMoEj/IjG6Z8WwF2MNX0GMGie6Ny7Z/BC70oK+2CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqtULLU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989E4C4CEEB;
-	Mon,  2 Jun 2025 14:20:17 +0000 (UTC)
+	 MIME-Version; b=JMiw1MxLbao3Ec073Nb+nNfRCNeue0awNoVz/eBtPDgoekuukyh/0DkRN0qewcb4EC0Hbvdv/mzerjHzJlRO2b8Xg4HmkJ7vZSSEZ3phcu8hF3IPiI0JzyOg2Zf1lo846+wQaivLBDRBhVJXATvExn5Vn9Xwf5yJD6ph0fj3kFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMRIjc5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F77C4CEEB;
+	Mon,  2 Jun 2025 14:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874018;
-	bh=gI4SSs3iY7poogC3AVSQVpVljpdrEhDBhTEsSQb2P0o=;
+	s=korg; t=1748874556;
+	bh=qzlZ8KlSrcevxiBjlcK4pd1tZhikZOZF/oi5no+O1Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqtULLU4XYZN6ug9KfiKws5yLHK3S8W2FD3KHeki2bBVssC1mbaXVc/vMXZL/DnNb
-	 C6EezbUXEKjiZifx8np2wV9NKCevzGjp2xSsvqQhoPL96UEtGdJnjxzO/iIBCVlewH
-	 K3gZ9aPEewsFbzt37vyW17NzWtzstwo/T69WYQfs=
+	b=oMRIjc5l5UJzig6veXZhLPXVBAtqKb8uuckjhWb/4J3csakiDzw9PXBJL/aA9NOsk
+	 deNJ+spANp5+1DAJBT/OfDuucBmm5nLWobFcpCuglu9Ye/1bL46g25igTwP04UcdB5
+	 xkg/mmzHmnKPnvAULTkDF/1gQR6caIgESwueVXc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Christian Brauner <brauner@kernel.org>,
 	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 329/444] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
-Date: Mon,  2 Jun 2025 15:46:33 +0200
-Message-ID: <20250602134354.290273924@linuxfoundation.org>
+Subject: [PATCH 5.4 061/204] do_umount(): add missing barrier before refcount checks in sync case
+Date: Mon,  2 Jun 2025 15:46:34 +0200
+Message-ID: <20250602134258.077341688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
+[ Upstream commit 65781e19dcfcb4aed1167d87a3ffcc2a0c071d47 ]
 
-... or we risk stealing final mntput from sync umount - raising mnt_count
-after umount(2) has verified that victim is not busy, but before it
-has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
-that it's safe to quietly undo mnt_count increment and leaves dropping
-the reference to caller, where it'll be a full-blown mntput().
+do_umount() analogue of the race fixed in 119e1ef80ecf "fix
+__legitimize_mnt()/mntput() race".  Here we want to make sure that
+if __legitimize_mnt() doesn't notice our lock_mount_hash(), we will
+notice their refcount increment.  Harder to hit than mntput_no_expire()
+one, fortunately, and consequences are milder (sync umount acting
+like umount -l on a rare race with RCU pathwalk hitting at just the
+wrong time instead of use-after-free galore mntput_no_expire()
+counterpart used to be hit).  Still a bug...
 
-Check under mount_lock is needed; leaving the current one done before
-taking that makes no sense - it's nowhere near common enough to bother
-with.
-
+Fixes: 48a066e72d97 ("RCU'd vfsmounts")
 Reviewed-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/namespace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/namespace.c b/fs/namespace.c
-index 450f4198b8cdd..ef3b2ae2957ec 100644
+index 281f08eaba5b9..809ec3acb147c 100644
 --- a/fs/namespace.c
 +++ b/fs/namespace.c
-@@ -636,12 +636,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 	smp_mb();		// see mntput_no_expire() and do_umount()
+@@ -569,7 +569,7 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 		return 0;
+ 	mnt = real_mount(bastard);
+ 	mnt_add_count(mnt, 1);
+-	smp_mb();			// see mntput_no_expire()
++	smp_mb();		// see mntput_no_expire() and do_umount()
  	if (likely(!read_seqretry(&mount_lock, seq)))
  		return 0;
--	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
--		mnt_add_count(mnt, -1);
--		return 1;
--	}
- 	lock_mount_hash();
--	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
-+	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
- 		mnt_add_count(mnt, -1);
- 		unlock_mount_hash();
- 		return 1;
+ 	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+@@ -1588,6 +1588,7 @@ static int do_umount(struct mount *mnt, int flags)
+ 			umount_tree(mnt, UMOUNT_PROPAGATE);
+ 		retval = 0;
+ 	} else {
++		smp_mb(); // paired with __legitimize_mnt()
+ 		shrink_submounts(mnt);
+ 		retval = -EBUSY;
+ 		if (!propagate_mount_busy(mnt, 2)) {
 -- 
 2.39.5
 
