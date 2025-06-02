@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4795ACB054
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7761FACAFA6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D754482489
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00EE37A3501
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027C0224244;
-	Mon,  2 Jun 2025 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58029221F11;
+	Mon,  2 Jun 2025 13:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kArRzM83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xr7bex5H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF271223DEF;
-	Mon,  2 Jun 2025 14:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F9C221703;
+	Mon,  2 Jun 2025 13:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872873; cv=none; b=bYCvQnvCSG8kawDAPPnkrqBk+78ii+BsYz73J/wYzhSkMPb32SDJtorVqpe2uBKzIWPW1uSJF9toM5dL7p0P/jzkGGCfaQuz9KYDYZHI6mW+WYN2q1zsxuvVDQzhEx1x90yb4peniF9Air0s3o3nT0rpczqOG9ymqRLgjvKjN54=
+	t=1748872190; cv=none; b=Av5StFxqCa/HScTdBEn2ubHvk0ZDawsRdKmrzHRIH3fPNgyuioaete29dY7OSNcFx6iRthWpPqT/BtVg1MMOHqNYnYchVUE5KSxKJYCmL3SqUD383gEYqKxJSp5sa3Bf+hwcM5j3WPyK7tAR0PoHm6DT8aWC1vzi/n8M80xRBik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872873; c=relaxed/simple;
-	bh=W+jtXM0uDiHjILujSeFQds8dHndSWX4EAcSt01IacSY=;
+	s=arc-20240116; t=1748872190; c=relaxed/simple;
+	bh=hCNY5Te4SZwxvY1LNSRiYHJei9XCZ4PUfq6qXR8/UHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwaJU8zC7h0+y9KbO2+wUfDZ2wE8aYALlCgSF6afdkmplFtHx3SMc4RcQcRQ5PXqy0f+6/SKlYbkdEbeWwrP15bLKcykV75T7VrJbz9VCgIFqqZFbpO/5TiJ2MHZb9L2InJVr6eAG3fVfIlMUvoF3zc30c9XE9A88Fza1sFasj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kArRzM83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAE1C4CEEB;
-	Mon,  2 Jun 2025 14:01:12 +0000 (UTC)
+	 MIME-Version; b=sB8JekxFuioLYMrqsQRWLdL1Dd6imbAAFczbTVDJDzZMkqp6zZGTvOTpdXxZ0uwWi6naR9johfmjJPLkpZQeXtP+Bv+TVHKzZJQiEhicJI13E4pQ2fB2e/cnSo2aWR6NCOSNiL+CiMzKmhfA8xV+ckOp4EK0FdOG3CUY44Q/6uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xr7bex5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE23C4CEEB;
+	Mon,  2 Jun 2025 13:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872873;
-	bh=W+jtXM0uDiHjILujSeFQds8dHndSWX4EAcSt01IacSY=;
+	s=korg; t=1748872190;
+	bh=hCNY5Te4SZwxvY1LNSRiYHJei9XCZ4PUfq6qXR8/UHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kArRzM83WyUT1yvqpzntWmoQsIoO/CwDecPahEdQ6e/MwTeDKtq8EWwfCkGFRquip
-	 sBEAz+IZDkUnKmIehU0jeryVcHFI+/IEMJP8c3/mxA48CoIFZOWpeBWN9bE+29ebmU
-	 K/GOSSLuV3s9u2KXW/iKXiXyol7oVEagVYmRZzMU=
+	b=xr7bex5H9/UI4g40jlkamTYM07pIsyS+dHfTKuQtMGi4SW9lEW6NzZUHIfaw4dF0k
+	 TkXIx3csm6AZ/5daz1dT1FEWOF10JnMJixRvluxedAHySM42dQLoUP/AFX84yWSiBL
+	 zZamnOn/sxHwYBlUt+5RGbOrYsxJ7rWl7/ldIH5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Neha Malcom Francis <n-francis@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.12 22/55] arm64: dts: ti: k3-am68-sk: Fix regulator hierarchy
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.15 47/49] coredump: hand a pidfd to the usermode coredump helper
 Date: Mon,  2 Jun 2025 15:47:39 +0200
-Message-ID: <20250602134239.150019619@linuxfoundation.org>
+Message-ID: <20250602134239.786689812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 7edf0a4d3bb7f5cd84f172b76c380c4259bb4ef8 upstream.
+commit b5325b2a270fcaf7b2a9a0f23d422ca8a5a8bdea upstream.
 
-Update the vin-supply of the TLV71033 regulator from LM5141 (vsys_3v3)
-to LM61460 (vsys_5v0) to match the schematics. Add a fixed regulator
-node for the LM61460 5V supply to support this change.
+Give userspace a way to instruct the kernel to install a pidfd into the
+usermode helper process. This makes coredump handling a lot more
+reliable for userspace. In parallel with this commit we already have
+systemd adding support for this in [1].
 
-AM68-SK schematics: https://www.ti.com/lit/zip/sprr463
+We create a pidfs file for the coredumping process when we process the
+corename pattern. When the usermode helper process is forked we then
+install the pidfs file as file descriptor three into the usermode
+helpers file descriptor table so it's available to the exec'd program.
 
-Fixes: a266c180b398 ("arm64: dts: ti: k3-am68-sk: Add support for AM68 SK base board")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250415111328.3847502-3-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Since usermode helpers are either children of the system_unbound_wq
+workqueue or kthreadd we know that the file descriptor table is empty
+and can thus always use three as the file descriptor number.
+
+Note, that we'll install a pidfd for the thread-group leader even if a
+subthread is calling do_coredump(). We know that task linkage hasn't
+been removed due to delay_group_leader() and even if this @current isn't
+the actual thread-group leader we know that the thread-group leader
+cannot be reaped until @current has exited.
+
+Link: https://github.com/systemd/systemd/pull/37125 [1]
+Link: https://lore.kernel.org/20250414-work-coredump-v2-3-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/coredump.c            |   56 +++++++++++++++++++++++++++++++++++++++++++----
+ include/linux/coredump.h |    1 
+ 2 files changed, 53 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am68-sk-base-board.dts
-@@ -44,6 +44,17 @@
- 		regulator-boot-on;
- 	};
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -43,6 +43,8 @@
+ #include <linux/timekeeping.h>
+ #include <linux/sysctl.h>
+ #include <linux/elf.h>
++#include <linux/pidfs.h>
++#include <uapi/linux/pidfd.h>
  
-+	vsys_5v0: regulator-vsys5v0 {
-+		/* Output of LM61460 */
-+		compatible = "regulator-fixed";
-+		regulator-name = "vsys_5v0";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vusb_main>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
+ #include <linux/uaccess.h>
+ #include <asm/mmu_context.h>
+@@ -60,6 +62,12 @@ static void free_vma_snapshot(struct cor
+ #define CORE_FILE_NOTE_SIZE_DEFAULT (4*1024*1024)
+ /* Define a reasonable max cap */
+ #define CORE_FILE_NOTE_SIZE_MAX (16*1024*1024)
++/*
++ * File descriptor number for the pidfd for the thread-group leader of
++ * the coredumping task installed into the usermode helper's file
++ * descriptor table.
++ */
++#define COREDUMP_PIDFD_NUMBER 3
+ 
+ static int core_uses_pid;
+ static unsigned int core_pipe_limit;
+@@ -339,6 +347,27 @@ static int format_corename(struct core_n
+ 			case 'C':
+ 				err = cn_printf(cn, "%d", cprm->cpu);
+ 				break;
++			/* pidfd number */
++			case 'F': {
++				/*
++				 * Installing a pidfd only makes sense if
++				 * we actually spawn a usermode helper.
++				 */
++				if (!ispipe)
++					break;
 +
- 	vsys_3v3: regulator-vsys3v3 {
- 		/* Output of LM5141 */
- 		compatible = "regulator-fixed";
-@@ -76,7 +87,7 @@
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <3300000>;
- 		regulator-boot-on;
--		vin-supply = <&vsys_3v3>;
-+		vin-supply = <&vsys_5v0>;
- 		gpios = <&main_gpio0 49 GPIO_ACTIVE_HIGH>;
- 		states = <1800000 0x0>,
- 			 <3300000 0x1>;
++				/*
++				 * Note that we'll install a pidfd for the
++				 * thread-group leader. We know that task
++				 * linkage hasn't been removed yet and even if
++				 * this @current isn't the actual thread-group
++				 * leader we know that the thread-group leader
++				 * cannot be reaped until @current has exited.
++				 */
++				cprm->pid = task_tgid(current);
++				err = cn_printf(cn, "%d", COREDUMP_PIDFD_NUMBER);
++				break;
++			}
+ 			default:
+ 				break;
+ 			}
+@@ -493,7 +522,7 @@ static void wait_for_dump_helpers(struct
+ }
+ 
+ /*
+- * umh_pipe_setup
++ * umh_coredump_setup
+  * helper function to customize the process used
+  * to collect the core in userspace.  Specifically
+  * it sets up a pipe and installs it as fd 0 (stdin)
+@@ -503,12 +532,31 @@ static void wait_for_dump_helpers(struct
+  * is a special value that we use to trap recursive
+  * core dumps
+  */
+-static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
++static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
+ {
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+ 	int err;
+ 
++	if (cp->pid) {
++		struct file *pidfs_file __free(fput) = NULL;
++
++		pidfs_file = pidfs_alloc_file(cp->pid, 0);
++		if (IS_ERR(pidfs_file))
++			return PTR_ERR(pidfs_file);
++
++		/*
++		 * Usermode helpers are childen of either
++		 * system_unbound_wq or of kthreadd. So we know that
++		 * we're starting off with a clean file descriptor
++		 * table. So we should always be able to use
++		 * COREDUMP_PIDFD_NUMBER as our file descriptor value.
++		 */
++		err = replace_fd(COREDUMP_PIDFD_NUMBER, pidfs_file, 0);
++		if (err < 0)
++			return err;
++	}
++
+ 	err = create_pipe_files(files, 0);
+ 	if (err)
+ 		return err;
+@@ -598,7 +646,7 @@ void do_coredump(const kernel_siginfo_t
+ 		}
+ 
+ 		if (cprm.limit == 1) {
+-			/* See umh_pipe_setup() which sets RLIMIT_CORE = 1.
++			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
+ 			 *
+ 			 * Normally core limits are irrelevant to pipes, since
+ 			 * we're not writing to the file system, but we use
+@@ -637,7 +685,7 @@ void do_coredump(const kernel_siginfo_t
+ 		retval = -ENOMEM;
+ 		sub_info = call_usermodehelper_setup(helper_argv[0],
+ 						helper_argv, NULL, GFP_KERNEL,
+-						umh_pipe_setup, NULL, &cprm);
++						umh_coredump_setup, NULL, &cprm);
+ 		if (sub_info)
+ 			retval = call_usermodehelper_exec(sub_info,
+ 							  UMH_WAIT_EXEC);
+--- a/include/linux/coredump.h
++++ b/include/linux/coredump.h
+@@ -28,6 +28,7 @@ struct coredump_params {
+ 	int vma_count;
+ 	size_t vma_data_size;
+ 	struct core_vma_metadata *vma_meta;
++	struct pid *pid;
+ };
+ 
+ extern unsigned int core_file_note_size_limit;
 
 
 
