@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC318ACB599
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:06:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BD0ACB2DF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02B661BC2243
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 587274A39AE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BB922579E;
-	Mon,  2 Jun 2025 14:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC85E23A9B0;
+	Mon,  2 Jun 2025 14:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrvz4kvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNL7y1Ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AAE1FF61E;
-	Mon,  2 Jun 2025 14:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ABA223323;
+	Mon,  2 Jun 2025 14:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875437; cv=none; b=qecFv7byik8QdRSbXSUFPuuHXTwZr01ei0SLri4pczRdP7fefmdZAMelRvrDRxJjq37cVrLSgD2vzR/yP/ONq24HVd6rsj8eUQkKq7r77871JipPGbAdg70GoxWTPzPqyqGSOfi1GXnlQAOh/vH0kwkZesxOM0LTWJMeA4lIo9M=
+	t=1748874097; cv=none; b=XaQ+Xf/Jin2o1j/HcaPa0xK3xds1S42uGEcYPMzRvy+tpQCDkaPbMSgRik80JpefAkscQW2Dzv2+Qs8hZjyBlvmVgZuumyCnSXhNfSUNRKcmezV9EWiiupqrGB3MMysaBay59kIRw8r5kPmEsG7/JA8BoUDp1hC2tg/waukSJx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875437; c=relaxed/simple;
-	bh=x0JHm3oT7UiOJPDPutyblHEd1fPAKPFCYKTBJc0FHxU=;
+	s=arc-20240116; t=1748874097; c=relaxed/simple;
+	bh=5wnOVYkQz/HS+WFD+Z++06W31V2zXQhpcP9/DIWfWL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHHS9of7F7PD0iiNXx5hzkUlo8ZqMNiKsV+VazqzHuApRyzPMpUWJFOyVHLpXmWa2ew4CQHYbaag3USCr8z23amhGD90Pun8ol0dXvN3P3rSv3AfQsmzwSGo0OYJhdgPrA8msgHmAjTp769Q/q5GuTyO0vbtKEje+17ky5jhqqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrvz4kvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11552C4CEEB;
-	Mon,  2 Jun 2025 14:43:56 +0000 (UTC)
+	 MIME-Version; b=Y6Zzyuxnv/xWwn57V2mkOt5BeIA3U1Zi1V9k+uLsJ6nMPzM4FkHE4uIsn31MyOALuSw2QwR70YaYjn5t1DUiQ4vCQKQz6IUb+djO469j8Qpm8L0dIdaxBDIbrQlNu4LSHb3LydRiMQN+Aug47Qk8E17x25X1q9mHholpZc7zChM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNL7y1Ab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C66C4CEEB;
+	Mon,  2 Jun 2025 14:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875437;
-	bh=x0JHm3oT7UiOJPDPutyblHEd1fPAKPFCYKTBJc0FHxU=;
+	s=korg; t=1748874097;
+	bh=5wnOVYkQz/HS+WFD+Z++06W31V2zXQhpcP9/DIWfWL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrvz4kvFoWmbJN5oiuRhg8c4Eaa/pQpb3mVYyOW2iT4RjwYaTrGt0PQI7CeHyGxKq
-	 2QpkEPjyfZjKqpngL4XyxN2+fA6VJM5D2C+6sLJH3OTrdhScERRL2CF6n8UkbmE8u0
-	 J5nsnEHHZPjl2uApLNEmmocpKiOB0sYipqeAG4Ac=
+	b=RNL7y1AbxuvMlXLmtkqJxMrMb3fP7ZQTWwaMeT0/j8GSl21M8E93wuiqfzLcX5EiM
+	 L7dp0B/MpjK1SN+YlHWDGKRFFo0TAcaxRIKJVh9HqPV7QKhUxeIbvIxVJCp5ytjfBM
+	 GOSLUXmWygxft6bCIRP5MSvKKFMcyy4/LOE4e7Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitalii Mordan <mordan@ispras.ru>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/270] i2c: pxa: fix call balance of i2c->clk handling routines
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 356/444] crypto: algif_hash - fix double free in hash_accept
 Date: Mon,  2 Jun 2025 15:47:00 +0200
-Message-ID: <20250602134312.742092192@linuxfoundation.org>
+Message-ID: <20250602134355.375200028@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitalii Mordan <mordan@ispras.ru>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
+commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
 
-If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
-disabled in any path.
+If accept(2) is called on socket type algif_hash with
+MSG_MORE flag set and crypto_ahash_import fails,
+sk2 is freed. However, it is also freed in af_alg_release,
+leading to slab-use-after-free error.
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
-
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-pxa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ crypto/algif_hash.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
-index 35ca2c02c9b9b..7fdc7f213b114 100644
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
- 				i2c->adap.name);
- 	}
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -265,10 +265,6 @@ static int hash_accept(struct socket *so
+ 		goto out_free_state;
  
--	clk_prepare_enable(i2c->clk);
-+	ret = clk_prepare_enable(i2c->clk);
-+	if (ret)
-+		return dev_err_probe(&dev->dev, ret,
-+				     "failed to enable clock\n");
+ 	err = crypto_ahash_import(&ctx2->req, state);
+-	if (err) {
+-		sock_orphan(sk2);
+-		sock_put(sk2);
+-	}
  
- 	if (i2c->use_pio) {
- 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
--- 
-2.39.5
-
+ out_free_state:
+ 	kfree_sensitive(state);
 
 
 
