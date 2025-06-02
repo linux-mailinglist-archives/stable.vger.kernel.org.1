@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BAAACB461
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141B3ACB721
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142581942E03
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE87E4C1415
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E6C221299;
-	Mon,  2 Jun 2025 14:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300932309B2;
+	Mon,  2 Jun 2025 15:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzoX0wJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNUoV4HC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D11EA65;
-	Mon,  2 Jun 2025 14:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0581227BA4;
+	Mon,  2 Jun 2025 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875104; cv=none; b=diCkxd1rwhEJIxuSBWkfehNhyfECq6GvuF5ptmJsmbs1XmJecyo6BGIYR3k7oGX1SssjcElfCuh0uRqVPvzRvTMNcPSfaDTwDQsJE7a3BKwST1k97PQOVTuH2aGxaCBZbbzkuXJTD1ZGDbbuBP6Ke3nKYalIuweAEZkqY2zq0pU=
+	t=1748876696; cv=none; b=ud0JkSEe9RmINBBqE1kz7KXZ3Tz2lnMuPAiLVb92KsUilnVls9nzt3dfWWtWN6SI0mmVW7+VEcZfMf43tU7caGQjNzEpOdHGN1f2gz4ptd8MD/ipx3xWEVyxgAmuaa1QuJOgu8+ooCe4vb4yHFdbuWnAlGbsATck7TybF7wqigc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875104; c=relaxed/simple;
-	bh=04rMup3j2LaCVUAfhSeo3lbGm2yG6I/qP0efXwJB3ds=;
+	s=arc-20240116; t=1748876696; c=relaxed/simple;
+	bh=kAyCGTiupVt71Rlap6WsqZ9H4iT3e1me76eBgHvwrsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hi+IaXyY2MT+WsWnxC7Cupa2gqq1WK+5Y17TMufiggMio1NCtdTk9ZyNN9eFPwzQqAeIKizHbp8CsvVoTpcpTi+D/KIi2Rh7Ur0EFF4At0AF6KhivbeUlXIl9iphAfB845h3Qsqj3oLUI+nnXUoM6vJYyA8lm95ftzWqqHTG6R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzoX0wJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2948CC4CEEB;
-	Mon,  2 Jun 2025 14:38:23 +0000 (UTC)
+	 MIME-Version; b=e7D5YB4igKkNyI3OEgYP7K98YHj/aWPTLrubyaUXK7m16YEv9mG/+p3RCWlfAZecBMfU2gVeFATwm7Q+ijcDGbYirwk4XFlUb6Q0bFYV9HhRc2actgRVaGPHDmeyWtPaqY/3nD936AVjGB5bdx5+Jaawwn8e52MLQ0UTUNaP5QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNUoV4HC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FFCC4CEEB;
+	Mon,  2 Jun 2025 15:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875104;
-	bh=04rMup3j2LaCVUAfhSeo3lbGm2yG6I/qP0efXwJB3ds=;
+	s=korg; t=1748876694;
+	bh=kAyCGTiupVt71Rlap6WsqZ9H4iT3e1me76eBgHvwrsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzoX0wJLxnHiVG2+LqwoaNv1xzMO/3d8Ibt4zU5WmuvJgzwXbQN9u+FEIjKt+Y+R2
-	 TiThMw39ff9G/5owCq7v4W+bCWBES48oW6FfVFN/cRdruMIkOQNdWOe6BgEDcyPArm
-	 neqeX5IbAarzo1JoFAnlRYO5INtMPKxT+4u0lZUE=
+	b=DNUoV4HCVrVPh5XX2OPz2okQRarMVm9bReA4/CBh2ji7i8hGHRmOD+F7OBv1EMf3C
+	 LJ6IJpY4X61UqAdXD8bZ4xoOkUkfKlhpBcZQzgIix+2ea4Gwce5/AkuFCIEiaB2hR4
+	 imajLMXLYr9VTUSqSVIgozUmM4FFZ/yqZP1ZI3/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 005/270] i2c: imx-lpi2c: Fix clock count when probe defers
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 014/325] net: enetc: refactor bulk flipping of RX buffers to separate function
 Date: Mon,  2 Jun 2025 15:44:50 +0200
-Message-ID: <20250602134307.417809486@linuxfoundation.org>
+Message-ID: <20250602134320.319381759@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit b1852c5de2f2a37dd4462f7837c9e3e678f9e546 upstream.
+[ Upstream commit 1d587faa5be7e9785b682cc5f58ba8f4100c13ea ]
 
-Deferred probe with pm_runtime_put() may delay clock disable, causing
-incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
-clock is disabled immediately.
+This small snippet of code ensures that we do something with the array
+of RX software buffer descriptor elements after passing the skb to the
+stack. In this case, we see if the other half of the page is reusable,
+and if so, we "turn around" the buffers, making them directly usable by
+enetc_refill_rx_ring() without going to enetc_new_page().
 
-Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Cc: <stable@vger.kernel.org> # v4.16+
-Link: https://lore.kernel.org/r/20250421062341.2471922-1-carlos.song@nxp.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We will need to perform this kind of buffer flipping from a new code
+path, i.e. from XDP_PASS. Currently, enetc_build_skb() does it there
+buffer by buffer, but in a subsequent change we will stop using
+enetc_build_skb() for XDP_PASS.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250417120005.3288549-3-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -616,9 +616,9 @@ static int lpi2c_imx_probe(struct platfo
- 	return 0;
- 
- rpm_disable:
--	pm_runtime_put(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+	pm_runtime_put_sync(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 
- 	return ret;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 230b317d93dae..bf49c07c8b513 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1536,6 +1536,16 @@ static void enetc_xdp_drop(struct enetc_bdr *rx_ring, int rx_ring_first,
+ 	}
  }
+ 
++static void enetc_bulk_flip_buff(struct enetc_bdr *rx_ring, int rx_ring_first,
++				 int rx_ring_last)
++{
++	while (rx_ring_first != rx_ring_last) {
++		enetc_flip_rx_buff(rx_ring,
++				   &rx_ring->rx_swbd[rx_ring_first]);
++		enetc_bdr_idx_inc(rx_ring, &rx_ring_first);
++	}
++}
++
+ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 				   struct napi_struct *napi, int work_limit,
+ 				   struct bpf_prog *prog)
+@@ -1659,11 +1669,7 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 				enetc_xdp_drop(rx_ring, orig_i, i);
+ 				rx_ring->stats.xdp_redirect_failures++;
+ 			} else {
+-				while (orig_i != i) {
+-					enetc_flip_rx_buff(rx_ring,
+-							   &rx_ring->rx_swbd[orig_i]);
+-					enetc_bdr_idx_inc(rx_ring, &orig_i);
+-				}
++				enetc_bulk_flip_buff(rx_ring, orig_i, i);
+ 				xdp_redirect_frm_cnt++;
+ 				rx_ring->stats.xdp_redirect++;
+ 			}
+-- 
+2.39.5
+
 
 
 
