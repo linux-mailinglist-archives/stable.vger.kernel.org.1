@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-149669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FD2ACB3F0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D1AACB313
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1A999E0F00
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C43FC1947209
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC276223DFD;
-	Mon,  2 Jun 2025 14:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87688223707;
+	Mon,  2 Jun 2025 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttH8XcCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+Qir80r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5181DED64;
-	Mon,  2 Jun 2025 14:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432121C5D72;
+	Mon,  2 Jun 2025 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874665; cv=none; b=NLAROVgFoxsoJLoFqtV5HbshSqJprHv/JTbcceVY8CuLOedBIa1hpdGy1zXGgRI9O1tUbVgccb1pTA6snRJKVa91cgiXo3Kds9r9/x3lx9uA5JBKw1f8LBI9HYkd/wm0r62esgyxFWNnl0XnpfdDH8tDHrrKrshO+3lJzfL/870=
+	t=1748874127; cv=none; b=KPJXnxVlp0vw1K05sXoAUzLwC1K2bxaeH3yvdrTZuFQjcQ4nmSP7H6z6hLuE7jCx/KWy0tazfhR25SKStCnuSRsawcqN0UR+DXBY5EmsZfjhg+KV1y8LnAVZU5QBFLPFh+9uboCshrJmYtEBQGZwksCa/f4hLCCN65NcJTbcVKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874665; c=relaxed/simple;
-	bh=Dzb31lT4A+57NGmIqdC9iKW33eX27dJTiu6GgX3Ycb4=;
+	s=arc-20240116; t=1748874127; c=relaxed/simple;
+	bh=3kwBJDBkWEhFiu4+lu6rA8BcR9Xg8vSAiAQ94DHPGhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhtrCUsw2WAudJkyoyvmUytaPa8v99+w6ei9m9unfBf9CjRAovfZbu0igIC1REYhpwDJYcAEG8tiCB9B12pAmDggIpMYkY9e1NrjtCmNIZDKIhL8qDG5iJrAoEWJWBQ4oHxbx2L6kaourkDXJ+TikE69cAFKg9MxXMdmLg7SA9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttH8XcCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACDCC4CEEB;
-	Mon,  2 Jun 2025 14:31:05 +0000 (UTC)
+	 MIME-Version; b=A32RYKEkAGsmTpU/ODAgy4nZ9dY5V2FTQv3TpP+KwBLUPX1TQuQYmM6LLUowx2SfLzarOe6BZf5l8ac1HMVkHRzNPJZPA7ipmJvJwRf88z3dXZPgTIcXoAMiMBekX8KQLbAPYCrdY4FAxPDS8lsdN+i6e5jAZAg+TCa5AGUXxeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+Qir80r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A62C4CEEB;
+	Mon,  2 Jun 2025 14:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874665;
-	bh=Dzb31lT4A+57NGmIqdC9iKW33eX27dJTiu6GgX3Ycb4=;
+	s=korg; t=1748874127;
+	bh=3kwBJDBkWEhFiu4+lu6rA8BcR9Xg8vSAiAQ94DHPGhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttH8XcCPth8TW0LneU4TbeABitufYm2ky/b++0ESJawPu98a8dr/Pzuz1K++rg5tU
-	 MROT1ZU5MxnSxUtdUD6uXzwzRBsniOSSCw7uCeMUSUsfmyb6XouKY61yL8RAs0mf1U
-	 UfF5+9bFqutDjOex1vOOdDqUAwg/APatVQWXRksQ=
+	b=x+Qir80rJdMlxKPpWjErtcpHfKZKE9Hv+jwFPhWj4O4PEUNBQmZTgaPvFvI6mGw1a
+	 kZ3K3UQNUNwbaHtD+o/ndY/FuL9ZImjYhZkv7ExQSizQS2oGgqyocxOSmi8+S5UKUV
+	 G0PXdrvSWGYzaUdAnadUCEqEK/PQJdLcE2yyHfCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 096/204] tools/build: Dont pass test log files to linker
+	Ed Burcher <git@edburcher.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 365/444] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14ASP10
 Date: Mon,  2 Jun 2025 15:47:09 +0200
-Message-ID: <20250602134259.429798680@linuxfoundation.org>
+Message-ID: <20250602134355.727382129@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Ed Burcher <git@edburcher.com>
 
-[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
+commit 8d70503068510e6080c2c649cccb154f16de26c9 upstream.
 
-Separate test log files from object files. Depend on test log output
-but don't pass to the linker.
+Lenovo Yoga Pro 7 (gen 10) with Realtek ALC3306 and combined CS35L56
+amplifiers need quirk ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN to
+enable bass
 
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ed Burcher <git@edburcher.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250519224907.31265-2-git@edburcher.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/build/Makefile.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
-index cd72016c3cfa7..ab0630ae6be85 100644
---- a/tools/build/Makefile.build
-+++ b/tools/build/Makefile.build
-@@ -130,6 +130,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
- obj-y        := $(addprefix $(objprefix),$(obj-y))
- subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
- 
-+# Separate out test log files from real build objects.
-+test-y       := $(filter %_log, $(obj-y))
-+obj-y        := $(filter-out %_log, $(obj-y))
-+
- # Final '$(obj)-in.o' object
- in-target := $(objprefix)$(obj)-in.o
- 
-@@ -140,7 +144,7 @@ $(subdir-y):
- 
- $(sort $(subdir-obj-y)): $(subdir-y) ;
- 
--$(in-target): $(obj-y) FORCE
-+$(in-target): $(obj-y) $(test-y) FORCE
- 	$(call rule_mkdir)
- 	$(call if_changed,$(host)ld_multi)
- 
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10574,6 +10574,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x17aa, 0x38f9, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
++	SND_PCI_QUIRK(0x17aa, 0x390d, "Lenovo Yoga Pro 7 14ASP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
 
 
 
