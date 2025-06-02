@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72958ACB25C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF96ACB71F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4132D3BB49E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11154A401DB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D38226D13;
-	Mon,  2 Jun 2025 14:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539AB22541F;
+	Mon,  2 Jun 2025 15:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gwnq66vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZaKOd2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDB8226188;
-	Mon,  2 Jun 2025 14:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7382253BC;
+	Mon,  2 Jun 2025 15:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873725; cv=none; b=idyJtHAyycJloUzLOhrmFVzHFFcpteTU2cHR4Uc4U8IvLQD3A2R13PxZ9f1Pvv6rxjSE6SBrz1gY1jdTRMt1q8FezIVPuejb3f6/9eV6gL4ISkQKP1OzJQJO6lQiTcNCm8mtjTT6DpM6KIikP9rMSa8r7C55aQlVP9m/p5LjcqU=
+	t=1748876610; cv=none; b=MjKsoqFaOW1IGevI2JwideqYN4R4G51051lT88X3U69PCBL5K00QsYQCfAcHAJ5ue2FL3JLoe/dXkE+CN/P5um2HpjiQOdhgFCBSfNx2yyz0nzGerXgwm3PU8y/a+qBKFI0o2iIr0jVK6oCxWiJFWs8usurTGr/7WCfyHrnRx54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873725; c=relaxed/simple;
-	bh=L6I9z2DIA+rRX6XdgslZTPzz64pvk3C0DWDJJFYOu48=;
+	s=arc-20240116; t=1748876610; c=relaxed/simple;
+	bh=OgMAwvT5zZWLi3iXbJFLeE/tYTE+wevo/bt56i4Ax/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXNdh4BvoXigUNp1cnqehxRBmc4esUJN0/9GIQcyb4NyzQsf0tAmGrF5WVk4oXglCLjGB2ddmE1qW0f1f/KuYOOukxG6OrlcUUOc+GVRAeg9oQpJNJe/zMnn1hLOB/67ztyIHYc8JfP5LUS8UinjOIzm4AGkJGu4xQUoYKAOooc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gwnq66vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41C1C4CEEB;
-	Mon,  2 Jun 2025 14:15:23 +0000 (UTC)
+	 MIME-Version; b=g6gA6AZtkg4F20qBWba9ThJBzKO8CHr2yRC4f4Vg7Z7tSEnwNF6s2BdfKY1aZxt/8oDvvcBbTqgVH0tcy445jf+ynkIWe77D1dOvc2bYLlOL5Oa3Shpg+WsRaVv7BbyP4x7hGZF93KKca2tJSW22XIsU4mXBUkLZUus/9xK9K7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZaKOd2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FFDC4CEEB;
+	Mon,  2 Jun 2025 15:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873724;
-	bh=L6I9z2DIA+rRX6XdgslZTPzz64pvk3C0DWDJJFYOu48=;
+	s=korg; t=1748876609;
+	bh=OgMAwvT5zZWLi3iXbJFLeE/tYTE+wevo/bt56i4Ax/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gwnq66vxxwDRaQ0qn1S6h0FUZYri0BuD10pen/Z+5HXlYQLGtvkGzBVcvFMt9ldjq
-	 sNvSCBv5IBnKZ5xQiV6KFM7VW5VXDNr1cGoIKHbpYZ8tPcq/iTFMfLwNCzNa9I6dCj
-	 uy2vVnJQKvZwteNLAJJ217/IJiMrWETXhTM0crc8=
+	b=PZaKOd2x4oFPvVejHuIdxjhGlWgy8JPGy4D8ml8ncbdiCUxgiPwaDgZxxHPAo8pa4
+	 aidKF1WGHpNmzeJH8wi8wZPN5eFWuTPysgtaeupuXz2cPAN2MMM2M3f8/IFBfl8t2u
+	 JU2gNVDo/Mac1hBE2KB95WuwnSKiVxlomVv33z0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Haoran Jiang <jianghaoran@kylinos.cn>,
+	zhangxi <zhangxi@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 230/444] smack: recognize ipv4 CIPSO w/o categories
+Subject: [PATCH 6.1 018/325] samples/bpf: Fix compilation failure for samples/bpf on LoongArch Fedora
 Date: Mon,  2 Jun 2025 15:44:54 +0200
-Message-ID: <20250602134350.248785388@linuxfoundation.org>
+Message-ID: <20250602134320.478388583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Haoran Jiang <jianghaoran@kylinos.cn>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+[ Upstream commit 548762f05d19c5542db7590bcdfb9be1fb928376 ]
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+When building the latest samples/bpf on LoongArch Fedora
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
+     make M=samples/bpf
 
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
+There are compilation errors as follows:
 
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
+In file included from ./linux/samples/bpf/sockex2_kern.c:2:
+In file included from ./include/uapi/linux/in.h:25:
+In file included from ./include/linux/socket.h:8:
+In file included from ./include/linux/uio.h:9:
+In file included from ./include/linux/thread_info.h:60:
+In file included from ./arch/loongarch/include/asm/thread_info.h:15:
+In file included from ./arch/loongarch/include/asm/processor.h:13:
+In file included from ./arch/loongarch/include/asm/cpu-info.h:11:
+./arch/loongarch/include/asm/loongarch.h:13:10: fatal error: 'larchintrin.h' file not found
+         ^~~~~~~~~~~~~~~
+1 error generated.
 
-This happens in two steps:
+larchintrin.h is included in /usr/lib64/clang/14.0.6/include,
+and the header file location is specified at compile time.
 
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
+Test on LoongArch Fedora:
+https://github.com/fedora-remix-loongarch/releases-info
 
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
+Signed-off-by: zhangxi <zhangxi@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250425095042.838824-1-jianghaoran@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ samples/bpf/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index 5dd1e164f9b13..d27e8b916bfb9 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -933,6 +933,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 727da3c5879b2..77bf18cfdae7f 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -434,7 +434,7 @@ $(obj)/%.o: $(src)/%.c
+ 	@echo "  CLANG-bpf " $@
+ 	$(Q)$(CLANG) $(NOSTDINC_FLAGS) $(LINUXINCLUDE) $(BPF_EXTRA_CFLAGS) \
+ 		-I$(obj) -I$(srctree)/tools/testing/selftests/bpf/ \
+-		-I$(LIBBPF_INCLUDE) \
++		-I$(LIBBPF_INCLUDE) $(CLANG_SYS_INCLUDES) \
+ 		-D__KERNEL__ -D__BPF_TRACING__ -Wno-unused-value -Wno-pointer-sign \
+ 		-D__TARGET_ARCH_$(SRCARCH) -Wno-compare-distinct-pointer-types \
+ 		-Wno-gnu-variable-sized-type-not-at-end \
 -- 
 2.39.5
 
