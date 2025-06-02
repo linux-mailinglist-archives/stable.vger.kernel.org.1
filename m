@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-150317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA65ACB72C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB08ACB7A2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D745F4C2722
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 874D4941004
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C08B231832;
-	Mon,  2 Jun 2025 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126C4235067;
+	Mon,  2 Jun 2025 15:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPFg2Hf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwuz+qCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA4231826;
-	Mon,  2 Jun 2025 15:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AAA22A7E5;
+	Mon,  2 Jun 2025 15:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876739; cv=none; b=Rwgwya/3RbKFw5m5UeQr0Zja+MIbvVDw9mZmxJJtsw6PTuaYRCJcxedfYu3LvOszq4kX33ID6ET2qiCKGAArRtiCo/B4Kwg6aXkiVjtzq4SwtxvCTIb0WBlRw2M9THoP8gPfN/MIoOTQsFAQMmBWJjFas/bBUMnP0I1IGLtyCJE=
+	t=1748876773; cv=none; b=umlC+PzDhWWHP58x4a0JaPhEbLnKXn6LGv7CkyIetflLk6kLB2j84iZZFQ+LVjlxQSPMy89WO6oG7jES4lKoWnZ6Gti+yuxj79VgrKRjNyc2fFfC7cQWekQlPhT5gCdLIKP4QGpzOK/HyTd8LtXQCy0zbU8HbISd6XykfooUVtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876739; c=relaxed/simple;
-	bh=j9QZ08CInXG7O4VF6JdV9PguEBKGpsMLQI+PGgUSkvQ=;
+	s=arc-20240116; t=1748876773; c=relaxed/simple;
+	bh=gCigCg7p8OAvWKrGxmq79QrN1or2qcOExuVYTOimGAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHVax8Mz5CYaRSrMUiirAUu9Qw1vTUqeEvGbctozScEcpeADKO8liXB25jfxq76gUR4r4e82VlSTA+x0Uog/91PgICU/iXdILZeqBXFuxveab3xpLGxH8Jnbk4IwCtVtIog2Sup84Sv+FrXtsUSuaYwEIdFlNoDP+gGcxV2VmDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPFg2Hf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0153EC4CEEB;
-	Mon,  2 Jun 2025 15:05:38 +0000 (UTC)
+	 MIME-Version; b=HxiPhp2QEc6MX7O8oJ8Vrd7faSACzVgH33cldY5wm+sUjQoa8iQ/efEGRhQGd12/A0PyXbiik7L5Af8xd7EwPtdCU0hq6bqrxERqnesOmfNwQ/cjGKx4tAF2OXOygChM1Wtl8134jM4hjeCH8iR8mufIF5MJi4nInLjJAHPu9Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwuz+qCn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C0EC4CEEB;
+	Mon,  2 Jun 2025 15:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876739;
-	bh=j9QZ08CInXG7O4VF6JdV9PguEBKGpsMLQI+PGgUSkvQ=;
+	s=korg; t=1748876773;
+	bh=gCigCg7p8OAvWKrGxmq79QrN1or2qcOExuVYTOimGAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPFg2Hf+XMkTr5yj7Q2xbjMBn7w+bXmGCby0i6YMKCOVJMGdZPjC4rQlluJhUk0bG
-	 vcpvmQAmIMJ44SYEXEPrktQQkXYOS5w25SuHLmbZndthcEjcSF3DFQGlcVyc2R56ON
-	 xH+mfanD+6IUwsyxyrw7ODbZ3hbYIWXgB2O6gLb0=
+	b=nwuz+qCn5QgV83O/kXcDYDgRBprGNpUFM8LBkPQPJ15buLF41I/OvP4wqxbpnJyCM
+	 AhPzjUMKfFTqUm8NPlV6Ok7acwrPAjTxhySyGH2CDqg+BniUOpid6JnYimtqeIAPi5
+	 1HmPqmXv9yuEGTj7IOAmWLVeiXcOVwA7F11RjikA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/325] objtool: Properly disable uaccess validation
-Date: Mon,  2 Jun 2025 15:45:17 +0200
-Message-ID: <20250602134321.421427030@linuxfoundation.org>
+Subject: [PATCH 6.1 042/325] PCI: dwc: ep: Ensure proper iteration over outbound map windows
+Date: Mon,  2 Jun 2025 15:45:18 +0200
+Message-ID: <20250602134321.460841127@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
 References: <20250602134319.723650984@linuxfoundation.org>
@@ -67,66 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit e1a9dda74dbffbc3fa2069ff418a1876dc99fb14 ]
+[ Upstream commit f3e1dccba0a0833fc9a05fb838ebeb6ea4ca0e1a ]
 
-If opts.uaccess isn't set, the uaccess validation is disabled, but only
-partially: it doesn't read the uaccess_safe_builtin list but still tries
-to do the validation.  Disable it completely to prevent false warnings.
+Most systems' PCIe outbound map windows have non-zero physical addresses,
+but the possibility of encountering zero increased after following commit
+("PCI: dwc: Use parent_bus_offset").
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/0e95581c1d2107fb5f59418edf2b26bba38b0cbb.1742852846.git.jpoimboe@kernel.org
+'ep->outbound_addr[n]', representing 'parent_bus_address', might be 0 on
+some hardware, which trims high address bits through bus fabric before
+sending to the PCIe controller.
+
+Replace the iteration logic with 'for_each_set_bit()' to ensure only
+allocated map windows are iterated when determining the ATU index from a
+given address.
+
+Link: https://lore.kernel.org/r/20250315201548.858189-12-helgaas@kernel.org
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 828c91aaf55bd..bf75628c5389a 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3083,7 +3083,7 @@ static int handle_insn_ops(struct instruction *insn,
- 		if (update_cfi_state(insn, next_insn, &state->cfi, op))
- 			return 1;
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 449ad709495d3..3b3f079d0d2dd 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -283,7 +283,7 @@ static int dw_pcie_find_index(struct dw_pcie_ep *ep, phys_addr_t addr,
+ 	u32 index;
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
  
--		if (!insn->alt_group)
-+		if (!opts.uaccess || !insn->alt_group)
+-	for (index = 0; index < pci->num_ob_windows; index++) {
++	for_each_set_bit(index, ep->ob_window_map, pci->num_ob_windows) {
+ 		if (ep->outbound_addr[index] != addr)
  			continue;
- 
- 		if (op->dest.type == OP_DEST_PUSHF) {
-@@ -3535,6 +3535,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			return 0;
- 
- 		case INSN_STAC:
-+			if (!opts.uaccess)
-+				break;
-+
- 			if (state.uaccess) {
- 				WARN_FUNC("recursive UACCESS enable", sec, insn->offset);
- 				return 1;
-@@ -3544,6 +3547,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			break;
- 
- 		case INSN_CLAC:
-+			if (!opts.uaccess)
-+				break;
-+
- 			if (!state.uaccess && func) {
- 				WARN_FUNC("redundant UACCESS disable", sec, insn->offset);
- 				return 1;
-@@ -3956,7 +3962,8 @@ static int validate_symbol(struct objtool_file *file, struct section *sec,
- 	if (!insn || insn->ignore || insn->visited)
- 		return 0;
- 
--	state->uaccess = sym->uaccess_safe;
-+	if (opts.uaccess)
-+		state->uaccess = sym->uaccess_safe;
- 
- 	ret = validate_branch(file, insn->func, insn, *state);
- 	if (ret && opts.backtrace)
+ 		*atu_index = index;
 -- 
 2.39.5
 
