@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1933AACB43C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A58FACB7CF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 326374A6404
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 664E81BC2A32
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AB9227B81;
-	Mon,  2 Jun 2025 14:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0BD228C99;
+	Mon,  2 Jun 2025 15:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJA8Ao1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngGCYDr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2133B1465A1;
-	Mon,  2 Jun 2025 14:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870052288F4;
+	Mon,  2 Jun 2025 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874818; cv=none; b=rHR5eogqrghBUA8MIKpqaOFmQ3G0eFMbduCPR+mrL886erBC14OC4HNYrcFVTP+4agKe9s0HEQOysBuxJGlxHxl4x21C0UpP48n2gXB3AfAJFdfH3pRGiMRpidmQ/8S8dGw7tCc7DkVX497ScR9+RVxbAWbeVjHdLZn5gXpuoYs=
+	t=1748877180; cv=none; b=b7M9rppkpR2xHOZKGKf8iQ7O9p/rC3lMa28uKkNX40sWG+cYIlIPP3Met2iyaBpe9kUlpwbxKf9kPxSaoPbS3+sptUSCXR4/z3hKTQfFQCOe9ZcWrtgjxvCGW1w/FIi4pelu1xW4clde4wHmfQs3GdtWv9+uklTI7+U5P+skLuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874818; c=relaxed/simple;
-	bh=4OgyoVQK2nh0EzeGK3945LhM2zcBYn5UVD5smgeRtFA=;
+	s=arc-20240116; t=1748877180; c=relaxed/simple;
+	bh=SP5t5C2zVjaYUzYV4GAPB87VDtmeUYkqtW3kvZmwk44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6g7fYwXw4kTSA/ErTDq/Ta8e3+C3LpAGLfkFrD8ZSC1+W0jWdTa5ZucOIpofUKIfNvoc0M4EuNOt6J9MIrLt2BiZmrDWRrvpmbzdrtHDh8/0zyIQxXlynOGTTLuOoUQPCxlrRR1XLuGRRAYetvqvU0MhEIYvIUa87Q/tgvpxkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJA8Ao1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B6BC4CEEB;
-	Mon,  2 Jun 2025 14:33:37 +0000 (UTC)
+	 MIME-Version; b=Z6Y649bQOsW2jD/xCa9yVYtFrYkVaadthlmGpag02DtczpyXCiYF1VQ5fUkyzZFhJkFxYMZp/8Qe5NG7kBHG3hgBkO0ZmKQMFd8qtB89srytBrTpSg3d3QejEvsymhPSfX+5vMhk7fHtPTeIclfHflLZrim5zvaPSsdzDTZFeGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngGCYDr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF402C4CEEB;
+	Mon,  2 Jun 2025 15:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874818;
-	bh=4OgyoVQK2nh0EzeGK3945LhM2zcBYn5UVD5smgeRtFA=;
+	s=korg; t=1748877179;
+	bh=SP5t5C2zVjaYUzYV4GAPB87VDtmeUYkqtW3kvZmwk44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJA8Ao1AmI947VQV1R6TTDsaNPSxYRIGQY+rlnpbtI9gFYbptu61TZNRNGWD56j73
-	 iw8hZuar/IrY1frK5aolgmCXlaA+cOMF+1EAID/XsyxE7/szUcQjz8w7yT3qF0dqC3
-	 xnz7KYwIF4vHesHBHDKqweg+MQj1TZXTGFbhAKMU=
+	b=ngGCYDr8FWCezkOAUdzuSaQJzhbHsSC/uvRP83BUI08f+h+4deYGo8jCtGGQzKVV+
+	 02JhOrIiv57g4mSSXc5OaK4pTXpcT172I5klNVFPXRVZoeVBltaz2RKrI+L0EXYzxV
+	 wjeCO9qYzU1JK63zAkU/KOw29MXn7Qj0TBAhMSwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Seiderer <ps.report@gmx.net>,
-	Simon Horman <horms@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/204] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
-Date: Mon,  2 Jun 2025 15:47:51 +0200
-Message-ID: <20250602134301.076364371@linuxfoundation.org>
+Subject: [PATCH 6.1 196/325] r8169: dont scan PHY addresses > 0
+Date: Mon,  2 Jun 2025 15:47:52 +0200
+Message-ID: <20250602134327.763961643@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Seiderer <ps.report@gmx.net>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
+[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
 
-Honour the user given buffer size for the strn_len() calls (otherwise
-strn_len() will access memory outside of the user given buffer).
+The PHY address is a dummy, because r8169 PHY access registers
+don't support a PHY address. Therefore scan address 0 only.
 
-Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/pktgen.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index e7cde4f097908..4fd66e6466d29 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -1770,8 +1770,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	i = len;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 4b461e93ffe9d..6346821d480bd 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5156,6 +5156,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 	new_bus->priv = tp;
+ 	new_bus->parent = &pdev->dev;
+ 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
++	new_bus->phy_mask = GENMASK(31, 1);
+ 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
+ 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
  
- 	/* Read variable name */
--
--	len = strn_len(&user_buffer[i], sizeof(name) - 1);
-+	max = min(sizeof(name) - 1, count - i);
-+	len = strn_len(&user_buffer[i], max);
- 	if (len < 0)
- 		return len;
- 
-@@ -1801,7 +1801,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	if (!strcmp(name, "add_device")) {
- 		char f[32];
- 		memset(f, 0, 32);
--		len = strn_len(&user_buffer[i], sizeof(f) - 1);
-+		max = min(sizeof(f) - 1, count - i);
-+		len = strn_len(&user_buffer[i], max);
- 		if (len < 0) {
- 			ret = len;
- 			goto out;
 -- 
 2.39.5
 
