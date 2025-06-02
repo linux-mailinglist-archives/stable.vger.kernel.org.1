@@ -1,128 +1,132 @@
-Return-Path: <stable+bounces-148951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8C5ACAE80
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFCEACAEE6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4BB189F334
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:05:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBC921BA14D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F109C1CD208;
-	Mon,  2 Jun 2025 13:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49CF1C84CE;
+	Mon,  2 Jun 2025 13:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ivnGhoHI"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="VVIpijuf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCDF2D7BF
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 13:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0760B1A9B4C
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 13:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748869531; cv=none; b=PMRKDw3LBtCwbubskZ96/6atsFoRuybIPdWvSxnwfwgg97wJjW9fRKb3QEPdvRD26O+cSTm/qeik+hI3ms+Xn9mgiAUdiOYXkmG6Sa0CCKyxv8/wwDdA3TBXfDoohM0/JAdNP9LQwgVvvROF7DkEF953qn+YOWPksxb/adSx9sU=
+	t=1748870609; cv=none; b=Uf7vUvt2KfN5FGOieJjKgmiug+FSChN13p3cPG7WHQsZHq+AiQZlNuyDjXh5DXMXZ4n+vzSmK0RTCxJN+lUYIl8t9nxoYx6GhvFDguKUWH1uuLV/Fmw3C9EnIzB7CRsAqVFY4dUHK799E6npRf0hkEItSGLLOan014gLAeKpJic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748869531; c=relaxed/simple;
-	bh=H568FxVEZlGiJFy0RPATsOPZ24o2IPx/SM2md2PJdwE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=stWEXba0IHWDT2ZWiujLC9ki83QoqF6blhmOuDCfduR3YWR/cyLCz3RR64tBR7aM9x02Z93TtJGLaiqk9NfFvZ8ka5HDb5CzpahIqG6raSPZF2xsVoCi9PhPRffCAAhF9Qe4wJxFjk0HP5a1GLm3NEhwPgdVuFo0h9iukWP7rg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ivnGhoHI; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748869530; x=1780405530;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=H568FxVEZlGiJFy0RPATsOPZ24o2IPx/SM2md2PJdwE=;
-  b=ivnGhoHIfDyD2SKUD3cPhrSpd1/owm1cASzT6MBNlDrjmlFXo2cdedZM
-   +DuhJsVR/ZpohuIhymO9NN+UZPT9zCyE122VU5ZZgqS+TiPdpaLUqEGWy
-   oTa/oiVNA+kRbEfjYAks8kqgtfy6XDH/e3mtJ5cyyK5GugRJrKayoxH7A
-   NC6i5FFSXtKda7cvrRR2GVkOnvICOq+XtjGN306VMeigNJ/qxU2gePT2/
-   4gF6Hd1ua2YzakFf053tGd1b6274nJDLXgH9oksCIraQqVTdCHtx6sjgr
-   LHwgVvN0PRbaecp1G+iko6mM6dEOvchzhQSRpNUJcOX82L6n70uF8QTKu
-   g==;
-X-CSE-ConnectionGUID: VwXWGxWuSBmAk23O2EE7Ug==
-X-CSE-MsgGUID: OmkgErEOQ0mHp3jsS71mrQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="73406304"
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="73406304"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 06:05:30 -0700
-X-CSE-ConnectionGUID: /S1V5dB2QcqIypvX5THjaQ==
-X-CSE-MsgGUID: P2XEzj+5QvuWVxgOvbqzkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
-   d="scan'208";a="149309252"
-Received: from vmusin-mobl1.ger.corp.intel.com (HELO [10.245.112.120]) ([10.245.112.120])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 06:05:28 -0700
-Message-ID: <861208c3-3505-4386-848f-a7c7a9508604@linux.intel.com>
-Date: Mon, 2 Jun 2025 15:05:26 +0200
+	s=arc-20240116; t=1748870609; c=relaxed/simple;
+	bh=KgOnuRbW9KY4v22ce/jkqCUShMUGex38JSfQaZVKbr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BUNrczyxzGFSeXEypYmx2pcEA79t6PA6Ju1gHKMimoJ3Hr8v/FAniWJVRgR4xsJJwL6wZbr7qw3BQN0CV6Gq841R9FwYAQnQHI4eQD4VqLYZU483PGDuvzU61JL7X0RTU5nArN2uxvBmtuC6sRSnAMO7MCvr4BQfJEIaMcdp0RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=VVIpijuf; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=AoWr/xzSg8anf+lp/dkeJOwZG3sIWYg6HK+zxoH1fXk=; b=VVIpijufwc2UX10zluF2nbknbU
+	uBPoQWSwH/kCY3qaQEI0M/mfNy9hUP7Y0EpEO6fW6OfQA0Sg3ApK2aH0bXPOQXiyaMD4xPfDjKKek
+	T2P2KPENQ+HJpXnLJFyxtAkgSdx40V9Yyhj/KtXtE2qhta/h4EWvpOlkDdbq9JItakQ2ZPBZqSVIO
+	s0lG27583gmqmQuo4GwGZEwiYla2oS9KMXOjG7n9OlILCTVz9801mnQyz6NZI37NQs+MeIvc6+zaW
+	EWOa8pCGV/Qca46BTfkHK/9fzYm4G3sgQ0MYyusC45PrzJXbPdFpUKw4z1MDS9BCrKG8H36Y/40gP
+	074B6QYQ==;
+Received: from [189.7.87.52] (helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256) (Exim)
+	id 1uM58I-00GHvh-Du; Mon, 02 Jun 2025 15:23:18 +0200
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Lucas Stach <l.stach@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Russell King <linux+etnaviv@armlinux.org.uk>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>
+Cc: dri-devel@lists.freedesktop.org,
+	etnaviv@lists.freedesktop.org,
+	kernel-dev@igalia.com,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/etnaviv: Protect the scheduler's pending list with its lock
+Date: Mon,  2 Jun 2025 10:22:16 -0300
+Message-ID: <20250602132240.93314-1-mcanal@igalia.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/ivpu: Trigger device recovery on engine
- reset/resume failure
-To: Lizhi Hou <lizhi.hou@amd.com>, dri-devel@lists.freedesktop.org
-Cc: jeff.hugo@oss.qualcomm.com, Karol Wachowski <karol.wachowski@intel.com>,
- stable@vger.kernel.org
-References: <20250528154253.500556-1-jacek.lawrynowicz@linux.intel.com>
- <5b8763f2-3c1c-3621-912f-995af0076d91@amd.com>
-Content-Language: en-US
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <5b8763f2-3c1c-3621-912f-995af0076d91@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler when GPU is still
+active") ensured that active jobs are returned to the pending list when
+extending the timeout. However, it didn't use the pending list's lock to
+manipulate the list, which causes a race condition as the scheduler's
+workqueues are running.
+
+Hold the lock while manipulating the scheduler's pending list to prevent
+a race.
+
+Cc: stable@vger.kernel.org
+Fixes: 704d3d60fec4 ("drm/etnaviv: don't block scheduler when GPU is still active")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
 Hi,
 
-On 5/28/2025 7:53 PM, Lizhi Hou wrote:
-> 
-> On 5/28/25 08:42, Jacek Lawrynowicz wrote:
->> From: Karol Wachowski <karol.wachowski@intel.com>
->>
->> Trigger full device recovery when the driver fails to restore device state
->> via engine reset and resume operations. This is necessary because, even if
->> submissions from a faulty context are blocked, the NPU may still process
->> previously submitted faulty jobs if the engine reset fails to abort them.
->> Such jobs can continue to generate faults and occupy device resources.
->> When engine reset is ineffective, the only way to recover is to perform
->> a full device recovery.
->>
->> Fixes: dad945c27a42 ("accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW")
->> Cc: <stable@vger.kernel.org> # v6.15+
->> Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
->> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->> ---
->>   drivers/accel/ivpu/ivpu_job.c     | 6 ++++--
->>   drivers/accel/ivpu/ivpu_jsm_msg.c | 9 +++++++--
->>   2 files changed, 11 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
->> index 1c8e283ad9854..fae8351aa3309 100644
->> --- a/drivers/accel/ivpu/ivpu_job.c
->> +++ b/drivers/accel/ivpu/ivpu_job.c
->> @@ -986,7 +986,8 @@ void ivpu_context_abort_work_fn(struct work_struct *work)
->>           return;
->>         if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
->> -        ivpu_jsm_reset_engine(vdev, 0);
->> +        if (ivpu_jsm_reset_engine(vdev, 0))
->> +            return;
-> 
-> Is it possible the context aborting is entered again before the full device recovery work is executed?
+I'm proposing this workaround patch to address the race-condition caused
+by manipulating the pending list without using its lock. Although I
+understand this isn't a complete solution (see [1]), it's not reasonable
+to backport the new DRM stat series [2] to the stable branches.
 
-This is a good point but ivpu_context_abort_work_fn() is triggered by an IRQ and the first thing we do when triggering recovery is disabling IRQs.
-The recovery work also flushes context_abort_work before staring to tear down everything, so we should be safe.
+Therefore, I believe the best solution is backporting this fix to the
+stable branches, which will fix the race and will keep adding the job
+back to the pending list (which will avoid most memory leaks).
 
-Regards,
-Jacek
+[1] https://lore.kernel.org/dri-devel/bcc0ed477f8a6f3bb06665b1756bcb98fb7af871.camel@mailbox.org/
+[2] https://lore.kernel.org/dri-devel/20250530-sched-skip-reset-v2-0-c40a8d2d8daa@igalia.com/
+
+Best Regards,
+- Maíra
+---
+ drivers/gpu/drm/etnaviv/etnaviv_sched.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_sched.c b/drivers/gpu/drm/etnaviv/etnaviv_sched.c
+index 76a3a3e517d8..71e2e6b9d713 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_sched.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_sched.c
+@@ -35,6 +35,7 @@ static enum drm_gpu_sched_stat etnaviv_sched_timedout_job(struct drm_sched_job
+ 							  *sched_job)
+ {
+ 	struct etnaviv_gem_submit *submit = to_etnaviv_submit(sched_job);
++	struct drm_gpu_scheduler *sched = sched_job->sched;
+ 	struct etnaviv_gpu *gpu = submit->gpu;
+ 	u32 dma_addr, primid = 0;
+ 	int change;
+@@ -89,7 +90,9 @@ static enum drm_gpu_sched_stat etnaviv_sched_timedout_job(struct drm_sched_job
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ 
+ out_no_timeout:
+-	list_add(&sched_job->list, &sched_job->sched->pending_list);
++	spin_lock(&sched->job_list_lock);
++	list_add(&sched_job->list, &sched->pending_list);
++	spin_unlock(&sched->job_list_lock);
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ }
+ 
+-- 
+2.49.0
 
 
