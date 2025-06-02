@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CB9ACB57A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE76FACB28A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412D09E62DD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8181943A7C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4732B226D03;
-	Mon,  2 Jun 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9913322DF96;
+	Mon,  2 Jun 2025 14:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTsJTCz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc6QS4W6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A9A2236F4;
-	Mon,  2 Jun 2025 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A0122DF87;
+	Mon,  2 Jun 2025 14:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875137; cv=none; b=gNh9RfI3tW64bm+PBQexTlMrHaBBAJYzasxTKzhiV5WOkY8C05hEgxfpeDHvUYwZD4nZpkOl+ibnyVHKou8Ws5NGGqpKqYLIHMZsQekmZniq9e8MPg2qLEP3P0HxNndWz7NeUlqULu9I5x5lw7AcVQYknCDd+OMZ0r4szdbn9DM=
+	t=1748873814; cv=none; b=msjbm2wUfkqvUo02TqPqoIDrYA01N6JqEtpyP9lO92J4hj+2DJBGPmY27dpsmLHYQeNwPQAjInddTwIm9gVWTFQEca/r0Rv5lS7qgbvVY63sqT3dwqJjxWvK2QBfoaflda3+HsXWFaFXW5U6ImIuC5HL2iNSVXFResvpPzV5VLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875137; c=relaxed/simple;
-	bh=cyXnlLgK6sDLIb64vSpZXu8koBGGecB34NEKb8KBzwQ=;
+	s=arc-20240116; t=1748873814; c=relaxed/simple;
+	bh=+8xCtVp0r+i/qYXwy/hx3vAJc3rpDh8+bCwp8C+AJy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VU8gUFH3RwW8NatTpGMkDb/wsDkoJZqRgVsuSDz+c0ZIBbdNuspvOUi66WzZQXw6YoAYY+Xp+EhPijt41MqyE82+hvGf+EvaWbLkCAEL3kEmAQi+7m/jyghKnYSGK663WO58hUJxtSnwsu4oNZ1xn3htvoCBzuQkAxgnFRjb75Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTsJTCz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C6BC4CEEB;
-	Mon,  2 Jun 2025 14:38:56 +0000 (UTC)
+	 MIME-Version; b=SbvMD1UmBavVyCXYS4wd9Eizn7PwO40UtNuLnqqlnWCVrPXgb+fWlchwXFbxMHKYef35F3jpItniJhD0qkhuRLwd0qx9ZgHYUjEp+h1R4jH/KA60OVRXr6YModuTqtvwScakonHWGKqwXRoDaoXguXdKDnwh2JCSfDAmTc6MiMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc6QS4W6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBADC4CEEB;
+	Mon,  2 Jun 2025 14:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875136;
-	bh=cyXnlLgK6sDLIb64vSpZXu8koBGGecB34NEKb8KBzwQ=;
+	s=korg; t=1748873814;
+	bh=+8xCtVp0r+i/qYXwy/hx3vAJc3rpDh8+bCwp8C+AJy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VTsJTCz14gXcSzhoJRA36s/QVe4+nHls3PMg3D/7U5JW/rlmKLI/Z9fmlVMhadhWT
-	 rADkhckZcHpzigOntPekCTnfrY0tReSvxFUTzTLX74pa54vMfBltJr0+eveURaHtlH
-	 0g25cKCZX7ZSH5kyElrzmwWu6/wa9zKS4Nivr66w=
+	b=oc6QS4W614njvX3DgpvSY8s0GX+Sux6qL27jV7lCUlkJwoIDuH1vSoFlI2WzHWRcG
+	 ExVVoewKrw74GxXwvG63616dNZ18y+Kh/wMFKyMkIRvAw2setu/4HCrIAtncwDtr/L
+	 HKtTxsyIlNj93CAYi9kvhuh6xgjZBgaLiUYpAvMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.10 040/270] dm: fix copying after src array boundaries
+	Disha Goel <disgoel@linux.vnet.ibm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 261/444] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
 Date: Mon,  2 Jun 2025 15:45:25 +0200
-Message-ID: <20250602134308.825505740@linuxfoundation.org>
+Message-ID: <20250602134351.526971433@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-commit f1aff4bc199cb92c055668caed65505e3b4d2656 upstream.
+[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
 
-The blammed commit copied to argv the size of the reallocated argv,
-instead of the size of the old_argv, thus reading and copying from
-past the old_argv allocated memory.
+perf mem report aborts as below sometimes (during some corner
+case) in powerpc:
 
-Following BUG_ON was hit:
-[    3.038929][    T1] kernel BUG at lib/string_helpers.c:1040!
-[    3.039147][    T1] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-...
-[    3.056489][    T1] Call trace:
-[    3.056591][    T1]  __fortify_panic+0x10/0x18 (P)
-[    3.056773][    T1]  dm_split_args+0x20c/0x210
-[    3.056942][    T1]  dm_table_add_target+0x13c/0x360
-[    3.057132][    T1]  table_load+0x110/0x3ac
-[    3.057292][    T1]  dm_ctl_ioctl+0x424/0x56c
-[    3.057457][    T1]  __arm64_sys_ioctl+0xa8/0xec
-[    3.057634][    T1]  invoke_syscall+0x58/0x10c
-[    3.057804][    T1]  el0_svc_common+0xa8/0xdc
-[    3.057970][    T1]  do_el0_svc+0x1c/0x28
-[    3.058123][    T1]  el0_svc+0x50/0xac
-[    3.058266][    T1]  el0t_64_sync_handler+0x60/0xc4
-[    3.058452][    T1]  el0t_64_sync+0x1b0/0x1b4
-[    3.058620][    T1] Code: f800865e a9bf7bfd 910003fd 941f48aa (d4210000)
-[    3.058897][    T1] ---[ end trace 0000000000000000 ]---
-[    3.059083][    T1] Kernel panic - not syncing: Oops - BUG: Fatal exception
+   # ./perf mem report 1>out
+   *** stack smashing detected ***: terminated
+   Aborted (core dumped)
 
-Fix it by copying the size of src, and not the size of dst, as it was.
+The backtrace is as below:
+   __pthread_kill_implementation ()
+   raise ()
+   abort ()
+   __libc_message
+   __fortify_fail
+   __stack_chk_fail
+   hist_entry.lvl_snprintf
+   __sort__hpp_entry
+   __hist_entry__snprintf
+   hists.fprintf
+   cmd_report
+   cmd_mem
 
-Fixes: 5a2a6c428190 ("dm: always update the array size in realloc_argv on success")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Snippet of code which triggers the issue
+from tools/perf/util/sort.c
+
+   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
+                                    size_t size, unsigned int width)
+   {
+        char out[64];
+
+        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
+        return repsep_snprintf(bf, size, "%-*s", width, out);
+   }
+
+The value of "out" is filled from perf_mem_data_src value.
+Debugging this further showed that for some corner cases, the
+value of "data_src" was pointing to wrong value. This resulted
+in bigger size of string and causing stack check fail.
+
+The perf mem data source values are captured in the sample via
+isa207_get_mem_data_src function. The initial check is to fetch
+the type of sampled instruction. If the type of instruction is
+not valid (not a load/store instruction), the function returns.
+
+Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
+data_src field is not initialized by the perf_sample_data_init()
+function. If the PMU driver doesn't set the data_src value to zero if
+type is not valid, this will result in uninitailised value for data_src.
+The uninitailised value of data_src resulted in stack check fail
+followed by abort for "perf mem report".
+
+When requesting for data source information in the sample, the
+instruction type is expected to be load or store instruction.
+In ISA v3.0, due to hardware limitation, there are corner cases
+where the instruction type other than load or store is observed.
+In ISA v3.0 and before values "0" and "7" are considered reserved.
+In ISA v3.1, value "7" has been used to indicate "larx/stcx".
+Drop the sample if instruction type has reserved values for this
+field with a ISA version check. Initialize data_src to zero in
+isa207_get_mem_data_src if the instruction type is not load/store.
+
+Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
+ arch/powerpc/perf/isa207-common.c |  4 +++-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -514,9 +514,9 @@ static char **realloc_argv(unsigned *siz
- 	}
- 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
- 	if (argv) {
--		*size = new_size;
- 		if (old_argv)
- 			memcpy(argv, old_argv, *size * sizeof(*argv));
-+		*size = new_size;
- 	}
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 10b946e9c6e75..4bb84dc4393fc 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2229,6 +2229,10 @@ static struct pmu power_pmu = {
+ #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
+ 				PERF_SAMPLE_PHYS_ADDR |		\
+ 				PERF_SAMPLE_DATA_PAGE_SIZE)
++
++#define SIER_TYPE_SHIFT	15
++#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
++
+ /*
+  * A counter has overflowed; update its count and record
+  * things if requested.  Note that interrupts are hard-disabled
+@@ -2297,6 +2301,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 	    is_kernel_addr(mfspr(SPRN_SIAR)))
+ 		record = 0;
  
- 	kfree(old_argv);
++	/*
++	 * SIER[46-48] presents instruction type of the sampled instruction.
++	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
++	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
++	 * Drop the sample if "type" has reserved values for this field with a
++	 * ISA version check.
++	 */
++	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
++			ppmu->get_mem_data_src) {
++		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
++		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
++			record = 0;
++			atomic64_inc(&event->lost_samples);
++		}
++	}
++
+ 	/*
+ 	 * Finally record data if requested.
+ 	 */
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index 56301b2bc8ae8..031a2b63c171d 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+ 
+ 	sier = mfspr(SPRN_SIER);
+ 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
+-	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
++	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
++		dsrc->val = 0;
+ 		return;
++	}
+ 
+ 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
+ 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
+-- 
+2.39.5
+
 
 
 
