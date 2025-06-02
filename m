@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF47ACB341
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160D7ACB58C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AD4F94353B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585113B457F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA60D22579E;
-	Mon,  2 Jun 2025 14:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573BA2327A1;
+	Mon,  2 Jun 2025 14:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNtGwrma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4xwCQio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F31225768;
-	Mon,  2 Jun 2025 14:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134F2230D14;
+	Mon,  2 Jun 2025 14:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874229; cv=none; b=vGNXrQZ0IImy9HyuSmncAI+M3gkV10emTe24a60C+BX/qXeoRqGWv+ZARSnRJKyvNCYMIfMGqlb3wpXD60/CBIto9n31MIiLRmupUAXNirhLz8d0lpQC789FsN5SvH6sk5jqHWJnA1ZJkWDE5e+6//alF89OLhMN7xAw+wc5nyE=
+	t=1748875583; cv=none; b=VIlAxFSIlhHI1lPdPxJ+wuo4+fNhCq3CcFKckwZuuTJ9cLQTXFQDCMcTqq1UoZ2T3FSRWP5rSJZDlSoHE3cxdvXEcNKJc3A+yRUqQXGdJfHkjUe9E3viZAhOQhc0P18fM3R1xlGM6cV5v9A7IiEeDCjIqGgHJWCbm+htJE2cQNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874229; c=relaxed/simple;
-	bh=ZxSqaOGs15IzFn9hI/R+GsH8/p/Ug9DfswV3/vTvqt4=;
+	s=arc-20240116; t=1748875583; c=relaxed/simple;
+	bh=cDQ+5eTGsiwLxBdl8iXFuU6fD+Pj6OiVbyG5Mynf8UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGc9uZxDMJft3cZdOXblY3VK9mTsyRkqJ38c+ubmZWFGswYqCDYrwwPF56H8A5IQ9139+sNDKZU5WtOOe6YZ598pKYiJDAG8jk0y4bcKs3eOpOg7ZteYeWLx4VCUTrZTvpPm+b40m47gDxtO554o9YJ/SBsFfQU6vQ+tKsBzJNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNtGwrma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2391BC4CEEB;
-	Mon,  2 Jun 2025 14:23:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TDJo+krwQkFsXX2ez8LasaOM78+/IWKqvM7H4iciDByiZoT06pOL8dyj5pdQQkXnBeNPqHM8PAG2832dPjzfjoqrJDl5sX3XoX8vS4uQjnT8Q0CCulvvoDrmiK+SXEslbFaSHkDM0DzON4TZCfdQdDpTteLxTIW/yAjHNqh2nXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4xwCQio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E553C4CEF0;
+	Mon,  2 Jun 2025 14:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874229;
-	bh=ZxSqaOGs15IzFn9hI/R+GsH8/p/Ug9DfswV3/vTvqt4=;
+	s=korg; t=1748875582;
+	bh=cDQ+5eTGsiwLxBdl8iXFuU6fD+Pj6OiVbyG5Mynf8UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNtGwrmaGafTGfiFMyyMgGzmTQLwwz0q8nLcnd4WJB6KLfnTe3SapcwGiw9Jeideq
-	 oW5WolfcSK/iAn+OjFLmDGmDsRhv+wT8HI6AOk6ZGojnP9ZT6nKrLJHlnMG4PK/7QL
-	 hRBmwi/GbEWuq7BWFH/NmHF5rAsKfRhRxh9XWeUY=
+	b=C4xwCQioD7sHfBExVEXY7b+vrHUacvBANaJcpJu0LFD8ojaVup/eNtHt5i2J9tsMM
+	 oWLZP0bDOXg/vWmvOp6ETwyAETm7asKs62t5Ogb8OExP8ffspt20pA+b743ElOglb2
+	 d5bCJKyPh5lZ5kNn/Wv44ly2qL4XhoxYIZfOeu9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 399/444] af_unix: Remove io_uring code for GC.
-Date: Mon,  2 Jun 2025 15:47:43 +0200
-Message-ID: <20250602134357.102793740@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 179/270] bonding: report duplicate MAC address in all situations
+Date: Mon,  2 Jun 2025 15:47:44 +0200
+Message-ID: <20250602134314.529617370@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 11498715f266a3fb4caabba9dd575636cbcaa8f1 upstream.
+[ Upstream commit 28d68d396a1cd21591e8c6d74afbde33a7ea107e ]
 
-Since commit 705318a99a13 ("io_uring/af_unix: disable sending
-io_uring over sockets"), io_uring's unix socket cannot be passed
-via SCM_RIGHTS, so it does not contribute to cyclic reference and
-no longer be candidate for garbage collection.
+Normally, a bond uses the MAC address of the first added slave as the bond’s
+MAC address. And the bond will set active slave’s MAC address to bond’s
+address if fail_over_mac is set to none (0) or follow (2).
 
-Also, commit 6e5e6d274956 ("io_uring: drop any code related to
-SCM_RIGHTS") cleaned up SCM_RIGHTS code in io_uring.
+When the first slave is removed, the bond will still use the removed slave’s
+MAC address, which can lead to a duplicate MAC address and potentially cause
+issues with the switch. To avoid confusion, let's warn the user in all
+situations, including when fail_over_mac is set to 2 or not in active-backup
+mode.
 
-Let's do it in AF_UNIX as well by reverting commit 0091bfc81741
-("io_uring/af_unix: defer registered files gc to io_uring release")
-and commit 10369080454d ("net: reclaim skb->scm_io_uring bit").
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Jens Axboe <axboe@kernel.dk>
-Link: https://lore.kernel.org/r/20240129190435.57228-3-kuniyu@amazon.com
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250225033914.18617-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |    1 -
- net/unix/garbage.c    |   25 ++-----------------------
- net/unix/scm.c        |    6 ------
- 3 files changed, 2 insertions(+), 30 deletions(-)
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -20,7 +20,6 @@ static inline struct unix_sock *unix_get
- void unix_inflight(struct user_struct *user, struct file *fp);
- void unix_notinflight(struct user_struct *user, struct file *fp);
- void unix_destruct_scm(struct sk_buff *skb);
--void io_uring_destruct_scm(struct sk_buff *skb);
- void unix_gc(void);
- void wait_for_unix_gc(struct scm_fp_list *fpl);
- struct sock *unix_peer_get(struct sock *sk);
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -184,12 +184,10 @@ static bool gc_in_progress;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 7caaf5b49c7b5..c5ccd42af528e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2239,7 +2239,7 @@ static int __bond_release_one(struct net_device *bond_dev,
  
- static void __unix_gc(struct work_struct *work)
- {
--	struct sk_buff *next_skb, *skb;
--	struct unix_sock *u;
--	struct unix_sock *next;
- 	struct sk_buff_head hitlist;
--	struct list_head cursor;
-+	struct unix_sock *u, *next;
- 	LIST_HEAD(not_cycle_list);
-+	struct list_head cursor;
+ 	RCU_INIT_POINTER(bond->current_arp_slave, NULL);
  
- 	spin_lock(&unix_gc_lock);
- 
-@@ -293,30 +291,11 @@ static void __unix_gc(struct work_struct
- 
- 	spin_unlock(&unix_gc_lock);
- 
--	/* We need io_uring to clean its registered files, ignore all io_uring
--	 * originated skbs. It's fine as io_uring doesn't keep references to
--	 * other io_uring instances and so killing all other files in the cycle
--	 * will put all io_uring references forcing it to go through normal
--	 * release.path eventually putting registered files.
--	 */
--	skb_queue_walk_safe(&hitlist, skb, next_skb) {
--		if (skb->destructor == io_uring_destruct_scm) {
--			__skb_unlink(skb, &hitlist);
--			skb_queue_tail(&skb->sk->sk_receive_queue, skb);
--		}
--	}
--
- 	/* Here we are. Hitlist is filled. Die. */
- 	__skb_queue_purge(&hitlist);
- 
- 	spin_lock(&unix_gc_lock);
- 
--	/* There could be io_uring registered files, just push them back to
--	 * the inflight list
--	 */
--	list_for_each_entry_safe(u, next, &gc_candidates, link)
--		list_move_tail(&u->link, &gc_inflight_list);
--
- 	/* All candidates should have been detached by now. */
- 	WARN_ON_ONCE(!list_empty(&gc_candidates));
- 
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -148,9 +148,3 @@ void unix_destruct_scm(struct sk_buff *s
- 	sock_wfree(skb);
- }
- EXPORT_SYMBOL(unix_destruct_scm);
--
--void io_uring_destruct_scm(struct sk_buff *skb)
--{
--	unix_destruct_scm(skb);
--}
--EXPORT_SYMBOL(io_uring_destruct_scm);
+-	if (!all && (!bond->params.fail_over_mac ||
++	if (!all && (bond->params.fail_over_mac != BOND_FOM_ACTIVE ||
+ 		     BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)) {
+ 		if (ether_addr_equal_64bits(bond_dev->dev_addr, slave->perm_hwaddr) &&
+ 		    bond_has_slaves(bond))
+-- 
+2.39.5
+
 
 
 
