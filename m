@@ -1,104 +1,131 @@
-Return-Path: <stable+bounces-150597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DA5ACB928
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:59:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D48ACB958
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:14:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626DA1703C1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53F63AD72A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AE617BD9;
-	Mon,  2 Jun 2025 15:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45034224240;
+	Mon,  2 Jun 2025 16:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="NsH/XNzm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcaVFxX1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809D8223DEF
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 15:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043DB223DED
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 16:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748879948; cv=none; b=VV7XHQyhZHkscrGpCRrrBUHba/uDmeWox3QH+toZvqVTCUyIEhX+Pf+w53R+P+rVF2NyXcBtTNc3A54llNHIoAmcFba+As9whlXJs9mAXAmO5xu4zVJ/QKWuJd3ufR0AONk46lu1raSHnXKDX/6W++OKjoSr7lg1pXcw4DGdODg=
+	t=1748880872; cv=none; b=mlW8+NP+7JWlBeP7+P1UiNNVkpb9SRnqd7+XdbQ1khl22+WQHG1dTI/kDpOSff15yAxgzDxfUutK4HRlAxgDmu2hpw6HheePrnOJZMgt+kekGSaqsTirEnXfG/GMVLpvRnj1klP3PhPdsJUnsj5bHsuAaeptjtlKXKZToruI1Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748879948; c=relaxed/simple;
-	bh=pF2ZL1p4Ei/qjK+21n7JunfkAAqlUb8ntxONs3Z572o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tfL5PjrfcHqeuMh7rTHVs+FaOXXVfydZsA78SRQIucX5Am3Z0mHinDHYIhc/63x+nUQPfYS5ED5KlkNJn5uoXKf3V+ZdgJ7Ue/A1QwW4LV0MLm5PF4vrX2xQLYbJ1gS+0EbRXZEHsP3N4n+jW1JK4Xlinn2qafGve8qOWX5NgxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=NsH/XNzm; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 4B6A81FA87;
-	Mon,  2 Jun 2025 17:59:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1748879943;
-	bh=EKCdMnhXKbL9nx4aXADmXEXPpwklZe+ysQFobHyuiso=; h=From:To:Subject;
-	b=NsH/XNzmlC1hrziF1koKU5UagtNFerZ171lYTq/Zr843VsX5ZyMzUKHEXGPaXtN+O
-	 KHpVCFWu1wXzpqsizu2QtyAnFx7vNMWfdtps+Kxnr7SA3/ErAGoCxx2L1zYE+0VaA2
-	 Y5DtaPxAKObdkmDCel3c68uJ2FfphJS3G0LyIH1XrWZTIBZLKSnA32l7XJCDGU9ZkM
-	 ioY/tNcaJrxY7gQ/r9HTpO9R+scMCPWcShJ72QkGIfYKf7AFZ3gZgLhGcOclGYFdZ3
-	 1p6+VRhFV0v8djDYSSo13C+VBNZixRu049qQ1Hf0wmrHRQ2fdh3j/D1YJEc8Rmle4L
-	 y4hNuW/AW5uNA==
-From: Francesco Dolcini <francesco@dolcini.it>
+	s=arc-20240116; t=1748880872; c=relaxed/simple;
+	bh=O8stFtvuZHAYMRqZoZPzmmmNavIppFXJmjX6fCSTJwM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n2mO7dXBw3Cg4YrQNv5s5GsivrVWbqfY0kv3mMiT9oeXAPzgP9GkX8y5x/53aaPLPa2BVICtURODzdYQMRE2X1vCxhKNSfFDGJYO0dhpLL9StVN2lJIZ/s5lP433wgLjB3syp8Nycw8fwtGrw1+/Vu4ScT/X4Y7jevR5Z7r3+KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcaVFxX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1688AC4CEEB;
+	Mon,  2 Jun 2025 16:14:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748880871;
+	bh=O8stFtvuZHAYMRqZoZPzmmmNavIppFXJmjX6fCSTJwM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HcaVFxX1Qy2xAJEoJXnJGeB25U0Crt9o9Np0n6h3zAuuTcN0dB8dwi1c9KFFcEsQv
+	 XgQktAPoHdLnh7hH21rHNFS7dWy74Jz8RUyG9GPBjdbPpu7qsPKEV+BCF30t9CUoA+
+	 ccOvXOOnyKoSykoQi5AMFCwzZaMy26C3fOpuEnS2Ub0/oxtvEywhXg/hfXLsT8LNIC
+	 87NAE6E/DkFJhGKZ9PxHA20AkR3Rg2gcgeKd9QULf4cKAcVQqc06Px56Qinvk9t/7f
+	 MBqPSFCoZquNFTdN1HarewBcf2xQ9xe/Ig9pXMkscmab+7oNsGDMeT0v2QRy/CGZNa
+	 KPcsyC3w8gCEA==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1.y] arm64: dts: imx8mm: Drop sd-vsel-gpios from i.MX8M Mini Verdin SoM
-Date: Mon,  2 Jun 2025 17:58:45 +0200
-Message-Id: <20250602155845.227354-1-francesco@dolcini.it>
+Cc: Denis Arefev <arefev@swemel.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10] netfilter: nft_socket: fix sk refcount leaks
+Date: Mon,  2 Jun 2025 12:14:29 -0400
+Message-Id: <20250602092354-c959a829b6d0673f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250602123948.40610-1-arefev@swemel.ru>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Marek Vasut <marex@denx.de>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 8bad8c923f217d238ba4f1a6d19d761e53bfbd26 ]
+Hi,
 
-The VSELECT pin is configured as MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT
-and not as a GPIO, drop the bogus sd-vsel-gpios property as the eSDHC
-block handles the VSELECT pin on its own.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The upstream commit SHA1 provided is correct: 8b26ff7af8c32cb4148b3e147c52f9e4c695209c
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Denis Arefev<arefev@swemel.ru>
+Commit author: Florian Westphal<fw@strlen.de>
+
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 83e6fb59040e)
+6.1.y | Present (different SHA1: 33c2258bf8cb)
+5.15.y | Present (different SHA1: ddc7c423c4a5)
+
+Note: The patch differs from the upstream commit:
 ---
-6.1.y is currently broken on imx8mm-verdin, because commit
-5591ce0069ddda97cdbbea596bed53e698f399c2, that was backported correctly on 6.1,
-depends on this one.
-
-This fixes the following error:
-
-[    1.735149] gpio-regulator: probe of regulator-usdhc2-vqmmc failed with error -16
-
+1:  8b26ff7af8c32 ! 1:  a2677efdc7b71 netfilter: nft_socket: fix sk refcount leaks
+    @@ Metadata
+      ## Commit message ##
+         netfilter: nft_socket: fix sk refcount leaks
+     
+    +    commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
+    +
+         We must put 'sk' reference before returning.
+     
+         Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
+         Signed-off-by: Florian Westphal <fw@strlen.de>
+         Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+    +    [Denis: minor fix to resolve merge conflict.]
+    +    Signed-off-by: Denis Arefev <arefev@swemel.ru>
+     
+      ## net/netfilter/nft_socket.c ##
+     @@ net/netfilter/nft_socket.c: static void nft_socket_eval(const struct nft_expr *expr,
+    - 			*dest = READ_ONCE(sk->sk_mark);
+    + 			*dest = sk->sk_mark;
+      		} else {
+      			regs->verdict.code = NFT_BREAK;
+     -			return;
+    @@ net/netfilter/nft_socket.c: static void nft_socket_eval(const struct nft_expr *e
+      		}
+      		nft_socket_wildcard(pkt, regs, sk, dest);
+      		break;
+    -@@ net/netfilter/nft_socket.c: static void nft_socket_eval(const struct nft_expr *expr,
+    - 	case NFT_SOCKET_CGROUPV2:
+    - 		if (!nft_sock_get_eval_cgroupv2(dest, sk, pkt, priv->level)) {
+    - 			regs->verdict.code = NFT_BREAK;
+    --			return;
+    -+			goto out_put_sk;
+    - 		}
+    - 		break;
+    - #endif
+     @@ net/netfilter/nft_socket.c: static void nft_socket_eval(const struct nft_expr *expr,
+      		regs->verdict.code = NFT_BREAK;
+      	}
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-index 5b2493bb8dd9..37acaf62f5c7 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-@@ -362,7 +362,6 @@ pca9450: pmic@25 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		reg = <0x25>;
--		sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
- 
- 		/*
- 		 * The bootloader is expected to switch on the I2C level shifter for the TLA2024 ADC
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.10.y       |  Success    |  Success   |
 
