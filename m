@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84840ACB535
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E3CACB8CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D15BF9E49AC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CA1A1C257FE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E502223DFD;
-	Mon,  2 Jun 2025 14:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41621221DBD;
+	Mon,  2 Jun 2025 15:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAQrIMQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0x4Dv7L6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C835A221DB7;
-	Mon,  2 Jun 2025 14:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2545221F10;
+	Mon,  2 Jun 2025 15:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875006; cv=none; b=UJFqS9fOcEYDqtYqXyhoknUQ6QHZe4qKBdf7XBjzIcbF1xVU//pVEyPoNtzmn1cdjHD1Xq1Y2m0yGC9DDJsN0H2xEq9LLWQFeTKyPX4sYJI9H5G+b30b4s4HbMzFROwb6XgR8kwM+pkUspUjyyQfL1i05PGSyNL48YVaJbe8mIg=
+	t=1748877383; cv=none; b=r0HC02z0rq90sN4IGmJvO8DJsXztiPET3rMblg/SfajKNYm+GixDaOdspmMVcbBzcZ2QkATtvUrO3P+TJzpngrlrXDraNP3kme/yP0+Y9CxhmTuHeU6xXz0msCOhbvRaPpXeoNu3QlDp0d15wvcpCuaOTW3+XGyPphDYwaXiFAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875006; c=relaxed/simple;
-	bh=wdW2To7yemT9ga+/av8y71sBlEvmCZ+LLdst7XazjyM=;
+	s=arc-20240116; t=1748877383; c=relaxed/simple;
+	bh=PmM690IWJNcOwMtN5ZNdami2z0fMDaz+6phHWjiYVec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C5Afk9tKbRzWVN2nQFHuvYYP2BymJSIVLpVCiI8V5TT7JtJdJZY+k7rEFzS+7w90XnQPjqZTgu4LBD+0TJOifKD35TFPFNPMald6mm9DqBR2eTO8yALJ8mLTMeeSYTE6jjQwEMJBL2z8BPlLY4WAblBvWNunHELhEbG02+qt52E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAQrIMQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADADC4CEEB;
-	Mon,  2 Jun 2025 14:36:46 +0000 (UTC)
+	 MIME-Version; b=GwIiQKiLa6NhCTGaMwwbs28XFyHwExuMsr9L7K86TZklUeH3zYAG0CzQsaCYrs12Dmlnos+am+8slrnfeIj6h6pRGV9c77f5faGv/irUx6q/O8sHAce6tA6RCbQYIMtIVEKlfUa/3RRgAOtJpEWD4KjdXgPZOktuyKX5eelVOnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0x4Dv7L6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F747C4CEEE;
+	Mon,  2 Jun 2025 15:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875006;
-	bh=wdW2To7yemT9ga+/av8y71sBlEvmCZ+LLdst7XazjyM=;
+	s=korg; t=1748877382;
+	bh=PmM690IWJNcOwMtN5ZNdami2z0fMDaz+6phHWjiYVec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAQrIMQmOZHV/oVgyUCd3a0fJ0u+OJ4AhYTw332jzbuB3JsQ5zkGlyfbQmFtlkQWc
-	 0VM/EGRc7rhIK//PUhLpVFYuRiwkcuNKxltaPw/lMT8z7bTXne/Ve3b1RBubkfGb1F
-	 VSr65g5/87bAIcAMVv3c/UbRxP9LSgJnCdd8T6jo=
+	b=0x4Dv7L6f+0iF0yoLt2YUp+g3L+OIKUVxn3KzU6V1jFkqz105o0z1vL5mtr5I6BRR
+	 FZCEPAi/kn+eE9RB5XItdTmBLhysVGWnVaGbQZy5QqFcpts5Jv4BkykxmLFSf0H4S0
+	 Q1KJ+TsKCsYMWRQMt492RG1rJ3yOKR8M+hIa1bhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valtteri Koskivuori <vkoskiv@gmail.com>,
-	Jonathan Woithe <jwoithe@just42.net>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/204] platform/x86: fujitsu-laptop: Support Lifebook S2110 hotkeys
-Date: Mon,  2 Jun 2025 15:48:55 +0200
-Message-ID: <20250602134303.609085772@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Wang Zhaolong <wangzhaolong1@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 260/325] smb: client: Fix use-after-free in cifs_fill_dirent
+Date: Mon,  2 Jun 2025 15:48:56 +0200
+Message-ID: <20250602134330.340149528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +60,176 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valtteri Koskivuori <vkoskiv@gmail.com>
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
 
-[ Upstream commit a7e255ff9fe4d9b8b902023aaf5b7a673786bb50 ]
+commit a7a8fe56e932a36f43e031b398aef92341bf5ea0 upstream.
 
-The S2110 has an additional set of media playback control keys enabled
-by a hardware toggle button that switches the keys between "Application"
-and "Player" modes. Toggling "Player" mode just shifts the scancode of
-each hotkey up by 4.
+There is a race condition in the readdir concurrency process, which may
+access the rsp buffer after it has been released, triggering the
+following KASAN warning.
 
-Add defines for new scancodes, and a keymap and dmi id for the S2110.
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in cifs_fill_dirent+0xb03/0xb60 [cifs]
+ Read of size 4 at addr ffff8880099b819c by task a.out/342975
 
-Tested on a Fujitsu Lifebook S2110.
+ CPU: 2 UID: 0 PID: 342975 Comm: a.out Not tainted 6.15.0-rc6+ #240 PREEMPT(full)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x53/0x70
+  print_report+0xce/0x640
+  kasan_report+0xb8/0xf0
+  cifs_fill_dirent+0xb03/0xb60 [cifs]
+  cifs_readdir+0x12cb/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f996f64b9f9
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89
+ f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+ f0 ff ff  0d f7 c3 0c 00 f7 d8 64 89 8
+ RSP: 002b:00007f996f53de78 EFLAGS: 00000207 ORIG_RAX: 000000000000004e
+ RAX: ffffffffffffffda RBX: 00007f996f53ecdc RCX: 00007f996f64b9f9
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+ RBP: 00007f996f53dea0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000207 R12: ffffffffffffff88
+ R13: 0000000000000000 R14: 00007ffc8cd9a500 R15: 00007f996f51e000
+  </TASK>
 
-Signed-off-by: Valtteri Koskivuori <vkoskiv@gmail.com>
-Acked-by: Jonathan Woithe <jwoithe@just42.net>
-Link: https://lore.kernel.org/r/20250509184251.713003-1-vkoskiv@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Allocated by task 408:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  __kasan_slab_alloc+0x6e/0x70
+  kmem_cache_alloc_noprof+0x117/0x3d0
+  mempool_alloc_noprof+0xf2/0x2c0
+  cifs_buf_get+0x36/0x80 [cifs]
+  allocate_buffers+0x1d2/0x330 [cifs]
+  cifs_demultiplex_thread+0x22b/0x2690 [cifs]
+  kthread+0x394/0x720
+  ret_from_fork+0x34/0x70
+  ret_from_fork_asm+0x1a/0x30
+
+ Freed by task 342979:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  kasan_save_free_info+0x3b/0x60
+  __kasan_slab_free+0x37/0x50
+  kmem_cache_free+0x2b8/0x500
+  cifs_buf_release+0x3c/0x70 [cifs]
+  cifs_readdir+0x1c97/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents64+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ The buggy address belongs to the object at ffff8880099b8000
+  which belongs to the cache cifs_request of size 16588
+ The buggy address is located 412 bytes inside of
+  freed 16588-byte region [ffff8880099b8000, ffff8880099bc0cc)
+
+ The buggy address belongs to the physical page:
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x99b8
+ head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ anon flags: 0x80000000000040(head|node=0|zone=1)
+ page_type: f5(slab)
+ raw: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ raw: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ head: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000003 ffffea0000266e01 00000000ffffffff 00000000ffffffff
+ head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffff8880099b8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ >ffff8880099b8180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                             ^
+  ffff8880099b8200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ==================================================================
+
+POC is available in the link [1].
+
+The problem triggering process is as follows:
+
+Process 1                       Process 2
+-----------------------------------------------------------------
+cifs_readdir
+  /* file->private_data == NULL */
+  initiate_cifs_search
+    cifsFile = kzalloc(sizeof(struct cifsFileInfo), GFP_KERNEL);
+    smb2_query_dir_first ->query_dir_first()
+      SMB2_query_directory
+        SMB2_query_directory_init
+        cifs_send_recv
+        smb2_parse_query_directory
+          srch_inf->ntwrk_buf_start = (char *)rsp;
+          srch_inf->srch_entries_start = (char *)rsp + ...
+          srch_inf->last_entry = (char *)rsp + ...
+          srch_inf->smallBuf = true;
+  find_cifs_entry
+    /* if (cfile->srch_inf.ntwrk_buf_start) */
+    cifs_small_buf_release(cfile->srch_inf // free
+
+                        cifs_readdir  ->iterate_shared()
+                          /* file->private_data != NULL */
+                          find_cifs_entry
+                            /* in while (...) loop */
+                            smb2_query_dir_next  ->query_dir_next()
+                              SMB2_query_directory
+                                SMB2_query_directory_init
+                                cifs_send_recv
+                                  compound_send_recv
+                                    smb_send_rqst
+                                    __smb_send_rqst
+                                      rc = -ERESTARTSYS;
+                                      /* if (fatal_signal_pending()) */
+                                      goto out;
+                                      return rc
+                            /* if (cfile->srch_inf.last_entry) */
+                            cifs_save_resume_key()
+                              cifs_fill_dirent // UAF
+                            /* if (rc) */
+                            return -ENOENT;
+
+Fix this by ensuring the return code is checked before using pointers
+from the srch_inf.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220131 [1]
+Fixes: a364bc0b37f1 ("[CIFS] fix saving of resume key before CIFSFindNext")
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/fujitsu-laptop.c | 33 +++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ fs/smb/client/readdir.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
-index 80929380ec7e3..04ccfdd99e277 100644
---- a/drivers/platform/x86/fujitsu-laptop.c
-+++ b/drivers/platform/x86/fujitsu-laptop.c
-@@ -17,13 +17,13 @@
- /*
-  * fujitsu-laptop.c - Fujitsu laptop support, providing access to additional
-  * features made available on a range of Fujitsu laptops including the
-- * P2xxx/P5xxx/S6xxx/S7xxx series.
-+ * P2xxx/P5xxx/S2xxx/S6xxx/S7xxx series.
-  *
-  * This driver implements a vendor-specific backlight control interface for
-  * Fujitsu laptops and provides support for hotkeys present on certain Fujitsu
-  * laptops.
-  *
-- * This driver has been tested on a Fujitsu Lifebook S6410, S7020 and
-+ * This driver has been tested on a Fujitsu Lifebook S2110, S6410, S7020 and
-  * P8010.  It should work on most P-series and S-series Lifebooks, but
-  * YMMV.
-  *
-@@ -102,7 +102,11 @@
- #define KEY2_CODE			0x411
- #define KEY3_CODE			0x412
- #define KEY4_CODE			0x413
--#define KEY5_CODE			0x420
-+#define KEY5_CODE			0x414
-+#define KEY6_CODE			0x415
-+#define KEY7_CODE			0x416
-+#define KEY8_CODE			0x417
-+#define KEY9_CODE			0x420
- 
- /* Hotkey ringbuffer limits */
- #define MAX_HOTKEY_RINGBUFFER_SIZE	100
-@@ -450,7 +454,7 @@ static const struct key_entry keymap_default[] = {
- 	{ KE_KEY, KEY2_CODE,            { KEY_PROG2 } },
- 	{ KE_KEY, KEY3_CODE,            { KEY_PROG3 } },
- 	{ KE_KEY, KEY4_CODE,            { KEY_PROG4 } },
--	{ KE_KEY, KEY5_CODE,            { KEY_RFKILL } },
-+	{ KE_KEY, KEY9_CODE,            { KEY_RFKILL } },
- 	/* Soft keys read from status flags */
- 	{ KE_KEY, FLAG_RFKILL,          { KEY_RFKILL } },
- 	{ KE_KEY, FLAG_TOUCHPAD_TOGGLE, { KEY_TOUCHPAD_TOGGLE } },
-@@ -474,6 +478,18 @@ static const struct key_entry keymap_p8010[] = {
- 	{ KE_END, 0 }
- };
- 
-+static const struct key_entry keymap_s2110[] = {
-+	{ KE_KEY, KEY1_CODE, { KEY_PROG1 } }, /* "A" */
-+	{ KE_KEY, KEY2_CODE, { KEY_PROG2 } }, /* "B" */
-+	{ KE_KEY, KEY3_CODE, { KEY_WWW } },   /* "Internet" */
-+	{ KE_KEY, KEY4_CODE, { KEY_EMAIL } }, /* "E-mail" */
-+	{ KE_KEY, KEY5_CODE, { KEY_STOPCD } },
-+	{ KE_KEY, KEY6_CODE, { KEY_PLAYPAUSE } },
-+	{ KE_KEY, KEY7_CODE, { KEY_PREVIOUSSONG } },
-+	{ KE_KEY, KEY8_CODE, { KEY_NEXTSONG } },
-+	{ KE_END, 0 }
-+};
-+
- static const struct key_entry *keymap = keymap_default;
- 
- static int fujitsu_laptop_dmi_keymap_override(const struct dmi_system_id *id)
-@@ -511,6 +527,15 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
- 		},
- 		.driver_data = (void *)keymap_p8010
- 	},
-+	{
-+		.callback = fujitsu_laptop_dmi_keymap_override,
-+		.ident = "Fujitsu LifeBook S2110",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU SIEMENS"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK S2110"),
-+		},
-+		.driver_data = (void *)keymap_s2110
-+	},
- 	{}
- };
- 
--- 
-2.39.5
-
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -788,11 +788,11 @@ find_cifs_entry(const unsigned int xid,
+ 		rc = server->ops->query_dir_next(xid, tcon, &cfile->fid,
+ 						 search_flags,
+ 						 &cfile->srch_inf);
++		if (rc)
++			return -ENOENT;
+ 		/* FindFirst/Next set last_entry to NULL on malformed reply */
+ 		if (cfile->srch_inf.last_entry)
+ 			cifs_save_resume_key(cfile->srch_inf.last_entry, cfile);
+-		if (rc)
+-			return -ENOENT;
+ 	}
+ 	if (index_to_find < cfile->srch_inf.index_of_last_entry) {
+ 		/* we found the buffer that contains the entry */
 
 
 
