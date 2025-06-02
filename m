@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B17CACB5DD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF083ACB8F3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC721947C95
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDAC394672D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E423182D;
-	Mon,  2 Jun 2025 14:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEB3214A93;
+	Mon,  2 Jun 2025 15:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1APCDW58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fxee7e3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3D02AE9A;
-	Mon,  2 Jun 2025 14:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2972015CD55;
+	Mon,  2 Jun 2025 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875822; cv=none; b=SbFj/zHUKNE7CP5X+klUcsIpXc+Bu+2ZSc+nS6SrwLotQ+Esudoz+foQrmq5KMwMk1ZUc9/iZyKr+VdKO6w18ixUe6WYst2oa5QkWTkgJMee/Is56MFF7/+ou225aBXdLh6HXgA0teHkcNCi4Ak2iZ/pqg13XnchVz9cL02YzNY=
+	t=1748877312; cv=none; b=nRW0hllDV5yU8iDB9QDkgV2GCC+lmz2OnXkjZHoJlosetxGfy2p0do+RPiQPj0CAcelFvNTJ/jpZ/067ByNiNvnhv8nto+jo39ThIOyS5dMD/S+p7ThrHX5RrZ9PD0vFYJp7jcufrDlXszzTdzRGq1+jToD+xUy9ZUUrU9Oqstk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875822; c=relaxed/simple;
-	bh=mWAi7Bg1A0Fl81+zFoWbaYgKBHylV/J+0fEZiTyHI7A=;
+	s=arc-20240116; t=1748877312; c=relaxed/simple;
+	bh=pT4plt0hFY3BcabwB2BebMQN69NkxSKLTBxTdpcncvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sh464yyBXVrGkzutJjARFZi+d+XjNNza6IFwUyegQa3TA59sxxb+/8PblTzAPaK0Tl7zS2VoNRifqUvkLtveGDqmQSCs12ye7Ghr1r4H3v5cASt6kVCGQkHDmQemyXnZDTwFxkocHn3LgUvISefhxXy2hkWMJ0IJibGZWGj+gPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1APCDW58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC6DC4CEEB;
-	Mon,  2 Jun 2025 14:50:21 +0000 (UTC)
+	 MIME-Version; b=mu5bt31NCHYomFGL9RFw4PdxBVpkF+k30dFhuFSPaB2Y4l3KrPh2azorJSKGlYHx8PuTYdh3GDeVhzECykEUy+h+FV1FLC02EwD2BhJXKThHhv1FREONInRbinvlcv8o3wvc2/xMnZmb2YkNRO6nkPVtEAyhJ/XQz+palEwavdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fxee7e3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F68C4CEEB;
+	Mon,  2 Jun 2025 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875821;
-	bh=mWAi7Bg1A0Fl81+zFoWbaYgKBHylV/J+0fEZiTyHI7A=;
+	s=korg; t=1748877311;
+	bh=pT4plt0hFY3BcabwB2BebMQN69NkxSKLTBxTdpcncvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1APCDW58fMA4QrVXSRYprw2G38anLZ/rI/+kYhJoz2mYE5pbwMUHEM5HneTFFB1qH
-	 LeYIiq/tNbOuWbOJ/huUxrvpkoGRliHvCb7E6IH+JkV8xzpTMjQVcRqclu/JtPOqDP
-	 0uRg59I3bRUHGYuMLyKlr5wbvN8rZAS2AStI87M8=
+	b=Fxee7e3KcXODFX/x0jaWbNsJBtTH6sNWcOAMTpvvs41kLEIy3TGoskQcVh/n6MYno
+	 Y0PNfCYw3qyqjiCCOv0OjztMDEYZYS4MmRV4cSW3I6npb0cMJAXrVSHfR5el6gRsDh
+	 PvYngRevv3TV4xnhaNF/aCFX1zUcVFfW7DoYaOoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Louis DeLosSantos <louis.delos.devel@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 227/270] drm: Add valid clones check
+Subject: [PATCH 6.1 236/325] xfrm: Sanitize marks before insert
 Date: Mon,  2 Jun 2025 15:48:32 +0200
-Message-ID: <20250602134316.596714023@linuxfoundation.org>
+Message-ID: <20250602134329.374510440@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit 0b91fda3a1f044141e1e615456ff62508c32b202 ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+Prior to this patch, the mark is sanitized (applying the state's mask to
+the state's value) only on inserts when checking if a conflicting XFRM
+state or policy exists.
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+We discovered in Cilium that this same sanitization does not occur
+in the hot-path __xfrm_state_lookup. In the hot-path, the sk_buff's mark
+is simply compared to the state's value:
+
+    if ((mark & x->mark.m) != x->mark.v)
+        continue;
+
+Therefore, users can define unsanitized marks (ex. 0xf42/0xf00) which will
+never match any packet.
+
+This commit updates __xfrm_state_insert and xfrm_policy_insert to store
+the sanitized marks, thus removing this footgun.
+
+This has the side effect of changing the ip output, as the
+returned mark will have the mask applied to it when printed.
+
+Fixes: 3d6acfa7641f ("xfrm: SA lookups with mark")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Louis DeLosSantos <louis.delos.devel@gmail.com>
+Co-developed-by: Louis DeLosSantos <louis.delos.devel@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ net/xfrm/xfrm_policy.c | 3 +++
+ net/xfrm/xfrm_state.c  | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index dee3b81dec587..8612dd552d392 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -557,6 +557,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index a022f49846879..e015ff225b27a 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -1597,6 +1597,9 @@ int xfrm_policy_insert(int dir, struct xfrm_policy *policy, int excl)
+ 	struct xfrm_policy *delpol;
+ 	struct hlist_head *chain;
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
++	/* Sanitize mark before store */
++	policy->mark.v &= policy->mark.m;
 +
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -720,6 +744,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
+ 	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
+ 	chain = policy_hash_bysel(net, &policy->selector, policy->family, dir);
+ 	if (chain)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index b5047a94c7d01..58c53bb1c5838 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1275,6 +1275,9 @@ static void __xfrm_state_insert(struct xfrm_state *x)
  
- 	/*
+ 	list_add(&x->km.all, &net->xfrm.state_all);
+ 
++	/* Sanitize mark before store */
++	x->mark.v &= x->mark.m;
++
+ 	h = xfrm_dst_hash(net, &x->id.daddr, &x->props.saddr,
+ 			  x->props.reqid, x->props.family);
+ 	hlist_add_head_rcu(&x->bydst, net->xfrm.state_bydst + h);
 -- 
 2.39.5
 
