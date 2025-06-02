@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721D3ACB357
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BE5ACB65C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228BA1940236
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3EBA4A3409
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33B8227E95;
-	Mon,  2 Jun 2025 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA3C239E79;
+	Mon,  2 Jun 2025 14:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMHHT6/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydp1qzvt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6045B227EAC;
-	Mon,  2 Jun 2025 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F022397AA;
+	Mon,  2 Jun 2025 14:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874315; cv=none; b=hSBbsUaS4Eyv6lnzoU7EYcUhD8Au7y8M9ys7ad6PjX2zc++uY3K0GkV4QTrK6eJ+jv3lnm76TInQ0v14Ki/K4c6OGdqnkVEaU8qint04hU7aYs2jNMCou7w6K9yx6dMEH4Mjye/lMHFV6QEMDAtTN8mlQFJ34Mx1DQ+N57XQIfU=
+	t=1748876357; cv=none; b=j7mVQ2MRJjA7ieAPxInBmh8Xk9cS/slDbVgQKHGTflWMgeTUryyjoHYpcZN9MM8UrXDr5D5pOid8eXb5B018Su/QSPTtsIm/YhcnggltINN8g47CIlK/ajgGDITsCJYxaWFY/oGrwsgwDwqrVuYlUr1Ko96UHirabPbDiB85vF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874315; c=relaxed/simple;
-	bh=5tM/DkmY+unEo8OdpkyprjElyk0LPluSl6dAob2Eqc0=;
+	s=arc-20240116; t=1748876357; c=relaxed/simple;
+	bh=wrcbafhR1VSj15sro2uSDSndhgsVMzGxF0lAU/XwMh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzPmLGjC+lpcKTvSHmSeIX1tB/KPMAnhOe/B7AKMcj4/Vk1A6D3/p5EcATzMODkoIb6mq11IO/5nZhHs3lzRRL++geXS7gQNgRomPdwBnp0sNrvpH+hSz0kQEImOD+VzdBl3/7N1j4d7DKoQXtgK0nUUK/xDsgJSx6OH2Pq3q1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMHHT6/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5A0C4CEEB;
-	Mon,  2 Jun 2025 14:25:14 +0000 (UTC)
+	 MIME-Version; b=hi2BfHO2BbekSr9JExLWMazgYedAZD0eQpyrClqdPYcHvDTxKNG9sf0rRTqcsDKtI9CL7Rgs8iQVjwfoHlVAfo3jsdP44c3esbLwysWQq3edP6LYqMPH6KVEpgykOZ0aAV08Dg4Lb+ymkc2fNvvChVw67OcsrgZ0tl/DZ/kZlLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydp1qzvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDD4C4CEEB;
+	Mon,  2 Jun 2025 14:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874315;
-	bh=5tM/DkmY+unEo8OdpkyprjElyk0LPluSl6dAob2Eqc0=;
+	s=korg; t=1748876357;
+	bh=wrcbafhR1VSj15sro2uSDSndhgsVMzGxF0lAU/XwMh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMHHT6/y/5jCRbJL8jz4Kw5ORmJWReoLiRc/zmywWUwSX61TxNI0NEvRm/wUUrGUN
-	 OJHC038LE5AhUXIEG16OqW9zLpTTlChlVboDkSw73+K8LjQl8yv0lbbp9j0VQKXQAQ
-	 HqSy2fIWOnFie2vJ3ilE4P/7RD3ZUWKd5REKJBDI=
+	b=ydp1qzvtmfTDp+yZghjk4BgQ1TyVO9244pOM/y1SvOHweLjTwh+d1PPefDQv8eteS
+	 gsvtf+AwuK+0Wrp3a21oBZ8jEfEJil2L63eOfCDf/xB+iVNrnaxFhv0PF644t7cRGm
+	 eF9hbpFY0I64yD1tOg0o1hSYyhogkap2wLll3rHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 429/444] coredump: fix error handling for replace_fd()
+	Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 121/207] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
 Date: Mon,  2 Jun 2025 15:48:13 +0200
-Message-ID: <20250602134358.352312860@linuxfoundation.org>
+Message-ID: <20250602134303.456510170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Kees Cook <kees@kernel.org>
 
-commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
+[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
 
-The replace_fd() helper returns the file descriptor number on success
-and a negative error code on failure. The current error handling in
-umh_pipe_setup() only works because the file descriptor that is replaced
-is zero but that's pretty volatile. Explicitly check for a negative
-error code.
+GCC can see that the value range for "order" is capped, but this leads
+it to consider that it might be negative, leading to a false positive
+warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
 
-Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
+      |                                    ~~~~~~~~~~~^~~
+  'mlx4_alloc_db_from_pgdir': events 1-2
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     |                         |                                                   |                     |                         (2) out of array bounds here
+      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
+                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
+../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
+  664 |         unsigned long          *bits[2];
+      |                                 ^~~~
+
+Switch the argument to unsigned int, which removes the compiler needing
+to consider negative values.
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
+ include/linux/mlx4/device.h                | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -502,7 +502,9 @@ static int umh_pipe_setup(struct subproc
- {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
--	int err = create_pipe_files(files, 0);
-+	int err;
-+
-+	err = create_pipe_files(files, 0);
- 	if (err)
- 		return err;
- 
-@@ -510,10 +512,13 @@ static int umh_pipe_setup(struct subproc
- 
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
-+	if (err < 0)
-+		return err;
-+
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
- 
--	return err;
-+	return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+index b330020dc0d67..f2bded847e61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
++++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
  }
  
- void do_coredump(const kernel_siginfo_t *siginfo)
+ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+-				    struct mlx4_db *db, int order)
++				    struct mlx4_db *db, unsigned int order)
+ {
+-	int o;
++	unsigned int o;
+ 	int i;
+ 
+ 	for (o = order; o <= 1; ++o) {
+@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	return 0;
+ }
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 	struct mlx4_db_pgdir *pgdir;
+diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
+index 30bb59fe970cb..40ebf0502f427 100644
+--- a/include/linux/mlx4/device.h
++++ b/include/linux/mlx4/device.h
+@@ -1115,7 +1115,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ 		       struct mlx4_buf *buf);
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
+ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 
+ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
+-- 
+2.39.5
+
 
 
 
