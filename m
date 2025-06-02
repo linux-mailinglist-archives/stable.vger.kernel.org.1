@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7FFACB5A0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0ADACB3FD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8949019477AD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F54B194764F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6763225791;
-	Mon,  2 Jun 2025 14:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC7D228CA9;
+	Mon,  2 Jun 2025 14:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhztLbLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fckwEohz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601A4225771;
-	Mon,  2 Jun 2025 14:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F212288EE;
+	Mon,  2 Jun 2025 14:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875732; cv=none; b=dG70Ym2W4exBAoM3QQryJe8QPxiOGNcfi7W7F9vQSZ9arNnnRQIea+9miSPZsVdRoZ2eDVAeThrQOfFCdCZ9+79Bo/MExmcQrsu2oJ95jxDF2XS9gN+V+MOOH6LaqEXyfaBGwYf6hAzouR4SPLb/g/I4QDqGZdVJnJk2e2zEdH4=
+	t=1748874824; cv=none; b=jkUiwQFSDDTKyiWSyMGvSq/n77tIgko3CgSDHNPZqgtSaHaF1rTwRRSAHqlg9nws4sBk4lk6qjrMsyv2UMniMpmUBC9tbObPO/piNf2NJ0hR95qzTDuAmP5ttJVaPGssMcl67q0FZgWHHirmwH0l33UQlPwhXnNVjthtD2JelnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875732; c=relaxed/simple;
-	bh=lgmju0h5hTiHVhdaTq4i9xq6Oh0o7N7MQZVn+HXUHxY=;
+	s=arc-20240116; t=1748874824; c=relaxed/simple;
+	bh=y66gCV3EEyyYpLn52ogz3JIYpFkDQGFzcOggJMxUzxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkLUyAtVLbB1qn0u5WdH++SktQ1h2szPRdyNoZ/b5dieM6v0bhkxjAPMF0+fg35i85m/e0zEWBpk7Zelq7VOK31P9D9RhBuWWBKU73XQZYdqs+BDPKbs6iBpp0fJ2/IzfIE/NgknPsbpfIoRCS9eWj5jZcRYT2YV1IP3B/2+u38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhztLbLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C031DC4CEEB;
-	Mon,  2 Jun 2025 14:48:51 +0000 (UTC)
+	 MIME-Version; b=hm1WBR4XzaaGwcuH0kwWCc95greS9SuoSbFQ8RPVycTvwm8+Bh3fMmhrEn4clZKbZI+NM+TXWEvneZ55TNYm4AblKrx6tSE9iiT3I5XMhyE8tf0wQUyFn3PKLpxLEVCeAVs9AEc/YFMN9uKYkRAA+eCboQk6Ex0jK9LKobqwQqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fckwEohz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19527C4CEEE;
+	Mon,  2 Jun 2025 14:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875732;
-	bh=lgmju0h5hTiHVhdaTq4i9xq6Oh0o7N7MQZVn+HXUHxY=;
+	s=korg; t=1748874824;
+	bh=y66gCV3EEyyYpLn52ogz3JIYpFkDQGFzcOggJMxUzxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhztLbLsFlu4OaDm1bRpVh9Uy5/if+GXvJ2sS+k4O2bNPCA6oxgyXLuf/1U4anATi
-	 BDYsGfH8JKa1eYRQ58ega7525XVLaUouySjcUXi2H6R9G2TYUc+/mgT3qnCVOA9Pnp
-	 pBCWXekKTrVVttvmiEcEhWdSWkJhHbfMIN8KzC90=
+	b=fckwEohzqeYW0u3W73iTS6FXgOxQM1xPqjPjAuB7YjUIxseoLxaUlR6kktcOCuypI
+	 UzStdkUP2DQhZldLCIqO/asRs4oz/S/n2dxGfFvyYYEVBXynhZsLfz+hRoTFRndcY4
+	 eb/HtWqSCUG5PHogaKMjsl0S9aLzzPKjZKRFmWKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 196/270] ACPI: HED: Always initialize before evged
+Subject: [PATCH 5.4 148/204] phy: core: dont require set_mode() callback for phy_get_mode() to work
 Date: Mon,  2 Jun 2025 15:48:01 +0200
-Message-ID: <20250602134315.208432042@linuxfoundation.org>
+Message-ID: <20250602134301.466147621@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaofei Tan <tanxiaofei@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
+[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
 
-When the HED driver is built-in, it initializes after evged because they
-both are at the same initcall level, so the initialization ordering
-depends on the Makefile order.  However, this prevents RAS records
-coming in between the evged driver initialization and the HED driver
-initialization from being handled.
+As reported by Damon Ding, the phy_get_mode() call doesn't work as
+expected unless the PHY driver has a .set_mode() call. This prompts PHY
+drivers to have empty stubs for .set_mode() for the sake of being able
+to get the mode.
 
-If the number of such RAS records is above the APEI HEST error source
-number, the HEST resources may be exhausted, and that may affect
-subsequent RAS error reporting.
+Make .set_mode() callback truly optional and update PHY's mode even if
+it there is none.
 
-To fix this issue, change the initcall level of HED to subsys_initcall
-and prevent the driver from being built as a module by changing ACPI_HED
-in Kconfig from "tristate" to "bool".
-
-Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
+Tested-by: Damon Ding <damon.ding@rock-chips.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/Kconfig | 2 +-
- drivers/acpi/hed.c   | 7 ++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/phy/phy-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-index b5ea34c340ccc..3ef66a39111c0 100644
---- a/drivers/acpi/Kconfig
-+++ b/drivers/acpi/Kconfig
-@@ -432,7 +432,7 @@ config ACPI_SBS
- 	  the modules will be called sbs and sbshc.
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index c94a0d2c45161..917e01af4769f 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -360,13 +360,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
  
- config ACPI_HED
--	tristate "Hardware Error Device"
-+	bool "Hardware Error Device"
- 	help
- 	  This driver supports the Hardware Error Device (PNP0C33),
- 	  which is used to report some hardware errors notified via
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index cf148287e2baf..75166839c99e0 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
- 		.notify = acpi_hed_notify,
- 	},
- };
--module_acpi_driver(acpi_hed_driver);
-+
-+static int __init acpi_hed_driver_init(void)
-+{
-+	return acpi_bus_register_driver(&acpi_hed_driver);
-+}
-+subsys_initcall(acpi_hed_driver_init);
+ int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
+ {
+-	int ret;
++	int ret = 0;
  
- ACPI_MODULE_NAME("hed");
- MODULE_AUTHOR("Huang Ying");
+-	if (!phy || !phy->ops->set_mode)
++	if (!phy)
+ 		return 0;
+ 
+ 	mutex_lock(&phy->mutex);
+-	ret = phy->ops->set_mode(phy, mode, submode);
++	if (phy->ops->set_mode)
++		ret = phy->ops->set_mode(phy, mode, submode);
+ 	if (!ret)
+ 		phy->attrs.mode = mode;
+ 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
