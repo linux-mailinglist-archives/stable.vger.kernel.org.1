@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEAAACB5F7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84840ACB535
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E241BC4AA2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D15BF9E49AC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35292309BE;
-	Mon,  2 Jun 2025 14:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E502223DFD;
+	Mon,  2 Jun 2025 14:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFPB/BWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAQrIMQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6078E229B1E;
-	Mon,  2 Jun 2025 14:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C835A221DB7;
+	Mon,  2 Jun 2025 14:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875810; cv=none; b=oIY3Lw/p18/hU1znWx7+GrUTTX4jdYezFF84Hk5aKc2SKSABmaAwH1lzxqSgLZWGEbQpKmtVYtFulm1uDVwLuWfr92ryAxQcKs1VvxBRKSlMtB2xBmJv1ibFwjoIrajjBMi0beGGb902iNU14myPR2L56xZYyMDSsViERrhmMMo=
+	t=1748875006; cv=none; b=UJFqS9fOcEYDqtYqXyhoknUQ6QHZe4qKBdf7XBjzIcbF1xVU//pVEyPoNtzmn1cdjHD1Xq1Y2m0yGC9DDJsN0H2xEq9LLWQFeTKyPX4sYJI9H5G+b30b4s4HbMzFROwb6XgR8kwM+pkUspUjyyQfL1i05PGSyNL48YVaJbe8mIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875810; c=relaxed/simple;
-	bh=dhCqnB+gDY3SVl2vkokWSoGYK2MwrUSFxcP+WuVS2tc=;
+	s=arc-20240116; t=1748875006; c=relaxed/simple;
+	bh=wdW2To7yemT9ga+/av8y71sBlEvmCZ+LLdst7XazjyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7eIMkd8zepA+cbnVWFiL6LJjPJRwriZG+HLy4Kx9i+K5oD2h3xdPuufV2wNRd+PeVdxeQsTmXgD1SLAqkJ2b2iYEvlsYDH62OdSV4n7YSTG9mitCYL0fj1WxMRnnQ+P5AL/aSuU/JdyA5kGuTSZ20zpbALIrcezbtnB5khULhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFPB/BWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74F7C4CEEB;
-	Mon,  2 Jun 2025 14:50:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C5Afk9tKbRzWVN2nQFHuvYYP2BymJSIVLpVCiI8V5TT7JtJdJZY+k7rEFzS+7w90XnQPjqZTgu4LBD+0TJOifKD35TFPFNPMald6mm9DqBR2eTO8yALJ8mLTMeeSYTE6jjQwEMJBL2z8BPlLY4WAblBvWNunHELhEbG02+qt52E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAQrIMQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADADC4CEEB;
+	Mon,  2 Jun 2025 14:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875809;
-	bh=dhCqnB+gDY3SVl2vkokWSoGYK2MwrUSFxcP+WuVS2tc=;
+	s=korg; t=1748875006;
+	bh=wdW2To7yemT9ga+/av8y71sBlEvmCZ+LLdst7XazjyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFPB/BWMxyVYUPc8ecXTSZXrs4a0xzwJty5Qy3lKux9YFm/ohXQtOLYn+taoWoVhF
-	 yLNh/1lPNJ+Kr3gF1+hC20Fk9R/MokbVEtKDwif6BUyOb7PJAm9iyq8jWlz044V3lf
-	 NZfBUHQ+DaSKyqOXQXO5T9YulrFdBk0UiYieDDmk=
+	b=nAQrIMQmOZHV/oVgyUCd3a0fJ0u+OJ4AhYTw332jzbuB3JsQ5zkGlyfbQmFtlkQWc
+	 0VM/EGRc7rhIK//PUhLpVFYuRiwkcuNKxltaPw/lMT8z7bTXne/Ve3b1RBubkfGb1F
+	 VSr65g5/87bAIcAMVv3c/UbRxP9LSgJnCdd8T6jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Valtteri Koskivuori <vkoskiv@gmail.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 250/270] spi: spi-fsl-dspi: Halt the module after a new message transfer
+Subject: [PATCH 5.4 202/204] platform/x86: fujitsu-laptop: Support Lifebook S2110 hotkeys
 Date: Mon,  2 Jun 2025 15:48:55 +0200
-Message-ID: <20250602134317.549341824@linuxfoundation.org>
+Message-ID: <20250602134303.609085772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+From: Valtteri Koskivuori <vkoskiv@gmail.com>
 
-[ Upstream commit 8a30a6d35a11ff5ccdede7d6740765685385a917 ]
+[ Upstream commit a7e255ff9fe4d9b8b902023aaf5b7a673786bb50 ]
 
-The XSPI mode implementation in this driver still uses the EOQ flag to
-signal the last word in a transmission and deassert the PCS signal.
-However, at speeds lower than ~200kHZ, the PCS signal seems to remain
-asserted even when SR[EOQF] = 1 indicates the end of a transmission.
-This is a problem for target devices which require the deassertation of
-the PCS signal between transfers.
+The S2110 has an additional set of media playback control keys enabled
+by a hardware toggle button that switches the keys between "Application"
+and "Player" modes. Toggling "Player" mode just shifts the scancode of
+each hotkey up by 4.
 
-Hence, this commit 'forces' the deassertation of the PCS by stopping the
-module through MCR[HALT] after completing a new transfer. According to
-the reference manual, the module stops or transitions from the Running
-state to the Stopped state after the current frame, when any one of the
-following conditions exist:
-- The value of SR[EOQF] = 1.
-- The chip is in Debug mode and the value of MCR[FRZ] = 1.
-- The value of MCR[HALT] = 1.
+Add defines for new scancodes, and a keymap and dmi id for the S2110.
 
-This shouldn't be done if the last transfer in the message has cs_change
-set.
+Tested on a Fujitsu Lifebook S2110.
 
-Fixes: ea93ed4c181b ("spi: spi-fsl-dspi: Use EOQ for last word in buffer even for XSPI mode")
-Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-2-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Valtteri Koskivuori <vkoskiv@gmail.com>
+Acked-by: Jonathan Woithe <jwoithe@just42.net>
+Link: https://lore.kernel.org/r/20250509184251.713003-1-vkoskiv@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/platform/x86/fujitsu-laptop.c | 33 +++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 7c26eef0570e7..fdfd104fde9e2 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -61,6 +61,7 @@
- #define SPI_SR_TFIWF			BIT(18)
- #define SPI_SR_RFDF			BIT(17)
- #define SPI_SR_CMDFFF			BIT(16)
-+#define SPI_SR_TXRXS			BIT(30)
- #define SPI_SR_CLEAR			(SPI_SR_TCFQF | \
- 					SPI_SR_TFUF | SPI_SR_TFFF | \
- 					SPI_SR_CMDTCF | SPI_SR_SPEF | \
-@@ -907,9 +908,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 	struct spi_device *spi = message->spi;
- 	struct spi_transfer *transfer;
- 	int status = 0;
-+	u32 val = 0;
-+	bool cs_change = false;
+diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
+index 80929380ec7e3..04ccfdd99e277 100644
+--- a/drivers/platform/x86/fujitsu-laptop.c
++++ b/drivers/platform/x86/fujitsu-laptop.c
+@@ -17,13 +17,13 @@
+ /*
+  * fujitsu-laptop.c - Fujitsu laptop support, providing access to additional
+  * features made available on a range of Fujitsu laptops including the
+- * P2xxx/P5xxx/S6xxx/S7xxx series.
++ * P2xxx/P5xxx/S2xxx/S6xxx/S7xxx series.
+  *
+  * This driver implements a vendor-specific backlight control interface for
+  * Fujitsu laptops and provides support for hotkeys present on certain Fujitsu
+  * laptops.
+  *
+- * This driver has been tested on a Fujitsu Lifebook S6410, S7020 and
++ * This driver has been tested on a Fujitsu Lifebook S2110, S6410, S7020 and
+  * P8010.  It should work on most P-series and S-series Lifebooks, but
+  * YMMV.
+  *
+@@ -102,7 +102,11 @@
+ #define KEY2_CODE			0x411
+ #define KEY3_CODE			0x412
+ #define KEY4_CODE			0x413
+-#define KEY5_CODE			0x420
++#define KEY5_CODE			0x414
++#define KEY6_CODE			0x415
++#define KEY7_CODE			0x416
++#define KEY8_CODE			0x417
++#define KEY9_CODE			0x420
  
- 	message->actual_length = 0;
+ /* Hotkey ringbuffer limits */
+ #define MAX_HOTKEY_RINGBUFFER_SIZE	100
+@@ -450,7 +454,7 @@ static const struct key_entry keymap_default[] = {
+ 	{ KE_KEY, KEY2_CODE,            { KEY_PROG2 } },
+ 	{ KE_KEY, KEY3_CODE,            { KEY_PROG3 } },
+ 	{ KE_KEY, KEY4_CODE,            { KEY_PROG4 } },
+-	{ KE_KEY, KEY5_CODE,            { KEY_RFKILL } },
++	{ KE_KEY, KEY9_CODE,            { KEY_RFKILL } },
+ 	/* Soft keys read from status flags */
+ 	{ KE_KEY, FLAG_RFKILL,          { KEY_RFKILL } },
+ 	{ KE_KEY, FLAG_TOUCHPAD_TOGGLE, { KEY_TOUCHPAD_TOGGLE } },
+@@ -474,6 +478,18 @@ static const struct key_entry keymap_p8010[] = {
+ 	{ KE_END, 0 }
+ };
  
-+	/* Put DSPI in running mode if halted. */
-+	regmap_read(dspi->regmap, SPI_MCR, &val);
-+	if (val & SPI_MCR_HALT) {
-+		regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, 0);
-+		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
-+		       !(val & SPI_SR_TXRXS))
-+			;
-+	}
++static const struct key_entry keymap_s2110[] = {
++	{ KE_KEY, KEY1_CODE, { KEY_PROG1 } }, /* "A" */
++	{ KE_KEY, KEY2_CODE, { KEY_PROG2 } }, /* "B" */
++	{ KE_KEY, KEY3_CODE, { KEY_WWW } },   /* "Internet" */
++	{ KE_KEY, KEY4_CODE, { KEY_EMAIL } }, /* "E-mail" */
++	{ KE_KEY, KEY5_CODE, { KEY_STOPCD } },
++	{ KE_KEY, KEY6_CODE, { KEY_PLAYPAUSE } },
++	{ KE_KEY, KEY7_CODE, { KEY_PREVIOUSSONG } },
++	{ KE_KEY, KEY8_CODE, { KEY_NEXTSONG } },
++	{ KE_END, 0 }
++};
 +
- 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
- 		dspi->cur_transfer = transfer;
- 		dspi->cur_msg = message;
-@@ -934,6 +946,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
- 		}
+ static const struct key_entry *keymap = keymap_default;
  
-+		cs_change = transfer->cs_change;
- 		dspi->tx = transfer->tx_buf;
- 		dspi->rx = transfer->rx_buf;
- 		dspi->len = transfer->len;
-@@ -966,6 +979,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 		spi_transfer_delay_exec(transfer);
- 	}
- 
-+	if (status || !cs_change) {
-+		/* Put DSPI in stop mode */
-+		regmap_update_bits(dspi->regmap, SPI_MCR,
-+				   SPI_MCR_HALT, SPI_MCR_HALT);
-+		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
-+		       val & SPI_SR_TXRXS)
-+			;
-+	}
-+
- 	message->status = status;
- 	spi_finalize_current_message(ctlr);
- 
-@@ -1206,6 +1228,8 @@ static int dspi_init(struct fsl_dspi *dspi)
- 	if (!spi_controller_is_slave(dspi->ctlr))
- 		mcr |= SPI_MCR_MASTER;
- 
-+	mcr |= SPI_MCR_HALT;
-+
- 	regmap_write(dspi->regmap, SPI_MCR, mcr);
- 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+ static int fujitsu_laptop_dmi_keymap_override(const struct dmi_system_id *id)
+@@ -511,6 +527,15 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
+ 		},
+ 		.driver_data = (void *)keymap_p8010
+ 	},
++	{
++		.callback = fujitsu_laptop_dmi_keymap_override,
++		.ident = "Fujitsu LifeBook S2110",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU SIEMENS"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK S2110"),
++		},
++		.driver_data = (void *)keymap_s2110
++	},
+ 	{}
+ };
  
 -- 
 2.39.5
