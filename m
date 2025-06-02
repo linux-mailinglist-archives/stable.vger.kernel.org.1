@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA294ACB733
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4573ACB3E7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B551C22D7F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E59E7AD409
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8992C227BA4;
-	Mon,  2 Jun 2025 15:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D50322A4E8;
+	Mon,  2 Jun 2025 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJvDGRV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYhi7ili"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4214A224AF3;
-	Mon,  2 Jun 2025 15:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B6622A1E6;
+	Mon,  2 Jun 2025 14:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876704; cv=none; b=im91VqRKKnKpk17t+DdXJagSpecp/OiS57mvXudDvkQMRr1BcuViCePlNAX8EObSOvM/X9eGKvWH/mryAYj6xwCPufxFFvEOL1GwvUoaFNR7nXx1iM9QyQwPAhWWetH5F5qVVyHyM3JFW+e+GwFFLNF141CnoOMyZqkYwStYP9s=
+	t=1748875206; cv=none; b=E+8R3bkdxFy/GHuzeDGiYPWADy5g9q5Vi/1YF/INejqrMpoBE5jMLUIB1LBowK5xvwefN0zxFlwUE60SIkFE+GY2oJtCkLSxbT19tnMki/xREm1EbTwyLPKRFz9q73WY8q/N2Z/J+IvsOz+xAfx+sUP3BuIuBnvwy13Cs4pcNxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876704; c=relaxed/simple;
-	bh=ogMsFBVYMcuRjv+Lfbd78Nyj2SYgvRF8YUX2zAb9Fbs=;
+	s=arc-20240116; t=1748875206; c=relaxed/simple;
+	bh=Afiko+hniFQoNWIUpoSUQcewR+ezzZYQsY9jXmFV0kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBIT+dUw1vQc8AR0r8V69Qe9HYfjofIxYg+F+WAPqSje2BKlSDH90T8yILtAZiKOLuWtaF16Hwp+XlKGC33WRSg+c6sjllCv87Gj4EZfeIqxasVq43UvGH8dmXl7iQ4xy7DQz+pRQL14nf+j7w5hjudJuhzih6P56gIWAdyl+Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJvDGRV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AC5C4CEEB;
-	Mon,  2 Jun 2025 15:05:03 +0000 (UTC)
+	 MIME-Version; b=XNjW8zA+NwZlBjWtBkHUirdkpDguMjGDQqyZKMrjTZVR1HbSerUz8SZ6CFf38kbbHbwGEGbB7NfB1ESVizcepyKH3lX8HO09Me3mwWYFIzTcyl6Atya2etE5yYJP7ziEU+tRzWHlnepFEMvxt2N9tCc3VWJH+fCrur14nyc7nx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYhi7ili; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4E2C4CEEB;
+	Mon,  2 Jun 2025 14:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876704;
-	bh=ogMsFBVYMcuRjv+Lfbd78Nyj2SYgvRF8YUX2zAb9Fbs=;
+	s=korg; t=1748875205;
+	bh=Afiko+hniFQoNWIUpoSUQcewR+ezzZYQsY9jXmFV0kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJvDGRV+6huIospzh8pklnqNrZcfoHUfGoqV/NiFgllxhwBI3O6EZsJLDIsMzr2uA
-	 2QBZ4XF0Jmmj/Yicmx8CeFg67V6v4ULlJVwbzp+2wrVwUv3Z/UX3nyOxhgZygGCX5E
-	 ndgEZnxw2gHaF8NKtI9U56Q+Za7IDLW8TyJNAVQY=
+	b=KYhi7iliFEOdt4vRagE9SxPFusR7J/Ra1jefajJYCtavvw9WZFyu8jRfQdtjx/AUf
+	 NGjRzjbqxwjXs5xHWEVLWuR0h3ksc5kDPvfg+MO1uMLFnZmFn80JTnQNZiMwhgRD/U
+	 7gtoi3XFdLF9lnJEpfGKkRd+RdyOtlNUqQZD9H4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Nisar Sayed <Nisar.Sayed@microchip.com>,
+	Yuiko Oshino <yuiko.oshino@microchip.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/325] lockdep: Fix wait context check on softirq for PREEMPT_RT
+Subject: [PATCH 5.10 031/270] net: phy: microchip: implement generic .handle_interrupt() callback
 Date: Mon,  2 Jun 2025 15:45:16 +0200
-Message-ID: <20250602134321.382204223@linuxfoundation.org>
+Message-ID: <20250602134308.472104908@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 61c39d8c83e2077f33e0a2c8980a76a7f323f0ce ]
+[ Upstream commit e01a3feb8f69ab620b0016498603cad364f65224 ]
 
-Since:
+In an attempt to actually support shared IRQs in phylib, we now move the
+responsibility of triggering the phylib state machine or just returning
+IRQ_NONE, based on the IRQ status register, to the PHY driver. Having
+3 different IRQ handling callbacks (.handle_interrupt(),
+.did_interrupt() and .ack_interrupt() ) is confusing so let the PHY
+driver implement directly an IRQ handler like any other device driver.
+Make this driver follow the new convention.
 
-  0c1d7a2c2d32 ("lockdep: Remove softirq accounting on PREEMPT_RT.")
-
-the wait context test for mutex usage within "in softirq context" fails
-as it references @softirq_context:
-
-    | wait context tests |
-    --------------------------------------------------------------------------
-                                   | rcu  | raw  | spin |mutex |
-    --------------------------------------------------------------------------
-                 in hardirq context:  ok  |  ok  |  ok  |  ok  |
-  in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
-                 in softirq context:  ok  |  ok  |  ok  |FAILED|
-
-As a fix, add lockdep map for BH disabled section. This fixes the
-issue by letting us catch cases when local_bh_disable() gets called
-with preemption disabled where local_lock doesn't get acquired.
-In the case of "in softirq context" selftest, local_bh_disable() was
-being called with preemption disable as it's early in the boot.
-
-[ boqun: Move the lockdep annotations into __local_bh_*() to avoid false
-         positives because of unpaired local_bh_disable() reported by
-	 Borislav Petkov and Peter Zijlstra, and make bh_lock_map
-	 only exist for PREEMPT_RT. ]
-
-[ mingo: Restored authorship and improved the bh_lock_map definition. ]
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250321143322.79651-1-boqun.feng@gmail.com
+Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
+Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/softirq.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/phy/microchip.c    | 19 +++++++++++++++++++
+ drivers/net/phy/microchip_t1.c | 19 +++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 6665f5cd60cb0..9ab5ca399a990 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -140,6 +140,18 @@ static DEFINE_PER_CPU(struct softirq_ctrl, softirq_ctrl) = {
- 	.lock	= INIT_LOCAL_LOCK(softirq_ctrl.lock),
- };
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 375bbd60b38af..a149d0ae58b02 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -56,6 +56,24 @@ static int lan88xx_phy_ack_interrupt(struct phy_device *phydev)
+ 	return rc < 0 ? rc : 0;
+ }
  
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+static struct lock_class_key bh_lock_key;
-+struct lockdep_map bh_lock_map = {
-+	.name			= "local_bh",
-+	.key			= &bh_lock_key,
-+	.wait_type_outer	= LD_WAIT_FREE,
-+	.wait_type_inner	= LD_WAIT_CONFIG, /* PREEMPT_RT makes BH preemptible. */
-+	.lock_type		= LD_LOCK_PERCPU,
-+};
-+EXPORT_SYMBOL_GPL(bh_lock_map);
-+#endif
++static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
++{
++	int irq_status;
 +
- /**
-  * local_bh_blocked() - Check for idle whether BH processing is blocked
-  *
-@@ -162,6 +174,8 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
- 
- 	WARN_ON_ONCE(in_hardirq());
- 
-+	lock_map_acquire_read(&bh_lock_map);
++	irq_status = phy_read(phydev, LAN88XX_INT_STS);
++	if (irq_status < 0) {
++		phy_error(phydev);
++		return IRQ_NONE;
++	}
 +
- 	/* First entry of a task into a BH disabled section? */
- 	if (!current->softirq_disable_cnt) {
- 		if (preemptible()) {
-@@ -225,6 +239,8 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- 	WARN_ON_ONCE(in_hardirq());
- 	lockdep_assert_irqs_enabled();
- 
-+	lock_map_release(&bh_lock_map);
++	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
++		return IRQ_NONE;
 +
- 	local_irq_save(flags);
- 	curcnt = __this_cpu_read(softirq_ctrl.cnt);
- 
-@@ -275,6 +291,8 @@ static inline void ksoftirqd_run_begin(void)
- /* Counterpart to ksoftirqd_run_begin() */
- static inline void ksoftirqd_run_end(void)
++	phy_trigger_machine(phydev);
++
++	return IRQ_HANDLED;
++}
++
+ static int lan88xx_suspend(struct phy_device *phydev)
  {
-+	/* pairs with the lock_map_acquire_read() in ksoftirqd_run_begin() */
-+	lock_map_release(&bh_lock_map);
- 	__local_bh_enable(SOFTIRQ_OFFSET, true);
- 	WARN_ON_ONCE(in_interrupt());
- 	local_irq_enable();
+ 	struct lan88xx_priv *priv = phydev->priv;
+@@ -374,6 +392,7 @@ static struct phy_driver microchip_phy_driver[] = {
+ 
+ 	.ack_interrupt	= lan88xx_phy_ack_interrupt,
+ 	.config_intr	= lan88xx_phy_config_intr,
++	.handle_interrupt = lan88xx_handle_interrupt,
+ 
+ 	.suspend	= lan88xx_suspend,
+ 	.resume		= genphy_resume,
+diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
+index fed3e395f18e1..553b391d1747a 100644
+--- a/drivers/net/phy/microchip_t1.c
++++ b/drivers/net/phy/microchip_t1.c
+@@ -203,6 +203,24 @@ static int lan87xx_phy_ack_interrupt(struct phy_device *phydev)
+ 	return rc < 0 ? rc : 0;
+ }
+ 
++static irqreturn_t lan87xx_handle_interrupt(struct phy_device *phydev)
++{
++	int irq_status;
++
++	irq_status = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
++	if (irq_status < 0) {
++		phy_error(phydev);
++		return IRQ_NONE;
++	}
++
++	if (irq_status == 0)
++		return IRQ_NONE;
++
++	phy_trigger_machine(phydev);
++
++	return IRQ_HANDLED;
++}
++
+ static int lan87xx_config_init(struct phy_device *phydev)
+ {
+ 	int rc = lan87xx_phy_init(phydev);
+@@ -223,6 +241,7 @@ static struct phy_driver microchip_t1_phy_driver[] = {
+ 
+ 		.ack_interrupt  = lan87xx_phy_ack_interrupt,
+ 		.config_intr    = lan87xx_phy_config_intr,
++		.handle_interrupt = lan87xx_handle_interrupt,
+ 
+ 		.suspend        = genphy_suspend,
+ 		.resume         = genphy_resume,
 -- 
 2.39.5
 
