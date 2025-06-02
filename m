@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF93ACB758
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F20ACB6DD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10154C7AE2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E531BC3CE9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136BA226D12;
-	Mon,  2 Jun 2025 15:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A82225A37;
+	Mon,  2 Jun 2025 14:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8+EaF4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpcDLTdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33C7226D0A;
-	Mon,  2 Jun 2025 15:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AA1225A20;
+	Mon,  2 Jun 2025 14:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877123; cv=none; b=XmRwhZLXe+A4mQKurZnjC/1mrn5xof08DzOyUXwuONJx1gT9C6olM6qlDr55vkkLgTKACJanHtm55VUvd+8FVP/pz84/qSENOyz518GHZw77QhLTvaTX9Yfx96lSxYtNf6NEbkfactDjZVXDb+k5NOdSLpxw+/c9Wx6xXmUh44Y=
+	t=1748876120; cv=none; b=B9iiI2w58PmUKPd4xXRYKLqKq39rAjyRyojXLRz77f6nOOgt+fVHaju1xYeVoyOkmvaE9Pn/zgoLyzyGkGHdv9uxPxj8yY+qiywekCPDedI6loCNVe3x4Bvjt8U334UhzxIW77zHB2ZJwc+GKg8JPo/uzgrIWhxccrkfnq9dGoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877123; c=relaxed/simple;
-	bh=zfXeZYyKUops0886JlJLblAwfVfSFA2VBZ5TIdZbr3A=;
+	s=arc-20240116; t=1748876120; c=relaxed/simple;
+	bh=yPul50c9mvgKoVlafZU3FWX7+16vcQA8vCTd0aPpxL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bS2fT2uH1xadPmIUOzl8npdXb8h/nBMMbeiLoV8PUNb4vhZKlvCThN8S9ss86YNxM4WLC49He9gyfJWAPUx90xsojnIWGRwEtiA4k5q0XznDhTl70Y75ajR6Q8yFx38y9lLg5WLMXzETRpG+r9LtWfboXs6WwJdWgIIIskIXP04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8+EaF4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3979C4CEEB;
-	Mon,  2 Jun 2025 15:12:02 +0000 (UTC)
+	 MIME-Version; b=i+73D/ItI2HVBIVQW3pI2ZgNVtNGh75wQDKeBk9dqRcwZVKQrNgFogqjN56SgVhcE6UkESBc1XOG1l1IG6vCJ5kUUjnIBe3ZUBxPjXEsNHm91li2t4NSBQv4g02/WH1MuGJODvba4EHNSXi80fx7M1SfSjdjXAr83mjNGZNXuso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpcDLTdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D858BC4CEEB;
+	Mon,  2 Jun 2025 14:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877123;
-	bh=zfXeZYyKUops0886JlJLblAwfVfSFA2VBZ5TIdZbr3A=;
+	s=korg; t=1748876120;
+	bh=yPul50c9mvgKoVlafZU3FWX7+16vcQA8vCTd0aPpxL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8+EaF4FK8ACsFVfRQYH42SxlChmoryfGHzUiAY9B3j0W2W2WbpXXu04lOhIcDCHD
-	 E6qd71t/mEaJ1dX6+ptZyhdrQvdzBArN6enWXoJ7yqMy6mUvkSVX7GAT5yE+uBg/1C
-	 ua74j6z5tD4pE22m6VfBFNL0IPeXOQtZm2vyZcks=
+	b=LpcDLTdtlyxfO74bn/4VkCn9xmmCS2oHnewKEw6lGUwaCu62yh/jBjipo/N5c9Jrc
+	 dAKal0vboZVhjPo2Pa+7t3JKdwQHAeZxWPn4a/fmlOKjw854Ppwj15ag2upAjBLEwT
+	 ks/7lSBn0Lbe1ZNIbYJsDN0lHR96Ec9Brc0khh4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Yunke Cao <yunkec@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/325] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
-Date: Mon,  2 Jun 2025 15:47:28 +0200
-Message-ID: <20250602134326.811538254@linuxfoundation.org>
+Subject: [PATCH 5.15 077/207] media: uvcvideo: Add sanity check to uvc_ioctl_xu_ctrl_map
+Date: Mon,  2 Jun 2025 15:47:29 +0200
+Message-ID: <20250602134301.753149974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
+[ Upstream commit 990262fdfce24d6055df9711424343d94d829e6a ]
 
-Cross case in pinctrl framework make impossible to an hogged pin and
-another, not hogged, used within the same device-tree node. For example
-with this simplified device-tree :
+Do not process unknown data types.
 
-  &pinctrl {
-    pinctrl_pin_1: pinctrl-pin-1 {
-      pins = "dummy-pinctrl-pin";
-    };
-  };
-
-  &rtc {
-    pinctrl-names = "default"
-    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
-
-    rtc_pin_1: rtc-pin-1 {
-      pins = "dummy-rtc-pin";
-    };
-  };
-
-"pinctrl_pin_1" configuration is never set. This produces this path in
-the code:
-
-  really_probe()
-    pinctrl_bind_pins()
-    | devm_pinctrl_get()
-    |   pinctrl_get()
-    |     create_pinctrl()
-    |       pinctrl_dt_to_map()
-    |         // Hog pin create an abort for all pins of the node
-    |         ret = dt_to_map_one_config()
-    |         | /* Do not defer probing of hogs (circular loop) */
-    |         | if (np_pctldev == p->dev->of_node)
-    |         |   return -ENODEV;
-    |         if (ret)
-    |           goto err
-    |
-    call_driver_probe()
-      stm32_rtc_probe()
-        pinctrl_enable()
-          pinctrl_claim_hogs()
-            create_pinctrl()
-              for_each_maps(maps_node, i, map)
-                // Not hog pin is skipped
-                if (pctldev && strcmp(dev_name(pctldev->dev),
-                                      map->ctrl_dev_name))
-                  continue;
-
-At the first call of create_pinctrl() the hogged pin produces an abort to
-avoid a defer of hogged pins. All other pin configurations are trashed.
-
-At the second call, create_pinctrl is now called with pctldev parameter to
-get hogs, but in this context only hogs are set. And other pins are
-skipped.
-
-To handle this, do not produce an abort in the first call of
-create_pinctrl(). Classic pin configuration will be set in
-pinctrl_bind_pins() context. And the hogged pin configuration will be set
-in pinctrl_claim_hogs() context.
-
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Yunke Cao <yunkec@google.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250203-uvc-roi-v17-15-5900a9fed613@chromium.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_v4l2.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 5ee746cb81f59..6520b88db1105 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
- 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
- 		if (pctldev)
- 			break;
--		/* Do not defer probing of hogs (circular loop) */
-+		/*
-+		 * Do not defer probing of hogs (circular loop)
-+		 *
-+		 * Return 1 to let the caller catch the case.
-+		 */
- 		if (np_pctldev == p->dev->of_node) {
- 			of_node_put(np_pctldev);
--			return -ENODEV;
-+			return 1;
- 		}
- 	}
- 	of_node_put(np_pctldev);
-@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 			ret = dt_to_map_one_config(p, pctldev, statename,
- 						   np_config);
- 			of_node_put(np_config);
-+			if (ret == 1)
-+				continue;
- 			if (ret < 0)
- 				goto err;
- 		}
+diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
+index a86d470a9f98f..2f8b485ddde04 100644
+--- a/drivers/media/usb/uvc/uvc_v4l2.c
++++ b/drivers/media/usb/uvc/uvc_v4l2.c
+@@ -35,6 +35,12 @@ static int uvc_ioctl_ctrl_map(struct uvc_video_chain *chain,
+ 	unsigned int size;
+ 	int ret;
+ 
++	if (xmap->data_type > UVC_CTRL_DATA_TYPE_BITMASK) {
++		uvc_dbg(chain->dev, CONTROL,
++			"Unsupported UVC data type %u\n", xmap->data_type);
++		return -EINVAL;
++	}
++
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+ 	if (map == NULL)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
