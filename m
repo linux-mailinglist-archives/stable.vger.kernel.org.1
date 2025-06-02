@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FFBACB44B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F97ACB70D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26F381946842
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEE2A1943D3B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65A4290F;
-	Mon,  2 Jun 2025 14:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FC92222BF;
+	Mon,  2 Jun 2025 15:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYzefLJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdKkjuQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D91C5D72;
-	Mon,  2 Jun 2025 14:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523ED221F10;
+	Mon,  2 Jun 2025 15:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874656; cv=none; b=tCag4AWy3U/D3YbZJRZR4wUbiBIMxR829FgeOGf8HfB9QuTLM7FZoULyvemEnr1LkCv3ZM4Co6b99/MTqcQgPRyyq9LLs7duvdyYqd+8OjDDw2uMZdXse9R6IA+Pf75zFil54YZCvoRz+EEQqYZ+67PBxSgtjFbiqrC4oZg+Bzg=
+	t=1748877030; cv=none; b=rgc9MQs4A9NMG8K4BY4XnUbqZXx8d3LO9jdW/TyOFprgnvLP6UbiChxcn181NM6GAx/hzOVdsdmOvwPRV62UjiCX9SdXNy8gARkTVbqFNWLtU9ohnpByAQLPDKGI0LSzr/9xa/FxZpXmqs/FE2wrgA3avxnxqDYLZhyQ4ftrC18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874656; c=relaxed/simple;
-	bh=28eQU9y5DXDBDWwjMEdvZHxFfqveTEzBjiWhhftUVIs=;
+	s=arc-20240116; t=1748877030; c=relaxed/simple;
+	bh=GxjLDH2WN7xQj+7rZIOILQH/68xHDzdKzIT93FYhDps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyRv2990MW+qiuDmuN9VIf0g9RaWi41lnbABvUCOGU9yCbTM1aE1IyhWEUL08g6dp56eBt5KaX5nFnsSxAiMKTKh1fDxvWJsgqnaumKhCh6vbJurh2PnkuNeE0ycdICyr4SKdqQo0midngZjrOsey1lA/pCUhBUZH3dm7okaS6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYzefLJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D032BC4CEEB;
-	Mon,  2 Jun 2025 14:30:55 +0000 (UTC)
+	 MIME-Version; b=dnr6UokHNnAsqx7i7KW7Ux42hvk/qTJYOo28l3CTbNhhxPqNHqQFqeJzmew9oxSWmwkfywrNeCu/B8GGTcUrSREoFsZnmPYhEz1zxGU7vCGzX4eX/BiEDnDI3D7UGHDWxkR75Ktm+ChrN4pTrLQMRM6dAhB6fNJrAjJKi3HBCBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdKkjuQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A76FC4CEEB;
+	Mon,  2 Jun 2025 15:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874656;
-	bh=28eQU9y5DXDBDWwjMEdvZHxFfqveTEzBjiWhhftUVIs=;
+	s=korg; t=1748877029;
+	bh=GxjLDH2WN7xQj+7rZIOILQH/68xHDzdKzIT93FYhDps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYzefLJbcKR1ZEnA1Q9pzsjepSUMiNO+/r9sbnbidwDSNatKRyGMBACiV0qpKda1m
-	 bdNrMq3/PjXgozohTspX2OH5JvsmrnzYmaiPXx8cBcAacCCORzSqTOCOzeS5q4XdD+
-	 Cg8X/eU8qAPzSjegwVPJZJdO42TRidOx+3S4GNZg=
+	b=YdKkjuQnUK/B8+gKMgGSwQeB9nPin8YuaCxea5BPtrE+Y5HhRAM/mwVN5FAEe+ORX
+	 wuZtCf3FntjikL+NT7Yu9J3H6+p7/JiDzFMM91a470hYt/4JQw0jmbbn/h9FNR7McQ
+	 w602Vy+yr/CAxCcEiBDK3R9c4NNa1Ec7sigxoZzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 093/204] NFSv4: Treat ENETUNREACH errors as fatal for state recovery
+Subject: [PATCH 6.1 150/325] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
 Date: Mon,  2 Jun 2025 15:47:06 +0200
-Message-ID: <20250602134259.314595779@linuxfoundation.org>
+Message-ID: <20250602134325.909915564@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 0af5fb5ed3d2fd9e110c6112271f022b744a849a ]
+[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
 
-If a containerised process is killed and causes an ENETUNREACH or
-ENETDOWN error to be propagated to the state manager, then mark the
-nfs_client as being dead so that we don't loop in functions that are
-expecting recovery to succeed.
+Set the RX mask and the highest RX rate according to the number of
+spatial streams the chip can receive. For RTL8814AU that is 3.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 1d38484e0a53b..b64a3751c3e4a 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2655,7 +2655,15 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 	pr_warn_ratelimited("NFS: state manager%s%s failed on NFSv4 server %s"
- 			" with error %d\n", section_sep, section,
- 			clp->cl_hostname, -status);
--	ssleep(1);
-+	switch (status) {
-+	case -ENETDOWN:
-+	case -ENETUNREACH:
-+		nfs_mark_client_ready(clp, -EIO);
-+		break;
-+	default:
-+		ssleep(1);
-+		break;
-+	}
- out_drain:
- 	memalloc_nofs_restore(memflags);
- 	nfs4_end_drain_session(clp);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 8a47cfb358b16..0a913cf6a615b 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1516,6 +1516,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	int i;
+ 
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -1535,17 +1536,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+ 	ht_cap->ampdu_density = chip->ampdu_density;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+-	if (efuse->hw_cap.nss > 1) {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0xFF;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(300);
+-	} else {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0x00;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(150);
+-	}
++
++	for (i = 0; i < efuse->hw_cap.nss; i++)
++		ht_cap->mcs.rx_mask[i] = 0xFF;
++	ht_cap->mcs.rx_mask[4] = 0x01;
++	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+ }
+ 
+ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
