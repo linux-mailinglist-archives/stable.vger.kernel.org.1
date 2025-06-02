@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFC2ACB419
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5128ACB8C1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26BAB19447DC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8899942EA8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69883230BE3;
-	Mon,  2 Jun 2025 14:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9513622331C;
+	Mon,  2 Jun 2025 15:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apML44As"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJEz15PW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289CD21325D;
-	Mon,  2 Jun 2025 14:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4324D22E01E;
+	Mon,  2 Jun 2025 15:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874572; cv=none; b=iPKreNLCEb+IOGp0Hz2GzZ7a+6Oq1RdBIbSMwdIVQvBSh9HDZePGXE/VSOAXy1pmLT29zKKxyngW01QIeEDPS/0HPQQB0Ez9q/P9KwLmGUT+n55+Q7opwc6NItusbAi1fTF3PaguVpLrZMoCquZcwkdffnxoOpSvFI2cMz/G+Y0=
+	t=1748876943; cv=none; b=q+mB5D8TSa9SSE3166pTW/4i3on816ghM88KKNDj3ZLT3EhkQeSUSlzGstC3JdzFhZcL3ubMm8IUfgZL2qkFz6QEpTUH61itoNEUBgS/xqRskBllmYrxbpFt1SDzZeCf+DjMPpORLz5lgnUmhS0bseQzGJTAJfMsVNPJ+3FZapo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874572; c=relaxed/simple;
-	bh=VbpkgkXPtKMo0DVjgHKrvUAltuqzyi7MT88l6ksMUy0=;
+	s=arc-20240116; t=1748876943; c=relaxed/simple;
+	bh=yl9olcrvA6Wf0XHXJWNJYxi1FZwwNvQMxuP5+ghUQW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QH9L8p1vkoeDsf29LgLjkGVlwnfBmZmaE9AuTRn1urlXPTxDF6ax9aaCinKBo/up7YbxgBb4ITMzL2MkjKuO2AZ7NAHDAVlF2wb8TW71nuhg2ZTYiZ3t4hyHSW0NAHzWmlVK/fQ+stIqJNsdfeJzYywq+b3OgvQm2AzrKaZ3VxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apML44As; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C3FC4CEEB;
-	Mon,  2 Jun 2025 14:29:31 +0000 (UTC)
+	 MIME-Version; b=dChT7HgD54eOfbqHXQ8e98Ia9IaOFTKM2bIQ69y8DuiIEqPnri3UB4M75e5Wa3oiGcGPaGpRuXPUhqgfA89iPedPu8/FAlmMqFYObrVwqN13zwHUTXyS8fyKsOUE5leP4ED/KOu9aGyiC2e5plDEC49zGgWxx1qo85effn6ICGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJEz15PW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B072C4CEEB;
+	Mon,  2 Jun 2025 15:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874572;
-	bh=VbpkgkXPtKMo0DVjgHKrvUAltuqzyi7MT88l6ksMUy0=;
+	s=korg; t=1748876942;
+	bh=yl9olcrvA6Wf0XHXJWNJYxi1FZwwNvQMxuP5+ghUQW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apML44AsF5jrOfLyYLY5NMc75i+NrvrZACrpVIq+9hRlIt9opSp1aev9qX2Sl8OaT
-	 jElEDUNgK6gv0gC7Hn9IubE+EAbd2kQujTbvKeLE2Z5AHAuBtUz8LxkBSp61R3gjjB
-	 EYMttRvw1ozIcFGeSc6M8wZ35K14N3DbPv9yfXFA=
+	b=xJEz15PWzn2jc9I8LrgXihlV5XGhLOeF/qrftUAyMvBzXueJpYyWe9PFR9yTTMI+f
+	 2RMAOqONPQULUZfYymozkKUWzoTdh908vmvazsGqivGJnG6J/Yd2hz0KXA+piAlStL
+	 tltf0y1g0+BL2PCx2njpJypRGzj3lld8q+u5Zlfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Sven Peter <sven@svenpeter.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 066/204] staging: axis-fifo: Correct handling of tx_fifo_depth for size validation
+Subject: [PATCH 6.1 123/325] soc: apple: rtkit: Use high prio work queue
 Date: Mon,  2 Jun 2025 15:46:39 +0200
-Message-ID: <20250602134258.276203771@linuxfoundation.org>
+Message-ID: <20250602134324.790208985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 2ca34b508774aaa590fc3698a54204706ecca4ba ]
+[ Upstream commit 22af2fac88fa5dbc310bfe7d0b66d4de3ac47305 ]
 
-Remove erroneous subtraction of 4 from the total FIFO depth read from
-device tree. The stored depth is for checking against total capacity,
-not initial vacancy. This prevented writes near the FIFO's full size.
+rtkit messages as communication with the DCP firmware for framebuffer
+swaps or input events are time critical so use WQ_HIGHPRI to prevent
+user space CPU load to increase latency.
+With kwin_wayland 6's explicit sync mode user space load was able to
+delay the IOMFB rtkit communication enough to miss vsync for surface
+swaps. Minimal test scenario is constantly resizing a glxgears
+Xwayland window.
 
-The check performed just before data transfer, which uses live reads of
-the TDFV register to determine current vacancy, correctly handles the
-initial Depth - 4 hardware state and subsequent FIFO fullness.
-
-Fixes: 4a965c5f89de ("staging: add driver for Xilinx AXI-Stream FIFO v4.1 IP core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Link: https://lore.kernel.org/r/20250419012937.674924-1-gshahrouzi@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-3-c3ec37f9021b@svenpeter.dev
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/axis-fifo/axis-fifo.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/soc/apple/rtkit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/axis-fifo/axis-fifo.c b/drivers/staging/axis-fifo/axis-fifo.c
-index 08f9990ab499a..4dd2c8e9b7878 100644
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -779,9 +779,6 @@ static int axis_fifo_parse_dt(struct axis_fifo *fifo)
- 		goto end;
- 	}
+diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
+index 8ec74d7539eb4..1ec0c3ba0be22 100644
+--- a/drivers/soc/apple/rtkit.c
++++ b/drivers/soc/apple/rtkit.c
+@@ -731,7 +731,7 @@ static struct apple_rtkit *apple_rtkit_init(struct device *dev, void *cookie,
+ 	rtk->mbox_cl.rx_callback = &apple_rtkit_rx;
+ 	rtk->mbox_cl.tx_done = &apple_rtkit_tx_done;
  
--	/* IP sets TDFV to fifo depth - 4 so we will do the same */
--	fifo->tx_fifo_depth -= 4;
--
- 	ret = get_dts_property(fifo, "xlnx,use-rx-data", &fifo->has_rx_fifo);
- 	if (ret) {
- 		dev_err(fifo->dt_device, "missing xlnx,use-rx-data property\n");
+-	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_MEM_RECLAIM,
++	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_HIGHPRI | WQ_MEM_RECLAIM,
+ 					  dev_name(rtk->dev));
+ 	if (!rtk->wq) {
+ 		ret = -ENOMEM;
 -- 
 2.39.5
 
