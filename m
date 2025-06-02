@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-150422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0134ACB7E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56AADACB390
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227964C7822
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48FCE943584
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451BF22424C;
-	Mon,  2 Jun 2025 15:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32499225A47;
+	Mon,  2 Jun 2025 14:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+Owcl7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxvD5UDH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E49223DC0;
-	Mon,  2 Jun 2025 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F8520E026;
+	Mon,  2 Jun 2025 14:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877074; cv=none; b=Phwf82RxpoSWgFGWo3ZnvcaSh6OvBdYP9AeJXWUgSRkoLextWt74qW2E2F7LHtCtvXuAELDJgN9qRZy9xHdGqN/HA4g+IPOY9R6YcE7TCbBeewKKk5wFWueB6AWC2qr006iOjUGw/jRqV+c/MIhDatmD7gS2Ba7ZhtkYCl3HeaU=
+	t=1748874242; cv=none; b=ZdigSF+2zIq8wIejxhiPbFutI59QcYHEeZyVn5g38zvfiXdgo08MXjUYwr3CxYJwJ/nieAlPYmWdakrMYFXSAV/oDWi32tq2XMS/ZjC2ODO6b2B4V/RmutmQTq/v9uYMpY642OBiGHHBHLwmNHx//OBFw+H+rbANOaZ2oay/QJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877074; c=relaxed/simple;
-	bh=cUvBffMp/oVdr5s7aCeLjURHMWixSAhjx0V917/Jd+A=;
+	s=arc-20240116; t=1748874242; c=relaxed/simple;
+	bh=rvXUQ5vLsf1qvrUxheIRPxnZgurkpwpM5U8NtswBgPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqvuGAmgPU75JIU+8lKBzmeMEhivWOPov76JCONVWzvhgX629WHbSoR6FJBqSpMzmMvB6lidU0AP+p9DvEZ5xLOu2hD7aAhTjn4Q0FX82oSMAp1dL2nBeRa+l0lBIrcXkATGr1ko36nNT5V8321THkDb2cP0MCM9deuqclIVlxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+Owcl7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C52C4CEEB;
-	Mon,  2 Jun 2025 15:11:13 +0000 (UTC)
+	 MIME-Version; b=t24O5fRpnQA6Koxekv0B1lbHt06AABI0xj3O1AFAzA/CZo5NDarELG7j55UQxOg5smYtRmUMu4AleSQD4R8eC2cyKnLCxygT4g+6/E00DjTk7ACmwavpwynHqaNVilOGFc9BRZ3d4X2IAT1U1hQTuS3vPk5BGyKl/+LrG7vDzZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxvD5UDH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696E3C4CEEB;
+	Mon,  2 Jun 2025 14:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877073;
-	bh=cUvBffMp/oVdr5s7aCeLjURHMWixSAhjx0V917/Jd+A=;
+	s=korg; t=1748874241;
+	bh=rvXUQ5vLsf1qvrUxheIRPxnZgurkpwpM5U8NtswBgPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+Owcl7fPN/OGeE/2+FvfLpblhzDR+Bpz3TD2FYW2t8E18W4tN4d+R3V90NOHw0EH
-	 m2yvEH2ncjkHLupzzmfmv0y9R/yGay8AYegpU/87hd9xSp4w8w62cZ1xzBqGUHwYY8
-	 /7IEMZH3wNLzN6jPN3qHp7uk64TGCavpwSbGSoTQ=
+	b=uxvD5UDHSdVHD3rTi1Me1MPs9Be1gsxYd3xmP8TdtmFCA7wLWmSLJ5d5criVQ916U
+	 0Smk8X/TdPXVWafMV+2YkXzsza5vnAh1MlSECi9u1SJv8gECIn9pDopD9VQeAylgdd
+	 8A/Fl20uTZHYhODVVDDQh1Xz4JwKse4oofgS6C5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/325] vxlan: Join / leave MC group after remote changes
+	Vicki Pfau <vi@endrift.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 375/444] Input: xpad - add more controllers
 Date: Mon,  2 Jun 2025 15:47:19 +0200
-Message-ID: <20250602134326.422208895@linuxfoundation.org>
+Message-ID: <20250602134356.137567724@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit d42d543368343c0449a4e433b5f02e063a86209c ]
+commit f0d17942ea3edec191f1c0fc0d2cd7feca8de2f0 upstream.
 
-When a vxlan netdevice is brought up, if its default remote is a multicast
-address, the device joins the indicated group.
+Adds support for a revision of the Turtle Beach Recon Wired Controller,
+the Turtle Beach Stealth Ultra, and the PowerA Wired Controller.
 
-Therefore when the multicast remote address changes, the device should
-leave the current group and subscribe to the new one. Similarly when the
-interface used for endpoint communication is changed in a situation when
-multicast remote is configured. This is currently not done.
-
-Both vxlan_igmp_join() and vxlan_igmp_leave() can however fail. So it is
-possible that with such fix, the netdevice will end up in an inconsistent
-situation where the old group is not joined anymore, but joining the new
-group fails. Should we join the new group first, and leave the old one
-second, we might end up in the opposite situation, where both groups are
-joined. Undoing any of this during rollback is going to be similarly
-problematic.
-
-One solution would be to just forbid the change when the netdevice is up.
-However in vnifilter mode, changing the group address is allowed, and these
-problems are simply ignored (see vxlan_vni_update_group()):
-
- # ip link add name br up type bridge vlan_filtering 1
- # ip link add vx1 up master br type vxlan external vnifilter local 192.0.2.1 dev lo dstport 4789
- # bridge vni add dev vx1 vni 200 group 224.0.0.1
- # tcpdump -i lo &
- # bridge vni add dev vx1 vni 200 group 224.0.0.2
- 18:55:46.523438 IP 0.0.0.0 > 224.0.0.22: igmp v3 report, 1 group record(s)
- 18:55:46.943447 IP 0.0.0.0 > 224.0.0.22: igmp v3 report, 1 group record(s)
- # bridge vni
- dev               vni                group/remote
- vx1               200                224.0.0.2
-
-Having two different modes of operation for conceptually the same interface
-is silly, so in this patch, just do what the vnifilter code does and deal
-with the errors by crossing fingers real hard.
-
-The vnifilter code leaves old before joining new, and in case of join /
-leave failures does not roll back the configuration changes that have
-already been applied, but bails out of joining if it could not leave. Do
-the same here: leave before join, apply changes unconditionally and do not
-attempt to join if we couldn't leave.
-
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/20250513225950.2719387-1-vi@endrift.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/input/joystick/xpad.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 50be5a3c47795..0afd7eb976e6c 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -4231,6 +4231,7 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 			    struct netlink_ext_ack *extack)
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
-+	bool rem_ip_changed, change_igmp;
- 	struct net_device *lowerdev;
- 	struct vxlan_config conf;
- 	struct vxlan_rdst *dst;
-@@ -4254,8 +4255,13 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	if (err)
- 		return err;
- 
-+	rem_ip_changed = !vxlan_addr_equal(&conf.remote_ip, &dst->remote_ip);
-+	change_igmp = vxlan->dev->flags & IFF_UP &&
-+		      (rem_ip_changed ||
-+		       dst->remote_ifindex != conf.remote_ifindex);
-+
- 	/* handle default dst entry */
--	if (!vxlan_addr_equal(&conf.remote_ip, &dst->remote_ip)) {
-+	if (rem_ip_changed) {
- 		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac, conf.vni);
- 
- 		spin_lock_bh(&vxlan->hash_lock[hash_index]);
-@@ -4299,6 +4305,9 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 		}
- 	}
- 
-+	if (change_igmp && vxlan_addr_multicast(&dst->remote_ip))
-+		err = vxlan_multicast_leave(vxlan);
-+
- 	if (conf.age_interval != vxlan->cfg.age_interval)
- 		mod_timer(&vxlan->age_timer, jiffies);
- 
-@@ -4306,7 +4315,12 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	if (lowerdev && lowerdev != dst->remote_dev)
- 		dst->remote_dev = lowerdev;
- 	vxlan_config_apply(dev, &conf, lowerdev, vxlan->net, true);
--	return 0;
-+
-+	if (!err && change_igmp &&
-+	    vxlan_addr_multicast(&dst->remote_ip))
-+		err = vxlan_multicast_join(vxlan);
-+
-+	return err;
- }
- 
- static void vxlan_dellink(struct net_device *dev, struct list_head *head)
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -289,6 +289,8 @@ static const struct xpad_device {
+ 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x10f5, 0x7005, "Turtle Beach Recon Controller", 0, XTYPE_XBOXONE },
++	{ 0x10f5, 0x7008, "Turtle Beach Recon Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
++	{ 0x10f5, 0x7073, "Turtle Beach Stealth Ultra Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
+ 	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
+ 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
+@@ -353,6 +355,7 @@ static const struct xpad_device {
+ 	{ 0x1ee9, 0x1590, "ZOTAC Gaming Zone", 0, XTYPE_XBOX360 },
+ 	{ 0x20d6, 0x2001, "BDA Xbox Series X Wired Controller", 0, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x2009, "PowerA Enhanced Wired Controller for Xbox Series X|S", 0, XTYPE_XBOXONE },
++	{ 0x20d6, 0x2064, "PowerA Wired Controller for Xbox", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x20d6, 0x281f, "PowerA Wired Controller For Xbox 360", 0, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5000, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x24c6, 0x5300, "PowerA MINI PROEX Controller", 0, XTYPE_XBOX360 },
 
 
 
