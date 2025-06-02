@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FF9ACB3E8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C68ACB60C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E1B54841FC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F927A4179
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FF622259B;
-	Mon,  2 Jun 2025 14:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBF22356A4;
+	Mon,  2 Jun 2025 15:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5JgGEB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEWhb56b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528AC225A40;
-	Mon,  2 Jun 2025 14:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDA123185D;
+	Mon,  2 Jun 2025 15:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874502; cv=none; b=DZxz/B/JhuCwtK1fmsFv4YAAYBAH69CYD4kU0tTX+tKM5Pdco9c9rNPQN4zdPqwVGwry/2Kjd/QyWmxIksXveaZRWjCf11ftBGGP/GvCfUD+vUzvqO3drOqtai4PvkpiknJ5l/hA4pafgA2avh9Ip6/DhtmAVkIAEWBSFm5hTO8=
+	t=1748876780; cv=none; b=GXubEDihpMMN4cyQwesaA78i8nb5HXpRoIc3mdQzvg17BBzItTd97RLrWOKiGFn0TGsR0ZLaWXesZeAbjA/Srh5Y/lRjZqAEIKDQJ4avbiThA4q5uolywuBIitl/sEwfHFJjRTQOmtT4jsY0A6YNxYyoDegNRylk7RiuoifN9Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874502; c=relaxed/simple;
-	bh=Ysp4nXXfqm2amGwjDfEZATrVBKueMUxZRX8U6wuC6Cw=;
+	s=arc-20240116; t=1748876780; c=relaxed/simple;
+	bh=GEetga6hoxUXdnQi89U2Cz21dK1SFeeDuptw4+BvaHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qy6LrRTjDMcYVG48OqTN3Z6C8jA9nvHhfdwF/eqGTh2MDquhhDT/MlFlcc9oTzrmX4NzdPACkYdKz2HF4LbxPPesJoK+j+hdho9SX0iJ7HPC4GDssmg94+kEyDUHuPxtpLtpQnsmKCnSBqk06FCZ/eIeL19IHyJfhZJGCMT7aUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5JgGEB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1695C4CEEB;
-	Mon,  2 Jun 2025 14:28:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cvx+jaeQFHpza9LAxie1w/G/b9fiZWP+a+Pdl62tHrSs1/4X4bkWJsnPcKCgIT/ENKkO/lKDzPehltYRRMyUxOQhnVRdUFRzzIZhSUCzDnlSQD6AefgZvU9CDli1kOEnYFvOoTTgNLX/yqevDvlt3wamHJpmPO6Iua/LojS3Iz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEWhb56b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258DDC4CEEE;
+	Mon,  2 Jun 2025 15:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874502;
-	bh=Ysp4nXXfqm2amGwjDfEZATrVBKueMUxZRX8U6wuC6Cw=;
+	s=korg; t=1748876779;
+	bh=GEetga6hoxUXdnQi89U2Cz21dK1SFeeDuptw4+BvaHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5JgGEB51kTGF9pHmgJs8MS8lb2xRuGeDwrV6RTSqQgaGZ05LiExNdiwMgUYru0iN
-	 Kk3ij1db1t1J5CfK9hn03iqjgIbWJTTnSdpNbZg/BSYvH1zCs37dJU5OEFVotcyAS1
-	 MMh1emm6xCu0hdeN08T800H20Ixqm/Km/B5+bELM=
+	b=tEWhb56bQHUvgXXF7vY6mFRD8X9U1wAYSRgRwFj8nSz8SiBbLbXKzGmKQ2nOia9A8
+	 Uvy1eDvPm2Gx5hU37QMcaMjXCVV1u1IjlByIOQOFh7he+9Q80ZS+BJiZY5ZwiGAC1N
+	 3GSzATD0xEhXx3ATrCLl0JW7zlA5ZaF5dlFLowVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/204] net_sched: qfq: Fix double list add in class with netem as child qdisc
+Subject: [PATCH 6.1 070/325] ASoC: mediatek: mt6359: Add stub for mt6359_accdet_enable_jack_detect
 Date: Mon,  2 Jun 2025 15:45:46 +0200
-Message-ID: <20250602134256.012806339@linuxfoundation.org>
+Message-ID: <20250602134322.630686716@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+[ Upstream commit 0116a7d84b32537a10d9bea1fd1bfc06577ef527 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+Add a stub for mt6359_accdet_enable_jack_detect() to prevent linker
+failures in the machine sound drivers calling it when
+CONFIG_SND_SOC_MT6359_ACCDET is not enabled.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://patch.msgid.link/20250306-mt8188-accdet-v3-3-7828e835ff4b@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/soc/codecs/mt6359-accdet.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 6e9e3405f26b9..c466d255f7865 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -203,6 +203,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
+diff --git a/sound/soc/codecs/mt6359-accdet.h b/sound/soc/codecs/mt6359-accdet.h
+index c234f2f4276a1..78ada3a5bfae5 100644
+--- a/sound/soc/codecs/mt6359-accdet.h
++++ b/sound/soc/codecs/mt6359-accdet.h
+@@ -123,6 +123,15 @@ struct mt6359_accdet {
+ 	struct workqueue_struct *jd_workqueue;
+ };
  
-+static bool cl_is_active(struct qfq_class *cl)
++#if IS_ENABLED(CONFIG_SND_SOC_MT6359_ACCDET)
+ int mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
+ 				     struct snd_soc_jack *jack);
++#else
++static inline int
++mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
++				 struct snd_soc_jack *jack)
 +{
-+	return !list_empty(&cl->alist);
++	return -EOPNOTSUPP;
 +}
-+
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1218,7 +1223,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
- 
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1240,7 +1244,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1257,8 +1260,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
++#endif
+ #endif
 -- 
 2.39.5
 
