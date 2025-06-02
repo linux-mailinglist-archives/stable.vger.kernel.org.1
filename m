@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90F8ACB486
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9183BACB8DB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D501BA56CB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F58D406F0B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888BC22257B;
-	Mon,  2 Jun 2025 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61602288C6;
+	Mon,  2 Jun 2025 15:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJtnFDzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYB/Wbsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450B521882B;
-	Mon,  2 Jun 2025 14:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D881A2547;
+	Mon,  2 Jun 2025 15:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874793; cv=none; b=d1cA1ltIP+NhRQm21vg5eaCeY26yAaTAxmW45M1GToivKlkEGoGwoanvK7uGVcqBEhriZDGR2k82twVJ8d0nYeVNg7ElNw/XsuRkxhCGaisIMqkWqshroW8Ey2D/JnToaAFBJaaYyyry6KsmTuF3LjuTmD6fcdMGc0vleqYSbJs=
+	t=1748877169; cv=none; b=bTz/tdesnq9VShmWUOIfj/KOqACyc2sOFiBmGLahEXUWRr8GZw5FbXuI1oFJ2WcYx6raaqo8a36cw6oNSFvaxxxJBZFTGM/goQYqncN52Xx9d/HKop9tx+eUbAiq7dB00bs06Xp6JxL8AADZ5c4A/K7Xqm7QZDek4mrZf+VHgWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874793; c=relaxed/simple;
-	bh=4RESip1SmM/hibkBS07v0a1MpI6cai4q3HR9tgLx3oc=;
+	s=arc-20240116; t=1748877169; c=relaxed/simple;
+	bh=hd/Jai7bMgPbQekEwb6bZIl9cAMa6EdorMpZmXbm/0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/dCYnSMw2W852Sg3/cQri0yC/ulJ2pckVWYMXiTq9PydBd8az9/xKzLpOb6HAJXtwtlY2ZGu1kMG07HQzRb0osrRN1kKQaTCSaEebmLwGjCiJmoPyWzzhgq4aAs5yJfTzymxXDmc7tOXUqeJ5o19Op9ojAo/5z/xEQGDPeNG/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJtnFDzC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D03C4CEEB;
-	Mon,  2 Jun 2025 14:33:12 +0000 (UTC)
+	 MIME-Version; b=OHueXt/hyKbWzvv3e6AstrP1tYeW98cDu/nrZrjBK/Ss+dM6Tgwyr+iEDBKRedQE1E+t9NYrl8sWyVBGeEJMHqelimlEvnrLGO0XG2JNsi0mV2gF+ntreSKj/tRNc1hxvadZQwBK4QPffQ46bvA+xAwlGH4+Tzv6p9JzaKT4ee8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYB/Wbsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88DAC4CEEB;
+	Mon,  2 Jun 2025 15:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874792;
-	bh=4RESip1SmM/hibkBS07v0a1MpI6cai4q3HR9tgLx3oc=;
+	s=korg; t=1748877169;
+	bh=hd/Jai7bMgPbQekEwb6bZIl9cAMa6EdorMpZmXbm/0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJtnFDzCzyUs/hGoyiUe6uTqMCZvlkoUT6xoyFv7ARctRYxgOJ6FOaeQ8UmAZlZxM
-	 L7jgb0yUVmoUsMOHf1cUL08yS0OmkAaRFt1gBuiRw3W6czhlblCPcSHuP8XRNlEFDk
-	 9cWh6UuhSGlVxJpph7j2+PwjylHXt1JVWCYcorK4=
+	b=JYB/Wbslau0Q2su2cblnBWXpm1KGtmTcHX8ZeWZAlSoFH+o0KIBvOZdJAieFuNVCV
+	 otA8s0znMULJl6zpJeU8Txfg8g75iYnN6nS4Z5ZvEZ51mbAoOMvcZ6OXSZP3O0cPI9
+	 +ZOBfr5+RJjBNqjrCoF/fDnU7XallB0OjeuvBDtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 136/204] scsi: mpt3sas: Send a diag reset if target reset fails
+Subject: [PATCH 6.1 193/325] hwmon: (xgene-hwmon) use appropriate type for the latency value
 Date: Mon,  2 Jun 2025 15:47:49 +0200
-Message-ID: <20250602134300.997813118@linuxfoundation.org>
+Message-ID: <20250602134327.647109913@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit 5612d6d51ed2634a033c95de2edec7449409cbb9 ]
+[ Upstream commit 8df0f002827e18632dcd986f7546c1abf1953a6f ]
 
-When an IOCTL times out and driver issues a target reset, if firmware
-fails the task management elevate the recovery by issuing a diag reset to
-controller.
+The expression PCC_NUM_RETRIES * pcc_chan->latency is currently being
+evaluated using 32-bit arithmetic.
 
-Signed-off-by: Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
-Link: https://lore.kernel.org/r/1739410016-27503-5-git-send-email-shivasharan.srikanteshwara@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Since a value of type 'u64' is used to store the eventual result,
+and this result is later sent to the function usecs_to_jiffies with
+input parameter unsigned int, the current data type is too wide to
+store the value of ctx->usecs_lat.
+
+Change the data type of "usecs_lat" to a more suitable (narrower) type.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Link: https://lore.kernel.org/r/20250204095400.95013-1-a.vatoropin@crpt.ru
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_ctl.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/hwmon/xgene-hwmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-index 1c5c172315de4..377e941d93e38 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-@@ -662,6 +662,7 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 	size_t data_in_sz = 0;
- 	long ret;
- 	u16 device_handle = MPT3SAS_INVALID_DEVICE_HANDLE;
-+	int tm_ret;
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index 207084d55044a..6768dbf390390 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -111,7 +111,7 @@ struct xgene_hwmon_dev {
  
- 	issue_reset = 0;
+ 	phys_addr_t		comm_base_addr;
+ 	void			*pcc_comm_addr;
+-	u64			usecs_lat;
++	unsigned int		usecs_lat;
+ };
  
-@@ -1094,16 +1095,23 @@ _ctl_do_mpt_command(struct MPT3SAS_ADAPTER *ioc, struct mpt3_ioctl_command karg,
- 			if (pcie_device && (!ioc->tm_custom_handling) &&
- 			    (!(mpt3sas_scsih_is_pcie_scsi_device(
- 			    pcie_device->device_info))))
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, pcie_device->reset_timeout,
- 			MPI26_SCSITASKMGMT_MSGFLAGS_PROTOCOL_LVL_RST_PCIE);
- 			else
--				mpt3sas_scsih_issue_locked_tm(ioc,
-+				tm_ret = mpt3sas_scsih_issue_locked_tm(ioc,
- 				  le16_to_cpu(mpi_request->FunctionDependent1),
- 				  0, MPI2_SCSITASKMGMT_TASKTYPE_TARGET_RESET, 0,
- 				  0, 30, MPI2_SCSITASKMGMT_MSGFLAGS_LINK_RESET);
-+
-+			if (tm_ret != SUCCESS) {
-+				ioc_info(ioc,
-+					 "target reset failed, issue hard reset: handle (0x%04x)\n",
-+					 le16_to_cpu(mpi_request->FunctionDependent1));
-+				mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
-+			}
- 		} else
- 			mpt3sas_base_hard_reset_handler(ioc, FORCE_BIG_HAMMER);
- 	}
+ /*
 -- 
 2.39.5
 
