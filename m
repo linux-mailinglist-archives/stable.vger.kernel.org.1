@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA9AACB256
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BAAACB461
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3974A0792
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 142581942E03
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12592226541;
-	Mon,  2 Jun 2025 14:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E6C221299;
+	Mon,  2 Jun 2025 14:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYEXQU8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzoX0wJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C337D226188;
-	Mon,  2 Jun 2025 14:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90D11EA65;
+	Mon,  2 Jun 2025 14:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873711; cv=none; b=IPPZRxSLBylCx+CcpWrrnnuSiftat/02VSn0X7cktV689LY4RUACWyi1ML18vM8dfKZOoTxF3lAkhXpapX++bXsjJK24N0//dxm+yPueX6P1Tlf+fgcgt7Obfwn5T7cQj4W6HDTHdgl5lFTzUE5ljeDRHhyL0sB/DK+d0qhs6vg=
+	t=1748875104; cv=none; b=diCkxd1rwhEJIxuSBWkfehNhyfECq6GvuF5ptmJsmbs1XmJecyo6BGIYR3k7oGX1SssjcElfCuh0uRqVPvzRvTMNcPSfaDTwDQsJE7a3BKwST1k97PQOVTuH2aGxaCBZbbzkuXJTD1ZGDbbuBP6Ke3nKYalIuweAEZkqY2zq0pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873711; c=relaxed/simple;
-	bh=3qI/bxCjNYp78Uz2LxFo0QUQPj3IjB201GhasOws+Aw=;
+	s=arc-20240116; t=1748875104; c=relaxed/simple;
+	bh=04rMup3j2LaCVUAfhSeo3lbGm2yG6I/qP0efXwJB3ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l19kGbkWmOIj0HSO+G6d11lq8ssj5sXWVSzJ9JQg/f644gzbEEyoPP4omrX7awgJxuLxthcObwI6z8myQ39ihjZcZoAzWwdv8UK/noOfSBRE9yXn0qxy7+zVElTct+rnGYVrg8ioT6x7Ax43mhMZcFoVk+FdKApjvsQiD4GRGQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYEXQU8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFFFC4CEEB;
-	Mon,  2 Jun 2025 14:15:10 +0000 (UTC)
+	 MIME-Version; b=Hi+IaXyY2MT+WsWnxC7Cupa2gqq1WK+5Y17TMufiggMio1NCtdTk9ZyNN9eFPwzQqAeIKizHbp8CsvVoTpcpTi+D/KIi2Rh7Ur0EFF4At0AF6KhivbeUlXIl9iphAfB845h3Qsqj3oLUI+nnXUoM6vJYyA8lm95ftzWqqHTG6R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzoX0wJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2948CC4CEEB;
+	Mon,  2 Jun 2025 14:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873711;
-	bh=3qI/bxCjNYp78Uz2LxFo0QUQPj3IjB201GhasOws+Aw=;
+	s=korg; t=1748875104;
+	bh=04rMup3j2LaCVUAfhSeo3lbGm2yG6I/qP0efXwJB3ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYEXQU8ixLwI0Xc3PekMfNCpBMPG4U6RkWGcAcGr5owYbLAQALcaSG5YcCvKwEYlN
-	 Fiawgf+XsHOGzeO1Qn6jgLLGQqdHhin0U8ehmGifuevwodGvjo0bhG8jmQ/mZcSB52
-	 Mm19TPdSG39LGcADcMFzMWYz6vXGfd4JFlU8bJjY=
+	b=QzoX0wJLxnHiVG2+LqwoaNv1xzMO/3d8Ibt4zU5WmuvJgzwXbQN9u+FEIjKt+Y+R2
+	 TiThMw39ff9G/5owCq7v4W+bCWBES48oW6FfVFN/cRdruMIkOQNdWOe6BgEDcyPArm
+	 neqeX5IbAarzo1JoFAnlRYO5INtMPKxT+4u0lZUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/444] ASoC: tas2764: Mark SW_RESET as volatile
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 5.10 005/270] i2c: imx-lpi2c: Fix clock count when probe defers
 Date: Mon,  2 Jun 2025 15:44:50 +0200
-Message-ID: <20250602134350.088143555@linuxfoundation.org>
+Message-ID: <20250602134307.417809486@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit f37f1748564ac51d32f7588bd7bfc99913ccab8e ]
+commit b1852c5de2f2a37dd4462f7837c9e3e678f9e546 upstream.
 
-Since the bit is self-clearing.
+Deferred probe with pm_runtime_put() may delay clock disable, causing
+incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
+clock is disabled immediately.
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-3-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Cc: <stable@vger.kernel.org> # v4.16+
+Link: https://lore.kernel.org/r/20250421062341.2471922-1-carlos.song@nxp.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/tas2764.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-imx-lpi2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 4e5381c07f504..3f622d629f77a 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -654,6 +654,7 @@ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
- static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-+	case TAS2764_SW_RST:
- 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
- 	case TAS2764_INT_CLK_CFG:
- 		return true;
--- 
-2.39.5
-
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -616,9 +616,9 @@ static int lpi2c_imx_probe(struct platfo
+ 	return 0;
+ 
+ rpm_disable:
+-	pm_runtime_put(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
++	pm_runtime_put_sync(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
+ 
+ 	return ret;
+ }
 
 
 
