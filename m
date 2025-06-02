@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77771ACB605
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AD0ACB7F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74934C4FEA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE434C3061
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD79E238C27;
-	Mon,  2 Jun 2025 14:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BCF22A4F6;
+	Mon,  2 Jun 2025 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pyx9q0Xr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5WSdQkZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8959823644F;
-	Mon,  2 Jun 2025 14:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A091F4165;
+	Mon,  2 Jun 2025 15:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876341; cv=none; b=cPPJr9e893F/3AZaDYPd9tgA+NorZpsVg4XOFtC3U4Vz0V9CWC+jQCGiTeDLngJ59jHSsirkWxTLK+GNY+uoMC+CFn+NnvtEeJlijXQ5E7r31kp+snd06/7X90i3jO/XLCu0yr+5CiMCfNWeS24hISWiq+uaMnMiraR+KBaawWM=
+	t=1748877239; cv=none; b=Rl2Bm1m+YcT3K0bRqULCVaglPjNBnxtO1Oa6zLMxILJ3a+mM1t6pV2Aa+5X516CnbsGAuG2r8+pVVJOv9HbzJzDtsc88VnCIIyUNj5YsJLnzzbn5DBBXWJs2Jvc1Tb+hS3jwQm0xotPPqSBKVjggfleHwvl/qMGI87cVy9NehSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876341; c=relaxed/simple;
-	bh=6NllfDimlhC3DGdzoDaqah3uZ5xNszKGgEolTOBiveM=;
+	s=arc-20240116; t=1748877239; c=relaxed/simple;
+	bh=UyWSct317ej7f2p+vbVviyvUPnIgEPHSOsaMySjdNjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfWWs52xzvGJDtE0DnqrhAdO9PanAuOZVZj3nNUXlS4y23tn4e7QtdLjxwtiHKJy+Ggv1l1gawOQpwPRIMW9osXQZQFGAh2qT1kH3eiTq/wli60D2Zu8JeqpqNWxXardhgs5q4Si07ih62/Tuw7yF/wKNsM0e6D4N7ih9dEHA8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pyx9q0Xr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5FDC4CEEB;
-	Mon,  2 Jun 2025 14:59:00 +0000 (UTC)
+	 MIME-Version; b=CIg0htWkAxln1Jl8OnEsuuOagtiSjnjf4iUfYkoxVxaNYvxGS6w0BJOCx5OkkBYP9cH6SFIyLKX65ZbHDRN0i1ruESLjRoqGizYxhiUSyAKbAUDg/0lSUtpUIyu1hmqs2Unz42vSIaYoNyrw3amH9Mz2RRo/QW1OMND54rKSATg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5WSdQkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F93C4CEEB;
+	Mon,  2 Jun 2025 15:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876341;
-	bh=6NllfDimlhC3DGdzoDaqah3uZ5xNszKGgEolTOBiveM=;
+	s=korg; t=1748877238;
+	bh=UyWSct317ej7f2p+vbVviyvUPnIgEPHSOsaMySjdNjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pyx9q0Xrj+JoXLaolyl9QxEzQOwYh3jTjjsKpxNnYTuPKCOro0S4qmoyGMsA+RtjP
-	 W2r5wl25xs7ECyAveZeUsCTQhl7CIRk1pLxDCQEhdJGMUwVmPElw0gjiDEBH+L//iw
-	 5/U984pf2T1QPRTj1Do1O4WZ+JU0MwulCAWh+5JA=
+	b=R5WSdQkZ2qbGNEwCd31VOn+v5RqMGLuGZk9kwqIXM/c/U/6bLEoxrz6PG2pqoW1US
+	 YLYcj3GC+MGM7e7PaFvZAL0ucRWFlsbhX8QmEieY3XwUJIng4BY1ENJSpB79wpeHKl
+	 CPptqpND63Sbb2rl7hA6b/2lNJXNTQ6HU0rBLhfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/207] smack: recognize ipv4 CIPSO w/o categories
+Subject: [PATCH 6.1 215/325] regulator: ad5398: Add device tree support
 Date: Mon,  2 Jun 2025 15:48:11 +0200
-Message-ID: <20250602134303.381785207@linuxfoundation.org>
+Message-ID: <20250602134328.533079864@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Isaac Scott <isaac.scott@ideasonboard.com>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+Previously, the ad5398 driver used only platform_data, which is
+deprecated in favour of device tree. This caused the AD5398 to fail to
+probe as it could not load its init_data. If the AD5398 has a device
+tree node, pull the init_data from there using
+of_get_regulator_init_data.
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
-
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
-
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
-
-This happens in two steps:
-
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
-
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
+Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/regulator/ad5398.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index f6961a8895296..0feaa29cc0243 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
+diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
+index 75f432f61e919..f4d6e62bd963e 100644
+--- a/drivers/regulator/ad5398.c
++++ b/drivers/regulator/ad5398.c
+@@ -14,6 +14,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
++#include <linux/regulator/of_regulator.h>
+ 
+ #define AD5398_CURRENT_EN_MASK	0x8000
+ 
+@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
+ 	const struct ad5398_current_data_format *df =
+ 			(struct ad5398_current_data_format *)id->driver_data;
+ 
+-	if (!init_data)
+-		return -EINVAL;
+-
+ 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+ 	if (!chip)
+ 		return -ENOMEM;
+ 
+ 	config.dev = &client->dev;
++	if (client->dev.of_node)
++		init_data = of_get_regulator_init_data(&client->dev,
++						       client->dev.of_node,
++						       &ad5398_reg);
++	if (!init_data)
++		return -EINVAL;
++
+ 	config.init_data = init_data;
++	config.of_node = client->dev.of_node;
+ 	config.driver_data = chip;
+ 
+ 	chip->client = client;
 -- 
 2.39.5
 
