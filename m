@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-150539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD641ACB8EA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1069EACB6C2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB75948217
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9D01BA6938
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7E922652D;
-	Mon,  2 Jun 2025 15:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BEB22D790;
+	Mon,  2 Jun 2025 15:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzsnqhyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fL/2lNBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF7A225791;
-	Mon,  2 Jun 2025 15:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457F522D4D7;
+	Mon,  2 Jun 2025 15:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877440; cv=none; b=F7LfsUx21PHfy3IF09WtFpns+g2RmSMMK2eNaaCb6HpK6qMopIh4nG1qo7aITaWsPxxgtH3CgfZocfxxYUZSeErhZbe2QhDz6li0HhO5jn3vKXPfxc/5hZsPrvwSUlFgkFy5Bp9qtOE9wm7mbMT4zRWOqlM/Yl5VM72/1mO5MpE=
+	t=1748876442; cv=none; b=Gxuzh+8TSKvauCayHt+ThzqAKSlh5fEEKhVdhqmSK9gjyHdO0UWxt//EdRcjAG35tMaXFuEMnFGPXF+Y3wSOcF3BWXFqn1mLR8JmmeGOYGgWig5IOgcX7R+t0jd2ZE+UsQOqJ7Zmo+tqVrbXRI/rhpBi8ltHY+dHmzeKbwXVKBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877440; c=relaxed/simple;
-	bh=C5ksXSwv5MPfaWaae51nX8Bd9kY7y+FvfgoCHjJY+f0=;
+	s=arc-20240116; t=1748876442; c=relaxed/simple;
+	bh=PF611zMRZtuzCG2xqfXIXyyLmqytSfeWxoRaCld43TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBiNzWH+f/RK7bJOGxlTRm7pTaBEAgdHJ50Onb6wGZGaIDuThQtJoO2dGoDH7PUFatYnRVW37KuM8Hny6ZrLaHXJ22vPB6WFAMtkQKG47tdrYPSlkNDm1dhGI6eApUnTAf3TwFX1o7Akq8aOgLRbZclpz8aEs43mToshdcrVrmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzsnqhyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349D6C4CEEB;
-	Mon,  2 Jun 2025 15:17:20 +0000 (UTC)
+	 MIME-Version; b=nIxKJnvBDPNoWfBmt+pyCM+Y2znLMFizLjCm+l6V4pV/ZnTtlmjSuX1k5/VYtHiklcZTOy8Ie4avsJLxaBBH8BaxJ8bw0KUPhuPaWYvtqF8RY8/cpn3LeDtEqlJ1NWG5qd9ztuNfPOhqUEEgJfz+VygQOBJWWZX6ctNS+ejehrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fL/2lNBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCF1C4CEEB;
+	Mon,  2 Jun 2025 15:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877440;
-	bh=C5ksXSwv5MPfaWaae51nX8Bd9kY7y+FvfgoCHjJY+f0=;
+	s=korg; t=1748876442;
+	bh=PF611zMRZtuzCG2xqfXIXyyLmqytSfeWxoRaCld43TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OzsnqhyI84Ipdh0ETFtqxnz3HEYbNwRj0CfcdkVPAbtPwLDEc7hqqoOyiB00UZpGR
-	 vVPaWvFYnhUub7EmAmShltEorP75Ly93I4oK2xMj/NLsLmM68COPckXF8Ginc2ySol
-	 xVdcs6MoT9JHyS2N7pwWzApF5YBJodV2X3WvqRkg=
+	b=fL/2lNBG+MJeS1EPf2g0EIw68nPmWohZuHicxgvuh7nkSqL1xwevpqgf5x87HluKs
+	 TeE7nqVXOpghm4otTCoUC3wAZJAY+7XDQ9ehIYA4NBI4pTd2Ltnbd+gf2k0fR3Ewjl
+	 YNR8UiFwZ+JzZWquqt4P0c6HsHIWv3i/etPj7mGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.1 271/325] serial: sh-sci: Save and restore more registers
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 175/207] llc: fix data loss when reading from a socket in llc_ui_recvmsg()
 Date: Mon,  2 Jun 2025 15:49:07 +0200
-Message-ID: <20250602134330.780843002@linuxfoundation.org>
+Message-ID: <20250602134305.601832836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
 
-commit 81100b9a7b0515132996d62a7a676a77676cb6e3 upstream.
+commit 239af1970bcb039a1551d2c438d113df0010c149 upstream.
 
-On (H)SCIF with a Baud Rate Generator for External Clock (BRG), there
-are multiple ways to configure the requested serial speed.  If firmware
-uses a different method than Linux, and if any debug info is printed
-after the Bit Rate Register (SCBRR) is restored, but before termios is
-reconfigured (which configures the alternative method), the system may
-lock-up during resume.
+For SOCK_STREAM sockets, if user buffer size (len) is less
+than skb size (skb->len), the remaining data from skb
+will be lost after calling kfree_skb().
 
-Fix this by saving and restoring the contents of the BRG Frequency
-Division (SCDL) and Clock Select (SCCKS) registers as well.
+To fix this, move the statement for partial reading
+above skb deletion.
 
-Also save and restore the HSCIF's Sampling Rate Register (HSSRR), which
-configures the sampling point, and the SCIFA/SCIFB's Serial Port Control
-and Data Registers (SCPCR/SCPDR), which configure the optional control
-flow signals.
+Found by InfoTeCS on behalf of Linux Verification Center (linuxtesting.org)
 
-After this, all registers that are not saved/restored are either:
-  - read-only,
-  - write-only,
-  - status registers containing flags with clear-after-set semantics,
-  - FIFO Data Count Trigger registers, which do not matter much for
-    the serial console.
-
-Fixes: 22a6984c5b5df8ea ("serial: sh-sci: Update the suspend/resume support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/11c2eab45d48211e75d8b8202cce60400880fe55.1741114989.git.geert+renesas@glider.be
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 30a584d944fb ("[LLX]: SOCK_DGRAM interface fixes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ net/llc/af_llc.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -106,10 +106,15 @@ struct plat_sci_reg {
- };
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -886,15 +886,15 @@ static int llc_ui_recvmsg(struct socket
+ 		if (sk->sk_type != SOCK_STREAM)
+ 			goto copy_uaddr;
  
- struct sci_suspend_regs {
-+	u16 scdl;
-+	u16 sccks;
- 	u16 scsmr;
- 	u16 scscr;
- 	u16 scfcr;
- 	u16 scsptr;
-+	u16 hssrr;
-+	u16 scpcr;
-+	u16 scpdr;
- 	u8 scbrr;
- 	u8 semr;
- };
-@@ -3418,6 +3423,10 @@ static void sci_console_save(struct sci_
- 	struct sci_suspend_regs *regs = &s->suspend_regs;
- 	struct uart_port *port = &s->port;
++		/* Partial read */
++		if (used + offset < skb_len)
++			continue;
++
+ 		if (!(flags & MSG_PEEK)) {
+ 			skb_unlink(skb, &sk->sk_receive_queue);
+ 			kfree_skb(skb);
+ 			*seq = 0;
+ 		}
+-
+-		/* Partial read */
+-		if (used + offset < skb_len)
+-			continue;
+ 	} while (len > 0);
  
-+	if (sci_getreg(port, SCDL)->size)
-+		regs->scdl = sci_serial_in(port, SCDL);
-+	if (sci_getreg(port, SCCKS)->size)
-+		regs->sccks = sci_serial_in(port, SCCKS);
- 	if (sci_getreg(port, SCSMR)->size)
- 		regs->scsmr = sci_serial_in(port, SCSMR);
- 	if (sci_getreg(port, SCSCR)->size)
-@@ -3428,6 +3437,12 @@ static void sci_console_save(struct sci_
- 		regs->scsptr = sci_serial_in(port, SCSPTR);
- 	if (sci_getreg(port, SCBRR)->size)
- 		regs->scbrr = sci_serial_in(port, SCBRR);
-+	if (sci_getreg(port, HSSRR)->size)
-+		regs->hssrr = sci_serial_in(port, HSSRR);
-+	if (sci_getreg(port, SCPCR)->size)
-+		regs->scpcr = sci_serial_in(port, SCPCR);
-+	if (sci_getreg(port, SCPDR)->size)
-+		regs->scpdr = sci_serial_in(port, SCPDR);
- 	if (sci_getreg(port, SEMR)->size)
- 		regs->semr = sci_serial_in(port, SEMR);
- }
-@@ -3437,6 +3452,10 @@ static void sci_console_restore(struct s
- 	struct sci_suspend_regs *regs = &s->suspend_regs;
- 	struct uart_port *port = &s->port;
- 
-+	if (sci_getreg(port, SCDL)->size)
-+		sci_serial_out(port, SCDL, regs->scdl);
-+	if (sci_getreg(port, SCCKS)->size)
-+		sci_serial_out(port, SCCKS, regs->sccks);
- 	if (sci_getreg(port, SCSMR)->size)
- 		sci_serial_out(port, SCSMR, regs->scsmr);
- 	if (sci_getreg(port, SCSCR)->size)
-@@ -3447,6 +3466,12 @@ static void sci_console_restore(struct s
- 		sci_serial_out(port, SCSPTR, regs->scsptr);
- 	if (sci_getreg(port, SCBRR)->size)
- 		sci_serial_out(port, SCBRR, regs->scbrr);
-+	if (sci_getreg(port, HSSRR)->size)
-+		sci_serial_out(port, HSSRR, regs->hssrr);
-+	if (sci_getreg(port, SCPCR)->size)
-+		sci_serial_out(port, SCPCR, regs->scpcr);
-+	if (sci_getreg(port, SCPDR)->size)
-+		sci_serial_out(port, SCPDR, regs->scpdr);
- 	if (sci_getreg(port, SEMR)->size)
- 		sci_serial_out(port, SEMR, regs->semr);
- }
+ out:
 
 
 
