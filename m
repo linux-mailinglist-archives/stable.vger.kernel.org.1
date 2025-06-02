@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-150164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172A4ACB739
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BEDACB339
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28801BA5820
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B7040258B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA0D23505D;
-	Mon,  2 Jun 2025 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D99225416;
+	Mon,  2 Jun 2025 14:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPwsigIK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dujWSc39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7908722A4DB;
-	Mon,  2 Jun 2025 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272F91B81DC;
+	Mon,  2 Jun 2025 14:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876236; cv=none; b=J/W0ADamYKmBoIcVq4iZoJm8C2yNqutI8D9IbpA2sUs/mZ1QcCa1RTv2uEsGZuxmL9Ev+fcBH3GGXWGxbmCYfGoIS83uiD9POHLlaboY/R+okPgWo/W9Fs91hfRg8t6fJy9XOXhUmMXmdAR8TRXL7/YHr7Ke8Tj3F8DVVl4Cd2Q=
+	t=1748874214; cv=none; b=oJo7e+ZHXvuEQNT/TixMo2VGSZVhGHObsQGDA19TW82zUnIOcRhLd20F/KAmJeolC6eClp1EV3csCw01VKHzUk5FLDpvDYgmfOSMSDtUxb8L+3ScF7MM5G0ESJHnvGNR/gOrRPEYf0GS6cU6gI+4fESy3/3ONcpRVBUohMFRMBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876236; c=relaxed/simple;
-	bh=JQjrdA5C2LW4ISRB5v4+22A7F7w0VUflTtaofTX3/CE=;
+	s=arc-20240116; t=1748874214; c=relaxed/simple;
+	bh=mP6L7XKcQaG38K7qXAf7dM7D9B2uzCBgrplSwZTWV8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBfe6zqdy0EaCzCDulIn4Csn55cWguXLrIpuWvxVS6bAslk/sAuA3kMd0o/MIN3VCvbF59+uT5tb+7TyskG6NS4HIyIIbVLUBp05HKuWcu1R1Mf7a2EYnPIt7wXudzOewlkYahvXd/2IAbCp1+IObb+teYr3+bHWrahBhOZoFLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPwsigIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA84C4CEEB;
-	Mon,  2 Jun 2025 14:57:15 +0000 (UTC)
+	 MIME-Version; b=ZDsDBcB9zt96U+cgtZmRDePvgwBeo2c0QsasZTxpE0cU1IHnrTXUu7dD2fJ2TDGCLSLmJk0ycyo7vdmydNlVILMR6O9vRfBceCThoXzs1tHH5dVTZtZwp8fKtDAwoFlLzbmA70zv06iVv6zg8Ylaq3ezUeMqXkgU/UV5QWTcyto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dujWSc39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C92AC4CEEE;
+	Mon,  2 Jun 2025 14:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876236;
-	bh=JQjrdA5C2LW4ISRB5v4+22A7F7w0VUflTtaofTX3/CE=;
+	s=korg; t=1748874214;
+	bh=mP6L7XKcQaG38K7qXAf7dM7D9B2uzCBgrplSwZTWV8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPwsigIKizuDpB/ZOZB+mktOLYyWCssRzIr9Ab5+xVdD590hyZmjHu787MHh0NuvR
-	 ZVZMPPt9qA7FkAXp/lRI4IBx9HVrVdWz2u+/je+YjLugIrPAA/29Vag23872pTBA9Q
-	 Tk24ScdErWSbsy5sbrqWdCOqRZa8TmAxok1BGAds=
+	b=dujWSc39Qd+HqcFXjp9mizaMFzN6JoDfRQoQn7xD3Ypzo7ygVjZC6qf2oCd6wVLTR
+	 uacMRfs6LV/9+CS8Vs+JjcdnnbYGbntgFNR1hcXImTe7zOfRS/qYzu/bwzQOpNRFYV
+	 vPAe9VyZN8yajHX8BE6ThadDWar/XMzXQx3OLlFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/207] net/mlx5: Avoid report two health errors on same syndrome
+	"stable@vger.kernel.org, Simon Horman" <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.6 395/444] af_unix: Return struct unix_sock from unix_get_socket().
 Date: Mon,  2 Jun 2025 15:47:39 +0200
-Message-ID: <20250602134302.142084611@linuxfoundation.org>
+Message-ID: <20250602134356.939886853@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +65,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
+commit 5b17307bd0789edea0675d524a2b277b93bbde62 upstream.
 
-In case health counter has not increased for few polling intervals, miss
-counter will reach max misses threshold and health report will be
-triggered for FW health reporter. In case syndrome found on same health
-poll another health report will be triggered.
+Currently, unix_get_socket() returns struct sock, but after calling
+it, we always cast it to unix_sk().
 
-Avoid two health reports on same syndrome by marking this syndrome as
-already known.
+Let's return struct unix_sock from unix_get_socket().
 
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Pavel Begunkov <asml.silence@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240123170856.41348-4-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/af_unix.h |    2 +-
+ net/unix/garbage.c    |   19 +++++++------------
+ net/unix/scm.c        |   19 +++++++------------
+ 3 files changed, 15 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index 1504856fafde4..2a0b111fbcd3c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -737,6 +737,7 @@ static void poll_health(struct timer_list *t)
- 	health->prev = count;
- 	if (health->miss_counter == MAX_MISSES) {
- 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
-+		health->synd = ioread8(&h->synd);
- 		print_health_info(dev);
- 		queue_work(health->wq, &health->report_work);
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -14,7 +14,7 @@ void unix_destruct_scm(struct sk_buff *s
+ void io_uring_destruct_scm(struct sk_buff *skb);
+ void unix_gc(void);
+ void wait_for_unix_gc(void);
+-struct sock *unix_get_socket(struct file *filp);
++struct unix_sock *unix_get_socket(struct file *filp);
+ struct sock *unix_peer_get(struct sock *sk);
+ 
+ #define UNIX_HASH_MOD	(256 - 1)
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -105,20 +105,15 @@ static void scan_inflight(struct sock *x
+ 
+ 			while (nfd--) {
+ 				/* Get the socket the fd matches if it indeed does so */
+-				struct sock *sk = unix_get_socket(*fp++);
++				struct unix_sock *u = unix_get_socket(*fp++);
+ 
+-				if (sk) {
+-					struct unix_sock *u = unix_sk(sk);
++				/* Ignore non-candidates, they could have been added
++				 * to the queues after starting the garbage collection
++				 */
++				if (u && test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
++					hit = true;
+ 
+-					/* Ignore non-candidates, they could
+-					 * have been added to the queues after
+-					 * starting the garbage collection
+-					 */
+-					if (test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
+-						hit = true;
+-
+-						func(u);
+-					}
++					func(u);
+ 				}
+ 			}
+ 			if (hit && hitlist != NULL) {
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -21,9 +21,8 @@ EXPORT_SYMBOL(gc_inflight_list);
+ DEFINE_SPINLOCK(unix_gc_lock);
+ EXPORT_SYMBOL(unix_gc_lock);
+ 
+-struct sock *unix_get_socket(struct file *filp)
++struct unix_sock *unix_get_socket(struct file *filp)
+ {
+-	struct sock *u_sock = NULL;
+ 	struct inode *inode = file_inode(filp);
+ 
+ 	/* Socket ? */
+@@ -34,10 +33,10 @@ struct sock *unix_get_socket(struct file
+ 
+ 		/* PF_UNIX ? */
+ 		if (s && ops && ops->family == PF_UNIX)
+-			u_sock = s;
++			return unix_sk(s);
  	}
--- 
-2.39.5
-
+ 
+-	return u_sock;
++	return NULL;
+ }
+ EXPORT_SYMBOL(unix_get_socket);
+ 
+@@ -46,13 +45,11 @@ EXPORT_SYMBOL(unix_get_socket);
+  */
+ void unix_inflight(struct user_struct *user, struct file *fp)
+ {
+-	struct sock *s = unix_get_socket(fp);
++	struct unix_sock *u = unix_get_socket(fp);
+ 
+ 	spin_lock(&unix_gc_lock);
+ 
+-	if (s) {
+-		struct unix_sock *u = unix_sk(s);
+-
++	if (u) {
+ 		if (!u->inflight) {
+ 			BUG_ON(!list_empty(&u->link));
+ 			list_add_tail(&u->link, &gc_inflight_list);
+@@ -69,13 +66,11 @@ void unix_inflight(struct user_struct *u
+ 
+ void unix_notinflight(struct user_struct *user, struct file *fp)
+ {
+-	struct sock *s = unix_get_socket(fp);
++	struct unix_sock *u = unix_get_socket(fp);
+ 
+ 	spin_lock(&unix_gc_lock);
+ 
+-	if (s) {
+-		struct unix_sock *u = unix_sk(s);
+-
++	if (u) {
+ 		BUG_ON(!u->inflight);
+ 		BUG_ON(list_empty(&u->link));
+ 
 
 
 
