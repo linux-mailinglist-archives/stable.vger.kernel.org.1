@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-149705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39907ACB411
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E634ACB62E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4184A62E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14DDE1BC3307
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1E1221FBF;
-	Mon,  2 Jun 2025 14:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41C9231C8D;
+	Mon,  2 Jun 2025 14:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuWa4Si4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGd0Et89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5832576;
-	Mon,  2 Jun 2025 14:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B209C21CA07;
+	Mon,  2 Jun 2025 14:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874777; cv=none; b=b1Jp0hO5Y7oEHHYkIi0znpfdYcDJ9KNEy0hFQoL8CeElESEsjDwreyVYMwj+4lBRzxV8d+VxIVBAmYi2kQI52fOLs8O58WjMRbYLPjn4tstaaU30Q+qw8vomM29RxZU+YQ/IKjQB4/ZFjOoER01PHI2pcrsZCVxId99SbTQEbis=
+	t=1748876262; cv=none; b=cXj+8HLyF2B2V0u2W5AzT6ikMJnKy+Ijqvsq6wIgu+LyUiAIBviHb/2F37hMbKocBWkP+fnDlfQvRVbFvoHH/qld6eawRoKkaUriB58m3GXiO5fMi2d1WMW7N35QpIYgYaiqWQTM6LwbhMnX3x2mvbYybnvmsC/BoUKRV8fyypA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874777; c=relaxed/simple;
-	bh=zl+IX5nsaPAaYxsCohKPD6ddFX5ZCqDOnIyuVfhBej8=;
+	s=arc-20240116; t=1748876262; c=relaxed/simple;
+	bh=0HIPBbzJGXN0bbtJe1e/bZFwTTWkMOuSb1cf+fOdtGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUyfBDAcrUEaCeQWvbYzt5hd7JLCCJMn1++bWa4fAdToWNmB77q71fQZBLuW777Uj490UFEzINFZJ7pWg0lZhCsc7Vl7LMbaGokrnoZYsjQY4AMFvntqqUibCYQiCf6/TgouSA8Uy7U21rm0GFnW4SsHOfFn3bWvlZud0wkZMKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuWa4Si4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D00BC4CEEB;
-	Mon,  2 Jun 2025 14:32:56 +0000 (UTC)
+	 MIME-Version; b=h+/cPiFBtycFZZwa3/PHlsNWsgLN63MSuHNSUtx//uMqeeEZ1wDTb0XvdoOCMlPV2SYwjGna5JfvNsVlAhHzAA0AvYynXt3AHDXfm0QebFsMnDIVq06N6QY5lbID9YQd94CpWxhmxFeJQUSDGRl67HatU3RRxbWyh3KiOLJVlr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGd0Et89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EA5C4CEEB;
+	Mon,  2 Jun 2025 14:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874776;
-	bh=zl+IX5nsaPAaYxsCohKPD6ddFX5ZCqDOnIyuVfhBej8=;
+	s=korg; t=1748876262;
+	bh=0HIPBbzJGXN0bbtJe1e/bZFwTTWkMOuSb1cf+fOdtGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuWa4Si4hVODM4Fa1vvH/Qrp8dz9dUmG7RKj0psRz+tYicZzQ/fxeJeN2S2qJwRlX
-	 nke/2h/sCtKr3eWnox8HByqgUXzvh+qzxnNxG5olafGItl1pRgNSRmEr2ylOxODbuh
-	 CVkqy8V8wL5wZVvHjvK3XcnYnbSq3iNq5pF9zE24=
+	b=NGd0Et89IsebXcx/dOitS+ZJ1Kh427vd6Ba+URiKdY2CZPkuQUfh5yMIecpLVRi9D
+	 UUCFfEsZsKCnbYDtIk6bRsxKRbw3Ikepv01yg/RLXO58TF6NYU7ow1w2Wwe4Uki1ws
+	 tz5ePeeQ/ioGhIm0vqIMGLBoDZcjSrT6VmCVUSCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
+	Nir Lichtman <nir@lichtman.org>,
 	Ingo Molnar <mingo@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Michal Marek <michal.lkml@markovi.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 132/204] x86/nmi: Add an emergency handler in nmi_desc & use it in nmi_shootdown_cpus()
+Subject: [PATCH 5.15 093/207] x86/build: Fix broken copy command in genimage.sh when making isoimage
 Date: Mon,  2 Jun 2025 15:47:45 +0200
-Message-ID: <20250602134300.839405842@linuxfoundation.org>
+Message-ID: <20250602134302.377730542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,174 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Nir Lichtman <nir@lichtman.org>
 
-[ Upstream commit fe37c699ae3eed6e02ee55fbf5cb9ceb7fcfd76c ]
+[ Upstream commit e451630226bd09dc730eedb4e32cab1cc7155ae8 ]
 
-Depending on the type of panics, it was found that the
-__register_nmi_handler() function can be called in NMI context from
-nmi_shootdown_cpus() leading to a lockdep splat:
+Problem: Currently when running the "make isoimage" command there is an
+error related to wrong parameters passed to the cp command:
 
-  WARNING: inconsistent lock state
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+  "cp: missing destination file operand after 'arch/x86/boot/isoimage/'"
 
-   lock(&nmi_desc[0].lock);
-   <Interrupt>
-     lock(&nmi_desc[0].lock);
+This is caused because FDINITRDS is an empty array.
 
-  Call Trace:
-    _raw_spin_lock_irqsave
-    __register_nmi_handler
-    nmi_shootdown_cpus
-    kdump_nmi_shootdown_cpus
-    native_machine_crash_shutdown
-    __crash_kexec
+Solution: Check if FDINITRDS is empty before executing the "cp" command,
+similar to how it is done in the case of hdimage.
 
-In this particular case, the following panic message was printed before:
-
-  Kernel panic - not syncing: Fatal hardware error!
-
-This message seemed to be given out from __ghes_panic() running in
-NMI context.
-
-The __register_nmi_handler() function which takes the nmi_desc lock
-with irq disabled shouldn't be called from NMI context as this can
-lead to deadlock.
-
-The nmi_shootdown_cpus() function can only be invoked once. After the
-first invocation, all other CPUs should be stuck in the newly added
-crash_nmi_callback() and cannot respond to a second NMI.
-
-Fix it by adding a new emergency NMI handler to the nmi_desc
-structure and provide a new set_emergency_nmi_handler() helper to set
-crash_nmi_callback() in any context. The new emergency handler will
-preempt other handlers in the linked list. That will eliminate the need
-to take any lock and serve the panic in NMI use case.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Nir Lichtman <nir@lichtman.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rik van Riel <riel@surriel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250206191844.131700-1-longman@redhat.com
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Link: https://lore.kernel.org/r/20250110120500.GA923218@lichtman.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nmi.h |  2 ++
- arch/x86/kernel/nmi.c      | 42 ++++++++++++++++++++++++++++++++++++++
- arch/x86/kernel/reboot.c   | 10 +++------
- 3 files changed, 47 insertions(+), 7 deletions(-)
+ arch/x86/boot/genimage.sh | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
-index 9d5d949e662e1..dfb483c8c98b6 100644
---- a/arch/x86/include/asm/nmi.h
-+++ b/arch/x86/include/asm/nmi.h
-@@ -59,6 +59,8 @@ int __register_nmi_handler(unsigned int, struct nmiaction *);
- 
- void unregister_nmi_handler(unsigned int, const char *);
- 
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler);
-+
- void stop_nmi(void);
- void restart_nmi(void);
- void local_touch_nmi(void);
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index 5bb001c0c771a..d5c572bca8b1b 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -41,8 +41,12 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/nmi.h>
- 
-+/*
-+ * An emergency handler can be set in any context including NMI
-+ */
- struct nmi_desc {
- 	raw_spinlock_t lock;
-+	nmi_handler_t emerg_handler;
- 	struct list_head head;
- };
- 
-@@ -124,9 +128,22 @@ static void nmi_check_duration(struct nmiaction *action, u64 duration)
- static int nmi_handle(unsigned int type, struct pt_regs *regs)
- {
- 	struct nmi_desc *desc = nmi_to_desc(type);
-+	nmi_handler_t ehandler;
- 	struct nmiaction *a;
- 	int handled=0;
- 
-+	/*
-+	 * Call the emergency handler, if set
-+	 *
-+	 * In the case of crash_nmi_callback() emergency handler, it will
-+	 * return in the case of the crashing CPU to enable it to complete
-+	 * other necessary crashing actions ASAP. Other handlers in the
-+	 * linked list won't need to be run.
-+	 */
-+	ehandler = desc->emerg_handler;
-+	if (ehandler)
-+		return ehandler(type, regs);
-+
- 	rcu_read_lock();
- 
- 	/*
-@@ -212,6 +229,31 @@ void unregister_nmi_handler(unsigned int type, const char *name)
- }
- EXPORT_SYMBOL_GPL(unregister_nmi_handler);
- 
-+/**
-+ * set_emergency_nmi_handler - Set emergency handler
-+ * @type:    NMI type
-+ * @handler: the emergency handler to be stored
-+ *
-+ * Set an emergency NMI handler which, if set, will preempt all the other
-+ * handlers in the linked list. If a NULL handler is passed in, it will clear
-+ * it. It is expected that concurrent calls to this function will not happen
-+ * or the system is screwed beyond repair.
-+ */
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler)
-+{
-+	struct nmi_desc *desc = nmi_to_desc(type);
-+
-+	if (WARN_ON_ONCE(desc->emerg_handler == handler))
-+		return;
-+	desc->emerg_handler = handler;
-+
-+	/*
-+	 * Ensure the emergency handler is visible to other CPUs before
-+	 * function return
-+	 */
-+	smp_wmb();
-+}
-+
- static void
- pci_serr_error(unsigned char reason, struct pt_regs *regs)
- {
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 6fede2f001042..17e378db513d2 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -875,15 +875,11 @@ void nmi_shootdown_cpus(nmi_shootdown_cb callback)
- 	shootdown_callback = callback;
- 
- 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
--	/* Would it be better to replace the trap vector here? */
--	if (register_nmi_handler(NMI_LOCAL, crash_nmi_callback,
--				 NMI_FLAG_FIRST, "crash"))
--		return;		/* Return what? */
-+
- 	/*
--	 * Ensure the new callback function is set before sending
--	 * out the NMI
-+	 * Set emergency handler to preempt other handlers.
- 	 */
--	wmb();
-+	set_emergency_nmi_handler(NMI_LOCAL, crash_nmi_callback);
- 
- 	apic_send_IPI_allbutself(NMI_VECTOR);
- 
+diff --git a/arch/x86/boot/genimage.sh b/arch/x86/boot/genimage.sh
+index 0673fdfc1a11a..a8a9b1daffac8 100644
+--- a/arch/x86/boot/genimage.sh
++++ b/arch/x86/boot/genimage.sh
+@@ -22,6 +22,7 @@
+ # This script requires:
+ #   bash
+ #   syslinux
++#   genisoimage
+ #   mtools (for fdimage* and hdimage)
+ #   edk2/OVMF (for hdimage)
+ #
+@@ -250,7 +251,9 @@ geniso() {
+ 	cp "$isolinux" "$ldlinux" "$tmp_dir"
+ 	cp "$FBZIMAGE" "$tmp_dir"/linux
+ 	echo default linux "$KCMDLINE" > "$tmp_dir"/isolinux.cfg
+-	cp "${FDINITRDS[@]}" "$tmp_dir"/
++	if [ ${#FDINITRDS[@]} -gt 0 ]; then
++		cp "${FDINITRDS[@]}" "$tmp_dir"/
++	fi
+ 	genisoimage -J -r -appid 'LINUX_BOOT' -input-charset=utf-8 \
+ 		    -quiet -o "$FIMAGE" -b isolinux.bin \
+ 		    -c boot.cat -no-emul-boot -boot-load-size 4 \
 -- 
 2.39.5
 
