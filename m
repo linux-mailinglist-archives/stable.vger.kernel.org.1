@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-149774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC6EACB4B2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17449ACB349
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49AA4400C7F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84B25188A266
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05819230BCE;
-	Mon,  2 Jun 2025 14:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A593022257B;
+	Mon,  2 Jun 2025 14:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyNcAhPt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG2vAJsy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E7019EEBD;
-	Mon,  2 Jun 2025 14:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECAD222587;
+	Mon,  2 Jun 2025 14:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874997; cv=none; b=unzCkLwDdo2hiGg1QnZ88wY0GOoj7z4vItxcUrerMBgQBy+p10OryAdkQxy67krNNekYtfXOIMmTI69A6/mt8O5gXU6SOVN7obuFSF2K5SzChCvDxydgMY/ZYNOwe68vd7Wjd86i8V7JRIzUbMVbuZFVWfEXN+XY8Le3tc0e0cM=
+	t=1748874384; cv=none; b=YXt9VR0ATrltF4qm4HjtpFBYKKIh68OfNQTFZM8mrdeJYl7Vo8p0HyynHmYPOpG80QhebjsbHyJl6ipC/jWa2XG2KtF+v+/Mxr0q5MLsjBG5x64LnYK6OgyhXEwy1RtsLyKx19oRNcgOrshuYOWlxlJ3Dkr1n2nZIkhq2pms3cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874997; c=relaxed/simple;
-	bh=xTXS8nC6VPWGx8oJybglHvU+YHNk0O+id6uUgV+GKgU=;
+	s=arc-20240116; t=1748874384; c=relaxed/simple;
+	bh=BgQpOwLAIutmT/1T03CqwdZL6QxdcIOpgfAvMGon/iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MkruVaPdRGv6Bz2fUSA3tTDw879vZUkmu+51iXD2AMQUoopYqTthtTUEcBp7LrO8ci4/Bxfoq2RY5gZeLU/SpMQdrMKR4Y8gKKNaJ8A0naiCyRjnOqDPTUknAaz4wE0raXvuyAW51dOcsNwoYZ3RfYaVVtmHssANBeimHSt4QhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyNcAhPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26589C4CEEB;
-	Mon,  2 Jun 2025 14:36:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VpL/Dc6GLd4aKmbYEpZwsqF4tLDRvlECcTLK+DeP/v3wAyqF/KW0WHCR/J3VL0ZX8WxjXPhJ9HiV/23ujauSEGpYcWNNjvcWKKTwEydHMZRqMOZoPe1akZ9nds2uvISRCHnJ4Js+a33kpPzFZtiVdZx7aoZ410sV/BujZ1uYiOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG2vAJsy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F01C4CEEB;
+	Mon,  2 Jun 2025 14:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874997;
-	bh=xTXS8nC6VPWGx8oJybglHvU+YHNk0O+id6uUgV+GKgU=;
+	s=korg; t=1748874383;
+	bh=BgQpOwLAIutmT/1T03CqwdZL6QxdcIOpgfAvMGon/iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyNcAhPtdQLyQK6IF2P1+cYCupbYsxe3vsp51/3YbMJE/VMiULhYI6e6+3NN6MVmF
-	 vbtXCT3hsP/CzsgdW0mVewbDtLo3/WvvkDxi54UJpcgIrRrKn2Ci70IkcTS2QLaGJY
-	 uVNctbJd358bLrXchOLhC8gwoxOv1Wgjy8+v8o1I=
+	b=WG2vAJsyePgT6YUXA1bc4mLulheBlD4TrlNuEfvHZJLthrCf64lsGnzL8Yi7Mr8jG
+	 oK6EBh2Ala8efKZbmBeUMJGtA8+dQ5TuvJOY28Nk7bMPDPp3fRR4p1szuBgDb8TD7i
+	 2mzKBEiqO60sAIorvqWvDNRKr4rv+8v6W2w7I7Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Corentin LABBE <clabbe.montjoie@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Derek Barbosa <debarbos@redhat.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 173/204] net: dwmac-sun8i: Use parsed internal PHY address instead of 1
+Subject: [PATCH 6.6 442/444] platform/x86: thinkpad_acpi: Ignore battery threshold change event notification
 Date: Mon,  2 Jun 2025 15:48:26 +0200
-Message-ID: <20250602134302.448943051@linuxfoundation.org>
+Message-ID: <20250602134358.876773686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 47653e4243f2b0a26372e481ca098936b51ec3a8 ]
+[ Upstream commit 29e4e6b4235fefa5930affb531fe449cac330a72 ]
 
-While the MDIO address of the internal PHY on Allwinner sun8i chips is
-generally 1, of_mdio_parse_addr is used to cleanly parse the address
-from the device-tree instead of hardcoding it.
+If user modifies the battery charge threshold an ACPI event is generated.
+Confirmed with Lenovo FW team this is only generated on user event. As no
+action is needed, ignore the event and prevent spurious kernel logs.
 
-A commit reworking the code ditched the parsed value and hardcoded the
-value 1 instead, which didn't really break anything but is more fragile
-and not future-proof.
-
-Restore the initial behavior using the parsed address returned from the
-helper.
-
-Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
-Link: https://patch.msgid.link/20250519164936.4172658-1-paulk@sys-base.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Derek Barbosa <debarbos@redhat.com>
+Closes: https://lore.kernel.org/platform-driver-x86/7e9a1c47-5d9c-4978-af20-3949d53fb5dc@app.fastmail.com/T/#m5f5b9ae31d3fbf30d7d9a9d76c15fb3502dfd903
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250517023348.2962591-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 497ce6e6b16ff..99387e39c04ea 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -919,7 +919,7 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
- 		/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
- 		 * address. No need to mask it again.
- 		 */
--		reg |= 1 << H3_EPHY_ADDR_SHIFT;
-+		reg |= ret << H3_EPHY_ADDR_SHIFT;
- 	} else {
- 		/* For SoCs without internal PHY the PHY selection bit should be
- 		 * set to 0 (external PHY).
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index bcb0689101e2b..8de0d3232e48c 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -212,6 +212,7 @@ enum tpacpi_hkey_event_t {
+ 	/* Thermal events */
+ 	TP_HKEY_EV_ALARM_BAT_HOT	= 0x6011, /* battery too hot */
+ 	TP_HKEY_EV_ALARM_BAT_XHOT	= 0x6012, /* battery critically hot */
++	TP_HKEY_EV_ALARM_BAT_LIM_CHANGE	= 0x6013, /* battery charge limit changed*/
+ 	TP_HKEY_EV_ALARM_SENSOR_HOT	= 0x6021, /* sensor too hot */
+ 	TP_HKEY_EV_ALARM_SENSOR_XHOT	= 0x6022, /* sensor critically hot */
+ 	TP_HKEY_EV_THM_TABLE_CHANGED	= 0x6030, /* windows; thermal table changed */
+@@ -3942,6 +3943,10 @@ static bool hotkey_notify_6xxx(const u32 hkey,
+ 		pr_alert("THERMAL EMERGENCY: battery is extremely hot!\n");
+ 		/* recommended action: immediate sleep/hibernate */
+ 		break;
++	case TP_HKEY_EV_ALARM_BAT_LIM_CHANGE:
++		pr_debug("Battery Info: battery charge threshold changed\n");
++		/* User changed charging threshold. No action needed */
++		return true;
+ 	case TP_HKEY_EV_ALARM_SENSOR_HOT:
+ 		pr_crit("THERMAL ALARM: a sensor reports something is too hot!\n");
+ 		/* recommended action: warn user through gui, that */
 -- 
 2.39.5
 
