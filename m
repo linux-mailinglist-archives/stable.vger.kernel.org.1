@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5908CACB544
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA77ACB316
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D331B1947311
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70CBD4A3DE7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4772A20E026;
-	Mon,  2 Jun 2025 14:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D85223DC0;
+	Mon,  2 Jun 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6AP7AVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUY8uHMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D082222CA;
-	Mon,  2 Jun 2025 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DB71C5D72;
+	Mon,  2 Jun 2025 14:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875400; cv=none; b=D3lGTUHNg0W6gLFrrZ9pSYmtYQsnyrEBFxT0Wg/qyS4IXzwnn1sSzgzSHr++0yB7unZv8RVLtHAOzBmM8E16epcqI0poPcowXUxA4e7fuuaPSHw0GgJgpaVJD1ZCGB3ydvP2/FhvW44ee+fofjJ60yswDCKI8yTItYusL+mgLeA=
+	t=1748874145; cv=none; b=MbV4TsanvP4b2T3+wBC+k9/IsbmhGMVGUws7vvbbJDZOKEASIJ7UZSIgbziX+z8NG+j/hP9KlVxYunW7CXYr3pX9FhnWJNLnAxaqn1D9FsRuL0XguIpjqgvCtYtnejTt7kfOJIvtaX+CRb7fvqBmoNicEily4rZKlCYB7AOLLDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875400; c=relaxed/simple;
-	bh=lOrVRUN5nXCnCknhC3ynTERNeAWgrfDBlW3MUEyRNM4=;
+	s=arc-20240116; t=1748874145; c=relaxed/simple;
+	bh=PZQy/Vz8ONP5pLpqDVpZzyqVOeUoYoAAjrSbLYgvj/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9aJQfIRSDSvafplVOq6Hn5ZmKZoNixfkvbDfldzcH2SohmXnMEwPLx/F/ahAneUgdQqLDzSwEbDHE4+QsFZmP4Jq8+XN88tUatMPtC7bejUsfkS09wNSqWXVoa3/IhPlXXyyu4IwGPvmJ54S0pwb4atG5vXZLT55MRpUKMHzLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6AP7AVE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02726C4CEEE;
-	Mon,  2 Jun 2025 14:43:15 +0000 (UTC)
+	 MIME-Version; b=Z3slChd0+VKiuFaGJWx3qIc//bXXIfuke7I89N5YZbaxCwoJC/Srr8oNG4wRcIdggNHJy2ul908u2zVcy5rwnwvrOt5zMql2aZjwqpa4Cjt3atW7FJxLOKSn6MwzKrk9lT8cM3JrJ1aw+WENVhxqvgyZdque8Vd3Q9Q2KPpbmZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUY8uHMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF95C4CEF0;
+	Mon,  2 Jun 2025 14:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875396;
-	bh=lOrVRUN5nXCnCknhC3ynTERNeAWgrfDBlW3MUEyRNM4=;
+	s=korg; t=1748874145;
+	bh=PZQy/Vz8ONP5pLpqDVpZzyqVOeUoYoAAjrSbLYgvj/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6AP7AVEL/ujNUWwULb4waobsMI4L28Fo1gz8Yq6/fmQbTqVdrBx5Fd8GGhfcdI0J
-	 FYG/bLUqwj7T4r+hyFmX6rhUEVKLgxw3P29u96gjdeK9LM3I6GCI6XeTMQ+DkhSMnS
-	 wlDm9twLD4CX9q4VrRn28lQD93PuTuAYFRvS0Ev8=
+	b=fUY8uHMgZ+yEm2WAMxY5lQpCfmEir5fqbgX06V7jEEd5jCwBgYVeZJYjOWQu1Y6vm
+	 7FXCUnfGuM7SJm26HQMQRaQ3G57Kb1kY8pjXQVS5aUG19aOCsX2ts3zUa7ivOKSRP2
+	 Y31VEi+2p9Fx9QXIyot2U6msE38f9PWxK87Dbfgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/270] mailbox: use error ret code of of_parse_phandle_with_args()
+Subject: [PATCH 6.6 342/444] bridge: netfilter: Fix forwarding of fragmented packets
 Date: Mon,  2 Jun 2025 15:46:46 +0200
-Message-ID: <20250602134312.171959812@linuxfoundation.org>
+Message-ID: <20250602134354.817569698@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+When netfilter defrag hooks are loaded (due to the presence of conntrack
+rules, for example), fragmented packets entering the bridge will be
+defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
+ipv4_conntrack_defrag()).
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Later on, in the bridge's post-routing hook, the defragged packet will
+be fragmented again. If the size of the largest fragment is larger than
+what the kernel has determined as the destination MTU (using
+ip_skb_dst_mtu()), the defragged packet will be dropped.
+
+Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
+ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
+the destination MTU. Assuming the dst entry attached to the packet is
+the bridge's fake rtable one, this would simply be the bridge's MTU (see
+fake_mtu()).
+
+However, after above mentioned commit, ip_skb_dst_mtu() ends up
+returning the route's MTU stored in the dst entry's metrics. Ideally, in
+case the dst entry is the bridge's fake rtable one, this should be the
+bridge's MTU as the bridge takes care of updating this metric when its
+MTU changes (see br_change_mtu()).
+
+Unfortunately, the last operation is a no-op given the metrics attached
+to the fake rtable entry are marked as read-only. Therefore,
+ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
+defragged packets are dropped during fragmentation when dealing with
+large fragments and high MTU (e.g., 9k).
+
+Fix by moving the fake rtable entry's metrics to be per-bridge (in a
+similar fashion to the fake rtable entry itself) and marking them as
+writable, thereby allowing MTU changes to be reflected.
+
+Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
+Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
+Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
+Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
+Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/bridge/br_nf_core.c | 7 ++-----
+ net/bridge/br_private.h | 1 +
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 4229b9b5da98f..6f54501dc7762 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
+index 98aea5485aaef..a8c67035e23c0 100644
+--- a/net/bridge/br_nf_core.c
++++ b/net/bridge/br_nf_core.c
+@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
+  * ipt_REJECT needs it.  Future netfilter modules might
+  * require us to fill additional fields.
+  */
+-static const u32 br_dst_default_metrics[RTAX_MAX] = {
+-	[RTAX_MTU - 1] = 1500,
+-};
+-
+ void br_netfilter_rtable_init(struct net_bridge *br)
+ {
+ 	struct rtable *rt = &br->fake_rtable;
  
- 	mutex_lock(&con_mutex);
- 
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
- 	}
- 
- 	chan = ERR_PTR(-EPROBE_DEFER);
+ 	rcuref_init(&rt->dst.__rcuref, 1);
+ 	rt->dst.dev = br->dev;
+-	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
++	dst_init_metrics(&rt->dst, br->metrics, false);
++	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
+ 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
+ 	rt->dst.ops = &fake_dst_ops;
+ }
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 72d80fd943a8a..9197b511e4597 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -502,6 +502,7 @@ struct net_bridge {
+ 		struct rtable		fake_rtable;
+ 		struct rt6_info		fake_rt6_info;
+ 	};
++	u32				metrics[RTAX_MAX];
+ #endif
+ 	u16				group_fwd_mask;
+ 	u16				group_fwd_mask_required;
 -- 
 2.39.5
 
