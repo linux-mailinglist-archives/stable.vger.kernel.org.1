@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51581ACB30D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8D8ACB39A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE006166861
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CB6A1940516
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2EC2C3247;
-	Mon,  2 Jun 2025 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FA822E01E;
+	Mon,  2 Jun 2025 14:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U84FPuC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abcC788H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F4F1ACEAF;
-	Mon,  2 Jun 2025 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93622330F;
+	Mon,  2 Jun 2025 14:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874040; cv=none; b=dGHuh9I8bhi82jmS8RrJ+zjF584ewwAgt4O69/59l0yl7PH7GS655Q7B4MXu2HHJcWuCB9Tj/NE+QaFqEy25i6oiMVBgjdBn8kOK0s/RZhsGOdKzkm/bSIJsqmRvyBjm8I1S56cKzl74ZNB2S+O0f2bZouSnZCYH/XwxnMR8vcU=
+	t=1748874509; cv=none; b=RGyhPo5mdeabiz7RszLv0I5YBLs4IJ5TieWavM3sM6Z2oj6HuUVfMttr1RW9EuDFaMf1h+zrbbBkdV8bO5InFmO0TUAAqMcYjo1tcp4wDblS4PlAujfle33vzvDTCHdMtsgbAw0xGUkJJQ/r5YxWElTT+qgPLtdDYijcUaaOdw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874040; c=relaxed/simple;
-	bh=D+IlwVwPeozDg76rCC7Oz7BDDUsfzllc9Gg1S+uBb1c=;
+	s=arc-20240116; t=1748874509; c=relaxed/simple;
+	bh=t23FnSEZmkumq9WhAZxjeGs+q/cSN1M742TwWi7fpgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/PsgQ+axcMkmVzDCBdJIjYcOj7xfQdANMFkCcRiBZXNYQI6ec11Lg1P4JFitLzCFxjZUbXZI1vursE9N2JE1T5Sc96/lluYGexSmJX8m+8g/ljc2MnbwAAo2e19IR/ZbchIzgkrKinwypw+2SVRs6TekVSUntnjNQqQLhrCQZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U84FPuC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30E7C4CEEB;
-	Mon,  2 Jun 2025 14:20:39 +0000 (UTC)
+	 MIME-Version; b=GqK+Sp2mkNy3LzfzdACQdVQAfhHKFp1ECDHPtcsMe1TO8ePzby/Wh/L8p+Ax6mHiXeY+aCx0xx0jVp2odZDIVMPFkk165t6KGGR1QWWEboGlplRshHRzYbvKxJ7KG/k1v4yScxBsGnU1ycpPeIbdjp/Htp15Y4ysyZCZxz5E4Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abcC788H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DEAC4CEEB;
+	Mon,  2 Jun 2025 14:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874040;
-	bh=D+IlwVwPeozDg76rCC7Oz7BDDUsfzllc9Gg1S+uBb1c=;
+	s=korg; t=1748874508;
+	bh=t23FnSEZmkumq9WhAZxjeGs+q/cSN1M742TwWi7fpgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U84FPuC+nMlNj/77JXN3UJuPHsmumrlb2u4RMG8P8w7GgXpj5gx1IyUU34jBhhrht
-	 DsR9OlqCJ0+rEv8fOgg+zbiPpamddFmHYAIxSoKftGZz/Gv+Lqh9ZiHx3QtunUpeFz
-	 XsDazwAXODv4fpvAEF+0YoN+2GCO080o0+KvNnYE=
+	b=abcC788H/3Ig7aWDnth6WibtM8j9jUh6soXordAPPs/2RAko1GKIaoYbugEwckby3
+	 fAYXd8vPaJeilK1aALpAPIHFhEmhZ7mmgajTVmXjfjmIyDdJOkXQN6/47tZzUQWdgF
+	 9H0sL0o66CMaWM3MeRG8VWUN0Io8lxhXCha+Arck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/444] drm: bridge: adv7511: fill stream capabilities
+	Markus Rathgeb <maggu2810@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 039/204] Input: synaptics - enable InterTouch on Dell Precision M3800
 Date: Mon,  2 Jun 2025 15:46:12 +0200
-Message-ID: <20250602134353.433267397@linuxfoundation.org>
+Message-ID: <20250602134257.212561718@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit c852646f12d4cd5b4f19eeec2976c5d98c0382f8 ]
+commit a609cb4cc07aa9ab8f50466622814356c06f2c17 upstream.
 
-Set no_i2s_capture and no_spdif_capture flags in hdmi_codec_pdata structure
-to report that the ADV7511 HDMI bridge does not support i2s or spdif audio
-capture.
+Enable InterTouch mode on Dell Precision M3800 by adding "DLL060d" to
+the list of SMBus-enabled variants.
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-2-olivier.moysan@foss.st.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Markus Rathgeb <maggu2810@gmail.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Link: https://lore.kernel.org/r/PN3PR01MB959789DD6D574E16141E5DC4B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/mouse/synaptics.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 8f786592143b6..24e1e11acf697 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -244,7 +244,9 @@ static const struct hdmi_codec_pdata codec_data = {
- 	.ops = &adv7511_codec_ops,
- 	.max_i2s_channels = 2,
- 	.i2s = 1,
-+	.no_i2s_capture = 1,
- 	.spdif = 1,
-+	.no_spdif_capture = 1,
- };
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -163,6 +163,7 @@ static const char * const topbuttonpad_p
  
- int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511)
--- 
-2.39.5
-
+ static const char * const smbus_pnp_ids[] = {
+ 	/* all of the topbuttonpad_pnp_ids are valid, we just add some extras */
++	"DLL060d", /* Dell Precision M3800 */
+ 	"LEN0048", /* X1 Carbon 3 */
+ 	"LEN0046", /* X250 */
+ 	"LEN0049", /* Yoga 11e */
 
 
 
