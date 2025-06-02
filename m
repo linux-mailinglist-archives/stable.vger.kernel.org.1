@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-149681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1839ACB433
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CC1ACB65D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2BBF407053
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F421BC6E52
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ECB221578;
-	Mon,  2 Jun 2025 14:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E871DED64;
+	Mon,  2 Jun 2025 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIf7D6hN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvs9ouSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB0E21B9C7;
-	Mon,  2 Jun 2025 14:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2181C2C327E;
+	Mon,  2 Jun 2025 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874702; cv=none; b=gfVsuhdLWbTvSEnTkVANJgHmd8gfmqvc4fgOAqSGqEOtt3FITiZeC3ZpZfEZCYBZrwkR6xn72jGQKAAzTe4c7FAVM/wv71mmaGW6CXTgIebae2hautAOUbi6Q2eg46Y0kvsfNC7/yW4AiTPOJ1GLoky83FJTWBDKEKYmU8SAZQE=
+	t=1748875999; cv=none; b=uVdq+KSLZN/DaqUQrhueH3RLei/zCL1IpXCj/rkQe45e7/6YwxyHhLf2SvnowygLGO2NF4o0nKQCLc70+OjK7MwGgJeGbBmcZyNt6cdPWajIePxf2ZqptpyG1lPyeBSPXQPGLVy9xE6Lqm0+RT9q0gt3g4AQ+cIvjOmsmaWiVYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874702; c=relaxed/simple;
-	bh=8/8QUhiMtGBEa7iVaa76HO0oS74c74bEKosggtqiVk0=;
+	s=arc-20240116; t=1748875999; c=relaxed/simple;
+	bh=KVNdSBSB/gGa84G8yMVo14/BJFUsGp/qDCtnY/q7jRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHb56Qpi7vwYq+ipUhgyJn73kjPlwt32sY34XJj8LQl1IaonNATkKiqY7YxkzYx6WWwoV2em481rbOkOkGkM4E4899SuQaA8IRH3op505qt/owaeK6GlrtC+a7g3+gdrNp13ArNDuwu411gqISCigQWEdbCjOoOBaUTjbx7drQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIf7D6hN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E5BC4CEEB;
-	Mon,  2 Jun 2025 14:31:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LqT8/b0fme9e+b3YnVR33tNKgjoGu0ax+q4qgQMpAvR3gNHhMG2UPUuw7ZRySu2bRxKxJeIKbsdoK14UjBPNqJozELXW9jlRhZ5EIdlS72dYdNp6joE2OSezhWbSXyRb9b4szknZl+TOMp3pBBjEFuKyb8EyZJ8deybD/LQhKfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvs9ouSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83966C4CEEB;
+	Mon,  2 Jun 2025 14:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874702;
-	bh=8/8QUhiMtGBEa7iVaa76HO0oS74c74bEKosggtqiVk0=;
+	s=korg; t=1748875999;
+	bh=KVNdSBSB/gGa84G8yMVo14/BJFUsGp/qDCtnY/q7jRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HIf7D6hNSCYc5J2+2S+XXUyLyxHCXJ0R45+z56xeDhE1wsA3xhwXkat9QubZncYOt
-	 EK5uUHqhsxn60vw94Fa5ZYbJlF5SIuwBQFEleg4ZgFWsCCoynKzDnTgqqGzWz9ZVV3
-	 jRZdXKXwwSNB2TcNJOHD4C3wbCJLZGgRirCMBKc8=
+	b=hvs9ouStQ4cmREnft4NwE84Ly/7K0fObt2UZvhf+OpdFonbkkQQjakJY3nk08cF0L
+	 Wg8SoW8tuikf0+P+2YLQOApqdyhJuFjdJEOk8WIJf6tT9IGXg5zQ+3432xJuqk0wec
+	 jmziq9jymcA0u7TC3n4B8EhZMj7FB6W9k9zLt2co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 078/204] ACPI: PPTT: Fix processor subtable walk
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 039/207] ext4: reorder capability check last
 Date: Mon,  2 Jun 2025 15:46:51 +0200
-Message-ID: <20250602134258.740503014@linuxfoundation.org>
+Message-ID: <20250602134300.290053945@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Linton <jeremy.linton@arm.com>
+From: Christian Göttsche <cgzones@googlemail.com>
 
-commit adfab6b39202481bb43286fff94def4953793fdb upstream.
+[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
 
-The original PPTT code had a bug where the processor subtable length
-was not correctly validated when encountering a truncated
-acpi_pptt_processor node.
+capable() calls refer to enabled LSMs whether to permit or deny the
+request.  This is relevant in connection with SELinux, where a
+capability check results in a policy decision and by default a denial
+message on insufficient permission is issued.
+It can lead to three undesired cases:
+  1. A denial message is generated, even in case the operation was an
+     unprivileged one and thus the syscall succeeded, creating noise.
+  2. To avoid the noise from 1. the policy writer adds a rule to ignore
+     those denial messages, hiding future syscalls, where the task
+     performs an actual privileged operation, leading to hidden limited
+     functionality of that task.
+  3. To avoid the noise from 1. the policy writer adds a rule to permit
+     the task the requested capability, while it does not need it,
+     violating the principle of least privilege.
 
-Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-sizeof() calls") attempted to fix this by validating the size is as
-large as the acpi_pptt_processor node structure. This introduced a
-regression where the last processor node in the PPTT table is ignored
-if it doesn't contain any private resources. That results errors like:
-
-  ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
-  ACPI: SPE must be homogeneous
-
-Furthermore, it fails in a common case where the node length isn't
-equal to the acpi_pptt_processor structure size, leaving the original
-bug in a modified form.
-
-Correct the regression by adjusting the loop termination conditions as
-suggested by the bug reporters. An additional check performed after
-the subtable node type is detected, validates the acpi_pptt_processor
-node is fully contained in the PPTT table. Repeating the check in
-acpi_pptt_leaf_node() is largely redundant as the node is already
-known to be fully contained in the table.
-
-The case where a final truncated node's parent property is accepted,
-but the node itself is rejected should not be considered a bug.
-
-Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls")
-Reported-by: Maximilian Heyne <mheyne@amazon.de>
-Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@mheyne-amazon/
-Reported-by: Yicong Yang <yangyicong@hisilicon.com>
-Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyicong@huawei.com/
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Maximilian Heyne <mheyne@amazon.de>
-Cc: All applicable <stable@vger.kernel.org> # 7ab4f0e37a0f4: ACPI PPTT: Fix coding mistakes ...
-Link: https://patch.msgid.link/20250508023025.1301030-1-jeremy.linton@arm.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/pptt.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/ext4/balloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -218,16 +218,18 @@ static int acpi_pptt_leaf_node(struct ac
- 			     sizeof(struct acpi_table_pptt));
- 	proc_sz = sizeof(struct acpi_pptt_processor);
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index c23ac149601e5..d6872b71657b6 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -637,8 +637,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
+ 	/* Hm, nope.  Are (enough) root reserved clusters available? */
+ 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
+ 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
+-	    capable(CAP_SYS_RESOURCE) ||
+-	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
++	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
++	    capable(CAP_SYS_RESOURCE)) {
  
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	/* ignore subtable types that are smaller than a processor node */
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
-+
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    cpu_node->parent == node_entry)
- 			return 0;
- 		if (entry->length == 0)
- 			return 0;
-+
- 		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
- 				     entry->length);
--
- 	}
- 	return 1;
- }
-@@ -260,15 +262,18 @@ static struct acpi_pptt_processor *acpi_
- 	proc_sz = sizeof(struct acpi_pptt_processor);
- 
- 	/* find the processor structure associated with this cpuid */
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
- 
- 		if (entry->length == 0) {
- 			pr_warn("Invalid zero length subtable\n");
- 			break;
- 		}
-+		/* entry->length may not equal proc_sz, revalidate the processor structure length */
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    acpi_cpu_id == cpu_node->acpi_processor_id &&
-+		    (unsigned long)entry + entry->length <= table_end &&
-+		    entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
- 		     acpi_pptt_leaf_node(table_hdr, cpu_node)) {
- 			return (struct acpi_pptt_processor *)entry;
- 		}
+ 		if (free_clusters >= (nclusters + dirty_clusters +
+ 				      resv_clusters))
+-- 
+2.39.5
+
 
 
 
