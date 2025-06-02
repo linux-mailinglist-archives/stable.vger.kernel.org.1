@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C275ACB82E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BB6ACB55B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AEA6189DA8D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 852C919451B6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD7922A4E9;
-	Mon,  2 Jun 2025 15:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797FB22F14C;
+	Mon,  2 Jun 2025 14:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIh6zgDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dh7PLlsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E39EEBD;
-	Mon,  2 Jun 2025 15:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AF72248A4;
+	Mon,  2 Jun 2025 14:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876862; cv=none; b=g/AAqm+mog68g9WLLXNWSK6Bnsihnh4SK4mm8mECSDut9nWNqwKpjVXfGx8pfKQpWkJOfAnn8LP8B05lPg/kQed6M4S2myP1pAT/WoyE6oA5zcb9IY44+qxDpdrcS3y5PsX3urt4J8jx9x7TzstRYrfchFkQjaQdZsgkcFUdhyY=
+	t=1748875295; cv=none; b=mAf86geODg4KTzf/MCYezAiqivAqfErnWsloOlozT2aWi0b/sbw2+yoeDps8SE7wq96moulFLjkNHQTnd9tk3+j1uX00e14RuGf/OCrlTnIZaUdMiRPccwcvWarzuZswSqTnKiTV0NjczhBrFoKNKffhjAZn1VpD2VTJylsENeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876862; c=relaxed/simple;
-	bh=x6mDlcZRB4OEYSIh5rDBKL8weRrP06TNUWRwHSNTlSg=;
+	s=arc-20240116; t=1748875295; c=relaxed/simple;
+	bh=0aZtuPOuGT4haS8Lu+lw34bQpO7BpzWaZo6ErhP9qFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmeMFQcYuzpmfV4HSPiEw2VrpLYEhYSdVdqDdMCBvK08MsPfQs3HcJIekTJOrn7gGts2QRyZSDVZwNnHtL5ySww0meGlYIU+ng/93ix4BckOFVVwQh92fXwh+KNfGATeEforWKwP9qqgC1stTXaJGobID+guLQQM/gfi3UpRPdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIh6zgDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06D6C4CEEB;
-	Mon,  2 Jun 2025 15:07:41 +0000 (UTC)
+	 MIME-Version; b=ntanMTB2mxNyzM9FmlIH+827JG847kISly/NvXbNVgIPwTKJ8TdpN9oLz5NHEET9UE/dCMkBU1vNDoKiQ2DJ0hB+yuqPwMYmXJt+Jy7+pzmHGYHygtMNuZfiplkCPLIoIhYcP0hckM/j2gi52Qvg5Ngl4FZfQR6+08FBKK21EmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dh7PLlsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AEBC4CEEB;
+	Mon,  2 Jun 2025 14:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876862;
-	bh=x6mDlcZRB4OEYSIh5rDBKL8weRrP06TNUWRwHSNTlSg=;
+	s=korg; t=1748875295;
+	bh=0aZtuPOuGT4haS8Lu+lw34bQpO7BpzWaZo6ErhP9qFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIh6zgDtyR9tmTpPShBHwGavu0F6aB60rTp1YjgL3laT6cETHwG09iA0qxxA1ZU0n
-	 GgXitSvJidQjalI3KGSLBIGwWnmYFPAf4Ra2KH8gdjYsGWCUh6kdNaUeArSn5+sL3p
-	 S/ROUT0IIOKtqoEdLsIf6IT1X3f7Fw9Gsd98yudY=
+	b=dh7PLlsugcbyjGruNh2v52LHiF3F+hKTFOhx8EENOYNdJh1PGo6vQF3/BlFNJLZP0
+	 qK0t2jcXaerlssQ9BEz40ieRVrvhOVWqaVfT4JG91Gw3fJZ3BQlBNQFSDH8by43vez
+	 YqoNzZ8MjVHn0v0Lw1WWu2S2sMLVNUHC5XSMZyjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2d373c9936c00d7e120c@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/325] ALSA: seq: Improve data consistency at polling
+Subject: [PATCH 5.10 088/270] spi: loopback-test: Do not split 1024-byte hexdumps
 Date: Mon,  2 Jun 2025 15:46:13 +0200
-Message-ID: <20250602134323.726743145@linuxfoundation.org>
+Message-ID: <20250602134310.759091345@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit e3cd33ab17c33bd8f1a9df66ec83a15dd8f7afbb ]
+[ Upstream commit a73fa3690a1f3014d6677e368dce4e70767a6ba2 ]
 
-snd_seq_poll() calls snd_seq_write_pool_allocated() that reads out a
-field in client->pool object, while it can be updated concurrently via
-ioctls, as reported by syzbot.  The data race itself is harmless, as
-it's merely a poll() call, and the state is volatile.  OTOH, the read
-out of poll object info from the caller side is fragile, and we can
-leave it better in snd_seq_pool_poll_wait() alone.
+spi_test_print_hex_dump() prints buffers holding less than 1024 bytes in
+full.  Larger buffers are truncated: only the first 512 and the last 512
+bytes are printed, separated by a truncation message.  The latter is
+confusing in case the buffer holds exactly 1024 bytes, as all data is
+printed anyway.
 
-A similar pattern is seen in snd_seq_kernel_client_write_poll(), too,
-which is called from the OSS sequencer.
+Fix this by printing buffers holding up to and including 1024 bytes in
+full.
 
-This patch drops the pool checks from the caller side and add the
-pool->lock in snd_seq_pool_poll_wait() for better data consistency.
-
-Reported-by: syzbot+2d373c9936c00d7e120c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/67c88903.050a0220.15b4b9.0028.GAE@google.com
-Link: https://patch.msgid.link/20250307084246.29271-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 84e0c4e5e2c4ef42 ("spi: add loopback test driver to allow for spi_master regression tests")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/37ee1bc90c6554c9347040adabf04188c8f704aa.1746184171.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_clientmgr.c | 5 +----
- sound/core/seq/seq_memory.c    | 1 +
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/spi/spi-loopback-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
-index 2d707afa1ef1c..1252ea7ad55ea 100644
---- a/sound/core/seq/seq_clientmgr.c
-+++ b/sound/core/seq/seq_clientmgr.c
-@@ -1140,8 +1140,7 @@ static __poll_t snd_seq_poll(struct file *file, poll_table * wait)
- 	if (snd_seq_file_flags(file) & SNDRV_SEQ_LFLG_OUTPUT) {
- 
- 		/* check if data is available in the pool */
--		if (!snd_seq_write_pool_allocated(client) ||
--		    snd_seq_pool_poll_wait(client->pool, file, wait))
-+		if (snd_seq_pool_poll_wait(client->pool, file, wait))
- 			mask |= EPOLLOUT | EPOLLWRNORM;
- 	}
- 
-@@ -2382,8 +2381,6 @@ int snd_seq_kernel_client_write_poll(int clientid, struct file *file, poll_table
- 	if (client == NULL)
- 		return -ENXIO;
- 
--	if (! snd_seq_write_pool_allocated(client))
--		return 1;
- 	if (snd_seq_pool_poll_wait(client->pool, file, wait))
- 		return 1;
- 	return 0;
-diff --git a/sound/core/seq/seq_memory.c b/sound/core/seq/seq_memory.c
-index 47ef6bc30c0ee..e30b92d85079b 100644
---- a/sound/core/seq/seq_memory.c
-+++ b/sound/core/seq/seq_memory.c
-@@ -366,6 +366,7 @@ int snd_seq_pool_poll_wait(struct snd_seq_pool *pool, struct file *file,
- 			   poll_table *wait)
+diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
+index 4d4f77a186a98..89fccb9da1b8e 100644
+--- a/drivers/spi/spi-loopback-test.c
++++ b/drivers/spi/spi-loopback-test.c
+@@ -383,7 +383,7 @@ MODULE_LICENSE("GPL");
+ static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
  {
- 	poll_wait(file, &pool->output_sleep, wait);
-+	guard(spinlock_irq)(&pool->lock);
- 	return snd_seq_output_ok(pool);
- }
- 
+ 	/* limit the hex_dump */
+-	if (len < 1024) {
++	if (len <= 1024) {
+ 		print_hex_dump(KERN_INFO, pre,
+ 			       DUMP_PREFIX_OFFSET, 16, 1,
+ 			       ptr, len, 0);
 -- 
 2.39.5
 
