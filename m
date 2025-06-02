@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-150044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5889CACB6FF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FB1ACB6C5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B591BC5E96
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D7889E78D4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEDB22ACEF;
-	Mon,  2 Jun 2025 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DF022E01E;
+	Mon,  2 Jun 2025 15:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDYUfOss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3ub2wRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAA522A7E4;
-	Mon,  2 Jun 2025 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE6022E3F7;
+	Mon,  2 Jun 2025 15:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875857; cv=none; b=cAtXCjw5pUOtIQ6LjRimmzU1i6ihTTRqN5GX6Dauy3iAxJz+41KeW2bc+YAMIB4KBpMR2woL8GTDlT++9cA9jx3syPCr26CbNT2MNfphrksqBNV0D5HrjxuVzkDaIMNZFotrKiYHXkMt0Sb8U2ZI1F6dk2YBMF6zH83BaiAE6zo=
+	t=1748876458; cv=none; b=pWIovbylI5SFK4TEW5tFev+J3R4nd9KVtIBtJOPfuJQEwvDrOlkkNWNkcKvf6B3Bb1JxOEweFI30u2LGMOUXrAU1qw5iMALTIeM6z+0PrVJLlG00uIVJisTjaRr/xGr/HjbFA+Pn/BVAqc62DBjMdZhRjp5X2hdZns2b8Vy1QYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875857; c=relaxed/simple;
-	bh=Ub55TsO7yi5Pt5qg7DpJJipWijefFk7HTEEkeTgTEzs=;
+	s=arc-20240116; t=1748876458; c=relaxed/simple;
+	bh=ix7gDJPD7Subs5f2WLAsXzRxrh7XsVUsMCfPKsJROM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kp6dDd0PTu2SfKJEQQmIk5iI9ZM7Q9Z4W1ZFPd1rHVYuqEZjtrIj6rGx/f0gS2UUoiJpEpM30tlHY8K/23Q1NQbWLBsRNV6zlNMM97XNpAKWRCaL53h5B9BvfHyaW9rgsritS+xekSAgOpJEcLbi41pJ1hJMa+JzLaLGu7mQZLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDYUfOss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24D3C4CEF2;
-	Mon,  2 Jun 2025 14:50:56 +0000 (UTC)
+	 MIME-Version; b=K0NiZiqtWYcH11M2PlzQ5brRq1nJdwPr89m8oHBG/cTXJySd1IDmcI/myz2a/Z0EKxcJA28tAHrqY51JEyL+5JHyIUYYJMOQPVsQpIKHeRhWw4Z2aDOxNSJls/vBOyCxGgGaCVOBYssstDB65jrlV245AYRwyS43jAMlnp1vD6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3ub2wRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E979C4CEEB;
+	Mon,  2 Jun 2025 15:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875857;
-	bh=Ub55TsO7yi5Pt5qg7DpJJipWijefFk7HTEEkeTgTEzs=;
+	s=korg; t=1748876458;
+	bh=ix7gDJPD7Subs5f2WLAsXzRxrh7XsVUsMCfPKsJROM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDYUfOssw4Xlk+0HbsTQ93T4P3HCNQASs2ot2RilMgLyvRfYf+djqgO2A8DjWhCc5
-	 GTI9dh411Ez4LqZHrCNHKddVMfsXQEEL+H/Hvguq92VsLpMoYGd8W3UGSajgm8knMg
-	 F1gNrMVA9nhxgWaEzkHh2a0k1nISu5ogbo6h6D5s=
+	b=s3ub2wRJ1LW8dzUC6saaQhT/pjK0v9fbnsCN0/XKNCw3zStnrDZf5CSXL41BLrcm9
+	 or/V1FA25ENakI6K6tP5q4/33nFMBykrChsGEpACQZtV9myHu7Up8xqhSlkvn+5VCs
+	 H2TZn76EsfYaAilLmR6VqaeKdnqm0cf2xLfFgetA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/270] tpm: tis: Double the timeout B to 4s
+	Breno Leitao <leitao@debian.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 179/207] memcg: always call cond_resched() after fn()
 Date: Mon,  2 Jun 2025 15:49:11 +0200
-Message-ID: <20250602134318.214137566@linuxfoundation.org>
+Message-ID: <20250602134305.763408988@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +72,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 2f661f71fda1fc0c42b7746ca5b7da529eb6b5be ]
+commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
 
-With some Infineon chips the timeouts in tpm_tis_send_data (both B and
-C) can reach up to about 2250 ms.
+I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
+is happening because killing the process in certain machine might be very
+slow, which causes the soft lockup and RCU stalls.  This happens usually
+when the cgroup has MANY processes and memory.oom.group is set.
 
-Timeout C is retried since
-commit de9e33df7762 ("tpm, tpm_tis: Workaround failed command reception on Infineon devices")
+Example I am seeing in real production:
 
-Timeout B still needs to be extended.
+       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
+       ....
+       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
+       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
+       ....
 
-The problem is most commonly encountered with context related operation
-such as load context/save context. These are issued directly by the
-kernel, and there is no retry logic for them.
+Quick look at why this is so slow, it seems to be related to serial flush
+for certain machine types.  For all the crashes I saw, the target CPU was
+at console_flush_all().
 
-When a filesystem is set up to use the TPM for unlocking the boot fails,
-and restarting the userspace service is ineffective. This is likely
-because ignoring a load context/save context result puts the real TPM
-state and the TPM state expected by the kernel out of sync.
+In the case above, there are thousands of processes in the cgroup, and it
+is soft locking up before it reaches the 1024 limit in the code (which
+would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
+sufficient.
 
-Chips known to be affected:
-tpm_tis IFX1522:00: 2.0 TPM (device-id 0x1D, rev-id 54)
-Description: SLB9672
-Firmware Revision: 15.22
+Remove the counter-based conditional rescheduling logic and call
+cond_resched() unconditionally after each task iteration, after fn() is
+called.  This avoids the lockup independently of how slow fn() is.
 
-tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1B, rev-id 22)
-Firmware Revision: 7.83
-
-tpm_tis MSFT0101:00: 2.0 TPM (device-id 0x1A, rev-id 16)
-Firmware Revision: 5.63
-
-Link: https://lore.kernel.org/linux-integrity/Z5pI07m0Muapyu9w@kitsune.suse.cz/
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
+Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Suggested-by: Rik van Riel <riel@surriel.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Michael van der Westhuizen <rmikey@meta.com>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Chen Ridong <chenridong@huawei.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.h | 2 +-
- include/linux/tpm.h             | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ mm/memcontrol.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
-index 464ed352ab2e8..ed7b2caa9ebbd 100644
---- a/drivers/char/tpm/tpm_tis_core.h
-+++ b/drivers/char/tpm/tpm_tis_core.h
-@@ -53,7 +53,7 @@ enum tis_int_flags {
- enum tis_defaults {
- 	TIS_MEM_LEN = 0x5000,
- 	TIS_SHORT_TIMEOUT = 750,	/* ms */
--	TIS_LONG_TIMEOUT = 2000,	/* 2 sec */
-+	TIS_LONG_TIMEOUT = 4000,	/* 4 secs */
- 	TIS_TIMEOUT_MIN_ATML = 14700,	/* usecs */
- 	TIS_TIMEOUT_MAX_ATML = 15000,	/* usecs */
- };
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 95c3069823f9b..7868e847eee0e 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -174,7 +174,7 @@ enum tpm2_const {
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1194,7 +1194,6 @@ int mem_cgroup_scan_tasks(struct mem_cgr
+ {
+ 	struct mem_cgroup *iter;
+ 	int ret = 0;
+-	int i = 0;
  
- enum tpm2_timeouts {
- 	TPM2_TIMEOUT_A          =    750,
--	TPM2_TIMEOUT_B          =   2000,
-+	TPM2_TIMEOUT_B          =   4000,
- 	TPM2_TIMEOUT_C          =    200,
- 	TPM2_TIMEOUT_D          =     30,
- 	TPM2_DURATION_SHORT     =     20,
--- 
-2.39.5
-
+ 	BUG_ON(memcg == root_mem_cgroup);
+ 
+@@ -1204,10 +1203,9 @@ int mem_cgroup_scan_tasks(struct mem_cgr
+ 
+ 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
+ 		while (!ret && (task = css_task_iter_next(&it))) {
+-			/* Avoid potential softlockup warning */
+-			if ((++i & 1023) == 0)
+-				cond_resched();
+ 			ret = fn(task, arg);
++			/* Avoid potential softlockup warning */
++			cond_resched();
+ 		}
+ 		css_task_iter_end(&it);
+ 		if (ret) {
 
 
 
