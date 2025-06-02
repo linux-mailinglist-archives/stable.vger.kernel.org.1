@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-149699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6351EACB422
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 172A4ACB739
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE2D173F08
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28801BA5820
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916A3226D09;
-	Mon,  2 Jun 2025 14:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA0D23505D;
+	Mon,  2 Jun 2025 14:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVPEGw3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPwsigIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D194226CFD;
-	Mon,  2 Jun 2025 14:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7908722A4DB;
+	Mon,  2 Jun 2025 14:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874757; cv=none; b=ZF26XLezGWAyPM585yT5l5Nr9dp8Ag+4av7jsiWk2diZVMhzdGYUHrYl0yz6wfz44ehSTim3S6EWP5obFSmXYzAmdtU+wLRXAUk1Vx7WqLA15QOlrtM+cjgNxZYcCHbzHLiVdrPfNgnyhbu8fYz1UKlEAJgz8rTGSAl02QtJux8=
+	t=1748876236; cv=none; b=J/W0ADamYKmBoIcVq4iZoJm8C2yNqutI8D9IbpA2sUs/mZ1QcCa1RTv2uEsGZuxmL9Ev+fcBH3GGXWGxbmCYfGoIS83uiD9POHLlaboY/R+okPgWo/W9Fs91hfRg8t6fJy9XOXhUmMXmdAR8TRXL7/YHr7Ke8Tj3F8DVVl4Cd2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874757; c=relaxed/simple;
-	bh=ue5OOWC+NSmJ8RrVGXR9eSvjRYbNTjEx8AOC+Rz4ksE=;
+	s=arc-20240116; t=1748876236; c=relaxed/simple;
+	bh=JQjrdA5C2LW4ISRB5v4+22A7F7w0VUflTtaofTX3/CE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMg/QmxjsoIJxrtcvTXr6fg9coDWwm9qZwCx+YmVY8leLmetIaoWYyCFZuaCVUTN5I8B46tuuRcisB1usDd6UbBzAjpzoeIrV2SbkwJ1Z90cBoGXF0BMmYsLaUL5YYMaAXoMi8BSIqSTr52alPd8NSLdn45eyyxhZ/xg0AcRMlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVPEGw3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF62BC4CEEE;
-	Mon,  2 Jun 2025 14:32:36 +0000 (UTC)
+	 MIME-Version; b=VBfe6zqdy0EaCzCDulIn4Csn55cWguXLrIpuWvxVS6bAslk/sAuA3kMd0o/MIN3VCvbF59+uT5tb+7TyskG6NS4HIyIIbVLUBp05HKuWcu1R1Mf7a2EYnPIt7wXudzOewlkYahvXd/2IAbCp1+IObb+teYr3+bHWrahBhOZoFLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPwsigIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA84C4CEEB;
+	Mon,  2 Jun 2025 14:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874757;
-	bh=ue5OOWC+NSmJ8RrVGXR9eSvjRYbNTjEx8AOC+Rz4ksE=;
+	s=korg; t=1748876236;
+	bh=JQjrdA5C2LW4ISRB5v4+22A7F7w0VUflTtaofTX3/CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVPEGw3ipBSMOo1szwlY2JDEsG+DQsgnHCggzl5h2BXTGJ57kQk/BNCVxfTu4bmO/
-	 57IYeLg9mNVxliQ63jqAbjXea88E5vpOu4RZnUlzHtruuTgvu5dDNLeCtufLspC+CZ
-	 JKb3LtBqIn1cThXe/L+fNnoxcY2JJXWvdWU2IyTg=
+	b=bPwsigIKizuDpB/ZOZB+mktOLYyWCssRzIr9Ab5+xVdD590hyZmjHu787MHh0NuvR
+	 ZVZMPPt9qA7FkAXp/lRI4IBx9HVrVdWz2u+/je+YjLugIrPAA/29Vag23872pTBA9Q
+	 Tk24ScdErWSbsy5sbrqWdCOqRZa8TmAxok1BGAds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 126/204] drm/mediatek: mtk_dpi: Add checks for reg_h_fre_con existence
+Subject: [PATCH 5.15 087/207] net/mlx5: Avoid report two health errors on same syndrome
 Date: Mon,  2 Jun 2025 15:47:39 +0200
-Message-ID: <20250602134300.596358858@linuxfoundation.org>
+Message-ID: <20250602134302.142084611@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 8c9da7cd0bbcc90ab444454fecf535320456a312 ]
+[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
 
-In preparation for adding support for newer DPI instances which
-do support direct-pin but do not have any H_FRE_CON register,
-like the one found in MT8195 and MT8188, add a branch to check
-if the reg_h_fre_con variable was declared in the mtk_dpi_conf
-structure for the probed SoC DPI version.
+In case health counter has not increased for few polling intervals, miss
+counter will reach max misses threshold and health report will be
+triggered for FW health reporter. In case syndrome found on same health
+poll another health report will be triggered.
 
-As a note, this is useful specifically only for cases in which
-the support_direct_pin variable is true, so mt8195-dpintf is
-not affected by any issue.
+Avoid two health reports on same syndrome by marking this syndrome as
+already known.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-6-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 191e0cec004b4..6d105e8aae459 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -337,12 +337,13 @@ static void mtk_dpi_config_swap_input(struct mtk_dpi *dpi, bool enable)
- 
- static void mtk_dpi_config_2n_h_fre(struct mtk_dpi *dpi)
- {
--	mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
-+	if (dpi->conf->reg_h_fre_con)
-+		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
- }
- 
- static void mtk_dpi_config_disable_edge(struct mtk_dpi *dpi)
- {
--	if (dpi->conf->edge_sel_en)
-+	if (dpi->conf->edge_sel_en && dpi->conf->reg_h_fre_con)
- 		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, 0, EDGE_SEL_EN);
- }
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index 1504856fafde4..2a0b111fbcd3c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -737,6 +737,7 @@ static void poll_health(struct timer_list *t)
+ 	health->prev = count;
+ 	if (health->miss_counter == MAX_MISSES) {
+ 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
++		health->synd = ioread8(&h->synd);
+ 		print_health_info(dev);
+ 		queue_work(health->wq, &health->report_work);
+ 	}
 -- 
 2.39.5
 
