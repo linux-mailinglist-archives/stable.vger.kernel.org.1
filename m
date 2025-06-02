@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-149374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD16ACB273
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF89ACB6F3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7EAA1942809
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73C744C1B83
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F7522A7E4;
-	Mon,  2 Jun 2025 14:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2937722A1C5;
+	Mon,  2 Jun 2025 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0BJr/LE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5jvrGFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D1821CA1E;
-	Mon,  2 Jun 2025 14:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D809E227EBB;
+	Mon,  2 Jun 2025 15:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873774; cv=none; b=EQmXizQ2PB4JFxBzcCmhzp2ScBKMrNv6kEeUDYtUqf81RdE3lDlTS0TXB91lFhYK9ANlG/TottH/GjZRqQ4xhns9gXOvjNVJO+4zMjNIn3EbgbK6AQPC/RAxyQbgEJoKDeb8lJsoKyRMjfemOC2HSiiwjhMh3m9QYvmf0YLt80g=
+	t=1748876672; cv=none; b=Aj0UlcMPVxKzdc6HH++wc6sOVfZvHY+Rl28Z/uQK94zuveQA78kga5AmArRVb9aGed4blK4i+hLRB6P+b3nxM9dPqaavPNt7XVj0wexb+GjAIkBs0Br4SvOXtIbklUNMGRdXfVeFQaGatiSJ4yiHCZRXHYx+/5MBjZBgYh5Yo4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873774; c=relaxed/simple;
-	bh=KVCWJ5tRbVnZ4zEnwtgEdn/jw5AiZtMTMT9HEeqp8H0=;
+	s=arc-20240116; t=1748876672; c=relaxed/simple;
+	bh=klRjDvD2FqsMOwMlbw0V/OlTbIl87XStf46HI7fiU1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJtBIKW48tygWLeba2/9HBfyGKc3iwJDYuEhxmXtECJw4pvkME3OQLnzk80pSArI9cn6g+/ZC4y3t/79LCvJcOqgCioWsZjwy0UxdfGzVQAwRcpJWwBGykJGbqSFNXHeRn43d78Hr4EjnusOlJeVY/sxe83E4JM6lGKp5bU1Gd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0BJr/LE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A5EC4CEEB;
-	Mon,  2 Jun 2025 14:16:14 +0000 (UTC)
+	 MIME-Version; b=f+nGkMV6ZisRaFwycE52whsUxFYRi3/u+E8x4H0HVDAFYGTNHNJHFO2/7F0bFhP/nFPe7rfqVOjlOmWCJ7V053LRYO7UmdJ/ZygURv74aClzmcMW+ijWztTbRH1AgJspReQ8xo4mLGQVsFTxldx0zO1f5ToGe+q+VO8Kq15qMJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5jvrGFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6CCC4CEEB;
+	Mon,  2 Jun 2025 15:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873774;
-	bh=KVCWJ5tRbVnZ4zEnwtgEdn/jw5AiZtMTMT9HEeqp8H0=;
+	s=korg; t=1748876672;
+	bh=klRjDvD2FqsMOwMlbw0V/OlTbIl87XStf46HI7fiU1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0BJr/LE+8wK1nvefWae22lG6fHjZ/7bGxE4aWsyjZOkSIZO/FNYn4t5oFdiwah51
-	 DDCTL2LFNHUr9wqETYw/Bin/F6Nwn46DDA3hrWX/93/V/x3t08WnoL34DnQCGdIB/F
-	 exI2egAMHS8yhnFHsTAyVPsEBP2JM2zYS0/q7LTY=
+	b=a5jvrGFixlyHFcbteFe5R/CNoD2C1ESgoS4NDdW/7xPlElaqdZbWfaPs/eD0Csyjy
+	 W/PgAOo9VoS9FYGm4N8cnAx/TU27gevkDb7iTrDnOHUwlu6nWacT6u+e+KKPydNB6u
+	 1AkH28UUsvwQ8+94pO4096v9m6b5NDPfNl1WUHZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Joshua Aberback <joshua.aberback@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 248/444] drm/amd/display: Increase block_sequence array size
+Subject: [PATCH 6.1 036/325] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
 Date: Mon,  2 Jun 2025 15:45:12 +0200
-Message-ID: <20250602134350.982512803@linuxfoundation.org>
+Message-ID: <20250602134321.222155827@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Aberback <joshua.aberback@amd.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3a7810c212bcf2f722671dadf4b23ff70a7d23ee ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-[Why]
-It's possible to generate more than 50 steps in hwss_build_fast_sequence,
-for example with a 6-pipe asic where all pipes are in one MPC chain. This
-overflows the block_sequence buffer and corrupts block_sequence_steps,
-causing a crash.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-[How]
-Expand block_sequence to 100 items. A naive upper bound on the possible
-number of steps for a 6-pipe asic, ignoring the potential for steps to be
-mutually exclusive, is 91 with current code, therefore 100 is sufficient.
-
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Joshua Aberback <joshua.aberback@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/inc/core_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-index eaad1260bfd18..4b284ce669ae5 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-@@ -532,7 +532,7 @@ struct dc_state {
- 	 */
- 	struct bw_context bw_ctx;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index b6529a9d37d37..a390a4e5592f2 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -275,9 +275,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
--	struct block_sequence block_sequence[50];
-+	struct block_sequence block_sequence[100];
- 	unsigned int block_sequence_steps;
- 	struct dc_dmub_cmd dc_dmub_cmd[10];
- 	unsigned int dmub_cmd_count;
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
