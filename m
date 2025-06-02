@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-149957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73E4ACB5C0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D9ACB43D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D5BA21569
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE701BA55CF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A598722DF80;
-	Mon,  2 Jun 2025 14:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C1A226D13;
+	Mon,  2 Jun 2025 14:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pxrOagN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIz8qXAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6211422D9EE;
-	Mon,  2 Jun 2025 14:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331EF1EA65;
+	Mon,  2 Jun 2025 14:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875581; cv=none; b=IAmAC2gBDU0BelFDWLIG/VlP8OCM3mMPcb6kGU1op4WhLRp9/Pl0K92aPRdgTjwsI5tN1u2AF0/QLWDhp6ZlyWDVCuBpwc/5Tb8ab5dwSW3xvKzeUo+sw+fROw7vdGMxoGacFUcKqyYqMvO2Dfi63LApIuXuD2/lf5ofS47G1BM=
+	t=1748874770; cv=none; b=nwuCmRRNpjT98GByLT95dWXvfFBdGnlFVPHurSLMq6tgPUDqekq58j29TBFF8H/vbVX6PgbTI4hIh9tn9iJwixOLO9wXxyN+Bis5F3NGYaOY1k2B2HtJc2ZGIc/f9m/Za/Twh5y0ghilGm1b8kUjUTdWlGrGWoZbt234An2vFCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875581; c=relaxed/simple;
-	bh=5kMQI6DrKY4Z3tjRL5inrrF1/xLQtBiHybtfgQO2Hwg=;
+	s=arc-20240116; t=1748874770; c=relaxed/simple;
+	bh=ryu+J81VTZEm5f2WixjsC7/MVVLCDwotR2M5buSLnKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M735Rzua3kcxIZFZOesiaFDw9sJQUqIEibrJ6HNraOF9pRn2KafekBYeY41AQvgRzQq7TqFTBVOyMaYT+z0aq6cbh1MTBzay6bL8ObXTzRDy0Tg6mQxxrwk5CuB6HIxA4ws6uC/iurGOX+WaMEQg9mNqHqdKY5qQw9ISvV3cjzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pxrOagN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEF0C4CEF0;
-	Mon,  2 Jun 2025 14:46:19 +0000 (UTC)
+	 MIME-Version; b=HxOVX+2IwDxCSwEViu/nF8sNuUbGEaOWYO48k2Wa3Wl6OhUaJ8S0QR/ZGBwsURovbEk98P+EhXxM/vxz6APO6aR5JbiRVwR49FsnuXStAsdb0Q6yAuSTTkyPzsVy6Y4vlrIHba/CVSmWPsCtWV4C/Ni/OXGJzLNRj/k9t2H2sGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIz8qXAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978B6C4CEEB;
+	Mon,  2 Jun 2025 14:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875580;
-	bh=5kMQI6DrKY4Z3tjRL5inrrF1/xLQtBiHybtfgQO2Hwg=;
+	s=korg; t=1748874770;
+	bh=ryu+J81VTZEm5f2WixjsC7/MVVLCDwotR2M5buSLnKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pxrOagNYueaX9h/+J5R4P8knpopiS80bAsvExgWrC5PwniPjk19lRhCUgg3SjZn1
-	 kMfTt9PjdD7QgceBUwERIJZPfHFlOl1ShLFOpYEvyGt+Xuokyql8XzgFNdrXj5LJvF
-	 whahOSGLC8RCKB5NQnzq+F8p3h7Hjefm4xvZ25ek=
+	b=OIz8qXAyOEGeEVNHX6BuKKLdIY8WdzwCMWwknexl95woKKLOURyE6EskhJK4blAFq
+	 XGkzOCWuwQPmQ9JEzFuyQdcZuwjul5fmgGCYAokSn6kSp7ihdp1pnQxOOYK7XpdGoV
+	 2+NnQ2+tTGcDrxWhT9hKENtfQqSOTbx+CHV01Bgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/270] net: xgene-v2: remove incorrect ACPI_PTR annotation
+Subject: [PATCH 5.4 130/204] net: xgene-v2: remove incorrect ACPI_PTR annotation
 Date: Mon,  2 Jun 2025 15:47:43 +0200
-Message-ID: <20250602134314.491027008@linuxfoundation.org>
+Message-ID: <20250602134300.759096613@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,7 +84,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
-index 80399c8980bd3..627f860141002 100644
+index 848be6bf2fd1f..514a121d96aeb 100644
 --- a/drivers/net/ethernet/apm/xgene-v2/main.c
 +++ b/drivers/net/ethernet/apm/xgene-v2/main.c
 @@ -9,8 +9,6 @@
