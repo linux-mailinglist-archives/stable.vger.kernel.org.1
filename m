@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-149555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B72FACB3B1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B114ACB0D6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2306C404498
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74211164CBD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC59227E97;
-	Mon,  2 Jun 2025 14:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E843231C9F;
+	Mon,  2 Jun 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7N+QNfN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgIW9hAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E994D227E94;
-	Mon,  2 Jun 2025 14:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF83F231A51;
+	Mon,  2 Jun 2025 14:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874310; cv=none; b=FpFgNUyrojbZ0yajX77mGPiEXMSB4D8uAVAvQN4orcCKDVJwpSu+T9/Vs+6xxkfNQ1l6Iwah9YLsXmc11Oto51sig0w5x2rXQoDVpfCikZmhKvPgyKYfo01H1b+H6umLI6Ihr+6IHUTQB/qrOiy67/agbEJJvRHbJ2tY067ZxDs=
+	t=1748872973; cv=none; b=aC4k8CJAeh0x19sEMV1r0PKdKuIkibqDJKHmppofqoW2mXKQPVIW1S8clnSUH9ee2cxPC2X5pTV2o6cvOGUGikPTPY/Aha4ykh0J5CyAwLzNW7ZSRY1BteN7+kRn8/5BuGlf1NQE75e0tFTaZNrpQw+U7ogXOAQsi32DOpyXLsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874310; c=relaxed/simple;
-	bh=rAannaRrsFJIXNfrlFjUHUnMS26qFazvXYg+aDIkmL0=;
+	s=arc-20240116; t=1748872973; c=relaxed/simple;
+	bh=Ma7QPiCJCFK4ijRA5ysBtHmMrIxUvntwWyUGpu0MhDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzcfGB7C+HYTfSsA8VNeJvrn28RFFvsGmGdqruGGUMyaOzRAUAgk7+72vettzk0R9PAWUcHJ+SQVlVmDl5DKx91Ja7qQcyH4OH7mPykBg7CRmSPMDX2C/Re54q0iMznjcyUeIp7v0O2JtEDTqVbPqUigG1LfAnadVwNkhwDGBO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7N+QNfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685FBC4CEEB;
-	Mon,  2 Jun 2025 14:25:09 +0000 (UTC)
+	 MIME-Version; b=nS/4OA1Qe3T9vMKkHuFCbVvsLYxdRU+g0lKxQIdj0W9KuVyOFPxnA2m2T6kapLG/zF5Ygmb4IJRbHISs1cOOBdek7MlfO6JrJ5RoGi1hrPvmVBuLQ5xJqfdU30net45ZBU7kO37erp5S/xuwnJvJD8uhB90PWWUx601D/svLU5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgIW9hAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A589C4CEEE;
+	Mon,  2 Jun 2025 14:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874309;
-	bh=rAannaRrsFJIXNfrlFjUHUnMS26qFazvXYg+aDIkmL0=;
+	s=korg; t=1748872972;
+	bh=Ma7QPiCJCFK4ijRA5ysBtHmMrIxUvntwWyUGpu0MhDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7N+QNfN0dAixY5PrUNn3fVSz0TWjf0gCp2+BHIw2tvGZcCZJH+rS7VMaW78koqvS
-	 3twd2Pkod0g2+q1Q9oILMKa0IQv7q7KRgAlQW0wmkWPT0OUTZx3xi4YiFMRH7YIxwM
-	 MHpoIwFIcr6yrI5MNzTAKBhyUj1Z++UJYmyGnDXQ=
+	b=YgIW9hAqcUScaYLs4m2mqzGJbxkFHl8INk0YA/iDDw2z6OiPYYAiT+5H12PQvjP3n
+	 8eaXCC7t7/2V/PNv6GAnOW92bgK77HUAEiEwNjcUJ1xK3Z5WWBDFSE/9YqRNwcs6nm
+	 x7Mabh2m7u4BSDSXwvvVTgP8J5qKcYdOCvc0AN58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 427/444] perf/arm-cmn: Fix REQ2/SNP2 mixup
+	Nishanth Menon <nm@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 54/55] net: ethernet: ti: am65-cpsw: Lower random mac address error print to info
 Date: Mon,  2 Jun 2025 15:48:11 +0200
-Message-ID: <20250602134358.274062742@linuxfoundation.org>
+Message-ID: <20250602134240.403762758@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Nishanth Menon <nm@ti.com>
 
-commit 11b0f576e0cbde6a12258f2af6753b17b8df342b upstream.
+[ Upstream commit 50980d8da71a0c2e045e85bba93c0099ab73a209 ]
 
-Somehow the encodings for REQ2/SNP2 channels in XP events
-got mixed up... Unmix them.
+Using random mac address is not an error since the driver continues to
+function, it should be informative that the system has not assigned
+a MAC address. This is inline with other drivers such as ax88796c,
+dm9051 etc. Drop the error level to info level.
 
-CC: stable@vger.kernel.org
-Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/087023e9737ac93d7ec7a841da904758c254cb01.1746717400.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://patch.msgid.link/20250516122655.442808-1-nm@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -684,8 +684,8 @@ static umode_t arm_cmn_event_attr_is_vis
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index a21e7c0afbfdc..61788a43cb861 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2699,7 +2699,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 							port->slave.mac_addr);
+ 			if (!is_valid_ether_addr(port->slave.mac_addr)) {
+ 				eth_random_addr(port->slave.mac_addr);
+-				dev_err(dev, "Use random MAC address\n");
++				dev_info(dev, "Use random MAC address\n");
+ 			}
+ 		}
  
- 		if ((chan == 5 && cmn->rsp_vc_num < 2) ||
- 		    (chan == 6 && cmn->dat_vc_num < 2) ||
--		    (chan == 7 && cmn->snp_vc_num < 2) ||
--		    (chan == 8 && cmn->req_vc_num < 2))
-+		    (chan == 7 && cmn->req_vc_num < 2) ||
-+		    (chan == 8 && cmn->snp_vc_num < 2))
- 			return 0;
- 	}
- 
-@@ -841,8 +841,8 @@ static umode_t arm_cmn_event_attr_is_vis
- 	_CMN_EVENT_XP(pub_##_name, (_event) | (4 << 5)),	\
- 	_CMN_EVENT_XP(rsp2_##_name, (_event) | (5 << 5)),	\
- 	_CMN_EVENT_XP(dat2_##_name, (_event) | (6 << 5)),	\
--	_CMN_EVENT_XP(snp2_##_name, (_event) | (7 << 5)),	\
--	_CMN_EVENT_XP(req2_##_name, (_event) | (8 << 5))
-+	_CMN_EVENT_XP(req2_##_name, (_event) | (7 << 5)),	\
-+	_CMN_EVENT_XP(snp2_##_name, (_event) | (8 << 5))
- 
- #define CMN_EVENT_XP_DAT(_name, _event)				\
- 	_CMN_EVENT_XP_PORT(dat_##_name, (_event) | (3 << 5)),	\
+-- 
+2.39.5
+
 
 
 
