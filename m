@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14185ACB6EF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 197CEACB26A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A484C3458
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D1517611E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7FB225792;
-	Mon,  2 Jun 2025 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C29227E8F;
+	Mon,  2 Jun 2025 14:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT/Es18D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYkUWtWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98EA221FC3;
-	Mon,  2 Jun 2025 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77556227E89;
+	Mon,  2 Jun 2025 14:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876619; cv=none; b=lmXGBQpEi178UMTzqACvSpF4Gwuyys81mkBkANWq0Tx4wseb2ELtmeWhKFCSJ70TM18YX0PZ8PeQkzNIwKByDnuPM5UTq5KN9XKiTgTTspo19FXBAE9rexLGlLRt5By4U/ScxQBTWNILR8Yn95grfShuHqSKLYtTJ3jw6dSatg0=
+	t=1748873740; cv=none; b=KRI7p7NngcOMA1Y/8bHptnzJs9EfeUvc4oVJocP814QHscZQQ6WGFnCFyVOhNohmF1nL7vxZIooPTPJwTHrXtxPC6u2MU2xR2GTvdvsLqfk5HDjnh0ntyyOiktLLxQnpiX5qwuhY99+iVOyigkRQKQn1xV4kdKDpWba165druoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876619; c=relaxed/simple;
-	bh=6XE8YJP8rwOxOkesg4tK3L+iFMb77vrYu7XbTNFVG7A=;
+	s=arc-20240116; t=1748873740; c=relaxed/simple;
+	bh=001vTVtvNsY4xsygy0Qw8xoUJ2K/sl84uCVnjs+5aMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uPKhW1527BUncQPx0G2rR94tEHD6nQdL34okFruw79fFIv7dLYgw5MBjhOC+ZzveCJ4OiQPLdTGFS3w6WUn6BJ5S74onqJIyRTl4RuLuwUNS811j53Ox42UM5AvE+wP/GCP1qBnxqKuQh7W3TcMYn2eD0/Am7YnNITPnIIzEfF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT/Es18D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16988C4CEEB;
-	Mon,  2 Jun 2025 15:03:38 +0000 (UTC)
+	 MIME-Version; b=MD4LOcox2HJCw/8Z+uALmd52PFjcEy6M2jGuLkBaCBQkiSY7oGfq1AKvcCTDi0trZEvnzyovDHnrFx3xkPtRyspn3PC4RWGnyNZZpYCxdkAbulPvE1h8LkHJn9cqCBph/OfiaagvPEwsQ0OTwqLdBYAxRMTiZ+jOTwiYXRDzC5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYkUWtWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53FAC4CEEB;
+	Mon,  2 Jun 2025 14:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876619;
-	bh=6XE8YJP8rwOxOkesg4tK3L+iFMb77vrYu7XbTNFVG7A=;
+	s=korg; t=1748873740;
+	bh=001vTVtvNsY4xsygy0Qw8xoUJ2K/sl84uCVnjs+5aMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GT/Es18DsOORU4u6d07War+/v/O9i+as/sNLbVKtfgPQ9yxyBI5nwvns22qzppS9F
-	 HGC6Ws1NY+Y440KAnMmWmRWH0+bQIxtvxMQH8bloF4jH+esVKgnMZ6hU+OfAcbd0h+
-	 81QUnnIk/NyMUTrn7+PSTbSnkI1LGJucGUxUol6s=
+	b=GYkUWtWsucwpVB0SnHBcAxGLbU5ziYG4yay5ekSFwzg/iD93R7elnZbmx9B0cS0BU
+	 POlCIAk/fzAtyQ+6tioUdJFnsSXZbOM2c7rKLQEOJ+ZTYDVwMXEJSza8o36GieeMx7
+	 L/QkUGiU1P3yU36/uHTS92ZDDtSao5MT20DAnznY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/325] cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES
-Date: Mon,  2 Jun 2025 15:44:57 +0200
-Message-ID: <20250602134320.601098657@linuxfoundation.org>
+Subject: [PATCH 6.6 234/444] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
+Date: Mon,  2 Jun 2025 15:44:58 +0200
+Message-ID: <20250602134350.408921267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit e255612b5ed9f179abe8196df7c2ba09dd227900 ]
+[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
 
-Some operations, like WRITE, does not require FILE_READ_ATTRIBUTES access.
+Memset the config argument to get_mbus_config V4L2 sub-device pad
+operation to zero before calling the operation. This ensures the callers
+don't need to bother with it nor the implementations need to set all
+fields that may not be relevant to them.
 
-So when FILE_READ_ATTRIBUTES is not explicitly requested for
-smb2_open_file() then first try to do SMB2 CREATE with FILE_READ_ATTRIBUTES
-access (like it was before) and then fallback to SMB2 CREATE without
-FILE_READ_ATTRIBUTES access (less common case).
-
-This change allows to complete WRITE operation to a file when it does not
-grant FILE_READ_ATTRIBUTES permission and its parent directory does not
-grant READ_DATA permission (parent directory READ_DATA is implicit grant of
-child FILE_READ_ATTRIBUTES permission).
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ include/media/v4l2-subdev.h           | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index a7475bc05cac0..afdc78e92ee9b 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -108,16 +108,25 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
- 	int err_buftype = CIFS_NO_BUFFER;
- 	struct cifs_fid *fid = oparms->fid;
- 	struct network_resiliency_req nr_ioctl_req;
-+	bool retry_without_read_attributes = false;
- 
- 	smb2_path = cifs_convert_path_to_utf16(oparms->path, oparms->cifs_sb);
- 	if (smb2_path == NULL)
- 		return -ENOMEM;
- 
--	oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+	if (!(oparms->desired_access & FILE_READ_ATTRIBUTES)) {
-+		oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+		retry_without_read_attributes = true;
-+	}
- 	smb2_oplock = SMB2_OPLOCK_LEVEL_BATCH;
- 
- 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 		       &err_buftype);
-+	if (rc == -EACCES && retry_without_read_attributes) {
-+		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
-+		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
-+			       &err_buftype);
-+	}
- 	if (rc && data) {
- 		struct smb2_hdr *hdr = err_iov.iov_base;
- 
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index 5f115438d0722..cb3ad72a3e54a 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -351,6 +351,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
+ static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
+ 				struct v4l2_mbus_config *config)
+ {
++	memset(config, 0, sizeof(*config));
++
+ 	return check_pad(sd, pad) ? :
+ 	       sd->ops->pad->get_mbus_config(sd, pad, config);
+ }
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index b4fcd0164048e..0740dfc6c0488 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -822,7 +822,9 @@ struct v4l2_subdev_state {
+  *		     possible configuration from the remote end, likely calling
+  *		     this operation as close as possible to stream on time. The
+  *		     operation shall fail if the pad index it has been called on
+- *		     is not valid or in case of unrecoverable failures.
++ *		     is not valid or in case of unrecoverable failures. The
++ *		     config argument has been memset to 0 just before calling
++ *		     the op.
+  *
+  * @set_routing: enable or disable data connection routes described in the
+  *		 subdevice routing table.
 -- 
 2.39.5
 
