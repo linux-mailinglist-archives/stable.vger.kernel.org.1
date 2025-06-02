@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B61ACB7F6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0556ACB56F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D4004C5169
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D53CF4A8174
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32EF225A20;
-	Mon,  2 Jun 2025 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F92E226CFB;
+	Mon,  2 Jun 2025 14:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCbpbpzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShPiDQJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA28225791;
-	Mon,  2 Jun 2025 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9E51FE45A;
+	Mon,  2 Jun 2025 14:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877424; cv=none; b=dR4qv1yPW5F2uadoBy67vfu94r8qO4mTsOiMpW1zZ3kyCKmSiniK6zYfsjt8Zdz6Fk+F35AqxyqnddqM/RR9foT3HrR0lFRrRmDeG4mOdfjxfhTtFSOC4AlpNPVFMDnw1DkMPpvfw7jPfDoDezdHTlktpNqoCE8BfBgKYG0xmgI=
+	t=1748875755; cv=none; b=EuuXK0LLYwGC7kt+NxPa1fYELdmwBz6pAdxfJ3VJQ8QBLlARq4ost5AgJHgRDOENHwVFAwxTbvb+bTQkGcQqal291whVjeVAMG2C7jMGffAbGQx6GBQdwor+vcb71xScljC5NvLHMlCUa97ZcfxZax84DMD8e8q1wxQhzNyeDyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877424; c=relaxed/simple;
-	bh=qSJGXFMUGNMHDtr5LowcuFcW57ruJiTGxNlaQQadoPo=;
+	s=arc-20240116; t=1748875755; c=relaxed/simple;
+	bh=tjTeeSlZ6O/5nmLGXNLHgZANQkXTetrW7kqhbsyNEf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXVxtvnztYJNjADlRAMxFPw2aue9BUpuPp5MMFosNpcCP1qa4sw9oTpv2882GJe+Jcm+semZO78dFpiGD8FzvXY+SxTfMs1GFzcbK73rox9PY6rd0tZFSBaYVPye1qy8TdSoKWiKuHN/TRaMEwo3HIdp+DXdLx+qR4EjiPh4bg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCbpbpzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3092C4CEEB;
-	Mon,  2 Jun 2025 15:17:03 +0000 (UTC)
+	 MIME-Version; b=sWd52rWjGeH5a98cdYWS++HXgVHpuUNI5WFBOZqV0sV6WcqUsVVn6K5i/0QohaYSDlrnYc9AkAgNbF249pBEoaBIEz30NEwpyP6Ohm/B0i9DcaWM+iYC8vxRDAKb8z+0rGHdniftBnfGmtHnZnzZe4jklxOH1AbJbttC3ko93YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShPiDQJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4A8C4CEF0;
+	Mon,  2 Jun 2025 14:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877424;
-	bh=qSJGXFMUGNMHDtr5LowcuFcW57ruJiTGxNlaQQadoPo=;
+	s=korg; t=1748875755;
+	bh=tjTeeSlZ6O/5nmLGXNLHgZANQkXTetrW7kqhbsyNEf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCbpbpzQdKMpLQ3kmytEVuyHzzFa53R8vn9Lpoqsotwt8llafdRyZO2WHCWxlu/N8
-	 0J4ZEdZRFh+F6hsIG9SREjF5G7QSgnLSNqeWdOnhB8VnHzDDyjYz1nlDjl4iLQGK7e
-	 HGIKykh05XIrnQAD4rhkK4pm2qSblJoshttv1Bwc=
+	b=ShPiDQJQx447dsfgqthCRu2tAHC8bOY7xxa9LNQU68dqXKWeMH44XV3JwxcxqDOq5
+	 xlB1sZXCxBA9CMYx/EQA/SXD4c4gXWsUFtUcouBEz9HgVuSSK9XcLGcVyofFTR9tzS
+	 u072QIaRPzr9/2gEQCYPeBoquEHqhvi+/aAXxZUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/325] io_uring: fix overflow resched cqe reordering
+Subject: [PATCH 5.10 234/270] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
 Date: Mon,  2 Jun 2025 15:48:39 +0200
-Message-ID: <20250602134329.658617640@linuxfoundation.org>
+Message-ID: <20250602134316.877556576@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit a7d755ed9ce9738af3db602eb29d32774a180bc7 ]
+[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
 
-Leaving the CQ critical section in the middle of a overflow flushing
-can cause cqe reordering since the cache cq pointers are reset and any
-new cqe emitters that might get called in between are not going to be
-forced into io_cqe_cache_refill().
+... or we risk stealing final mntput from sync umount - raising mnt_count
+after umount(2) has verified that victim is not busy, but before it
+has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
+that it's safe to quietly undo mnt_count increment and leaves dropping
+the reference to caller, where it'll be a full-blown mntput().
 
-Fixes: eac2ca2d682f9 ("io_uring: check if we need to reschedule during overflow flush")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/90ba817f1a458f091f355f407de1c911d2b93bbf.1747483784.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Check under mount_lock is needed; leaving the current one done before
+taking that makes no sense - it's nowhere near common enough to bother
+with.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/namespace.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index f39d66589180e..ad462724246a7 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -627,6 +627,7 @@ static bool __io_cqring_overflow_flush(struct io_ring_ctx *ctx, bool force)
- 		 * to care for a non-real case.
- 		 */
- 		if (need_resched()) {
-+			ctx->cqe_sentinel = ctx->cqe_cached;
- 			io_cq_unlock_post(ctx);
- 			mutex_unlock(&ctx->uring_lock);
- 			cond_resched();
+diff --git a/fs/namespace.c b/fs/namespace.c
+index e46267e7d29d1..869cc6e06d889 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -572,12 +572,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+-	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+-		mnt_add_count(mnt, -1);
+-		return 1;
+-	}
+ 	lock_mount_hash();
+-	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
++	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
+ 		mnt_add_count(mnt, -1);
+ 		unlock_mount_hash();
+ 		return 1;
 -- 
 2.39.5
 
