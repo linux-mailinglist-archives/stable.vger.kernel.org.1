@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5128ACB8C1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7FDACB5DC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8899942EA8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173214A1516
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9513622331C;
-	Mon,  2 Jun 2025 15:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E8E232785;
+	Mon,  2 Jun 2025 14:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJEz15PW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ffVMRq6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4324D22E01E;
-	Mon,  2 Jun 2025 15:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FBB232368;
+	Mon,  2 Jun 2025 14:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876943; cv=none; b=q+mB5D8TSa9SSE3166pTW/4i3on816ghM88KKNDj3ZLT3EhkQeSUSlzGstC3JdzFhZcL3ubMm8IUfgZL2qkFz6QEpTUH61itoNEUBgS/xqRskBllmYrxbpFt1SDzZeCf+DjMPpORLz5lgnUmhS0bseQzGJTAJfMsVNPJ+3FZapo=
+	t=1748875957; cv=none; b=Ps2k6RcRxP/TqoflyvW9tboUNCDtE7hFGiU7zzmRNk94x8c3JETA18xqwgPN0q49+wCAJGC58BkEL9XgcmCbHZevrj0AxlQ/e0ZllQetBeXvymv8mz0YJEAI/oBWr1Pxu9w332ppx6viZys3Eu6sT9sqC9G7hPsFSrDb9vu55Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876943; c=relaxed/simple;
-	bh=yl9olcrvA6Wf0XHXJWNJYxi1FZwwNvQMxuP5+ghUQW4=;
+	s=arc-20240116; t=1748875957; c=relaxed/simple;
+	bh=MmiQW32QBguyznkgPcieA+53rLTbWUJy1835+c2Cvyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dChT7HgD54eOfbqHXQ8e98Ia9IaOFTKM2bIQ69y8DuiIEqPnri3UB4M75e5Wa3oiGcGPaGpRuXPUhqgfA89iPedPu8/FAlmMqFYObrVwqN13zwHUTXyS8fyKsOUE5leP4ED/KOu9aGyiC2e5plDEC49zGgWxx1qo85effn6ICGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJEz15PW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B072C4CEEB;
-	Mon,  2 Jun 2025 15:09:02 +0000 (UTC)
+	 MIME-Version; b=iBv9VgnYdk1aXWowEU0F6jKuGVQH6SZqM/MnmY5VBSithDC15qAnOgJV5U4Ww6PzI9NAR0JXeKIhXTWnHTvEC4J5vTHAfWIIEVNaSF3IYLql7voAcO2t+81GQovTIlLpYlnDwwSpVdJe0dOLQsYr2VQhpFUrtfS+iOpXF5y8VIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ffVMRq6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCE6C4CEEB;
+	Mon,  2 Jun 2025 14:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876942;
-	bh=yl9olcrvA6Wf0XHXJWNJYxi1FZwwNvQMxuP5+ghUQW4=;
+	s=korg; t=1748875957;
+	bh=MmiQW32QBguyznkgPcieA+53rLTbWUJy1835+c2Cvyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJEz15PWzn2jc9I8LrgXihlV5XGhLOeF/qrftUAyMvBzXueJpYyWe9PFR9yTTMI+f
-	 2RMAOqONPQULUZfYymozkKUWzoTdh908vmvazsGqivGJnG6J/Yd2hz0KXA+piAlStL
-	 tltf0y1g0+BL2PCx2njpJypRGzj3lld8q+u5Zlfw=
+	b=ffVMRq6SzT+miErxYJjKCzmbi2TQzusdd7WlQzHpeaJg7eyNSGwAidURuZTzgMsBQ
+	 KcBUaF13su+5CmfMsVttZTTSETTaOqi/pXVb98p5mBPons4JH1KR2lLIK1RA5laGSf
+	 +KmgypUB9FqSWeoufScG0tlIlBsRxDTdazgzrwIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Sven Peter <sven@svenpeter.dev>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/325] soc: apple: rtkit: Use high prio work queue
+Subject: [PATCH 5.15 027/207] wifi: mt76: only mark tx-status-failed frames as ACKed on mt76x0/2
 Date: Mon,  2 Jun 2025 15:46:39 +0200
-Message-ID: <20250602134324.790208985@linuxfoundation.org>
+Message-ID: <20250602134259.833871418@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 22af2fac88fa5dbc310bfe7d0b66d4de3ac47305 ]
+[ Upstream commit 0c5a89ceddc1728a40cb3313948401dd70e3c649 ]
 
-rtkit messages as communication with the DCP firmware for framebuffer
-swaps or input events are time critical so use WQ_HIGHPRI to prevent
-user space CPU load to increase latency.
-With kwin_wayland 6's explicit sync mode user space load was able to
-delay the IOMFB rtkit communication enough to miss vsync for surface
-swaps. Minimal test scenario is constantly resizing a glxgears
-Xwayland window.
+The interrupt status polling is unreliable, which can cause status events
+to get lost. On all newer chips, txs-timeout is an indication that the
+packet was either never sent, or never acked.
+Fixes issues with inactivity polling.
 
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-3-c3ec37f9021b@svenpeter.dev
-Signed-off-by: Sven Peter <sven@svenpeter.dev>
+Link: https://patch.msgid.link/20250311103646.43346-6-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/apple/rtkit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h       | 1 +
+ drivers/net/wireless/mediatek/mt76/mt76x0/pci.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76x0/usb.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76x2/pci.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 3 ++-
+ drivers/net/wireless/mediatek/mt76/tx.c         | 3 ++-
+ 6 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
-index 8ec74d7539eb4..1ec0c3ba0be22 100644
---- a/drivers/soc/apple/rtkit.c
-+++ b/drivers/soc/apple/rtkit.c
-@@ -731,7 +731,7 @@ static struct apple_rtkit *apple_rtkit_init(struct device *dev, void *cookie,
- 	rtk->mbox_cl.rx_callback = &apple_rtkit_rx;
- 	rtk->mbox_cl.tx_done = &apple_rtkit_tx_done;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 27f04fb2796d7..5a90fa556203f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -345,6 +345,7 @@ struct mt76_hw_cap {
+ #define MT_DRV_RX_DMA_HDR		BIT(3)
+ #define MT_DRV_HW_MGMT_TXQ		BIT(4)
+ #define MT_DRV_AMSDU_OFFLOAD		BIT(5)
++#define MT_DRV_IGNORE_TXS_FAILED	BIT(6)
  
--	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_MEM_RECLAIM,
-+	rtk->wq = alloc_ordered_workqueue("rtkit-%s", WQ_HIGHPRI | WQ_MEM_RECLAIM,
- 					  dev_name(rtk->dev));
- 	if (!rtk->wq) {
- 		ret = -ENOMEM;
+ struct mt76_driver_ops {
+ 	u32 drv_flags;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+index b795e7245c075..3255f9c0ef71f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/pci.c
+@@ -151,7 +151,8 @@ mt76x0e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	static const struct mt76_driver_ops drv_ops = {
+ 		.txwi_size = sizeof(struct mt76x02_txwi),
+ 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
+-			     MT_DRV_SW_RX_AIRTIME,
++			     MT_DRV_SW_RX_AIRTIME |
++			     MT_DRV_IGNORE_TXS_FAILED,
+ 		.survey_flags = SURVEY_INFO_TIME_TX,
+ 		.update_survey = mt76x02_update_channel,
+ 		.tx_prepare_skb = mt76x02_tx_prepare_skb,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
+index f2b2fa7338457..7a4d62bff28ff 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/usb.c
+@@ -209,7 +209,8 @@ static int mt76x0u_probe(struct usb_interface *usb_intf,
+ 			 const struct usb_device_id *id)
+ {
+ 	static const struct mt76_driver_ops drv_ops = {
+-		.drv_flags = MT_DRV_SW_RX_AIRTIME,
++		.drv_flags = MT_DRV_SW_RX_AIRTIME |
++			     MT_DRV_IGNORE_TXS_FAILED,
+ 		.survey_flags = SURVEY_INFO_TIME_TX,
+ 		.update_survey = mt76x02_update_channel,
+ 		.tx_prepare_skb = mt76x02u_tx_prepare_skb,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+index 5cd0379d86de8..4e369bd87c900 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/pci.c
+@@ -22,7 +22,8 @@ mt76x2e_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	static const struct mt76_driver_ops drv_ops = {
+ 		.txwi_size = sizeof(struct mt76x02_txwi),
+ 		.drv_flags = MT_DRV_TX_ALIGNED4_SKBS |
+-			     MT_DRV_SW_RX_AIRTIME,
++			     MT_DRV_SW_RX_AIRTIME |
++			     MT_DRV_IGNORE_TXS_FAILED,
+ 		.survey_flags = SURVEY_INFO_TIME_TX,
+ 		.update_survey = mt76x02_update_channel,
+ 		.tx_prepare_skb = mt76x02_tx_prepare_skb,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 9369515f36a3a..09b01e09bcfe0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -29,7 +29,8 @@ static int mt76x2u_probe(struct usb_interface *intf,
+ 			 const struct usb_device_id *id)
+ {
+ 	static const struct mt76_driver_ops drv_ops = {
+-		.drv_flags = MT_DRV_SW_RX_AIRTIME,
++		.drv_flags = MT_DRV_SW_RX_AIRTIME |
++			     MT_DRV_IGNORE_TXS_FAILED,
+ 		.survey_flags = SURVEY_INFO_TIME_TX,
+ 		.update_survey = mt76x02_update_channel,
+ 		.tx_prepare_skb = mt76x02u_tx_prepare_skb,
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 134a735a06329..3fbf0153d13ca 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -93,7 +93,8 @@ __mt76_tx_status_skb_done(struct mt76_dev *dev, struct sk_buff *skb, u8 flags,
+ 	__skb_unlink(skb, &dev->status_list);
+ 
+ 	/* Tx status can be unreliable. if it fails, mark the frame as ACKed */
+-	if (flags & MT_TX_CB_TXS_FAILED) {
++	if (flags & MT_TX_CB_TXS_FAILED &&
++	    (dev->drv->drv_flags & MT_DRV_IGNORE_TXS_FAILED)) {
+ 		info->status.rates[0].count = 0;
+ 		info->status.rates[0].idx = -1;
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
 -- 
 2.39.5
 
