@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82642ACB716
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7009DACB53C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C774C446C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ABF49E2E51
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77D422A1D5;
-	Mon,  2 Jun 2025 15:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAF72C324F;
+	Mon,  2 Jun 2025 14:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eupp8r5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePcgGc/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D336228CA5;
-	Mon,  2 Jun 2025 15:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4841FCFE2;
+	Mon,  2 Jun 2025 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877199; cv=none; b=jNru3Fim0YRe+aN104WJ0Ksm1itlTseHLOXEhENET6dtkmUpnOY5Hy0Gc0kaIYxYNUWRd2Qhg6HS9zcll0SqT8HqH6oRy26DFWmjJrJAndCxUVgoDodtYHocg4UCHaE9bsDAqINPsu1G1/4ydSMPciv7mh+0aGjf3lAMaT7gEmA=
+	t=1748875645; cv=none; b=Vi46gebL8il13QXbITbioojfHcObzlC7MUlHjmLzIcgvo3gwxps3i1wvhMFNDaFWl3n9pcgQrr9hlCx4o6aZsvdVK6n7PQjX4OLrdBhbeASotvv4Hs7dkMImzIMYTjV2EHYcqfiMdfYEPaP1CBr+PKjlBVWC0tMxOuoOW3QJR+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877199; c=relaxed/simple;
-	bh=Ubpzr/p84I9E+mJQIQWEKk59IvHPEn/Fr6WlJx2NgDI=;
+	s=arc-20240116; t=1748875645; c=relaxed/simple;
+	bh=J7+Y5UANdBr0LHZbpbXILo3MBpBgf5bghlav54EqwLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikA1Zmvqmj20uQzQZKrgF1kehoTJMU32luaPWeVRf4hZ4560MZgl0VuI5JEBVx1/AwUOfEKgm5b5lZS09jhaPql7hrTergufUfJvcIzk/EwQ8johHVEz/5vaoBWHJxPnpiy7A1iQq+9kXozVh7yteajKPE3zttn1GbH9X8s+wJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eupp8r5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7987C4CEEB;
-	Mon,  2 Jun 2025 15:13:18 +0000 (UTC)
+	 MIME-Version; b=Fg8y0z0VBU4ftgZb/fCiOJgnQ/ZWVtypiSXjfDu0CRRnerDf2tHSgjjA6myINlySPdlaIN8FtNt3uJvjurJQI48isX0Hfe35uem/zZWYatxNwguDQnV7E9cz+50ybP1oBqKnI59uUnJuvH4vyLqi/AcRod85rJP+MEmcr42ue5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePcgGc/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE4BC4CEEB;
+	Mon,  2 Jun 2025 14:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877199;
-	bh=Ubpzr/p84I9E+mJQIQWEKk59IvHPEn/Fr6WlJx2NgDI=;
+	s=korg; t=1748875645;
+	bh=J7+Y5UANdBr0LHZbpbXILo3MBpBgf5bghlav54EqwLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eupp8r5J5UqwbSE/RFef07i+4YwwFk0ptgBz7cHSTCBDxlZhBr2+Y4NRUMUVU1tA4
-	 5fPSp1MDPFufJRz0WUxcgzGJzL/RWuqz8Iz0OeXG8fg53wMyUes1hm7ulqrUB4FdDs
-	 i8Oa+7u/r6RfWypVEKyRJCe6NaLxH0nHUgkTRCwQ=
+	b=ePcgGc/yL7MXxx2s9xGLpuIP8Z6ELdJx+i3JRgrPdGLaMTI1OvROIURdtP0yv5bLC
+	 2gIV/COoN6r4ouhYaiAKzZfbCahZWGNRHewICjrYWuE+FRROx3CbLFFXq/AF6H/RUa
+	 OpIFk6Vj3Q4Pvwo4MbCVBrv9E8aZxfOAm+/pbKTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/325] ice: count combined queues using Rx/Tx count
+Subject: [PATCH 5.10 192/270] EDAC/ie31200: work around false positive build warning
 Date: Mon,  2 Jun 2025 15:47:57 +0200
-Message-ID: <20250602134327.965247771@linuxfoundation.org>
+Message-ID: <20250602134315.050939708@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c3a392bdd31adc474f1009ee85c13fdd01fe800d ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-Previous implementation assumes that there is 1:1 matching between
-vectors and queues. It isn't always true.
+gcc-14 produces a bogus warning in some configurations:
 
-Get minimum value from Rx/Tx queues to determine combined queues number.
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
+
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
+
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index a163e7717a534..1f62d11831567 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3373,8 +3373,7 @@ static u32 ice_get_combined_cnt(struct ice_vsi *vsi)
- 	ice_for_each_q_vector(vsi, q_idx) {
- 		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index cad20e87783b5..79a6612bd01e4 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -398,10 +398,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
  
--		if (q_vector->rx.rx_ring && q_vector->tx.tx_ring)
--			combined++;
-+		combined += min(q_vector->num_ring_tx, q_vector->num_ring_rx);
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -459,19 +458,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
  	}
  
- 	return combined;
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
+ 	/*
+@@ -482,14 +472,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
++
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
+ 
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
+ 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
