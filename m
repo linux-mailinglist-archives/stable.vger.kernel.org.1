@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6377ACB2A6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FCBACB727
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3B463B38B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAD564C1509
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8522822F74F;
-	Mon,  2 Jun 2025 14:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461FD230BC9;
+	Mon,  2 Jun 2025 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfyhkIcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sr0bJp98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1B02236F4;
-	Mon,  2 Jun 2025 14:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0162A22A4DB;
+	Mon,  2 Jun 2025 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873829; cv=none; b=rgcVVQksNyrPT3OZnXjX+bAe99fYniZlHaNneMRwcThpkJItgatvLDRPnU3kuiSIFbHShDrUyQhWrCPipHeX4LZYtJbKp4VufWVww83cul75Q6EP7d1T2+MaNJFxaqGOXPccJgSXGow6aLjQNkJZjG9jImRiWE6FXmyep9mhPOI=
+	t=1748876727; cv=none; b=Wqth9CNr1Lbbi6C94R4NAF9WLM6F9H4VZTRZFj05DyrdxyLWlybJpjJ0OsUJSrmcoDIHofV3w2CSUaXD8EM582Wm9b+J77XJECnWXOF7ZIqdp1OfZ69SmAiq0TtTAYoiB/kWrqRKxI1AWf0eCSMAkN5uMba0IIx2TPOAc1sQGdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873829; c=relaxed/simple;
-	bh=3l2K+z8oPLChHIvuBLEnDjbSOmqcKznrVzFH/+R+Yto=;
+	s=arc-20240116; t=1748876727; c=relaxed/simple;
+	bh=lT8bJaWEMgt83BdUXZxig3/lBQXn25Gep093hFQf+cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sy9RxgyGWtDbn5tI/JjESNFCM6gJ4wcjQJSyvw6zE9EECrkE+ICU3EvqevJV1aHsyeFo77U1aZXtcTsavYTSUr5fYoGX/o9Ps0E+7e8Q9X2YvIrZvKaFHAZJ844oeBz4vO16rHRSzF/J5+0yxeTsnic9690V632QoZDUNY3PS7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfyhkIcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E799C4CEEB;
-	Mon,  2 Jun 2025 14:17:08 +0000 (UTC)
+	 MIME-Version; b=pZAO3JftltdTX2CvoTe4LBNHqoknvJfQkOWkTJhqNP5sQFOilAfZOwJ+1+81IHR8KLIKtOhNADZwym89LVl5WlQ562iA41X9bPRXXFkxecg+dFEnU/2SFGutZl2ytW7tCM1bQOTP+q2frzr0HLfpUNKZCtKwcK3aRJphTiAjOH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sr0bJp98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BF6C4CEEB;
+	Mon,  2 Jun 2025 15:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873828;
-	bh=3l2K+z8oPLChHIvuBLEnDjbSOmqcKznrVzFH/+R+Yto=;
+	s=korg; t=1748876726;
+	bh=lT8bJaWEMgt83BdUXZxig3/lBQXn25Gep093hFQf+cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfyhkIcuhbjGnYIAwYTZf9qK5IIx92lmL5nxx39rFagq3q8Z0SFq/U1JhnCpzgOrh
-	 a6FH+66sUVDLTQCoHvwR9U4bwi4x0LAqZmeXj8WAy9ADi3zEYXAu5eZm3doLFRZHVs
-	 C+88gK5jdjA/cUBAIXCU2DoYUHFyMm43gpC1BkTk=
+	b=sr0bJp98WYaI91tHOnAhzd3ivDf78RAh2xnR+aXJtIZRSNDN7Gac5wVcToIKpONFw
+	 1PNOQM0Pz3c1+VX7+M53wZmSZbhswsFhZHN1s15+OFL1WauXSfp7WeC+ehZkaMG5oI
+	 cXyC3u6Kdx1zPQsaUHbAd8yXeft13+XMzegm0mZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/444] ext4: dont write back data before punch hole in nojournal mode
-Date: Mon,  2 Jun 2025 15:45:30 +0200
-Message-ID: <20250602134351.753071893@linuxfoundation.org>
+Subject: [PATCH 6.1 055/325] btrfs: get zone unusable bytes while holding lock at btrfs_reclaim_bgs_work()
+Date: Mon,  2 Jun 2025 15:45:31 +0200
+Message-ID: <20250602134321.999764820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 43d0105e2c7523cc6b14cad65e2044e829c0a07a ]
+[ Upstream commit 1283b8c125a83bf7a7dbe90c33d3472b6d7bf612 ]
 
-There is no need to write back all data before punching a hole in
-non-journaled mode since it will be dropped soon after removing space.
-Therefore, the call to filemap_write_and_wait_range() can be eliminated.
-Besides, similar to ext4_zero_range(), we must address the case of
-partially punched folios when block size < page size. It is essential to
-remove writable userspace mappings to ensure that the folio can be
-faulted again during subsequent mmap write access.
+At btrfs_reclaim_bgs_work(), we are grabbing a block group's zone unusable
+bytes while not under the protection of the block group's spinlock, so
+this can trigger race reports from KCSAN (or similar tools) since that
+field is typically updated while holding the lock, such as at
+__btrfs_add_free_space_zoned() for example.
 
-In journaled mode, we need to write dirty pages out before discarding
-page cache in case of crash before committing the freeing data
-transaction, which could expose old, stale data, even if synchronization
-has been performed.
+Fix this by grabbing the zone unusable bytes while we are still in the
+critical section holding the block group's spinlock, which is right above
+where we are currently grabbing it.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20241220011637.1157197-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ fs/btrfs/block-group.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index d3d28e6587202..456f686136fc5 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -3946,17 +3946,6 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 
- 	trace_ext4_punch_hole(inode, offset, length, 0);
- 
--	/*
--	 * Write out all dirty pages to avoid race conditions
--	 * Then release them.
--	 */
--	if (mapping_tagged(mapping, PAGECACHE_TAG_DIRTY)) {
--		ret = filemap_write_and_wait_range(mapping, offset,
--						   offset + length - 1);
--		if (ret)
--			return ret;
--	}
--
- 	inode_lock(inode);
- 
- 	/* No need to punch hole beyond i_size */
-@@ -4018,8 +4007,11 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 		ret = ext4_update_disksize_before_punch(inode, offset, length);
- 		if (ret)
- 			goto out_dio;
--		truncate_pagecache_range(inode, first_block_offset,
--					 last_block_offset);
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 0dcf7fecaf55b..91440ef79a26f 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1678,6 +1678,17 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
+ 			up_write(&space_info->groups_sem);
+ 			goto next;
+ 		}
 +
-+		ret = ext4_truncate_page_cache_block_range(inode,
-+				first_block_offset, last_block_offset + 1);
-+		if (ret)
-+			goto out_dio;
- 	}
++		/*
++		 * Cache the zone_unusable value before turning the block group
++		 * to read only. As soon as the block group is read only it's
++		 * zone_unusable value gets moved to the block group's read-only
++		 * bytes and isn't available for calculations anymore. We also
++		 * cache it before unlocking the block group, to prevent races
++		 * (reports from KCSAN and such tools) with tasks updating it.
++		 */
++		zone_unusable = bg->zone_unusable;
++
+ 		spin_unlock(&bg->lock);
  
- 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+ 		/*
+@@ -1693,13 +1704,6 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
+ 			goto next;
+ 		}
+ 
+-		/*
+-		 * Cache the zone_unusable value before turning the block group
+-		 * to read only. As soon as the blog group is read only it's
+-		 * zone_unusable value gets moved to the block group's read-only
+-		 * bytes and isn't available for calculations anymore.
+-		 */
+-		zone_unusable = bg->zone_unusable;
+ 		ret = inc_block_group_ro(bg, 0);
+ 		up_write(&space_info->groups_sem);
+ 		if (ret < 0)
 -- 
 2.39.5
 
