@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411A3ACAFA1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BE9ACB04C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F6B41BA278E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:51:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E39FD1886937
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEBE221DB6;
-	Mon,  2 Jun 2025 13:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A76A221FC3;
+	Mon,  2 Jun 2025 14:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMfoAQmD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q17Rk49e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5AC2C3247;
-	Mon,  2 Jun 2025 13:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AF8221578;
+	Mon,  2 Jun 2025 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872224; cv=none; b=HP0D3D/r5nhaDYKQH/Jxv2yzYW59RXnwaxe3OXs3i23QShuQKxR+N+vWzxwZBELMB3P3cXk7dW92f+yxK/xa5uYXDxC5F65fG3dU6w7m5l/KfoJbu07agpX/o9aG8bTLr7C25Cod8tyQuiDnKfWT7SrxQ+U6NtiytE85AB8tBZA=
+	t=1748872845; cv=none; b=Am4usabhxpAEkmgz8ttseStIfgd+z1204VaHj/sGb1hUKQIi2eg352P3gLmYTjxD/gj4ga+BagIO4GXV89v6rYBIejfja1m1xfeLmNohX1mWzvBx1x08togaPiDoCxGLE3EckwKuZx9wtiIWOh+YfE6W4sM0fXJ4D6jSYGkDkGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872224; c=relaxed/simple;
-	bh=lo+r2+tBB3UzWAeQz+Z8YtBOgFs990CUhv/Q8ryex5Q=;
+	s=arc-20240116; t=1748872845; c=relaxed/simple;
+	bh=Mb17ghtf/RGUtyhiA4GrZhRCf+7cCgwBh96NjCbtCp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSg+p3gPK9qlU5L1FtsAkz2FmYIJTwk6KT+RlWFUrdKNpUQEmBrag9JR7iiqJFEqri2PRy7BC81ut7sW7Ck49KwWkrZS3SRiOAjnGmVw5wD8A0TTipdN5eP6Kn7sTYEocK5hmh5wQqXajdOXj9ZD9SZtmqJ3PhxYAPrTknZCIxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMfoAQmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DE4C4CEEB;
-	Mon,  2 Jun 2025 13:50:23 +0000 (UTC)
+	 MIME-Version; b=jgoaU/dwELF6loUx9PS8EW5DxjvSdLtVuGq6w0kgTALVFILiIgxK/+kxzJPVAU3G8V+/WpH1I8/+0hlj398NK6KsRQXwuh3fuBKXVMRJBPDF+8fhztNIQsjzHYYnTGiie6WQAuL+ultMgExrWh4ilwo2cepz8dSlBIRNfLBy8hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q17Rk49e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042A9C4CEEB;
+	Mon,  2 Jun 2025 14:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872224;
-	bh=lo+r2+tBB3UzWAeQz+Z8YtBOgFs990CUhv/Q8ryex5Q=;
+	s=korg; t=1748872842;
+	bh=Mb17ghtf/RGUtyhiA4GrZhRCf+7cCgwBh96NjCbtCp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMfoAQmDRyOzRTP5lcd/wIDKahBtfKL1/wDTYX3lZDexzAAVS4np4OnQZR+ZVepUW
-	 bgAOyMQIjwyoQFnbgOKCJZjvZADGsDnlmze/K6SwEA2futsTTo221cYIu4Xp4TM77X
-	 StYEgt8if/kjI0TSuj4MHo54NN6MtBltjqj0YEZA=
+	b=q17Rk49eP++mWOgSpLqZeUI1o/gZVXnVXydDZv5swdoc8+pGa6MeCKVsqhccDQebY
+	 snDDWQm72b506IAE5c36lZiZ8bihq9jVVzcRVxD5foJZ18F40NHI5+6+oTvsHNBknm
+	 xnmrRAuRXpum0r/pZce3Q8wTjfOQUabRRuP9E7Lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.15 38/49] arm64: dts: ti: k3-j722s-evm: Enable "serdes_wiz0" and "serdes_wiz1"
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 13/55] arm64: dts: qcom: x1e80100-yoga-slim7x: mark l12b and l15b always-on
 Date: Mon,  2 Jun 2025 15:47:30 +0200
-Message-ID: <20250602134239.436832019@linuxfoundation.org>
+Message-ID: <20250602134238.802424718@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 9d76be5828be44ed7a104cc21b4f875be4a63322 upstream.
+commit f43a71dc6d8d8378af587675eec77c06e0298c79 upstream.
 
-In preparation for disabling "serdes_wiz0" and "serdes_wiz1" device-tree
-nodes in the SoC file, enable them in the board file. The motivation for
-this change is that of following the existing convention of disabling
-nodes in the SoC file and only enabling the required ones in the board
-file.
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250417123246.2733923-2-s-vadapalli@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
+
+Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
+Cc: stable@vger.kernel.org	# 6.11
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-7-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-@@ -843,6 +843,10 @@
- 		      <J722S_SERDES1_LANE0_PCIE0_LANE0>;
- };
+--- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+@@ -266,6 +266,7 @@
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
  
-+&serdes_wiz0 {
-+	status = "okay";
-+};
-+
- &serdes0 {
- 	status = "okay";
- 	serdes0_usb_link: phy@0 {
-@@ -854,6 +858,10 @@
+ 		vreg_l14b_3p0: ldo14 {
+@@ -280,8 +281,8 @@
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+-
  	};
- };
  
-+&serdes_wiz1 {
-+	status = "okay";
-+};
-+
- &serdes1 {
- 	status = "okay";
- 	serdes1_pcie_link: phy@0 {
+ 	regulators-1 {
 
 
 
