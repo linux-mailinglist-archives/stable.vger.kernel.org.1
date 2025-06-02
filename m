@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-150177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6052ACB61B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15DDACB560
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD944C2149
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B0984C1EFB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD3E237173;
-	Mon,  2 Jun 2025 14:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DDF221297;
+	Mon,  2 Jun 2025 14:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDckLJwX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLYkzafI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17212237163;
-	Mon,  2 Jun 2025 14:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63B81B81DC;
+	Mon,  2 Jun 2025 14:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876279; cv=none; b=MKOIQhoQgN3YKS4+X260BkBT8MCOfhDCg8bA4jrxuoIwPCIs2NPvs6Aa0GYPN8u+DULx0qXV+s347dzif2gDoJSXj4ca3WAm/cFbrrnEn4620qPwNOK8XCUomD6aC9k3rEfek9GTRul/Ykt/gTip+csqKrVD+UiCEFZo7zRUygw=
+	t=1748875697; cv=none; b=WSr5N6ZZ/FrABKIoo9a5UL2XTFvpIIpPBZlSgOgGkydoK3pqHqk7DjdUlInOIkQ+FCTa71jVJ+XCCdBdelFa3nlbsSh0rIex+omVv+XrPUB2/WsuZCG4OnpXjBa9PLtmCQ+oDfd3dn+iw5XBCF5QS+4A3gYyDlZPOMYRUDKXT2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876279; c=relaxed/simple;
-	bh=5PGn2TVh/Ajphn5oeBaYNWgI0cMOwvLtFXkrdU+LSio=;
+	s=arc-20240116; t=1748875697; c=relaxed/simple;
+	bh=HStgfdKNMNvf/Br6pQtuINwkKaXhFimt9jAPkcLWYuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuND0I0xE3vVmpfbdAWLPiMdj7cHCPwrBQ97KKzzKWnlg+8mMNYYZimkiM3RaFu4rSXahJfrrgw65cZw6UD2CroZqtYClzqnTj+N/EJr9XGwhMDkenXHWYNAp4dLA/7mkcXdujqdv+gv90ln/EMn1XOfbE4V2X0v2BcAunBUQrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDckLJwX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B58FC4CEEB;
-	Mon,  2 Jun 2025 14:57:58 +0000 (UTC)
+	 MIME-Version; b=vA0VY4QVcbCtAn+fOadg6nN/Tf2zNwL6QSzzUOXJKTLLAGGfFdhlFg6RBG/niSWv+agJRBQHnY3bYg4IpGt4TxzaFxYayos36kvls/ynzJ4/pENMjZ/821gNsnTB5rIyCRh1/BLNBbsgOj2dhQuR2ftWhNqvKr2AZ+Yof2bUKTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLYkzafI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B364C4CEEB;
+	Mon,  2 Jun 2025 14:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876279;
-	bh=5PGn2TVh/Ajphn5oeBaYNWgI0cMOwvLtFXkrdU+LSio=;
+	s=korg; t=1748875696;
+	bh=HStgfdKNMNvf/Br6pQtuINwkKaXhFimt9jAPkcLWYuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDckLJwXkUuP/IszHBe58WkIETU3q1PNTlma+WSn1uxDPkm7xZvZmnQA4nhSEfBZY
-	 OFjVxccuAP5hpNtqiaIZ8F6nNKez/jdtOz8XojOzoPpHbojlG4kE/NXzPLN5t38zrY
-	 W1o9+aRf7ONpT/1jpCG4+8wPJMX/1xkk5s3q5v28=
+	b=CLYkzafIWDDVz+fuTFdzUvVLODaMPfJxVzFzZ2WtHN0w4dySX/4847+ps3Qb4TKRn
+	 UwzpEAcOsRyLZikwmjV6qBp+s/V3YyB3SGnrgdfJNXoUAsQUF42NhI3fNB/b6Om3/v
+	 8us+8v8yJIOX8jpRffvAySecXgravtYyQsP8z+8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ankur Arora <ankur.a.arora@oracle.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/207] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
+Subject: [PATCH 5.10 215/270] rcu: handle quiescent states for PREEMPT_RCU=n, PREEMPT_COUNT=y
 Date: Mon,  2 Jun 2025 15:48:20 +0200
-Message-ID: <20250602134303.722409918@linuxfoundation.org>
+Message-ID: <20250602134315.971842933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
+[ Upstream commit 83b28cfe796464ebbde1cf7916c126da6d572685 ]
 
-We might not have called drv_mgd_prepare_tx(), so only call
-drv_mgd_complete_tx() under the same conditions.
+With PREEMPT_RCU=n, cond_resched() provides urgently needed quiescent
+states for read-side critical sections via rcu_all_qs().
+One reason why this was needed: lacking preempt-count, the tick
+handler has no way of knowing whether it is executing in a
+read-side critical section or not.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+With (PREEMPT_LAZY=y, PREEMPT_DYNAMIC=n), we get (PREEMPT_COUNT=y,
+PREEMPT_RCU=n). In this configuration cond_resched() is a stub and
+does not provide quiescent states via rcu_all_qs().
+(PREEMPT_RCU=y provides this information via rcu_read_unlock() and
+its nesting counter.)
+
+So, use the availability of preempt_count() to report quiescent states
+in rcu_flavor_sched_clock_irq().
+
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/rcu/tree_plugin.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index b71d3a03032e8..11d9bce1a4390 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2336,7 +2336,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	if (tx)
- 		ieee80211_flush_queues(local, sdata, false);
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index f5ba0740f9b50..c07a841971739 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -919,13 +919,16 @@ static void rcu_preempt_check_blocked_tasks(struct rcu_node *rnp)
+  */
+ static void rcu_flavor_sched_clock_irq(int user)
+ {
+-	if (user || rcu_is_cpu_rrupt_from_idle()) {
++	if (user || rcu_is_cpu_rrupt_from_idle() ||
++	     (IS_ENABLED(CONFIG_PREEMPT_COUNT) &&
++	      (preempt_count() == HARDIRQ_OFFSET))) {
  
--	drv_mgd_complete_tx(sdata->local, sdata, &info);
-+	if (tx || frame_buf)
-+		drv_mgd_complete_tx(sdata->local, sdata, &info);
- 
- 	/* clear bssid only after building the needed mgmt frames */
- 	eth_zero_addr(ifmgd->bssid);
+ 		/*
+ 		 * Get here if this CPU took its interrupt from user
+-		 * mode or from the idle loop, and if this is not a
+-		 * nested interrupt.  In this case, the CPU is in
+-		 * a quiescent state, so note it.
++		 * mode, from the idle loop without this being a nested
++		 * interrupt, or while not holding the task preempt count
++		 * (with PREEMPT_COUNT=y). In this case, the CPU is in a
++		 * quiescent state, so note it.
+ 		 *
+ 		 * No memory barrier is required here because rcu_qs()
+ 		 * references only CPU-local variables that other CPUs
 -- 
 2.39.5
 
