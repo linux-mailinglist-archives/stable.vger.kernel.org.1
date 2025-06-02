@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7834AACB4C8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248AEACB27B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC233188800C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768F21675DD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64037227E80;
-	Mon,  2 Jun 2025 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0539322A7F2;
+	Mon,  2 Jun 2025 14:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QT60LR0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkOlvHFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2052D226D1E;
-	Mon,  2 Jun 2025 14:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F4022A7EA;
+	Mon,  2 Jun 2025 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875159; cv=none; b=Rw3LUg5xeHY1IvLHS2w5ZbL/auLYiLAOdlD4YrY5kFLd64ruUWJrz1yHiYXP2WrmdlSHBcL5TR6PMwWRwubOKnkM8W+0TioSDiSuz1zvsFFgWbAvu+Alzzh+ZUkzBntuYIsSM/BdKyHm6faj9ANvWKpFM17/z4x4/aJKuKRwXT4=
+	t=1748873782; cv=none; b=pydywr1luo6Axk8U4EAkmKEA1dXpiLAmH/B9Yu8x9P41TkrKy6Sz2j3186o7+2ZV5SOesx7ckwHa+w+UvBDyfFuurC8EEd4jWO1ZW1gxk4xq6U0O4jWhNsix2cYBBk7tPXJC+yEfIbt0tN1Y3s+2phDAzMwD7IVLPZdbXTxH8TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875159; c=relaxed/simple;
-	bh=4y+f1DWjQzKYPdJGyenWFo50HUNijjrDvl1PvFoWI6Y=;
+	s=arc-20240116; t=1748873782; c=relaxed/simple;
+	bh=lPhLDvBVdQyQo1v/iQ9R+k9bNBliWCxmH/Z0PAPjIaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HX1mEQCTMbu2lj4Oo/9RkZ9kDOFAfzieQBHPZ/qk6CA55TcykuKV1A+P5D6fSQpbHctgjD24f7eCS8o18npgcufmdBuzCL9YHIx+ze1cHjF+FaE+imjZXJnY9ITVDSZaU17fqXilbk0PQcN6+TUNuSBknSzv+L1mhNldsSkHjCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QT60LR0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D637C4CEEB;
-	Mon,  2 Jun 2025 14:39:18 +0000 (UTC)
+	 MIME-Version; b=dg274KdtTnJSLcMir9zuQ/vdzU7TmPU36YJJeLnqaz9V//bnEE4BWwmQ64S9j/F2UjGXmiA1+QIeB5X4dLIpYhRsjj/xxEVrQutSLUo+s5Fd+4cTCDQAuXagPFSPK8ehAw+HEG9xjY764Di28rzmhlpfhKXUwjz6N7KpHm/LmG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkOlvHFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 344C7C4CEEB;
+	Mon,  2 Jun 2025 14:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875159;
-	bh=4y+f1DWjQzKYPdJGyenWFo50HUNijjrDvl1PvFoWI6Y=;
+	s=korg; t=1748873782;
+	bh=lPhLDvBVdQyQo1v/iQ9R+k9bNBliWCxmH/Z0PAPjIaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QT60LR0H7AdLVX6YoDAx706rD0k1k7BTy3dIOtJME3tswoPA6RVehmOrjDl/UqK+r
-	 Xov5I319HTNF3Lfle5Jk+7dSm4aHjF8pulnq87VwcWxo/35FDBGr6fzlCmrkDjjspm
-	 RHORqgBZHIaUQBvSnPZ5RnaEgWg3Yw0olMA8fPkk=
+	b=IkOlvHFndPnhrb9143FzGjI7bJ2V2sYa0fAE1txQaFdmEmNFama/lkVaKFss9oBj7
+	 vQF/m8TufDTT8aWdSyrDNjc+myTIH7wN/g+eEYGvHur5ZavF59PQ9KziKxX3NJtBGr
+	 +1xNWiOzm05xiOWZ4JXl0SOFmaSa5dNwnAUuPd/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Ryan Matthews <ryanmatthews@fastmail.com>
-Subject: [PATCH 5.10 029/270] PCI: imx6: Skip controller_id generation logic for i.MX7D
-Date: Mon,  2 Jun 2025 15:45:14 +0200
-Message-ID: <20250602134308.391161562@linuxfoundation.org>
+	Chaohai Chen <wdhh66@163.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 251/444] scsi: target: spc: Fix loop traversal in spc_rsoc_get_descr()
+Date: Mon,  2 Jun 2025 15:45:15 +0200
+Message-ID: <20250602134351.112505512@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Chaohai Chen <wdhh66@163.com>
 
-commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 upstream.
+[ Upstream commit 04ad06e41d1c74cc323b20a7bd023c47bd0e0c38 ]
 
-The i.MX7D only has one PCIe controller, so controller_id should always be
-0. The previous code is incorrect although yielding the correct result.
+Stop traversing after finding the appropriate descriptor.
 
-Fix by removing "IMX7D" from the switch case branch.
-
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-[Because this switch case does more than just controller_id
- logic, move the "IMX7D" case label instead of removing it entirely.]
-Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chaohai Chen <wdhh66@163.com>
+Link: https://lore.kernel.org/r/20250124085542.109088-1-wdhh66@163.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/target/target_core_spc.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1092,11 +1092,10 @@ static int imx6_pcie_probe(struct platfo
- 		if (IS_ERR(imx6_pcie->pcie_aux))
- 			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
- 					     "pcie_aux clock source missing or invalid\n");
--		fallthrough;
--	case IMX7D:
- 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
- 			imx6_pcie->controller_id = 1;
--
-+		fallthrough;
-+	case IMX7D:
- 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
- 									    "pciephy");
- 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
+diff --git a/drivers/target/target_core_spc.c b/drivers/target/target_core_spc.c
+index f110f932ba054..675f774be1d30 100644
+--- a/drivers/target/target_core_spc.c
++++ b/drivers/target/target_core_spc.c
+@@ -2151,8 +2151,10 @@ spc_rsoc_get_descr(struct se_cmd *cmd, struct target_opcode_descriptor **opcode)
+ 			if (descr->serv_action_valid)
+ 				return TCM_INVALID_CDB_FIELD;
+ 
+-			if (!descr->enabled || descr->enabled(descr, cmd))
++			if (!descr->enabled || descr->enabled(descr, cmd)) {
+ 				*opcode = descr;
++				return TCM_NO_SENSE;
++			}
+ 			break;
+ 		case 0x2:
+ 			/*
+@@ -2166,8 +2168,10 @@ spc_rsoc_get_descr(struct se_cmd *cmd, struct target_opcode_descriptor **opcode)
+ 			if (descr->serv_action_valid &&
+ 			    descr->service_action == requested_sa) {
+ 				if (!descr->enabled || descr->enabled(descr,
+-								      cmd))
++								      cmd)) {
+ 					*opcode = descr;
++					return TCM_NO_SENSE;
++				}
+ 			} else if (!descr->serv_action_valid)
+ 				return TCM_INVALID_CDB_FIELD;
+ 			break;
+@@ -2180,13 +2184,15 @@ spc_rsoc_get_descr(struct se_cmd *cmd, struct target_opcode_descriptor **opcode)
+ 			 */
+ 			if (descr->service_action == requested_sa)
+ 				if (!descr->enabled || descr->enabled(descr,
+-								      cmd))
++								      cmd)) {
+ 					*opcode = descr;
++					return TCM_NO_SENSE;
++				}
+ 			break;
+ 		}
+ 	}
+ 
+-	return 0;
++	return TCM_NO_SENSE;
+ }
+ 
+ static sense_reason_t
+-- 
+2.39.5
+
 
 
 
