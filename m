@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0573ACB86C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:40:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FB7ACB3F9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11DA91BC64E9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24CAE1941327
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F197223DEF;
-	Mon,  2 Jun 2025 15:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B6222423F;
+	Mon,  2 Jun 2025 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX1vWlQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9+fk6Ka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034AD223DC0;
-	Mon,  2 Jun 2025 15:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7781C5D72;
+	Mon,  2 Jun 2025 14:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877062; cv=none; b=L643++3Y99FwPtkxE4E5LeaLzuz4ZFEYgU4UwHdsFBfbaBORpXKms+M7YV1ULHPCBLoy5O6drpkkRLP/LXg8NGJ7WYuNwYogVXnrgKwFKiUE9dG1FUdK07ddT2Q71W/8f0PPQNjVRdQl48hgw8pH2VrI+7yruM29xfQwHEJJAD8=
+	t=1748874687; cv=none; b=RhJdiEaXJUpzW6G1Z7AhvtiPY4TA3rZoUPXUQHEOoDhvwCh59X3xk3up5bDzgMocUN+B7AV33g7FqfeSYXZG9N/2kzDFg/layiPvN3aG7Dtam8F+nH6SbGww9MZW0OvZ3JuJUStZrnRdzH9QXLC0NnMpTRiwRWMpFrmXdxW6rTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877062; c=relaxed/simple;
-	bh=deeLhae4Vok3Df8La9hyrxvhUaDJump76ZTD/8J1wcU=;
+	s=arc-20240116; t=1748874687; c=relaxed/simple;
+	bh=i7MCvsjisZJXpAesjJhSWyvLCY6nD2FvOd2AGsd0xLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUvx4FB1ntLq14v06RFiGoA6xLoXaxBswcTGrjm6YnSqgvZ+net8x5JWDUzMZVWfm0cXB56vUKJOb/nHlgaeHxF2G/N0lyyHdyRcw8cWcH5kcKGbX7kyHoQUj1T2LvvJ6VxABgzkdtcLIXxkNDUTgWagU1l0gQVRxOhZurw+9Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX1vWlQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D828C4CEF0;
-	Mon,  2 Jun 2025 15:11:00 +0000 (UTC)
+	 MIME-Version; b=AuR/uQftYs8t3LHGhbceFb9vmxVwR7gOuUqikzmP6N+uEuEISXnyLM5W5jKjWThSeIPCpYO6BwbQjG+V1e+lcsppAKNiMDkPH5e0YtHeG42iEjhWrCglkLIPi/xyVDk81Cm++l4I7zi7cnThbhGPCsTkBKzAmkWzCrKVsYJ15GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9+fk6Ka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C818C4CEEE;
+	Mon,  2 Jun 2025 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877061;
-	bh=deeLhae4Vok3Df8La9hyrxvhUaDJump76ZTD/8J1wcU=;
+	s=korg; t=1748874686;
+	bh=i7MCvsjisZJXpAesjJhSWyvLCY6nD2FvOd2AGsd0xLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UX1vWlQRRwTdt9RP9MEKE+QCv1Dm8bUfIOlBEC3HWmKhKPggGL58mgIxBM0uffNeX
-	 92MhYlrppy6oJ0mVw6aZf6OeGOmEwSRbWORN/lBr0gs6ejQCyZuL4kiSbNk+HDQ7bU
-	 5Au+y7qqT5yS5EuYtxGv+Jj7CzHv36jn6pqer/uA=
+	b=K9+fk6KaJMhCKe//wfyDXgSaIe8USr/fGMvV8zmjx+4983f1WglL5avWx+d2bBSb8
+	 LrFEmZvPM1C7ZipSoXolhxiJ4NZ7oYICERDbEAWl/unjLCYYe1wX9INZ4qjCRNPpkG
+	 ktsXMOmdHtWFZC43C674WT4I3y9rKSvIK7pX3twU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/325] can: c_can: Use of_property_present() to test existence of DT property
+Subject: [PATCH 5.4 102/204] btrfs: send: return -ENAMETOOLONG when attempting a path that is too long
 Date: Mon,  2 Jun 2025 15:47:15 +0200
-Message-ID: <20250602134326.267407867@linuxfoundation.org>
+Message-ID: <20250602134259.669998744@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ab1bc2290fd8311d49b87c29f1eb123fcb581bee ]
+[ Upstream commit a77749b3e21813566cea050bbb3414ae74562eba ]
 
-of_property_read_bool() should be used only on boolean properties.
+When attempting to build a too long path we are currently returning
+-ENOMEM, which is very odd and misleading. So update fs_path_ensure_buf()
+to return -ENAMETOOLONG instead. Also, while at it, move the WARN_ON()
+into the if statement's expression, as it makes it clear what is being
+tested and also has the effect of adding 'unlikely' to the statement,
+which allows the compiler to generate better code as this condition is
+never expected to happen.
 
-Cc: Rob Herring <robh@kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250212-syscon-phandle-args-can-v2-3-ac9a1253396b@linaro.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/c_can/c_can_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/send.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/c_can/c_can_platform.c b/drivers/net/can/c_can/c_can_platform.c
-index c5d7093d54133..c29862b3bb1f3 100644
---- a/drivers/net/can/c_can/c_can_platform.c
-+++ b/drivers/net/can/c_can/c_can_platform.c
-@@ -334,7 +334,7 @@ static int c_can_plat_probe(struct platform_device *pdev)
- 		/* Check if we need custom RAMINIT via syscon. Mostly for TI
- 		 * platforms. Only supported with DT boot.
- 		 */
--		if (np && of_property_read_bool(np, "syscon-raminit")) {
-+		if (np && of_property_present(np, "syscon-raminit")) {
- 			u32 id;
- 			struct c_can_raminit *raminit = &priv->raminit_sys;
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index e1063ef3dece5..b0933d9525939 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -397,10 +397,8 @@ static int fs_path_ensure_buf(struct fs_path *p, int len)
+ 	if (p->buf_len >= len)
+ 		return 0;
  
+-	if (len > PATH_MAX) {
+-		WARN_ON(1);
+-		return -ENOMEM;
+-	}
++	if (WARN_ON(len > PATH_MAX))
++		return -ENAMETOOLONG;
+ 
+ 	path_len = p->end - p->start;
+ 	old_buf_len = p->buf_len;
 -- 
 2.39.5
 
