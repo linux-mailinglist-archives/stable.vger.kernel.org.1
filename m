@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1263EACB61D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DDFACB3D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEDF54C3A8D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFC984A2F9D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FF9231A51;
-	Mon,  2 Jun 2025 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B63231A3F;
+	Mon,  2 Jun 2025 14:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOzn+pJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLcCJZaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD94A231854;
-	Mon,  2 Jun 2025 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB99231A32;
+	Mon,  2 Jun 2025 14:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875938; cv=none; b=Zt5HJBx95576djw08JZ6iJ6/iMMColPVV21dyM8Qy3Od1+vRAssTx0jfmxg5MdJlGIQ7DlDFbNsUVaMPfzQB8GJxJTsGwrPSYXbS7ddqTScB3u/PVbjLx1jDirVdYYnprpgMchjkFzJcVayTeAwKOa7NeyIWLsBCjlNSQnZdsFE=
+	t=1748874597; cv=none; b=BXWNBHe9q4mSjVr0aOAU5BLELGwNPc1QBuAa4ds6GTaxNrwYffNZMnnAukdduuAnuXkzdLkc+Lk9CcaL3liXF1bohZnWZEL/EdxuWe7rK7dFY0ug1sQAcYAEtEdsyCMeOQ+T5F74BxKlWp0bK964R2uFgeHq48KB/EQkqnwM30Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875938; c=relaxed/simple;
-	bh=pTovmpH3iGYILiUB5CpRbnX+NUJ3Cjfd42hxBBzWM9Y=;
+	s=arc-20240116; t=1748874597; c=relaxed/simple;
+	bh=VZ8s+AlidHtPTcEwNBls1xQ3VfzAy1GCd4rDgsy+ChI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvTBZwTOb1Sjxu6eV+yFgaOfzs6fHPf8U86iJGHMBWJy/VUftQd9lV03/GcSoRpyDoHbIPjOCx2Awz2nOav3O6dSfRA6CzX8eZDVCuAj/0wiCBXUnpiuo1Dntq4HT+SxiwygsQpORxnapiKiaskCwy0ApDDbukJefeFQB9a3Qas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOzn+pJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF78C4CEEB;
-	Mon,  2 Jun 2025 14:52:17 +0000 (UTC)
+	 MIME-Version; b=q4NgsfWrmUoYoR3wONXfSrRuSMJr31/Iuns4g0dNIyeoF0H1RNdt51g7dWMDDgDYsIZahTGoFlYORHzOFlrekJRzF1pFBSKmcin/m2+FGIRs39R9kWiiHox4BjhQviYEId9XrElU/L0vYrlC/QVPiqhCb6qMV/ChS/MHTOxeesU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLcCJZaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2199C4CEEB;
+	Mon,  2 Jun 2025 14:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875938;
-	bh=pTovmpH3iGYILiUB5CpRbnX+NUJ3Cjfd42hxBBzWM9Y=;
+	s=korg; t=1748874597;
+	bh=VZ8s+AlidHtPTcEwNBls1xQ3VfzAy1GCd4rDgsy+ChI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOzn+pJwBfGrr6Gdr8l++noMgC3cevwyZsLVcskixiNt+k2MlG5IFqTOTGYBzwWGq
-	 mcYNISM/HW5k9GsG1dKJXrq85T0rX5otbVjXb2ZmlezbVgGS7QUQ4gJKoIE+pxBjzw
-	 DtW3wMASIsze2PoxQVqWOcF+SC4vB7JdNsrz7gFo=
+	b=kLcCJZaVX2vCG3MM3WbYpbR9ZhR0gJxJmpeNG2FKsXMWanh4kEk8plnIVgGgzikxT
+	 iRMxScHeS7Ewf9kbiRfOFTUapRhnouAeljv5gphv2GEJAal9hCcnGFSSn72SeToq5o
+	 QUsGtm+UzcX3gEl3i+pmVI+Ncs5Up+9hdckNMyho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brandon Kammerdiener <brandon.kammerdiener@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Hou Tao <houtao1@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/207] bpf: fix possible endless loop in BPF map iteration
+	stable <stable@kernel.org>,
+	Alexey Charkov <alchark@gmail.com>
+Subject: [PATCH 5.4 045/204] usb: uhci-platform: Make the clock really optional
 Date: Mon,  2 Jun 2025 15:46:18 +0200
-Message-ID: <20250602134259.018682196@linuxfoundation.org>
+Message-ID: <20250602134257.449462238@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brandon Kammerdiener <brandon.kammerdiener@intel.com>
+From: Alexey Charkov <alchark@gmail.com>
 
-[ Upstream commit 75673fda0c557ae26078177dd14d4857afbf128d ]
+commit a5c7973539b010874a37a0e846e62ac6f00553ba upstream.
 
-The _safe variant used here gets the next element before running the callback,
-avoiding the endless loop condition.
+Device tree bindings state that the clock is optional for UHCI platform
+controllers, and some existing device trees don't provide those - such
+as those for VIA/WonderMedia devices.
 
-Signed-off-by: Brandon Kammerdiener <brandon.kammerdiener@intel.com>
-Link: https://lore.kernel.org/r/20250424153246.141677-2-brandon.kammerdiener@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The driver however fails to probe now if no clock is provided, because
+devm_clk_get returns an error pointer in such case.
+
+Switch to devm_clk_get_optional instead, so that it could probe again
+on those platforms where no clocks are given.
+
+Cc: stable <stable@kernel.org>
+Fixes: 26c502701c52 ("usb: uhci: Add clk support to uhci-platform")
+Signed-off-by: Alexey Charkov <alchark@gmail.com>
+Link: https://lore.kernel.org/r/20250425-uhci-clock-optional-v1-1-a1d462592f29@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/hashtab.c | 2 +-
+ drivers/usb/host/uhci-platform.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index d08fe64e0e453..24258c54057d4 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -2102,7 +2102,7 @@ static int bpf_for_each_hash_elem(struct bpf_map *map, void *callback_fn,
- 		b = &htab->buckets[i];
- 		rcu_read_lock();
- 		head = &b->head;
--		hlist_nulls_for_each_entry_rcu(elem, n, head, hash_node) {
-+		hlist_nulls_for_each_entry_safe(elem, n, head, hash_node) {
- 			key = elem->key;
- 			if (is_percpu) {
- 				/* current cpu value for percpu map */
--- 
-2.39.5
-
+--- a/drivers/usb/host/uhci-platform.c
++++ b/drivers/usb/host/uhci-platform.c
+@@ -122,7 +122,7 @@ static int uhci_hcd_platform_probe(struc
+ 	}
+ 
+ 	/* Get and enable clock if any specified */
+-	uhci->clk = devm_clk_get(&pdev->dev, NULL);
++	uhci->clk = devm_clk_get_optional(&pdev->dev, NULL);
+ 	if (IS_ERR(uhci->clk)) {
+ 		ret = PTR_ERR(uhci->clk);
+ 		goto err_rmr;
 
 
 
