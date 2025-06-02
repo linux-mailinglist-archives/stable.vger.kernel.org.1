@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708BFACB25A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D50A5ACB799
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0CC3BB6C5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4392A3A24EC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2623225A3E;
-	Mon,  2 Jun 2025 14:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415D42253AE;
+	Mon,  2 Jun 2025 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8Hye/h7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs0NoVGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5B922576E;
-	Mon,  2 Jun 2025 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7AA224B0D;
+	Mon,  2 Jun 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873719; cv=none; b=blVhYIf+v+4LZVpd8qSSCtdCi0xzDCzd6AR6hmCn7mc+escwbD0527CHXy6XgzhTcOzX+7qAhAN3wRIUqY4FGuZYMUeUWuzbGVFspWdbxTfbhHtA1wf6xDvBBQDgTfZY8yajnq/7sLnWj8I1U4iOtzLkZCwaHq2xRZBHM7N9aX0=
+	t=1748876604; cv=none; b=jQXfmcH4kFQcqNcxmjv+fLutKlho3d5lSTQdovcwOKs4cPVBgEw51wBhhFqxv/wVy4B/oslmCaenBQXuwV4nvj75kev3ZwTlMeGPn7ODmjeLSjSt9dJmnrIPgHQ/Eo9LU9+gnJswXF5En/cqCY3twz+hYBlPefG3svxq7A/vPIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873719; c=relaxed/simple;
-	bh=Z7rs6pp/ZII1MGLGmdpgRguPAgFI1OuEJ1K+Opcn84s=;
+	s=arc-20240116; t=1748876604; c=relaxed/simple;
+	bh=xC6FO8ACBQZ+5eYRH1JNRHrIxYHJNw7CkuINHSJqvUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU/YT8072xJT9BQ6Z9+6xQUkIKe5RvGkhwrw3hkAIj6/TCMw2jTBsd43n4HnA8zQ6MKvPUD0FuTTx4OfcaWp6KQi+lSYd/jEwBIA0NkAaHzHF0PrU4KhFQDRX9lyQxUNGiTF0ANIuClJA4oHxjr0UK1kvWFdjoJcGDlinHKcyO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8Hye/h7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F07EC4CEEB;
-	Mon,  2 Jun 2025 14:15:17 +0000 (UTC)
+	 MIME-Version; b=d4Y0M3uICJYWAAnaEyzWa607JMZU/uvup3F4OnpQzoesVCiLD7tAT5MSlMCgvFBUusG36goyfCwFMgip35q2rnMLkKca/gnecSEhCqgWmGYCNkZlQacdSAJxZ4FjiREH2CdaIA6lE5LyznqWJ3jYarny6QZeVlcKZZYxuttZNYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs0NoVGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDE1C4CEEB;
+	Mon,  2 Jun 2025 15:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873718;
-	bh=Z7rs6pp/ZII1MGLGmdpgRguPAgFI1OuEJ1K+Opcn84s=;
+	s=korg; t=1748876603;
+	bh=xC6FO8ACBQZ+5eYRH1JNRHrIxYHJNw7CkuINHSJqvUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8Hye/h7/XNFjKMp2UODdjiD/p03UGqXINFgIWNWODLW0bRAt7WjMpjDOZqH88lpt
-	 SPeJT6lBQTD4aKB66xtlUVxwu2hryUIX6mZbpnGXvvZHY5QeSBSAZKMM5RkJYkr2w2
-	 IQFz+6IZ/Ba6R7SpGGTY+7O0+rtoFRXsLd1HSnaw=
+	b=fs0NoVGdeeFZF6ypCYaXc453xP8TrDUObojls12VLtggQmmtUdVKxdMnaPt3pGQti
+	 aex4jNC0mwvXu71GBrEmseUy9EisqXNE6Ux1MQLV78NS5ZaEGGDPi8j0mK7RRoLsTI
+	 z4JqWv8PEHvIo0qI0v48uQXJEbV6aX0qRl1ZM9I8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/444] ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()
+Subject: [PATCH 6.1 016/325] selftests/bpf: Mitigate sockmap_ktls disconnect_after_delete failure
 Date: Mon,  2 Jun 2025 15:44:52 +0200
-Message-ID: <20250602134350.170106724@linuxfoundation.org>
+Message-ID: <20250602134320.399277303@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
 
-[ Upstream commit 7f1186a8d738661b941b298fd6d1d5725ed71428 ]
+[ Upstream commit f2858f308131a09e33afb766cd70119b5b900569 ]
 
-snd_soc_dai_set_tdm_slot() calls .xlate_tdm_slot_mask() or
-snd_soc_xlate_tdm_slot_mask(), but didn't check its return value.
-Let's check it.
+"sockmap_ktls disconnect_after_delete" test has been failing on BPF CI
+after recent merges from netdev:
+* https://github.com/kernel-patches/bpf/actions/runs/14458537639
+* https://github.com/kernel-patches/bpf/actions/runs/14457178732
 
-This patch might break existing driver. In such case, let's makes
-each func to void instead of int.
+It happens because disconnect has been disabled for TLS [1], and it
+renders the test case invalid.
 
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87o6z7yk61.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Removing all the test code creates a conflict between bpf and
+bpf-next, so for now only remove the offending assert [2].
+
+The test will be removed later on bpf-next.
+
+[1] https://lore.kernel.org/netdev/20250404180334.3224206-1-kuba@kernel.org/
+[2] https://lore.kernel.org/bpf/cfc371285323e1a3f3b006bfcf74e6cf7ad65258@linux.dev/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/bpf/20250416170246.2438524-1-ihor.solodrai@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dai.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index 9a828e55c4f9e..507743c87e402 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -275,10 +275,11 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
+index 2d0796314862a..0a99fd404f6dc 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c
+@@ -68,7 +68,6 @@ static void test_sockmap_ktls_disconnect_after_delete(int family, int map)
+ 		goto close_cli;
  
- 	if (dai->driver->ops &&
- 	    dai->driver->ops->xlate_tdm_slot_mask)
--		dai->driver->ops->xlate_tdm_slot_mask(slots,
--						      &tx_mask, &rx_mask);
-+		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
- 	else
--		snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
-+	if (ret)
-+		goto err;
+ 	err = disconnect(cli);
+-	ASSERT_OK(err, "disconnect");
  
- 	for_each_pcm_streams(stream)
- 		snd_soc_dai_tdm_mask_set(dai, stream, *tdm_mask[stream]);
-@@ -287,6 +288,7 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- 	    dai->driver->ops->set_tdm_slot)
- 		ret = dai->driver->ops->set_tdm_slot(dai, tx_mask, rx_mask,
- 						      slots, slot_width);
-+err:
- 	return soc_dai_ret(dai, ret);
- }
- EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
+ close_cli:
+ 	close(cli);
 -- 
 2.39.5
 
