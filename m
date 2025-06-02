@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F5CACB8A0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:43:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D53ACB067
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37A541C24363
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 973211BA47E1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79724224244;
-	Mon,  2 Jun 2025 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412B5221578;
+	Mon,  2 Jun 2025 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQ8eBi6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCHmI1af"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365D01FF61E;
-	Mon,  2 Jun 2025 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF4E2C327B;
+	Mon,  2 Jun 2025 14:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877077; cv=none; b=R14zVISH+6eiejZp+I5CY6ejTN2dd8GtRk/vpm+h+lzhqawMCr4NExFiR3E0rCbwysYTQQE54aZ2yqTohX8IoWl9Jv9AGyySMM2YCYoTaSi+2E05qFT3dl6fBFMgWb/c9a9jLjFtDaDcJ+b2Aq2ABIndfTg0D8ow/pb0SXzy54Y=
+	t=1748872886; cv=none; b=NNHDdfdfhyU7DSy+Un/+yFDc6DethjSluDPPWYOxKR7NKiKkzQl5LFwSRT//E757ibjmMOz6ZJGta9i/80hzp+kgASLdKSnY+gJPp2ifmJpBbvwKsywvQD9x61cnlLI3SKEPnJ2x/Q5jpgW3loawkVlf4b7WsMxSsoaaN2PdoQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877077; c=relaxed/simple;
-	bh=UP1raTO1TD1rJf9p23VzhMnxzVSDYsbv/AVTd4LPqw0=;
+	s=arc-20240116; t=1748872886; c=relaxed/simple;
+	bh=vY9qoWKbpqhiIZFOBO48+Mu4ej9pbeaRgQeYiZ6vmGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEjPR11HVc77qTJPjHVurrFyfkkphCrq6XPZ9FTpZJDCUQMHpQSKRUc+WCk13ZFm6jdBLL6+a66XtpguQjluPpGrFsBZRwn0zic1dB/xz27JdotzJgUqSnibE1rQyFjj3LUaMR4oDZV6T3V1H9OMfkERRttQfRNfxPO7ASJN8DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQ8eBi6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0979C4CEEB;
-	Mon,  2 Jun 2025 15:11:16 +0000 (UTC)
+	 MIME-Version; b=XJC8cy3dDUVDJHnWM66XzDsPO0rJ0yutg7Hv78t6i43wSa2gdRTzqm3NdUP2bs7gw4gqUOnKovhcosOGREpDqJUbgNVh4Mcfz0OFdzCbLZFrsloHXIobLRZQsvXAVuElV71bSt1aX2QmX4fwKAb3c+IqB7I3dDREDka8nY6n9KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCHmI1af; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D345C4CEEB;
+	Mon,  2 Jun 2025 14:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877077;
-	bh=UP1raTO1TD1rJf9p23VzhMnxzVSDYsbv/AVTd4LPqw0=;
+	s=korg; t=1748872885;
+	bh=vY9qoWKbpqhiIZFOBO48+Mu4ej9pbeaRgQeYiZ6vmGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQ8eBi6+0rhWRSBg9PNx7/B0KovdsUpJ3u+WMrwbWLRoOigmWzQkm9/fjVYK5NaXg
-	 7B9KvAvWCAGWOUv1NqbnAIAdoidwaYVDYaGclKGlJrcGdHPJAiMhnbZlqH3mOeZVwB
-	 lQS434bvw3zbTimleE+4TCqG4+sGk22GvfoRsa+A=
+	b=TCHmI1afxnHbAguQiF+U1KBWrgj6S3F3lLRTn3RBclxyp6LHdCWtXercJh2xE//2A
+	 2ZJOq9YEis94ohF5kuWIQ0BuyBexOYPlnLryW7zsjSHW0XJJds5msol35XUJ3sYcVm
+	 f7kIs0WqQUxzT9rBwq4T5y7Nn+/3ozDaF0ruk+Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	"Artem S. Tashkinov" <aros@gmx.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/325] media: test-drivers: vivid: dont call schedule in loop
-Date: Mon,  2 Jun 2025 15:47:20 +0200
-Message-ID: <20250602134326.461016405@linuxfoundation.org>
+	stable@kernel.org,
+	Karthik Sanagavarapu <quic_kartsana@quicinc.com>,
+	Ling Xu <quic_lxu5@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 04/55] arm64: dts: qcom: sa8775p: Remove cdsp compute-cb@10
+Date: Mon,  2 Jun 2025 15:47:21 +0200
+Message-ID: <20250602134238.442345504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,133 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Karthik Sanagavarapu <quic_kartsana@quicinc.com>
 
-[ Upstream commit e4740118b752005cbed339aec9a1d1c43620e0b9 ]
+commit d180c2bd3b43d55f30c9b99de68bc6bb8420d1c1 upstream.
 
-Artem reported that the CPU load was 100% when capturing from
-vivid at low resolution with ffmpeg.
+Remove the context bank compute-cb@10 because these SMMU ids are S2-only
+which is not used for S1 transaction.
 
-This was caused by:
-
-while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
-       !kthread_should_stop())
-        schedule();
-
-If there are no other processes running that can be scheduled,
-then this is basically a busy-loop.
-
-Change it to wait_event_interruptible_timeout() which doesn't
-have that problem.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reported-by: Artem S. Tashkinov <aros@gmx.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219570
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f7b01bfb4b47 ("arm64: qcom: sa8775p: Add ADSP and CDSP0 fastrpc nodes")
+Cc: stable@kernel.org
+Signed-off-by: Karthik Sanagavarapu <quic_kartsana@quicinc.com>
+Signed-off-by: Ling Xu <quic_lxu5@quicinc.com>
+Link: https://lore.kernel.org/r/4c9de858fda7848b77ea8c528c9b9d53600ad21a.1739260973.git.quic_lxu5@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vivid/vivid-kthread-cap.c  | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-kthread-out.c  | 11 ++++++++---
- .../media/test-drivers/vivid/vivid-kthread-touch.c    | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-sdr-cap.c      | 11 ++++++++---
- 4 files changed, 32 insertions(+), 12 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8775p.dtsi |    8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-index 690daada7db4f..54e6a6772035f 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-@@ -894,9 +894,14 @@ static int vivid_thread_vid_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+--- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
+@@ -4080,14 +4080,6 @@
+ 						dma-coherent;
+ 					};
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-out.c b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-index 0833e021bb11d..8a17a01e6e426 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-@@ -235,9 +235,14 @@ static int vivid_thread_vid_out(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
- 
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Output Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-index fa711ee36a3fb..c862689786b69 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-@@ -135,9 +135,14 @@ static int vivid_thread_touch_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
- 
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Touch Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-index 0ae5628b86c95..abccd1d0109ec 100644
---- a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-@@ -206,9 +206,14 @@ static int vivid_thread_sdr_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
- 
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "SDR Capture Thread End\n");
- 	return 0;
--- 
-2.39.5
-
+-					compute-cb@10 {
+-						compatible = "qcom,fastrpc-compute-cb";
+-						reg = <10>;
+-						iommus = <&apps_smmu 0x214a 0x04a0>,
+-							 <&apps_smmu 0x218a 0x0400>;
+-						dma-coherent;
+-					};
+-
+ 					compute-cb@11 {
+ 						compatible = "qcom,fastrpc-compute-cb";
+ 						reg = <11>;
 
 
 
