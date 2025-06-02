@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2789ACB072
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EF7ACB359
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B257816B743
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADF4D940443
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212FE223339;
-	Mon,  2 Jun 2025 14:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F60621882B;
+	Mon,  2 Jun 2025 14:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLgBKXat"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jab5nOlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0439223327;
-	Mon,  2 Jun 2025 14:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C407221299;
+	Mon,  2 Jun 2025 14:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872912; cv=none; b=ghR4rj2zBz5D0TbkeeLXoL/9dnOHL3ZG11318TJzdRsgSMCZnUNKnVPKRYgxcqkUcgTp3lIuSbybyPJp6L6ADfeg6vyBLOALg1+90zc9CBufhOTNYZEsgb98dfjnehK+Y5Wk3Yj812/QrShk/G4Ac7w8POEElBLWMR93BHiZNkw=
+	t=1748874349; cv=none; b=qu/UxSSmi77psm+IpzJ+49jK68fmhq9LEI/504cx9hRI6/1UWn/GYhNPKL34V1R5lvkpx/hBbjbQfhHsB+asdSphsc9sjQhxpaWyxL30tp23PXRtZBvMumMdWhKxm0Q/+n8H7IwbprQZ8TfgoqH8f+qnpKI8B1mraRM6BF7dKN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872912; c=relaxed/simple;
-	bh=eEeXQ43vtY/W7vvaJHDC/Gx17tltqAQgNxUm/P46lpU=;
+	s=arc-20240116; t=1748874349; c=relaxed/simple;
+	bh=3th5Mz5/vtrDoNIpawjpufSj1GqgJo28nMCaJ4Axo90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k18xS29judbz/IrFZLtoTJqEeSvOcL5AwrrY7u0vj7zTIW5vOF4CN7OPVlMuknpth6QKOl8qCPTC4gq90tYKsik0FkadBuFmPH1iMGEbw5PNiFWAi3snHV/iborDVhAM0ydxk3HN7MyEXSEVI6E1r1K212KjNMT6db15DplOwNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLgBKXat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59000C4CEEB;
-	Mon,  2 Jun 2025 14:01:52 +0000 (UTC)
+	 MIME-Version; b=OGmm8Ny4O559YIpjd81NWPMPx9yCkVPGdeWOiPGWi9EQaSqaHriual84DijFvYlOZYhAf5PG5BhsmVOEeDn7X0Nto61PLKrT1O0C1vI+sQLpU06tdKeSkd9cFMnhAgE4+XR/Kb5sl+JvYKau7JuPKqpDsr5yloBhS5Vi9WzXwBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jab5nOlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1013C4CEEB;
+	Mon,  2 Jun 2025 14:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872912;
-	bh=eEeXQ43vtY/W7vvaJHDC/Gx17tltqAQgNxUm/P46lpU=;
+	s=korg; t=1748874349;
+	bh=3th5Mz5/vtrDoNIpawjpufSj1GqgJo28nMCaJ4Axo90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLgBKXatbxCybUx4UAwTJcMSoWENIcb3aNOXgewXo4JjrhDg2ieU6bzu4a2IzqOXG
-	 7AlReTapRWyjl4RqK5aGDHjiJ2bsZbpZWbPJ/CpgRsyln89WwJsTGLdnhL4xa4FrLv
-	 GEjQGflQqh2RI5no/Y/OkHlX+o7f6dGDoH8jERhE=
+	b=Jab5nOlJiMhALEmP3ECYac3B+BJMJPspsY435dytssMLIP/9Pr6mP7Ch5Mai+aWa1
+	 tv4d0p5BcKR9mkTP+EKbVSzQlI6hNzYOPGX9nGLPwbs4czOzHe+5Ni6M5mL9KJIkGD
+	 +BgDLGLH/i9gVZbn/PAmBzQQNdK8jJSa726cbpns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Milton Barrera <miltonjosue2001@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 36/55] HID: quirks: Add ADATA XPG alpha wireless mouse support
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 409/444] af_unix: Save O(n) setup of Tarjans algo.
 Date: Mon,  2 Jun 2025 15:47:53 +0200
-Message-ID: <20250602134239.704007462@linuxfoundation.org>
+Message-ID: <20250602134357.534250941@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Milton Barrera <miltonjosue2001@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit fa9fdeea1b7d6440c22efa6d59a769eae8bc89f1 ]
+commit ba31b4a4e1018f5844c6eb31734976e2184f2f9a upstream.
 
-This patch adds HID_QUIRK_ALWAYS_POLL for the ADATA XPG wireless gaming mouse (USB ID 125f:7505) and its USB dongle (USB ID 125f:7506). Without this quirk, the device does not generate input events properly.
+Before starting Tarjan's algorithm, we need to mark all vertices
+as unvisited.  We can save this O(n) setup by reserving two special
+indices (0, 1) and using two variables.
 
-Signed-off-by: Milton Barrera <miltonjosue2001@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The first time we link a vertex to unix_unvisited_vertices, we set
+unix_vertex_unvisited_index to index.
+
+During DFS, we can see that the index of unvisited vertices is the
+same as unix_vertex_unvisited_index.
+
+When we finalise SCC later, we set unix_vertex_grouped_index to each
+vertex's index.
+
+Then, we can know (i) that the vertex is on the stack if the index
+of a visited vertex is >= 2 and (ii) that it is not on the stack and
+belongs to a different SCC if the index is unix_vertex_grouped_index.
+
+After the whole algorithm, all indices of vertices are set as
+unix_vertex_grouped_index.
+
+Next time we start DFS, we know that all unvisited vertices have
+unix_vertex_grouped_index, and we can use unix_vertex_unvisited_index
+as the not-on-stack marker.
+
+To use the same variable in __unix_walk_scc(), we can swap
+unix_vertex_(grouped|unvisited)_index at the end of Tarjan's
+algorithm.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-10-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    | 4 ++++
- drivers/hid/hid-quirks.c | 2 ++
- 2 files changed, 6 insertions(+)
+ include/net/af_unix.h |    1 -
+ net/unix/garbage.c    |   26 +++++++++++++++-----------
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 92baa34f42f28..c6424f6259487 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -41,6 +41,10 @@
- #define USB_VENDOR_ID_ACTIONSTAR	0x2101
- #define USB_DEVICE_ID_ACTIONSTAR_1011	0x1011
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -37,7 +37,6 @@ struct unix_vertex {
+ 	unsigned long out_degree;
+ 	unsigned long index;
+ 	unsigned long lowlink;
+-	bool on_stack;
+ };
  
-+#define USB_VENDOR_ID_ADATA_XPG 0x125f
-+#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE 0x7505
-+#define USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE 0x7506
+ struct unix_edge {
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -115,16 +115,20 @@ static struct unix_vertex *unix_edge_suc
+ static LIST_HEAD(unix_unvisited_vertices);
+ 
+ enum unix_vertex_index {
+-	UNIX_VERTEX_INDEX_UNVISITED,
++	UNIX_VERTEX_INDEX_MARK1,
++	UNIX_VERTEX_INDEX_MARK2,
+ 	UNIX_VERTEX_INDEX_START,
+ };
+ 
++static unsigned long unix_vertex_unvisited_index = UNIX_VERTEX_INDEX_MARK1;
 +
- #define USB_VENDOR_ID_ADS_TECH		0x06e1
- #define USB_DEVICE_ID_ADS_TECH_RADIO_SI470X	0xa155
+ static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+ {
+ 	struct unix_vertex *vertex = edge->predecessor->vertex;
  
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 5d7a418ccdbec..73979643315bf 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -27,6 +27,8 @@
- static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE_DONGLE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AFATECH, USB_DEVICE_ID_AFATECH_AF9016), HID_QUIRK_FULLSPEED_INTERVAL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AIREN, USB_DEVICE_ID_AIREN_SLIMPLUS), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI_09E8, USB_DEVICE_ID_AKAI_09E8_MIDIMIX), HID_QUIRK_NO_INIT_REPORTS },
--- 
-2.39.5
-
+ 	if (!vertex) {
+ 		vertex = list_first_entry(&fpl->vertices, typeof(*vertex), entry);
++		vertex->index = unix_vertex_unvisited_index;
+ 		vertex->out_degree = 0;
+ 		INIT_LIST_HEAD(&vertex->edges);
+ 
+@@ -265,6 +269,7 @@ void unix_destroy_fpl(struct scm_fp_list
+ }
+ 
+ static LIST_HEAD(unix_visited_vertices);
++static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
+ 
+ static void __unix_walk_scc(struct unix_vertex *vertex)
+ {
+@@ -274,10 +279,10 @@ static void __unix_walk_scc(struct unix_
+ 	LIST_HEAD(edge_stack);
+ 
+ next_vertex:
+-	/* Push vertex to vertex_stack.
++	/* Push vertex to vertex_stack and mark it as on-stack
++	 * (index >= UNIX_VERTEX_INDEX_START).
+ 	 * The vertex will be popped when finalising SCC later.
+ 	 */
+-	vertex->on_stack = true;
+ 	list_add(&vertex->scc_entry, &vertex_stack);
+ 
+ 	vertex->index = index;
+@@ -291,7 +296,7 @@ next_vertex:
+ 		if (!next_vertex)
+ 			continue;
+ 
+-		if (next_vertex->index == UNIX_VERTEX_INDEX_UNVISITED) {
++		if (next_vertex->index == unix_vertex_unvisited_index) {
+ 			/* Iterative deepening depth first search
+ 			 *
+ 			 *   1. Push a forward edge to edge_stack and set
+@@ -317,7 +322,7 @@ prev_vertex:
+ 			 * to skip SCC finalisation.
+ 			 */
+ 			vertex->lowlink = min(vertex->lowlink, next_vertex->lowlink);
+-		} else if (next_vertex->on_stack) {
++		} else if (next_vertex->index != unix_vertex_grouped_index) {
+ 			/* Loop detected by a back/cross edge.
+ 			 *
+ 			 * The successor is on vertex_stack, so two vertices are
+@@ -344,7 +349,8 @@ prev_vertex:
+ 			/* Don't restart DFS from this vertex in unix_walk_scc(). */
+ 			list_move_tail(&vertex->entry, &unix_visited_vertices);
+ 
+-			vertex->on_stack = false;
++			/* Mark vertex as off-stack. */
++			vertex->index = unix_vertex_grouped_index;
+ 		}
+ 
+ 		list_del(&scc);
+@@ -357,20 +363,18 @@ prev_vertex:
+ 
+ static void unix_walk_scc(void)
+ {
+-	struct unix_vertex *vertex;
+-
+-	list_for_each_entry(vertex, &unix_unvisited_vertices, entry)
+-		vertex->index = UNIX_VERTEX_INDEX_UNVISITED;
+-
+ 	/* Visit every vertex exactly once.
+ 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
+ 	 */
+ 	while (!list_empty(&unix_unvisited_vertices)) {
++		struct unix_vertex *vertex;
++
+ 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
+ 		__unix_walk_scc(vertex);
+ 	}
+ 
+ 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
++	swap(unix_vertex_unvisited_index, unix_vertex_grouped_index);
+ }
+ 
+ static LIST_HEAD(gc_candidates);
 
 
 
