@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DE8ACB8CF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE9BACB765
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0B9946DC5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4282B1C21BFF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B401B81DC;
-	Mon,  2 Jun 2025 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3031FC0EF;
+	Mon,  2 Jun 2025 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URPQG00Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiOtvGAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D0D2C327E;
-	Mon,  2 Jun 2025 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55022ACF3;
+	Mon,  2 Jun 2025 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877346; cv=none; b=EW0YC/4o8e8+ETcQr3dcFWAUBjdrdyGSM/zjOpUYYtv9LhtjJwpyAHrGdYMv6hFq4X3p6mpEnidy43vtQEpfH47xZmrPARv+T8FHXPbn+UBYqJwG1xJ4ow+yLGJjTbHoLmUP/IBn/pxwleV47EEOO6I2CUfToj+vMDTrtmtVCgA=
+	t=1748876470; cv=none; b=gthEtQOxGy4gA0MABDQ+VT/HgDK0q2IIkRSc/IrjVNWcTJqs0zAWEuyQIM7iSZdl9m1mq0X9XOS/OQpbd4HNw6aioxyKslhycsGNHCDVDxHjIfqLbvuZms//Ek4GWcTS0aEpoqA8mZjX0QxDQHh4mXXJ2drzinxYKPWrHY90Qn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877346; c=relaxed/simple;
-	bh=iEbmj25+kpXVAnbxz3kPc99x7Q0pnBQqgoRNwTUwi1k=;
+	s=arc-20240116; t=1748876470; c=relaxed/simple;
+	bh=2/goVAt4FXQjzV0AV1o/nA/kUZR9SsK3/ys/StrqSO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P31cnnvFG8cqims3qpiAeICd8FEb/+alqvLBtMDMY4R8c90HmohIebjeArh+0nKGJTr5MXxmTMBzTs3yxJafRrJbRybUJ8i8iICfxkj/A2cxh8AnSwYOZz+Qp67rY8dgfErINGkJhFLe2JELXN/c6rZugHvsgpxd7IkC4nrDzL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URPQG00Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3938C4CEEB;
-	Mon,  2 Jun 2025 15:15:45 +0000 (UTC)
+	 MIME-Version; b=i8VhzXAVQfGilOZlIWfQ6i3U07hYMWUNHaCO9lzjpam7gGJllw/2gxsY+JHvSLApiXmL/5eCgUPrKa84mwz5gX2fqR8fLC1rTJ8g42jePR/mUW7AJOkixKBHCSAOQlIdsiKNwdF/NHVtuGi/OaIT4YIusVrm7OjOSt6Wz0xPXr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiOtvGAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7604CC4CEEB;
+	Mon,  2 Jun 2025 15:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877346;
-	bh=iEbmj25+kpXVAnbxz3kPc99x7Q0pnBQqgoRNwTUwi1k=;
+	s=korg; t=1748876470;
+	bh=2/goVAt4FXQjzV0AV1o/nA/kUZR9SsK3/ys/StrqSO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URPQG00ZoM/GKhL3RDGB983QtqT0UgId/X+WTahJI3spMXG7CClFSxegZhdkJOmKj
-	 Ad8AOXASGRXhBjd/5JQs6fL2COYo6bP2DL7dpR2W+LtvX34Wkkn+Ir+KXUvlGzRiWd
-	 EYc9YNx91VyRhxi6kT8X9R97kRDhpz6JKCejETFc=
+	b=PiOtvGAsxd9/LW9tuxBK/evspqJyalQTAsLQ9I0w5E/uMR2htigQoLuMhyFseU/AH
+	 aMNqS52lk5xsdzQYbexVNa86fmZ7Sw2LaUyu5kPVHfIizQEqlGmsjhiS/xUA6Q6GxY
+	 aGkSYcDDwxLD9/U3socVh4idLuSFyTXvObG5ggjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 249/325] octeontx2-af: Fix APR entry mapping based on APR_LMT_CFG
-Date: Mon,  2 Jun 2025 15:48:45 +0200
-Message-ID: <20250602134329.899604702@linuxfoundation.org>
+Subject: [PATCH 5.15 154/207] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+Date: Mon,  2 Jun 2025 15:48:46 +0200
+Message-ID: <20250602134304.755377642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit a6ae7129819ad20788e610261246e71736543b8b ]
+[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
 
-The current implementation maps the APR table using a fixed size,
-which can lead to incorrect mapping when the number of PFs and VFs
-varies.
-This patch corrects the mapping by calculating the APR table
-size dynamically based on the values configured in the
-APR_LMT_CFG register, ensuring accurate representation
-of APR entries in debugfs.
+Incorrect types are used as sizeof() arguments in devm_kcalloc().
+It should be sizeof(dai_link_data) for link_data instead of
+sizeof(snd_soc_dai_link).
 
-Fixes: 0daa55d033b0 ("octeontx2-af: cn10k: debugfs for dumping LMTST map table").
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Link: https://patch.msgid.link/20250521060834.19780-3-gakula@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This is found by our static analysis tool.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c |  9 ++++++---
- .../net/ethernet/marvell/octeontx2/af/rvu_debugfs.c   | 11 ++++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ sound/soc/fsl/imx-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-index 6ec0609074dca..5cd45846237e2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
-@@ -13,7 +13,6 @@
- /* RVU LMTST */
- #define LMT_TBL_OP_READ		0
- #define LMT_TBL_OP_WRITE	1
--#define LMT_MAP_TABLE_SIZE	(128 * 1024)
- #define LMT_MAPTBL_ENTRY_SIZE	16
- #define LMT_MAX_VFS		256
- 
-@@ -26,10 +25,14 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
- {
- 	void __iomem *lmt_map_base;
- 	u64 tbl_base, cfg;
-+	int pfs, vfs;
- 
- 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
-+	cfg  = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_CFG);
-+	vfs = 1 << (cfg & 0xF);
-+	pfs = 1 << ((cfg >> 4) & 0x7);
- 
--	lmt_map_base = ioremap_wc(tbl_base, LMT_MAP_TABLE_SIZE);
-+	lmt_map_base = ioremap_wc(tbl_base, pfs * vfs * LMT_MAPTBL_ENTRY_SIZE);
- 	if (!lmt_map_base) {
- 		dev_err(rvu->dev, "Failed to setup lmt map table mapping!!\n");
- 		return -ENOMEM;
-@@ -80,7 +83,7 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
- 
- 	mutex_lock(&rvu->rsrc_lock);
- 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_REQ, iova);
--	pf = rvu_get_pf(pcifunc) & 0x1F;
-+	pf = rvu_get_pf(pcifunc) & RVU_PFVF_PF_MASK;
- 	val = BIT_ULL(63) | BIT_ULL(14) | BIT_ULL(13) | pf << 8 |
- 	      ((pcifunc & RVU_PFVF_FUNC_MASK) & 0xFF);
- 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_TXN_REQ, val);
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index a3c1d82032f55..aa2ab987eb752 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -580,6 +580,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 	u64 lmt_addr, val, tbl_base;
- 	int pf, vf, num_vfs, hw_vfs;
- 	void __iomem *lmt_map_base;
-+	int apr_pfs, apr_vfs;
- 	int buf_size = 10240;
- 	size_t off = 0;
- 	int index = 0;
-@@ -595,8 +596,12 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 2b64c0384b6bb..9b14cda56b068 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -517,7 +517,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	if (!card->dai_link)
  		return -ENOMEM;
  
- 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
-+	val  = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_CFG);
-+	apr_vfs = 1 << (val & 0xF);
-+	apr_pfs = 1 << ((val >> 4) & 0x7);
+-	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
++	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
+ 	if (!data->link_data)
+ 		return -ENOMEM;
  
--	lmt_map_base = ioremap_wc(tbl_base, 128 * 1024);
-+	lmt_map_base = ioremap_wc(tbl_base, apr_pfs * apr_vfs *
-+				  LMT_MAPTBL_ENTRY_SIZE);
- 	if (!lmt_map_base) {
- 		dev_err(rvu->dev, "Failed to setup lmt map table mapping!!\n");
- 		kfree(buf);
-@@ -618,7 +623,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 		off += scnprintf(&buf[off], buf_size - 1 - off, "PF%d  \t\t\t",
- 				    pf);
- 
--		index = pf * rvu->hw->total_vfs * LMT_MAPTBL_ENTRY_SIZE;
-+		index = pf * apr_vfs * LMT_MAPTBL_ENTRY_SIZE;
- 		off += scnprintf(&buf[off], buf_size - 1 - off, " 0x%llx\t\t",
- 				 (tbl_base + index));
- 		lmt_addr = readq(lmt_map_base + index);
-@@ -631,7 +636,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
- 		/* Reading num of VFs per PF */
- 		rvu_get_pf_numvfs(rvu, pf, &num_vfs, &hw_vfs);
- 		for (vf = 0; vf < num_vfs; vf++) {
--			index = (pf * rvu->hw->total_vfs * 16) +
-+			index = (pf * apr_vfs * LMT_MAPTBL_ENTRY_SIZE) +
- 				((vf + 1)  * LMT_MAPTBL_ENTRY_SIZE);
- 			off += scnprintf(&buf[off], buf_size - 1 - off,
- 					    "PF%d:VF%d  \t\t", pf, vf);
 -- 
 2.39.5
 
