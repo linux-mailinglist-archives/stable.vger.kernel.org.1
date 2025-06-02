@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-149786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474E3ACB4B3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A37FACB66C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73ED19E5070
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580111BC19F0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4854D221FBB;
-	Mon,  2 Jun 2025 14:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFA922AE7A;
+	Mon,  2 Jun 2025 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htcRmf01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bt919peU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044EB2C327E;
-	Mon,  2 Jun 2025 14:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5EE22A807;
+	Mon,  2 Jun 2025 14:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875035; cv=none; b=G9hbH4OTY6apzkaZV6MPkHyRxtpF3+tDToVAyKFSf4EcKhUTyjemtRGe0Jf2MaTWtCXBFlcKYYo++XRYdF+5BO09cAL17sXj0+pBwj6hSAFsxKYxJA9opUvtMueRq1NoLoYUG70xHQIm9YvYLZllTMA436F6pXCWZRNNrgaLr6g=
+	t=1748876395; cv=none; b=T/sZDDJwLiyZ6YF8G0xHN5jqnzuGworN2MYFZ3wUhnjKrNz9Q8lvRo+EZrhRbT91a2ZObJBgWoohrGi8gs1XNFMs6LBCuIGRPN+nJ1vC12zZwHyEA8dlfkxmTDN5xti5AxGLdIApwFy24yUH5t2wFSkYszjX/Uejf+OdSOLm5aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875035; c=relaxed/simple;
-	bh=HegTlO36RaKslskhO6uVBGA0cuAN54bvk59PsOE7+SQ=;
+	s=arc-20240116; t=1748876395; c=relaxed/simple;
+	bh=Zt4hum/i1e+Bjx5cvSQN4z/l88w7usSO6JBeENZfT88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tYghGYFvV/YU2+r52zuWX6rl3WUPYuemY2JHGJ025EYsvsWAs43RlGeGxPPpZVseK3tlMNQxNXC7p/0QudW73qocV1MfNjP2BY8JDl7Otcvu3MAgR8JCvoT65+xNdQlcotg9RAyNByal0EO7i2nyDVn5Hgo/X3HBCe/cSORgnhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htcRmf01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695CAC4CEEB;
-	Mon,  2 Jun 2025 14:37:14 +0000 (UTC)
+	 MIME-Version; b=tlVYZ62bs6X1vW893eMn6Lhsieteb2Euz+rEFMPF30jG3tGi+9M5fMoTme8hHnSf4sXPm9trxYYIpO48oHsY/CW1O9w+oTlL2dLy8GoFzTQYsz3iC6b+xfYYRghiZ6osZRLpK+gAqfXz0O2pybcjnQyXbz6Z02zi0CqMdCLJVdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bt919peU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA3C4CEEE;
+	Mon,  2 Jun 2025 14:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875034;
-	bh=HegTlO36RaKslskhO6uVBGA0cuAN54bvk59PsOE7+SQ=;
+	s=korg; t=1748876394;
+	bh=Zt4hum/i1e+Bjx5cvSQN4z/l88w7usSO6JBeENZfT88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htcRmf0123rs43Xf/m3wuFV4zZi/PKBCMrsJcIBDTSEokRk0FHWzGU+1fHYPhINxM
-	 8E69YeEj/unsouR73ZLfrbq9uko1VE31+h9aG6eQTvDax4sqxW/RVlbISpImloh4Ly
-	 inifv7pOuPk6sI9ksoG/M6r9CLhn5lVM3dn/GpCc=
+	b=Bt919peUsiitzmWfn9pPE5+i6GHOhFFDImXSQeqSTJmmRR14hy/GRtpSVlxnVyuXa
+	 S3T34cVDZRQbDIaH9eZPBbq4Eorba5wR/SV8YIWeJi8hhBWdnmy34+KB6H2MV+orVz
+	 /YpktMXCM+q9CtBwR++DE79OMuEg33FJAijkq8FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Barbosa <debarbos@redhat.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 203/204] platform/x86: thinkpad_acpi: Ignore battery threshold change event notification
+Subject: [PATCH 5.15 164/207] Bluetooth: L2CAP: Fix not checking l2cap_chan security level
 Date: Mon,  2 Jun 2025 15:48:56 +0200
-Message-ID: <20250602134303.648394259@linuxfoundation.org>
+Message-ID: <20250602134305.161396516@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +59,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 29e4e6b4235fefa5930affb531fe449cac330a72 ]
+[ Upstream commit 7af8479d9eb4319b4ba7b47a8c4d2c55af1c31e1 ]
 
-If user modifies the battery charge threshold an ACPI event is generated.
-Confirmed with Lenovo FW team this is only generated on user event. As no
-action is needed, ignore the event and prevent spurious kernel logs.
+l2cap_check_enc_key_size shall check the security level of the
+l2cap_chan rather than the hci_conn since for incoming connection
+request that may be different as hci_conn may already been
+encrypted using a different security level.
 
-Reported-by: Derek Barbosa <debarbos@redhat.com>
-Closes: https://lore.kernel.org/platform-driver-x86/7e9a1c47-5d9c-4978-af20-3949d53fb5dc@app.fastmail.com/T/#m5f5b9ae31d3fbf30d7d9a9d76c15fb3502dfd903
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250517023348.2962591-1-mpearson-lenovo@squebb.ca
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 522e9ed157e3 ("Bluetooth: l2cap: Check encryption key size on incoming connection")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/l2cap_core.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 441b7fb6b37af..9eb74d9e1519c 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -195,6 +195,7 @@ enum tpacpi_hkey_event_t {
- 	/* Thermal events */
- 	TP_HKEY_EV_ALARM_BAT_HOT	= 0x6011, /* battery too hot */
- 	TP_HKEY_EV_ALARM_BAT_XHOT	= 0x6012, /* battery critically hot */
-+	TP_HKEY_EV_ALARM_BAT_LIM_CHANGE	= 0x6013, /* battery charge limit changed*/
- 	TP_HKEY_EV_ALARM_SENSOR_HOT	= 0x6021, /* sensor too hot */
- 	TP_HKEY_EV_ALARM_SENSOR_XHOT	= 0x6022, /* sensor critically hot */
- 	TP_HKEY_EV_THM_TABLE_CHANGED	= 0x6030, /* windows; thermal table changed */
-@@ -4059,6 +4060,10 @@ static bool hotkey_notify_6xxx(const u32 hkey,
- 		pr_alert("THERMAL EMERGENCY: battery is extremely hot!\n");
- 		/* recommended action: immediate sleep/hibernate */
- 		break;
-+	case TP_HKEY_EV_ALARM_BAT_LIM_CHANGE:
-+		pr_debug("Battery Info: battery charge threshold changed\n");
-+		/* User changed charging threshold. No action needed */
-+		return true;
- 	case TP_HKEY_EV_ALARM_SENSOR_HOT:
- 		pr_crit("THERMAL ALARM: a sensor reports something is too hot!\n");
- 		/* recommended action: warn user through gui, that */
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index d34e161a30b37..872a0249f53c8 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -1537,7 +1537,8 @@ static void l2cap_request_info(struct l2cap_conn *conn)
+ 		       sizeof(req), &req);
+ }
+ 
+-static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
++static bool l2cap_check_enc_key_size(struct hci_conn *hcon,
++				     struct l2cap_chan *chan)
+ {
+ 	/* The minimum encryption key size needs to be enforced by the
+ 	 * host stack before establishing any L2CAP connections. The
+@@ -1551,7 +1552,7 @@ static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
+ 	int min_key_size = hcon->hdev->min_enc_key_size;
+ 
+ 	/* On FIPS security level, key size must be 16 bytes */
+-	if (hcon->sec_level == BT_SECURITY_FIPS)
++	if (chan->sec_level == BT_SECURITY_FIPS)
+ 		min_key_size = 16;
+ 
+ 	return (!test_bit(HCI_CONN_ENCRYPT, &hcon->flags) ||
+@@ -1579,7 +1580,7 @@ static void l2cap_do_start(struct l2cap_chan *chan)
+ 	    !__l2cap_no_conn_pending(chan))
+ 		return;
+ 
+-	if (l2cap_check_enc_key_size(conn->hcon))
++	if (l2cap_check_enc_key_size(conn->hcon, chan))
+ 		l2cap_start_connection(chan);
+ 	else
+ 		__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
+@@ -1661,7 +1662,7 @@ static void l2cap_conn_start(struct l2cap_conn *conn)
+ 				continue;
+ 			}
+ 
+-			if (l2cap_check_enc_key_size(conn->hcon))
++			if (l2cap_check_enc_key_size(conn->hcon, chan))
+ 				l2cap_start_connection(chan);
+ 			else
+ 				l2cap_chan_close(chan, ECONNREFUSED);
+@@ -4163,7 +4164,7 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+ 	/* Check if the ACL is secure enough (if not SDP) */
+ 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
+ 	    (!hci_conn_check_link_mode(conn->hcon) ||
+-	    !l2cap_check_enc_key_size(conn->hcon))) {
++	    !l2cap_check_enc_key_size(conn->hcon, pchan))) {
+ 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
+ 		result = L2CAP_CR_SEC_BLOCK;
+ 		goto response;
+@@ -8373,7 +8374,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
+ 		}
+ 
+ 		if (chan->state == BT_CONNECT) {
+-			if (!status && l2cap_check_enc_key_size(hcon))
++			if (!status && l2cap_check_enc_key_size(hcon, chan))
+ 				l2cap_start_connection(chan);
+ 			else
+ 				__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
+@@ -8383,7 +8384,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
+ 			struct l2cap_conn_rsp rsp;
+ 			__u16 res, stat;
+ 
+-			if (!status && l2cap_check_enc_key_size(hcon)) {
++			if (!status && l2cap_check_enc_key_size(hcon, chan)) {
+ 				if (test_bit(FLAG_DEFER_SETUP, &chan->flags)) {
+ 					res = L2CAP_CR_PEND;
+ 					stat = L2CAP_CS_AUTHOR_PEND;
 -- 
 2.39.5
 
