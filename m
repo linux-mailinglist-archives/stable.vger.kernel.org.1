@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC75FACB795
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B72ACB410
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F317944C17
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5E164A012B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4BB227E8E;
-	Mon,  2 Jun 2025 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369AA226D1D;
+	Mon,  2 Jun 2025 14:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmwMtcTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMo5IoyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547CF1C84DC;
-	Mon,  2 Jun 2025 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66571EA65;
+	Mon,  2 Jun 2025 14:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877143; cv=none; b=IsKGCK7qeOpTaS8tkTUl+BySOZiaZ+bMYZxzHjIZZ6JXR+kdJPkvZCc1vBlninOfNozNGv0fUsCOz4AqHeSstS1W+4k5Jk65vm8odl9w1Jlaa6Wd2Ud+U4B3KQjc9SKXhXyr82+DpjKEYwft54/uezNHHlWWizN3OKckUQP6kK4=
+	t=1748874767; cv=none; b=svCihksyWXcyYBZKx2UBzODulguV9hnOdjGVWhjpqNk8m/+/C2sG+ZqV/i7cLwDjlqbEaMd4dOfxmLJyZvVubJceO89VFJMn3nxvN1NnBh/+GZZ6v10j0RsoZL6kxIoHPsMTR5GYHfXi3zzgqLvzYnLV3CnZeHdJJHmtZDlUzCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877143; c=relaxed/simple;
-	bh=8hdhj9sOibrqLjRmG2S/wNVbk3hm4ZKJeDhwRqZMY6U=;
+	s=arc-20240116; t=1748874767; c=relaxed/simple;
+	bh=EU6Yj+QvGnd7t6yj4chXgb665ZAIOGl7IIRfwvY/2Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoipIRl7bqtcWKVcD8ujeK7e8oy+RvXm40JwXOZDAiPbT6StFumjQmr18VCu5hkxtiR2Eeec43UuQlfJJ/RTGiUpxv7sHB6LtbBKIO52X9gcJXxs5bQP02CMsf77JvpLlNb8b7bOkx3/bPENo+AdJLViYK8ijqZj1ztGBoSUdUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmwMtcTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88694C4CEEE;
-	Mon,  2 Jun 2025 15:12:22 +0000 (UTC)
+	 MIME-Version; b=qH/H/R5GoqRcX36rBVYVIzSld/IvnQV1N2lXL28Tcyt+Z8XIdZQA5i69baVhuWKZIhOylKZubWgIXKz+oFyQiGyEvCuLjf/GB/LlbzD0vZ6a2PZSMWi0wTgyaCIWAzh2CLZPedIrVJi1bMjZ6zkdh6RBOAMjAZtSHx4NEkNLsxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMo5IoyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543A1C4CEEB;
+	Mon,  2 Jun 2025 14:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877143;
-	bh=8hdhj9sOibrqLjRmG2S/wNVbk3hm4ZKJeDhwRqZMY6U=;
+	s=korg; t=1748874766;
+	bh=EU6Yj+QvGnd7t6yj4chXgb665ZAIOGl7IIRfwvY/2Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PmwMtcTbVqfwSHfAIbY36PUi0IUVcX8flrEunYciRV5nWMRZb59HOjlgC2pk43giA
-	 5kfIB5r/N/qfl8P7rmd8E/cd/1JZUyjGQFPtF9TST/+fJ8pZsgVwaduc49ZgSGJ+d2
-	 1u8LBpV2A7/6Tcq17fJmUL0BbkvBLXsD2Sxnfi+A=
+	b=EMo5IoyRaqaOO8AeZZkyQ1CjSksBM7wdxTWxtZQWY4G4urtwovZVD4T6rjxMnq8ok
+	 7y+xzF/K20xP28sVlUBgQVBz9E/Upy/T9L2Vwl0pzFkneaT4cVBAhkrI3MkhsRLhCw
+	 19blRv0tqXq9S+ky7eqC4iOWbUHQPIpmJPQUgLic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/325] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
+Subject: [PATCH 5.4 129/204] drm/amdkfd: KFD release_work possible circular locking
 Date: Mon,  2 Jun 2025 15:47:42 +0200
-Message-ID: <20250602134327.365177546@linuxfoundation.org>
+Message-ID: <20250602134300.714892944@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
+[ Upstream commit 1b9366c601039d60546794c63fbb83ce8e53b978 ]
 
-We might not have called drv_mgd_prepare_tx(), so only call
-drv_mgd_complete_tx() under the same conditions.
+If waiting for gpu reset done in KFD release_work, thers is WARNING:
+possible circular locking dependency detected
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  #2  kfd_create_process
+        kfd_process_mutex
+          flush kfd release work
+
+  #1  kfd release work
+        wait for amdgpu reset work
+
+  #0  amdgpu_device_gpu_reset
+        kgd2kfd_pre_reset
+          kfd_process_mutex
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock((work_completion)(&p->release_work));
+                  lock((wq_completion)kfd_process_wq);
+                  lock((work_completion)(&p->release_work));
+   lock((wq_completion)amdgpu-reset-dev);
+
+To fix this, KFD create process move flush release work outside
+kfd_process_mutex.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 9a5530ca2f6b2..8f0e6d7fe7167 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -2896,7 +2896,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 	if (tx)
- 		ieee80211_flush_queues(local, sdata, false);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 662e4d973f13a..b07deeb987475 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -277,6 +277,14 @@ struct kfd_process *kfd_create_process(struct file *filep)
+ 	if (thread->group_leader->mm != thread->mm)
+ 		return ERR_PTR(-EINVAL);
  
--	drv_mgd_complete_tx(sdata->local, sdata, &info);
-+	if (tx || frame_buf)
-+		drv_mgd_complete_tx(sdata->local, sdata, &info);
- 
- 	/* clear AP addr only after building the needed mgmt frames */
- 	eth_zero_addr(sdata->deflink.u.mgd.bssid);
++	/* If the process just called exec(3), it is possible that the
++	 * cleanup of the kfd_process (following the release of the mm
++	 * of the old process image) is still in the cleanup work queue.
++	 * Make sure to drain any job before trying to recreate any
++	 * resource for this process.
++	 */
++	flush_workqueue(kfd_process_wq);
++
+ 	/*
+ 	 * take kfd processes mutex before starting of process creation
+ 	 * so there won't be a case where two threads of the same process
+@@ -289,14 +297,6 @@ struct kfd_process *kfd_create_process(struct file *filep)
+ 	if (process) {
+ 		pr_debug("Process already found\n");
+ 	} else {
+-		/* If the process just called exec(3), it is possible that the
+-		 * cleanup of the kfd_process (following the release of the mm
+-		 * of the old process image) is still in the cleanup work queue.
+-		 * Make sure to drain any job before trying to recreate any
+-		 * resource for this process.
+-		 */
+-		flush_workqueue(kfd_process_wq);
+-
+ 		process = create_process(thread);
+ 		if (IS_ERR(process))
+ 			goto out;
 -- 
 2.39.5
 
