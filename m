@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-150099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077A8ACB5C1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93C8ACB434
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AFDD4A3042
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ACDE1946A52
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACA0221FCC;
-	Mon,  2 Jun 2025 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38125223DD0;
+	Mon,  2 Jun 2025 14:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xq5G/Z2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUswH/51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1686017BBF;
-	Mon,  2 Jun 2025 14:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE2221FB8;
+	Mon,  2 Jun 2025 14:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876031; cv=none; b=KvnFmKc/Drd7UHtWIyRWXmoI9vD2HAfTMyTCukyxyxiR0lyF2LzwI/duEyJwPfqUQJKJPn5VABf6Z7D1DvUosIYF8SihhWahF+TJhi5/ye57POtuGKtaBXnVl3IY57JMKVdrfPx5YcOpYATCG13lt1EaoNAUMYa4OMA9Imj66fo=
+	t=1748874638; cv=none; b=gC8+aYiOgZwxmQwXQoVqr1gsIf0R3BmIuy75o0M9JpWrPi3YhLs+w4KSLCfN6r7q/dxea1lAG0PbiFhO1aTzM2SbGfCMxJxbsEUFgFZyNdFyoNpOl4bABRSiICgUyo7iGAvmWUlXS2lVgrwmK9AyU2QD8AIjUpOIoTsK+unxALk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876031; c=relaxed/simple;
-	bh=MyBp7SKpZATsDMb7wD4zHHSdaGIqlmZBwHQBZr/thR8=;
+	s=arc-20240116; t=1748874638; c=relaxed/simple;
+	bh=4L7bdygLLnDB3NEP8fXbTbXEguhqj1gXJ8VLIc2WqNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZS9QgEj2n0ym2llPtD537+YfiAfNzuCMt9th1ITSNUVNWK/C7LoJh25ceQOXXh/SeQEQtWqSrcHFNvdtkDWiTys5UGdGAr0SeD8CrejY8QWaFf/8lryDYmvic7dwN3N8k9DEZ1XZpbCAc+BDTVmkgH45gnZ2sXrl80JCtX8A3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xq5G/Z2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771A0C4CEEB;
-	Mon,  2 Jun 2025 14:53:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SxBdYwwaIDqf2OXK1YTVBNeo95+28W/W5CthxAexfyNNr2zaLGamSGZPdAzmW7sx+Su7R2Zbwybu/xP3OTy8nLQ8t77v6zUUAakZMikhXW4xem/cQvnVmF/c95x4SIZ2SQVg1v7eaTDrUcXlOwt7NJqsjIfJ5c+HMbSJ0EpiSvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUswH/51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAEEC4CEEB;
+	Mon,  2 Jun 2025 14:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876031;
-	bh=MyBp7SKpZATsDMb7wD4zHHSdaGIqlmZBwHQBZr/thR8=;
+	s=korg; t=1748874637;
+	bh=4L7bdygLLnDB3NEP8fXbTbXEguhqj1gXJ8VLIc2WqNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xq5G/Z2etMYPrrtm+iOyRoUeBYlIy/jRBbjocfP/FF97vpJId52KZbfLJxYhbSBoN
-	 +ObNx1asRH1AE25BT9BE2LZdj8V/nvihbx9yu19+SGo+laYJ7jc56Jkuxw7Z3xP83x
-	 qonqAM0TFcZ5BW78l+3eyGwbjVFWb1OepRhtrxwA=
+	b=dUswH/51Hrlq/0Q54uzEL759fPKJsZYAPv2/b68A3pBFcJu4E1EoFkxuKwcBveapY
+	 aod5oIz5jlgvpEPekEAnynYlgVAWfwGaub2+ly1t/1MKeNbGHvOnhvraKkcq6VW2FR
+	 RUBtlXhfki3Rr4xBecbWlneT4mLlzNyAAEBtZLDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	gao xu <gaoxu2@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/207] dm: restrict dm device size to 2^63-512 bytes
-Date: Mon,  2 Jun 2025 15:47:00 +0200
-Message-ID: <20250602134300.636923626@linuxfoundation.org>
+Subject: [PATCH 5.4 088/204] cgroup: Fix compilation issue due to cgroup_mutex not being exported
+Date: Mon,  2 Jun 2025 15:47:01 +0200
+Message-ID: <20250602134259.121981338@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: gaoxu <gaoxu2@honor.com>
 
-[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
+[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
 
-The devices with size >= 2^63 bytes can't be used reliably by userspace
-because the type off_t is a signed 64-bit integer.
+When adding folio_memcg function call in the zram module for
+Android16-6.12, the following error occurs during compilation:
+ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
 
-Therefore, we limit the maximum size of a device mapper device to
-2^63-512 bytes.
+This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
+within folio_memcg. The export setting for cgroup_mutex is controlled by
+the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
+CONFIG_PROVE_RCU is not, this compilation error will occur.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
+ensure cgroup_mutex is properly exported when needed.
+
+Signed-off-by: gao xu <gaoxu2@honor.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 5a66be3b2a63f..0f815bcf751f1 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -661,6 +661,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
- 		DMERR("%s: zero-length target", dm_device_name(t->md));
- 		return -EINVAL;
- 	}
-+	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
-+		DMERR("%s: too large device", dm_device_name(t->md));
-+		return -EINVAL;
-+	}
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 273a8a42cb721..801022a8899b5 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -81,7 +81,7 @@
+ DEFINE_MUTEX(cgroup_mutex);
+ DEFINE_SPINLOCK(css_set_lock);
  
- 	tgt->type = dm_get_target_type(type);
- 	if (!tgt->type) {
+-#ifdef CONFIG_PROVE_RCU
++#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
+ EXPORT_SYMBOL_GPL(cgroup_mutex);
+ EXPORT_SYMBOL_GPL(css_set_lock);
+ #endif
 -- 
 2.39.5
 
