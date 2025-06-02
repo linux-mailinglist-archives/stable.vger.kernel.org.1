@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83ABDACB596
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:06:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD379ACB6C1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38D5E9E7BAD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CC831884182
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D45D223DFA;
-	Mon,  2 Jun 2025 14:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDAB223704;
+	Mon,  2 Jun 2025 14:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnvXeRm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odMjrBy6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CD72C327E;
-	Mon,  2 Jun 2025 14:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8717222F77B;
+	Mon,  2 Jun 2025 14:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875390; cv=none; b=SxcgWD2shNHcOISQoV9kB+wioYtK6yCF8L/Pn7/t3ow0/QEZ/O6gPJMJrB7jBiHu5NsFawJHvblaQUmVqQA6L+2n+uZyLsMz57xeelvx09u0kRxl6ywsdiC4lEjEh7/1qWPmnPpwSBACndLq5rjpBb84xkAdoUTnqJ5SwrdfQmU=
+	t=1748875973; cv=none; b=KWMUYLQWemwmGx1Fb9sAqqmQ1blAgpim2vH4IRBanB7As+R2qnS7E23EK6j9gp1X+pmzZgWm+M/JGwP1ECFE00rE63wr0jMQ6AekWc0zbEYmUHRZDIAl3Ow0hAZtgIIXfIU+Tp+eujPS7riHl4x3vqouV7vlTjx17cmQe75d2jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875390; c=relaxed/simple;
-	bh=xSH79XWC6Er7XPZWdUCTAAxaIf79IufMF5C3cPj4dOE=;
+	s=arc-20240116; t=1748875973; c=relaxed/simple;
+	bh=siEr7+QyDtuv3N7/Uu/uz8DGH8BCKKqK1WH1D6zHifs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCraGz+zlgccy9laU5ARGoA0UzOt88SPKqzKDnrWQ1g29ba/Tp8F8RXYGc1yT99zGR/zriZbPam+/2cadvl9YTMa/hgWj83Gz9nVqZfr03UymAi6lC37GX70UY+LG59IOsWNBo9aHA51WoV0yRLNd/66TJwK8+mcFuORxoMG4DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnvXeRm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18A9C4CEEB;
-	Mon,  2 Jun 2025 14:43:09 +0000 (UTC)
+	 MIME-Version; b=HncD/JmZcCYfHLzvQgfgysrNtGxiwZZhW8nXMhE2UNXzXtT3VJ4NCrMI9evF/CD5nGXeLUA3BXIlsZxjdriYwkZkw/g8tVmX/fufSoWZxuFAJJXNS26sNi+bYL7ZSG4ZAwot7BU1xv0+5KKF5eerjiuMVjxe6MXZ2Xb3s4S3TPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odMjrBy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DC6C4CEEE;
+	Mon,  2 Jun 2025 14:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875390;
-	bh=xSH79XWC6Er7XPZWdUCTAAxaIf79IufMF5C3cPj4dOE=;
+	s=korg; t=1748875973;
+	bh=siEr7+QyDtuv3N7/Uu/uz8DGH8BCKKqK1WH1D6zHifs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnvXeRm9f5z7S7C4jfe2Ry4fKSFVCjom8wTCWHdJtF5KIR1OwQ3BoxYCTh9dgzgj5
-	 qtip4g1rL3I7EGEOf26naVNOajc2FZkhP1bmbBrpQ3dmNoRQhuW6zvuAUaPGk9JNbZ
-	 bRmM5eCg+itasJEMuBjB//xAAOx2eTq/9w3WRhpE=
+	b=odMjrBy6PBjAfvh4DZ5/dDHWDxAcEURP8b81r+CqJQG+ErpLmiGSvTB6/9e9vgizo
+	 AeLcdFUMqsRF6CuIbl2V6MualoqzksDgbbz9wTjMX1E+8yZOBr9DfaUmLLGW24KS65
+	 4A+cYl7vRRc3wGF6NB8U4qVktWovgeidBddJ3bmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/270] kconfig: merge_config: use an empty file as initfile
+Subject: [PATCH 5.15 032/207] btrfs: get zone unusable bytes while holding lock at btrfs_reclaim_bgs_work()
 Date: Mon,  2 Jun 2025 15:46:44 +0200
-Message-ID: <20250602134312.090531170@linuxfoundation.org>
+Message-ID: <20250602134300.022937748@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit 1283b8c125a83bf7a7dbe90c33d3472b6d7bf612 ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+At btrfs_reclaim_bgs_work(), we are grabbing a block group's zone unusable
+bytes while not under the protection of the block group's spinlock, so
+this can trigger race reports from KCSAN (or similar tools) since that
+field is typically updated while holding the lock, such as at
+__btrfs_add_free_space_zoned() for example.
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
+Fix this by grabbing the zone unusable bytes while we are still in the
+critical section holding the block group's spinlock, which is right above
+where we are currently grabbing it.
 
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/block-group.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index d7d5c58b8b6aa..557f37f481fdf 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -98,8 +98,8 @@ INITFILE=$1
- shift;
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 2c5bd2ad69f35..614917cac0e7e 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -1543,6 +1543,17 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
+ 			up_write(&space_info->groups_sem);
+ 			goto next;
+ 		}
++
++		/*
++		 * Cache the zone_unusable value before turning the block group
++		 * to read only. As soon as the block group is read only it's
++		 * zone_unusable value gets moved to the block group's read-only
++		 * bytes and isn't available for calculations anymore. We also
++		 * cache it before unlocking the block group, to prevent races
++		 * (reports from KCSAN and such tools) with tasks updating it.
++		 */
++		zone_unusable = bg->zone_unusable;
++
+ 		spin_unlock(&bg->lock);
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
+ 		/*
+@@ -1558,13 +1569,6 @@ void btrfs_reclaim_bgs_work(struct work_struct *work)
+ 			goto next;
+ 		}
  
- MERGE_LIST=$*
+-		/*
+-		 * Cache the zone_unusable value before turning the block group
+-		 * to read only. As soon as the blog group is read only it's
+-		 * zone_unusable value gets moved to the block group's read-only
+-		 * bytes and isn't available for calculations anymore.
+-		 */
+-		zone_unusable = bg->zone_unusable;
+ 		ret = inc_block_group_ro(bg, 0);
+ 		up_write(&space_info->groups_sem);
+ 		if (ret < 0)
 -- 
 2.39.5
 
