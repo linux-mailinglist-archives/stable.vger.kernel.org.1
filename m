@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-150117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C29BACB61C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC945ACB321
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A0D44C3F6E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3995519434F0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5802236F4;
-	Mon,  2 Jun 2025 14:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2883C22616C;
+	Mon,  2 Jun 2025 14:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdt2FO4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwkVrHn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB321EA65;
-	Mon,  2 Jun 2025 14:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1212222AF;
+	Mon,  2 Jun 2025 14:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876088; cv=none; b=T6xdwTcqnfwlvz+G+84GAK8amuDZIdbvaAvjqcyY6NC7UP46pMfKS+3iqsyIcK6Y7ZITUqWwh3NG/qic4G+VcENQP8CjMSDz5WxBi+enYJLl+et2XI2bXQ/dT5CdsOeoDavILjmXrsnyvgNC84GU+fcuQnnpE8Pk0FLCe5ci1x0=
+	t=1748874244; cv=none; b=jf9eMY/YDdwsaRPuw/tjXmJ80r9Jr/JiUVdMBuRYijMh7ZGNUinrc+uGJtkZtIKHsV/4ILQZwgkCmEvt4X428JnCqHukLjwVslHHS4GDTxOxIQNiomIW4lIZlLhFA0y4Qbf+DXpiagH8t6gHlZwc+vXpHbQS0VRucRbTqoO9ioE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876088; c=relaxed/simple;
-	bh=673TzASmcIqAPoAaUxRfsFVBqXbbfcoQrxxdxv10TMI=;
+	s=arc-20240116; t=1748874244; c=relaxed/simple;
+	bh=3H7ZJhd6MI5anA1GR7tJdEfArwEeR0SlCLCM1qehG9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPYa2qd4w4tDq5RwXm+X/0Cc981WWYQggI6p218T0bHqF3K5OvfJ7CyZS4DPim/jrXUZxV0oo5n1dc0uMlj0mlzvk9vm02CJy5Udic9w8mWfNEjTZrTvjLAgR2HnFjL0B5WMlQcpSv+y0JFFxI7ewlGf2l4lUujj4lkw/nhH2UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdt2FO4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4016C4CEEB;
-	Mon,  2 Jun 2025 14:54:47 +0000 (UTC)
+	 MIME-Version; b=jCvvJ+Ym6ImzFZD/1gSXSc/5c6ATo2+8ogD5vHkLPuv7jFRsbEqSCo2BYiwaI50am6j45sZKx0Uy+uWLiJXrS1bUfatec/K2g1nEgC+lwKS9a/6uJ1XXJ1DIzH/06i7x6ANPa9nClArEuN80LDx/7cFy20e47xYqhav7+fv15FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwkVrHn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30254C4CEEB;
+	Mon,  2 Jun 2025 14:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876088;
-	bh=673TzASmcIqAPoAaUxRfsFVBqXbbfcoQrxxdxv10TMI=;
+	s=korg; t=1748874244;
+	bh=3H7ZJhd6MI5anA1GR7tJdEfArwEeR0SlCLCM1qehG9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdt2FO4bEhzZMU0e1glnMHDnWAwLaO5yMlUezL12JmVhLKXoCqwM8Cl9wyTSQaklQ
-	 96fyraR+J35T8fuP+Sn2vXnmccf8jgCnzjgxMqu9g52Zb+5yAkJflLdkYVd1V4Ql8h
-	 a4ofhIYRGQ7u4Z6KhD32gEUXr7dMjaTsT2QDFa4E=
+	b=MwkVrHn9eQEz0RexYYGCBFO8t2Z9HbdRcKGPAP+8ysYGfNjzdL5H56rY6ddlG+CtW
+	 CxepikWR6Ll4mo4oF6q/twPlwiLqUMATb+/cf+Ipeztq0oxWq3A/qoe9w5f53x+iCs
+	 Oub5PiYv4oPJNtd/IdZ77kG0zor48FF6F7wq8Wu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/207] dm cache: prevent BUG_ON by blocking retries on failed device resumes
+	Breno Leitao <leitao@debian.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 376/444] memcg: always call cond_resched() after fn()
 Date: Mon,  2 Jun 2025 15:47:20 +0200
-Message-ID: <20250602134301.403330547@linuxfoundation.org>
+Message-ID: <20250602134356.178851847@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +72,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 5da692e2262b8f81993baa9592f57d12c2703dea ]
+commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
 
-A cache device failing to resume due to mapping errors should not be
-retried, as the failure leaves a partially initialized policy object.
-Repeating the resume operation risks triggering BUG_ON when reloading
-cache mappings into the incomplete policy object.
+I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
+is happening because killing the process in certain machine might be very
+slow, which causes the soft lockup and RCU stalls.  This happens usually
+when the cgroup has MANY processes and memory.oom.group is set.
 
-Reproduce steps:
+Example I am seeing in real production:
 
-1. create a cache metadata consisting of 512 or more cache blocks,
-   with some mappings stored in the first array block of the mapping
-   array. Here we use cache_restore v1.0 to build the metadata.
+       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
+       ....
+       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
+       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
+       ....
 
-cat <<EOF >> cmeta.xml
-<superblock uuid="" block_size="128" nr_cache_blocks="512" \
-policy="smq" hint_width="4">
-  <mappings>
-    <mapping cache_block="0" origin_block="0" dirty="false"/>
-  </mappings>
-</superblock>
-EOF
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
-dmsetup remove cmeta
+Quick look at why this is so slow, it seems to be related to serial flush
+for certain machine types.  For all the crashes I saw, the target CPU was
+at console_flush_all().
 
-2. wipe the second array block of the mapping array to simulate
-   data degradations.
+In the case above, there are thousands of processes in the cgroup, and it
+is soft locking up before it reaches the 1024 limit in the code (which
+would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
+sufficient.
 
-mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
-2>/dev/null | hexdump -e '1/8 "%u\n"')
-ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
-2>/dev/null | hexdump -e '1/8 "%u\n"')
-dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+Remove the counter-based conditional rescheduling logic and call
+cond_resched() unconditionally after each task iteration, after fn() is
+called.  This avoids the lockup independently of how slow fn() is.
 
-3. try bringing up the cache device. The resume is expected to fail
-   due to the broken array block.
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dmsetup create cache --notable
-dmsetup load cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup resume cache
-
-4. try resuming the cache again. An unexpected BUG_ON is triggered
-   while loading cache mappings.
-
-dmsetup resume cache
-
-Kernel logs:
-
-(snip)
-------------[ cut here ]------------
-kernel BUG at drivers/md/dm-cache-policy-smq.c:752!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 332 Comm: dmsetup Not tainted 6.13.4 #3
-RIP: 0010:smq_load_mapping+0x3e5/0x570
-
-Fix by disallowing resume operations for devices that failed the
-initial attempt.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
+Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Suggested-by: Rik van Riel <riel@surriel.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Michael van der Westhuizen <rmikey@meta.com>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Chen Ridong <chenridong@huawei.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-cache-target.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ mm/memcontrol.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 1864e8180be89..1660d4fec7511 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2883,6 +2883,27 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
- 	return to_cblock(size);
- }
- 
-+static bool can_resume(struct cache *cache)
-+{
-+	/*
-+	 * Disallow retrying the resume operation for devices that failed the
-+	 * first resume attempt, as the failure leaves the policy object partially
-+	 * initialized. Retrying could trigger BUG_ON when loading cache mappings
-+	 * into the incomplete policy object.
-+	 */
-+	if (cache->sized && !cache->loaded_mappings) {
-+		if (get_cache_mode(cache) != CM_WRITE)
-+			DMERR("%s: unable to resume a failed-loaded cache, please check metadata.",
-+			      cache_device_name(cache));
-+		else
-+			DMERR("%s: unable to resume cache due to missing proper cache table reload",
-+			      cache_device_name(cache));
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1266,7 +1266,6 @@ void mem_cgroup_scan_tasks(struct mem_cg
  {
- 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
-@@ -2931,6 +2952,9 @@ static int cache_preresume(struct dm_target *ti)
- 	struct cache *cache = ti->private;
- 	dm_cblock_t csize = get_cache_dev_size(cache);
+ 	struct mem_cgroup *iter;
+ 	int ret = 0;
+-	int i = 0;
  
-+	if (!can_resume(cache))
-+		return -EINVAL;
-+
- 	/*
- 	 * Check to see if the cache has resized.
- 	 */
--- 
-2.39.5
-
+ 	BUG_ON(mem_cgroup_is_root(memcg));
+ 
+@@ -1276,10 +1275,9 @@ void mem_cgroup_scan_tasks(struct mem_cg
+ 
+ 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
+ 		while (!ret && (task = css_task_iter_next(&it))) {
+-			/* Avoid potential softlockup warning */
+-			if ((++i & 1023) == 0)
+-				cond_resched();
+ 			ret = fn(task, arg);
++			/* Avoid potential softlockup warning */
++			cond_resched();
+ 		}
+ 		css_task_iter_end(&it);
+ 		if (ret) {
 
 
 
