@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD50ACB6E1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9586ACB447
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911F01BC2F70
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC8C4A4180
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1740B223DD4;
-	Mon,  2 Jun 2025 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850B2222580;
+	Mon,  2 Jun 2025 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAsiwXTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgN+qENf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82501DD543;
-	Mon,  2 Jun 2025 14:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4203C1465A1;
+	Mon,  2 Jun 2025 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876091; cv=none; b=BFaimqpooTPaR9i3cyncIH7TyJWTqB9y/updrH+3TsLzlRmn4av5AXUE2QdO9agU3IaXFeYfE0qYEwFjV34AIp5xe6tkLJjyFqvHcL1hN3kRv0PHng90MBkpaWWZMyBw3k33CEKcxhSEZWfiwW8x4pfydJSPrQGvf4OKXumqtrU=
+	t=1748874802; cv=none; b=ckJTNi3AOScNVITLQV5aOAOm/AYKpSjJtCTlftVOwUOm0jKABMN1nP14HCN/jzatDum4wNhzLaSjHcJc5Yw0ylo8SSw9+rxHyCPN7MWMlg6nv8Yd+EgNR2pNGzpBahCAE1JATlxnlILhzv76IrLrDG/JTOubpxhpqK5jEH5WwP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876091; c=relaxed/simple;
-	bh=ctltIGmGp3xhYywtvw/PCKYOLlxa76GQy9YsgBt6EDA=;
+	s=arc-20240116; t=1748874802; c=relaxed/simple;
+	bh=aC9nfvJ1mOuRCClABbt9VBw6HcHUM3WFkK4h28RDxag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzS2ixOn7UF34YWHE9cUXKeGXEcvyLG6d2yio7DFA8f/Tvzj3qxBqgQ0N1dxhYdCZL1x0VO1iROVQZZKZsgm3rVPm/BsfwRwU9BO4flX2t7Y86pFHk+yrhwU8yWxwqurUZAz16medUaLud6vGAKTkpich3nOJfqyvhGk4yw4Sz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAsiwXTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34132C4CEEE;
-	Mon,  2 Jun 2025 14:54:51 +0000 (UTC)
+	 MIME-Version; b=BkoheNKFSVGdDitxcAvrD0USBSuwi9EGIu0qQPeuC8Aj1I+mZfe+vWDO4bq18edrZb50yxnq2Q5TFO9qOnfFUnNt/192BUe/cdJQEfcnjQkRKNTRWXUR+6WBssxT/xcg3jxC7LfcFdNuHH1DdLntm6i8WHYX8/Jm9ldZyHC93IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgN+qENf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3302C4CEEB;
+	Mon,  2 Jun 2025 14:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876091;
-	bh=ctltIGmGp3xhYywtvw/PCKYOLlxa76GQy9YsgBt6EDA=;
+	s=korg; t=1748874802;
+	bh=aC9nfvJ1mOuRCClABbt9VBw6HcHUM3WFkK4h28RDxag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAsiwXTbXZJCtv9W/d0hM6OF8kycEphr5LMP3hiGgbFwte/nvcbDDQvftBwteyXGA
-	 MPGiHq3yWTnA92ks4WIHFsMeDt0JxyfzOf5n/JsR2h+LM4ibgzA0G2BzqoQFoKh/bI
-	 WrRrqfc3zGm1CKZQL+un0tnpn9LrnIUy/MxODWNA=
+	b=LgN+qENfzUN3hC2KkxW5Cc7Knnz0ra+cONvct+NgG4F4yrvUvpR5k0pacuUbyiI3Q
+	 sEblIzrtkL7sUMWbxUiHzMfXkjv8ZYevk3X03dAyufmSheOvGSdCFQAX4dMe0AeO/Z
+	 UzRi1R2p6uw3Uie9zOY7UleNUlJ88jmw/Gkd1rTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/207] orangefs: Do not truncate file size
-Date: Mon,  2 Jun 2025 15:47:21 +0200
-Message-ID: <20250602134301.440591728@linuxfoundation.org>
+Subject: [PATCH 5.4 109/204] dm: restrict dm device size to 2^63-512 bytes
+Date: Mon,  2 Jun 2025 15:47:22 +0200
+Message-ID: <20250602134259.946113222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
+[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
 
-'len' is used to store the result of i_size_read(), so making 'len'
-a size_t results in truncation to 4GiB on 32-bit systems.
+The devices with size >= 2^63 bytes can't be used reliably by userspace
+because the type off_t is a signed 64-bit integer.
 
-Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
-Tested-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Therefore, we limit the maximum size of a device mapper device to
+2^63-512 bytes.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/md/dm-table.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index c1bb4c4b5d672..0cf3dcb76d2f4 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -23,9 +23,9 @@ static int orangefs_writepage_locked(struct page *page,
- 	struct orangefs_write_range *wr = NULL;
- 	struct iov_iter iter;
- 	struct bio_vec bv;
--	size_t len, wlen;
-+	size_t wlen;
- 	ssize_t ret;
--	loff_t off;
-+	loff_t len, off;
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index a56d03eefb83c..7002846afb308 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -742,6 +742,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
+ 		DMERR("%s: zero-length target", dm_device_name(t->md));
+ 		return -EINVAL;
+ 	}
++	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
++		DMERR("%s: too large device", dm_device_name(t->md));
++		return -EINVAL;
++	}
  
- 	set_page_writeback(page);
- 
-@@ -94,8 +94,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
- 	struct orangefs_write_range *wrp, wr;
- 	struct iov_iter iter;
- 	ssize_t ret;
--	size_t len;
--	loff_t off;
-+	loff_t len, off;
- 	int i;
- 
- 	len = i_size_read(inode);
+ 	tgt->type = dm_get_target_type(type);
+ 	if (!tgt->type) {
 -- 
 2.39.5
 
