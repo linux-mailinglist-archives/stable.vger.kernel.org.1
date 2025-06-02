@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-150096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D598ACB751
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452A3ACB5FB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C2329E182B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CECD1BC2CE5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87270221739;
-	Mon,  2 Jun 2025 14:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD524221FB8;
+	Mon,  2 Jun 2025 14:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKZnV+1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vS6AQ8FZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443AA1FBC90;
-	Mon,  2 Jun 2025 14:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783DC17BB6;
+	Mon,  2 Jun 2025 14:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876022; cv=none; b=eRbrBG/yp2qC/JCjRROdHCVBDS1fpqfIdIb+jS0nORgZwwydb7Et8ac580IgN3Kyl41sIZKCgzkFV1dx4qp+6YqGQfe3egyCX2Gi3bPJz/IXFKoihsjkpaqk119aM6wPIV9RF2gtvT2ni7c/eiQUw3782gQtljRqju+tlvRDbjk=
+	t=1748876028; cv=none; b=ULyZXoMlSHi7fOc9uTRA/ptlljKJG+1NXCqORE7Zu8/vVDR1AYjh+bldkhyTymx8OqgOtHa0yR4zkB1G0s65wg7AuGYU0OjRsSUvtWZmpxBslWJajQZsRKV1+plxnwUaOicbMGhJKf55wgVjgO/7QnouhFq35k9If6WM2Z3YYzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876022; c=relaxed/simple;
-	bh=lpHe9QHGhbkDDLc54xbt0suSrOKz5GGtBycyxorZKJ8=;
+	s=arc-20240116; t=1748876028; c=relaxed/simple;
+	bh=RAloyMz/GKBAzUb1SsUD+Mqvb7z4qdwtVmej2bEGDtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fK5SOldVsnuslOUJGfYLKtdQkVlO6htkOBbsXqE/rQBTOsAytT03An0GZsN+rjmV6jpuTT8cBBUqwRwMQSF/wBn9Y9JakmHIHW0kvyJh6mqRaOUgpH5QOGs3N0ZXFjtnq/DOV+/mPshw7To/OgvT5FqOnRIRHCD74mOOZP1cikA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKZnV+1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F1BC4CEEB;
-	Mon,  2 Jun 2025 14:53:41 +0000 (UTC)
+	 MIME-Version; b=VffKTxaJSP6qQZgMoS0lXJl+SIg1pahuot7xIx/UR8XNai5jySpBIW0vk1sEa/BaaLgs+Go97SV3OY8XiSp+stVtRjKIjwbTy+IOUTqmibVQ9bIGbs3xB7r7skGzekZGA2PMcEL/GxjxaOKtBJc6JQV0LuCev1SFWlvY7A/FILI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vS6AQ8FZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AA9C4CEEB;
+	Mon,  2 Jun 2025 14:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876021;
-	bh=lpHe9QHGhbkDDLc54xbt0suSrOKz5GGtBycyxorZKJ8=;
+	s=korg; t=1748876028;
+	bh=RAloyMz/GKBAzUb1SsUD+Mqvb7z4qdwtVmej2bEGDtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKZnV+1qCW7yBJ24eK70bd6B8T3bOJGhiAayF6DO1Z3y+HkNERPcwEzpUmZRGH4lx
-	 C8I5dP0TxhxJxoD7hIGh1zCpjdpz+hVPAERWoh02Ic+fIc8IgrWP9Y61QGthG0ePGX
-	 YBYnmnfl5GfsxrIvlSg1zqMMI1NVdZzjsOSEi3jo=
+	b=vS6AQ8FZCtaEklh/Moa0VJLH8m1bv+4c8roqprltjKICBwBINY2SFfclMb327urYo
+	 QaA3afF59y/TbEslMYEGeb1ZuveBvt7KfB5N4vaU4Q+AU8T95lTEXUuagDCFaWOyTz
+	 ZRndQVE9+m/gNx7o/R2oLl/s7cXipW9a7Dr2kMqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seyediman Seyedarab <imandevel@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Shashank Gupta <shashankg@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/207] kbuild: fix argument parsing in scripts/config
-Date: Mon,  2 Jun 2025 15:46:58 +0200
-Message-ID: <20250602134300.558415932@linuxfoundation.org>
+Subject: [PATCH 5.15 047/207] crypto: octeontx2 - suppress auth failure screaming due to negative tests
+Date: Mon,  2 Jun 2025 15:46:59 +0200
+Message-ID: <20250602134300.596849065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
 References: <20250602134258.769974467@linuxfoundation.org>
@@ -66,80 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Shashank Gupta <shashankg@marvell.com>
 
-[ Upstream commit f757f6011c92b5a01db742c39149bed9e526478f ]
+[ Upstream commit 64b7871522a4cba99d092e1c849d6f9092868aaa ]
 
-The script previously assumed --file was always the first argument,
-which caused issues when it appeared later. This patch updates the
-parsing logic to scan all arguments to find --file, sets the config
-file correctly, and resets the argument list with the remaining
-commands.
+This patch addresses an issue where authentication failures were being
+erroneously reported due to negative test failures in the "ccm(aes)"
+selftest.
+pr_debug suppress unnecessary screaming of these tests.
 
-It also fixes --refresh to respect --file by passing KCONFIG_CONFIG=$FN
-to make oldconfig.
-
-Signed-off-by: Seyediman Seyedarab <imandevel@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Shashank Gupta <shashankg@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/config | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/config b/scripts/config
-index ff88e2faefd35..ea475c07de283 100755
---- a/scripts/config
-+++ b/scripts/config
-@@ -32,6 +32,7 @@ commands:
-                              Disable option directly after other option
- 	--module-after|-M beforeopt option
-                              Turn option into module directly after other option
-+	--refresh            Refresh the config using old settings
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
+index 811ded72ce5fb..798bb40fed68d 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_reqmgr.c
+@@ -410,9 +410,10 @@ static int cpt_process_ccode(struct otx2_cptlfs_info *lfs,
+ 				break;
+ 			}
  
- 	commands can be repeated multiple times
- 
-@@ -124,16 +125,22 @@ undef_var() {
- 	txt_delete "^# $name is not set" "$FN"
- }
- 
--if [ "$1" = "--file" ]; then
--	FN="$2"
--	if [ "$FN" = "" ] ; then
--		usage
-+FN=.config
-+CMDS=()
-+while [[ $# -gt 0 ]]; do
-+	if [ "$1" = "--file" ]; then
-+		if [ "$2" = "" ]; then
-+			usage
-+		fi
-+		FN="$2"
-+		shift 2
-+	else
-+		CMDS+=("$1")
-+		shift
- 	fi
--	shift 2
--else
--	FN=.config
--fi
-+done
- 
-+set -- "${CMDS[@]}"
- if [ "$1" = "" ] ; then
- 	usage
- fi
-@@ -217,9 +224,8 @@ while [ "$1" != "" ] ; do
- 		set_var "${CONFIG_}$B" "${CONFIG_}$B=m" "${CONFIG_}$A"
- 		;;
- 
--	# undocumented because it ignores --file (fixme)
- 	--refresh)
--		yes "" | make oldconfig
-+		yes "" | make oldconfig KCONFIG_CONFIG=$FN
- 		;;
- 
- 	*)
+-			dev_err(&pdev->dev,
+-				"Request failed with software error code 0x%x\n",
+-				cpt_status->s.uc_compcode);
++			pr_debug("Request failed with software error code 0x%x: algo = %s driver = %s\n",
++				 cpt_status->s.uc_compcode,
++				 info->req->areq->tfm->__crt_alg->cra_name,
++				 info->req->areq->tfm->__crt_alg->cra_driver_name);
+ 			otx2_cpt_dump_sg_list(pdev, info->req);
+ 			break;
+ 		}
 -- 
 2.39.5
 
