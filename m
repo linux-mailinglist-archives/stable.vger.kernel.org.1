@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-149573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFDCACB37F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6052ACB61B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFBA9405BB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD944C2149
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F35122A4F0;
-	Mon,  2 Jun 2025 14:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD3E237173;
+	Mon,  2 Jun 2025 14:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeViHRqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDckLJwX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A11322A4ED;
-	Mon,  2 Jun 2025 14:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17212237163;
+	Mon,  2 Jun 2025 14:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874366; cv=none; b=pw1/eYpqfUq9oZOPK+pyKJtecmIt7DGtjR/Lsn5ElwB9eQkazd1rSKp3MOILKVQ5pWAKmgRQsyTO9bKYZOd0tQf28QFzJZuh6zQw2ywDfPF54qT89oMDidbfeUTFaG53N5oiZFZ/ANjizoRtvcyOZetv4YT+5I2TPkSMuxZN5Tg=
+	t=1748876279; cv=none; b=MKOIQhoQgN3YKS4+X260BkBT8MCOfhDCg8bA4jrxuoIwPCIs2NPvs6Aa0GYPN8u+DULx0qXV+s347dzif2gDoJSXj4ca3WAm/cFbrrnEn4620qPwNOK8XCUomD6aC9k3rEfek9GTRul/Ykt/gTip+csqKrVD+UiCEFZo7zRUygw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874366; c=relaxed/simple;
-	bh=RE4diVqyCBx5qjdmz5yBWbQFCGwns5q9pE63ElS8zUs=;
+	s=arc-20240116; t=1748876279; c=relaxed/simple;
+	bh=5PGn2TVh/Ajphn5oeBaYNWgI0cMOwvLtFXkrdU+LSio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0lN5IvQSWJJ+CZ0HLa3MNvQ3rZESlSx6gVh5j2xSNczkFdPc0rNH/W58nE1CAxsMWtPLlt1qA7FtmbYRgFiDh3fAxj6o5jnSxh4VDbiykEdny4alG7I8VPS8USTbmqYVeVZkYuzZDItmDbMiNyuUwdBqbUdGsETh8Z0dSc/b9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeViHRqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A988BC4CEEB;
-	Mon,  2 Jun 2025 14:26:05 +0000 (UTC)
+	 MIME-Version; b=HuND0I0xE3vVmpfbdAWLPiMdj7cHCPwrBQ97KKzzKWnlg+8mMNYYZimkiM3RaFu4rSXahJfrrgw65cZw6UD2CroZqtYClzqnTj+N/EJr9XGwhMDkenXHWYNAp4dLA/7mkcXdujqdv+gv90ln/EMn1XOfbE4V2X0v2BcAunBUQrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDckLJwX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B58FC4CEEB;
+	Mon,  2 Jun 2025 14:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874366;
-	bh=RE4diVqyCBx5qjdmz5yBWbQFCGwns5q9pE63ElS8zUs=;
+	s=korg; t=1748876279;
+	bh=5PGn2TVh/Ajphn5oeBaYNWgI0cMOwvLtFXkrdU+LSio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeViHRqPyrmKiOZf+Lmw05Dcyz6qvtmi159bl1NZzRz1t8OXXBmCuM0nWp2MrKJM2
-	 9Jhvxd9biwZttMHacFS5XP52O6SmCKwh8n/Hx1H+WtuPbwrfpLualtLug//xnR6UZy
-	 RPUY5NSSxDPmlB8jbOikFaQls0MebJFb2kgIzwR8=
+	b=GDckLJwXkUuP/IszHBe58WkIETU3q1PNTlma+WSn1uxDPkm7xZvZmnQA4nhSEfBZY
+	 OFjVxccuAP5hpNtqiaIZ8F6nNKez/jdtOz8XojOzoPpHbojlG4kE/NXzPLN5t38zrY
+	 W1o9+aRf7ONpT/1jpCG4+8wPJMX/1xkk5s3q5v28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 436/444] drm/amd/display: fix link_set_dpms_off multi-display MST corner case
+Subject: [PATCH 5.15 128/207] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
 Date: Mon,  2 Jun 2025 15:48:20 +0200
-Message-ID: <20250602134358.634430880@linuxfoundation.org>
+Message-ID: <20250602134303.722409918@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3c1a467372e0c356b1d3c59f6d199ed5a6612dd1 ]
+[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
 
-[Why & How]
-When MST config is unplugged/replugged too quickly, it can potentially
-result in a scenario where previous DC state has not been reset before
-the HPD link detection sequence begins. In this case, driver will
-disable the streams/link prior to re-enabling the link for link
-training.
+We might not have called drv_mgd_prepare_tx(), so only call
+drv_mgd_complete_tx() under the same conditions.
 
-There is a bug in the current logic that does not account for the fact
-that current_state can be released and cleared prior to swapping to a
-new state (resulting in the pipe_ctx stream pointers to be cleared) in
-between disabling streams.
-
-To resolve this, cache the original streams prior to committing any
-stream updates.
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1561782686ccc36af844d55d31b44c938dd412dc)
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 4901e27f678bc..9b470812d96a5 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -145,6 +145,7 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
- void link_set_all_streams_dpms_off_for_link(struct dc_link *link)
- {
- 	struct pipe_ctx *pipes[MAX_PIPES];
-+	struct dc_stream_state *streams[MAX_PIPES];
- 	struct dc_state *state = link->dc->current_state;
- 	uint8_t count;
- 	int i;
-@@ -157,10 +158,18 @@ void link_set_all_streams_dpms_off_for_link(struct dc_link *link)
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b71d3a03032e8..11d9bce1a4390 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2336,7 +2336,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	if (tx)
+ 		ieee80211_flush_queues(local, sdata, false);
  
- 	link_get_master_pipes_with_dpms_on(link, state, &count, pipes);
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (tx || frame_buf)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
  
-+	/* The subsequent call to dc_commit_updates_for_stream for a full update
-+	 * will release the current state and swap to a new state. Releasing the
-+	 * current state results in the stream pointers in the pipe_ctx structs
-+	 * to be zero'd. Hence, cache all streams prior to dc_commit_updates_for_stream.
-+	 */
-+	for (i = 0; i < count; i++)
-+		streams[i] = pipes[i]->stream;
-+
- 	for (i = 0; i < count; i++) {
--		stream_update.stream = pipes[i]->stream;
-+		stream_update.stream = streams[i];
- 		dc_commit_updates_for_stream(link->ctx->dc, NULL, 0,
--				pipes[i]->stream, &stream_update,
-+				streams[i], &stream_update,
- 				state);
- 	}
- 
+ 	/* clear bssid only after building the needed mgmt frames */
+ 	eth_zero_addr(ifmgd->bssid);
 -- 
 2.39.5
 
