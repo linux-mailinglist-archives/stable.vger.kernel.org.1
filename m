@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25536ACB603
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C47ACB35C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E73183B2A54
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B83457ACAE7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAC122539F;
-	Mon,  2 Jun 2025 14:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303620E6E3;
+	Mon,  2 Jun 2025 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWhCQRcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz8dVtbn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09A220E6E3;
-	Mon,  2 Jun 2025 14:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8188B22F384;
+	Mon,  2 Jun 2025 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875620; cv=none; b=ST2yBgZkYRW7aQcyOuuNSQ3SUlZ5ikC5YmHtdV3RwSulFh9lS47BrYAfAL8nhMQKz1cI8a1VTOtyRdAa5YTOYS2NaWuyAgvs7Nc4MaauG5eExVE7CqNUROjPZAq5BI1jUnB974ZapfBl59wBwAotUC/+NUwW3p7LApp+Fqwl98Y=
+	t=1748874910; cv=none; b=KlBtooNQZTUZoxxwRiMRrCXeM7LCOAUs1T2SPsSc0ejHQLkF48h/vmjybEJ+hxoILq6Vfcr1KkCitFu7EKr89abrpiI2jKE1DQ1p9KW66OInYqeGCyJAkohdonAB82KaiOvA+3YY7NNsg01azmgLSVeHQ7NNbtMXinXd3nWuFs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875620; c=relaxed/simple;
-	bh=cL+Gbcl432m5pxC9d0eW8BLNKzVtjEOeOzMkfy8w9Pw=;
+	s=arc-20240116; t=1748874910; c=relaxed/simple;
+	bh=zMh2v1Q+tM8dlcKaXzAMpIWLv2PltfJJl8lYzUyNQJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QoOZoVIuT4S8LX2lYqtx1o8zxMebaIS829TNHjWGci5yzTB4ZTNzEvBMqxxlJtlV7Uy7tfqdgCnV/aO/0QYibOjkPfNsuTVe6hFt307qRvU5oD5ZU9108a5ny6SmI2atJUaRn6WijHy2vaYHUwyi/biooD40chnYYeNOfp7oQfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWhCQRcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B69C4CEEB;
-	Mon,  2 Jun 2025 14:47:00 +0000 (UTC)
+	 MIME-Version; b=JGZepuD/b7NHFOPbg5agG7cfFlPXWL6gkiLLlvJwadrQb6GYFf/W1VDOGBFEkimO6fOL+nzDJ3Qg8KJp5LKHtx2+9qXLYI+Nfw5n5LSoFW3pcpIoVcOVIzgdWhoDxP7ZY6kd6ZBxdJY5APWyNeQlIqsHRV4vp0SsmVmSHVD7PDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz8dVtbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2816C4CEEB;
+	Mon,  2 Jun 2025 14:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875620;
-	bh=cL+Gbcl432m5pxC9d0eW8BLNKzVtjEOeOzMkfy8w9Pw=;
+	s=korg; t=1748874910;
+	bh=zMh2v1Q+tM8dlcKaXzAMpIWLv2PltfJJl8lYzUyNQJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWhCQRcEJEOhf5HaxSJ189DXTt1CXLHcR6Dtw0jxuBvm60h5yCwzXYU4Ny6EJVD6F
-	 b2T78hxpyPi6FSpC9ve18AnhZKnCE1Ara8T44BbAGTDrDNWf0T2P8cvaK8+mm0v1SI
-	 eXR94FTHz/WExBAXwUMG0Q+u+T24Hrj+eNm/OxR0=
+	b=kz8dVtbn8zsV+mVm6sPkRfG7sqpST7A5dTFvcEcrq3kInr8ZdfgQXICK00kU/bx5X
+	 w/mfOxH6hfkTPjDdWAGoJmFRdaE+j99R3+eYh9SjZ5P5ftqy5QvaE7hRJSmFbVe3mD
+	 THlgC0rrITwMdQQAutRHoKzLmqkGdX8N3tBoa2j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 190/270] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
+Subject: [PATCH 5.4 142/204] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
 Date: Mon,  2 Jun 2025 15:47:55 +0200
-Message-ID: <20250602134314.972355163@linuxfoundation.org>
+Message-ID: <20250602134301.226703830@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
+[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
 
-This function translates the rate number reported by the hardware into
-something mac80211 can understand. It was ignoring the 3SS and 4SS HT
-rates. Translate them too.
+In the sensor_count field of the MTEWE register, bits 1-62 are
+supported only for unmanaged switches, not for NICs, and bit 63
+is reserved for internal use.
 
-Also set *nss to 0 for the HT rates, just to make sure it's
-initialised.
+To prevent confusing output that may include set bits that are
+not relevant to NIC sensors, we update the bitmask to retain only
+the first bit, which corresponds to the sensor ASIC.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
-index 2c515af214e76..bfd017d53fef8 100644
---- a/drivers/net/wireless/realtek/rtw88/util.c
-+++ b/drivers/net/wireless/realtek/rtw88/util.c
-@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
- 		*nss = 4;
- 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
- 	} else if (rate >= DESC_RATEMCS0 &&
--		   rate <= DESC_RATEMCS15) {
-+		   rate <= DESC_RATEMCS31) {
-+		*nss = 0;
- 		*mcs = rate - DESC_RATEMCS0;
- 	}
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 3ce17c3d7a001..9d7b0a4cc48a9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -156,6 +156,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	u64 value_msb;
+ 
+ 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
++	/* bit 1-63 are not supported for NICs,
++	 * hence read only bit 0 (asic) from lsb.
++	 */
++	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+ 
+ 	mlx5_core_warn(events->dev,
 -- 
 2.39.5
 
