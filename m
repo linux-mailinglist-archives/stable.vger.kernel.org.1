@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6A0ACB404
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B95BACB889
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 927F87B0BE3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45E7C94201F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99A8223301;
-	Mon,  2 Jun 2025 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C711522A801;
+	Mon,  2 Jun 2025 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oM2BsSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXNbNOss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E5F22259A;
-	Mon,  2 Jun 2025 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847F9225785;
+	Mon,  2 Jun 2025 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875256; cv=none; b=nfwaXZQstR88qboUFd/cpAxXhJcVFlHaXxGw0BDZnRzmNwaIn8I3zMW67OpJI6twvkOpxVF7aFL5i3ExGKle6gWaAABrnVIDGNdwcaP03eTG/9ycjALHhfFoTfxzadaX56PQScqhXtQrdaUDEveaYvd2bRYKN9ztmdstj0GxkXI=
+	t=1748876827; cv=none; b=QCuiwWW1/N03lPdg66wVywJ6u755TAX52MoqawjWFr2v8XGAsK2jtZg2f7U5i+XWa47oz30BI0bptacMSJexcO+JUvatpSGrzwu7vcJUi6bLtPRfyek47YsnmGmMf4qyWRAoeAeEDMKQ/QtRe9QqLc/YwleqtR2olk+MHmiLFxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875256; c=relaxed/simple;
-	bh=6qZtpdSc0zTSvivRRRE7qHiuL36Z4IT6eYTWflI05zw=;
+	s=arc-20240116; t=1748876827; c=relaxed/simple;
+	bh=vBynjrK7gHOJZMNajzBQ4G2URj/JkMPbhKGIyKOZr0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EyBWiY+JygIr/gXfkDez268fIOn2CcB9U9v/61XUieIBpe1C1uD29a1s+BZFiMjTnz3MtjqV2VFpzEoiSvxe+Nm92FCZYVYJdgoG5hSz5DcFG6owIJjEJ58RHFozJjgJ7/6omXH2qjQm5bb19bbAiZ2qo9sZiRVEqVVN8Xr6ddQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oM2BsSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06829C4CEEB;
-	Mon,  2 Jun 2025 14:40:55 +0000 (UTC)
+	 MIME-Version; b=do28zxhVCRiuz3rIODO+dMYmXN7FYvsMLYGgR43SifU3eVQ+JUsRsSH4U0UzYyhD7DFfXE8kawQuGxQ+cIAMX68dk6sKPSQZjPby6qry05/TRBsSsnG+R3EA8uKTQA9tkV8Hsp81Kj3Tc5euNH7n3jGVT9R4DWzYcS2jc5aWLtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXNbNOss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886D9C4CEEE;
+	Mon,  2 Jun 2025 15:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875256;
-	bh=6qZtpdSc0zTSvivRRRE7qHiuL36Z4IT6eYTWflI05zw=;
+	s=korg; t=1748876827;
+	bh=vBynjrK7gHOJZMNajzBQ4G2URj/JkMPbhKGIyKOZr0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oM2BsSaBwd5wnWPPVGFFoYUiTEEA6Vfah4hMhvR2bHIZPSPkC1A1UH15msWKjn0i
-	 V1+sHeDvSQPH4wHaOZawTGL5XtWSlI00t/TyYIBKwQDUwhrabgydZKFklPqsmNkZzL
-	 Epv4+7Z7lJgQNoohOTQVLKLgwyCeX3szPn7cW5Rk=
+	b=aXNbNOss+uikWMSw9c+qjTm4s4CvIFPrNoint4wxIV252THgCTaJlvLLRkcQMQdNk
+	 AtkAPgeHN0DFS/pToq0ISchoNfuHfEmOOXAAb3TOGjdDSPGWrGQVwBkE7BCfVusIdA
+	 huQ08MPAxT9I0M9d9NDayUOO2JbXrlCMh1SbIEvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/270] iio: adc: dln2: Use aligned_s64 for timestamp
+Subject: [PATCH 6.1 087/325] ipv6: save dontfrag in cork
 Date: Mon,  2 Jun 2025 15:46:03 +0200
-Message-ID: <20250602134310.363734577@linuxfoundation.org>
+Message-ID: <20250602134323.315624215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 5097eaae98e53f9ab9d35801c70da819b92ca907 ]
+[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
 
-Here the lack of marking allows the overall structure to not be
-sufficiently aligned resulting in misplacement of the timestamp
-in iio_push_to_buffers_with_timestamp(). Use aligned_s64 to
-force the alignment on all architectures.
+When spanning datagram construction over multiple send calls using
+MSG_MORE, per datagram settings are configured on the first send.
 
-Fixes: 7c0299e879dd ("iio: adc: Add support for DLN2 ADC")
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-4-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+That is when ip(6)_setup_cork stores these settings for subsequent use
+in __ip(6)_append_data and others.
+
+The only flag that escaped this was dontfrag. As a result, a datagram
+could be constructed with df=0 on the first sendmsg, but df=1 on a
+next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
+the "diff" scenario.
+
+Changing datagram conditions in the middle of constructing an skb
+makes this already complex code path even more convoluted. It is here
+unintentional. Bring this flag in line with expected sockopt/cmsg
+behavior.
+
+And stop passing ipc6 to __ip6_append_data, to avoid such issues
+in the future. This is already the case for __ip_append_data.
+
+inet6_cork had a 6 byte hole, so the 1B flag has no impact.
+
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/dln2-adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ipv6.h  | 1 +
+ net/ipv6/ip6_output.c | 9 +++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index 58b3f6065db0d..e29eb38a50690 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -483,7 +483,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct {
- 		__le16 values[DLN2_ADC_MAX_CHANNELS];
--		int64_t timestamp_space;
-+		aligned_s64 timestamp_space;
- 	} data;
- 	struct dln2_adc_get_all_vals dev_data;
- 	struct dln2_adc *dln2 = iio_priv(indio_dev);
+diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
+index 9a44de45cc1f2..9f27e004127bb 100644
+--- a/include/linux/ipv6.h
++++ b/include/linux/ipv6.h
+@@ -199,6 +199,7 @@ struct inet6_cork {
+ 	struct ipv6_txoptions *opt;
+ 	u8 hop_limit;
+ 	u8 tclass;
++	u8 dontfrag:1;
+ };
+ 
+ /**
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index f7a225da8525b..cfc276e5a249f 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1450,6 +1450,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
+ 	}
+ 	v6_cork->hop_limit = ipc6->hlimit;
+ 	v6_cork->tclass = ipc6->tclass;
++	v6_cork->dontfrag = ipc6->dontfrag;
+ 	if (rt->dst.flags & DST_XFRM_TUNNEL)
+ 		mtu = np->pmtudisc >= IPV6_PMTUDISC_PROBE ?
+ 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
+@@ -1483,7 +1484,7 @@ static int __ip6_append_data(struct sock *sk,
+ 			     int getfrag(void *from, char *to, int offset,
+ 					 int len, int odd, struct sk_buff *skb),
+ 			     void *from, size_t length, int transhdrlen,
+-			     unsigned int flags, struct ipcm6_cookie *ipc6)
++			     unsigned int flags)
+ {
+ 	struct sk_buff *skb, *skb_prev = NULL;
+ 	struct inet_cork *cork = &cork_full->base;
+@@ -1539,7 +1540,7 @@ static int __ip6_append_data(struct sock *sk,
+ 	if (headersize + transhdrlen > mtu)
+ 		goto emsgsize;
+ 
+-	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
++	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
+ 	    (sk->sk_protocol == IPPROTO_UDP ||
+ 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
+ 	     sk->sk_protocol == IPPROTO_RAW)) {
+@@ -1884,7 +1885,7 @@ int ip6_append_data(struct sock *sk,
+ 
+ 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
+ 				 &np->cork, sk_page_frag(sk), getfrag,
+-				 from, length, transhdrlen, flags, ipc6);
++				 from, length, transhdrlen, flags);
+ }
+ EXPORT_SYMBOL_GPL(ip6_append_data);
+ 
+@@ -2089,7 +2090,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
+ 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
+ 				&current->task_frag, getfrag, from,
+ 				length + exthdrlen, transhdrlen + exthdrlen,
+-				flags, ipc6);
++				flags);
+ 	if (err) {
+ 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
+ 		return ERR_PTR(err);
 -- 
 2.39.5
 
