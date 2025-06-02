@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5AFACB4E7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C40D3ACB26C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9807E9E519B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74DF161155
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10541223DFA;
-	Mon,  2 Jun 2025 14:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD93226D00;
+	Mon,  2 Jun 2025 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBDEYN15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjAFXTYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D422236F0;
-	Mon,  2 Jun 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A9A1DED64;
+	Mon,  2 Jun 2025 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875044; cv=none; b=IRAStSQ8KxIdPQQZs7DE4eTmmA2uxZXxZVZwAzAwUpFC3kGBUFrPsBtwFCBxJxR2/BfAi1BCsdZkALkI32FxZWWmbc83hTwvIm/ud5BuW+qwIZkZaUXE7BReeW9fqhYgJK5iCa8TF715hd1yF7Yy/F2UdCxe8Ht3ksRrql09c3U=
+	t=1748873731; cv=none; b=PHF6dOCf9gl8iDph8WSzWHrDSwOgb2KAA3JQfGp8lmSl19OzpTLxaC5F14ZtYAjpnZyPVGEm6KBBVkzq6WxiLVFsw9/3IqA0gDBsnXM+e8bv3divXhj0DeHwjXxvsosTlJVIJcELRKulZa3/RUzwItCvzgHpI422yUWXobmL2a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875044; c=relaxed/simple;
-	bh=YfEht2HhuGDYMrnp8lwO5KnMLHcVGJIpBc+c4tg5HQw=;
+	s=arc-20240116; t=1748873731; c=relaxed/simple;
+	bh=kcUO2ek+BpJwqB/8K1BYNIFfXvZCVxDdLJ3dIFNReGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cle6j5WlK5JXKR7UEqpbpKNUmroAgzyXsLZPbv+bibgv1jgCY4lxzeU+fLUd8LFLB822jb+ssrxi0XI5QbSCao1T1lxBTTOTO6TFVZ+/wDE1Umwn5sdi/bI6fPHwaQb4qQoQQ4W8yMUIYNfNkb1bqkPdFhPDnODHtkhCr1JZJQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBDEYN15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26982C4CEEB;
-	Mon,  2 Jun 2025 14:37:23 +0000 (UTC)
+	 MIME-Version; b=sVU0+Vc+yvPa/ywkeFzoA53PsG7FstCWlxoLCgOD3xdFLCGNgq2W0+h/5vyun2KzVp//59gnOZiMVTzmHoVbMMOjDs1aJ5iaVqjSrHMqiYprO4IeUBPcGoeWA8Ln/l/JqpYEXnbvwpgi0yyhXI77zYvV/hg7d4z+oT/XlZyUyxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjAFXTYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E47EC4CEEB;
+	Mon,  2 Jun 2025 14:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875044;
-	bh=YfEht2HhuGDYMrnp8lwO5KnMLHcVGJIpBc+c4tg5HQw=;
+	s=korg; t=1748873730;
+	bh=kcUO2ek+BpJwqB/8K1BYNIFfXvZCVxDdLJ3dIFNReGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBDEYN150SZOTV8qMVV0vv+ztzDI65pLr0X7dAQmWlVAeyUWPPjMfsqTnq8HmYBKj
-	 N4YuJlwsZnT4HNCaKrpDYW0a4y55inAYm0Tt7XOQ/ETaTKt3KhG+GE00fuu69WHwUf
-	 HgEHaIyM8T4dtBx4Wjy3yWIC+DW1mYpk04YyYifc=
+	b=RjAFXTYFrc/sF02cTTDq7jPflCcDXb/E1vnym1NqnZmWvWce0h7LaWepH+W2IjiTY
+	 N0nOlEZwrFuoN/XKBs6n0sh3qyDG2VI11wdVexLjCYnp1OMBKTCPKGqmsMR45Vb+l0
+	 3NNpxYFxumoAue4SszUmklG0+mmGxbJEU0yYGcMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.10 011/270] dm: always update the array size in realloc_argv on success
+	Brendan Jackman <jackmanb@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 232/444] kunit: tool: Use qboot on QEMU x86_64
 Date: Mon,  2 Jun 2025 15:44:56 +0200
-Message-ID: <20250602134307.659184592@linuxfoundation.org>
+Message-ID: <20250602134350.328056498@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Brendan Jackman <jackmanb@google.com>
 
-commit 5a2a6c428190f945c5cbf5791f72dbea83e97f66 upstream.
+[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
 
-realloc_argv() was only updating the array size if it was called with
-old_argv already allocated. The first time it was called to create an
-argv array, it would allocate the array but return the array size as
-zero. dm_split_args() would think that it couldn't store any arguments
-in the array and would call realloc_argv() again, causing it to
-reallocate the initial slots (this time using GPF_KERNEL) and finally
-return a size. Aside from being wasteful, this could cause deadlocks on
-targets that need to process messages without starting new IO. Instead,
-realloc_argv should always update the allocated array size on success.
+As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
+qboot does not.
 
-Fixes: a0651926553c ("dm table: don't copy from a NULL pointer in realloc_argv()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It turns out this is actually useful with kunit.py, since the user is
+exposed to this issue if they set --raw_output=all.
+
+qboot is also faster than SeaBIOS, but it's is marginal for this
+usecase.
+
+[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
+
+Both SeaBIOS and qboot are x86-specific.
+
+Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -513,9 +513,10 @@ static char **realloc_argv(unsigned *siz
- 		gfp = GFP_NOIO;
- 	}
- 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
--	if (argv && old_argv) {
--		memcpy(argv, old_argv, *size * sizeof(*argv));
-+	if (argv) {
- 		*size = new_size;
-+		if (old_argv)
-+			memcpy(argv, old_argv, *size * sizeof(*argv));
- 	}
- 
- 	kfree(old_argv);
+diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
+index dc79490768630..4a6bf4e048f5b 100644
+--- a/tools/testing/kunit/qemu_configs/x86_64.py
++++ b/tools/testing/kunit/qemu_configs/x86_64.py
+@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
+ 			   qemu_arch='x86_64',
+ 			   kernel_path='arch/x86/boot/bzImage',
+ 			   kernel_command_line='console=ttyS0',
+-			   extra_qemu_params=[])
++			   # qboot is faster than SeaBIOS and doesn't mess up
++			   # the terminal.
++			   extra_qemu_params=['-bios', 'qboot.rom'])
+-- 
+2.39.5
+
 
 
 
