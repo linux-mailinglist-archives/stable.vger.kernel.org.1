@@ -1,190 +1,269 @@
-Return-Path: <stable+bounces-148895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89EAACA7ED
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 03:23:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4750ACA818
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 03:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3031886E62
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:23:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE8E67A04C6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 01:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C02139CF2;
-	Mon,  2 Jun 2025 00:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45464C7C;
+	Mon,  2 Jun 2025 01:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="N6VRS2YS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xNchlMuY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDC4801;
-	Mon,  2 Jun 2025 00:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FAE184E
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 01:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748823832; cv=none; b=dtrK8KaoRG3HwQp0do7qZNkafIvIWycuYLltvMMdadbRT/AUKJ7d1wtiTDs3799nq4ZgIYFv6AOpgyHGyPjgjZQi084WM1AK19iYP7dRphmDwFBMGO0Rq4SgLcgWCrv3+KO4k25bmdgVQDeVl5HbW5r/a0nasw09kaP1Vt2fpOM=
+	t=1748828620; cv=none; b=NPQGkSp+S8QuVWQY/v/3agtX2tEGPkINKYIA9YAyu0/Ap7tJJnFeEh266S8YNxglND/Ax/rQjN2jhrq+28o3zChw4kCLx+RFaGfh6NwfGhx2IPcHksUDAWWQcgaJg+jQ50A8853+SkhZ7bN40igz6MiD6XmEhUmW8ANr+MpKk54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748823832; c=relaxed/simple;
-	bh=mPT034hNVZ/977d10Yr+1gK7OY83Sfsc+vYjI2DF18M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F/objP5M+Gsmce7qSkd/pm2qUC651+Z1BxkVzq6sf2394QQCluZJm4Kc+IEFnllbkONOdrdh2VMHYutfmyaB7hqX4AgIbwQTf5+EdNH1OW4phsWIckkrbxrkQrlDttlrnbAIa0K0eDpxk8BiD4F/CapB9NL1kAvuEf7h2u89KMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=N6VRS2YS; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=FYIuU5adQcAYGloGoUqfC/nnupMXlhYz03OeWU8d5SU=; b=N6VRS2YSAFXF86qS
-	DuTC0pRgN9Gmce800c4ExShbL1zoIOeDRHO309B1UY93x5BUAx4RvY03m7643W5EY1wGj3hqG0UsG
-	HZQLV8Y2aUo8JA5OmDZvXzxkK4Lh7S6qo9ZMBa25jowDs1GTHiBvoi7/ZTU5Xf/wBva1yMe0EYwkg
-	ja8fPWiwVRfNHvP753rmcqI3CVAVbe6n53tT9x+GmccLjHEim+lCZT3jbfeJyy39peje37jkR3n9d
-	Z73cHw/QUtqmPTajQQA8uyeYBTtaQINDDsQHh1q3oQhtbHKs2XNmmrFdFFyTIwbP0r71gO9J+Uqmg
-	WrmjVV5gKDzNJIxx3g==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1uLsSE-0074vX-2C;
-	Sun, 01 Jun 2025 23:51:02 +0000
-Date: Sun, 1 Jun 2025 23:51:02 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>, perex@perex.cz, tiwai@suse.com,
-	yuehaibing@huawei.com, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.15 101/110] ALSA: seq: Remove unused
- snd_seq_queue_client_leave_cells
-Message-ID: <aDznZgej_QbaalP0@gallifrey>
-References: <20250601232435.3507697-1-sashal@kernel.org>
- <20250601232435.3507697-101-sashal@kernel.org>
+	s=arc-20240116; t=1748828620; c=relaxed/simple;
+	bh=3D5N5qY69CbwZgHWptHWeTHskJpWRrvqNIYWE4h9DbM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N9+RZl5SYQgexZBjagbOIS7mgBO0uoyE0VDAWNThZMYc+NmtgNLyyaze/7uzn34hnAjNsyoZBJAqMh/ee5XB3Gbu3JMSZbVwdpya9LHgtpSBVWhrcbDL9GpxD9bl2PmJlnX1tLSY/HXNSpizMl68rrZdqM2I4txowqenrX1ahtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xNchlMuY; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6024087086dso8546a12.0
+        for <stable@vger.kernel.org>; Sun, 01 Jun 2025 18:43:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748828617; x=1749433417; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wYvGcWQJ9d1k2IJ1WZ8pmBWN9v/WGRaKrwMXLLXLqzw=;
+        b=xNchlMuYtftLvVQqSzNfvE2gnP+s/RrAFC6uHlIs/phC+IO8IHR0G8PTP5Kh1iUO4o
+         mcnaQ4CKWzfAEUCVsHPNyh3BR8gt/IAlYzWqMRLvFDii6rfgKyPZwxeXVrN5LNX5CoCD
+         qj/CTIwnI75pRnsfDYqmbEbTod67nBehIP+9Wfrq6SALyVK9vFZp9OWCs0MxQ5yjssws
+         5CzhXl8X3avlTsquuOx74+CCeiftNJC4vx7LDhbyjD1DxNdHFzguGb75xlqOA0MdoyAA
+         GhmUBYGs0ji3dobUsMlipZhPBZtyFxtN32HXv1mPfOvFLrcq8hRa9RxI7NS91Ptuex/C
+         23rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748828617; x=1749433417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wYvGcWQJ9d1k2IJ1WZ8pmBWN9v/WGRaKrwMXLLXLqzw=;
+        b=ZdTsYJGtG6rW8V2u9mpr363zI449RFmMMg1USOGBLb9RCUs+lp2vn14Wt/Fgx3GjB3
+         ERSF8ddLdC8+sl3q3TMc7iPKY9ex2lZdlRxKFaR0gKZKo8EqbFo71nw3KVB6jnIRxVbY
+         e/DrvpbsMwGlIA5vkiBztgoUuj06krsTmEFMrsNDERE4U+G8uR76m97knLSLBZesl+pQ
+         Hy9JXTkDjPhiBH6Wdyy3x3o/QzGn8mP/h48Q84llFq7Px1Ak7qPpjWJ4dyxx6smncjna
+         694crE+gW/v7NNvuwTNV4GFybc1sILcf+8xAa/0fKrQEc8LnGHpILlkAAO8+83ZcjuLv
+         iygg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKDFBAzB8i6qzq93A60PDcV8/9We9cr8D3xTCAIeYCnLMsGacRbSQIoN9jIiVDBNXb4UDHCVo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzb/24VyEzPhbYLmJwwIjMoVXpX0LAPPbByaKUk8I9wrzHEPXDj
+	Is4OWWAEHW4ySQZok89CUUhoxva2wUM9H9sXtnMy81bnX6CVWtJnLt4RCD30GVJ7aZ+AxNQ2wls
+	o/F17yLgFG3aahB4taJnCc90ztfVQ4hyRkTb+B8m5MACq/PdbW0yL1RGP
+X-Gm-Gg: ASbGncvkpeIbvJSWIl3UGvuI2gYTJxNFBhQmwjwlx23myS6nTxfd5ZqJ47EAjTRzBAe
+	scIu7TMXm68I2ftxzYUd6R0aRIaXcWVImjBiJoioLa5AsbccEPTsZxX6ajGkWavmZkBfaGnITAO
+	efy632znZVP/wlL2Qx7lhmn/xa+O3orPnjMAUvcg80J8HVPApaqm+0UuL0iBwojuPybklT0ur8f
+	VYK
+X-Google-Smtp-Source: AGHT+IFMz4mfq5Y8/o5Yf0vlPV+OHhh4I+9hHTwnCw8e89qHhyt4L6kmwID2mb8bj9joV5ZdYADHSGEV4nVYb0ujbYU=
+X-Received: by 2002:a05:6402:1852:b0:5fd:2041:88f7 with SMTP id
+ 4fb4d7f45d1cf-605ad29d9d5mr95107a12.2.1748828616702; Sun, 01 Jun 2025
+ 18:43:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20250601232435.3507697-101-sashal@kernel.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-34-amd64 (x86_64)
-X-Uptime: 23:48:36 up 35 days,  8:02,  1 user,  load average: 0.10, 0.06, 0.01
-User-Agent: Mutt/2.2.12 (2023-09-09)
+References: <20250601200108.23186-1-ryncsn@gmail.com>
+In-Reply-To: <20250601200108.23186-1-ryncsn@gmail.com>
+From: Lokesh Gidra <lokeshgidra@google.com>
+Date: Sun, 1 Jun 2025 18:43:25 -0700
+X-Gm-Features: AX0GCFsO6EmUtlJ041E_1X1dTrIiqSlIvY3mMfgpc6Yn0ldxuA-DlfU3YYsdO14
+Message-ID: <CA+EESO5DWB1C3ggH53n=DQL6xNz1bU+NWh7C7_ao=o9NGLvQ4w@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: userfaultfd: fix race of userfaultfd_move and swap cache
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <21cnbao@gmail.com>, Peter Xu <peterx@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-* Sasha Levin (sashal@kernel.org) wrote:
-
-Hi Sasha,
-
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> 
-> [ Upstream commit 81ea9e92941091bb3178d49e63b13bf4df2ee46b ]
-> 
-> The last use of snd_seq_queue_client_leave_cells() was removed in 2018
-> by
-> commit 85d59b57be59 ("ALSA: seq: Remove superfluous
-> snd_seq_queue_client_leave_cells() call")
-> 
-> Remove it.
-> 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> Link: https://patch.msgid.link/20250502235219.1000429-4-linux@treblig.org
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Sun, Jun 1, 2025 at 1:01=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> On seeing a swap entry PTE, userfaultfd_move does a lockless swap cache
+> lookup, and try to move the found folio to the faulting vma when.
+> Currently, it relies on the PTE value check to ensure the moved folio
+> still belongs to the src swap entry, which turns out is not reliable.
+>
+> While working and reviewing the swap table series with Barry, following
+> existing race is observed and reproduced [1]:
+>
+> ( move_pages_pte is moving src_pte to dst_pte, where src_pte is a
+>  swap entry PTE holding swap entry S1, and S1 isn't in the swap cache.)
+>
+> CPU1                               CPU2
+> userfaultfd_move
+>   move_pages_pte()
+>     entry =3D pte_to_swp_entry(orig_src_pte);
+>     // Here it got entry =3D S1
+>     ... < Somehow interrupted> ...
+>                                    <swapin src_pte, alloc and use folio A=
+>
+>                                    // folio A is just a new allocated fol=
+io
+>                                    // and get installed into src_pte
+>                                    <frees swap entry S1>
+>                                    // src_pte now points to folio A, S1
+>                                    // has swap count =3D=3D 0, it can be =
+freed
+>                                    // by folio_swap_swap or swap
+>                                    // allocator's reclaim.
+>                                    <try to swap out another folio B>
+>                                    // folio B is a folio in another VMA.
+>                                    <put folio B to swap cache using S1 >
+>                                    // S1 is freed, folio B could use it
+>                                    // for swap out with no problem.
+>                                    ...
+>     folio =3D filemap_get_folio(S1)
+>     // Got folio B here !!!
+>     ... < Somehow interrupted again> ...
+>                                    <swapin folio B and free S1>
+>                                    // Now S1 is free to be used again.
+>                                    <swapout src_pte & folio A using S1>
+>                                    // Now src_pte is a swap entry pte
+>                                    // holding S1 again.
+>     folio_trylock(folio)
+>     move_swap_pte
+>       double_pt_lock
+>       is_pte_pages_stable
+>       // Check passed because src_pte =3D=3D S1
+>       folio_move_anon_rmap(...)
+>       // Moved invalid folio B here !!!
+>
+> The race window is very short and requires multiple collisions of
+> multiple rare events, so it's very unlikely to happen, but with a
+> deliberately constructed reproducer and increased time window, it can be
+> reproduced [1].
+>
+> It's also possible that folio (A) is swapped in, and swapped out again
+> after the filemap_get_folio lookup, in such case folio (A) may stay in
+> swap cache so it needs to be moved too. In this case we should also try
+> again so kernel won't miss a folio move.
+>
+> Fix this by checking if the folio is the valid swap cache folio after
+> acquiring the folio lock, and checking the swap cache again after
+> acquiring the src_pte lock.
+>
+> SWP_SYNCRHONIZE_IO path does make the problem more complex, but so far
+> we don't need to worry about that since folios only might get exposed to
+> swap cache in the swap out path, and it's covered in this patch too by
+> checking the swap cache again after acquiring src_pte lock.
+>
+> Testing with a simple C program to allocate and move several GB of memory
+> did not show any observable performance change.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=3D6OOrK2OUZ0-tqCzi+EJ=
+t+2_K97TPGoSt=3D9+JwP7Q@mail.gmail.com/ [1]
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+>
 > ---
-> 
-> NO This commit should not be backported to stable kernel trees for
-> several reasons: 
-
-I'd agree with that big fat NO - unless it makes your life easier backporting
-a big pile of other stuff.
-I'm a bit curious about:
-  a) How it got picked up by autosel - I'm quite careful not to include
-     'fixes' tags to avoid them getting picked up.
-  b) Given it's got a big fat no, why is it posted here?
-
-Dave
-
-
-**1. This is a code cleanup, not a bug fix** The commit
-> removes dead code (`snd_seq_queue_client_leave_cells()`) that hasn't
-> been used since 2018. The commit message explicitly states this function
-> was already removed from use by commit 85d59b57be59 in 2018, and this
-> commit is simply cleaning up the unused function definition. This is
-> purely a maintenance/cleanup change with no functional impact. **2. No
-> user-visible impact or bug being fixed** The removed function
-> `snd_seq_queue_client_leave_cells()` was already unused, so removing it
-> doesn't fix any existing bugs, security issues, or user-reported
-> problems. The code changes show: - Removal of the function
-> implementation from `sound/core/seq/seq_queue.c` (lines that iterate
-> through queues and call `snd_seq_prioq_leave()`) - Removal of the
-> function declaration from `sound/core/seq/seq_queue.h` **3. Follows
-> pattern of similar non-backported commits** Looking at the similar
-> commits provided: - **Similar Commit #1**: Removed superfluous function
-> call - Status: NO - **Similar Commit #2**: Removed useless function -
-> Status: NO - **Similar Commit #4**: Removed unused declarations -
-> Status: NO - **Similar Commit #5**: Code refactoring with no functional
-> changes - Status: NO Only **Similar Commit #3** was backported (Status:
-> YES), and that was because it fixed an actual race condition bug that
-> could cause long stalls, not because it was removing unused code. **4.
-> Stable tree criteria not met** Stable kernel backports should focus on:
-> - Important bug fixes that affect users - Security fixes - Critical
-> functionality issues This commit doesn't meet any of these criteria.
-> It's purely cosmetic code cleanup that removes dead code without
-> changing any runtime behavior. **5. Risk vs. benefit analysis** While
-> the risk of regression is minimal since the function was unused, there's
-> no benefit to users of stable kernels from this change. Stable trees
-> should minimize churn and only include changes that provide tangible
-> benefits to users. The commit represents good housekeeping for the
-> mainline kernel but doesn't provide the type of user-impacting fix that
-> justifies inclusion in stable kernel trees.
-> 
->  sound/core/seq/seq_queue.c | 16 ----------------
->  sound/core/seq/seq_queue.h |  1 -
->  2 files changed, 17 deletions(-)
-> 
-> diff --git a/sound/core/seq/seq_queue.c b/sound/core/seq/seq_queue.c
-> index 5df26788dda41..10add922323da 100644
-> --- a/sound/core/seq/seq_queue.c
-> +++ b/sound/core/seq/seq_queue.c
-> @@ -564,22 +564,6 @@ void snd_seq_queue_client_leave(int client)
->  
->  /*----------------------------------------------------------------*/
->  
-> -/* remove cells from all queues */
-> -void snd_seq_queue_client_leave_cells(int client)
-> -{
-> -	int i;
-> -	struct snd_seq_queue *q;
-> -
-> -	for (i = 0; i < SNDRV_SEQ_MAX_QUEUES; i++) {
-> -		q = queueptr(i);
-> -		if (!q)
-> -			continue;
-> -		snd_seq_prioq_leave(q->tickq, client, 0);
-> -		snd_seq_prioq_leave(q->timeq, client, 0);
-> -		queuefree(q);
-> -	}
-> -}
-> -
->  /* remove cells based on flush criteria */
->  void snd_seq_queue_remove_cells(int client, struct snd_seq_remove_events *info)
+>
+> V1: https://lore.kernel.org/linux-mm/20250530201710.81365-1-ryncsn@gmail.=
+com/
+> Changes:
+> - Check swap_map instead of doing a filemap lookup after acquiring the
+>   PTE lock to minimize critical section overhead [ Barry Song, Lokesh Gid=
+ra ]
+>
+>  mm/userfaultfd.c | 27 +++++++++++++++++++++++++--
+>  1 file changed, 25 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index bc473ad21202..a74ede04996c 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1084,8 +1084,11 @@ static int move_swap_pte(struct mm_struct *mm, str=
+uct vm_area_struct *dst_vma,
+>                          pte_t orig_dst_pte, pte_t orig_src_pte,
+>                          pmd_t *dst_pmd, pmd_t dst_pmdval,
+>                          spinlock_t *dst_ptl, spinlock_t *src_ptl,
+> -                        struct folio *src_folio)
+> +                        struct folio *src_folio,
+> +                        struct swap_info_struct *si)
 >  {
-> diff --git a/sound/core/seq/seq_queue.h b/sound/core/seq/seq_queue.h
-> index 74cc31aacdac1..b81379c9af43e 100644
-> --- a/sound/core/seq/seq_queue.h
-> +++ b/sound/core/seq/seq_queue.h
-> @@ -66,7 +66,6 @@ void snd_seq_queue_client_leave(int client);
->  int snd_seq_enqueue_event(struct snd_seq_event_cell *cell, int atomic, int hop);
->  
->  /* Remove events */
-> -void snd_seq_queue_client_leave_cells(int client);
->  void snd_seq_queue_remove_cells(int client, struct snd_seq_remove_events *info);
->  
->  /* return pointer to queue structure for specified id */
-> -- 
-> 2.39.5
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+> +       swp_entry_t entry;
+> +
+>         double_pt_lock(dst_ptl, src_ptl);
+>
+>         if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src=
+_pte,
+> @@ -1102,6 +1105,16 @@ static int move_swap_pte(struct mm_struct *mm, str=
+uct vm_area_struct *dst_vma,
+>         if (src_folio) {
+>                 folio_move_anon_rmap(src_folio, dst_vma);
+>                 src_folio->index =3D linear_page_index(dst_vma, dst_addr)=
+;
+> +       } else {
+> +               /*
+> +                * Check if the swap entry is cached after acquiring the =
+src_pte
+> +                * lock. Or we might miss a new loaded swap cache folio.
+> +                */
+> +               entry =3D pte_to_swp_entry(orig_src_pte);
+
+Can we pass this also from move_pages_pte()? It would be great to
+minimize PTL critical section.
+
+> +               if (si->swap_map[swp_offset(entry)] & SWAP_HAS_CACHE) {
+> +                       double_pt_unlock(dst_ptl, src_ptl);
+> +                       return -EAGAIN;
+> +               }
+>         }
+>
+>         orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_pte);
+> @@ -1409,10 +1422,20 @@ static int move_pages_pte(struct mm_struct *mm, p=
+md_t *dst_pmd, pmd_t *src_pmd,
+>                                 folio_lock(src_folio);
+>                                 goto retry;
+>                         }
+> +                       /*
+> +                        * Check if the folio still belongs to the target=
+ swap entry after
+> +                        * acquiring the lock. Folio can be freed in the =
+swap cache while
+> +                        * not locked.
+> +                        */
+> +                       if (unlikely(!folio_test_swapcache(folio) ||
+> +                                    entry.val !=3D folio->swap.val)) {
+> +                               err =3D -EAGAIN;
+> +                               goto out;
+> +                       }
+
+This check will get skipped if the folio was locked by folio_lock()
+rather than folio_trylock(). It seems to me that the correct way to do
+this is to check outside this if block (right before calling
+move_swap_pte()) and with 'src_folio' instead of 'folio'. Even better,
+if you pass 'entry' as well to move_swap_pte() as per my previous
+comment, then you can move this check also in move_swap_pte().
+
+>                 }
+>                 err =3D move_swap_pte(mm, dst_vma, dst_addr, src_addr, ds=
+t_pte, src_pte,
+>                                 orig_dst_pte, orig_src_pte, dst_pmd, dst_=
+pmdval,
+> -                               dst_ptl, src_ptl, src_folio);
+> +                               dst_ptl, src_ptl, src_folio, si);
+>         }
+>
+>  out:
+> --
+> 2.49.0
+>
 
