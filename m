@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EE2ACB7B8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B309AACB69D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236459E1F46
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082B94C02A0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43836227E94;
-	Mon,  2 Jun 2025 15:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8EA1DDC11;
+	Mon,  2 Jun 2025 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcZ57PA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiF3K9FX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003DC221F1E;
-	Mon,  2 Jun 2025 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7D522257E;
+	Mon,  2 Jun 2025 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877460; cv=none; b=USIH+RvtemeiPFuh23iLJqyKjC3jMixU0P+OjAEOtKnsPIX+xRMcGW1DixRulOwkooURhbrZPVIC5KWLfvk+99AMYVQYegMyU3oIQcU7RtvG2LqFPTvzVmFKw1E4JplDBpV9N94yON7tPUbxvwbb0H4noxbGcj/lIp3TfDwofPA=
+	t=1748876564; cv=none; b=BaEwj0z83vGp/QXXyXvtbxbuboHmZW8z3/OUkeC+fO33C23oD9t/FiCIWvYmXd7VnuH0EGnI67E+2azXCsGKJTBGScvTcWUFQrk3xKLqSwivxCdiUr3BaCVjBqzr1GcUz3eEG9GiT7HjRUwNFQ3nZmZ+DFy7ijxqlqwgsH2xH0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877460; c=relaxed/simple;
-	bh=76vHNv3MnwbkkfQ2b2baTyqmcaUo96fvkplPbM1Em2U=;
+	s=arc-20240116; t=1748876564; c=relaxed/simple;
+	bh=kt9md95zIo+NPYkM3IX4kAmCxyxSlkgjeH2DW7Q5CMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lhk/lXrSTM4/jiVV6R+QeqIMjrepgWZQ0vCzgodVk0pdAUnkr14qIH4FvgkDUkMkGp1t8Eg0e4wNdJBT8/ABIKrytMGE01uyIbTnY8tPnV7V1PCPHXzQANmft7jf5d18+I4KxEtdXxxlcGsVx4WKYsUNWw7GxH55q0fWTGAJxqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcZ57PA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A11EC4CEEB;
-	Mon,  2 Jun 2025 15:17:39 +0000 (UTC)
+	 MIME-Version; b=Hs5zsqV3G7sUn4aJNn8DLi3kR2RJN0OK/Amqtu28V4+O7+tAF9YK4aANSGoti8hrXtNpfNzM9bc+XG3ZMsCnOgPxn1ECyBnTIQvgef/q9vOwuUso3wdXMDdj7HXbYmHbCVenU2xV2CR/67ZZVP474ITE2O3WD1cC6ewJRGAN7dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiF3K9FX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9C5C4CEEE;
+	Mon,  2 Jun 2025 15:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877459;
-	bh=76vHNv3MnwbkkfQ2b2baTyqmcaUo96fvkplPbM1Em2U=;
+	s=korg; t=1748876564;
+	bh=kt9md95zIo+NPYkM3IX4kAmCxyxSlkgjeH2DW7Q5CMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcZ57PA5w9m8SrLSZsJ3tIcjKJOEuP/ck8YsAdo86s9AriN9lUwNrhIAr3Uvf84ZD
-	 3XwyXDLjxPDi5KQDgYckJ2w7TeYAKCwSzvqxsMkakIIIq6FL4NZ9imNl7nXs8mxt+7
-	 aPmABpdyiz1MnKLqBlymXH/v4F0OpVeXvwq6Q/G4=
+	b=FiF3K9FX+onRGco06B0sKUrNQ/hEbaUb/ssDID9lqVnMwE4gzFquhOaSaBotSwxE4
+	 ziZT2Vq2FGvWxh87sHp2SXZdI3nQH8+5/VRWma4DNphazh939O4qLPAy/CRfGspvMd
+	 nD6vmpAP3spvU1ug2mC7WulkS2cB8RUvMFgtaBEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 285/325] af_unix: Replace BUG_ON() with WARN_ON_ONCE().
+	Guenter Roeck <linux@roeck-us.net>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 5.15 189/207] x86/its: Fix undefined reference to cpu_wants_rethunk_at()
 Date: Mon,  2 Jun 2025 15:49:21 +0200
-Message-ID: <20250602134331.343151029@linuxfoundation.org>
+Message-ID: <20250602134306.179957592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit d0f6dc26346863e1f4a23117f5468614e54df064 upstream.
+Below error was reported in a 32-bit kernel build:
 
-This is a prep patch for the last patch in this series so that
-checkpatch will not warn about BUG_ON().
+  static_call.c:(.ref.text+0x46): undefined reference to `cpu_wants_rethunk_at'
+  make[1]: [Makefile:1234: vmlinux] Error
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Jens Axboe <axboe@kernel.dk>
-Link: https://lore.kernel.org/r/20240129190435.57228-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+This is because the definition of cpu_wants_rethunk_at() depends on
+CONFIG_STACK_VALIDATION which is only enabled in 64-bit mode.
+
+Define the empty function for CONFIG_STACK_VALIDATION=n, rethunk mitigation
+is anyways not supported without it.
+
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 5d19a0574b75 ("x86/its: Add support for ITS-safe return thunk")
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Link: https://lore.kernel.org/stable/0f597436-5da6-4319-b918-9f57bde5634a@roeck-us.net/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c |    8 ++++----
- net/unix/scm.c     |    8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/alternative.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -145,7 +145,7 @@ static void scan_children(struct sock *x
- 			/* An embryo cannot be in-flight, so it's safe
- 			 * to use the list link.
- 			 */
--			BUG_ON(!list_empty(&u->link));
-+			WARN_ON_ONCE(!list_empty(&u->link));
- 			list_add_tail(&u->link, &embryos);
- 		}
- 		spin_unlock(&x->sk_receive_queue.lock);
-@@ -224,8 +224,8 @@ static void __unix_gc(struct work_struct
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -98,7 +98,7 @@ static inline u8 *its_static_thunk(int r
+ }
+ #endif
  
- 		total_refs = file_count(sk->sk_socket->file);
- 
--		BUG_ON(!u->inflight);
--		BUG_ON(total_refs < u->inflight);
-+		WARN_ON_ONCE(!u->inflight);
-+		WARN_ON_ONCE(total_refs < u->inflight);
- 		if (total_refs == u->inflight) {
- 			list_move_tail(&u->link, &gc_candidates);
- 			__set_bit(UNIX_GC_CANDIDATE, &u->gc_flags);
-@@ -318,7 +318,7 @@ static void __unix_gc(struct work_struct
- 		list_move_tail(&u->link, &gc_inflight_list);
- 
- 	/* All candidates should have been detached by now. */
--	BUG_ON(!list_empty(&gc_candidates));
-+	WARN_ON_ONCE(!list_empty(&gc_candidates));
- 
- 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
- 	WRITE_ONCE(gc_in_progress, false);
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -50,10 +50,10 @@ void unix_inflight(struct user_struct *u
- 
- 	if (u) {
- 		if (!u->inflight) {
--			BUG_ON(!list_empty(&u->link));
-+			WARN_ON_ONCE(!list_empty(&u->link));
- 			list_add_tail(&u->link, &gc_inflight_list);
- 		} else {
--			BUG_ON(list_empty(&u->link));
-+			WARN_ON_ONCE(list_empty(&u->link));
- 		}
- 		u->inflight++;
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
-@@ -70,8 +70,8 @@ void unix_notinflight(struct user_struct
- 	spin_lock(&unix_gc_lock);
- 
- 	if (u) {
--		BUG_ON(!u->inflight);
--		BUG_ON(list_empty(&u->link));
-+		WARN_ON_ONCE(!u->inflight);
-+		WARN_ON_ONCE(list_empty(&u->link));
- 
- 		u->inflight--;
- 		if (!u->inflight)
+-#ifdef CONFIG_RETHUNK
++#if defined(CONFIG_RETHUNK) && defined(CONFIG_STACK_VALIDATION)
+ extern bool cpu_wants_rethunk(void);
+ extern bool cpu_wants_rethunk_at(void *addr);
+ #else
 
 
 
