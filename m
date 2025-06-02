@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848F2ACB353
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFD6ACB64B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF9FD19433C6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D63F9E561D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF39225A59;
-	Mon,  2 Jun 2025 14:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7890117BBF;
+	Mon,  2 Jun 2025 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1GKJUZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyNhisC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED39D21885A;
-	Mon,  2 Jun 2025 14:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C381EA65;
+	Mon,  2 Jun 2025 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874239; cv=none; b=nBrA7XRf6f5T+mcfUqixg9yFb2kp5UPCeRB95cTDla1ZwzbK9h+rfTN26yqmlKRHm6HDugdDq1140K8DAKfKGA2l7haLh4eCTh7tuTN680cJjZj9TQZXGABYUhy9Gh4mU3tSvfs+wFApsE6B+uKzKBqHNs8kA5PQnl8m5QRnfRE=
+	t=1748876085; cv=none; b=l3G2P24k6AVnPpz7Iw+Ml/OGFZQ5INmIAy/ENl93HwcyqLvxaOTDgWjjsNo6fEpFn6y6dfRR0i09MjHQvzshPGbCT37smu+Nh+hQivPHzp9WPbf3xpMtgOoiSqLk6zJ4267uUKFeOd68qy8PnsaMYoh8IEMet+DBpGN/7KGGkMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874239; c=relaxed/simple;
-	bh=VSGw4N0Ts4uDetnSFA3kTDzhqU/fux07fywHlVBWvV8=;
+	s=arc-20240116; t=1748876085; c=relaxed/simple;
+	bh=DAPaaEYNpGOxvM2j6J39ZDSGB5ZWY6nMJdu3Ir9ngwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LphTVeRyzqUejwHF9ZbsWQS/il2d/Yi+1YBDRUCLvMPsPboXGZUFD3eh7ow4BxZrjXK3Pk3ON9QikZy4L6Noq+d9K7GZ2S3f4ZHvaszEHDk1lP/73c/nx7nW9nnmgQ6AcN7AHKTRdAdKzs4mnY+PFfezWo2HHjK9Z6RToX6Qw4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1GKJUZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C58C4CEEB;
-	Mon,  2 Jun 2025 14:23:58 +0000 (UTC)
+	 MIME-Version; b=lMCzqePWvP1dnEsKzde4QqLpozcEU1VLa4X2RnfooabEROz0GSuU/CNElDBng4GkiSgVG26SD8bYucKJPEo2aI3nR+n0G0Kb6Ta1KEpyrQP0UT3ZImSQBnywd2Oj1o+okIywWjUYZgLA5qmjY1nGlW/tXIXziaENxnBbNbn5MIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyNhisC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BE3C4CEEB;
+	Mon,  2 Jun 2025 14:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874238;
-	bh=VSGw4N0Ts4uDetnSFA3kTDzhqU/fux07fywHlVBWvV8=;
+	s=korg; t=1748876085;
+	bh=DAPaaEYNpGOxvM2j6J39ZDSGB5ZWY6nMJdu3Ir9ngwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1GKJUZZdMycNDtvm4k3qOxwOsxihQnY5YqKfe23jOLEg/iXC+hHZj+HWLRLE9C9s
-	 0dviSEvTQnr8cHacfj0ueJynkH5OXOa7j3y6XSx8yNScpLbMBDXafkWFP0al5Swl+X
-	 bmAa5i72Yvv2Yb/JYbR84HJfdw0IDCaKrHpBwNd8=
+	b=pyNhisC2bQoKAyBs1u2Pt6NdS340oDGBME/4FgwR+0Qq+TOJfTIk89fUdsYu6/k4a
+	 XYiCOP6Ey/GBVbGPVm8SddUMfxdO2RGK+rvs/toto+YHI2hML4XPRFEmqnEBd8EedQ
+	 t3k/M5uZMXEn+N1pwgkFWk21CABzSpR36CS7Xfh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 374/444] Revert "drm/amd: Keep display off while going into S4"
-Date: Mon,  2 Jun 2025 15:47:18 +0200
-Message-ID: <20250602134356.096885647@linuxfoundation.org>
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 067/207] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
+Date: Mon,  2 Jun 2025 15:47:19 +0200
+Message-ID: <20250602134301.365733937@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-commit 7e7cb7a13c81073d38a10fa7b450d23712281ec4 upstream.
+[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
 
-commit 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
-attempted to keep displays off during the S4 sequence by not resuming
-display IP.  This however leads to hangs because DRM clients such as the
-console can try to access registers and cause a hang.
+An of_node_put(i2c_bus) call was immediately used after a pointer check
+for an of_find_i2c_adapter_by_node() call in this function implementation.
+Thus call such a function only once instead directly before the check.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4155
-Fixes: 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250522141328.115095-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e485502c37b097b0bd773baa7e2741bf7bd2909a)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue was transformed by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2896,11 +2896,6 @@ static int dm_resume(void *handle)
+diff --git a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+index 88d0188397e7b..28aab5a8336e0 100644
+--- a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
++++ b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+@@ -811,13 +811,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
+ 		}
+ 		tsin->i2c_adapter =
+ 			of_find_i2c_adapter_by_node(i2c_bus);
++		of_node_put(i2c_bus);
+ 		if (!tsin->i2c_adapter) {
+ 			dev_err(&pdev->dev, "No i2c adapter found\n");
+-			of_node_put(i2c_bus);
+ 			ret = -ENODEV;
+ 			goto err_node_put;
+ 		}
+-		of_node_put(i2c_bus);
  
- 		return 0;
- 	}
--
--	/* leave display off for S4 sequence */
--	if (adev->in_s4)
--		return 0;
--
- 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
- 	dc_release_state(dm_state->context);
- 	dm_state->context = dc_create_state(dm->dc);
+ 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
+ 
+-- 
+2.39.5
+
 
 
 
