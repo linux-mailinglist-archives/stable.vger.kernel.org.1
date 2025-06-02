@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-149307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A787EACB21F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:28:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F98ACB22C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D17B74080D6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF6A91613AB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CFA23D293;
-	Mon,  2 Jun 2025 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3511E23E350;
+	Mon,  2 Jun 2025 14:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imjnklvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEnOyCnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600E22236FC;
-	Mon,  2 Jun 2025 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E400023D2AE;
+	Mon,  2 Jun 2025 14:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873562; cv=none; b=WqKzz9WiRdHyeUhIZ6JSU45lo+Qwt868a347zd15aeFZvrvXnT6KNrAJNVpnWvV8TAiB853DuZx5i2EfvsM7vGKqFlAwja79qKXLokXZEBuLyF01dPArGFyyzlYTosoLHaI9HdGjnnYwPJKGg0s9f7n2th4uqEconveNQW9A6ik=
+	t=1748873598; cv=none; b=Sx/fZ0gAEoOmMQb/9BzkrregNyhDpAl5NHr2JWPPDiVkm9MLTqzyGE0x6lWKROe21Q63aMJHaQNBzfX3CmrHtuV5gcap6kyUiE1D0Tmik7Zy6kRV0J5yL72mw8daGsj7x4wHOD59P1vFfwfo+CmyNL1ei13HxVaEgeItXRs2qZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873562; c=relaxed/simple;
-	bh=CrnsF92GaWZd9jdxxHHt8TNVR3RfsUJg7uDqnFN/XoY=;
+	s=arc-20240116; t=1748873598; c=relaxed/simple;
+	bh=vCbI+cjAV40fLqr/0YITuKS1NjAnwhUX/IZZ40MX6ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPvfEm5lLYcbHTZXYaP4uaIRfapyjW84Hwl/MXcaW5nsmQj3pFKUwGdC96Q9IiIxR18gWjMyN6kcoJXlVmPVyf7TzoZ6vfEVLHdxNP9NOvsdA7aupdV9EbdJi+LL4gsc1ttRuUf2bV5zADitqaX6ItgqtRq/DTw3wMuiGZmeKkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imjnklvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2689C4CEEB;
-	Mon,  2 Jun 2025 14:12:41 +0000 (UTC)
+	 MIME-Version; b=P8A4peTIemdITLMNKtxvAhzxDyEx72T/1iPTaAckEVbnPiJhVOCpS4s3aXJi9+dBFQHvrVJy+RhzEvnZTsh0eHOPclZDBLGDQKZ+UvsVnXoQtI8wHDMnnp4d/svEDlJqGLStA0hcYCSEX/IGy5lpJs0Ac+GpHE/YI4pZkPx6raw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEnOyCnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A97C4CEEB;
+	Mon,  2 Jun 2025 14:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873562;
-	bh=CrnsF92GaWZd9jdxxHHt8TNVR3RfsUJg7uDqnFN/XoY=;
+	s=korg; t=1748873597;
+	bh=vCbI+cjAV40fLqr/0YITuKS1NjAnwhUX/IZZ40MX6ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imjnklvOeJ/t4TS53Adv97ufcpVnDnPdwZ3EFRqSrqF0Ollq+lKbi+ABEw4GRHJOD
-	 Ihx+BoUC0uTX9vsw5pTNis2jAR4hY8JmH7//Vbz9UIGo270lDsoz7hLpiy7L2IABwW
-	 a0T1icVYHBShakgeCH/IB1qCOySeu8rJH1/8gu3E=
+	b=qEnOyCnAfS8Dh30jQTdaO+ra1kzMxcprH2qmL8MwIUvldqT5J5ZjN5WX00/eyysi1
+	 xmA+7xO+INVHJdjxyBnKteAbr2ndvhsQbPOjJo2H9VcmGmdvbSqcnfxDBaOLn3mMPc
+	 fjCl8sUHqwEMbmEhbc4ZDzbzMXQUI9OyyDOu3qOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Krakauer <krakauer@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/444] selftests/net: have `gro.sh -t` return a correct exit code
-Date: Mon,  2 Jun 2025 15:43:57 +0200
-Message-ID: <20250602134347.920618815@linuxfoundation.org>
+Subject: [PATCH 6.6 174/444] drm/amdkfd: KFD release_work possible circular locking
+Date: Mon,  2 Jun 2025 15:43:58 +0200
+Message-ID: <20250602134347.958260835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -67,35 +67,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kevin Krakauer <krakauer@google.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
+[ Upstream commit 1b9366c601039d60546794c63fbb83ce8e53b978 ]
 
-Modify gro.sh to return a useful exit code when the -t flag is used. It
-formerly returned 0 no matter what.
+If waiting for gpu reset done in KFD release_work, thers is WARNING:
+possible circular locking dependency detected
 
-Tested: Ran `gro.sh -t large` and verified that test failures return 1.
-Signed-off-by: Kevin Krakauer <krakauer@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  #2  kfd_create_process
+        kfd_process_mutex
+          flush kfd release work
+
+  #1  kfd release work
+        wait for amdgpu reset work
+
+  #0  amdgpu_device_gpu_reset
+        kgd2kfd_pre_reset
+          kfd_process_mutex
+
+  Possible unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock((work_completion)(&p->release_work));
+                  lock((wq_completion)kfd_process_wq);
+                  lock((work_completion)(&p->release_work));
+   lock((wq_completion)amdgpu-reset-dev);
+
+To fix this, KFD create process move flush release work outside
+kfd_process_mutex.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
-index 342ad27f631b1..e771f5f7faa26 100755
---- a/tools/testing/selftests/net/gro.sh
-+++ b/tools/testing/selftests/net/gro.sh
-@@ -95,5 +95,6 @@ trap cleanup EXIT
- if [[ "${test}" == "all" ]]; then
-   run_all_tests
- else
--  run_test "${proto}" "${test}"
-+  exit_code=$(run_test "${proto}" "${test}")
-+  exit $exit_code
- fi;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index a6d08dee74f6e..93740b8fc3f44 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -812,6 +812,14 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	/* If the process just called exec(3), it is possible that the
++	 * cleanup of the kfd_process (following the release of the mm
++	 * of the old process image) is still in the cleanup work queue.
++	 * Make sure to drain any job before trying to recreate any
++	 * resource for this process.
++	 */
++	flush_workqueue(kfd_process_wq);
++
+ 	/*
+ 	 * take kfd processes mutex before starting of process creation
+ 	 * so there won't be a case where two threads of the same process
+@@ -830,14 +838,6 @@ struct kfd_process *kfd_create_process(struct task_struct *thread)
+ 	if (process) {
+ 		pr_debug("Process already found\n");
+ 	} else {
+-		/* If the process just called exec(3), it is possible that the
+-		 * cleanup of the kfd_process (following the release of the mm
+-		 * of the old process image) is still in the cleanup work queue.
+-		 * Make sure to drain any job before trying to recreate any
+-		 * resource for this process.
+-		 */
+-		flush_workqueue(kfd_process_wq);
+-
+ 		process = create_process(thread);
+ 		if (IS_ERR(process))
+ 			goto out;
 -- 
 2.39.5
 
