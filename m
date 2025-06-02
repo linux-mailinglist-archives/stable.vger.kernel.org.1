@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D211EACB4E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210BAACB7C2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D819E020C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2767419451D6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE96226D04;
-	Mon,  2 Jun 2025 14:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0CA224AF3;
+	Mon,  2 Jun 2025 15:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1zIqn17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKyib7TK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A507226CF0;
-	Mon,  2 Jun 2025 14:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16D2AE9A;
+	Mon,  2 Jun 2025 15:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875134; cv=none; b=uadGIV6JKlfaQ3cTYcqfzcJbojmjvClxbGuerZd3eUUB61jpC8X6NejLp8pxFJh98ITnBn4XOiVXTvgwAmXeoOKoImpJwSMImlb6A6+NfrL0Fh9OlXtEH39XX4BdV7JAfJg9xwFFjBtXTNaUQ2ru/NjQaKQbN2Oc0yABHQKUAiY=
+	t=1748876707; cv=none; b=bNql1tZH6EzUMuhxRh0c52kkb6RMhkOR7f1D+dONkDDC0tKGDbfrDQ/xPJBBUkyVoKvp1YirFIwWpgW6y1M+1eTqSxKtLWf94CKjCKh9B4ewMbuJYqrkpLuXbdBaldTVb1uMq8n/KnP3rYuzEj+SMaGdyoi1PUDBwRK2Hr8sV/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875134; c=relaxed/simple;
-	bh=LHbpd2W7AOTcqh9z3M28gg89e964uDDHrNN+v/VuaMw=;
+	s=arc-20240116; t=1748876707; c=relaxed/simple;
+	bh=OTxPKeXAm4QVXSULHRaG9S/RnjX9zIHtB+z4XuCpJp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNBZwNB2mqhvX4UiTeCWnyan3yoo9Wp8BrkvUAtj/NBiQipjgygzCqje8h1Rc5WyhHCqfUEbBZE2vJYWeCmLDpLTf+Dz52bfNWC0MbbrEy+8Wts5xw4w1Vl++gB7EX+aHUbtV5nKRHUcLocKi9dCFlajJt/JdiZ5txf+5Tp3e8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1zIqn17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EB5C4CEEB;
-	Mon,  2 Jun 2025 14:38:52 +0000 (UTC)
+	 MIME-Version; b=B3sUVK+ln9Dy/vfmC9kkEejwjI1IzUF9xLpvcPSHvV874dE/qVkdOg9KaNfnyMLVvMzU+BHw90qzWxnB65EVVkxNLZRrHVvVEKd8kvTXUV5wWpGiznfluwtmHoIg8VmVa9QbmbrydfpKJX/j37gp5ycy3Qex7hIe27DWso38JyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKyib7TK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89EAC4CEEB;
+	Mon,  2 Jun 2025 15:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875133;
-	bh=LHbpd2W7AOTcqh9z3M28gg89e964uDDHrNN+v/VuaMw=;
+	s=korg; t=1748876707;
+	bh=OTxPKeXAm4QVXSULHRaG9S/RnjX9zIHtB+z4XuCpJp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1zIqn17NlAC1S+58nNxcRMe+e1oWzGNci96kkpuH/n1xEEVCZgMrz+5GstAHvzwg
-	 IrhNR9q3kREak3Z8NKWeNylhginTUktZgPPo64DWRUkVWsS5tgop7NIPbeJ+BTnYDf
-	 0a76+x9b+qg+HfqGdhiRv0kMXZoH8HMeRCuSFUZU=
+	b=lKyib7TKZk4IUkxC2N+0Oh0gqdph3h1UdGyRZXoVh7i8A5xDJteF62isZ2IQbhUXf
+	 LwJ2bNty6j/3g7Je53ZOuDxQHlLyTUeOS5skbxh9/XzIFKotPOYFRi+l/G0UZUy1fT
+	 lY/o4YKam+CMJeUtBL4jXrA47t1RgZ2UeDOOJrNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Peter Chen <peter.chen@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/270] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
-Date: Mon,  2 Jun 2025 15:45:24 +0200
-Message-ID: <20250602134308.785976794@linuxfoundation.org>
+Subject: [PATCH 6.1 049/325] i2c: qup: Vote for interconnect bandwidth to DRAM
+Date: Mon,  2 Jun 2025 15:45:25 +0200
+Message-ID: <20250602134321.758395112@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d ]
+[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
 
-usb_phy_init() may return an error code if e.g. its implementation fails
-to prepare/enable some clocks. And properly rollback on probe error path
-by calling the counterpart usb_phy_shutdown().
+When the I2C QUP controller is used together with a DMA engine it needs
+to vote for the interconnect path to the DRAM. Otherwise it may be
+unable to access the memory quickly enough.
 
-Found by Linux Verification Center (linuxtesting.org).
+The requested peak bandwidth is dependent on the I2C core clock.
 
-Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To avoid sending votes too often the bandwidth is always requested when
+a DMA transfer starts, but dropped only on runtime suspend. Runtime
+suspend should only happen if no transfer is active. After resumption we
+can defer the next vote until the first DMA transfer actually happens.
+
+The implementation is largely identical to the one introduced for
+spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
+bandwidth to DRAM") since both drivers represent the same hardware
+block.
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index abe162cd729e9..03d883f5a4cc7 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -446,7 +446,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
- 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
- 		data->override_phy_control = true;
--		usb_phy_init(pdata.usb_phy);
-+		ret = usb_phy_init(pdata.usb_phy);
-+		if (ret) {
-+			dev_err(dev, "Failed to init phy\n");
-+			goto err_clk;
-+		}
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 78682388e02ed..82de4651d18f0 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -14,6 +14,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -150,6 +151,8 @@
+ /* TAG length for DATA READ in RX FIFO  */
+ #define READ_RX_TAGS_LEN		2
+ 
++#define QUP_BUS_WIDTH			8
++
+ static unsigned int scl_freq;
+ module_param_named(scl_freq, scl_freq, uint, 0444);
+ MODULE_PARM_DESC(scl_freq, "SCL frequency override");
+@@ -227,6 +230,7 @@ struct qup_i2c_dev {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct clk		*pclk;
++	struct icc_path		*icc_path;
+ 	struct i2c_adapter	adap;
+ 
+ 	int			clk_ctl;
+@@ -255,6 +259,10 @@ struct qup_i2c_dev {
+ 	/* To configure when bus is in run state */
+ 	u32			config_run;
+ 
++	/* bandwidth votes */
++	u32			src_clk_freq;
++	u32			cur_bw_clk_freq;
++
+ 	/* dma parameters */
+ 	bool			is_dma;
+ 	/* To check if the current transfer is using DMA */
+@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 	return ret;
+ }
+ 
++static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
++{
++	u32 needed_peak_bw;
++	int ret;
++
++	if (qup->cur_bw_clk_freq == clk_freq)
++		return 0;
++
++	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
++	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
++	if (ret)
++		return ret;
++
++	qup->cur_bw_clk_freq = clk_freq;
++	return 0;
++}
++
+ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ {
+ 	struct qup_i2c_block *blk = &qup->blk;
+@@ -840,6 +865,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
+ 	int ret = 0;
+ 	int idx = 0;
+ 
++	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
++	if (ret)
++		return ret;
++
+ 	enable_irq(qup->irq);
+ 	ret = qup_i2c_req_dma(qup);
+ 
+@@ -1645,6 +1674,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 	config = readl(qup->base + QUP_CONFIG);
+ 	config |= QUP_CLOCK_AUTO_GATE;
+ 	writel(config, qup->base + QUP_CONFIG);
++	qup_i2c_vote_bw(qup, 0);
+ 	clk_disable_unprepare(qup->pclk);
+ }
+ 
+@@ -1745,6 +1775,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 			goto fail_dma;
+ 		}
+ 		qup->is_dma = true;
++
++		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
++		if (IS_ERR(qup->icc_path))
++			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
++					     "failed to get interconnect path\n");
  	}
  
- 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
-@@ -455,7 +459,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	ret = imx_usbmisc_init(data->usbmisc_data);
- 	if (ret) {
- 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
--		goto err_clk;
-+		goto phy_shutdown;
+ nodma:
+@@ -1793,6 +1828,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup->clk);
  	}
++	qup->src_clk_freq = src_clk_freq;
  
- 	data->ci_pdev = ci_hdrc_add_device(dev,
-@@ -464,7 +468,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 	if (IS_ERR(data->ci_pdev)) {
- 		ret = PTR_ERR(data->ci_pdev);
- 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
--		goto err_clk;
-+		goto phy_shutdown;
- 	}
- 
- 	if (data->usbmisc_data) {
-@@ -498,6 +502,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 
- disable_device:
- 	ci_hdrc_remove_device(data->ci_pdev);
-+phy_shutdown:
-+	if (data->override_phy_control)
-+		usb_phy_shutdown(data->phy);
- err_clk:
- 	imx_disable_unprepare_clks(dev);
- disable_hsic_regulator:
+ 	/*
+ 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
 2.39.5
 
