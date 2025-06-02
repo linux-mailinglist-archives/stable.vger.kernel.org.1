@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-149706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A017ACB48F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 856EFACB3FB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FB19E1EB8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B99201947485
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9375422541F;
-	Mon,  2 Jun 2025 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F5F222593;
+	Mon,  2 Jun 2025 14:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yugXi2ro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1Lnup4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E95821882B;
-	Mon,  2 Jun 2025 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043B6221299;
+	Mon,  2 Jun 2025 14:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874780; cv=none; b=io0guIS4u2zxbf3Pd2o30Na9QD4bRww2wSUYgtbPJxKoBVLUacOsJslUcH3p3G1VLzALvopzLIltypepgtGfD0JST+sOF8xjtlvTAl8BdA/mDqYtlpd5kbP2sP1mG/H9Q/Q6jZ+YBAtdpA0tSPh0+qFdjoF8K9bMOdjam51vFGg=
+	t=1748874796; cv=none; b=onVxIIPj4vUARxGYssHTLELZzyJNBH9Dz56lFJYckXbGKNIVbsB9boExgnKBMqSyFcIXyaRHLaKkk5a7w+6K0wSt0RwJx+z8IrNmzwS2kDluXXSd/adBJo0WlxS+Xf43H3IQ0BVTCwoZLuKO9iTC1kLS+ZkzyVPjA8RxLOeNCHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874780; c=relaxed/simple;
-	bh=HU7HTt4EGikjshpirHO029ynR1FwZBlSgJdB/plR4S0=;
+	s=arc-20240116; t=1748874796; c=relaxed/simple;
+	bh=Yj+QXhGCmEq3GXcgw3BEC8ES08OUr1iTxDeqbVVpFSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pANsUxpy7BKS7VfCn15Uq/E5u4Ry0E77faqBfh9ZSz/ofN6ypqGm2Mt/CMcKvVniBrIjFgelSuk3yHKZxxePzXzTxM/r4BO7+rlrGkEXgbcH0QJJPxbVxSXHCxAryfUBdRYuuFjedXVFEPYZbmm2V0vmUHZPQWB0OlRAMMIrmgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yugXi2ro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD8C4CEEB;
-	Mon,  2 Jun 2025 14:32:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KPNky4lXnqUeA2pjlxpH8eOMdsJl73EoIecIyrRveXXa4Sd+7RkhzwGYM++AnTUbImiCJAu3/OO0lTUJ0mOuNLiW2nOncpB15rBFBtRMyxDSNE5XIM8d7Kcb4LG4HBqyM84MfpT/I4nwBopUBRAdNg7sEQd4dRwMq5o5FoX2L3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1Lnup4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DFFC4CEEB;
+	Mon,  2 Jun 2025 14:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874780;
-	bh=HU7HTt4EGikjshpirHO029ynR1FwZBlSgJdB/plR4S0=;
+	s=korg; t=1748874795;
+	bh=Yj+QXhGCmEq3GXcgw3BEC8ES08OUr1iTxDeqbVVpFSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yugXi2roxoOZF19hngmTPpD0XWqG4/m0D94PN6jy8gT3zWOCgQKQmxE4UgBl9Wq64
-	 aB4zz8RqvYBUQRd9+nAEVUoxu91GGXd7Je0ShsEdU2tZ8hjaRzdDCCIoGImH9dGho0
-	 c8cBM01r17zVeVhJ6AMLu+QabdCI4FSa741huk24=
+	b=v1Lnup4iL/71Si1yBDbZCu3DRj2/rkvNJYQGGY3WU7TpxDdfL0z78pSWxGaKxFbZA
+	 l5i9BjcZyRDcZiGu8c9QrXzdkaqxQ0QzKJ6VY2jXa8DfjpbQx/A1uyIbHqMlNzfyrK
+	 2yePFYNYibRsrX+2CH8U/esSz3MB+GGutTgX/jkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 106/204] scsi: st: Tighten the page format heuristics with MODE SELECT
-Date: Mon,  2 Jun 2025 15:47:19 +0200
-Message-ID: <20250602134259.830399745@linuxfoundation.org>
+Subject: [PATCH 5.4 107/204] scsi: st: ERASE does not change tape location
+Date: Mon,  2 Jun 2025 15:47:20 +0200
+Message-ID: <20250602134259.867165772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
 References: <20250602134255.449974357@linuxfoundation.org>
@@ -69,40 +69,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
+[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
 
-In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
-not correctly implement it. The st driver first tries MODE SELECT with the
-page format bit set to set the block descriptor.  If not successful, the
-non-page format is tried.
-
-The test only tests the sense code and this triggers also from illegal
-parameter in the parameter list. The test is limited to "old" devices and
-made more strict to remove false alarms.
+The SCSI ERASE command erases from the current position onwards.  Don't
+clear the position variables.
 
 Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
+Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/st.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 2b5e3e2ba3b8b..8f927851ccf86 100644
+index 8f927851ccf86..3f798f87e8d98 100644
 --- a/drivers/scsi/st.c
 +++ b/drivers/scsi/st.c
-@@ -3076,7 +3076,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			   cmd_in == MTSETDRVBUFFER ||
- 			   cmd_in == SET_DENS_AND_BLK) {
- 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
--			    !(STp->use_pf & PF_TESTED)) {
-+				cmdstatp->sense_hdr.asc == 0x24 &&
-+				(STp->device)->scsi_level <= SCSI_2 &&
-+				!(STp->use_pf & PF_TESTED)) {
- 				/* Try the other possible state of Page Format if not
- 				   already tried */
- 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
+@@ -2889,7 +2889,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			timeout = STp->long_timeout * 8;
+ 
+ 		DEBC_printk(STp, "Erasing tape.\n");
+-		fileno = blkno = at_sm = 0;
+ 		break;
+ 	case MTSETBLK:		/* Set block length */
+ 	case MTSETDENSITY:	/* Set tape density */
 -- 
 2.39.5
 
