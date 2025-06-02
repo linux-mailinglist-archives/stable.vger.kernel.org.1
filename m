@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A8DACB806
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD03ACB34E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A41079459C2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E0CD7AC18A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041921F4165;
-	Mon,  2 Jun 2025 15:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370FF22D9F7;
+	Mon,  2 Jun 2025 14:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkylE1RL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejaPTL61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B8823098D;
-	Mon,  2 Jun 2025 15:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65C11D8DFB;
+	Mon,  2 Jun 2025 14:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877250; cv=none; b=ZF0QzguijmdR+Dq6LikdieQiBEorxlIUFLrcySBCmzbdzVPIUsZbkp52NHZ9y0UV8NJhIyf9t8cbkC4r/OH2Bc/XyVHEztT910EWaqTsDG/+HO08HvhFKrb52sKdbERFsNrNe4Zh90celDjeV+ES6WEsFx80FzP/vHBOCThwRVI=
+	t=1748874874; cv=none; b=aqym/RqHEt4TafiB6vOin2YKnHujPv76ErOy2jyljxMY2lf9VC0jVKevNNslMyDR0EV5lnMJH/IhN6+qt99vDf/9QUhFRxwn7yKlKT/2hKcPM3mZIgRgYhqPR/IvJZ4Hyjuwg9J7VwX8CpsnOqpSq152rTag4ALvRD0K1ydge0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877250; c=relaxed/simple;
-	bh=vKyMJsHKY9yQ02o3tX7QngfEIO+KQX5fA+H/XFgOlYc=;
+	s=arc-20240116; t=1748874874; c=relaxed/simple;
+	bh=56RYP85K2y+qIgSk6J+pUi/bzWH5E+z6j6WzcXlIyfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3CbkeUvxxzP4fY3sCN2plouzonGH02N1pybTr19rOEt45I8zXkrOQih+gvO97tMZ9B3RGCLmA735h9KjNz31DzK+eqv/H8ET0rqMUd2rN2LxttOhdJ5qUlmVaMTqioh80noExtYnYaP86AV5qsgS+dCmY0KzyIUve1rA5CqLUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkylE1RL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9F7C4CEEB;
-	Mon,  2 Jun 2025 15:14:09 +0000 (UTC)
+	 MIME-Version; b=k7oO5sZanDfIIXEiKbHeNrF4fOpR7RkHjtisByt4iZIhC1T3pzy8NYF0apW4B85tPikRbYrsrd9yskZMxQY1vgqLn5IIZshEqw+phyXq9XRdgVWPnMJzViyeH+ZWxz7/96qVCesju6WIUOquFth8Ghz8QgbFl6WwV5yDLFPD7No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejaPTL61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604D7C4CEEB;
+	Mon,  2 Jun 2025 14:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877250;
-	bh=vKyMJsHKY9yQ02o3tX7QngfEIO+KQX5fA+H/XFgOlYc=;
+	s=korg; t=1748874873;
+	bh=56RYP85K2y+qIgSk6J+pUi/bzWH5E+z6j6WzcXlIyfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkylE1RL4gbfEz1SmcUxG8d5fzL8j2YFt+oBVOP0bQPyiEhTXpqbBWm120Ba3OfUp
-	 2vLhIPWETi1Q6OX/8HWBfHMkTOnohMzu3eV0mQOTQ0/8YFwL97pZuZSXZ/UYdsLv0p
-	 CMRKCD1OqzLxEfyvWmucLWoRPEFARI8S7K9D298w=
+	b=ejaPTL61OfKE3WO/Mzjwukl5Ddj+72N+bwToisPnJCxSz2tbgOpAbMhGs8hbVr9bc
+	 bDMjQHqQvXw7iXXpassFS9l6B/tk8FYWNqSmZpHZNBe1OBj+p0jRO3LYhSzYc51SR6
+	 X/virV9DmIDjrO7u6QfVciP4r2I9OqAz7s3LqKGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Isaac Scott <isaac.scott@ideasonboard.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/325] drm: Add valid clones check
+Subject: [PATCH 5.4 162/204] regulator: ad5398: Add device tree support
 Date: Mon,  2 Jun 2025 15:48:15 +0200
-Message-ID: <20250602134328.689668288@linuxfoundation.org>
+Message-ID: <20250602134302.022321735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Isaac Scott <isaac.scott@ideasonboard.com>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+Previously, the ad5398 driver used only platform_data, which is
+deprecated in favour of device tree. This caused the AD5398 to fail to
+probe as it could not load its init_data. If the AD5398 has a device
+tree node, pull the init_data from there using
+of_get_regulator_init_data.
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
+Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/regulator/ad5398.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 66d223c2d9ab9..e737e45a3a702 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -573,6 +573,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
+index 75f432f61e919..f4d6e62bd963e 100644
+--- a/drivers/regulator/ad5398.c
++++ b/drivers/regulator/ad5398.c
+@@ -14,6 +14,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
++#include <linux/regulator/of_regulator.h>
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -744,6 +768,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
+ #define AD5398_CURRENT_EN_MASK	0x8000
  
- 	/*
+@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
+ 	const struct ad5398_current_data_format *df =
+ 			(struct ad5398_current_data_format *)id->driver_data;
+ 
+-	if (!init_data)
+-		return -EINVAL;
+-
+ 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+ 	if (!chip)
+ 		return -ENOMEM;
+ 
+ 	config.dev = &client->dev;
++	if (client->dev.of_node)
++		init_data = of_get_regulator_init_data(&client->dev,
++						       client->dev.of_node,
++						       &ad5398_reg);
++	if (!init_data)
++		return -EINVAL;
++
+ 	config.init_data = init_data;
++	config.of_node = client->dev.of_node;
+ 	config.driver_data = chip;
+ 
+ 	chip->client = client;
 -- 
 2.39.5
 
