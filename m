@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1337ACB8C2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:45:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24ED9ACB442
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA702944E10
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6962487D05
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9611C84DC;
-	Mon,  2 Jun 2025 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8FD224B15;
+	Mon,  2 Jun 2025 14:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvuFpQgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcxZtny0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6942253F2;
-	Mon,  2 Jun 2025 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FEA224B0C;
+	Mon,  2 Jun 2025 14:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877159; cv=none; b=ocsfyIZuWs4IUqU572f8Vl72jJGKxOU+HZjvvZhU1x1UECwUhlXdiqC+iAExu2lDrgbej5TpM4WICFanTTLjox3Q2bVtZrzUPvt2bVslUijkXJi6/qiM012xNNMQ97AXdZT9YUm2b3fKwNSFJFtxytYqR8SMZUzI1ILFpoLIAjI=
+	t=1748874723; cv=none; b=CyNfNrGgU7FLST61tUJNzNWXNARDSDu+q1CFSCz/fE3KNvvqjGIR8s33qZgqB1DLVBq1v1ZK31WOEFRSxhe3vG8oY/8rMHAEpNVgZU057ICUyqKsBQ1s6byWm4MMf2RcLfaYPJ3Al8340/YTKzSINPdNY9J0Hw/918nfHztfIeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877159; c=relaxed/simple;
-	bh=1CVYTQ/KAxjP7arXTbFQKsk/ux3QkN8E23c08REt/Zg=;
+	s=arc-20240116; t=1748874723; c=relaxed/simple;
+	bh=u8sgfCEHs5W+YHke4n/kDPI89M3EpCtTjM9x24hcwqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ahpq3MSO2quYrqt/yuIpvUJPU4MhXnwCsx6NrzGJGjTrFUnJVRqGP+7JGS73dFFKDy6rBNmvRu1Hksbm/DLFUoLyTIFgqWdcXohrpGKGwdDIL5cuPbPoDgQd+O8ohY/ES5ZHD83DP09dGGbKZ8t0RdAL8hJhK+jiWPM+0thnrPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvuFpQgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FE1C4CEEB;
-	Mon,  2 Jun 2025 15:12:38 +0000 (UTC)
+	 MIME-Version; b=ZYOqabA5uFPtFgsKmlE6RMroXT2dXLCYa2uBEc0LXmyiL7bOpzm5M5SHNoffrg3atxpIbqEaOWBTEEqPqlS0jiHCqE3w5LtOFYvk2gOY1Rd2umGM7CylQu1/0wuT9wbygyEwpzWGA7xVXzUXMeGmTRUqheW4y480kSwWZZjRlAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcxZtny0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3277DC4CEEB;
+	Mon,  2 Jun 2025 14:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877159;
-	bh=1CVYTQ/KAxjP7arXTbFQKsk/ux3QkN8E23c08REt/Zg=;
+	s=korg; t=1748874722;
+	bh=u8sgfCEHs5W+YHke4n/kDPI89M3EpCtTjM9x24hcwqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvuFpQgMzzVuY1nIFzGpEM8FdYON6XqioM9M0bl+apPBfJAgAPSlADfrIv788Wwfd
-	 T+fF4Rg/CdmmFwY2inls74CloHECP6HNgW2V+7Yh92o1OY6z57RbnVGq8aI0yP5lf0
-	 xEkSfX60euwgkngLwK8jdhXprltrsWwPaLVeweP4=
+	b=YcxZtny0P6wX6y/p5mQIV4w682AoQFIsTa3N7isd5Na4qLe2etT22m8kYZF9epPA5
+	 s+OedbWQWP6e3+InhoQUphCPq0Cza7O0+JWQRUMIZyUmqmp1lbn7+7Drjnv83izkfR
+	 9S95rxPynUaFgEYpCuIRm0nitX7iCskqHY7ElcWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 173/325] smack: recognize ipv4 CIPSO w/o categories
+Subject: [PATCH 5.4 116/204] ieee802154: ca8210: Use proper setters and getters for bitwise types
 Date: Mon,  2 Jun 2025 15:47:29 +0200
-Message-ID: <20250602134326.851030859@linuxfoundation.org>
+Message-ID: <20250602134300.216483894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+[ Upstream commit 169b2262205836a5d1213ff44dca2962276bece1 ]
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+Sparse complains that the driver doesn't respect the bitwise types:
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
+drivers/net/ieee802154/ca8210.c:1796:27: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1796:27:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1796:27:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1801:25: warning: incorrect type in assignment (different base types)
+drivers/net/ieee802154/ca8210.c:1801:25:    expected restricted __le16 [addressable] [assigned] [usertype] pan_id
+drivers/net/ieee802154/ca8210.c:1801:25:    got unsigned short [usertype]
+drivers/net/ieee802154/ca8210.c:1928:28: warning: incorrect type in argument 3 (different base types)
+drivers/net/ieee802154/ca8210.c:1928:28:    expected unsigned short [usertype] dst_pan_id
+drivers/net/ieee802154/ca8210.c:1928:28:    got restricted __le16 [addressable] [usertype] pan_id
 
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
+Use proper setters and getters for bitwise types.
 
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
+Note, in accordance with [1] the protocol is little endian.
 
-This happens in two steps:
-
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
-
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Link: https://www.cascoda.com/wp-content/uploads/2018/11/CA-8210_datasheet_0418.pdf [1]
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/20250305105656.2133487-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ieee802154/ca8210.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index d955f3dcb3a5e..9dca3672d82b4 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -922,6 +922,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index d394e2b65054d..d99976034027c 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -1487,8 +1487,7 @@ static u8 mcps_data_request(
+ 	command.pdata.data_req.src_addr_mode = src_addr_mode;
+ 	command.pdata.data_req.dst.mode = dst_address_mode;
+ 	if (dst_address_mode != MAC_MODE_NO_ADDR) {
+-		command.pdata.data_req.dst.pan_id[0] = LS_BYTE(dst_pan_id);
+-		command.pdata.data_req.dst.pan_id[1] = MS_BYTE(dst_pan_id);
++		put_unaligned_le16(dst_pan_id, command.pdata.data_req.dst.pan_id);
+ 		if (dst_address_mode == MAC_MODE_SHORT_ADDR) {
+ 			command.pdata.data_req.dst.address[0] = LS_BYTE(
+ 				dst_addr->short_address
+@@ -1837,12 +1836,12 @@ static int ca8210_skb_rx(
+ 	}
+ 	hdr.source.mode = data_ind[0];
+ 	dev_dbg(&priv->spi->dev, "srcAddrMode: %#03x\n", hdr.source.mode);
+-	hdr.source.pan_id = *(u16 *)&data_ind[1];
++	hdr.source.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[1]));
+ 	dev_dbg(&priv->spi->dev, "srcPanId: %#06x\n", hdr.source.pan_id);
+ 	memcpy(&hdr.source.extended_addr, &data_ind[3], 8);
+ 	hdr.dest.mode = data_ind[11];
+ 	dev_dbg(&priv->spi->dev, "dstAddrMode: %#03x\n", hdr.dest.mode);
+-	hdr.dest.pan_id = *(u16 *)&data_ind[12];
++	hdr.dest.pan_id = cpu_to_le16(get_unaligned_le16(&data_ind[12]));
+ 	dev_dbg(&priv->spi->dev, "dstPanId: %#06x\n", hdr.dest.pan_id);
+ 	memcpy(&hdr.dest.extended_addr, &data_ind[14], 8);
+ 
+@@ -1969,7 +1968,7 @@ static int ca8210_skb_tx(
+ 	status =  mcps_data_request(
+ 		header.source.mode,
+ 		header.dest.mode,
+-		header.dest.pan_id,
++		le16_to_cpu(header.dest.pan_id),
+ 		(union macaddr *)&header.dest.extended_addr,
+ 		skb->len - mac_len,
+ 		&skb->data[mac_len],
 -- 
 2.39.5
 
