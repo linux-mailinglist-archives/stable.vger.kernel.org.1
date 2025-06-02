@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-150018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E98EACB52D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F5AACB36E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E1F77B1473
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E28C07AD25F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1B23027C;
-	Mon,  2 Jun 2025 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8B22253A9;
+	Mon,  2 Jun 2025 14:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzPAINyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boYR35oH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D41122836C;
-	Mon,  2 Jun 2025 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1881FCFE2;
+	Mon,  2 Jun 2025 14:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875774; cv=none; b=eJbZ4d5AAi0n7N10+0zWJbmquGLahAC3d6V76i7qY2H0UV7YHemieB5C/lVhZJKvTUOPIKugVTGnW5bo/CDjgG+SrWgUdbyvekkidIDMcUJqKdbOZIckz4tqBOn0aveq4+HGj5p5UQeSfoDGo68CnltMecAgFk0dBVv56G+X8fU=
+	t=1748874972; cv=none; b=WqqjjyI289Tmr3oWSRKSLnIAf5NjxIVqL3IMq1RxomgsrnYKeg9AJin4zig1hDPYIwFWvGTBbqBCOs6j4dQn8kNenFIwPdVN0FZcb3/efsXpV6x6yG7Piq+lU8FXhFeCe71rcvDUw7/zWE/oNufMHP/9No9OSe832W8cOU3UOb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875774; c=relaxed/simple;
-	bh=W2J8mKCYhyXNXOorj8FC2q1coRjc3sFhUBNhbLcikR4=;
+	s=arc-20240116; t=1748874972; c=relaxed/simple;
+	bh=02ue9IlPTATr3g+TEN+2gzIZDDymCbI3tjW+wwfKFCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXuboqFgY1XQY48kM8aDg7m0D/87cCS9q4FVZjIMsRY/PKwNAO2Un1zZkO9Ak5f5A0SDLbL5SaolPAjPO9O3tRMkagpwWbyhLit7Wm8eAYQ3NRMyPda6bzqduScufAKDWw4CwDiftgqQaVloH6oKuH4g/u27j39+cxumLgbk75A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzPAINyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C47C4CEEE;
-	Mon,  2 Jun 2025 14:49:33 +0000 (UTC)
+	 MIME-Version; b=PE4IYi8sXOgoK4fjeRiVMfEF5ZKs848WfK6KfKm0vDXSslr/c48Nvwe5Qf26eqCWkcz7XIi/k4WsR8SHDs41fq+9Jz27jx7jXDUdWfqepAub40gatts3wb3xQkbr810SuGC2AYKqi6VrP4kNGC0ZlH+5a1yG+r88tywpZv2FPco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boYR35oH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96533C4CEEB;
+	Mon,  2 Jun 2025 14:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875773;
-	bh=W2J8mKCYhyXNXOorj8FC2q1coRjc3sFhUBNhbLcikR4=;
+	s=korg; t=1748874972;
+	bh=02ue9IlPTATr3g+TEN+2gzIZDDymCbI3tjW+wwfKFCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzPAINyY1ueJGjP4bslR6Ev+JG1hDbem2l6fHWdyRNpOeN4biCbhaetlQReExgnsb
-	 ejEP8iJ03qntg71bgvnDUt0oMWifkzXYMeG0aZrD8jPTdSLtv65To3UDcQ6s4Wt/9+
-	 NNU1aQhclY0eKEycUOGXAWs1MVFdpH4mcYVphhus=
+	b=boYR35oH+QB2bSoqiswaXVRIKk0fOL0oqWRiisSPnfJx5H40S8oK76H3WHFxpsjAY
+	 S3gkneLYi+AlBO8hytk9G9O6S1BsyEhxbcwttctldi1shpupZulAsoKuGd1aa9GfA4
+	 8MqD2ip+bdsfK/4aA8uTtpXgK8CpYrjStD8rdDn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 240/270] crypto: algif_hash - fix double free in hash_accept
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 192/204] coredump: fix error handling for replace_fd()
 Date: Mon,  2 Jun 2025 15:48:45 +0200
-Message-ID: <20250602134317.142502202@linuxfoundation.org>
+Message-ID: <20250602134303.222592387@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
+commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
 
-If accept(2) is called on socket type algif_hash with
-MSG_MORE flag set and crypto_ahash_import fails,
-sk2 is freed. However, it is also freed in af_alg_release,
-leading to slab-use-after-free error.
+The replace_fd() helper returns the file descriptor number on success
+and a negative error code on failure. The current error handling in
+umh_pipe_setup() only works because the file descriptor that is replaced
+is zero but that's pretty volatile. Explicitly check for a negative
+error code.
 
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/algif_hash.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/coredump.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -262,10 +262,6 @@ static int hash_accept(struct socket *so
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -551,7 +551,9 @@ static int umh_pipe_setup(struct subproc
+ {
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+-	int err = create_pipe_files(files, 0);
++	int err;
++
++	err = create_pipe_files(files, 0);
+ 	if (err)
  		return err;
  
- 	err = crypto_ahash_import(&ctx2->req, state);
--	if (err) {
--		sock_orphan(sk2);
--		sock_put(sk2);
--	}
+@@ -559,10 +561,13 @@ static int umh_pipe_setup(struct subproc
  
- 	return err;
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
++	if (err < 0)
++		return err;
++
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return err;
++	return 0;
  }
+ 
+ void do_coredump(const kernel_siginfo_t *siginfo)
 
 
 
