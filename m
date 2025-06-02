@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3717DACB39D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B14AACB769
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1D399E01CD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F4624A1634
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C3922FDEC;
-	Mon,  2 Jun 2025 14:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198F2214A93;
+	Mon,  2 Jun 2025 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Io4EicAH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSFNVNSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78FA22FE0A;
-	Mon,  2 Jun 2025 14:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FD322ACF3;
+	Mon,  2 Jun 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874549; cv=none; b=bKM72uoYzjDSJrJqeLVqMguN9AEL2fdlwjibChkZ5AFs8FD0EdMocCV3OfOOROu6Vb27Iz41NUE5k1bZI6gI+gOd9gKGOcOXoR7nAYJmmbsXzgguVsAtYPKLTCvzJe9Bn/Lolj8hliAJCM8nYvZZYSv31qK8YWVJFzgvP+LiRvM=
+	t=1748876919; cv=none; b=QzRcHs0xIZRYIfgxUjgp/AKuTku/uZ2PtzouIHSnNwXXfouShyix/GYjlnkjyoxQI5dGodOm0wVB//kJDVjeexw0/yWk5XV5umpX5OOoA3f8KZORnKPuEggdev7YW6tle02xR6Gc1Gabo48QDWTa0gqApFwl/KwhGVKQBB52sSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874549; c=relaxed/simple;
-	bh=w4FCF4+ZvXz8e6/JCTdLXJiIU/xccmKRhot1MsSs1nY=;
+	s=arc-20240116; t=1748876919; c=relaxed/simple;
+	bh=eSF4lt1PP65E0Xfqo0+tpxS6lLwWt4sgzq8E0QfnSDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZls5ukT+R/sNf/gktZ1ubxYM98BJlw4qS45uJ8C4s38CtcZQZE1b763O29KpQXPd+nURkP6v840ee9/JdEVF8TSjrNISbgTAl3mfhji8xaLTGURhYNX/w4KN6oj6lpiUhGpCcgbYeGZ4fYeIGx/+gGBgbaboeBhywTi5GgDAiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Io4EicAH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CF1C4CEF0;
-	Mon,  2 Jun 2025 14:29:08 +0000 (UTC)
+	 MIME-Version; b=CkRC1CTL8ylq2L474X1eF5jIBPOhV/GknzJqnZ7JR3oxoTGuuJ2hApQOQQSNE7E/qp2os8VKxkxkFFJjWUM1Xv+TyCy2EaIvn8gAELIpcx0IIjDZbGR3b7ejgOlVD+8YCQMW3dIZQXO06qiyH27ydYgOrdXzfjfp3zawUe6QKqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSFNVNSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FB2C4CEEB;
+	Mon,  2 Jun 2025 15:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874549;
-	bh=w4FCF4+ZvXz8e6/JCTdLXJiIU/xccmKRhot1MsSs1nY=;
+	s=korg; t=1748876919;
+	bh=eSF4lt1PP65E0Xfqo0+tpxS6lLwWt4sgzq8E0QfnSDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Io4EicAHLNC5JqyME1dnPP+iVxXdayEF9/Fm2yTyJi4pGUFIZhwiIitIdikbcUlwX
-	 0TuYHXAmFmmMt60DJsZWR7WgastEcVgkHIux4C/X4VCec+qpxdXAc1HaFJhDWDgTAs
-	 b7x0na4nufaHryQYKZdNm/9wg4zZotEreUmZGXKE=
+	b=DSFNVNSWErPs9M8i+F9XFRA6d0NvY3OEFBQGri0IJhqXC0tUZFR+sO0i/GIZtgql6
+	 I4puyq4XmDuPgyVZe7G9tZz6hBUhIsmjeos5GlE0qWTGqd8o42bOGfGxq19x7rb7FR
+	 ZCYYjqk/D4MoTZ59Wata8q9Nt+wC5z28Rnve0ZoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Yunke Cao <yunkec@google.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/204] MIPS: Fix MAX_REG_OFFSET
+Subject: [PATCH 6.1 116/325] media: uvcvideo: Add sanity check to uvc_ioctl_xu_ctrl_map
 Date: Mon,  2 Jun 2025 15:46:32 +0200
-Message-ID: <20250602134258.001180415@linuxfoundation.org>
+Message-ID: <20250602134324.493049547@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit c44572e0cc13c9afff83fd333135a0aa9b27ba26 ]
+[ Upstream commit 990262fdfce24d6055df9711424343d94d829e6a ]
 
-Fix MAX_REG_OFFSET to point to the last register in 'pt_regs' and not to
-the marker itself, which could allow regs_get_register() to return an
-invalid offset.
+Do not process unknown data types.
 
-Fixes: 40e084a506eb ("MIPS: Add uprobes support.")
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Tested-by: Yunke Cao <yunkec@google.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250203-uvc-roi-v17-15-5900a9fed613@chromium.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ptrace.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_v4l2.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index ae578860f7295..4ec9b306556f6 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -65,7 +65,8 @@ static inline void instruction_pointer_set(struct pt_regs *regs,
+diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
+index bd4677a6e653a..0aaa4fce61dae 100644
+--- a/drivers/media/usb/uvc/uvc_v4l2.c
++++ b/drivers/media/usb/uvc/uvc_v4l2.c
+@@ -36,6 +36,12 @@ static int uvc_ioctl_ctrl_map(struct uvc_video_chain *chain,
+ 	unsigned int size;
+ 	int ret;
  
- /* Query offset/name of register from its name/offset */
- extern int regs_query_register_offset(const char *name);
--#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
-+#define MAX_REG_OFFSET \
-+	(offsetof(struct pt_regs, __last) - sizeof(unsigned long))
- 
- /**
-  * regs_get_register() - get register value from its offset
++	if (xmap->data_type > UVC_CTRL_DATA_TYPE_BITMASK) {
++		uvc_dbg(chain->dev, CONTROL,
++			"Unsupported UVC data type %u\n", xmap->data_type);
++		return -EINVAL;
++	}
++
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+ 	if (map == NULL)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
