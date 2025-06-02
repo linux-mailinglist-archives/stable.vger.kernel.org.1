@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D97ACB785
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AB6ACB5C2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC3661BA6165
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17FBF1BA4D6D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CC8224224;
-	Mon,  2 Jun 2025 15:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1297322C325;
+	Mon,  2 Jun 2025 14:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h36evT7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i55yuTcJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DED223DC0;
-	Mon,  2 Jun 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AEE22ACFA;
+	Mon,  2 Jun 2025 14:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877402; cv=none; b=CHSB1MlHpkaXVYX44MBmti7WzWYyEqqEWGYKCTNVxB3l13bAGc1LDZJw3jPL1wb7cguNOo558uInOcnkvxMb9JMScwmkvMKowUm8wxhR/T6V2YCGZPiZdCxR8AV3L0hdP04IjgahS08VifEM5Ju7DoTbS2QBBM+pmjclvJl2fKM=
+	t=1748875873; cv=none; b=CqDcXN/ciUYVdF6/lkN0sUnHjj2Xt+8QFpsSka9revjTKZln/hNedxvCvbuwINojcT73aiKR5dAo+JhLp8sb9k8IsmpyvKXwKbJf4YXvGhh/Ei2joDio9HyZ7vGAwf8zmKNlVRcJsCeCtgWVL1FSTaoXHp7r8Rcq7HPRkHm6S8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877402; c=relaxed/simple;
-	bh=wjKW0aKeiGT0Hf9ErfxOK7KIxrdbCRtoBzIl674UZeI=;
+	s=arc-20240116; t=1748875873; c=relaxed/simple;
+	bh=+Wlr4PpTfSX2qlIOOYabxfLV037jrY99Lt/o4WIEPsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3KH1G5UmNwDdFBifflvEfAm5pgC57nO8XrcFmtbFccRKMKSZTHw+6hPgsswGoM3iktSK8fXZ7gbPtjsDB16p8X0UUnUcqKxfmj27BjLWuSXybePgq1CiweFKWG+Kbi0R65QrvOUJauSevbcxJASpSscczy67WyvoBPQGMZr9yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h36evT7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E9CC4CEEB;
-	Mon,  2 Jun 2025 15:16:40 +0000 (UTC)
+	 MIME-Version; b=Sv6jqNsVdNaUEcOlfXmQjNoTfXON1jHrQtvHS6vko08O1DMRCQSeuYoslmga1iiyBLHHBTleNMZwJVwC3VRf702Gb8OjajiaDZ/287AoMzHX5FOV+b0Z/P11Aty/h+Pq449XJautaYNhq5PbmwVMbRlQkxZVCAU52aL+R9rUQxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i55yuTcJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311C6C4CEEB;
+	Mon,  2 Jun 2025 14:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877401;
-	bh=wjKW0aKeiGT0Hf9ErfxOK7KIxrdbCRtoBzIl674UZeI=;
+	s=korg; t=1748875873;
+	bh=+Wlr4PpTfSX2qlIOOYabxfLV037jrY99Lt/o4WIEPsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h36evT7u4H8Ij6EkzX7v8o5R0ffQ8Vg1b4AcUviqeWbHhWjWii5i7Sj/BHqHa5dRr
-	 okYF5leXLkV3CyS8e2fMe9UmlmmklVcA6AYyavlb+05TrvYEs3yP9KwWHfkTCkhyoQ
-	 Fpe7TXZB9umDdEkUpacf8JvIfxk6T2WoYLbqXIPE=
+	b=i55yuTcJIWFk2mEGjDfK5Cyn4CmJYDnSoln0KJOX8XzvDi7orcP99NMAEL7TfXuac
+	 yBUkLpD0+WuSwElXJ1YbPNPfIVsqykV4ArpdxXmpczucY7z6dNtAbh1trTxDX7MKuo
+	 jOx01TLUiscYa0b7nH4MItzVLeYRNEWfv3awOaxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/325] ksmbd: fix stream write failure
-Date: Mon,  2 Jun 2025 15:49:02 +0200
-Message-ID: <20250602134330.583712381@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 258/270] pid: add pidfd_prepare()
+Date: Mon,  2 Jun 2025 15:49:03 +0200
+Message-ID: <20250602134317.880978666@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 1f4bbedd4e5a69b01cde2cc21d01151ab2d0884f ]
+commit 6ae930d9dbf2d093157be33428538c91966d8a9f upstream.
 
-If there is no stream data in file, v_len is zero.
-So, If position(*pos) is zero, stream write will fail
-due to stream write position validation check.
-This patch reorganize stream write position validation.
+Add a new helper that allows to reserve a pidfd and allocates a new
+pidfd file that stashes the provided struct pid. This will allow us to
+remove places that either open code this function or that call
+pidfd_create() but then have to call close_fd() because there are still
+failure points after pidfd_create() has been called.
 
-Fixes: 0ca6df4f40cf ("ksmbd: prevent out-of-bounds stream writes by validating *pos")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230327-pidfd-file-api-v1-1-5c0e9a3158e4@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ include/linux/pid.h |    1 
+ kernel/fork.c       |   85 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 86 insertions(+)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index cf1b241a15789..fa647b75fba8a 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -423,10 +423,15 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
- 	ksmbd_debug(VFS, "write stream data pos : %llu, count : %zd\n",
- 		    *pos, count);
+--- a/include/linux/pid.h
++++ b/include/linux/pid.h
+@@ -79,6 +79,7 @@ struct file;
+ extern struct pid *pidfd_pid(const struct file *file);
+ struct pid *pidfd_get_pid(unsigned int fd, unsigned int *flags);
+ int pidfd_create(struct pid *pid, unsigned int flags);
++int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret);
  
-+	if (*pos >= XATTR_SIZE_MAX) {
-+		pr_err("stream write position %lld is out of bounds\n",	*pos);
-+		return -EINVAL;
-+	}
+ static inline struct pid *get_pid(struct pid *pid)
+ {
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1820,6 +1820,91 @@ const struct file_operations pidfd_fops
+ #endif
+ };
+ 
++/**
++ * __pidfd_prepare - allocate a new pidfd_file and reserve a pidfd
++ * @pid:   the struct pid for which to create a pidfd
++ * @flags: flags of the new @pidfd
++ * @pidfd: the pidfd to return
++ *
++ * Allocate a new file that stashes @pid and reserve a new pidfd number in the
++ * caller's file descriptor table. The pidfd is reserved but not installed yet.
 +
- 	size = *pos + count;
- 	if (size > XATTR_SIZE_MAX) {
- 		size = XATTR_SIZE_MAX;
--		count = (*pos + count) - XATTR_SIZE_MAX;
-+		count = XATTR_SIZE_MAX - *pos;
- 	}
- 
- 	v_len = ksmbd_vfs_getcasexattr(user_ns,
-@@ -440,13 +445,6 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
- 		goto out;
- 	}
- 
--	if (v_len <= *pos) {
--		pr_err("stream write position %lld is out of bounds (stream length: %zd)\n",
--				*pos, v_len);
--		err = -EINVAL;
--		goto out;
--	}
--
- 	if (v_len < size) {
- 		wbuf = kvzalloc(size, GFP_KERNEL);
- 		if (!wbuf) {
--- 
-2.39.5
-
++ * The helper doesn't perform checks on @pid which makes it useful for pidfds
++ * created via CLONE_PIDFD where @pid has no task attached when the pidfd and
++ * pidfd file are prepared.
++ *
++ * If this function returns successfully the caller is responsible to either
++ * call fd_install() passing the returned pidfd and pidfd file as arguments in
++ * order to install the pidfd into its file descriptor table or they must use
++ * put_unused_fd() and fput() on the returned pidfd and pidfd file
++ * respectively.
++ *
++ * This function is useful when a pidfd must already be reserved but there
++ * might still be points of failure afterwards and the caller wants to ensure
++ * that no pidfd is leaked into its file descriptor table.
++ *
++ * Return: On success, a reserved pidfd is returned from the function and a new
++ *         pidfd file is returned in the last argument to the function. On
++ *         error, a negative error code is returned from the function and the
++ *         last argument remains unchanged.
++ */
++static int __pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
++{
++	int pidfd;
++	struct file *pidfd_file;
++
++	if (flags & ~(O_NONBLOCK | O_RDWR | O_CLOEXEC))
++		return -EINVAL;
++
++	pidfd = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
++	if (pidfd < 0)
++		return pidfd;
++
++	pidfd_file = anon_inode_getfile("[pidfd]", &pidfd_fops, pid,
++					flags | O_RDWR | O_CLOEXEC);
++	if (IS_ERR(pidfd_file)) {
++		put_unused_fd(pidfd);
++		return PTR_ERR(pidfd_file);
++	}
++	get_pid(pid); /* held by pidfd_file now */
++	*ret = pidfd_file;
++	return pidfd;
++}
++
++/**
++ * pidfd_prepare - allocate a new pidfd_file and reserve a pidfd
++ * @pid:   the struct pid for which to create a pidfd
++ * @flags: flags of the new @pidfd
++ * @pidfd: the pidfd to return
++ *
++ * Allocate a new file that stashes @pid and reserve a new pidfd number in the
++ * caller's file descriptor table. The pidfd is reserved but not installed yet.
++ *
++ * The helper verifies that @pid is used as a thread group leader.
++ *
++ * If this function returns successfully the caller is responsible to either
++ * call fd_install() passing the returned pidfd and pidfd file as arguments in
++ * order to install the pidfd into its file descriptor table or they must use
++ * put_unused_fd() and fput() on the returned pidfd and pidfd file
++ * respectively.
++ *
++ * This function is useful when a pidfd must already be reserved but there
++ * might still be points of failure afterwards and the caller wants to ensure
++ * that no pidfd is leaked into its file descriptor table.
++ *
++ * Return: On success, a reserved pidfd is returned from the function and a new
++ *         pidfd file is returned in the last argument to the function. On
++ *         error, a negative error code is returned from the function and the
++ *         last argument remains unchanged.
++ */
++int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
++{
++	if (!pid || !pid_has_task(pid, PIDTYPE_TGID))
++		return -EINVAL;
++
++	return __pidfd_prepare(pid, flags, ret);
++}
++
+ static void __delayed_free_task(struct rcu_head *rhp)
+ {
+ 	struct task_struct *tsk = container_of(rhp, struct task_struct, rcu);
 
 
 
