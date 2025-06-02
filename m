@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE6DACB2A0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80A2ACB479
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92DFF168747
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 769D24A5C8D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F922231A30;
-	Mon,  2 Jun 2025 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E70722D9E6;
+	Mon,  2 Jun 2025 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbE3ydX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGNSvUBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD11231854;
-	Mon,  2 Jun 2025 14:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC0222259F;
+	Mon,  2 Jun 2025 14:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873927; cv=none; b=nHdWdIqwuBf3DwSpGyEJt2Pf3XC2wyC2mcphAyjy557coGZ4aZe7CV0HzjyCsGVmZQlEt2s09EUiwC5ZNi3HPoJ53Hm8VbcBdGlz+J5UzmkhqZEC9/fe3LnSkPkKW4qnbmflbVR3ILEts6pib/djd3zHdAzliM2KQT//VqdqmAg=
+	t=1748875260; cv=none; b=p+XoRy2vF9IZOL5iiS2UbC2DTmCmgSkF9wVlCowJkSvP7Qsiq4KQHnDU2m53LfJ+7NobQtrla/n0oLBiBL8bQbtRb7jpuT1lk9IX6VO8h2Y/Rv8qTo1DOu88Bsg4DvCGodR3tyBw2zwqCHh+rkIC6FXzP1UE+ACQYa0RXTMOKvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873927; c=relaxed/simple;
-	bh=clwd3Ld7TWLE3VN0G/hzlE9+st6xKmv4cTt2o996oA8=;
+	s=arc-20240116; t=1748875260; c=relaxed/simple;
+	bh=s7yQiLZ78+zl5x1aUy3WKzJWl3Hq37RkV8MIgAKvGV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/YoTdGRJO3e2odQkUm/IGWXUg0XrAuQSZc5jm2lmZRYj/lT50SV6WiQZJrTVXC8HjBxDGcMc5Hj5NMSAJRlkYDP7nT9f7DaYmFiWQDzkntxja6B4lRGSaCiILDiSs2nghpppXcMqWam6cKEovGOwTtcb5WU89rIJEjV9jWjgR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbE3ydX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF68FC4CEEB;
-	Mon,  2 Jun 2025 14:18:46 +0000 (UTC)
+	 MIME-Version; b=asR/Pxrmh6LqXGvTajX/Jh+xQvAkM8YYbWylm+iOvHK9unNbrh3dvdSnPssITJYExDXVTpw8/RWrcGRTD11/fx6bZZ/9oEMc4MSE8wd3xc04wSrnysEBsJz/oJWXE9aN1iB1bKEhlLMfKWE9ZoC3SXyNNMFBg9LH5asIEOoyEDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGNSvUBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6375FC4CEEE;
+	Mon,  2 Jun 2025 14:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873927;
-	bh=clwd3Ld7TWLE3VN0G/hzlE9+st6xKmv4cTt2o996oA8=;
+	s=korg; t=1748875259;
+	bh=s7yQiLZ78+zl5x1aUy3WKzJWl3Hq37RkV8MIgAKvGV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbE3ydX39/UvK74pBOfLSn+6GwZCGS5XsZtbtLRgyL+bi3B3Q9pS8X40fa56brh38
-	 IbM0qqw3P87AYmQPhscprEJX00fhSro1bacwsHTmvThdtGAlwlqkDsW+bw3/22BLFa
-	 Ujmp3jFqdRkaK/hxSy8c/5sHIvOYop7cLQhBZi6g=
+	b=eGNSvUBcmru0T125qoaRsGG5f8OzCZnBJ4qKgOqRdH6RtQg4yUiJTIbRwCmY7gkza
+	 Ef4iGY6E+5B2Rj7RO2J4EOb8P9wQ1O8lchUr+X+JmD+YCyFfpwj4rK+WpUsAhyVnFz
+	 Lka9L7JR81aItXNitQu4e1sgDTshvSFK0SZb9U38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soeren Moch <smoch@web.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 299/444] wifi: rtl8xxxu: retry firmware download on error
-Date: Mon,  2 Jun 2025 15:46:03 +0200
-Message-ID: <20250602134353.082807622@linuxfoundation.org>
+Subject: [PATCH 5.10 079/270] MIPS: Fix MAX_REG_OFFSET
+Date: Mon,  2 Jun 2025 15:46:04 +0200
+Message-ID: <20250602134310.407524069@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Soeren Moch <smoch@web.de>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 3d3e28feca7ac8c6cf2a390dbbe1f97e3feb7f36 ]
+[ Upstream commit c44572e0cc13c9afff83fd333135a0aa9b27ba26 ]
 
-Occasionally there is an EPROTO error during firmware download.
-This error is converted to EAGAIN in the download function.
-But nobody tries again and so device probe fails.
+Fix MAX_REG_OFFSET to point to the last register in 'pt_regs' and not to
+the marker itself, which could allow regs_get_register() to return an
+invalid offset.
 
-Implement download retry to fix this.
-
-This error was observed (and fix tested) on a tbs2910 board [1]
-with an embedded RTL8188EU (0bda:8179) device behind a USB hub.
-
-[1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
-
-Signed-off-by: Soeren Moch <smoch@web.de>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250127194828.599379-1-smoch@web.de
+Fixes: 40e084a506eb ("MIPS: Add uprobes support.")
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c   | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/ptrace.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 6e47dde938909..05e77d2bda373 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -900,9 +900,10 @@ rtl8xxxu_writeN(struct rtl8xxxu_priv *priv, u16 addr, u8 *buf, u16 len)
- 	return len;
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index ae578860f7295..4ec9b306556f6 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -65,7 +65,8 @@ static inline void instruction_pointer_set(struct pt_regs *regs,
  
- write_error:
--	dev_info(&udev->dev,
--		 "%s: Failed to write block at addr: %04x size: %04x\n",
--		 __func__, addr, blocksize);
-+	if (rtl8xxxu_debug & RTL8XXXU_DEBUG_REG_WRITE)
-+		dev_info(&udev->dev,
-+			 "%s: Failed to write block at addr: %04x size: %04x\n",
-+			 __func__, addr, blocksize);
- 	return -EAGAIN;
- }
+ /* Query offset/name of register from its name/offset */
+ extern int regs_query_register_offset(const char *name);
+-#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
++#define MAX_REG_OFFSET \
++	(offsetof(struct pt_regs, __last) - sizeof(unsigned long))
  
-@@ -4073,8 +4074,14 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 	 */
- 	rtl8xxxu_write16(priv, REG_TRXFF_BNDY + 2, fops->trxff_boundary);
- 
--	ret = rtl8xxxu_download_firmware(priv);
--	dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+	for (int retry = 5; retry >= 0 ; retry--) {
-+		ret = rtl8xxxu_download_firmware(priv);
-+		dev_dbg(dev, "%s: download_firmware %i\n", __func__, ret);
-+		if (ret != -EAGAIN)
-+			break;
-+		if (retry)
-+			dev_dbg(dev, "%s: retry firmware download\n", __func__);
-+	}
- 	if (ret)
- 		goto exit;
- 	ret = rtl8xxxu_start_firmware(priv);
+ /**
+  * regs_get_register() - get register value from its offset
 -- 
 2.39.5
 
