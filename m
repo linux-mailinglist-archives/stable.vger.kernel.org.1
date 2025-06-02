@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-149486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E213ACB2F1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BC5ACB7F8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA99194589B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058551C245FE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987D123AE60;
-	Mon,  2 Jun 2025 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4487D225A3E;
+	Mon,  2 Jun 2025 15:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoTvMfks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="svSUJ7kW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57141223323;
-	Mon,  2 Jun 2025 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08CF225A24;
+	Mon,  2 Jun 2025 15:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874103; cv=none; b=MWZ9atxKb3iTSVwqCHsqrBqn1nHekZO8oo9EF2e8GSCvhU8q/GCEmyr0wkwrM38v96Rey5apOsEqD3TTh3nGfkODTwe7+vueMki+mtF/dWG+yyEWwsUE/XNK1RC3fg6jJB9nnLgV6dtUQHDz/DAHUC2W82ckJY2EVl9KvPdiOCE=
+	t=1748877114; cv=none; b=umsiOWTqAAb227kQfqCH/fIKcJ1tcIJJG8hD0L1Lw8w9owsEpHQWcd5f/k8lHlS2G7rhCYRywu80qTXy4xWsxBLMnENo3eFjfkdS6DDiU4IdK05BATK7ICpse1VAK4WzD8ypv3grA9UUZqcKIib1OzGBWdWJn5fUowx5BwdDS0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874103; c=relaxed/simple;
-	bh=OeNFQToHLiHxmbmuW8xeabQm0Mrx8cT/bZ8vIfgw9PU=;
+	s=arc-20240116; t=1748877114; c=relaxed/simple;
+	bh=tYFXtNwRc/enTc0pFtXr5nFmv68fKR5FjTHvFGmpxxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4rDFRmojpDgWOFmueocTWQDIEd9xfueh1wl1Zer0E16oo6VaaYYbCuTE4UEPwpZl7CnZk8IhtThHsXey6SRJCaZsQw19+RtRoNXLS7kSDAo4+lyqK648llMbn0ep11PPnQmUoosRLfo060+dlOgryiv0EjDhksYA/O1S1zAvhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoTvMfks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEA9C4CEEB;
-	Mon,  2 Jun 2025 14:21:42 +0000 (UTC)
+	 MIME-Version; b=Ss1N4jqtg6pzYu/xzLqb5ZU52LA8+uYUl5QCuvE/q3zzok7wYEL474D96zhQpxKwyHTeOr8ItmBI73vXlGIagV3gHojEmC4rNMPW8wV0DugNXUzeHMmc7HdHRCGDLrfLWdbwB0mIz04zln4rBsx70DtpeYQXDoWLCa3WafepM+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=svSUJ7kW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B34BC4CEEB;
+	Mon,  2 Jun 2025 15:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874103;
-	bh=OeNFQToHLiHxmbmuW8xeabQm0Mrx8cT/bZ8vIfgw9PU=;
+	s=korg; t=1748877113;
+	bh=tYFXtNwRc/enTc0pFtXr5nFmv68fKR5FjTHvFGmpxxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoTvMfksuv7amgfFew6hk6BA8SZ9ZdMDTTvUl2GYR3Sd/pfCv4X7I7SBtzE/hoHx9
-	 6R8ugKmKzF+MiL3SuaUXxYCiXiqmgn1G/dGLFkz702KGgTrXKqmMyrFTlbatoKBbdd
-	 vdgBK8WNFoVIzCVl5gswf8gfnaU/B42xtlOy2/h8=
+	b=svSUJ7kWTGbowio7enjoo51z8Kj95ptnyzm7P9+H7ivm74ja0up9c9g4eIJuX8c21
+	 4QwCFLGSyYmos5zaKJ3LDatjdqGJiNWKiAPGlDDhN2M4BDiuC5kR/AiSWf1t3kGygi
+	 VCveBXJCb1hu8UiJBqWsvOYDvDzid0HQkMPGDwRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Sanchez <carlossanchez@geotab.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 358/444] can: slcan: allow reception of short error messages
+	Paul Burton <paulburton@kernel.org>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/325] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
 Date: Mon,  2 Jun 2025 15:47:02 +0200
-Message-ID: <20250602134355.455139723@linuxfoundation.org>
+Message-ID: <20250602134325.745315513@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +66,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Sanchez <carlossanchez@geotab.com>
+From: Paul Burton <paulburton@kernel.org>
 
-commit ef0841e4cb08754be6cb42bf97739fce5d086e5f upstream.
+[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
 
-Allows slcan to receive short messages (typically errors) from the serial
-interface.
+The pm-cps code has up until now used per-CPU variables indexed by core,
+rather than CPU number, in order to share data amongst sibling CPUs (ie.
+VPs/threads in a core). This works fine for single cluster systems, but
+with multi-cluster systems a core number is no longer unique in the
+system, leading to sharing between CPUs that are not actually siblings.
 
-When error support was added to slcan protocol in
-b32ff4668544e1333b694fcc7812b2d7397b4d6a ("can: slcan: extend the protocol
-with error info") the minimum valid message size changed from 5 (minimum
-standard can frame tIII0) to 3 ("e1a" is a valid protocol message, it is
-one of the examples given in the comments for slcan_bump_err() ), but the
-check for minimum message length prodicating all decoding was not adjusted.
-This makes short error messages discarded and error frames not being
-generated.
+Avoid this issue by using per-CPU variables as they are more generally
+used - ie. access them using CPU numbers rather than core numbers.
+Sharing between siblings is then accomplished by:
+ - Assigning the same pointer to entries for each sibling CPU for the
+   nc_asm_enter & ready_count variables, which allow this by virtue of
+   being per-CPU pointers.
 
-This patch changes the minimum length to the new minimum (3 characters,
-excluding terminator, is now a valid message).
+ - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
+   of pm_barrier, for which we can't use the previous approach because
+   the per-CPU variable is not a pointer.
 
-Signed-off-by: Carlos Sanchez <carlossanchez@geotab.com>
-Fixes: b32ff4668544 ("can: slcan: extend the protocol with error info")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250520102305.1097494-1-carlossanchez@geotab.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
+Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/slcan/slcan-core.c |   26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/drivers/net/can/slcan/slcan-core.c
-+++ b/drivers/net/can/slcan/slcan-core.c
-@@ -71,12 +71,21 @@ MODULE_AUTHOR("Dario Binacchi <dario.bin
- #define SLCAN_CMD_LEN 1
- #define SLCAN_SFF_ID_LEN 3
- #define SLCAN_EFF_ID_LEN 8
-+#define SLCAN_DATA_LENGTH_LEN 1
-+#define SLCAN_ERROR_LEN 1
- #define SLCAN_STATE_LEN 1
- #define SLCAN_STATE_BE_RXCNT_LEN 3
- #define SLCAN_STATE_BE_TXCNT_LEN 3
--#define SLCAN_STATE_FRAME_LEN       (1 + SLCAN_CMD_LEN + \
--				     SLCAN_STATE_BE_RXCNT_LEN + \
--				     SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_STATE_MSG_LEN     (SLCAN_CMD_LEN +		\
-+                                 SLCAN_STATE_LEN +		\
-+                                 SLCAN_STATE_BE_RXCNT_LEN +	\
-+                                 SLCAN_STATE_BE_TXCNT_LEN)
-+#define SLCAN_ERROR_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_ERROR_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
-+#define SLCAN_FRAME_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
-+                                 SLCAN_SFF_ID_LEN +	\
-+                                 SLCAN_DATA_LENGTH_LEN)
- struct slcan {
- 	struct can_priv         can;
+diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
+index 9bf60d7d44d36..a7bcf2b814c86 100644
+--- a/arch/mips/kernel/pm-cps.c
++++ b/arch/mips/kernel/pm-cps.c
+@@ -56,10 +56,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
+ /* Indicates online CPUs coupled with the current CPU */
+ static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
  
-@@ -176,6 +185,9 @@ static void slcan_bump_frame(struct slca
- 	u32 tmpid;
- 	char *cmd = sl->rbuff;
+-/*
+- * Used to synchronize entry to deep idle states. Actually per-core rather
+- * than per-CPU.
+- */
++/* Used to synchronize entry to deep idle states */
+ static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
  
-+	if (sl->rcount < SLCAN_FRAME_MSG_LEN_MIN)
-+		return;
+ /* Saved CPU state across the CPS_PM_POWER_GATED state */
+@@ -118,9 +115,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 	cps_nc_entry_fn entry;
+ 	struct core_boot_config *core_cfg;
+ 	struct vpe_boot_config *vpe_cfg;
++	atomic_t *barrier;
+ 
+ 	/* Check that there is an entry function for this state */
+-	entry = per_cpu(nc_asm_enter, core)[state];
++	entry = per_cpu(nc_asm_enter, cpu)[state];
+ 	if (!entry)
+ 		return -EINVAL;
+ 
+@@ -156,7 +154,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 	smp_mb__after_atomic();
+ 
+ 	/* Create a non-coherent mapping of the core ready_count */
+-	core_ready_count = per_cpu(ready_count, core);
++	core_ready_count = per_cpu(ready_count, cpu);
+ 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
+ 				   (unsigned long)core_ready_count);
+ 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
+@@ -164,7 +162,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 
+ 	/* Ensure ready_count is zero-initialised before the assembly runs */
+ 	WRITE_ONCE(*nc_core_ready_count, 0);
+-	coupled_barrier(&per_cpu(pm_barrier, core), online);
++	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
++	coupled_barrier(barrier, online);
+ 
+ 	/* Run the generated entry code */
+ 	left = entry(online, nc_core_ready_count);
+@@ -635,12 +634,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
+ 
+ static int cps_pm_online_cpu(unsigned int cpu)
+ {
+-	enum cps_pm_state state;
+-	unsigned core = cpu_core(&cpu_data[cpu]);
++	unsigned int sibling, core;
+ 	void *entry_fn, *core_rc;
++	enum cps_pm_state state;
 +
- 	skb = alloc_can_skb(sl->dev, &cf);
- 	if (unlikely(!skb)) {
- 		sl->dev->stats.rx_dropped++;
-@@ -281,7 +293,7 @@ static void slcan_bump_state(struct slca
- 		return;
++	core = cpu_core(&cpu_data[cpu]);
+ 
+ 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
+-		if (per_cpu(nc_asm_enter, core)[state])
++		if (per_cpu(nc_asm_enter, cpu)[state])
+ 			continue;
+ 		if (!test_bit(state, state_support))
+ 			continue;
+@@ -652,16 +653,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
+ 			clear_bit(state, state_support);
+ 		}
+ 
+-		per_cpu(nc_asm_enter, core)[state] = entry_fn;
++		for_each_cpu(sibling, &cpu_sibling_map[cpu])
++			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
  	}
  
--	if (state == sl->can.state || sl->rcount < SLCAN_STATE_FRAME_LEN)
-+	if (state == sl->can.state || sl->rcount != SLCAN_STATE_MSG_LEN)
- 		return;
- 
- 	cmd += SLCAN_STATE_BE_RXCNT_LEN + SLCAN_CMD_LEN + 1;
-@@ -328,6 +340,9 @@ static void slcan_bump_err(struct slcan
- 	bool rx_errors = false, tx_errors = false, rx_over_errors = false;
- 	int i, len;
- 
-+	if (sl->rcount < SLCAN_ERROR_MSG_LEN_MIN)
-+		return;
+-	if (!per_cpu(ready_count, core)) {
++	if (!per_cpu(ready_count, cpu)) {
+ 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
+ 		if (!core_rc) {
+ 			pr_err("Failed allocate core %u ready_count\n", core);
+ 			return -ENOMEM;
+ 		}
+-		per_cpu(ready_count, core) = core_rc;
 +
- 	/* get len from sanitized ASCII value */
- 	len = cmd[1];
- 	if (len >= '0' && len < '9')
-@@ -456,8 +471,7 @@ static void slcan_bump(struct slcan *sl)
- static void slcan_unesc(struct slcan *sl, unsigned char s)
- {
- 	if ((s == '\r') || (s == '\a')) { /* CR or BEL ends the pdu */
--		if (!test_and_clear_bit(SLF_ERROR, &sl->flags) &&
--		    sl->rcount > 4)
-+		if (!test_and_clear_bit(SLF_ERROR, &sl->flags))
- 			slcan_bump(sl);
++		for_each_cpu(sibling, &cpu_sibling_map[cpu])
++			per_cpu(ready_count, sibling) = core_rc;
+ 	}
  
- 		sl->rcount = 0;
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
