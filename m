@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5351ACB24B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 576FEACB4A7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFB963A513F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6AA29E57D4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636D01D516F;
-	Mon,  2 Jun 2025 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0460221739;
+	Mon,  2 Jun 2025 14:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X34qBB7F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+5X4VpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE0E1C84DC;
-	Mon,  2 Jun 2025 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4F71EA65;
+	Mon,  2 Jun 2025 14:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873705; cv=none; b=PZ8qZJGnRk9Z+sC3Wo6FBeijDxfx2nhfKiaNKApcRpKJMu49KAlmFs815yh5ebgLpfU/WojV8LbBz9sEwUr2crDLzFrYgfuCWS5LwVa0ZT3OhGZPJM4AgXWFiJwo87LhXVrb0B5aWnbWlsEBcjRqv6mB4dLhff/wy4aHXksAGmI=
+	t=1748875098; cv=none; b=rLVLrZ/jtbWX5piVN5tK/0bOmQLs8eOVhLf4T8BBgX2xtavOuweLoPJbUpgEWxgoEEco55rUsRl28kNcsfgj2JluH2hAe+39HAOzrAojdyR2nVyoI+G+V7D3+Fj+mCnkrnwqYnBLRbTow+NJXtt9GyXQdA5YhFINue54O4obznE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873705; c=relaxed/simple;
-	bh=jPjvah5qAnGJK8c45nNDrJwgzFxezu4RaDgsYBNeN4s=;
+	s=arc-20240116; t=1748875098; c=relaxed/simple;
+	bh=YZ4Jl+lox84mMUhS3J8UvUyBsPTGoBx4iXToy3m3a/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hLs8dG2x4iBVpN/ees3e6CQr0U1FMBvXvFj8CT7tvO1itPvSHFXrjHozluQKJeFGb1XEIN60t+JMmax8DBbPoXSeUg8/K0vILipCNkNFDq6yjWW49AtDjr29g4AngfLqzmizwkgQSGty79ALgOYY0SBhmyqe+TJC3axo0HO1ziQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X34qBB7F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C4AC4CEEB;
-	Mon,  2 Jun 2025 14:15:04 +0000 (UTC)
+	 MIME-Version; b=bAf3+h8msaMFUlnbdwvpB3IMpvZfdOM9+sNIKYuh8LlTiyZ4E9cBSaiDwFXPqQmqRO69Pnw5H6BO0de/61epXjLD0Z85sK9H9GQ6E3f0ZsWtoqidPFdtoOIRiWwmStyu+nv89hKRjbRFsP3RrwbCwsbCjc6dvZIrFdGQ3PKt3cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+5X4VpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00D8C4CEEB;
+	Mon,  2 Jun 2025 14:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873705;
-	bh=jPjvah5qAnGJK8c45nNDrJwgzFxezu4RaDgsYBNeN4s=;
+	s=korg; t=1748875098;
+	bh=YZ4Jl+lox84mMUhS3J8UvUyBsPTGoBx4iXToy3m3a/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X34qBB7F5ULQi+HUWesEIfV9yzi8iGQ8HTJDfNk671Sym1EVHpv2jIQgHeQTiijBa
-	 qXIrfkdeWgAU5BffL2hgcPLK9z2ZObR1C19AccfpS+LlAR4/8QaKYH6Z16wO/VwWj/
-	 aCWJDfNewqODDKwzAeADFdNSRQfYW7kGhBsw7TaY=
+	b=u+5X4VpLvtt9asCRcTmFhTkYEhelSz8gSolzYO+DRIEecVCLCM3y1OCmgXFP59a7a
+	 ULNLtLnBGbf+KEn/irGkVaL+lVegXy2c0OeiRH0/p20dcPuiEEe+uM/QYltCv2OsTP
+	 Tr1BaCJ6R6opgLIvhD0qJMTknB+3MVtbIygwX+h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/444] ASoC: ops: Enforce platform maximum on initial value
+	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.10 003/270] EDAC/altera: Test the correct error reg offset
 Date: Mon,  2 Jun 2025 15:44:48 +0200
-Message-ID: <20250602134350.007303686@linuxfoundation.org>
+Message-ID: <20250602134307.338431528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
 
-[ Upstream commit 783db6851c1821d8b983ffb12b99c279ff64f2ee ]
+commit 4fb7b8fceb0beebbe00712c3daf49ade0386076a upstream.
 
-Lower the volume if it is violating the platform maximum at its initial
-value (i.e. at the time of the 'snd_soc_limit_volume' call).
+Test correct structure member, ecc_cecnt_offset, before using it.
 
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
-[Cherry picked from the Asahi kernel with fixups -- broonie]
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-volume-limit-v1-1-b98fcf4cdbad@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ bp: Massage commit message. ]
+
+Fixes: 73bcc942f427 ("EDAC, altera: Add Arria10 EDAC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250425142640.33125-2-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-ops.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index b4cfc34d00ee6..eff1355cc3df0 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -638,6 +638,33 @@ int snd_soc_get_volsw_range(struct snd_kcontrol *kcontrol,
- }
- EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
- 
-+static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
-+{
-+	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
-+	struct snd_ctl_elem_value uctl;
-+	int ret;
-+
-+	if (!mc->platform_max)
-+		return 0;
-+
-+	ret = kctl->get(kctl, &uctl);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (uctl.value.integer.value[0] > mc->platform_max)
-+		uctl.value.integer.value[0] = mc->platform_max;
-+
-+	if (snd_soc_volsw_is_stereo(mc) &&
-+	    uctl.value.integer.value[1] > mc->platform_max)
-+		uctl.value.integer.value[1] = mc->platform_max;
-+
-+	ret = kctl->put(kctl, &uctl);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- /**
-  * snd_soc_limit_volume - Set new limit to an existing volume control.
-  *
-@@ -662,7 +689,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
- 		struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
- 		if (max <= mc->max - mc->min) {
- 			mc->platform_max = max;
--			ret = 0;
-+			ret = snd_soc_clip_to_platform_max(kctl);
- 		}
- 	}
- 	return ret;
--- 
-2.39.5
-
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -97,7 +97,7 @@ static irqreturn_t altr_sdram_mc_err_han
+ 	if (status & priv->ecc_stat_ce_mask) {
+ 		regmap_read(drvdata->mc_vbase, priv->ecc_saddr_offset,
+ 			    &err_addr);
+-		if (priv->ecc_uecnt_offset)
++		if (priv->ecc_cecnt_offset)
+ 			regmap_read(drvdata->mc_vbase,  priv->ecc_cecnt_offset,
+ 				    &err_count);
+ 		edac_mc_handle_error(HW_EVENT_ERR_CORRECTED, mci, err_count,
 
 
 
