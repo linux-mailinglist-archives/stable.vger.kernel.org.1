@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216C9ACB4C5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA65ACB72C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FFD17E341
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D745F4C2722
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C58A22A7E0;
-	Mon,  2 Jun 2025 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C08B231832;
+	Mon,  2 Jun 2025 15:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uk2m12MH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPFg2Hf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3894222A4F1;
-	Mon,  2 Jun 2025 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA4231826;
+	Mon,  2 Jun 2025 15:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875209; cv=none; b=TnROVBTyp+5yvxf2LQD4HwT7daATnAi5DjR19+kDmipOdZNO/k8Pl0LCcLvaN7MyOb1WufcKIBcyPBmfTpzbQnxPJmNJSYfPz06CYvxA7AyGwbONYS1/peHcqreiCGmQOFNkms8zFt2VczjGd9M8uuhBzspnIHDBT3UbpaKS28w=
+	t=1748876739; cv=none; b=Rwgwya/3RbKFw5m5UeQr0Zja+MIbvVDw9mZmxJJtsw6PTuaYRCJcxedfYu3LvOszq4kX33ID6ET2qiCKGAArRtiCo/B4Kwg6aXkiVjtzq4SwtxvCTIb0WBlRw2M9THoP8gPfN/MIoOTQsFAQMmBWJjFas/bBUMnP0I1IGLtyCJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875209; c=relaxed/simple;
-	bh=++0Jl2XCyNr4mlhkgpNo2BQeupvwwOIme7pQb50PrbE=;
+	s=arc-20240116; t=1748876739; c=relaxed/simple;
+	bh=j9QZ08CInXG7O4VF6JdV9PguEBKGpsMLQI+PGgUSkvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2yZbJ0ZzFVI7G6dPEOptP2zJPJ0ZN5xOH/1Kvpok4ODYXlu3OurQwMJQt420RMH/fcJ8dZx2ZJExo3nLqt00nnb06mTfggeOt+Elx93E9iwJUwxUBQiL0Jxt7KMXMh7SiNMJgUSnAOVbwHdXdCsm9/JCzE5BjlmKDr2+p4N4lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uk2m12MH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF8AC4CEEB;
-	Mon,  2 Jun 2025 14:40:08 +0000 (UTC)
+	 MIME-Version; b=HHVax8Mz5CYaRSrMUiirAUu9Qw1vTUqeEvGbctozScEcpeADKO8liXB25jfxq76gUR4r4e82VlSTA+x0Uog/91PgICU/iXdILZeqBXFuxveab3xpLGxH8Jnbk4IwCtVtIog2Sup84Sv+FrXtsUSuaYwEIdFlNoDP+gGcxV2VmDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPFg2Hf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0153EC4CEEB;
+	Mon,  2 Jun 2025 15:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875209;
-	bh=++0Jl2XCyNr4mlhkgpNo2BQeupvwwOIme7pQb50PrbE=;
+	s=korg; t=1748876739;
+	bh=j9QZ08CInXG7O4VF6JdV9PguEBKGpsMLQI+PGgUSkvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uk2m12MHvWJkABTt7GR5JsPBDRMH/ATF+BUPvldtLimQ0ZpCCP+CfCURVN9EjQOQ4
-	 lf6/k0o2DiKQ9V6uaOoTZBAMuLIKr57l/0JcqcJSIHDUhRQ4C8U6G5EAMpytHnswvC
-	 mCz/RW4Xsim+KkKpZ+tDUp2KUW0J8DfUc8COxLv8=
+	b=XPFg2Hf+XMkTr5yj7Q2xbjMBn7w+bXmGCby0i6YMKCOVJMGdZPjC4rQlluJhUk0bG
+	 vcpvmQAmIMJ44SYEXEPrktQQkXYOS5w25SuHLmbZndthcEjcSF3DFQGlcVyc2R56ON
+	 xH+mfanD+6IUwsyxyrw7ODbZ3hbYIWXgB2O6gLb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nisar Sayed <Nisar.Sayed@microchip.com>,
-	Yuiko Oshino <yuiko.oshino@microchip.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/270] net: phy: microchip: remove the use of .ack_interrupt()
+Subject: [PATCH 6.1 041/325] objtool: Properly disable uaccess validation
 Date: Mon,  2 Jun 2025 15:45:17 +0200
-Message-ID: <20250602134308.513121391@linuxfoundation.org>
+Message-ID: <20250602134321.421427030@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit cf499391982d877e9313d2adeedcf5f1ffe05d6e ]
+[ Upstream commit e1a9dda74dbffbc3fa2069ff418a1876dc99fb14 ]
 
-In preparation of removing the .ack_interrupt() callback, we must replace
-its occurrences (aka phy_clear_interrupt), from the 2 places where it is
-called from (phy_enable_interrupts and phy_disable_interrupts), with
-equivalent functionality.
+If opts.uaccess isn't set, the uaccess validation is disabled, but only
+partially: it doesn't read the uaccess_safe_builtin list but still tries
+to do the validation.  Disable it completely to prevent false warnings.
 
-This means that clearing interrupts now becomes something that the PHY
-driver is responsible of doing, before enabling interrupts and after
-clearing them. Make this driver follow the new contract.
-
-Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
-Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/0e95581c1d2107fb5f59418edf2b26bba38b0cbb.1742852846.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c    | 13 +++++--------
- drivers/net/phy/microchip_t1.c | 17 +++++++----------
- 2 files changed, 12 insertions(+), 18 deletions(-)
+ tools/objtool/check.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index a149d0ae58b02..230f2fcf9c46a 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -44,14 +44,12 @@ static int lan88xx_phy_config_intr(struct phy_device *phydev)
- 			       LAN88XX_INT_MASK_LINK_CHANGE_);
- 	} else {
- 		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--	}
--
--	return rc < 0 ? rc : 0;
--}
-+		if (rc)
-+			return rc;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 828c91aaf55bd..bf75628c5389a 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3083,7 +3083,7 @@ static int handle_insn_ops(struct instruction *insn,
+ 		if (update_cfi_state(insn, next_insn, &state->cfi, op))
+ 			return 1;
  
--static int lan88xx_phy_ack_interrupt(struct phy_device *phydev)
--{
--	int rc = phy_read(phydev, LAN88XX_INT_STS);
-+		/* Ack interrupts after they have been disabled */
-+		rc = phy_read(phydev, LAN88XX_INT_STS);
-+	}
+-		if (!insn->alt_group)
++		if (!opts.uaccess || !insn->alt_group)
+ 			continue;
  
- 	return rc < 0 ? rc : 0;
- }
-@@ -390,7 +388,6 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
+ 		if (op->dest.type == OP_DEST_PUSHF) {
+@@ -3535,6 +3535,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			return 0;
  
--	.ack_interrupt	= lan88xx_phy_ack_interrupt,
- 	.config_intr	= lan88xx_phy_config_intr,
- 	.handle_interrupt = lan88xx_handle_interrupt,
+ 		case INSN_STAC:
++			if (!opts.uaccess)
++				break;
++
+ 			if (state.uaccess) {
+ 				WARN_FUNC("recursive UACCESS enable", sec, insn->offset);
+ 				return 1;
+@@ -3544,6 +3547,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			break;
  
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index 553b391d1747a..4440182243108 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -189,16 +189,14 @@ static int lan87xx_phy_config_intr(struct phy_device *phydev)
- 		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, 0x7FFF);
- 		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
- 		val = LAN87XX_MASK_LINK_UP | LAN87XX_MASK_LINK_DOWN;
--	}
--
--	rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
--
--	return rc < 0 ? rc : 0;
--}
-+		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
-+	} else {
-+		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
-+		if (rc)
-+			return rc;
+ 		case INSN_CLAC:
++			if (!opts.uaccess)
++				break;
++
+ 			if (!state.uaccess && func) {
+ 				WARN_FUNC("redundant UACCESS disable", sec, insn->offset);
+ 				return 1;
+@@ -3956,7 +3962,8 @@ static int validate_symbol(struct objtool_file *file, struct section *sec,
+ 	if (!insn || insn->ignore || insn->visited)
+ 		return 0;
  
--static int lan87xx_phy_ack_interrupt(struct phy_device *phydev)
--{
--	int rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
-+		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
-+	}
+-	state->uaccess = sym->uaccess_safe;
++	if (opts.uaccess)
++		state->uaccess = sym->uaccess_safe;
  
- 	return rc < 0 ? rc : 0;
- }
-@@ -239,7 +237,6 @@ static struct phy_driver microchip_t1_phy_driver[] = {
- 		.config_init	= lan87xx_config_init,
- 		.config_aneg    = genphy_config_aneg,
- 
--		.ack_interrupt  = lan87xx_phy_ack_interrupt,
- 		.config_intr    = lan87xx_phy_config_intr,
- 		.handle_interrupt = lan87xx_handle_interrupt,
- 
+ 	ret = validate_branch(file, insn->func, insn, *state);
+ 	if (ret && opts.backtrace)
 -- 
 2.39.5
 
