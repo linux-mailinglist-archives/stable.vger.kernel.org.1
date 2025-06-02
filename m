@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-149940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23D5ACB4D9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0CAACB5C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E55047B31EC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 155A99E696F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3E922A814;
-	Mon,  2 Jun 2025 14:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B97221F1C;
+	Mon,  2 Jun 2025 14:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eelGGuir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hI2dlK0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3070822A7E4;
-	Mon,  2 Jun 2025 14:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DA817BBF;
+	Mon,  2 Jun 2025 14:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875524; cv=none; b=JZEG0JyhKRPobU3SYEhoFC7t0OOwXtURC57FnZpZ4R+MLpwIdz32D2B/QobUYaY4tKongi7Bi1byFHFS0fCCRUQqqX7LOLlUpAl4I6LMRxhEBkUCLRJe/0HxainaUxqu8pq5JHL6a555lGKFe/Mmd4I37C6z9q481hQayuQo9dU=
+	t=1748876015; cv=none; b=BiZaGo8xR7/jsfka273mp1MGGvSK4S7QWL3NmTCfgseD3PXNS2EYxW1LcRUvWMSx8iWhtRhAoYROjtNLkdAet0oAgnYBDjQNyS4PnFuhkELIYlo+0ApHxaPAbJVrTdC+4cylumFOOPCKkSIHSZXjTctfpsJCoAF8KqFXm9AmVmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875524; c=relaxed/simple;
-	bh=TsaUmG+rxNwqEQMhSTmQ6GOLzgpLK3So3ajiJuojgEU=;
+	s=arc-20240116; t=1748876015; c=relaxed/simple;
+	bh=ApZ1TSSN11OenBNouWqQQRsi6zNq8Pb9+/xRP9XHulA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SblXjEcuIuVIRVPLwS3uwzq/c3jTLnRrdm8ZJEPUL2PqhdW0tFtPSs3NN8mOcOyAXors5VjaSmlEcjmoG1IKk2EzuBojwZWgGAwvfwLEMwu3ld5SBqHIe7PPlWFBJ1eFD/3Y5cE721MkMvpvJ2S35/uRmmwTIcXU60XcOS9ebUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eelGGuir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CF7C4CEEE;
-	Mon,  2 Jun 2025 14:45:23 +0000 (UTC)
+	 MIME-Version; b=E0pDl4QxgnzFv0QU+77sz7SZZLkojKEx5mumojCwE+5wPlTPtz2LOHtI9aSvGqrQP5pMmJPLvh1Jr0FZceNw0vODvXvaTabu38RD0fUFlL9sQV4N1+Xy2k2/89kK903iea5IELDTeHz+ALX634YEtDi9DUlzjbTfUmIOk4siWtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hI2dlK0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF05C4CEF0;
+	Mon,  2 Jun 2025 14:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875524;
-	bh=TsaUmG+rxNwqEQMhSTmQ6GOLzgpLK3So3ajiJuojgEU=;
+	s=korg; t=1748876015;
+	bh=ApZ1TSSN11OenBNouWqQQRsi6zNq8Pb9+/xRP9XHulA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eelGGuirpwLhQ1t9reeYOnG/7B8dKRuB7R+zUWzcYJjnfLnXKnPwjN8Clf9poT9iA
-	 tk2jlLQ8x12Esmk5iuHDYPGfRNkV+rEjGKv4QvmszAgO7yDDYuwpfYy8ws4CEJA77h
-	 ogXBreqHKXRrUkWgRDZ4FSQc2Q5AIMRfRXMykBbk=
+	b=hI2dlK0NGqcDjBWZ+La9d5oCYPyOLJHXATbEDXsEW2cDI6fQrKu7vbflz4gatvB5U
+	 8cDJrBWKzp7m0KIv+kojieT37HxjOcBkpiC1F2+UTLuAC8+lmSlB/aULfQRfjhfJVL
+	 mwlqcJfU/8YSCMpvXTZDuoXvyl4209OzBV3HyNBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 131/270] pNFS/flexfiles: Report ENETDOWN as a connection error
+Subject: [PATCH 5.15 044/207] rtc: rv3032: fix EERD location
 Date: Mon,  2 Jun 2025 15:46:56 +0200
-Message-ID: <20250602134312.583672965@linuxfoundation.org>
+Message-ID: <20250602134300.482126342@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit aa42add73ce9b9e3714723d385c254b75814e335 ]
+[ Upstream commit b0f9cb4a0706b0356e84d67e48500b77b343debe ]
 
-If the client should see an ENETDOWN when trying to connect to the data
-server, it might still be able to talk to the metadata server through
-another NIC. If so, report the error.
+EERD is bit 2 in CTRL1
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20250306214243.1167692-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-rv3032.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 1af0b8ad83f2d..ce9c2d1f54ae0 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -1260,6 +1260,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
- 		case -ECONNRESET:
- 		case -EHOSTDOWN:
- 		case -EHOSTUNREACH:
-+		case -ENETDOWN:
- 		case -ENETUNREACH:
- 		case -EADDRINUSE:
- 		case -ENOBUFS:
+diff --git a/drivers/rtc/rtc-rv3032.c b/drivers/rtc/rtc-rv3032.c
+index 1b62ed2f14594..6b7712f0b09ce 100644
+--- a/drivers/rtc/rtc-rv3032.c
++++ b/drivers/rtc/rtc-rv3032.c
+@@ -69,7 +69,7 @@
+ #define RV3032_CLKOUT2_FD_MSK		GENMASK(6, 5)
+ #define RV3032_CLKOUT2_OS		BIT(7)
+ 
+-#define RV3032_CTRL1_EERD		BIT(3)
++#define RV3032_CTRL1_EERD		BIT(2)
+ #define RV3032_CTRL1_WADA		BIT(5)
+ 
+ #define RV3032_CTRL2_STOP		BIT(0)
 -- 
 2.39.5
 
