@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-150524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9BBACB817
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3418CACB665
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65E891C25C17
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4364C0C0A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF49224244;
-	Mon,  2 Jun 2025 15:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9256523A9AA;
+	Mon,  2 Jun 2025 15:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvQ8EYin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3S49DHK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9813A221727;
-	Mon,  2 Jun 2025 15:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C55D22A4E8;
+	Mon,  2 Jun 2025 15:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877392; cv=none; b=P9Hds1fjn15Iqi2Fdb6e/3IgBJLf5aA257LfZEknJRoigpK/cQKzM0yqHGooxOvtOqs78Bi2XAAHGxs83lFYz4f6zVLLyLa73Bvrn0kft2OM+OMj14kwetb48Xgece6GA1ggOQhFwZQnByecU01Y7nRYI5P4Wfzm3Qpmta2ad5k=
+	t=1748876406; cv=none; b=ruDs8IwiCDBes15zxpHrGutSHZ9D1qxeFUpJOERMPoWqCwB+GFGJ+r3eFYG19RyB0MZUqJxyu5x5F6T0ss+XsgKDnJASX7bEVLuckV6OMHqS6YJaBy25xdPc5pNFFvUlwpMhxcprpExG5BQykZUddU+fPpC09mIF8KeLirqWnZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877392; c=relaxed/simple;
-	bh=BMkAGXtS2FY0QeMOVsr6iU3W3EGtEpu1CNbu0HUhcec=;
+	s=arc-20240116; t=1748876406; c=relaxed/simple;
+	bh=T1zJ+nBIVmfDof2kFrvUvt+tMacjY5bOm36AuYnNJNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDIO2Na3aNjSTy5aPxmBk1WZtHdIzVtefou/T3B0jzl03DoyZjif48NIARqIyTaqwty86jLxFOy8uKnf/WXrBJTBSLAAAkvv+jUW/VkUapgFdxkjVe20gewN8JPxnMnhdOEI4IWfBmuu3ddeI3nHdRoQBiAMktz9q0bU50jPQmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvQ8EYin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAF6C4CEEB;
-	Mon,  2 Jun 2025 15:16:31 +0000 (UTC)
+	 MIME-Version; b=rxHDoDEbc49Q4mR62AwHnZP6HiabgItFUmBZxs8XOscZCwroeh0ifFEmZZjaBsMWVMvAnIOqihXbxTDmZwMWYW4NfeEDhSuRklM7E1Ah5FJoxKp2haCcNgosXVdzr2c+lIyoma1FY7+NO1Jy08Eh/NqQDsJv/p1Hjcg4ga0jiWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3S49DHK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7DBC4CEF0;
+	Mon,  2 Jun 2025 15:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877392;
-	bh=BMkAGXtS2FY0QeMOVsr6iU3W3EGtEpu1CNbu0HUhcec=;
+	s=korg; t=1748876405;
+	bh=T1zJ+nBIVmfDof2kFrvUvt+tMacjY5bOm36AuYnNJNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvQ8EYinddkUk4GKda9T24eGuSbN9rIzgUUOLu8A/0CLphSsVur5sb0QdkheH04GY
-	 vQfyMvW1xnE/MyNaBms+PwpDuNwBHzGuSEUNYM3SesTjOd/mbi6uS/ASRxTL1BKcwb
-	 au+WmCDm7hdQ/qy96WD6JSHBfwcmb0sBR7s0CLs4=
+	b=e3S49DHKvFP9umFIYCJbYeDHTFigpYbJCIBoju3Eq+pFSLkPZRJ1QYyjfKiFOb+dI
+	 i1j6SmEiNNVjI3f6FZlmOm5DEHzBPLe6nbc+LlWdYIrj8yJQPHMSZaSTdWMhB9JGi1
+	 fEQi+49D3hHE9vqbmwTjyXLeOehgQNUqwOrVC0lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 263/325] memcg: always call cond_resched() after fn()
-Date: Mon,  2 Jun 2025 15:48:59 +0200
-Message-ID: <20250602134330.458945652@linuxfoundation.org>
+	syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com,
+	Wang Liang <wangliang74@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 168/207] net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done
+Date: Mon,  2 Jun 2025 15:49:00 +0200
+Message-ID: <20250602134305.317887898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Wang Liang <wangliang74@huawei.com>
 
-commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
+[ Upstream commit e279024617134c94fd3e37470156534d5f2b3472 ]
 
-I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
-is happening because killing the process in certain machine might be very
-slow, which causes the soft lockup and RCU stalls.  This happens usually
-when the cgroup has MANY processes and memory.oom.group is set.
+Syzbot reported a slab-use-after-free with the following call trace:
 
-Example I am seeing in real production:
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
+  Read of size 8 at addr ffff88807a733000 by task kworker/1:0/25
 
-       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
-       ....
-       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
-       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
-       ....
+  Call Trace:
+   kasan_report+0xd9/0x110 mm/kasan/report.c:601
+   tipc_aead_encrypt_done+0x4bd/0x510 net/tipc/crypto.c:840
+   crypto_request_complete include/crypto/algapi.h:266
+   aead_request_complete include/crypto/internal/aead.h:85
+   cryptd_aead_crypt+0x3b8/0x750 crypto/cryptd.c:772
+   crypto_request_complete include/crypto/algapi.h:266
+   cryptd_queue_worker+0x131/0x200 crypto/cryptd.c:181
+   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
 
-Quick look at why this is so slow, it seems to be related to serial flush
-for certain machine types.  For all the crashes I saw, the target CPU was
-at console_flush_all().
+  Allocated by task 8355:
+   kzalloc_noprof include/linux/slab.h:778
+   tipc_crypto_start+0xcc/0x9e0 net/tipc/crypto.c:1466
+   tipc_init_net+0x2dd/0x430 net/tipc/core.c:72
+   ops_init+0xb9/0x650 net/core/net_namespace.c:139
+   setup_net+0x435/0xb40 net/core/net_namespace.c:343
+   copy_net_ns+0x2f0/0x670 net/core/net_namespace.c:508
+   create_new_namespaces+0x3ea/0xb10 kernel/nsproxy.c:110
+   unshare_nsproxy_namespaces+0xc0/0x1f0 kernel/nsproxy.c:228
+   ksys_unshare+0x419/0x970 kernel/fork.c:3323
+   __do_sys_unshare kernel/fork.c:3394
 
-In the case above, there are thousands of processes in the cgroup, and it
-is soft locking up before it reaches the 1024 limit in the code (which
-would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
-sufficient.
+  Freed by task 63:
+   kfree+0x12a/0x3b0 mm/slub.c:4557
+   tipc_crypto_stop+0x23c/0x500 net/tipc/crypto.c:1539
+   tipc_exit_net+0x8c/0x110 net/tipc/core.c:119
+   ops_exit_list+0xb0/0x180 net/core/net_namespace.c:173
+   cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
+   process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
 
-Remove the counter-based conditional rescheduling logic and call
-cond_resched() unconditionally after each task iteration, after fn() is
-called.  This avoids the lockup independently of how slow fn() is.
+After freed the tipc_crypto tx by delete namespace, tipc_aead_encrypt_done
+may still visit it in cryptd_queue_worker workqueue.
 
-Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
-Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michael van der Westhuizen <rmikey@meta.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Chen Ridong <chenridong@huawei.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I reproduce this issue by:
+  ip netns add ns1
+  ip link add veth1 type veth peer name veth2
+  ip link set veth1 netns ns1
+  ip netns exec ns1 tipc bearer enable media eth dev veth1
+  ip netns exec ns1 tipc node set key this_is_a_master_key master
+  ip netns exec ns1 tipc bearer disable media eth dev veth1
+  ip netns del ns1
+
+The key of reproduction is that, simd_aead_encrypt is interrupted, leading
+to crypto_simd_usable() return false. Thus, the cryptd_queue_worker is
+triggered, and the tipc_crypto tx will be visited.
+
+  tipc_disc_timeout
+    tipc_bearer_xmit_skb
+      tipc_crypto_xmit
+        tipc_aead_encrypt
+          crypto_aead_encrypt
+            // encrypt()
+            simd_aead_encrypt
+              // crypto_simd_usable() is false
+              child = &ctx->cryptd_tfm->base;
+
+  simd_aead_encrypt
+    crypto_aead_encrypt
+      // encrypt()
+      cryptd_aead_encrypt_enqueue
+        cryptd_aead_enqueue
+          cryptd_enqueue_request
+            // trigger cryptd_queue_worker
+            queue_work_on(smp_processor_id(), cryptd_wq, &cpu_queue->work)
+
+Fix this by holding net reference count before encrypt.
+
+Reported-by: syzbot+55c12726619ff85ce1f6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=55c12726619ff85ce1f6
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20250520101404.1341730-1-wangliang74@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/tipc/crypto.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1242,7 +1242,6 @@ int mem_cgroup_scan_tasks(struct mem_cgr
- {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
--	int i = 0;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index b09c4a17b283e..35e0ffa1bd84b 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -828,12 +828,16 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
+ 		goto exit;
+ 	}
  
- 	BUG_ON(memcg == root_mem_cgroup);
++	/* Get net to avoid freed tipc_crypto when delete namespace */
++	get_net(aead->crypto->net);
++
+ 	/* Now, do encrypt */
+ 	rc = crypto_aead_encrypt(req);
+ 	if (rc == -EINPROGRESS || rc == -EBUSY)
+ 		return rc;
  
-@@ -1252,10 +1251,9 @@ int mem_cgroup_scan_tasks(struct mem_cgr
+ 	tipc_bearer_put(b);
++	put_net(aead->crypto->net);
  
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			/* Avoid potential softlockup warning */
--			if ((++i & 1023) == 0)
--				cond_resched();
- 			ret = fn(task, arg);
-+			/* Avoid potential softlockup warning */
-+			cond_resched();
- 		}
- 		css_task_iter_end(&it);
- 		if (ret) {
+ exit:
+ 	kfree(ctx);
+@@ -871,6 +875,7 @@ static void tipc_aead_encrypt_done(struct crypto_async_request *base, int err)
+ 	kfree(tx_ctx);
+ 	tipc_bearer_put(b);
+ 	tipc_aead_put(aead);
++	put_net(net);
+ }
+ 
+ /**
+-- 
+2.39.5
+
 
 
 
