@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A0BACB707
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D774ACB12B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FD7A1945DB6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24821941A8C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D62229B36;
-	Mon,  2 Jun 2025 14:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0718823BF8F;
+	Mon,  2 Jun 2025 14:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOBaG37+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPCFfSt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EF8227E95;
-	Mon,  2 Jun 2025 14:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF65523C50F;
+	Mon,  2 Jun 2025 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876180; cv=none; b=SevvkuKOB2R0zDL7NeQ1gl588sOnKLEjmhdGZg6OD76Tx9mMGe5mQwDDSSlzb8agos3tcAbawZ9knOcHsaltmvfuVnD6kzZ4SyRg/YdLfd0h4/Ld6ByfK8IENMjUn3inLhf2//hyWSM4FIZDC6/A7cOvOx/N5AK9WyoBWMrNkv4=
+	t=1748872992; cv=none; b=u9bm/QtEr4YcvWbPS+ksqTTbKbY6LgCFD/E6uBzelqi9hB8jcDQQwCcpRNkZvbircNiiL66vbyRj3cKUZi1iJFozgZUawuxN+LKzN4khe1NbzJvET/0GaB7vP/DTI+IjW2WnohXIbv3cMRWtqkXX+6dT0J0RTlMxUx+FN1iDD5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876180; c=relaxed/simple;
-	bh=f5QTFoujuLer7SklPTZ3SItX8ret6YT9g7hr9p1P9uM=;
+	s=arc-20240116; t=1748872992; c=relaxed/simple;
+	bh=6wulQ6QChfk79ln1HPofSLVQZXaX66rrofmJIGsLtxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYoMbSAUhjsGoZGgtS7T/Tt4z2HFRFU7XZi6sBipfJgLuIBzgJIv/j1UOw8pswHHgSs5u/4qfKWETzYO70WfTJnptdgF/6njscOEaI85tTMZKIG3VGn83gBR/l1jjpD6R2O+vHtWD9oWUJz22M1vu9aievyOyRnoPz+BRHq5n60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOBaG37+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2E6C4CEEB;
-	Mon,  2 Jun 2025 14:56:19 +0000 (UTC)
+	 MIME-Version; b=o9aLzyi8YoWiKX3S1LlOvsIzlp4b5Jw9GmslKR8fELE8PNPWtqj/LHWxqnyZpcMRfLnj+gs0LcElmGJx/nvaYRGRK3RTo1/4Oo1bLFcVyJEgSvfYcxM5GHYXiktR6uOIgpxpnvaITPbxyGXuY8FwVoLsNSiW0VWJtLeHOrBmtY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPCFfSt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B136AC4CEEE;
+	Mon,  2 Jun 2025 14:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876179;
-	bh=f5QTFoujuLer7SklPTZ3SItX8ret6YT9g7hr9p1P9uM=;
+	s=korg; t=1748872992;
+	bh=6wulQ6QChfk79ln1HPofSLVQZXaX66rrofmJIGsLtxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOBaG37+aMqCQ9mVyGksYfAWizsuzkKc5dQPIhAcjvxwx9zZsMAB3NQ3l0NUAcUDP
-	 ss9VkT6WWPrj8PeSxm6+i8twsh4kwPor7fW1ENLqeYBdFpdAIDTzNlrwLA4KTfUU9m
-	 Ue4f7DR1SBsKkoftM+y8FS1SPK5kF6G1ehYkuvbc=
+	b=GPCFfSt6849nzR0JGYprKyc+fb4BgzrGkiuBiPKx9CBWxB/DftupuHXb1HvEupmUm
+	 nE314BnrLEbSdp0mzFVCeEtOFui9dxtbx+Ce63bOuXtII+PHy+DauCLoev7GAMaP2p
+	 WFuVYFU6H45ilFstyqSsW40BtzE3/3mgbaJLj6Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nandakumar Edamana <nandakumar@nandakumar.co.in>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/207] libbpf: Fix out-of-bound read
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 32/55] perf/arm-cmn: Add CMN S3 ACPI binding
 Date: Mon,  2 Jun 2025 15:47:49 +0200
-Message-ID: <20250602134302.538449790@linuxfoundation.org>
+Message-ID: <20250602134239.547594053@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
+commit 8c138a189f6db295ceb32258d46ac061df0823e5 upstream.
 
-In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
-that it will be at least two characters long due to the presence of checks for
-opening and closing quotes. But the check for the closing quote
-(value[len - 1] != '"') misses the fact that it could be checking the opening
-quote itself in case of an invalid input that consists of just the opening
-quote.
+An ACPI binding for CMN S3 was not yet finalised when the driver support
+was originally written, but v1.2 of DEN0093 "ACPI for Arm Components"
+has at last been published; support ACPI systems using the proper HID.
 
-This commit adds an explicit check to make sure the string is at least two
-characters long.
-
-Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0dc2f4963f7e ("perf/arm-cmn: Support CMN S3")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/7dafe147f186423020af49d7037552ee59c60e97.1747652164.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/perf/arm-cmn.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 294fdba9c76f7..40e0d84e3d8ed 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -1567,7 +1567,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
- 	}
- 
- 	len = strlen(value);
--	if (value[len - 1] != '"') {
-+	if (len < 2 || value[len - 1] != '"') {
- 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
- 			ext->name, value);
- 		return -EINVAL;
--- 
-2.39.5
-
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2650,6 +2650,7 @@ static const struct acpi_device_id arm_c
+ 	{ "ARMHC600", PART_CMN600 },
+ 	{ "ARMHC650" },
+ 	{ "ARMHC700" },
++	{ "ARMHC003" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(acpi, arm_cmn_acpi_match);
 
 
 
