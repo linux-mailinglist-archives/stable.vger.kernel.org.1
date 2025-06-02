@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-150057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F86ACB6ED
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E39ACB643
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C81F69E48D1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0E2C4C35BC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6DB1CBA18;
-	Mon,  2 Jun 2025 14:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97426223338;
+	Mon,  2 Jun 2025 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJbadVhf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBVGKjbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C920F07C;
-	Mon,  2 Jun 2025 14:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B62518DF89;
+	Mon,  2 Jun 2025 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875898; cv=none; b=suY5lPron7caq1J3JlbUK2JrYhqa/Lwimi2lvaTZh5qwzZDciH1To82z/29HEJpxBHG0gWPVJ7BhgbmdTBqYNpfiDkO8pR7LXc9+Xr2jbUFILbnnXbiFe7taMXoy2G3aPKJRUiXdryT9CLPs3iPG8vzyV4d9HYQRFCXrTdiq+Tw=
+	t=1748876413; cv=none; b=HGhMjfXGFf5Frkyrx69GZPlrNX5U9ob3ls8MPHpGVxbQ5ivT31JSqd3GQ+dNcEtGoMbSGWcZvecd2am+2JV7/OdVpxe4sYoAylIScNDo3EBW0AwucHAi/WWgUOr9fj8rOK8LpkvfasbUBufik9sahVh0zqrOTQWiKHZSPXVV4iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875898; c=relaxed/simple;
-	bh=/rkTPRJud5DJJmgcy6ZicMFA8lp2Ydd6TSHs+G4G6oc=;
+	s=arc-20240116; t=1748876413; c=relaxed/simple;
+	bh=W/hAHOJTPWllvlMJ/AIcYoQRbhTiPe2X5Lll5GWbu6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay+TzSzYrpYpQRAUCybSCXGLvjiz71YZKjWOIgSQTuhtUgxzyjSO/ogrJNmkfBRRcmXGZy5sRJs7U/S/n3ZCrZQnI1SHiy/65C5TOKmJXZkxnga2Sou0kMj+32dJR0Jq2rPwvu304E2D4s/s1NSbemE/9K+kafQgXXqg6ae1zPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJbadVhf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F54C4CEEB;
-	Mon,  2 Jun 2025 14:51:37 +0000 (UTC)
+	 MIME-Version; b=QCkyYWjd3/rq6CKTdz3K5BvfgzuZ9K+6CeUnBTX7Kb1FKAMiudwMwnhWvXHaaxN6usvthVh+Yz64oOXztyR7+o3so6dIW31z2yt9JQ9oIvMuc71ATvbnie11RsYbUw+6B2H2Uelq9Wt1csl3yIMmjs1MUvp6BPnsH9a3nuD6D7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBVGKjbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E94C4CEEB;
+	Mon,  2 Jun 2025 15:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875898;
-	bh=/rkTPRJud5DJJmgcy6ZicMFA8lp2Ydd6TSHs+G4G6oc=;
+	s=korg; t=1748876413;
+	bh=W/hAHOJTPWllvlMJ/AIcYoQRbhTiPe2X5Lll5GWbu6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJbadVhf6Xb4gPQ4nJ9fgtoLDt6XMYqnhO0X7BEH1FtD8jBvK79VyT2rNieFmmKKk
-	 +74FR3VaWpS/2bE9X0oksjbvJy2+9GCtol3yiC+ZS9bRldrn2dc6XkesxShq5UzOlp
-	 Iv3iSa1bFAnO8bA+xL5qahUWifaIuiJOPW6xM1Ko=
+	b=EBVGKjbEnGqu8+Ncl1Yx/vwOAfbGHEBlCbjoHYgmI4nqLl+Mi5bx/Wyw0vKcz2k12
+	 oabYoBbXK8QhrG1BexhotUkqBKNK7oTmwB7aZfgX4D7CVs69LvfJKnNBDQSs+a9weo
+	 D4JRMSznHfLqDYEKAH+QfV2QjwbRuc8JCM7jGvTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	William Liu <will@willsroot.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 256/270] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 169/207] octeontx2-af: Set LMT_ENA bit for APR table entries
 Date: Mon,  2 Jun 2025 15:49:01 +0200
-Message-ID: <20250602134317.799955151@linuxfoundation.org>
+Message-ID: <20250602134305.364782226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
+[ Upstream commit 0eefa27b493306928d88af6368193b134c98fd64 ]
 
-Savino says:
-    "We are writing to report that this recent patch
-    (141d34391abbb315d68556b7c67ad97885407547) [1]
-    can be bypassed, and a UAF can still occur when HFSC is utilized with
-    NETEM.
+This patch enables the LMT line for a PF/VF by setting the
+LMT_ENA bit in the APR_LMT_MAP_ENTRY_S structure.
 
-    The patch only checks the cl->cl_nactive field to determine whether
-    it is the first insertion or not [2], but this field is only
-    incremented by init_vf [3].
+Additionally, it simplifies the logic for calculating the
+LMTST table index by consistently using the maximum
+number of hw supported VFs (i.e., 256).
 
-    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
-    check and insert the class twice in the eltree.
-    Under normal conditions, this would lead to an infinite loop in
-    hfsc_dequeue for the reasons we already explained in this report [5].
-
-    However, if TBF is added as root qdisc and it is configured with a
-    very low rate,
-    it can be utilized to prevent packets from being dequeued.
-    This behavior can be exploited to perform subsequent insertions in the
-    HFSC eltree and cause a UAF."
-
-To fix both the UAF and the infinite loop, with netem as an hfsc child,
-check explicitly in hfsc_enqueue whether the class is already in the eltree
-whenever the HFSC_RSC flag is set.
-
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
-[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
-[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
-[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
-[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Reported-by: William Liu <will@willsroot.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
+Fixes: 873a1e3d207a ("octeontx2-af: cn10k: Setting up lmtst map table").
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250521060834.19780-2-gakula@marvell.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -176,6 +176,11 @@ struct hfsc_sched {
- 
- #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
- 
-+static bool cl_in_el_or_vttree(struct hfsc_class *cl)
-+{
-+	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
-+		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
-+}
- 
- /*
-  * eligible tree holds backlogged classes being sorted by their eligible times.
-@@ -1038,6 +1043,8 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	if (cl == NULL)
- 		return -ENOBUFS;
- 
-+	RB_CLEAR_NODE(&cl->el_node);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index 25713287a288f..39870e419ccb0 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -15,13 +15,17 @@
+ #define LMT_TBL_OP_WRITE	1
+ #define LMT_MAP_TABLE_SIZE	(128 * 1024)
+ #define LMT_MAPTBL_ENTRY_SIZE	16
++#define LMT_MAX_VFS		256
 +
- 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
- 	if (err) {
- 		kfree(cl);
-@@ -1574,7 +1581,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
- 	sch->qstats.backlog += len;
- 	sch->q.qlen++;
++#define LMT_MAP_ENTRY_ENA      BIT_ULL(20)
++#define LMT_MAP_ENTRY_LINES    GENMASK_ULL(18, 16)
  
--	if (first && !cl->cl_nactive) {
-+	if (first && !cl_in_el_or_vttree(cl)) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
+ /* Function to perform operations (read/write) on lmtst map table */
+ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 			       int lmt_tbl_op)
+ {
+ 	void __iomem *lmt_map_base;
+-	u64 tbl_base;
++	u64 tbl_base, cfg;
+ 
+ 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
+ 
+@@ -35,6 +39,13 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ 		*val = readq(lmt_map_base + index);
+ 	} else {
+ 		writeq((*val), (lmt_map_base + index));
++
++		cfg = FIELD_PREP(LMT_MAP_ENTRY_ENA, 0x1);
++		/* 2048 LMTLINES */
++		cfg |= FIELD_PREP(LMT_MAP_ENTRY_LINES, 0x6);
++
++		writeq(cfg, (lmt_map_base + (index + 8)));
++
+ 		/* Flushing the AP interceptor cache to make APR_LMT_MAP_ENTRY_S
+ 		 * changes effective. Write 1 for flush and read is being used as a
+ 		 * barrier and sets up a data dependency. Write to 0 after a write
+@@ -52,7 +63,7 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ #define LMT_MAP_TBL_W1_OFF  8
+ static u32 rvu_get_lmtst_tbl_index(struct rvu *rvu, u16 pcifunc)
+ {
+-	return ((rvu_get_pf(pcifunc) * rvu->hw->total_vfs) +
++	return ((rvu_get_pf(pcifunc) * LMT_MAX_VFS) +
+ 		(pcifunc & RVU_PFVF_FUNC_MASK)) * LMT_MAPTBL_ENTRY_SIZE;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
