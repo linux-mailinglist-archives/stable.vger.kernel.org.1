@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AF8ACB6E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EACACB487
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04FA81889844
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5635917278F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46BF22DF8B;
-	Mon,  2 Jun 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0F922D785;
+	Mon,  2 Jun 2025 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AMc3Xe4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yJi9L0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED1222D4CE;
-	Mon,  2 Jun 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6C820F07C;
+	Mon,  2 Jun 2025 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876907; cv=none; b=hoRbL7LAYyja4bqxoV+jR0zG9HAKGgkoBpVCktFl8vu9epwni4KZZ4oKPkuV6dkfaPvr8t5XN/R66bkH3dfhCOthCmSiXBL47OKeDx1UmZ36+7/RgKXDRyl4hyu1+Dr6VdupvDL3pVWZoNpjyzXMiWJ4RAyfhflUXZoUT0aTLgo=
+	t=1748875241; cv=none; b=DBEN2mnTZ66TEWqWpgn6Jdm5miq94EA6wQrOhZW13h3wWifV5mOFZrLdkknXXrT5mr49W7PptntE7yFQZh+gG5NytnDvzbdLaPB6CPV1K7a6+SGVVCJgDLpcL/BCA+aPKJYKRLAO9HTBWEhZBihSkuRWVZ814GbHvqfSwRFg4g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876907; c=relaxed/simple;
-	bh=67ozSBmzhS7zpZCxkXKXifaBRI2OAzCGN7a/N6kUSbM=;
+	s=arc-20240116; t=1748875241; c=relaxed/simple;
+	bh=MV1m3DCFnLcwJCYXZfU2NruJ620tj1gKvi+xdqTRLbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NFLenlcxkxg0zmd8Y7/0/LWS5PjwbXEu8n0WKABixhCZOdnt30QWsPPSsDNFaRulhXxvkniGqJ+iP21JAyVem83v7HRqjZSfWkuITU7aa41HFjG+hfTsVvH+4TXdrk/5ePGIbG3KQF6ph+cciG3vr7JoiZ1flCh2Y8FnKAkMMaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AMc3Xe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69488C4CEEB;
-	Mon,  2 Jun 2025 15:08:26 +0000 (UTC)
+	 MIME-Version; b=Y5kPrNv/CAQ+bEDGs6HgDXXP4YAYYksuNzCUYptq2UZnG+MoQO9e67Z8+ERzsOkbzer1Bs25rerOMmUVhbepvpj07ZDllNNpB+0irjmtYR+Ou1Zax5pS/ST5L1TC6TPeNAbk6waZvQMFpGYRoPRgF8iMRmGlu6LsR/NipQ06C+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yJi9L0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC36C4CEEB;
+	Mon,  2 Jun 2025 14:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876906;
-	bh=67ozSBmzhS7zpZCxkXKXifaBRI2OAzCGN7a/N6kUSbM=;
+	s=korg; t=1748875241;
+	bh=MV1m3DCFnLcwJCYXZfU2NruJ620tj1gKvi+xdqTRLbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1AMc3Xe4hPL7kfWZmK3AVmsg6EDvNlzOC4eXQsmPCmsSZ/TW05pAicqzTOyL7DCZQ
-	 Lib8E0JSv9MS7zR3N83qgbyTg+22qC6AR313L0Q4K8Vcgwhq33w7Hbc2wkyfEyTF+F
-	 Ocb9JECChv+wGuN51nD4fWNNyWg7uJb/9/tRRRC8=
+	b=1yJi9L0VbFNJvBWLlARVlBqQMTolKB8URinH3YS+J4WwVlvDp8gZ3H7TqI+Ynk7nJ
+	 CotCUytLvRsHOeE7SYJZoQVO800dxBWOfZGOs+1/5RkJqFDydLkR3/qyD0HX8Eg+bv
+	 FVBaTWtpMEOrTw3sljL7MshYWUamYJjdtgAUr4gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/325] timer_list: Dont use %pK through printk()
-Date: Mon,  2 Jun 2025 15:45:57 +0200
-Message-ID: <20250602134323.070686724@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.10 073/270] USB: usbtmc: use interruptible sleep in usbtmc_read
+Date: Mon,  2 Jun 2025 15:45:58 +0200
+Message-ID: <20250602134310.167231653@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
+commit 054c5145540e5ad5b80adf23a5e3e2fc281fb8aa upstream.
 
-This reverts commit f590308536db ("timer debug: Hide kernel addresses via
-%pK in /proc/timer_list")
+usbtmc_read() calls usbtmc_generic_read()
+which uses interruptible sleep, but usbtmc_read()
+itself uses uninterruptble sleep for mutual exclusion
+between threads. That makes no sense.
+Both should use interruptible sleep.
 
-The timer list helper SEQ_printf() uses either the real seq_printf() for
-procfs output or vprintk() to print to the kernel log, when invoked from
-SysRq-q. It uses %pK for printing pointers.
-
-In the past %pK was prefered over %p as it would not leak raw pointer
-values into the kernel log. Since commit ad67b74d2469 ("printk: hash
-addresses printed with %p") the regular %p has been improved to avoid this
-issue.
-
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping looks in atomic contexts.
-
-Switch to the regular pointer formatting which is safer, easier to reason
-about and sufficient here.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5b775f672cc99 ("USB: add USB test and measurement class driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250430134810.226015-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timer_list.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/class/usbtmc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
-index ed7d6ad694fba..20a5e6962b696 100644
---- a/kernel/time/timer_list.c
-+++ b/kernel/time/timer_list.c
-@@ -46,7 +46,7 @@ static void
- print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
- 	    int idx, u64 now)
- {
--	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
-+	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
- 	SEQ_printf(m, ", S:%02x", timer->state);
- 	SEQ_printf(m, "\n");
- 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
-@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
- static void
- print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
- {
--	SEQ_printf(m, "  .base:       %pK\n", base);
-+	SEQ_printf(m, "  .base:       %p\n", base);
- 	SEQ_printf(m, "  .index:      %d\n", base->index);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -1350,7 +1350,10 @@ static ssize_t usbtmc_read(struct file *
+ 	if (!buffer)
+ 		return -ENOMEM;
  
- 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
--- 
-2.39.5
-
+-	mutex_lock(&data->io_mutex);
++	retval = mutex_lock_interruptible(&data->io_mutex);
++	if (retval < 0)
++		goto exit_nolock;
++
+ 	if (data->zombie) {
+ 		retval = -ENODEV;
+ 		goto exit;
+@@ -1473,6 +1476,7 @@ static ssize_t usbtmc_read(struct file *
+ 
+ exit:
+ 	mutex_unlock(&data->io_mutex);
++exit_nolock:
+ 	kfree(buffer);
+ 	return retval;
+ }
 
 
 
