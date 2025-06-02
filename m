@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-149431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7056ACB2BD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFD4ACB813
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1DC3940F9B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 568F7940A85
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F932327A1;
-	Mon,  2 Jun 2025 14:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DA223237B;
+	Mon,  2 Jun 2025 15:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15DvqWBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hipvXpBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AB923236D;
-	Mon,  2 Jun 2025 14:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1612343B6;
+	Mon,  2 Jun 2025 15:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873942; cv=none; b=Xnl7PAdR7YcsqkIFv2ddbZmY6pqPjWuKDugoctQPGHtVjlUKeGohE9R1WIcrL/0kHNSge6gMpJFib5uz9znVZVAXpDEKCxqoD8RXbYwvfSc5HJOnrTZZsqIpzrPpsgUq8qA95rgSD+WzwMyxDdsURF7/yM6IH3Bn5IlBKa4dp7I=
+	t=1748876755; cv=none; b=JzHvj2OE1bTvOSK9n7Fp4ilBJ0DEFPM8IKrjBj2ILJogJ2xlPwOFFjzlBW/N7IRwu/aWSPPZx/lotgwGhqShkhu+EWVaIi52ln4RtDwXxCRYdu7dAS8rm+cS+EZpeZ16aXz9l14gsAkWblkY7wiRGSmwqLX55gegRr3T9Bh5NPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873942; c=relaxed/simple;
-	bh=MlK5s+6xIjbxuohX8OmbwyFSjzqODQ8oQvASlX/9Ps4=;
+	s=arc-20240116; t=1748876755; c=relaxed/simple;
+	bh=w+EfHVuSwC7xXKyBs9DzUX1Nhr6C6e3APzIpbNTpLK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8hdLM9k2WJcjVES5otqHilHVf0Y7cZqYqHNEIOLLSBtNHhEXy1Mk0SzGADbiuKHBctURj+au41FqX1XgpXqnS8jyfMEB1kg6Qhxia+Vw6OPx32BoACG2y/00MCE4n6uSJ0CpdBt+ju+cHkIXkIQt9XlHz1GX/mkiin4EIAlsnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15DvqWBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AADCC4CEEB;
-	Mon,  2 Jun 2025 14:19:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ir1VGBGD94BuWVlQIJMt7twJehOykyXWhN5w4INx7UrhLEcmnk1lonKvWwwFPxcXhN7W+R+YqYactzfFfLzbRhNHjVUdgFkFtOJ8L4UNjY0O+/PEcGbeSDSufw4uLrAPe+Gy2ZtPspltw0gdnuF3Xa+bfbRvEm1Po7ZXRsEzAHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hipvXpBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D86C4CEEE;
+	Mon,  2 Jun 2025 15:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873942;
-	bh=MlK5s+6xIjbxuohX8OmbwyFSjzqODQ8oQvASlX/9Ps4=;
+	s=korg; t=1748876755;
+	bh=w+EfHVuSwC7xXKyBs9DzUX1Nhr6C6e3APzIpbNTpLK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15DvqWBJNrfQKUmqM+usSMAerFHln2pMIgDrfifH8mm9KgdWyfmB+WiRt7hho3FLe
-	 s49QRx26DwlDR/Okm6DHwyP+/EYTBw0/zpUhBxiIZY0q7alcMUzn1mSM+rmxpNaFXk
-	 sUeyrM+APIC/K0cYpvdwZLN9zU4UbevJ5b4+GUQE=
+	b=hipvXpBKQ7wbZf9Qj4oOUDoXLlDTZMP2Dg6KtXdN1gN5CHMm3pu8HzEHnP4w6wFH5
+	 btWzO7Qa3TTmm2Y2VIpNe+gdXKZJ7W7uIyotdMawic/ILTG4BYyj3hRQVaFUruhiYS
+	 i9S20nVEkVzcnLtfEjxqgSQaLeyIOdEIOV8Iz29A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/444] net/mlx5e: Avoid WARN_ON when configuring MQPRIO with HTB offload enabled
-Date: Mon,  2 Jun 2025 15:45:38 +0200
-Message-ID: <20250602134352.081259329@linuxfoundation.org>
+Subject: [PATCH 6.1 063/325] scsi: st: Tighten the page format heuristics with MODE SELECT
+Date: Mon,  2 Jun 2025 15:45:39 +0200
+Message-ID: <20250602134322.334398830@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 689805dcc474c2accb5cffbbcea1c06ee4a54570 ]
+[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
 
-When attempting to enable MQPRIO while HTB offload is already
-configured, the driver currently returns `-EINVAL` and triggers a
-`WARN_ON`, leading to an unnecessary call trace.
+In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
+not correctly implement it. The st driver first tries MODE SELECT with the
+page format bit set to set the block descriptor.  If not successful, the
+non-page format is tried.
 
-Update the code to handle this case more gracefully by returning
-`-EOPNOTSUPP` instead, while also providing a helpful user message.
+The test only tests the sense code and this triggers also from illegal
+parameter in the parameter list. The test is limited to "old" devices and
+made more strict to remove false alarms.
 
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/st.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index d9dc7280302eb..5c6f01abdcb91 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3627,8 +3627,11 @@ static int mlx5e_setup_tc_mqprio(struct mlx5e_priv *priv,
- 	/* MQPRIO is another toplevel qdisc that can't be attached
- 	 * simultaneously with the offloaded HTB.
- 	 */
--	if (WARN_ON(mlx5e_selq_is_htb_enabled(&priv->selq)))
--		return -EINVAL;
-+	if (mlx5e_selq_is_htb_enabled(&priv->selq)) {
-+		NL_SET_ERR_MSG_MOD(mqprio->extack,
-+				   "MQPRIO cannot be configured when HTB offload is enabled.");
-+		return -EOPNOTSUPP;
-+	}
- 
- 	switch (mqprio->mode) {
- 	case TC_MQPRIO_MODE_DCB:
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 7f107be344236..284c2cf1ae662 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3074,7 +3074,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 			   cmd_in == MTSETDRVBUFFER ||
+ 			   cmd_in == SET_DENS_AND_BLK) {
+ 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
+-			    !(STp->use_pf & PF_TESTED)) {
++				cmdstatp->sense_hdr.asc == 0x24 &&
++				(STp->device)->scsi_level <= SCSI_2 &&
++				!(STp->use_pf & PF_TESTED)) {
+ 				/* Try the other possible state of Page Format if not
+ 				   already tried */
+ 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
 -- 
 2.39.5
 
