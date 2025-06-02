@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-149533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC945ACB321
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E27ACB52B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3995519434F0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C60F9E0B84
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2883C22616C;
-	Mon,  2 Jun 2025 14:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A018A231A57;
+	Mon,  2 Jun 2025 14:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwkVrHn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVdX9Axv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1212222AF;
-	Mon,  2 Jun 2025 14:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575C222A7E3;
+	Mon,  2 Jun 2025 14:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874244; cv=none; b=jf9eMY/YDdwsaRPuw/tjXmJ80r9Jr/JiUVdMBuRYijMh7ZGNUinrc+uGJtkZtIKHsV/4ILQZwgkCmEvt4X428JnCqHukLjwVslHHS4GDTxOxIQNiomIW4lIZlLhFA0y4Qbf+DXpiagH8t6gHlZwc+vXpHbQS0VRucRbTqoO9ioE=
+	t=1748875508; cv=none; b=PlKDcNKbQnduh3eFf4LLTQvQna16TygNo1FwYLnKmXbZuEpfzqCikA5K57LOm2tXoK+KVLs5aHfWsy5Hwh8cU9Pz285LdgHTtU5naTBFu0ZckLSs6cvGQmj2WchkRtBcXjFAKf4M/BYiGw9JkEVaOWzNxjadwCoR7FhAGZMGYEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874244; c=relaxed/simple;
-	bh=3H7ZJhd6MI5anA1GR7tJdEfArwEeR0SlCLCM1qehG9w=;
+	s=arc-20240116; t=1748875508; c=relaxed/simple;
+	bh=RxXHtSKbTZrj7SONCPB5stwR/ezJMP/NcQyulypr4G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCvvJ+Ym6ImzFZD/1gSXSc/5c6ATo2+8ogD5vHkLPuv7jFRsbEqSCo2BYiwaI50am6j45sZKx0Uy+uWLiJXrS1bUfatec/K2g1nEgC+lwKS9a/6uJ1XXJ1DIzH/06i7x6ANPa9nClArEuN80LDx/7cFy20e47xYqhav7+fv15FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwkVrHn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30254C4CEEB;
-	Mon,  2 Jun 2025 14:24:04 +0000 (UTC)
+	 MIME-Version; b=YxYi3bwETlEhJP300SBRgJVfWdk40KUzc6bieCJZQKEyk4vSMjCl27qvj88tcCefbRhaHiRSV/IGygoXJpp4xDzUeS2KkPhB38CiVoHbJOdSdCY1Ps/Wby5gneodKa4+q68Jrx3zvKFk7rnxqU4v4edBqMwzAyMOg0ZlG0Za8GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVdX9Axv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B235CC4CEEB;
+	Mon,  2 Jun 2025 14:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874244;
-	bh=3H7ZJhd6MI5anA1GR7tJdEfArwEeR0SlCLCM1qehG9w=;
+	s=korg; t=1748875508;
+	bh=RxXHtSKbTZrj7SONCPB5stwR/ezJMP/NcQyulypr4G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwkVrHn9eQEz0RexYYGCBFO8t2Z9HbdRcKGPAP+8ysYGfNjzdL5H56rY6ddlG+CtW
-	 CxepikWR6Ll4mo4oF6q/twPlwiLqUMATb+/cf+Ipeztq0oxWq3A/qoe9w5f53x+iCs
-	 Oub5PiYv4oPJNtd/IdZ77kG0zor48FF6F7wq8Wu4=
+	b=sVdX9AxvLYmrW6ISreWGkrimsd5yWFN691243mzY/LMhOHGQjSp5tDlYe1ZIExN3U
+	 h0PV/noDSRwLmjna5rV+YA6Xy28scUaoQ+P0SemiaAdOHwgvgY6kFOGR2cj4hstmu/
+	 Y9uWwuuFvvM6i12omD/ZamUUoZb4I+OWOrqXRGRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 376/444] memcg: always call cond_resched() after fn()
+	Andreas Schwab <schwab@linux-m68k.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 155/270] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
 Date: Mon,  2 Jun 2025 15:47:20 +0200
-Message-ID: <20250602134356.178851847@linuxfoundation.org>
+Message-ID: <20250602134313.553765270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Andreas Schwab <schwab@linux-m68k.org>
 
-commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
+[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
 
-I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
-is happening because killing the process in certain machine might be very
-slow, which causes the soft lockup and RCU stalls.  This happens usually
-when the cgroup has MANY processes and memory.oom.group is set.
+Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
+property on the i2s node.
 
-Example I am seeing in real production:
-
-       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
-       ....
-       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
-       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
-       ....
-
-Quick look at why this is so slow, it seems to be related to serial flush
-for certain machine types.  For all the crashes I saw, the target CPU was
-at console_flush_all().
-
-In the case above, there are thousands of processes in the cgroup, and it
-is soft locking up before it reaches the 1024 limit in the code (which
-would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
-sufficient.
-
-Remove the counter-based conditional rescheduling logic and call
-cond_resched() unconditionally after each task iteration, after fn() is
-called.  This avoids the lockup independently of how slow fn() is.
-
-Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
-Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michael van der Westhuizen <rmikey@meta.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Chen Ridong <chenridong@huawei.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+[maddy: added "commit" work in depends-on to avoid checkpatch error]
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/prom_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1266,7 +1266,6 @@ void mem_cgroup_scan_tasks(struct mem_cg
- {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
--	int i = 0;
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 9a753c4dafab6..b29135dd73342 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2944,11 +2944,11 @@ static void __init fixup_device_tree_pmac(void)
+ 	char type[8];
+ 	phandle node;
  
- 	BUG_ON(mem_cgroup_is_root(memcg));
+-	// Some pmacs are missing #size-cells on escc nodes
++	// Some pmacs are missing #size-cells on escc or i2s nodes
+ 	for (node = 0; prom_next_node(&node); ) {
+ 		type[0] = '\0';
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "escc"))
++		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+ 			continue;
  
-@@ -1276,10 +1275,9 @@ void mem_cgroup_scan_tasks(struct mem_cg
- 
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			/* Avoid potential softlockup warning */
--			if ((++i & 1023) == 0)
--				cond_resched();
- 			ret = fn(task, arg);
-+			/* Avoid potential softlockup warning */
-+			cond_resched();
- 		}
- 		css_task_iter_end(&it);
- 		if (ret) {
+ 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+-- 
+2.39.5
+
 
 
 
