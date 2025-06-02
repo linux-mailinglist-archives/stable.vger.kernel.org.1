@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBD3ACB2CE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEAA0ACB706
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A72D9416D0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 074C7A23B30
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1986320F07C;
-	Mon,  2 Jun 2025 14:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93A7188907;
+	Mon,  2 Jun 2025 14:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxJomZWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkZPSR1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEDE2343C7;
-	Mon,  2 Jun 2025 14:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F36422E3FC;
+	Mon,  2 Jun 2025 14:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873975; cv=none; b=qlxDh0pb7xx3Z6DI/d7yYNhLPr1qlWiPevs2pRNvACfARLwI1tDVNWmrJmk0BYaOfulSR/JCxsT5nQj60j4t4IjK/NC7Gh9qnQ0mZH5eRNXwuc7wqp+d89nwFZgilrqxXn3JD4WtkuAkXnhyiBy0wbtYqL13VHJdwi9S8kv4SUw=
+	t=1748875945; cv=none; b=GcYmTTIPQpyB4EGyL5ZpT/i1PUbvfBx/V6svmr3Sn8aC5ZLiKfKaSDuzZV4fzAEb9Gb2HWGtMtFt3qvgiNT2dgUdsm5x88pAn3RbvJZKWU8PNABDN1EbxMkGpgSyIZnciiiCYJ6GrAnl+uyjLtRGKWFWkgGZhVOERoh+bF6uN4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873975; c=relaxed/simple;
-	bh=l7qeHle0m+4sfaug0WsrKiBBLxSkJY46N/t6aHyomg0=;
+	s=arc-20240116; t=1748875945; c=relaxed/simple;
+	bh=Eh5bRi0POL8YIzyJ2jLrW7kDSA1dubKFaUvc2TnzdjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8gQVawDsZaXefSejHiBmcUTdi0bNydyV0+PJiEltzUkZenye2dHlwAO6KasjMkkyEgrJb1OQ3r6bgaLGVL8C5RTh/Xt5r6Nb5z+ZDRxpV4Craqt0H3///P9qIh2vDLVa+0h17wy7cfIWrK5tLFlDiUQjOFoZvTE8lxyAPNvirw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxJomZWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2392C4CEEB;
-	Mon,  2 Jun 2025 14:19:34 +0000 (UTC)
+	 MIME-Version; b=j3spgK83jbA6j9CgU54DFes7RJ6lIwp1a0aMBYtOu53wn6/81tir30AS9m77EP5tqXS7E1SQYUgnk9ut4CFPjfR+pbNVKIL14SJ/nrKgrVdctoVk73QGojcBtlpusPHz2xguaC/FMOhpYjdbDC+BjCgKyoe0LWK5Ud3SiazvsyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkZPSR1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2B1C4CEEB;
+	Mon,  2 Jun 2025 14:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873975;
-	bh=l7qeHle0m+4sfaug0WsrKiBBLxSkJY46N/t6aHyomg0=;
+	s=korg; t=1748875944;
+	bh=Eh5bRi0POL8YIzyJ2jLrW7kDSA1dubKFaUvc2TnzdjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxJomZWVMtius9pMhBzrChiJYgo6665CcWXPLtj+eD6PrlrZzzl5x4GiObEDzO/vr
-	 uXmjUXMkCDSnlMfY0ykdagXNxTYIsr67p5xU0ngHSJpFQ8r8NtoTqpRhHNVLNv7zCN
-	 UVQJXTcXjqPb0Uvb/fBqOdvIuFD0WfInHtcQSiRY=
+	b=xkZPSR1FvX4AQfHOZ+aFFrkeGAuZ4JoVRtG2sYCVv14xutt/rDaYnXqb0d1SVrgUU
+	 b1FS4bCKrLojpoWSWq/9bHU7OoDczsyRWI3lH8IKoaumXTHSZwGH06BbZMb8bz7Gb7
+	 w67XTThAnNUbDtCSsJIGIL3EX7uLPKgyEJtUknDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 316/444] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
+Subject: [PATCH 5.15 008/207] kconfig: merge_config: use an empty file as initfile
 Date: Mon,  2 Jun 2025 15:46:20 +0200
-Message-ID: <20250602134353.763067890@linuxfoundation.org>
+Message-ID: <20250602134259.098360990@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Daniel Gomez <da.gomez@samsung.com>
 
-[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
+[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
 
-Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
-model for making it working.
+The scripts/kconfig/merge_config.sh script requires an existing
+$INITFILE (or the $1 argument) as a base file for merging Kconfig
+fragments. However, an empty $INITFILE can serve as an initial starting
+point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
+if -m is not used. This variable can point to any configuration file
+containing preset config symbols (the merged output) as stated in
+Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
+contain just the merge output requiring the user to run make (i.e.
+KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
+olddefconfig).
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Instead of failing when `$INITFILE` is missing, create an empty file and
+use it as the starting point for merges.
+
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ scripts/kconfig/merge_config.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index ce80adc30fe94..6a85e8fdcae64 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -576,6 +576,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{       /* Acer Aspire SW3-013 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
+index 72da3b8d6f307..151f9938abaa7 100755
+--- a/scripts/kconfig/merge_config.sh
++++ b/scripts/kconfig/merge_config.sh
+@@ -105,8 +105,8 @@ INITFILE=$1
+ shift;
+ 
+ if [ ! -r "$INITFILE" ]; then
+-	echo "The base file '$INITFILE' does not exist.  Exit." >&2
+-	exit 1
++	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
++	touch "$INITFILE"
+ fi
+ 
+ MERGE_LIST=$*
 -- 
 2.39.5
 
