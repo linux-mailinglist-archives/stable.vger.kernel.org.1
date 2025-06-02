@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233F3ACB7E4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78027ACB77E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08D02A24B1C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4245A1BA42F3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD8A226D14;
-	Mon,  2 Jun 2025 14:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318922A7E5;
+	Mon,  2 Jun 2025 15:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHw2PovB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW0HHmGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B51226D12;
-	Mon,  2 Jun 2025 14:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7BD22A4E5;
+	Mon,  2 Jun 2025 15:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876139; cv=none; b=luXcNxTU3togVDudC2CFPMjdifA+z1nvSR504eRXUScmG1wMSqyuHdRd7gBAIhx6eh73Eu2bWa7YIH4QeVM5rG/nLQKDZ45ae9ox5/BITAhEXgqgOx4YvooDVzw8Wkb/UWRjnvxLFkJ2JFFkBq/fdPDiJh1BAuxw3VYXnOlKLak=
+	t=1748877219; cv=none; b=vAAtKgar55ydIayGp6kIzmI8kTZfYaFXp01EIfcunKxDKetFUn96GKJF5mBc/ToYIir82LpzssA+7fwJAudluxAL/lWfwhOml8aGu4XHQyoWE9/q3UiPmeIBDk+NPwUt/90Zc0QpRaWoztQeJ6FmgFt4scvOpBr6t3JZiQ9Bf2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876139; c=relaxed/simple;
-	bh=xrZaNTxVw/k9W7vnlPFPjIQLm+VK2705HI+gQJLCjMo=;
+	s=arc-20240116; t=1748877219; c=relaxed/simple;
+	bh=oTNXPKA3//AuFTXhG3GhsPbVxCzetMPvpPdZH157/UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eudv5JyX8Ekhyi6b7ZjtrC2fBEG0Z5EX+N8qdLfmY8vvB1iS5Jp2QGAHvEQvq9anYv51LrNZgRXZXI+X6VYUjflt6mcKz7CW5kjwRng+D+oTT4I1um8dyzNpcJekGRx+6mH/GFfx2eStLg7OvpYZRGTrTIpWLUJT3CEWqA6ios4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHw2PovB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987BFC4CEEB;
-	Mon,  2 Jun 2025 14:55:38 +0000 (UTC)
+	 MIME-Version; b=BRNNrg+RRKP8xeZT4RBciRxJnun52n8K+1AvZ6qigt3nynugclH6FuvFHMaOmbHi/8ly9IaFtNiRQ02Z5yNNVFTynWsvEQ873ZJvZMwqlEftheSI4eUaqTyvaz0QOlxLYMuYcXq4dI3wTle0ACdTAgpuXXwi8GGITZF/DVPyhoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW0HHmGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B27C4CEEB;
+	Mon,  2 Jun 2025 15:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876139;
-	bh=xrZaNTxVw/k9W7vnlPFPjIQLm+VK2705HI+gQJLCjMo=;
+	s=korg; t=1748877218;
+	bh=oTNXPKA3//AuFTXhG3GhsPbVxCzetMPvpPdZH157/UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHw2PovBb8np3js2dWdkx8iJvfs5OJxNg8xXvuB+QKFlOsg451Vg3ridM3DGoBJlD
-	 4LGS1BPevMRk5VqjcAglXnZCHyAz3zARCOySwzvhtTob/y5whWgU1SAgYWYL15jfRI
-	 1qyWdZsBs3MEV/GLAjE140WffGaFM0Fwfgwq3CC4=
+	b=LW0HHmGP4v0z1ux4HpehOnyRRyup+swaAt5Q2Ml3EccXxgnJxG4CZmJoC2SBm6y0T
+	 bRHxHSXSu2LSdF4z2obvtAoddsFYMC00HDYxMmTIWqMNT3FB5TJcxTXVeMro3HrOji
+	 bV4e936CU+w3x46p90LAf6diQvipkXILDVCwc5Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/207] drm/mediatek: mtk_dpi: Add checks for reg_h_fre_con existence
+Subject: [PATCH 6.1 178/325] phy: core: dont require set_mode() callback for phy_get_mode() to work
 Date: Mon,  2 Jun 2025 15:47:34 +0200
-Message-ID: <20250602134301.952749983@linuxfoundation.org>
+Message-ID: <20250602134327.052982163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 8c9da7cd0bbcc90ab444454fecf535320456a312 ]
+[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
 
-In preparation for adding support for newer DPI instances which
-do support direct-pin but do not have any H_FRE_CON register,
-like the one found in MT8195 and MT8188, add a branch to check
-if the reg_h_fre_con variable was declared in the mtk_dpi_conf
-structure for the probed SoC DPI version.
+As reported by Damon Ding, the phy_get_mode() call doesn't work as
+expected unless the PHY driver has a .set_mode() call. This prompts PHY
+drivers to have empty stubs for .set_mode() for the sake of being able
+to get the mode.
 
-As a note, this is useful specifically only for cases in which
-the support_direct_pin variable is true, so mt8195-dpintf is
-not affected by any issue.
+Make .set_mode() callback truly optional and update PHY's mode even if
+it there is none.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-6-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
+Tested-by: Damon Ding <damon.ding@rock-chips.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/phy/phy-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 9518672dc21b3..3f39109b69154 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -346,12 +346,13 @@ static void mtk_dpi_config_swap_input(struct mtk_dpi *dpi, bool enable)
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index 0730fe80dc3c1..069bcf49ee8f7 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -398,13 +398,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
  
- static void mtk_dpi_config_2n_h_fre(struct mtk_dpi *dpi)
+ int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
  {
--	mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
-+	if (dpi->conf->reg_h_fre_con)
-+		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
- }
+-	int ret;
++	int ret = 0;
  
- static void mtk_dpi_config_disable_edge(struct mtk_dpi *dpi)
- {
--	if (dpi->conf->edge_sel_en)
-+	if (dpi->conf->edge_sel_en && dpi->conf->reg_h_fre_con)
- 		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, 0, EDGE_SEL_EN);
- }
+-	if (!phy || !phy->ops->set_mode)
++	if (!phy)
+ 		return 0;
  
+ 	mutex_lock(&phy->mutex);
+-	ret = phy->ops->set_mode(phy, mode, submode);
++	if (phy->ops->set_mode)
++		ret = phy->ops->set_mode(phy, mode, submode);
+ 	if (!ret)
+ 		phy->attrs.mode = mode;
+ 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
