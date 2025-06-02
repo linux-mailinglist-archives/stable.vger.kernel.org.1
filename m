@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0886ACB764
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938E5ACB7ED
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60F09E61EE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88423944F45
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FA322FE18;
-	Mon,  2 Jun 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C5228C92;
+	Mon,  2 Jun 2025 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gs+jOw/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVVVbsJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC20229B2E;
-	Mon,  2 Jun 2025 14:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D6F20E026;
+	Mon,  2 Jun 2025 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876186; cv=none; b=b1ziYvn3nrCvF8ysW/G9MVKAbeCmKN/yMHIJSpH/1YgcsGjVHk9bC8+r8NqFrYr4KD7i5IQEH3mOK/E08O0Dy5/5F3SE2GB1bBKXP68U8GIMUhLuZgLgfkuEf379UeIMfWB2+chuc8xdCUUtrYy/p99k5uSXgA29YNjtRYUk/Uo=
+	t=1748877176; cv=none; b=kpWcBE4HYab1g2LTCqtGHgHG/wa3dbJxwLEPvVzdY8TnbMARsjt1PBYatvfoXPgXdZkvY1OX4+Xhr5NXgmi9osBJ8+qyzAUXlsDIyWifEaJPIWdlg/M/I0Wi0YQnC53xfncjkcHAe/d97PNTMyjyd8Tu3f/sayW18lE5TQvD0mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876186; c=relaxed/simple;
-	bh=3tUYAkd/0evZdZz8CNagrQkAnfTno1I5yzvbsB0onNQ=;
+	s=arc-20240116; t=1748877176; c=relaxed/simple;
+	bh=AVivlVTHYWGNtqYzZ2Eso6gzPW89ZHeeRohyTJX2UBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FeTXeXpzTuo3LeDlLZC5gZHiqJl6k0ELl0lf8sw14//td/fiRBNwtEoMNr+kTQlyzbTMlU+jcYINn4inu6yDqEttHOumndWWR8mXa/8UD4lOJ1ledWKk9RJncsnPkN+gKuypmSjKpeqStxAi7RRbk1mvgW/G4Sz5ol79ndz8tcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gs+jOw/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7625CC4CEEB;
-	Mon,  2 Jun 2025 14:56:25 +0000 (UTC)
+	 MIME-Version; b=n7Y2SuKgRl7WeDQZotkyeBKee48hYKAI5ijrf6ZsTxBhWxWMaDM1v8T1xcUFh1Ic+D8dQ4RwZh9eplcbNeD8Mu7XGJodtWwc0bajmQ9HHJioClzoscRoVIUJgtWyOqn6AsKpCj1R8uMcQgBIdVlHW+oRv8qVqt+7WcXe4YMHR7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVVVbsJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5E0C4CEEB;
+	Mon,  2 Jun 2025 15:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876185;
-	bh=3tUYAkd/0evZdZz8CNagrQkAnfTno1I5yzvbsB0onNQ=;
+	s=korg; t=1748877175;
+	bh=AVivlVTHYWGNtqYzZ2Eso6gzPW89ZHeeRohyTJX2UBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gs+jOw/nzambCX46o+r09eVxaB/KTmEHgA51NgBWx6xxHlefIKhx9hHxpw+b5qzvX
-	 eNJFSTB0nAkbEUT9LrpummF9qW56hxJK4LXltBOqppmW+aG4QlRv6HnlvEGK1wQibv
-	 O0rSLuD0cdA2I/yapVoynLy+lQ7JfgByYov5XMEc=
+	b=xVVVbsJVM+5GSn/YHXNqPFUpcyChebUHHAW7LagZkCr+SPheoGrib+pCmYF8qoLpj
+	 98teOAgPaOT6wjNrcgouuT2zXjtCH/cQDo3hcpPdoNcPrF8RbtSAs7jKe/qNlTJzdW
+	 gmygimdsHTqheWwIBjNNBk0dwop7TnEaxjlgCIss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/207] MIPS: Use arch specific syscall name match function
+Subject: [PATCH 6.1 195/325] vxlan: Annotate FDB data races
 Date: Mon,  2 Jun 2025 15:47:51 +0200
-Message-ID: <20250602134302.618608600@linuxfoundation.org>
+Message-ID: <20250602134327.725421749@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
+[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
 
-On MIPS system, most of the syscall function name begin with prefix
-sys_. Some syscalls are special such as clone/fork, function name of
-these begin with __sys_. Since scratch registers need be saved in
-stack when these system calls happens.
+The 'used' and 'updated' fields in the FDB entry structure can be
+accessed concurrently by multiple threads, leading to reports such as
+[1]. Can be reproduced using [2].
 
-With ftrace system call method, system call functions are declared with
-SYSCALL_DEFINEx, metadata of the system call symbol name begins with
-sys_. Here mips specific function arch_syscall_match_sym_name is used to
-compare function name between sys_call_table[] and metadata of syscall
-symbol.
+Suppress these reports by annotating these accesses using
+READ_ONCE() / WRITE_ONCE().
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+[1]
+BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+
+write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
+ vxlan_xmit+0xb29/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
+ vxlan_xmit+0xadf/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+
+[2]
+ #!/bin/bash
+
+ set +H
+ echo whitelist > /sys/kernel/debug/kcsan
+ echo !vxlan_xmit > /sys/kernel/debug/kcsan
+
+ ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
+ taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+ taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-index db497a8167da2..e3212f44446fa 100644
---- a/arch/mips/include/asm/ftrace.h
-+++ b/arch/mips/include/asm/ftrace.h
-@@ -87,4 +87,20 @@ struct dyn_arch_ftrace {
- #endif /*  CONFIG_DYNAMIC_FTRACE */
- #endif /* __ASSEMBLY__ */
- #endif /* CONFIG_FUNCTION_TRACER */
-+
-+#ifdef CONFIG_FTRACE_SYSCALLS
-+#ifndef __ASSEMBLY__
-+/*
-+ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
-+ * for instance). We should also match the sys_ variant with those.
-+ */
-+#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
-+static inline bool arch_syscall_match_sym_name(const char *sym,
-+					       const char *name)
-+{
-+	return !strcmp(sym, name) ||
-+		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
-+}
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_FTRACE_SYSCALLS */
- #endif /* _ASM_MIPS_FTRACE_H */
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 0afd7eb976e6c..ef61eab81707c 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -274,9 +274,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 			be32_to_cpu(fdb->vni)))
+ 		goto nla_put_failure;
+ 
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
+ 
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+@@ -482,8 +482,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
+ 
+ 	f = __vxlan_find_mac(vxlan, mac, vni);
+-	if (f && f->used != jiffies)
+-		f->used = jiffies;
++	if (f && READ_ONCE(f->used) != jiffies)
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	return f;
+ }
+@@ -1057,12 +1057,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+ 		if (f->state != state) {
+ 			f->state = state;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 		if (f->flags != fdb_flags) {
+ 			f->flags = fdb_flags;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 	}
+@@ -1096,7 +1096,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	}
+ 
+ 	if (ndm_flags & NTF_USE)
+-		f->used = jiffies;
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1525,7 +1525,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 
+ 		rdst->remote_ip = *src_ip;
+-		f->updated = jiffies;
++		WRITE_ONCE(f->updated, jiffies);
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
+ 	} else {
+ 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+@@ -2936,7 +2936,7 @@ static void vxlan_cleanup(struct timer_list *t)
+ 			if (f->flags & NTF_EXT_LEARNED)
+ 				continue;
+ 
+-			timeout = f->used + vxlan->cfg.age_interval * HZ;
++			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
+ 			if (time_before_eq(timeout, jiffies)) {
+ 				netdev_dbg(vxlan->dev,
+ 					   "garbage collect %pM\n",
 -- 
 2.39.5
 
