@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F5AACB36E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28CDACB6CC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E28C07AD25F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59B317634A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8B22253A9;
-	Mon,  2 Jun 2025 14:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA5623A98D;
+	Mon,  2 Jun 2025 15:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boYR35oH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp5RlzIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1881FCFE2;
-	Mon,  2 Jun 2025 14:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED801FC0EF;
+	Mon,  2 Jun 2025 15:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874972; cv=none; b=WqqjjyI289Tmr3oWSRKSLnIAf5NjxIVqL3IMq1RxomgsrnYKeg9AJin4zig1hDPYIwFWvGTBbqBCOs6j4dQn8kNenFIwPdVN0FZcb3/efsXpV6x6yG7Piq+lU8FXhFeCe71rcvDUw7/zWE/oNufMHP/9No9OSe832W8cOU3UOb8=
+	t=1748876467; cv=none; b=n6uqUT05EF2JXcmtSog6LGOcSaeewJvMnPIod2QXOc5gmqBRIJCHyuCv3Dir3gjdx7jvs/PAXfcZDApR2VG7L2nfEOHR0hdEBxKWAKbgugOygoomIUh7WZ2eKuPmosg4Df1PFdMpLvUkVz91f+At6fqYOq8tFYU/TKSeEq15L8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874972; c=relaxed/simple;
-	bh=02ue9IlPTATr3g+TEN+2gzIZDDymCbI3tjW+wwfKFCg=;
+	s=arc-20240116; t=1748876467; c=relaxed/simple;
+	bh=O+HWmrK0e+Tr+3mHGspbTYzQKpeW/frh0vMUl3uVY7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PE4IYi8sXOgoK4fjeRiVMfEF5ZKs848WfK6KfKm0vDXSslr/c48Nvwe5Qf26eqCWkcz7XIi/k4WsR8SHDs41fq+9Jz27jx7jXDUdWfqepAub40gatts3wb3xQkbr810SuGC2AYKqi6VrP4kNGC0ZlH+5a1yG+r88tywpZv2FPco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boYR35oH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96533C4CEEB;
-	Mon,  2 Jun 2025 14:36:11 +0000 (UTC)
+	 MIME-Version; b=t3jd1CYbHms1KwkV7DO5aYjXe1fsMoyhHJhpo/su3eSNub5YRQJ6PcBbhT/n46+HmsUqdqByAyNHdpYMw28n0F7Dk+tz7xmJXawytkE47L99UJ6Hxe4UzoRlW4MrGupN0K4pp+vbZIJ+FYfnaRS4oULSUR8rj1odJmyjHRXU+mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp5RlzIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753EDC4CEEB;
+	Mon,  2 Jun 2025 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874972;
-	bh=02ue9IlPTATr3g+TEN+2gzIZDDymCbI3tjW+wwfKFCg=;
+	s=korg; t=1748876466;
+	bh=O+HWmrK0e+Tr+3mHGspbTYzQKpeW/frh0vMUl3uVY7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boYR35oH+QB2bSoqiswaXVRIKk0fOL0oqWRiisSPnfJx5H40S8oK76H3WHFxpsjAY
-	 S3gkneLYi+AlBO8hytk9G9O6S1BsyEhxbcwttctldi1shpupZulAsoKuGd1aa9GfA4
-	 8MqD2ip+bdsfK/4aA8uTtpXgK8CpYrjStD8rdDn0=
+	b=Tp5RlzIc9x4qdNHITHPN58pR0rCecCmD4nx3rquyrQUtpSXLhP9Ab8JbljdETcTo1
+	 HP7jfEvZ6pSyBBS7DbXi1JCMISNafH18p8lzpR95+xN9qQmz78i/VHDNNYCbmYBAUa
+	 ecPJZrGOIvHfqP1WrMYod9JaMLla1dQRAfZ8HA0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 192/204] coredump: fix error handling for replace_fd()
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 153/207] drm: Add valid clones check
 Date: Mon,  2 Jun 2025 15:48:45 +0200
-Message-ID: <20250602134303.222592387@linuxfoundation.org>
+Message-ID: <20250602134304.715035952@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
+[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
 
-The replace_fd() helper returns the file descriptor number on success
-and a negative error code on failure. The current error handling in
-umh_pipe_setup() only works because the file descriptor that is replaced
-is zero but that's pretty volatile. Explicitly check for a negative
-error code.
+Check that all encoders attached to a given CRTC are valid
+possible_clones of each other.
 
-Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
-Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -551,7 +551,9 @@ static int umh_pipe_setup(struct subproc
- {
- 	struct file *files[2];
- 	struct coredump_params *cp = (struct coredump_params *)info->data;
--	int err = create_pipe_files(files, 0);
-+	int err;
-+
-+	err = create_pipe_files(files, 0);
- 	if (err)
- 		return err;
- 
-@@ -559,10 +561,13 @@ static int umh_pipe_setup(struct subproc
- 
- 	err = replace_fd(0, files[0], 0);
- 	fput(files[0]);
-+	if (err < 0)
-+		return err;
-+
- 	/* and disallow core files too */
- 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
- 
--	return err;
-+	return 0;
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index bd01d925769db..db3c58013c00d 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -563,6 +563,30 @@ mode_valid(struct drm_atomic_state *state)
+ 	return 0;
  }
  
- void do_coredump(const kernel_siginfo_t *siginfo)
++static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
++					 struct drm_crtc *crtc)
++{
++	struct drm_encoder *drm_enc;
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
++
++	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
++		if (!drm_enc->possible_clones) {
++			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
++			continue;
++		}
++
++		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
++		    crtc_state->encoder_mask) {
++			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
++				  crtc->base.id, crtc_state->encoder_mask);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
+ /**
+  * drm_atomic_helper_check_modeset - validate state object for modeset changes
+  * @dev: DRM device
+@@ -729,6 +753,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
+ 		ret = drm_atomic_add_affected_planes(state, crtc);
+ 		if (ret != 0)
+ 			return ret;
++
++		ret = drm_atomic_check_valid_clones(state, crtc);
++		if (ret != 0)
++			return ret;
+ 	}
+ 
+ 	/*
+-- 
+2.39.5
+
 
 
 
