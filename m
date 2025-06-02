@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6BAACB2CC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E9FACB40F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90B7740725F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95FA4066A1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C17230BEF;
-	Mon,  2 Jun 2025 14:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C517122A81D;
+	Mon,  2 Jun 2025 14:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7lPMpuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4aakhck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25A722FE19;
-	Mon,  2 Jun 2025 14:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8305822ACEE;
+	Mon,  2 Jun 2025 14:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873882; cv=none; b=uzr+cjoSzN1ohdj4v9sd+wBCKi/VBFwMVQR83p5TDE8WJR8IX4PvHvKOShV9/eGSyDYt3cz5Jnv9iXidmZ6FZKTc8NLJZb7L4hBpnzf6wWzTrkm+Z82sQWWoIVC3flX2yw2Eof/Uw5vOGwzy0M0ED7jzqvumKxwb3s3XpTU74Ks=
+	t=1748874413; cv=none; b=HfzPC9hHJjK64Q38TbtRzR8Wslohi4S+Bza86617uraVaavFA8VkltI/n+F9rPW//wJN92pkwFCa3m9ajdwmPLQdjfqPqHQ/i0GL1payE08Ds7aNVhgsi6cxV9ds8n3jKNww1dZUkLtRIC7FOJNZJg3wofas9ztZ3DQLyK5TvEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873882; c=relaxed/simple;
-	bh=6jkq7liZ2MqXC7Is9MpDCu9+qn+DIEtnItXElnWSjow=;
+	s=arc-20240116; t=1748874413; c=relaxed/simple;
+	bh=vPWU+o6drO5Ybfvts/HZnAe0Cji3RZFVfzd3Wj2dvZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6i2duck8SIv2x55hc98dgR79IO59CKo4kbAcg3iGxXN1AcV6vmi3JOO0ZjeFZmYutZKcWsCbMYOngt9+YWp+hfyCBVxzVS3Ds8LVlAyriwdvuh2RAv5y6eCj2V5FqcRfNBhqwxw/ZZ74zqum9LE/RVD0krzGkoUxQEwLOmd+Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7lPMpuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70052C4CEEB;
-	Mon,  2 Jun 2025 14:18:01 +0000 (UTC)
+	 MIME-Version; b=ZC8ljPA3dSprA17vSwZ3Tmc4/8ayn6hkw8N9ctcMuh1AiC2f9/jb9FT8sgxotEQc1Jc+9/nBdc9kdys8jqrYfgG8q/Di5ELKKTsM4BubFm5e+UBy9ykew9q+uWvzLIe8iUYPkIPslUD2oeJxThUk0mj7JJXY+76al2rYikfTdLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4aakhck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C38EC4CEEB;
+	Mon,  2 Jun 2025 14:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873881;
-	bh=6jkq7liZ2MqXC7Is9MpDCu9+qn+DIEtnItXElnWSjow=;
+	s=korg; t=1748874413;
+	bh=vPWU+o6drO5Ybfvts/HZnAe0Cji3RZFVfzd3Wj2dvZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7lPMpuIorRy3K2nOZzJRWTYadh5iEk2dKo4TPTp0j2mUJHJRp6lJvw9n/OsHoR/+
-	 hMd6vcB/vmgnIysVzaWN0YFxTj3hnf8Sqmc15OcTkroPFt/QZCZVNSGS8ZVJ9adFNo
-	 AUdvf/xnpNzvNEBiatECLMN8+BBQLbvAjZwGOeog=
+	b=v4aakhckaSwMJGXggSs5XVBC+LNPsiQsBnO+e7ZCEJEB+9YXrFXLKy2siSFA2htzX
+	 2M8BLRU7Lt07FMyXgJuC3DZfMpmB3TGYBEuipkaVZnwCdZsOFgH4jOb2j4O5QHDhPc
+	 WbeJPKA7t3mDI6/uj0xUNOfyuBkePD1W0EfR+m1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Colin Ian King <colin.king@canonical.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/444] net/mana: fix warning in the writer of client oob
+Subject: [PATCH 5.4 016/204] lan743x: remove redundant initialization of variable current_head_index
 Date: Mon,  2 Jun 2025 15:45:49 +0200
-Message-ID: <20250602134352.526520163@linuxfoundation.org>
+Message-ID: <20250602134256.131907208@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
+[ Upstream commit bb809a047eb5070e2fc76aa62d111fbbe656c532 ]
 
-Do not warn on missing pad_data when oob is in sgl.
+The variable current_head_index is being initialized with a value that
+is never read and it is being updated later with a new value.  Replace
+the initialization of -1 with the latter assignment.
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2d52e2e38b85 ("net: lan743x: Fix memleak issue when GSO enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index ae014e21eb605..9ed965d61e355 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1036,7 +1036,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
- 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 6458dbd6c631a..5d539e4e942cc 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -2004,14 +2004,13 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ {
+ 	struct skb_shared_hwtstamps *hwtstamps = NULL;
+ 	int result = RX_PROCESS_RESULT_NOTHING_TO_DO;
++	int current_head_index = *rx->head_cpu_ptr;
+ 	struct lan743x_rx_buffer_info *buffer_info;
+ 	struct lan743x_rx_descriptor *descriptor;
+-	int current_head_index = -1;
+ 	int extension_index = -1;
+ 	int first_index = -1;
+ 	int last_index = -1;
  
- 	if (oob_in_sgl) {
--		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
-+		WARN_ON_ONCE(wqe_req->num_sge < 2);
- 
- 		header->client_oob_in_sgl = 1;
+-	current_head_index = *rx->head_cpu_ptr;
+ 	if (current_head_index < 0 || current_head_index >= rx->ring_size)
+ 		goto done;
  
 -- 
 2.39.5
