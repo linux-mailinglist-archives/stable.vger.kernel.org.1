@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A65ACB3CF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DFCACB541
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C457C16253F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 828124A4E66
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA89227E8E;
-	Mon,  2 Jun 2025 14:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582D6221714;
+	Mon,  2 Jun 2025 14:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW+pz6zo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQ1A27mN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB71FBC90;
-	Mon,  2 Jun 2025 14:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F42A1FCFE2;
+	Mon,  2 Jun 2025 14:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874294; cv=none; b=mqlE9ahPJqyPGM/TnQ5z0XNH3XfAWCtuvrjbgvr2p3Z3iPYGjiJgXkPodT9a8mRpFxi+4ohPZAVnaVEkDulIrf5PbWni7mGqu1vWi33MJK3xMh1mAYXNpZsllX6PyBh7z+aEjY3mW61DriFf2lACR3v+7lKE0ZQife/kRNewguc=
+	t=1748875649; cv=none; b=IRVtN77kJLn3xF6Rw/ApKdN77hh2SjPp3zuNrZJwPqEZ8MmeVTwEksuWJVQKutkfV0dFjrtISXP2zN2E9nyy5eZX01rki/1HF94N2aDk1bXYc8Rbe0IegXeNdmQsxueKgUtH9IJ+HG02c5zZqL47AI91DyvL+cr/QZNNDWh5b2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874294; c=relaxed/simple;
-	bh=Kiy/mEwRwrbIJnYyHDRMlN17f5t0/EV8GOiBGmU5Gqo=;
+	s=arc-20240116; t=1748875649; c=relaxed/simple;
+	bh=RWc7VnWpyilLxWVL/SoalTiWIC7C+vQ1Qaq3a5Eim9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGIiuXrL3/YhdXK9TLH5kmPdcs8Hu0kSUKLXaOFRozQylYlpTlH4+OlwfXKQlX87ZcQy2PBwB4DkpFa6iTJax0lqt6uQZqngO9iGa8D5EKiDEbgJZa3Ygnonz1mzTZTSHt2nlDqOO7eO7hiPHgzoB39M4iXMWbfrzMKWhBYzaG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW+pz6zo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68179C4CEEB;
-	Mon,  2 Jun 2025 14:24:54 +0000 (UTC)
+	 MIME-Version; b=PIi4h9TyYA3bay+napCUZjxXOfAG0RyR+s/a6BOGEfpzBrfCt/2SBT0wPeMFTuoAzP/9WkuhBW9VTGklSP4LzzgNIemXMYf6ntYw0DUWyvWM6n4ImT+q8RKtA906m7AXZBEMXosmD9+FMzMOiD/mPMgb9QE3Z+gn1tkKZkMZT5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQ1A27mN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81877C4CEEB;
+	Mon,  2 Jun 2025 14:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874294;
-	bh=Kiy/mEwRwrbIJnYyHDRMlN17f5t0/EV8GOiBGmU5Gqo=;
+	s=korg; t=1748875648;
+	bh=RWc7VnWpyilLxWVL/SoalTiWIC7C+vQ1Qaq3a5Eim9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW+pz6zoM3MT3t6121xxE7MDdKBUQaoZ29uVumcR5EPC0c2/Um/At0XcAlZ8tSNzm
-	 N5cTTgONRD0yE7vyu/f1+ONfP8oNfYA0mqhx2dFb0FWRYSZandFv7QZTfFctNtig4Y
-	 ejsAVWvksw0YrixwFovf4e9IV0eQMeaydqiTZqPY=
+	b=BQ1A27mNzuafmse6TzaJQMIQYCqovHVdZFSjsdxzRLNKvzBLtsysMRonRkrpMnZk8
+	 cOEHfO5N9TLN2n0BQ91tNep0k+FFxh/uoTDExIWb76sjIaWcqUqfGv9Bqhzf4DtXUy
+	 GqKbqN7GdhdaFzsKJwocx1uGO1I4FKM0rHQlHqNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 422/444] arm64: dts: qcom: sm8350: Fix typo in pil_camera_mem node
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 201/270] ASoC: soc-dai: check return value at snd_soc_dai_set_tdm_slot()
 Date: Mon,  2 Jun 2025 15:48:06 +0200
-Message-ID: <20250602134358.072195264@linuxfoundation.org>
+Message-ID: <20250602134315.404617669@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 295217420a44403a33c30f99d8337fe7b07eb02b upstream.
+[ Upstream commit 7f1186a8d738661b941b298fd6d1d5725ed71428 ]
 
-There is a typo in sm8350.dts where the node label
-mmeory@85200000 should be memory@85200000.
-This patch corrects the typo for clarity and consistency.
+snd_soc_dai_set_tdm_slot() calls .xlate_tdm_slot_mask() or
+snd_soc_xlate_tdm_slot_mask(), but didn't check its return value.
+Let's check it.
 
-Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250514114656.2307828-1-alok.a.tiwari@oracle.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch might break existing driver. In such case, let's makes
+each func to void instead of int.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87o6z7yk61.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-dai.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -442,7 +442,7 @@
- 			no-map;
- 		};
+diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
+index 4705c3da6280f..f9aba413e4952 100644
+--- a/sound/soc/soc-dai.c
++++ b/sound/soc/soc-dai.c
+@@ -208,10 +208,11 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
  
--		pil_camera_mem: mmeory@85200000 {
-+		pil_camera_mem: memory@85200000 {
- 			reg = <0x0 0x85200000 0x0 0x500000>;
- 			no-map;
- 		};
+ 	if (dai->driver->ops &&
+ 	    dai->driver->ops->xlate_tdm_slot_mask)
+-		dai->driver->ops->xlate_tdm_slot_mask(slots,
+-						      &tx_mask, &rx_mask);
++		ret = dai->driver->ops->xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
+ 	else
+-		snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++		ret = snd_soc_xlate_tdm_slot_mask(slots, &tx_mask, &rx_mask);
++	if (ret)
++		goto err;
+ 
+ 	dai->tx_mask = tx_mask;
+ 	dai->rx_mask = rx_mask;
+@@ -220,6 +221,7 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
+ 	    dai->driver->ops->set_tdm_slot)
+ 		ret = dai->driver->ops->set_tdm_slot(dai, tx_mask, rx_mask,
+ 						      slots, slot_width);
++err:
+ 	return soc_dai_ret(dai, ret);
+ }
+ EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
+-- 
+2.39.5
+
 
 
 
