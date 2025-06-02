@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8F6ACB497
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B17CACB5DD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E12319421C8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC721947C95
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0DB221F1E;
-	Mon,  2 Jun 2025 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5E423182D;
+	Mon,  2 Jun 2025 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbdGzXut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1APCDW58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2FD2153CB;
-	Mon,  2 Jun 2025 14:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3D02AE9A;
+	Mon,  2 Jun 2025 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875025; cv=none; b=EUr3IOGT0IvXlg4V3zB3yCjRhT1AbMUPdPKgsHLZxEiPjLpN/hOJUlvIRxHiBe1VWZaNPgXVu+4SYH3gEeSDeHirLMCsmR6QqdKcrl4Y9PGpkoL9ZPhYK8R/cbsM4tbQvYzMvqywtXK3RTLSCATe3K+KShAx3OBmRRDZO9y19c8=
+	t=1748875822; cv=none; b=SbFj/zHUKNE7CP5X+klUcsIpXc+Bu+2ZSc+nS6SrwLotQ+Esudoz+foQrmq5KMwMk1ZUc9/iZyKr+VdKO6w18ixUe6WYst2oa5QkWTkgJMee/Is56MFF7/+ou225aBXdLh6HXgA0teHkcNCi4Ak2iZ/pqg13XnchVz9cL02YzNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875025; c=relaxed/simple;
-	bh=1SBbtmrBH8CrOX6IyOsUcXB1g/t24wt/g7XI+r9ij9w=;
+	s=arc-20240116; t=1748875822; c=relaxed/simple;
+	bh=mWAi7Bg1A0Fl81+zFoWbaYgKBHylV/J+0fEZiTyHI7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VV3eECv+AVXLWYsjK5bKG9D5ElQ28KtAXyzelGZomX15koBxDhSlA4RKl8cyWMtrlBjIr6HaNxukUTFXPNY/dQ8NtJJyBbsGreK5Piww2Bw8nz9yZ7GW/Y1wbKKfcVLd1qwukC3m+uFbGLDgNAJ/yGtUGtdj5foA/WgDn0nZJVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbdGzXut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023C4C4CEEB;
-	Mon,  2 Jun 2025 14:37:04 +0000 (UTC)
+	 MIME-Version; b=sh464yyBXVrGkzutJjARFZi+d+XjNNza6IFwUyegQa3TA59sxxb+/8PblTzAPaK0Tl7zS2VoNRifqUvkLtveGDqmQSCs12ye7Ghr1r4H3v5cASt6kVCGQkHDmQemyXnZDTwFxkocHn3LgUvISefhxXy2hkWMJ0IJibGZWGj+gPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1APCDW58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC6DC4CEEB;
+	Mon,  2 Jun 2025 14:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875025;
-	bh=1SBbtmrBH8CrOX6IyOsUcXB1g/t24wt/g7XI+r9ij9w=;
+	s=korg; t=1748875821;
+	bh=mWAi7Bg1A0Fl81+zFoWbaYgKBHylV/J+0fEZiTyHI7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbdGzXutyWsI8sjMziPLaF1Y9okDLdkaROcAKCEQl7Y4qzpwfs6AUrBy6MDqX8JUE
-	 ObFo9sANmzOGu4CyQodDJqHrgKeFellcLQQUVL+g+p7ji4dnPw+eppbU/6DrA3w1DO
-	 noNQGedVWjdwCxiWrDcapK+5VSGwu1EWf0pVixlA=
+	b=1APCDW58fMA4QrVXSRYprw2G38anLZ/rI/+kYhJoz2mYE5pbwMUHEM5HneTFFB1qH
+	 LeYIiq/tNbOuWbOJ/huUxrvpkoGRliHvCb7E6IH+JkV8xzpTMjQVcRqclu/JtPOqDP
+	 0uRg59I3bRUHGYuMLyKlr5wbvN8rZAS2AStI87M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 179/204] llc: fix data loss when reading from a socket in llc_ui_recvmsg()
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 227/270] drm: Add valid clones check
 Date: Mon,  2 Jun 2025 15:48:32 +0200
-Message-ID: <20250602134302.683035413@linuxfoundation.org>
+Message-ID: <20250602134316.596714023@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-commit 239af1970bcb039a1551d2c438d113df0010c149 upstream.
+[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
 
-For SOCK_STREAM sockets, if user buffer size (len) is less
-than skb size (skb->len), the remaining data from skb
-will be lost after calling kfree_skb().
+Check that all encoders attached to a given CRTC are valid
+possible_clones of each other.
 
-To fix this, move the statement for partial reading
-above skb deletion.
-
-Found by InfoTeCS on behalf of Linux Verification Center (linuxtesting.org)
-
-Fixes: 30a584d944fb ("[LLX]: SOCK_DGRAM interface fixes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/af_llc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -885,15 +885,15 @@ static int llc_ui_recvmsg(struct socket
- 		if (sk->sk_type != SOCK_STREAM)
- 			goto copy_uaddr;
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index dee3b81dec587..8612dd552d392 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -557,6 +557,30 @@ mode_valid(struct drm_atomic_state *state)
+ 	return 0;
+ }
  
-+		/* Partial read */
-+		if (used + offset < skb_len)
-+			continue;
++static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
++					 struct drm_crtc *crtc)
++{
++	struct drm_encoder *drm_enc;
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
 +
- 		if (!(flags & MSG_PEEK)) {
- 			skb_unlink(skb, &sk->sk_receive_queue);
- 			kfree_skb(skb);
- 			*seq = 0;
- 		}
--
--		/* Partial read */
--		if (used + offset < skb_len)
--			continue;
- 	} while (len > 0);
++	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
++		if (!drm_enc->possible_clones) {
++			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
++			continue;
++		}
++
++		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
++		    crtc_state->encoder_mask) {
++			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
++				  crtc->base.id, crtc_state->encoder_mask);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
+ /**
+  * drm_atomic_helper_check_modeset - validate state object for modeset changes
+  * @dev: DRM device
+@@ -720,6 +744,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
+ 		ret = drm_atomic_add_affected_planes(state, crtc);
+ 		if (ret != 0)
+ 			return ret;
++
++		ret = drm_atomic_check_valid_clones(state, crtc);
++		if (ret != 0)
++			return ret;
+ 	}
  
- out:
+ 	/*
+-- 
+2.39.5
+
 
 
 
