@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A714ACB369
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2970BACB76E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF4E11886047
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D493EA20A2C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CEF22A1FA;
-	Mon,  2 Jun 2025 14:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE6D22A7E5;
+	Mon,  2 Jun 2025 14:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2ewTri1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JH83Vedz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B6E221299;
-	Mon,  2 Jun 2025 14:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD9B22A7F9;
+	Mon,  2 Jun 2025 14:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874369; cv=none; b=cViPshDPZgKg0Ku1HmJmVUdemZman6QcYewWfaSQgpPmf9J0XUbD7UtteJQOeVIbWN7c4puUTuCT4a8V9Uv6hb4Gu2mXhhq7t7JqqDzK7LIHpcFADrHMS3+Eo14sz5ErJd2zjZJ3Iy+973jxKzkzP7/Poe12fmcP3wOfXl+A6Zw=
+	t=1748876282; cv=none; b=dW0R82c6XD53649F+zR7bTeANBv/3/4HrIP2DsPgqmPzk7lxoN8/cGuFkh5yfpwrKKqgP0L6PFjXugtvv3hJDa+17o+bTBP4aKIzDRTiAF/AKZ0ZuC2cfMtj/6iNJyOAWOjd5GLTmE3US+HZxAXVhy4NIED7fiFwyOQQ+dTDvXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874369; c=relaxed/simple;
-	bh=P4vgKvB1+JF/fOV1As6kEBDmsic07XYwPBy+iy/eXsY=;
+	s=arc-20240116; t=1748876282; c=relaxed/simple;
+	bh=ymSkNBPkaW8Z5QzukKyCQF+bjbKjtpFzP0/6N3+fg9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eR0EWR7RwboSfQme0rKKap+IhuIH+R1gqDOgW2RXxN1LrLt+qK2ZpJWw1SuiiQxqbGAYUoFbMtC0UIlH1jzH8mFpI2HDN+EAnpgHmXk63YGX/UGc09cbg4QxivX7FEdpvqWrOEWeDFPToSBxua2gr6u3BDGvr79PzGIg6Zsbo6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2ewTri1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC23C4CEEB;
-	Mon,  2 Jun 2025 14:26:08 +0000 (UTC)
+	 MIME-Version; b=KGaQalf3FPkXI0s7n+cvlaARo7rUYWZkA1CCz7SzwzbrSlJZ3XBmvG9TuLLCums4ngLnmqSqiYzw8T5/QjPNj0iBs6ows5fSy4sNTW7INv9nR3hwYZOj5AdnxVw410yJykuiOm8IMIqmO7UQg0io2xrTjaKOppJdRlsBkJh82xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JH83Vedz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC3BC4CEEB;
+	Mon,  2 Jun 2025 14:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874369;
-	bh=P4vgKvB1+JF/fOV1As6kEBDmsic07XYwPBy+iy/eXsY=;
+	s=korg; t=1748876282;
+	bh=ymSkNBPkaW8Z5QzukKyCQF+bjbKjtpFzP0/6N3+fg9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2ewTri1EivbZkHdGSYWNfWaWWf08peejd/rza5UYKTRCEtNniNFo8zPBQZ0kfunn
-	 fPvmPkjWuNT8QUcmxc3rh6jU/V30tIBClbTGOuUHqO9hJX0GwnSsfXb5KoVfL0x6ZQ
-	 7Io4b/6OUjReOdiUhzzHCrP5hyImBOI7ARlvN1Qw=
+	b=JH83VedzcN8gyPt7DMBm3hBUuUchj4J2bfZwCKagED/Viq/Ck0pXFsP3My5a3MFcu
+	 zRzcLuYwRM7m3DTteNvjLC+euA3GnTGToAXJFff/AZhOPy5qubuMYx4p9jK2ggkb9f
+	 iXS2Z00gpOrq5PivYqqIeKiymTEHL9urep5WHWxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 437/444] phy: starfive: jh7110-usb: Fix USB 2.0 host occasional detection failure
+Subject: [PATCH 5.15 129/207] wifi: mac80211: remove misplaced drv_mgd_complete_tx() call
 Date: Mon,  2 Jun 2025 15:48:21 +0200
-Message-ID: <20250602134358.675164037@linuxfoundation.org>
+Message-ID: <20250602134303.771805585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hal Feng <hal.feng@starfivetech.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3f097adb9b6c804636bcf8d01e0e7bc037bee0d3 ]
+[ Upstream commit f4995cdc4d02d0abc8e9fcccad5c71ce676c1e3f ]
 
-JH7110 USB 2.0 host fails to detect USB 2.0 devices occasionally. With a
-long time of debugging and testing, we found that setting Rx clock gating
-control signal to normal power consumption mode can solve this problem.
+In the original commit 15fae3410f1d ("mac80211: notify driver on
+mgd TX completion") I evidently made a mistake and placed the
+call in the "associated" if, rather than the "assoc_data". Later
+I noticed the missing call and placed it in commit c042600c17d8
+("wifi: mac80211: adding missing drv_mgd_complete_tx() call"),
+but didn't remove the wrong one. Remove it now.
 
-Signed-off-by: Hal Feng <hal.feng@starfivetech.com>
-Link: https://lore.kernel.org/r/20250422101244.51686-1-hal.feng@starfivetech.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.6ed954179bbf.Id8ef8835b7e6da3bf913c76f77d201017dc8a3c9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/starfive/phy-jh7110-usb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/mac80211/mlme.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/phy/starfive/phy-jh7110-usb.c b/drivers/phy/starfive/phy-jh7110-usb.c
-index 633912f8a05d0..bf52b41110db8 100644
---- a/drivers/phy/starfive/phy-jh7110-usb.c
-+++ b/drivers/phy/starfive/phy-jh7110-usb.c
-@@ -16,6 +16,8 @@
- #include <linux/usb/of.h>
- 
- #define USB_125M_CLK_RATE		125000000
-+#define USB_CLK_MODE_OFF		0x0
-+#define USB_CLK_MODE_RX_NORMAL_PWR	BIT(1)
- #define USB_LS_KEEPALIVE_OFF		0x4
- #define USB_LS_KEEPALIVE_ENABLE		BIT(4)
- 
-@@ -68,6 +70,7 @@ static int jh7110_usb2_phy_init(struct phy *_phy)
- {
- 	struct jh7110_usb2_phy *phy = phy_get_drvdata(_phy);
- 	int ret;
-+	unsigned int val;
- 
- 	ret = clk_set_rate(phy->usb_125m_clk, USB_125M_CLK_RATE);
- 	if (ret)
-@@ -77,6 +80,10 @@ static int jh7110_usb2_phy_init(struct phy *_phy)
- 	if (ret)
- 		return ret;
- 
-+	val = readl(phy->regs + USB_CLK_MODE_OFF);
-+	val |= USB_CLK_MODE_RX_NORMAL_PWR;
-+	writel(val, phy->regs + USB_CLK_MODE_OFF);
-+
- 	return 0;
- }
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 11d9bce1a4390..ae379bd9dccca 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5952,7 +5952,6 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+ 					    req->reason_code, false);
+-		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ 		return 0;
+ 	}
  
 -- 
 2.39.5
