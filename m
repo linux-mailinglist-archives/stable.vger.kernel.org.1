@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8952CACB805
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D556ACB30C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A22B84C2470
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7702419470D3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D09F2236F4;
-	Mon,  2 Jun 2025 15:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00712236FB;
+	Mon,  2 Jun 2025 14:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaxFhL/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRo8/rRS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE252236F0;
-	Mon,  2 Jun 2025 15:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4881A01C6;
+	Mon,  2 Jun 2025 14:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877033; cv=none; b=tBlsJXR8FDsSwrtbz7EAHhEpG/Y6gJOXJ2yv3x/1JWxXh8cEIk0JKbTUJD+6z+PtS7E/N90sppvDxg73esaanxVo6OG7crPL7e+E1sfwAbSYkhEvd9cHr36H+jJl3Q5GgH1ligtk3tWW5JtpqaguwQyiuByUhU2qpP8Yya+QP1c=
+	t=1748874118; cv=none; b=nulPAlDl+2h6q42ollqs+MUXcU9T0casU+s8ksQK6Ai4XRzkiRo4N9XbRiuRty2LhjszzWyDCNOZt75WSQ/5yvEFheDxD6Yik3NfHKOECIvl8ZsA/2gLDbG8PQj/FJFNQpDvUDQ9oGkoD29vlHjKWXPL0uMyqS3TUMAeZlYwIhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877033; c=relaxed/simple;
-	bh=hkVmhuNmXdux744vr6Tzh3XMvjX4irB8//F1Sq8rc0g=;
+	s=arc-20240116; t=1748874118; c=relaxed/simple;
+	bh=z8+MHRszgzoCW7edxDHxWf36lSw9OFTkEQd1pv6yGzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Inc5jC5SOI8LAy2j0X9h47oZhl4nsTOkFS36hYtF0s4K5FVxJpvHha81pkwLkfm9X/MB9bwGWT94zvwV6Uih4BRN2iaJls3x/9JtNeCHLmVB2zDug41KyjiLy7PoOhc2yodtpO8SWENhbewj7L0dTtdNvja7nHnvhGxmsqDmsnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaxFhL/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90473C4CEEB;
-	Mon,  2 Jun 2025 15:10:32 +0000 (UTC)
+	 MIME-Version; b=JgkFgU2bgQrlq2G8xK8H6AOgut9rTCsWPvJZETOow2CRQ7p9pL9h+vQqrhZ0ErbxDqmQcTn6VA7O8ILDyQe1nACIwcr1VQyaeYsTe7OBuEFmd9x/WiBZRqL/Hm4U+oZsRH0pgNG8JESeDFhgJiXHk6fAcLSo2OIec0rTcGDeJNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRo8/rRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C81C4CEEB;
+	Mon,  2 Jun 2025 14:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877032;
-	bh=hkVmhuNmXdux744vr6Tzh3XMvjX4irB8//F1Sq8rc0g=;
+	s=korg; t=1748874118;
+	bh=z8+MHRszgzoCW7edxDHxWf36lSw9OFTkEQd1pv6yGzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MaxFhL/8JK+ErApIRwdlXOkYWungX7BHooVP47wpPWZYvOjBwoxEuU7SZwole3vPr
-	 MkKHP1R6pt4NzBU6i1MQeQUm0D7AmydqhHcMaBkEVIMD+PvuvdBPiAGKQ3UzL9npFp
-	 aKwvORwTv1NkBGiyZl3qza3d7d8Gt2PBPUg/rlMI=
+	b=LRo8/rRSggDdxTpIo7Ej2nA2oO2A/bymFlKsCTKokvmHpINjjgAOXkowrQiNewaZs
+	 FCyb8ykQ7hrrhF77D4AWZm+Tk48yeZgQE7PvjqhbzNE0zC4nw1GxoeiIAXQWV7sZnT
+	 9LRZfzVJT1gYmbO2vgjodjz1eGAkNZJ2HbeM4Fxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/325] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 363/444] ASoC: SOF: ipc4-pcm: Delay reporting is only supported for playback direction
 Date: Mon,  2 Jun 2025 15:47:07 +0200
-Message-ID: <20250602134325.951068166@linuxfoundation.org>
+Message-ID: <20250602134355.648312718@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
+commit 98db16f314b3a0d6e5acd94708ea69751436467f upstream.
 
-This function translates the rate number reported by the hardware into
-something mac80211 can understand. It was ignoring the 3SS and 4SS HT
-rates. Translate them too.
+The firmware does not provide any information for capture streams via the
+shared pipeline registers.
 
-Also set *nss to 0 for the HT rates, just to make sure it's
-initialised.
+To avoid reporting invalid delay value for capture streams to user space
+we need to disable it.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: af74dbd0dbcf ("ASoC: SOF: ipc4-pcm: allocate time info for pcm delay feature")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Link: https://patch.msgid.link/20250509085951.15696-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
+ sound/soc/sof/ipc4-pcm.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
-index cdfd66a85075a..43cd06aa39b13 100644
---- a/drivers/net/wireless/realtek/rtw88/util.c
-+++ b/drivers/net/wireless/realtek/rtw88/util.c
-@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
- 		*nss = 4;
- 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
- 	} else if (rate >= DESC_RATEMCS0 &&
--		   rate <= DESC_RATEMCS15) {
-+		   rate <= DESC_RATEMCS31) {
-+		*nss = 0;
- 		*mcs = rate - DESC_RATEMCS0;
- 	}
- }
--- 
-2.39.5
-
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -621,7 +621,8 @@ static int sof_ipc4_pcm_setup(struct snd
+ 			return -ENOMEM;
+ 		}
+ 
+-		if (!support_info)
++		/* Delay reporting is only supported on playback */
++		if (!support_info || stream == SNDRV_PCM_STREAM_CAPTURE)
+ 			continue;
+ 
+ 		stream_info = kzalloc(sizeof(*stream_info), GFP_KERNEL);
 
 
 
