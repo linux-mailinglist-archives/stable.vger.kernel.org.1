@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A654DACB01D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:00:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C80DACB047
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8220C481CD7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73C927A8376
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1774D1E1A3F;
-	Mon,  2 Jun 2025 14:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9322236FB;
+	Mon,  2 Jun 2025 14:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no6HVAvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+RYGzK9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FE822068B;
-	Mon,  2 Jun 2025 14:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB3222333B;
+	Mon,  2 Jun 2025 14:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872811; cv=none; b=LbGQ2i+lfhe7vhy496q89jYE6i5IOznKTYlQkN9hJYaj2MVo5+I1rdlJm9QLn4S5SsoEyCsFgz599U2j6DA5vG1EwOnbb8ASnmZx+jkqZab60dL/XsKy1aw8R4eNY1SYhUW8+pcd/dcUv3DV3FoOGIATskIhJLBdxgJ5MW9jeHo=
+	t=1748872919; cv=none; b=k7hzMgGt+lojQsovFgz5FC7UHC5qTLWwMoK9fLY+SBxonzunrFLwF5+tplje2GIx7BSmWv1fFjAAZ+8pLGnARhSsLGbSVmvATTAgWckhWWy2h9rQsWOdfz492VqfUgOSVgWhZ4WidQiToFjRF2D/Xe89ncZ3ZfxHup4NPLh0a94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872811; c=relaxed/simple;
-	bh=eOARE1a5xLLxGOz8zSldT4f6tfVMQa4wiOZFN5dn7nY=;
+	s=arc-20240116; t=1748872919; c=relaxed/simple;
+	bh=7R4XGEOCw7DzlfMzi8jNcCHp2LDa3cs8fpTiPWKkXCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKzPfv5bproevr2H0+1TqSB0aU6GGJipSggb6GwTKPp3hEZd9OIo1F8yMW9u9Tjd6osbKaR76nyNlIuPp+luouz5CDcaGNpv3G38Du+tzUaAcZHwfA+TvTl1BlPIURfykqNNMtR/jjkKVbGDmolKHgsl5WfRYUQInUCDTkCjOKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no6HVAvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481F9C4CEEE;
-	Mon,  2 Jun 2025 14:00:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eBUFdQcGByxRf4Fv+N4T9EASQ+B/ByWwWh03M3sPIPA8eHy0BEbOma0stW5CUC3ZJowltaAWpt6txv2SWd4evAZFISWgeVQSeD66b/zPoJ/ksJY1885azEmtAKQQ5GZPOJNpOaZkP2DgprBB2diEXh8sMGoDsem4pKepr5swz/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+RYGzK9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C32C4CEEB;
+	Mon,  2 Jun 2025 14:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872811;
-	bh=eOARE1a5xLLxGOz8zSldT4f6tfVMQa4wiOZFN5dn7nY=;
+	s=korg; t=1748872919;
+	bh=7R4XGEOCw7DzlfMzi8jNcCHp2LDa3cs8fpTiPWKkXCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=no6HVAvpBZzPTr9b7QCsS/JC3gmw+C4d01MOW324a47rO5ku9hlHJ/v9UFNp3BkPZ
-	 CXQrtFrU+RhXrvEU+WR+QRBfCUeEzwo5jvdOQDTDnlK7+JjewGtCgq2q0O1cJpt/Al
-	 Cg8iVy9F6HI9pggqHHEU5cRYbqffuNVyUaUgzLYk=
+	b=u+RYGzK9ldYvti9+h3NElxNsu3FJuKJLlHOXxDVTaYOzapWTJ1OMb4XU15EXutHe7
+	 FQO1pbRqtqPuLwy0UeB2ULYJSUZg4C2yYwcW9NkHdwoE99oYyDmGgiP3fcKKltjnL2
+	 4UfDhLuYUTKH/BjwmacroAHg6JMx/qcXsJGXqcO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valtteri Koskivuori <vkoskiv@gmail.com>,
-	Jonathan Woithe <jwoithe@just42.net>,
+	John Chau <johnchau@0atlas.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 69/73] platform/x86: fujitsu-laptop: Support Lifebook S2110 hotkeys
+Subject: [PATCH 6.12 38/55] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
 Date: Mon,  2 Jun 2025 15:47:55 +0200
-Message-ID: <20250602134244.404465593@linuxfoundation.org>
+Message-ID: <20250602134239.780966937@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valtteri Koskivuori <vkoskiv@gmail.com>
+From: John Chau <johnchau@0atlas.com>
 
-[ Upstream commit a7e255ff9fe4d9b8b902023aaf5b7a673786bb50 ]
+[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
 
-The S2110 has an additional set of media playback control keys enabled
-by a hardware toggle button that switches the keys between "Application"
-and "Player" modes. Toggling "Player" mode just shifts the scancode of
-each hotkey up by 4.
+Change get_thinkpad_model_data() to check for additional vendor name
+"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
+more).
 
-Add defines for new scancodes, and a keymap and dmi id for the S2110.
+The reason of this works with minimal changes is because NEC Lavie
+X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
+"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
+the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
 
-Tested on a Fujitsu Lifebook S2110.
+I compiled and tested with my own machine, attached the dmesg
+below as proof of work:
+[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
+[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
+[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
+[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
+[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
+[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
+[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
+[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
+[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
+[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
 
-Signed-off-by: Valtteri Koskivuori <vkoskiv@gmail.com>
-Acked-by: Jonathan Woithe <jwoithe@just42.net>
-Link: https://lore.kernel.org/r/20250509184251.713003-1-vkoskiv@gmail.com
+Signed-off-by: John Chau <johnchau@0atlas.com>
+Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/fujitsu-laptop.c | 33 +++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
-index a0eae24ca9e60..162809140f68a 100644
---- a/drivers/platform/x86/fujitsu-laptop.c
-+++ b/drivers/platform/x86/fujitsu-laptop.c
-@@ -17,13 +17,13 @@
- /*
-  * fujitsu-laptop.c - Fujitsu laptop support, providing access to additional
-  * features made available on a range of Fujitsu laptops including the
-- * P2xxx/P5xxx/S6xxx/S7xxx series.
-+ * P2xxx/P5xxx/S2xxx/S6xxx/S7xxx series.
-  *
-  * This driver implements a vendor-specific backlight control interface for
-  * Fujitsu laptops and provides support for hotkeys present on certain Fujitsu
-  * laptops.
-  *
-- * This driver has been tested on a Fujitsu Lifebook S6410, S7020 and
-+ * This driver has been tested on a Fujitsu Lifebook S2110, S6410, S7020 and
-  * P8010.  It should work on most P-series and S-series Lifebooks, but
-  * YMMV.
-  *
-@@ -107,7 +107,11 @@
- #define KEY2_CODE			0x411
- #define KEY3_CODE			0x412
- #define KEY4_CODE			0x413
--#define KEY5_CODE			0x420
-+#define KEY5_CODE			0x414
-+#define KEY6_CODE			0x415
-+#define KEY7_CODE			0x416
-+#define KEY8_CODE			0x417
-+#define KEY9_CODE			0x420
- 
- /* Hotkey ringbuffer limits */
- #define MAX_HOTKEY_RINGBUFFER_SIZE	100
-@@ -560,7 +564,7 @@ static const struct key_entry keymap_default[] = {
- 	{ KE_KEY, KEY2_CODE,            { KEY_PROG2 } },
- 	{ KE_KEY, KEY3_CODE,            { KEY_PROG3 } },
- 	{ KE_KEY, KEY4_CODE,            { KEY_PROG4 } },
--	{ KE_KEY, KEY5_CODE,            { KEY_RFKILL } },
-+	{ KE_KEY, KEY9_CODE,            { KEY_RFKILL } },
- 	/* Soft keys read from status flags */
- 	{ KE_KEY, FLAG_RFKILL,          { KEY_RFKILL } },
- 	{ KE_KEY, FLAG_TOUCHPAD_TOGGLE, { KEY_TOUCHPAD_TOGGLE } },
-@@ -584,6 +588,18 @@ static const struct key_entry keymap_p8010[] = {
- 	{ KE_END, 0 }
- };
- 
-+static const struct key_entry keymap_s2110[] = {
-+	{ KE_KEY, KEY1_CODE, { KEY_PROG1 } }, /* "A" */
-+	{ KE_KEY, KEY2_CODE, { KEY_PROG2 } }, /* "B" */
-+	{ KE_KEY, KEY3_CODE, { KEY_WWW } },   /* "Internet" */
-+	{ KE_KEY, KEY4_CODE, { KEY_EMAIL } }, /* "E-mail" */
-+	{ KE_KEY, KEY5_CODE, { KEY_STOPCD } },
-+	{ KE_KEY, KEY6_CODE, { KEY_PLAYPAUSE } },
-+	{ KE_KEY, KEY7_CODE, { KEY_PREVIOUSSONG } },
-+	{ KE_KEY, KEY8_CODE, { KEY_NEXTSONG } },
-+	{ KE_END, 0 }
-+};
-+
- static const struct key_entry *keymap = keymap_default;
- 
- static int fujitsu_laptop_dmi_keymap_override(const struct dmi_system_id *id)
-@@ -621,6 +637,15 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
- 		},
- 		.driver_data = (void *)keymap_p8010
- 	},
-+	{
-+		.callback = fujitsu_laptop_dmi_keymap_override,
-+		.ident = "Fujitsu LifeBook S2110",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU SIEMENS"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK S2110"),
-+		},
-+		.driver_data = (void *)keymap_s2110
-+	},
- 	{}
- };
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index dea40da867552..fa60a221cfb14 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -11472,6 +11472,8 @@ static int __must_check __init get_thinkpad_model_data(
+ 		tp->vendor = PCI_VENDOR_ID_IBM;
+ 	else if (dmi_name_in_vendors("LENOVO"))
+ 		tp->vendor = PCI_VENDOR_ID_LENOVO;
++	else if (dmi_name_in_vendors("NEC"))
++		tp->vendor = PCI_VENDOR_ID_LENOVO;
+ 	else
+ 		return 0;
  
 -- 
 2.39.5
