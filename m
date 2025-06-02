@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197CEACB26A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3952ACB74A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D1517611E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000B8A40297
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C29227E8F;
-	Mon,  2 Jun 2025 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53120225A23;
+	Mon,  2 Jun 2025 15:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYkUWtWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVFcSjwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77556227E89;
-	Mon,  2 Jun 2025 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2831221FC3;
+	Mon,  2 Jun 2025 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873740; cv=none; b=KRI7p7NngcOMA1Y/8bHptnzJs9EfeUvc4oVJocP814QHscZQQ6WGFnCFyVOhNohmF1nL7vxZIooPTPJwTHrXtxPC6u2MU2xR2GTvdvsLqfk5HDjnh0ntyyOiktLLxQnpiX5qwuhY99+iVOyigkRQKQn1xV4kdKDpWba165druoo=
+	t=1748876623; cv=none; b=meu1xtyYOhyGnv0yVaLw1iUImecJgEhynR2JqnELvtLXxixlkrxmxscDwH+0sDEI7kuCnXQBrwUFg90pd0XRIui1IewuAYy6EJyjDHznKKgJ+M2UXTHejaCOxiFtXFX4IQFVnoFApnJEsFLgttqhGYqqfwigIaRug1hi3pBj7yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873740; c=relaxed/simple;
-	bh=001vTVtvNsY4xsygy0Qw8xoUJ2K/sl84uCVnjs+5aMY=;
+	s=arc-20240116; t=1748876623; c=relaxed/simple;
+	bh=xioZo/0u7p4RLFCfRTzh8MaiFq8ogMghp0p45IRiMW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MD4LOcox2HJCw/8Z+uALmd52PFjcEy6M2jGuLkBaCBQkiSY7oGfq1AKvcCTDi0trZEvnzyovDHnrFx3xkPtRyspn3PC4RWGnyNZZpYCxdkAbulPvE1h8LkHJn9cqCBph/OfiaagvPEwsQ0OTwqLdBYAxRMTiZ+jOTwiYXRDzC5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYkUWtWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53FAC4CEEB;
-	Mon,  2 Jun 2025 14:15:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SzjtYtHRDXDgPER8tYL9VNA74x4/5wpeFagiIPhmn12qMNceanTcQX0OWArod8epHC59DDnCf64sNv5P/Vz/uvMINENKbVdLweQoHNfaKErejUdLR/zcBo4ymd3BjW68dup7cfChmsTBenMtTU9sdlPFPoV3mJFOwYBPkgRxLeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVFcSjwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA17C4CEEB;
+	Mon,  2 Jun 2025 15:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873740;
-	bh=001vTVtvNsY4xsygy0Qw8xoUJ2K/sl84uCVnjs+5aMY=;
+	s=korg; t=1748876622;
+	bh=xioZo/0u7p4RLFCfRTzh8MaiFq8ogMghp0p45IRiMW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GYkUWtWsucwpVB0SnHBcAxGLbU5ziYG4yay5ekSFwzg/iD93R7elnZbmx9B0cS0BU
-	 POlCIAk/fzAtyQ+6tioUdJFnsSXZbOM2c7rKLQEOJ+ZTYDVwMXEJSza8o36GieeMx7
-	 L/QkUGiU1P3yU36/uHTS92ZDDtSao5MT20DAnznY=
+	b=aVFcSjwIKqLYB/Xw6oVYUpBOG4AOoFJxAmB8L9oaEB2Lw4JKeb3/6lmvbUsc6N0KI
+	 QbGqC/A0Qilo53b5VDL7Qx5982azqC5ntdToGYn087OuWLjGlKaNvGH3L5n5pObkSU
+	 crx5VPn7NcUkXMuXETePXbQ6725FVdx0SbmnlVuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 234/444] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
+Subject: [PATCH 6.1 022/325] cifs: Fix querying and creating MF symlinks over SMB1
 Date: Mon,  2 Jun 2025 15:44:58 +0200
-Message-ID: <20250602134350.408921267@linuxfoundation.org>
+Message-ID: <20250602134320.640051186@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
+[ Upstream commit 4236ac9fe5b8b42756070d4abfb76fed718e87c2 ]
 
-Memset the config argument to get_mbus_config V4L2 sub-device pad
-operation to zero before calling the operation. This ensures the callers
-don't need to bother with it nor the implementations need to set all
-fields that may not be relevant to them.
+Old SMB1 servers without CAP_NT_SMBS do not support CIFS_open() function
+and instead SMBLegacyOpen() needs to be used. This logic is already handled
+in cifs_open_file() function, which is server->ops->open callback function.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+So for querying and creating MF symlinks use open callback function instead
+of CIFS_open() function directly.
+
+This change fixes querying and creating new MF symlinks on Windows 98.
+Currently cifs_query_mf_symlink() is not able to detect MF symlink and
+cifs_create_mf_symlink() is failing with EIO error.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- include/media/v4l2-subdev.h           | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/client/link.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 5f115438d0722..cb3ad72a3e54a 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -351,6 +351,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
- static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
- 				struct v4l2_mbus_config *config)
- {
-+	memset(config, 0, sizeof(*config));
-+
- 	return check_pad(sd, pad) ? :
- 	       sd->ops->pad->get_mbus_config(sd, pad, config);
- }
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index b4fcd0164048e..0740dfc6c0488 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -822,7 +822,9 @@ struct v4l2_subdev_state {
-  *		     possible configuration from the remote end, likely calling
-  *		     this operation as close as possible to stream on time. The
-  *		     operation shall fail if the pad index it has been called on
-- *		     is not valid or in case of unrecoverable failures.
-+ *		     is not valid or in case of unrecoverable failures. The
-+ *		     config argument has been memset to 0 just before calling
-+ *		     the op.
-  *
-  * @set_routing: enable or disable data connection routes described in the
-  *		 subdevice routing table.
+diff --git a/fs/smb/client/link.c b/fs/smb/client/link.c
+index c0f101fc1e5d0..d71feb3fdbd2c 100644
+--- a/fs/smb/client/link.c
++++ b/fs/smb/client/link.c
+@@ -269,7 +269,7 @@ cifs_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
+ 	struct cifs_open_parms oparms;
+ 	struct cifs_io_parms io_parms = {0};
+ 	int buf_type = CIFS_NO_BUFFER;
+-	FILE_ALL_INFO file_info;
++	struct cifs_open_info_data query_data;
+ 
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+@@ -281,11 +281,11 @@ cifs_query_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
+ 		.fid = &fid,
+ 	};
+ 
+-	rc = CIFS_open(xid, &oparms, &oplock, &file_info);
++	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, &query_data);
+ 	if (rc)
+ 		return rc;
+ 
+-	if (file_info.EndOfFile != cpu_to_le64(CIFS_MF_SYMLINK_FILE_SIZE)) {
++	if (query_data.fi.EndOfFile != cpu_to_le64(CIFS_MF_SYMLINK_FILE_SIZE)) {
+ 		rc = -ENOENT;
+ 		/* it's not a symlink */
+ 		goto out;
+@@ -324,7 +324,7 @@ cifs_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
+ 		.fid = &fid,
+ 	};
+ 
+-	rc = CIFS_open(xid, &oparms, &oplock, NULL);
++	rc = tcon->ses->server->ops->open(xid, &oparms, &oplock, NULL);
+ 	if (rc)
+ 		return rc;
+ 
 -- 
 2.39.5
 
