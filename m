@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A446ACB68A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9330ACB532
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F23624A0CEB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72CC47B0EC1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038DC22B8A1;
-	Mon,  2 Jun 2025 14:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071B223875D;
+	Mon,  2 Jun 2025 14:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmyVLX8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghTNRnvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D4422ACF2;
-	Mon,  2 Jun 2025 14:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2D238177;
+	Mon,  2 Jun 2025 14:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876397; cv=none; b=WHMEf4W9t3KCWu4dfhmdpjqOwMv06988dL3b3Xm357X/o85JLHLTpHJIX/0rJJ9RU9YiH/aqZOqompVmDkCyE0VDZR9S1YPP/U5E4Cf2J/c5fs6DOHOIqCGQbEwv/jsoOFHc3IR9yynGy4fQhbXG28Fh/WohagGuhISV6Z79lQw=
+	t=1748875815; cv=none; b=gNWvVcD/cdoeuTROS2Z8lecBqlkQ4GUq8gJ6XFiIOYkqgW4No5grYcg8Xoi9rfaf1RvcoMpe+7gWKvX4z6QswYCo9lZcrYQDoceqy3gZStHLEYTlZqPuTw/Q+/oP5AOPRLYl2AkKrpWwJfUsfxs5q2DovavjGWSTIhUts+tCYQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876397; c=relaxed/simple;
-	bh=hxaIGH6wy37JI6z/BZoC1FGlu8kC1pg/DeY6xnCmHV8=;
+	s=arc-20240116; t=1748875815; c=relaxed/simple;
+	bh=76K8QDU/zTfZZIcOLAtMQtw9Pcotmxa3+egaMvCbSVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KouTDBuI5c4e0oQ7lmr27s1Np5xdjGyVCXi+Hjo6+UPXcqB5XTdJn8IaURv6Kycfud2iWaSZuuf55ygE8GVmLmwosbbwkEOwpjo6e8XTBQYyx5zq5dMvX8nmMNR92mtAU/2g2SeAx/vuxvTsSvjJvLAu5ZHNCva+ZBesCZ1R7Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmyVLX8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBB6C4CEEB;
-	Mon,  2 Jun 2025 14:59:56 +0000 (UTC)
+	 MIME-Version; b=inJy8XGGIdM2Bv13N4OGtPLH3T9yjPVLXWTq3JnA8zxqAIYCQTxhQUEJZC1lfJpJ6z2DVgAi2GFiasTnkOQKO1k5oayqfkZ4oaSVYnj93l0TlI7uTyeAeFnjsc5gJ0hQsNP/yGCFzMIjT6NfFtrjKZHm7od7+KuZM08hjUyJLUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghTNRnvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220A4C4CEEB;
+	Mon,  2 Jun 2025 14:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876397;
-	bh=hxaIGH6wy37JI6z/BZoC1FGlu8kC1pg/DeY6xnCmHV8=;
+	s=korg; t=1748875815;
+	bh=76K8QDU/zTfZZIcOLAtMQtw9Pcotmxa3+egaMvCbSVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmyVLX8O0bUiARxTn2dLv87oghWLhorsJnhUgJuodpEO12W44OnxBovuCbxGHteFc
-	 ypPA0c2J1jwhNncRhjVWxfI0Liih4SynYa8DZm0n3ed23yPo4+yCyClSx4yvrQzaAy
-	 ZbIl5XKet6nNDLEF1cGvEEp6oUQLI5X7QqZHwUmo=
+	b=ghTNRnvZCdp1tMEMShcQtLpSoipH4Sy716QllOv/rN6TmgJpY/F+SFWlE7wdBBfjb
+	 8pBLhRwoh6d4jGYibqfUj6XLPs/Rzyb95iwXi5q+p9Vr0kiB7ACo7hD/TczmIa7KZT
+	 +/0lvFsukdwEQ3ShPbU3ieLFxxvWtsamUAjfPF7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 165/207] bridge: netfilter: Fix forwarding of fragmented packets
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Marcus Seyfarth <m.seyfarth@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 252/270] kbuild: Disable -Wdefault-const-init-unsafe
 Date: Mon,  2 Jun 2025 15:48:57 +0200
-Message-ID: <20250602134305.201021360@linuxfoundation.org>
+Message-ID: <20250602134317.632920110@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
+commit d0afcfeb9e3810ec89d1ffde1a0e36621bb75dca upstream.
 
-When netfilter defrag hooks are loaded (due to the presence of conntrack
-rules, for example), fragmented packets entering the bridge will be
-defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
-ipv4_conntrack_defrag()).
+A new on by default warning in clang [1] aims to flags instances where
+const variables without static or thread local storage or const members
+in aggregate types are not initialized because it can lead to an
+indeterminate value. This is quite noisy for the kernel due to
+instances originating from header files such as:
 
-Later on, in the bridge's post-routing hook, the defragged packet will
-be fragmented again. If the size of the largest fragment is larger than
-what the kernel has determined as the destination MTU (using
-ip_skb_dst_mtu()), the defragged packet will be dropped.
+  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+     62 |         typecheck(typeof(ring->size), next);
+        |         ^
+  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
+     10 | ({      type __dummy; \
+        |              ^
 
-Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
-ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
-the destination MTU. Assuming the dst entry attached to the packet is
-the bridge's fake rtable one, this would simply be the bridge's MTU (see
-fake_mtu()).
+  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
+    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
+        |                            ^
+  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
+    138 | #define time_before(a,b)        time_after(b,a)
+        |                                 ^
+  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
+    128 |         (typecheck(unsigned long, a) && \
+        |          ^
+  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
+     11 |         typeof(x) __dummy2; \
+        |                   ^
 
-However, after above mentioned commit, ip_skb_dst_mtu() ends up
-returning the route's MTU stored in the dst entry's metrics. Ideally, in
-case the dst entry is the bridge's fake rtable one, this should be the
-bridge's MTU as the bridge takes care of updating this metric when its
-MTU changes (see br_change_mtu()).
+  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
+    409 |         struct list_head *next = smp_load_acquire(&head->next);
+        |                                  ^
+  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
+    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
+        |                             ^
+  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
+    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
+        |                                                                  ^
+  include/linux/list.h:409:27: note: member '__val' declared 'const' here
 
-Unfortunately, the last operation is a no-op given the metrics attached
-to the fake rtable entry are marked as read-only. Therefore,
-ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
-defragged packets are dropped during fragmentation when dealing with
-large fragments and high MTU (e.g., 9k).
+  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+     66 |         struct scatter_walk walk;
+        |                             ^
+  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
+    112 |                 void *const addr;
+        |                             ^
 
-Fix by moving the fake rtable entry's metrics to be per-bridge (in a
-similar fashion to the fake rtable entry itself) and marking them as
-writable, thereby allowing MTU changes to be reflected.
+  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
+    733 |         struct vm_area_struct pseudo_vma;
+        |                               ^
+  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
+    803 |                 const vm_flags_t vm_flags;
+        |                                  ^
 
-Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
-Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
-Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
-Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Silencing the instances from typecheck.h is difficult because '= {}' is
+not available in older but supported compilers and '= {0}' would cause
+warnings about a literal 0 being treated as NULL. While it might be
+possible to come up with a local hack to silence the warning for
+clang-21+, it may not be worth it since -Wuninitialized will still
+trigger if an uninitialized const variable is actually used.
+
+In all audited cases of the "field" variant of the warning, the members
+are either not used in the particular call path, modified through other
+means such as memset() / memcpy() because the containing object is not
+const, or are within a union with other non-const members.
+
+Since this warning does not appear to have a high signal to noise ratio,
+just disable it.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Apply change to Makefile instead of scripts/Makefile.extrawarn
+         due to lack of e88ca24319e4 in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_nf_core.c | 7 ++-----
- net/bridge/br_private.h | 1 +
- 2 files changed, 3 insertions(+), 5 deletions(-)
+ Makefile |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
-index 8c69f0c95a8ed..b8c8deb87407d 100644
---- a/net/bridge/br_nf_core.c
-+++ b/net/bridge/br_nf_core.c
-@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
-  * ipt_REJECT needs it.  Future netfilter modules might
-  * require us to fill additional fields.
-  */
--static const u32 br_dst_default_metrics[RTAX_MAX] = {
--	[RTAX_MTU - 1] = 1500,
--};
--
- void br_netfilter_rtable_init(struct net_bridge *br)
- {
- 	struct rtable *rt = &br->fake_rtable;
+--- a/Makefile
++++ b/Makefile
+@@ -795,6 +795,18 @@ KBUILD_CFLAGS += -Wno-gnu
+ # source of a reference will be _MergedGlobals and not on of the whitelisted names.
+ # See modpost pattern 2
+ KBUILD_CFLAGS += -mno-global-merge
++
++# Clang may emit a warning when a const variable, such as the dummy variables
++# in typecheck(), or const member of an aggregate type are not initialized,
++# which can result in unexpected behavior. However, in many audited cases of
++# the "field" variant of the warning, this is intentional because the field is
++# never used within a particular call path, the field is within a union with
++# other non-const members, or the containing object is not const so the field
++# can be modified via memcpy() / memset(). While the variable warning also gets
++# disabled with this same switch, there should not be too much coverage lost
++# because -Wuninitialized will still flag when an uninitialized const variable
++# is used.
++KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
+ else
  
- 	atomic_set(&rt->dst.__refcnt, 1);
- 	rt->dst.dev = br->dev;
--	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
-+	dst_init_metrics(&rt->dst, br->metrics, false);
-+	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
- 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
- 	rt->dst.ops = &fake_dst_ops;
- }
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index fe61d3b8d0cc2..1718168bd927e 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -466,6 +466,7 @@ struct net_bridge {
- 		struct rtable		fake_rtable;
- 		struct rt6_info		fake_rt6_info;
- 	};
-+	u32				metrics[RTAX_MAX];
- #endif
- 	u16				group_fwd_mask;
- 	u16				group_fwd_mask_required;
--- 
-2.39.5
-
+ # Warn about unmarked fall-throughs in switch statement.
 
 
 
