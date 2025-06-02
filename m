@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD2CACB7EA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77823ACB521
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5EA1BC2C1C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A8219E4F7E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5360238141;
-	Mon,  2 Jun 2025 14:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1535E221FC7;
+	Mon,  2 Jun 2025 14:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb+UxeEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezwTE48N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8489422A4EB;
-	Mon,  2 Jun 2025 14:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77C42153CB;
+	Mon,  2 Jun 2025 14:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876289; cv=none; b=NrEbdG8zI+f53DSKRcS8eAQ+a+be7VXBD8CRK5AHbYoSDyxiGYjH581F6oVEsfohe7p6cQLB/01iwyEpjNsD8Obwn+tm8GmTS5BX0jgZajnk2QlfnfCpEM9lkzAKPL0a+Z4211hNgBV0y6R2Tou04asEEQR2mv+j/Y3SXE9vhGo=
+	t=1748875028; cv=none; b=u6MQXJdNVwH8yrsUjwGzuPjG7I/zs9yNFySkrGZl2XcJX75ecgETQn7NF6YunZY9gYn3fggbYKXo4Nwkq0dyjfmoMR0XRI/e/wEt1FFOQDDWvWTXiolZ+Apr4F1wOTb0QCTT5/Eb1r/xFir33Du31xwh8DSbqz032X/dzhdNXtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876289; c=relaxed/simple;
-	bh=ci6orBNni8iDOZzpFYHq8Q0WHA5ZXIvO4evw9nMXsWc=;
+	s=arc-20240116; t=1748875028; c=relaxed/simple;
+	bh=rWKwgkZLWnGwusvO3hPyLc5YP/bpb58m+PILSuLT2+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAwJiN1+6BdcUqAGLT1tI98pSaanRuFQ1Q4xMVfHX6QiugPxEJ4hm0H6bLrEsshxyOIphSIpc35KeoP/R2d74nHCfB71JG4i4QF4ahj1hxEpFFcJFcFAq8fIQulC6qrzo6Uos5Q1EPebLhs8AXBVnnzSylYffbHGFsGfLfhfO0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb+UxeEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82B8C4CEEB;
-	Mon,  2 Jun 2025 14:58:08 +0000 (UTC)
+	 MIME-Version; b=FKhhQozaq63pb2gWvxa26tARqGytA672jWCDA/mYjKpcjUULzPYTfHWxXyn05rp5j/V7Q7WXxJwPk7Qg8xMP3syEyTA19JR6/DzGudfPSsxHIqoAdrbxA6qlVwHi4lAO+MH+i+E56jDowcnw16/9hGkQ448OMtf+OUlmH0ADQs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezwTE48N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C98BC4CEEB;
+	Mon,  2 Jun 2025 14:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876289;
-	bh=ci6orBNni8iDOZzpFYHq8Q0WHA5ZXIvO4evw9nMXsWc=;
+	s=korg; t=1748875028;
+	bh=rWKwgkZLWnGwusvO3hPyLc5YP/bpb58m+PILSuLT2+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wb+UxeENRZctKq9XAXgjBhERK9uXLhOGmmRZnqR03mu2HD1ddnqgSAA561qNQzXLg
-	 UKU1Y0R3bodJ9397ZVvvWXXrwWq9oDUO19PwkP/24kkRkp3qzFhriz7FQzGxu5owkr
-	 jiTahI8uVejgDwSInVS8HCLOHOvZSVQDfPJmVZmk=
+	b=ezwTE48NWl1gAzRIuVSgZNOdRN2rOHwIlAdvC4CER0OHrPf5tgc05D8pAwC/Yxhvm
+	 1WakF56o/ll1wY9STqlNBnmTpt+PtFtFncj8odzaa6wp5czvna0mRCuoWnzKP9J7y0
+	 LZLteoROG1lDN1T+DRuN2L9fDgRoE6L7I6MFO3q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/207] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
+Subject: [PATCH 5.4 170/204] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
 Date: Mon,  2 Jun 2025 15:48:23 +0200
-Message-ID: <20250602134303.848574783@linuxfoundation.org>
+Message-ID: <20250602134302.333835280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
+[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
 
-The following patch will not set skb->sk from VRF path.
+... or we risk stealing final mntput from sync umount - raising mnt_count
+after umount(2) has verified that victim is not busy, but before it
+has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
+that it's safe to quietly undo mnt_count increment and leaves dropping
+the reference to caller, where it'll be a full-blown mntput().
 
-Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
-in fib[46]_rule_configure().
+Check under mount_lock is needed; leaving the current one done before
+taking that makes no sense - it's nowhere near common enough to bother
+with.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_rules.c  | 4 ++--
- net/ipv6/fib6_rules.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/namespace.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
-index d279cb8ac1584..a270951386e19 100644
---- a/net/ipv4/fib_rules.c
-+++ b/net/ipv4/fib_rules.c
-@@ -226,9 +226,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
--	struct net *net = sock_net(skb->sk);
-+	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
- 
- 	if (frh->tos & ~IPTOS_TOS_MASK) {
- 		NL_SET_ERR_MSG(extack, "Invalid tos");
-diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
-index a4caaead74c1d..a20ef3ab059ca 100644
---- a/net/ipv6/fib6_rules.c
-+++ b/net/ipv6/fib6_rules.c
-@@ -353,9 +353,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
- 			       struct nlattr **tb,
- 			       struct netlink_ext_ack *extack)
- {
-+	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
-+	struct net *net = rule->fr_net;
- 	int err = -EINVAL;
--	struct net *net = sock_net(skb->sk);
--	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
- 
- 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
- 		if (rule->table == RT6_TABLE_UNSPEC) {
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 809ec3acb147c..a5cb608778b1e 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -572,12 +572,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+-	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+-		mnt_add_count(mnt, -1);
+-		return 1;
+-	}
+ 	lock_mount_hash();
+-	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
++	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
+ 		mnt_add_count(mnt, -1);
+ 		unlock_mount_hash();
+ 		return 1;
 -- 
 2.39.5
 
