@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0830ACB5D7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96921ACB593
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A4416CC78
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5002D9E7B7F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDB822F774;
-	Mon,  2 Jun 2025 14:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274B72153CB;
+	Mon,  2 Jun 2025 14:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmImSOG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0Q017Yc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF92322F765;
-	Mon,  2 Jun 2025 14:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D426119EEBD;
+	Mon,  2 Jun 2025 14:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875967; cv=none; b=KxML9tPBsWPtwYV6Cut9+pJYZazU2ZH7piDzgsbQovLuRN1KLlTP+AAmaQByrEeUL4PD6+qcnS3NQmXst+ybQ0bN2OhCMxtjpoXuaN6dkKSl/+7NQHhF6wemLTazjVtI/ujWXPqqkGJgmFCoUUkbkhIeHKMxwwL4dtebZHuQeUo=
+	t=1748875383; cv=none; b=hhpBhadn4kni2WLA04UmADAZanIffllqcLya65Qo2KKHGwQv07IBO3Pz/5m0t9OtdL9MyIzHxt+ZDH/s7SyPzZsDKvFCwMff48R5i6ooqK4hkwXh1VpIm9GwOF0IkeoBZd6nJFtaOZ7QpFKzEUncrbDFQbNm1o+T34ynC9/s43g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875967; c=relaxed/simple;
-	bh=VD4afxwXbO1U6qiXhMRehg/cBmyg9dGysMxNsML8eWM=;
+	s=arc-20240116; t=1748875383; c=relaxed/simple;
+	bh=+otAXOc8mtb2jejzqwvpRXsqqvTP5DcI0XBVvw0AUPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WsyAWscaCcjFUAuzhsxFEuU07/lt3cF43GBSYMhLV1aHTEoUjtxRT3b4NAKPEvoQ9pXEAeLvGCt9OBEQvxdblcDFK9iFs47GrqFaEJ7o1gucdx7CENKJntXEJKPi1H5G7EHqyoePKBdJfZJb3dFm40xwHx9B+H2QWB4CqSHDaO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmImSOG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D42C4CEEB;
-	Mon,  2 Jun 2025 14:52:46 +0000 (UTC)
+	 MIME-Version; b=nFvmKYQ1WM1jNnwDpXFTDB2nXb+AF0Pk5V9YyNIet7bKRBefvzHAK1+B9sO5ZLOCBe4C98ZKKgLe0N9HGWQVqi3g/YsJhpHXr88H898e4ZcUdSJnrcanjM/98HLw//ahPIdfZtFu4iZmFOjV22+Sy4oHmJDr1/i1sxN5Vk3FTAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0Q017Yc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC74C4CEEB;
+	Mon,  2 Jun 2025 14:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875966;
-	bh=VD4afxwXbO1U6qiXhMRehg/cBmyg9dGysMxNsML8eWM=;
+	s=korg; t=1748875383;
+	bh=+otAXOc8mtb2jejzqwvpRXsqqvTP5DcI0XBVvw0AUPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmImSOG8uv6RhytMjHIDXG6fJdKGjILTKQ44fMp7bzCAM01Xo54HKXM51Uq5AsFDC
-	 dd0hOmmINZj8PQz54x6F+eAmagwLSCSEA7bUIZeREqb+gDKIOYjz+mbQKc07PBObjj
-	 qX4+wA0WaV1fnKf3Pz/nwo6U+gTw+IXRcHp1p1cU=
+	b=E0Q017YcOfLvqgdevSdhBVxX7hutFvNHCUzWSVOQxzHZZX9HLuQWuFRr7QFmWoo6i
+	 R7Rc39VtF2XGwpXqMafRZzkkZHtDYXZH53U06fUHYI90uAiB+hOa3gyPeqO51HmMrc
+	 TH2yCWbBkczUZrtJlz7mSFpkkQE0kSXXEUeklWZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/207] btrfs: make btrfs_discard_workfn() block_group ref explicit
+Subject: [PATCH 5.10 117/270] dma-mapping: avoid potential unused data compilation warning
 Date: Mon,  2 Jun 2025 15:46:42 +0200
-Message-ID: <20250602134259.946331020@linuxfoundation.org>
+Message-ID: <20250602134312.011654169@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
+[ Upstream commit c9b19ea63036fc537a69265acea1b18dabd1cbd3 ]
 
-Currently, the async discard machinery owns a ref to the block_group
-when the block_group is queued on a discard list. However, to handle
-races with discard cancellation and the discard workfn, we have a
-specific logic to detect that the block_group is *currently* running in
-the workfn, to protect the workfn's usage amidst cancellation.
+When CONFIG_NEED_DMA_MAP_STATE is not defined, dma-mapping clients might
+report unused data compilation warnings for dma_unmap_*() calls
+arguments. Redefine macros for those calls to let compiler to notice that
+it is okay when the provided arguments are not used.
 
-As far as I can tell, this doesn't have any overt bugs (though
-finish_discard_pass() and remove_from_discard_list() racing can have a
-surprising outcome for the caller of remove_from_discard_list() in that
-it is again added at the end).
-
-But it is needlessly complicated to rely on locking and the nullity of
-discard_ctl->block_group. Simplify this significantly by just taking a
-refcount while we are in the workfn and unconditionally drop it in both
-the remove and workfn paths, regardless of if they race.
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250415075659.428549-1-m.szyprowski@samsung.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/discard.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ include/linux/dma-mapping.h | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
-index 7b2f77a8aa982..a90f3cb83c709 100644
---- a/fs/btrfs/discard.c
-+++ b/fs/btrfs/discard.c
-@@ -152,13 +152,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
- 	block_group->discard_eligible_time = 0;
- 	queued = !list_empty(&block_group->discard_list);
- 	list_del_init(&block_group->discard_list);
--	/*
--	 * If the block group is currently running in the discard workfn, we
--	 * don't want to deref it, since it's still being used by the workfn.
--	 * The workfn will notice this case and deref the block group when it is
--	 * finished.
--	 */
--	if (queued && !running)
-+	if (queued)
- 		btrfs_put_block_group(block_group);
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index a7d70cdee25e3..fb48f8ba5dcc8 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -568,10 +568,14 @@ static inline int dma_mmap_wc(struct device *dev,
+ #else
+ #define DEFINE_DMA_UNMAP_ADDR(ADDR_NAME)
+ #define DEFINE_DMA_UNMAP_LEN(LEN_NAME)
+-#define dma_unmap_addr(PTR, ADDR_NAME)           (0)
+-#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  do { } while (0)
+-#define dma_unmap_len(PTR, LEN_NAME)             (0)
+-#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    do { } while (0)
++#define dma_unmap_addr(PTR, ADDR_NAME)           \
++	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
++#define dma_unmap_addr_set(PTR, ADDR_NAME, VAL)  \
++	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
++#define dma_unmap_len(PTR, LEN_NAME)             \
++	({ typeof(PTR) __p __maybe_unused = PTR; 0; })
++#define dma_unmap_len_set(PTR, LEN_NAME, VAL)    \
++	do { typeof(PTR) __p __maybe_unused = PTR; } while (0)
+ #endif
  
- 	spin_unlock(&discard_ctl->lock);
-@@ -256,9 +250,10 @@ static struct btrfs_block_group *peek_discard_list(
- 			block_group->discard_cursor = block_group->start;
- 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
- 		}
--		discard_ctl->block_group = block_group;
- 	}
- 	if (block_group) {
-+		btrfs_get_block_group(block_group);
-+		discard_ctl->block_group = block_group;
- 		*discard_state = block_group->discard_state;
- 		*discard_index = block_group->discard_index;
- 	}
-@@ -482,9 +477,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
- 
- 	block_group = peek_discard_list(discard_ctl, &discard_state,
- 					&discard_index, now);
--	if (!block_group || !btrfs_run_discard_work(discard_ctl))
-+	if (!block_group)
- 		return;
-+	if (!btrfs_run_discard_work(discard_ctl)) {
-+		spin_lock(&discard_ctl->lock);
-+		btrfs_put_block_group(block_group);
-+		discard_ctl->block_group = NULL;
-+		spin_unlock(&discard_ctl->lock);
-+		return;
-+	}
- 	if (now < block_group->discard_eligible_time) {
-+		spin_lock(&discard_ctl->lock);
-+		btrfs_put_block_group(block_group);
-+		discard_ctl->block_group = NULL;
-+		spin_unlock(&discard_ctl->lock);
- 		btrfs_discard_schedule_work(discard_ctl, false);
- 		return;
- 	}
-@@ -536,15 +542,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
- 	spin_lock(&discard_ctl->lock);
- 	discard_ctl->prev_discard = trimmed;
- 	discard_ctl->prev_discard_time = now;
--	/*
--	 * If the block group was removed from the discard list while it was
--	 * running in this workfn, then we didn't deref it, since this function
--	 * still owned that reference. But we set the discard_ctl->block_group
--	 * back to NULL, so we can use that condition to know that now we need
--	 * to deref the block_group.
--	 */
--	if (discard_ctl->block_group == NULL)
--		btrfs_put_block_group(block_group);
-+	btrfs_put_block_group(block_group);
- 	discard_ctl->block_group = NULL;
- 	__btrfs_discard_schedule_work(discard_ctl, now, false);
- 	spin_unlock(&discard_ctl->lock);
+ /*
 -- 
 2.39.5
 
