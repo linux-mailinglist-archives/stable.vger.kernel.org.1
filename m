@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B6AACB86A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCCCACB7EB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D6721BC23C6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB4E1C22046
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435C022F767;
-	Mon,  2 Jun 2025 15:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62341219A9B;
+	Mon,  2 Jun 2025 15:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uE40+eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylUAK1Yb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF59228CB7;
-	Mon,  2 Jun 2025 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205ED1FCFE2;
+	Mon,  2 Jun 2025 15:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877489; cv=none; b=E0f36t9dG7pM32qjHvHXO9AxI815LrOxgr1vdj1JKvc5Ox71llje6qdhnTnP5AHFLuWYrYKtG00+THgRz148X6QunwBhpw0Jy8KwAWBWYQyzHx50ZOZ6gb/YDJts3OM3giVA19z3h5+2E+5BnlNccjZhfORdHRk5oo461K3MAMM=
+	t=1748876508; cv=none; b=HajqlKIFr17PscRPdoUEdvYp6OQyEN7m8O6Ddi29/zVRPYr3S/yC1AWyFemDJ3euzho29RW/e3BEOGkXhMD5k8jYGEu000isMI5nWy75jUkCIfhnaiGpafqbgRplZM7Ygil84hBumM+4oQ5rdQ2natkzwhR/gu0hMFdhQQiJd1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877489; c=relaxed/simple;
-	bh=mzPVcgn7hX8CmA0xnqjPORb3VooceHSLecbHXASlUcg=;
+	s=arc-20240116; t=1748876508; c=relaxed/simple;
+	bh=kVmy/9iXLbg3J5Y3UH5Tbdqv7r1RvZ9HRVCFXUnQWLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jO5djF88jWVTyjq+9i12oquOnEsVyQ27VSYJvULEN8YfJ+GpFV8wlLgj2SQPwYRMlQxRcEQxcgxxny/Xb5EfaFHNFMat3Oz83Jde/9xuxjVycwLAz6VF63t1oquMGmf6G6ji4XS/sJC+X2hvVNBtvf+L0qZRrO6avd1JxGwH5b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uE40+eb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA4DC4CEEB;
-	Mon,  2 Jun 2025 15:18:08 +0000 (UTC)
+	 MIME-Version; b=BT/CWxGsBNEilqwO/T11lqbKXRUt/QkcetQjnw5t2075YYDCoIrh/bsMSDQ7I9Q0+eQSnfL669tAef/jjbT7I4bppYccqyof+N9/LIB2kDyZjAIAelKwNJ/u+OwAuO/dJeG3Vt6X/by+ZYL4xOIjTnGTBzLD2et+sOXoSOB4REI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylUAK1Yb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A837EC4CEEB;
+	Mon,  2 Jun 2025 15:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877488;
-	bh=mzPVcgn7hX8CmA0xnqjPORb3VooceHSLecbHXASlUcg=;
+	s=korg; t=1748876508;
+	bh=kVmy/9iXLbg3J5Y3UH5Tbdqv7r1RvZ9HRVCFXUnQWLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uE40+ebCE0maqP5hHAaLjmmHXME9aA3L9Az4gp6K1JGrL8eyXWiAA/vZW4+rXTNe
-	 W15RWKHdKfZ72Uv9+DhBSzSFG0B9u3LoJgTMeh8IjebNrUvoyiUXZYK1TxWrQPn3HZ
-	 CaQ5fiFYbL8meMH492skHO6Ee+mkX5fG/O4qlO7E=
+	b=ylUAK1YbrfJMGAbStNvV/pV5pVsCiBwqaDekfU38LYjfF6YotOFy81c8/LEl1mMfY
+	 hF5w/7PvdQ05hGe3Z73nANfgdCx0/oIrb9gzISrhHxYiVi7xCfyeZiz1vVm2f6Km6d
+	 UcAcwHFI2N3gn0V1jfIupFH/DE8gDP0KipR57UVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 293/325] af_unix: Detect Strongly Connected Components.
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 197/207] coredump: hand a pidfd to the usermode coredump helper
 Date: Mon,  2 Jun 2025 15:49:29 +0200
-Message-ID: <20250602134331.807927517@linuxfoundation.org>
+Message-ID: <20250602134306.495328068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,200 +62,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 3484f063172dd88776b062046d721d7c2ae1af7c upstream.
+commit b5325b2a270fcaf7b2a9a0f23d422ca8a5a8bdea upstream.
 
-In the new GC, we use a simple graph algorithm, Tarjan's Strongly
-Connected Components (SCC) algorithm, to find cyclic references.
+Give userspace a way to instruct the kernel to install a pidfd into the
+usermode helper process. This makes coredump handling a lot more
+reliable for userspace. In parallel with this commit we already have
+systemd adding support for this in [1].
 
-The algorithm visits every vertex exactly once using depth-first
-search (DFS).
+We create a pidfs file for the coredumping process when we process the
+corename pattern. When the usermode helper process is forked we then
+install the pidfs file as file descriptor three into the usermode
+helpers file descriptor table so it's available to the exec'd program.
 
-DFS starts by pushing an input vertex to a stack and assigning it
-a unique number.  Two fields, index and lowlink, are initialised
-with the number, but lowlink could be updated later during DFS.
+Since usermode helpers are either children of the system_unbound_wq
+workqueue or kthreadd we know that the file descriptor table is empty
+and can thus always use three as the file descriptor number.
 
-If a vertex has an edge to an unvisited inflight vertex, we visit
-it and do the same processing.  So, we will have vertices in the
-stack in the order they appear and number them consecutively in
-the same order.
+Note, that we'll install a pidfd for the thread-group leader even if a
+subthread is calling do_coredump(). We know that task linkage hasn't
+been removed due to delay_group_leader() and even if this @current isn't
+the actual thread-group leader we know that the thread-group leader
+cannot be reaped until @current has exited.
 
-If a vertex has a back-edge to a visited vertex in the stack,
-we update the predecessor's lowlink with the successor's index.
+[brauner: This is a backport for the v5.14 series. Upstream has
+significantly changed and backporting all that infra is a non-starter.
+So simply backport the pidfd_prepare() helper and waste the file
+descriptor we allocated. Then we minimally massage the umh coredump
+setup code.]
 
-After iterating edges from the vertex, we check if its index
-equals its lowlink.
-
-If the lowlink is different from the index, it shows there was a
-back-edge.  Then, we go backtracking and propagate the lowlink to
-its predecessor and resume the previous edge iteration from the
-next edge.
-
-If the lowlink is the same as the index, we pop vertices before
-and including the vertex from the stack.  Then, the set of vertices
-is SCC, possibly forming a cycle.  At the same time, we move the
-vertices to unix_visited_vertices.
-
-When we finish the algorithm, all vertices in each SCC will be
-linked via unix_vertex.scc_entry.
-
-Let's take an example.  We have a graph including five inflight
-vertices (F is not inflight):
-
-  A -> B -> C -> D -> E (-> F)
-       ^         |
-       `---------'
-
-Suppose that we start DFS from C.  We will visit C, D, and B first
-and initialise their index and lowlink.  Then, the stack looks like
-this:
-
-  > B = (3, 3)  (index, lowlink)
-    D = (2, 2)
-    C = (1, 1)
-
-When checking B's edge to C, we update B's lowlink with C's index
-and propagate it to D.
-
-    B = (3, 1)  (index, lowlink)
-  > D = (2, 1)
-    C = (1, 1)
-
-Next, we visit E, which has no edge to an inflight vertex.
-
-  > E = (4, 4)  (index, lowlink)
-    B = (3, 1)
-    D = (2, 1)
-    C = (1, 1)
-
-When we leave from E, its index and lowlink are the same, so we
-pop E from the stack as single-vertex SCC.  Next, we leave from
-B and D but do nothing because their lowlink are different from
-their index.
-
-    B = (3, 1)  (index, lowlink)
-    D = (2, 1)
-  > C = (1, 1)
-
-Then, we leave from C, whose index and lowlink are the same, so
-we pop B, D and C as SCC.
-
-Last, we do DFS for the rest of vertices, A, which is also a
-single-vertex SCC.
-
-Finally, each unix_vertex.scc_entry is linked as follows:
-
-  A -.  B -> C -> D  E -.
-  ^  |  ^         |  ^  |
-  `--'  `---------'  `--'
-
-We use SCC later to decide whether we can garbage-collect the
-sockets.
-
-Note that we still cannot detect SCC properly if an edge points
-to an embryo socket.  The following two patches will sort it out.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-7-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://github.com/systemd/systemd/pull/37125 [1]
+Link: https://lore.kernel.org/20250414-work-coredump-v2-3-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/af_unix.h |    3 +++
- net/unix/garbage.c    |   46 ++++++++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 47 insertions(+), 2 deletions(-)
+ fs/coredump.c           |   77 +++++++++++++++++++++++++++++++++++++++++++-----
+ include/linux/binfmts.h |    1 
+ 2 files changed, 71 insertions(+), 7 deletions(-)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -32,8 +32,11 @@ void wait_for_unix_gc(struct scm_fp_list
- struct unix_vertex {
- 	struct list_head edges;
- 	struct list_head entry;
-+	struct list_head scc_entry;
- 	unsigned long out_degree;
- 	unsigned long index;
-+	unsigned long lowlink;
-+	bool on_stack;
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -56,6 +56,13 @@
+ static bool dump_vma_snapshot(struct coredump_params *cprm);
+ static void free_vma_snapshot(struct coredump_params *cprm);
+ 
++/*
++ * File descriptor number for the pidfd for the thread-group leader of
++ * the coredumping task installed into the usermode helper's file
++ * descriptor table.
++ */
++#define COREDUMP_PIDFD_NUMBER 3
++
+ int core_uses_pid;
+ unsigned int core_pipe_limit;
+ char core_pattern[CORENAME_MAX_SIZE] = "core";
+@@ -327,6 +334,27 @@ static int format_corename(struct core_n
+ 				err = cn_printf(cn, "%lu",
+ 					      rlimit(RLIMIT_CORE));
+ 				break;
++			/* pidfd number */
++			case 'F': {
++				/*
++				 * Installing a pidfd only makes sense if
++				 * we actually spawn a usermode helper.
++				 */
++				if (!ispipe)
++					break;
++
++				/*
++				 * Note that we'll install a pidfd for the
++				 * thread-group leader. We know that task
++				 * linkage hasn't been removed yet and even if
++				 * this @current isn't the actual thread-group
++				 * leader we know that the thread-group leader
++				 * cannot be reaped until @current has exited.
++				 */
++				cprm->pid = task_tgid(current);
++				err = cn_printf(cn, "%d", COREDUMP_PIDFD_NUMBER);
++				break;
++			}
+ 			default:
+ 				break;
+ 			}
+@@ -550,7 +578,7 @@ static void wait_for_dump_helpers(struct
+ }
+ 
+ /*
+- * umh_pipe_setup
++ * umh_coredump_setup
+  * helper function to customize the process used
+  * to collect the core in userspace.  Specifically
+  * it sets up a pipe and installs it as fd 0 (stdin)
+@@ -560,27 +588,62 @@ static void wait_for_dump_helpers(struct
+  * is a special value that we use to trap recursive
+  * core dumps
+  */
+-static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
++static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
+ {
+ 	struct file *files[2];
++	struct file *pidfs_file = NULL;
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+ 	int err;
+ 
++	if (cp->pid) {
++		int fd;
++
++		fd = pidfd_prepare(cp->pid, 0, &pidfs_file);
++		if (fd < 0)
++			return fd;
++
++		/*
++		 * We don't care about the fd. We also cannot simply
++		 * replace it below because dup2() will refuse to close
++		 * this file descriptor if its in a larval state. So
++		 * close it!
++		 */
++		put_unused_fd(fd);
++
++		/*
++		 * Usermode helpers are childen of either
++		 * system_unbound_wq or of kthreadd. So we know that
++		 * we're starting off with a clean file descriptor
++		 * table. So we should always be able to use
++		 * COREDUMP_PIDFD_NUMBER as our file descriptor value.
++		 */
++		err = replace_fd(COREDUMP_PIDFD_NUMBER, pidfs_file, 0);
++		if (err < 0)
++			goto out_fail;
++
++		pidfs_file = NULL;
++	}
++
+ 	err = create_pipe_files(files, 0);
+ 	if (err)
+-		return err;
++		goto out_fail;
+ 
+ 	cp->file = files[1];
+ 
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
+ 	if (err < 0)
+-		return err;
++		goto out_fail;
+ 
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return 0;
++	err = 0;
++
++out_fail:
++	if (pidfs_file)
++		fput(pidfs_file);
++	return err;
+ }
+ 
+ void do_coredump(const kernel_siginfo_t *siginfo)
+@@ -656,7 +719,7 @@ void do_coredump(const kernel_siginfo_t
+ 		}
+ 
+ 		if (cprm.limit == 1) {
+-			/* See umh_pipe_setup() which sets RLIMIT_CORE = 1.
++			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
+ 			 *
+ 			 * Normally core limits are irrelevant to pipes, since
+ 			 * we're not writing to the file system, but we use
+@@ -701,7 +764,7 @@ void do_coredump(const kernel_siginfo_t
+ 		retval = -ENOMEM;
+ 		sub_info = call_usermodehelper_setup(helper_argv[0],
+ 						helper_argv, NULL, GFP_KERNEL,
+-						umh_pipe_setup, NULL, &cprm);
++						umh_coredump_setup, NULL, &cprm);
+ 		if (sub_info)
+ 			retval = call_usermodehelper_exec(sub_info,
+ 							  UMH_WAIT_EXEC);
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -90,6 +90,7 @@ struct coredump_params {
+ 	int vma_count;
+ 	size_t vma_data_size;
+ 	struct core_vma_metadata *vma_meta;
++	struct pid *pid;
  };
  
- struct unix_edge {
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -251,11 +251,19 @@ static LIST_HEAD(unix_visited_vertices);
- static void __unix_walk_scc(struct unix_vertex *vertex)
- {
- 	unsigned long index = UNIX_VERTEX_INDEX_START;
-+	LIST_HEAD(vertex_stack);
- 	struct unix_edge *edge;
- 	LIST_HEAD(edge_stack);
- 
- next_vertex:
-+	/* Push vertex to vertex_stack.
-+	 * The vertex will be popped when finalising SCC later.
-+	 */
-+	vertex->on_stack = true;
-+	list_add(&vertex->scc_entry, &vertex_stack);
-+
- 	vertex->index = index;
-+	vertex->lowlink = index;
- 	index++;
- 
- 	/* Explore neighbour vertices (receivers of the current vertex's fd). */
-@@ -283,12 +291,46 @@ prev_vertex:
- 			edge = list_first_entry(&edge_stack, typeof(*edge), stack_entry);
- 			list_del_init(&edge->stack_entry);
- 
-+			next_vertex = vertex;
- 			vertex = edge->predecessor->vertex;
-+
-+			/* If the successor has a smaller lowlink, two vertices
-+			 * are in the same SCC, so propagate the smaller lowlink
-+			 * to skip SCC finalisation.
-+			 */
-+			vertex->lowlink = min(vertex->lowlink, next_vertex->lowlink);
-+		} else if (next_vertex->on_stack) {
-+			/* Loop detected by a back/cross edge.
-+			 *
-+			 * The successor is on vertex_stack, so two vertices are
-+			 * in the same SCC.  If the successor has a smaller index,
-+			 * propagate it to skip SCC finalisation.
-+			 */
-+			vertex->lowlink = min(vertex->lowlink, next_vertex->index);
-+		} else {
-+			/* The successor was already grouped as another SCC */
- 		}
- 	}
- 
--	/* Don't restart DFS from this vertex in unix_walk_scc(). */
--	list_move_tail(&vertex->entry, &unix_visited_vertices);
-+	if (vertex->index == vertex->lowlink) {
-+		struct list_head scc;
-+
-+		/* SCC finalised.
-+		 *
-+		 * If the lowlink was not updated, all the vertices above on
-+		 * vertex_stack are in the same SCC.  Group them using scc_entry.
-+		 */
-+		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
-+
-+		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
-+			/* Don't restart DFS from this vertex in unix_walk_scc(). */
-+			list_move_tail(&vertex->entry, &unix_visited_vertices);
-+
-+			vertex->on_stack = false;
-+		}
-+
-+		list_del(&scc);
-+	}
- 
- 	/* Need backtracking ? */
- 	if (!list_empty(&edge_stack))
+ /*
 
 
 
