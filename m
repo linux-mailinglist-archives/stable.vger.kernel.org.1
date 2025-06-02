@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-150358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157CCACB61F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD0CACB4B8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 029A47A52AA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 703B2175647
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA9F22A7EF;
-	Mon,  2 Jun 2025 15:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A7822FAE1;
+	Mon,  2 Jun 2025 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vojzxSul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kueRSxaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB5C22CBFE;
-	Mon,  2 Jun 2025 15:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FA622F769;
+	Mon,  2 Jun 2025 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876868; cv=none; b=BQGq8KU66m1pvNIgj2M0cgLqWWFHUFLZT0IE6CBdvZwf8EApjCSf1MLV01PGT+Tj6mGvI4/QWJIuUXkNjvnIjOZlAeRhNl8x5VookX/gRunIjkdWnbGRoS1/ipS5Yr/8dqnXC8c212vRJEhJU6JBLluXDA931x9wORQ4S6UtvIM=
+	t=1748875304; cv=none; b=aWcmX5hehqYIAN5snXVKRdNZLqz7hmlvnCFZybEZiKlEUT5BUxayC3m+HrGs3obpDngENDM7c0m49N8aV1a5GvGbS1h6tKkKCB/DafAHeH3pYTXtT11AlfxWJj+vjfRfcDFJfTSvofzDgC0vzXCamHZ3svLARbETlm7XyoPiF5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876868; c=relaxed/simple;
-	bh=mtDXSvJvxNhrbi5gPRDncSWj65coM6ZHGVj2uxikktA=;
+	s=arc-20240116; t=1748875304; c=relaxed/simple;
+	bh=G3p+grPMRR1ZfsZRhD2fKuUajVVmIAtI1Va8vccNX6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oO/q0aN1jT+VG9MvFlGBYr7B/D5HxAc67qukpwEGufqXjsBUady57/Y6N4CHcWD3BFphBJnxgztQlec+7aEc8BZABnC/X42z82zPRmqX+flFXDiIBKpmw8wP7+2BfGvh7RH/ZGqHhdW9AvbY4hvzfgXKE9Jnc0ngY0nz9VJOA4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vojzxSul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E79C4CEEB;
-	Mon,  2 Jun 2025 15:07:47 +0000 (UTC)
+	 MIME-Version; b=cZzfH5IOkUtyQr0ENwZci+NT9KoT4FwKsJR9xf7Ir/zFECU1ipC4fbbQDWTcr/7lkxqmeZcDBFkXFIzgR3R1j/2UbvEQWSDhel8Y2aIYr+iOtW77ElIh7sXaX1lbIWZhFfhNEZ+ZKZS1yErXs2Y6VSpVP3UWaNVi4gNkNJ9TOtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kueRSxaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBCEC4CEEB;
+	Mon,  2 Jun 2025 14:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876868;
-	bh=mtDXSvJvxNhrbi5gPRDncSWj65coM6ZHGVj2uxikktA=;
+	s=korg; t=1748875304;
+	bh=G3p+grPMRR1ZfsZRhD2fKuUajVVmIAtI1Va8vccNX6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vojzxSulfcUowyjJ/mGP804hPggwpxQpi9b0DVaqP8JjoN2jpVbiFP+LqQn+HcKSv
-	 yuYIYIrq4W6d3Q/E1ihA4DyBIAn2dgOUN9c9I1gXtzFqwVoIPV/sN7tZTZoEl8vZTb
-	 jy1WxJJlvkfqC1Ah4yB0NLOvaJ4aZ3lc5b0IShug=
+	b=kueRSxaN5Vshbjylj3+SP4wptNiyCh4ZiL0koPfwFW3ZTYjn0mZ/g7pnwOKaGpcFJ
+	 1kZi508WiLv/CNj5zUdSJeW+rfUK+B12xnT9kifKDOL135mWXL0ZSqTEKnJhajKeVS
+	 FWpalOzYcEOkASqtvm345VflfIkrvrNpYQ5jNTi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/325] rtc: ds1307: stop disabling alarms on probe
+Subject: [PATCH 5.10 090/270] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
 Date: Mon,  2 Jun 2025 15:46:15 +0200
-Message-ID: <20250602134323.806222142@linuxfoundation.org>
+Message-ID: <20250602134310.843755012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
+[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
 
-It is a bad practice to disable alarms on probe or remove as this will
-prevent alarms across reboots.
+There is a situation where after THALT is set high, TGO stays high as
+well. Because jiffies are never updated, as we are in a context with
+interrupts disabled, we never exit that loop and have a deadlock.
 
-Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+That deadlock was noticed on a sama5d4 device that stayed locked for days.
+
+Use retries instead of jiffies so that the timeout really works and we do
+not have a deadlock anymore.
+
+Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index d51565bcc1896..b7f8b3f9b0595 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1802,10 +1802,8 @@ static int ds1307_probe(struct i2c_client *client,
- 		 * For some variants, be sure alarms can trigger when we're
- 		 * running on Vbackup (BBSQI/BBSQW)
- 		 */
--		if (want_irq || ds1307_can_wakeup_device) {
-+		if (want_irq || ds1307_can_wakeup_device)
- 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
--			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
--		}
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 0f18837def3c8..74f3cabf8ed64 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -826,22 +826,15 @@ static void macb_update_stats(struct macb *bp)
  
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+ static int macb_halt_tx(struct macb *bp)
+ {
+-	unsigned long	halt_time, timeout;
+-	u32		status;
++	u32 status;
+ 
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
+ 
+-	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
+-	do {
+-		halt_time = jiffies;
+-		status = macb_readl(bp, TSR);
+-		if (!(status & MACB_BIT(TGO)))
+-			return 0;
+-
+-		udelay(250);
+-	} while (time_before(halt_time, timeout));
+-
+-	return -ETIMEDOUT;
++	/* Poll TSR until TGO is cleared or timeout. */
++	return read_poll_timeout_atomic(macb_readl, status,
++					!(status & MACB_BIT(TGO)),
++					250, MACB_HALT_TIMEOUT, false,
++					bp, TSR);
+ }
+ 
+ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb)
 -- 
 2.39.5
 
