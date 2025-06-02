@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51237ACB257
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90CCACB4D4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26B7A1942495
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC2679E59C1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BAD22576E;
-	Mon,  2 Jun 2025 14:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38FD222587;
+	Mon,  2 Jun 2025 14:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzvJM5KL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3cbs3Bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654241DED64;
-	Mon,  2 Jun 2025 14:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BA81FF61E;
+	Mon,  2 Jun 2025 14:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873721; cv=none; b=ZrgflePqKWlsQMVpxygmsKXcoAstmSghLBA0YHGuLUbiYKwAAdehcqZciykBsrWNE7ZbMk8VFbNCHQV5re2vlzvtx6Xp0flKtJJ3pkJu0JQCSDiKxf06pMnnERNtTOp3xJUd/zDhk50t/JIzYfLVtXaGapP8sDR+lWwACkqDMwo=
+	t=1748875114; cv=none; b=UQXikbLQUhqhaSKGe38ku+FfSozgTgfLFoe09jZejscm/Y1FYYGlev2kMNw8WK6sX7u0w9UEROn9axCZrEQJC6X10ya57ZWXnkbu6Q1w2zd/pHK1tXbZxPcruNReUPn9QzVMIMfNF3oE4E8U0wvdFBBFFs2j44mJ1eP+zGMSJXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873721; c=relaxed/simple;
-	bh=7RM8QdCW02l+uQq1wEick6ptOaJGNp/FQYuDnShxRzk=;
+	s=arc-20240116; t=1748875114; c=relaxed/simple;
+	bh=ReXL8bjJON4H31d8Db1qGZRU27TnY1CgqsbXQPRep40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfBa3cxywKuJfFjy3NY16NiALB3RClJjvA2BTvzglgQZL9Il1A4+yZ9S9t1bTZs4a0KLfaIkCaB+R5SdA0KPl+etVVCNxxOLUR8UdAL53jPQUX/KA7GYvMXWhXtkWBaV3P7LQ8Ip7FEL4w9Lgk2QA5cAxEIQCoin2T4swDhVPu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzvJM5KL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA141C4CEEB;
-	Mon,  2 Jun 2025 14:15:20 +0000 (UTC)
+	 MIME-Version; b=ovWoOOfsjGcHCi2PgRm09znRDFmYFXLxDN3ToDwARdwF4Wp33bROE2WqshqHTCYlrrv8dViEWikwj4XYNI0vcToQlhcol5auvmQTpdS9sVr4dJPcaX3syX09YXIqU2sg4AjKUEJRpC9cOMcMl8YyieuEjVV7ePemhMau/EJrVcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3cbs3Bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A75C4CEEB;
+	Mon,  2 Jun 2025 14:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873721;
-	bh=7RM8QdCW02l+uQq1wEick6ptOaJGNp/FQYuDnShxRzk=;
+	s=korg; t=1748875114;
+	bh=ReXL8bjJON4H31d8Db1qGZRU27TnY1CgqsbXQPRep40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzvJM5KLPnT6q77W/9utg9I5ucVjc+33JAdtp90/lITCARnHf5ynfmE611ISaMkzc
-	 0odUM6Fx+luElI+NXqADO23jZhhqtdMEH/MXDMBI402b+WeuQOmgc27PMWD+uDKUOE
-	 J5F9aoKm9fW92gIuaC701IjXfH3+upfr0Ea1PUKU=
+	b=h3cbs3BusOf56DE4BMOkm3oYzeLNs7ZSeJ+N7BhI8jDrPKMb1Qk8Pc2O/5+cog/lz
+	 J0dbuu0JsN1bicbrRx3SFEPWMzCm0h6AyzqCQcnsgUVoYvXInejcme/co9uqGrJqwy
+	 QLilxo1X+x5ASw2xF0aZ1qJsat65GUSgKRKtNI8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/444] pinctrl: devicetree: do not goto err when probing hogs in pinctrl_dt_to_map
+	Ihar Salauyou <salauyou.ihar@gmail.com>,
+	Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 008/270] mmc: renesas_sdhi: Fix error handling in renesas_sdhi_probe
 Date: Mon,  2 Jun 2025 15:44:53 +0200
-Message-ID: <20250602134350.210525902@linuxfoundation.org>
+Message-ID: <20250602134307.537847659@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
 
-[ Upstream commit c98868e816209e568c9d72023ba0bc1e4d96e611 ]
+commit 649b50a82f09fa44c2f7a65618e4584072145ab7 upstream.
 
-Cross case in pinctrl framework make impossible to an hogged pin and
-another, not hogged, used within the same device-tree node. For example
-with this simplified device-tree :
+After moving tmio_mmc_host_probe down, error handling has to be
+adjusted.
 
-  &pinctrl {
-    pinctrl_pin_1: pinctrl-pin-1 {
-      pins = "dummy-pinctrl-pin";
-    };
-  };
-
-  &rtc {
-    pinctrl-names = "default"
-    pinctrl-0 = <&pinctrl_pin_1 &rtc_pin_1>
-
-    rtc_pin_1: rtc-pin-1 {
-      pins = "dummy-rtc-pin";
-    };
-  };
-
-"pinctrl_pin_1" configuration is never set. This produces this path in
-the code:
-
-  really_probe()
-    pinctrl_bind_pins()
-    | devm_pinctrl_get()
-    |   pinctrl_get()
-    |     create_pinctrl()
-    |       pinctrl_dt_to_map()
-    |         // Hog pin create an abort for all pins of the node
-    |         ret = dt_to_map_one_config()
-    |         | /* Do not defer probing of hogs (circular loop) */
-    |         | if (np_pctldev == p->dev->of_node)
-    |         |   return -ENODEV;
-    |         if (ret)
-    |           goto err
-    |
-    call_driver_probe()
-      stm32_rtc_probe()
-        pinctrl_enable()
-          pinctrl_claim_hogs()
-            create_pinctrl()
-              for_each_maps(maps_node, i, map)
-                // Not hog pin is skipped
-                if (pctldev && strcmp(dev_name(pctldev->dev),
-                                      map->ctrl_dev_name))
-                  continue;
-
-At the first call of create_pinctrl() the hogged pin produces an abort to
-avoid a defer of hogged pins. All other pin configurations are trashed.
-
-At the second call, create_pinctrl is now called with pctldev parameter to
-get hogs, but in this context only hogs are set. And other pins are
-skipped.
-
-To handle this, do not produce an abort in the first call of
-create_pinctrl(). Classic pin configuration will be set in
-pinctrl_bind_pins() context. And the hogged pin configuration will be set
-in pinctrl_claim_hogs() context.
-
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/20250116170009.2075544-1-valentin.caron@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
+Reviewed-by: Ihar Salauyou <salauyou.ihar@gmail.com>
+Signed-off-by: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250326220638.460083-1-ruslan.piasetskyi@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/devicetree.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/devicetree.c b/drivers/pinctrl/devicetree.c
-index 5ee746cb81f59..6520b88db1105 100644
---- a/drivers/pinctrl/devicetree.c
-+++ b/drivers/pinctrl/devicetree.c
-@@ -143,10 +143,14 @@ static int dt_to_map_one_config(struct pinctrl *p,
- 		pctldev = get_pinctrl_dev_from_of_node(np_pctldev);
- 		if (pctldev)
- 			break;
--		/* Do not defer probing of hogs (circular loop) */
-+		/*
-+		 * Do not defer probing of hogs (circular loop)
-+		 *
-+		 * Return 1 to let the caller catch the case.
-+		 */
- 		if (np_pctldev == p->dev->of_node) {
- 			of_node_put(np_pctldev);
--			return -ENODEV;
-+			return 1;
- 		}
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1108,26 +1108,26 @@ int renesas_sdhi_probe(struct platform_d
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+ 		ret = num_irqs;
+-		goto eirq;
++		goto edisclk;
  	}
- 	of_node_put(np_pctldev);
-@@ -265,6 +269,8 @@ int pinctrl_dt_to_map(struct pinctrl *p, struct pinctrl_dev *pctldev)
- 			ret = dt_to_map_one_config(p, pctldev, statename,
- 						   np_config);
- 			of_node_put(np_config);
-+			if (ret == 1)
-+				continue;
- 			if (ret < 0)
- 				goto err;
+ 
+ 	/* There must be at least one IRQ source */
+ 	if (!num_irqs) {
+ 		ret = -ENXIO;
+-		goto eirq;
++		goto edisclk;
+ 	}
+ 
+ 	for (i = 0; i < num_irqs; i++) {
+ 		irq = platform_get_irq(pdev, i);
+ 		if (irq < 0) {
+ 			ret = irq;
+-			goto eirq;
++			goto edisclk;
  		}
--- 
-2.39.5
-
+ 
+ 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
+ 				       dev_name(&pdev->dev), host);
+ 		if (ret)
+-			goto eirq;
++			goto edisclk;
+ 	}
+ 
+ 	ret = tmio_mmc_host_probe(host);
+@@ -1139,8 +1139,6 @@ int renesas_sdhi_probe(struct platform_d
+ 
+ 	return ret;
+ 
+-eirq:
+-	tmio_mmc_host_remove(host);
+ edisclk:
+ 	renesas_sdhi_clk_disable(host);
+ efree:
 
 
 
