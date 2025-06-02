@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-149975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F524ACB61E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503DCACB6D6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D58E3A4E93
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0517C1BC23F4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA1F2222BB;
-	Mon,  2 Jun 2025 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D36225A3D;
+	Mon,  2 Jun 2025 14:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJSkoBeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6fimMjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC81FCFE2;
-	Mon,  2 Jun 2025 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CE1221727;
+	Mon,  2 Jun 2025 14:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875636; cv=none; b=b8KSwWZzt2lGo2nVmmplk09Z2mcNEcFfcYDMFQPQe+70xRJbrdhKgu0APOa6HFkif8utZJMSjK5E1k8YiNOZyDOooFaEoZGvfzDsf85AzhAkHjn1oQ1ChkuUcP6yzsKGih/FqbE9xJOflI58OOelsOnpfp4vT29Npq9mgDq61eA=
+	t=1748876127; cv=none; b=pGok7v0wzZ3ilO+zNwoJLorQ2y0MghjwHAInYi1yKHYxRGufQVxeVSt0g8cqIp9/ycIDW4AUaMmsD0xybMSaW7wxfrwy1X0vNE5Thf8OtPs1e8s/9c9EYHWguz/I9iWXySGrFQ+UD2qPYM+a25xik/nXWVESkGZnnnO95MXWQq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875636; c=relaxed/simple;
-	bh=gy13HvDUyaGPk/foVtk/pWXXzphSBHfahGRpyq0Znd4=;
+	s=arc-20240116; t=1748876127; c=relaxed/simple;
+	bh=7NfbzEc6UHcl1WO4+MdZaL2pF2e8qzJTWm1fAuq/VOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tF8yRiPY6SAf6cFp2VUQgziTVYVuEt6vSexT2C1Y89aVcV/+AkA2pBCf8TXxb+h9/h60Km/W3RtBA5eL32BqGeRRCMl24f+CW26++e63fyHFvF3RGYECjNsgIJ/XCADM4gsFoTW4IDJTGeyloC9WF70cCy/OfCzl4golh/1Yzg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJSkoBeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53BEC4CEF0;
-	Mon,  2 Jun 2025 14:47:15 +0000 (UTC)
+	 MIME-Version; b=Yp7qZDPj3hNaPXkCKYzzBy+K//5AmYIfgPqlt0NW0ftdyWzocTSgCahvLbGlrveIyjtX561vxHJv1mToMOSlWqUbAd8l2Ayuz6XF7hntgT3fc0waBIwjkbdtC0rhM0Uf0XXP/1sdMqAuRff5nW7jiuxEgMivbaKg7O0LLfZDPQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6fimMjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DBCC4CEEB;
+	Mon,  2 Jun 2025 14:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875636;
-	bh=gy13HvDUyaGPk/foVtk/pWXXzphSBHfahGRpyq0Znd4=;
+	s=korg; t=1748876126;
+	bh=7NfbzEc6UHcl1WO4+MdZaL2pF2e8qzJTWm1fAuq/VOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJSkoBeEV8znTZkjS6LN7D7eeNw88nY1xypMMZZtqpS7b6T3d87bqRt2R4fuZSMKc
-	 pEcqWNAqgk35Qx8GVBTX6HNpsOpgUx4FISopIHZIvd0QDkWLQJSe7NqqV690rVb8bk
-	 p3vDI25vBGVEUHD3AYlAQGARYVp451UCvt5nqnnw=
+	b=w6fimMjMeanCUrwNowqcSBlA9un2++lD6JtLfKycUSE975Vuv/aV7lXLuZ9ObwOcW
+	 LO2CyjrlhvDh/RCtCPcHf+4zSyY4Cjx7/2RR3cwQVXXghnchUjYtJ0uKOW1mWZAPHv
+	 Fm6bIKnvTVLONpA9wXv2qSRZxMjUFYTswo98gCCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	David Kaplan <David.Kaplan@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/270] net: ethernet: ti: cpsw_new: populate netdev of_node
+Subject: [PATCH 5.15 079/207] x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2
 Date: Mon,  2 Jun 2025 15:47:31 +0200
-Message-ID: <20250602134314.010363976@linuxfoundation.org>
+Message-ID: <20250602134301.829509606@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
+[ Upstream commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d ]
 
-So that of_find_net_device_by_node() can find CPSW ports and other DSA
-switches can be stacked downstream. Tested in conjunction with KSZ8873.
+Change the default value of spectre v2 in user mode to respect the
+CONFIG_MITIGATION_SPECTRE_V2 config option.
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently, user mode spectre v2 is set to auto
+(SPECTRE_V2_USER_CMD_AUTO) by default, even if
+CONFIG_MITIGATION_SPECTRE_V2 is disabled.
+
+Set the spectre_v2 value to auto (SPECTRE_V2_USER_CMD_AUTO) if the
+Spectre v2 config (CONFIG_MITIGATION_SPECTRE_V2) is enabled, otherwise
+set the value to none (SPECTRE_V2_USER_CMD_NONE).
+
+Important to say the command line argument "spectre_v2_user" overwrites
+the default value in both cases.
+
+When CONFIG_MITIGATION_SPECTRE_V2 is not set, users have the flexibility
+to opt-in for specific mitigations independently. In this scenario,
+setting spectre_v2= will not enable spectre_v2_user=, and command line
+options spectre_v2_user and spectre_v2 are independent when
+CONFIG_MITIGATION_SPECTRE_V2=n.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: David Kaplan <David.Kaplan@amd.com>
+Link: https://lore.kernel.org/r/20241031-x86_bugs_last_v2-v2-2-b7ff1dab840e@debian.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/kernel-parameters.txt |  2 ++
+ arch/x86/kernel/cpu/bugs.c                      | 10 +++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index a1ee205d6a889..d6f8d3e757a25 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1427,6 +1427,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		ndev->netdev_ops = &cpsw_netdev_ops;
- 		ndev->ethtool_ops = &cpsw_ethtool_ops;
- 		SET_NETDEV_DEV(ndev, dev);
-+		ndev->dev.of_node = slave_data->slave_node;
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 4bc5d8c97d097..e0670357d23f8 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5445,6 +5445,8 @@
  
- 		if (!napi_ndev) {
- 			/* CPSW Host port CPDMA interface is shared between
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
++			Selecting specific mitigation does not force enable
++			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 63af3d73d19e5..30b9292ac58fd 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1382,9 +1382,13 @@ static __ro_after_init enum spectre_v2_mitigation_cmd spectre_v2_cmd;
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
++	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
++	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
++		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
++
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1397,7 +1401,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return SPECTRE_V2_USER_CMD_AUTO;
++		return mode;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1407,8 +1411,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
+-	return SPECTRE_V2_USER_CMD_AUTO;
++	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
++	return mode;
+ }
+ 
+ static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
 -- 
 2.39.5
 
