@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C3CACB568
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE03ACB6A3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABE391BA030B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D25A4C25C0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DFA226556;
-	Mon,  2 Jun 2025 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E21224AF3;
+	Mon,  2 Jun 2025 14:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVAlONPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zy65Zy8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D50225A3E;
-	Mon,  2 Jun 2025 14:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB21723182B;
+	Mon,  2 Jun 2025 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875739; cv=none; b=L+qLlPFL/PunAigNF0NpIQs4LX8of0f5ngzPlfXs84qscF6AKhOQv4qPb9Z8jqjGvWSIogZ4WNfv2ouFVjQzXEgsqAzfZnY5QmOPqdmVrgJjUhrg/b+I8EXBSE1RCVBDIiUPCDLK8hbxbFt1/lyM9a87Tehlrdd8khj6GVG9V8Y=
+	t=1748876226; cv=none; b=WfIntRihXbJ9CPe8FLRtRx78vdkhTbfUbe6uW2nD6jNV7lk40C3WavslBDBy692X1OdBb8QWtlhjAtyidhjyPthpkMGpA+a/YtvwkFcEs0XpyRluXItRE+P9G82cshM+kZP1/Bkp69UfD46fCLnne3P5TrzSZTFz7Y31ziKUiaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875739; c=relaxed/simple;
-	bh=KTPWBbQYdlhcdNRtvFEy+zLc/djpTWAz5Y5gEm+gosc=;
+	s=arc-20240116; t=1748876226; c=relaxed/simple;
+	bh=qgQb9xzACLfRZZN1WAJgIudX0FMXxa54xcdDWv+tisw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSiQgJUkeA4yzDjoMU9L/ND4KJusAat9WHEshq9dIXnev1fDP6OkVmHmTD26Qc7DlF76RJ4kgOgjiRWLFoUiy5IRfGMyKt/5eMCCQRZa+KJFmLPWFxS/2lyGLbomuEXHfQR6B9p9PutfFKd38w7fmIBkJw0V9xNuDLI8Fr65xIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVAlONPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398A5C4CEEE;
-	Mon,  2 Jun 2025 14:48:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HGPReMi+XYbnimUBqZKJqrPrGIpehMh5eZlWI0loKMLa04Y3blv5zJH0gXNxZB5Mh2lhueXon5R5svqZL87w72ABcgB60U5j6TlDnrMR4UN8ImL9Ty8c98C/GFOi2s/d6QRVmx4DAkStDqseZXM0ZmYfG/T1/5bU8WpPI6mGPd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zy65Zy8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED76C4CEEB;
+	Mon,  2 Jun 2025 14:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875738;
-	bh=KTPWBbQYdlhcdNRtvFEy+zLc/djpTWAz5Y5gEm+gosc=;
+	s=korg; t=1748876226;
+	bh=qgQb9xzACLfRZZN1WAJgIudX0FMXxa54xcdDWv+tisw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVAlONPXDWeAF9pP8iZXqHVKpVi333xQizAEEFXVS7qYyL8x92SWSZoAc3+j3fhgY
-	 XIouvApgLZ13rKLJf1Cuhzznr774t/oMAsYhIxcfxoQQbQS4JqK7yR4M3jixnLy8Ut
-	 qSpXTikPs7E8W/vfRZi+H6aN16g4PVDTkT0jnjqU=
+	b=zy65Zy8JRLVT2euO+x/VcGMmhBgb4H2SkUu9mXQyS8Qyz10NzngrQdy2YtM8UsYXL
+	 ayVZxYSCMi+so/CLNN0F70bj/7FIVfdUvLSb2LP4+YL+LOeVxUiQDtMDt3CST6pBtR
+	 mTd+zjHClmAYJm5NsMRetOHrL7nJChYLuqQdE3hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xiaochun Lee <lixc17@lenovo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 198/270] net/mlx5: Apply rate-limiting to high temperature warning
+Subject: [PATCH 5.15 111/207] PCI: Fix old_size lower bound in calculate_iosize() too
 Date: Mon,  2 Jun 2025 15:48:03 +0200
-Message-ID: <20250602134315.288430235@linuxfoundation.org>
+Message-ID: <20250602134303.076650224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
+rescan") fixed double counting of mem resources because of old_size being
+applied too early.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix a similar counting bug on the io resource side.
+
+Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Xiaochun Lee <lixc17@lenovo.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/setup-bus.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 9d7b0a4cc48a9..5e8db7a6185a4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -162,9 +162,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index a159bfdfa2512..04c3ae8efc0f8 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -806,11 +806,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
+ 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
+ #endif
+ 	size = size + size1;
+-	if (size < old_size)
+-		size = old_size;
  
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
- 
- 	return NOTIFY_OK;
+-	size = ALIGN(max(size, add_size) + children_add_size, align);
+-	return size;
++	size = max(size, add_size) + children_add_size;
++	return ALIGN(max(size, old_size), align);
  }
+ 
+ static resource_size_t calculate_memsize(resource_size_t size,
 -- 
 2.39.5
 
