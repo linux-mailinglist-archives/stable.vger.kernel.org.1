@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9AAACB471
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D951ACB3FF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D64D7B26E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA96F4A042D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3671229B0F;
-	Mon,  2 Jun 2025 14:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1DB215F6B;
+	Mon,  2 Jun 2025 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhgVLVoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYg2R2t1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D06228CB8;
-	Mon,  2 Jun 2025 14:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F127B1C5D72;
+	Mon,  2 Jun 2025 14:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875486; cv=none; b=g9P7afM5PbHS3vjHvXj80chVo3Ti+Nu+NHCZ9IuKEMgIB/EaLIbxGHm6MLnBzCooeU1t0GlYOo29pEpx0MFJdYiMz5KGBUnKC1Dr37l9egeg4O69TImMD3OJUG5KZOIuUhCYTWbbV9fa+LQlsBc6lxUXDJIc9L4m//yrXsOJ2kg=
+	t=1748874684; cv=none; b=bPYGi1aQ9iB/mpYSCdKRzLFQwXqM+syqWmn1uNGaz7hz/RK1UCdVz+lJEVEPtHwifb3Iv9GusnfXm5LpIRxeuaMjPwy7h7A/niQyz4K4qFvBIUG0v4gZ425XqFbfFhbeR7FvQjUs4651pG4I1woohANkl5iyW5//UeyQbGe5pmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875486; c=relaxed/simple;
-	bh=XXNabtyj3KNm+CScohq32bHx3JCqGVyj2zfYEW6orFM=;
+	s=arc-20240116; t=1748874684; c=relaxed/simple;
+	bh=Vcu55QVeG9ufhtAtvvOv9xbt0CkdsVlb0Of7VrnSYtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJwBJ/f2+uJsB/ffGrH9IymHKs+bUY+iQHVb8UyWxnWxe+RZdnD2OCy40vCjuul14Rd4e9hBf1VQES1Z+fwcpGOmR53tXfU97lTlDCR9jD5f7eo6Pa36LngL1LTdmF2kePUs3TY4AHZ7m2bb9oPJFphLCSLRaK92q8QKKmsx8Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhgVLVoM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E164C4CEEB;
-	Mon,  2 Jun 2025 14:44:46 +0000 (UTC)
+	 MIME-Version; b=PSU5GmURb9Li7XhJ36mkoJrgakxOah9Ye+j+Z9ffehd+20zJ5i2tTTLUVq/WQyN8V2VkrGA319DRK3M0YclTAANDj+MH8hNoUGaERVQAerl7Kx2FZZSxSkFIRU9VIexudWAzq38cEpiddIJ2R1M6eKGgRL8Jep2TuPophmGuOAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYg2R2t1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500E3C4CEEB;
+	Mon,  2 Jun 2025 14:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875486;
-	bh=XXNabtyj3KNm+CScohq32bHx3JCqGVyj2zfYEW6orFM=;
+	s=korg; t=1748874683;
+	bh=Vcu55QVeG9ufhtAtvvOv9xbt0CkdsVlb0Of7VrnSYtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PhgVLVoM96AtxdHD4m8oa6vq8NlcvXuJwYafaSzK1pGkjWsHGyRG0Pos9WyVL9jmz
-	 kU+aZSJPaG3bhQqYYgsIH3LTTFhC2Zpdd32j1tIfdPKp6VyuCr+WYESCW/dhk6xKnE
-	 7euFrF+xGY2mA1i8L8AUWjENnQlPhUhlSDjupb8c=
+	b=GYg2R2t19z1W4GpkgtQ6ywq9vBBhvjHdeXcuOfb5+EAr/jXHG5dHzpeqgRI4ZBtdg
+	 nnl7pX9ddae+hljF08z8+BEhY3MmWvJYqFL/WELb85mYeUrtuPOhwspLmDldYrNmJV
+	 tp8Qc+oBzWIUJj0mXnYcVLk5yjMWByTbIeBnWUhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <maharmstone@fb.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/270] posix-timers: Add cond_resched() to posix_timer_add() search loop
+Subject: [PATCH 5.4 101/204] btrfs: avoid linker error in btrfs_find_create_tree_block()
 Date: Mon,  2 Jun 2025 15:47:14 +0200
-Message-ID: <20250602134313.313074797@linuxfoundation.org>
+Message-ID: <20250602134259.632462185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mark Harmstone <maharmstone@fb.com>
 
-[ Upstream commit 5f2909c6cd13564a07ae692a95457f52295c4f22 ]
+[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
 
-With a large number of POSIX timers the search for a valid ID might cause a
-soft lockup on PREEMPT_NONE/VOLUNTARY kernels.
+The inline function btrfs_is_testing() is hardcoded to return 0 if
+CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
+the compiler optimizing out the call to alloc_test_extent_buffer() in
+btrfs_find_create_tree_block(), as it's not been defined (it's behind an
+ #ifdef).
 
-Add cond_resched() to the loop to prevent that.
+Add a stub version of alloc_test_extent_buffer() to avoid linker errors
+on non-standard optimization levels. This problem was seen on GCC 14
+with -O0 and is helps to see symbols that would be otherwise optimized
+out.
 
-[ tglx: Split out from Eric's series ]
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/all/20250214135911.2037402-2-edumazet@google.com
-Link: https://lore.kernel.org/all/20250308155623.635612865@linutronix.de
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <maharmstone@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/posix-timers.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/extent_io.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 29569b1c3d8c8..3a68c650ff2a3 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -161,6 +161,7 @@ static int posix_timer_add(struct k_itimer *timer)
- 			return id;
- 		}
- 		spin_unlock(&hash_lock);
-+		cond_resched();
- 	}
- 	/* POSIX return code when no timer ID could be allocated */
- 	return -EAGAIN;
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 04788940afafc..64af1c7f95c24 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -5134,10 +5134,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
+ 	return NULL;
+ }
+ 
+-#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					u64 start)
+ {
++#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ 	struct extent_buffer *eb, *exists = NULL;
+ 	int ret;
+ 
+@@ -5173,8 +5173,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ free_eb:
+ 	btrfs_release_extent_buffer(eb);
+ 	return exists;
+-}
++#else
++	/* Stub to avoid linker error when compiled with optimizations turned off. */
++	return NULL;
+ #endif
++}
+ 
+ struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					  u64 start)
 -- 
 2.39.5
 
