@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-150328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB08ACB7A2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0616BACB27C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 874D4941004
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6554B94028A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126C4235067;
-	Mon,  2 Jun 2025 15:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C353E22CBE9;
+	Mon,  2 Jun 2025 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwuz+qCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PKpjyXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AAA22A7E5;
-	Mon,  2 Jun 2025 15:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C50522C325;
+	Mon,  2 Jun 2025 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876773; cv=none; b=umlC+PzDhWWHP58x4a0JaPhEbLnKXn6LGv7CkyIetflLk6kLB2j84iZZFQ+LVjlxQSPMy89WO6oG7jES4lKoWnZ6Gti+yuxj79VgrKRjNyc2fFfC7cQWekQlPhT5gCdLIKP4QGpzOK/HyTd8LtXQCy0zbU8HbISd6XykfooUVtk=
+	t=1748873791; cv=none; b=q2WGGvTI3+H/qdFzD6AztpkFbQt73C4q5VG/0BP9U2QEDCIg80oegQvnP2QXdRiXMtsE85iHoeq/9CL0WADjmRwaXTY6BDCRr2PolzKfq45vpE9PqemicSq6uhUU6sRP53Y/aUtgq2yswod1InbC7ONrR1KGKH0JwFSFwKqogwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876773; c=relaxed/simple;
-	bh=gCigCg7p8OAvWKrGxmq79QrN1or2qcOExuVYTOimGAE=;
+	s=arc-20240116; t=1748873791; c=relaxed/simple;
+	bh=2gNfTNnjlLq/ijp4pNcDdiZNd9A1QUD7pzM186LqcNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxiPhp2QEc6MX7O8oJ8Vrd7faSACzVgH33cldY5wm+sUjQoa8iQ/efEGRhQGd12/A0PyXbiik7L5Af8xd7EwPtdCU0hq6bqrxERqnesOmfNwQ/cjGKx4tAF2OXOygChM1Wtl8134jM4hjeCH8iR8mufIF5MJi4nInLjJAHPu9Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwuz+qCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C0EC4CEEB;
-	Mon,  2 Jun 2025 15:06:13 +0000 (UTC)
+	 MIME-Version; b=AG5FZOXYTnZXF3WCxWWOHxrpraHaqnBc/CFx5t7eVpPpbqbipqXe1DFCJOOwgDR5TlSUN8Nhi5w+33VMKV173fx9Nz+FX5zIR4j7tGEDc/D/SjAMXO8eYAEGcM0KzhgnCGBRHaWtWLBBM+yGoPXS7J8ZI10dA/LIqCT6FKKJWVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PKpjyXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D349C4CEEE;
+	Mon,  2 Jun 2025 14:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876773;
-	bh=gCigCg7p8OAvWKrGxmq79QrN1or2qcOExuVYTOimGAE=;
+	s=korg; t=1748873791;
+	bh=2gNfTNnjlLq/ijp4pNcDdiZNd9A1QUD7pzM186LqcNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwuz+qCn5QgV83O/kXcDYDgRBprGNpUFM8LBkPQPJ15buLF41I/OvP4wqxbpnJyCM
-	 AhPzjUMKfFTqUm8NPlV6Ok7acwrPAjTxhySyGH2CDqg+BniUOpid6JnYimtqeIAPi5
-	 1HmPqmXv9yuEGTj7IOAmWLVeiXcOVwA7F11RjikA=
+	b=1PKpjyXS0bQyuOH5VNSg/RNaZobDwf/zV9ejnQpjWHz1jIyBt9fCJyz0Olz4hFceD
+	 yX4XdlXGxD0jjsTgg1G8TcCGARCPRXIV9ZN76AiutMXDoz0PG/IlsNZwb2XOVREd4y
+	 ZSSZvhMppMS6wI6fWE8RDjW4SIHOjdTi1DA3dImw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	William Tu <witu@nvidia.com>,
+	Bodong Wang <bodong@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/325] PCI: dwc: ep: Ensure proper iteration over outbound map windows
+Subject: [PATCH 6.6 254/444] net/mlx5e: reduce rep rxq depth to 256 for ECPF
 Date: Mon,  2 Jun 2025 15:45:18 +0200
-Message-ID: <20250602134321.460841127@linuxfoundation.org>
+Message-ID: <20250602134351.239693433@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: William Tu <witu@nvidia.com>
 
-[ Upstream commit f3e1dccba0a0833fc9a05fb838ebeb6ea4ca0e1a ]
+[ Upstream commit b9cc8f9d700867aaa77aedddfea85e53d5e5d584 ]
 
-Most systems' PCIe outbound map windows have non-zero physical addresses,
-but the possibility of encountering zero increased after following commit
-("PCI: dwc: Use parent_bus_offset").
+By experiments, a single queue representor netdev consumes kernel
+memory around 2.8MB, and 1.8MB out of the 2.8MB is due to page
+pool for the RXQ. Scaling to a thousand representors consumes 2.8GB,
+which becomes a memory pressure issue for embedded devices such as
+BlueField-2 16GB / BlueField-3 32GB memory.
 
-'ep->outbound_addr[n]', representing 'parent_bus_address', might be 0 on
-some hardware, which trims high address bits through bus fabric before
-sending to the PCIe controller.
+Since representor netdevs mostly handles miss traffic, and ideally,
+most of the traffic will be offloaded, reduce the default non-uplink
+rep netdev's RXQ default depth from 1024 to 256 if mdev is ecpf eswitch
+manager. This saves around 1MB of memory per regular RQ,
+(1024 - 256) * 2KB, allocated from page pool.
 
-Replace the iteration logic with 'for_each_set_bit()' to ensure only
-allocated map windows are iterated when determining the ATU index from a
-given address.
+With rxq depth of 256, the netlink page pool tool reports
+$./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+	 --dump page-pool-get
+ {'id': 277,
+  'ifindex': 9,
+  'inflight': 128,
+  'inflight-mem': 786432,
+  'napi-id': 775}]
 
-Link: https://lore.kernel.org/r/20250315201548.858189-12-helgaas@kernel.org
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+This is due to mtu 1500 + headroom consumes half pages, so 256 rxq
+entries consumes around 128 pages (thus create a page pool with
+size 128), shown above at inflight.
+
+Note that each netdev has multiple types of RQs, including
+Regular RQ, XSK, PTP, Drop, Trap RQ. Since non-uplink representor
+only supports regular rq, this patch only changes the regular RQ's
+default depth.
+
+Signed-off-by: William Tu <witu@nvidia.com>
+Reviewed-by: Bodong Wang <bodong@nvidia.com>
+Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250209101716.112774-8-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 449ad709495d3..3b3f079d0d2dd 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -283,7 +283,7 @@ static int dw_pcie_find_index(struct dw_pcie_ep *ep, phys_addr_t addr,
- 	u32 index;
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index 39d8e63e8856d..851c499faa795 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -63,6 +63,7 @@
+ #define MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE \
+ 	max(0x7, MLX5E_PARAMS_MINIMUM_LOG_SQ_SIZE)
+ #define MLX5E_REP_PARAMS_DEF_NUM_CHANNELS 1
++#define MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE 0x8
  
--	for (index = 0; index < pci->num_ob_windows; index++) {
-+	for_each_set_bit(index, ep->ob_window_map, pci->num_ob_windows) {
- 		if (ep->outbound_addr[index] != addr)
- 			continue;
- 		*atu_index = index;
+ static const char mlx5e_rep_driver_name[] = "mlx5e_rep";
+ 
+@@ -798,6 +799,8 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
+ 
+ 	/* RQ */
+ 	mlx5e_build_rq_params(mdev, params);
++	if (!mlx5e_is_uplink_rep(priv) && mlx5_core_is_ecpf(mdev))
++		params->log_rq_mtu_frames = MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE;
+ 
+ 	/* If netdev is already registered (e.g. move from nic profile to uplink,
+ 	 * RTNL lock must be held before triggering netdev notifiers.
 -- 
 2.39.5
 
