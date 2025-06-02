@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-149878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3ED7ACB452
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE78ACB816
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E9917B1677
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 375FC3B77CA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD21FCFE2;
-	Mon,  2 Jun 2025 14:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4774822DA13;
+	Mon,  2 Jun 2025 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6YziXzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV96ZqSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B6A223324;
-	Mon,  2 Jun 2025 14:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F219D22D4CE;
+	Mon,  2 Jun 2025 15:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875328; cv=none; b=FNOgtJFNtVQPyygzH8P5h9z1SrOF68KLfBXhtGRaEtdhuOj2konnUf2ANVLgL4Lc2ijwYiGUR2QRZb/K2nGOqKNmZbzQCNB6MsSIjPuDg4WDi811TE6H7ekd6mDPxIbC37YdTyfM+MDsMOF4K5x0YWtL6+Ty5mLKLYzwAOwIsQk=
+	t=1748876897; cv=none; b=cLnx56K1AWK3TARzt0+ZcJLmadLjhvOSck7wOQcHKRWSkmEvNxtDeCvGOjWnlGlDIAg1I6OZT5bewST/9wI5jIePZaYuV3ZWeuk0Ossopp8Zo1uTu0Wwkgyv9h/gJxdScpXN/7Ltl6AgznCpJkKDP7U9uE3MnamrmlNNk5Nrm+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875328; c=relaxed/simple;
-	bh=R3NXbNmEUTlz4eA2XkhfwLwBGoGWaqWQ4IRQ4ompFDo=;
+	s=arc-20240116; t=1748876897; c=relaxed/simple;
+	bh=ngZ9/YwZ3sOxw1lJLuvNmAzIm0aztW0XKky+e69blT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPeOQqBzWKrzbP2q99Ceja2BEELZRbUwmmhppzzORjtvtGkYGlzQg0kQwc6rby1/8VIw38Bl19lmVQZFeTlRwqRz7m6gzJeHQZLD12eqGY1c/yccMOQTgx9+1PnCyYP73ca85shtbBc8+72R3vP7tB+S0VM07a7xT4yJe5P5Ac8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6YziXzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D94DC4CEEB;
-	Mon,  2 Jun 2025 14:42:07 +0000 (UTC)
+	 MIME-Version; b=YiWRNE6m/QZfosVUd9XNMWO18+oBePemFea5itGitpyratLXRdWXWk/jB3U56ENET+gezHbYCN6xhVXd7s+ojzjYPnQNF9bZxhjWj5S1EnW4SsVtW4qDKWaQPe28vBW3Sj0D6GoNEQf/N+DMmITfex9fW5Gswp31E4iz4ZN1Bbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV96ZqSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E57C4CEEB;
+	Mon,  2 Jun 2025 15:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875328;
-	bh=R3NXbNmEUTlz4eA2XkhfwLwBGoGWaqWQ4IRQ4ompFDo=;
+	s=korg; t=1748876896;
+	bh=ngZ9/YwZ3sOxw1lJLuvNmAzIm0aztW0XKky+e69blT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6YziXzAB5fUTIaU3iRxic67fv1nYAJdlquRelwF3/hPtzlu357OHUbZ4N4nw7d8J
-	 qhHKYpIH3t3hAW6ARsvqQ86kUKyLTEI2+U8Lln9rFxA1GSBC6AIB4aG6FxPltkvIAn
-	 jaEeRr+uItpbtvZevyoyEYJOnTyE7ELKNSMyeLKQ=
+	b=aV96ZqSU2iTKKyxNWT5ghmndT01axE9RaexyY1QlStnF50kVShW9GTsd2QkPEu8DM
+	 dJmjXtEUe7S8aRTe24RiHsB+AXuOMHuOgkLrv13Tx6K89xNC5S40xDhUvu1hq0QVE1
+	 1REwZQCSImLPDrlpDkARDsUgSCoIiXF2+treT5l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wayne Chang <waynec@nvidia.com>
-Subject: [PATCH 5.10 069/270] usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/325] ext4: reject the data_err=abort option in nojournal mode
 Date: Mon,  2 Jun 2025 15:45:54 +0200
-Message-ID: <20250602134310.008542528@linuxfoundation.org>
+Message-ID: <20250602134322.947152625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 59820fde001500c167342257650541280c622b73 upstream.
+[ Upstream commit 26343ca0df715097065b02a6cddb4a029d5b9327 ]
 
-We identified a bug where the ST_RC bit in the status register was not
-being acknowledged after clearing the CTRL_RUN bit in the control
-register. This could lead to unexpected behavior in the USB gadget
-drivers.
+data_err=abort aborts the journal on I/O errors. However, this option is
+meaningless if journal is disabled, so it is rejected in nojournal mode
+to reduce unnecessary checks. Also, this option is ignored upon remount.
 
-This patch resolves the issue by adding the necessary code to explicitly
-acknowledge ST_RC after clearing CTRL_RUN based on the programming
-sequence, ensuring proper state transition.
-
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://lore.kernel.org/r/20250418081228.1194779-1-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250122110533.4116662-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -1737,6 +1737,10 @@ static int __tegra_xudc_ep_disable(struc
- 		val = xudc_readl(xudc, CTRL);
- 		val &= ~CTRL_RUN;
- 		xudc_writel(xudc, val, CTRL);
-+
-+		val = xudc_readl(xudc, ST);
-+		if (val & ST_RC)
-+			xudc_writel(xudc, ST_RC, ST);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 7f0231b349057..f829f989f2b59 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2741,6 +2741,13 @@ static int ext4_check_opt_consistency(struct fs_context *fc,
  	}
  
- 	dev_info(xudc->dev, "ep %u disabled\n", ep->index);
+ 	if (is_remount) {
++		if (!sbi->s_journal &&
++		    ctx_test_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT)) {
++			ext4_msg(NULL, KERN_WARNING,
++				 "Remounting fs w/o journal so ignoring data_err option");
++			ctx_clear_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT);
++		}
++
+ 		if (ctx_test_mount_opt(ctx, EXT4_MOUNT_DAX_ALWAYS) &&
+ 		    (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA)) {
+ 			ext4_msg(NULL, KERN_ERR, "can't mount with "
+@@ -5318,6 +5325,11 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 				 "data=, fs mounted w/o journal");
+ 			goto failed_mount3a;
+ 		}
++		if (test_opt(sb, DATA_ERR_ABORT)) {
++			ext4_msg(sb, KERN_ERR,
++				 "can't mount with data_err=abort, fs mounted w/o journal");
++			goto failed_mount3a;
++		}
+ 		sbi->s_def_mount_opt &= ~EXT4_MOUNT_JOURNAL_CHECKSUM;
+ 		clear_opt(sb, JOURNAL_CHECKSUM);
+ 		clear_opt(sb, DATA_FLAGS);
+-- 
+2.39.5
+
 
 
 
