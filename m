@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0EDACB7F2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BABFACB5A9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257771C21C5D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B364C2741
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F0922F744;
-	Mon,  2 Jun 2025 15:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170D0228CB0;
+	Mon,  2 Jun 2025 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lteVPwtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ly4QPLED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E1322ACF3;
-	Mon,  2 Jun 2025 15:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74292288F9;
+	Mon,  2 Jun 2025 14:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876476; cv=none; b=FTHdeB9P0Xxbk4E2Eq0I8rMJgOW63AKsyPLXe/a4qzO3ZyUXQfF2oWjtVnloBuzGvLq2mG17zrnxeap3hgzJWI+PbSQ2C1Fqj+I/SsJGuRanidHE+dupr+UJ/UBnx+UExDZ3ee/uO9QwNFC8ZxU8ZIGiHIBU4xUfoi2DVC+X+l0=
+	t=1748875783; cv=none; b=ZJ/LPrq07sWDvW1FUk1M+MMUal+9hG7EzziLOOQNa5lc7qeYQySZLSqVdcRLAnGfYgBgOZkmqOL5c2SOkZeay0MsROzNvUiZA4HIm6EixPJdNcNm9ISU5LKNgBq/cGeSmk79INmeGue3PpbiutWxz1gr60Ta4cqCpk7zBDbXM/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876476; c=relaxed/simple;
-	bh=WHmvpm3DVqwyQWs6PQ5CrSmP+75U4cMSV/7mikc/pno=;
+	s=arc-20240116; t=1748875783; c=relaxed/simple;
+	bh=FLSQEfmvSlAlzXMNQLUxSSouJzxi4PUAKhaYSMFIusU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jC6FNP0HXbEadwjj/OtQlV1YQKSxZmqkzgZZomhCNRhKfB6nBvybFhNSFqsFYJszBA8dnPgwuvPx6muAWreQ5lxGgUuuiD5KDIeThZdFZ6pcaPpvMVisTEf0Uf80DTuV07mzewfn7wgSI+3aEVaRkVf4cWxH4KWxgv0yKFr4wkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lteVPwtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC02C4CEEB;
-	Mon,  2 Jun 2025 15:01:15 +0000 (UTC)
+	 MIME-Version; b=fMPWFrsln9UicC348udqm6EIy7zkYSn+VQwoOq5AMDrYJhtS6oSTDFFiN6pJpggdALvB4sLuA7MgEcHPYqgYNvrDU+Y4FYxo+61bD8wCCWyL3Z1qjUYwdFeew6DKC4DIJ9yS4iRAqHTbGM5dDY0ESWeCKQ6Y3JqFPWRyHp4j8zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ly4QPLED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E50BC4CEEB;
+	Mon,  2 Jun 2025 14:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876476;
-	bh=WHmvpm3DVqwyQWs6PQ5CrSmP+75U4cMSV/7mikc/pno=;
+	s=korg; t=1748875783;
+	bh=FLSQEfmvSlAlzXMNQLUxSSouJzxi4PUAKhaYSMFIusU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lteVPwtVxZr4X1C1dbeUgRs2/LJTNoLH8qsShrWFLBQZjwc5n4I1R42gvidUiiLeL
-	 rU2QQDyjBLskxuNpT3OQxUyyZhkIx21CWF690NYlswjwYDj2bjC04YVjfktVDS+6N2
-	 ASubT74+Mt0XnT+yMjesIZp0ViyymCKqlybIw2os=
+	b=ly4QPLEDRSGnslQ7mAvTv5yW4C0VXT5B85VVIptLLKZ5CEc2/Nm3mFDtZbMfsDVyk
+	 C4nJYkjWLLi6agPRg5e/dYD8yqcTXEAbDuDo5fkI9qzS6hdodWiLZcypt6Unl2LMX0
+	 ctYrucWU5BxL/xaqNbAPBO1XspEltXDUlGFhDClU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 156/207] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 243/270] can: bcm: add missing rcu read protection for procfs content
 Date: Mon,  2 Jun 2025 15:48:48 +0200
-Message-ID: <20250602134304.832409036@linuxfoundation.org>
+Message-ID: <20250602134317.265100787@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
+commit dac5e6249159ac255dad9781793dbe5908ac9ddb upstream.
 
-Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
-model for making it working.
+When the procfs content is generated for a bcm_op which is in the process
+to be removed the procfs output might show unreliable data (UAF).
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As the removal of bcm_op's is already implemented with rcu handling this
+patch adds the missing rcu_read_lock() and makes sure the list entries
+are properly removed under rcu protection.
+
+Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org # >= 5.4
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/can/bcm.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 721b9971fd744..4954e8c494c6d 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -573,6 +573,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{       /* Acer Aspire SW3-013 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
--- 
-2.39.5
-
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -207,7 +207,9 @@ static int bcm_proc_show(struct seq_file
+ 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
+ 	seq_printf(m, " <<<\n");
+ 
+-	list_for_each_entry(op, &bo->rx_ops, list) {
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
+ 
+ 		unsigned long reduction;
+ 
+@@ -263,6 +265,9 @@ static int bcm_proc_show(struct seq_file
+ 		seq_printf(m, "# sent %ld\n", op->frames_abs);
+ 	}
+ 	seq_putc(m, '\n');
++
++	rcu_read_unlock();
++
+ 	return 0;
+ }
+ #endif /* CONFIG_PROC_FS */
+@@ -811,7 +816,7 @@ static int bcm_delete_rx_op(struct list_
+ 						  REGMASK(op->can_id),
+ 						  bcm_rx_handler, op);
+ 
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -831,7 +836,7 @@ static int bcm_delete_tx_op(struct list_
+ 	list_for_each_entry_safe(op, n, ops, list) {
+ 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
+ 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -1253,7 +1258,7 @@ static int bcm_rx_setup(struct bcm_msg_h
+ 					      bcm_rx_handler, op, "bcm", sk);
+ 		if (err) {
+ 			/* this bcm rx op is broken -> remove it */
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return err;
+ 		}
 
 
 
