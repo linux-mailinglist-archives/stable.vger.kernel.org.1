@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097FEACB804
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2FDACB395
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CE8C946622
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C42AE7AF599
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC4823182D;
-	Mon,  2 Jun 2025 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC33223DE1;
+	Mon,  2 Jun 2025 14:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZzepFlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10crENiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A47222DF9D;
-	Mon,  2 Jun 2025 15:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5707A221734;
+	Mon,  2 Jun 2025 14:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877305; cv=none; b=lQU2pfHanjObpNXdYzv2JrCbCEJlT7ODmTef6N4gO0m1UwZMpn4ulmRVJspj74J2sY1Vz1O6bOpQH9mYpnIYPzSanA3VVBULZxLLOYFUWNMKowpaW+uBO+EeDSNNZm1JjUDn0ThGySbjlmaAR7S+6ObSeqH6UHF5Y31a1SUz7F0=
+	t=1748875019; cv=none; b=d4gJPGr2qlCd8/6hYl2qKHj+GyHZZPJbosZF8X6IxtdUNLws+Y+VBgLwNa39HJteUt1Jm1LXi5v8/tTYrUJ0MI28qeyLScUDCJxN39TqzNVTpZPI2WR4uS4sbXfUQNB+GaEFAOeBVdsRCusPokyibZJYiLgWbOOIEe4WOtbBGT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877305; c=relaxed/simple;
-	bh=tv3He+8ejSIrzljiR8W1eSNIMVBFDf7Rumr2Hnm0cn4=;
+	s=arc-20240116; t=1748875019; c=relaxed/simple;
+	bh=Zw6YepdzPPm/nJt/xTb43c1szJvelKQLSLYOpWfBCEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZTkTyXr8jO0gqUWHcttUvZqtJDFL2ILULA0wYpj7eBCxi+zf0/rfLEs5G6zsCidmpzUDo0SIkqQ2euAg42QA9jDBz/EolMqWTaG/wXuUupB+EFDWYk2NFaH2qqestlpfGdhqOSF8l7Ppsucp1RKNpoMTUE/FM380QmXXjhlo0k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZzepFlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC304C4CEF0;
-	Mon,  2 Jun 2025 15:15:04 +0000 (UTC)
+	 MIME-Version; b=ZTlkbEmA086t4sWUzraRSWtoKCj5dnCEfgKb+F8Rl3cau/8VGleUZ3z+6hIYeGck6lj846oAfk/Z6JA9759S7PBbEFq58CIeFNYVlebqu0RAcqoX6wzhVCnkrv3H6mpqBWcYNnfN7SItya1WJpalJB+4u/Lt+Usm9SYSwpL5Yl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10crENiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7ADC4CEEB;
+	Mon,  2 Jun 2025 14:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877305;
-	bh=tv3He+8ejSIrzljiR8W1eSNIMVBFDf7Rumr2Hnm0cn4=;
+	s=korg; t=1748875019;
+	bh=Zw6YepdzPPm/nJt/xTb43c1szJvelKQLSLYOpWfBCEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZzepFlpxIIc2OqTgdqNdJl74+6OvClWifvSEa3i/IuEtZ8NYjaJdXLtHu9BUjlb8
-	 VNeEMh7JqenhIZERdcdW5Exhg4CzT5WtSPrjFo1KN4JQJN6vmFCoJQAIT0yfmsZ7A0
-	 CIBrBeZ0U5VlmKRStUOtYMt8JmvKXFkMFbFIm7Mo=
+	b=10crENiEovyYAQe2BglrJF8FuJjr8BjHEg/zVs9DNqT55OvFheDyp2pgZzZtYUoBx
+	 08kYw5Pnt2Ao5blC97l0h73oqefTYrBhyyirFjW8nfUiTLCka/hBzKSf88TAWl2WM8
+	 89a9K5uEspfQxMytcL14C+2BVUR4dHbjCdQSNnDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 6.1 234/325] remoteproc: qcom_wcnss: Fix on platforms without fallback regulators
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.4 177/204] can: bcm: add missing rcu read protection for procfs content
 Date: Mon,  2 Jun 2025 15:48:30 +0200
-Message-ID: <20250602134329.292969827@linuxfoundation.org>
+Message-ID: <20250602134302.604819647@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 4ca45af0a56d00b86285d6fdd720dca3215059a7 ]
+commit dac5e6249159ac255dad9781793dbe5908ac9ddb upstream.
 
-Recent change to handle platforms with only single power domain broke
-pronto-v3 which requires power domains and doesn't have fallback voltage
-regulators in case power domains are missing. Add a check to verify
-the number of fallback voltage regulators before using the code which
-handles single power domain situation.
+When the procfs content is generated for a bcm_op which is in the process
+to be removed the procfs output might show unreliable data (UAF).
 
-Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-Tested-by: Luca Weiss <luca.weiss@fairphone.com> # sdm632-fairphone-fp3
-Link: https://lore.kernel.org/r/20250511234026.94735-1-matti.lehtimaki@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As the removal of bcm_op's is already implemented with rcu handling this
+patch adds the missing rcu_read_lock() and makes sure the list entries
+are properly removed under rcu protection.
+
+Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org # >= 5.4
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/qcom_wcnss.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/can/bcm.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
-index ce61e0e7cbeb8..af96541c9b69a 100644
---- a/drivers/remoteproc/qcom_wcnss.c
-+++ b/drivers/remoteproc/qcom_wcnss.c
-@@ -445,7 +445,8 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
- 	if (wcnss->num_pds) {
- 		info += wcnss->num_pds;
- 		/* Handle single power domain case */
--		num_vregs += num_pd_vregs - wcnss->num_pds;
-+		if (wcnss->num_pds < num_pd_vregs)
-+			num_vregs += num_pd_vregs - wcnss->num_pds;
- 	} else {
- 		num_vregs += num_pd_vregs;
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -209,7 +209,9 @@ static int bcm_proc_show(struct seq_file
+ 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
+ 	seq_printf(m, " <<<\n");
+ 
+-	list_for_each_entry(op, &bo->rx_ops, list) {
++	rcu_read_lock();
++
++	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
+ 
+ 		unsigned long reduction;
+ 
+@@ -265,6 +267,9 @@ static int bcm_proc_show(struct seq_file
+ 		seq_printf(m, "# sent %ld\n", op->frames_abs);
  	}
--- 
-2.39.5
-
+ 	seq_putc(m, '\n');
++
++	rcu_read_unlock();
++
+ 	return 0;
+ }
+ #endif /* CONFIG_PROC_FS */
+@@ -813,7 +818,7 @@ static int bcm_delete_rx_op(struct list_
+ 						  REGMASK(op->can_id),
+ 						  bcm_rx_handler, op);
+ 
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -833,7 +838,7 @@ static int bcm_delete_tx_op(struct list_
+ 	list_for_each_entry_safe(op, n, ops, list) {
+ 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
+ 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return 1; /* done */
+ 		}
+@@ -1255,7 +1260,7 @@ static int bcm_rx_setup(struct bcm_msg_h
+ 					      bcm_rx_handler, op, "bcm", sk);
+ 		if (err) {
+ 			/* this bcm rx op is broken -> remove it */
+-			list_del(&op->list);
++			list_del_rcu(&op->list);
+ 			bcm_remove_op(op);
+ 			return err;
+ 		}
 
 
 
