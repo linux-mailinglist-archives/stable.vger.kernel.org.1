@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-149765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8C3ACB4A6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E98EACB52D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A2F173CCC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E1F77B1473
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9892253A7;
-	Mon,  2 Jun 2025 14:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1B23027C;
+	Mon,  2 Jun 2025 14:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0k/KGCR4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzPAINyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD141FCFE2;
-	Mon,  2 Jun 2025 14:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D41122836C;
+	Mon,  2 Jun 2025 14:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874969; cv=none; b=YAC3LB9A3jfNWsKoxzXivG4bMlD1VcjZrPPR8sdD5i9hh+Ep3nEyxQ8+fOuSpgHdY5lQXH37LKz1bysIamzSz18qFw5t8Z3ZmTfU/BdqlugOp/xRC6JuH8vIw5dBvdIcSzwXquH8sPpwsRB4m7SjMq6/z0vHL8Pvh4aQUfu2MZM=
+	t=1748875774; cv=none; b=eJbZ4d5AAi0n7N10+0zWJbmquGLahAC3d6V76i7qY2H0UV7YHemieB5C/lVhZJKvTUOPIKugVTGnW5bo/CDjgG+SrWgUdbyvekkidIDMcUJqKdbOZIckz4tqBOn0aveq4+HGj5p5UQeSfoDGo68CnltMecAgFk0dBVv56G+X8fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874969; c=relaxed/simple;
-	bh=Scj1jNnUhTOcS8NZupQqRSQ0da6+/k+1zneoPSqZ5CI=;
+	s=arc-20240116; t=1748875774; c=relaxed/simple;
+	bh=W2J8mKCYhyXNXOorj8FC2q1coRjc3sFhUBNhbLcikR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSEE6qhxZejuDn+6sgMcbFLCD0ooEMvuhBPUQaMeMG1OB1wymsM6jY3B5EdyiR5Xw7ZoT3hactZKhAmuTpD6Jiz23+aMUse1+zsTv+FQX2VFiU0ZNDmYyR33O6YXGMJGFm4U2iSywAulfepqQN8VfZl6nzQ4G6qBrZO114nO2YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0k/KGCR4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942C6C4CEEB;
-	Mon,  2 Jun 2025 14:36:08 +0000 (UTC)
+	 MIME-Version; b=TXuboqFgY1XQY48kM8aDg7m0D/87cCS9q4FVZjIMsRY/PKwNAO2Un1zZkO9Ak5f5A0SDLbL5SaolPAjPO9O3tRMkagpwWbyhLit7Wm8eAYQ3NRMyPda6bzqduScufAKDWw4CwDiftgqQaVloH6oKuH4g/u27j39+cxumLgbk75A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzPAINyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C47C4CEEE;
+	Mon,  2 Jun 2025 14:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874968;
-	bh=Scj1jNnUhTOcS8NZupQqRSQ0da6+/k+1zneoPSqZ5CI=;
+	s=korg; t=1748875773;
+	bh=W2J8mKCYhyXNXOorj8FC2q1coRjc3sFhUBNhbLcikR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0k/KGCR4KvZxOrBFEC0ut66btjOCq7L9fghQNbZgqq8P5rgygB8BwE/woHHrjF/IV
-	 MVbjuhTTnplxQlCf4xS6jOHwoUBDjEfF+chW2wP5sIV4CUWNlw6YNLswueh7tMo0fh
-	 bRWLFJGqYgkLWKc9Lr3pEHYAI6okowYmOBfzg7jw=
+	b=LzPAINyY1ueJGjP4bslR6Ev+JG1hDbem2l6fHWdyRNpOeN4biCbhaetlQReExgnsb
+	 ejEP8iJ03qntg71bgvnDUt0oMWifkzXYMeG0aZrD8jPTdSLtv65To3UDcQ6s4Wt/9+
+	 NNU1aQhclY0eKEycUOGXAWs1MVFdpH4mcYVphhus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	William Liu <will@willsroot.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 191/204] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
-Date: Mon,  2 Jun 2025 15:48:44 +0200
-Message-ID: <20250602134303.183783087@linuxfoundation.org>
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 240/270] crypto: algif_hash - fix double free in hash_accept
+Date: Mon,  2 Jun 2025 15:48:45 +0200
+Message-ID: <20250602134317.142502202@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
+commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
 
-Savino says:
-    "We are writing to report that this recent patch
-    (141d34391abbb315d68556b7c67ad97885407547) [1]
-    can be bypassed, and a UAF can still occur when HFSC is utilized with
-    NETEM.
+If accept(2) is called on socket type algif_hash with
+MSG_MORE flag set and crypto_ahash_import fails,
+sk2 is freed. However, it is also freed in af_alg_release,
+leading to slab-use-after-free error.
 
-    The patch only checks the cl->cl_nactive field to determine whether
-    it is the first insertion or not [2], but this field is only
-    incremented by init_vf [3].
-
-    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
-    check and insert the class twice in the eltree.
-    Under normal conditions, this would lead to an infinite loop in
-    hfsc_dequeue for the reasons we already explained in this report [5].
-
-    However, if TBF is added as root qdisc and it is configured with a
-    very low rate,
-    it can be utilized to prevent packets from being dequeued.
-    This behavior can be exploited to perform subsequent insertions in the
-    HFSC eltree and cause a UAF."
-
-To fix both the UAF and the infinite loop, with netem as an hfsc child,
-check explicitly in hfsc_enqueue whether the class is already in the eltree
-whenever the HFSC_RSC flag is set.
-
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
-[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
-[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
-[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
-[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Reported-by: William Liu <will@willsroot.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ crypto/algif_hash.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -176,6 +176,11 @@ struct hfsc_sched {
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -262,10 +262,6 @@ static int hash_accept(struct socket *so
+ 		return err;
  
- #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
+ 	err = crypto_ahash_import(&ctx2->req, state);
+-	if (err) {
+-		sock_orphan(sk2);
+-		sock_put(sk2);
+-	}
  
-+static bool cl_in_el_or_vttree(struct hfsc_class *cl)
-+{
-+	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
-+		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
-+}
- 
- /*
-  * eligible tree holds backlogged classes being sorted by their eligible times.
-@@ -1038,6 +1043,8 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	if (cl == NULL)
- 		return -ENOBUFS;
- 
-+	RB_CLEAR_NODE(&cl->el_node);
-+
- 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
- 	if (err) {
- 		kfree(cl);
-@@ -1576,7 +1583,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
- 	sch->qstats.backlog += len;
- 	sch->q.qlen++;
- 
--	if (first && !cl->cl_nactive) {
-+	if (first && !cl_in_el_or_vttree(cl)) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
+ 	return err;
+ }
 
 
 
