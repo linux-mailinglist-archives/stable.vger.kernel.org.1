@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-149457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C130ACB2EF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91E2ACB4CE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AEBA194109C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9303117EE2E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DE2238C29;
-	Mon,  2 Jun 2025 14:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC1321B9F6;
+	Mon,  2 Jun 2025 14:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9BNjPkx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvOIapie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02764238C19;
-	Mon,  2 Jun 2025 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD94919EEBD;
+	Mon,  2 Jun 2025 14:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874021; cv=none; b=uqKIsuDgMZSxYLUPZeij/dMGH3c1Mz/2Jgy8NyYb9G1GD6ng/zBv4/XMNCO2oa3zeWiknCemr2yIkTSDWJ8zMt8nVutJajcDfmSpZm4ZfowieOTDWV9ROr4a9P4vn29MybutzHtdJoCBO5KrR56VURq3bOGd57b26T8XgHNdH7s=
+	t=1748875356; cv=none; b=E8Wk+VwFMRr1WonRr3TlYJ8bJSh6NAKsKc1LqipOwo7Q8634uDVebmifQDSmExlvcNMAruYBRHz1KmM9cS7/xV1xZS0b8s3tc+h95CjXcY6loCU52e3Y0w8vw0E2DIdyvAmrTJ/UwnVC27i7fVvgvNxoB1mjDkGDPay+t3lBBCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874021; c=relaxed/simple;
-	bh=wNEX5h6oHV+4NaPktCLx3H6OMMo3enggxtvK37blxyc=;
+	s=arc-20240116; t=1748875356; c=relaxed/simple;
+	bh=yvOo1yRqr+9emsZI64UxORIPJBQaXkqpbBYe0jVW5fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO2deAmRWlan/SQ+XksSoF4w54O7GirSShliXodTBjaEcyPSMtwIRAGPVqZS1u6A9IIRVPwEWQFwa8EZrpgR2WOvPgcH+FB1vT6W9pXyEPs+zMsgKZ5RDqldZq7t1MR+QRz3yJJ7aTwg5SOS39obm9uWFl1+ktuW+0kwvCsLolI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9BNjPkx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E56C4CEEB;
-	Mon,  2 Jun 2025 14:20:20 +0000 (UTC)
+	 MIME-Version; b=Shhgiq9sN0hqtKPAW1/V+XR/XRYFkxfsXe6dfDrIDUhO4WHHn1Np+sCjVIhL/k8s0VXQZU7dyEZH6reABb/STKOxK17w7DgZHku9rUoAe0eOqLw0juQf1kvaXfX3+yUgj7xHnS8W+uyLA9S/CWqBfmzrNTzZGGyuf74PoxwpcsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvOIapie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C81C4CEEB;
+	Mon,  2 Jun 2025 14:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874020;
-	bh=wNEX5h6oHV+4NaPktCLx3H6OMMo3enggxtvK37blxyc=;
+	s=korg; t=1748875355;
+	bh=yvOo1yRqr+9emsZI64UxORIPJBQaXkqpbBYe0jVW5fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9BNjPkxNwW2VeA89XSXlA2nz2UnpwyKQopGg8NWwCjkWyW4ES6XFvUn+zvchQ+ft
-	 7x2odH93SYiEUPxIUeLu4PU3nwfIbqYidl4jg8n8OhC23mgaAe/NJeJQKK8RMz/9Sl
-	 T//0EXiufjPGs9Pvha394u3kD46ttn06tX6IqmhI=
+	b=YvOIapie/ym84LqythNgz80kVTfOfQtZYnophZds40JTpfKOl9glIvkIVthTuNnbD
+	 CJb/Aj799pHngaf+fN8xQOm6Ot5k/Ladl39dKJUsp1KsdM4EDkPPnOaZdTntLohvcL
+	 nNdg4niTKAKqyCZ5bSXETEid1Bu0gWBKgZg2VH+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 330/444] soundwire: bus: Fix race on the creation of the IRQ domain
+	stable <stable@kernel.org>,
+	GONG Ruiqi <gongruiqi1@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.10 109/270] usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
 Date: Mon,  2 Jun 2025 15:46:34 +0200
-Message-ID: <20250602134354.329233314@linuxfoundation.org>
+Message-ID: <20250602134311.693079808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: GONG Ruiqi <gongruiqi1@huawei.com>
 
-[ Upstream commit fd15594ba7d559d9da741504c322b9f57c4981e5 ]
+commit b0e525d7a22ea350e75e2aec22e47fcfafa4cacd upstream.
 
-The SoundWire IRQ domain needs to be created before any slaves are added
-to the bus, such that the domain is always available when needed. Move
-the call to sdw_irq_create() before the calls to sdw_acpi_find_slaves()
-and sdw_of_find_slaves().
+The error handling for the case `con_index == 0` should involve dropping
+the pm usage counter, as ucsi_ccg_sync_control() gets it at the
+beginning. Fix it.
 
-Fixes: 12a95123bfe1 ("soundwire: bus: Allow SoundWire peripherals to register IRQ handlers")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250409122239.1396489-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: e56aac6e5a25 ("usb: typec: fix potential array underflow in ucsi_ccg_sync_control()")
+Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250107015750.2778646-1-gongruiqi1@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Minor context change fixed.]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/bus.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index e7553c38be59d..767942f19adb6 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -121,6 +121,10 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 	set_bit(SDW_GROUP13_DEV_NUM, bus->assigned);
- 	set_bit(SDW_MASTER_DEV_NUM, bus->assigned);
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -575,7 +575,7 @@ static int ucsi_ccg_sync_write(struct uc
+ 				    UCSI_CMD_CONNECTOR_MASK;
+ 			if (con_index == 0) {
+ 				ret = -EINVAL;
+-				goto unlock;
++				goto err_put;
+ 			}
+ 			con = &uc->ucsi->connector[con_index - 1];
+ 			ucsi_ccg_update_set_new_cam_cmd(uc, con, (u64 *)val);
+@@ -591,8 +591,8 @@ static int ucsi_ccg_sync_write(struct uc
  
-+	ret = sdw_irq_create(bus, fwnode);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * SDW is an enumerable bus, but devices can be powered off. So,
- 	 * they won't be able to report as present.
-@@ -137,6 +141,7 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
+ err_clear_bit:
+ 	clear_bit(DEV_CMD_PENDING, &uc->flags);
++err_put:
+ 	pm_runtime_put_sync(uc->dev);
+-unlock:
+ 	mutex_unlock(&uc->lock);
  
- 	if (ret < 0) {
- 		dev_err(bus->dev, "Finding slaves failed:%d\n", ret);
-+		sdw_irq_delete(bus);
- 		return ret;
- 	}
- 
-@@ -155,10 +160,6 @@ int sdw_bus_master_add(struct sdw_bus *bus, struct device *parent,
- 	bus->params.curr_bank = SDW_BANK0;
- 	bus->params.next_bank = SDW_BANK1;
- 
--	ret = sdw_irq_create(bus, fwnode);
--	if (ret)
--		return ret;
--
- 	return 0;
- }
- EXPORT_SYMBOL(sdw_bus_master_add);
--- 
-2.39.5
-
+ 	return ret;
 
 
 
