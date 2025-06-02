@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C63ACB06A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DF1ACB79C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D4818972D9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C034C792B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A93221FA4;
-	Mon,  2 Jun 2025 14:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E193B224AED;
+	Mon,  2 Jun 2025 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Qlyoh0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IN0Fglyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB8C1DED64;
-	Mon,  2 Jun 2025 14:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCEA1DF73C;
+	Mon,  2 Jun 2025 15:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872895; cv=none; b=IhYFJ0wrrCuEiJV7DirWTMswPD5oHUxnMrwNzg3AIqKfUrSybJo+9k8+Na5Jnx+BnqUnUOSlSIkZlDcrJjBHqOMe1DSrUstLxdYookq0yOSYnpWNJqoAVl2vGT4J/WCclFwC1LjzdUGF+JBnMUbxGdY5Zg6K8i4YoTgs3sJE/f4=
+	t=1748877095; cv=none; b=Sfm1kwrHjQXQIEayx5ghRPvxXCL1kAsJp2EyMLTl//G1vVnMSHf1d+czemaoLSieUDi9KrB0fKO2/oCI+QMTcEXEQmOFyyk4noVQaziveae798xD3HXoQV91OUDIsqowrebWoyXbMtrX8ecOWk+ZOwvqGCVdWxyUciVIWDxPQAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872895; c=relaxed/simple;
-	bh=14xDnfdgyyiIHbcKnWE2zjQCbbtFAhkwkb9K2gsAXCk=;
+	s=arc-20240116; t=1748877095; c=relaxed/simple;
+	bh=oK4FJfA6Is0SOg0p9n19tnptSE/9vwwt0etLWDcgOaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WiSBHkU/vsef/TKP7Vf7m/MGWt0GwC6/zJ6BHUH/AaXPAA6p9RtrL9RxkOujgvyfoZjIXsdLDNXMg5Yqt3VOBmEwktlU1mxPG/3NXBYCRRCxJj3vF2qR62cOR6rpz7W4xzrMGYBgP9y5tG/CWEa05FEOsON5UD7zBAaUkIU4Nlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Qlyoh0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901E0C4CEF0;
-	Mon,  2 Jun 2025 14:01:34 +0000 (UTC)
+	 MIME-Version; b=IDfvTx+Ru9Q6XhBcj0AcmpkPTBSFDn8WBKcPz6xx+0TSd9PA4iCC+4V3REgDsgSmWt+mXK4UEHSA6OYumsJVYGWoQ4pwJz/Mwm2xzIU/QjhYGYuCxJpxiNLHbk3V8bnak31Pjm8BISYSa3JKDIOLqvanw9+tbZyXCRmnZZThFRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IN0Fglyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F987C4CEEB;
+	Mon,  2 Jun 2025 15:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872895;
-	bh=14xDnfdgyyiIHbcKnWE2zjQCbbtFAhkwkb9K2gsAXCk=;
+	s=korg; t=1748877095;
+	bh=oK4FJfA6Is0SOg0p9n19tnptSE/9vwwt0etLWDcgOaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Qlyoh0wYwCWXCo5gWl7xbNWX7n1DmmSNpiSkJf0LTJOODkVho7BrOVmgMbcReJqE
-	 0dFvlZ+D0TycAz3rNFMS+iNxkGRdbcOEGZ5dplaZjwuSaSzR8XhQpMwkFskZ84pYY/
-	 Sw7Dr2zSlAoMagD9t62MfGJrvI6k8+Pvm47TNPGE=
+	b=IN0Fglyl30OUfX/PCaFa+GWRpLJWoTK374UCbzz9jVdLm/1p7kKQhXjWpOmK0Bpua
+	 wI5kNS4nZu8wGa+2ADFFlSPuVKcVxMy5DoTtX1rhGX6uzYfqD3tQVN5zm6pSK+EdYM
+	 BFJQZlQLxht1mTfs9Exs6RB/hKpgWxbVvxq06oAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 07/55] arm64: dts: qcom: sm8550: Add missing properties for cryptobam
-Date: Mon,  2 Jun 2025 15:47:24 +0200
-Message-ID: <20250602134238.558774473@linuxfoundation.org>
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 169/325] ASoC: tas2764: Mark SW_RESET as volatile
+Date: Mon,  2 Jun 2025 15:47:25 +0200
+Message-ID: <20250602134326.684468894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Hector Martin <marcan@marcan.st>
 
-commit 663cd2cad36da23cf1a3db7868fce9f1a19b2d61 upstream.
+[ Upstream commit f37f1748564ac51d32f7588bd7bfc99913ccab8e ]
 
-num-channels and qcom,num-ees are required for BAM nodes without clock,
-because the driver cannot ensure the hardware is powered on when trying to
-obtain the information from the hardware registers. Specifying the node
-without these properties is unsafe and has caused early boot crashes for
-other SoCs before [1, 2].
+Since the bit is self-clearing.
 
-Add the missing information from the hardware registers to ensure the
-driver can probe successfully without causing crashes.
-
-[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
-[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
-
-Cc: stable@vger.kernel.org
-Fixes: 433477c3bf0b ("arm64: dts: qcom: sm8550: add QCrypto nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-3-f560889e65d8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-3-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/tas2764.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -1952,6 +1952,8 @@
- 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <20>;
- 			qcom,controlled-remotely;
- 			iommus = <&apps_smmu 0x480 0x0>,
- 				 <&apps_smmu 0x481 0x0>;
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 72db361ac3611..94428487a8855 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -654,6 +654,7 @@ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
+ static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
+ {
+ 	switch (reg) {
++	case TAS2764_SW_RST:
+ 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
+ 	case TAS2764_INT_CLK_CFG:
+ 		return true;
+-- 
+2.39.5
+
 
 
 
