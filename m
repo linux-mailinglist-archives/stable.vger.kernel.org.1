@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDE9ACB40D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4D0ACB62F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9345B4A4FD4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57F4A4C4806
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9AD22F74F;
-	Mon,  2 Jun 2025 14:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A65231826;
+	Mon,  2 Jun 2025 14:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1EaYoHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmDSZo1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB03815CD55;
-	Mon,  2 Jun 2025 14:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110D222A1E9;
+	Mon,  2 Jun 2025 14:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874922; cv=none; b=hnOZvG3R1TZWcXQp5CbkJ7rxDOxnNYatMlXS7qSDIfSNhC8LvpTjr7PlcO5Ds2pPYuXgTwIRcd1b/ij4NlBI60NxrWEVDQCqBPDT2hat/3bRIO6HXX2V9OoNfIM+26ZStPQ+XH8YVpYxCMyVe2uTM+tq7aJJIoidihSs/KKgTsQ=
+	t=1748876214; cv=none; b=VKqhefmL143h2Eej7g3V5ljN/+bSdXt1lYUadG8elEe4FMUbX3l/S9ZarPzWb9NsAIcOy49obIe1vn4b0hegZUSVhxqA04kwSxQdSp5FM6jmfb17MKvZ+XdCstHSLvCmHX+CTEOda5yK3aCcpBi8zRtweWud/0GdGK6UAEZTM0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874922; c=relaxed/simple;
-	bh=DwwR0VdQ4IMBjxMZsYKByUCMsdLUnzUlUHkeKUY3Szw=;
+	s=arc-20240116; t=1748876214; c=relaxed/simple;
+	bh=fedeNau8pW769+qRPB477/JQiCQcbiTmHS1hmeVEayg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/5BXzavuc6oOuQ2Q3T0ZkGFVRRA1URC/0hFrLRlbJ72Kn8Y/1IjiGFn1LkNNR3OSsdg6Bv5YxqN+8a3OGBRB/dhHuMtOa7aTpPTYAINd+kxnD43jrBeUGXszSVGvzswkcwG0JgAnA5GYgNcFGBIJBEhucAxge/ABKM1P6gdLIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1EaYoHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27807C4CEEB;
-	Mon,  2 Jun 2025 14:35:21 +0000 (UTC)
+	 MIME-Version; b=g0K7130f1+zD0U9ICvlEvDolOexxWVAD8eq3yqBFcMlm0nlN+KFUoUMi3F+B8BM4zjVRoZRge5GZSV0Ywmy4UES6tz1XF/tOCymcuOQWjX2zc6Ny+5JvQUpvYIm0NH8pHdWd+LieOhEJPb0q0Fx1UrdzqdCrYCILuc7vaoPhrjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmDSZo1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75662C4CEEE;
+	Mon,  2 Jun 2025 14:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874922;
-	bh=DwwR0VdQ4IMBjxMZsYKByUCMsdLUnzUlUHkeKUY3Szw=;
+	s=korg; t=1748876213;
+	bh=fedeNau8pW769+qRPB477/JQiCQcbiTmHS1hmeVEayg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1EaYoHG5KWkEVGm8GAWHRaycOAOfwYseYIOL9sMsuDq6q0aJIi+UuRU7rZoYv7OO
-	 d/7EoTpJKtcAN2pv6SHeoCsl3RSSsay1a0vPdb6QOASkAqI0b5m5nJ28nyeCs/IfRV
-	 6NliX/qZB994T0qXX/yNe0q/N9FAJSlaY8heZUA0=
+	b=nmDSZo1t2Wkj4nToR1/pBIhCqbjqFal0gqRlRGzRVe+sOCoB48VhBqHXd30H34MJW
+	 aHESrANZY3JJbVXn8p6UrnEEQmcVqU6qxLUxxt3Kr3i0Zzdm5xFrXhkZk33FTJtZr0
+	 qlxU5c7eKaWjFnmZIIP+bewHjICF2BZ+FfBmsvE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 146/204] smack: recognize ipv4 CIPSO w/o categories
+Subject: [PATCH 5.15 107/207] EDAC/ie31200: work around false positive build warning
 Date: Mon,  2 Jun 2025 15:47:59 +0200
-Message-ID: <20250602134301.390198408@linuxfoundation.org>
+Message-ID: <20250602134302.925043625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+gcc-14 produces a bogus warning in some configurations:
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
 
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
 
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
 
-This happens in two steps:
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
 
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
-
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index ddb0a292802ef..526598b40b13c 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index acb011cfd8c4f..5e61ca1b72e00 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -397,10 +397,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
+ 
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -458,19 +457,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
+ 	}
+ 
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
+ 	/*
+@@ -481,14 +471,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
++
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
+ 
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
+ 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
