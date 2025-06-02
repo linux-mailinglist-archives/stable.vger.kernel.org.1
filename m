@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFDAACB8E6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA5BACB6E8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 563999E303C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:22:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5FBB9E3FD9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D1A22A4F6;
-	Mon,  2 Jun 2025 15:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D16D1C5D72;
+	Mon,  2 Jun 2025 15:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+15uNU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLPx7H2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D27A22FAE1;
-	Mon,  2 Jun 2025 15:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB172C325E;
+	Mon,  2 Jun 2025 15:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877499; cv=none; b=ISlRcnHJsh6OGcv19VwDiIAIP8rRfvzABAv1GXBnSw0X0GcaE/QcDioIC7/6DUqoMZLNWSB70Tp56sqTnji4h/Iio8Y900hKWIEgafM7adRA+HBRZnBphm67Qh/WStOsPyw661gdrC9YSRfKXDgYE/ue0bFzI8H+sVVn6nMPmSw=
+	t=1748876517; cv=none; b=BR+dMleT5i0QEN0prpMHOk7arZm8qJN781lG2/XNq5VNyGL9UsDKKDOjLL3qyCKQMlvatNnDZ96bnboQgvz2H9a62+n8BmYc6Tg60CnF3nfOm3+kpi5gtnQDSaLwSozWicwqXq79uznxAjWniuyXZaSya8EF4xQ42Z2o4Q7P+6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877499; c=relaxed/simple;
-	bh=OpmdVt2bOQ4zqM08YThd2sY25MGfSDGjh41oPThm4oQ=;
+	s=arc-20240116; t=1748876517; c=relaxed/simple;
+	bh=KoCHj/LMcjkcQv5yYQI/NX7FYQCns1CtO9P6xmOkBTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLshCHIF7nnw+hUaHoVLX2N/WACkD+BV84SUvfD4teNhCxyonuzEV14TKPwNrYU6WCmYlWzDYH7laYyIm6rXJC38YhY2T8lGf+6ldES4cozOkmESC5wDQGtLNBJYKuHuopV0f2PujApYf9R27nl16hxC0+NX9ptVjK+cOAhVnwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+15uNU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66511C4CEEB;
-	Mon,  2 Jun 2025 15:18:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lU6StSknBpD3aULebW4zIsSotDDxct0rFxQwORJlRuUWTVh5H0ye+5dOE2z3EjcyFH98ghR9RFfn3MMwUYgWcQwUD/WBPDTBw3pbGSyXr9h/049QzfT7I3az0p2etXZvVJ46OqVsboZllHduUdhlhcLnR6kcAGVq6zmnc1w22m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLPx7H2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E74C4CEEB;
+	Mon,  2 Jun 2025 15:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877499;
-	bh=OpmdVt2bOQ4zqM08YThd2sY25MGfSDGjh41oPThm4oQ=;
+	s=korg; t=1748876517;
+	bh=KoCHj/LMcjkcQv5yYQI/NX7FYQCns1CtO9P6xmOkBTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+15uNU1Q7CBoyJw+ssqDvMRcAKgRqLG0KvflAnvqbJ/84rq+EsxL+2G0WlvUxhpw
-	 fmgzGO90d23JDGxr4yRZ2yR/qQSH2zqmAi3V/6msNezuv481lWBLKskgheDBOW3oQj
-	 QFQ79nfO377dDgYi0JI6Y/7Xhub9QBlsb/nldqh4=
+	b=cLPx7H2V8sgh57XmvtK0h9O03jvo0ingsDVNa09x9b93LN2w+BD79ofKuxdd+oObV
+	 pX/tgV4PCVvXKs59Wgsu6ZahqTUpE2182PyleiAs1gQkEVJuaqOoOQwgCy2Qz3jznn
+	 tGEeQEB/+YIO49U1FmPzCPGZQjaf/lNa6sy/2/so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 296/325] af_unix: Save O(n) setup of Tarjans algo.
+	John Chau <johnchau@0atlas.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 200/207] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
 Date: Mon,  2 Jun 2025 15:49:32 +0200
-Message-ID: <20250602134331.930004627@linuxfoundation.org>
+Message-ID: <20250602134306.617046677@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,162 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: John Chau <johnchau@0atlas.com>
 
-commit ba31b4a4e1018f5844c6eb31734976e2184f2f9a upstream.
+[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
 
-Before starting Tarjan's algorithm, we need to mark all vertices
-as unvisited.  We can save this O(n) setup by reserving two special
-indices (0, 1) and using two variables.
+Change get_thinkpad_model_data() to check for additional vendor name
+"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
+more).
 
-The first time we link a vertex to unix_unvisited_vertices, we set
-unix_vertex_unvisited_index to index.
+The reason of this works with minimal changes is because NEC Lavie
+X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
+"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
+the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
 
-During DFS, we can see that the index of unvisited vertices is the
-same as unix_vertex_unvisited_index.
+I compiled and tested with my own machine, attached the dmesg
+below as proof of work:
+[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
+[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
+[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
+[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
+[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
+[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
+[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
+[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
+[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
+[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
 
-When we finalise SCC later, we set unix_vertex_grouped_index to each
-vertex's index.
-
-Then, we can know (i) that the vertex is on the stack if the index
-of a visited vertex is >= 2 and (ii) that it is not on the stack and
-belongs to a different SCC if the index is unix_vertex_grouped_index.
-
-After the whole algorithm, all indices of vertices are set as
-unix_vertex_grouped_index.
-
-Next time we start DFS, we know that all unvisited vertices have
-unix_vertex_grouped_index, and we can use unix_vertex_unvisited_index
-as the not-on-stack marker.
-
-To use the same variable in __unix_walk_scc(), we can swap
-unix_vertex_(grouped|unvisited)_index at the end of Tarjan's
-algorithm.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-10-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Chau <johnchau@0atlas.com>
+Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |    1 -
- net/unix/garbage.c    |   26 +++++++++++++++-----------
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -37,7 +37,6 @@ struct unix_vertex {
- 	unsigned long out_degree;
- 	unsigned long index;
- 	unsigned long lowlink;
--	bool on_stack;
- };
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 5e44a4338706a..b994e07a61111 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10935,6 +10935,8 @@ static int __must_check __init get_thinkpad_model_data(
+ 		tp->vendor = PCI_VENDOR_ID_IBM;
+ 	else if (dmi_name_in_vendors("LENOVO"))
+ 		tp->vendor = PCI_VENDOR_ID_LENOVO;
++	else if (dmi_name_in_vendors("NEC"))
++		tp->vendor = PCI_VENDOR_ID_LENOVO;
+ 	else
+ 		return 0;
  
- struct unix_edge {
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -115,16 +115,20 @@ static struct unix_vertex *unix_edge_suc
- static LIST_HEAD(unix_unvisited_vertices);
- 
- enum unix_vertex_index {
--	UNIX_VERTEX_INDEX_UNVISITED,
-+	UNIX_VERTEX_INDEX_MARK1,
-+	UNIX_VERTEX_INDEX_MARK2,
- 	UNIX_VERTEX_INDEX_START,
- };
- 
-+static unsigned long unix_vertex_unvisited_index = UNIX_VERTEX_INDEX_MARK1;
-+
- static void unix_add_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
- 	struct unix_vertex *vertex = edge->predecessor->vertex;
- 
- 	if (!vertex) {
- 		vertex = list_first_entry(&fpl->vertices, typeof(*vertex), entry);
-+		vertex->index = unix_vertex_unvisited_index;
- 		vertex->out_degree = 0;
- 		INIT_LIST_HEAD(&vertex->edges);
- 
-@@ -265,6 +269,7 @@ void unix_destroy_fpl(struct scm_fp_list
- }
- 
- static LIST_HEAD(unix_visited_vertices);
-+static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
- 
- static void __unix_walk_scc(struct unix_vertex *vertex)
- {
-@@ -274,10 +279,10 @@ static void __unix_walk_scc(struct unix_
- 	LIST_HEAD(edge_stack);
- 
- next_vertex:
--	/* Push vertex to vertex_stack.
-+	/* Push vertex to vertex_stack and mark it as on-stack
-+	 * (index >= UNIX_VERTEX_INDEX_START).
- 	 * The vertex will be popped when finalising SCC later.
- 	 */
--	vertex->on_stack = true;
- 	list_add(&vertex->scc_entry, &vertex_stack);
- 
- 	vertex->index = index;
-@@ -291,7 +296,7 @@ next_vertex:
- 		if (!next_vertex)
- 			continue;
- 
--		if (next_vertex->index == UNIX_VERTEX_INDEX_UNVISITED) {
-+		if (next_vertex->index == unix_vertex_unvisited_index) {
- 			/* Iterative deepening depth first search
- 			 *
- 			 *   1. Push a forward edge to edge_stack and set
-@@ -317,7 +322,7 @@ prev_vertex:
- 			 * to skip SCC finalisation.
- 			 */
- 			vertex->lowlink = min(vertex->lowlink, next_vertex->lowlink);
--		} else if (next_vertex->on_stack) {
-+		} else if (next_vertex->index != unix_vertex_grouped_index) {
- 			/* Loop detected by a back/cross edge.
- 			 *
- 			 * The successor is on vertex_stack, so two vertices are
-@@ -344,7 +349,8 @@ prev_vertex:
- 			/* Don't restart DFS from this vertex in unix_walk_scc(). */
- 			list_move_tail(&vertex->entry, &unix_visited_vertices);
- 
--			vertex->on_stack = false;
-+			/* Mark vertex as off-stack. */
-+			vertex->index = unix_vertex_grouped_index;
- 		}
- 
- 		list_del(&scc);
-@@ -357,20 +363,18 @@ prev_vertex:
- 
- static void unix_walk_scc(void)
- {
--	struct unix_vertex *vertex;
--
--	list_for_each_entry(vertex, &unix_unvisited_vertices, entry)
--		vertex->index = UNIX_VERTEX_INDEX_UNVISITED;
--
- 	/* Visit every vertex exactly once.
- 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
- 	 */
- 	while (!list_empty(&unix_unvisited_vertices)) {
-+		struct unix_vertex *vertex;
-+
- 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
- 		__unix_walk_scc(vertex);
- 	}
- 
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
-+	swap(unix_vertex_unvisited_index, unix_vertex_grouped_index);
- }
- 
- static LIST_HEAD(gc_candidates);
+-- 
+2.39.5
+
 
 
 
