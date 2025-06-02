@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BF9ACB531
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A85ACB26B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3DC19436FD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8369E19416DD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCA2224B0C;
-	Mon,  2 Jun 2025 14:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A00221F38;
+	Mon,  2 Jun 2025 14:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0le6U5sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ogje7oEs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFDB224AF3;
-	Mon,  2 Jun 2025 14:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A815229D05;
+	Mon,  2 Jun 2025 14:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875073; cv=none; b=RRFJWFURaAeHgQiB69wDFXs5wjPlYSh9tjzNomqX8NNqV+kQ5wBET+B73oc+KjqqQyVQw1USyeIXWW6GTod8og+AOJUkbMQdqQXmt1EAe8m3q35qoTAXXXFE1+7m2+ba+jneThJHnHcYroV2QUCKeAE1r7iMA7dvDV15Nyhgys0=
+	t=1748873698; cv=none; b=FylsPrPKWOQdLDBQcWQBt/lkUC26OBa/hBAKRuT5Craij8wHN9NqV/Dr9G2hFoc3lTr3fsIkVBu5klzq/1JyQyR0+ixyOdIdRtdbM+7rSo0B43uD3zz4HpLtPrVSl1iwITGGvxJugvxYvnrHVt0GZ3axFQORLi0w/aOVvR3r1fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875073; c=relaxed/simple;
-	bh=qyRzSzGrZ2U0xLt9B+baHqwi0yrVUvkNE178RgcaHDE=;
+	s=arc-20240116; t=1748873698; c=relaxed/simple;
+	bh=gFRkaLDbw1vWERFzOwJIGp6pIx+GDPKBCKlezHFQzWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4oAH2Ds6gMNtPXWTCIeeJq+w8U/o/y0JnX6A+2fU17R/ob9rzBWoEkjlR3hu9nXDWLESI/VzDl0J3v7Z0B8+p32jyNu5m2aCPJwR7ph5Vl51Jl8MkPTS8sQNgrR1SJL9xeHNK7bqKRmxEb7ETScJ38lgibTQ3HCIJSe/tfChIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0le6U5sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7D0C4CEEB;
-	Mon,  2 Jun 2025 14:37:52 +0000 (UTC)
+	 MIME-Version; b=jKqQh/FOllJv2J9RE1AhSqNA6g4ZkiXpULBYjGRlm7dWFl2RtQUe8/2v7lrZOJKA1UAR6vbcZY80ivZcQALvzyiBDPf9c5A5DzRrhR09XnFHwot1vaduYPs9LSXraHAOQaQgTuxS1tEBfJIABA+ebKvF5wGD47ELzHGkKX+tMSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ogje7oEs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226F9C4CEEB;
+	Mon,  2 Jun 2025 14:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875072;
-	bh=qyRzSzGrZ2U0xLt9B+baHqwi0yrVUvkNE178RgcaHDE=;
+	s=korg; t=1748873698;
+	bh=gFRkaLDbw1vWERFzOwJIGp6pIx+GDPKBCKlezHFQzWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0le6U5szvSUerkcxyP+n/9Z42MTdVFxs5H+pfuzXuBsNk1QfGoDxjT7xng2+EpuGW
-	 gLiS7eZvT0yMdkRusQoaBPzF1rSW3cRhCW0+oL2jdSwWVSD0AhtyJ289cQMoBH5hoP
-	 dlKqjIXpQ4C0Eb04ihlvS1mVAjweOrOMH9kFYuVQ=
+	b=Ogje7oEsLwwlIPm7GVZ/nf3BowEtUDj3Lzz3nZpUG2B2AUhStZJKk8nG2f8DGmgRZ
+	 zL2l6jJDJw+eqi4bjQ1Qq8kapniIqyajy5q9QqZ/Gb8MeJqMwkq0ttszF4URPmJH0R
+	 gmQzYbKB0NClOVgarvgC2oaRuM9Pb7s1F+3Py2SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.10 002/270] drm/nouveau: Fix WARN_ON in nouveau_fence_context_kill()
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 223/444] firmware: arm_ffa: Reject higher major version as incompatible
 Date: Mon,  2 Jun 2025 15:44:47 +0200
-Message-ID: <20250602134307.297453124@linuxfoundation.org>
+Message-ID: <20250602134349.958114306@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-commit bbe5679f30d7690a9b6838a583b9690ea73fe0e9 upstream.
+[ Upstream commit efff6a7f16b34fd902f342b58bd8bafc2d6f2fd1 ]
 
-Nouveau is mostly designed in a way that it's expected that fences only
-ever get signaled through nouveau_fence_signal(). However, in at least
-one other place, nouveau_fence_done(), can signal fences, too. If that
-happens (race) a signaled fence remains in the pending list for a while,
-until it gets removed by nouveau_fence_update().
+When the firmware compatibility was handled previously in the commit
+8e3f9da608f1 ("firmware: arm_ffa: Handle compatibility with different firmware versions"),
+we only addressed firmware versions that have higher minor versions
+compared to the driver version which is should be considered compatible
+unless the firmware returns NOT_SUPPORTED.
 
-Should nouveau_fence_context_kill() run in the meantime, this would be
-a bug because the function would attempt to set an error code on an
-already signaled fence.
+However, if the firmware reports higher major version than the driver
+supported, we need to reject it. If the firmware can work in a compatible
+mode with the driver requested version, it must return the same major
+version as requested.
 
-Have nouveau_fence_context_kill() check for a fence being signaled.
-
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: ea13e5abf807 ("drm/nouveau: signal pending fences when channel has been killed")
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250415121900.55719-3-phasta@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-12-bd1d9de615e7@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/driver.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -95,7 +95,7 @@ nouveau_fence_context_kill(struct nouvea
- 	while (!list_empty(&fctx->pending)) {
- 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 7c2db3f017651..488f8345dd1b6 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -121,6 +121,14 @@ static int ffa_version_check(u32 *version)
+ 		return -EOPNOTSUPP;
+ 	}
  
--		if (error)
-+		if (error && !dma_fence_is_signaled_locked(&fence->base))
- 			dma_fence_set_error(&fence->base, error);
- 
- 		if (nouveau_fence_signal(fence))
++	if (FFA_MAJOR_VERSION(ver.a0) > FFA_MAJOR_VERSION(FFA_DRIVER_VERSION)) {
++		pr_err("Incompatible v%d.%d! Latest supported v%d.%d\n",
++		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
++		       FFA_MAJOR_VERSION(FFA_DRIVER_VERSION),
++		       FFA_MINOR_VERSION(FFA_DRIVER_VERSION));
++		return -EINVAL;
++	}
++
+ 	if (ver.a0 < FFA_MIN_VERSION) {
+ 		pr_err("Incompatible v%d.%d! Earliest supported v%d.%d\n",
+ 		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
+-- 
+2.39.5
+
 
 
 
