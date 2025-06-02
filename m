@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35F5ACB3E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413ADACB2F9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D969E4A249C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2314E1946C63
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5B7231A30;
-	Mon,  2 Jun 2025 14:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B40239096;
+	Mon,  2 Jun 2025 14:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3XCz9gD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYlO9Jo1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF23223321;
-	Mon,  2 Jun 2025 14:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B856F224B09;
+	Mon,  2 Jun 2025 14:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874591; cv=none; b=Oj9VNGqa8sWadrLBGqw4So9Uvceivd1u07Ja7Sm290hte/NixMJVBc05iYTB3ZzOHmtluMxbiYHCBTw59hx94PYxIwzXQBMHFpiYAJXYe5uIGWzaqq8dtaK8PcIdjqjVdY71oq/pcw5llWltMsnTqbv8hAvJ8ts8tMp0bkVaDS0=
+	t=1748874051; cv=none; b=sayzm1gYwrbw0r5hK0Fy7FUFLBYTV6Mjmif5nRVUyeQivhIUkXEqVjh58QtuhZo+y+vjC+N8S/UZ0OA2UjVhbMatjp9Rl4NwPJvfti+XwRFmMPuQNjK2sWSl8X+Dy6gW3kBRTAucx985D1gdHgTP+IEj2TTCdJ9Ee6PAwXJWtUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874591; c=relaxed/simple;
-	bh=1xKrNCv+gDCkBeojUsHde/gqdehLUZwPYxYr5OAdZ0o=;
+	s=arc-20240116; t=1748874051; c=relaxed/simple;
+	bh=dURlkI1fO5YqfzdPNMaadd/IQzsLBJlA0ONTRMR5ENE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4+AisT1iuHsRPqar6UmuL7aDp3lqKw1ux4kv1RiH5/rGQVfhtGJWcwC4Fmqzo9SKhx5CD28RERtNhuivbxPupKug/5lz0QrFBjBk3oD6Cd+rFv0D+6vEIN+Mb6cY9rTfNKCKDclMPo38COw5YFCdB+SSzeHgwXuM2Z32ZY6z3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3XCz9gD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B36C4CEEB;
-	Mon,  2 Jun 2025 14:29:50 +0000 (UTC)
+	 MIME-Version; b=fVT4pAdJSQy6X/jBScgRFZBmdmQoyiG8bti3A95NJcL43YJGRfKGft1+YnTo+qGvDsZ2RnyRzrrMjug61jhdyNxN4PuXOSidUHxktNWCE1sMASsjxvLpRxtYWjafju/LeIKweX9MIFNRz7oxIbAK8hBfAYtHJS9fG+O2nBL6Zso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYlO9Jo1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44499C4CEEB;
+	Mon,  2 Jun 2025 14:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874590;
-	bh=1xKrNCv+gDCkBeojUsHde/gqdehLUZwPYxYr5OAdZ0o=;
+	s=korg; t=1748874051;
+	bh=dURlkI1fO5YqfzdPNMaadd/IQzsLBJlA0ONTRMR5ENE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3XCz9gDrOhDDUG8FLxFuw+tgp0Yya/9LhkKz8WrLkYmxwIUrrUAFcDpXwgmvdpNj
-	 bYfaegR3w3jiu9rycRbeJ8GeAA7Nm43tsUgka2nbcrcCmzFKHwN6/w1HXLvdU2jkmD
-	 pw3z8iBl3ScMPtdgtPTi3M6Xr0KiutvAVNHGDvUs=
+	b=dYlO9Jo1nkIPxFKRe8EW8ODyzJmp1+O0hQL0DO5+e6XeUNLdXm3YCcrF9ZoUscGMk
+	 cHcVPR3/vVN+BRDVCqArx0zehYsnPdXy4OpkQ03ZVeYg+DKRxe/kNX8/2AKkSK43cp
+	 2DzNG/7Sy8qGvn3UFke0fIlKIOCkQmMIORSg3b8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Silvano Seva <s.seva@4sigma.it>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 043/204] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 312/444] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
 Date: Mon,  2 Jun 2025 15:46:16 +0200
-Message-ID: <20250602134257.373499655@linuxfoundation.org>
+Message-ID: <20250602134353.603939823@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Silvano Seva <s.seva@4sigma.it>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
+[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
 
-Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
-pattern_len is equal to zero and the device FIFO is not empty.
+Incorrect types are used as sizeof() arguments in devm_kcalloc().
+It should be sizeof(dai_link_data) for link_data instead of
+sizeof(snd_soc_dai_link).
 
-Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
-Signed-off-by: Silvano Seva <s.seva@4sigma.it>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is found by our static analysis tool.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/fsl/imx-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -360,6 +360,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
- 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
- 		return 0;
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 7128bcf3a743e..bb304de5cc38a 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -517,7 +517,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
  
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
-+
- 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
- 		   ST_LSM6DSX_CHAN_SIZE;
- 	fifo_len = (fifo_len / pattern_len) * pattern_len;
+-	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
++	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
+ 	if (!data->link_data)
+ 		return -ENOMEM;
+ 
+-- 
+2.39.5
+
 
 
 
