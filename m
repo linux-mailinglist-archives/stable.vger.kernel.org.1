@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28CDACB6CC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DE8ACB8CF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E59B317634A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0B9946DC5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA5623A98D;
-	Mon,  2 Jun 2025 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B401B81DC;
+	Mon,  2 Jun 2025 15:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp5RlzIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URPQG00Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED801FC0EF;
-	Mon,  2 Jun 2025 15:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D0D2C327E;
+	Mon,  2 Jun 2025 15:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876467; cv=none; b=n6uqUT05EF2JXcmtSog6LGOcSaeewJvMnPIod2QXOc5gmqBRIJCHyuCv3Dir3gjdx7jvs/PAXfcZDApR2VG7L2nfEOHR0hdEBxKWAKbgugOygoomIUh7WZ2eKuPmosg4Df1PFdMpLvUkVz91f+At6fqYOq8tFYU/TKSeEq15L8U=
+	t=1748877346; cv=none; b=EW0YC/4o8e8+ETcQr3dcFWAUBjdrdyGSM/zjOpUYYtv9LhtjJwpyAHrGdYMv6hFq4X3p6mpEnidy43vtQEpfH47xZmrPARv+T8FHXPbn+UBYqJwG1xJ4ow+yLGJjTbHoLmUP/IBn/pxwleV47EEOO6I2CUfToj+vMDTrtmtVCgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876467; c=relaxed/simple;
-	bh=O+HWmrK0e+Tr+3mHGspbTYzQKpeW/frh0vMUl3uVY7o=;
+	s=arc-20240116; t=1748877346; c=relaxed/simple;
+	bh=iEbmj25+kpXVAnbxz3kPc99x7Q0pnBQqgoRNwTUwi1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3jd1CYbHms1KwkV7DO5aYjXe1fsMoyhHJhpo/su3eSNub5YRQJ6PcBbhT/n46+HmsUqdqByAyNHdpYMw28n0F7Dk+tz7xmJXawytkE47L99UJ6Hxe4UzoRlW4MrGupN0K4pp+vbZIJ+FYfnaRS4oULSUR8rj1odJmyjHRXU+mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp5RlzIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753EDC4CEEB;
-	Mon,  2 Jun 2025 15:01:06 +0000 (UTC)
+	 MIME-Version; b=P31cnnvFG8cqims3qpiAeICd8FEb/+alqvLBtMDMY4R8c90HmohIebjeArh+0nKGJTr5MXxmTMBzTs3yxJafRrJbRybUJ8i8iICfxkj/A2cxh8AnSwYOZz+Qp67rY8dgfErINGkJhFLe2JELXN/c6rZugHvsgpxd7IkC4nrDzL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URPQG00Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3938C4CEEB;
+	Mon,  2 Jun 2025 15:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876466;
-	bh=O+HWmrK0e+Tr+3mHGspbTYzQKpeW/frh0vMUl3uVY7o=;
+	s=korg; t=1748877346;
+	bh=iEbmj25+kpXVAnbxz3kPc99x7Q0pnBQqgoRNwTUwi1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tp5RlzIc9x4qdNHITHPN58pR0rCecCmD4nx3rquyrQUtpSXLhP9Ab8JbljdETcTo1
-	 HP7jfEvZ6pSyBBS7DbXi1JCMISNafH18p8lzpR95+xN9qQmz78i/VHDNNYCbmYBAUa
-	 ecPJZrGOIvHfqP1WrMYod9JaMLla1dQRAfZ8HA0w=
+	b=URPQG00ZoM/GKhL3RDGB983QtqT0UgId/X+WTahJI3spMXG7CClFSxegZhdkJOmKj
+	 Ad8AOXASGRXhBjd/5JQs6fL2COYo6bP2DL7dpR2W+LtvX34Wkkn+Ir+KXUvlGzRiWd
+	 EYc9YNx91VyRhxi6kT8X9R97kRDhpz6JKCejETFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/207] drm: Add valid clones check
+Subject: [PATCH 6.1 249/325] octeontx2-af: Fix APR entry mapping based on APR_LMT_CFG
 Date: Mon,  2 Jun 2025 15:48:45 +0200
-Message-ID: <20250602134304.715035952@linuxfoundation.org>
+Message-ID: <20250602134329.899604702@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit a6ae7129819ad20788e610261246e71736543b8b ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+The current implementation maps the APR table using a fixed size,
+which can lead to incorrect mapping when the number of PFs and VFs
+varies.
+This patch corrects the mapping by calculating the APR table
+size dynamically based on the values configured in the
+APR_LMT_CFG register, ensuring accurate representation
+of APR entries in debugfs.
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 0daa55d033b0 ("octeontx2-af: cn10k: debugfs for dumping LMTST map table").
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Link: https://patch.msgid.link/20250521060834.19780-3-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c |  9 ++++++---
+ .../net/ethernet/marvell/octeontx2/af/rvu_debugfs.c   | 11 ++++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index bd01d925769db..db3c58013c00d 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -563,6 +563,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index 6ec0609074dca..5cd45846237e2 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -13,7 +13,6 @@
+ /* RVU LMTST */
+ #define LMT_TBL_OP_READ		0
+ #define LMT_TBL_OP_WRITE	1
+-#define LMT_MAP_TABLE_SIZE	(128 * 1024)
+ #define LMT_MAPTBL_ENTRY_SIZE	16
+ #define LMT_MAX_VFS		256
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -729,6 +753,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
+@@ -26,10 +25,14 @@ static int lmtst_map_table_ops(struct rvu *rvu, u32 index, u64 *val,
+ {
+ 	void __iomem *lmt_map_base;
+ 	u64 tbl_base, cfg;
++	int pfs, vfs;
  
- 	/*
+ 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
++	cfg  = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_CFG);
++	vfs = 1 << (cfg & 0xF);
++	pfs = 1 << ((cfg >> 4) & 0x7);
+ 
+-	lmt_map_base = ioremap_wc(tbl_base, LMT_MAP_TABLE_SIZE);
++	lmt_map_base = ioremap_wc(tbl_base, pfs * vfs * LMT_MAPTBL_ENTRY_SIZE);
+ 	if (!lmt_map_base) {
+ 		dev_err(rvu->dev, "Failed to setup lmt map table mapping!!\n");
+ 		return -ENOMEM;
+@@ -80,7 +83,7 @@ static int rvu_get_lmtaddr(struct rvu *rvu, u16 pcifunc,
+ 
+ 	mutex_lock(&rvu->rsrc_lock);
+ 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_ADDR_REQ, iova);
+-	pf = rvu_get_pf(pcifunc) & 0x1F;
++	pf = rvu_get_pf(pcifunc) & RVU_PFVF_PF_MASK;
+ 	val = BIT_ULL(63) | BIT_ULL(14) | BIT_ULL(13) | pf << 8 |
+ 	      ((pcifunc & RVU_PFVF_FUNC_MASK) & 0xFF);
+ 	rvu_write64(rvu, BLKADDR_RVUM, RVU_AF_SMMU_TXN_REQ, val);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+index a3c1d82032f55..aa2ab987eb752 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+@@ -580,6 +580,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
+ 	u64 lmt_addr, val, tbl_base;
+ 	int pf, vf, num_vfs, hw_vfs;
+ 	void __iomem *lmt_map_base;
++	int apr_pfs, apr_vfs;
+ 	int buf_size = 10240;
+ 	size_t off = 0;
+ 	int index = 0;
+@@ -595,8 +596,12 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
+ 		return -ENOMEM;
+ 
+ 	tbl_base = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_MAP_BASE);
++	val  = rvu_read64(rvu, BLKADDR_APR, APR_AF_LMT_CFG);
++	apr_vfs = 1 << (val & 0xF);
++	apr_pfs = 1 << ((val >> 4) & 0x7);
+ 
+-	lmt_map_base = ioremap_wc(tbl_base, 128 * 1024);
++	lmt_map_base = ioremap_wc(tbl_base, apr_pfs * apr_vfs *
++				  LMT_MAPTBL_ENTRY_SIZE);
+ 	if (!lmt_map_base) {
+ 		dev_err(rvu->dev, "Failed to setup lmt map table mapping!!\n");
+ 		kfree(buf);
+@@ -618,7 +623,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
+ 		off += scnprintf(&buf[off], buf_size - 1 - off, "PF%d  \t\t\t",
+ 				    pf);
+ 
+-		index = pf * rvu->hw->total_vfs * LMT_MAPTBL_ENTRY_SIZE;
++		index = pf * apr_vfs * LMT_MAPTBL_ENTRY_SIZE;
+ 		off += scnprintf(&buf[off], buf_size - 1 - off, " 0x%llx\t\t",
+ 				 (tbl_base + index));
+ 		lmt_addr = readq(lmt_map_base + index);
+@@ -631,7 +636,7 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
+ 		/* Reading num of VFs per PF */
+ 		rvu_get_pf_numvfs(rvu, pf, &num_vfs, &hw_vfs);
+ 		for (vf = 0; vf < num_vfs; vf++) {
+-			index = (pf * rvu->hw->total_vfs * 16) +
++			index = (pf * apr_vfs * LMT_MAPTBL_ENTRY_SIZE) +
+ 				((vf + 1)  * LMT_MAPTBL_ENTRY_SIZE);
+ 			off += scnprintf(&buf[off], buf_size - 1 - off,
+ 					    "PF%d:VF%d  \t\t", pf, vf);
 -- 
 2.39.5
 
