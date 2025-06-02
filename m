@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8938ACB5EF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:11:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56122ACB538
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583C41945C79
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D40DA9E3C81
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EC6230BF8;
-	Mon,  2 Jun 2025 14:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C5F22F744;
+	Mon,  2 Jun 2025 14:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDHF7jaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdzbhuZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C62230BD9;
-	Mon,  2 Jun 2025 14:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EC15CD55;
+	Mon,  2 Jun 2025 14:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876207; cv=none; b=cvwdvzPRAfH9qEmr+zFGUMuP0YZc+y5Gq4MHITEJvjkW3lnxIP8tiSuIJeEOd4gw/fMKPRO8wsPesAu+JDbHlphn5p3IqwlKNxOtS5a4eaO33rx6Z+bAEAPFPxu9aFJk2ylLt5D7mk6aE0N8+CE3SB9y/74A0nV+TjEoDLi72XE=
+	t=1748874916; cv=none; b=QOJE8KtgqgPGA3JMLdetpT556s7mVwfIKmZPly0t12vwOMBApAHRCMUYjFDCwwlHRun8SfAeHPEkQk7StxhAapZDyEvdN6df59BEFsEbad7J8eJWvwWfb74N/rLFM4tQIMcWE8FeJbUQPF8nCiP30QQRGXwjgc2JmAgHO63VgXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876207; c=relaxed/simple;
-	bh=0/EFMtPkeNJDGlmdz3yCtMxOsnqIeXPiA2cTuqafwh0=;
+	s=arc-20240116; t=1748874916; c=relaxed/simple;
+	bh=R17vjGMkdCQD8uSe2lK5hAcvrIVuUClZe0MXvyixHXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPFe0pLlNHdp8QmijQrqLIj3waakWIbEUOFQjzc/4cEbjAseA8GqbbQP20erM8/9cyhGV37sUHVxj6gDeU2u09ukwGfFGW8EE6HqBreRZ3ErgFpBTuPpFA8Ux8AEDVqDabGo6/LVBBsI2eJQa+wBaOsxL2BMiPM4HIYeLfAVENA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDHF7jaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1624BC4CEEB;
-	Mon,  2 Jun 2025 14:56:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uZkpAUZUEEAEB3TrabE2xNzpfAJUup0yvcb3dedKb3nmoQQmbwZZUvrnI23wgZd2ealah95fjZUjifgaDBloGO61bg5ILRsK9HqjbTZjCD2I8kqR4nvuUNxu5MooCunBePqtrb3IhbfPFB31/+mgWD/ccnanEDaMlCyhvMDjY7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdzbhuZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF8EC4CEEB;
+	Mon,  2 Jun 2025 14:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876207;
-	bh=0/EFMtPkeNJDGlmdz3yCtMxOsnqIeXPiA2cTuqafwh0=;
+	s=korg; t=1748874916;
+	bh=R17vjGMkdCQD8uSe2lK5hAcvrIVuUClZe0MXvyixHXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDHF7jaFic1RUwLgkk5mtjIZWB1BrvL3a2ucb/HKS8bbklQeWo9isReSeqqWzj2KZ
-	 O7F/fUvaBOiLmUNMRFXk3MlK21fd6EbloFV4Ws5xTJD2I7v4JFZ0fNYdoM9G9pcP53
-	 IeISqxaU9fPBfAiINo3M19m6sgTD99XYAJLRsNcc=
+	b=WdzbhuZwjaAo+4UiIIt9oiJUTt0pVDyEu24ferkiG91hiT4UZ/m1TlG1PA2uEnpUi
+	 BMaokwNPFZw4JG6tCR/txliUITjhunjD3nKtdX8eB7wb+zJiaEjigevvFDheOkRNPl
+	 S31Imjr7YZCY/C1DBSEUrSvaggps6HDBckKXdmss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/207] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
+Subject: [PATCH 5.4 144/204] ASoC: ops: Enforce platform maximum on initial value
 Date: Mon,  2 Jun 2025 15:47:57 +0200
-Message-ID: <20250602134302.849139860@linuxfoundation.org>
+Message-ID: <20250602134301.313582739@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Martin Povišer <povik+lin@cutebit.org>
 
-[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
+[ Upstream commit 783db6851c1821d8b983ffb12b99c279ff64f2ee ]
 
-This function translates the rate number reported by the hardware into
-something mac80211 can understand. It was ignoring the 3SS and 4SS HT
-rates. Translate them too.
+Lower the volume if it is violating the platform maximum at its initial
+value (i.e. at the time of the 'snd_soc_limit_volume' call).
 
-Also set *nss to 0 for the HT rates, just to make sure it's
-initialised.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
+[Cherry picked from the Asahi kernel with fixups -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-volume-limit-v1-1-b98fcf4cdbad@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/soc-ops.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
-index 2c515af214e76..bfd017d53fef8 100644
---- a/drivers/net/wireless/realtek/rtw88/util.c
-+++ b/drivers/net/wireless/realtek/rtw88/util.c
-@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
- 		*nss = 4;
- 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
- 	} else if (rate >= DESC_RATEMCS0 &&
--		   rate <= DESC_RATEMCS15) {
-+		   rate <= DESC_RATEMCS31) {
-+		*nss = 0;
- 		*mcs = rate - DESC_RATEMCS0;
- 	}
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 08ed973b2d975..a3b1f1c064ddc 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -635,6 +635,33 @@ int snd_soc_get_volsw_range(struct snd_kcontrol *kcontrol,
  }
+ EXPORT_SYMBOL_GPL(snd_soc_get_volsw_range);
+ 
++static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
++{
++	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
++	struct snd_ctl_elem_value uctl;
++	int ret;
++
++	if (!mc->platform_max)
++		return 0;
++
++	ret = kctl->get(kctl, &uctl);
++	if (ret < 0)
++		return ret;
++
++	if (uctl.value.integer.value[0] > mc->platform_max)
++		uctl.value.integer.value[0] = mc->platform_max;
++
++	if (snd_soc_volsw_is_stereo(mc) &&
++	    uctl.value.integer.value[1] > mc->platform_max)
++		uctl.value.integer.value[1] = mc->platform_max;
++
++	ret = kctl->put(kctl, &uctl);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ /**
+  * snd_soc_limit_volume - Set new limit to an existing volume control.
+  *
+@@ -667,7 +694,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
+ 		mc = (struct soc_mixer_control *)kctl->private_value;
+ 		if (max <= mc->max) {
+ 			mc->platform_max = max;
+-			ret = 0;
++			ret = snd_soc_clip_to_platform_max(kctl);
+ 		}
+ 	}
+ 	return ret;
 -- 
 2.39.5
 
