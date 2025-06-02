@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E64AACB2E8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7C2ACB6CB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA9E3A575C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAE7D1BC5A18
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98758235076;
-	Mon,  2 Jun 2025 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EF722D9EB;
+	Mon,  2 Jun 2025 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnBgWW1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJMc/zpd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567CE2343C7;
-	Mon,  2 Jun 2025 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BEB22D4CE;
+	Mon,  2 Jun 2025 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873969; cv=none; b=XnrqHp4NNTf0nRq4gTIlMujCZCVSCsyC8spvDExbRgSCfzjXEZNOrzccspukUhL5phY9D2+4yozx2xGsOtTOk8ZwsdC4cKCoEMOlviHMfheIuTT5c9twoO0qY/59JEJJRKjH9JxqlnWLGn3Sd8ZtM+rsD2WRcId2zcsGt11/h00=
+	t=1748876881; cv=none; b=jkg6iuumHkxhaZTmPCfU+zPt868tGU3iHb1Jzy2OuTPFQCrXmxc+rbjKrV2JJHOKBcNUD/XZ/bumbzUxXlRpHZ8Sh/3mzb9kIWwW8IbAj7ej7iRHoZF6Wr3qW152mQkSAFx+p3lb2QhIRfatjQhA2tJG2AaM4PK7qsb5+C4xfW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873969; c=relaxed/simple;
-	bh=98CT6yQ4Qo7CEsmQPYMFF6S8krE+tSvTYi0YCJ2JO30=;
+	s=arc-20240116; t=1748876881; c=relaxed/simple;
+	bh=PRCOsLPmR7zN2RA5qsxbLJfCxOd+2hE962vfiSMx/Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvnQCjz3jo3syHFLNNAvMnPcX1PRDLt5yC72wcTv8uobiBXnx2qC0RabXiRc01k4dLHXy81nPUUQPd77A21M2Xy81uletSNFYMKcFwdZfRWOsRaiwgr5kSW1BYaiFSMgK7zPVSqe/bRwNz28tjQXE2RSc7BX8lYybxmAPqdwVac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnBgWW1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FCBC4CEEB;
-	Mon,  2 Jun 2025 14:19:28 +0000 (UTC)
+	 MIME-Version; b=gn+UpCnnyz50SqB1FecV5y7c65v6agUWk1XujqRAaUEFntcCDMHipJjUbgRxv985D1B3lqPKNxwMYdtlBoRrmo50OvkShdZh6g4DrMQeMvGBefdG1G+uHVJOkfsldn5PBfCAZV+Eddu3C7vIOVZqkX5pwQcNxS8VYFMXB2GIJNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJMc/zpd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE59C4CEEB;
+	Mon,  2 Jun 2025 15:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873969;
-	bh=98CT6yQ4Qo7CEsmQPYMFF6S8krE+tSvTYi0YCJ2JO30=;
+	s=korg; t=1748876880;
+	bh=PRCOsLPmR7zN2RA5qsxbLJfCxOd+2hE962vfiSMx/Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnBgWW1qLDRMfQkFTgHit+7/Y/ngSgrzhKRJREWMO/7iqO+TkBFlxrdrIk7vsQhiP
-	 dGw0AKnkT65TrlFSyy/jrkU5SEHYHt1Ktgmywd9beMFr2WSCH5xsyfERpVu01MCXWV
-	 iYVoAhw1rzAo5hb929CRH02KNY05C66oHKNp2t0k=
+	b=aJMc/zpdHk3uDQ9YNIyiAB7B6iEi5nHJCGVvugXQv3GGDpP1yF2AExxfzoy4MNIdo
+	 TWFjttBMmtnGHuAJyB1JBcDiI89jX6aP1YXG7GolQNiXmyBvxIllC5SA/EyXuCayXF
+	 fhXbwOJ9jOW5Sv4XQgG1rXiaEXJN1UYZSNEoo40s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Markus Elfring <elfring@users.sourceforge.net>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 314/444] pinctrl: meson: define the pull up/down resistor value as 60 kOhm
+Subject: [PATCH 6.1 102/325] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
 Date: Mon,  2 Jun 2025 15:46:18 +0200
-Message-ID: <20250602134353.680354445@linuxfoundation.org>
+Message-ID: <20250602134323.925056457@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit e56088a13708757da68ad035269d69b93ac8c389 ]
+[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
 
-The public datasheets of the following Amlogic SoCs describe a typical
-resistor value for the built-in pull up/down resistor:
-- Meson8/8b/8m2: not documented
-- GXBB (S905): 60 kOhm
-- GXL (S905X): 60 kOhm
-- GXM (S912): 60 kOhm
-- G12B (S922X): 60 kOhm
-- SM1 (S905D3): 60 kOhm
+An of_node_put(i2c_bus) call was immediately used after a pointer check
+for an of_find_i2c_adapter_by_node() call in this function implementation.
+Thus call such a function only once instead directly before the check.
 
-The public G12B and SM1 datasheets additionally state min and max
-values:
-- min value: 50 kOhm for both, pull-up and pull-down
-- max value for the pull-up: 70 kOhm
-- max value for the pull-down: 130 kOhm
+This issue was transformed by using the Coccinelle software.
 
-Use 60 kOhm in the pinctrl-meson driver as well so it's shown in the
-debugfs output. It may not be accurate for Meson8/8b/8m2 but in reality
-60 kOhm is closer to the actual value than 1 Ohm.
-
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/20250329190132.855196-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
-index 524424ee6c4e7..5cc00fdc48d84 100644
---- a/drivers/pinctrl/meson/pinctrl-meson.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson.c
-@@ -486,7 +486,7 @@ static int meson_pinconf_get(struct pinctrl_dev *pcdev, unsigned int pin,
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
- 	case PIN_CONFIG_BIAS_PULL_UP:
- 		if (meson_pinconf_get_pull(pc, pin) == param)
--			arg = 1;
-+			arg = 60000;
- 		else
- 			return -EINVAL;
- 		break;
+diff --git a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
+index 1dbb89f0ddb8c..b2a977f1ec18a 100644
+--- a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
++++ b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
+@@ -802,13 +802,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
+ 		}
+ 		tsin->i2c_adapter =
+ 			of_find_i2c_adapter_by_node(i2c_bus);
++		of_node_put(i2c_bus);
+ 		if (!tsin->i2c_adapter) {
+ 			dev_err(&pdev->dev, "No i2c adapter found\n");
+-			of_node_put(i2c_bus);
+ 			ret = -ENODEV;
+ 			goto err_node_put;
+ 		}
+-		of_node_put(i2c_bus);
+ 
+ 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
+ 
 -- 
 2.39.5
 
