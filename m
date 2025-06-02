@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-150432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86596ACB72A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8485ACB4E8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A569443F7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1D337B1541
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2FF2253B5;
-	Mon,  2 Jun 2025 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F322B22ACD1;
+	Mon,  2 Jun 2025 14:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgOAgFda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjvF3YKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E6F2253B0;
-	Mon,  2 Jun 2025 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED9C22A1E6;
+	Mon,  2 Jun 2025 14:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877105; cv=none; b=VC//juN6ECGYNpYMJTDDoMbsm4YEMvbi/KfywextDYgHXYHkhPDK0W8m4s7arQKksTWtCCUZXiJtHaBqWZM2u76+UemLuh0ZWt2HfDpWauf94V/6eCVwhJ51ARKGysx0iq7y5Sj25pu84cBIzvW0+2kuKQoJs22BiqDn0qj5j0Q=
+	t=1748875533; cv=none; b=lV5neE4x9hQfGgqm09CVSwXRtEABFz6dOEAI4A6gKxeW/lod1vzP9qhjUebYm4LCL9x8+dzLMw43vOJ2JowG6QuX4fOiYkmFsJyxWiWRrdLNm00/S3Ec5CYdOSb2u7GGhcWJi9z5aNMbmANffOY146X68/1QAIeZX5flCuiOKto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877105; c=relaxed/simple;
-	bh=nJEi+44Kl00egxr4MOuf5gD8kjtxNI9rT45cClH64OY=;
+	s=arc-20240116; t=1748875533; c=relaxed/simple;
+	bh=Vpf2G4rdXMqpVRgW/MRfgUt37wX2xTpxXF305fNLVGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sztu/1nb+lWLo0zBQj7338UMPWVZhndPfSIlrJguas7+i/6dY1DE+jp7v7Fbst1NIJpCHObOcZhw7n8f90q7TkVdImNif+grRoXnSwPLX8Gr/E8ArbVd6XfBNTwnB1KpxzG5eCzUhCgpB2LamlEnhs1qJWJABYNQ7CnYucVd/MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgOAgFda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A888CC4CEF0;
-	Mon,  2 Jun 2025 15:11:44 +0000 (UTC)
+	 MIME-Version; b=VYEu10oLcbghWMrt04YszLvnPVktKxr1fviBPPwo8ZC71+TDrv5sQkYDoCvN24wXgECd/jz8sWC+srjg0QwKbJhEr6dwvDozw7yvQmIeryrU6pLtxounDA8LhJA6QR/68VLrqs4LPBrYEO9mUcJzqfPnvA9vIFLj1syU78SVHvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjvF3YKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D02C4CEEB;
+	Mon,  2 Jun 2025 14:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877105;
-	bh=nJEi+44Kl00egxr4MOuf5gD8kjtxNI9rT45cClH64OY=;
+	s=korg; t=1748875533;
+	bh=Vpf2G4rdXMqpVRgW/MRfgUt37wX2xTpxXF305fNLVGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OgOAgFdazf1FODD4QqDAfXwJSsdnIYx34+xPDCNvlr9NU74HyoQACwTxHcUzDka/B
-	 c9iyyamchWKhG2VeaRWLUg8n8xKQToLqTooB57CH0ONfx8yBgo6v7x9hzETC0kVYiQ
-	 O9hk7+edJKgi/DT//mfWAqDtHxpgM2NQgPVXGolU=
+	b=kjvF3YKHvGDfaKvsh6Cy8VvBOZfdbWpqS6xbm0fC39k6+DCyZAxD8n0VfLkMGJ2qh
+	 qr2+onpqWoyNzdb7jXXndUXDda8/1B2kzdZvIa7K/fyIX+eRVTNWs3Gx6UyOLdcPeY
+	 0DA96+qvKGIEIrcAFbAazM8Bkhs0/zURS7BbxoG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balbir Singh <balbirs@nvidia.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1 143/325] x86/kaslr: Reduce KASLR entropy on most x86 systems
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 134/270] i2c: qup: Vote for interconnect bandwidth to DRAM
 Date: Mon,  2 Jun 2025 15:46:59 +0200
-Message-ID: <20250602134325.624253617@linuxfoundation.org>
+Message-ID: <20250602134312.702521118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balbir Singh <balbirs@nvidia.com>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit 7ffb791423c7c518269a9aad35039ef824a40adb ]
+[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
 
-When CONFIG_PCI_P2PDMA=y (which is basically enabled on all
-large x86 distros), it maps the PFN's via a ZONE_DEVICE
-mapping using devm_memremap_pages(). The mapped virtual
-address range corresponds to the pci_resource_start()
-of the BAR address and size corresponding to the BAR length.
+When the I2C QUP controller is used together with a DMA engine it needs
+to vote for the interconnect path to the DRAM. Otherwise it may be
+unable to access the memory quickly enough.
 
-When KASLR is enabled, the direct map range of the kernel is
-reduced to the size of physical memory plus additional padding.
-If the BAR address is beyond this limit, PCI peer to peer DMA
-mappings fail.
+The requested peak bandwidth is dependent on the I2C core clock.
 
-Fix this by not shrinking the size of the direct map when
-CONFIG_PCI_P2PDMA=y.
+To avoid sending votes too often the bandwidth is always requested when
+a DMA transfer starts, but dropped only on runtime suspend. Runtime
+suspend should only happen if no transfer is active. After resumption we
+can defer the next vote until the first DMA transfer actually happens.
 
-This reduces the total available entropy, but it's better than
-the current work around of having to disable KASLR completely.
+The implementation is largely identical to the one introduced for
+spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
+bandwidth to DRAM") since both drivers represent the same hardware
+block.
 
-[ mingo: Clarified the changelog to point out the broad impact ... ]
-
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com> # drivers/pci/Kconfig
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/lkml/20250206023201.1481957-1-balbirs@nvidia.com/
-Link: https://lore.kernel.org/r/20250206234234.1912585-1-balbirs@nvidia.com
---
- arch/x86/mm/kaslr.c | 10 ++++++++--
- drivers/pci/Kconfig |  6 ++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/kaslr.c | 10 ++++++++--
- drivers/pci/Kconfig |  6 ++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
-index 230f1dee4f095..e0b0ec0f82457 100644
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -109,8 +109,14 @@ void __init kernel_randomize_memory(void)
- 	memory_tb = DIV_ROUND_UP(max_pfn << PAGE_SHIFT, 1UL << TB_SHIFT) +
- 		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 576c12670bd88..8fd51de64d96b 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -14,6 +14,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -150,6 +151,8 @@
+ /* TAG length for DATA READ in RX FIFO  */
+ #define READ_RX_TAGS_LEN		2
  
--	/* Adapt physical memory region size based on available memory */
--	if (memory_tb < kaslr_regions[0].size_tb)
-+	/*
-+	 * Adapt physical memory region size based on available memory,
-+	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
-+	 * device BAR space assuming the direct map space is large enough
-+	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
-+	 * to the physical BAR address.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
- 		kaslr_regions[0].size_tb = memory_tb;
++#define QUP_BUS_WIDTH			8
++
+ static unsigned int scl_freq;
+ module_param_named(scl_freq, scl_freq, uint, 0444);
+ MODULE_PARM_DESC(scl_freq, "SCL frequency override");
+@@ -227,6 +230,7 @@ struct qup_i2c_dev {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct clk		*pclk;
++	struct icc_path		*icc_path;
+ 	struct i2c_adapter	adap;
+ 
+ 	int			clk_ctl;
+@@ -255,6 +259,10 @@ struct qup_i2c_dev {
+ 	/* To configure when bus is in run state */
+ 	u32			config_run;
+ 
++	/* bandwidth votes */
++	u32			src_clk_freq;
++	u32			cur_bw_clk_freq;
++
+ 	/* dma parameters */
+ 	bool			is_dma;
+ 	/* To check if the current transfer is using DMA */
+@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 	return ret;
+ }
+ 
++static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
++{
++	u32 needed_peak_bw;
++	int ret;
++
++	if (qup->cur_bw_clk_freq == clk_freq)
++		return 0;
++
++	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
++	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
++	if (ret)
++		return ret;
++
++	qup->cur_bw_clk_freq = clk_freq;
++	return 0;
++}
++
+ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ {
+ 	struct qup_i2c_block *blk = &qup->blk;
+@@ -840,6 +865,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
+ 	int ret = 0;
+ 	int idx = 0;
+ 
++	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
++	if (ret)
++		return ret;
++
+ 	enable_irq(qup->irq);
+ 	ret = qup_i2c_req_dma(qup);
+ 
+@@ -1645,6 +1674,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 	config = readl(qup->base + QUP_CONFIG);
+ 	config |= QUP_CLOCK_AUTO_GATE;
+ 	writel(config, qup->base + QUP_CONFIG);
++	qup_i2c_vote_bw(qup, 0);
+ 	clk_disable_unprepare(qup->pclk);
+ }
+ 
+@@ -1745,6 +1775,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 			goto fail_dma;
+ 		}
+ 		qup->is_dma = true;
++
++		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
++		if (IS_ERR(qup->icc_path))
++			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
++					     "failed to get interconnect path\n");
+ 	}
+ 
+ nodma:
+@@ -1793,6 +1828,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup->clk);
+ 	}
++	qup->src_clk_freq = src_clk_freq;
  
  	/*
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index 55c028af4bd94..c4f9ac5c00c12 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -184,6 +184,12 @@ config PCI_P2PDMA
- 	  P2P DMA transactions must be between devices behind the same root
- 	  port.
- 
-+	  Enabling this option will reduce the entropy of x86 KASLR memory
-+	  regions. For example - on a 46 bit system, the entropy goes down
-+	  from 16 bits to 15 bits. The actual reduction in entropy depends
-+	  on the physical address bits, on processor features, kernel config
-+	  (5 level page table) and physical memory present on the system.
-+
- 	  If unsure, say N.
- 
- config PCI_LABEL
+ 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
 2.39.5
 
