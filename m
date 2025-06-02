@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A52EACAFE7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08E9ACAF78
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C0D1BA2F23
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AF651BA2386
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B0C20F07C;
-	Mon,  2 Jun 2025 13:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E84221723;
+	Mon,  2 Jun 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOc8XU20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeOJ+JYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AE61401B;
-	Mon,  2 Jun 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9460022156B;
+	Mon,  2 Jun 2025 13:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872644; cv=none; b=rixu+shZn6FNN/vwg+7oEujA52Qh+smFHN+XPpQgidwz/qdUGdJQtLYAqngzQZt4Q6t510XP1naoMNtM0h7RME4wuRgSwJNELP6xpttalPfFxlczLlKvZb+shfyib4qJFLEfwT6YiI5zH278flDAZFbBtEjlg9qgCs3b9AJDl50=
+	t=1748872111; cv=none; b=A/pz3als+CaUIDv8CSZ/l0d04Wu/glqfydlbV1QMAYCuephZDQz0eCAGbl7B2mOzRI7dGeLhBUyk3Num8ZMyk+3JSuEg/6FYf1dSeLW0jtNF3IPSK5RM4r2XsVnvyuLcR8WDkGulNM97PmNDTMgncLHonIl2wxOTd5FVGSZi0aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872644; c=relaxed/simple;
-	bh=b0lE0hAqx0M6AyjGe04PlGPwpCnHIyXXHwhQVvMEcyQ=;
+	s=arc-20240116; t=1748872111; c=relaxed/simple;
+	bh=E7bWldQHf4sGX8xPYKC5m1JJcS0MvS034D9FYhtJAgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thpuAVTx7OJ9rKsCs01lQrMzRU0NX2Q5YW2Z43SlL1IdbFLoo9SAQ5a2fSZMWPYXbHMqKPs2qYF6wThOZQGswnGglSC0F/thZItb8xAyXkaogdlJDytF1B63NhMAVgBznAraQ7zaZGFyfqNVYkbat6I1tx6AUUCK2fHcXdsPJwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOc8XU20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569B8C4CEEB;
-	Mon,  2 Jun 2025 13:57:23 +0000 (UTC)
+	 MIME-Version; b=dwaW2zUqKwSy+bl7AAXkIH4+RYNaEHYBOFzpyp2qoNOXUfu0YEgbDDDUC07x5gvaGzeRzEGZuuLooC7KXbdR7r+LHDF7klDDftjfErU+L1aC1hBMGXmnabmM3VcAHCH0HAZ++9JLeEmqoGH4TysadkVAWpT9BPg5yKgxojuJYOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeOJ+JYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2048C4CEEB;
+	Mon,  2 Jun 2025 13:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872643;
-	bh=b0lE0hAqx0M6AyjGe04PlGPwpCnHIyXXHwhQVvMEcyQ=;
+	s=korg; t=1748872111;
+	bh=E7bWldQHf4sGX8xPYKC5m1JJcS0MvS034D9FYhtJAgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IOc8XU20RjowDBcpBWEVgxks6ctmVwF7k1nmTIwynzN0EpkYd9gcqiL4pPINmdmwb
-	 rB0RGWCid5zrbuflJRwEj915w/t62d6hWeZzW07HiBAf4cO+MnDqzO6gTHHfYNswLV
-	 qEzqXkRHpnK4vfQ5NlnUb6fgHMVn4AXjbL3FTUe0=
+	b=UeOJ+JYFv6KjTY8ZBOoD4Az+7g6W6lbbk1CwiKTrcqboM1HnkW38uJ8zLJup4g4BQ
+	 UXLKcJzZypwBQoW9Mvldv2emVegYqSoW4woloAcOriarQaADDnO1tMvvlx8sahjb2c
+	 SUSB94UT04hzbp1puJ8PwICopEumrqx7lmQ7hk54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 26/73] arm64: dts: qcom: x1e80100: Fix PCIe 3rd controller DBI size
-Date: Mon,  2 Jun 2025 15:47:12 +0200
-Message-ID: <20250602134242.729133050@linuxfoundation.org>
+Subject: [PATCH 6.15 21/49] arm64: dts: qcom: x1e80100-qcp: mark l12b and l15b always-on
+Date: Mon,  2 Jun 2025 15:47:13 +0200
+Message-ID: <20250602134238.776348770@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 181faec4cc9d90dad0ec7f7c8124269c0ba2e107 upstream.
+commit ff6ba96378367133b66587bd3ee9f068a39ff3a9 upstream.
 
-According to documentation, the DBI range size is 0xf20. So fix it.
+The l12b and l15b supplies are used by components that are not (fully)
+described (and some never will be) and must never be disabled.
 
-Cc: stable@vger.kernel.org # 6.14
-Fixes: f8af195beeb0 ("arm64: dts: qcom: x1e80100: Add support for PCIe3 on x1e80100")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Mark the regulators as always-on to prevent them from being disabled,
+for example, when consumers probe defer or suspend.
+
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Cc: stable@vger.kernel.org	# 6.8
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250422-x1e80100-dts-fix-pcie3-dbi-size-v1-1-c197701fd7e4@linaro.org
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250314145440.11371-8-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index c04a2615ca77..06175b33bd92 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -3126,7 +3126,7 @@ pcie3: pcie@1bd0000 {
- 			device_type = "pci";
- 			compatible = "qcom,pcie-x1e80100";
- 			reg = <0x0 0x01bd0000 0x0 0x3000>,
--			      <0x0 0x78000000 0x0 0xf1d>,
-+			      <0x0 0x78000000 0x0 0xf20>,
- 			      <0x0 0x78000f40 0x0 0xa8>,
- 			      <0x0 0x78001000 0x0 0x1000>,
- 			      <0x0 0x78100000 0x0 0x100000>,
--- 
-2.49.0
-
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -437,6 +437,7 @@
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+ 
+ 		vreg_l13b_3p0: ldo13 {
+@@ -458,6 +459,7 @@
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-always-on;
+ 		};
+ 
+ 		vreg_l16b_2p9: ldo16 {
 
 
 
