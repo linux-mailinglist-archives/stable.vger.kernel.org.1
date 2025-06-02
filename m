@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70073ACB2FB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CCDACB523
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE731947266
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FB8F1BA2DF4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E6623BCFF;
-	Mon,  2 Jun 2025 14:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B5C221FDD;
+	Mon,  2 Jun 2025 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="httUQ4dx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIiYsB9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BF31C5D72;
-	Mon,  2 Jun 2025 14:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135022C327E;
+	Mon,  2 Jun 2025 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874136; cv=none; b=SkLNYOu08Wcu08YSAN2ne4TUvpON5SP+reoMHljJ+YPRuH4weLss8tO4WlQWdhGWHSGGxWS9LoRA+TqwJfJF0p/3Pm6SObUBQieN2lSDQmqcCsKXd09y3tI6gk15ZYjvYCsuTH7xEG6YC/I8VP3DeKym+zpwZ1H9QEmfavzxDqE=
+	t=1748875387; cv=none; b=X9Ah7u1iMZ340+mpFqVtu/teXlveEz3JtQi3yM67ITj8ir+l7+bbMgPkesHuROWVIbC144g5hQRrcNozuOAfI+pzfH/DCke4asTofC5R8GpxugOVqIjn5vBtUzmv36UY2uMNlC5ECGq85GZJ6D0Blrwl0CXBT0O1fpJ54iZCkRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874136; c=relaxed/simple;
-	bh=EPzxl7YrD01h2PVU0wRu2i1rTEwsGa/0o8Ens1cwSKg=;
+	s=arc-20240116; t=1748875387; c=relaxed/simple;
+	bh=+ztcrusHTzcpMqSz/dj6WhhE84nm0RQV+DUh3gBIBnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4qvho32wWyhFQpiwu+UrIAZ5xktixqlepqTtTUQEpwCeEcDGTptt0XCleS6Kzx63CsrgIOHuXWmCD4k8RE8Iwvqm51mO9Mxxv+B31XQr8qR5TpnoGi840BmJOkOGtIafBlwyZ5UhmZfuD2c9NHh8Wxhpz7g4MOW9lDw3aOBfms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=httUQ4dx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2344C4CEEB;
-	Mon,  2 Jun 2025 14:22:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QbVtj1V0tyfmuMvWD90jNxxNIzCTWPupJL00LCh5ls3hXDawu1PKE2tHCXexdqAGivOW7zXnF3YwSty1t6sx5lIhV1V61HsBuirzJrmIhkH78DMFtTVIzZY8+BO68nIF0vl3WHMorvmW9IlJcTLI4BNv4KY/WCCFtfC4glg8ceo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIiYsB9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F19C4CEEB;
+	Mon,  2 Jun 2025 14:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874136;
-	bh=EPzxl7YrD01h2PVU0wRu2i1rTEwsGa/0o8Ens1cwSKg=;
+	s=korg; t=1748875386;
+	bh=+ztcrusHTzcpMqSz/dj6WhhE84nm0RQV+DUh3gBIBnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=httUQ4dxr/nutxMEyIbca+HiwumFLoWowAYPLWap0His246frRhW3c4Q3YvWAtl/A
-	 4edG4ejWHT7h7/JihOfXZ8kl5wNPpdExfYcSmA0Gcc4Sb6LybpAGeJ3PZQgXE3YtUa
-	 GOpTLNYFcg6sCTnQvucBP9NmpTJ46FB7yiejxlsM=
+	b=NIiYsB9pCrqFRft2yiDSEHC8HDiPVQjcpwkQZpajxR/PV+3ELUFEQHG/pqFeQ7Git
+	 ZuxMckHNOacOUiqMAGgFtE0XzoIY6RiwLRBIBRLiozdHHNCUe2y6G9ObCoLPV5yZ3h
+	 zL1GTZeUByQyg1IMOqNE6EaFxD51uBMAVDACNUhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Joy Zou <joy.zou@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	gao xu <gaoxu2@honor.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 339/444] dmaengine: fsl-edma: Fix return code for unhandled interrupts
+Subject: [PATCH 5.10 118/270] cgroup: Fix compilation issue due to cgroup_mutex not being exported
 Date: Mon,  2 Jun 2025 15:46:43 +0200
-Message-ID: <20250602134354.685967670@linuxfoundation.org>
+Message-ID: <20250602134312.050008493@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: gaoxu <gaoxu2@honor.com>
 
-[ Upstream commit 5e27af0514e2249a9ccc9a762abd3b74e03a1f90 ]
+[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
 
-For fsl,imx93-edma4 two DMA channels share the same interrupt.
-So in case fsl_edma3_tx_handler is called for the "wrong"
-channel, the return code must be IRQ_NONE. This signalize that
-the interrupt wasn't handled.
+When adding folio_memcg function call in the zram module for
+Android16-6.12, the following error occurs during compilation:
+ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
 
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Joy Zou <joy.zou@nxp.com>
-Link: https://lore.kernel.org/r/20250424114829.9055-1-wahrenst@gmx.net
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
+within folio_memcg. The export setting for cgroup_mutex is controlled by
+the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
+CONFIG_PROVE_RCU is not, this compilation error will occur.
+
+To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
+ensure cgroup_mutex is properly exported when needed.
+
+Signed-off-by: gao xu <gaoxu2@honor.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-main.c | 2 +-
+ kernel/cgroup/cgroup.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index cc9923ab686dc..eccbcf67951fb 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -58,7 +58,7 @@ static irqreturn_t fsl_edma3_tx_handler(int irq, void *dev_id)
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index efeb0b7427501..37d7a99be8f01 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -81,7 +81,7 @@
+ DEFINE_MUTEX(cgroup_mutex);
+ DEFINE_SPINLOCK(css_set_lock);
  
- 	intr = edma_readl_chreg(fsl_chan, ch_int);
- 	if (!intr)
--		return IRQ_HANDLED;
-+		return IRQ_NONE;
- 
- 	edma_writel_chreg(fsl_chan, 1, ch_int);
- 
+-#ifdef CONFIG_PROVE_RCU
++#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
+ EXPORT_SYMBOL_GPL(cgroup_mutex);
+ EXPORT_SYMBOL_GPL(css_set_lock);
+ #endif
 -- 
 2.39.5
 
