@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C36ACB710
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBFCACB082
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE741948476
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7631BA63B7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C24A226D1D;
-	Mon,  2 Jun 2025 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB6B223DD4;
+	Mon,  2 Jun 2025 14:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcokzKWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRkgV0Kj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFD3221F1E;
-	Mon,  2 Jun 2025 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F58E221FC6;
+	Mon,  2 Jun 2025 14:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877150; cv=none; b=m2uUQvRKfupG4z2SfXNInufnDOYxJ+kx11wy1nPGtQHsqH2lQSpp1SiXQqs1MbyNIKGC0ycsZRU9Q38EIn8JYb0SwNMYzEYZkhkgGJKmkG+NFM5Idzb/yqNFyJKMHj2g+i/PbVYJLLgaCAWc6+b8JLWcUUn2c6g+uDzoCuZwi6U=
+	t=1748872941; cv=none; b=sxJKoIweKuOrR+2doNXfCXN7MSt2Lqh/qOPIn1r5DT2/I8AqaTQk7+NSjldsFiYULq16OXlInFoTf5BjfIlMazxIp6cqONWsFlcScdRYHbcS/14OGOvFzv4nfy/tw2qMqu59HUx/oQ2v4aBP5Y/L7PWp8dmb7Q4C3Zu136NV5Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877150; c=relaxed/simple;
-	bh=Hq+Q3GGhvaELezrUfHR5U97/JGyGOIMV8DqeXe0Yk/g=;
+	s=arc-20240116; t=1748872941; c=relaxed/simple;
+	bh=ac59jFzxmgj2lAdPa5GZZPXcIlgkHsAtzImKR2OSiqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHwgYe96oIzwP+oUt4oS4DkUxyJk5SHfm5jvt3sEBJaxPiL271sRCdDQdB+XfChTEHNc8ddnPNuE5sH0XMjagjcuF/vH5xKLROKkXZy7PoV5IeVmF1gP0rWAGsxKimE8MBRYCh9pAuznG1oBj7PxCMwUg+PVlwq3R6Os5R7ZLvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcokzKWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5035BC4CEEB;
-	Mon,  2 Jun 2025 15:12:29 +0000 (UTC)
+	 MIME-Version; b=a0qaXHT4iWDh+qYd3X0QGTKKyeTXn2Fu6WFuN/t1Ax3XUCNBKA580Mj2UIpWYeBqWsITId8klecj2FmUWBmEueaGwn0k7oOkdQu+aBrmjQudrJBHTadG3EVE6cGtodlxrt0USP/kRJQXPH29tIZNWsB95UT/LLID50vt0ZiPx5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRkgV0Kj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D3FC4CEEB;
+	Mon,  2 Jun 2025 14:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877149;
-	bh=Hq+Q3GGhvaELezrUfHR5U97/JGyGOIMV8DqeXe0Yk/g=;
+	s=korg; t=1748872941;
+	bh=ac59jFzxmgj2lAdPa5GZZPXcIlgkHsAtzImKR2OSiqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcokzKWajkxQT9HSsECGB5avI5S3eOppRFTN2lwOeKcoL6kpDRk2fBLymzWXaQp1D
-	 rggLtVVeBJWVsMCAErwKsrI0/2x1d11vPGVXQSaYILDtuvfPf7x5+Feh6CTSNlTtpX
-	 0lJRXz5M3VbOcNZViY8kgGNC5Sy641udcif21+go=
+	b=GRkgV0KjybtJ74mEI3TKjjlaDQRAQdxHuEcS4Mw1CLs9wDMBWeK/Y8plyiCU9gyf9
+	 LbTD7MWxmSdBDC1gUtb9mFjA8W4G3Hk7mBaqDpCk3Uw+HbPKh9GY++mKlTdlOVR8Hg
+	 /MMrQIXo9Bnnc+Y2u0M3Ozo1eriUcRaV70XPFD3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 188/325] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 27/55] arm64: dts: ti: k3-j722s-main: Disable "serdes_wiz0" and "serdes_wiz1"
 Date: Mon,  2 Jun 2025 15:47:44 +0200
-Message-ID: <20250602134327.449578695@linuxfoundation.org>
+Message-ID: <20250602134239.346283159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
+commit 320d8a84f6f045dc876d4c2983f9024c7ac9d6df upstream.
 
-perf mem report aborts as below sometimes (during some corner
-case) in powerpc:
+Since "serdes0" and "serdes1" which are the sub-nodes of "serdes_wiz0"
+and "serdes_wiz1" respectively, have been disabled in the SoC file already,
+and, given that these sub-nodes will only be enabled in a board file if the
+board utilizes any of the SERDES instances and the peripherals bound to
+them, we end up in a situation where the board file doesn't explicitly
+disable "serdes_wiz0" and "serdes_wiz1". As a consequence of this, the
+following errors show up when booting Linux:
 
-   # ./perf mem report 1>out
-   *** stack smashing detected ***: terminated
-   Aborted (core dumped)
+  wiz bus@f0000:phy@f000000: probe with driver wiz failed with error -12
+  ...
+  wiz bus@f0000:phy@f010000: probe with driver wiz failed with error -12
 
-The backtrace is as below:
-   __pthread_kill_implementation ()
-   raise ()
-   abort ()
-   __libc_message
-   __fortify_fail
-   __stack_chk_fail
-   hist_entry.lvl_snprintf
-   __sort__hpp_entry
-   __hist_entry__snprintf
-   hists.fprintf
-   cmd_report
-   cmd_mem
+To not only fix the above, but also, in order to follow the convention of
+disabling device-tree nodes in the SoC file and enabling them in the board
+files for those boards which require them, disable "serdes_wiz0" and
+"serdes_wiz1" device-tree nodes.
 
-Snippet of code which triggers the issue
-from tools/perf/util/sort.c
-
-   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
-                                    size_t size, unsigned int width)
-   {
-        char out[64];
-
-        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
-        return repsep_snprintf(bf, size, "%-*s", width, out);
-   }
-
-The value of "out" is filled from perf_mem_data_src value.
-Debugging this further showed that for some corner cases, the
-value of "data_src" was pointing to wrong value. This resulted
-in bigger size of string and causing stack check fail.
-
-The perf mem data source values are captured in the sample via
-isa207_get_mem_data_src function. The initial check is to fetch
-the type of sampled instruction. If the type of instruction is
-not valid (not a load/store instruction), the function returns.
-
-Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
-data_src field is not initialized by the perf_sample_data_init()
-function. If the PMU driver doesn't set the data_src value to zero if
-type is not valid, this will result in uninitailised value for data_src.
-The uninitailised value of data_src resulted in stack check fail
-followed by abort for "perf mem report".
-
-When requesting for data source information in the sample, the
-instruction type is expected to be load or store instruction.
-In ISA v3.0, due to hardware limitation, there are corner cases
-where the instruction type other than load or store is observed.
-In ISA v3.0 and before values "0" and "7" are considered reserved.
-In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-Drop the sample if instruction type has reserved values for this
-field with a ISA version check. Initialize data_src to zero in
-isa207_get_mem_data_src if the instruction type is not load/store.
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 628e0a0118e6 ("arm64: dts: ti: k3-j722s-main: Add SERDES and PCIe support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250417123246.2733923-3-s-vadapalli@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
- arch/powerpc/perf/isa207-common.c |  4 +++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j722s-main.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index e3c31c771ce91..470d7715ecf4b 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2229,6 +2229,10 @@ static struct pmu power_pmu = {
- #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
- 				PERF_SAMPLE_PHYS_ADDR |		\
- 				PERF_SAMPLE_DATA_PAGE_SIZE)
-+
-+#define SIER_TYPE_SHIFT	15
-+#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
-+
- /*
-  * A counter has overflowed; update its count and record
-  * things if requested.  Note that interrupts are hard-disabled
-@@ -2297,6 +2301,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 	    is_kernel_addr(mfspr(SPRN_SIAR)))
- 		record = 0;
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+index 6850f50530f1..beda9e40e931 100644
+--- a/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-j722s-main.dtsi
+@@ -32,6 +32,8 @@ serdes_wiz0: phy@f000000 {
+ 		assigned-clocks = <&k3_clks 279 1>;
+ 		assigned-clock-parents = <&k3_clks 279 5>;
  
-+	/*
-+	 * SIER[46-48] presents instruction type of the sampled instruction.
-+	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
-+	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-+	 * Drop the sample if "type" has reserved values for this field with a
-+	 * ISA version check.
-+	 */
-+	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
-+			ppmu->get_mem_data_src) {
-+		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
-+		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
-+			record = 0;
-+			atomic64_inc(&event->lost_samples);
-+		}
-+	}
++		status = "disabled";
 +
- 	/*
- 	 * Finally record data if requested.
- 	 */
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 56301b2bc8ae8..031a2b63c171d 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+ 		serdes0: serdes@f000000 {
+ 			compatible = "ti,j721e-serdes-10g";
+ 			reg = <0x0f000000 0x00010000>;
+@@ -70,6 +72,8 @@ serdes_wiz1: phy@f010000 {
+ 		assigned-clocks = <&k3_clks 280 1>;
+ 		assigned-clock-parents = <&k3_clks 280 5>;
  
- 	sier = mfspr(SPRN_SIER);
- 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
--	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
-+	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
-+		dsrc->val = 0;
- 		return;
-+	}
- 
- 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
- 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
++		status = "disabled";
++
+ 		serdes1: serdes@f010000 {
+ 			compatible = "ti,j721e-serdes-10g";
+ 			reg = <0x0f010000 0x00010000>;
 -- 
-2.39.5
+2.49.0
 
 
 
