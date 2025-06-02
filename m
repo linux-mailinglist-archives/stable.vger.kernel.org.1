@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D440ACB426
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDF0ACB7C0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CE471881D08
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B864A4BA9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B2022D785;
-	Mon,  2 Jun 2025 14:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D92122FF58;
+	Mon,  2 Jun 2025 15:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OL0RXiR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gVXoN2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8DB22259A;
-	Mon,  2 Jun 2025 14:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A371F4165;
+	Mon,  2 Jun 2025 15:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874856; cv=none; b=beUGFVOHNZLCyZEjAuiWgEGpXgQfT0m7JsQ+4ymUCRJxZI3EDnzHzTx8gywRia1GWkZk5QDosujmuz31DSbpVB6UU3c+B6U3DTOLZSG68LS+Z8WZpP4GP+assrFFpoCMIRC5qWzWJiX8UBkNiF/B8Kye/qifOaZtC+bTOw41hEY=
+	t=1748877236; cv=none; b=fA0y9mknaOgr75VjfXeoEeOGtaQ1THOU41m75R7oCXp3lyWlFUmo2orybyHaSfyKr256UGUWLnCwzJbuUg/dl/PvNnDunfbqP8rS8D2o9MpufE7Ubfru6CmMvPbKxdf1QW7EeaPenJdNnUndE3YHDukbsaZUdiYZWZqXElSzjwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874856; c=relaxed/simple;
-	bh=9M1yZj25d+hnKsomFC0VyrQvB+AOZtCcRrFrovqZvYI=;
+	s=arc-20240116; t=1748877236; c=relaxed/simple;
+	bh=c2zGEQkI+I9sRXmwZguQFgJO7GiZQGo8XuXH2+T5QRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzjpOa8VpUHEmOutO3KFifYJE4ga7TOkyCHfKvddJiKw49rs2d9/zMdFokT9gSsUtZbWiOmc9FCnbZmTlIY19A4n/LvXGAUYK6gNuPnLPIRAfxjjHrSvxd5wWNbG/7nNWa+O/1+BERpUSHGUe+yykdWtc8EKo6spx3ivid2BB44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OL0RXiR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6979BC4CEEB;
-	Mon,  2 Jun 2025 14:34:15 +0000 (UTC)
+	 MIME-Version; b=Ypbm/JMnSCH+RLUNKkQTkNRj818tE2g9lzbNBX/gvP1ZEH+/0zMZZeFKNr9HYF2Em61cJG/kPbZtVd4SuAnMmgz+fZ/DNmfCNFGe7+vFB5C6QviU7kjXaOqyAQ6wSeamglvlmxoQZ1BmyyElrAGsNsoUDZ/0nk8NtjaupwB2kLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gVXoN2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356B9C4CEEB;
+	Mon,  2 Jun 2025 15:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874855;
-	bh=9M1yZj25d+hnKsomFC0VyrQvB+AOZtCcRrFrovqZvYI=;
+	s=korg; t=1748877234;
+	bh=c2zGEQkI+I9sRXmwZguQFgJO7GiZQGo8XuXH2+T5QRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OL0RXiR6nhnvA0zFRt3jPolvdrTEcre0HYuKDhEj21NtKGGtn+BapbzRY55ii/JiK
-	 asDtF/Tb5KHMNxOX8KYvHlGZPKaDjrcfUVaI4ckW5JxFZlqhCPbWPS1JpzSCAETynu
-	 27LHxripwBwwWho8jb6AZjcA03j1RYJ7VgtpvNZ8=
+	b=0gVXoN2yLvfhJSTeYX6+0IXQZgztNu77Y8iIymXuSgE1aW1S1sFY8KDfTDIwZu9M0
+	 ZIgQJqWgw8vjvOBNaws0QxwU0H6eX7QGMLGWa1nP+Z6AVBEZ1/xEONc6qC2E9y7SzW
+	 V7uReT8fJ2ehGLGV+LpArL0CK0cdTAwDAkY9gdb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 157/204] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Subject: [PATCH 6.1 214/325] spi: zynqmp-gqspi: Always acknowledge interrupts
 Date: Mon,  2 Jun 2025 15:48:10 +0200
-Message-ID: <20250602134301.827609140@linuxfoundation.org>
+Message-ID: <20250602134328.492805435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
+[ Upstream commit 89785306453ce6d949e783f6936821a0b7649ee2 ]
 
-After a port swap between separate fabrics, there may be multiple nodes in
-the vport's fc_nodes list with the same fabric well known address.
-Duplication is temporary and eventually resolves itself after dev_loss_tmo
-expires, but nameserver queries may still occur before dev_loss_tmo.  This
-possibly results in returning stale fabric ndlp objects.  Fix by adding an
-nlp_state check to ensure the ndlp search routine returns the correct newer
-allocated ndlp fabric object.
+RXEMPTY can cause an IRQ, even though we may not do anything about it
+(such as if we are waiting for more received data). We must still handle
+these IRQs because we can tell they were caused by the device.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250116224130.2684544-6-sean.anderson@linux.dev
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 0abce779fbb13..3238222b89fa8 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5357,6 +5357,7 @@ static struct lpfc_nodelist *
- __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index c89544ae5ed91..fde7c38103596 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -698,7 +698,6 @@ static void zynqmp_process_dma_irq(struct zynqmp_qspi *xqspi)
+ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
  {
- 	struct lpfc_nodelist *ndlp;
-+	struct lpfc_nodelist *np = NULL;
- 	uint32_t data1;
+ 	struct zynqmp_qspi *xqspi = (struct zynqmp_qspi *)dev_id;
+-	irqreturn_t ret = IRQ_NONE;
+ 	u32 status, mask, dma_status = 0;
  
- 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
-@@ -5371,14 +5372,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- 					 ndlp, ndlp->nlp_DID,
- 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
- 					 ndlp->active_rrqs_xri_bitmap);
--			return ndlp;
-+
-+			/* Check for new or potentially stale node */
-+			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
-+				return ndlp;
-+			np = ndlp;
- 		}
+ 	status = zynqmp_gqspi_read(xqspi, GQSPI_ISR_OFST);
+@@ -713,27 +712,24 @@ static irqreturn_t zynqmp_qspi_irq(int irq, void *dev_id)
+ 				   dma_status);
  	}
  
--	/* FIND node did <did> NOT FOUND */
--	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
--			 "0932 FIND node did x%x NOT FOUND.\n", did);
--	return NULL;
-+	if (!np)
-+		/* FIND node did <did> NOT FOUND */
-+		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
-+				 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	if (mask & GQSPI_ISR_TXNOT_FULL_MASK) {
++	if (!mask && !dma_status)
++		return IRQ_NONE;
 +
-+	return np;
++	if (mask & GQSPI_ISR_TXNOT_FULL_MASK)
+ 		zynqmp_qspi_filltxfifo(xqspi, GQSPI_TX_FIFO_FILL);
+-		ret = IRQ_HANDLED;
+-	}
+ 
+-	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK) {
++	if (dma_status & GQSPI_QSPIDMA_DST_I_STS_DONE_MASK)
+ 		zynqmp_process_dma_irq(xqspi);
+-		ret = IRQ_HANDLED;
+-	} else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
+-			(mask & GQSPI_IER_GENFIFOEMPTY_MASK)) {
++	else if (!(mask & GQSPI_IER_RXEMPTY_MASK) &&
++			(mask & GQSPI_IER_GENFIFOEMPTY_MASK))
+ 		zynqmp_qspi_readrxfifo(xqspi, GQSPI_RX_FIFO_FILL);
+-		ret = IRQ_HANDLED;
+-	}
+ 
+ 	if (xqspi->bytes_to_receive == 0 && xqspi->bytes_to_transfer == 0 &&
+ 	    ((status & GQSPI_IRQ_MASK) == GQSPI_IRQ_MASK)) {
+ 		zynqmp_gqspi_write(xqspi, GQSPI_IDR_OFST, GQSPI_ISR_IDR_MASK);
+ 		complete(&xqspi->data_completion);
+-		ret = IRQ_HANDLED;
+ 	}
+-	return ret;
++	return IRQ_HANDLED;
  }
  
- struct lpfc_nodelist *
+ /**
 -- 
 2.39.5
 
