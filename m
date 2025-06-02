@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-150027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E23AACB60A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5A9ACB435
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC0B51BC4A31
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12D84A42A4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF1922A1D4;
-	Mon,  2 Jun 2025 14:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1616E223DDF;
+	Mon,  2 Jun 2025 14:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSrfs5tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nOM3hjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD865224AF3;
-	Mon,  2 Jun 2025 14:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E752C3247;
+	Mon,  2 Jun 2025 14:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875802; cv=none; b=WVJYnpc1sv7QxR6nSWPGPZb2vue6CO0zDFit4RH/MAnc2FkjS4LUYSTsHnP2jksReIYn08wRDn6DTsovXD3NCLg8n/zwppyR+eqA6MeLrrEL4Vgh3xSzthzaBEHGU3vpPwL6+Ln7LTpKYW1SvsrH9MifKW6x3EEmLwWDZTi6VGI=
+	t=1748875000; cv=none; b=tanrUHub2OTShuyEBrlUuq00uPRmSpcH+9jzuBWMLBXPshmrRlhAcLqnMPLiKDTdGaBv9VVY8bffk/IPnJZ52VXc91HTpVUCZpoPaE41Pnz2dLbZsu7p4xz+KKSYSfSXcET9bMifP4AM6r+KPkgucWblJ/m0mjQCXwFfK6Y46js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875802; c=relaxed/simple;
-	bh=qkkeClFvKzOxWpID0VH6scpWU2LmHW4VG+pqH0PUf64=;
+	s=arc-20240116; t=1748875000; c=relaxed/simple;
+	bh=eSv8jQBNXbwEa9L6zxBKwBvP9sgCdYF++8fmo18B2Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1yCzMllOT9Fjh/qG8E/LZKfrqYuQL/fhqNXptOY6aXjy38hM6Z28XYqYOcTMTCRo6VzI1mvSnfUsdHJQvk/dxaNGYH+G1nPLYe/p/ozFRg25InMUsw0G6cEDLDx0bDT3DBq0XxKAVL9X502AaVx2iL6IsAlQ6g08XcXTl1jhZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSrfs5tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C6EC4CEF4;
-	Mon,  2 Jun 2025 14:50:02 +0000 (UTC)
+	 MIME-Version; b=gsK5MDtxqYoBJFguBOzlgtjA7XxPYILFzoFWifNFcXvAr2O7y8e5k3ajfVTAPBBgkHFM+aIPG0kK/riT+VjfNZXHla+uIzAjFCskJYx4OVI506n4N3qw+0shWw2SRD2Z50pfyAOmcGiC8lY3z4MU9VCOCY1/MRIei+Cbn9SSGZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nOM3hjv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EC8C4CEEB;
+	Mon,  2 Jun 2025 14:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875802;
-	bh=qkkeClFvKzOxWpID0VH6scpWU2LmHW4VG+pqH0PUf64=;
+	s=korg; t=1748875000;
+	bh=eSv8jQBNXbwEa9L6zxBKwBvP9sgCdYF++8fmo18B2Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSrfs5tj8Hufq6rCreW3ULvrAkrrUqJg8TSPdOksOUwGz6pKefdNX5pDmgUy8FroY
-	 PcCj8TLQv+Y5At6IPLocZ7BKNgWgs6Qe+39GTjr16EQ/tgKr1TxRdwWeHaZOMITl75
-	 9Z5bA25WCAlXpENwhpzDRnfr0UoP/d8Q9IrhH+YM=
+	b=0nOM3hjvWplva6Lc4mDYgkYpNdgXP+7CkJJHOM+wGjN3/bArdjMJZDplezacgl9gf
+	 Iupbv47HTHYatOUhgKYA6XY65xGcm5qLUXJUcBjXOQHmu0IxWHKlzcFpWV0/3SAEsR
+	 SDXdQH4U9QQdl+dz6HQq/nwcTWxfXQ6ZdlPWUWS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 248/270] mm/page_alloc.c: avoid infinite retries caused by cpuset race
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Gow <davidgow@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 200/204] um: let make clean properly clean underlying SUBARCH as well
 Date: Mon,  2 Jun 2025 15:48:53 +0200
-Message-ID: <20250602134317.471003108@linuxfoundation.org>
+Message-ID: <20250602134303.532454453@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,84 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
+[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
 
-__alloc_pages_slowpath has no change detection for ac->nodemask in the
-part of retry path, while cpuset can modify it in parallel.  For some
-processes that set mempolicy as MPOL_BIND, this results ac->nodemask
-changes, and then the should_reclaim_retry will judge based on the latest
-nodemask and jump to retry, while the get_page_from_freelist only
-traverses the zonelist from ac->preferred_zoneref, which selected by a
-expired nodemask and may cause infinite retries in some cases
+Building the kernel with O= is affected by stale in-tree build artifacts.
 
-cpu 64:
-__alloc_pages_slowpath {
-        /* ..... */
-retry:
-        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
-        if (alloc_flags & ALLOC_KSWAPD)
-                wake_all_kswapds(order, gfp_mask, ac);
-        /* cpu 1:
-        cpuset_write_resmask
-            update_nodemask
-                update_nodemasks_hier
-                    update_tasks_nodemask
-                        mpol_rebind_task
-                         mpol_rebind_policy
-                          mpol_rebind_nodemask
-		// mempolicy->nodes has been modified,
-		// which ac->nodemask point to
+So, if the source tree is not clean, Kbuild displays the following:
 
-        */
-        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
-        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-                                 did_some_progress > 0, &no_progress_loops))
-                goto retry;
-}
+  $ make ARCH=um O=build defconfig
+  make[1]: Entering directory '/.../linux/build'
+  ***
+  *** The source tree is not clean, please run 'make ARCH=um mrproper'
+  *** in /.../linux
+  ***
+  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
+  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
+  make[1]: Leaving directory '/.../linux/build'
+  make: *** [Makefile:248: __sub-make] Error 2
 
-Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
-this issue on a multi node server when the maximum memory pressure is
-reached and the swap is enabled
+Usually, running 'make mrproper' is sufficient for cleaning the source
+tree for out-of-tree builds.
 
-Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
-Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, building UML generates build artifacts not only in arch/um/,
+but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
+files remain under arch/x86/, Kbuild will reuse them instead of creating
+new ones under the specified build directory.
+
+This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
+
+Reported-by: Shuah Khan <skhan@linuxfoundation.org>
+Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/um/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4758,6 +4758,14 @@ restart:
- 	}
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 94cea8d46b222..daec900ed4631 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -154,5 +154,6 @@ MRPROPER_DIRS += arch/$(SUBARCH)/include/generated
+ archclean:
+ 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
+ 		-o -name '*.gcov' \) -type f -print | xargs rm -f
++	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
  
- retry:
-+	/*
-+	 * Deal with possible cpuset update races or zonelist updates to avoid
-+	 * infinite retries.
-+	 */
-+	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
-+	    check_retry_zonelist(zonelist_iter_cookie))
-+		goto restart;
-+
- 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
- 	if (alloc_flags & ALLOC_KSWAPD)
- 		wake_all_kswapds(order, gfp_mask, ac);
+ export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING OS DEV_NULL_PATH
+-- 
+2.39.5
+
 
 
 
