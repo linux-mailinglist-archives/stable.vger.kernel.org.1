@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-150377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6B4ACB815
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F038ACB4FD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCF04194720A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92544A5DAA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712FD22E00E;
-	Mon,  2 Jun 2025 15:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF1D222561;
+	Mon,  2 Jun 2025 14:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzZ+W+6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqPqw4lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C78B188907;
-	Mon,  2 Jun 2025 15:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF4819EEBD;
+	Mon,  2 Jun 2025 14:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876930; cv=none; b=laHjfrmhYjw3yrA0lJDlV4g2lkR2BHtCEuo/G5/2h+hTAy+JHpdhpv+8NUfXPTC4S0RDUcf/GWYeUAy1BP/3aNtGeNqA49UAILE5CM9c8KQY5iTe5X86rNKVj3FoTAilax9S8wFaZgTQ9NhZa/8c3oNcTyhWF7DyrOsoWPjxTyg=
+	t=1748875359; cv=none; b=g2nZsjPSiArZzRY/d49EZrCTs+tGVuixHfABF/2x1VKS9o+QY2CsAKoE/mOa8ka38YL5NW9jUhnUuY8dA4eY61ofHlUl749CudFD3Zs8IlzYQSDF8CnVmEMS+QdZ4b7I0zsxgJbOWtlNFoHy8Xv54y+plAiPfCy9/fa0752JI84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876930; c=relaxed/simple;
-	bh=1zEzaeN6JnXUnJg0KEJMqT2VemRf6cVccOMg5PuULNo=;
+	s=arc-20240116; t=1748875359; c=relaxed/simple;
+	bh=ZU9BbzxoHvY8IX8vk6Gk9I8FNr7uOuKTNPv22mnCSNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dnjn0FOhQGVqDF6P+G1hMEm4cC4/SJaV60p3A1YIW5d3B8eDh0ci04wPdv/gZY+ZfWl4qQusOkk+7mtTTURTRweQctD1SZdVBieEsdnJ0GAUbtWcwKkoTgAn+Ud4BhfGzwlbiP4jnIBrINzeZCV7+pSJNJBKmMeUtBkPi88Etw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzZ+W+6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3E0C4CEEB;
-	Mon,  2 Jun 2025 15:08:49 +0000 (UTC)
+	 MIME-Version; b=rX14FTmB4cXWT259r6ot0FmadMlDSEwOutmu7qgutWKt92n46tUwhBDydR06Z2a04rK+USZW/4DyfjApv1BbIW9wa8BJHa6y6SleBuwkduSE46FMBUmD5VaR2/fjTsfAFXMeXAtU3DJA1OFt4vj9Ig4yK7LPRZfoNUuADdiAd6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqPqw4lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0513AC4CEEB;
+	Mon,  2 Jun 2025 14:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876930;
-	bh=1zEzaeN6JnXUnJg0KEJMqT2VemRf6cVccOMg5PuULNo=;
+	s=korg; t=1748875358;
+	bh=ZU9BbzxoHvY8IX8vk6Gk9I8FNr7uOuKTNPv22mnCSNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzZ+W+6NUqk1pE0DgKBcXeuxtdbE8m0nC3ky2IXy21rj9w4LpBtVGMLuxLr2wBgVH
-	 QwZ/zeZNJL1kcN0VJrOQCpXVcV0TGujlPJhOa/LfHTS6anXHyYmdUBKAMTMBCoQ+q5
-	 +x12qGRXmT8gSmgMcsTDYwehxgLGw3X82wgSmAMU=
+	b=tqPqw4ljHp1WfzSK0+wzaFAno+nzzIzOQtdk1J0g4FB0kAAe7gMtjqqJIlUWWznur
+	 k/UF0iu1PbN2ZcET0Jb5L14/AKoqtGJki4u1iTo6xI0vdHdFMbXFVPxDRNxjOPIP3B
+	 clBzqbALNjF7tuhPDL5fcM88qROPpzV3wf/yKu5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/325] hwmon: (gpio-fan) Add missing mutex locks
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@inux.alibaba.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 110/270] selftests/mm: compaction_test: support platform with huge mount of memory
 Date: Mon,  2 Jun 2025 15:46:35 +0200
-Message-ID: <20250602134324.618391261@linuxfoundation.org>
+Message-ID: <20250602134311.731423742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Feng Tang <feng.tang@linux.alibaba.com>
 
-[ Upstream commit 9fee7d19bab635f89223cc40dfd2c8797fdc4988 ]
+commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
 
-set_fan_speed() is expected to be called with fan_data->lock being locked.
-Add locking for proper synchronization.
+When running mm selftest to verify mm patches, 'compaction_test' case
+failed on an x86 server with 1TB memory.  And the root cause is that it
+has too much free memory than what the test supports.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250210145934.761280-3-alexander.stein@ew.tq-group.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The test case tries to allocate 100000 huge pages, which is about 200 GB
+for that x86 server, and when it succeeds, it expects it's large than 1/3
+of 80% of the free memory in system.  This logic only works for platform
+with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
+alarm for others.
+
+Fix it by changing the fixed page number to self-adjustable number
+according to the real number of free memory.
+
+Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/gpio-fan.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vm/compaction_test.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
-index ba408942dbe73..f1926b9171e0c 100644
---- a/drivers/hwmon/gpio-fan.c
-+++ b/drivers/hwmon/gpio-fan.c
-@@ -392,7 +392,12 @@ static int gpio_fan_set_cur_state(struct thermal_cooling_device *cdev,
- 	if (state >= fan_data->num_speed)
- 		return -EINVAL;
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -89,6 +89,8 @@ int check_compaction(unsigned long mem_f
+ 	int compaction_index = 0;
+ 	char initial_nr_hugepages[20] = {0};
+ 	char nr_hugepages[20] = {0};
++	char target_nr_hugepages[24] = {0};
++	int slen;
  
-+	mutex_lock(&fan_data->lock);
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -118,11 +120,18 @@ int check_compaction(unsigned long mem_f
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+-	/* Request a large number of huge pages. The Kernel will allocate
+-	   as much as it can */
+-	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++	/*
++	 * Request huge pages for about half of the free memory. The Kernel
++	 * will allocate as much as it can, and we expect it will get at least 1/3
++	 */
++	nr_hugepages_ul = mem_free / hugepage_size / 2;
++	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
++		 "%lu", nr_hugepages_ul);
 +
- 	set_fan_speed(fan_data, state);
-+
-+	mutex_unlock(&fan_data->lock);
-+
- 	return 0;
- }
- 
-@@ -488,7 +493,11 @@ MODULE_DEVICE_TABLE(of, of_gpio_fan_match);
- 
- static void gpio_fan_stop(void *data)
- {
-+	struct gpio_fan_data *fan_data = data;
-+
-+	mutex_lock(&fan_data->lock);
- 	set_fan_speed(data, 0);
-+	mutex_unlock(&fan_data->lock);
- }
- 
- static int gpio_fan_probe(struct platform_device *pdev)
-@@ -561,7 +570,9 @@ static int gpio_fan_suspend(struct device *dev)
- 
- 	if (fan_data->gpios) {
- 		fan_data->resume_speed = fan_data->speed_index;
-+		mutex_lock(&fan_data->lock);
- 		set_fan_speed(fan_data, 0);
-+		mutex_unlock(&fan_data->lock);
++	slen = strlen(target_nr_hugepages);
++	if (write(fd, target_nr_hugepages, slen) != slen) {
++		ksft_test_result_fail("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
++			       nr_hugepages_ul, strerror(errno));
+ 		goto close_fd;
  	}
  
- 	return 0;
-@@ -571,8 +582,11 @@ static int gpio_fan_resume(struct device *dev)
- {
- 	struct gpio_fan_data *fan_data = dev_get_drvdata(dev);
- 
--	if (fan_data->gpios)
-+	if (fan_data->gpios) {
-+		mutex_lock(&fan_data->lock);
- 		set_fan_speed(fan_data, fan_data->resume_speed);
-+		mutex_unlock(&fan_data->lock);
-+	}
- 
- 	return 0;
- }
--- 
-2.39.5
-
 
 
 
