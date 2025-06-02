@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-150309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38203ACB83A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7307EACB4C0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345BF9E0623
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE904A5777
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412FA2309BE;
-	Mon,  2 Jun 2025 15:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB60226D16;
+	Mon,  2 Jun 2025 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+SPN/08"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3dRg1m7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26922AE9A;
-	Mon,  2 Jun 2025 15:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7A2221FC9;
+	Mon,  2 Jun 2025 14:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876714; cv=none; b=aXfhaE59vsyZc686//Wl5iawnweuidCj2Lu+qnqD1V42lv9s83trr2BPRaOH72xg70Orqui9N49IyieAsSWwMEOT8KE+U8TvKMEITY9W1FAkO3GfbweNiga2SG9f05SYaPhvNj+CSjxydtZU2p9tCR79cE+lZBnfivYdG9G+xCc=
+	t=1748875143; cv=none; b=KRFknKAawNRkMiUTyxwwVL0wAKXUd8xn05DeHoUUsyUYTMcDFy2tt1JaTcRH46rTJeqU8U0rcUbuVUihuqZ9tkgZMbZVnVu3cwkpfg1B75IJmOzUiFpRopprB8kapSKwZuOwomSHi07QUu4D88ME6RALhm52vqNyhioB0uygJnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876714; c=relaxed/simple;
-	bh=PvR97CVwqSQC6gHwkKgMWmzUGVI0W30Hlv6WN0PSVoI=;
+	s=arc-20240116; t=1748875143; c=relaxed/simple;
+	bh=dk76xtzYaAQ4V0Xkh1Zn1MH0HKEzaQN/4YzZwbgUYfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwhcH4/K+k2QObkoXobFQYvnZ3frQAMioMkF96ok3g8K+cDaEdI3XgZuHSlB+TfETfusK+4IbqYbC+x0BhPqteiw6OZnQutVW2/nD4QW0IWP5+ZOYLfo7UrhVzH6Lzar4JKh3eKqxK02uG5MZKHUYWn4mQALtd4RNzcoBoDiE3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+SPN/08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E92C4CEEB;
-	Mon,  2 Jun 2025 15:05:13 +0000 (UTC)
+	 MIME-Version; b=PEx43COdNmoXg8f6Aga1GMqLtOFrt3KnD+hylhny1p6mlF4i7SZocmwWPs3x2PtOGn7K3Vg9XI3y1Umit4e3FANco3j9m/7D6cdPX2hQ+S9GIRNYk9zaqICaVeEb5uLXU2WifaWsEv4sslLwpTcaqC3zN2xGijVaQ2PjT517jbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3dRg1m7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56F8C4CEEB;
+	Mon,  2 Jun 2025 14:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876713;
-	bh=PvR97CVwqSQC6gHwkKgMWmzUGVI0W30Hlv6WN0PSVoI=;
+	s=korg; t=1748875143;
+	bh=dk76xtzYaAQ4V0Xkh1Zn1MH0HKEzaQN/4YzZwbgUYfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+SPN/08GU3r6CU5vS5uehIr/RCYvo1UY5jYlURCMuAcDyVFibkomyVlm8LtQcV7U
-	 pGTVY/ceF7SuXc11fFP5ZIPXeSik1U/EIAmRaLjJzoU3WtWMwpe4ZiQWXfv+SZZep8
-	 DqxGnBhAdC7aGREQoU44wATimC8lE8y2CUocjSpw=
+	b=G3dRg1m7yN+RQ9M1fxUaDFeKEwZL7SJGlKaQQY3CHtUAAtYgr0bPlmbdQOCz5g4R5
+	 1Zkc0nb96Lou51b8LBWrvQvgARpAxB86gGPTinu5tmG2LLhcC4gPPjHeo1NIfkltKG
+	 GQzadXxP2doscuN7TAuVm+bF4kz858XIB4myr2kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/325] btrfs: make btrfs_discard_workfn() block_group ref explicit
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 042/270] can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
 Date: Mon,  2 Jun 2025 15:45:27 +0200
-Message-ID: <20250602134321.836656199@linuxfoundation.org>
+Message-ID: <20250602134308.906795452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
+commit 84f5eb833f53ae192baed4cfb8d9eaab43481fc9 upstream.
 
-Currently, the async discard machinery owns a ref to the block_group
-when the block_group is queued on a discard list. However, to handle
-races with discard cancellation and the discard workfn, we have a
-specific logic to detect that the block_group is *currently* running in
-the workfn, to protect the workfn's usage amidst cancellation.
+If a driver is removed, the driver framework invokes the driver's
+remove callback. A CAN driver's remove function calls
+unregister_candev(), which calls net_device_ops::ndo_stop further down
+in the call stack for interfaces which are in the "up" state.
 
-As far as I can tell, this doesn't have any overt bugs (though
-finish_discard_pass() and remove_from_discard_list() racing can have a
-surprising outcome for the caller of remove_from_discard_list() in that
-it is again added at the end).
+With the mcp251xfd driver the removal of the module causes the
+following warning:
 
-But it is needlessly complicated to rely on locking and the nullity of
-discard_ctl->block_group. Simplify this significantly by just taking a
-refcount while we are in the workfn and unconditionally drop it in both
-the remove and workfn paths, regardless of if they race.
+| WARNING: CPU: 0 PID: 352 at net/core/dev.c:7342 __netif_napi_del_locked+0xc8/0xd8
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+as can_rx_offload_del() deletes the NAPI, while it is still active,
+because the interface is still up.
+
+To fix the warning, first unregister the network interface, which
+calls net_device_ops::ndo_stop, which disables the NAPI, and then call
+can_rx_offload_del().
+
+Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250502-can-rx-offload-del-v1-1-59a9b131589d@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/discard.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
-index 7b2f77a8aa982..a90f3cb83c709 100644
---- a/fs/btrfs/discard.c
-+++ b/fs/btrfs/discard.c
-@@ -152,13 +152,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
- 	block_group->discard_eligible_time = 0;
- 	queued = !list_empty(&block_group->discard_list);
- 	list_del_init(&block_group->discard_list);
--	/*
--	 * If the block group is currently running in the discard workfn, we
--	 * don't want to deref it, since it's still being used by the workfn.
--	 * The workfn will notice this case and deref the block group when it is
--	 * finished.
--	 */
--	if (queued && !running)
-+	if (queued)
- 		btrfs_put_block_group(block_group);
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -2889,8 +2889,8 @@ static int mcp251xfd_remove(struct spi_d
+ 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
+ 	struct net_device *ndev = priv->ndev;
  
- 	spin_unlock(&discard_ctl->lock);
-@@ -256,9 +250,10 @@ static struct btrfs_block_group *peek_discard_list(
- 			block_group->discard_cursor = block_group->start;
- 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
- 		}
--		discard_ctl->block_group = block_group;
- 	}
- 	if (block_group) {
-+		btrfs_get_block_group(block_group);
-+		discard_ctl->block_group = block_group;
- 		*discard_state = block_group->discard_state;
- 		*discard_index = block_group->discard_index;
- 	}
-@@ -482,9 +477,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
+-	can_rx_offload_del(&priv->offload);
+ 	mcp251xfd_unregister(priv);
++	can_rx_offload_del(&priv->offload);
+ 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
+ 	free_candev(ndev);
  
- 	block_group = peek_discard_list(discard_ctl, &discard_state,
- 					&discard_index, now);
--	if (!block_group || !btrfs_run_discard_work(discard_ctl))
-+	if (!block_group)
- 		return;
-+	if (!btrfs_run_discard_work(discard_ctl)) {
-+		spin_lock(&discard_ctl->lock);
-+		btrfs_put_block_group(block_group);
-+		discard_ctl->block_group = NULL;
-+		spin_unlock(&discard_ctl->lock);
-+		return;
-+	}
- 	if (now < block_group->discard_eligible_time) {
-+		spin_lock(&discard_ctl->lock);
-+		btrfs_put_block_group(block_group);
-+		discard_ctl->block_group = NULL;
-+		spin_unlock(&discard_ctl->lock);
- 		btrfs_discard_schedule_work(discard_ctl, false);
- 		return;
- 	}
-@@ -536,15 +542,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
- 	spin_lock(&discard_ctl->lock);
- 	discard_ctl->prev_discard = trimmed;
- 	discard_ctl->prev_discard_time = now;
--	/*
--	 * If the block group was removed from the discard list while it was
--	 * running in this workfn, then we didn't deref it, since this function
--	 * still owned that reference. But we set the discard_ctl->block_group
--	 * back to NULL, so we can use that condition to know that now we need
--	 * to deref the block_group.
--	 */
--	if (discard_ctl->block_group == NULL)
--		btrfs_put_block_group(block_group);
-+	btrfs_put_block_group(block_group);
- 	discard_ctl->block_group = NULL;
- 	__btrfs_discard_schedule_work(discard_ctl, now, false);
- 	spin_unlock(&discard_ctl->lock);
--- 
-2.39.5
-
 
 
 
