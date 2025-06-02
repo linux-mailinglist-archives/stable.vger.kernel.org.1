@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-150026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C608AACB59E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:06:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B5ACB45B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8022B4A6E4C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CA41BC09C3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44012309B5;
-	Mon,  2 Jun 2025 14:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE262230BD5;
+	Mon,  2 Jun 2025 14:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFrDwllC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/QP14ls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0275229B1E;
-	Mon,  2 Jun 2025 14:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBDF223DE5;
+	Mon,  2 Jun 2025 14:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875799; cv=none; b=ZU4TgdKbkRseXzmzjpVakT5MQO0zTD3pEZkXmuoSs6XCG5bmnhXPlRWt+UKHnANuEoHth2/1rg7aHk5cTqi8gLRJJclDMkiB1cnm72fvp0JYjkifodkh4Y/PX8NbtvMiWDrGDNR8a4gjHTJ6yGXd83/c76D7QpZc+YCX6vxy+kw=
+	t=1748874994; cv=none; b=q8nTZmByQOJELNXjuz+pjURR/LEY8B89jE7yeeG95DtiH0YkdWXgfnJsPKiTTp8nMot0opqsJYiIkt2iuUv8iLWEF3uJtHDbc18W9VBdrRExit5oiszp3sqs2/vy8Pr5IUb12txiMh2DH+LTKhI1P5LhLhKfBl0awDeQlMCLeO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875799; c=relaxed/simple;
-	bh=05/0NNzlwMrqOFZcaq3Dfsa+iHjqw6B+VNzN9dJNtG0=;
+	s=arc-20240116; t=1748874994; c=relaxed/simple;
+	bh=Mt7S2WB46i8IcOReFXJwmWjLw6Qk/bGUSz6npEx88pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSog4YNkJDJKv8tezFaH/bWcbam6nO8YyWwIch4FoYVrVqJiqNddo0fDa0G0MSKN3EFQVOe2Q2J2frJTjnRFkLH6LYj/J/JbHE3gdyY9unhXCXDKrNPdrv1YELInXoBJPkE2bMYlkN68JOoNbvctJWDEOAGzafh5MXAhOnGMSYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFrDwllC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA918C4CEEB;
-	Mon,  2 Jun 2025 14:49:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gpyPEMfLbUlulmnLOw/gSu7eUZL+0sr3iHYbkAWqKTgx2ERYrlPOPiPkKFA9zyZnLB5GgRniA7rMZBpvwmRuMrN1Mcv3t1fZXugutNrp4H7Z33caD0MFXYX1OMD+hI0sj1jEkW6aVTs9EI9cTdNwiBh5sQSDhijUAwsW0LASZj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/QP14ls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0028C4CEEB;
+	Mon,  2 Jun 2025 14:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875799;
-	bh=05/0NNzlwMrqOFZcaq3Dfsa+iHjqw6B+VNzN9dJNtG0=;
+	s=korg; t=1748874994;
+	bh=Mt7S2WB46i8IcOReFXJwmWjLw6Qk/bGUSz6npEx88pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PFrDwllCBCJetRUs59youdfIA6Zu0Av9atTU1J9vu4nkMVK8U+DeSQ26Fx3xRBl6r
-	 myq5VsyK1gRkmoQ5YdJ+hooTik6295l66ZkpAJvWa0Eg1HIm5jwEeETyM23dLHA4Cv
-	 +4SOQ7kk8vJvHVYXJzHGZ6mH9V8+KZ0STC/94O50=
+	b=0/QP14lsigM/i50dcL80Q+ADEuhLhnUj2IJpOM2vLIrkO7uocBqWZpG4p9Dbbf44j
+	 RlWFS8kS6iHnyjSFkXbqdnV/r9GdyI43IMe1ay1NxslLILCWiExK0PthimlEcP9Oqq
+	 6cQr4KHkFn2TF2oUlpQVvIPCC4/Hgc2J8iI+LEKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 247/270] memcg: always call cond_resched() after fn()
+	John Chau <johnchau@0atlas.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 199/204] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
 Date: Mon,  2 Jun 2025 15:48:52 +0200
-Message-ID: <20250602134317.428317627@linuxfoundation.org>
+Message-ID: <20250602134303.494348898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: John Chau <johnchau@0atlas.com>
 
-commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
+[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
 
-I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
-is happening because killing the process in certain machine might be very
-slow, which causes the soft lockup and RCU stalls.  This happens usually
-when the cgroup has MANY processes and memory.oom.group is set.
+Change get_thinkpad_model_data() to check for additional vendor name
+"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
+more).
 
-Example I am seeing in real production:
+The reason of this works with minimal changes is because NEC Lavie
+X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
+"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
+the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
 
-       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
-       ....
-       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
-       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
-       ....
+I compiled and tested with my own machine, attached the dmesg
+below as proof of work:
+[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
+[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
+[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
+[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
+[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
+[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
+[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
+[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
+[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
+[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
 
-Quick look at why this is so slow, it seems to be related to serial flush
-for certain machine types.  For all the crashes I saw, the target CPU was
-at console_flush_all().
-
-In the case above, there are thousands of processes in the cgroup, and it
-is soft locking up before it reaches the 1024 limit in the code (which
-would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
-sufficient.
-
-Remove the counter-based conditional rescheduling logic and call
-cond_resched() unconditionally after each task iteration, after fn() is
-called.  This avoids the lockup independently of how slow fn() is.
-
-Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
-Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michael van der Westhuizen <rmikey@meta.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Chen Ridong <chenridong@huawei.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Chau <johnchau@0atlas.com>
+Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1312,7 +1312,6 @@ int mem_cgroup_scan_tasks(struct mem_cgr
- {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
--	int i = 0;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index fbb9a5c7f8b82..441b7fb6b37af 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10112,6 +10112,8 @@ static int __must_check __init get_thinkpad_model_data(
+ 		tp->vendor = PCI_VENDOR_ID_IBM;
+ 	else if (dmi_name_in_vendors("LENOVO"))
+ 		tp->vendor = PCI_VENDOR_ID_LENOVO;
++	else if (dmi_name_in_vendors("NEC"))
++		tp->vendor = PCI_VENDOR_ID_LENOVO;
+ 	else
+ 		return 0;
  
- 	BUG_ON(memcg == root_mem_cgroup);
- 
-@@ -1322,10 +1321,9 @@ int mem_cgroup_scan_tasks(struct mem_cgr
- 
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			/* Avoid potential softlockup warning */
--			if ((++i & 1023) == 0)
--				cond_resched();
- 			ret = fn(task, arg);
-+			/* Avoid potential softlockup warning */
-+			cond_resched();
- 		}
- 		css_task_iter_end(&it);
- 		if (ret) {
+-- 
+2.39.5
+
 
 
 
