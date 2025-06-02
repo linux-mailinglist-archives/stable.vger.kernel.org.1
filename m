@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-150050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2BFACB5FF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BDEACB7F7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA1781753E3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1841C22F70
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF2122B8BD;
-	Mon,  2 Jun 2025 14:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3073E23184F;
+	Mon,  2 Jun 2025 15:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IosZDPC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYjXuyFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C4622A814;
-	Mon,  2 Jun 2025 14:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D802D1FF61E;
+	Mon,  2 Jun 2025 15:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875876; cv=none; b=hg9fyPEaFHgsjlVP9rMCO6cBbEjNdRfO9BY+2dCkzln6LQoWQ8P/UH6efsq6HDCvYBxPIYdR+fGUrtQE+4De0AHRPEr8kwd8fCXA6Iv3aWVR3NHVzRIFzZ/GUCKSO7gfNajX8RPsLMlVyZ+0JD6Njht8Ld4nqh6vlchifqdc6YM=
+	t=1748877411; cv=none; b=BbUh/qjHTnq9qiP0HG29G4LxmJzQIb/zO3xpiCzoNq1d2bDx6xhM/RHckMDJ69N44Xi7GibN8nrW9YO+O2bs5n6+z6Ukps4QpOiXEpdzMTlqu2L89OWxMKt6RWWeNdnu7bl4R7DZajjTKwFVQdmDwk2BRYTwEMIIDXtJ0Np7vEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875876; c=relaxed/simple;
-	bh=AnHG3IWuW5vXJ/nlfocQB1u0unT4W19BaDcafdEVZ+o=;
+	s=arc-20240116; t=1748877411; c=relaxed/simple;
+	bh=2Y+wC4RpJ3rxNEgX8lUZYnrvWCl/+6bCTZbz8tJCOXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGUSpEFpm1n79fTFD9IGDb3zdbH8nVGoE1KT3gDSS7bqtMjfjyOJnP4S1OOEgUuIeE45+ZsU1thWTWPByP6kYhYTJQzf5NboKAHHKrAgOp4Y9xWBTz5oXncz0Jp+IEcsCWLddzuv5hGoT/txcErUHGCZJTlJesMlXi2Lw1GbflI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IosZDPC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421D1C4CEEB;
-	Mon,  2 Jun 2025 14:51:16 +0000 (UTC)
+	 MIME-Version; b=QqnYKswMPDbAMDxK1jQqHnmHmID79rpMfdqvjW4PWppD7T8ioBYsB+2GVkVQbcl1qGktDxgPOD/hLI4ERZtrGvAD5GRWlbrQ2OwIOioZm7raYwGfWmhSs+iVu5g9HrLW6eyzqifHcYSgGaK/J+lYMHRbqV/38BZ7Lx6IDGFCDQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYjXuyFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD3DC4CEEB;
+	Mon,  2 Jun 2025 15:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875876;
-	bh=AnHG3IWuW5vXJ/nlfocQB1u0unT4W19BaDcafdEVZ+o=;
+	s=korg; t=1748877411;
+	bh=2Y+wC4RpJ3rxNEgX8lUZYnrvWCl/+6bCTZbz8tJCOXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IosZDPC6Q2L6qHT2Y2YJuvFvcQLWCDTiM2MltKTIUK9fESc0uF+EPwEYfZo7lJyYq
-	 NVm33gAA+m+k88QDE9AzK6EAKep7tHNvkJEZe+MK7nje89NGHgjO3b7PT82RpIaJ9T
-	 NAoia72sI9r7j97GCFLUghVht11ryK3SZiiT76KE=
+	b=TYjXuyFi7d2A4Mo3T7IGfPtLJxBYsbTAAiz4O3yrOJwOE0MyT4Bhl4YFLt4FZZ/uB
+	 93n4/PHlBfJKseQJ+Ihk83mXZD+utyJFasVg4e3vOaCImh+TQZg6ZBPa1zJdmwAnp8
+	 ISG4VaMeGWjmP962AFJRe3j7p3dkjrFljLTDX6jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 259/270] fork: use pidfd_prepare()
+	Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 268/325] spi: spi-fsl-dspi: Halt the module after a new message transfer
 Date: Mon,  2 Jun 2025 15:49:04 +0200
-Message-ID: <20250602134317.920368252@linuxfoundation.org>
+Message-ID: <20250602134330.663086949@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
 
-commit ca7707f5430ad6b1c9cb7cee0a7f67d69328bb2d upstream.
+[ Upstream commit 8a30a6d35a11ff5ccdede7d6740765685385a917 ]
 
-Stop open-coding get_unused_fd_flags() and anon_inode_getfile(). That's
-brittle just for keeping the flags between both calls in sync. Use the
-dedicated helper.
+The XSPI mode implementation in this driver still uses the EOQ flag to
+signal the last word in a transmission and deassert the PCS signal.
+However, at speeds lower than ~200kHZ, the PCS signal seems to remain
+asserted even when SR[EOQF] = 1 indicates the end of a transmission.
+This is a problem for target devices which require the deassertation of
+the PCS signal between transfers.
 
-Message-Id: <20230327-pidfd-file-api-v1-2-5c0e9a3158e4@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Hence, this commit 'forces' the deassertation of the PCS by stopping the
+module through MCR[HALT] after completing a new transfer. According to
+the reference manual, the module stops or transitions from the Running
+state to the Stopped state after the current frame, when any one of the
+following conditions exist:
+- The value of SR[EOQF] = 1.
+- The chip is in Debug mode and the value of MCR[FRZ] = 1.
+- The value of MCR[HALT] = 1.
+
+This shouldn't be done if the last transfer in the message has cs_change
+set.
+
+Fixes: ea93ed4c181b ("spi: spi-fsl-dspi: Use EOQ for last word in buffer even for XSPI mode")
+Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-2-bea884630cfb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c |   13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ drivers/spi/spi-fsl-dspi.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2238,21 +2238,12 @@ static __latent_entropy struct task_stru
- 	 * if the fd table isn't shared).
- 	 */
- 	if (clone_flags & CLONE_PIDFD) {
--		retval = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
-+		/* Note that no task has been attached to @pid yet. */
-+		retval = __pidfd_prepare(pid, O_RDWR | O_CLOEXEC, &pidfile);
- 		if (retval < 0)
- 			goto bad_fork_free_pid;
--
- 		pidfd = retval;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 3f9609edac944..93cdc52f0fb06 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -61,6 +61,7 @@
+ #define SPI_SR_TFIWF			BIT(18)
+ #define SPI_SR_RFDF			BIT(17)
+ #define SPI_SR_CMDFFF			BIT(16)
++#define SPI_SR_TXRXS			BIT(30)
+ #define SPI_SR_CLEAR			(SPI_SR_TCFQF | \
+ 					SPI_SR_TFUF | SPI_SR_TFFF | \
+ 					SPI_SR_CMDTCF | SPI_SR_SPEF | \
+@@ -907,9 +908,20 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spi_device *spi = message->spi;
+ 	struct spi_transfer *transfer;
+ 	int status = 0;
++	u32 val = 0;
++	bool cs_change = false;
  
--		pidfile = anon_inode_getfile("[pidfd]", &pidfd_fops, pid,
--					      O_RDWR | O_CLOEXEC);
--		if (IS_ERR(pidfile)) {
--			put_unused_fd(pidfd);
--			retval = PTR_ERR(pidfile);
--			goto bad_fork_free_pid;
--		}
--		get_pid(pid);	/* held by pidfile now */
--
- 		retval = put_user(pidfd, args->pidfd);
- 		if (retval)
- 			goto bad_fork_put_pidfd;
+ 	message->actual_length = 0;
+ 
++	/* Put DSPI in running mode if halted. */
++	regmap_read(dspi->regmap, SPI_MCR, &val);
++	if (val & SPI_MCR_HALT) {
++		regmap_update_bits(dspi->regmap, SPI_MCR, SPI_MCR_HALT, 0);
++		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
++		       !(val & SPI_SR_TXRXS))
++			;
++	}
++
+ 	list_for_each_entry(transfer, &message->transfers, transfer_list) {
+ 		dspi->cur_transfer = transfer;
+ 		dspi->cur_msg = message;
+@@ -934,6 +946,7 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 				dspi->tx_cmd |= SPI_PUSHR_CMD_CONT;
+ 		}
+ 
++		cs_change = transfer->cs_change;
+ 		dspi->tx = transfer->tx_buf;
+ 		dspi->rx = transfer->rx_buf;
+ 		dspi->len = transfer->len;
+@@ -966,6 +979,15 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ 		spi_transfer_delay_exec(transfer);
+ 	}
+ 
++	if (status || !cs_change) {
++		/* Put DSPI in stop mode */
++		regmap_update_bits(dspi->regmap, SPI_MCR,
++				   SPI_MCR_HALT, SPI_MCR_HALT);
++		while (regmap_read(dspi->regmap, SPI_SR, &val) >= 0 &&
++		       val & SPI_SR_TXRXS)
++			;
++	}
++
+ 	message->status = status;
+ 	spi_finalize_current_message(ctlr);
+ 
+@@ -1206,6 +1228,8 @@ static int dspi_init(struct fsl_dspi *dspi)
+ 	if (!spi_controller_is_slave(dspi->ctlr))
+ 		mcr |= SPI_MCR_MASTER;
+ 
++	mcr |= SPI_MCR_HALT;
++
+ 	regmap_write(dspi->regmap, SPI_MCR, mcr);
+ 	regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
+ 
+-- 
+2.39.5
+
 
 
 
