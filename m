@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-150265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DABACB7D8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63EB4ACB65E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C361C22491
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20C514C5A9A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9495A223DED;
-	Mon,  2 Jun 2025 15:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C83F2253A7;
+	Mon,  2 Jun 2025 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GE0RXooK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0VN1ot7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C99223DD4;
-	Mon,  2 Jun 2025 15:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED05523BCF0;
+	Mon,  2 Jun 2025 15:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876570; cv=none; b=pmDYZrHNgkf8rt1vAiKOmSKyfepQXcrw85Zfen7e1l0FTDOiBx5imF+ZuGp9vMPMQzvy32QmaFxOE8jHD3uTfRIVz9o8hwk9yKMi1cYO/aTl3yqTAe4XD8HiPWQv/5oGp7PJeZHpfFCP5ID8eXf15OBnib2P7x2yhESLuXbnzDM=
+	t=1748876493; cv=none; b=a16hM/t2S4K6LiFKg8fe2mHtzYkDtp2VREdKtjzrKNXr5/kiVmjtmnus5ILQKt+A+YN18KosLbHtHwYiZ6zVniSqVAqh95183TCeFxDWtJLd2nPRhWzTqqerDB717zjln2zYRjRrSH7LgB+Wv6YJlvUvx3kn8HO/VcpNCKg0/JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876570; c=relaxed/simple;
-	bh=/LZX5G/VECHYyMl/9T+0BhJ8WJjQU0myJhfZRnj8+bA=;
+	s=arc-20240116; t=1748876493; c=relaxed/simple;
+	bh=zeGUr/OmRqfJzmCtW0NWriX2mjcM9PyPcGK8GHp35A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOd/nMYYeC4ACOVc63aeth0OkGdOE3hzHNlbOxSBWOW2rD5zcicGQJiLsqWCVqFBUrfKUABHEeVuXBZ7uh1qUA5vYQG6zqkJYxqil/Y9csLzWaZWMNvlfCsCDAulKFufsUeCn4mUVbpeyK92dljBFvNDjlComlHsf/6eTWBYmo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GE0RXooK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5FBC4CEF3;
-	Mon,  2 Jun 2025 15:02:49 +0000 (UTC)
+	 MIME-Version; b=bmT2T4OwJYsT29OnvsbvH7EnMX/6KfSy1SVfP4EgElyNaVXQRzCXap5/TGit/L2oS60xcnBdTr/nuXsJU7bwkI4zHQqgPRg4YfrDVe9OkvT+xtOCyQvJEuxECaVawxtSHJQfU+HK83Isx8mrm0zU/QMqGytqE1ywNesUaMShODs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0VN1ot7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0385CC4CEF0;
+	Mon,  2 Jun 2025 15:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876570;
-	bh=/LZX5G/VECHYyMl/9T+0BhJ8WJjQU0myJhfZRnj8+bA=;
+	s=korg; t=1748876492;
+	bh=zeGUr/OmRqfJzmCtW0NWriX2mjcM9PyPcGK8GHp35A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GE0RXooKoMGsykbBQW9EUMKCDgPXEkStSeQ5WC1/7ggFSO8p5h4a56qez/I0TF42/
-	 hgaDjnAzppYSKe2JleR/upVCIJfYxx1yp4x35oDQdlF3TmwnuEl9OhOjBYywNFhSyI
-	 JUNqHHhnGuSyTs/A2w9APu9Q/TOmcUl/879c0RJA=
+	b=I0VN1ot71yvf2DhPq/SjqqV9zcuFU0IyVxOuu9XkJgglwKL4ZAi+JJyNZyGe+prIo
+	 MugvlaPNt+HflE0veeDlyuueGMktkjiQjOM5Sw9GOG2cvBdCgVSyyN5ljYB1cZCrze
+	 Iniy4wpN7elYLeK4SYuC/iKLGQjiQNMMGJ8N3IVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 191/207] smb: client: Reset all search buffer pointers when releasing buffer
-Date: Mon,  2 Jun 2025 15:49:23 +0200
-Message-ID: <20250602134306.258959592@linuxfoundation.org>
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 192/207] arm64: dts: qcom: sm8350: Fix typo in pil_camera_mem node
+Date: Mon,  2 Jun 2025 15:49:24 +0200
+Message-ID: <20250602134306.296585122@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
 References: <20250602134258.769974467@linuxfoundation.org>
@@ -66,43 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit e48f9d849bfdec276eebf782a84fd4dfbe1c14c0 upstream.
+commit 295217420a44403a33c30f99d8337fe7b07eb02b upstream.
 
-Multiple pointers in struct cifs_search_info (ntwrk_buf_start,
-srch_entries_start, and last_entry) point to the same allocated buffer.
-However, when freeing this buffer, only ntwrk_buf_start was set to NULL,
-while the other pointers remained pointing to freed memory.
+There is a typo in sm8350.dts where the node label
+mmeory@85200000 should be memory@85200000.
+This patch corrects the typo for clarity and consistency.
 
-This is defensive programming to prevent potential issues with stale
-pointers. While the active UAF vulnerability is fixed by the previous
-patch, this change ensures consistent pointer state and more robust error
-handling.
-
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
 Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://lore.kernel.org/r/20250514114656.2307828-1-alok.a.tiwari@oracle.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/readdir.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cifs/readdir.c
-+++ b/fs/cifs/readdir.c
-@@ -762,7 +762,10 @@ find_cifs_entry(const unsigned int xid,
- 			else
- 				cifs_buf_release(cfile->srch_inf.
- 						ntwrk_buf_start);
-+			/* Reset all pointers to the network buffer to prevent stale references */
- 			cfile->srch_inf.ntwrk_buf_start = NULL;
-+			cfile->srch_inf.srch_entries_start = NULL;
-+			cfile->srch_inf.last_entry = NULL;
- 		}
- 		rc = initiate_cifs_search(xid, file, full_path);
- 		if (rc) {
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -240,7 +240,7 @@
+ 			no-map;
+ 		};
+ 
+-		pil_camera_mem: mmeory@85200000 {
++		pil_camera_mem: memory@85200000 {
+ 			reg = <0x0 0x85200000 0x0 0x500000>;
+ 			no-map;
+ 		};
 
 
 
