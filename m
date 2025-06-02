@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7995CACB6F8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF8CACB53F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 675574C7942
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9AED405E55
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4127D224B0D;
-	Mon,  2 Jun 2025 15:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0526922ACEF;
+	Mon,  2 Jun 2025 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6R6HiE4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLrND2jz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EBB224AFA;
-	Mon,  2 Jun 2025 15:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B663B22A81D;
+	Mon,  2 Jun 2025 14:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877102; cv=none; b=dGRjla6ncBqOah401DJYPsQ/WGQowgPx9JWuuWOfSNxbdfeUa3fHQCthP4L+DTiRt+1k0RSWOGrCIppRZ/GqivuvMlr86T5GzCMmxfK0JalkGsU2jTRI6GRGwk5+F1alHH/DDUCEOxLG6t27zhDO2BhIrnnYrFvrrwRbahBTEkU=
+	t=1748875530; cv=none; b=cnI03FHE4Xze728NqQzgXRG8rOO/rvT4pUdAy/GDg0ss/ymHgQgiLMEuetEybpMBL5StqryyMgQZhDYTOY4fqMxPF9PcU17KAbRhywybtgB5PdcNUcpZps/TLzPaGGZubZrENyE1hCQRMDN6emAr9vDdysdajnNl3CsfU8QpJRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877102; c=relaxed/simple;
-	bh=5EfPlRNHAjRiQJ89iVJVfM4qoJxb7aANlJdfKA3AymI=;
+	s=arc-20240116; t=1748875530; c=relaxed/simple;
+	bh=sYPfQHe0ngZilKviUORoIjcMTo3PIIZjpHVsfDs3Oag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2ySrJCIsKD6O7dqU0O1XtgyTQsRxBjtA+9xogqF9GxgRZu+gO/cmdzAkDVubMzk2flSmscTXWcbgm7Pn3zRuntWSF0AooFeDb5rQAAngf0HEw7hmGCLPuVEiSGv49O4G3Rr3eD8A1kK6xktoW/YPoD9opTOxFxgORyXwUArmag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6R6HiE4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620FDC4CEEB;
-	Mon,  2 Jun 2025 15:11:41 +0000 (UTC)
+	 MIME-Version; b=eYCKSPGGRaYDr5BEVjedBQ/CSX1wSLiTi7s/UZ61EiS3LSCJin1/sdmyy+MMS0B/5rS+EChr2AD3480qjfOJmU4UP6e7SPcVkz+B65iGlv6zehvPIWQkEGH5jAUOPMFwgYy8A7xvXOn4k8G6LvGrw3Vb/BZJf5+GsF2V+uWXLyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLrND2jz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F41EC4CEEB;
+	Mon,  2 Jun 2025 14:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877101;
-	bh=5EfPlRNHAjRiQJ89iVJVfM4qoJxb7aANlJdfKA3AymI=;
+	s=korg; t=1748875530;
+	bh=sYPfQHe0ngZilKviUORoIjcMTo3PIIZjpHVsfDs3Oag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6R6HiE495mQyQqni0vyF4nDtfP2GSXqatq/aW2xJMFryJPXKvfDFu7H91BDFVBz/
-	 KQFnvJxSNafupWbk9NfPFCOTI4NBVSbnYdIoqEiibqQZr4b7gYh2GPclVcOMWM2Whd
-	 DK45CC0ZRoRTy3gmfW+kauZeMXaAPNzjCgEU3Zzs=
+	b=RLrND2jzTgBFmTrkZ/RrgCUUP2A3nuCBEP77s4rzT/kZhA4LU0lt5kULnYVMCgJJj
+	 3xP3UPXqUg86NjUeHqgVM18M8AcaSuyevgqnUC4CKzL4Jh85ZwuOBd7dSOnXehFdBr
+	 0u+4OlJPlIfavU1whqSpV0+xRDU0BdIWrC7znED8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	Tianxiang Peng <txpeng@tencent.com>,
-	Hao Peng <flyingpeng@tencent.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Erick Shepherd <erick.shepherd@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/325] dm: fix unconditional IO throttle caused by REQ_PREFLUSH
+Subject: [PATCH 5.10 133/270] mmc: host: Wait for Vdd to settle on card power off
 Date: Mon,  2 Jun 2025 15:46:58 +0200
-Message-ID: <20250602134325.569223731@linuxfoundation.org>
+Message-ID: <20250602134312.664034195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@gmail.com>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit 88f7f56d16f568f19e1a695af34a7f4a6ce537a6 ]
+[ Upstream commit 31e75ed964582257f59156ce6a42860e1ae4cc39 ]
 
-When a bio with REQ_PREFLUSH is submitted to dm, __send_empty_flush()
-generates a flush_bio with REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC,
-which causes the flush_bio to be throttled by wbt_wait().
+The SD spec version 6.0 section 6.4.1.5 requires that Vdd must be
+lowered to less than 0.5V for a minimum of 1 ms when powering off a
+card. Increase wait to 15 ms so that voltage has time to drain down
+to 0.5V and cards can power off correctly. Issues with voltage drain
+time were only observed on Apollo Lake and Bay Trail host controllers
+so this fix is limited to those devices.
 
-An example from v5.4, similar problem also exists in upstream:
-
-    crash> bt 2091206
-    PID: 2091206  TASK: ffff2050df92a300  CPU: 109  COMMAND: "kworker/u260:0"
-     #0 [ffff800084a2f7f0] __switch_to at ffff80004008aeb8
-     #1 [ffff800084a2f820] __schedule at ffff800040bfa0c4
-     #2 [ffff800084a2f880] schedule at ffff800040bfa4b4
-     #3 [ffff800084a2f8a0] io_schedule at ffff800040bfa9c4
-     #4 [ffff800084a2f8c0] rq_qos_wait at ffff8000405925bc
-     #5 [ffff800084a2f940] wbt_wait at ffff8000405bb3a0
-     #6 [ffff800084a2f9a0] __rq_qos_throttle at ffff800040592254
-     #7 [ffff800084a2f9c0] blk_mq_make_request at ffff80004057cf38
-     #8 [ffff800084a2fa60] generic_make_request at ffff800040570138
-     #9 [ffff800084a2fae0] submit_bio at ffff8000405703b4
-    #10 [ffff800084a2fb50] xlog_write_iclog at ffff800001280834 [xfs]
-    #11 [ffff800084a2fbb0] xlog_sync at ffff800001280c3c [xfs]
-    #12 [ffff800084a2fbf0] xlog_state_release_iclog at ffff800001280df4 [xfs]
-    #13 [ffff800084a2fc10] xlog_write at ffff80000128203c [xfs]
-    #14 [ffff800084a2fcd0] xlog_cil_push at ffff8000012846dc [xfs]
-    #15 [ffff800084a2fda0] xlog_cil_push_work at ffff800001284a2c [xfs]
-    #16 [ffff800084a2fdb0] process_one_work at ffff800040111d08
-    #17 [ffff800084a2fe00] worker_thread at ffff8000401121cc
-    #18 [ffff800084a2fe70] kthread at ffff800040118de4
-
-After commit 2def2845cc33 ("xfs: don't allow log IO to be throttled"),
-the metadata submitted by xlog_write_iclog() should not be throttled.
-But due to the existence of the dm layer, throttling flush_bio indirectly
-causes the metadata bio to be throttled.
-
-Fix this by conditionally adding REQ_IDLE to flush_bio.bi_opf, which makes
-wbt_should_throttle() return false to avoid wbt_wait().
-
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Reviewed-by: Tianxiang Peng <txpeng@tencent.com>
-Reviewed-by: Hao Peng <flyingpeng@tencent.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250314195021.1588090-1-erick.shepherd@ni.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-pci-core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index f70129bc703b8..4767265793de7 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1523,14 +1523,18 @@ static void __send_empty_flush(struct clone_info *ci)
- {
- 	struct dm_table *t = ci->map;
- 	struct bio flush_bio;
-+	blk_opf_t opf = REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC;
-+
-+	if ((ci->io->orig_bio->bi_opf & (REQ_IDLE | REQ_SYNC)) ==
-+	    (REQ_IDLE | REQ_SYNC))
-+		opf |= REQ_IDLE;
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index 67d9dd2165ec7..3769595693531 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -666,8 +666,12 @@ static void sdhci_intel_set_power(struct sdhci_host *host, unsigned char mode,
+ 
+ 	sdhci_set_power(host, mode, vdd);
+ 
+-	if (mode == MMC_POWER_OFF)
++	if (mode == MMC_POWER_OFF) {
++		if (slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_APL_SD ||
++		    slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_BYT_SD)
++			usleep_range(15000, 17500);
+ 		return;
++	}
  
  	/*
- 	 * Use an on-stack bio for this, it's safe since we don't
- 	 * need to reference it after submit. It's just used as
- 	 * the basis for the clone(s).
- 	 */
--	bio_init(&flush_bio, ci->io->md->disk->part0, NULL, 0,
--		 REQ_OP_WRITE | REQ_PREFLUSH | REQ_SYNC);
-+	bio_init(&flush_bio, ci->io->md->disk->part0, NULL, 0, opf);
- 
- 	ci->bio = &flush_bio;
- 	ci->sector_count = 0;
+ 	 * Bus power might not enable after D3 -> D0 transition due to the
 -- 
 2.39.5
 
