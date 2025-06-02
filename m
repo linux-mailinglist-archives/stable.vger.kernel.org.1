@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-150474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D1EACB836
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7195ACB574
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9341C407573
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F4C19460F0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99D23024D;
-	Mon,  2 Jun 2025 15:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465CF221FD6;
+	Mon,  2 Jun 2025 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0849UCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxera9B4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2745C1F4165;
-	Mon,  2 Jun 2025 15:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194821885A;
+	Mon,  2 Jun 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877241; cv=none; b=eckewpkicBgnXpEtZYBxt1oqBsk4ngFTvlneu9V+Tv02fNv2sXL+M5w2Oz8EZafS6fh/mwCc+En1cDzZ2ak4jfPtcyx0SAAdsDGjcDIKrQ3bYFOFQ39a48+D31+iAJ7/pL3NUA8w6YR2D3JCOXLLdEHJD+KG/9ZM/R6vcQNrM3M=
+	t=1748875668; cv=none; b=EiOBdo5m+WSeDQHf5Lh+VhA+2eKaU8MyuTDZWD4FyLPo7UWr4nhsZiJBLC32ppci7S6sv8FyVSLO5R7bjTHtxUlZ34Ak3L3x2vBpMPs0q+DoguFUCxB0AXNlDd5mVyrNQgBU8YLmn0FMPs1eh2T1IbwjGmiZ+X6xP2kPamoWi+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877241; c=relaxed/simple;
-	bh=8047DHaIOEHNoEkhaElM5lRjVGBJnomkQBIGPlsvSJI=;
+	s=arc-20240116; t=1748875668; c=relaxed/simple;
+	bh=fLxxHNzWssvnSE96LODGmVLFYaeJHCGNieZ5jCaEuKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QIU/sUvQH0gyKRVQ3FBsFezGIp2GRN3bKSeDN08zRl2wrFqEQGAPpopBa0aVmUSi6lJrkDL4PmjIhVkYGTbaRbB1uxtvL9kKuDOuCldpuyaQ4BNVKuT9SpT0K+vg3jWg2tnT9INVdPcwH3A44QUBdUmP6Z1oPjfkKhsegjmH0lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0849UCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AF0C4CEEB;
-	Mon,  2 Jun 2025 15:14:00 +0000 (UTC)
+	 MIME-Version; b=bkWwJNEXmTxPmayfViZ2Je5y4IEQmPqDyN3cNyYbTyrUEIlv6UQgYb7YvwBdtJNmizhDZ6Jj7flUb6IsSjnLoeGflWh9wu66txSZfT7icydlt/LFklcVm1ZquL/o0EcbooLh0c7N9f2lLlnUVnjbQ8cSKNNaTRmgcnUIeqdXnzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxera9B4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B317C4CEEB;
+	Mon,  2 Jun 2025 14:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877241;
-	bh=8047DHaIOEHNoEkhaElM5lRjVGBJnomkQBIGPlsvSJI=;
+	s=korg; t=1748875667;
+	bh=fLxxHNzWssvnSE96LODGmVLFYaeJHCGNieZ5jCaEuKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0849UCG+orL2RtiqGBtKYcf1Pgh7Wmq0kTkMQLatqgQX3CiLu4jV93QyosijDMpu
-	 tGP4X3SFip88r1IdvFke1B/b8NAg42y4iV0RswtF2N0lrUC/YT6GXCTFFo6bPj7g+8
-	 TvjEAOhbyOko+KYy43SbZBn/MAD5QMpJFaicF8FQ=
+	b=qxera9B4RoEGtwpaCFRH0F4jcx05QYcsZy2aF5cNiwuoEHOIF3TtUKPkzHzfqdd40
+	 7RnlHt8yhggUH3aJL6ltCPK+1Ccc2+uFMp+CNotvusRXOmbHwVY3uRmTJKy7IElMRX
+	 d6TDb/YAnh/2+LFK+rY2wcduOVXLw9NhZeLvwBzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Roman Li <roman.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 216/325] wifi: ath9k: return by of_get_mac_address
+Subject: [PATCH 5.10 207/270] drm/amd/display: Initial psr_version with correct setting
 Date: Mon,  2 Jun 2025 15:48:12 +0200
-Message-ID: <20250602134328.571298640@linuxfoundation.org>
+Message-ID: <20250602134315.655416155@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit dfffb317519f88534bb82797f055f0a2fd867e7b ]
+[ Upstream commit d8c782cac5007e68e7484d420168f12d3490def6 ]
 
-When using nvmem, ath9k could potentially be loaded before nvmem, which
-loads after mtd. This is an issue if DT contains an nvmem mac address.
+[Why & How]
+The initial setting for psr_version is not correct while
+create a virtual link.
 
-If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
-it to _probe so that ath9k can properly grab a potentially present MAC
-address.
+The default psr_version should be DC_PSR_VERSION_UNSUPPORTED.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20241105222326.194417-1-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/init.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index 4f00400c7ffb8..58386906598a7 100644
---- a/drivers/net/wireless/ath/ath9k/init.c
-+++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -691,7 +691,9 @@ static int ath9k_of_init(struct ath_softc *sc)
- 		ah->ah_flags |= AH_NO_EEP_SWAP;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 84fb1377ec934..88a9473ccf531 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -228,6 +228,7 @@ static bool create_links(
+ 		link->link_id.type = OBJECT_TYPE_CONNECTOR;
+ 		link->link_id.id = CONNECTOR_ID_VIRTUAL;
+ 		link->link_id.enum_id = ENUM_ID_1;
++		link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
+ 		link->link_enc = kzalloc(sizeof(*link->link_enc), GFP_KERNEL);
  
--	of_get_mac_address(np, common->macaddr);
-+	ret = of_get_mac_address(np, common->macaddr);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
- 
- 	return 0;
- }
+ 		if (!link->link_enc) {
 -- 
 2.39.5
 
