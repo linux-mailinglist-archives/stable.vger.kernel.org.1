@@ -1,188 +1,128 @@
-Return-Path: <stable+bounces-148950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EABACAE6A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8C5ACAE80
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D8707ABED9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:59:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4BB189F334
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD621F4165;
-	Mon,  2 Jun 2025 13:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F109C1CD208;
+	Mon,  2 Jun 2025 13:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="T9HGC4tt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ivnGhoHI"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C99AC8CE;
-	Mon,  2 Jun 2025 13:00:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCDF2D7BF
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 13:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748869249; cv=none; b=XDWbAvFS2Q7BTwl+qYF1uzj+6bwY54pIrID/gyVY3ZUwrD2ffDZW+gyJm8CmhJjPy++S14AhW7U/WVDx6bFs4sjdWCsPNhV4NB0p6cuo2Kt25+RI+eoSKiew8cR+Q5NOOK2phCosUcuo63FE525B6cHzDiEpSSu8UuHh/BUUal4=
+	t=1748869531; cv=none; b=PMRKDw3LBtCwbubskZ96/6atsFoRuybIPdWvSxnwfwgg97wJjW9fRKb3QEPdvRD26O+cSTm/qeik+hI3ms+Xn9mgiAUdiOYXkmG6Sa0CCKyxv8/wwDdA3TBXfDoohM0/JAdNP9LQwgVvvROF7DkEF953qn+YOWPksxb/adSx9sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748869249; c=relaxed/simple;
-	bh=ujsjFmfmKNY3XZSEPL45VVklZB5mdxfIdwBl8x+CdSw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YC9T+PgHLX5B0ParW88Iv2CI1cqrj+Se2OSPG350xEiORbxRxgMt8Gw3ua9IcDSGkaARO3D75l8gPv4SOGqvRMMVPEE1jGFoQuvXeLWRCPEnkFpeXMGigungvfdkAF81V9iL8SOufIE7iQTyhOnPGyLK1xAVseQPz98v0xPpHrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=T9HGC4tt; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1748869240;
-	bh=ujsjFmfmKNY3XZSEPL45VVklZB5mdxfIdwBl8x+CdSw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=T9HGC4ttEOut4U5T98eg8qP2EaOlhNuuiQkfOgbQNPK6+DQapTUSxzlb5OK3ATb0M
-	 OaTzO64G77yCGN/dk+E6bxaArLjh1pPQXrV5zTf4t2+Di+Fk1yb8WLWSi2JRnA85zv
-	 6MmAOq/zEDfHYoe3M1Xv2/oGT1j43UJNdrmX7/X2xl+/VaoTG/sZ5O6HpEssEvvn28
-	 NYwhMFAFSFletYthThItKCxaoAImwRAsn4vDmBnFKrVp+s9Bqh2kIhOdnGJJ09aoyA
-	 jMXXlvIhQc8Cw2u1bY0z/WiXBFtp1+V/X8Zadvy86eL0aEb2HKP+dGiHEhQs/anCPQ
-	 obYtdpp99cWuw==
-Received: from [IPv6:2606:6d00:10:5285::5ac] (unknown [IPv6:2606:6d00:10:5285::5ac])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: nicolas)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1CCD017E01FD;
-	Mon,  2 Jun 2025 15:00:39 +0200 (CEST)
-Message-ID: <4d34103cf31df1cf10dd95f33a285c54249d6e3b.camel@collabora.com>
-Subject: Re: [PATCH AUTOSEL 6.15 054/110] media: rkvdec: Initialize the m2m
- context before the controls
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, 
-	stable@vger.kernel.org
-Cc: Hans Verkuil <hverkuil@xs4all.nl>, ezequiel@vanguardiasur.com.ar, 
-	mchehab@kernel.org, gregkh@linuxfoundation.org,
- linux-media@vger.kernel.org, 	linux-rockchip@lists.infradead.org,
- linux-staging@lists.linux.dev, 	linux-kernel@vger.kernel.org
-Date: Mon, 02 Jun 2025 09:00:37 -0400
-In-Reply-To: <20250601232435.3507697-54-sashal@kernel.org>
-References: <20250601232435.3507697-1-sashal@kernel.org>
-	 <20250601232435.3507697-54-sashal@kernel.org>
-Organization: Collabora Canada
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1748869531; c=relaxed/simple;
+	bh=H568FxVEZlGiJFy0RPATsOPZ24o2IPx/SM2md2PJdwE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=stWEXba0IHWDT2ZWiujLC9ki83QoqF6blhmOuDCfduR3YWR/cyLCz3RR64tBR7aM9x02Z93TtJGLaiqk9NfFvZ8ka5HDb5CzpahIqG6raSPZF2xsVoCi9PhPRffCAAhF9Qe4wJxFjk0HP5a1GLm3NEhwPgdVuFo0h9iukWP7rg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ivnGhoHI; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748869530; x=1780405530;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=H568FxVEZlGiJFy0RPATsOPZ24o2IPx/SM2md2PJdwE=;
+  b=ivnGhoHIfDyD2SKUD3cPhrSpd1/owm1cASzT6MBNlDrjmlFXo2cdedZM
+   +DuhJsVR/ZpohuIhymO9NN+UZPT9zCyE122VU5ZZgqS+TiPdpaLUqEGWy
+   oTa/oiVNA+kRbEfjYAks8kqgtfy6XDH/e3mtJ5cyyK5GugRJrKayoxH7A
+   NC6i5FFSXtKda7cvrRR2GVkOnvICOq+XtjGN306VMeigNJ/qxU2gePT2/
+   4gF6Hd1ua2YzakFf053tGd1b6274nJDLXgH9oksCIraQqVTdCHtx6sjgr
+   LHwgVvN0PRbaecp1G+iko6mM6dEOvchzhQSRpNUJcOX82L6n70uF8QTKu
+   g==;
+X-CSE-ConnectionGUID: VwXWGxWuSBmAk23O2EE7Ug==
+X-CSE-MsgGUID: OmkgErEOQ0mHp3jsS71mrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="73406304"
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
+   d="scan'208";a="73406304"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 06:05:30 -0700
+X-CSE-ConnectionGUID: /S1V5dB2QcqIypvX5THjaQ==
+X-CSE-MsgGUID: P2XEzj+5QvuWVxgOvbqzkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,203,1744095600"; 
+   d="scan'208";a="149309252"
+Received: from vmusin-mobl1.ger.corp.intel.com (HELO [10.245.112.120]) ([10.245.112.120])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2025 06:05:28 -0700
+Message-ID: <861208c3-3505-4386-848f-a7c7a9508604@linux.intel.com>
+Date: Mon, 2 Jun 2025 15:05:26 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/ivpu: Trigger device recovery on engine
+ reset/resume failure
+To: Lizhi Hou <lizhi.hou@amd.com>, dri-devel@lists.freedesktop.org
+Cc: jeff.hugo@oss.qualcomm.com, Karol Wachowski <karol.wachowski@intel.com>,
+ stable@vger.kernel.org
+References: <20250528154253.500556-1-jacek.lawrynowicz@linux.intel.com>
+ <5b8763f2-3c1c-3621-912f-995af0076d91@amd.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <5b8763f2-3c1c-3621-912f-995af0076d91@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Le dimanche 01 juin 2025 à 19:23 -0400, Sasha Levin a écrit :
-> From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Hi,
+
+On 5/28/2025 7:53 PM, Lizhi Hou wrote:
 > 
-> [ Upstream commit d43d7db3c8a1868dcbc6cb8de90a3cdf309d6cbb ]
+> On 5/28/25 08:42, Jacek Lawrynowicz wrote:
+>> From: Karol Wachowski <karol.wachowski@intel.com>
+>>
+>> Trigger full device recovery when the driver fails to restore device state
+>> via engine reset and resume operations. This is necessary because, even if
+>> submissions from a faulty context are blocked, the NPU may still process
+>> previously submitted faulty jobs if the engine reset fails to abort them.
+>> Such jobs can continue to generate faults and occupy device resources.
+>> When engine reset is ineffective, the only way to recover is to perform
+>> a full device recovery.
+>>
+>> Fixes: dad945c27a42 ("accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW")
+>> Cc: <stable@vger.kernel.org> # v6.15+
+>> Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>> ---
+>>   drivers/accel/ivpu/ivpu_job.c     | 6 ++++--
+>>   drivers/accel/ivpu/ivpu_jsm_msg.c | 9 +++++++--
+>>   2 files changed, 11 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
+>> index 1c8e283ad9854..fae8351aa3309 100644
+>> --- a/drivers/accel/ivpu/ivpu_job.c
+>> +++ b/drivers/accel/ivpu/ivpu_job.c
+>> @@ -986,7 +986,8 @@ void ivpu_context_abort_work_fn(struct work_struct *work)
+>>           return;
+>>         if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
+>> -        ivpu_jsm_reset_engine(vdev, 0);
+>> +        if (ivpu_jsm_reset_engine(vdev, 0))
+>> +            return;
 > 
-> Setting up the control handler calls into .s_ctrl ops. While validating
-> the controls the ops may need to access some of the context state, which
-> could lead to a crash if not properly initialized.
-> 
-> Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-> Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> Now let me analyze the specific changes proposed in the commit: ##
-> Analysis **YES** This commit should be backported to stable kernel
-> trees. Here's my extensive analysis: ### Core Issue Analysis The commit
-> addresses a critical initialization order bug that can lead to crashes.
+> Is it possible the context aborting is entered again before the full device recovery work is executed?
 
-"While validating the controls the ops **may** need"
+This is a good point but ivpu_context_abort_work_fn() is triggered by an IRQ and the first thing we do when triggering recovery is disabling IRQs.
+The recovery work also flushes context_abort_work before staring to tear down everything, so we should be safe.
 
-It wasn't the case yet, so its not as critical as this analyses made
-it sound like. The changes that came next, removes superfluous branches
-that was only there for the purpose of avoiding the crash.
+Regards,
+Jacek
 
-It is harmless otherwise, the change is good practice and at best may
-help people backportin more patches. But not worth "Fixes:" and
-"CC: Stable" in my opinion. You are free to proceed.
-
-> The problem occurs in the `rkvdec_open()` function at lines 822-830 in
-> the current code: 1. **Current problematic order:** - Line 822:
-> `rkvdec_init_ctrls(ctx)` is called first - Line 826-830:
-> `v4l2_m2m_ctx_init()` is called second 2. **The problem:** According to
-> the commit message and my analysis of the kernel documentation,
-> `v4l2_ctrl_handler_setup()` (called inside `rkvdec_init_ctrls()`) calls
-> `.s_ctrl` for all controls unconditionally to initialize hardware to
-> default values. The `.s_ctrl` handlers may need to access the m2m
-> context state, but if the m2m context (`ctx->fh.m2m_ctx`) isn't
-> initialized yet, this can cause a crash or undefined behavior. ### Code
-> Changes Analysis The fix is minimal and surgical: - **Lines moved:** The
-> initialization order is swapped - m2m context initialization moves
-> before control handler setup - **Error handling updated:** The error
-> handling paths are correctly updated to match the new initialization
-> order - **No functional changes:** The fix doesn't change driver
-> functionality, only initialization sequence ### Why This Should Be
-> Backported 1. **Fixes a real crash bug:** This addresses a potential
-> crash scenario that affects users 2. **Small and contained:** The change
-> is minimal - just reordering initialization and updating error paths 3.
-> **Low regression risk:** Moving m2m init before control init is safer
-> since m2m context doesn't depend on controls, but controls may depend on
-> m2m context 4. **Follows established patterns:** Similar commit #2 in
-> the historical examples shows a "YES" backport for proper initialization
-> order in V4L2 drivers 5. **Critical subsystem:** Media drivers crashing
-> can affect user applications ### Comparison with Historical Commits -
-> **Similar to commit #2 (YES):** Also fixes initialization order in V4L2
-> media driver to prevent crashes - **Similar to commit #4 (YES):** Media
-> driver fix that's low-risk and contained - **Unlike commits #1, #3, #5
-> (NO):** This actually fixes a bug rather than just cleanup/code style
-> improvements ### Stable Tree Criteria Met ✅ **Important bugfix:**
-> Prevents crashes ✅ **Minimal risk:** Simple reordering with no side
-> effects ✅ **Small change:** Only affects initialization sequence ✅ **No
-> architectural changes:** Pure bug fix ✅ **Confined to subsystem:** Only
-> affects rkvdec driver The fix follows the stable tree rules perfectly -
-> it's an important crash prevention fix with minimal regression risk,
-> making it an ideal backport candidate.
-
-Suggestion for improving the report, perhaps adding line breaks for
-each items ?
-
-best regards,
-Nicolas
-
-> 
->  drivers/staging/media/rkvdec/rkvdec.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-> index f9bef5173bf25..4702df5b095b7 100644
-> --- a/drivers/staging/media/rkvdec/rkvdec.c
-> +++ b/drivers/staging/media/rkvdec/rkvdec.c
-> @@ -819,24 +819,24 @@ static int rkvdec_open(struct file *filp)
->  	rkvdec_reset_decoded_fmt(ctx);
->  	v4l2_fh_init(&ctx->fh, video_devdata(filp));
->  
-> -	ret = rkvdec_init_ctrls(ctx);
-> -	if (ret)
-> -		goto err_free_ctx;
-> -
->  	ctx->fh.m2m_ctx = v4l2_m2m_ctx_init(rkvdec->m2m_dev, ctx,
->  					    rkvdec_queue_init);
->  	if (IS_ERR(ctx->fh.m2m_ctx)) {
->  		ret = PTR_ERR(ctx->fh.m2m_ctx);
-> -		goto err_cleanup_ctrls;
-> +		goto err_free_ctx;
->  	}
->  
-> +	ret = rkvdec_init_ctrls(ctx);
-> +	if (ret)
-> +		goto err_cleanup_m2m_ctx;
-> +
->  	filp->private_data = &ctx->fh;
->  	v4l2_fh_add(&ctx->fh);
->  
->  	return 0;
->  
-> -err_cleanup_ctrls:
-> -	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
-> +err_cleanup_m2m_ctx:
-> +	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
->  
->  err_free_ctx:
->  	kfree(ctx);
 
