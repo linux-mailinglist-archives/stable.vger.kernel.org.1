@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8722ACB35D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF564ACB587
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F396294282A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9871942626
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3EF23A9B4;
-	Mon,  2 Jun 2025 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33328225A20;
+	Mon,  2 Jun 2025 14:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXuqujZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyBDeDkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A48223323;
-	Mon,  2 Jun 2025 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EB322576E;
+	Mon,  2 Jun 2025 14:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874100; cv=none; b=nw7OGnpaKdTEbgXY0kwyrxwfQOVPoCV+T9V/sQBlMohBnI05fx4FaZlixJ/lNtBHjxcxXEowDgnwG+1yptaqpGEoa1SJwWHC+VxTysL6YzEIDn14d+GVH4cFoceRYIbfpLsWohqxeJ38kkzaa1WFOBy6Z6EU/X/XfcnNAzjnunA=
+	t=1748875441; cv=none; b=PBxdSR90QgueO4WrFalmcdANP3Fv2QdEJKJiCgg0c5J2HXel/QBzZFCqjVWEoOJYhKKk+F1bmubXAvurnSCl8N+Ek+9AmIcAk+ilLKSlx+ITEHNas6QtUb/9D6NBUKLRg1vwWk0WqSLgRocTRyrmy1Ionk4meir5xAOka7I1sv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874100; c=relaxed/simple;
-	bh=L92dkW4BlmsSbqTDgzg+KwxNK4jAevkf+i5Z3VAwDJI=;
+	s=arc-20240116; t=1748875441; c=relaxed/simple;
+	bh=gomUuc+UroZ4D4Xq7P9Bad0YJFfbQrZQxOjUQC70Gf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvBsEjkFqRUOGGoSWrYQcWjTYaarmax7PI9l2wvcmr3FFgCpPDoFhvz92MlC3y6knROW3dliOTyGQ8j0BcFv5Go4QDdGtuFaqq0JaPJpOV2t6JnohRvTG23FbjJfXW1rdqJ8YlOsY54QhgrD/CGpvtjk5ntLl6raKGksIDwyqWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXuqujZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C855CC4CEEB;
-	Mon,  2 Jun 2025 14:21:39 +0000 (UTC)
+	 MIME-Version; b=dl/bBZoqrN/abnuMHjxyIn/fKStgNQrFcXkaFdcWkYgqQtxiqo6yIFaZ/gWl6+D+mB2hx9UWcYdB9iE3WWnSgiCglWsfotlxpyLBWwaxyd7YKykotjQG/urJKCl+bKa0v0lPN2JE1BuqEEu8dNDgJJmXzXc/K9SdMLWmWQivTV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyBDeDkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55830C4CEEB;
+	Mon,  2 Jun 2025 14:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874100;
-	bh=L92dkW4BlmsSbqTDgzg+KwxNK4jAevkf+i5Z3VAwDJI=;
+	s=korg; t=1748875440;
+	bh=gomUuc+UroZ4D4Xq7P9Bad0YJFfbQrZQxOjUQC70Gf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXuqujZuUc+O6imDZ7QHiUaxvIBGDVxdz5ofg88bZUqHdZ5AaGqGi9LacKZsH9XvT
-	 tH8BsdtTSXA6K96rcapwJTScSsFCm41VKJCNj8sgYm6yIngmnekExPmOZbrFdPyrow
-	 d8TmjQQxH8xM+QkivwKrPMkY96cL8ofkTjREFXtM=
+	b=kyBDeDkrANYZiM2N9tns3yw27aDHClNn42jIZQv+t0/DYhXcMZ3U35vMit/HRW4+/
+	 Sj8x9oXm3yaB2kx1j2YxXsyIrmd0znwMKUl9sJi4kegEHytYnxj2ejNIFL5gPchMZ8
+	 3OvB7skft/LqG0KZWOp429Lacgzel/WViKPz6v/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dominik Grzegorzek <dominik.grzegorzek@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 357/444] padata: do not leak refcount in reorder_work
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <maharmstone@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 136/270] btrfs: avoid linker error in btrfs_find_create_tree_block()
 Date: Mon,  2 Jun 2025 15:47:01 +0200
-Message-ID: <20250602134355.414365367@linuxfoundation.org>
+Message-ID: <20250602134312.791172033@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
+From: Mark Harmstone <maharmstone@fb.com>
 
-commit d6ebcde6d4ecf34f8495fb30516645db3aea8993 upstream.
+[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
 
-A recent patch that addressed a UAF introduced a reference count leak:
-the parallel_data refcount is incremented unconditionally, regardless
-of the return value of queue_work(). If the work item is already queued,
-the incremented refcount is never decremented.
+The inline function btrfs_is_testing() is hardcoded to return 0 if
+CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
+the compiler optimizing out the call to alloc_test_extent_buffer() in
+btrfs_find_create_tree_block(), as it's not been defined (it's behind an
+ #ifdef).
 
-Fix this by checking the return value of queue_work() and decrementing
-the refcount when necessary.
+Add a stub version of alloc_test_extent_buffer() to avoid linker errors
+on non-standard optimization levels. This problem was seen on GCC 14
+with -O0 and is helps to see symbols that would be otherwise optimized
+out.
 
-Resolves:
-
-Unreferenced object 0xffff9d9f421e3d80 (size 192):
-  comm "cryptomgr_probe", pid 157, jiffies 4294694003
-  hex dump (first 32 bytes):
-    80 8b cf 41 9f 9d ff ff b8 97 e0 89 ff ff ff ff  ...A............
-    d0 97 e0 89 ff ff ff ff 19 00 00 00 1f 88 23 00  ..............#.
-  backtrace (crc 838fb36):
-    __kmalloc_cache_noprof+0x284/0x320
-    padata_alloc_pd+0x20/0x1e0
-    padata_alloc_shell+0x3b/0xa0
-    0xffffffffc040a54d
-    cryptomgr_probe+0x43/0xc0
-    kthread+0xf6/0x1f0
-    ret_from_fork+0x2f/0x50
-    ret_from_fork_asm+0x1a/0x30
-
-Fixes: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <maharmstone@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/extent_io.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -358,7 +358,8 @@ static void padata_reorder(struct parall
- 		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
- 		 */
- 		padata_get_pd(pd);
--		queue_work(pinst->serial_wq, &pd->reorder_work);
-+		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
-+			padata_put_pd(pd);
- 	}
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 9cef930c4ecfb..8498994ef5c6d 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -5134,10 +5134,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
+ 	return NULL;
  }
  
+-#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					u64 start)
+ {
++#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
+ 	struct extent_buffer *eb, *exists = NULL;
+ 	int ret;
+ 
+@@ -5173,8 +5173,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+ free_eb:
+ 	btrfs_release_extent_buffer(eb);
+ 	return exists;
+-}
++#else
++	/* Stub to avoid linker error when compiled with optimizations turned off. */
++	return NULL;
+ #endif
++}
+ 
+ struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
+ 					  u64 start)
+-- 
+2.39.5
+
 
 
 
