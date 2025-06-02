@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AE4ACB689
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18DAACB7D9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB8811BC5053
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A994C13B4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02500238C33;
-	Mon,  2 Jun 2025 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE0A22541F;
+	Mon,  2 Jun 2025 15:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMbxh8aU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMvDW7RJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E87238174;
-	Mon,  2 Jun 2025 14:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C391FF61E;
+	Mon,  2 Jun 2025 15:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876344; cv=none; b=po9j6WePh8x2wAr2CMdhBX6sCnpBMdyiiwmZgNOTV2Vn8MB12A+WN+BawN+LdeqebV8g3n1FDx1w/Cnsv086hAdhjXT87CKC5u4TudfXNocsD5CEqoeWq4UJsEACQIJIs3jY+GymYv7N3WeVt9khzrvSvmsNkT1Fkcc28+HZx/c=
+	t=1748877421; cv=none; b=Db3D5LCE4DbxOufBgZgKe4ZOzuZUoCDkF9K1grNXV9kk6cBg5awNJRm7zUrWZsdTUNJjTaEnx/9jyEiACJKj/2vxbedP2XBW6a789YQw3gPsjLNtHsL4DK2NtgR5Y58FdRwwzxD2F7TFGze6cN8pTdgKJxGese2GwoJatVcj4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876344; c=relaxed/simple;
-	bh=hDkUA4cEEsZwHHY7uXz5q4lIw80E8U7zX/KILu7/B1c=;
+	s=arc-20240116; t=1748877421; c=relaxed/simple;
+	bh=YLvi/2M7ikLuI/t1wI+7/3ObHHdvJmijlWCgIkqC5y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqvI0cpPWop6NtNByprqL5dL+fwVy3zf23zelPzc+LPToWou80SYagEgWurJOi688GXLVmLkzijJC0GlS0RH5Uise2BcgaDehnw3DQL2wRWIRq/mak0KVZieM9z03RLtM7ibidKEZgOTcbSl+LGFtOHfgndNgmkkVmqJKYdOpb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMbxh8aU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EF5C4CEF0;
-	Mon,  2 Jun 2025 14:59:03 +0000 (UTC)
+	 MIME-Version; b=lDi9DvSBQwMiDJW9brAHWiXKOFpU5vD1P4lJeWmsOVjvbGVNw0t9qYQaUkaefacOS2bF1QbpTv9EkZ8thVNHvuVhV+gqVAB4U7FwRPVb8LByCkoT7dCLyceXPu2cH2ShChr/kYpvloE2EZLf1mKQe1Dy+4SIsb9flKOY0UcMt84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMvDW7RJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB1DC4CEEB;
+	Mon,  2 Jun 2025 15:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876344;
-	bh=hDkUA4cEEsZwHHY7uXz5q4lIw80E8U7zX/KILu7/B1c=;
+	s=korg; t=1748877421;
+	bh=YLvi/2M7ikLuI/t1wI+7/3ObHHdvJmijlWCgIkqC5y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HMbxh8aUZ4O+nY2Me0jYpyIO6cKBT3SSP4xrXrxijWhlnT0uRaGwXqqzfUdZ6dRKz
-	 IEQUK/NxzlP2SKnckV1zUujuBze/O/RHgM4HG1HT3gTOF5pBeKxEjvwcqG6DruccOg
-	 l+ghCTQQW/rgewZjalL/HwiYebUjY9RgQ+oYNmZg=
+	b=eMvDW7RJC49AZ1XuSE96jJXwoQIceRTzWFWIjBqwKf47RHCD1HebAs5rwvPygA80V
+	 Bl7adcznjx9e5z8Eb6q6Tv8UA2ODPtv0BU2U1YH3Z3WHQBDBfDjJYbEkyxEziGYMhu
+	 Wam4C0gNxzdj6PD/S/PfHLQm3yAodLwiv9fHOM0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/207] bpftool: Fix readlink usage in get_fd_type
+Subject: [PATCH 6.1 242/325] net: lan743x: Restore SGMII CTRL register on resume
 Date: Mon,  2 Jun 2025 15:48:38 +0200
-Message-ID: <20250602134304.440729650@linuxfoundation.org>
+Message-ID: <20250602134329.619370093@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
+[ Upstream commit 293e38ff4e4c2ba53f3fd47d8a4a9f0f0414a7a6 ]
 
-The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
-bytes and *does not* append null-terminator to buf. With respect to
-that, fix two pieces in get_fd_type:
+SGMII_CTRL register, which specifies the active interface, was not
+properly restored when resuming from suspend. This led to incorrect
+interface selection after resume particularly in scenarios involving
+the FPGA.
 
-1. Change the truncation check to contain sizeof(buf) rather than
-   sizeof(path).
-2. Append null-terminator to buf.
+To fix this:
+- Move the SGMII_CTRL setup out of the probe function.
+- Initialize the register in the hardware initialization helper function,
+which is called during both device initialization and resume.
 
-Reported by Coverity.
+This ensures the interface configuration is consistently restored after
+suspend/resume cycles.
 
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: a46d9d37c4f4f ("net: lan743x: Add support for SGMII interface")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Link: https://patch.msgid.link/20250516035719.117960-1-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index e4c65d34fe74f..2b4773e00ab68 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -318,10 +318,11 @@ int get_fd_type(int fd)
- 		p_err("can't read link type: %s", strerror(errno));
- 		return -1;
- 	}
--	if (n == sizeof(path)) {
-+	if (n == sizeof(buf)) {
- 		p_err("can't read link type: path too long!");
- 		return -1;
- 	}
-+	buf[n] = '\0';
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 2e69ba0143b15..fd35554191793 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -3253,6 +3253,7 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 				 struct pci_dev *pdev)
+ {
+ 	struct lan743x_tx *tx;
++	u32 sgmii_ctl;
+ 	int index;
+ 	int ret;
  
- 	if (strstr(buf, "bpf-map"))
- 		return BPF_OBJ_MAP;
+@@ -3265,6 +3266,15 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 		spin_lock_init(&adapter->eth_syslock_spinlock);
+ 		mutex_init(&adapter->sgmii_rw_lock);
+ 		pci11x1x_set_rfe_rd_fifo_threshold(adapter);
++		sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
++		if (adapter->is_sgmii_en) {
++			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
++			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
++		} else {
++			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
++			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
++		}
++		lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 	} else {
+ 		adapter->max_tx_channels = LAN743X_MAX_TX_CHANNELS;
+ 		adapter->used_tx_channels = LAN743X_USED_TX_CHANNELS;
+@@ -3313,7 +3323,6 @@ static int lan743x_hardware_init(struct lan743x_adapter *adapter,
+ 
+ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ {
+-	u32 sgmii_ctl;
+ 	int ret;
+ 
+ 	adapter->mdiobus = devm_mdiobus_alloc(&adapter->pdev->dev);
+@@ -3325,10 +3334,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ 	adapter->mdiobus->priv = (void *)adapter;
+ 	if (adapter->is_pci11x1x) {
+ 		if (adapter->is_sgmii_en) {
+-			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+-			sgmii_ctl |= SGMII_CTL_SGMII_ENABLE_;
+-			sgmii_ctl &= ~SGMII_CTL_SGMII_POWER_DN_;
+-			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "SGMII operation\n");
+ 			adapter->mdiobus->probe_capabilities = MDIOBUS_C22_C45;
+@@ -3338,10 +3343,6 @@ static int lan743x_mdiobus_init(struct lan743x_adapter *adapter)
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "lan743x-mdiobus-c45\n");
+ 		} else {
+-			sgmii_ctl = lan743x_csr_read(adapter, SGMII_CTL);
+-			sgmii_ctl &= ~SGMII_CTL_SGMII_ENABLE_;
+-			sgmii_ctl |= SGMII_CTL_SGMII_POWER_DN_;
+-			lan743x_csr_write(adapter, SGMII_CTL, sgmii_ctl);
+ 			netif_dbg(adapter, drv, adapter->netdev,
+ 				  "RGMII operation\n");
+ 			// Only C22 support when RGMII I/F
 -- 
 2.39.5
 
