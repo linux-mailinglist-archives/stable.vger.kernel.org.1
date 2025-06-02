@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C80DACB047
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1CAACB01E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73C927A8376
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:01:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 094BD7A24F0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9322236FB;
-	Mon,  2 Jun 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B15F21B9C7;
+	Mon,  2 Jun 2025 14:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+RYGzK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eih8+3Go"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB3222333B;
-	Mon,  2 Jun 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC858221DBD;
+	Mon,  2 Jun 2025 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872919; cv=none; b=k7hzMgGt+lojQsovFgz5FC7UHC5qTLWwMoK9fLY+SBxonzunrFLwF5+tplje2GIx7BSmWv1fFjAAZ+8pLGnARhSsLGbSVmvATTAgWckhWWy2h9rQsWOdfz492VqfUgOSVgWhZ4WidQiToFjRF2D/Xe89ncZ3ZfxHup4NPLh0a94=
+	t=1748872814; cv=none; b=nvZ/jAMSjlP67Vv2QrpNXKj24F2lJHQrzI1LgCDPfW+R5wD5sTHx+QWL5AVNg4IM+hLugma1QNZc84TutCqEOOCFBWD9HLGX1p1yF4/cGe9qi3ddU/Ahvt+0b9xPsDqb8P1qEcFnR1i/bSxAcfpm5CIrZMlP+VFrQhwlEBmsSRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872919; c=relaxed/simple;
-	bh=7R4XGEOCw7DzlfMzi8jNcCHp2LDa3cs8fpTiPWKkXCU=;
+	s=arc-20240116; t=1748872814; c=relaxed/simple;
+	bh=a1xcGuKqOY99s1M8JFQoG4BrFGY8EGLI1aIrsEmuE9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eBUFdQcGByxRf4Fv+N4T9EASQ+B/ByWwWh03M3sPIPA8eHy0BEbOma0stW5CUC3ZJowltaAWpt6txv2SWd4evAZFISWgeVQSeD66b/zPoJ/ksJY1885azEmtAKQQ5GZPOJNpOaZkP2DgprBB2diEXh8sMGoDsem4pKepr5swz/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+RYGzK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C32C4CEEB;
-	Mon,  2 Jun 2025 14:01:58 +0000 (UTC)
+	 MIME-Version; b=J3Z6pqgqzE18ngZ+kGJjZDNqQ0p0CYLA/FZBqJsozQcz/mpGPY5bSFvYWYz4BYKqCIe9kuOHWEdeAF0FUI7hS1eYGwBKCLDxKoqNYOsDJY6S0iFLGII7npe3S5F0NOTdqSMo6JbMYsSeaffT4K4Udh0aZ5TXUG9EQ8WYlj0wuic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eih8+3Go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCDAC4CEEE;
+	Mon,  2 Jun 2025 14:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872919;
-	bh=7R4XGEOCw7DzlfMzi8jNcCHp2LDa3cs8fpTiPWKkXCU=;
+	s=korg; t=1748872814;
+	bh=a1xcGuKqOY99s1M8JFQoG4BrFGY8EGLI1aIrsEmuE9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+RYGzK9ldYvti9+h3NElxNsu3FJuKJLlHOXxDVTaYOzapWTJ1OMb4XU15EXutHe7
-	 FQO1pbRqtqPuLwy0UeB2ULYJSUZg4C2yYwcW9NkHdwoE99oYyDmGgiP3fcKKltjnL2
-	 4UfDhLuYUTKH/BjwmacroAHg6JMx/qcXsJGXqcO0=
+	b=Eih8+3God7NO6esNaAzGbaL+GdfGKU3MqGHGbD4u1xnzxXaqdALrZWmzfjtpwMBr7
+	 0Ab4qAju9ULjwpH7bfIlqFAbrejGPzBvzJ6g23hGoZ6sP5qQAYvEsOiTRX2xkTXVF5
+	 1nfmr4PC9rD6R1PGiH6gUbxFmmD6kr0KkW1yYdyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Chau <johnchau@0atlas.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 38/55] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
-Date: Mon,  2 Jun 2025 15:47:55 +0200
-Message-ID: <20250602134239.780966937@linuxfoundation.org>
+Subject: [PATCH 6.14 70/73] ALSA: hda/realtek - restore auto-mute mode for Dell Chrome platform
+Date: Mon,  2 Jun 2025 15:47:56 +0200
+Message-ID: <20250602134244.445934333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Chau <johnchau@0atlas.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
+[ Upstream commit 5ad8a4ddc45048bc2fe23b75357b6bf185db004f ]
 
-Change get_thinkpad_model_data() to check for additional vendor name
-"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
-more).
+This board need to shutdown Class-D amp to avoid EMI issue.
+Restore the Auto-Mute mode item will off pin control when Auto-mute mode was enable.
 
-The reason of this works with minimal changes is because NEC Lavie
-X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
-"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
-the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
-
-I compiled and tested with my own machine, attached the dmesg
-below as proof of work:
-[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
-[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
-[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
-[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
-[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
-[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
-[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
-[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
-[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
-[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
-
-Signed-off-by: John Chau <johnchau@0atlas.com>
-Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Links: https://lore.kernel.org/ee8bbe5236464c369719d96269ba8ef8@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index dea40da867552..fa60a221cfb14 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -11472,6 +11472,8 @@ static int __must_check __init get_thinkpad_model_data(
- 		tp->vendor = PCI_VENDOR_ID_IBM;
- 	else if (dmi_name_in_vendors("LENOVO"))
- 		tp->vendor = PCI_VENDOR_ID_LENOVO;
-+	else if (dmi_name_in_vendors("NEC"))
-+		tp->vendor = PCI_VENDOR_ID_LENOVO;
- 	else
- 		return 0;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 9e5c36ad8f52d..3f09ceac08ada 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6811,7 +6811,10 @@ static void alc256_fixup_chromebook(struct hda_codec *codec,
  
+ 	switch (action) {
+ 	case HDA_FIXUP_ACT_PRE_PROBE:
+-		spec->gen.suppress_auto_mute = 1;
++		if (codec->core.subsystem_id == 0x10280d76)
++			spec->gen.suppress_auto_mute = 0;
++		else
++			spec->gen.suppress_auto_mute = 1;
+ 		spec->gen.suppress_auto_mic = 1;
+ 		spec->en_3kpull_low = false;
+ 		break;
 -- 
 2.39.5
 
