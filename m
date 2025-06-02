@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43397ACB47C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B170ACB2CA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E08519443D7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08EC5486AB1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE461FBC90;
-	Mon,  2 Jun 2025 14:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C26022F77C;
+	Mon,  2 Jun 2025 14:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoNvlkSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZfdbHwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DD11B81DC;
-	Mon,  2 Jun 2025 14:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5D122F765;
+	Mon,  2 Jun 2025 14:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875089; cv=none; b=pL8bgbWdAlGIzlekbJ+r0fXCgiq+hna1W+ynAQfo/57Er9bxcPeKPPHmCeRvuhtI90Cw/+GQ5tnD+ba+3mWdsOEoSVnzJ6vVm6Pe5302Zq0OzMJfdKlsOEGFMmgvW6YDDFj7vfthJupOaB8i3LYaVfa2mfGjysFY7p8VjULmE/k=
+	t=1748873855; cv=none; b=fgggyt5/ugV8U7sNWsq0sWhXDWdYTgkcEXKnK5SES8u2zhk/poi0ME8pU5KWeUOvB6I/m67i0Fdh0d2cR2a2lQRPQk3upnNwTU4pA3xVTKX5OqVvjNcfWBcwiLeGc6BNT2pCKJa6aJgzCJxTa3JyPZnzCanqStnrBfgmtu+/dHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875089; c=relaxed/simple;
-	bh=qeHGn7k4T3Fw+GU2J73t1Ycrl0v3Srj5cm0E4K2ivzQ=;
+	s=arc-20240116; t=1748873855; c=relaxed/simple;
+	bh=txAxfDs81Vgzf7A412zoYF4ReMuY7ArovEdo++45HrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UR6IUd+kiKI8GcgtlysTLShBhI8OcwpM+gpwx2NijIhPfBRgyIsLrK3LFPnNw3FqqBg1faMtLKCUOgW9FnWae5tfGFBhKn8RHSOPIchUh3k9I4DVDW5n0ueu2EhWQVHPPr0Z89R5NpLtnr9ADU8aYY6SyDxU0+oqKFvZFe1q0Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoNvlkSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6014CC4CEEB;
-	Mon,  2 Jun 2025 14:38:08 +0000 (UTC)
+	 MIME-Version; b=nBPQqk/oZH07KHvkZqd4ypL45kqEhRVJa5v1Kkc26Jbozg+MrO/5T3Tu0MXA/5x5EcPi1BVNztbpi0bY2S0z2gDBBcDBZOIhmgflD1raW0o8B1Q3+kysPJnsNBmJ3yGAoriscrfj+k8LnvBhMn3PCZkos3c3ZgF2FrI4/CJVZPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZfdbHwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A57CC4CEEB;
+	Mon,  2 Jun 2025 14:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875088;
-	bh=qeHGn7k4T3Fw+GU2J73t1Ycrl0v3Srj5cm0E4K2ivzQ=;
+	s=korg; t=1748873855;
+	bh=txAxfDs81Vgzf7A412zoYF4ReMuY7ArovEdo++45HrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoNvlkShs3vPR3MaUC8+MzYccPaDccHhkbq2CurPO5K3+O/SQfBuPRx2gyGKQP8FG
-	 myzpn3YOWl3TVGR8p48BN9H17+sSTLPoH2fpc+tQfHuwItd+QTyIP9TajK0i6EerDj
-	 gp6erv59yR/u+dcKQp7Yh8VUl2sHNyWFtDw5UPzk=
+	b=HZfdbHwzLFsKdVoGc4PLPiTBwialjChW90gMszvzSadS2HcrIK1em/VTklBycOoF3
+	 lYQ1AHfxpLfpOnr+4+HxIBcMkQHovh8537s/jlbjHRHYdm9L6xTDwtsryLA0i37SzI
+	 YdL/1CR0Jty9SJX90oSdM7RthKfvyE2SUe0YD0eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/270] net: ipv6: fix UDPv6 GSO segmentation with NAT
+Subject: [PATCH 6.6 245/444] drm/amdgpu: reset psp->cmd to NULL after releasing the buffer
 Date: Mon,  2 Jun 2025 15:45:09 +0200
-Message-ID: <20250602134308.187284265@linuxfoundation.org>
+Message-ID: <20250602134350.863283220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-[ Upstream commit b936a9b8d4a585ccb6d454921c36286bfe63e01d ]
+[ Upstream commit e92f3f94cad24154fd3baae30c6dfb918492278d ]
 
-If any address or port is changed, update it in all packets and recalculate
-checksum.
+Reset psp->cmd to NULL after releasing the buffer in function psp_sw_fini().
 
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250426153210.14044-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index b6952b88b5051..73beaa7e2d703 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -242,6 +242,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
- 	return segs;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 6a24e8ceb9449..a4ab02c85f65b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -506,7 +506,6 @@ static int psp_sw_fini(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 	struct psp_context *psp = &adev->psp;
+-	struct psp_gfx_cmd_resp *cmd = psp->cmd;
  
-+static void __udpv6_gso_segment_csum(struct sk_buff *seg,
-+				     struct in6_addr *oldip,
-+				     const struct in6_addr *newip,
-+				     __be16 *oldport, __be16 newport)
-+{
-+	struct udphdr *uh = udp_hdr(seg);
-+
-+	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
-+		return;
-+
-+	if (uh->check) {
-+		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
-+					  newip->s6_addr32, true);
-+
-+		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
-+					 false);
-+		if (!uh->check)
-+			uh->check = CSUM_MANGLED_0;
-+	}
-+
-+	*oldip = *newip;
-+	*oldport = newport;
-+}
-+
-+static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
-+{
-+	const struct ipv6hdr *iph;
-+	const struct udphdr *uh;
-+	struct ipv6hdr *iph2;
-+	struct sk_buff *seg;
-+	struct udphdr *uh2;
-+
-+	seg = segs;
-+	uh = udp_hdr(seg);
-+	iph = ipv6_hdr(seg);
-+	uh2 = udp_hdr(seg->next);
-+	iph2 = ipv6_hdr(seg->next);
-+
-+	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
-+	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
-+	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
-+		return segs;
-+
-+	while ((seg = seg->next)) {
-+		uh2 = udp_hdr(seg);
-+		iph2 = ipv6_hdr(seg);
-+
-+		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
-+					 &uh2->source, uh->source);
-+		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
-+					 &uh2->dest, uh->dest);
-+	}
-+
-+	return segs;
-+}
-+
- static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
- 					      netdev_features_t features,
- 					      bool is_ipv6)
-@@ -254,7 +310,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 	psp_memory_training_fini(psp);
  
- 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
+@@ -516,8 +515,8 @@ static int psp_sw_fini(void *handle)
+ 	amdgpu_ucode_release(&psp->cap_fw);
+ 	amdgpu_ucode_release(&psp->toc_fw);
  
--	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
-+	if (is_ipv6)
-+		return __udpv6_gso_segment_list_csum(skb);
-+	else
-+		return __udpv4_gso_segment_list_csum(skb);
- }
+-	kfree(cmd);
+-	cmd = NULL;
++	kfree(psp->cmd);
++	psp->cmd = NULL;
  
- struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 	psp_free_shared_bufs(psp);
+ 
 -- 
 2.39.5
 
