@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11A8ACB68E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED59FACB506
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4FF47A72C8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 270457B458A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA622D4F9;
-	Mon,  2 Jun 2025 15:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD832222DA;
+	Mon,  2 Jun 2025 14:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcukHSyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiPPI5X/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8C222259C;
-	Mon,  2 Jun 2025 15:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399E91EA65;
+	Mon,  2 Jun 2025 14:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877289; cv=none; b=ClzN9jh6fv4h3yYfuSPrvKX3ZoQZqlXm/CfPH6ETHetiozp3GnDrBdIiI6D1DMGDDs7G1mzzkHXbKM7YQ12kFhAFfLnjBQCI+YPXOVSb2Hrw+7HHIyEeO/r6Q33mnVr0mduegL9v69gHStAdh+4BnLYssD0mCIzUWrVAYsTXy1Y=
+	t=1748875719; cv=none; b=VEm/mhV46NQzURiWGhhgnOY64qWFN5sCojhzREDMe8/GBWyBaHAu8wOqfWps2wHaS6zTufr+9MHNP99I4dUUe6ZqI+pNhdkNyOTyVKAwEiHXVDjuLgvsnBmTAqcaDRQWzluO47IIY20gbkuLqP6lu5O+2BKxh58wW5W0VyBOalw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877289; c=relaxed/simple;
-	bh=mAzFEuRHG5IiqCw3cW5aSF/+kgM/F9V19E9dPYmLpkg=;
+	s=arc-20240116; t=1748875719; c=relaxed/simple;
+	bh=v+wxQsAE08UjMMlFuKFPqTvMg5VcINGuqD1VsDO202g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bg182VJdQsLBrdtkSgT5VjH54SoRaE6wK1FqugDRhKHLatASxmquXdDbPRItKmLG5rg5jMsh11QeilJD/GeNy2w8cfC7FoHEyos8JJrb4gOcacFj6PjBPQVJVL6+OYXNhxTOJCExTZq+9mP3Op2IBlRhpFdlvKeHQmfhzQNYmGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcukHSyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C30C4CEEB;
-	Mon,  2 Jun 2025 15:14:48 +0000 (UTC)
+	 MIME-Version; b=LkiY3JvaMRULE7eq+L+i2gRVKom7IXdnBA6k+GznDoXkgED0G8hEongss23LYhGeoBo1ukk2rN4Xy3PMCPTGP6jI1dp4HbUvFu5SUaGG5IOED9YtKfv9yqYOIyDGl8HzU7EJ2Wi/efTNkEzL5FUs193bk0slMZtBauW7yHZZ4q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiPPI5X/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74335C4CEEB;
+	Mon,  2 Jun 2025 14:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877289;
-	bh=mAzFEuRHG5IiqCw3cW5aSF/+kgM/F9V19E9dPYmLpkg=;
+	s=korg; t=1748875719;
+	bh=v+wxQsAE08UjMMlFuKFPqTvMg5VcINGuqD1VsDO202g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcukHSyB3jipxjzRpOTXtwbAxouUpDRPPWU7rp2wg6vIQ60DV4Ogc16pd9gLMYXC0
-	 YLfcQu1nnbwrgTd+eesCqk2VWiKQMjjvUeHrJ9r2DVVIRqOo8UWpx/g1IjmetLSWvm
-	 kmNSM/dv+mTPNoer5Afnps0bBjqs9hQ8EizUGxFs=
+	b=iiPPI5X/zBD+PspFTKzY5qNxTlc5Bh68d6V1djgxi+HSgyEgNTf6bAbvOyCiuYJQ7
+	 YbrfT/kcdELacLzPsUef7N696nP3ON/SVTH2aJGsGLkO6fYrFxB+3+3yYoJnWgR5WY
+	 dtlgYbtf7qwzvjEJWwb4x5zxMi0KPxzDSElefARo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 230/325] espintcp: remove encap socket caching to avoid reference leak
+Subject: [PATCH 5.10 221/270] bpftool: Fix readlink usage in get_fd_type
 Date: Mon,  2 Jun 2025 15:48:26 +0200
-Message-ID: <20250602134329.129206290@linuxfoundation.org>
+Message-ID: <20250602134316.215123156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,254 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 028363685bd0b7a19b4a820f82dd905b1dc83999 ]
+[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
 
-The current scheme for caching the encap socket can lead to reference
-leaks when we try to delete the netns.
+The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
+bytes and *does not* append null-terminator to buf. With respect to
+that, fix two pieces in get_fd_type:
 
-The reference chain is: xfrm_state -> enacp_sk -> netns
+1. Change the truncation check to contain sizeof(buf) rather than
+   sizeof(path).
+2. Append null-terminator to buf.
 
-Since the encap socket is a userspace socket, it holds a reference on
-the netns. If we delete the espintcp state (through flush or
-individual delete) before removing the netns, the reference on the
-socket is dropped and the netns is correctly deleted. Otherwise, the
-netns may not be reachable anymore (if all processes within the ns
-have terminated), so we cannot delete the xfrm state to drop its
-reference on the socket.
+Reported by Coverity.
 
-This patch results in a small (~2% in my tests) performance
-regression.
-
-A GC-type mechanism could be added for the socket cache, to clear
-references if the state hasn't been used "recently", but it's a lot
-more complex than just not caching the socket.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h    |  1 -
- net/ipv4/esp4.c       | 49 ++++---------------------------------------
- net/ipv6/esp6.c       | 49 ++++---------------------------------------
- net/xfrm/xfrm_state.c |  3 ---
- 4 files changed, 8 insertions(+), 94 deletions(-)
+ tools/bpf/bpftool/common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index bf670929622dc..64911162ab5f4 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -212,7 +212,6 @@ struct xfrm_state {
- 
- 	/* Data for encapsulator */
- 	struct xfrm_encap_tmpl	*encap;
--	struct sock __rcu	*encap_sk;
- 
- 	/* Data for care-of address */
- 	xfrm_address_t	*coaddr;
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 419969b268225..8f5417ff355d7 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -118,47 +118,16 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
- }
- 
- #ifdef CONFIG_INET_ESPINTCP
--struct esp_tcp_sk {
--	struct sock *sk;
--	struct rcu_head rcu;
--};
--
--static void esp_free_tcp_sk(struct rcu_head *head)
--{
--	struct esp_tcp_sk *esk = container_of(head, struct esp_tcp_sk, rcu);
--
--	sock_put(esk->sk);
--	kfree(esk);
--}
--
- static struct sock *esp_find_tcp_sk(struct xfrm_state *x)
- {
- 	struct xfrm_encap_tmpl *encap = x->encap;
- 	struct net *net = xs_net(x);
--	struct esp_tcp_sk *esk;
- 	__be16 sport, dport;
--	struct sock *nsk;
- 	struct sock *sk;
- 
--	sk = rcu_dereference(x->encap_sk);
--	if (sk && sk->sk_state == TCP_ESTABLISHED)
--		return sk;
--
- 	spin_lock_bh(&x->lock);
- 	sport = encap->encap_sport;
- 	dport = encap->encap_dport;
--	nsk = rcu_dereference_protected(x->encap_sk,
--					lockdep_is_held(&x->lock));
--	if (sk && sk == nsk) {
--		esk = kmalloc(sizeof(*esk), GFP_ATOMIC);
--		if (!esk) {
--			spin_unlock_bh(&x->lock);
--			return ERR_PTR(-ENOMEM);
--		}
--		RCU_INIT_POINTER(x->encap_sk, NULL);
--		esk->sk = sk;
--		call_rcu(&esk->rcu, esp_free_tcp_sk);
--	}
- 	spin_unlock_bh(&x->lock);
- 
- 	sk = inet_lookup_established(net, net->ipv4.tcp_death_row.hashinfo, x->id.daddr.a4,
-@@ -171,20 +140,6 @@ static struct sock *esp_find_tcp_sk(struct xfrm_state *x)
- 		return ERR_PTR(-EINVAL);
+diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
+index eefa2b34e641a..33065b17900fa 100644
+--- a/tools/bpf/bpftool/common.c
++++ b/tools/bpf/bpftool/common.c
+@@ -311,10 +311,11 @@ int get_fd_type(int fd)
+ 		p_err("can't read link type: %s", strerror(errno));
+ 		return -1;
  	}
- 
--	spin_lock_bh(&x->lock);
--	nsk = rcu_dereference_protected(x->encap_sk,
--					lockdep_is_held(&x->lock));
--	if (encap->encap_sport != sport ||
--	    encap->encap_dport != dport) {
--		sock_put(sk);
--		sk = nsk ?: ERR_PTR(-EREMCHG);
--	} else if (sk == nsk) {
--		sock_put(sk);
--	} else {
--		rcu_assign_pointer(x->encap_sk, sk);
--	}
--	spin_unlock_bh(&x->lock);
--
- 	return sk;
- }
- 
-@@ -207,6 +162,8 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 		err = espintcp_push_skb(sk, skb);
- 	bh_unlock_sock(sk);
- 
-+	sock_put(sk);
-+
- out:
- 	rcu_read_unlock();
- 	return err;
-@@ -391,6 +348,8 @@ static struct ip_esp_hdr *esp_output_tcp_encap(struct xfrm_state *x,
- 	if (IS_ERR(sk))
- 		return ERR_CAST(sk);
- 
-+	sock_put(sk);
-+
- 	*lenp = htons(len);
- 	esph = (struct ip_esp_hdr *)(lenp + 1);
- 
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index a021c88d3d9b8..085a83b807afd 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -135,47 +135,16 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp)
- }
- 
- #ifdef CONFIG_INET6_ESPINTCP
--struct esp_tcp_sk {
--	struct sock *sk;
--	struct rcu_head rcu;
--};
--
--static void esp_free_tcp_sk(struct rcu_head *head)
--{
--	struct esp_tcp_sk *esk = container_of(head, struct esp_tcp_sk, rcu);
--
--	sock_put(esk->sk);
--	kfree(esk);
--}
--
- static struct sock *esp6_find_tcp_sk(struct xfrm_state *x)
- {
- 	struct xfrm_encap_tmpl *encap = x->encap;
- 	struct net *net = xs_net(x);
--	struct esp_tcp_sk *esk;
- 	__be16 sport, dport;
--	struct sock *nsk;
- 	struct sock *sk;
- 
--	sk = rcu_dereference(x->encap_sk);
--	if (sk && sk->sk_state == TCP_ESTABLISHED)
--		return sk;
--
- 	spin_lock_bh(&x->lock);
- 	sport = encap->encap_sport;
- 	dport = encap->encap_dport;
--	nsk = rcu_dereference_protected(x->encap_sk,
--					lockdep_is_held(&x->lock));
--	if (sk && sk == nsk) {
--		esk = kmalloc(sizeof(*esk), GFP_ATOMIC);
--		if (!esk) {
--			spin_unlock_bh(&x->lock);
--			return ERR_PTR(-ENOMEM);
--		}
--		RCU_INIT_POINTER(x->encap_sk, NULL);
--		esk->sk = sk;
--		call_rcu(&esk->rcu, esp_free_tcp_sk);
--	}
- 	spin_unlock_bh(&x->lock);
- 
- 	sk = __inet6_lookup_established(net, net->ipv4.tcp_death_row.hashinfo, &x->id.daddr.in6,
-@@ -188,20 +157,6 @@ static struct sock *esp6_find_tcp_sk(struct xfrm_state *x)
- 		return ERR_PTR(-EINVAL);
+-	if (n == sizeof(path)) {
++	if (n == sizeof(buf)) {
+ 		p_err("can't read link type: path too long!");
+ 		return -1;
  	}
++	buf[n] = '\0';
  
--	spin_lock_bh(&x->lock);
--	nsk = rcu_dereference_protected(x->encap_sk,
--					lockdep_is_held(&x->lock));
--	if (encap->encap_sport != sport ||
--	    encap->encap_dport != dport) {
--		sock_put(sk);
--		sk = nsk ?: ERR_PTR(-EREMCHG);
--	} else if (sk == nsk) {
--		sock_put(sk);
--	} else {
--		rcu_assign_pointer(x->encap_sk, sk);
--	}
--	spin_unlock_bh(&x->lock);
--
- 	return sk;
- }
- 
-@@ -224,6 +179,8 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 		err = espintcp_push_skb(sk, skb);
- 	bh_unlock_sock(sk);
- 
-+	sock_put(sk);
-+
- out:
- 	rcu_read_unlock();
- 	return err;
-@@ -427,6 +384,8 @@ static struct ip_esp_hdr *esp6_output_tcp_encap(struct xfrm_state *x,
- 	if (IS_ERR(sk))
- 		return ERR_CAST(sk);
- 
-+	sock_put(sk);
-+
- 	*lenp = htons(len);
- 	esph = (struct ip_esp_hdr *)(lenp + 1);
- 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 2f4cf976b59a3..b5047a94c7d01 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -694,9 +694,6 @@ int __xfrm_state_delete(struct xfrm_state *x)
- 		net->xfrm.state_num--;
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
- 
--		if (x->encap_sk)
--			sock_put(rcu_dereference_raw(x->encap_sk));
--
- 		xfrm_dev_state_delete(x);
- 
- 		/* All xfrm_state objects are created by xfrm_state_alloc.
+ 	if (strstr(buf, "bpf-map"))
+ 		return BPF_OBJ_MAP;
 -- 
 2.39.5
 
