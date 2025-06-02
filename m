@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76E7ACB48E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38203ACB83A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1619E6305
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345BF9E0623
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C24226D0A;
-	Mon,  2 Jun 2025 14:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412FA2309BE;
+	Mon,  2 Jun 2025 15:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhYrYDoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+SPN/08"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307282236F4;
-	Mon,  2 Jun 2025 14:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26922AE9A;
+	Mon,  2 Jun 2025 15:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875140; cv=none; b=gpQwUDmL2YELOi55LdplSk2Fs5v1ZSxIPXAYr4jKXXSdcyjM9RTyTODNWJicQfI0Ksk3Wki+yhj/MK/ONgM0iDZotWW9xv9HP3u7edrtBasSXB9r3ZVQjnJOu3EeD18n2cAOUHXG8Pl/om9iPFolGNsE2Q880OtmUhQ+83B40c8=
+	t=1748876714; cv=none; b=aXfhaE59vsyZc686//Wl5iawnweuidCj2Lu+qnqD1V42lv9s83trr2BPRaOH72xg70Orqui9N49IyieAsSWwMEOT8KE+U8TvKMEITY9W1FAkO3GfbweNiga2SG9f05SYaPhvNj+CSjxydtZU2p9tCR79cE+lZBnfivYdG9G+xCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875140; c=relaxed/simple;
-	bh=o2z0ye9enXeDaxNSAH6ps4Q+w8/Sw+LU6TthJftTwUI=;
+	s=arc-20240116; t=1748876714; c=relaxed/simple;
+	bh=PvR97CVwqSQC6gHwkKgMWmzUGVI0W30Hlv6WN0PSVoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKAJQ09XGb5TmDX6VnWBjPGemzvfBx5be49ZswCsg1HTwGgd4/eoeUQ2uqH9CB9rSjbvFIk+EjJbIFNMbbRqCR6Oi9s98LW2vzcqKWRw/qIZled1tRGx1jwS7YKbemT37IPaIjlxpavUQLQneyU6QDGaETkq9LIKqZxdhKnzKOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhYrYDoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA899C4CEEB;
-	Mon,  2 Jun 2025 14:38:59 +0000 (UTC)
+	 MIME-Version; b=gwhcH4/K+k2QObkoXobFQYvnZ3frQAMioMkF96ok3g8K+cDaEdI3XgZuHSlB+TfETfusK+4IbqYbC+x0BhPqteiw6OZnQutVW2/nD4QW0IWP5+ZOYLfo7UrhVzH6Lzar4JKh3eKqxK02uG5MZKHUYWn4mQALtd4RNzcoBoDiE3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+SPN/08; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E92C4CEEB;
+	Mon,  2 Jun 2025 15:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875140;
-	bh=o2z0ye9enXeDaxNSAH6ps4Q+w8/Sw+LU6TthJftTwUI=;
+	s=korg; t=1748876713;
+	bh=PvR97CVwqSQC6gHwkKgMWmzUGVI0W30Hlv6WN0PSVoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhYrYDojqanT2jPomaKnG4ucNOkfA8Z+tFSlKZWlR58BzHnRp33K5P5yUBSGCK+f1
-	 F6DSqfTTMVLtc6uLQyOC9Y57EAsc2vwiwornbKZf7FaQPs5wqo+w+UpM1tBBejLrn2
-	 dy2aLNY5mHgoLbZ+NDO4SnESZPXFfDNnC/TFih4M=
+	b=0+SPN/08GU3r6CU5vS5uehIr/RCYvo1UY5jYlURCMuAcDyVFibkomyVlm8LtQcV7U
+	 pGTVY/ceF7SuXc11fFP5ZIPXeSik1U/EIAmRaLjJzoU3WtWMwpe4ZiQWXfv+SZZep8
+	 DqxGnBhAdC7aGREQoU44wATimC8lE8y2CUocjSpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 041/270] scsi: target: Fix WRITE_SAME No Data Buffer crash
-Date: Mon,  2 Jun 2025 15:45:26 +0200
-Message-ID: <20250602134308.866284745@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 051/325] btrfs: make btrfs_discard_workfn() block_group ref explicit
+Date: Mon,  2 Jun 2025 15:45:27 +0200
+Message-ID: <20250602134321.836656199@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Boris Burkov <boris@bur.io>
 
-commit ccd3f449052449a917a3e577d8ba0368f43b8f29 upstream.
+[ Upstream commit 895c6721d310c036dcfebb5ab845822229fa35eb ]
 
-In newer version of the SBC specs, we have a NDOB bit that indicates there
-is no data buffer that gets written out. If this bit is set using commands
-like "sg_write_same --ndob" we will crash in target_core_iblock/file's
-execute_write_same handlers when we go to access the se_cmd->t_data_sg
-because its NULL.
+Currently, the async discard machinery owns a ref to the block_group
+when the block_group is queued on a discard list. However, to handle
+races with discard cancellation and the discard workfn, we have a
+specific logic to detect that the block_group is *currently* running in
+the workfn, to protect the workfn's usage amidst cancellation.
 
-This patch adds a check for the NDOB bit in the common WRITE SAME code
-because we don't support it. And, it adds a check for zero SG elements in
-each handler in case the initiator tries to send a normal WRITE SAME with
-no data buffer.
+As far as I can tell, this doesn't have any overt bugs (though
+finish_discard_pass() and remove_from_discard_list() racing can have a
+surprising outcome for the caller of remove_from_discard_list() in that
+it is again added at the end).
 
-Link: https://lore.kernel.org/r/20220628022325.14627-2-michael.christie@oracle.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But it is needlessly complicated to rely on locking and the nullity of
+discard_ctl->block_group. Simplify this significantly by just taking a
+refcount while we are in the workfn and unconditionally drop it in both
+the remove and workfn paths, regardless of if they race.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_file.c   |    3 +++
- drivers/target/target_core_iblock.c |    4 ++++
- drivers/target/target_core_sbc.c    |    6 ++++++
- 3 files changed, 13 insertions(+)
+ fs/btrfs/discard.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
---- a/drivers/target/target_core_file.c
-+++ b/drivers/target/target_core_file.c
-@@ -455,6 +455,9 @@ fd_execute_write_same(struct se_cmd *cmd
- 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
- 	}
+diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
+index 7b2f77a8aa982..a90f3cb83c709 100644
+--- a/fs/btrfs/discard.c
++++ b/fs/btrfs/discard.c
+@@ -152,13 +152,7 @@ static bool remove_from_discard_list(struct btrfs_discard_ctl *discard_ctl,
+ 	block_group->discard_eligible_time = 0;
+ 	queued = !list_empty(&block_group->discard_list);
+ 	list_del_init(&block_group->discard_list);
+-	/*
+-	 * If the block group is currently running in the discard workfn, we
+-	 * don't want to deref it, since it's still being used by the workfn.
+-	 * The workfn will notice this case and deref the block group when it is
+-	 * finished.
+-	 */
+-	if (queued && !running)
++	if (queued)
+ 		btrfs_put_block_group(block_group);
  
-+	if (!cmd->t_data_nents)
-+		return TCM_INVALID_CDB_FIELD;
-+
- 	if (cmd->t_data_nents > 1 ||
- 	    cmd->t_data_sg[0].length != cmd->se_dev->dev_attrib.block_size) {
- 		pr_err("WRITE_SAME: Illegal SGL t_data_nents: %u length: %u"
---- a/drivers/target/target_core_iblock.c
-+++ b/drivers/target/target_core_iblock.c
-@@ -458,6 +458,10 @@ iblock_execute_write_same(struct se_cmd
- 		       " backends not supported\n");
- 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
+ 	spin_unlock(&discard_ctl->lock);
+@@ -256,9 +250,10 @@ static struct btrfs_block_group *peek_discard_list(
+ 			block_group->discard_cursor = block_group->start;
+ 			block_group->discard_state = BTRFS_DISCARD_EXTENTS;
+ 		}
+-		discard_ctl->block_group = block_group;
  	}
-+
-+	if (!cmd->t_data_nents)
-+		return TCM_INVALID_CDB_FIELD;
-+
- 	sg = &cmd->t_data_sg[0];
+ 	if (block_group) {
++		btrfs_get_block_group(block_group);
++		discard_ctl->block_group = block_group;
+ 		*discard_state = block_group->discard_state;
+ 		*discard_index = block_group->discard_index;
+ 	}
+@@ -482,9 +477,20 @@ static void btrfs_discard_workfn(struct work_struct *work)
  
- 	if (cmd->t_data_nents > 1 ||
---- a/drivers/target/target_core_sbc.c
-+++ b/drivers/target/target_core_sbc.c
-@@ -312,6 +312,12 @@ sbc_setup_write_same(struct se_cmd *cmd,
- 		pr_warn("WRITE SAME with ANCHOR not supported\n");
- 		return TCM_INVALID_CDB_FIELD;
- 	}
-+
-+	if (flags & 0x01) {
-+		pr_warn("WRITE SAME with NDOB not supported\n");
-+		return TCM_INVALID_CDB_FIELD;
+ 	block_group = peek_discard_list(discard_ctl, &discard_state,
+ 					&discard_index, now);
+-	if (!block_group || !btrfs_run_discard_work(discard_ctl))
++	if (!block_group)
+ 		return;
++	if (!btrfs_run_discard_work(discard_ctl)) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
++		return;
 +	}
-+
- 	/*
- 	 * Special case for WRITE_SAME w/ UNMAP=1 that ends up getting
- 	 * translated into block discard requests within backend code.
+ 	if (now < block_group->discard_eligible_time) {
++		spin_lock(&discard_ctl->lock);
++		btrfs_put_block_group(block_group);
++		discard_ctl->block_group = NULL;
++		spin_unlock(&discard_ctl->lock);
+ 		btrfs_discard_schedule_work(discard_ctl, false);
+ 		return;
+ 	}
+@@ -536,15 +542,7 @@ static void btrfs_discard_workfn(struct work_struct *work)
+ 	spin_lock(&discard_ctl->lock);
+ 	discard_ctl->prev_discard = trimmed;
+ 	discard_ctl->prev_discard_time = now;
+-	/*
+-	 * If the block group was removed from the discard list while it was
+-	 * running in this workfn, then we didn't deref it, since this function
+-	 * still owned that reference. But we set the discard_ctl->block_group
+-	 * back to NULL, so we can use that condition to know that now we need
+-	 * to deref the block_group.
+-	 */
+-	if (discard_ctl->block_group == NULL)
+-		btrfs_put_block_group(block_group);
++	btrfs_put_block_group(block_group);
+ 	discard_ctl->block_group = NULL;
+ 	__btrfs_discard_schedule_work(discard_ctl, now, false);
+ 	spin_unlock(&discard_ctl->lock);
+-- 
+2.39.5
+
 
 
 
