@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-150542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D42FACB6DF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A07FACB6AD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF7F77A8C3C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AA28A27F3F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9013227E97;
-	Mon,  2 Jun 2025 15:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC37E222562;
+	Mon,  2 Jun 2025 15:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcSCkXy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTDPZvoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8479D227E95;
-	Mon,  2 Jun 2025 15:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C4E2222DA;
+	Mon,  2 Jun 2025 15:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877450; cv=none; b=RnU9YCnMP95feqRqgv+1GSQm8fSleOpBa6QCpQACQdwM1bb9mZkf77ExITl1wK9MWZ7u7N6ymR28CP4wE98NF56TwInWTg5Jsf+UuhsQJbUhoVmqAMo4JuIahQybSmZOE3vJqVdqxMqoujo6F25AskygmEABos9WyGisIGl4DtQ=
+	t=1748876548; cv=none; b=BfygLxF5MMZ7K6l3W63GVIiE5P823aU1ze2Q7xa0MleT/EXXAJtDtcxLRCEII3A5uSdwbCChnMsJqaB7sOe8AVA2u7Zi16fcjWhwwGabVu/wauyCiI+c8Ao561GSfKPkh35bQ7ZcA8d14bLl10PdyHV1IE31mMk4bzT6wNjl5wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877450; c=relaxed/simple;
-	bh=lSAL+1ANzt8B6ViQzD5EGFcWGnatSKjwwOOzsGdhHKM=;
+	s=arc-20240116; t=1748876548; c=relaxed/simple;
+	bh=l1fmWtr/ewYtppCzFpgO6qkTWjeEu3rDmrn+9GD+W58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+0X2l6hPXzfNGHvyrWbJdFZp1CCwtNzvk4eMYQoUZDULDaaqr/ikD6XH1EMKfCiffEq5D32cfxl7CobotBVJo3DO+nPGHaKt1FEGnlfPPSGR4x3LYxg37SB3yugDDJnRQsqOV/Wrz05QriVUZg4KU2Dk4GcKEi6VTS0rGTNXJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcSCkXy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC11C4CEEB;
-	Mon,  2 Jun 2025 15:17:29 +0000 (UTC)
+	 MIME-Version; b=tRUIxur8KcV4NC3yLPv1B3UMYakwUd4U25VFDg2sHu/GZAI9mCHbbHC1GXa9uTuSYRDcIKqfoO+dPbUSpx1dySa57kiD91RhNgGvhZm6EBS7yYnKzMvOsgFoGYdZbvQ3sFNgV6JvCvwL03dCBydD6uvdVlKIuLQw9NrOoTZYVIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTDPZvoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067F3C4CEEE;
+	Mon,  2 Jun 2025 15:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877450;
-	bh=lSAL+1ANzt8B6ViQzD5EGFcWGnatSKjwwOOzsGdhHKM=;
+	s=korg; t=1748876548;
+	bh=l1fmWtr/ewYtppCzFpgO6qkTWjeEu3rDmrn+9GD+W58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcSCkXy04wBE0cn35xppgShZKnlnwdpfGaRENicqx5tzig5ICy5444JVjvVLkpfF1
-	 3QwpEMZ896Hdj/fo5ePXpSVvudTObM7FEen0t/yPSbOi3kgIzgO9WEf7JsgQgS38Uu
-	 aS1NcsknUJl7bwW3dFguhTLloKMpVDe3OnVdqpdc=
+	b=DTDPZvoUz0MhJR2n9N2rnx1EH1ek1k/dJEg6IYaBLHuMxjD31YUCssd46JCNbipRj
+	 fLTpcl+B4bxB3t4vris/qfs9hjcMGhABLHkiDBpKANi7HLTWVgGw835fskUG5ogX8n
+	 ck+Z6vUgywQznrOA1gJ7Mh9pXr7FFuf8NlWiRDUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, Simon Horman" <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.1 282/325] af_unix: Return struct unix_sock from unix_get_socket().
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 186/207] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
 Date: Mon,  2 Jun 2025 15:49:18 +0200
-Message-ID: <20250602134331.219556431@linuxfoundation.org>
+Message-ID: <20250602134306.041965487@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,131 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 5b17307bd0789edea0675d524a2b277b93bbde62 upstream.
+commit e8d2d287e26d9bd9114cf258a123a6b70812442e upstream.
 
-Currently, unix_get_socket() returns struct sock, but after calling
-it, we always cast it to unix_sk().
+Clang warns (or errors with CONFIG_WERROR=y):
 
-Let's return struct unix_sock from unix_get_socket().
+  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+    596 |         default:
+        |         ^
+  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+    596 |         default:
+        |         ^
+        |         break;
+  1 error generated.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240123170856.41348-4-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Clang is a little more pedantic than GCC, which does not warn when
+falling through to a case that is just break or return. Clang's version
+is more in line with the kernel's own stance in deprecated.rst, which
+states that all switch/case blocks must end in either break,
+fallthrough, continue, goto, or return. Add the missing break to silence
+the warning.
+
+Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/af_unix.h |    2 +-
- net/unix/garbage.c    |   19 +++++++------------
- net/unix/scm.c        |   19 +++++++------------
- 3 files changed, 15 insertions(+), 25 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -13,7 +13,7 @@ void unix_notinflight(struct user_struct
- void unix_destruct_scm(struct sk_buff *skb);
- void unix_gc(void);
- void wait_for_unix_gc(void);
--struct sock *unix_get_socket(struct file *filp);
-+struct unix_sock *unix_get_socket(struct file *filp);
- struct sock *unix_peer_get(struct sock *sk);
- 
- #define UNIX_HASH_MOD	(256 - 1)
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -105,20 +105,15 @@ static void scan_inflight(struct sock *x
- 
- 			while (nfd--) {
- 				/* Get the socket the fd matches if it indeed does so */
--				struct sock *sk = unix_get_socket(*fp++);
-+				struct unix_sock *u = unix_get_socket(*fp++);
- 
--				if (sk) {
--					struct unix_sock *u = unix_sk(sk);
-+				/* Ignore non-candidates, they could have been added
-+				 * to the queues after starting the garbage collection
-+				 */
-+				if (u && test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
-+					hit = true;
- 
--					/* Ignore non-candidates, they could
--					 * have been added to the queues after
--					 * starting the garbage collection
--					 */
--					if (test_bit(UNIX_GC_CANDIDATE, &u->gc_flags)) {
--						hit = true;
--
--						func(u);
--					}
-+					func(u);
- 				}
- 			}
- 			if (hit && hitlist != NULL) {
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -21,9 +21,8 @@ EXPORT_SYMBOL(gc_inflight_list);
- DEFINE_SPINLOCK(unix_gc_lock);
- EXPORT_SYMBOL(unix_gc_lock);
- 
--struct sock *unix_get_socket(struct file *filp)
-+struct unix_sock *unix_get_socket(struct file *filp)
- {
--	struct sock *u_sock = NULL;
- 	struct inode *inode = file_inode(filp);
- 
- 	/* Socket ? */
-@@ -33,10 +32,10 @@ struct sock *unix_get_socket(struct file
- 
- 		/* PF_UNIX ? */
- 		if (s && sock->ops && sock->ops->family == PF_UNIX)
--			u_sock = s;
-+			return unix_sk(s);
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -438,6 +438,7 @@ static void svc_i3c_master_ibi_work(stru
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++		break;
+ 	default:
+ 		break;
  	}
- 
--	return u_sock;
-+	return NULL;
- }
- EXPORT_SYMBOL(unix_get_socket);
- 
-@@ -45,13 +44,11 @@ EXPORT_SYMBOL(unix_get_socket);
-  */
- void unix_inflight(struct user_struct *user, struct file *fp)
- {
--	struct sock *s = unix_get_socket(fp);
-+	struct unix_sock *u = unix_get_socket(fp);
- 
- 	spin_lock(&unix_gc_lock);
- 
--	if (s) {
--		struct unix_sock *u = unix_sk(s);
--
-+	if (u) {
- 		if (!u->inflight) {
- 			BUG_ON(!list_empty(&u->link));
- 			list_add_tail(&u->link, &gc_inflight_list);
-@@ -68,13 +65,11 @@ void unix_inflight(struct user_struct *u
- 
- void unix_notinflight(struct user_struct *user, struct file *fp)
- {
--	struct sock *s = unix_get_socket(fp);
-+	struct unix_sock *u = unix_get_socket(fp);
- 
- 	spin_lock(&unix_gc_lock);
- 
--	if (s) {
--		struct unix_sock *u = unix_sk(s);
--
-+	if (u) {
- 		BUG_ON(!u->inflight);
- 		BUG_ON(list_empty(&u->link));
- 
 
 
 
