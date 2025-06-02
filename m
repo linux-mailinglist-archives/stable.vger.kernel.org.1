@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-150204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B7BACB680
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F68ACB43A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10B318971BD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FBF84A6B82
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00957239E7E;
-	Mon,  2 Jun 2025 14:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263AA22D9E6;
+	Mon,  2 Jun 2025 14:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JCDPdse"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLQ8m0MO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2502238174;
-	Mon,  2 Jun 2025 14:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80F91D8DFB;
+	Mon,  2 Jun 2025 14:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876367; cv=none; b=Q5ExKB6H3BPygnHoJHUhOcgRIHeaxST5p1w/Q5ZiEfdk9EQDXrrZqdt6YeX8vUZRNUDknwKktFsT7c5d/8VbMwJut8UtL2kFwojEEUZjZSdzhK8HHVmD6uECmwt1gmbqtGqR75B/utGIOOPFBnac9NurJqlWD6tUvetZJzDlC3k=
+	t=1748874876; cv=none; b=Tt3tCAFvFxZ6v9tLO6y8SFRCXdQ1vwLZRkRSxU2a5jqiAVUnF7hmTxLDZPZlyDmsl0QbO2b0ZZdBVCOBoDeyjhP+XiyovA/twelvbdIUcNKFxDVh8VOK7di25sgUZOexyOhBGFqNzidQyl4jk3LHcNRO6gxwBMNya0GxOS2Heys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876367; c=relaxed/simple;
-	bh=1f0eYIISdGeO1ecTRoDxFeFo/P5n8WspQTA85yCVq4M=;
+	s=arc-20240116; t=1748874876; c=relaxed/simple;
+	bh=d2KTfrF8Wz6ha4dr3AU21gCjgqXfNFe2raoicUMNzb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8iXFe5Aj2rnr0o7EbU19UOMS2m3nENA7nFkAIiBIJ2yCMCqzW8FMqXDwspqQpmkj+Go/1fozKXqvTlLdfXZqC03iF9EMnq7/3A3wWLV2H0oVHAR/c7/dBIZZ57xDyy5HVFWFMW6xFWnLRZ6iOqNuBTzVD+CjHTUdCXh1MVnT5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JCDPdse; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A19C4CEEB;
-	Mon,  2 Jun 2025 14:59:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hLVfb1ky3UrBVLiGBQEWC3yXLTwP0pgevA3/81dCN9yuCjzQgnwZD9urn4LJW5pRIJDrdHBonw2fXyuM86hKApAMUwZc1KCtQZ8uwrR9/qBEATU3EaMaF4ViumkHvOYp4dWudmm3RzKjxcDObLmea+LUHT/ow80PJ5OVJFptcKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLQ8m0MO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361CBC4CEEB;
+	Mon,  2 Jun 2025 14:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876367;
-	bh=1f0eYIISdGeO1ecTRoDxFeFo/P5n8WspQTA85yCVq4M=;
+	s=korg; t=1748874876;
+	bh=d2KTfrF8Wz6ha4dr3AU21gCjgqXfNFe2raoicUMNzb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JCDPdsejwfEL2dtwLF4iG5lGAofT9iljjlO3Nl9GetvpkFcGNc2SS/B4HMwM0UwJ
-	 dNSTl/G461RVOFcd+S+AZhFnQadCDKPxr/M8s/9ByLGJLUDqsUwjuRkdx3mq3N3cwt
-	 o/GrE94DQxHkg5ry/VwR6+0j34dnN6H2jqUaKO5w=
+	b=cLQ8m0MO3StiId1fkjtDFbjFXt5H5m67uB/tb5fOdKre8mBQez5jXSmFtfEkcY071
+	 EMEjAkC7T1tqCJeiPF/H/ruPMxbbfbnSRHJjx2Cc1Tl67ZJIFfYgSk9qkrgXad6sBo
+	 q29yYCoKZ/ftoWTCM01K95oUTnDQoZhIlUIgE98g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Clark <robdclark@gmail.com>,
+	Simon Ser <contact@emersion.fr>,
+	Manasi Navare <navaremanasi@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simona Vetter <simona.vetter@intel.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/207] drm/amd/display: Initial psr_version with correct setting
+Subject: [PATCH 5.4 163/204] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
 Date: Mon,  2 Jun 2025 15:48:16 +0200
-Message-ID: <20250602134303.571968959@linuxfoundation.org>
+Message-ID: <20250602134302.065713820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +72,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit d8c782cac5007e68e7484d420168f12d3490def6 ]
+[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
 
-[Why & How]
-The initial setting for psr_version is not correct while
-create a virtual link.
+msm is automagically upgrading normal commits to full modesets, and
+that's a big no-no:
 
-The default psr_version should be DC_PSR_VERSION_UNSUPPORTED.
+- for one this results in full on->off->on transitions on all these
+  crtc, at least if you're using the usual helpers. Which seems to be
+  the case, and is breaking uapi
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+- further even if the ctm change itself would not result in flicker,
+  this can hide modesets for other reasons. Which again breaks the
+  uapi
+
+v2: I forgot the case of adding unrelated crtc state. Add that case
+and link to the existing kerneldoc explainers. This has come up in an
+irc discussion with Manasi and Ville about intel's bigjoiner mode.
+Also cc everyone involved in the msm irc discussion, more people
+joined after I sent out v1.
+
+v3: Wording polish from Pekka and Thomas
+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index d3d638252e2b9..e1085c316b78e 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -248,6 +248,7 @@ static bool create_links(
- 		link->link_id.type = OBJECT_TYPE_CONNECTOR;
- 		link->link_id.id = CONNECTOR_ID_VIRTUAL;
- 		link->link_id.enum_id = ENUM_ID_1;
-+		link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
- 		link->link_enc = kzalloc(sizeof(*link->link_enc), GFP_KERNEL);
- 
- 		if (!link->link_enc) {
+diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
+index 927e1205d7aa4..202975db784c6 100644
+--- a/include/drm/drm_atomic.h
++++ b/include/drm/drm_atomic.h
+@@ -323,8 +323,27 @@ struct drm_atomic_state {
+ 	 *
+ 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
+ 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
+-	 * never consult this flag, instead looking at the output of
+-	 * drm_atomic_crtc_needs_modeset().
++	 * generally not consult this flag, but instead look at the output of
++	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
++	 *
++	 * - Drivers must not consult @allow_modeset in the atomic commit path.
++	 *   Use drm_atomic_crtc_needs_modeset() instead.
++	 *
++	 * - Drivers must consult @allow_modeset before adding unrelated struct
++	 *   drm_crtc_state to this commit by calling
++	 *   drm_atomic_get_crtc_state(). See also the warning in the
++	 *   documentation for that function.
++	 *
++	 * - Drivers must never change this flag, it is under the exclusive
++	 *   control of userspace.
++	 *
++	 * - Drivers may consult @allow_modeset in the atomic check path, if
++	 *   they have the choice between an optimal hardware configuration
++	 *   which requires a modeset, and a less optimal configuration which
++	 *   can be committed without a modeset. An example would be suboptimal
++	 *   scanout FIFO allocation resulting in increased idle power
++	 *   consumption. This allows userspace to avoid flickering and delays
++	 *   for the normal composition loop at reasonable cost.
+ 	 */
+ 	bool allow_modeset : 1;
+ 	bool legacy_cursor_update : 1;
 -- 
 2.39.5
 
