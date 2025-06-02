@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E693ACB3AC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B270CACB55F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 893C8407762
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 120BE19415A5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4FD2253A9;
-	Mon,  2 Jun 2025 14:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6E22253A7;
+	Mon,  2 Jun 2025 14:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YegsBQNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBvULWFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE26622331E;
-	Mon,  2 Jun 2025 14:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED32B225397;
+	Mon,  2 Jun 2025 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874594; cv=none; b=OXPaAPo0zqfEOOum5vijc2Q6o+bNr04VQ9H/EIhsjYJIxE3L8Fs7H0719vBBVTwa7EJU3k8DovoLH6KbOcpVsxPhR5ZYAyS3gXgYedoU9W7DF10L9s7ObN0+8IqEhgkUCvj1pyGY40aAiqt7NIB6cAxTPxy91AF6rMBDtEPBuy8=
+	t=1748875310; cv=none; b=qYn3ETrIWoINraT9Bzo5lhK3VwN3IMJ9pVPUvoJKPQEVNhnwaH2kUlDG9Yf6Jo/FHZ7NRW4x18LXnnNQ4wdsmX/qI9No4D9ZMItI4Y3QXjUjPctdqWcV1vRL47+jEmyDNPVQVKMwQpDDgcnO2//ZOG9SdSQuBDa+5Qpxx2gkcJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874594; c=relaxed/simple;
-	bh=lxfkhneQhyHapnaZZXo6pcFYwpOs5idvE0mrJYCI1ts=;
+	s=arc-20240116; t=1748875310; c=relaxed/simple;
+	bh=53mAXAXzSNIBE2evYnO2+fTav1nCi9JLc2yswD//+Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tz/7xWltQ1p1/s72Y/5kYOSgYab2YC4qRfaMxY401j0W+oT2wJ5B1OjDoHDiZcT6g/G5NBZHW5U+MUR6sYzrJyNhMsa7qWmXY4Mi2ZwSv1pN9UXwbmwy4m4ENhSqhv/CS2ok/JVPZyNuxMGbPVzKWj5bz94UgvAx9SKtopLaf1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YegsBQNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2CEC4CEEB;
-	Mon,  2 Jun 2025 14:29:53 +0000 (UTC)
+	 MIME-Version; b=Bt9WR7IRq4H0AaYTZFemsRkr+bBd5iMofh5ufwAOn67Y97FT2YXaLoXBBjTOx65OMBQ7mxw7eJtIss6U8HzN9H9pn9iOceG1w8z+CjlqsZxpp3e/kM2jlsMZbmcOzDUf7fXMTKrVZK4Y41PIWmf+Ud98jXI0WhJJnAnJDgmOg9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBvULWFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7722BC4CEEB;
+	Mon,  2 Jun 2025 14:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874593;
-	bh=lxfkhneQhyHapnaZZXo6pcFYwpOs5idvE0mrJYCI1ts=;
+	s=korg; t=1748875309;
+	bh=53mAXAXzSNIBE2evYnO2+fTav1nCi9JLc2yswD//+Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YegsBQNkptY5HkHVLW0zoBIc/mmNOv+N9UsD0qjhdE/yL+An2jvOBt5HOCXZ5nO/K
-	 hMh1tCQAq8cytexFVa/qZaQx5QYwomkULhitWXPVCL/tYdM8i400uoXkLXOqmkvUqN
-	 sK7owWQ9LRrOhz049ePYcRNHd25AWwe6DxwO7LB0=
+	b=wBvULWFKAv+wvomUric+n0xa/3kf4hzUOpfkvhyb00iWdmR2L1JrQAGWKnbYsrLtx
+	 0TQEEfAf5EgsCtPMMw99l8Y4azI1c1S766YXTl3vl3WhrcMUg1YtNJJFVYpnHKfwxA
+	 ZbqdTEa3CkguNY9TicQFopgFAbrjQ+9iKCVrUbUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Silvano Seva <s.seva@4sigma.it>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 044/204] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 092/270] ALSA: sh: SND_AICA should depend on SH_DMA_API
 Date: Mon,  2 Jun 2025 15:46:17 +0200
-Message-ID: <20250602134257.411310522@linuxfoundation.org>
+Message-ID: <20250602134310.942188262@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Silvano Seva <s.seva@4sigma.it>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 8114ef86e2058e2554111b793596f17bee23fa15 upstream.
+[ Upstream commit 66e48ef6ef506c89ec1b3851c6f9f5f80b5835ff ]
 
-Prevent st_lsm6dsx_read_tagged_fifo from falling in an infinite loop in
-case pattern_len is equal to zero and the device FIFO is not empty.
+If CONFIG_SH_DMA_API=n:
 
-Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Silvano Seva <s.seva@4sigma.it>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250311085030.3593-4-s.seva@4sigma.it
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    WARNING: unmet direct dependencies detected for G2_DMA
+      Depends on [n]: SH_DREAMCAST [=y] && SH_DMA_API [=n]
+      Selected by [y]:
+      - SND_AICA [=y] && SOUND [=y] && SND [=y] && SND_SUPERH [=y] && SH_DREAMCAST [=y]
+
+SND_AICA selects G2_DMA.  As the latter depends on SH_DMA_API, the
+former should depend on SH_DMA_API, too.
+
+Fixes: f477a538c14d07f8 ("sh: dma: fix kconfig dependency for G2_DMA")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505131320.PzgTtl9H-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/b90625f8a9078d0d304bafe862cbe3a3fab40082.1747121335.git.geert+renesas@glider.be
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/sh/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -541,6 +541,9 @@ int st_lsm6dsx_read_tagged_fifo(struct s
- 	if (!fifo_len)
- 		return 0;
+diff --git a/sound/sh/Kconfig b/sound/sh/Kconfig
+index b75fbb3236a7b..f5fa09d740b4c 100644
+--- a/sound/sh/Kconfig
++++ b/sound/sh/Kconfig
+@@ -14,7 +14,7 @@ if SND_SUPERH
  
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-+
- 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
- 		err = st_lsm6dsx_read_block(hw,
- 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
+ config SND_AICA
+ 	tristate "Dreamcast Yamaha AICA sound"
+-	depends on SH_DREAMCAST
++	depends on SH_DREAMCAST && SH_DMA_API
+ 	select SND_PCM
+ 	select G2_DMA
+ 	help
+-- 
+2.39.5
+
 
 
 
