@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56728ACB5C4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABDBACB685
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509161945A11
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0FEC7A16AC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257B722425B;
-	Mon,  2 Jun 2025 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39E022A804;
+	Mon,  2 Jun 2025 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqPp+DnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zcnw5Mjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BAF222590;
-	Mon,  2 Jun 2025 14:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5D721CA07;
+	Mon,  2 Jun 2025 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875699; cv=none; b=StfLITfZEBJLHYBwZI1GxXXRPJpbhQ5DsJsYb0rlgEqNTxHLmEd5l1QZMc//srbL21WW+QLbUkynUEOozFpxBrxCNLTDiX2vikU2VLbLXpFgSQhu5BKYfvWnkvgLmt/fz8KvN0dxO16BEmS04i5wcjjHpKYrtVPpOiijbKPis5w=
+	t=1748877273; cv=none; b=FewyxpAPJDgJmLU6lcwwVzfQ672hNRivW2YIfCko5ZRUS//Q40qJ+xbow7m8PoErd0rev+S0mRExg2ALn2tY2eUuuMVqsUe7CIDbnSrO0ZK+xYMa5Kabo/kqMJYLTxYBir572ar11zQ+UvyiSCovGGq5KO8E6vED5w4KktannKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875699; c=relaxed/simple;
-	bh=n2hLuEf7SkSc+LA5LzaX4vsvrowqYPkHCG0A13+AGyw=;
+	s=arc-20240116; t=1748877273; c=relaxed/simple;
+	bh=nLPQUnU5NmFjkZZtNSxECxusbR2mFFdFfQQqIz65jzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsvPVEzDP1p24Qq2IW54GCqVvmY4zBoNK7lmFjpOBLx8y37/KMO6Mq63Es7QUxc7g4a/FDSwCzUpb3LAFaHZ5KmJtrvtIhZxAtpbJ9dj2863FfAegUUidvywNh2CT+sJdbubzluTF3tNgUDiRNH8xXxeaVY0f178ELA4l0gAu94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqPp+DnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42110C4CEEB;
-	Mon,  2 Jun 2025 14:48:19 +0000 (UTC)
+	 MIME-Version; b=mpg9EUiy355pcwyh4U95uuZ7yILD/YUvCHV3HDUt0jYM0nEYKet+G9dAPlNxV0FjrZWjc5vNWMQGsX1fVfRRoWgKVqErwRDRgdB95hGZzKBlDDA1KaUcxMoqiyf3Y7vt7Wxt5kz1q8RyKkJZ21rBT1SHUQY/e1+JdBiaEotmJBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zcnw5Mjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B8DC4CEEB;
+	Mon,  2 Jun 2025 15:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875699;
-	bh=n2hLuEf7SkSc+LA5LzaX4vsvrowqYPkHCG0A13+AGyw=;
+	s=korg; t=1748877273;
+	bh=nLPQUnU5NmFjkZZtNSxECxusbR2mFFdFfQQqIz65jzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqPp+DnAeUGan7RzEj8jMtfCXJBkYx4FVeR5qmprkMTmpYc1nMVUI1xtJwOVyUiHM
-	 P2tGA+MWT2Oy09beRfZdt28GFG6LLnYgza2sm8wNUU4ibBNEcI+ljXcLzyYZmxN8sT
-	 5JBLTvW4CE6exwN7beHd04vY+GJzxhpaGxRNR4mk=
+	b=Zcnw5Mjm9ni7bVL/s395UNOX2qPKZubL3loO8Gkuo1m2i0YRxZqq2LS8wjeZqSZJu
+	 dANkoiEDmS4B4fWL71GMF+zTxVUk3s6/ugt0/06b4+TtYTwmd8ocL1Zbf+E2lXPuV9
+	 pMZ41AcecV4UMZL6F7/PF4uIsHpi2H7o0fjI/N5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	syzbot+3e77fd302e99f5af9394@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 216/270] rcu: fix header guard for rcu_all_qs()
+Subject: [PATCH 6.1 225/325] io_uring/fdinfo: annotate racy sq/cq head/tail reads
 Date: Mon,  2 Jun 2025 15:48:21 +0200
-Message-ID: <20250602134316.017930367@linuxfoundation.org>
+Message-ID: <20250602134328.927759313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankur Arora <ankur.a.arora@oracle.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit ad6b5b73ff565e88aca7a7d1286788d80c97ba71 ]
+[ Upstream commit f024d3a8ded0d8d2129ae123d7a5305c29ca44ce ]
 
-rcu_all_qs() is defined for !CONFIG_PREEMPT_RCU but the declaration
-is conditioned on CONFIG_PREEMPTION.
+syzbot complains about the cached sq head read, and it's totally right.
+But we don't need to care, it's just reading fdinfo, and reading the
+CQ or SQ tail/head entries are known racy in that they are just a view
+into that very instant and may of course be outdated by the time they
+are reported.
 
-With CONFIG_PREEMPT_LAZY, CONFIG_PREEMPTION=y does not imply
-CONFIG_PREEMPT_RCU=y.
+Annotate both the SQ head and CQ tail read with data_race() to avoid
+this syzbot complaint.
 
-Decouple the two.
-
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/io-uring/6811f6dc.050a0220.39e3a1.0d0e.GAE@google.com/
+Reported-by: syzbot+3e77fd302e99f5af9394@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcutree.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/fdinfo.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
-index 59eb5cd567d7a..92f04fcb89473 100644
---- a/include/linux/rcutree.h
-+++ b/include/linux/rcutree.h
-@@ -64,7 +64,7 @@ extern int rcu_scheduler_active __read_mostly;
- void rcu_end_inkernel_boot(void);
- bool rcu_inkernel_boot_has_ended(void);
- bool rcu_is_watching(void);
--#ifndef CONFIG_PREEMPTION
-+#ifndef CONFIG_PREEMPT_RCU
- void rcu_all_qs(void);
- #endif
- 
+diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
+index ea2c2ded4e412..4a50531699777 100644
+--- a/io_uring/fdinfo.c
++++ b/io_uring/fdinfo.c
+@@ -79,11 +79,11 @@ static __cold void __io_uring_show_fdinfo(struct io_ring_ctx *ctx,
+ 	seq_printf(m, "SqMask:\t0x%x\n", sq_mask);
+ 	seq_printf(m, "SqHead:\t%u\n", sq_head);
+ 	seq_printf(m, "SqTail:\t%u\n", sq_tail);
+-	seq_printf(m, "CachedSqHead:\t%u\n", ctx->cached_sq_head);
++	seq_printf(m, "CachedSqHead:\t%u\n", data_race(ctx->cached_sq_head));
+ 	seq_printf(m, "CqMask:\t0x%x\n", cq_mask);
+ 	seq_printf(m, "CqHead:\t%u\n", cq_head);
+ 	seq_printf(m, "CqTail:\t%u\n", cq_tail);
+-	seq_printf(m, "CachedCqTail:\t%u\n", ctx->cached_cq_tail);
++	seq_printf(m, "CachedCqTail:\t%u\n", data_race(ctx->cached_cq_tail));
+ 	seq_printf(m, "SQEs:\t%u\n", sq_tail - sq_head);
+ 	sq_entries = min(sq_tail - sq_head, ctx->sq_entries);
+ 	for (i = 0; i < sq_entries; i++) {
 -- 
 2.39.5
 
