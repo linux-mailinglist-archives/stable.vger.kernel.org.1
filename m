@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C787ACB272
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F84ACB79A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00F191942CC6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AA561BC332F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE78922A7E2;
-	Mon,  2 Jun 2025 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB486227EBB;
+	Mon,  2 Jun 2025 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPNkfGNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWx13I2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B69721CA1E;
-	Mon,  2 Jun 2025 14:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B491C84DC;
+	Mon,  2 Jun 2025 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873780; cv=none; b=e7Zn2R+L6kR5E5NCFf4uEt0RAMAyRfkvJpGVGcbXY4T5CVqesYhI3ST4Jj+yucZSWcyvq3FGrA5c9GFr/SY8E+GTW/hYWI6AFMYHRuT9X1dad9TrLGBQSpRphc3ErrqQQboLEHeQsCMbi/TnTqiyHIiJCMAUiJB3qGyI6VsMER0=
+	t=1748876675; cv=none; b=B3YyxpdN7ACj8hfieF7YhIh5mKH0fSd1GI7aNnENSavwi3+ZD33sXcpdG1mQmb7YXSOduibUykpHpOOQGpkXOTZkNhnnxrBN54ivAwoE9eXkd2geD5wzq8NjpTtWGAjrVG/xrShxYguVUGp0U3nLwbdn88ME5mtccLAeoJ9Lgmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873780; c=relaxed/simple;
-	bh=8omp5pvSIUUhOfUr77BiNwpS2/zoXLMNed4juKEJyHU=;
+	s=arc-20240116; t=1748876675; c=relaxed/simple;
+	bh=lyJR2MCoFbjRabnQtuFHa7CZD8YbIGt6XAWt2EW3818=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EubMHfq6J0uvDmMgFHb5YGH+o/O9HU+hKc5WkzukwiqE6KEKyXIgZxwFWqvQHpd3v+6h6wu+yn1WpGdzNphNB3dyugTJCv/DM6nsS45SG4FlTjL0Pfpt0Ob6XajD80kiiioVF6Rul/m+PK9H+H7a9ts+W+sYqFqi8bCRGxEQkYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPNkfGNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F146BC4CEEB;
-	Mon,  2 Jun 2025 14:16:16 +0000 (UTC)
+	 MIME-Version; b=LdmOH4F7k2uJ6Gd+8Wh3XZmgOdYYYTO3FgqYNmTz+gKKNo6HBLHr04icsRECpqjq/saBUwgZHlGD2RCGY2nXmGd5gmnP3ZOoK0x+EbuGq38//r3nb87sljPPdEeQXprwsiSAr01OJBJhyFiFPUvkGYeNAhFResTL85IL3KUn2Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWx13I2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296EBC4CEEB;
+	Mon,  2 Jun 2025 15:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873777;
-	bh=8omp5pvSIUUhOfUr77BiNwpS2/zoXLMNed4juKEJyHU=;
+	s=korg; t=1748876675;
+	bh=lyJR2MCoFbjRabnQtuFHa7CZD8YbIGt6XAWt2EW3818=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPNkfGNcxZotrC3zRAg5dNUbUnE447Q2V2V6csh6mtQJlWjlGAdiumyq54cAvkChJ
-	 csVGKwFQrDvTWywUBYrFHOkY7VXaltwuAjm4gyBySaSoZ468B7fcJ0uJLSOmMfuwFb
-	 cv/TmHXw2JZQNS9Dy2zA+HFJR/BZH5I9jsV+VmSk=
+	b=XWx13I2U9SXa5RiF+bal54E1EdCR+l4xOlMcfEPjqoJ4B6Q1wSmhg2VqSfuK3HVsX
+	 QP4MUChxBmN4V1xnIwq4XuzZRorz5Bbzsp7bxNKHKmAp129Qm+fI+BFn0wT/Hsa/Lu
+	 sQbxNah5FaCSH2pUHVyV1FjHq8x2ybxUm1tslwSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiwu Zhang <shiwu.zhang@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/444] drm/amdgpu: enlarge the VBIOS binary size limit
+Subject: [PATCH 6.1 037/325] SUNRPC: rpcbind should never reset the port to the value 0
 Date: Mon,  2 Jun 2025 15:45:13 +0200
-Message-ID: <20250602134351.023999673@linuxfoundation.org>
+Message-ID: <20250602134321.264981747@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiwu Zhang <shiwu.zhang@amd.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 667b96134c9e206aebe40985650bf478935cbe04 ]
+[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
 
-Some chips have a larger VBIOS file so raise the size limit to support
-the flashing tool.
+If we already had a valid port number for the RPC service, then we
+should not allow the rpcbind client to set it to the invalid value '0'.
 
-Signed-off-by: Shiwu Zhang <shiwu.zhang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/rpcb_clnt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index a4ab02c85f65b..ffa5e72a84ebc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -43,7 +43,7 @@
- #include "amdgpu_securedisplay.h"
- #include "amdgpu_atomfirmware.h"
+diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
+index 82afb56695f8d..1ec20163a0b7d 100644
+--- a/net/sunrpc/rpcb_clnt.c
++++ b/net/sunrpc/rpcb_clnt.c
+@@ -797,9 +797,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
+ 	}
  
--#define AMD_VBIOS_FILE_MAX_SIZE_B      (1024*1024*3)
-+#define AMD_VBIOS_FILE_MAX_SIZE_B      (1024*1024*16)
+ 	trace_rpcb_setport(child, map->r_status, map->r_port);
+-	xprt->ops->set_port(xprt, map->r_port);
+-	if (map->r_port)
++	if (map->r_port) {
++		xprt->ops->set_port(xprt, map->r_port);
+ 		xprt_set_bound(xprt);
++	}
+ }
  
- static int psp_load_smu_fw(struct psp_context *psp);
- static int psp_rap_terminate(struct psp_context *psp);
+ /*
 -- 
 2.39.5
 
