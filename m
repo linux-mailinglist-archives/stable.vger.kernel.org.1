@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6663AACB22F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:28:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1263FACB21C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05D71941011
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:22:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521804867E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C054E223704;
-	Mon,  2 Jun 2025 14:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D75123C8BE;
+	Mon,  2 Jun 2025 14:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6szJebH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIviw2eT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7EB2236E0;
-	Mon,  2 Jun 2025 14:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28506223339;
+	Mon,  2 Jun 2025 14:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873524; cv=none; b=qL+Bo9oTOx3L9ZPLYILzl5V0lCodXqoBhPHGQMeVZ9ulgXgjXrnB4JCo0bpeA4Nc4mXVhDZ2IU4gE1+bsgJ1ehlDcynzAeJyAHowSZXGFzVFoIDYfJm3KeNj7TrVB6EcBPbbsn5iV8CKgKJ29nQf98UaObQgdFE0HvgksYYKEk4=
+	t=1748873531; cv=none; b=Rz/Fztqw5OiPABeGv9ybMKLl9J+/5rgfkTF+qIQyIzv8i2tzyBzIgbk3qqqwu93lc6/FEV46l3srV8l3UXSeY4yPoyOrpyW4RpTAUvVJ0TY4EjSTFhYpNkc8qaK7MyNFrrPZzf67qrG8FRGz4nmzBlhA59avhrlRx2HZn3qXM1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873524; c=relaxed/simple;
-	bh=doE2NWA8OOMkjdvSoToHTwxvA24U9scjwMYJMF4MQyg=;
+	s=arc-20240116; t=1748873531; c=relaxed/simple;
+	bh=kUSPb37/Yj21QU6HrtfFXlJ7M/VyjpsKwdfoGNaAvDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7fMEgfOjkrnC07FkdcGgkybSCckzUPDEHWDp8AtFm3IysIDH7hTTiB66yDLCO6qlSeFj0Q0qEFvITXjLKZI7y+UTeMlNSWF6+VXN+4EMSzS+27DIC2pY7G/87pItnn9+JO0aJCVKB5zX0JYyaHae1Ef74U1ibqAiMs64X4KAag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6szJebH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD819C4CEEB;
-	Mon,  2 Jun 2025 14:12:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o5bAClG6t2or7iHLmLRQXzseNygLzFrACeSe8td7FKFo1rQL9qmNv5xXXOMNlD1avm1a8R4eXV3Za+dvfEPVsPPJFx6c9lusloqNJ5x5AOFcNkPUWg8WLww1ZU2OMZLQhQqRwfTFzCo8LgGPmVI4iQQLcurvZxfI00/Z3SGb4u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIviw2eT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7029CC4CEEB;
+	Mon,  2 Jun 2025 14:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873524;
-	bh=doE2NWA8OOMkjdvSoToHTwxvA24U9scjwMYJMF4MQyg=;
+	s=korg; t=1748873531;
+	bh=kUSPb37/Yj21QU6HrtfFXlJ7M/VyjpsKwdfoGNaAvDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6szJebHQV8aUglwz4PqdBIgc9kU0vwKrnGiwfVXXubbB0rgwVaweeJBbTORmk2Cq
-	 ztE7W4QmLZF39JPJSevj+Nj4PP+Z146uQqBkoxi7/5EAGox/ruiEm/uEgqkQVpgeO9
-	 3RrTOTLcY6JdbWPsmhOsCr8whGcUml/ZxZsYXiCA=
+	b=XIviw2eTuXzOvC4cgkOeY7psTdMWQhv+1u+Jdg8TBJVpt34TSHkyRhrhQkG3FiMeu
+	 q/UqTt8uc4Dg0FFQvJQxb7ziIbWFI3OlvEA/yjanOsYkumok5paP5+asj3XQUedQ4I
+	 1HH0IHWwvbnWvbP/AsiWqlhUSzL0qGY7gB4xohOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinith Kumar R <quic_vinithku@quicinc.com>,
-	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/444] wifi: ath12k: Report proper tx completion status to mac80211
-Date: Mon,  2 Jun 2025 15:43:52 +0200
-Message-ID: <20250602134347.720166678@linuxfoundation.org>
+Subject: [PATCH 6.6 169/444] PCI: brcmstb: Expand inbound window size up to 64GB
+Date: Mon,  2 Jun 2025 15:43:53 +0200
+Message-ID: <20250602134347.759707213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -62,60 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinith Kumar R <quic_vinithku@quicinc.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit d2d9c9b8de725e1006d3aa3d18678a732f5d3584 ]
+[ Upstream commit 25a98c727015638baffcfa236e3f37b70cedcf87 ]
 
-Currently Tx completion for few exception packets are received from
-firmware and the tx status updated to mac80211. The tx status values of
-HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
-are considered as tx failure and reported as tx failure to mac80211.
-But these failure status is due to internal firmware tx drop and these
-packets were not tried to transmit in the air.
-In case of mesh this invalid tx status report might trigger mpath broken
-issue due to increase in mpath fail average.
-So do not report these tx status as tx failure instead free the skb
-by calling ieee80211_free_txskb(), and that will be accounted as dropped
-frame.
+The BCM2712 memory map can support up to 64GB of system memory, thus
+expand the inbound window size in calculation helper function.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+The change is safe for the currently supported SoCs that have smaller
+inbound window sizes.
 
-Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
-Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241122173432.2064858-1-quic_tamizhr@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Jim Quinlan <james.quinlan@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-7-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 4 ++--
+ drivers/pci/controller/pcie-brcmstb.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index e025e4d0e7678..25a9d4c4fae76 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -422,13 +422,13 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
- 
- 	switch (wbm_status) {
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_OK:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
--	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 		ts.acked = (wbm_status == HAL_WBM_REL_HTT_TX_COMP_STATUS_OK);
- 		ts.ack_rssi = le32_get_bits(status_desc->info2,
- 					    HTT_TX_WBM_COMP_INFO2_ACK_RSSI);
- 		ath12k_dp_tx_htt_tx_complete_buf(ab, msdu, tx_ring, &ts);
- 		break;
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP:
-+	case HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_REINJ:
- 	case HAL_WBM_REL_HTT_TX_COMP_STATUS_INSPECT:
- 		ath12k_dp_tx_free_txbuf(ab, msdu, mac_id, tx_ring);
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 940af934ce1bb..8b88e30db7447 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -284,8 +284,8 @@ static int brcm_pcie_encode_ibar_size(u64 size)
+ 	if (log2_in >= 12 && log2_in <= 15)
+ 		/* Covers 4KB to 32KB (inclusive) */
+ 		return (log2_in - 12) + 0x1c;
+-	else if (log2_in >= 16 && log2_in <= 35)
+-		/* Covers 64KB to 32GB, (inclusive) */
++	else if (log2_in >= 16 && log2_in <= 36)
++		/* Covers 64KB to 64GB, (inclusive) */
+ 		return log2_in - 15;
+ 	/* Something is awry so disable */
+ 	return 0;
 -- 
 2.39.5
 
