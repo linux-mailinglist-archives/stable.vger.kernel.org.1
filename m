@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A53ACB48C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4133DACB5C9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E47D77A884B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1064C3EE8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A6A227EAE;
-	Mon,  2 Jun 2025 14:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14EF222596;
+	Mon,  2 Jun 2025 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fm/6vsq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPw7YrbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949C1227E9E;
-	Mon,  2 Jun 2025 14:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0861EA65;
+	Mon,  2 Jun 2025 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875480; cv=none; b=RPiRbVP29x2Oc1ktfLQd4OZDr7/a/yBF5TySw80PNdhFeP1ENWmIku9LiOO+rghba1clyZKdJPBMCKTCjAu6LFb+954CbiBnofkNulnbCDO27Q3jvxu54CA3h+SyjmgmNA4tv7u4ABDglz9Ny/VGRzMGj5RWtB6WbE21G05Ymzg=
+	t=1748876066; cv=none; b=avovQjHOQt81UXzT9mzP4QUNfTnOWiPCp0uKteMpJdxNi2gn9cbavk8CfCS7SwIVyZn350ZTgQtcTQo/HUQmD9zsO0wFni2Cr3uUCcfGxoli6NFrUOcQXtNKu0j/V7YPJ4Z3AjcDXmacZ2sRk+fXBzwPvfwPSV7EYO3sbAIJ+7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875480; c=relaxed/simple;
-	bh=p37wUS8dtO0c9HfwEFKE2aoG2arQS2SJRV4n1X7X25c=;
+	s=arc-20240116; t=1748876066; c=relaxed/simple;
+	bh=9qTg1moThmFtldyO8UMqbH9VcTMsDOYFSU6VrAgTEBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gt54HHzRC6DwclVYLGr5tXcHZh0bQHvCzaRTzQ90X82y1nL3dI4YjPp9n+DjX8IaJUhzKNcvCwrURsjizGhXQ3HjeRLRqCxeM9qtFErPsnB1eXySDIIC/w2piYnhN94V8o9fR4glugD2s81E6AsRvtxZT1GdMlaYvwTa/Ow3Dic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fm/6vsq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A399DC4CEEB;
-	Mon,  2 Jun 2025 14:44:39 +0000 (UTC)
+	 MIME-Version; b=sdDdYp0dzDziUjAdDz3zxxZd1CmbhctlY5xr71jV05q9IaWU1vU97G4Cpl9EJAZh7D8dBzTM5FKZKS396rdvNoGtcoqEOuwm5/oY6fViGg/FAkED0TaZomvi5Q0KexMwq0Vw14hnuNQCjktRzQ3+Ghhtoml5rgtKAtTCNw0Ojmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPw7YrbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955F4C4CEEB;
+	Mon,  2 Jun 2025 14:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875480;
-	bh=p37wUS8dtO0c9HfwEFKE2aoG2arQS2SJRV4n1X7X25c=;
+	s=korg; t=1748876066;
+	bh=9qTg1moThmFtldyO8UMqbH9VcTMsDOYFSU6VrAgTEBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fm/6vsq45YMRWPI1bA+yUXNDratHgqK/HpTfHY0+KjtOOH6gmEbGeqZF49R2xQ/gw
-	 +1BuIIzDAkLnQ8mrl+vGjUo+5ze0khU31Mj0HzGgclN43D/VBlNi4uHoK135kXaZ8f
-	 K/dmH7bqn+fhLmKpdenpPqpXfI8IOzkEvulVLkME=
+	b=FPw7YrbAdFve3c1wM/Zh/Q/ZxBjuAxQy31S5haNZxokqmtfDaO4ti7SPL5GfrJiDw
+	 r9ukvPc1P/dqsc4N/A8lencFtSs/EuSpziffE9bZHJpcxT223qpL+MQ+tswXc1HG+0
+	 Ks96UxMBQzvc6FmPEQ11jKdJx+m+dws+KXkDbk5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/270] dm: restrict dm device size to 2^63-512 bytes
-Date: Mon,  2 Jun 2025 15:47:12 +0200
-Message-ID: <20250602134313.233728798@linuxfoundation.org>
+Subject: [PATCH 5.15 061/207] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
+Date: Mon,  2 Jun 2025 15:47:13 +0200
+Message-ID: <20250602134301.138669790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
+[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
 
-The devices with size >= 2^63 bytes can't be used reliably by userspace
-because the type off_t is a signed 64-bit integer.
+According to the board schematics the enable pin of this regulator is
+connected to gpio line #9 of the first instance of the TCA9539
+GPIO expander, so adjust it.
 
-Therefore, we limit the maximum size of a device mapper device to
-2^63-512 bytes.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index db40df5749c83..4351de47fa775 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -682,6 +682,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
- 		DMERR("%s: zero-length target", dm_device_name(t->md));
- 		return -EINVAL;
- 	}
-+	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
-+		DMERR("%s: too large device", dm_device_name(t->md));
-+		return -EINVAL;
-+	}
- 
- 	tgt->type = dm_get_target_type(type);
- 	if (!tgt->type) {
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+index d8409c1b43800..4abd8b14b8a5c 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+@@ -1638,7 +1638,7 @@ vdd_1v8_dis: regulator@7 {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-always-on;
+-		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
++		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		vin-supply = <&vdd_1v8>;
+ 	};
 -- 
 2.39.5
 
