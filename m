@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-150209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03C7ACB627
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E23AACB60A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 889211C2120D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC0B51BC4A31
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3638122A808;
-	Mon,  2 Jun 2025 14:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF1922A1D4;
+	Mon,  2 Jun 2025 14:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+4Pt7rY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSrfs5tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DDA22A819;
-	Mon,  2 Jun 2025 14:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD865224AF3;
+	Mon,  2 Jun 2025 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876383; cv=none; b=PM89nmKYdZp6yR8OngU3ZGJBCwkZDhrT2Nbcpl5+KeFXz1cYoQQLgBk5zit+QBKyLp9K0qsheePAfi60AptvAZN/zekNzIUL4qBjDhcvsSkVF2grPICC9iN9kP63hZPwnlE69V9TceG3XGJ2CFbsr4a5eAnp6F7lWj1LP3DsU7E=
+	t=1748875802; cv=none; b=WVJYnpc1sv7QxR6nSWPGPZb2vue6CO0zDFit4RH/MAnc2FkjS4LUYSTsHnP2jksReIYn08wRDn6DTsovXD3NCLg8n/zwppyR+eqA6MeLrrEL4Vgh3xSzthzaBEHGU3vpPwL6+Ln7LTpKYW1SvsrH9MifKW6x3EEmLwWDZTi6VGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876383; c=relaxed/simple;
-	bh=hNuy8boHY21JUhZHGvdtrnS+JbLUR1Jj+vsPTOPVSTg=;
+	s=arc-20240116; t=1748875802; c=relaxed/simple;
+	bh=qkkeClFvKzOxWpID0VH6scpWU2LmHW4VG+pqH0PUf64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJGuovJXxZQsfNBV038wKQFIFxDignXhaFzgIUGAB5ti7SV6tcI14wQKXskL5oJe1XbnxvUlDfLpPlhN9LNocl2ji+l59LZMEZJzV1Upbvv2mWwP6sbknHVhNiWVzjx9yLef2WDhvvXWfJ91T89OXvrlrHkkDrWwjQRRYpMrous=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+4Pt7rY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53642C4CEEB;
-	Mon,  2 Jun 2025 14:59:42 +0000 (UTC)
+	 MIME-Version; b=t1yCzMllOT9Fjh/qG8E/LZKfrqYuQL/fhqNXptOY6aXjy38hM6Z28XYqYOcTMTCRo6VzI1mvSnfUsdHJQvk/dxaNGYH+G1nPLYe/p/ozFRg25InMUsw0G6cEDLDx0bDT3DBq0XxKAVL9X502AaVx2iL6IsAlQ6g08XcXTl1jhZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSrfs5tj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C6EC4CEF4;
+	Mon,  2 Jun 2025 14:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876382;
-	bh=hNuy8boHY21JUhZHGvdtrnS+JbLUR1Jj+vsPTOPVSTg=;
+	s=korg; t=1748875802;
+	bh=qkkeClFvKzOxWpID0VH6scpWU2LmHW4VG+pqH0PUf64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+4Pt7rYRcZs6lFZr9U4ZxtuffXuIe/5Cx1rdpewhR+bHBlxLYbyCvev6rdu2K05k
-	 0TP2gSE/k1HP+zu+kNyvnUPnkUEkG9WjLHceGjp7HFd98VYcW4sruqTohEm2cNl0W8
-	 NsgEkXKAOev7/oN3ocqvnkm+S96uGJmdZfnmM35k=
+	b=ZSrfs5tj8Hufq6rCreW3ULvrAkrrUqJg8TSPdOksOUwGz6pKefdNX5pDmgUy8FroY
+	 PcCj8TLQv+Y5At6IPLocZ7BKNgWgs6Qe+39GTjr16EQ/tgKr1TxRdwWeHaZOMITl75
+	 9Z5bA25WCAlXpENwhpzDRnfr0UoP/d8Q9IrhH+YM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/207] xenbus: Allow PVH dom0 a non-local xenstore
-Date: Mon,  2 Jun 2025 15:48:52 +0200
-Message-ID: <20250602134304.988656730@linuxfoundation.org>
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 248/270] mm/page_alloc.c: avoid infinite retries caused by cpuset race
+Date: Mon,  2 Jun 2025 15:48:53 +0200
+Message-ID: <20250602134317.471003108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
+commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
 
-Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
-currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
-xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
-late init path.
+__alloc_pages_slowpath has no change detection for ac->nodemask in the
+part of retry path, while cpuset can modify it in parallel.  For some
+processes that set mempolicy as MPOL_BIND, this results ac->nodemask
+changes, and then the should_reclaim_retry will judge based on the latest
+nodemask and jump to retry, while the get_page_from_freelist only
+traverses the zonelist from ac->preferred_zoneref, which selected by a
+expired nodemask and may cause infinite retries in some cases
 
-Ideally we'd drop the use of xen_initial_domain() and just check for the
-event channel instead.  However, ARM has a xen,enhanced no-xenstore
-mode, where the event channel and PFN would both be 0.  Retain the
-xen_initial_domain() check, and use that for an additional check when
-the event channel is 0.
+cpu 64:
+__alloc_pages_slowpath {
+        /* ..... */
+retry:
+        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
+        if (alloc_flags & ALLOC_KSWAPD)
+                wake_all_kswapds(order, gfp_mask, ac);
+        /* cpu 1:
+        cpuset_write_resmask
+            update_nodemask
+                update_nodemasks_hier
+                    update_tasks_nodemask
+                        mpol_rebind_task
+                         mpol_rebind_policy
+                          mpol_rebind_nodemask
+		// mempolicy->nodes has been modified,
+		// which ac->nodemask point to
 
-Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
-chance that high bits are set for the 32bit event channel.
+        */
+        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
+        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+                                 did_some_progress > 0, &no_progress_loops))
+                goto retry;
+}
 
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
+this issue on a multi node server when the maximum memory pressure is
+reached and the swap is enabled
+
+Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
+Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ mm/page_alloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index e680bd1adf9c4..2068f83556b78 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -927,9 +927,15 @@ static int __init xenbus_init(void)
- 	if (xen_pv_domain())
- 		xen_store_domain_type = XS_PV;
- 	if (xen_hvm_domain())
-+	{
- 		xen_store_domain_type = XS_HVM;
--	if (xen_hvm_domain() && xen_initial_domain())
--		xen_store_domain_type = XS_LOCAL;
-+		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
-+		if (err)
-+			goto out_error;
-+		xen_store_evtchn = (int)v;
-+		if (!v && xen_initial_domain())
-+			xen_store_domain_type = XS_LOCAL;
-+	}
- 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
- 		xen_store_domain_type = XS_LOCAL;
- 	if (xen_pv_domain() && xen_start_info->store_evtchn)
-@@ -948,10 +954,6 @@ static int __init xenbus_init(void)
- 		xen_store_interface = gfn_to_virt(xen_store_gfn);
- 		break;
- 	case XS_HVM:
--		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
--		if (err)
--			goto out_error;
--		xen_store_evtchn = (int)v;
- 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
- 		if (err)
- 			goto out_error;
--- 
-2.39.5
-
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4758,6 +4758,14 @@ restart:
+ 	}
+ 
+ retry:
++	/*
++	 * Deal with possible cpuset update races or zonelist updates to avoid
++	 * infinite retries.
++	 */
++	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
++	    check_retry_zonelist(zonelist_iter_cookie))
++		goto restart;
++
+ 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
+ 	if (alloc_flags & ALLOC_KSWAPD)
+ 		wake_all_kswapds(order, gfp_mask, ac);
 
 
 
