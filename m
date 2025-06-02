@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C97BACB6E4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A219ACB662
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A25417A8DE8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90624A7BC5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3C122839A;
-	Mon,  2 Jun 2025 15:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B885C22D781;
+	Mon,  2 Jun 2025 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH4OGqTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1I8gx4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B71020E026;
-	Mon,  2 Jun 2025 15:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C0C22D4D7;
+	Mon,  2 Jun 2025 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877476; cv=none; b=uGN8/GLMnjkWIg3Okdu4RpOI+AsKUt/4xAeC+vW8vMvKS/xDFxuPg9KGtmbLVHd5oMyEheV16FEiGdClyVF0AD6wiNUeM7BGFFo9Uhp0NSpnb2m1CHJyCCfCNHtU8STaINHeMUcRaXzaoG16YZ+rFN2XHpX3NDUuEa0AOBPAoDI=
+	t=1748876446; cv=none; b=nZmefcnYTwu1vrt+PWzguZCtfYtadNKYEc+yBGS3jm/ht6z1ZDia9rTugbInAl6MempiTRyZePgOWRnpDt99RRxyjTJesJBEZoiiP6hFGB0oL4oe6WeAHVpWTG5NGFD+5gy10MvpAsB/Wg8MjMTNWkRSUnDvrIOrLFkyCuCSOzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877476; c=relaxed/simple;
-	bh=z2G3UMBmpSrxLcGeS658lbRLtB1E17IIus96ytzqDSw=;
+	s=arc-20240116; t=1748876446; c=relaxed/simple;
+	bh=Oo8CJ9g7ANV9fBtHfVCL3pqUM10N1u7QdD61ihowpFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJ0fqilgsmBNnz4NJHjb9SRd4WLKz+8MqxeN9KuU6TGqWKn2OYRO2byC+jg269fvc44hXkvRhB71TWubJ37Wah5kCWJLzEbD5YkmRBd8nIfv7WCDtLevxbZR+Irn3QNwdaXq/6pvuVpBT2gp97Scq7l3S8NpdSwUe2/0++kiCzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH4OGqTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7402EC4CEEB;
-	Mon,  2 Jun 2025 15:17:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhVPFwX6Cpc0AkgRft5dh36P6AQevUsxxIz3VP/uVuAJRs6uszmlcRmgxc1v+OEibhBXB+oq1TBw6KUiWFJ/kzfMU0wvWB8uAgeniJ6Hkk6Os+4El1xRsbY5fPPLvtzU2CtoyiuAmDFGXolyRFd99AMNbG9UplhPPaLwhMEn7bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1I8gx4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5491EC4CEEB;
+	Mon,  2 Jun 2025 15:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877475;
-	bh=z2G3UMBmpSrxLcGeS658lbRLtB1E17IIus96ytzqDSw=;
+	s=korg; t=1748876445;
+	bh=Oo8CJ9g7ANV9fBtHfVCL3pqUM10N1u7QdD61ihowpFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WH4OGqTM1nAuXFQ40hWFwBKGNKaBfkOJrV0w65Ut3E+35+HFiSlwk3dUpyuoG2n7K
-	 6TasBkHzSGUgEXpvz12aPg4RKr+KyNs4ATfXP3oE6V1M6eErYIeSeizOl+IHNRWvNd
-	 WM1TcON45sGM6J/uimkBvNdxoTS9qqIyiM4v2uEw=
+	b=N1I8gx4Caepm6S3xijZHsEK7RvIbHySaxFuZo7C1XMhVT4dGltmJvXCln3SjVsKKW
+	 59wa0CvvcRP7xubkR8ci4B7i7hUAdCwC7lVAtHKCM+WSiUWu3vR5Cz5wNo+O8Ar9H9
+	 k5EPLPEu0nRK7YtvEL03d4lwLBWeZGiJlAQlMtiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 272/325] pinctrl: tegra: Fix off by one in tegra_pinctrl_get_group()
+	Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.15 176/207] platform/x86: dell-wmi-sysman: Avoid buffer overflow in current_password_store()
 Date: Mon,  2 Jun 2025 15:49:08 +0200
-Message-ID: <20250602134330.818382992@linuxfoundation.org>
+Message-ID: <20250602134305.643883131@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
 
-commit 5a062c3c3b82004766bc3ece82b594d337076152 upstream.
+commit 4e89a4077490f52cde652d17e32519b666abf3a6 upstream.
 
-This should be >= pmx->soc->ngroups instead of > to avoid an out of
-bounds access.  The pmx->soc->groups[] array is allocated in
-tegra_pinctrl_probe().
+If the 'buf' array received from the user contains an empty string, the
+'length' variable will be zero. Accessing the 'buf' array element with
+index 'length - 1' will result in a buffer overflow.
 
-Fixes: c12bfa0fee65 ("pinctrl-tegra: Restore SFSEL bit when freeing pins")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Kunwu Chan <kunwu.chan@linux.dev>
-Link: https://lore.kernel.org/82b40d9d-b437-42a9-9eb3-2328aa6877ac@stanley.mountain
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Add a check for an empty string.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
+Link: https://lore.kernel.org/r/39973642a4f24295b4a8fad9109c5b08@kaspersky.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/tegra/pinctrl-tegra.c |    2 +-
+ drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/tegra/pinctrl-tegra.c
-+++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
-@@ -305,7 +305,7 @@ static const struct tegra_pingroup *tegr
- {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
+@@ -45,7 +45,7 @@ static ssize_t current_password_store(st
+ 	int length;
  
--	if (group_index < 0 || group_index > pmx->soc->ngroups)
-+	if (group_index < 0 || group_index >= pmx->soc->ngroups)
- 		return NULL;
+ 	length = strlen(buf);
+-	if (buf[length-1] == '\n')
++	if (length && buf[length - 1] == '\n')
+ 		length--;
  
- 	return &pmx->soc->groups[group_index];
+ 	/* firmware does verifiation of min/max password length,
 
 
 
