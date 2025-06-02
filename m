@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-149121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E51ACB0A2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:09:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D706BACB49B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE82816A287
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:06:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2E69E2E46
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFB222CBF4;
-	Mon,  2 Jun 2025 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67CC22B8D5;
+	Mon,  2 Jun 2025 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrL84YVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTTJdI4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A6C22C339;
-	Mon,  2 Jun 2025 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8251522B8B0;
+	Mon,  2 Jun 2025 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872960; cv=none; b=qh4qkInZkBVIqsZXx3c3SfeXJ/ZgWQstY3J1OYoFSn9+LgeKdYgcJNV+ysLhS6lmY8muRTO3BZN6B2V4pp4E32xX/RgvvS9qjhQG7xcS0euX/CqDKeTCt7MdIFOqq+oLnqBR7bnZ87znwDyXD+2K5l+l6u1gRL+7OCnx8D4MVf4=
+	t=1748874843; cv=none; b=lD+N5yJVAq87uSXQC6F1dEzXp7EkFsXWxOY0fXSmba0yB0mHSun6gy1eqzMvohET+hHSmpqnJtRuBAnJhGW5zsro9TiBaLTR2yjghxzXYzHeIlJHiZTqbVmotrbl9bu8T1YXAfwKDdWd6M4MqoJ2sD2xRsOaHu9QRxPBCNJF+3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872960; c=relaxed/simple;
-	bh=no6cJIbSEL2tcRVZ6Qmd6IgxNQmJ2Xh5IlzzVgj95RM=;
+	s=arc-20240116; t=1748874843; c=relaxed/simple;
+	bh=zwBoLjjILlzc0QnzV9Cce/YiQBhSdfhqa9DcfREH0ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQR27WAdEdrrARG5kXycWgzQZs8JKu+6VgJYGld4V/if6q4Rd3Nfl9XhIuv+P6f05okasJiD3/CSUMvgs/Qjj3SXtFAdqh8qwLVeAfjduJgCMj5dsTdBibX14EjUqewk18QSL7+EGcAYZDtxbEwZMaJm3NNEorWM5gCEOQEwG60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrL84YVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DABC4CEF0;
-	Mon,  2 Jun 2025 14:02:39 +0000 (UTC)
+	 MIME-Version; b=LrWlPoCTGDkk5MYyLxqS0yMDMyPOq2Ja4n/HIn99oJQTaW/GY7pqZaFyhZ1L9qXpFNyeaZPcBFUBC/0igvG4TEfQLf8ddZ0Ds7HQnWNfC5PGa5hGjSA73HtIHJmT3Mkgk/bKMRe/w4DicFF0CWoSUh5xeaHCAFZLs+T75QXWsQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTTJdI4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA89BC4CEF0;
+	Mon,  2 Jun 2025 14:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872960;
-	bh=no6cJIbSEL2tcRVZ6Qmd6IgxNQmJ2Xh5IlzzVgj95RM=;
+	s=korg; t=1748874843;
+	bh=zwBoLjjILlzc0QnzV9Cce/YiQBhSdfhqa9DcfREH0ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrL84YVHgq0m0YRMzohAu0rX0CNJC9y8STP88nS5+XCLkCgYMB8vtvk3qmlfQ9viZ
-	 7mNmSMiLz1VFonBhS6mwbsyQ6vSXvQl0Y/1QiuvAwr5oBrdfp6S27kQnkon2wyqqGF
-	 SyeQPKjTCl4mUF/ocntv+FJxfTTaV+5AJ4j/eLec=
+	b=OTTJdI4/6uu8NwE+xfg5Tq70E7gLveeKI0InJtpjmLTHX0ZKDFeha1k/KGG3UMSWA
+	 lpt4oOLoXy/jsIrfuk3/dhr7uOtndjmr1z2j9Et5BGGxOFgI7gAfpwVQctkHDC+Q7B
+	 aOtp8TnA+FucVq3jGFkz776YCmlmoecXfTnoOMwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 50/55] NFS: Avoid flushing data while holding directory locks in nfs_rename()
+Subject: [PATCH 5.4 154/204] vxlan: Annotate FDB data races
 Date: Mon,  2 Jun 2025 15:48:07 +0200
-Message-ID: <20250602134240.247985573@linuxfoundation.org>
+Message-ID: <20250602134301.711661525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +65,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit dcd21b609d4abc7303f8683bce4f35d78d7d6830 ]
+[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
 
-The Linux client assumes that all filehandles are non-volatile for
-renames within the same directory (otherwise sillyrename cannot work).
-However, the existence of the Linux 'subtree_check' export option has
-meant that nfs_rename() has always assumed it needs to flush writes
-before attempting to rename.
+The 'used' and 'updated' fields in the FDB entry structure can be
+accessed concurrently by multiple threads, leading to reports such as
+[1]. Can be reproduced using [2].
 
-Since NFSv4 does allow the client to query whether or not the server
-exhibits this behaviour, and since knfsd does actually set the
-appropriate flag when 'subtree_check' is enabled on an export, it
-should be OK to optimise away the write flushing behaviour in the cases
-where it is clearly not needed.
+Suppress these reports by annotating these accesses using
+READ_ONCE() / WRITE_ONCE().
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[1]
+BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+
+write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
+ vxlan_xmit+0xb29/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
+ vxlan_xmit+0xadf/0x2380
+ dev_hard_start_xmit+0x84/0x2f0
+ __dev_queue_xmit+0x45a/0x1650
+ packet_xmit+0x100/0x150
+ packet_sendmsg+0x2114/0x2ac0
+ __sys_sendto+0x318/0x330
+ __x64_sys_sendto+0x76/0x90
+ x64_sys_call+0x14e8/0x1c00
+ do_syscall_64+0x9e/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+
+[2]
+ #!/bin/bash
+
+ set +H
+ echo whitelist > /sys/kernel/debug/kcsan
+ echo !vxlan_xmit > /sys/kernel/debug/kcsan
+
+ ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
+ taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+ taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c           |  2 ++
- fs/nfs/dir.c              | 15 ++++++++++++++-
- include/linux/nfs_fs_sb.h | 12 +++++++++---
- 3 files changed, 25 insertions(+), 4 deletions(-)
+ drivers/net/vxlan.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 03ecc77656151..4503758e9594b 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -1096,6 +1096,8 @@ struct nfs_server *nfs_create_server(struct fs_context *fc)
- 		if (server->namelen == 0 || server->namelen > NFS2_MAXNAMLEN)
- 			server->namelen = NFS2_MAXNAMLEN;
- 	}
-+	/* Linux 'subtree_check' borkenness mandates this setting */
-+	server->fh_expire_type = NFS_FH_VOL_RENAME;
+diff --git a/drivers/net/vxlan.c b/drivers/net/vxlan.c
+index ce11fb2b05561..7105ac37f341e 100644
+--- a/drivers/net/vxlan.c
++++ b/drivers/net/vxlan.c
+@@ -302,9 +302,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
+ 	    nla_put_u32(skb, NDA_IFINDEX, rdst->remote_ifindex))
+ 		goto nla_put_failure;
  
- 	if (!(fattr->valid & NFS_ATTR_FATTR)) {
- 		error = ctx->nfs_mod->rpc_ops->getattr(server, ctx->mntfh,
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 492cffd9d3d84..f9f4a92f63e92 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -2690,6 +2690,18 @@ nfs_unblock_rename(struct rpc_task *task, struct nfs_renamedata *data)
- 	unblock_revalidate(new_dentry);
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
+ 
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+@@ -510,8 +510,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
+ 
+ 	f = __vxlan_find_mac(vxlan, mac, vni);
+-	if (f && f->used != jiffies)
+-		f->used = jiffies;
++	if (f && READ_ONCE(f->used) != jiffies)
++		WRITE_ONCE(f->used, jiffies);
+ 
+ 	return f;
  }
- 
-+static bool nfs_rename_is_unsafe_cross_dir(struct dentry *old_dentry,
-+					   struct dentry *new_dentry)
-+{
-+	struct nfs_server *server = NFS_SB(old_dentry->d_sb);
-+
-+	if (old_dentry->d_parent != new_dentry->d_parent)
-+		return false;
-+	if (server->fh_expire_type & NFS_FH_RENAME_UNSAFE)
-+		return !(server->fh_expire_type & NFS_FH_NOEXPIRE_WITH_OPEN);
-+	return true;
-+}
-+
- /*
-  * RENAME
-  * FIXME: Some nfsds, like the Linux user space nfsd, may generate a
-@@ -2777,7 +2789,8 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 
+@@ -942,12 +942,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+ 		if (f->state != state) {
+ 			f->state = state;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 		if (f->flags != fdb_flags) {
+ 			f->flags = fdb_flags;
+-			f->updated = jiffies;
++			WRITE_ONCE(f->updated, jiffies);
+ 			notify = 1;
+ 		}
+ 	}
+@@ -974,7 +974,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
  	}
  
--	if (S_ISREG(old_inode->i_mode))
-+	if (S_ISREG(old_inode->i_mode) &&
-+	    nfs_rename_is_unsafe_cross_dir(old_dentry, new_dentry))
- 		nfs_sync_inode(old_inode);
- 	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry,
- 				must_unblock ? nfs_unblock_rename : NULL);
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 81ab18658d72d..2cff5cafbaa78 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -211,6 +211,15 @@ struct nfs_server {
- 	char			*fscache_uniq;	/* Uniquifier (or NULL) */
- #endif
+ 	if (ndm_flags & NTF_USE)
+-		f->used = jiffies;
++		WRITE_ONCE(f->used, jiffies);
  
-+	/* The following #defines numerically match the NFSv4 equivalents */
-+#define NFS_FH_NOEXPIRE_WITH_OPEN (0x1)
-+#define NFS_FH_VOLATILE_ANY (0x2)
-+#define NFS_FH_VOL_MIGRATION (0x4)
-+#define NFS_FH_VOL_RENAME (0x8)
-+#define NFS_FH_RENAME_UNSAFE (NFS_FH_VOLATILE_ANY | NFS_FH_VOL_RENAME)
-+	u32			fh_expire_type;	/* V4 bitmask representing file
-+						   handle volatility type for
-+						   this filesystem */
- 	u32			pnfs_blksize;	/* layout_blksize attr */
- #if IS_ENABLED(CONFIG_NFS_V4)
- 	u32			attr_bitmask[3];/* V4 bitmask representing the set
-@@ -234,9 +243,6 @@ struct nfs_server {
- 	u32			acl_bitmask;	/* V4 bitmask representing the ACEs
- 						   that are supported on this
- 						   filesystem */
--	u32			fh_expire_type;	/* V4 bitmask representing file
--						   handle volatility type for
--						   this filesystem */
- 	struct pnfs_layoutdriver_type  *pnfs_curr_ld; /* Active layout driver */
- 	struct rpc_wait_queue	roc_rpcwaitq;
- 	void			*pnfs_ld_data;	/* per mount point data */
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1351,7 +1351,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
+ 
+ 		rdst->remote_ip = *src_ip;
+-		f->updated = jiffies;
++		WRITE_ONCE(f->updated, jiffies);
+ 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
+ 	} else {
+ 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
+@@ -2748,7 +2748,7 @@ static void vxlan_cleanup(struct timer_list *t)
+ 			if (f->flags & NTF_EXT_LEARNED)
+ 				continue;
+ 
+-			timeout = f->used + vxlan->cfg.age_interval * HZ;
++			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
+ 			if (time_before_eq(timeout, jiffies)) {
+ 				netdev_dbg(vxlan->dev,
+ 					   "garbage collect %pM\n",
 -- 
 2.39.5
 
