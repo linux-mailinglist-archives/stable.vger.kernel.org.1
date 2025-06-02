@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-150515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3631DACB6AE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475F8ACB4F3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F08F7A7888
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAE077A5964
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3694217BBF;
-	Mon,  2 Jun 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DE1229B21;
+	Mon,  2 Jun 2025 14:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW6ofw6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdbDmkw7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44242C325E;
-	Mon,  2 Jun 2025 15:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76749227BA4;
+	Mon,  2 Jun 2025 14:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877364; cv=none; b=Xzp6N0PK4HKUYPKAdmc9tYSoyxT8jTvTOnEgP1f0YYJDXvyMURO6rUxuALStttTGeCmn6Ypaz3gYBuay6d/yb+Kyi+ccCs2MroF1OncszBaHD3kwnof0x2fPNYIWlbJxNBZwsrTU45dcSdVPs1UWmt47bEt8xPy5s1ykP7Z9xI4=
+	t=1748875796; cv=none; b=NwJkQSH+v+kET114o7+IUOE9LhXTGAEfcfuf9hsPr4nNzdOCSIjMD3ogKKXgrotFILuhz+cviHFP/6l3QyWngrnvk2OlHnd+gMCIYaWmFufAyLfleJsy+QbcI/Csel6FTkznEQKhCzosE8kyMBkIbfaN3fhkbwnDGaR5wAgM5FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877364; c=relaxed/simple;
-	bh=JsRfhdKuo80WOVYfmxuIfZXTe1aWQkfNJ/AH90+eVzA=;
+	s=arc-20240116; t=1748875796; c=relaxed/simple;
+	bh=04tNniGgxJOJJyBGRUDzSkgRp0iuwmLxa/d+Syr7JV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpccN51iu/DcrjMdrf2ZrkdABdjtMBCABNA3+rszgD9b6SSkW5Qk3FoodNbvuaOZJCgmnEdu4VdwELqJD9mBaKkqy45py55leUzo5LMv3CmvzpvEtxxtVdlJo3kgZRr0EfITf1LVC2OknHzEnFVxoBcdE2wcUXMdn5cHoM4FcUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW6ofw6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDA6C4CEEB;
-	Mon,  2 Jun 2025 15:16:03 +0000 (UTC)
+	 MIME-Version; b=PoynK7dBQ3wZ+cdA3UmA+Q7FbsgkQMZGMHvBONKAG/VQxf4BnLZ7bAnRuEBK9ry89/jpEgr7PaIIV7id2ffppqFnhmmcvihDCI9E2gfn/kErRntS+tGGy7uf/x6QgfmaBhEMxn7T8pCc+NvHnmUk00SvoFH/1RtG2qTsbbN6Ifc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdbDmkw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C25C4CEEE;
+	Mon,  2 Jun 2025 14:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877363;
-	bh=JsRfhdKuo80WOVYfmxuIfZXTe1aWQkfNJ/AH90+eVzA=;
+	s=korg; t=1748875796;
+	bh=04tNniGgxJOJJyBGRUDzSkgRp0iuwmLxa/d+Syr7JV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yW6ofw6zoghDL7gdAL6IMpj9z3h0xNYbWxVTggC16ps0dccNZUo5y++rbNUJ58xf+
-	 TjIyH01MAXz7W4tp93HGjsoe3GoO34WlVfQvvxfzRb1ud3reI7PPLKp9e8SPcastEF
-	 TvAG+9nn3yjvvD/HHZgvG4tyoIQAPLxG9f6HJXDM=
+	b=HdbDmkw7QcTgmQsCSQUKYDC1v6UMKMDOm/4ZCoiL7BaatA8t+1WqnysAustuodb5h
+	 Jo5R4p5NaHBjPvaC/85gQ1+bn6tIBDg7nhKxl7MsWNTC2MO3zQDyXYbg/2PAQRUexr
+	 ESVthiEWM0mXmessg53FtBvNcxfxx4JZTO71AeCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32d4647f551007595173@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 255/325] ALSA: pcm: Fix race of buffer access at PCM OSS layer
+	"feijuan.li" <feijuan.li@samsung.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 5.10 246/270] drm/edid: fixed the bug that hdr metadata was not reset
 Date: Mon,  2 Jun 2025 15:48:51 +0200
-Message-ID: <20250602134330.134837380@linuxfoundation.org>
+Message-ID: <20250602134317.389221279@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: feijuan.li <feijuan.li@samsung.com>
 
-commit 93a81ca0657758b607c3f4ba889ae806be9beb73 upstream.
+commit 6692dbc15e5ed40a3aa037aced65d7b8826c58cd upstream.
 
-The PCM OSS layer tries to clear the buffer with the silence data at
-initialization (or reconfiguration) of a stream with the explicit call
-of snd_pcm_format_set_silence() with runtime->dma_area.  But this may
-lead to a UAF because the accessed runtime->dma_area might be freed
-concurrently, as it's performed outside the PCM ops.
+When DP connected to a device with HDR capability,
+the hdr structure was filled.Then connected to another
+sink device without hdr capability, but the hdr info
+still exist.
 
-For avoiding it, move the code into the PCM core and perform it inside
-the buffer access lock, so that it won't be changed during the
-operation.
-
-Reported-by: syzbot+32d4647f551007595173@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/68164d8e.050a0220.11da1b.0019.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250516080817.20068-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: e85959d6cbe0 ("drm: Parse HDR metadata info from EDID")
+Cc: <stable@vger.kernel.org> # v5.3+
+Signed-off-by: "feijuan.li" <feijuan.li@samsung.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20250514063511.4151780-1-feijuan.li@samsung.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/pcm.h      |    2 ++
- sound/core/oss/pcm_oss.c |    3 +--
- sound/core/pcm_native.c  |   11 +++++++++++
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_edid.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1429,6 +1429,8 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
- #endif
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -5097,6 +5097,7 @@ drm_reset_display_info(struct drm_connec
+ 	info->has_hdmi_infoframe = false;
+ 	info->rgb_quant_range_selectable = false;
+ 	memset(&info->hdmi, 0, sizeof(info->hdmi));
++	memset(&connector->hdr_sink_metadata, 0, sizeof(connector->hdr_sink_metadata));
  
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+
- /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
-  * @dma: DMA number
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1085,8 +1085,7 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	if (runtime->dma_area)
--		snd_pcm_format_set_silence(runtime->format, runtime->dma_area, bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_runtime_buffer_set_silence(runtime);
- 
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
- 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -703,6 +703,17 @@ static void snd_pcm_buffer_access_unlock
- 	atomic_inc(&runtime->buffer_accessing);
- }
- 
-+/* fill the PCM buffer with the current silence format; called from pcm_oss.c */
-+void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+{
-+	snd_pcm_buffer_access_lock(runtime);
-+	if (runtime->dma_area)
-+		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
-+					   bytes_to_samples(runtime, runtime->dma_bytes));
-+	snd_pcm_buffer_access_unlock(runtime);
-+}
-+EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
-+
- #if IS_ENABLED(CONFIG_SND_PCM_OSS)
- #define is_oss_stream(substream)	((substream)->oss.oss)
- #else
+ 	info->non_desktop = 0;
+ 	memset(&info->monitor_range, 0, sizeof(info->monitor_range));
 
 
 
