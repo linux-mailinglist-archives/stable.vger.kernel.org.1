@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C62BACB565
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E25A7ACB4EC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA5EA21892
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C399E3D35
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48756221F00;
-	Mon,  2 Jun 2025 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0804722F751;
+	Mon,  2 Jun 2025 14:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2KMc0fK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDGhGW2k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065381A4F12;
-	Mon,  2 Jun 2025 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AE92248A4;
+	Mon,  2 Jun 2025 14:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875599; cv=none; b=gjARGMLgVwWvP1JY5MuSfAIV9VkK0FNy92KckMRMxodeq6j2QnfxBoitC0Ziok9KwJgXCiTZf9ex66CShw3SrB3EX7zM2GwuOjV1g20llcjZAWMSk8WPgwonMCAt2ZhJt7BAxQA0dyKvJL16GlVfSc1EZ6itXHn14fH7j4GVkk8=
+	t=1748874925; cv=none; b=UdcffgzpgYOa+GuupU+xcwS9Ht4WjKdRTk57uRBlZYKE0uByp1wBRCqtPIkv7AW8Idy44FnuVVoPZrj/tw8kx1UHfrUBP+cAh6Vahn+DN/MaeL4Bb9wMszksBP/pfwnrHWEu10jIaq5G6RI5HSDfsfhcyr6PzaiVU14ZWb6nT2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875599; c=relaxed/simple;
-	bh=UIBVo/CWmB6ZkIMx+IJOkAf5JPwrhHWZWGk2m5ANiNI=;
+	s=arc-20240116; t=1748874925; c=relaxed/simple;
+	bh=4gFOtPrR+n0Y8U7ZLjXfbyF1b5KYcPlYM082hBKtlUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU6hXJP0dKNw4luZ37HFC/rpRC3BcINTdgkx0zRCeVIgBKobfCyAkrlnWOiZh9mGrcP0tqHmeEM64XS/iN2TOwG9mHSjOsHL4vKibziWtq4YyQNeml/lDWBYbv1SM7Yk4jX3iLpRjFQtVBMD+tE0j6BxyQWlsPloQpUaEGMDDJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2KMc0fK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE7DC4CEEB;
-	Mon,  2 Jun 2025 14:46:38 +0000 (UTC)
+	 MIME-Version; b=r+Kfr5aZy6YVUHNwIC0fV7g266+8VZW5Tab61PWSB7WypYbbO2SyCVcUkMvaIV1vYXxpr7N3m6LuGXQGrEazLjUupF7aeMyt/bgHzRmqibx/5pFGyvQeqEKDd4xnWDCW5OFmeJjaX7xI8HmGb1B9GVR5CC3WylBNqOsucZiXi+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDGhGW2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2899CC4CEEB;
+	Mon,  2 Jun 2025 14:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875598;
-	bh=UIBVo/CWmB6ZkIMx+IJOkAf5JPwrhHWZWGk2m5ANiNI=;
+	s=korg; t=1748874925;
+	bh=4gFOtPrR+n0Y8U7ZLjXfbyF1b5KYcPlYM082hBKtlUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2KMc0fKJvNhvJtT4OTb+El9Itw6mwSTmSDlc3g3aRmQ95wHmjC5Qbml/EjCqaOTG
-	 59i66ZBFpaUHYQnO0Dj/9R/YrN3MmcJ9gvPztAcVvOKNz7+3RAZ+GIP4QRxVlNOFzi
-	 sNoKy/HBH84PgObhCXcNZq2E8acJqBn6h22bBgu4=
+	b=FDGhGW2k3tBcrFg60ONkGBFbHNtZgHWs3knMAEJMtFrZxDEYk74w/hqCwhUJ3+CT1
+	 Alx3ZoOOjEmPx7QGqzd1Z7X295WRpeM7YAoc07UMgVBgmYZpljfXicPZFDxM6yXixQ
+	 DMBh/0mAd63cWLlzCA568OTL7omTPSwUjqEpoqaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/270] MIPS: Use arch specific syscall name match function
-Date: Mon,  2 Jun 2025 15:47:49 +0200
-Message-ID: <20250602134314.734435689@linuxfoundation.org>
+Subject: [PATCH 5.4 137/204] wifi: rtw88: Fix rtw_init_ht_cap() for RTL8814AU
+Date: Mon,  2 Jun 2025 15:47:50 +0200
+Message-ID: <20250602134301.035417798@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
+[ Upstream commit c7eea1ba05ca5b0dbf77a27cf2e1e6e2fb3c0043 ]
 
-On MIPS system, most of the syscall function name begin with prefix
-sys_. Some syscalls are special such as clone/fork, function name of
-these begin with __sys_. Since scratch registers need be saved in
-stack when these system calls happens.
+Set the RX mask and the highest RX rate according to the number of
+spatial streams the chip can receive. For RTL8814AU that is 3.
 
-With ftrace system call method, system call functions are declared with
-SYSCALL_DEFINEx, metadata of the system call symbol name begins with
-sys_. Here mips specific function arch_syscall_match_sym_name is used to
-compare function name between sys_call_table[] and metadata of syscall
-symbol.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4e786f50-ed1c-4387-8b28-e6ff00e35e81@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/wireless/realtek/rtw88/main.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-index b463f2aa5a613..7acbe701afd69 100644
---- a/arch/mips/include/asm/ftrace.h
-+++ b/arch/mips/include/asm/ftrace.h
-@@ -87,4 +87,20 @@ struct dyn_arch_ftrace {
- #endif /*  CONFIG_DYNAMIC_FTRACE */
- #endif /* __ASSEMBLY__ */
- #endif /* CONFIG_FUNCTION_TRACER */
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 15c7a6fc37b90..e4d487468c4dd 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -766,6 +766,7 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 			    struct ieee80211_sta_ht_cap *ht_cap)
+ {
+ 	struct rtw_efuse *efuse = &rtwdev->efuse;
++	int i;
+ 
+ 	ht_cap->ht_supported = true;
+ 	ht_cap->cap = 0;
+@@ -780,17 +781,11 @@ static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
+ 	ht_cap->ampdu_factor = IEEE80211_HT_MAX_AMPDU_64K;
+ 	ht_cap->ampdu_density = IEEE80211_HT_MPDU_DENSITY_16;
+ 	ht_cap->mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
+-	if (efuse->hw_cap.nss > 1) {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0xFF;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(300);
+-	} else {
+-		ht_cap->mcs.rx_mask[0] = 0xFF;
+-		ht_cap->mcs.rx_mask[1] = 0x00;
+-		ht_cap->mcs.rx_mask[4] = 0x01;
+-		ht_cap->mcs.rx_highest = cpu_to_le16(150);
+-	}
 +
-+#ifdef CONFIG_FTRACE_SYSCALLS
-+#ifndef __ASSEMBLY__
-+/*
-+ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
-+ * for instance). We should also match the sys_ variant with those.
-+ */
-+#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
-+static inline bool arch_syscall_match_sym_name(const char *sym,
-+					       const char *name)
-+{
-+	return !strcmp(sym, name) ||
-+		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
-+}
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_FTRACE_SYSCALLS */
- #endif /* _ASM_MIPS_FTRACE_H */
++	for (i = 0; i < efuse->hw_cap.nss; i++)
++		ht_cap->mcs.rx_mask[i] = 0xFF;
++	ht_cap->mcs.rx_mask[4] = 0x01;
++	ht_cap->mcs.rx_highest = cpu_to_le16(150 * efuse->hw_cap.nss);
+ }
+ 
+ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
 -- 
 2.39.5
 
