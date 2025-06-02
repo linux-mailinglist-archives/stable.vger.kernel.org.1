@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-149252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F48BACB1DD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:24:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF26BACB1F4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DE83ADEE4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:19:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5A911943FBA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B70236A9F;
-	Mon,  2 Jun 2025 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FECA236A9C;
+	Mon,  2 Jun 2025 14:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwBTBgmB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fv10OVhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932CB226888;
-	Mon,  2 Jun 2025 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4AD22259B;
+	Mon,  2 Jun 2025 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873387; cv=none; b=nXr2nUk63RTLgti8P7TXgZZVM98y1pKECkZG3U5C6yKZZgBnPNfK1IOY8b5U/we7iEbwvEc8UiAs2Q0+NSW1bKnNxmRSOWOZYw8OrXyT3CaXZuuDKE10etl6x9zFwEQw55R141Jn6E3+e3z8qoYFau0dkuiGR+pBVeltti1ggYM=
+	t=1748873394; cv=none; b=ZwMPevgsFFR8qI89+bWtnXBbV2tbDXhwOt3TsjkxtiqpGyaZ50MRPt9xcHNf4SOJYUwoUE2EHboR+aco4RUzUfkVrF6UgCYehZLdtGfU0y2yZDvLY/kkkvvIkcXFBVO7l9m32uJlTWQI7IZCRpizak/iTfSF9ZqjMxwoGxMIRsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873387; c=relaxed/simple;
-	bh=hsm8H3aaFSdOoCwEr7z4lgBY7GoNodS6AV/OO1+6Lok=;
+	s=arc-20240116; t=1748873394; c=relaxed/simple;
+	bh=m8zpKSJnhBTQuwv4PLT0VKwps5BVp4wgOqaDPKV/iho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DwIw6HDPp73BeKx8AAYDEWd13ahVCN0CxeiDu3kVP/FVUnNa4+SSQghNMpyN1ywszHMstF81+xvhMJpwBDsTtbytVviybGoRep9wHE706ggwgtlEUFPMCoKqCHwvPABLv940ApGibJoAvjcT5YWD7l9Pms8n5x90UJds1g3yE0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwBTBgmB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F87CC4CEEB;
-	Mon,  2 Jun 2025 14:09:46 +0000 (UTC)
+	 MIME-Version; b=XMHpahBJf+Qc5orbochz9Fid3wwJS5TNr8HDzttdcaHIEtDszkPvAzxLA1LChfmdjAol8LE+47Bf4CPdjqD4KWCJeoKtXY97mNWxMbBMc+pY3/XGUB6Lu0ZuA2kC5FOfP3TZ1GJXq80QWy03o4rTiPnT+DBeBGfer8la64ey3c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fv10OVhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB45EC4CEEB;
+	Mon,  2 Jun 2025 14:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873387;
-	bh=hsm8H3aaFSdOoCwEr7z4lgBY7GoNodS6AV/OO1+6Lok=;
+	s=korg; t=1748873393;
+	bh=m8zpKSJnhBTQuwv4PLT0VKwps5BVp4wgOqaDPKV/iho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwBTBgmB9on7vMTac13rGFCaYuFZhnh34anM8RGzlOe3YST+DFF2jziMSEwLAHbzr
-	 scEpUdndeQ2c+YJ4jc7qE2zDBT7OMVc6goQ879rzpprLXOjjmiAtB8DbV8vvdJULRM
-	 CpUZA8LcsApy7zeC6jXKGy/wsxjtr6IooBZkimxM=
+	b=fv10OVhzj48bcP6iHGszvPBwljWYEkG6lZX539n49ot6qNxgpXWdor0Rz3kcA8zI9
+	 jBe7SfPiPX3fyWitmE0B74/znYQkVtmHcHn6uKZi0yg9RuhwjfQrWGkgTTroGtftdu
+	 qTkqB3qwYXa/UqDAYwOBpvClOhyhh0UkzuVt/v6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/444] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
-Date: Mon,  2 Jun 2025 15:43:10 +0200
-Message-ID: <20250602134346.007237062@linuxfoundation.org>
+Subject: [PATCH 6.6 127/444] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
+Date: Mon,  2 Jun 2025 15:43:11 +0200
+Message-ID: <20250602134346.045370369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -66,114 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
+[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
 
-Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
-hd44780_common") makes charlcd_alloc() argument-less effectively dropping
-the single allocation for the struct charlcd_priv object along with
-the driver specific one. Restore that behaviour here.
+Setting format to s16le is required for compressed playback on compatible
+soundcards.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/auxdisplay/charlcd.c | 5 +++--
- drivers/auxdisplay/charlcd.h | 5 +++--
- drivers/auxdisplay/hd44780.c | 2 +-
- drivers/auxdisplay/lcd2s.c   | 2 +-
- drivers/auxdisplay/panel.c   | 2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ sound/soc/qcom/sm8250.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
-index 6d309e4971b61..e243291a7e77c 100644
---- a/drivers/auxdisplay/charlcd.c
-+++ b/drivers/auxdisplay/charlcd.c
-@@ -594,18 +594,19 @@ static int charlcd_init(struct charlcd *lcd)
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index 88a7169336d61..580eb20b0771a 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -7,6 +7,7 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/pcm.h>
++#include <sound/pcm_params.h>
+ #include <linux/soundwire/sdw.h>
+ #include <sound/jack.h>
+ #include <linux/input-event-codes.h>
+@@ -39,9 +40,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+ 					SNDRV_PCM_HW_PARAM_RATE);
+ 	struct snd_interval *channels = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_CHANNELS);
++	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
+ 
+ 	rate->min = rate->max = 48000;
+ 	channels->min = channels->max = 2;
++	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+ 
  	return 0;
  }
- 
--struct charlcd *charlcd_alloc(void)
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size)
- {
- 	struct charlcd_priv *priv;
- 	struct charlcd *lcd;
- 
--	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
-+	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
- 	if (!priv)
- 		return NULL;
- 
- 	priv->esc_seq.len = -1;
- 
- 	lcd = &priv->lcd;
-+	lcd->drvdata = priv->drvdata;
- 
- 	return lcd;
- }
-diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
-index eed80063a6d20..4bbf106b2dd8a 100644
---- a/drivers/auxdisplay/charlcd.h
-+++ b/drivers/auxdisplay/charlcd.h
-@@ -49,7 +49,7 @@ struct charlcd {
- 		unsigned long y;
- 	} addr;
- 
--	void *drvdata;
-+	void *drvdata;			/* Set by charlcd_alloc() */
- };
- 
- /**
-@@ -93,7 +93,8 @@ struct charlcd_ops {
- };
- 
- void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
--struct charlcd *charlcd_alloc(void);
-+
-+struct charlcd *charlcd_alloc(unsigned int drvdata_size);
- void charlcd_free(struct charlcd *lcd);
- 
- int charlcd_register(struct charlcd *lcd);
-diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
-index 8b690f59df27d..ebaf0ff518f4c 100644
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
- 	if (!hdc)
- 		return -ENOMEM;
- 
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		goto fail1;
- 
-diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
-index 6422be0dfe20e..0ecf6a9469f24 100644
---- a/drivers/auxdisplay/lcd2s.c
-+++ b/drivers/auxdisplay/lcd2s.c
-@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c)
- 	if (err < 0)
- 		return err;
- 
--	lcd = charlcd_alloc();
-+	lcd = charlcd_alloc(0);
- 	if (!lcd)
- 		return -ENOMEM;
- 
-diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
-index eba04c0de7eb3..0f3999b665e70 100644
---- a/drivers/auxdisplay/panel.c
-+++ b/drivers/auxdisplay/panel.c
-@@ -835,7 +835,7 @@ static void lcd_init(void)
- 	if (!hdc)
- 		return;
- 
--	charlcd = charlcd_alloc();
-+	charlcd = charlcd_alloc(0);
- 	if (!charlcd) {
- 		kfree(hdc);
- 		return;
 -- 
 2.39.5
 
