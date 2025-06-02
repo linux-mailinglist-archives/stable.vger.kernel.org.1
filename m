@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DD5ACB705
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016D5ACB6D4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC9081BC60FA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B4DB7A8559
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2D122B8D5;
-	Mon,  2 Jun 2025 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF61226D12;
+	Mon,  2 Jun 2025 15:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ao0AVxBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNCgOQZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B44422A814;
-	Mon,  2 Jun 2025 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5F2226D00;
+	Mon,  2 Jun 2025 15:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875870; cv=none; b=MbDTFM0mGUABiqbxCWtWI27P6FNDMJ8zj3xL7g53o7Mz3JL21/WZDEYH/VLq+tXsc9J3LBPsMGQPL2PeAk168QZGp56PZ7L4YgrRMNxeuk5kJcIG26R7QXTFFOh582gv/d4IhgJvz5JNXXcNFVIZ7ihOiKXoYS/Rk55zEu3mc/4=
+	t=1748877444; cv=none; b=MJ4tfTMsY1ZOuvXHb585NDqShfvu+Hd8s88ouMCt91nS1fdIxadstKYzfjyIyqMJcjhH9QZjc+OiEeJEB0q3FhqvtUajqhog+JYvJtTgojVbsObasqIRidbfRUPSw7HO2qKsIr7p/1WoDZKfanlmRFiBI302Tm69aHbT3eVgI/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875870; c=relaxed/simple;
-	bh=zxBlhjDfJBf1BWDpcS70keSIxBJ7JdQrAE90zXDPXeE=;
+	s=arc-20240116; t=1748877444; c=relaxed/simple;
+	bh=cETVBYpHKfmwIuvPqAfmo0VlQ00aHdMBKyZFQNkE5GI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOvUwZbJLcs+tyC5c22vWTrExma/VmnNZrX3nF0Y7W68P54fnY6fiwTJtQz0w93+EZ1CgsPbLQcb4ZADW2i9DMOMi8aSLPz/mfj8sfaG67Ai5/ONiHv/pkbMWt6ws+/nIOJsmhIdPcHcHPnjUKaQG3ajKR8yH5jvlgg1Z1UWQng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ao0AVxBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF0EC4CEEB;
-	Mon,  2 Jun 2025 14:51:09 +0000 (UTC)
+	 MIME-Version; b=H/J3qTizlMkr8efOdrPpGokMmNecYy/jT3J8kNwN8e+wxD6eTgjP5FXgmIIV3dDeKKjML9F/UfR044N7Hsg5K11AOohks16e/r1G7Mqhwg3/wDyOmUSyxGQRD63Bt8zMnE50n5pf5B70VLYM5W16MK3sNAYnral3gpJIKp6LUjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNCgOQZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EEEC4CEF2;
+	Mon,  2 Jun 2025 15:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875870;
-	bh=zxBlhjDfJBf1BWDpcS70keSIxBJ7JdQrAE90zXDPXeE=;
+	s=korg; t=1748877443;
+	bh=cETVBYpHKfmwIuvPqAfmo0VlQ00aHdMBKyZFQNkE5GI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ao0AVxBV8+bSj+9d19gXomSCrad3E5qVgMkHAU/u6CEzuZAy/rezMy6h1yKwVqhxm
-	 RUUytf/Iy9ZLOroqktTUFUfUp/UyCQC4FL4dHsJEuqXkYP29hMVy91X25aSZ8Pov+0
-	 ktal7oCWUatVed1m0b4jW90fSDtRukjr0ys7emJo=
+	b=PNCgOQZT+aWP1W4Wiv1e8ByGqRT78fh+mjPSLYbSbx9QtLT/IEx+mwB94SdDMy+1z
+	 LmrYp/85MaDH+FGeKjTVseGSeBbaIv0jORmnMDs4YddPjmqbFRXX036TUYeYU7gNkp
+	 4zlFAvcQxM/RnhJonGoVqzBrvunN0yWz5x9Hof3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 270/270] perf/arm-cmn: Initialise cmn->cpu earlier
-Date: Mon,  2 Jun 2025 15:49:15 +0200
-Message-ID: <20250602134318.370595510@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Zhaoyang Li <lizy04@hust.edu.cn>
+Subject: [PATCH 6.1 280/325] btrfs: check folio mapping after unlock in relocate_one_folio()
+Date: Mon,  2 Jun 2025 15:49:16 +0200
+Message-ID: <20250602134331.139215980@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Boris Burkov <boris@bur.io>
 
-commit 597704e201068db3d104de3c7a4d447ff8209127 upstream.
+commit 3e74859ee35edc33a022c3f3971df066ea0ca6b9 upstream.
 
-For all the complexity of handling affinity for CPU hotplug, what we've
-apparently managed to overlook is that arm_cmn_init_irqs() has in fact
-always been setting the *initial* affinity of all IRQs to CPU 0, not the
-CPU we subsequently choose for event scheduling. Oh dear.
+When we call btrfs_read_folio() to bring a folio uptodate, we unlock the
+folio. The result of that is that a different thread can modify the
+mapping (like remove it with invalidate) before we call folio_lock().
+This results in an invalid page and we need to try again.
 
-Cc: stable@vger.kernel.org
-Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ backport past NUMA changes in 5.17 ]
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+In particular, if we are relocating concurrently with aborting a
+transaction, this can result in a crash like the following:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP
+  CPU: 76 PID: 1411631 Comm: kworker/u322:5
+  Workqueue: events_unbound btrfs_reclaim_bgs_work
+  RIP: 0010:set_page_extent_mapped+0x20/0xb0
+  RSP: 0018:ffffc900516a7be8 EFLAGS: 00010246
+  RAX: ffffea009e851d08 RBX: ffffea009e0b1880 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: ffffc900516a7b90 RDI: ffffea009e0b1880
+  RBP: 0000000003573000 R08: 0000000000000001 R09: ffff88c07fd2f3f0
+  R10: 0000000000000000 R11: 0000194754b575be R12: 0000000003572000
+  R13: 0000000003572fff R14: 0000000000100cca R15: 0000000005582fff
+  FS:  0000000000000000(0000) GS:ffff88c07fd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 000000407d00f002 CR4: 00000000007706f0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  PKRU: 55555554
+  Call Trace:
+  <TASK>
+  ? __die+0x78/0xc0
+  ? page_fault_oops+0x2a8/0x3a0
+  ? __switch_to+0x133/0x530
+  ? wq_worker_running+0xa/0x40
+  ? exc_page_fault+0x63/0x130
+  ? asm_exc_page_fault+0x22/0x30
+  ? set_page_extent_mapped+0x20/0xb0
+  relocate_file_extent_cluster+0x1a7/0x940
+  relocate_data_extent+0xaf/0x120
+  relocate_block_group+0x20f/0x480
+  btrfs_relocate_block_group+0x152/0x320
+  btrfs_relocate_chunk+0x3d/0x120
+  btrfs_reclaim_bgs_work+0x2ae/0x4e0
+  process_scheduled_works+0x184/0x370
+  worker_thread+0xc6/0x3e0
+  ? blk_add_timer+0xb0/0xb0
+  kthread+0xae/0xe0
+  ? flush_tlb_kernel_range+0x90/0x90
+  ret_from_fork+0x2f/0x40
+  ? flush_tlb_kernel_range+0x90/0x90
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+
+This occurs because cleanup_one_transaction() calls
+destroy_delalloc_inodes() which calls invalidate_inode_pages2() which
+takes the folio_lock before setting mapping to NULL. We fail to check
+this, and subsequently call set_extent_mapping(), which assumes that
+mapping != NULL (in fact it asserts that in debug mode)
+
+Note that the "fixes" patch here is not the one that introduced the
+race (the very first iteration of this code from 2009) but a more recent
+change that made this particular crash happen in practice.
+
+Fixes: e7f1326cc24e ("btrfs: set page extent mapped after read_folio in relocate_one_page")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm-cmn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/relocation.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -1512,6 +1512,7 @@ static int arm_cmn_probe(struct platform
- 		return -ENOMEM;
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2977,6 +2977,7 @@ static int relocate_one_page(struct inod
+ 	int ret;
  
- 	cmn->dev = &pdev->dev;
-+	cmn->cpu = raw_smp_processor_id();
- 	platform_set_drvdata(pdev, cmn);
+ 	ASSERT(page_index <= last_index);
++again:
+ 	page = find_lock_page(inode->i_mapping, page_index);
+ 	if (!page) {
+ 		page_cache_sync_readahead(inode->i_mapping, ra, NULL,
+@@ -2998,6 +2999,11 @@ static int relocate_one_page(struct inod
+ 			ret = -EIO;
+ 			goto release_page;
+ 		}
++		if (page->mapping != inode->i_mapping) {
++			unlock_page(page);
++			put_page(page);
++			goto again;
++		}
+ 	}
  
- 	if (has_acpi_companion(cmn->dev))
-@@ -1533,7 +1534,6 @@ static int arm_cmn_probe(struct platform
- 	if (err)
- 		return err;
- 
--	cmn->cpu = raw_smp_processor_id();
- 	cmn->pmu = (struct pmu) {
- 		.module = THIS_MODULE,
- 		.attr_groups = arm_cmn_attr_groups,
+ 	/*
 
 
 
