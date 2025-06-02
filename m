@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E05ACB066
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B643FACB31A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D476B165731
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4142C7A135D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EFE222575;
-	Mon,  2 Jun 2025 14:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0996D222599;
+	Mon,  2 Jun 2025 14:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMT81AQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL+Qbbel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3598F222560;
-	Mon,  2 Jun 2025 14:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85FB1FF61E;
+	Mon,  2 Jun 2025 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872898; cv=none; b=jlSV5f3fD88I6aqM3+in3AFXZwinPU9ywZApxS2z+l+3T4l6fUKfEqfapjCylQ2k9Lrw/y3qcALhnOJKns8gl72+iPlHCOZ35omVuFZcjY1P6zZRrt1ZE6ptq7VnshQGR1QBkFXTqmhBO02VryFtL+qg5wqxhH+FcDTVOSmO7EU=
+	t=1748874811; cv=none; b=KnENASQ9mvfMzDqUzEWDRZGsdSyubjZsa5tYjl3liZk2fr/EuFLfAo6pzAQBEtmj9ranfy6SB72pm+/NtiVbQm71HX1dwL3yD5nJck7K6rVFIAAyevW1gCdiY0F1/jwICJrIpwQNcR+fLvyq9PXdeWpTSqg1u9pCjYrKLAN1DSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872898; c=relaxed/simple;
-	bh=sa0tL9IBkfzMvsfeYwrUNP+iOUtJS0TethNqmp9JnIg=;
+	s=arc-20240116; t=1748874811; c=relaxed/simple;
+	bh=SpRFl/g0d8a0jpKqNn5rZ8pntFlTuJLubCYyTvh3/yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIO16tp7KKWovMqJKN9sGA4XK9DhqLuVR07Pl5fmKqwJivfSgrwkeuz+NuM9yiMMEMCuSynJh0a28N64OCzfQjl/qVIqAZRmhNepYNuLI9NyInlIiZRV0wDjtuLvE3JwhCidMOio0XRfuXcttzfeXsaRCjKjC6jxkQSN/OaqzYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMT81AQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4143C4CEEE;
-	Mon,  2 Jun 2025 14:01:37 +0000 (UTC)
+	 MIME-Version; b=VTqkYs/Ha+5D0dPFfooqo8ROYzMGDRKJc8NPKIM2K8U3W+8+CH1acy2ev4+zFAZhM+1EmCfTQpRdU/QHL7Cuxe5xB2b+cd4xNCv39saQ2/Jecj1GabiWdY5pg8Jh+bnQCSSf7YowMwjQkCZYIG5hsOxRVJu9MwtPGtwLxFFPq04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL+Qbbel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBFFC4CEEB;
+	Mon,  2 Jun 2025 14:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872898;
-	bh=sa0tL9IBkfzMvsfeYwrUNP+iOUtJS0TethNqmp9JnIg=;
+	s=korg; t=1748874811;
+	bh=SpRFl/g0d8a0jpKqNn5rZ8pntFlTuJLubCYyTvh3/yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cMT81AQYmNlo1RSZxJGKCrmn+18FzRn5LKVrTHL99yYjxHlAWocim5c0gExN03Fn6
-	 T6uojr23D+PT6mjw+fm06X6Jeqf0EdQrS0RsAwgS4Oz/+jrOKTri6X/klXvvtH2Dgn
-	 3LDHHRwqeLI7F+VHINQnIgMa0RjSCQfG3cBFTX0E=
+	b=tL+QbbeldbZfVX8b8Ao9DiBBgNXdgtQgKsAa9Ihk2OgYG/jCibRtdOShZ+rMkOjM5
+	 mk6RhVEiAAUh8DjLPWI06uGrYYrWvGW3ZqONxQvnaOv94A1agMZWHPRd0AP0e74L/p
+	 2RnqMs66/6Xufxu8zfGPrh1430uRvI0VytDnD5ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 08/55] arm64: dts: qcom: sm8650: Add missing properties for cryptobam
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 112/204] netfilter: conntrack: Bound nf_conntrack sysctl writes
 Date: Mon,  2 Jun 2025 15:47:25 +0200
-Message-ID: <20250602134238.596804249@linuxfoundation.org>
+Message-ID: <20250602134300.061905517@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-commit 38b88722bce07b6a5927f45fbf7a9a85e834572c upstream.
+[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
 
-num-channels and qcom,num-ees are required for BAM nodes without clock,
-because the driver cannot ensure the hardware is powered on when trying to
-obtain the information from the hardware registers. Specifying the node
-without these properties is unsafe and has caused early boot crashes for
-other SoCs before [1, 2].
+nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
+be written any negative value, which would then be stored in the
+unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
 
-Add the missing information from the hardware registers to ensure the
-driver can probe successfully without causing crashes.
+While the do_proc_dointvec_conv function is supposed to limit writing
+handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
+being written in an unsigned int leads to a very high value, exceeding
+this limit.
 
-[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
-[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
+Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
+minimum value is 1.
 
-Cc: stable@vger.kernel.org
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-4-f560889e65d8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The proc_handlers have thus been updated to proc_dointvec_minmax in
+order to specify the following write bounds :
+
+* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
+  and SYSCTL_INT_MAX.
+
+* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+
+With this patch applied, sysctl writes outside the defined in the bound
+will thus lead to a write error :
+
+```
+sysctl -w net.netfilter.nf_conntrack_expect_max=-1
+sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
+```
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -2495,6 +2495,8 @@
- 				 <&apps_smmu 0x481 0>;
- 
- 			qcom,ee = <0>;
-+			qcom,num-ees = <4>;
-+			num-channels = <20>;
- 			qcom,controlled-remotely;
- 		};
- 
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 1e3dbed9d7840..de330dffa0a28 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -608,7 +608,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_COUNT] = {
+ 		.procname	= "nf_conntrack_count",
+@@ -647,7 +649,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+@@ -926,7 +930,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{ }
+ };
+-- 
+2.39.5
+
 
 
 
