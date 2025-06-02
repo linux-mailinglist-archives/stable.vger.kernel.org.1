@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A334ACB7C8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B93ACB54E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F7C1948009
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F32BD17DF71
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DAD221297;
-	Mon,  2 Jun 2025 15:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5662228CB7;
+	Mon,  2 Jun 2025 14:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0YfqSVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn3ImAK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC5417BBF;
-	Mon,  2 Jun 2025 15:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819992288E3;
+	Mon,  2 Jun 2025 14:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877357; cv=none; b=BqWDfBQoZdR6iYGPvfna7oWwOonAFWxjKyHEYrU7if4xzBXcVzjMgjgmw+PGlnfa/9cK+Szgm2Eobdn+Y1Td8BVyEUfOppgvyP2BrpW/tDZSAhwC5UlEaB7Q6Qi7K8lWA/0hxF+0RISNWZFFLLX/BitzCpwwisz5cnzAIcp8aYg=
+	t=1748875790; cv=none; b=ADutc4DAdpkXCikQoUItYqb4ZPkumFlRBRu0UkUxz0zh89F0ueXprBqC2rPExUybWKyLQmY5bTDM2hgJKki24TDKeDNFgG1XGj3iE6bDFYpe8LhMxMMbOXRAl2G44uCpdihp1NXILiH8NmY2f1vrQ55oBfnmecNrdUTfH5Q26AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877357; c=relaxed/simple;
-	bh=iWJgumALeVdvabCOMESv9z2MJYmRiNi9XylSfR7VmOI=;
+	s=arc-20240116; t=1748875790; c=relaxed/simple;
+	bh=9xDnyjg4kS8N60atJtIHl/VZWSCbf8sTuttiopGaBjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkUJ2umHoB/tRU0r95m0Mz2d1JiOEbb8V7dmM/qGwiF9WMHPWAE3kMpBUaBxJL5QPaTNxLNosgLG4hz+laZgThuFlEUkel5cRKN1G77Vzvq+dJVpSB/JUfSiEZo9vNnZoFjCq6ttkUjny3bVMKVDooPZ4oVPJy8MUpKrSu6EWj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0YfqSVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649D4C4CEEB;
-	Mon,  2 Jun 2025 15:15:57 +0000 (UTC)
+	 MIME-Version; b=XE0xWcT3eW8Bn0FSE8cvqp9rk4Eh9mU//xm/Nybs5RrpY88C7dMxgX4u1K7uFWybo/lJ1ETJoNvCfAe/2hO1GcZwrwD3nZmw0W4cbXGJ7HWwgcxuN3nHN+NISZJO0kGkx459sXQaK3Cyebq4bCgrqmzNJ9dqsEIoZu28DhsdPgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn3ImAK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839ABC4CEEB;
+	Mon,  2 Jun 2025 14:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877357;
-	bh=iWJgumALeVdvabCOMESv9z2MJYmRiNi9XylSfR7VmOI=;
+	s=korg; t=1748875790;
+	bh=9xDnyjg4kS8N60atJtIHl/VZWSCbf8sTuttiopGaBjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0YfqSVZTcdLvfdMeC7yZ/z+Px+s0ycIXBVSaaEN6EEvvkOPAFDhK9FOz16/84v1D
-	 L9qvt4e+jf6RF59CLIoGNxTYn+03jZR5i8JlGZfNJesCejAQCiKqEyGBViRE8urChO
-	 KANX0OVHXta90v9U/VNUuJR5IpCklWL6qpn36Cm0=
+	b=Zn3ImAK7eD9g3mfhMYC6nbYzmwTVugQ0kq0bfsWd06t/T8u/1O/NZM18a0SoXj+8w
+	 Xau8ka3W0+RVgQj0hrZGuk1JJThhxwFVlMa1dFDxDIoC5NtypkzDV8aSV84BvO4ELC
+	 3/T0PxfVUS5zVqsS7Hcsidv4cVHs2m1jKFS7dPMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH 6.1 253/325] can: bcm: add locking for bcm_op runtime updates
+	syzbot+32d4647f551007595173@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 244/270] ALSA: pcm: Fix race of buffer access at PCM OSS layer
 Date: Mon,  2 Jun 2025 15:48:49 +0200
-Message-ID: <20250602134330.054043343@linuxfoundation.org>
+Message-ID: <20250602134317.305561094@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,197 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c2aba69d0c36a496ab4f2e81e9c2b271f2693fd7 upstream.
+commit 93a81ca0657758b607c3f4ba889ae806be9beb73 upstream.
 
-The CAN broadcast manager (CAN BCM) can send a sequence of CAN frames via
-hrtimer. The content and also the length of the sequence can be changed
-resp reduced at runtime where the 'currframe' counter is then set to zero.
+The PCM OSS layer tries to clear the buffer with the silence data at
+initialization (or reconfiguration) of a stream with the explicit call
+of snd_pcm_format_set_silence() with runtime->dma_area.  But this may
+lead to a UAF because the accessed runtime->dma_area might be freed
+concurrently, as it's performed outside the PCM ops.
 
-Although this appeared to be a safe operation the updates of 'currframe'
-can be triggered from user space and hrtimer context in bcm_can_tx().
-Anderson Nascimento created a proof of concept that triggered a KASAN
-slab-out-of-bounds read access which can be prevented with a spin_lock_bh.
+For avoiding it, move the code into the PCM core and perform it inside
+the buffer access lock, so that it won't be changed during the
+operation.
 
-At the rework of bcm_can_tx() the 'count' variable has been moved into
-the protected section as this variable can be modified from both contexts
-too.
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250519125027.11900-1-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reported-by: syzbot+32d4647f551007595173@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/68164d8e.050a0220.11da1b.0019.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250516080817.20068-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/bcm.c |   66 +++++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 45 insertions(+), 21 deletions(-)
+ include/sound/pcm.h      |    2 ++
+ sound/core/oss/pcm_oss.c |    3 +--
+ sound/core/pcm_native.c  |   11 +++++++++++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -58,6 +58,7 @@
- #include <linux/can/skb.h>
- #include <linux/can/bcm.h>
- #include <linux/slab.h>
-+#include <linux/spinlock.h>
- #include <net/sock.h>
- #include <net/net_namespace.h>
+--- a/include/sound/pcm.h
++++ b/include/sound/pcm.h
+@@ -1334,6 +1334,8 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
+ #define snd_pcm_lib_mmap_iomem	NULL
+ #endif
  
-@@ -120,6 +121,7 @@ struct bcm_op {
- 	struct canfd_frame last_sframe;
- 	struct sock *sk;
- 	struct net_device *rx_reg_dev;
-+	spinlock_t bcm_tx_lock; /* protect currframe/count in runtime updates */
- };
++void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
++
+ /**
+  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
+  * @dma: DMA number
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -1078,8 +1078,7 @@ static int snd_pcm_oss_change_params_loc
+ 	runtime->oss.params = 0;
+ 	runtime->oss.prepare = 1;
+ 	runtime->oss.buffer_used = 0;
+-	if (runtime->dma_area)
+-		snd_pcm_format_set_silence(runtime->format, runtime->dma_area, bytes_to_samples(runtime, runtime->dma_bytes));
++	snd_pcm_runtime_buffer_set_silence(runtime);
  
- struct bcm_sock {
-@@ -273,13 +275,18 @@ static void bcm_can_tx(struct bcm_op *op
- {
- 	struct sk_buff *skb;
- 	struct net_device *dev;
--	struct canfd_frame *cf = op->frames + op->cfsiz * op->currframe;
-+	struct canfd_frame *cf;
- 	int err;
+ 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
  
- 	/* no target device? => exit */
- 	if (!op->ifindex)
- 		return;
- 
-+	/* read currframe under lock protection */
-+	spin_lock_bh(&op->bcm_tx_lock);
-+	cf = op->frames + op->cfsiz * op->currframe;
-+	spin_unlock_bh(&op->bcm_tx_lock);
-+
- 	dev = dev_get_by_index(sock_net(op->sk), op->ifindex);
- 	if (!dev) {
- 		/* RFC: should this bcm_op remove itself here? */
-@@ -300,6 +307,10 @@ static void bcm_can_tx(struct bcm_op *op
- 	skb->dev = dev;
- 	can_skb_set_owner(skb, op->sk);
- 	err = can_send(skb, 1);
-+
-+	/* update currframe and count under lock protection */
-+	spin_lock_bh(&op->bcm_tx_lock);
-+
- 	if (!err)
- 		op->frames_abs++;
- 
-@@ -308,6 +319,11 @@ static void bcm_can_tx(struct bcm_op *op
- 	/* reached last frame? */
- 	if (op->currframe >= op->nframes)
- 		op->currframe = 0;
-+
-+	if (op->count > 0)
-+		op->count--;
-+
-+	spin_unlock_bh(&op->bcm_tx_lock);
- out:
- 	dev_put(dev);
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -685,6 +685,17 @@ static void snd_pcm_buffer_access_unlock
+ 	atomic_inc(&runtime->buffer_accessing);
  }
-@@ -404,7 +420,7 @@ static enum hrtimer_restart bcm_tx_timeo
- 	struct bcm_msg_head msg_head;
  
- 	if (op->kt_ival1 && (op->count > 0)) {
--		op->count--;
-+		bcm_can_tx(op);
- 		if (!op->count && (op->flags & TX_COUNTEVT)) {
- 
- 			/* create notification to user */
-@@ -419,7 +435,6 @@ static enum hrtimer_restart bcm_tx_timeo
- 
- 			bcm_send_to_user(op, &msg_head, NULL, 0);
- 		}
--		bcm_can_tx(op);
- 
- 	} else if (op->kt_ival2) {
- 		bcm_can_tx(op);
-@@ -914,6 +929,27 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		}
- 		op->flags = msg_head->flags;
- 
-+		/* only lock for unlikely count/nframes/currframe changes */
-+		if (op->nframes != msg_head->nframes ||
-+		    op->flags & TX_RESET_MULTI_IDX ||
-+		    op->flags & SETTIMER) {
++/* fill the PCM buffer with the current silence format; called from pcm_oss.c */
++void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
++{
++	snd_pcm_buffer_access_lock(runtime);
++	if (runtime->dma_area)
++		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
++					   bytes_to_samples(runtime, runtime->dma_bytes));
++	snd_pcm_buffer_access_unlock(runtime);
++}
++EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
 +
-+			spin_lock_bh(&op->bcm_tx_lock);
-+
-+			if (op->nframes != msg_head->nframes ||
-+			    op->flags & TX_RESET_MULTI_IDX) {
-+				/* potentially update changed nframes */
-+				op->nframes = msg_head->nframes;
-+				/* restart multiple frame transmission */
-+				op->currframe = 0;
-+			}
-+
-+			if (op->flags & SETTIMER)
-+				op->count = msg_head->count;
-+
-+			spin_unlock_bh(&op->bcm_tx_lock);
-+		}
-+
- 	} else {
- 		/* insert new BCM operation for the given can_id */
- 
-@@ -921,9 +957,14 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		if (!op)
- 			return -ENOMEM;
- 
-+		spin_lock_init(&op->bcm_tx_lock);
- 		op->can_id = msg_head->can_id;
- 		op->cfsiz = CFSIZ(msg_head->flags);
- 		op->flags = msg_head->flags;
-+		op->nframes = msg_head->nframes;
-+
-+		if (op->flags & SETTIMER)
-+			op->count = msg_head->count;
- 
- 		/* create array for CAN frames and copy the data */
- 		if (msg_head->nframes > 1) {
-@@ -982,22 +1023,8 @@ static int bcm_tx_setup(struct bcm_msg_h
- 
- 	} /* if ((op = bcm_find_op(&bo->tx_ops, msg_head->can_id, ifindex))) */
- 
--	if (op->nframes != msg_head->nframes) {
--		op->nframes   = msg_head->nframes;
--		/* start multiple frame transmission with index 0 */
--		op->currframe = 0;
--	}
--
--	/* check flags */
--
--	if (op->flags & TX_RESET_MULTI_IDX) {
--		/* start multiple frame transmission with index 0 */
--		op->currframe = 0;
--	}
--
- 	if (op->flags & SETTIMER) {
- 		/* set timer values */
--		op->count = msg_head->count;
- 		op->ival1 = msg_head->ival1;
- 		op->ival2 = msg_head->ival2;
- 		op->kt_ival1 = bcm_timeval_to_ktime(msg_head->ival1);
-@@ -1014,11 +1041,8 @@ static int bcm_tx_setup(struct bcm_msg_h
- 		op->flags |= TX_ANNOUNCE;
- 	}
- 
--	if (op->flags & TX_ANNOUNCE) {
-+	if (op->flags & TX_ANNOUNCE)
- 		bcm_can_tx(op);
--		if (op->count)
--			op->count--;
--	}
- 
- 	if (op->flags & STARTTIMER)
- 		bcm_tx_start_timer(op);
+ #if IS_ENABLED(CONFIG_SND_PCM_OSS)
+ #define is_oss_stream(substream)	((substream)->oss.oss)
+ #else
 
 
 
