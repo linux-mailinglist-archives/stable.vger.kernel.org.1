@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-150518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7326EACB83F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:38:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1A9ACB7E6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315C01C2333C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848D6189E459
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B264E2C325E;
-	Mon,  2 Jun 2025 15:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719E122AE65;
+	Mon,  2 Jun 2025 14:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWzoAROn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSS3houy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712E8221F39;
-	Mon,  2 Jun 2025 15:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDEC22ACD6;
+	Mon,  2 Jun 2025 14:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877373; cv=none; b=K7HqvLWeX98hH7I0NCGMkD9P6ih8ZehvWvH/HodsnXwDoPmsM7LD3CTY24f6FMW85dka2Ig/5rb0H3q7/ijEjD+oK/BgQZnLEdyW3cJV+Jqqk2qLkH//OYX0DIHmrxchJ7ISsl27zIX8dmAi0jjOJcarsx8NRcxZtXjSHoEhCbU=
+	t=1748876389; cv=none; b=uqLEmASOPwMIaIvpbD/2joR6lIIYTg8iKXnjCSdSDLYuzIZTBQviXFdu9KH8MuSJ9SAIBX1TINqlfVwaWdIJeqBvpItiBh6edkUlAh9h46WCRDWOJYVpTiEkklSsyCgX5uhTBoZfiUKToOJ2InT1r3CVVm4S2Ja9O79v4FKcWFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877373; c=relaxed/simple;
-	bh=jev/ACduupEdrRm0mK/DwHJt9/yFhiVwRQ+9fw/zRu8=;
+	s=arc-20240116; t=1748876389; c=relaxed/simple;
+	bh=YBiOVvLSsdzOqvqYB4heWBnekybTa/efAs/nlLv9T4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqknuxZGBvVJ151AxL3YuqtwLkbSSiF677Hph8Dg9dZ4/c/u4jEwkAvQpfd0H+LRiU63eoqPmSHpXwyyosJLXoNlxuTLRBFY8llGBFH6lH2kGpQ4amzIdfHpZJTcxz65rv1UJzje4AZ89LJY++m5PVeioNIGj9x4sxPKM4pGkWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWzoAROn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3CFC4CEEB;
-	Mon,  2 Jun 2025 15:16:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uM3TWpFUOfe0k0jViB+42y/Ih+/iKfPd85kvw56jViAi0aWfgLVXk26ykoYDHo6g6s4Od3FiOe07+Rf9yVmmWRZT5RG7ti+nN5+osn6NxFlEpaSkxjCKtWjgeIrILtb4pUYN2W6Rnj9DLSTOhvbz+FLd27MY1133vBFpdUshVfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSS3houy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BF7C4CEEB;
+	Mon,  2 Jun 2025 14:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877373;
-	bh=jev/ACduupEdrRm0mK/DwHJt9/yFhiVwRQ+9fw/zRu8=;
+	s=korg; t=1748876389;
+	bh=YBiOVvLSsdzOqvqYB4heWBnekybTa/efAs/nlLv9T4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWzoAROncl1fxpZVlwVasyUsr/dEaoirrP7oqZWbKEao0KROF5QZNWcg62KnY8LEY
-	 rtPCsuX7zQ1JRHfs/TtRLeXopiws5bxgITnFhA7PApQrVp3yz5aBHJsT35FaSr7nhY
-	 36kwmad3NqLMPAP8JujYg/jqFul1SCSKCljmGpkI=
+	b=VSS3houy/FaCTMmE1Q3mhIEiGqCGMx2U+jPkBDdLdCfXOL1XgHoLiWhyy0k/CI8Hv
+	 HR44cDB47zxdBsbxCk9G3QVTjL+j1OCKtqzhIiD9DRLE774hfyOs7Wld6e6cAcd1py
+	 KaeFnr+AsnS/Y2ZJVdU+7fHIcTTKIsn2SmITBs0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 257/325] llc: fix data loss when reading from a socket in llc_ui_recvmsg()
-Date: Mon,  2 Jun 2025 15:48:53 +0200
-Message-ID: <20250602134330.214626445@linuxfoundation.org>
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 5.15 162/207] remoteproc: qcom_wcnss: Fix on platforms without fallback regulators
+Date: Mon,  2 Jun 2025 15:48:54 +0200
+Message-ID: <20250602134305.070651017@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-commit 239af1970bcb039a1551d2c438d113df0010c149 upstream.
+[ Upstream commit 4ca45af0a56d00b86285d6fdd720dca3215059a7 ]
 
-For SOCK_STREAM sockets, if user buffer size (len) is less
-than skb size (skb->len), the remaining data from skb
-will be lost after calling kfree_skb().
+Recent change to handle platforms with only single power domain broke
+pronto-v3 which requires power domains and doesn't have fallback voltage
+regulators in case power domains are missing. Add a check to verify
+the number of fallback voltage regulators before using the code which
+handles single power domain situation.
 
-To fix this, move the statement for partial reading
-above skb deletion.
-
-Found by InfoTeCS on behalf of Linux Verification Center (linuxtesting.org)
-
-Fixes: 30a584d944fb ("[LLX]: SOCK_DGRAM interface fixes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 65991ea8a6d1 ("remoteproc: qcom_wcnss: Handle platforms with only single power domain")
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Tested-by: Luca Weiss <luca.weiss@fairphone.com> # sdm632-fairphone-fp3
+Link: https://lore.kernel.org/r/20250511234026.94735-1-matti.lehtimaki@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/af_llc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/remoteproc/qcom_wcnss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -888,15 +888,15 @@ static int llc_ui_recvmsg(struct socket
- 		if (sk->sk_type != SOCK_STREAM)
- 			goto copy_uaddr;
- 
-+		/* Partial read */
-+		if (used + offset < skb_len)
-+			continue;
-+
- 		if (!(flags & MSG_PEEK)) {
- 			skb_unlink(skb, &sk->sk_receive_queue);
- 			kfree_skb(skb);
- 			*seq = 0;
- 		}
--
--		/* Partial read */
--		if (used + offset < skb_len)
--			continue;
- 	} while (len > 0);
- 
- out:
+diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+index 3e07f5621d0f2..90c09cde6e0fb 100644
+--- a/drivers/remoteproc/qcom_wcnss.c
++++ b/drivers/remoteproc/qcom_wcnss.c
+@@ -446,7 +446,8 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
+ 	if (wcnss->num_pds) {
+ 		info += wcnss->num_pds;
+ 		/* Handle single power domain case */
+-		num_vregs += num_pd_vregs - wcnss->num_pds;
++		if (wcnss->num_pds < num_pd_vregs)
++			num_vregs += num_pd_vregs - wcnss->num_pds;
+ 	} else {
+ 		num_vregs += num_pd_vregs;
+ 	}
+-- 
+2.39.5
+
 
 
 
