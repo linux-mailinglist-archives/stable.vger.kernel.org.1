@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECFFACB2C8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09062ACB623
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71822170FF3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EA6D7A533E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAA1225A40;
-	Mon,  2 Jun 2025 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1E322D7B1;
+	Mon,  2 Jun 2025 15:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDqnnpaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sb7m+Q1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBCB22259C;
-	Mon,  2 Jun 2025 14:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AA722D4CE;
+	Mon,  2 Jun 2025 15:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873966; cv=none; b=h6xflDm7lazlIvoRZOAacCsNOTaPk4LzYV9Gn1wFgCoQJ3GkVQ/Vs5FW7tnCvm78Sqf8heZB/69H7Zc9dXph0hSd9v89WxvGifBtVEuo2VOKWdftB6E/kGox8L0Dzoyl4Ld9iNcp2oBMs7KzWdDoe72Bzw8bSxFP9g2sKXjEoUk=
+	t=1748876874; cv=none; b=QfHAG8qTWP/zC9UpjDp5eXIw+BPtOOp/1qNQiY3jSbQcTA+8RxvU0yD4EjO0te2UOxAucXapbuDEtXu2RfhL7jza6kGbPxJjy++fRlnTZH9e5EeX2gAz1+Qq5H3dtTpZgUhYVSiuJwwgPwp7wk3CACfyjOyaE3nOaX1m0s4lnfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873966; c=relaxed/simple;
-	bh=wux90AhSUybHxPzR0ElyAjFOa45C0fWaXA8sA0jng50=;
+	s=arc-20240116; t=1748876874; c=relaxed/simple;
+	bh=4zxxQV6mk97o9a4mbBeGLxQ4diTv8leGHwW174eIWvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1PAFWLx80bwQkOkAAzAOsFHz2qPhB1EpYv5s1mg9VxEqSWIna1nu5Hf4PXSzuwLcsaZRWq5xZvP1dGwTjnVDbgmAsyufRsAyC81iF/AX3uhX8Y/+TV27Z9sTwpcSoSXgBXdGSRifpz7dM2nLROWPVxxN7QFFhQ+4UwrsC5hbmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDqnnpaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4560C4CEEB;
-	Mon,  2 Jun 2025 14:19:25 +0000 (UTC)
+	 MIME-Version; b=D08OweK+jyZKmy2D55FJVXOpQGeNvXxupb34s8LzlmDw9iVOhYzGmVXtvmAZRBRRzIKSNvxoRImxVV5cebhK3W1e3KS1WneCcSg7X4ssBEH+h6jVvDjXrSSOiF17mUbfQZGJebx7G4Jyv5BuFnbRztc2FmbaKgQv8XuUYW3xe8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sb7m+Q1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C75C4CEEB;
+	Mon,  2 Jun 2025 15:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873966;
-	bh=wux90AhSUybHxPzR0ElyAjFOa45C0fWaXA8sA0jng50=;
+	s=korg; t=1748876874;
+	bh=4zxxQV6mk97o9a4mbBeGLxQ4diTv8leGHwW174eIWvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDqnnpaPrYLVSXkHai7e8VjtCPjrj7i+zKj7kSD3eUO1t5iMmy+tbUDLVIv741+bo
-	 +jLlOfy8olZYmeyYLkyUoqUULaOqR3m3tBSjRmPyuEiRWnstr9UYrL+YpzrsmaxQaR
-	 KnWrwiZi1t7QhIyUoVeZ31eIjuNHJsIiIcLwz3kU=
+	b=sb7m+Q1St809epZLh5bCT2LoBfi5jwiHFwcOz9Iiv75fRop/9x60tV3ZT66cEdXVW
+	 19o5e8t/B1EQ4ImgxhVJex1zP4qSG+Q6LjMDlZH3Ur2KvdMO7/ZrpzpnQkJeaygtJJ
+	 /GuQaYWvSOsYeNGYiASMLNtIEAqb/2+dX537jFU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/444] book3s64/radix: Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
+Subject: [PATCH 6.1 101/325] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
 Date: Mon,  2 Jun 2025 15:46:17 +0200
-Message-ID: <20250602134353.641751272@linuxfoundation.org>
+Message-ID: <20250602134323.884195031@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 29bdc1f1c1df80868fb35bc69d1f073183adc6de ]
+[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
 
-Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
+PLLD is usually used as parent clock for internal video devices, like
+DSI for example, while PLLD2 is used as parent for HDMI.
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8231763344223c193e3452eab0ae8ea966aff466.1741609795.git.donettom@linux.ibm.com
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/tegra114.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 28460e3340808..aff3b37e32d64 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -912,7 +912,7 @@ int __meminit radix__vmemmap_create_mapping(unsigned long start,
- 	return 0;
- }
- 
--
-+#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
- bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
- {
- 	if (radix_enabled())
-@@ -920,6 +920,7 @@ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
- 
- 	return false;
- }
-+#endif
- 
- int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
- 				unsigned long addr, unsigned long next)
+diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
+index 09996acad6399..bb23bb39dd5b1 100644
+--- a/arch/arm/boot/dts/tegra114.dtsi
++++ b/arch/arm/boot/dts/tegra114.dtsi
+@@ -139,7 +139,7 @@ dsib: dsi@54400000 {
+ 			reg = <0x54400000 0x00040000>;
+ 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
+ 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
+-				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
++				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
+ 			clock-names = "dsi", "lp", "parent";
+ 			resets = <&tegra_car 82>;
+ 			reset-names = "dsi";
 -- 
 2.39.5
 
