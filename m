@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-149832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2F4ACB463
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7056ACB2BD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F69C17D201
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1DC3940F9B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3918C22836C;
-	Mon,  2 Jun 2025 14:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F932327A1;
+	Mon,  2 Jun 2025 14:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKqG9lwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15DvqWBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B98227EB6;
-	Mon,  2 Jun 2025 14:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AB923236D;
+	Mon,  2 Jun 2025 14:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875181; cv=none; b=P4tz780KJCbH8DmZV2TGOWPw6qPmVUkbcZ+HB7xY3D58fdEekfDCCDOCu1pOtqTJZTZYs5SyKCcJS492xAYmIS+RcUHq33ZDrQNUkIQdZe8c8xF2uTX1WmTLx9hdGTYPuDlDL5X/GqpoM0X3xSkirA3Leu4wsiYvLmatiZuUlUY=
+	t=1748873942; cv=none; b=Xnl7PAdR7YcsqkIFv2ddbZmY6pqPjWuKDugoctQPGHtVjlUKeGohE9R1WIcrL/0kHNSge6gMpJFib5uz9znVZVAXpDEKCxqoD8RXbYwvfSc5HJOnrTZZsqIpzrPpsgUq8qA95rgSD+WzwMyxDdsURF7/yM6IH3Bn5IlBKa4dp7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875181; c=relaxed/simple;
-	bh=TVxAD8MeHEJ3KFTGC2f620wrTSOhLCpO9tAGngNJt1E=;
+	s=arc-20240116; t=1748873942; c=relaxed/simple;
+	bh=MlK5s+6xIjbxuohX8OmbwyFSjzqODQ8oQvASlX/9Ps4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZF8y25YLAqw8Vsc5O5G++vHuIvdRdcQagExulAgwH/+70vbiV5XTAwusx01ehPFmk9rxeZllZ/EAvyxBLwy7o5Eyj+ZwyLnL81kIwvSG4+Ij2A3Pp0TvBrtXdxrG6X5Gcf+2vJ6BaTrt8i5euYCbIE63IuHhkuGbFQUktIWggU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKqG9lwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE33C4CEEB;
-	Mon,  2 Jun 2025 14:39:40 +0000 (UTC)
+	 MIME-Version; b=O8hdLM9k2WJcjVES5otqHilHVf0Y7cZqYqHNEIOLLSBtNHhEXy1Mk0SzGADbiuKHBctURj+au41FqX1XgpXqnS8jyfMEB1kg6Qhxia+Vw6OPx32BoACG2y/00MCE4n6uSJ0CpdBt+ju+cHkIXkIQt9XlHz1GX/mkiin4EIAlsnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15DvqWBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AADCC4CEEB;
+	Mon,  2 Jun 2025 14:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875180;
-	bh=TVxAD8MeHEJ3KFTGC2f620wrTSOhLCpO9tAGngNJt1E=;
+	s=korg; t=1748873942;
+	bh=MlK5s+6xIjbxuohX8OmbwyFSjzqODQ8oQvASlX/9Ps4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKqG9lwFwth6zvxhCiacuQOI7wHiKndHKxOSVKdhz6za8+DxZsFf+VYnM6XFFXyEJ
-	 l6xy1OpeoV64A5D82ihNeHaXgvrF/6Nui9Ktxmv4WVpWLKCXOJPTBkTuSH663/ERYR
-	 X28HsDcWp5j+3um4TcztCGE/403oOBQYw154WEnI=
+	b=15DvqWBJNrfQKUmqM+usSMAerFHln2pMIgDrfifH8mm9KgdWyfmB+WiRt7hho3FLe
+	 s49QRx26DwlDR/Okm6DHwyP+/EYTBw0/zpUhBxiIZY0q7alcMUzn1mSM+rmxpNaFXk
+	 sUeyrM+APIC/K0cYpvdwZLN9zU4UbevJ5b4+GUQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Rathgeb <maggu2810@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 053/270] Input: synaptics - enable InterTouch on Dell Precision M3800
+	Carolina Jubran <cjubran@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 274/444] net/mlx5e: Avoid WARN_ON when configuring MQPRIO with HTB offload enabled
 Date: Mon,  2 Jun 2025 15:45:38 +0200
-Message-ID: <20250602134309.367413837@linuxfoundation.org>
+Message-ID: <20250602134352.081259329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-commit a609cb4cc07aa9ab8f50466622814356c06f2c17 upstream.
+[ Upstream commit 689805dcc474c2accb5cffbbcea1c06ee4a54570 ]
 
-Enable InterTouch mode on Dell Precision M3800 by adding "DLL060d" to
-the list of SMBus-enabled variants.
+When attempting to enable MQPRIO while HTB offload is already
+configured, the driver currently returns `-EINVAL` and triggers a
+`WARN_ON`, leading to an unnecessary call trace.
 
-Reported-by: Markus Rathgeb <maggu2810@gmail.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB959789DD6D574E16141E5DC4B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the code to handle this case more gracefully by returning
+`-EOPNOTSUPP` instead, while also providing a helpful user message.
+
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -163,6 +163,7 @@ static const char * const topbuttonpad_p
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index d9dc7280302eb..5c6f01abdcb91 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3627,8 +3627,11 @@ static int mlx5e_setup_tc_mqprio(struct mlx5e_priv *priv,
+ 	/* MQPRIO is another toplevel qdisc that can't be attached
+ 	 * simultaneously with the offloaded HTB.
+ 	 */
+-	if (WARN_ON(mlx5e_selq_is_htb_enabled(&priv->selq)))
+-		return -EINVAL;
++	if (mlx5e_selq_is_htb_enabled(&priv->selq)) {
++		NL_SET_ERR_MSG_MOD(mqprio->extack,
++				   "MQPRIO cannot be configured when HTB offload is enabled.");
++		return -EOPNOTSUPP;
++	}
  
- static const char * const smbus_pnp_ids[] = {
- 	/* all of the topbuttonpad_pnp_ids are valid, we just add some extras */
-+	"DLL060d", /* Dell Precision M3800 */
- 	"LEN0048", /* X1 Carbon 3 */
- 	"LEN0046", /* X250 */
- 	"LEN0049", /* Yoga 11e */
+ 	switch (mqprio->mode) {
+ 	case TC_MQPRIO_MODE_DCB:
+-- 
+2.39.5
+
 
 
 
