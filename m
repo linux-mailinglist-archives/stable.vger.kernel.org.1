@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-150152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAC5ACB69C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03AAACB34B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47E681C2030B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 808834A4C05
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF5C227BA4;
-	Mon,  2 Jun 2025 14:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D567221FDD;
+	Mon,  2 Jun 2025 14:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbt4E8Ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cy1NaPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC1B230BE2;
-	Mon,  2 Jun 2025 14:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA6E1B81DC;
+	Mon,  2 Jun 2025 14:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876198; cv=none; b=oUODM2weyxQ+JRo3Rmuq2fvS3dTH+Ct/OvT8/qSFGvndAhR33mXI/i52u2Nv99LTBzPCk+Dsu3YvFaMI2HVci+Dyi0FUAyuiDI21L7YSr2CEJuv6+DSXAsnFqAGpJxqnqCd9DectfQWc1HJ4GSfG7Wd5qQeMbaij4msnMFthM24=
+	t=1748874260; cv=none; b=KVSlNOSooCQ5Re03enq/ORq5DRuO3NqhY0nHrdk3vVBp0rR/J/TtNoaTFSW9IbT8714DHlMdFRW33q5ye7CbzNDFfM3oncm3p6kLerWhQyqCTgkXFJrjXjdwG0sDURAtBKv76ZqgoEs6MawJZqF38KnHDnGqVZ3rIKWOYFm1K0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876198; c=relaxed/simple;
-	bh=5wtDVddmzeYKp74i4XGXqk7f2AQ+LU07qCoPvBhtAt8=;
+	s=arc-20240116; t=1748874260; c=relaxed/simple;
+	bh=ppFy1zCA6grvT9Nf4jUgCTaDjJfKdoNlR85VKxY4cGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEaab4NhxdaRVx8EhbDlLSsIzjSf4ruD+YgK0U3r4ABUi6T97kZtJbWMygckVWkrBNpeMskVmNBva1BkQBwXjnk7jIZxRwWs8pfdWLld3iVDNrSjV4lFak+Lo4GZwV6pEEUZtzb/due/6YeNSZHoU2MHm+GCJX2ehfKHQkBLetc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbt4E8Ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD51CC4CEEE;
-	Mon,  2 Jun 2025 14:56:37 +0000 (UTC)
+	 MIME-Version; b=Vkmjse5n6VYzfVzyB4Lc8MtPd4jxwzBBisTEWYMTUMWeLFyykoVmYigecRx2uCDJEUcve9yuOid8Vz+fJNu6bW7QUilPMDAvEsKF0jJdMQjAn9JYd0VXEwDCp1sQHeXdfp9ZToz8PQVpZWwepk3mYVOOaS94S7QtR3S2en1sIUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cy1NaPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888DFC4CEEB;
+	Mon,  2 Jun 2025 14:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876198;
-	bh=5wtDVddmzeYKp74i4XGXqk7f2AQ+LU07qCoPvBhtAt8=;
+	s=korg; t=1748874259;
+	bh=ppFy1zCA6grvT9Nf4jUgCTaDjJfKdoNlR85VKxY4cGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbt4E8IpUwdPaLNhBdP4Pv3Vpz0qA7lYf6dbQH5dbYJ4118dnSGWm4zXIMmUTPIAn
-	 aFCY8E5HRqkKRVYt2ZSZFQrwnp4vicj+j8sPPSuo5GUYwCCowJaGQ1pp79vQKPGdtd
-	 5p8hKO8eZwgiOT0fwuxuA2i2IMM1saUEeRQCnL00=
+	b=0cy1NaPJWPynt2OOskE4anac8rmYdW5/KHOBEgnrgB0Qu0gq9K6LVhauJZz/2q3WG
+	 z1pBWXzQXSpd/EPbMM6DO6de0uXrRgYL1CajfFA3v4x3zmjzadZ0zn/8T3keLKWkYH
+	 DlqHXGQCuhRqU477RphvMt3Qq/J8HA/MuogI+pmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/207] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 411/444] af_unix: Avoid Tarjans algorithm if unnecessary.
 Date: Mon,  2 Jun 2025 15:47:55 +0200
-Message-ID: <20250602134302.773057708@linuxfoundation.org>
+Message-ID: <20250602134357.615782764@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
+commit ad081928a8b0f57f269df999a28087fce6f2b6ce upstream.
 
-Set the MCS maps and the highest rates according to the number of
-spatial streams the chip has. For RTL8814AU that is 3.
+Once a cyclic reference is formed, we need to run GC to check if
+there is dead SCC.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, we do not need to run Tarjan's algorithm if we know that
+the shape of the inflight graph has not been changed.
+
+If an edge is added/updated/deleted and the edge's successor is
+inflight, we set false to unix_graph_grouped, which means we need
+to re-classify SCC.
+
+Once we finalise SCC, we set true to unix_graph_grouped.
+
+While unix_graph_grouped is true, we can iterate the grouped
+SCC using vertex->scc_entry in unix_walk_scc_fast().
+
+list_add() and list_for_each_entry_reverse() uses seem weird, but
+they are to keep the vertex order consistent and make writing test
+easier.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-12-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ net/unix/garbage.c |   28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 23971a5737cf5..c5d0b213a3546 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1366,8 +1366,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 			     struct ieee80211_sta_vht_cap *vht_cap)
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -113,6 +113,7 @@ static struct unix_vertex *unix_edge_suc
+ }
+ 
+ static bool unix_graph_maybe_cyclic;
++static bool unix_graph_grouped;
+ 
+ static void unix_update_graph(struct unix_vertex *vertex)
  {
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
--	u16 mcs_map;
-+	u16 mcs_map = 0;
- 	__le16 highest;
-+	int i;
+@@ -123,6 +124,7 @@ static void unix_update_graph(struct uni
+ 		return;
  
- 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
- 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
-@@ -1390,21 +1391,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 	if (rtw_chip_has_rx_ldpc(rtwdev))
- 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
+ 	unix_graph_maybe_cyclic = true;
++	unix_graph_grouped = false;
+ }
  
--	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
--	if (efuse->hw_cap.nss > 1) {
--		highest = cpu_to_le16(780);
--		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
--	} else {
--		highest = cpu_to_le16(390);
--		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
-+	for (i = 0; i < 8; i++) {
-+		if (i < efuse->hw_cap.nss)
-+			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
-+		else
-+			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
- 	}
+ static LIST_HEAD(unix_unvisited_vertices);
+@@ -144,6 +146,7 @@ static void unix_add_edge(struct scm_fp_
+ 		vertex->index = unix_vertex_unvisited_index;
+ 		vertex->out_degree = 0;
+ 		INIT_LIST_HEAD(&vertex->edges);
++		INIT_LIST_HEAD(&vertex->scc_entry);
  
-+	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
+ 		list_move_tail(&vertex->entry, &unix_unvisited_vertices);
+ 		edge->predecessor->vertex = vertex;
+@@ -418,6 +421,26 @@ static void unix_walk_scc(void)
+ 
+ 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
+ 	swap(unix_vertex_unvisited_index, unix_vertex_grouped_index);
 +
- 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.rx_highest = highest;
--- 
-2.39.5
-
++	unix_graph_grouped = true;
++}
++
++static void unix_walk_scc_fast(void)
++{
++	while (!list_empty(&unix_unvisited_vertices)) {
++		struct unix_vertex *vertex;
++		struct list_head scc;
++
++		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
++		list_add(&scc, &vertex->scc_entry);
++
++		list_for_each_entry_reverse(vertex, &scc, scc_entry)
++			list_move_tail(&vertex->entry, &unix_visited_vertices);
++
++		list_del(&scc);
++	}
++
++	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
+ }
+ 
+ static LIST_HEAD(gc_candidates);
+@@ -570,7 +593,10 @@ static void __unix_gc(struct work_struct
+ 	if (!unix_graph_maybe_cyclic)
+ 		goto skip_gc;
+ 
+-	unix_walk_scc();
++	if (unix_graph_grouped)
++		unix_walk_scc_fast();
++	else
++		unix_walk_scc();
+ 
+ 	/* First, select candidates for garbage collection.  Only
+ 	 * in-flight sockets are considered, and from those only ones
 
 
 
