@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D951ACB3FF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAB8ACB592
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA96F4A042D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CBA1947BBF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1DB215F6B;
-	Mon,  2 Jun 2025 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291BD229B05;
+	Mon,  2 Jun 2025 14:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYg2R2t1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8aiQH7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F127B1C5D72;
-	Mon,  2 Jun 2025 14:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8A6227BA4;
+	Mon,  2 Jun 2025 14:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874684; cv=none; b=bPYGi1aQ9iB/mpYSCdKRzLFQwXqM+syqWmn1uNGaz7hz/RK1UCdVz+lJEVEPtHwifb3Iv9GusnfXm5LpIRxeuaMjPwy7h7A/niQyz4K4qFvBIUG0v4gZ425XqFbfFhbeR7FvQjUs4651pG4I1woohANkl5iyW5//UeyQbGe5pmY=
+	t=1748875489; cv=none; b=A3QD7I5f3Q53v6QfB/Fj5EEFetJPoRipuhyWuCI3w38ee0b0rQhUE4N7y4tYYl7VNnnzxPN3IU5+GTB9CF0c9clgEo0+zIF5YvP19LQMJtN5JlVREiYrPeyFvJh3gVQOMXz0SHt4VqVaNSyxln7kRNIRDo+BFJCNDtSQL2Qw3DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874684; c=relaxed/simple;
-	bh=Vcu55QVeG9ufhtAtvvOv9xbt0CkdsVlb0Of7VrnSYtc=;
+	s=arc-20240116; t=1748875489; c=relaxed/simple;
+	bh=VXpBokGVLs5g2KT+b3yzLvFYwvtGlgk8pP31jGgZ3tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSU5GmURb9Li7XhJ36mkoJrgakxOah9Ye+j+Z9ffehd+20zJ5i2tTTLUVq/WQyN8V2VkrGA319DRK3M0YclTAANDj+MH8hNoUGaERVQAerl7Kx2FZZSxSkFIRU9VIexudWAzq38cEpiddIJ2R1M6eKGgRL8Jep2TuPophmGuOAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYg2R2t1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500E3C4CEEB;
-	Mon,  2 Jun 2025 14:31:23 +0000 (UTC)
+	 MIME-Version; b=A2piA6/h925xKTBdsZw6cFygBoFWpBvhDyq+9gtASykXDPBBWpDDKYpcOSbqjR5iXa6rS8jxaHCSmqB8WnvtAiw+rg+7QIH0+sSCC7BzRE8qndc9+lbf4hzB4dqUowTNZ9P5jx5sxCsGftSQZyG4vraxqgvF2wUvByvM/WgHDd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8aiQH7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48425C4CEEB;
+	Mon,  2 Jun 2025 14:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874683;
-	bh=Vcu55QVeG9ufhtAtvvOv9xbt0CkdsVlb0Of7VrnSYtc=;
+	s=korg; t=1748875489;
+	bh=VXpBokGVLs5g2KT+b3yzLvFYwvtGlgk8pP31jGgZ3tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GYg2R2t19z1W4GpkgtQ6ywq9vBBhvjHdeXcuOfb5+EAr/jXHG5dHzpeqgRI4ZBtdg
-	 nnl7pX9ddae+hljF08z8+BEhY3MmWvJYqFL/WELb85mYeUrtuPOhwspLmDldYrNmJV
-	 tp8Qc+oBzWIUJj0mXnYcVLk5yjMWByTbIeBnWUhQ=
+	b=e8aiQH7kX2u4hF0rq/juoHLPa+F2QIfAihCNOCMghHik24HhpZ65zYZnu4QXWa/ZX
+	 o8Lqt1Q6C+J62KXw+orKYykh+CohuLpWXBvU/EFu4CUZ55g3mui2VX/JL0eUH8kBqd
+	 WMBe3zb4M/TKjrxZSAMgXnjLbFEi15ded7osPe6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>,
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/204] btrfs: avoid linker error in btrfs_find_create_tree_block()
-Date: Mon,  2 Jun 2025 15:47:14 +0200
-Message-ID: <20250602134259.632462185@linuxfoundation.org>
+Subject: [PATCH 5.10 150/270] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Date: Mon,  2 Jun 2025 15:47:15 +0200
+Message-ID: <20250602134313.352048326@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
+[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
 
-The inline function btrfs_is_testing() is hardcoded to return 0 if
-CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
-the compiler optimizing out the call to alloc_test_extent_buffer() in
-btrfs_find_create_tree_block(), as it's not been defined (it's behind an
- #ifdef).
+nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
+be written any negative value, which would then be stored in the
+unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
 
-Add a stub version of alloc_test_extent_buffer() to avoid linker errors
-on non-standard optimization levels. This problem was seen on GCC 14
-with -O0 and is helps to see symbols that would be otherwise optimized
-out.
+While the do_proc_dointvec_conv function is supposed to limit writing
+handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
+being written in an unsigned int leads to a very high value, exceeding
+this limit.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
+minimum value is 1.
+
+The proc_handlers have thus been updated to proc_dointvec_minmax in
+order to specify the following write bounds :
+
+* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
+  and SYSCTL_INT_MAX.
+
+* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+
+With this patch applied, sysctl writes outside the defined in the bound
+will thus lead to a write error :
+
+```
+sysctl -w net.netfilter.nf_conntrack_expect_max=-1
+sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
+```
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 04788940afafc..64af1c7f95c24 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -5134,10 +5134,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
- 	return NULL;
- }
- 
--#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- 					u64 start)
- {
-+#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- 	struct extent_buffer *eb, *exists = NULL;
- 	int ret;
- 
-@@ -5173,8 +5173,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- free_eb:
- 	btrfs_release_extent_buffer(eb);
- 	return exists;
--}
-+#else
-+	/* Stub to avoid linker error when compiled with optimizations turned off. */
-+	return NULL;
- #endif
-+}
- 
- struct extent_buffer *alloc_extent_buffer(struct btrfs_fs_info *fs_info,
- 					  u64 start)
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 8498bf27a3531..abf558868db11 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -613,7 +613,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_COUNT] = {
+ 		.procname	= "nf_conntrack_count",
+@@ -652,7 +654,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+@@ -931,7 +935,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{ }
+ };
 -- 
 2.39.5
 
