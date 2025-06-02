@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-148987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E61ACAF88
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEDEACAFFC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362EF176EC5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507DC17A17A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808F0221734;
-	Mon,  2 Jun 2025 13:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7292576;
+	Mon,  2 Jun 2025 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dALB/cRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxRG1Art"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8CB1DE2CC;
-	Mon,  2 Jun 2025 13:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACA21C5D72;
+	Mon,  2 Jun 2025 13:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872172; cv=none; b=WdFUflv2n0GNKStEBkr2DwWVxR/8eE9tjEzUDa33q0zLkZZEQ0g1IgEcN5kr/YPBzGW7ks3m2Ksm6dEt5+ag5vtJXl9r5YhaaILsgZJ/8K0LKtvZ6mDO4heWONsXWXTmZ0R1Cxx9GLxEauZD9oZP8zwcL3NlQYOOVNvf8c3npag=
+	t=1748872717; cv=none; b=joalpuNzTzd1JEb8/fcxg5ZFERy5FW/WvyvMb0dzT3fbqVkpHZId2buCAO5oii31fDE6b4UiL2OApP2xVNhN3j0UQAbISrI+JJ+DISobpJHNSiSvtaui9LfsmUVtJWNe6YdqD6dCY5wWPOiErlFyNBZzTdfWUTfQe60iv/zB7RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872172; c=relaxed/simple;
-	bh=gs+uM6TOIgGzLUZWYUaTy/0c90zOKOkvE03c1mef7yo=;
+	s=arc-20240116; t=1748872717; c=relaxed/simple;
+	bh=j8wiUhxWzwfLWFU1Pfb6sfw8Ok8+D55LjpL30L2kA+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LokoK8oIGkqDs7Ux198PUISJmyhw8yMzCQAw5LLKhjWWXiXV/74s647kWkN5EHdz/HFWs/TQxZkEs/aYOK/tvq/vbXicSzTaZ4HUlrEbm3JPJTcHx3VHmziB3oD7nXb9bd398d37tWuJumVTlsJXud8HDgrM+urLNxM3iQz/nLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dALB/cRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464C1C4CEEB;
-	Mon,  2 Jun 2025 13:49:31 +0000 (UTC)
+	 MIME-Version; b=M8BpZOwF077XvdA5WB+ZC3qBAZ0UDFtwkwNiLQG2+Fp4at3Kptx3uASW1hatrXzcWj5Uy8gNnQpCDjHxjmO9ocI/WxYQcTJdbd5bx5sLWzuZ39jh4Zlz54fk8e0dtXFapWITOq7IvpjRWhlztML92/jN6SwGVy9ebXbEiw5jwPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxRG1Art; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660C2C4CEEB;
+	Mon,  2 Jun 2025 13:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872171;
-	bh=gs+uM6TOIgGzLUZWYUaTy/0c90zOKOkvE03c1mef7yo=;
+	s=korg; t=1748872716;
+	bh=j8wiUhxWzwfLWFU1Pfb6sfw8Ok8+D55LjpL30L2kA+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dALB/cRqpaZ6aF5wRupmvC2h3xFAo1oxoaRNl53wVBNG/gnGkTQsrDa8dJrN+4hMx
-	 RdB1D77W7uEpS4MmSj6WPLDN8U3kv6nEjjtPhVqvzYd0PKjiH5vc9IFDvHsPIWJI7t
-	 aC7/8OqabAer6uXRymV1/2rYbcfkNYjzf1HrBYNs=
+	b=dxRG1Artb47IEWeRhywhL0GupFZ9nQ1FHsBwXkp96oAqVEDQAOLh9qweZ4kHbwVx0
+	 eyn/IUpdo+44oNtzaYgGlG/SyI/hB5mCbtDqTHTSFr87O+bvaqgKRuOnxQtE6E/Y6X
+	 SUEI3MMCnAGY6zTixf4sXOrgRKyNgVNdF5cFtu+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	William Liu <will@willsroot.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.15 41/49] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.14 47/73] coredump: hand a pidfd to the usermode coredump helper
 Date: Mon,  2 Jun 2025 15:47:33 +0200
-Message-ID: <20250602134239.554027543@linuxfoundation.org>
+Message-ID: <20250602134243.556436871@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
+commit b5325b2a270fcaf7b2a9a0f23d422ca8a5a8bdea upstream.
 
-Savino says:
-    "We are writing to report that this recent patch
-    (141d34391abbb315d68556b7c67ad97885407547) [1]
-    can be bypassed, and a UAF can still occur when HFSC is utilized with
-    NETEM.
+Give userspace a way to instruct the kernel to install a pidfd into the
+usermode helper process. This makes coredump handling a lot more
+reliable for userspace. In parallel with this commit we already have
+systemd adding support for this in [1].
 
-    The patch only checks the cl->cl_nactive field to determine whether
-    it is the first insertion or not [2], but this field is only
-    incremented by init_vf [3].
+We create a pidfs file for the coredumping process when we process the
+corename pattern. When the usermode helper process is forked we then
+install the pidfs file as file descriptor three into the usermode
+helpers file descriptor table so it's available to the exec'd program.
 
-    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
-    check and insert the class twice in the eltree.
-    Under normal conditions, this would lead to an infinite loop in
-    hfsc_dequeue for the reasons we already explained in this report [5].
+Since usermode helpers are either children of the system_unbound_wq
+workqueue or kthreadd we know that the file descriptor table is empty
+and can thus always use three as the file descriptor number.
 
-    However, if TBF is added as root qdisc and it is configured with a
-    very low rate,
-    it can be utilized to prevent packets from being dequeued.
-    This behavior can be exploited to perform subsequent insertions in the
-    HFSC eltree and cause a UAF."
+Note, that we'll install a pidfd for the thread-group leader even if a
+subthread is calling do_coredump(). We know that task linkage hasn't
+been removed due to delay_group_leader() and even if this @current isn't
+the actual thread-group leader we know that the thread-group leader
+cannot be reaped until @current has exited.
 
-To fix both the UAF and the infinite loop, with netem as an hfsc child,
-check explicitly in hfsc_enqueue whether the class is already in the eltree
-whenever the HFSC_RSC flag is set.
+[brauner: This is a backport for the v6.12 series. The upstream kernel
+has changed pidfs_alloc_file() to set O_RDWR implicitly instead of
+forcing callers to set it. Let's minimize the churn and just let the
+coredump umh handler raise O_RDWR.]
 
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
-[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
-[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
-[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
-[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Reported-by: William Liu <will@willsroot.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://github.com/systemd/systemd/pull/37125 [1]
+Link: https://lore.kernel.org/20250414-work-coredump-v2-3-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/coredump.c            |   56 +++++++++++++++++++++++++++++++++++++++++++----
+ include/linux/coredump.h |    1 
+ 2 files changed, 53 insertions(+), 4 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -175,6 +175,11 @@ struct hfsc_sched {
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -43,6 +43,8 @@
+ #include <linux/timekeeping.h>
+ #include <linux/sysctl.h>
+ #include <linux/elf.h>
++#include <linux/pidfs.h>
++#include <uapi/linux/pidfd.h>
  
- #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
+ #include <linux/uaccess.h>
+ #include <asm/mmu_context.h>
+@@ -60,6 +62,12 @@ static void free_vma_snapshot(struct cor
+ #define CORE_FILE_NOTE_SIZE_DEFAULT (4*1024*1024)
+ /* Define a reasonable max cap */
+ #define CORE_FILE_NOTE_SIZE_MAX (16*1024*1024)
++/*
++ * File descriptor number for the pidfd for the thread-group leader of
++ * the coredumping task installed into the usermode helper's file
++ * descriptor table.
++ */
++#define COREDUMP_PIDFD_NUMBER 3
  
-+static bool cl_in_el_or_vttree(struct hfsc_class *cl)
-+{
-+	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
-+		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
-+}
+ static int core_uses_pid;
+ static unsigned int core_pipe_limit;
+@@ -339,6 +347,27 @@ static int format_corename(struct core_n
+ 			case 'C':
+ 				err = cn_printf(cn, "%d", cprm->cpu);
+ 				break;
++			/* pidfd number */
++			case 'F': {
++				/*
++				 * Installing a pidfd only makes sense if
++				 * we actually spawn a usermode helper.
++				 */
++				if (!ispipe)
++					break;
++
++				/*
++				 * Note that we'll install a pidfd for the
++				 * thread-group leader. We know that task
++				 * linkage hasn't been removed yet and even if
++				 * this @current isn't the actual thread-group
++				 * leader we know that the thread-group leader
++				 * cannot be reaped until @current has exited.
++				 */
++				cprm->pid = task_tgid(current);
++				err = cn_printf(cn, "%d", COREDUMP_PIDFD_NUMBER);
++				break;
++			}
+ 			default:
+ 				break;
+ 			}
+@@ -493,7 +522,7 @@ static void wait_for_dump_helpers(struct
+ }
  
  /*
-  * eligible tree holds backlogged classes being sorted by their eligible times.
-@@ -1040,6 +1045,8 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	if (cl == NULL)
- 		return -ENOBUFS;
+- * umh_pipe_setup
++ * umh_coredump_setup
+  * helper function to customize the process used
+  * to collect the core in userspace.  Specifically
+  * it sets up a pipe and installs it as fd 0 (stdin)
+@@ -503,12 +532,31 @@ static void wait_for_dump_helpers(struct
+  * is a special value that we use to trap recursive
+  * core dumps
+  */
+-static int umh_pipe_setup(struct subprocess_info *info, struct cred *new)
++static int umh_coredump_setup(struct subprocess_info *info, struct cred *new)
+ {
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+ 	int err;
  
-+	RB_CLEAR_NODE(&cl->el_node);
++	if (cp->pid) {
++		struct file *pidfs_file __free(fput) = NULL;
 +
- 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
- 	if (err) {
- 		kfree(cl);
-@@ -1572,7 +1579,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
- 	sch->qstats.backlog += len;
- 	sch->q.qlen++;
++		pidfs_file = pidfs_alloc_file(cp->pid, O_RDWR);
++		if (IS_ERR(pidfs_file))
++			return PTR_ERR(pidfs_file);
++
++		/*
++		 * Usermode helpers are childen of either
++		 * system_unbound_wq or of kthreadd. So we know that
++		 * we're starting off with a clean file descriptor
++		 * table. So we should always be able to use
++		 * COREDUMP_PIDFD_NUMBER as our file descriptor value.
++		 */
++		err = replace_fd(COREDUMP_PIDFD_NUMBER, pidfs_file, 0);
++		if (err < 0)
++			return err;
++	}
++
+ 	err = create_pipe_files(files, 0);
+ 	if (err)
+ 		return err;
+@@ -598,7 +646,7 @@ void do_coredump(const kernel_siginfo_t
+ 		}
  
--	if (first && !cl->cl_nactive) {
-+	if (first && !cl_in_el_or_vttree(cl)) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
+ 		if (cprm.limit == 1) {
+-			/* See umh_pipe_setup() which sets RLIMIT_CORE = 1.
++			/* See umh_coredump_setup() which sets RLIMIT_CORE = 1.
+ 			 *
+ 			 * Normally core limits are irrelevant to pipes, since
+ 			 * we're not writing to the file system, but we use
+@@ -637,7 +685,7 @@ void do_coredump(const kernel_siginfo_t
+ 		retval = -ENOMEM;
+ 		sub_info = call_usermodehelper_setup(helper_argv[0],
+ 						helper_argv, NULL, GFP_KERNEL,
+-						umh_pipe_setup, NULL, &cprm);
++						umh_coredump_setup, NULL, &cprm);
+ 		if (sub_info)
+ 			retval = call_usermodehelper_exec(sub_info,
+ 							  UMH_WAIT_EXEC);
+--- a/include/linux/coredump.h
++++ b/include/linux/coredump.h
+@@ -28,6 +28,7 @@ struct coredump_params {
+ 	int vma_count;
+ 	size_t vma_data_size;
+ 	struct core_vma_metadata *vma_meta;
++	struct pid *pid;
+ };
+ 
+ extern unsigned int core_file_note_size_limit;
 
 
 
