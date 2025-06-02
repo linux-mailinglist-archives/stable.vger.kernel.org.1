@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484AFACB496
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4053ACB629
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A233A6BD8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0464D7A584D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6629A22D4F6;
-	Mon,  2 Jun 2025 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049FF22DA0A;
+	Mon,  2 Jun 2025 15:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gszlKLL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4e8E3pk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CD022A804;
-	Mon,  2 Jun 2025 14:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CFB188907;
+	Mon,  2 Jun 2025 15:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875235; cv=none; b=gVusLeong4jR3MIaSjL6tEA+HmgCB9NTLlAyt7V+FJ9wmyJqrSAFk6LZRCVmXkaOfEccvpsFan8DvO/vvyhGqIEXXoPImq/5lZGPwtD3p9veS9C3hthLX4/+xHxuYe6V68VBykF2fq5I2U9/EpI566N+zZQlNqHZlEMzV7KCPZM=
+	t=1748876903; cv=none; b=KhQsLD6ps1CBK1qNoyW9JZ/jxYR/AkVLylo0PO4Apix+9oiofpYzuhVSjyCc0tiHuwdhWTea3y1Ta6UqQevDzRblF7lzhgScRVL1cZj720kPYU55eOLASYHmgLZd6Sugps3hTNqcpO+zu9te8oQx0HFkI4D0zWz9B75eduw6kqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875235; c=relaxed/simple;
-	bh=yZig6I1mcChph2ANgZFhiUOsDN/2L45hIiv5IuwNrxk=;
+	s=arc-20240116; t=1748876903; c=relaxed/simple;
+	bh=BhhQZRAzkvZ885Zb4zPsFJMKlZvoh21y0FC5rq9c+FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9QZCLGyXKcBCVAXVbne7OOP44Sxjcnj5r4563ryI9wkHPM2crtg4/92yV8VSF/JbpbbSmc/ioR4MXjKh3SyhYcXMXexzPnwb7D6Mui4/yNSJgHLtVxg+lAZVELnT+toLdMqm/zOOrgAyp6KgUAwP3qOzhVYYlPaKaoQyYftNC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gszlKLL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F397C4CEEB;
-	Mon,  2 Jun 2025 14:40:34 +0000 (UTC)
+	 MIME-Version; b=MBCFZpOP7p5Q61K7PJWugAm7gk5xJcxrLCnaeN1DU2rFnB//z0hpOueRlSoX1uw4YKkU1gcHg4vuurs3pdeIYElyWTAbs1AtBgGRGet5HjQ33FvXaYZo64CLMWd24d8u1r0TAN8O2FBIAsihPxj8FiVcwSK7Wu4cuRlaGCaMxqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4e8E3pk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78DCC4CEEB;
+	Mon,  2 Jun 2025 15:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875235;
-	bh=yZig6I1mcChph2ANgZFhiUOsDN/2L45hIiv5IuwNrxk=;
+	s=korg; t=1748876903;
+	bh=BhhQZRAzkvZ885Zb4zPsFJMKlZvoh21y0FC5rq9c+FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gszlKLL+SH7U86yR/z7ungd/p8pW9NOKCE9xH/O8hwlkzBQ8xNlbXFq6Xx5dnzNTw
-	 cqYMoTEwjyQ8mAoBhI0WLtta3TrrL1o/3rmHd5TUsnpnAskZSHztEl/KGdMIpNKS3b
-	 6Kb0azU79l/GCA18Iy2aX0ksc1K3n1ScgZ5fuLPo=
+	b=j4e8E3pkfSGF+otGjksJAw6hpcei7r8xXSoOJGUEYLARwrTQ6FmC5MwFgx8A7y72n
+	 oi51Uyu40qzuTILMUvdDwr79H6+pYqxeKWUiILjlPgSaPsrZJ10ioYo4AdJYRfwzA2
+	 t+8ykxlUcMBqZro86hbqRSXq/1X+GxWe/W6qi5aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 071/270] usb: typec: tcpm: delay SNK_TRY_WAIT_DEBOUNCE to SRC_TRYWAIT transition
+	Eric Dumazet <edumazet@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/325] posix-timers: Add cond_resched() to posix_timer_add() search loop
 Date: Mon,  2 Jun 2025 15:45:56 +0200
-Message-ID: <20250602134310.088016635@linuxfoundation.org>
+Message-ID: <20250602134323.027332977@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e918d3959b5ae0e793b8f815ce62240e10ba03a4 upstream.
+[ Upstream commit 5f2909c6cd13564a07ae692a95457f52295c4f22 ]
 
-This patch fixes Type-C Compliance Test TD 4.7.6 - Try.SNK DRP Connect
-SNKAS.
+With a large number of POSIX timers the search for a valid ID might cause a
+soft lockup on PREEMPT_NONE/VOLUNTARY kernels.
 
-The compliance tester moves into SNK_UNATTACHED during toggling and
-expects the PUT to apply Rp after tPDDebounce of detection. If the port
-is in SNK_TRY_WAIT_DEBOUNCE, it will move into SRC_TRYWAIT immediately
-and apply Rp. This violates TD 4.7.5.V.3, where the tester confirms that
-the PUT attaches Rp after the transitions to Unattached.SNK for
-tPDDebounce.
+Add cond_resched() to the loop to prevent that.
 
-Change the tcpm_set_state delay between SNK_TRY_WAIT_DEBOUNCE and
-SRC_TRYWAIT to tPDDebounce.
+[ tglx: Split out from Eric's series ]
 
-Fixes: a0a3e04e6b2c ("staging: typec: tcpm: Check for Rp for tPDDebounce")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250429234703.3748506-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/all/20250214135911.2037402-2-edumazet@google.com
+Link: https://lore.kernel.org/all/20250308155623.635612865@linutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/posix-timers.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4019,7 +4019,7 @@ static void _tcpm_cc_change(struct tcpm_
- 	case SNK_TRY_WAIT_DEBOUNCE:
- 		if (!tcpm_port_is_sink(port)) {
- 			port->max_wait = 0;
--			tcpm_set_state(port, SRC_TRYWAIT, 0);
-+			tcpm_set_state(port, SRC_TRYWAIT, PD_T_PD_DEBOUNCE);
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index 2d6cf93ca370a..fc08d4ccdeeb9 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -161,6 +161,7 @@ static int posix_timer_add(struct k_itimer *timer)
+ 			return id;
  		}
- 		break;
- 	case SRC_TRY_WAIT:
+ 		spin_unlock(&hash_lock);
++		cond_resched();
+ 	}
+ 	/* POSIX return code when no timer ID could be allocated */
+ 	return -EAGAIN;
+-- 
+2.39.5
+
 
 
 
