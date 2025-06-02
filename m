@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF3FACB8D9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:48:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC82ACB5CA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB8A3A3A5A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7676B9E4321
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B773C22F39B;
-	Mon,  2 Jun 2025 15:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB0422D4F2;
+	Mon,  2 Jun 2025 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epiC1Mze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn0g4aS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703B32253A7;
-	Mon,  2 Jun 2025 15:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E962822D4DC;
+	Mon,  2 Jun 2025 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876949; cv=none; b=RFE7M/ryJ71lnOJkO8/ngY+8uhTR7ClSUWzl3yqwMvfhjvVXrmlhA9FRkOj0R8F0mtXQTfdc3f6AMXam1ougPQDbV6ZxZY9vzh9HP7RYY8oD+Zqe9p2FhEqaEKQfrKLRkPMSSXLaOJXI/d7gKm4j/kJk0qh+CpjBc5gcNYtEMGY=
+	t=1748875907; cv=none; b=Zql+EeXzDkO1BOvpugS28gW7zKn7Qi2+dYddK+LQaa/SgvjuL50PBPafoA6qdkOYs5gfTSR8UqF5wZmPBrUAu6zAPbah4jayJAvGrNdePTwlNkeYa+tMTkjN/eped433oqeSQAqUheJMRd1taOAw3VR+O7xa0i9ehnt+kHLgIxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876949; c=relaxed/simple;
-	bh=XCHcf8bpCQTUh/gWTbSjch2lshHsJx6R6y4vAyBHyjw=;
+	s=arc-20240116; t=1748875907; c=relaxed/simple;
+	bh=rhz4r/5nkX12wTng6NxwxrLKNSd04mSsYThJO223ex4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmtU5eMgCFcrADGpk3UFl/q4MfrofNZT/iZB7iziGhPrWta/U4ruagqN7sQONd2/GH8PTWnDHnRDe/yH6runnfGIg0kqCe+Rc4WjnOIovYQG83Jm9x1aREs4nfPZspBz4cKzLyM8mNljpLoQEeq2DBP+ScQPHwUSZ6VoMpRokiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epiC1Mze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E015DC4CEEB;
-	Mon,  2 Jun 2025 15:09:08 +0000 (UTC)
+	 MIME-Version; b=lNHyAnVTdah369i2N5U5P7/ASFKR2eVX/FlwPg4Ds9pmfyvzsRwR9wKqEfHQ+jNVm0Nx+VgxDK1iUXgGdHpAjh/aK6UTfIuCgBGE0d6ov6rdiuo2T+XfDXiD9IMla5zmwr573N4eIoxIg7U8c5R+fnDwPhufR4Obl5EKZDJGVUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn0g4aS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9AFC4CEEB;
+	Mon,  2 Jun 2025 14:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876949;
-	bh=XCHcf8bpCQTUh/gWTbSjch2lshHsJx6R6y4vAyBHyjw=;
+	s=korg; t=1748875906;
+	bh=rhz4r/5nkX12wTng6NxwxrLKNSd04mSsYThJO223ex4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epiC1Mze89Vp63Eb2i5UneptU2MKM22zB0aen48N5RvfxaDR6Wvs2S4u5JoZ7kun9
-	 0tfS6+5zNqYXY5v6qCF/WiB9wMNz2V9WFwuNsV84u9ig5uXeg/CqyJ9b8oeKar1Lq6
-	 VX+N5M/VX88sEukNd/ZKe1/7LSUn23I55z/7W2k8=
+	b=bn0g4aS7n+/M/CNjbtwih0DOE3f/Pn/LiqjVypSLrMATINa2z9sS8vSlWVSiFzw4Q
+	 d/JfAlBzSb7Df5HT6O4MEc3bTAuNkgEb9Yy1xL0o189ua09vhayz2R+XsPw9OCga3G
+	 9PNi/oaaxatpRXOmkkewcRrkN/HrGWkkkElhyLS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Lu <victorchengchi.lu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/325] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
+Subject: [PATCH 5.15 011/207] mailbox: use error ret code of of_parse_phandle_with_args()
 Date: Mon,  2 Jun 2025 15:46:23 +0200
-Message-ID: <20250602134324.130121205@linuxfoundation.org>
+Message-ID: <20250602134259.217705738@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
+[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
 
-SRIOV VF does not have write access to AGP BAR regs.
-Skip the writes to avoid a dmesg warning.
+In case of error, of_parse_phandle_with_args() returns -EINVAL when the
+passed index is negative, or -ENOENT when the index is for an empty
+phandle. The mailbox core overwrote the error return code with a less
+precise -ENODEV. Use the error returned code from
+of_parse_phandle_with_args().
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mailbox/mailbox.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index ec4d5e15b766a..de74686cb1dbd 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- {
- 	uint64_t value;
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 4229b9b5da98f..6f54501dc7762 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
  
--	/* Program the AGP BAR */
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
--
- 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
-+		/* Program the AGP BAR */
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
-+
- 		/* Program the system aperture low logical page number. */
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+ 	mutex_lock(&con_mutex);
+ 
+-	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", index, &spec)) {
++	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
++					 index, &spec);
++	if (ret) {
+ 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
+ 		mutex_unlock(&con_mutex);
+-		return ERR_PTR(-ENODEV);
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	chan = ERR_PTR(-EPROBE_DEFER);
 -- 
 2.39.5
 
