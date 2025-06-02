@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD908ACB356
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688D6ACB624
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 884C5942A7E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42B04C2C99
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728C1223708;
-	Mon,  2 Jun 2025 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5988722FF37;
+	Mon,  2 Jun 2025 14:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQf1AakB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4Sdublm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271611C5D72;
-	Mon,  2 Jun 2025 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CFC22FE0A;
+	Mon,  2 Jun 2025 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874130; cv=none; b=RklkeJaiD67anPZO4T92235FDGkI1m9nTygwvbQhZz9jXe+SkP3t81H1xb9Dh3j2SGbX7oPEwQCKj3iMR6oN0ts7MaJn+BkS3i9naMRRkxWHMS2eOAWh5NMz3C8u1/OVRC/LnGHcWKWZGn3oEBH18eFIu5pwftmWpddQtSC4xBI=
+	t=1748876156; cv=none; b=OlWcQNYGBxWrnu4I406gQduD3yDEsbVj5Z4D5GSBqo/ov7xuLvewF9tEbO7vQSC2RTQiO554I8Vmch9YdrmnYrMzAXJGpHubvVHcid7WyXBjNHqGx7YOON+9SJiJkrXTSoPPD1J8sL0AOeJ84HmBtDU0/ZwAN7Y2tORqORgqC4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874130; c=relaxed/simple;
-	bh=6V0OOaHSQVLwQd3Y+xfi0Ms2C8fkuSBCQKGOICl7M88=;
+	s=arc-20240116; t=1748876156; c=relaxed/simple;
+	bh=0HR1a8Jcn+uz3Cw3MJ7CKYODUulrilTiGnFNAYoKBgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7UDdJjURUAmMDHjfETrKotqYJJoOzL50x+diU02tNsCMbxowA7sT/jhbevAsrxaqfKWcsuGzhcuraaDN85nTckb9hzWNmvbNhz8OVK/oNhaazuDHdNAPaz+4HRrQYYIBLZa1Zxp5j8Xmkx/n3M8NCR5CmwZIzDPK3qge2OXQSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQf1AakB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A515DC4CEEB;
-	Mon,  2 Jun 2025 14:22:09 +0000 (UTC)
+	 MIME-Version; b=ddOh5XKLB/CGU6gClIceP7yaRHznXQ9kJ1W1wMJKdvyL3r+NfIoYaPEW7rog+5AZWsYj6+I5S+Nt+1wzdqCmyn1JvxCaHIZ3Dmj17sdMQpkkvZQKLV2ho153SwmRGgs0e4DmGwldxQaNlEZSz2NIso/JezJhbzSOT1CZWQ8LIXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4Sdublm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D162C4CEF0;
+	Mon,  2 Jun 2025 14:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874130;
-	bh=6V0OOaHSQVLwQd3Y+xfi0Ms2C8fkuSBCQKGOICl7M88=;
+	s=korg; t=1748876155;
+	bh=0HR1a8Jcn+uz3Cw3MJ7CKYODUulrilTiGnFNAYoKBgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQf1AakBQO7NRmJC/phNQPGwmKYHvwS5IXICuzaPssXkDKDVvUzP3ScZD1VdHekpE
-	 HOKyHlvSbaEIciZOmdY9IH20SEG1I2zbuLIL2rhiJFdvHZqoekuArirdx0V+tdPy9X
-	 dRZRKMw/pqw7Sih2dwNqtg0Chpzo5n27UBN0+Xl0=
+	b=o4SdublmqVJlmY9we3YOpjaaaH0Wrr3A6seetvEMNoND+d1cNB5xrBCwFQHdIot2z
+	 tLmBwq9Mg0KJnORDH8wajgtN8Wn7vGU4lcd55s+jxA46rSRXc8MnSroRKceG5pPkZI
+	 JZyU117vpQidpYk5xaKeyd7KQS7na8XTULvjTPFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 366/444] llc: fix data loss when reading from a socket in llc_ui_recvmsg()
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 058/207] ASoC: qcom: sm8250: explicitly set format in sm8250_be_hw_params_fixup()
 Date: Mon,  2 Jun 2025 15:47:10 +0200
-Message-ID: <20250602134355.768082985@linuxfoundation.org>
+Message-ID: <20250602134301.023713068@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-commit 239af1970bcb039a1551d2c438d113df0010c149 upstream.
+[ Upstream commit 89be3c15a58b2ccf31e969223c8ac93ca8932d81 ]
 
-For SOCK_STREAM sockets, if user buffer size (len) is less
-than skb size (skb->len), the remaining data from skb
-will be lost after calling kfree_skb().
+Setting format to s16le is required for compressed playback on compatible
+soundcards.
 
-To fix this, move the statement for partial reading
-above skb deletion.
-
-Found by InfoTeCS on behalf of Linux Verification Center (linuxtesting.org)
-
-Fixes: 30a584d944fb ("[LLX]: SOCK_DGRAM interface fixes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250228161430.373961-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/af_llc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/qcom/sm8250.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -888,15 +888,15 @@ static int llc_ui_recvmsg(struct socket
- 		if (sk->sk_type != SOCK_STREAM)
- 			goto copy_uaddr;
+diff --git a/sound/soc/qcom/sm8250.c b/sound/soc/qcom/sm8250.c
+index a38a741ace379..34a6349754fb0 100644
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -7,6 +7,7 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/pcm.h>
++#include <sound/pcm_params.h>
+ #include <linux/soundwire/sdw.h>
+ #include "qdsp6/q6afe.h"
+ #include "common.h"
+@@ -27,9 +28,11 @@ static int sm8250_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+ 					SNDRV_PCM_HW_PARAM_RATE);
+ 	struct snd_interval *channels = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_CHANNELS);
++	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
  
-+		/* Partial read */
-+		if (used + offset < skb_len)
-+			continue;
-+
- 		if (!(flags & MSG_PEEK)) {
- 			skb_unlink(skb, &sk->sk_receive_queue);
- 			kfree_skb(skb);
- 			*seq = 0;
- 		}
--
--		/* Partial read */
--		if (used + offset < skb_len)
--			continue;
- 	} while (len > 0);
+ 	rate->min = rate->max = 48000;
+ 	channels->min = channels->max = 2;
++	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
  
- out:
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
