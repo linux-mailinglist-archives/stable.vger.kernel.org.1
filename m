@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50CA7ACB512
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4AEACB31E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BD9C1BC23F2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF6361758E5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C69227B9A;
-	Mon,  2 Jun 2025 14:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A49323BD0E;
+	Mon,  2 Jun 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkDvrHJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFB91P7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CDF227586;
-	Mon,  2 Jun 2025 14:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4359D23BD04;
+	Mon,  2 Jun 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875477; cv=none; b=DsJM8cCkLJP0QvKHrsGvnLDYlkE8VI4ufkPHAwlVXPemEwzacqlViQ9aJ0Pveyr+EKhQs2vjoFKiDG4paBUzvc9Ai16G6n+2Tgp74CvhBtdRlP7hKHxDFi8tmiaWu7UeW5GBPW+ZGnuJb/Xuk1dg95uVabIuib1zBRxAGE2MbdM=
+	t=1748874133; cv=none; b=ZhQ4GNynWKPU3V5L1FiYb3Uv11g37MQPV6ltMqMRi1NJzbk8sc4xjVZoZsVUjhRKJxxlyypFWoH5hGvhQllbeogsxMIzm8AhJ2pI34La4o4ylIddmZhMgYmk7YbSbRu0btGYis+TmGmCHmCxLoDdtCWTty/vMLeAzOxZL40MWYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875477; c=relaxed/simple;
-	bh=w4ikRrS5HEMaL5T6rNYz2ZcO7sfWebqt9LfYE3i3Ba8=;
+	s=arc-20240116; t=1748874133; c=relaxed/simple;
+	bh=YNUEzpCWd1Mjf74kDdMcVLJVkFwfqO0rpxkBAYFGjEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAX/8St0kww7otz69PScEi3r+RHCw7gSv6N+EYg5j9gOlMPWQ/Ydr8gBbXjZplQXNfKXbfzcKACgszih8UhgFJdF6O04FmotFCtN/O+M4qzz6yz41O7BuGgadN5TUW8lFY/SrZsT7K48TV+wuMPM5Zl6gR1zIiQj7NpEZ58uYt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkDvrHJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B40C4CEEB;
-	Mon,  2 Jun 2025 14:44:36 +0000 (UTC)
+	 MIME-Version; b=ehrIIrvlpEAj+y0mizobJb1HkUtwmgubYlci9NK4JKrDp9uYEcdAFPmyQAPRP6SEC8CrCCO9KQqxMd2eZK8uILFQAzeCz1+F0yLpjFI0t4lNe44BqY66dngeZZWDD50fkr6jgpxzwfxn9ozlBcjVGypu21UmzeeVLItsR1p2I6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFB91P7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A75C4CEEB;
+	Mon,  2 Jun 2025 14:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875476;
-	bh=w4ikRrS5HEMaL5T6rNYz2ZcO7sfWebqt9LfYE3i3Ba8=;
+	s=korg; t=1748874133;
+	bh=YNUEzpCWd1Mjf74kDdMcVLJVkFwfqO0rpxkBAYFGjEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkDvrHJRL+1WK9HM1EKIz6azuW4aBK7Nw85iPEt4MCMvtMWRW64DBGAJo11kdyQIW
-	 ODCiC+U6bfc3LNJTmJxdHORrvLhKay/WGuqels63tfA2AtWlcayN07yeM9H5/3XQR6
-	 SXdcprytGyc63hnkrAH7n9Xm6eKez3kME+7iPjTo=
+	b=RFB91P7GJzhG5merCh2/rnGyYsQMsH9IuRoxI8nn5K0Zhd+KVYHzARJW1n9t8VeDu
+	 Kgbkc9zgA8bC6osvCtn2eWl2TxHDX6Rc/pzGznEdzJpAC3CYfKzWLcR2sPo5GYkbYk
+	 P6GvLHdWx2WVrxvxt4N4ZedEVjZD9jlrHGrkLjZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seyediman Seyedarab <imandevel@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/270] kbuild: fix argument parsing in scripts/config
+	Axel Forsman <axfo@kvaser.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 367/444] can: kvaser_pciefd: Continue parsing DMA buf after dropped RX
 Date: Mon,  2 Jun 2025 15:47:11 +0200
-Message-ID: <20250602134313.194835709@linuxfoundation.org>
+Message-ID: <20250602134355.812024067@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Axel Forsman <axfo@kvaser.com>
 
-[ Upstream commit f757f6011c92b5a01db742c39149bed9e526478f ]
+commit 6d820b81c4dc4a4023e45c3cd6707a07dd838649 upstream.
 
-The script previously assumed --file was always the first argument,
-which caused issues when it appeared later. This patch updates the
-parsing logic to scan all arguments to find --file, sets the config
-file correctly, and resets the argument list with the remaining
-commands.
+Going bus-off on a channel doing RX could result in dropped packets.
 
-It also fixes --refresh to respect --file by passing KCONFIG_CONFIG=$FN
-to make oldconfig.
+As netif_running() gets cleared before the channel abort procedure,
+the handling of any last RDATA packets would see netif_rx() return
+non-zero to signal a dropped packet. kvaser_pciefd_read_buffer() dealt
+with this "error" by breaking out of processing the remaining DMA RX
+buffer.
 
-Signed-off-by: Seyediman Seyedarab <imandevel@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Only return an error from kvaser_pciefd_read_buffer() due to packet
+corruption, otherwise handle it internally.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Axel Forsman <axfo@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20250520114332.8961-4-axfo@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/config | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ drivers/net/can/kvaser_pciefd.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/config b/scripts/config
-index 8c8d7c3d7accc..330bef88fd5ef 100755
---- a/scripts/config
-+++ b/scripts/config
-@@ -32,6 +32,7 @@ commands:
-                              Disable option directly after other option
- 	--module-after|-M beforeopt option
-                              Turn option into module directly after other option
-+	--refresh            Refresh the config using old settings
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -1137,7 +1137,7 @@ static int kvaser_pciefd_handle_data_pac
+ 		skb = alloc_canfd_skb(priv->dev, &cf);
+ 		if (!skb) {
+ 			priv->dev->stats.rx_dropped++;
+-			return -ENOMEM;
++			return 0;
+ 		}
  
- 	commands can be repeated multiple times
+ 		cf->len = can_fd_dlc2len(dlc);
+@@ -1149,7 +1149,7 @@ static int kvaser_pciefd_handle_data_pac
+ 		skb = alloc_can_skb(priv->dev, (struct can_frame **)&cf);
+ 		if (!skb) {
+ 			priv->dev->stats.rx_dropped++;
+-			return -ENOMEM;
++			return 0;
+ 		}
+ 		can_frame_set_cc_len((struct can_frame *)cf, dlc, priv->ctrlmode);
+ 	}
+@@ -1167,7 +1167,9 @@ static int kvaser_pciefd_handle_data_pac
+ 	priv->dev->stats.rx_packets++;
+ 	kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
  
-@@ -124,16 +125,22 @@ undef_var() {
- 	txt_delete "^# $name is not set" "$FN"
+-	return netif_rx(skb);
++	netif_rx(skb);
++
++	return 0;
  }
  
--if [ "$1" = "--file" ]; then
--	FN="$2"
--	if [ "$FN" = "" ] ; then
--		usage
-+FN=.config
-+CMDS=()
-+while [[ $# -gt 0 ]]; do
-+	if [ "$1" = "--file" ]; then
-+		if [ "$2" = "" ]; then
-+			usage
-+		fi
-+		FN="$2"
-+		shift 2
-+	else
-+		CMDS+=("$1")
-+		shift
- 	fi
--	shift 2
--else
--	FN=.config
--fi
-+done
- 
-+set -- "${CMDS[@]}"
- if [ "$1" = "" ] ; then
- 	usage
- fi
-@@ -217,9 +224,8 @@ while [ "$1" != "" ] ; do
- 		set_var "${CONFIG_}$B" "${CONFIG_}$B=m" "${CONFIG_}$A"
- 		;;
- 
--	# undocumented because it ignores --file (fixme)
- 	--refresh)
--		yes "" | make oldconfig
-+		yes "" | make oldconfig KCONFIG_CONFIG=$FN
- 		;;
- 
- 	*)
--- 
-2.39.5
-
+ static void kvaser_pciefd_change_state(struct kvaser_pciefd_can *can,
 
 
 
