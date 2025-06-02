@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E060AACB884
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73E4ACB5C0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CD4119481E3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D5BA21569
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF97F227E80;
-	Mon,  2 Jun 2025 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A598722DF80;
+	Mon,  2 Jun 2025 14:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URA4mugu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pxrOagN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB1F221F1E;
-	Mon,  2 Jun 2025 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6211422D9EE;
+	Mon,  2 Jun 2025 14:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877146; cv=none; b=qRUhU+lsbg5dPUSqzAtaq0cIER5MEU0tqEJ8dpwGW0ZjTUIu9llnCrvMbckr6azmdncaF0kgpRl/HpeY69Rjjzsdo/595mqR3r9XwUurjYacwCSdfKU0KTIUVILfuGvciQ98MfnX5scxH2ZxevS8toaKSArbD/m5ukhqACL+bVw=
+	t=1748875581; cv=none; b=IAmAC2gBDU0BelFDWLIG/VlP8OCM3mMPcb6kGU1op4WhLRp9/Pl0K92aPRdgTjwsI5tN1u2AF0/QLWDhp6ZlyWDVCuBpwc/5Tb8ab5dwSW3xvKzeUo+sw+fROw7vdGMxoGacFUcKqyYqMvO2Dfi63LApIuXuD2/lf5ofS47G1BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877146; c=relaxed/simple;
-	bh=s3x/YPNboyIf7aCLgV7WkLmupy0zgX58+y917k/GBRY=;
+	s=arc-20240116; t=1748875581; c=relaxed/simple;
+	bh=5kMQI6DrKY4Z3tjRL5inrrF1/xLQtBiHybtfgQO2Hwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kD9VgLJEI4HmmyjWVaG8ujQSMPad7lpemtf5wb26UedGOyf+dwwerjfEwJvv0v2ngnTJ9nl7o2sK9mJDCh1Do5aj4UKcJJqsSdUvyDPr/IrjrCcPZd1G/uhnBKyQIuHPJTvn+J3LxZT5OEm2wxceKGu/nkjwsHwSXFjlIkU4CF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URA4mugu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3A4C4CEEB;
-	Mon,  2 Jun 2025 15:12:25 +0000 (UTC)
+	 MIME-Version; b=M735Rzua3kcxIZFZOesiaFDw9sJQUqIEibrJ6HNraOF9pRn2KafekBYeY41AQvgRzQq7TqFTBVOyMaYT+z0aq6cbh1MTBzay6bL8ObXTzRDy0Tg6mQxxrwk5CuB6HIxA4ws6uC/iurGOX+WaMEQg9mNqHqdKY5qQw9ISvV3cjzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pxrOagN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEF0C4CEF0;
+	Mon,  2 Jun 2025 14:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877146;
-	bh=s3x/YPNboyIf7aCLgV7WkLmupy0zgX58+y917k/GBRY=;
+	s=korg; t=1748875580;
+	bh=5kMQI6DrKY4Z3tjRL5inrrF1/xLQtBiHybtfgQO2Hwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URA4mugu1NXwWgfNne5PFwTZMx7chUs5Idzfyl/yJHKWcl3B/F6wSL6o1RuW9awEk
-	 ZtUYHK07N4exiOYvsDP5dYBDbRTN3P8u8lbWUZ6yf0y8hD7UKPCE6jJk4rAsB05jKX
-	 RlgnaJPJfpuJxC0miMq7bACG3fgGQvdPtuGXY2Z8=
+	b=2pxrOagNYueaX9h/+J5R4P8knpopiS80bAsvExgWrC5PwniPjk19lRhCUgg3SjZn1
+	 kMfTt9PjdD7QgceBUwERIJZPfHFlOl1ShLFOpYEvyGt+Xuokyql8XzgFNdrXj5LJvF
+	 whahOSGLC8RCKB5NQnzq+F8p3h7Hjefm4xvZ25ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/325] wifi: mac80211: remove misplaced drv_mgd_complete_tx() call
+Subject: [PATCH 5.10 178/270] net: xgene-v2: remove incorrect ACPI_PTR annotation
 Date: Mon,  2 Jun 2025 15:47:43 +0200
-Message-ID: <20250602134327.410025911@linuxfoundation.org>
+Message-ID: <20250602134314.491027008@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f4995cdc4d02d0abc8e9fcccad5c71ce676c1e3f ]
+[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
 
-In the original commit 15fae3410f1d ("mac80211: notify driver on
-mgd TX completion") I evidently made a mistake and placed the
-call in the "associated" if, rather than the "assoc_data". Later
-I noticed the missing call and placed it in commit c042600c17d8
-("wifi: mac80211: adding missing drv_mgd_complete_tx() call"),
-but didn't remove the wrong one. Remove it now.
+Building with W=1 shows a warning about xge_acpi_match being unused when
+CONFIG_ACPI is disabled:
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.6ed954179bbf.Id8ef8835b7e6da3bf913c76f77d201017dc8a3c9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 8f0e6d7fe7167..b300972c31500 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7312,7 +7312,6 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_report_disconnect(sdata, frame_buf,
- 					    sizeof(frame_buf), true,
- 					    req->reason_code, false);
--		drv_mgd_complete_tx(sdata->local, sdata, &info);
- 		return 0;
- 	}
+diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
+index 80399c8980bd3..627f860141002 100644
+--- a/drivers/net/ethernet/apm/xgene-v2/main.c
++++ b/drivers/net/ethernet/apm/xgene-v2/main.c
+@@ -9,8 +9,6 @@
  
+ #include "main.h"
+ 
+-static const struct acpi_device_id xge_acpi_match[];
+-
+ static int xge_get_resources(struct xge_pdata *pdata)
+ {
+ 	struct platform_device *pdev;
+@@ -733,7 +731,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
+ static struct platform_driver xge_driver = {
+ 	.driver = {
+ 		   .name = "xgene-enet-v2",
+-		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
++		   .acpi_match_table = xge_acpi_match,
+ 	},
+ 	.probe = xge_probe,
+ 	.remove = xge_remove,
 -- 
 2.39.5
 
