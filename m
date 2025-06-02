@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-150030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A6FACB66B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 474E3ACB4B3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234591BA6C5E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73ED19E5070
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00D52376E1;
-	Mon,  2 Jun 2025 14:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4854D221FBB;
+	Mon,  2 Jun 2025 14:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebxAlwBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htcRmf01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E01B237164;
-	Mon,  2 Jun 2025 14:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044EB2C327E;
+	Mon,  2 Jun 2025 14:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875812; cv=none; b=J3X9aDm+7Mk0WEyPnRqy8PDDRSFfJdcZ95x4SwPbLnI4LcLyKXEX2Sslix+W0QZgP8a5ku2rvvqqePRldOj0DmXVSnh2ODdj1UGUvYS+0bdYRba1qACXiWAio5oR4qNkSdlts2lw0CitaInUgFEzMKx2wM6sAQzKm+G/Fz27G+Q=
+	t=1748875035; cv=none; b=G9hbH4OTY6apzkaZV6MPkHyRxtpF3+tDToVAyKFSf4EcKhUTyjemtRGe0Jf2MaTWtCXBFlcKYYo++XRYdF+5BO09cAL17sXj0+pBwj6hSAFsxKYxJA9opUvtMueRq1NoLoYUG70xHQIm9YvYLZllTMA436F6pXCWZRNNrgaLr6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875812; c=relaxed/simple;
-	bh=Rft51Q/fl5pepx9p6AGzEB6Hlwhyz0UjDj0nG2K8Azo=;
+	s=arc-20240116; t=1748875035; c=relaxed/simple;
+	bh=HegTlO36RaKslskhO6uVBGA0cuAN54bvk59PsOE7+SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmW09ANoFHmLDlZ3Sve5buN6/aTVU5XokT5oFAS2rhN+XyObAzm7h589ydO70c/Lz4ooX9PA39GxaXXTva881rQLZbYqDyMlCE3ITJVrhUvUX9w1w8NsuHHxx1hBEfz0THTsgdto5Tl/DrF+lHTVUosAzgkhFiJLF+0rl2GBRxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebxAlwBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CCEC4CEEB;
-	Mon,  2 Jun 2025 14:50:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tYghGYFvV/YU2+r52zuWX6rl3WUPYuemY2JHGJ025EYsvsWAs43RlGeGxPPpZVseK3tlMNQxNXC7p/0QudW73qocV1MfNjP2BY8JDl7Otcvu3MAgR8JCvoT65+xNdQlcotg9RAyNByal0EO7i2nyDVn5Hgo/X3HBCe/cSORgnhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htcRmf01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695CAC4CEEB;
+	Mon,  2 Jun 2025 14:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875812;
-	bh=Rft51Q/fl5pepx9p6AGzEB6Hlwhyz0UjDj0nG2K8Azo=;
+	s=korg; t=1748875034;
+	bh=HegTlO36RaKslskhO6uVBGA0cuAN54bvk59PsOE7+SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebxAlwBVZhL6ei4h56nmqHJ4ofLP0UCo04+J0ADUdsyEZvH6vctQdrjIM2LgjPXhq
-	 gbKTbEC5GkPqd51hTYmxmqimIrMLBqI1q7Og5bt/QRwXd4wzmyCSKXk2AggAD8HPnc
-	 WlqJUVAO019mfBM0BIFfQog4/xpSEBdGIRx1LiG4=
+	b=htcRmf0123rs43Xf/m3wuFV4zZi/PKBCMrsJcIBDTSEokRk0FHWzGU+1fHYPhINxM
+	 8E69YeEj/unsouR73ZLfrbq9uko1VE31+h9aG6eQTvDax4sqxW/RVlbISpImloh4Ly
+	 inifv7pOuPk6sI9ksoG/M6r9CLhn5lVM3dn/GpCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Derek Barbosa <debarbos@redhat.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/270] spi: spi-fsl-dspi: Reset SR flags before sending a new message
+Subject: [PATCH 5.4 203/204] platform/x86: thinkpad_acpi: Ignore battery threshold change event notification
 Date: Mon,  2 Jun 2025 15:48:56 +0200
-Message-ID: <20250602134317.591687667@linuxfoundation.org>
+Message-ID: <20250602134303.648394259@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 7aba292eb15389073c7f3bd7847e3862dfdf604d ]
+[ Upstream commit 29e4e6b4235fefa5930affb531fe449cac330a72 ]
 
-If, in a previous transfer, the controller sends more data than expected
-by the DSPI target, SR.RFDF (RX FIFO is not empty) will remain asserted.
-When flushing the FIFOs at the beginning of a new transfer (writing 1
-into MCR.CLR_TXF and MCR.CLR_RXF), SR.RFDF should also be cleared.
-Otherwise, when running in target mode with DMA, if SR.RFDF remains
-asserted, the DMA callback will be fired before the controller sends any
-data.
+If user modifies the battery charge threshold an ACPI event is generated.
+Confirmed with Lenovo FW team this is only generated on user event. As no
+action is needed, ignore the event and prevent spurious kernel logs.
 
-Take this opportunity to reset all Status Register fields.
-
-Fixes: 5ce3cc567471 ("spi: spi-fsl-dspi: Provide support for DSPI slave mode operation (Vybryd vf610)")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-3-bea884630cfb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Derek Barbosa <debarbos@redhat.com>
+Closes: https://lore.kernel.org/platform-driver-x86/7e9a1c47-5d9c-4978-af20-3949d53fb5dc@app.fastmail.com/T/#m5f5b9ae31d3fbf30d7d9a9d76c15fb3502dfd903
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250517023348.2962591-1-mpearson-lenovo@squebb.ca
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/thinkpad_acpi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index fdfd104fde9e2..eda7ed618369d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -956,6 +956,8 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF,
- 				   SPI_MCR_CLR_TXF | SPI_MCR_CLR_RXF);
- 
-+		regmap_write(dspi->regmap, SPI_SR, SPI_SR_CLEAR);
-+
- 		spi_take_timestamp_pre(dspi->ctlr, dspi->cur_transfer,
- 				       dspi->progress, !dspi->irq);
- 
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 441b7fb6b37af..9eb74d9e1519c 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -195,6 +195,7 @@ enum tpacpi_hkey_event_t {
+ 	/* Thermal events */
+ 	TP_HKEY_EV_ALARM_BAT_HOT	= 0x6011, /* battery too hot */
+ 	TP_HKEY_EV_ALARM_BAT_XHOT	= 0x6012, /* battery critically hot */
++	TP_HKEY_EV_ALARM_BAT_LIM_CHANGE	= 0x6013, /* battery charge limit changed*/
+ 	TP_HKEY_EV_ALARM_SENSOR_HOT	= 0x6021, /* sensor too hot */
+ 	TP_HKEY_EV_ALARM_SENSOR_XHOT	= 0x6022, /* sensor critically hot */
+ 	TP_HKEY_EV_THM_TABLE_CHANGED	= 0x6030, /* windows; thermal table changed */
+@@ -4059,6 +4060,10 @@ static bool hotkey_notify_6xxx(const u32 hkey,
+ 		pr_alert("THERMAL EMERGENCY: battery is extremely hot!\n");
+ 		/* recommended action: immediate sleep/hibernate */
+ 		break;
++	case TP_HKEY_EV_ALARM_BAT_LIM_CHANGE:
++		pr_debug("Battery Info: battery charge threshold changed\n");
++		/* User changed charging threshold. No action needed */
++		return true;
+ 	case TP_HKEY_EV_ALARM_SENSOR_HOT:
+ 		pr_crit("THERMAL ALARM: a sensor reports something is too hot!\n");
+ 		/* recommended action: warn user through gui, that */
 -- 
 2.39.5
 
