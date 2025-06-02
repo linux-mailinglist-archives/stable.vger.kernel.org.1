@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-150230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FB1ACB6C5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C98ACB743
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D7889E78D4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CC767AC82A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DF022E01E;
-	Mon,  2 Jun 2025 15:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7E622B8AA;
+	Mon,  2 Jun 2025 15:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3ub2wRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OixQT6Wn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE6022E3F7;
-	Mon,  2 Jun 2025 15:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AACC22A4E9;
+	Mon,  2 Jun 2025 15:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876458; cv=none; b=pWIovbylI5SFK4TEW5tFev+J3R4nd9KVtIBtJOPfuJQEwvDrOlkkNWNkcKvf6B3Bb1JxOEweFI30u2LGMOUXrAU1qw5iMALTIeM6z+0PrVJLlG00uIVJisTjaRr/xGr/HjbFA+Pn/BVAqc62DBjMdZhRjp5X2hdZns2b8Vy1QYQ=
+	t=1748877524; cv=none; b=P/ILYjVBZI2OT34zIVvyjWS6TqydHozkCrFss0CEX06AKzMThlYk8erfuEhzp/4TAzlHplYvO97svc6Rh2DV9snBeYx7hWQZPq7VsyBN0q+fBG1seVWSBkqH+n6/vPepIIYq4eflx1A9yJHp7h+EHcglumJEh1/Xo9XdgXfhbIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876458; c=relaxed/simple;
-	bh=ix7gDJPD7Subs5f2WLAsXzRxrh7XsVUsMCfPKsJROM4=;
+	s=arc-20240116; t=1748877524; c=relaxed/simple;
+	bh=yEn30p3UYNleOKijXeWcT4YvjJ/90cIbE/2YqjVKcgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0NiZiqtWYcH11M2PlzQ5brRq1nJdwPr89m8oHBG/cTXJySd1IDmcI/myz2a/Z0EKxcJA28tAHrqY51JEyL+5JHyIUYYJMOQPVsQpIKHeRhWw4Z2aDOxNSJls/vBOyCxGgGaCVOBYssstDB65jrlV245AYRwyS43jAMlnp1vD6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3ub2wRJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E979C4CEEB;
-	Mon,  2 Jun 2025 15:00:57 +0000 (UTC)
+	 MIME-Version; b=ATnFBEmMY/33N+ZgOcOzblMBl2tGmThMI55cX7Qoy7q4JP4bjfpCNIC+TfvU2AI2StPLPb0+8biRLIS44FoDEBSkfrHWWaqvdPr1stNFhIjjFYFK0eSuH2i81v85NkUvP1XHizZvSZBlQ+M+lCJivL3/FJVKYuRO3t7rx/0RyGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OixQT6Wn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B66C4CEEB;
+	Mon,  2 Jun 2025 15:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876458;
-	bh=ix7gDJPD7Subs5f2WLAsXzRxrh7XsVUsMCfPKsJROM4=;
+	s=korg; t=1748877524;
+	bh=yEn30p3UYNleOKijXeWcT4YvjJ/90cIbE/2YqjVKcgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3ub2wRJ1LW8dzUC6saaQhT/pjK0v9fbnsCN0/XKNCw3zStnrDZf5CSXL41BLrcm9
-	 or/V1FA25ENakI6K6tP5q4/33nFMBykrChsGEpACQZtV9myHu7Up8xqhSlkvn+5VCs
-	 H2TZn76EsfYaAilLmR6VqaeKdnqm0cf2xLfFgetA=
+	b=OixQT6WnSbJ7unsNi21XkFQCAe8WrstvpHUjOVDwZC/0Qh/7zKv/oaIbF+tTwYiGR
+	 MpU3IS7E5KfWUVWv1FxHFa3o6pf96Lb1ouykh1bXmJUvV3Y350jtxJedC3dQT7bR/x
+	 Zn1yBYpqka3wKuzd6lZrHw5JOvR2Fn/nAuc+1te4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Rik van Riel <riel@surriel.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 179/207] memcg: always call cond_resched() after fn()
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 275/325] dmaengine: idxd: Fix passing freed memory in idxd_cdev_open()
 Date: Mon,  2 Jun 2025 15:49:11 +0200
-Message-ID: <20250602134305.763408988@linuxfoundation.org>
+Message-ID: <20250602134330.940285003@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-commit 06717a7b6c86514dbd6ab322e8083ffaa4db5712 upstream.
+commit 0642287e3ecdd0d1f88e6a2e63768e16153a990c upstream.
 
-I am seeing soft lockup on certain machine types when a cgroup OOMs.  This
-is happening because killing the process in certain machine might be very
-slow, which causes the soft lockup and RCU stalls.  This happens usually
-when the cgroup has MANY processes and memory.oom.group is set.
+Smatch warns:
+	drivers/dma/idxd/cdev.c:327:
+		idxd_cdev_open() warn: 'sva' was already freed.
 
-Example I am seeing in real production:
+When idxd_wq_set_pasid() fails, the current code unbinds sva and then
+goes to 'failed_set_pasid' where iommu_sva_unbind_device is called
+again causing the above warning.
+[ device_user_pasid_enabled(idxd) is still true when calling
+failed_set_pasid ]
 
-       [462012.244552] Memory cgroup out of memory: Killed process 3370438 (crosvm) ....
-       ....
-       [462037.318059] Memory cgroup out of memory: Killed process 4171372 (adb) ....
-       [462037.348314] watchdog: BUG: soft lockup - CPU#64 stuck for 26s! [stat_manager-ag:1618982]
-       ....
+Fix this by removing additional unbind when idxd_wq_set_pasid() fails
 
-Quick look at why this is so slow, it seems to be related to serial flush
-for certain machine types.  For all the crashes I saw, the target CPU was
-at console_flush_all().
-
-In the case above, there are thousands of processes in the cgroup, and it
-is soft locking up before it reaches the 1024 limit in the code (which
-would call the cond_resched()).  So, cond_resched() in 1024 blocks is not
-sufficient.
-
-Remove the counter-based conditional rescheduling logic and call
-cond_resched() unconditionally after each task iteration, after fn() is
-called.  This avoids the lockup independently of how slow fn() is.
-
-Link: https://lkml.kernel.org/r/20250523-memcg_fix-v1-1-ad3eafb60477@debian.org
-Fixes: ade81479c7dd ("memcg: fix soft lockup in the OOM process")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Michael van der Westhuizen <rmikey@meta.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Chen Ridong <chenridong@huawei.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b022f59725f0 ("dmaengine: idxd: add idxd_copy_cr() to copy user completion record during page fault handling")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Acked-by: Fenghua Yu <fenghua.yu@intel.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230509060716.2830630-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/dma/idxd/cdev.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1194,7 +1194,6 @@ int mem_cgroup_scan_tasks(struct mem_cgr
- {
- 	struct mem_cgroup *iter;
- 	int ret = 0;
--	int i = 0;
- 
- 	BUG_ON(memcg == root_mem_cgroup);
- 
-@@ -1204,10 +1203,9 @@ int mem_cgroup_scan_tasks(struct mem_cgr
- 
- 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
- 		while (!ret && (task = css_task_iter_next(&it))) {
--			/* Avoid potential softlockup warning */
--			if ((++i & 1023) == 0)
--				cond_resched();
- 			ret = fn(task, arg);
-+			/* Avoid potential softlockup warning */
-+			cond_resched();
- 		}
- 		css_task_iter_end(&it);
- 		if (ret) {
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -142,7 +142,6 @@ static int idxd_cdev_open(struct inode *
+ 		if (wq_dedicated(wq)) {
+ 			rc = idxd_wq_set_pasid(wq, pasid);
+ 			if (rc < 0) {
+-				iommu_sva_unbind_device(sva);
+ 				dev_err(dev, "wq set pasid failed: %d\n", rc);
+ 				goto failed_set_pasid;
+ 			}
 
 
 
