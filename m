@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B3CACB7BC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1170CACB3C3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D4CD4A64DA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEFA89E0D3A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DAA22F764;
-	Mon,  2 Jun 2025 15:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66B3223DDA;
+	Mon,  2 Jun 2025 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LO0l8//r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7kdH7ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B416122F757;
-	Mon,  2 Jun 2025 15:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631EB19EEBD;
+	Mon,  2 Jun 2025 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876965; cv=none; b=rTSx33u73ADEQnfdoCHzbi9iflbdWmMectzzH07883EiWWExYzLZeATX+YG0ZWeiVF63rrWwWbhXHPriUlbVd7FmpJIrEsfKdBtQiG7qMDLunO9j0hQYsh38epz9ha38XDbiYvj4iHXcUISwIGW4hl+WJNK8oPiq2QM5E3jP2Cg=
+	t=1748874644; cv=none; b=KK90XoY5PCkFJQBCwf0b7FT0IlqEyL2Jn6Hk12if9duizlYD6YKMEqwfDvqv2HqYJmtNYbaLdI+zFiHQR8oZRAm+NcC4+vANjXacpv5YaT2INCm2hjf9DEr78i6q1IpYYtAHxRsofV3oDWxXD2Nw9q6yn22Tdr8FAJhKPBxyZdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876965; c=relaxed/simple;
-	bh=qQuHSkDmgvrUsRAP5w3Ke34rqXZ6VY+Rcd83gcVpwjw=;
+	s=arc-20240116; t=1748874644; c=relaxed/simple;
+	bh=5pdxsO8gY7EhJk4y1wOHJDaN6qguvnMI41rX75cN7SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJPZ9ldza7pA548qE7nTf2OT69OHkcvt6z3kUI4cTvj7VqeGbzilRS94vgcxfH/ba1RH3R7KooXUMvyNwsVuoBvcMdLgLOTIGGBU/IxK9hvDebvFF0PwEiJGjnTzzt5PJFrsECMVIbFTGpr2elAsTeQ/qzT9vKqQaJ8vQxyjQvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LO0l8//r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CDCC4CEEB;
-	Mon,  2 Jun 2025 15:09:24 +0000 (UTC)
+	 MIME-Version; b=sHi1nPFg7Sa7XtyC6Pes5z9S7l5D79leFFtWSk5m2hGfraYAAaDu5b//SI3x4sdhZZzI4aLe0AI63LXLBLqdS87VworQGD7T8opCISLASlG+PRQl8V4DbuP/L3MDAW0sWbjKdqxAVwFgNRSpOs0oyMrEPyVXS/RtQL0WW3EBybU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7kdH7ot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F86C4CEEB;
+	Mon,  2 Jun 2025 14:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876965;
-	bh=qQuHSkDmgvrUsRAP5w3Ke34rqXZ6VY+Rcd83gcVpwjw=;
+	s=korg; t=1748874644;
+	bh=5pdxsO8gY7EhJk4y1wOHJDaN6qguvnMI41rX75cN7SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LO0l8//rrOwTq04U1aajHwCA/Dh7TmazhsUZ2PRyGbFRsXlG8r9g+zTwoJzjh0rs6
-	 oB08CfLcHHCshXGqj6UNcDCb428EHwGfQUYf7plHipzo6Gt1bk9jYN/cyiaBgcARi/
-	 fh7ZGnaZipFgK9dJWMv7cBF+UmrGy7SxJX8S9F5o=
+	b=D7kdH7otDjc9s4UMQJAt5RLW32NzPLdww+vNqQ6IAL1/UP7dZTqLNfzrgTquHAyRJ
+	 y6BY1Tw1ScUy0c4xk/S5J8YV/IUnAe9UhVJspetqLpKCUCKFvlM8KJJYxvu68taHpL
+	 M1R2312haeWIS8hj9PMUcws/Q2Z7ekiA/xSoJbCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Krakauer <krakauer@google.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/325] selftests/net: have `gro.sh -t` return a correct exit code
+Subject: [PATCH 5.4 072/204] net: dsa: sja1105: discard incoming frames in BR_STATE_LISTENING
 Date: Mon,  2 Jun 2025 15:46:45 +0200
-Message-ID: <20250602134325.051324102@linuxfoundation.org>
+Message-ID: <20250602134258.510103274@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Krakauer <krakauer@google.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
+[ Upstream commit 498625a8ab2c8e1c9ab5105744310e8d6952cc01 ]
 
-Modify gro.sh to return a useful exit code when the -t flag is used. It
-formerly returned 0 no matter what.
+It has been reported that when under a bridge with stp_state=1, the logs
+get spammed with this message:
 
-Tested: Ran `gro.sh -t large` and verified that test failures return 1.
-Signed-off-by: Kevin Krakauer <krakauer@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+[  251.734607] fsl_dpaa2_eth dpni.5 eth0: Couldn't decode source port
+
+Further debugging shows the following info associated with packets:
+source_port=-1, switch_id=-1, vid=-1, vbid=1
+
+In other words, they are data plane packets which are supposed to be
+decoded by dsa_tag_8021q_find_port_by_vbid(), but the latter (correctly)
+refuses to do so, because no switch port is currently in
+BR_STATE_LEARNING or BR_STATE_FORWARDING - so the packet is effectively
+unexpected.
+
+The error goes away after the port progresses to BR_STATE_LEARNING in 15
+seconds (the default forward_time of the bridge), because then,
+dsa_tag_8021q_find_port_by_vbid() can correctly associate the data plane
+packets with a plausible bridge port in a plausible STP state.
+
+Re-reading IEEE 802.1D-1990, I see the following:
+
+"4.4.2 Learning: (...) The Forwarding Process shall discard received
+frames."
+
+IEEE 802.1D-2004 further clarifies:
+
+"DISABLED, BLOCKING, LISTENING, and BROKEN all correspond to the
+DISCARDING port state. While those dot1dStpPortStates serve to
+distinguish reasons for discarding frames, the operation of the
+Forwarding and Learning processes is the same for all of them. (...)
+LISTENING represents a port that the spanning tree algorithm has
+selected to be part of the active topology (computing a Root Port or
+Designated Port role) but is temporarily discarding frames to guard
+against loops or incorrect learning."
+
+Well, this is not what the driver does - instead it sets
+mac[port].ingress = true.
+
+To get rid of the log spam, prevent unexpected data plane packets to
+be received by software by discarding them on ingress in the LISTENING
+state.
+
+In terms of blame attribution: the prints only date back to commit
+d7f9787a763f ("net: dsa: tag_8021q: add support for imprecise RX based
+on the VBID"). However, the settings would permit a LISTENING port to
+forward to a FORWARDING port, and the standard suggests that's not OK.
+
+Fixes: 640f763f98c2 ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250509113816.2221992-1-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
-index 342ad27f631b1..e771f5f7faa26 100755
---- a/tools/testing/selftests/net/gro.sh
-+++ b/tools/testing/selftests/net/gro.sh
-@@ -95,5 +95,6 @@ trap cleanup EXIT
- if [[ "${test}" == "all" ]]; then
-   run_all_tests
- else
--  run_test "${proto}" "${test}"
-+  exit_code=$(run_test "${proto}" "${test}")
-+  exit $exit_code
- fi;
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index eab861352bf23..007eb05ed659f 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1390,6 +1390,7 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
+ 	switch (state) {
+ 	case BR_STATE_DISABLED:
+ 	case BR_STATE_BLOCKING:
++	case BR_STATE_LISTENING:
+ 		/* From UM10944 description of DRPDTAG (why put this there?):
+ 		 * "Management traffic flows to the port regardless of the state
+ 		 * of the INGRESS flag". So BPDUs are still be allowed to pass.
+@@ -1399,11 +1400,6 @@ static void sja1105_bridge_stp_state_set(struct dsa_switch *ds, int port,
+ 		mac[port].egress    = false;
+ 		mac[port].dyn_learn = false;
+ 		break;
+-	case BR_STATE_LISTENING:
+-		mac[port].ingress   = true;
+-		mac[port].egress    = false;
+-		mac[port].dyn_learn = false;
+-		break;
+ 	case BR_STATE_LEARNING:
+ 		mac[port].ingress   = true;
+ 		mac[port].egress    = false;
 -- 
 2.39.5
 
