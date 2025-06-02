@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-150225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1069EACB6C2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645D4ACB6AA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9D01BA6938
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759A119433A1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BEB22D790;
-	Mon,  2 Jun 2025 15:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A432822259E;
+	Mon,  2 Jun 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fL/2lNBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCC9OK6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457F522D4D7;
-	Mon,  2 Jun 2025 15:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2B22259C;
+	Mon,  2 Jun 2025 14:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876442; cv=none; b=Gxuzh+8TSKvauCayHt+ThzqAKSlh5fEEKhVdhqmSK9gjyHdO0UWxt//EdRcjAG35tMaXFuEMnFGPXF+Y3wSOcF3BWXFqn1mLR8JmmeGOYGgWig5IOgcX7R+t0jd2ZE+UsQOqJ7Zmo+tqVrbXRI/rhpBi8ltHY+dHmzeKbwXVKBQ=
+	t=1748875889; cv=none; b=nSBTqSgmWBBZRM0pOV5AbGN7WkwDqtQ8WN1B0LUAvacJRwBkqPg7lSzkWRGHB7qt3XEcKxCzGuXut2+uHJCkiM7e890MrqYQeZwQVPvcikik5IHdPKlLbiYB1wna9RWFp2dAGsfP9i0khG+3ZbnJBLJvGG9Dxv9PxEdOPnuR0Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876442; c=relaxed/simple;
-	bh=PF611zMRZtuzCG2xqfXIXyyLmqytSfeWxoRaCld43TQ=;
+	s=arc-20240116; t=1748875889; c=relaxed/simple;
+	bh=RqJANCq+3SyYwWoDxkdwbymxwcXNz/aLI8kFI0WAW5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIxKJnvBDPNoWfBmt+pyCM+Y2znLMFizLjCm+l6V4pV/ZnTtlmjSuX1k5/VYtHiklcZTOy8Ie4avsJLxaBBH8BaxJ8bw0KUPhuPaWYvtqF8RY8/cpn3LeDtEqlJ1NWG5qd9ztuNfPOhqUEEgJfz+VygQOBJWWZX6ctNS+ejehrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fL/2lNBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCF1C4CEEB;
-	Mon,  2 Jun 2025 15:00:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ByfOsZ/GICj8abdOXVWMeDpNX4ipTyduk+8JChP5YZro0JPQ6tvKs3uDUl9Bzl2tBMCWClO8YLQZUDOeFH3YCG4e+SxFcPflhBbberScu6c5V7C0Oa8v/b7dxwQS3yNkXPqcCkVXzyllES6hWk9Rb/LbY2B1P9Ld91CnVe7wXuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCC9OK6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568D7C4CEEB;
+	Mon,  2 Jun 2025 14:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876442;
-	bh=PF611zMRZtuzCG2xqfXIXyyLmqytSfeWxoRaCld43TQ=;
+	s=korg; t=1748875888;
+	bh=RqJANCq+3SyYwWoDxkdwbymxwcXNz/aLI8kFI0WAW5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fL/2lNBG+MJeS1EPf2g0EIw68nPmWohZuHicxgvuh7nkSqL1xwevpqgf5x87HluKs
-	 TeE7nqVXOpghm4otTCoUC3wAZJAY+7XDQ9ehIYA4NBI4pTd2Ltnbd+gf2k0fR3Ewjl
-	 YNR8UiFwZ+JzZWquqt4P0c6HsHIWv3i/etPj7mGA=
+	b=hCC9OK6RzRvV/MTscdVnDduAK6el30Ca3tV0fmLkbmlvxloOfLcJ2VcAyzB0ANAKO
+	 1aRvWtQ7X15BhkklTJBSBkFa9S+3eRVGkjddNno4DZa6DRGFOGE3gKrW/ox9prRPkA
+	 fcTZ/aao04RZbPAGxf+XyYzCCNerQxMntmI3pa6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 175/207] llc: fix data loss when reading from a socket in llc_ui_recvmsg()
-Date: Mon,  2 Jun 2025 15:49:07 +0200
-Message-ID: <20250602134305.601832836@linuxfoundation.org>
+	John Chau <johnchau@0atlas.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 263/270] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
+Date: Mon,  2 Jun 2025 15:49:08 +0200
+Message-ID: <20250602134318.090336401@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+From: John Chau <johnchau@0atlas.com>
 
-commit 239af1970bcb039a1551d2c438d113df0010c149 upstream.
+[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
 
-For SOCK_STREAM sockets, if user buffer size (len) is less
-than skb size (skb->len), the remaining data from skb
-will be lost after calling kfree_skb().
+Change get_thinkpad_model_data() to check for additional vendor name
+"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
+more).
 
-To fix this, move the statement for partial reading
-above skb deletion.
+The reason of this works with minimal changes is because NEC Lavie
+X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
+"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
+the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
 
-Found by InfoTeCS on behalf of Linux Verification Center (linuxtesting.org)
+I compiled and tested with my own machine, attached the dmesg
+below as proof of work:
+[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
+[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
+[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
+[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
+[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
+[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
+[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
+[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
+[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
+[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
 
-Fixes: 30a584d944fb ("[LLX]: SOCK_DGRAM interface fixes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Chau <johnchau@0atlas.com>
+Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/af_llc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -886,15 +886,15 @@ static int llc_ui_recvmsg(struct socket
- 		if (sk->sk_type != SOCK_STREAM)
- 			goto copy_uaddr;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index c07b3bcbf795d..e9e63d8cbfbfd 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10233,6 +10233,8 @@ static int __must_check __init get_thinkpad_model_data(
+ 		tp->vendor = PCI_VENDOR_ID_IBM;
+ 	else if (dmi_name_in_vendors("LENOVO"))
+ 		tp->vendor = PCI_VENDOR_ID_LENOVO;
++	else if (dmi_name_in_vendors("NEC"))
++		tp->vendor = PCI_VENDOR_ID_LENOVO;
+ 	else
+ 		return 0;
  
-+		/* Partial read */
-+		if (used + offset < skb_len)
-+			continue;
-+
- 		if (!(flags & MSG_PEEK)) {
- 			skb_unlink(skb, &sk->sk_receive_queue);
- 			kfree_skb(skb);
- 			*seq = 0;
- 		}
--
--		/* Partial read */
--		if (used + offset < skb_len)
--			continue;
- 	} while (len > 0);
- 
- out:
+-- 
+2.39.5
+
 
 
 
