@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E6CACB456
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD743ACB38F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44CA519435DD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F023A51B4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5CB22259F;
-	Mon,  2 Jun 2025 14:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB9522A4DB;
+	Mon,  2 Jun 2025 14:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCr4nEbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWk5p+27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2631D8DFB;
-	Mon,  2 Jun 2025 14:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD386221739;
+	Mon,  2 Jun 2025 14:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874883; cv=none; b=qt202LeyjKtskPXSw/SrXiPqrQgHVOz06kE18uLpKiaNL94Gu3OblTgO9eCZEhTBLXOproIKCkZnB1VX6FGqhqKPePW8ZcGJ2q1q4vwhXV9qglTcPuoPXcKsAdG9vojkg21Kxq9hRUFED9nPdJ2vVVjxC4gLSahqlz1xRvCJZ84=
+	t=1748874354; cv=none; b=WsJH0gH+20MR9nCf4KeDO1RwrNEMN2IjUzY3C9RVqd9PfarnYVNL44YRO81DmnVrQ6z7GHziIYSU3tkbUPAZKPlaXu7neaitdIGmeZtVbxPsVnDzK78spL59ip5OPCLNxfwkNngNuHuc3v4j+cUUHBupYB2FHW+zXqFgWFPcx8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874883; c=relaxed/simple;
-	bh=UfZ/r1JuYiI+1wbU5AAzV/J/rjXchKUzgXcc94wS+Vo=;
+	s=arc-20240116; t=1748874354; c=relaxed/simple;
+	bh=3QBikKu2d9pjcVheP8wwpe/2WIxPs3hC+2cjFHPrx0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAG4mNpZ+lxGShwAjOiceJ6f4wQR/mkP6XUXDkjRwTMRj3OhPF8uUNvXfqsKRZ0kmk39A5iHJgJ46Rimebl09jM7/yoPBVbFrO3edFXRlqvOCpMWgoDJfFFlWQhGO8r8HFz0Ug0HoPLFTzx8dUt+uMXzI8U84zjfoJufCFD/sh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCr4nEbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC222C4CEEB;
-	Mon,  2 Jun 2025 14:34:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jj7xjyYtZjbVBfY+r42zPCLd9Wgg33W1m9Y6QeqON21Q5/ir8chwbdRo5ZBx2kLRe2j1UDWpv9rQ66CFGp2EC+d0fvFg+uZSQtDg9KK8LjbfIDwDVQCzYhjzhEbcwXsV1mUZV18oLoUebOlBFduGLmpA+SZciGNiyCUQmCSaoZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWk5p+27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F58FC4CEEB;
+	Mon,  2 Jun 2025 14:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874883;
-	bh=UfZ/r1JuYiI+1wbU5AAzV/J/rjXchKUzgXcc94wS+Vo=;
+	s=korg; t=1748874354;
+	bh=3QBikKu2d9pjcVheP8wwpe/2WIxPs3hC+2cjFHPrx0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCr4nEbZe61usF2p4iAKWv8MLm3Ljg8koPCtbQN3XYSdsyZeiNyeORYYYJrGh+DvX
-	 VThj3CdnCXLXCI8zxJtgEiwNofRVMMHkYY1reorzByzAsUVJLN0IEzG9mA9LB1Ac1Z
-	 Q5Ld7zsrdUaxDQw+cZYQWbxRMkGh7PcPHSdJYRTE=
+	b=jWk5p+27Pm5ImENQJnvouW9v/mTVbdLXF7OM4tMaBmKicJ30qxrGYAhVhQscW64xM
+	 hUoUNiH5pqR/k16jEgrKoFQvdXY6ulgbK5YlfYtZvO6D/H3BvdrkJfQJDLEFpdyjis
+	 BPofXNeXOpRzHoGW44x7uBX9/5Gw+Suo+gfbm92o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	John Chau <johnchau@0atlas.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 165/204] pinctrl: meson: define the pull up/down resistor value as 60 kOhm
+Subject: [PATCH 6.6 434/444] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
 Date: Mon,  2 Jun 2025 15:48:18 +0200
-Message-ID: <20250602134302.142761096@linuxfoundation.org>
+Message-ID: <20250602134358.557404852@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: John Chau <johnchau@0atlas.com>
 
-[ Upstream commit e56088a13708757da68ad035269d69b93ac8c389 ]
+[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
 
-The public datasheets of the following Amlogic SoCs describe a typical
-resistor value for the built-in pull up/down resistor:
-- Meson8/8b/8m2: not documented
-- GXBB (S905): 60 kOhm
-- GXL (S905X): 60 kOhm
-- GXM (S912): 60 kOhm
-- G12B (S922X): 60 kOhm
-- SM1 (S905D3): 60 kOhm
+Change get_thinkpad_model_data() to check for additional vendor name
+"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
+more).
 
-The public G12B and SM1 datasheets additionally state min and max
-values:
-- min value: 50 kOhm for both, pull-up and pull-down
-- max value for the pull-up: 70 kOhm
-- max value for the pull-down: 130 kOhm
+The reason of this works with minimal changes is because NEC Lavie
+X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
+"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
+the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
 
-Use 60 kOhm in the pinctrl-meson driver as well so it's shown in the
-debugfs output. It may not be accurate for Meson8/8b/8m2 but in reality
-60 kOhm is closer to the actual value than 1 Ohm.
+I compiled and tested with my own machine, attached the dmesg
+below as proof of work:
+[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
+[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
+[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
+[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
+[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
+[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
+[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
+[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
+[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
+[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/20250329190132.855196-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: John Chau <johnchau@0atlas.com>
+Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
-index aba479a1150c8..f3b381370e5ed 100644
---- a/drivers/pinctrl/meson/pinctrl-meson.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson.c
-@@ -480,7 +480,7 @@ static int meson_pinconf_get(struct pinctrl_dev *pcdev, unsigned int pin,
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
- 	case PIN_CONFIG_BIAS_PULL_UP:
- 		if (meson_pinconf_get_pull(pc, pin) == param)
--			arg = 1;
-+			arg = 60000;
- 		else
- 			return -EINVAL;
- 		break;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index cde5f845cf255..bcb0689101e2b 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -11315,6 +11315,8 @@ static int __must_check __init get_thinkpad_model_data(
+ 		tp->vendor = PCI_VENDOR_ID_IBM;
+ 	else if (dmi_name_in_vendors("LENOVO"))
+ 		tp->vendor = PCI_VENDOR_ID_LENOVO;
++	else if (dmi_name_in_vendors("NEC"))
++		tp->vendor = PCI_VENDOR_ID_LENOVO;
+ 	else
+ 		return 0;
+ 
 -- 
 2.39.5
 
