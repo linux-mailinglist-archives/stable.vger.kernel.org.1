@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8485ACB4E8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD42ACB34A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1D337B1541
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:49:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BE8942797
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F322B22ACD1;
-	Mon,  2 Jun 2025 14:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A4523A99E;
+	Mon,  2 Jun 2025 14:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjvF3YKH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byrAzFnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED9C22A1E6;
-	Mon,  2 Jun 2025 14:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BE6223323;
+	Mon,  2 Jun 2025 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875533; cv=none; b=lV5neE4x9hQfGgqm09CVSwXRtEABFz6dOEAI4A6gKxeW/lod1vzP9qhjUebYm4LCL9x8+dzLMw43vOJ2JowG6QuX4fOiYkmFsJyxWiWRrdLNm00/S3Ec5CYdOSb2u7GGhcWJi9z5aNMbmANffOY146X68/1QAIeZX5flCuiOKto=
+	t=1748874094; cv=none; b=DO1qn4UpJAFcdZkpDSNrgLjVxbZnoLfRuoSJvF1QADa5/ms6yYvVA2AfLDGTe2ZuY7IwY2UeuJx63eAfEFOHYMNHnwszpdIM8vgoJdZguDNPXyWuRxaAI//M9ZlAWX+CguulgX/4Z8IW6f5eMQqa64LiMPmCpJssWLnkxsJ0iuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875533; c=relaxed/simple;
-	bh=Vpf2G4rdXMqpVRgW/MRfgUt37wX2xTpxXF305fNLVGY=;
+	s=arc-20240116; t=1748874094; c=relaxed/simple;
+	bh=Jz7HfWXKxCkF2Qrk39ak3vFfPUJ8cwmUrtjXBAVHdpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYEu10oLcbghWMrt04YszLvnPVktKxr1fviBPPwo8ZC71+TDrv5sQkYDoCvN24wXgECd/jz8sWC+srjg0QwKbJhEr6dwvDozw7yvQmIeryrU6pLtxounDA8LhJA6QR/68VLrqs4LPBrYEO9mUcJzqfPnvA9vIFLj1syU78SVHvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjvF3YKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D02C4CEEB;
-	Mon,  2 Jun 2025 14:45:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ed7mqav7jp/m62ZcKeZNJKd80AN3UNVDyu18jLjMq82X7AmyEyE/slGcSUfIBkudVejHxt4ywGhsr7f6/pqA6Pt4KUJ07poQRSGZIKSDwke+No7TOjobhLxNt5outuYvHbB+5T+chUQio7KIHRXUdySqLN/PBg9hR0glMAni9uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byrAzFnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C74CC4CEF0;
+	Mon,  2 Jun 2025 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875533;
-	bh=Vpf2G4rdXMqpVRgW/MRfgUt37wX2xTpxXF305fNLVGY=;
+	s=korg; t=1748874094;
+	bh=Jz7HfWXKxCkF2Qrk39ak3vFfPUJ8cwmUrtjXBAVHdpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjvF3YKHvGDfaKvsh6Cy8VvBOZfdbWpqS6xbm0fC39k6+DCyZAxD8n0VfLkMGJ2qh
-	 qr2+onpqWoyNzdb7jXXndUXDda8/1B2kzdZvIa7K/fyIX+eRVTNWs3Gx6UyOLdcPeY
-	 0DA96+qvKGIEIrcAFbAazM8Bkhs0/zURS7BbxoG8=
+	b=byrAzFnJOaYSb/fezO7IXk32xv6z0r0BO9+XvlNTyEA/6N1ujkUuFnsXw6DVZnh3o
+	 yqO8o+ilPDWf1VWmZE/KC6ZwPrDN9zdeuP5OOJBq/9lVzCrIAqW0cOBOx0MAwTL6y0
+	 ibAvUgH6YH8nxca84nuKWG7PbLzgiPdWllMskz5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/270] i2c: qup: Vote for interconnect bandwidth to DRAM
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.6 355/444] clk: s2mps11: initialise clk_hw_onecell_data::num before accessing ::hws[] in probe()
 Date: Mon,  2 Jun 2025 15:46:59 +0200
-Message-ID: <20250602134312.702521118@linuxfoundation.org>
+Message-ID: <20250602134355.336509746@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,145 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
+commit 3e14c7207a975eefcda1929b2134a9f4119dde45 upstream.
 
-When the I2C QUP controller is used together with a DMA engine it needs
-to vote for the interconnect path to the DRAM. Otherwise it may be
-unable to access the memory quickly enough.
+With UBSAN enabled, we're getting the following trace:
 
-The requested peak bandwidth is dependent on the I2C core clock.
+    UBSAN: array-index-out-of-bounds in .../drivers/clk/clk-s2mps11.c:186:3
+    index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)' (aka 'struct clk_hw *[]')
 
-To avoid sending votes too often the bandwidth is always requested when
-a DMA transfer starts, but dropped only on runtime suspend. Runtime
-suspend should only happen if no transfer is active. After resumption we
-can defer the next vote until the first DMA transfer actually happens.
+This is because commit f316cdff8d67 ("clk: Annotate struct
+clk_hw_onecell_data with __counted_by") annotated the hws member of
+that struct with __counted_by, which informs the bounds sanitizer about
+the number of elements in hws, so that it can warn when hws is accessed
+out of bounds.
 
-The implementation is largely identical to the one introduced for
-spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
-bandwidth to DRAM") since both drivers represent the same hardware
-block.
+As noted in that change, the __counted_by member must be initialised
+with the number of elements before the first array access happens,
+otherwise there will be a warning from each access prior to the
+initialisation because the number of elements is zero. This occurs in
+s2mps11_clk_probe() due to ::num being assigned after ::hws access.
 
-Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the assignment to satisfy the requirement of assign-before-access.
+
+Cc: stable@vger.kernel.org
+Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250326-s2mps11-ubsan-v1-1-fcc6fce5c8a9@linaro.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/clk/clk-s2mps11.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
-index 576c12670bd88..8fd51de64d96b 100644
---- a/drivers/i2c/busses/i2c-qup.c
-+++ b/drivers/i2c/busses/i2c-qup.c
-@@ -14,6 +14,7 @@
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/i2c.h>
-+#include <linux/interconnect.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
-@@ -150,6 +151,8 @@
- /* TAG length for DATA READ in RX FIFO  */
- #define READ_RX_TAGS_LEN		2
+diff --git a/drivers/clk/clk-s2mps11.c b/drivers/clk/clk-s2mps11.c
+index 014db6386624..8ddf3a9a53df 100644
+--- a/drivers/clk/clk-s2mps11.c
++++ b/drivers/clk/clk-s2mps11.c
+@@ -137,6 +137,8 @@ static int s2mps11_clk_probe(struct platform_device *pdev)
+ 	if (!clk_data)
+ 		return -ENOMEM;
  
-+#define QUP_BUS_WIDTH			8
++	clk_data->num = S2MPS11_CLKS_NUM;
 +
- static unsigned int scl_freq;
- module_param_named(scl_freq, scl_freq, uint, 0444);
- MODULE_PARM_DESC(scl_freq, "SCL frequency override");
-@@ -227,6 +230,7 @@ struct qup_i2c_dev {
- 	int			irq;
- 	struct clk		*clk;
- 	struct clk		*pclk;
-+	struct icc_path		*icc_path;
- 	struct i2c_adapter	adap;
- 
- 	int			clk_ctl;
-@@ -255,6 +259,10 @@ struct qup_i2c_dev {
- 	/* To configure when bus is in run state */
- 	u32			config_run;
- 
-+	/* bandwidth votes */
-+	u32			src_clk_freq;
-+	u32			cur_bw_clk_freq;
-+
- 	/* dma parameters */
- 	bool			is_dma;
- 	/* To check if the current transfer is using DMA */
-@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
- 	return ret;
- }
- 
-+static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
-+{
-+	u32 needed_peak_bw;
-+	int ret;
-+
-+	if (qup->cur_bw_clk_freq == clk_freq)
-+		return 0;
-+
-+	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
-+	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
-+	if (ret)
-+		return ret;
-+
-+	qup->cur_bw_clk_freq = clk_freq;
-+	return 0;
-+}
-+
- static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
- {
- 	struct qup_i2c_block *blk = &qup->blk;
-@@ -840,6 +865,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
- 	int ret = 0;
- 	int idx = 0;
- 
-+	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
-+	if (ret)
-+		return ret;
-+
- 	enable_irq(qup->irq);
- 	ret = qup_i2c_req_dma(qup);
- 
-@@ -1645,6 +1674,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
- 	config = readl(qup->base + QUP_CONFIG);
- 	config |= QUP_CLOCK_AUTO_GATE;
- 	writel(config, qup->base + QUP_CONFIG);
-+	qup_i2c_vote_bw(qup, 0);
- 	clk_disable_unprepare(qup->pclk);
- }
- 
-@@ -1745,6 +1775,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
- 			goto fail_dma;
- 		}
- 		qup->is_dma = true;
-+
-+		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
-+		if (IS_ERR(qup->icc_path))
-+			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
-+					     "failed to get interconnect path\n");
+ 	switch (hwid) {
+ 	case S2MPS11X:
+ 		s2mps11_reg = S2MPS11_REG_RTC_CTRL;
+@@ -186,7 +188,6 @@ static int s2mps11_clk_probe(struct platform_device *pdev)
+ 		clk_data->hws[i] = &s2mps11_clks[i].hw;
  	}
  
- nodma:
-@@ -1793,6 +1828,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
- 		qup_i2c_enable_clocks(qup);
- 		src_clk_freq = clk_get_rate(qup->clk);
- 	}
-+	qup->src_clk_freq = src_clk_freq;
+-	clk_data->num = S2MPS11_CLKS_NUM;
+ 	of_clk_add_hw_provider(s2mps11_clks->clk_np, of_clk_hw_onecell_get,
+ 			       clk_data);
  
- 	/*
- 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
-2.39.5
+2.49.0
 
 
 
