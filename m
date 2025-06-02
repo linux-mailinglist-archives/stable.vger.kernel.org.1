@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980F2ACB526
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D99ACB373
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E232018913B0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F31D89408CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222C022DF9E;
-	Mon,  2 Jun 2025 14:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848B222D4D7;
+	Mon,  2 Jun 2025 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsfP0fvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJiveRut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EA31A4F12;
-	Mon,  2 Jun 2025 14:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F1C2C324D;
+	Mon,  2 Jun 2025 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875266; cv=none; b=CpIeZz+ODOGQEE6DqbewweFdLUMGwRwC5n7c+PEhjgtvFFGokMxqPFFNuxBgrl+yUBUSegyKEQ33sQmk9n/c7NQqYkvBzaBMTw6N2H2zl6E9osVRuQjYKbLP+huAWrkbKr/HdPkBV36SebfwNj/npYjBWiHKbc+0GnEYlkAC1G4=
+	t=1748874465; cv=none; b=nMvE3IZrJnIkkjr9n1hTKY0GgVTyaLDRzJI1fAFUalSa2D1L6YalHC0d0eUsOEjwLKNY0cs9YE0hKIWqVGSTLbIJWWh6bEyzuyLs/B3E5URFQA1UHPh58FqahW/2lYdIp6BsgQJszUajyfDYB3l1beLbWA19moDfAsQf03vqV6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875266; c=relaxed/simple;
-	bh=1PujuLhoZK2VrerA6nYXKLt8oPmbKHhHTnPsWltr9Aw=;
+	s=arc-20240116; t=1748874465; c=relaxed/simple;
+	bh=qRsKP2jsrR4I++2ivhLPPrrKDoCdzqn/sGVUc3Z7c1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBVHkyJIMOdgORy8AXrXUZrs14Er+uOvWJXVKgFAxGi3PkE088wSWvMbNPiB/DNPaZl5omIzg0DUvMjagoUbkqsj5QJuAO/NIOeSgjvfeVwmqyaXtB49RSO+lCJ0xT37CB35H7NzYPL5lcrBDH6qGc2L3GOM9Di2sIPK+epJdJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsfP0fvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB87C4CEEB;
-	Mon,  2 Jun 2025 14:41:06 +0000 (UTC)
+	 MIME-Version; b=fWqUaRqRJSrHiDQzMS0lUmMYiGvojV+kFARCN7Y0+S/HOhGQzcv6jgPlWIN6hQ8BX/7ysPQP1o3hIbcuiZyCU+O//4/rEled1hPdlCGTEdvzAdtHifBDVaWJaEMbC9BIN+cXyy4JN+17RoU4j8dbYQCTRmQOFqss6vR7TUo/2Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJiveRut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8B7C4CEEB;
+	Mon,  2 Jun 2025 14:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875266;
-	bh=1PujuLhoZK2VrerA6nYXKLt8oPmbKHhHTnPsWltr9Aw=;
+	s=korg; t=1748874465;
+	bh=qRsKP2jsrR4I++2ivhLPPrrKDoCdzqn/sGVUc3Z7c1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsfP0fvJ8ubEjXC6vndei1HgKVW6Ao+aDmIobVBfOnhzyg0mv1DLm8k8+v2e0E6hc
-	 BQ5PruSN5t3QKQJNBiIw2FBxPX7N5LmCgaXj4QmdGvjrsI0sttFkUqkG90rzl6WZzz
-	 pCII4cKdCDK9OfjHRL0nYL9rYfyRNX7HcuMjxTG8=
+	b=SJiveRut51FMKp489JWGKqs0QBhjfPtROKvuEJTua93mLtZI9hlksV/OSsK/0hfDS
+	 4UEt/WNG6J/W00AZNFqKwbiH3fZV5aLV6UFQ1z9xiVUOfvubaUi7hh93lu1XCSC2gK
+	 nCUQ7M9+tI3e9l1xdiDtI2M0Ypl1IL/98SeMOMMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Baker <kevinb@ventureresearch.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/270] drm/panel: simple: Update timings for AUO G101EVN010
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.4 032/204] dm: fix copying after src array boundaries
 Date: Mon,  2 Jun 2025 15:46:05 +0200
-Message-ID: <20250602134310.446872415@linuxfoundation.org>
+Message-ID: <20250602134256.942010488@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Baker <kevinb@ventureresearch.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 7c6fa1797a725732981f2d77711c867166737719 ]
+commit f1aff4bc199cb92c055668caed65505e3b4d2656 upstream.
 
-Switch to panel timings based on datasheet for the AUO G101EVN01.0
-LVDS panel. Default timings were tested on the panel.
+The blammed commit copied to argv the size of the reallocated argv,
+instead of the size of the old_argv, thus reading and copying from
+past the old_argv allocated memory.
 
-Previous mode-based timings resulted in horizontal display shift.
+Following BUG_ON was hit:
+[    3.038929][    T1] kernel BUG at lib/string_helpers.c:1040!
+[    3.039147][    T1] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+...
+[    3.056489][    T1] Call trace:
+[    3.056591][    T1]  __fortify_panic+0x10/0x18 (P)
+[    3.056773][    T1]  dm_split_args+0x20c/0x210
+[    3.056942][    T1]  dm_table_add_target+0x13c/0x360
+[    3.057132][    T1]  table_load+0x110/0x3ac
+[    3.057292][    T1]  dm_ctl_ioctl+0x424/0x56c
+[    3.057457][    T1]  __arm64_sys_ioctl+0xa8/0xec
+[    3.057634][    T1]  invoke_syscall+0x58/0x10c
+[    3.057804][    T1]  el0_svc_common+0xa8/0xdc
+[    3.057970][    T1]  do_el0_svc+0x1c/0x28
+[    3.058123][    T1]  el0_svc+0x50/0xac
+[    3.058266][    T1]  el0t_64_sync_handler+0x60/0xc4
+[    3.058452][    T1]  el0t_64_sync+0x1b0/0x1b4
+[    3.058620][    T1] Code: f800865e a9bf7bfd 910003fd 941f48aa (d4210000)
+[    3.058897][    T1] ---[ end trace 0000000000000000 ]---
+[    3.059083][    T1] Kernel panic - not syncing: Oops - BUG: Fatal exception
 
-Signed-off-by: Kevin Baker <kevinb@ventureresearch.com>
-Fixes: 4fb86404a977 ("drm/panel: simple: Add AUO G101EVN010 panel support")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250505170256.1385113-1-kevinb@ventureresearch.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250505170256.1385113-1-kevinb@ventureresearch.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by copying the size of src, and not the size of dst, as it was.
+
+Fixes: 5a2a6c428190 ("dm: always update the array size in realloc_argv on success")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ drivers/md/dm-table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 07b59021008ea..9cc9c950604a0 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -964,27 +964,28 @@ static const struct panel_desc auo_g070vvn01 = {
- 	},
- };
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -574,9 +574,9 @@ static char **realloc_argv(unsigned *siz
+ 	}
+ 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
+ 	if (argv) {
+-		*size = new_size;
+ 		if (old_argv)
+ 			memcpy(argv, old_argv, *size * sizeof(*argv));
++		*size = new_size;
+ 	}
  
--static const struct drm_display_mode auo_g101evn010_mode = {
--	.clock = 68930,
--	.hdisplay = 1280,
--	.hsync_start = 1280 + 82,
--	.hsync_end = 1280 + 82 + 2,
--	.htotal = 1280 + 82 + 2 + 84,
--	.vdisplay = 800,
--	.vsync_start = 800 + 8,
--	.vsync_end = 800 + 8 + 2,
--	.vtotal = 800 + 8 + 2 + 6,
-+static const struct display_timing auo_g101evn010_timing = {
-+	.pixelclock = { 64000000, 68930000, 85000000 },
-+	.hactive = { 1280, 1280, 1280 },
-+	.hfront_porch = { 8, 64, 256 },
-+	.hback_porch = { 8, 64, 256 },
-+	.hsync_len = { 40, 168, 767 },
-+	.vactive = { 800, 800, 800 },
-+	.vfront_porch = { 4, 8, 100 },
-+	.vback_porch = { 4, 8, 100 },
-+	.vsync_len = { 8, 16, 223 },
- };
- 
- static const struct panel_desc auo_g101evn010 = {
--	.modes = &auo_g101evn010_mode,
--	.num_modes = 1,
-+	.timings = &auo_g101evn010_timing,
-+	.num_timings = 1,
- 	.bpc = 6,
- 	.size = {
- 		.width = 216,
- 		.height = 135,
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
- 
--- 
-2.39.5
-
+ 	kfree(old_argv);
 
 
 
