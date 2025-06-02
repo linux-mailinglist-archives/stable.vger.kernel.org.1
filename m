@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9BBACB5DA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E213ACB2F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E1D4A34D1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AA99194589B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D581F221FCF;
-	Mon,  2 Jun 2025 14:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987D123AE60;
+	Mon,  2 Jun 2025 14:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKlYk2I+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoTvMfks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BA2221297;
-	Mon,  2 Jun 2025 14:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57141223323;
+	Mon,  2 Jun 2025 14:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876034; cv=none; b=eZXQYnpMLvn6VhbZWKtZCOmI4Y2YR9zwfMto0jRiEE8ACqLRAa/iWnvBPt9atoedM5IccD4Eriyq4dUXfT8Sn2gZh6PXCqWE3vxzqxttbbu10gbVWRjq92UnzYG/7lpqFdEKQ5hYmUMY8lETxX+QW8He2VRlx6o1ZXinZJ0P2Ak=
+	t=1748874103; cv=none; b=MWZ9atxKb3iTSVwqCHsqrBqn1nHekZO8oo9EF2e8GSCvhU8q/GCEmyr0wkwrM38v96Rey5apOsEqD3TTh3nGfkODTwe7+vueMki+mtF/dWG+yyEWwsUE/XNK1RC3fg6jJB9nnLgV6dtUQHDz/DAHUC2W82ckJY2EVl9KvPdiOCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876034; c=relaxed/simple;
-	bh=McwbOLGR+TOMn3ZJKByQjVnw9qNEsSiOLHB//t1aakA=;
+	s=arc-20240116; t=1748874103; c=relaxed/simple;
+	bh=OeNFQToHLiHxmbmuW8xeabQm0Mrx8cT/bZ8vIfgw9PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kpHX/HS0IYKhhJj50oGRZKXTArSLmpzz43iRKwI7r8sneGmT/gLM5oFU+cVQMPh7w4rPjxJZ1FGyJJyJmNJvMHQDhWNTOKmxnAUfMpIz6MhcUyk+tv1rf6lZwddZNOAy+Sb/fNySorC3/ZyClgUeJmMk5T0PHRLdimABTMbmKlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKlYk2I+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89146C4CEEB;
-	Mon,  2 Jun 2025 14:53:53 +0000 (UTC)
+	 MIME-Version; b=h4rDFRmojpDgWOFmueocTWQDIEd9xfueh1wl1Zer0E16oo6VaaYYbCuTE4UEPwpZl7CnZk8IhtThHsXey6SRJCaZsQw19+RtRoNXLS7kSDAo4+lyqK648llMbn0ep11PPnQmUoosRLfo060+dlOgryiv0EjDhksYA/O1S1zAvhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoTvMfks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEA9C4CEEB;
+	Mon,  2 Jun 2025 14:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876034;
-	bh=McwbOLGR+TOMn3ZJKByQjVnw9qNEsSiOLHB//t1aakA=;
+	s=korg; t=1748874103;
+	bh=OeNFQToHLiHxmbmuW8xeabQm0Mrx8cT/bZ8vIfgw9PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKlYk2I+jPyIXs12AR2owTgbn1cJ57vHcQuuF/x3wnFuhJwkQkwCs++ze3Xb38Yon
-	 B9sCycJJLPxAve/pJhvbtXc+XVMim4RRFpPtt3XfO2g4uILNUqMoqlhbri1LPaSL1z
-	 +SKC7ZtuV/KQrK3Sfnt5odBj+L5V64IhNIkyU9RU=
+	b=HoTvMfksuv7amgfFew6hk6BA8SZ9ZdMDTTvUl2GYR3Sd/pfCv4X7I7SBtzE/hoHx9
+	 6R8ugKmKzF+MiL3SuaUXxYCiXiqmgn1G/dGLFkz702KGgTrXKqmMyrFTlbatoKBbdd
+	 vdgBK8WNFoVIzCVl5gswf8gfnaU/B42xtlOy2/h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frediano Ziglio <frediano.ziglio@cloud.com>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/207] xen: Add support for XenServer 6.1 platform device
-Date: Mon,  2 Jun 2025 15:47:01 +0200
-Message-ID: <20250602134300.675966615@linuxfoundation.org>
+	Carlos Sanchez <carlossanchez@geotab.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 358/444] can: slcan: allow reception of short error messages
+Date: Mon,  2 Jun 2025 15:47:02 +0200
+Message-ID: <20250602134355.455139723@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frediano Ziglio <frediano.ziglio@cloud.com>
+From: Carlos Sanchez <carlossanchez@geotab.com>
 
-[ Upstream commit 2356f15caefc0cc63d9cc5122641754f76ef9b25 ]
+commit ef0841e4cb08754be6cb42bf97739fce5d086e5f upstream.
 
-On XenServer on Windows machine a platform device with ID 2 instead of
-1 is used.
+Allows slcan to receive short messages (typically errors) from the serial
+interface.
 
-This device is mainly identical to device 1 but due to some Windows
-update behaviour it was decided to use a device with a different ID.
+When error support was added to slcan protocol in
+b32ff4668544e1333b694fcc7812b2d7397b4d6a ("can: slcan: extend the protocol
+with error info") the minimum valid message size changed from 5 (minimum
+standard can frame tIII0) to 3 ("e1a" is a valid protocol message, it is
+one of the examples given in the comments for slcan_bump_err() ), but the
+check for minimum message length prodicating all decoding was not adjusted.
+This makes short error messages discarded and error frames not being
+generated.
 
-This causes compatibility issues with Linux which expects, if Xen
-is detected, to find a Xen platform device (5853:0001) otherwise code
-will crash due to some missing initialization (specifically grant
-tables). Specifically from dmesg
+This patch changes the minimum length to the new minimum (3 characters,
+excluding terminator, is now a valid message).
 
-    RIP: 0010:gnttab_expand+0x29/0x210
-    Code: 90 0f 1f 44 00 00 55 31 d2 48 89 e5 41 57 41 56 41 55 41 89 fd
-          41 54 53 48 83 ec 10 48 8b 05 7e 9a 49 02 44 8b 35 a7 9a 49 02
-          <8b> 48 04 8d 44 39 ff f7 f1 45 8d 24 06 89 c3 e8 43 fe ff ff
-          44 39
-    RSP: 0000:ffffba34c01fbc88 EFLAGS: 00010086
-    ...
-
-The device 2 is presented by Xapi adding device specification to
-Qemu command line.
-
-Signed-off-by: Frediano Ziglio <frediano.ziglio@cloud.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250227145016.25350-1-frediano.ziglio@cloud.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Carlos Sanchez <carlossanchez@geotab.com>
+Fixes: b32ff4668544 ("can: slcan: extend the protocol with error info")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250520102305.1097494-1-carlossanchez@geotab.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/platform-pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/slcan/slcan-core.c |   26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/xen/platform-pci.c b/drivers/xen/platform-pci.c
-index 6ebd819338ecb..2c77cac5594ba 100644
---- a/drivers/xen/platform-pci.c
-+++ b/drivers/xen/platform-pci.c
-@@ -26,6 +26,8 @@
+--- a/drivers/net/can/slcan/slcan-core.c
++++ b/drivers/net/can/slcan/slcan-core.c
+@@ -71,12 +71,21 @@ MODULE_AUTHOR("Dario Binacchi <dario.bin
+ #define SLCAN_CMD_LEN 1
+ #define SLCAN_SFF_ID_LEN 3
+ #define SLCAN_EFF_ID_LEN 8
++#define SLCAN_DATA_LENGTH_LEN 1
++#define SLCAN_ERROR_LEN 1
+ #define SLCAN_STATE_LEN 1
+ #define SLCAN_STATE_BE_RXCNT_LEN 3
+ #define SLCAN_STATE_BE_TXCNT_LEN 3
+-#define SLCAN_STATE_FRAME_LEN       (1 + SLCAN_CMD_LEN + \
+-				     SLCAN_STATE_BE_RXCNT_LEN + \
+-				     SLCAN_STATE_BE_TXCNT_LEN)
++#define SLCAN_STATE_MSG_LEN     (SLCAN_CMD_LEN +		\
++                                 SLCAN_STATE_LEN +		\
++                                 SLCAN_STATE_BE_RXCNT_LEN +	\
++                                 SLCAN_STATE_BE_TXCNT_LEN)
++#define SLCAN_ERROR_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
++                                 SLCAN_ERROR_LEN +	\
++                                 SLCAN_DATA_LENGTH_LEN)
++#define SLCAN_FRAME_MSG_LEN_MIN (SLCAN_CMD_LEN +	\
++                                 SLCAN_SFF_ID_LEN +	\
++                                 SLCAN_DATA_LENGTH_LEN)
+ struct slcan {
+ 	struct can_priv         can;
  
- #define DRV_NAME    "xen-platform-pci"
+@@ -176,6 +185,9 @@ static void slcan_bump_frame(struct slca
+ 	u32 tmpid;
+ 	char *cmd = sl->rbuff;
  
-+#define PCI_DEVICE_ID_XEN_PLATFORM_XS61	0x0002
++	if (sl->rcount < SLCAN_FRAME_MSG_LEN_MIN)
++		return;
 +
- static unsigned long platform_mmio;
- static unsigned long platform_mmio_alloc;
- static unsigned long platform_mmiolen;
-@@ -174,6 +176,8 @@ static int platform_pci_probe(struct pci_dev *pdev,
- static const struct pci_device_id platform_pci_tbl[] = {
- 	{PCI_VENDOR_ID_XEN, PCI_DEVICE_ID_XEN_PLATFORM,
- 		PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
-+	{PCI_VENDOR_ID_XEN, PCI_DEVICE_ID_XEN_PLATFORM_XS61,
-+		PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
- 	{0,}
- };
+ 	skb = alloc_can_skb(sl->dev, &cf);
+ 	if (unlikely(!skb)) {
+ 		sl->dev->stats.rx_dropped++;
+@@ -281,7 +293,7 @@ static void slcan_bump_state(struct slca
+ 		return;
+ 	}
  
--- 
-2.39.5
-
+-	if (state == sl->can.state || sl->rcount < SLCAN_STATE_FRAME_LEN)
++	if (state == sl->can.state || sl->rcount != SLCAN_STATE_MSG_LEN)
+ 		return;
+ 
+ 	cmd += SLCAN_STATE_BE_RXCNT_LEN + SLCAN_CMD_LEN + 1;
+@@ -328,6 +340,9 @@ static void slcan_bump_err(struct slcan
+ 	bool rx_errors = false, tx_errors = false, rx_over_errors = false;
+ 	int i, len;
+ 
++	if (sl->rcount < SLCAN_ERROR_MSG_LEN_MIN)
++		return;
++
+ 	/* get len from sanitized ASCII value */
+ 	len = cmd[1];
+ 	if (len >= '0' && len < '9')
+@@ -456,8 +471,7 @@ static void slcan_bump(struct slcan *sl)
+ static void slcan_unesc(struct slcan *sl, unsigned char s)
+ {
+ 	if ((s == '\r') || (s == '\a')) { /* CR or BEL ends the pdu */
+-		if (!test_and_clear_bit(SLF_ERROR, &sl->flags) &&
+-		    sl->rcount > 4)
++		if (!test_and_clear_bit(SLF_ERROR, &sl->flags))
+ 			slcan_bump(sl);
+ 
+ 		sl->rcount = 0;
 
 
 
