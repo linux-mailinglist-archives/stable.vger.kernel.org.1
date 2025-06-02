@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-149628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF1CACB455
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7D8ACB50B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767FF943D9E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D97188A090
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EA422F74A;
-	Mon,  2 Jun 2025 14:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223A7223DD7;
+	Mon,  2 Jun 2025 14:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcrxmuD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOX4ENAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BE015CD55;
-	Mon,  2 Jun 2025 14:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2113221D92;
+	Mon,  2 Jun 2025 14:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874537; cv=none; b=Dlsj+kk5drtY88ghTk0JOaqy6TcXfR5yCz1NuuMF8Rtvnazi31to2i6Ly3hG/jrKpZ7FoXp+ZWLs3yb1yItB8COyfB456ue2x1bXTfzypFmWV+7PabemrrMB0S5wXMAo/6ZF//J8PdZWXxg/ahCGYZjHoom9p2shiVlV1Iea5ec=
+	t=1748875339; cv=none; b=JOlQuuNO8KyzW+B17rYHIPZ4FjoUkizSpmXR+O6i37m4E6MoFuYzM3AgupEactkaJx+KXjGgg/aHtO4aiucGvRmpXeJ2rR4sCVvaMQhX0yxCv70/2yLGA4aLbUzGESECj11Y0R69F5RRmxLXTWNJFLC+xBJqq0YBJodbHd0kO9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874537; c=relaxed/simple;
-	bh=KRS1LpESRZ9BKSUjuI7Qp3uYUlLP9B3lbkle9QRElAI=;
+	s=arc-20240116; t=1748875339; c=relaxed/simple;
+	bh=uwNh3ww4EwZZJta/nZf+iwbi0N44twmsjJIcOw1H3YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBM1z6W7shC+Df3ygJM0RXp2uiveRP+C3Uwtc+PpCu6XEls6AcLcZtozOC0+WnuIaFjDvXWt2fzcacQNjgep794oY8Y1awEvGNxZyR6QJD8X0vAefTeg5wIonFsNKO6q3ZeWG2hyjLG1S9DzV7idi/ZlsJgtaAtinmMYqQyTXjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcrxmuD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558B9C4CEEB;
-	Mon,  2 Jun 2025 14:28:56 +0000 (UTC)
+	 MIME-Version; b=FTiPuhWvRYo4niyvcsO1lR9IQXGnUMV4Q3H7TJlqVOnwDqbhIjPLfYjtXZPwPaX7975kwxZKFwNlFuzR8GBJrgIDMaacvRjrQqgEra/c1hHUdXU8gHZTAARSDeArZpLC0oRMOPOUVgprGuT2dEfmlieNhgOyoivNAWbvd/S/5AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOX4ENAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C5FC4CEEB;
+	Mon,  2 Jun 2025 14:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874536;
-	bh=KRS1LpESRZ9BKSUjuI7Qp3uYUlLP9B3lbkle9QRElAI=;
+	s=korg; t=1748875339;
+	bh=uwNh3ww4EwZZJta/nZf+iwbi0N44twmsjJIcOw1H3YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcrxmuD3HQ1Xl8ORrkQetkqDb6eDdv6Z4PYu9zmcmOescpkUH/5YX/heDvh1ni2Yg
-	 XT//AV06+BPB/G6ab7UHNBg3WjILnI8VsfNq8z13kU3hlwhFveFc7DZL/f3RsGhxke
-	 uXoj4uNSWOGD10q2jBe1CabMeE9EfDT8zHSC/6Vg=
+	b=cOX4ENAwh11B8PYRtovXwW/usZfi/WQBJ766ZjgbUMti4gnSaEgHGITWxyLDQuu4K
+	 5GI6NhN6gxg61upmnQviax7GdjoXAa/hM8dOnY0EpUKcOUdt6cj/H+Hmqil4HOCASC
+	 mtFxqqvnF/oRLInW1XTVeRl1hjCJaHdcst4ev9OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 5.4 056/204] usb: usbtmc: Fix erroneous generic_read ioctl return
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 104/270] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
 Date: Mon,  2 Jun 2025 15:46:29 +0200
-Message-ID: <20250602134257.884178220@linuxfoundation.org>
+Message-ID: <20250602134311.487265686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 4e77d3ec7c7c0d9535ccf1138827cb9bb5480b9b upstream.
+commit 94cff94634e506a4a44684bee1875d2dbf782722 upstream.
 
-wait_event_interruptible_timeout returns a long
-The return value was being assigned to an int causing an integer overflow
-when the remaining jiffies > INT_MAX which resulted in random error
-returns.
+On x86 during boot, clockevent_i8253_disable() can be invoked via
+x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
+with enabled interrupts.
 
-Use a long return value, converting to the int ioctl return only on error.
+If some of the old i8253 hardware is actually used then lockdep will notice
+that i8253_lock is used in hard interrupt context. This causes lockdep to
+complain because it observed the lock being acquired with interrupts
+enabled and in hard interrupt context.
 
-Fixes: bb99794a4792 ("usb: usbtmc: Add ioctl for vendor specific read")
+Make clockevent_i8253_disable() acquire the lock with
+raw_spinlock_irqsave() to cure this.
+
+[ tglx: Massage change log and use guard() ]
+
+Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250502070941.31819-4-dpenkler@gmail.com
+Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/clocksource/i8253.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -803,6 +803,7 @@ static ssize_t usbtmc_generic_read(struc
- 	unsigned long expire;
- 	int bufcount = 1;
- 	int again = 0;
-+	long wait_rv;
- 
- 	/* mutex already locked */
- 
-@@ -915,19 +916,24 @@ static ssize_t usbtmc_generic_read(struc
- 		if (!(flags & USBTMC_FLAG_ASYNC)) {
- 			dev_dbg(dev, "%s: before wait time %lu\n",
- 				__func__, expire);
--			retval = wait_event_interruptible_timeout(
-+			wait_rv = wait_event_interruptible_timeout(
- 				file_data->wait_bulk_in,
- 				usbtmc_do_transfer(file_data),
- 				expire);
- 
--			dev_dbg(dev, "%s: wait returned %d\n",
--				__func__, retval);
-+			dev_dbg(dev, "%s: wait returned %ld\n",
-+				__func__, wait_rv);
- 
--			if (retval <= 0) {
--				if (retval == 0)
--					retval = -ETIMEDOUT;
-+			if (wait_rv < 0) {
-+				retval = wait_rv;
- 				goto error;
- 			}
+--- a/drivers/clocksource/i8253.c
++++ b/drivers/clocksource/i8253.c
+@@ -103,7 +103,9 @@ int __init clocksource_i8253_init(void)
+ #ifdef CONFIG_CLKEVT_I8253
+ void clockevent_i8253_disable(void)
+ {
+-	raw_spin_lock(&i8253_lock);
++	unsigned long flags;
 +
-+			if (wait_rv == 0) {
-+				retval = -ETIMEDOUT;
-+				goto error;
-+			}
-+
- 		}
++	raw_spin_lock_irqsave(&i8253_lock, flags);
  
- 		urb = usb_get_from_anchor(&file_data->in_anchor);
+ 	/*
+ 	 * Writing the MODE register should stop the counter, according to
+@@ -133,7 +135,7 @@ void clockevent_i8253_disable(void)
+ 
+ 	outb_p(0x30, PIT_MODE);
+ 
+-	raw_spin_unlock(&i8253_lock);
++	raw_spin_unlock_irqrestore(&i8253_lock, flags);
+ }
+ 
+ static int pit_shutdown(struct clock_event_device *evt)
 
 
 
