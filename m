@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B047ACB375
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B8DACB346
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25BA317EAE3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99E047AAE04
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC442227EB6;
-	Mon,  2 Jun 2025 14:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F2322D7A6;
+	Mon,  2 Jun 2025 14:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lqx6kphq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAtGm4x8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8369227EAE;
-	Mon,  2 Jun 2025 14:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AD222259A;
+	Mon,  2 Jun 2025 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874312; cv=none; b=ge2LBhdxRXmChboXZTZ5cdWKtaSjEaKVLHwJV2XRM1lGewBLVMVLsTehzJBoWog7vIB7hURvk75SOT37oUNKXmhYfsxQioMpATg3AWzhzsuB0qx5Lf7DRkBIqVh5Z1W+9C8RZ+mk83rdY+22aqBcB/t3WZ1GBW8YNtabL+fLU/Q=
+	t=1748874861; cv=none; b=Hyx0U3CE4sAZqpOMtbWF2WUOjumCQ0pKiuYlFEfaKx5INzUOg/0Z3BlaNT4qgGNmLlix01ONsA+vOsFLLHxq84AcIC/b5mvoKZveeNZV1R/zOTCQwb1xly5qS95VeHyCqjxDWJMf1/b9X8R7wsSKLDmMWkAE08F94Y/GQ/oErkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874312; c=relaxed/simple;
-	bh=ReZ0c26bDKqNXsbs3K5puNg07W/ctmtT40MEsEwaSVI=;
+	s=arc-20240116; t=1748874861; c=relaxed/simple;
+	bh=Y9SUu7yuj84pqayxDy40huYVHRmDKAZ3b5I3z6ONlKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQJ8iVSo5eyounUz2c8y3/m7EiBja+PLGuxg9RH2JVNllu7mAsgbl/YFboIISHIwHV9vf4N0qSdw1q7qsMo9b1Eq+1nAetF+TWywLuiXvYZm63iAIWbF6+xhiXkBGLqE+kWCLVfNe8Z1NzecLHf5Njf7MPAsx76Z3/HbZ2SX+lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lqx6kphq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F93C4CEEB;
-	Mon,  2 Jun 2025 14:25:11 +0000 (UTC)
+	 MIME-Version; b=pWAcVD9XgicgRYg89dprmq1TzpzaTaN1+qQCs0v89UQA24lna4C08xu14C7mZ5cRSADRvusKDJM0+wTtLKY3cbjuExQiuwN4T+NN00mOv+XVzbEVE62JeX3t3oUw7wzf5PXjYVlu21ojWu02r6QkxxhL305adL0rbTj1eZhkaHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAtGm4x8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2F7C4CEEB;
+	Mon,  2 Jun 2025 14:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874312;
-	bh=ReZ0c26bDKqNXsbs3K5puNg07W/ctmtT40MEsEwaSVI=;
+	s=korg; t=1748874861;
+	bh=Y9SUu7yuj84pqayxDy40huYVHRmDKAZ3b5I3z6ONlKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lqx6kphqkS5WNxO7rjtyMAnwhREUQqm03gBKgJs1rhTzol9HoePrg/TYRQecnMPTE
-	 ng8W/Z5xwvr0D2JGo274XSWTbW/18UtYl6eRKOi6jM9tYAJ8iqJQSVuduzXjb2Ia/g
-	 +53tm7d1I3iG6mcfb4pS/WY72c+55+CdGuZP3Tuo=
+	b=fAtGm4x8XWZZIcyEMDZegvqwSfpMPOki22l/XqM03V7e4BIiW99IWQmUbzBOPYqND
+	 /czLQ9Fjq0ThQjNUMw71v38MK5zag9QZ1fiv1SN6nMrPiEk4vnWA7TFywRlMQk1XGR
+	 E7mmpz3hILGbqFFyKAcD5t9zeSmPt11MDPz7g2QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 428/444] perf/arm-cmn: Initialise cmn->cpu earlier
+	junan <junan76@163.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 159/204] HID: usbkbd: Fix the bit shift number for LED_KANA
 Date: Mon,  2 Jun 2025 15:48:12 +0200
-Message-ID: <20250602134358.312650575@linuxfoundation.org>
+Message-ID: <20250602134301.903762061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: junan <junan76@163.com>
 
-commit 597704e201068db3d104de3c7a4d447ff8209127 upstream.
+[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
 
-For all the complexity of handling affinity for CPU hotplug, what we've
-apparently managed to overlook is that arm_cmn_init_irqs() has in fact
-always been setting the *initial* affinity of all IRQs to CPU 0, not the
-CPU we subsequently choose for event scheduling. Oh dear.
+Since "LED_KANA" was defined as "0x04", the shift number should be "4".
 
-Cc: stable@vger.kernel.org
-Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: junan <junan76@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c |    2 +-
+ drivers/hid/usbhid/usbkbd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2443,6 +2443,7 @@ static int arm_cmn_probe(struct platform
+diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+index d5b7a696a68c5..50c5b204bf04c 100644
+--- a/drivers/hid/usbhid/usbkbd.c
++++ b/drivers/hid/usbhid/usbkbd.c
+@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
+ 		return -1;
  
- 	cmn->dev = &pdev->dev;
- 	cmn->part = (unsigned long)device_get_match_data(cmn->dev);
-+	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
- 	platform_set_drvdata(pdev, cmn);
+ 	spin_lock_irqsave(&kbd->leds_lock, flags);
+-	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
++	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
+ 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
+ 		       (!!test_bit(LED_NUML,    dev->led));
  
- 	if (cmn->part == PART_CMN600 && has_acpi_companion(cmn->dev)) {
-@@ -2470,7 +2471,6 @@ static int arm_cmn_probe(struct platform
- 	if (err)
- 		return err;
- 
--	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
- 	cmn->pmu = (struct pmu) {
- 		.module = THIS_MODULE,
- 		.attr_groups = arm_cmn_attr_groups,
+-- 
+2.39.5
+
 
 
 
