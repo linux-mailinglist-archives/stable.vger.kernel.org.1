@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DC8ACB00D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8542DACB058
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E6E71888491
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCEBE482DC4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1904B1A3A80;
-	Mon,  2 Jun 2025 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B292236F3;
+	Mon,  2 Jun 2025 14:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMQbYdLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+3F7wl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C946C1C5D72;
-	Mon,  2 Jun 2025 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8582221FCA;
+	Mon,  2 Jun 2025 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872740; cv=none; b=tBv1qOFNbWt0My3VeA4S/V/ndXgwEvsn4olK9Y2tEsH1QhEE7UF/oCUpaE/DtEr8ROOPncV8p8oQJjfbE8MBJ9DuUGEmjiFFUtIPxm9Z0hZNfzDOQ/wwWtFbgfp1E1S5P0/7lJ9FgQPlo5t2ntF8GnPF953tat0Ou/hUZAaxWrk=
+	t=1748872876; cv=none; b=Nj6j7hnQTieTPeLWLIgwNUdwt11L6mGtqxSpGoR6g9BgyHDhaAHLax2m0Bve4JOUF7fVwM1arCmewcmy9yUCZ0MNQ5cddsay9pLNFK0TTLSk/25WCPWfYymWFMpmP/9PItwKAuLF8krtoOSVFuqM7n80ULKc2XpaEOHdMABTZyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872740; c=relaxed/simple;
-	bh=lsNj/VeJ+/aSUdJuVM/ID30AGXJAUyUT+0nheGBe9M4=;
+	s=arc-20240116; t=1748872876; c=relaxed/simple;
+	bh=JXgCOPmgQ8ZTn41dIqXx/2hXzWtHJTGBoSTkEwilk/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NQLMeC27NPrvmT4hub0cDU86ab43sPZlOAVOK5LZv0v6Vk39lMevPrXelm8apku8dZC0nwUMUMq3u7FCeSyq2WkOD/K3CqoFZGUfs0GFh3kaAr2AmXRYAgxqNFC3n5tGTiirH/2jmquq6ok/w2fgzN0khjL+ohdOdvLEcrZ5nKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMQbYdLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16DCC4CEEB;
-	Mon,  2 Jun 2025 13:58:58 +0000 (UTC)
+	 MIME-Version; b=Q1OXR6ZX91Y6YZuviSbkR+VgvovWEhv448MbrODoVRprQlc4dMkcw33AgMFHAd2bw3/QBxkC6ZUkGlBHVuaY+HpdhMY8tMhvBMte1ANSDqmjv7azTsanibMnp7weDBXEmit/UPesiZxkK5V/m5lCMhFl8FcvIF4PA0DbZ9sppBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+3F7wl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED30C4CEEB;
+	Mon,  2 Jun 2025 14:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872739;
-	bh=lsNj/VeJ+/aSUdJuVM/ID30AGXJAUyUT+0nheGBe9M4=;
+	s=korg; t=1748872876;
+	bh=JXgCOPmgQ8ZTn41dIqXx/2hXzWtHJTGBoSTkEwilk/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMQbYdLnsWM9vkRXr8uSLob6wl7Qoh410vKC7BSLvs5Emd5txXW8g/FElilUEnBlC
-	 VDYbFnx2Y9xyFmbZ3a5a0IBvB271brnw8rtnF5nccK+yFGDHZX7jBk3Gf4G03+Xq68
-	 jXA/ZCHdqmVVVxKwK8uWT1A77GqFoXGR7z+BvF3k=
+	b=B+3F7wl65jl5WdQZtVG9RfUy6mnYeLwj3yCJ5s2tZFKf7G5IqNMEPgg91qsQlYEke
+	 ho7e5u12USow+FTlb3ht9oTnwduVqr/Cxsc6gF8j8CiICwUcRWNKnJfS51lOs6DnNO
+	 Nf8B8o/LW4S//a0TRkNOGl7G9iZ53Wx+UMeAMco8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Pisati <paolo.pisati@canonical.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 53/73] kbuild: Require pahole <v1.28 or >v1.29 with GENDWARFKSYMS on X86
-Date: Mon,  2 Jun 2025 15:47:39 +0200
-Message-ID: <20250602134243.784571567@linuxfoundation.org>
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.12 23/55] arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators
+Date: Mon,  2 Jun 2025 15:47:40 +0200
+Message-ID: <20250602134239.188995456@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sami Tolvanen <samitolvanen@google.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-[ Upstream commit 9520a2b3f0b5e182f73410e45b9b92ea51d9b828 ]
+commit 97b67cc102dc2cc8aa39a569c22a196e21af5a21 upstream.
 
-With CONFIG_GENDWARFKSYMS, __gendwarfksyms_ptr variables are
-added to the kernel in EXPORT_SYMBOL() to ensure DWARF type
-information is available for exported symbols in the TUs where
-they're actually exported. These symbols are dropped when linking
-vmlinux, but dangling references to them remain in DWARF.
+Add device tree nodes for two power regulators on the J721E SK board.
+vsys_5v0: A fixed regulator representing the 5V supply output from the
+LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
 
-With CONFIG_DEBUG_INFO_BTF enabled on X86, pahole versions after
-commit 47dcb534e253 ("btf_encoder: Stop indexing symbols for
-VARs") and before commit 9810758003ce ("btf_encoder: Verify 0
-address DWARF variables are in ELF section") place these symbols
-in the .data..percpu section, which results in an "Invalid
-offset" error in btf_datasec_check_meta() during boot, as all
-the variables are at zero offset and have non-zero size. If
-CONFIG_DEBUG_INFO_BTF_MODULES is enabled, this also results in a
-failure to load modules with:
+J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
 
-  failed to validate module [$module] BTF: -22
-
-As the issue occurs in pahole v1.28 and the fix was merged
-after v1.29 was released, require pahole <v1.28 or >v1.29 when
-GENDWARFKSYMS is enabled with DEBUG_INFO_BTF on X86.
-
-Reported-by: Paolo Pisati <paolo.pisati@canonical.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250415111328.3847502-2-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts |   31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
-index d7762ef5949a2..39278737bb68f 100644
---- a/kernel/module/Kconfig
-+++ b/kernel/module/Kconfig
-@@ -192,6 +192,11 @@ config GENDWARFKSYMS
- 	depends on !DEBUG_INFO_REDUCED && !DEBUG_INFO_SPLIT
- 	# Requires ELF object files.
- 	depends on !LTO
-+	# To avoid conflicts with the discarded __gendwarfksyms_ptr symbols on
-+	# X86, requires pahole before commit 47dcb534e253 ("btf_encoder: Stop
-+	# indexing symbols for VARs") or after commit 9810758003ce ("btf_encoder:
-+	# Verify 0 address DWARF variables are in ELF section").
-+	depends on !X86 || !DEBUG_INFO_BTF || PAHOLE_VERSION < 128 || PAHOLE_VERSION > 129
- 	help
- 	  Calculate symbol versions from DWARF debugging information using
- 	  gendwarfksyms. Requires DEBUG_INFO to be enabled.
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -184,6 +184,17 @@
+ 		regulator-boot-on;
+ 	};
+ 
++	vsys_5v0: fixedregulator-vsys5v0 {
++		/* Output of LM61460 */
++		compatible = "regulator-fixed";
++		regulator-name = "vsys_5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vusb_main>;
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
+ 	vdd_mmc1: fixedregulator-sd {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -211,6 +222,20 @@
+ 			 <3300000 0x1>;
+ 	};
+ 
++	vdd_sd_dv: gpio-regulator-TLV71033 {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&vdd_sd_dv_pins_default>;
++		regulator-name = "tlv71033";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-boot-on;
++		vin-supply = <&vsys_5v0>;
++		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x0>,
++			 <3300000 0x1>;
++	};
++
+ 	transceiver1: can-phy1 {
+ 		compatible = "ti,tcan1042";
+ 		#phy-cells = <0>;
+@@ -608,6 +633,12 @@
+ 		>;
+ 	};
+ 
++	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
++		pinctrl-single,pins = <
++			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
++		>;
++	};
++
+ 	wkup_uart0_pins_default: wkup-uart0-default-pins {
+ 		pinctrl-single,pins = <
+ 			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
 
 
 
