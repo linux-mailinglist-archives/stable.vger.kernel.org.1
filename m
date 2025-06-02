@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-149987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA46ACB569
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C97ACB648
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08BD4A5501
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A291BA6A3A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEC6223DD0;
-	Mon,  2 Jun 2025 14:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313B0239E75;
+	Mon,  2 Jun 2025 14:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqaAQQ6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRsdt998"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2301721885A;
-	Mon,  2 Jun 2025 14:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFACE225785;
+	Mon,  2 Jun 2025 14:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875674; cv=none; b=CYVnwRWHvyah01U3y8eBaVXNwl5sza3OZUtzlf1LuS9/6KwKfTxpYiHS77fJ20lriP2PZzjnHm1hA6ZxRABt7KY7pEI4NupL9JT4TanMRtj8G/RfMNLhm1sxsBTfeTmTQ10g/RUhdBQyEhqa9leoFMdNvnpLdJQIAg9UGnrGRuE=
+	t=1748876361; cv=none; b=WF6323OvxwIojaGW/WplZFG8iq9yVYKdzKrSiWJRrWMM8Ar0V0g5oe97M4Whl1g7gHZlHDoFCmv7yw+XfmE4jw7gpgmaTNBAneexs7bl3+utZkn3lbgv/5L9XCbb79aVdjZPmYfj0iUZqB7Zz03eWa3KabwQd+MrDU4+9aGq/og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875674; c=relaxed/simple;
-	bh=TD1l7T+/REEMnbLNYcIx3n9jZvgn7iOd+YCfbVhf5H8=;
+	s=arc-20240116; t=1748876361; c=relaxed/simple;
+	bh=XF+VFk5a19M+sYNpc/TS7V3iLd+Ck+vuqwZWxeBVXjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FgYiu92qbk/SsUdqHP7EcvxHr6w1302FudXpiOAxVAUUCkNhqfgK5awb2xmSWXDaxXYHX42mf5wZVVAJVALuzlBTgVXA9bqV/uOGxhKZXS7Wky/ehEox3FvMhjAmq7iMjZuTlBQ3nO9i/OwAlnpTnVzkKpxfepRWqgBREyDP4IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqaAQQ6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAD4C4CEEB;
-	Mon,  2 Jun 2025 14:47:53 +0000 (UTC)
+	 MIME-Version; b=U/B6rqxyNwgu0CDjWRbX6+LnpQLcJrOrMKxd/fQroF8igX7fYosryGTA6H3p04dTgwUpOHKhj/PXQTJOPJdpgam6sp/86WMk8gVuMoECxkXuMKf2QHzm2rHOBu1u2SM4MseqW6pmW4Dt79pgYJCZLe+X8eGX2auzsZ/vkb0MyaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRsdt998; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB13C4CEEB;
+	Mon,  2 Jun 2025 14:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875674;
-	bh=TD1l7T+/REEMnbLNYcIx3n9jZvgn7iOd+YCfbVhf5H8=;
+	s=korg; t=1748876360;
+	bh=XF+VFk5a19M+sYNpc/TS7V3iLd+Ck+vuqwZWxeBVXjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqaAQQ6R3Cdsi0E3X4lDTj30KN6A5MBthAVm1WdYZsYEbykjFjipN/x96PFNM5rQl
-	 FYMCr4M8KbQWzEjOLFREbe2LZPt7X1IJn2rQmT583hMQ/gR1cphSaCTVtapFKKdAiu
-	 t7vdcUpsHSQnZ4fVgULkxpJGL4zyRLiHR3HLGutI=
+	b=HRsdt998NlqDO3EAwT7SIRCwDO9dvTDv1SqjSIRLPZtQO5ldMlrvVZFn9dI7x6nKq
+	 J0S0jsBA5KvI7WV7jLSuD2QmwboTcwbcAo/5lXLLOHxQ368CFgMxTjbEj72pVRNkQU
+	 jH+jE6JFZtOWS+1EmXJVWDuC//EqTwwcoOpmDZSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 209/270] net/mlx5e: set the tx_queue_len for pfifo_fast
+Subject: [PATCH 5.15 122/207] phy: core: dont require set_mode() callback for phy_get_mode() to work
 Date: Mon,  2 Jun 2025 15:48:14 +0200
-Message-ID: <20250602134315.732603788@linuxfoundation.org>
+Message-ID: <20250602134303.495375270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a38cc5706fb9f7dc4ee3a443f61de13ce1e410ed ]
+[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
 
-By default, the mq netdev creates a pfifo_fast qdisc. On a
-system with 16 core, the pfifo_fast with 3 bands consumes
-16 * 3 * 8 (size of pointer) * 1024 (default tx queue len)
-= 393KB. The patch sets the tx qlen to representor default
-value, 128 (1<<MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE), which
-consumes 16 * 3 * 8 * 128 = 49KB, saving 344KB for each
-representor at ECPF.
+As reported by Damon Ding, the phy_get_mode() call doesn't work as
+expected unless the PHY driver has a .set_mode() call. This prompts PHY
+drivers to have empty stubs for .set_mode() for the sake of being able
+to get the mode.
 
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-9-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Make .set_mode() callback truly optional and update PHY's mode even if
+it there is none.
+
+Cc: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
+Tested-by: Damon Ding <damon.ding@rock-chips.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/phy-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 6512bb231e7e0..8eb7288f820a4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -740,6 +740,8 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev)
- 	}
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index e2bfd56d5086e..21f12aeb7747f 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -360,13 +360,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
  
- 	netdev->watchdog_timeo    = 15 * HZ;
-+	if (mlx5_core_is_ecpf(mdev))
-+		netdev->tx_queue_len = 1 << MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE;
+ int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
+ {
+-	int ret;
++	int ret = 0;
  
- 	netdev->features       |= NETIF_F_NETNS_LOCAL;
+-	if (!phy || !phy->ops->set_mode)
++	if (!phy)
+ 		return 0;
  
+ 	mutex_lock(&phy->mutex);
+-	ret = phy->ops->set_mode(phy, mode, submode);
++	if (phy->ops->set_mode)
++		ret = phy->ops->set_mode(phy, mode, submode);
+ 	if (!ret)
+ 		phy->attrs.mode = mode;
+ 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
