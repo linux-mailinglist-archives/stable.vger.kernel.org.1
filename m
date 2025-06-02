@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F74ACB82F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2F4ACB463
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A74ED9408CE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F69C17D201
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB102233738;
-	Mon,  2 Jun 2025 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3918C22836C;
+	Mon,  2 Jun 2025 14:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hH2mVt1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKqG9lwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EBC233D64;
-	Mon,  2 Jun 2025 15:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B98227EB6;
+	Mon,  2 Jun 2025 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876753; cv=none; b=MH1oQQiPksxhfD065YjbIBHMH6jR7G8HCjqgGw9G8hnN0N6SQOmrV/BDFrGwFFzJrFnmtCLdSRI5xRURP+MJSHeEtRkSFxGx0kwgQW3TLXnsp+MKx1QK53mLmGqKj/O4632Ng5q7J4YqHNa308/CvHRNvBVSC6ON9zEl2g9qpTk=
+	t=1748875181; cv=none; b=P4tz780KJCbH8DmZV2TGOWPw6qPmVUkbcZ+HB7xY3D58fdEekfDCCDOCu1pOtqTJZTZYs5SyKCcJS492xAYmIS+RcUHq33ZDrQNUkIQdZe8c8xF2uTX1WmTLx9hdGTYPuDlDL5X/GqpoM0X3xSkirA3Leu4wsiYvLmatiZuUlUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876753; c=relaxed/simple;
-	bh=hHhqeot/t7UTXSd1n2tTXx6gO2cM7r9ZQod3YUopgfc=;
+	s=arc-20240116; t=1748875181; c=relaxed/simple;
+	bh=TVxAD8MeHEJ3KFTGC2f620wrTSOhLCpO9tAGngNJt1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MQHkxFtGnA3qTkbnvkx8MXmqseYBVdFu1I+F7KENEU3GQweFrQuMYm/yj9BZMfPZJE9XW8mKRxFAsJvphZBFem4rId9XsO7q50vlddB9W4BtDiC8Biv1bPaIXieJYrOtQdh4SAB6Bwbu9vJyMMgn5p/NSB04Y/LQPRKAZX9ed/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hH2mVt1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE8AC4CEEE;
-	Mon,  2 Jun 2025 15:05:51 +0000 (UTC)
+	 MIME-Version; b=ZZF8y25YLAqw8Vsc5O5G++vHuIvdRdcQagExulAgwH/+70vbiV5XTAwusx01ehPFmk9rxeZllZ/EAvyxBLwy7o5Eyj+ZwyLnL81kIwvSG4+Ij2A3Pp0TvBrtXdxrG6X5Gcf+2vJ6BaTrt8i5euYCbIE63IuHhkuGbFQUktIWggU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKqG9lwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE33C4CEEB;
+	Mon,  2 Jun 2025 14:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876751;
-	bh=hHhqeot/t7UTXSd1n2tTXx6gO2cM7r9ZQod3YUopgfc=;
+	s=korg; t=1748875180;
+	bh=TVxAD8MeHEJ3KFTGC2f620wrTSOhLCpO9tAGngNJt1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hH2mVt1XooV5Qq2D/1X2bqBMqvcnw5KwL1j+w1wvzr8xrsTXdai9YHyuRegL+iaKK
-	 WSpz3zp4cuAUDXhmDITaWfR2mIGWEL6TEFjHRfAPPDkXBI624ri+bLNy7DV8LPmSie
-	 9ahTkdDk8rY+KwLNJuk6FkHDwsQQvFV00CNVO17s=
+	b=QKqG9lwFwth6zvxhCiacuQOI7wHiKndHKxOSVKdhz6za8+DxZsFf+VYnM6XFFXyEJ
+	 l6xy1OpeoV64A5D82ihNeHaXgvrF/6Nui9Ktxmv4WVpWLKCXOJPTBkTuSH663/ERYR
+	 X28HsDcWp5j+3um4TcztCGE/403oOBQYw154WEnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Serge Hallyn <serge@hallyn.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/325] ext4: reorder capability check last
+	Markus Rathgeb <maggu2810@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 053/270] Input: synaptics - enable InterTouch on Dell Precision M3800
 Date: Mon,  2 Jun 2025 15:45:38 +0200
-Message-ID: <20250602134322.283466003@linuxfoundation.org>
+Message-ID: <20250602134309.367413837@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit 1b419c889c0767a5b66d0a6c566cae491f1cb0f7 ]
+commit a609cb4cc07aa9ab8f50466622814356c06f2c17 upstream.
 
-capable() calls refer to enabled LSMs whether to permit or deny the
-request.  This is relevant in connection with SELinux, where a
-capability check results in a policy decision and by default a denial
-message on insufficient permission is issued.
-It can lead to three undesired cases:
-  1. A denial message is generated, even in case the operation was an
-     unprivileged one and thus the syscall succeeded, creating noise.
-  2. To avoid the noise from 1. the policy writer adds a rule to ignore
-     those denial messages, hiding future syscalls, where the task
-     performs an actual privileged operation, leading to hidden limited
-     functionality of that task.
-  3. To avoid the noise from 1. the policy writer adds a rule to permit
-     the task the requested capability, while it does not need it,
-     violating the principle of least privilege.
+Enable InterTouch mode on Dell Precision M3800 by adding "DLL060d" to
+the list of SMBus-enabled variants.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250302160657.127253-2-cgoettsche@seltendoof.de
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Markus Rathgeb <maggu2810@gmail.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Link: https://lore.kernel.org/r/PN3PR01MB959789DD6D574E16141E5DC4B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/balloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/mouse/synaptics.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index fbd0329cf254e..9efe97f3721bc 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -638,8 +638,8 @@ static int ext4_has_free_clusters(struct ext4_sb_info *sbi,
- 	/* Hm, nope.  Are (enough) root reserved clusters available? */
- 	if (uid_eq(sbi->s_resuid, current_fsuid()) ||
- 	    (!gid_eq(sbi->s_resgid, GLOBAL_ROOT_GID) && in_group_p(sbi->s_resgid)) ||
--	    capable(CAP_SYS_RESOURCE) ||
--	    (flags & EXT4_MB_USE_ROOT_BLOCKS)) {
-+	    (flags & EXT4_MB_USE_ROOT_BLOCKS) ||
-+	    capable(CAP_SYS_RESOURCE)) {
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -163,6 +163,7 @@ static const char * const topbuttonpad_p
  
- 		if (free_clusters >= (nclusters + dirty_clusters +
- 				      resv_clusters))
--- 
-2.39.5
-
+ static const char * const smbus_pnp_ids[] = {
+ 	/* all of the topbuttonpad_pnp_ids are valid, we just add some extras */
++	"DLL060d", /* Dell Precision M3800 */
+ 	"LEN0048", /* X1 Carbon 3 */
+ 	"LEN0046", /* X250 */
+ 	"LEN0049", /* Yoga 11e */
 
 
 
