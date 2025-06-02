@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8B7ACB3B0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ECD5ACB46C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ED301BA4608
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FF087A97A4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A2823236F;
-	Mon,  2 Jun 2025 14:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB04C221FA4;
+	Mon,  2 Jun 2025 14:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aN+HZjed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCnpk0s6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43977225A31;
-	Mon,  2 Jun 2025 14:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AF121CA1E;
+	Mon,  2 Jun 2025 14:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874609; cv=none; b=D3yVCMW9aIQiAhWL2Q1FJU769YMgjUsJMA764QX0U/OdLBqFDBohdJIvcj+0e8pH3FIczH8ht+iZ3Zq4ZdB4WWvDOfol1dWUhhDln+mqAVUlZOVGDytdcYdhoq63d0wKzy1MiyTN4qseF7WIxxJTZt9pffj0qv2zaZk0cpgdsB8=
+	t=1748875393; cv=none; b=olTxuMdsxF8Wvp0sibGSXgv0JZ4DAOaaQViRkQWU0TrkSbdaJS9ukNNKMg0USFUTAMMtHRwrMCjyN/9ZvqknCTBLBmKryVQWaicv6/DMyiUe4M49RtOBRLtxvQ3nrv++uLhsZDD6onqlA9k4v1n28RLXgVgpPGBw6+KF2oit4go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874609; c=relaxed/simple;
-	bh=UbOOaz+ZVTQkkwVI+fEdfhYEGwIRb/qNuy3NvHAZ4KU=;
+	s=arc-20240116; t=1748875393; c=relaxed/simple;
+	bh=TW7TLZC40qREbmmzIy+cR3dCqgGYMiKnmepVJXPgr2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tO9qsp4Ts3pTDQ+i+k6BVWXKZqtQ4WGm6MTA1QfjUGWgq5rKLHLzi7GALvJ82XmmmY5Dt/Pyj3Kvl/SIVghBa7zop5KdCVP39CHkV8+OzmHkzdSOSc9USpONTxY6Szgwi0+KNQnAXmfXUuLg3Wciv9LScE2YhyBbDyKH+NfuWW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aN+HZjed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD22C4CEEE;
-	Mon,  2 Jun 2025 14:30:08 +0000 (UTC)
+	 MIME-Version; b=aOnivo1iLdezaGaULYWtBZLLlxjVqJHxD+WQ1ZG4xlKkJkWF1URkFsLY8txEFhcEGCQ/9AX1L3SzOBjUgd5pNGmxr69g7bt7L7GxUk3+UTyi/UM+tv/BVd1SwLSUQfVooQ9iSyycCHbpqWCZNRsKglTfOIu8/lbwYBTm/3TG0pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCnpk0s6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD86AC4CEEB;
+	Mon,  2 Jun 2025 14:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874609;
-	bh=UbOOaz+ZVTQkkwVI+fEdfhYEGwIRb/qNuy3NvHAZ4KU=;
+	s=korg; t=1748875393;
+	bh=TW7TLZC40qREbmmzIy+cR3dCqgGYMiKnmepVJXPgr2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aN+HZjedHsep5szWQ0jhbSn8SEN926oP3SF0ecE4buzB+kuby42SBYk+AzL+f6ePY
-	 FJOz5rQSDZov3qAr0/DL8ERtv3qPKmBQXOXC0OQnhOY8bIoLesASn6JV/7RfLkmOZz
-	 mQyfOvy2n6ipVx0ZImlijKrVnmffePC0dsVQUowg=
+	b=zCnpk0s6bkxY+9fZkMEO46i7UYD8N6SAg8czy9g+mk+LI1F3/lMfbwCxyxkzHo3Om
+	 qhxI46AnxHyUIlLAZfAZV4ntDBz78c5EDgHMBnRc3kCw/+zVFe8p4IIEuFRGvrhEbK
+	 ta568wwAD3VVMwq8zICRRu2eisOe1vRX781Lvdr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/204] spi: loopback-test: Do not split 1024-byte hexdumps
-Date: Mon,  2 Jun 2025 15:46:44 +0200
-Message-ID: <20250602134258.472359645@linuxfoundation.org>
+Subject: [PATCH 5.10 120/270] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
+Date: Mon,  2 Jun 2025 15:46:45 +0200
+Message-ID: <20250602134312.130560932@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit a73fa3690a1f3014d6677e368dce4e70767a6ba2 ]
+[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
 
-spi_test_print_hex_dump() prints buffers holding less than 1024 bytes in
-full.  Larger buffers are truncated: only the first 512 and the last 512
-bytes are printed, separated by a truncation message.  The latter is
-confusing in case the buffer holds exactly 1024 bytes, as all data is
-printed anyway.
+Check that the delegation is still attached after taking the spin lock
+in nfs_start_delegation_return_locked().
 
-Fix this by printing buffers holding up to and including 1024 bytes in
-full.
-
-Fixes: 84e0c4e5e2c4ef42 ("spi: add loopback test driver to allow for spi_master regression tests")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/37ee1bc90c6554c9347040adabf04188c8f704aa.1746184171.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-loopback-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/delegation.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 69a9df2cbbcf2..0f571ff132377 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -377,7 +377,7 @@ MODULE_LICENSE("GPL");
- static void spi_test_print_hex_dump(char *pre, const void *ptr, size_t len)
- {
- 	/* limit the hex_dump */
--	if (len < 1024) {
-+	if (len <= 1024) {
- 		print_hex_dump(KERN_INFO, pre,
- 			       DUMP_PREFIX_OFFSET, 16, 1,
- 			       ptr, len, 0);
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index dbed8d44d8053..f3bb987e9dba7 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
+ 	if (delegation == NULL)
+ 		goto out;
+ 	spin_lock(&delegation->lock);
+-	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++	if (delegation->inode &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
+ 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
+ 		/* Refcount matched in nfs_end_delegation_return() */
+ 		ret = nfs_get_delegation(delegation);
 -- 
 2.39.5
 
