@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-150045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BD2ACB554
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0519EACB679
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 686317B4FBD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:58:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4D29E7EAB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76D323F40C;
-	Mon,  2 Jun 2025 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C1B230BDF;
+	Mon,  2 Jun 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vv8nGaca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCq+CW5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9591E23F403;
-	Mon,  2 Jun 2025 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D9A22DA0F;
+	Mon,  2 Jun 2025 15:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875861; cv=none; b=ktHqkMuZriCjS0G4or4DaZcTGK8Wr2HzA37RjHqwyGCLXau+QayhutfyoWA6f4yfo7sIk1WOBo0mIF8w8S18J/39E+2gAPnmMttppqXd1IMvADD78zh7tVcuHwLo8PIHwEzk9AG8xK33PsQX7ttPNH6AOJDRJgLlKEJu9k7ZS9c=
+	t=1748876461; cv=none; b=PosePFDobJaNOiLkSz5e0taj6B3RvLPHOI/FEWH7y5RL0S0IY0EEUILJfIQIGRDDkIFzTkcq+2C75J1DkFmQtOR2m/WnWomAEWTE+ok9eevNDB0bKiJyGP+cQ1pRwdOvOmKUVZVUq7pvyh6iQ9MSNBWpKaCS3GXDpXHeDK3Z0Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875861; c=relaxed/simple;
-	bh=G7EDWtsS/CP3fwRzzdIDe59vqOYdd9vHimPVfiy9/Cw=;
+	s=arc-20240116; t=1748876461; c=relaxed/simple;
+	bh=FF/njCeLniiVs9ashMHw13afz8y9DRpkN7twtlajVfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UktF6LU9Dj1NvJ/vDRZKBz+hVDcAZqwimX2tP9Ty8NBKDiSULII5CpUDDNT5719V3f2ucubqL9dGWUCJHAn6vXCyoUAinsspjHqgKG8em2f68bV8sTpD80pqMzW6bnwOP12B8VFFuXEPbzZq8wTMn153fkL9OpuvfgvernxUvUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vv8nGaca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA772C4CEEB;
-	Mon,  2 Jun 2025 14:51:00 +0000 (UTC)
+	 MIME-Version; b=uQLL6NLCfPMbK8FvAhjQALQWDqvVDc9zH3FLDpGn15rAS+GjEwwLmcpTvIHG+hNNoaVl+g4yJVZ2cHV0NlGFRNcqQjp59E3NDJn7HQh8lUCWfNltD2AynXB+GH66oYvKovqVTzNVfk3+poWS2JAGpnvlpHVYpD4GBrlwXYok9bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCq+CW5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920E6C4CEEB;
+	Mon,  2 Jun 2025 15:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875861;
-	bh=G7EDWtsS/CP3fwRzzdIDe59vqOYdd9vHimPVfiy9/Cw=;
+	s=korg; t=1748876460;
+	bh=FF/njCeLniiVs9ashMHw13afz8y9DRpkN7twtlajVfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vv8nGacadp3ln2KvG8Xb6JI5nYoWKaYOasNZoR8l0vP/Pa+1LtcGB7l4N6S5CldT1
-	 l315z3s9F7GzHuLv8L8o7eXkrje7p96qKv3GrFHAaJk96vKLTsyFXVsWJQ+qSLDYWL
-	 6/CP6iYP332Qd3azqUEIqDM4PksCWCXZzvlQ/W0o=
+	b=CCq+CW5VJqtRr+cRdkIcNO/SlX1IvhRa0TtgtoUEdDF6uYNhLvHSSKLxnTWc8qchg
+	 D6MplLwdek8iNvDnn/MifeYVBjLb1T0Op3ZrwKDtmrEtOY5dTVfapDTGY8ZjrfbnSv
+	 wmWhIXpmvXZ8TpwyO+iEkXZPhVB62AZsJA/NTSrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valtteri Koskivuori <vkoskiv@gmail.com>,
-	Jonathan Woithe <jwoithe@just42.net>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 267/270] platform/x86: fujitsu-laptop: Support Lifebook S2110 hotkeys
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 180/207] mm/page_alloc.c: avoid infinite retries caused by cpuset race
 Date: Mon,  2 Jun 2025 15:49:12 +0200
-Message-ID: <20250602134318.254278066@linuxfoundation.org>
+Message-ID: <20250602134305.804114373@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +65,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valtteri Koskivuori <vkoskiv@gmail.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-[ Upstream commit a7e255ff9fe4d9b8b902023aaf5b7a673786bb50 ]
+commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
 
-The S2110 has an additional set of media playback control keys enabled
-by a hardware toggle button that switches the keys between "Application"
-and "Player" modes. Toggling "Player" mode just shifts the scancode of
-each hotkey up by 4.
+__alloc_pages_slowpath has no change detection for ac->nodemask in the
+part of retry path, while cpuset can modify it in parallel.  For some
+processes that set mempolicy as MPOL_BIND, this results ac->nodemask
+changes, and then the should_reclaim_retry will judge based on the latest
+nodemask and jump to retry, while the get_page_from_freelist only
+traverses the zonelist from ac->preferred_zoneref, which selected by a
+expired nodemask and may cause infinite retries in some cases
 
-Add defines for new scancodes, and a keymap and dmi id for the S2110.
+cpu 64:
+__alloc_pages_slowpath {
+        /* ..... */
+retry:
+        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
+        if (alloc_flags & ALLOC_KSWAPD)
+                wake_all_kswapds(order, gfp_mask, ac);
+        /* cpu 1:
+        cpuset_write_resmask
+            update_nodemask
+                update_nodemasks_hier
+                    update_tasks_nodemask
+                        mpol_rebind_task
+                         mpol_rebind_policy
+                          mpol_rebind_nodemask
+		// mempolicy->nodes has been modified,
+		// which ac->nodemask point to
 
-Tested on a Fujitsu Lifebook S2110.
+        */
+        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
+        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+                                 did_some_progress > 0, &no_progress_loops))
+                goto retry;
+}
 
-Signed-off-by: Valtteri Koskivuori <vkoskiv@gmail.com>
-Acked-by: Jonathan Woithe <jwoithe@just42.net>
-Link: https://lore.kernel.org/r/20250509184251.713003-1-vkoskiv@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
+this issue on a multi node server when the maximum memory pressure is
+reached and the swap is enabled
+
+Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
+Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/fujitsu-laptop.c | 33 +++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ mm/page_alloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/platform/x86/fujitsu-laptop.c b/drivers/platform/x86/fujitsu-laptop.c
-index 80929380ec7e3..04ccfdd99e277 100644
---- a/drivers/platform/x86/fujitsu-laptop.c
-+++ b/drivers/platform/x86/fujitsu-laptop.c
-@@ -17,13 +17,13 @@
- /*
-  * fujitsu-laptop.c - Fujitsu laptop support, providing access to additional
-  * features made available on a range of Fujitsu laptops including the
-- * P2xxx/P5xxx/S6xxx/S7xxx series.
-+ * P2xxx/P5xxx/S2xxx/S6xxx/S7xxx series.
-  *
-  * This driver implements a vendor-specific backlight control interface for
-  * Fujitsu laptops and provides support for hotkeys present on certain Fujitsu
-  * laptops.
-  *
-- * This driver has been tested on a Fujitsu Lifebook S6410, S7020 and
-+ * This driver has been tested on a Fujitsu Lifebook S2110, S6410, S7020 and
-  * P8010.  It should work on most P-series and S-series Lifebooks, but
-  * YMMV.
-  *
-@@ -102,7 +102,11 @@
- #define KEY2_CODE			0x411
- #define KEY3_CODE			0x412
- #define KEY4_CODE			0x413
--#define KEY5_CODE			0x420
-+#define KEY5_CODE			0x414
-+#define KEY6_CODE			0x415
-+#define KEY7_CODE			0x416
-+#define KEY8_CODE			0x417
-+#define KEY9_CODE			0x420
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5057,6 +5057,14 @@ restart:
+ 	}
  
- /* Hotkey ringbuffer limits */
- #define MAX_HOTKEY_RINGBUFFER_SIZE	100
-@@ -450,7 +454,7 @@ static const struct key_entry keymap_default[] = {
- 	{ KE_KEY, KEY2_CODE,            { KEY_PROG2 } },
- 	{ KE_KEY, KEY3_CODE,            { KEY_PROG3 } },
- 	{ KE_KEY, KEY4_CODE,            { KEY_PROG4 } },
--	{ KE_KEY, KEY5_CODE,            { KEY_RFKILL } },
-+	{ KE_KEY, KEY9_CODE,            { KEY_RFKILL } },
- 	/* Soft keys read from status flags */
- 	{ KE_KEY, FLAG_RFKILL,          { KEY_RFKILL } },
- 	{ KE_KEY, FLAG_TOUCHPAD_TOGGLE, { KEY_TOUCHPAD_TOGGLE } },
-@@ -474,6 +478,18 @@ static const struct key_entry keymap_p8010[] = {
- 	{ KE_END, 0 }
- };
- 
-+static const struct key_entry keymap_s2110[] = {
-+	{ KE_KEY, KEY1_CODE, { KEY_PROG1 } }, /* "A" */
-+	{ KE_KEY, KEY2_CODE, { KEY_PROG2 } }, /* "B" */
-+	{ KE_KEY, KEY3_CODE, { KEY_WWW } },   /* "Internet" */
-+	{ KE_KEY, KEY4_CODE, { KEY_EMAIL } }, /* "E-mail" */
-+	{ KE_KEY, KEY5_CODE, { KEY_STOPCD } },
-+	{ KE_KEY, KEY6_CODE, { KEY_PLAYPAUSE } },
-+	{ KE_KEY, KEY7_CODE, { KEY_PREVIOUSSONG } },
-+	{ KE_KEY, KEY8_CODE, { KEY_NEXTSONG } },
-+	{ KE_END, 0 }
-+};
+ retry:
++	/*
++	 * Deal with possible cpuset update races or zonelist updates to avoid
++	 * infinite retries.
++	 */
++	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
++	    check_retry_zonelist(zonelist_iter_cookie))
++		goto restart;
 +
- static const struct key_entry *keymap = keymap_default;
- 
- static int fujitsu_laptop_dmi_keymap_override(const struct dmi_system_id *id)
-@@ -511,6 +527,15 @@ static const struct dmi_system_id fujitsu_laptop_dmi_table[] = {
- 		},
- 		.driver_data = (void *)keymap_p8010
- 	},
-+	{
-+		.callback = fujitsu_laptop_dmi_keymap_override,
-+		.ident = "Fujitsu LifeBook S2110",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU SIEMENS"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK S2110"),
-+		},
-+		.driver_data = (void *)keymap_s2110
-+	},
- 	{}
- };
- 
--- 
-2.39.5
-
+ 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
+ 	if (alloc_flags & ALLOC_KSWAPD)
+ 		wake_all_kswapds(order, gfp_mask, ac);
 
 
 
