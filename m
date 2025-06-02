@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-149727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16161ACB33D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B7EACB0BC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF737A99C5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C84E4481614
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD3E233D9C;
-	Mon,  2 Jun 2025 14:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CF822F751;
+	Mon,  2 Jun 2025 14:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WL7fphyV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+AgP4f3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C36A233739;
-	Mon,  2 Jun 2025 14:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6FB22F745;
+	Mon,  2 Jun 2025 14:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874847; cv=none; b=kq2enrEgc9tNje8O5Ib3MebDsgoGs2DciVKjoSstN/QUvieNaTh8Dy7Lz7l4lq7kkuMoWNK0j4V7Wqd0w7ERxcbINvg3tf12GxAMJxENSxD2LiITY2Bo6KabAOyrZNYJ5FX0A+0cNLuGTWBAaBjrUylVzZGgmEngcd80JyLlS8I=
+	t=1748872966; cv=none; b=AUY6rl0bYS9LNnaYMlWj85wxOal+bhNtJuG7NWl2j5+uo5kto2tqwr6o5QBwYWlJiYAtmY8QJN7pgsLd+Ox0p+ntVfNhhYnwxEIWxaFiYOiqGY+5BdxRIN1xNT+rzU7oX/WGra2Xsw4TdGhCtV5uChqtjiKkckPGFeR1AsLA2Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874847; c=relaxed/simple;
-	bh=/7dkdyKQpGOo5ONzchYYTK/mxFLMIzfTzjxkKJL40oM=;
+	s=arc-20240116; t=1748872966; c=relaxed/simple;
+	bh=5xqeFVI/RNrEPpFtmANsNx1j+EJUxGoDstMksMOoCN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDnIwwJmxM63huTI3ZFGFA5d+S9taOCYRvw0WL2Z6oCFvPqwO+BO+MWzCEpS3+mrBzAH9rz3+PR6TjGZKWUV8R8cdBaHdzrXNQ4iWjRrFlYRksYjWublw3JJ5LJSgSFovYyYO836I5WLCbX5QA6VECMER8vECY4/2DIOf8mmj+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WL7fphyV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9850DC4CEEB;
-	Mon,  2 Jun 2025 14:34:06 +0000 (UTC)
+	 MIME-Version; b=djsBGoz9OWZjNEHhF3eBjS8p8DkSRdP5l4BaXIpHfzYakoc0y+yHkfXVObIi+CkVjIP37ogiidfm+gzOXjWO9TqQFrzaePQf058/DOOrsqcWuDkzHkDfW69FuoTeLh2x5zRu+zh4sQEabkS7t/pCqTEQluYFV4pfvfWsTu0bKKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+AgP4f3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D2EC4CEEE;
+	Mon,  2 Jun 2025 14:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874847;
-	bh=/7dkdyKQpGOo5ONzchYYTK/mxFLMIzfTzjxkKJL40oM=;
+	s=korg; t=1748872966;
+	bh=5xqeFVI/RNrEPpFtmANsNx1j+EJUxGoDstMksMOoCN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WL7fphyVADuC3IAYmsTIfqsTu0wctrrPKe3jtcXmDWrHbYxPSpNSyK2REtcGA1nrp
-	 QfZzQtWPHX3y0pmMPiM4CZitsBlhxFnGKzD0uiRnx7PVlNdUHzwIOGoqOsHOVqjhE9
-	 iA9UGM+cb3qpz7+SBV78piNG/VCt0EWPg9P0319g=
+	b=K+AgP4f3SdgGBML/PuWDqlOiLP+nGAGAotlh9PmkRu91BPAEHet1GRknb20nCpaBl
+	 aKU30sTmQYaO72AtZ6SSc2a6hPSqHdorjNNq1DYp0aMiI7UQ65SQuLJs/+AahpeeHS
+	 dOIWIkvPZbZNB8Jg2ofv9kSY/tL6dSJC8JF9FPlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 155/204] rcu: handle quiescent states for PREEMPT_RCU=n, PREEMPT_COUNT=y
-Date: Mon,  2 Jun 2025 15:48:08 +0200
-Message-ID: <20250602134301.750195247@linuxfoundation.org>
+Subject: [PATCH 6.12 52/55] ALSA: hda/realtek - restore auto-mute mode for Dell Chrome platform
+Date: Mon,  2 Jun 2025 15:48:09 +0200
+Message-ID: <20250602134240.328814749@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankur Arora <ankur.a.arora@oracle.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 83b28cfe796464ebbde1cf7916c126da6d572685 ]
+[ Upstream commit 5ad8a4ddc45048bc2fe23b75357b6bf185db004f ]
 
-With PREEMPT_RCU=n, cond_resched() provides urgently needed quiescent
-states for read-side critical sections via rcu_all_qs().
-One reason why this was needed: lacking preempt-count, the tick
-handler has no way of knowing whether it is executing in a
-read-side critical section or not.
+This board need to shutdown Class-D amp to avoid EMI issue.
+Restore the Auto-Mute mode item will off pin control when Auto-mute mode was enable.
 
-With (PREEMPT_LAZY=y, PREEMPT_DYNAMIC=n), we get (PREEMPT_COUNT=y,
-PREEMPT_RCU=n). In this configuration cond_resched() is a stub and
-does not provide quiescent states via rcu_all_qs().
-(PREEMPT_RCU=y provides this information via rcu_read_unlock() and
-its nesting counter.)
-
-So, use the availability of preempt_count() to report quiescent states
-in rcu_flavor_sched_clock_irq().
-
-Suggested-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Links: https://lore.kernel.org/ee8bbe5236464c369719d96269ba8ef8@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 2c127d438fe0a..1d9f2831b54ea 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -902,13 +902,16 @@ static void rcu_preempt_check_blocked_tasks(struct rcu_node *rnp)
-  */
- static void rcu_flavor_sched_clock_irq(int user)
- {
--	if (user || rcu_is_cpu_rrupt_from_idle()) {
-+	if (user || rcu_is_cpu_rrupt_from_idle() ||
-+	     (IS_ENABLED(CONFIG_PREEMPT_COUNT) &&
-+	      (preempt_count() == HARDIRQ_OFFSET))) {
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 13ffc9a6555f6..dce5680912006 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6813,7 +6813,10 @@ static void alc256_fixup_chromebook(struct hda_codec *codec,
  
- 		/*
- 		 * Get here if this CPU took its interrupt from user
--		 * mode or from the idle loop, and if this is not a
--		 * nested interrupt.  In this case, the CPU is in
--		 * a quiescent state, so note it.
-+		 * mode, from the idle loop without this being a nested
-+		 * interrupt, or while not holding the task preempt count
-+		 * (with PREEMPT_COUNT=y). In this case, the CPU is in a
-+		 * quiescent state, so note it.
- 		 *
- 		 * No memory barrier is required here because rcu_qs()
- 		 * references only CPU-local variables that other CPUs
+ 	switch (action) {
+ 	case HDA_FIXUP_ACT_PRE_PROBE:
+-		spec->gen.suppress_auto_mute = 1;
++		if (codec->core.subsystem_id == 0x10280d76)
++			spec->gen.suppress_auto_mute = 0;
++		else
++			spec->gen.suppress_auto_mute = 1;
+ 		spec->gen.suppress_auto_mic = 1;
+ 		spec->en_3kpull_low = false;
+ 		break;
 -- 
 2.39.5
 
