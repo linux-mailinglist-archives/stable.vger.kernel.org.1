@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F32FACB846
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:38:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C28ACB263
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6013A4024E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CDF61945E7A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868ED225768;
-	Mon,  2 Jun 2025 15:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E1E2222A9;
+	Mon,  2 Jun 2025 14:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsdgtEkp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sF6Fg9Rc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433F6221FC3;
-	Mon,  2 Jun 2025 15:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432D41DED64;
+	Mon,  2 Jun 2025 14:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876613; cv=none; b=Ryuuc7ripBiITn+1g3bSAW9oj2MIDmOlD5AEPvGp5qm91d16HvA0ZOskHcr49HjGwVjtBu17ghgFAVaRXiI/v/46E816EjiE0qbyk7lMxoPDxm2ReEGYcre6ku3hAYSXM37i/lPyuZy7afWjUvJs7zUQ6fU/H1fhJUh86BO4y/0=
+	t=1748873728; cv=none; b=DnZJhDNWx1/7RKoIqra1VuIt+HmPRAhaQCDTCHUdh2zI099R1izCQKQDCn3OR6Nmr1FQpAAoxsOhYk0V1EWxpGq0uTwx3LSImSJHL/mN/NwXLaQq9MRoiUQRP8JutW3Yds5uhprQDbr8n6qrRecVyRM1Jt0b9VC3aJImmoo+owQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876613; c=relaxed/simple;
-	bh=qYqBgwM1kxYkcC2ovPtKYWLhZ9LnrLJbtEEWt8TQOWc=;
+	s=arc-20240116; t=1748873728; c=relaxed/simple;
+	bh=02KQEojBAnRi6Eg6Y57JpdFMwq3bSJhZvl9eMUB7Je4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRtvUpTmh1nTzU9dCNStbyoLXkyXJXxBdhI5Wb92ev41zk5Uo2PS9T+naB5Oo0SzLd30Hj74iuj7a8dtlJ3TBZWIpaYRY4CWKCpjHFxyC7VYW2dZt/gW71O3f/9YqKab3FgfearAUBcpdldJ/26eYCZrVRGUXPKLE80pdvWXP9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsdgtEkp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69C3C4CEEB;
-	Mon,  2 Jun 2025 15:03:32 +0000 (UTC)
+	 MIME-Version; b=KsjlJpYkWMUW9buIzDSqGrI4KkLRhNBbRFYGKFiRDFbc1K/mrmaPIQg8sYeMkJAqP5xuMX50/u8/HT7Wt989C3kZma6JmL1qObwJV6WRLdO1BlTcsSoAO0Pk/BaKLhk9zhobyUY/cV8wDNHCe/N7RcVh5AJWRBctpDVqABKKkT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sF6Fg9Rc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43330C4CEEB;
+	Mon,  2 Jun 2025 14:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876613;
-	bh=qYqBgwM1kxYkcC2ovPtKYWLhZ9LnrLJbtEEWt8TQOWc=;
+	s=korg; t=1748873727;
+	bh=02KQEojBAnRi6Eg6Y57JpdFMwq3bSJhZvl9eMUB7Je4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VsdgtEkpujZ8Ph6xhjh40nS9WrJeEQJcwmXGgg8ljPjdDe8W74eC0skWf3kqaawQ6
-	 1b2Z/3ls4LUexYynLQn+zsJwZqS91tYSXM9ptAlLtM60Reu49Tnq3YTjhYByTfLfO8
-	 ehJ1jjM6sBnvFL/LMjOZrfUwjfu0u4jKqflGIQKk=
+	b=sF6Fg9RcikvJOUa8tgF1dK9mPly4DgK0+f9SJsFGbxFEY4nM0h7GIEGQn1b/vPo/F
+	 5N/g7LXwOY4zV9uR5/ZTyYmD0t98sOZFQQNvPzDzE7zqGxg8bkTZhu12jVx5EDhZbs
+	 v+8YQorLwD2BJKAtph9C0QjkGfc38BT65hI05vrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/325] kconfig: merge_config: use an empty file as initfile
+Subject: [PATCH 6.6 231/444] smack: Revert "smackfs: Added check catlen"
 Date: Mon,  2 Jun 2025 15:44:55 +0200
-Message-ID: <20250602134320.521135143@linuxfoundation.org>
+Message-ID: <20250602134350.286817705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
+[ Upstream commit c7fb50cecff9cad19fdac5b37337eae4e42b94c7 ]
 
-The scripts/kconfig/merge_config.sh script requires an existing
-$INITFILE (or the $1 argument) as a base file for merging Kconfig
-fragments. However, an empty $INITFILE can serve as an initial starting
-point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
-if -m is not used. This variable can point to any configuration file
-containing preset config symbols (the merged output) as stated in
-Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
-contain just the merge output requiring the user to run make (i.e.
-KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
-olddefconfig).
+This reverts commit ccfd889acb06eab10b98deb4b5eef0ec74157ea0
 
-Instead of failing when `$INITFILE` is missing, create an empty file and
-use it as the starting point for merges.
+The indicated commit
+* does not describe the problem that change tries to solve
+* has programming issues
+* introduces a bug: forever clears NETLBL_SECATTR_MLS_CAT
+         in (struct smack_known *)skp->smk_netlabel.flags
 
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reverting the commit to reapproach original problem
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/merge_config.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/smack/smackfs.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index 72da3b8d6f307..151f9938abaa7 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -105,8 +105,8 @@ INITFILE=$1
- shift;
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index d27e8b916bfb9..1e35c9f807b2b 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -830,7 +830,7 @@ static int smk_open_cipso(struct inode *inode, struct file *file)
+ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
+ 				size_t count, loff_t *ppos, int format)
+ {
+-	struct netlbl_lsm_catmap *old_cat, *new_cat = NULL;
++	struct netlbl_lsm_catmap *old_cat;
+ 	struct smack_known *skp;
+ 	struct netlbl_lsm_secattr ncats;
+ 	char mapcatset[SMK_CIPSOLEN];
+@@ -917,19 +917,8 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
  
- if [ ! -r "$INITFILE" ]; then
--	echo "The base file '$INITFILE' does not exist.  Exit." >&2
--	exit 1
-+	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
-+	touch "$INITFILE"
- fi
- 
- MERGE_LIST=$*
+ 		smack_catset_bit(cat, mapcatset);
+ 	}
+-	ncats.flags = 0;
+-	if (catlen == 0) {
+-		ncats.attr.mls.cat = NULL;
+-		ncats.attr.mls.lvl = maplevel;
+-		new_cat = netlbl_catmap_alloc(GFP_ATOMIC);
+-		if (new_cat)
+-			new_cat->next = ncats.attr.mls.cat;
+-		ncats.attr.mls.cat = new_cat;
+-		skp->smk_netlabel.flags &= ~(1U << 3);
+-		rc = 0;
+-	} else {
+-		rc = smk_netlbl_mls(maplevel, mapcatset, &ncats, SMK_CIPSOLEN);
+-	}
++
++	rc = smk_netlbl_mls(maplevel, mapcatset, &ncats, SMK_CIPSOLEN);
+ 	if (rc >= 0) {
+ 		old_cat = skp->smk_netlabel.attr.mls.cat;
+ 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
 -- 
 2.39.5
 
