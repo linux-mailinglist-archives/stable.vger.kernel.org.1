@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-149380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0616BACB27C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8641DACB52E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6554B94028A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 695409E08A9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C353E22CBE9;
-	Mon,  2 Jun 2025 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A34D22A4FC;
+	Mon,  2 Jun 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PKpjyXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2S7t5OrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C50522C325;
-	Mon,  2 Jun 2025 14:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5429217BBF;
+	Mon,  2 Jun 2025 14:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873791; cv=none; b=q2WGGvTI3+H/qdFzD6AztpkFbQt73C4q5VG/0BP9U2QEDCIg80oegQvnP2QXdRiXMtsE85iHoeq/9CL0WADjmRwaXTY6BDCRr2PolzKfq45vpE9PqemicSq6uhUU6sRP53Y/aUtgq2yswod1InbC7ONrR1KGKH0JwFSFwKqogwg=
+	t=1748875212; cv=none; b=a5LwWbFSBfJydzVsYWEQQL6/ra1OHlFX33lMhaF+1NJv93tK5z2gmCUs19UYCTJcjCgqw8SKJ5rtDE8X3l01L8IDftiftykC+9tRKoQwLnuhvMCh6htdMQcKyAQXrOADPzXJc5YZr8YYHdoMjG0YJ6eb7fJGmvHrtHbmyYb8JJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873791; c=relaxed/simple;
-	bh=2gNfTNnjlLq/ijp4pNcDdiZNd9A1QUD7pzM186LqcNs=;
+	s=arc-20240116; t=1748875212; c=relaxed/simple;
+	bh=omXVU52/Sp4MgLVIUHpRvhXG1P01SYG3wGo+7fBi1zY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AG5FZOXYTnZXF3WCxWWOHxrpraHaqnBc/CFx5t7eVpPpbqbipqXe1DFCJOOwgDR5TlSUN8Nhi5w+33VMKV173fx9Nz+FX5zIR4j7tGEDc/D/SjAMXO8eYAEGcM0KzhgnCGBRHaWtWLBBM+yGoPXS7J8ZI10dA/LIqCT6FKKJWVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PKpjyXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D349C4CEEE;
-	Mon,  2 Jun 2025 14:16:30 +0000 (UTC)
+	 MIME-Version; b=IQThnUnDIzEG/J10HrWeN+1fFYSCg3lpBSjqpFTAWYJNmFx9gQq108M/hLmQBY4fHG35ywoS9zzcOhRhWtc7hzY+bUtBqazkzBiu89ZeHNzzuTUnL20zjbamrRsH0sUmNzGMMRyB4hCfFqRwvyzY3FpCdnBc37s2zpaJDu6PArM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2S7t5OrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1274C4CEEB;
+	Mon,  2 Jun 2025 14:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873791;
-	bh=2gNfTNnjlLq/ijp4pNcDdiZNd9A1QUD7pzM186LqcNs=;
+	s=korg; t=1748875212;
+	bh=omXVU52/Sp4MgLVIUHpRvhXG1P01SYG3wGo+7fBi1zY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1PKpjyXS0bQyuOH5VNSg/RNaZobDwf/zV9ejnQpjWHz1jIyBt9fCJyz0Olz4hFceD
-	 yX4XdlXGxD0jjsTgg1G8TcCGARCPRXIV9ZN76AiutMXDoz0PG/IlsNZwb2XOVREd4y
-	 ZSSZvhMppMS6wI6fWE8RDjW4SIHOjdTi1DA3dImw=
+	b=2S7t5OrClsPvr435rdULVshcapKYFDRIbS7Rq0YRXpY+/gD0OmWHvsUCH16AqMCMU
+	 vcEG1N/kSBv0FmOn+/G5ibNnFUEkusJ1e1Rb/oXwhY8u61QMIsdf55ET++0wPkEAtd
+	 m9jNZGK1innUq5Mb7omujrvyTKSlUf3ksazi6lL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Bodong Wang <bodong@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fiona Klute <fiona.klute@gmx.de>,
+	kernel-list@raspberrypi.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/444] net/mlx5e: reduce rep rxq depth to 256 for ECPF
+Subject: [PATCH 5.10 033/270] net: phy: microchip: force IRQ polling mode for lan88xx
 Date: Mon,  2 Jun 2025 15:45:18 +0200
-Message-ID: <20250602134351.239693433@linuxfoundation.org>
+Message-ID: <20250602134308.551755912@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Fiona Klute <fiona.klute@gmx.de>
 
-[ Upstream commit b9cc8f9d700867aaa77aedddfea85e53d5e5d584 ]
+[ Upstream commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 ]
 
-By experiments, a single queue representor netdev consumes kernel
-memory around 2.8MB, and 1.8MB out of the 2.8MB is due to page
-pool for the RXQ. Scaling to a thousand representors consumes 2.8GB,
-which becomes a memory pressure issue for embedded devices such as
-BlueField-2 16GB / BlueField-3 32GB memory.
+With lan88xx based devices the lan78xx driver can get stuck in an
+interrupt loop while bringing the device up, flooding the kernel log
+with messages like the following:
 
-Since representor netdevs mostly handles miss traffic, and ideally,
-most of the traffic will be offloaded, reduce the default non-uplink
-rep netdev's RXQ default depth from 1024 to 256 if mdev is ecpf eswitch
-manager. This saves around 1MB of memory per regular RQ,
-(1024 - 256) * 2KB, allocated from page pool.
+lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
 
-With rxq depth of 256, the netlink page pool tool reports
-$./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-	 --dump page-pool-get
- {'id': 277,
-  'ifindex': 9,
-  'inflight': 128,
-  'inflight-mem': 786432,
-  'napi-id': 775}]
+Removing interrupt support from the lan88xx PHY driver forces the
+driver to use polling instead, which avoids the problem.
 
-This is due to mtu 1500 + headroom consumes half pages, so 256 rxq
-entries consumes around 128 pages (thus create a page pool with
-size 128), shown above at inflight.
+The issue has been observed with Raspberry Pi devices at least since
+4.14 (see [1], bug report for their downstream kernel), as well as
+with Nvidia devices [2] in 2020, where disabling interrupts was the
+vendor-suggested workaround (together with the claim that phylib
+changes in 4.9 made the interrupt handling in lan78xx incompatible).
 
-Note that each netdev has multiple types of RQs, including
-Regular RQ, XSK, PTP, Drop, Trap RQ. Since non-uplink representor
-only supports regular rq, this patch only changes the regular RQ's
-default depth.
+Iperf reports well over 900Mbits/sec per direction with client in
+--dualtest mode, so there does not seem to be a significant impact on
+throughput (lan88xx device connected via switch to the peer).
 
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Bodong Wang <bodong@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-8-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1] https://github.com/raspberrypi/linux/issues/2447
+[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
+
+Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
+Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
+Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+Cc: kernel-list@raspberrypi.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/microchip.c | 46 +++----------------------------------
+ 1 file changed, 3 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 39d8e63e8856d..851c499faa795 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -63,6 +63,7 @@
- #define MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE \
- 	max(0x7, MLX5E_PARAMS_MINIMUM_LOG_SQ_SIZE)
- #define MLX5E_REP_PARAMS_DEF_NUM_CHANNELS 1
-+#define MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE 0x8
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 230f2fcf9c46a..7c8bcec0a8fab 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -31,47 +31,6 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
+ 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
+ }
  
- static const char mlx5e_rep_driver_name[] = "mlx5e_rep";
+-static int lan88xx_phy_config_intr(struct phy_device *phydev)
+-{
+-	int rc;
+-
+-	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+-		/* unmask all source and clear them before enable */
+-		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
+-		rc = phy_read(phydev, LAN88XX_INT_STS);
+-		rc = phy_write(phydev, LAN88XX_INT_MASK,
+-			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
+-			       LAN88XX_INT_MASK_LINK_CHANGE_);
+-	} else {
+-		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
+-		if (rc)
+-			return rc;
+-
+-		/* Ack interrupts after they have been disabled */
+-		rc = phy_read(phydev, LAN88XX_INT_STS);
+-	}
+-
+-	return rc < 0 ? rc : 0;
+-}
+-
+-static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
+-{
+-	int irq_status;
+-
+-	irq_status = phy_read(phydev, LAN88XX_INT_STS);
+-	if (irq_status < 0) {
+-		phy_error(phydev);
+-		return IRQ_NONE;
+-	}
+-
+-	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
+-		return IRQ_NONE;
+-
+-	phy_trigger_machine(phydev);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static int lan88xx_suspend(struct phy_device *phydev)
+ {
+ 	struct lan88xx_priv *priv = phydev->priv;
+@@ -388,8 +347,9 @@ static struct phy_driver microchip_phy_driver[] = {
+ 	.config_aneg	= lan88xx_config_aneg,
+ 	.link_change_notify = lan88xx_link_change_notify,
  
-@@ -798,6 +799,8 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
+-	.config_intr	= lan88xx_phy_config_intr,
+-	.handle_interrupt = lan88xx_handle_interrupt,
++	/* Interrupt handling is broken, do not define related
++	 * functions to force polling.
++	 */
  
- 	/* RQ */
- 	mlx5e_build_rq_params(mdev, params);
-+	if (!mlx5e_is_uplink_rep(priv) && mlx5_core_is_ecpf(mdev))
-+		params->log_rq_mtu_frames = MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE;
- 
- 	/* If netdev is already registered (e.g. move from nic profile to uplink,
- 	 * RTNL lock must be held before triggering netdev notifiers.
+ 	.suspend	= lan88xx_suspend,
+ 	.resume		= genphy_resume,
 -- 
 2.39.5
 
