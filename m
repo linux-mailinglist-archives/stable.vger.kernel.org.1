@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E29FACB608
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71467ACB483
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BCC4A13A4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B8773AF470
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B8238C04;
-	Mon,  2 Jun 2025 14:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2D622538F;
+	Mon,  2 Jun 2025 14:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUfTtiwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfQx7QzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C881F4165;
-	Mon,  2 Jun 2025 14:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8CF225388;
+	Mon,  2 Jun 2025 14:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876338; cv=none; b=CKp9V7+ktOch9zn3nLlFreHfgRIW20fPjMT2PwWklIDPh1E1zZlzLRm1rULbjx3877PtdnEB6kQDB7Wo0yKvLkg9rYdzqTOqN+dqclWYK3SDPjU1+Pu5Rg652OTwEY+pgBj2dG6MnOYMatAwFA4sWQMkFjN1O9iF5R/UEO/c+ig=
+	t=1748874947; cv=none; b=mk3YBYUU8YFTfAJQ4Q6BJsXbplpb0XmWPuXfLOHsCAoplD0mALyquGVB3QBY15cE2dbJUYGi+3SN6rTwgiHUzCCvEb12k9GY0kKovKUDfa7+wsoFoNpXQTP2MJrXvaR9puY/+7HKeEVvhm0SJ/teuDIPMKw3id1maJjEReNvXX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876338; c=relaxed/simple;
-	bh=wdLS0WjiuLOdD7TeTQvXIULLj7MECuAhppAWKAKymYI=;
+	s=arc-20240116; t=1748874947; c=relaxed/simple;
+	bh=rwXqm+jKbJqHLIWzQr1UCl/OBgyDtI+gEGl9u8XbRHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThcGmDNZ25Y0OHPILm+HJQ58USQ9pVSto4zv2VD24EcxnSShG1fn0eADaOFsY+gnHq4RFc+WqPYoOvCOazeTTplXkbG5dahu+4h4HhfpnMxBlow5BgbXmke691k/w4LvDuGOPvx14KSkTxw2xAWnET5jfDLiQI0os8Vy+kYtZoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUfTtiwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CA5C4CEEB;
-	Mon,  2 Jun 2025 14:58:57 +0000 (UTC)
+	 MIME-Version; b=SJXu+p6r7af32LR+sV+RbGg+hbkHYf9PxXjC6o0+ChsaLQf4D2ytTjvS/eaKql2lThhIm18Cwswg82R5SMceEMvnKwhZNuqxIC2VgN6W+3qWN4HNVmctIlWfm38FYJJxI3NCD7hcp1vnmk4EuHIa7V9V1CgFrMVjseeXk6IsqoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfQx7QzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC54C4CEEB;
+	Mon,  2 Jun 2025 14:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876338;
-	bh=wdLS0WjiuLOdD7TeTQvXIULLj7MECuAhppAWKAKymYI=;
+	s=korg; t=1748874947;
+	bh=rwXqm+jKbJqHLIWzQr1UCl/OBgyDtI+gEGl9u8XbRHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUfTtiwZ3Slktg/Fodb2s3VMbJ98WKY/AV3Ra8ABMtMGy5NHdvPHHLdigrR35Ts/q
-	 I+sW7BnYYuFvkDpud3mcj3g/vzZPFcs/wTtU4qpARDQZ9e4B9ZM4gnV367U9gV6vW0
-	 JGhWuks14Cs3J7RSd9B6IPo9YcthEj53NufprGPc=
+	b=yfQx7QzASIAqQEM1OyVno/NK++ywF3V1ioRU8lA6+R7fLfhcf9yqWsJtKLk3aOpfo
+	 fq+LlJcIzjTx6V6sPJvcMZ8RYQJeL8KrBocUV26k/O6b8Xz/MCYWtez7K4q8IX3sGO
+	 3VOw8+g1+EwSN4Vj05AQL6Om+scQB3siaz8Pm9i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 145/207] drm/ast: Find VBIOS mode from regular display size
-Date: Mon,  2 Jun 2025 15:48:37 +0200
-Message-ID: <20250602134304.402022009@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 185/204] netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+Date: Mon,  2 Jun 2025 15:48:38 +0200
+Message-ID: <20250602134302.943322623@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
+commit 8965d42bcf54d42cbc72fe34a9d0ec3f8527debd upstream.
 
-The ast driver looks up supplied display modes from an internal list of
-display modes supported by the VBIOS.
+It would be better to not store nft_ctx inside nft_trans object,
+the netlink ctx strucutre is huge and most of its information is
+never needed in places that use trans->ctx.
 
-Do not use the crtc_-prefixed display values from struct drm_display_mode
-for looking up the VBIOS mode. The fields contain raw values that the
-driver programs to hardware. They are affected by display settings like
-double-scan or interlace.
+Avoid/reduce its usage if possible, no runtime behaviour change
+intended.
 
-Instead use the regular vdisplay and hdisplay fields for lookup. As the
-programmed values can now differ from the values used for lookup, set
-struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
-mode.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index 08ed0d08d03b8..87d31d3b0e357 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -105,7 +105,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		return false;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1675,10 +1675,8 @@ static void nf_tables_chain_free_chain_r
+ 	kvfree(chain->rules_next);
+ }
+ 
+-static void nf_tables_chain_destroy(struct nft_ctx *ctx)
++void nf_tables_chain_destroy(struct nft_chain *chain)
+ {
+-	struct nft_chain *chain = ctx->chain;
+-
+ 	if (WARN_ON(chain->use > 0))
+ 		return;
+ 
+@@ -1929,7 +1927,7 @@ err2:
+ err_use:
+ 	nf_tables_unregister_hook(net, table, chain);
+ err1:
+-	nf_tables_chain_destroy(ctx);
++	nf_tables_chain_destroy(chain);
+ 
+ 	return err;
+ }
+@@ -6905,7 +6903,7 @@ static void nft_commit_release(struct nf
+ 		kfree(nft_trans_chain_name(trans));
+ 		break;
+ 	case NFT_MSG_DELCHAIN:
+-		nf_tables_chain_destroy(&trans->ctx);
++		nf_tables_chain_destroy(trans->ctx.chain);
+ 		break;
+ 	case NFT_MSG_DELRULE:
+ 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+@@ -7582,7 +7580,7 @@ static void nf_tables_abort_release(stru
+ 		nf_tables_table_destroy(&trans->ctx);
+ 		break;
+ 	case NFT_MSG_NEWCHAIN:
+-		nf_tables_chain_destroy(&trans->ctx);
++		nf_tables_chain_destroy(trans->ctx.chain);
+ 		break;
+ 	case NFT_MSG_NEWRULE:
+ 		nf_tables_rule_destroy(&trans->ctx, nft_trans_rule(trans));
+@@ -8233,7 +8231,7 @@ int __nft_release_basechain(struct nft_c
  	}
+ 	nft_chain_del(ctx->chain);
+ 	nft_use_dec(&ctx->table->use);
+-	nf_tables_chain_destroy(ctx);
++	nf_tables_chain_destroy(ctx->chain);
  
--	switch (mode->crtc_hdisplay) {
-+	switch (mode->hdisplay) {
- 	case 640:
- 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
- 		break;
-@@ -116,7 +116,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1024x768[refresh_rate_index];
- 		break;
- 	case 1280:
--		if (mode->crtc_vdisplay == 800)
-+		if (mode->vdisplay == 800)
- 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
-@@ -128,7 +128,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
- 		break;
- 	case 1600:
--		if (mode->crtc_vdisplay == 900)
-+		if (mode->vdisplay == 900)
- 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
-@@ -137,7 +137,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
- 		break;
- 	case 1920:
--		if (mode->crtc_vdisplay == 1080)
-+		if (mode->vdisplay == 1080)
- 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
- 		else
- 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
-@@ -181,6 +181,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
- 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
- 
-+	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
- 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
- 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
- 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
-@@ -190,6 +191,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
- 					 vbios_mode->enh_table->hfp +
- 					 vbios_mode->enh_table->hsync);
- 
-+	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
- 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
- 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
- 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
--- 
-2.39.5
-
+ 	return 0;
+ }
+@@ -8300,10 +8298,9 @@ static void __nft_release_table(struct n
+ 		nft_obj_destroy(&ctx, obj);
+ 	}
+ 	list_for_each_entry_safe(chain, nc, &table->chains, list) {
+-		ctx.chain = chain;
+ 		nft_chain_del(chain);
+ 		nft_use_dec(&table->use);
+-		nf_tables_chain_destroy(&ctx);
++		nf_tables_chain_destroy(chain);
+ 	}
+ 	list_del(&table->list);
+ 	nf_tables_table_destroy(&ctx);
 
 
 
