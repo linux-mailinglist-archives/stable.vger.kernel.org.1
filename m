@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B64ACB3E5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77ECACB2E2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E8B485471
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35187940E0B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA9C22C325;
-	Mon,  2 Jun 2025 14:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F23D23184A;
+	Mon,  2 Jun 2025 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5+IAWr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXWTwReD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A827C1CBA18;
-	Mon,  2 Jun 2025 14:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7E02C324D;
+	Mon,  2 Jun 2025 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874453; cv=none; b=R/jdA+DDmRZk6it5oEAz0UEw6QnujCeMglL/peZVOe9rshxlwaIxzqNT4iTPe4Q8WRShW+MdNRQct4HamEXa1ZuA/yG49vwcYGbaw0+1Roj9kJxdCTh56bC+4C33O9Knp64EfwTwRuY+XAj8Glp0+Yq8Bh90CNBsigbHoINP9w8=
+	t=1748873921; cv=none; b=dnLckJQ3Ungp5ph5UrIhF612G0CotxbZEzrKPm6e0pVM055SvKXJkRmAQPS2EY6Qze1IHmL8G6lAo2xcF3iy3jCqyTWxaVQ5UxisTBOup5c94Jmla6oRDho+E6x5bB9yIlWsnVuy+HKM6yiYoajGsDqcsAfonoG+bMXVqjNAWsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874453; c=relaxed/simple;
-	bh=Aequtit8cCk3Wwwfdcj0pJJVQc6wUQjEDncnhK6TmxE=;
+	s=arc-20240116; t=1748873921; c=relaxed/simple;
+	bh=bAJUL/piny45Zhirga8VUavEnS0+YiGz7fERk4Bp4cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jX0yTRC5BWMAZyKi63zdKjN1qB2m/IASQvOrbRRo85Ir/YO+3rJk+RElBpe/gSMgA3jKqxYoop4T/WTB8jtaw0JjPbUvCFmDezpwcPb5ypZop95MnagyrUHbDrvFxkHBcEVtWqsdrfiq6w8VrzAWa50KOhEcdV2xx9DGzc8MVH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5+IAWr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173BCC4CEEB;
-	Mon,  2 Jun 2025 14:27:32 +0000 (UTC)
+	 MIME-Version; b=hFMzjDWt+Od+aoXHqWx2YsxXLYqrW5H2FUcIsSnAnXTjpT48Sec/FN8rxCTYge0y7ftQOQdw66OgxNvoyeKiPZ50dFUqDYPybCZUvUzcZ4cxr86/eyf3WpPS9VMVW7zX+yE0AbhcPZyK/QV+Utx4/C9v298mEJaLLntAZhcwgmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXWTwReD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF55C4CEEB;
+	Mon,  2 Jun 2025 14:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874453;
-	bh=Aequtit8cCk3Wwwfdcj0pJJVQc6wUQjEDncnhK6TmxE=;
+	s=korg; t=1748873921;
+	bh=bAJUL/piny45Zhirga8VUavEnS0+YiGz7fERk4Bp4cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5+IAWr1tDbst/vr6SHBXkS6VvPawOMb5UZbtheyCRHiCsPguy8leOofFeARvC0yO
-	 11gCDLK5kMUURSUNlavpiWrLleLumAgLX2ZO0f5+pd0UCzW80h8BWTP2nRTY2QhZP3
-	 LjHMk2lT4OSaXzEXqyCrLNe7ZjpEue1fSzYc4RlY=
+	b=FXWTwReDfNi9oaA1gbQrJBJI9amrZMyQ2zJLybQfxotImCJiauR1D7qAsDRO+Daxu
+	 fFF8ERgtUyz99lKO+7dgYuIUwrAonwWkBYofc+UNAhLggmQhYxjlQracmw7dXLkZsd
+	 wJ8pTFTGFWRBYJhjq6o6PtLw1xiVDYNMu67VJE+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 028/204] usb: chipidea: ci_hdrc_imx: use dev_err_probe()
+Subject: [PATCH 6.6 297/444] perf/amd/ibs: Fix perf_ibs_op.cnt_mask for CurCnt
 Date: Mon,  2 Jun 2025 15:46:01 +0200
-Message-ID: <20250602134256.788877722@linuxfoundation.org>
+Message-ID: <20250602134353.005013361@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-[ Upstream commit 18171cfc3c236a1587dcad9adc27c6e781af4438 ]
+[ Upstream commit 46dcf85566170d4528b842bf83ffc350d71771fa ]
 
-Use dev_err_probe() to simplify handling errors in ci_hdrc_imx_probe()
+IBS Op uses two counters: MaxCnt and CurCnt. MaxCnt is programmed with
+the desired sample period. IBS hw generates sample when CurCnt reaches
+to MaxCnt. The size of these counter used to be 20 bits but later they
+were extended to 27 bits. The 7 bit extension is indicated by CPUID
+Fn8000_001B_EAX[6 / OpCntExt].
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20220614120522.1469957-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8c531e0a8c2d ("usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling")
+perf_ibs->cnt_mask variable contains bit masks for MaxCnt and CurCnt.
+But IBS driver does not set upper 7 bits of CurCnt in cnt_mask even
+when OpCntExt CPUID bit is set. Fix this.
+
+IBS driver uses cnt_mask[CurCnt] bits only while disabling an event.
+Fortunately, CurCnt bits are not read from MSR while re-enabling the
+event, instead MaxCnt is programmed with desired period and CurCnt is
+set to 0. Hence, we did not see any issues so far.
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/r/20250115054438.1021-5-ravi.bangoria@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ arch/x86/events/amd/ibs.c         | 3 ++-
+ arch/x86/include/asm/perf_event.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 034de11a1ac11..0fd860da9267d 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -342,12 +342,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 		data->pinctrl = devm_pinctrl_get(dev);
- 		if (PTR_ERR(data->pinctrl) == -ENODEV)
- 			data->pinctrl = NULL;
--		else if (IS_ERR(data->pinctrl)) {
--			if (PTR_ERR(data->pinctrl) != -EPROBE_DEFER)
--				dev_err(dev, "pinctrl get failed, err=%ld\n",
--					PTR_ERR(data->pinctrl));
--			return PTR_ERR(data->pinctrl);
--		}
-+		else if (IS_ERR(data->pinctrl))
-+			return dev_err_probe(dev, PTR_ERR(data->pinctrl),
-+					     "pinctrl get failed\n");
- 
- 		pinctrl_hsic_idle = pinctrl_lookup_state(data->pinctrl, "idle");
- 		if (IS_ERR(pinctrl_hsic_idle)) {
-@@ -377,13 +374,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 		if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
- 			/* no pad regualator is needed */
- 			data->hsic_pad_regulator = NULL;
--		} else if (IS_ERR(data->hsic_pad_regulator)) {
--			if (PTR_ERR(data->hsic_pad_regulator) != -EPROBE_DEFER)
--				dev_err(dev,
--					"Get HSIC pad regulator error: %ld\n",
--					PTR_ERR(data->hsic_pad_regulator));
--			return PTR_ERR(data->hsic_pad_regulator);
--		}
-+		} else if (IS_ERR(data->hsic_pad_regulator))
-+			return dev_err_probe(dev, PTR_ERR(data->hsic_pad_regulator),
-+					     "Get HSIC pad regulator error\n");
- 
- 		if (data->hsic_pad_regulator) {
- 			ret = regulator_enable(data->hsic_pad_regulator);
-@@ -441,9 +434,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 				&pdata);
- 	if (IS_ERR(data->ci_pdev)) {
- 		ret = PTR_ERR(data->ci_pdev);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "ci_hdrc_add_device failed, err=%d\n",
--					ret);
-+		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
- 		goto err_clk;
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index f483874fa20f1..85731f121feb5 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -1219,7 +1219,8 @@ static __init int perf_ibs_op_init(void)
+ 	if (ibs_caps & IBS_CAPS_OPCNTEXT) {
+ 		perf_ibs_op.max_period  |= IBS_OP_MAX_CNT_EXT_MASK;
+ 		perf_ibs_op.config_mask	|= IBS_OP_MAX_CNT_EXT_MASK;
+-		perf_ibs_op.cnt_mask    |= IBS_OP_MAX_CNT_EXT_MASK;
++		perf_ibs_op.cnt_mask    |= (IBS_OP_MAX_CNT_EXT_MASK |
++					    IBS_OP_CUR_CNT_EXT_MASK);
  	}
  
+ 	if (ibs_caps & IBS_CAPS_ZEN4)
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 384e8a7db4827..ba2a3935dc624 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -501,6 +501,7 @@ struct pebs_xmm {
+  */
+ #define IBS_OP_CUR_CNT		(0xFFF80ULL<<32)
+ #define IBS_OP_CUR_CNT_RAND	(0x0007FULL<<32)
++#define IBS_OP_CUR_CNT_EXT_MASK	(0x7FULL<<52)
+ #define IBS_OP_CNT_CTL		(1ULL<<19)
+ #define IBS_OP_VAL		(1ULL<<18)
+ #define IBS_OP_ENABLE		(1ULL<<17)
 -- 
 2.39.5
 
