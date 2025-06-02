@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-149379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B691ACB27D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:32:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 216C9ACB4C5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1631943320
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FFD17E341
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EB722B59D;
-	Mon,  2 Jun 2025 14:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C58A22A7E0;
+	Mon,  2 Jun 2025 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIrtv1+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uk2m12MH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ED022AE65;
-	Mon,  2 Jun 2025 14:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3894222A4F1;
+	Mon,  2 Jun 2025 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873788; cv=none; b=Zd+Ht4IQW2ThQ40V4500N356NAAs16gPpTYg5JryhS4SWKhG6nitqqr1zLT/csMzdI62EtJhESDg3Hel7v70U60CxnJvltBHvFOMfLcsMNc8auC34/OwqokKf5E8HfcyXE0ISpW9JbjkBP9grkkdaaeoH7MSG7iALW7LTsRGEd4=
+	t=1748875209; cv=none; b=TnROVBTyp+5yvxf2LQD4HwT7daATnAi5DjR19+kDmipOdZNO/k8Pl0LCcLvaN7MyOb1WufcKIBcyPBmfTpzbQnxPJmNJSYfPz06CYvxA7AyGwbONYS1/peHcqreiCGmQOFNkms8zFt2VczjGd9M8uuhBzspnIHDBT3UbpaKS28w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873788; c=relaxed/simple;
-	bh=F3cL4W+ukXSIlmqB9V5rF3USqiCemeOw9JTs2f8paAg=;
+	s=arc-20240116; t=1748875209; c=relaxed/simple;
+	bh=++0Jl2XCyNr4mlhkgpNo2BQeupvwwOIme7pQb50PrbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrF+Vng2giNIIie0IuE5y/nqD6tf3+z5CIOfjZgUKukS0i81CphRqFSoa6vSszjMcGp6WEapbnHQ34krIIUb1Jp/ryQufn9UEJZ3rXQ4Mb45arYSFMLDu2JY+DsQVvR4r3QiuHlQLZhbZaYW0hYhzaI5Em4d2RNgLa05dC5TmwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIrtv1+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022E5C4CEF0;
-	Mon,  2 Jun 2025 14:16:27 +0000 (UTC)
+	 MIME-Version; b=W2yZbJ0ZzFVI7G6dPEOptP2zJPJ0ZN5xOH/1Kvpok4ODYXlu3OurQwMJQt420RMH/fcJ8dZx2ZJExo3nLqt00nnb06mTfggeOt+Elx93E9iwJUwxUBQiL0Jxt7KMXMh7SiNMJgUSnAOVbwHdXdCsm9/JCzE5BjlmKDr2+p4N4lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uk2m12MH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF8AC4CEEB;
+	Mon,  2 Jun 2025 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873788;
-	bh=F3cL4W+ukXSIlmqB9V5rF3USqiCemeOw9JTs2f8paAg=;
+	s=korg; t=1748875209;
+	bh=++0Jl2XCyNr4mlhkgpNo2BQeupvwwOIme7pQb50PrbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZIrtv1+O5zbu0bBtFTKnLWCq4D+5J+j11noj7tUOB6oClQumfUa5FcGOmX/YAwpHX
-	 NFUSMV8MShtUuJQY7QD5/mB5aofgSlWY5kDsDqE5cej2SJwbu49A+PYWsp34HMmKpF
-	 1+kRR4ethSEtNBhYt/4fLHq6W91wl89yzgM910GM=
+	b=Uk2m12MHvWJkABTt7GR5JsPBDRMH/ATF+BUPvldtLimQ0ZpCCP+CfCURVN9EjQOQ4
+	 lf6/k0o2DiKQ9V6uaOoTZBAMuLIKr57l/0JcqcJSIHDUhRQ4C8U6G5EAMpytHnswvC
+	 mCz/RW4Xsim+KkKpZ+tDUp2KUW0J8DfUc8COxLv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <witu@nvidia.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Nisar Sayed <Nisar.Sayed@microchip.com>,
+	Yuiko Oshino <yuiko.oshino@microchip.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/444] net/mlx5e: set the tx_queue_len for pfifo_fast
+Subject: [PATCH 5.10 032/270] net: phy: microchip: remove the use of .ack_interrupt()
 Date: Mon,  2 Jun 2025 15:45:17 +0200
-Message-ID: <20250602134351.191677804@linuxfoundation.org>
+Message-ID: <20250602134308.513121391@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <witu@nvidia.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit a38cc5706fb9f7dc4ee3a443f61de13ce1e410ed ]
+[ Upstream commit cf499391982d877e9313d2adeedcf5f1ffe05d6e ]
 
-By default, the mq netdev creates a pfifo_fast qdisc. On a
-system with 16 core, the pfifo_fast with 3 bands consumes
-16 * 3 * 8 (size of pointer) * 1024 (default tx queue len)
-= 393KB. The patch sets the tx qlen to representor default
-value, 128 (1<<MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE), which
-consumes 16 * 3 * 8 * 128 = 49KB, saving 344KB for each
-representor at ECPF.
+In preparation of removing the .ack_interrupt() callback, we must replace
+its occurrences (aka phy_clear_interrupt), from the 2 places where it is
+called from (phy_enable_interrupts and phy_disable_interrupts), with
+equivalent functionality.
 
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-9-tariqt@nvidia.com
+This means that clearing interrupts now becomes something that the PHY
+driver is responsible of doing, before enabling interrupts and after
+clearing them. Make this driver follow the new contract.
+
+Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
+Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/phy/microchip.c    | 13 +++++--------
+ drivers/net/phy/microchip_t1.c | 17 +++++++----------
+ 2 files changed, 12 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 751d3ffcd2f6c..39d8e63e8856d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -829,6 +829,8 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev,
- 	netdev->ethtool_ops = &mlx5e_rep_ethtool_ops;
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index a149d0ae58b02..230f2fcf9c46a 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -44,14 +44,12 @@ static int lan88xx_phy_config_intr(struct phy_device *phydev)
+ 			       LAN88XX_INT_MASK_LINK_CHANGE_);
+ 	} else {
+ 		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
+-	}
+-
+-	return rc < 0 ? rc : 0;
+-}
++		if (rc)
++			return rc;
  
- 	netdev->watchdog_timeo    = 15 * HZ;
-+	if (mlx5_core_is_ecpf(mdev))
-+		netdev->tx_queue_len = 1 << MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE;
+-static int lan88xx_phy_ack_interrupt(struct phy_device *phydev)
+-{
+-	int rc = phy_read(phydev, LAN88XX_INT_STS);
++		/* Ack interrupts after they have been disabled */
++		rc = phy_read(phydev, LAN88XX_INT_STS);
++	}
  
- #if IS_ENABLED(CONFIG_MLX5_CLS_ACT)
- 	netdev->hw_features    |= NETIF_F_HW_TC;
+ 	return rc < 0 ? rc : 0;
+ }
+@@ -390,7 +388,6 @@ static struct phy_driver microchip_phy_driver[] = {
+ 	.config_aneg	= lan88xx_config_aneg,
+ 	.link_change_notify = lan88xx_link_change_notify,
+ 
+-	.ack_interrupt	= lan88xx_phy_ack_interrupt,
+ 	.config_intr	= lan88xx_phy_config_intr,
+ 	.handle_interrupt = lan88xx_handle_interrupt,
+ 
+diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
+index 553b391d1747a..4440182243108 100644
+--- a/drivers/net/phy/microchip_t1.c
++++ b/drivers/net/phy/microchip_t1.c
+@@ -189,16 +189,14 @@ static int lan87xx_phy_config_intr(struct phy_device *phydev)
+ 		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, 0x7FFF);
+ 		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
+ 		val = LAN87XX_MASK_LINK_UP | LAN87XX_MASK_LINK_DOWN;
+-	}
+-
+-	rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
+-
+-	return rc < 0 ? rc : 0;
+-}
++		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
++	} else {
++		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
++		if (rc)
++			return rc;
+ 
+-static int lan87xx_phy_ack_interrupt(struct phy_device *phydev)
+-{
+-	int rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
++		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
++	}
+ 
+ 	return rc < 0 ? rc : 0;
+ }
+@@ -239,7 +237,6 @@ static struct phy_driver microchip_t1_phy_driver[] = {
+ 		.config_init	= lan87xx_config_init,
+ 		.config_aneg    = genphy_config_aneg,
+ 
+-		.ack_interrupt  = lan87xx_phy_ack_interrupt,
+ 		.config_intr    = lan87xx_phy_config_intr,
+ 		.handle_interrupt = lan87xx_handle_interrupt,
+ 
 -- 
 2.39.5
 
