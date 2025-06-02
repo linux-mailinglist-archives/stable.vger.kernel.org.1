@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D34ACB542
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1A6ACB8CB
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE07B1BC2160
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71BE09431F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6232253E9;
-	Mon,  2 Jun 2025 14:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FF61EDA02;
+	Mon,  2 Jun 2025 15:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvdj51UZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hihJVWRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA4C1FF61E;
-	Mon,  2 Jun 2025 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC52C325E;
+	Mon,  2 Jun 2025 15:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875419; cv=none; b=dRGQCTPcVC8uBa0HTPkdi2Y8YF13r2C77wTKXideRtwNA9c230adblKIdmcsN5DQpMebuLpMQ4n6lIHXZ3jHogxSy6ssHkIzKjJrk33AeV9r+QfeeDbQW8eNdchODvZc3LRoJSfG522bvNC6kmIKzB+i73m1JQw08roxNltpMH8=
+	t=1748876985; cv=none; b=pYlY+gus/85t7buUBYWfA0fjsUY+ezhukFZEkqWvxogqLXued1iQZ8uIUrB84aBstougPPnyvHsMHSsWZ23C7bfyshk2i/v1TvlEw5HVIvepzbLiMAFqiC6SR7GBpNCuwx+Px5iY18P2RZCciqThFnWog3XmANV9uv/fQzPAOFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875419; c=relaxed/simple;
-	bh=HVt/vzxDyTVm6ucTVrt1INjG7chVr4QR2qwg/I7/GlM=;
+	s=arc-20240116; t=1748876985; c=relaxed/simple;
+	bh=XCEpZ2s29Hpg0iXG7rxzj0/dTThdLO2ff2Mx0+PxPTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cw3KegCwNrGZ/d0We0zpcSt2K5By7FpYVe8QUXKZLwiumWMKIDDUB266KuPdDf1w+WdhB+RmEIw2bn99UDlUH1/+fsw9WtwsucCEEiuQJtj9tbt73FV55bY2YEfHVMxBAQInsWzHXG2sIJxUaZnIeTbjIv4QsaEkFNO70n0Onjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvdj51UZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FAFC4CEF0;
-	Mon,  2 Jun 2025 14:43:38 +0000 (UTC)
+	 MIME-Version; b=PzL6fbKG0iL/vGdHC9M9Kg7TFPPfcGar3OuQ6INHqK+xJzSPgbr3YaL1lEkoPjhM848hA9p5HKxoJqLPOrVZrLKtOqXr3lNX1yVIrv4Wn6JnkPIy/AxGZ+v/rpNp5yyzm0qecDyecLt44Ryrwh9DJrIHivPYJe22Y0iAttXklcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hihJVWRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83320C4CEF2;
+	Mon,  2 Jun 2025 15:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875418;
-	bh=HVt/vzxDyTVm6ucTVrt1INjG7chVr4QR2qwg/I7/GlM=;
+	s=korg; t=1748876984;
+	bh=XCEpZ2s29Hpg0iXG7rxzj0/dTThdLO2ff2Mx0+PxPTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvdj51UZbeWQyn4rlkk3M6w8z4CophuGFgMJEiNpKKSTDGZm3YEXL2684KuOePcUQ
-	 4rAH2CLXNaWb2VcPT1tDktKEM/EsK95pNx4bcyZadbYTl6cLFM8kth0HSX9Mz2Slhx
-	 INN3+MMQOBRzgL3nAyxvgT7Kg2s9DuuygJMis3Kg=
+	b=hihJVWRDD26h9G5WvJTB5PU7p2Zfd1ARwtDIaXNOJVM4HM3POLUtvDRZTWRCOfn5v
+	 5vKOgjKFxOgl47GmfX3M6Ki17/Tn3fEC0lUSBr7oXgw4L/zo6XQli348SSg6GC44zi
+	 37Clx/Y10RZ+76xySKq4QNTu7L4IKBDdo1OV301Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 099/270] phy: Fix error handling in tegra_xusb_port_init
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 108/325] media: cx231xx: set device_caps for 417
 Date: Mon,  2 Jun 2025 15:46:24 +0200
-Message-ID: <20250602134311.217075010@linuxfoundation.org>
+Message-ID: <20250602134324.173655069@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
+[ Upstream commit a79efc44b51432490538a55b9753a721f7d3ea42 ]
 
-If device_add() fails, do not use device_unregister() for error
-handling. device_unregister() consists two functions: device_del() and
-put_device(). device_unregister() should only be called after
-device_add() succeeded because device_del() undoes what device_add()
-does if successful. Change device_unregister() to put_device() call
-before returning from the function.
+The video_device for the MPEG encoder did not set device_caps.
 
-As comment of device_add() says, 'if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count'.
+Add this, otherwise the video device can't be registered (you get a
+WARN_ON instead).
 
-Found by code review.
+Not seen before since currently 417 support is disabled, but I found
+this while experimenting with it.
 
-Cc: stable@vger.kernel.org
-Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-417.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -536,16 +536,16 @@ static int tegra_xusb_port_init(struct t
- 
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
- 
- 	err = device_add(&port->dev);
- 	if (err < 0)
--		goto unregister;
-+		goto put_device;
- 
- 	return 0;
- 
--unregister:
--	device_unregister(&port->dev);
-+put_device:
-+	put_device(&port->dev);
- 	return err;
- }
- 
+diff --git a/drivers/media/usb/cx231xx/cx231xx-417.c b/drivers/media/usb/cx231xx/cx231xx-417.c
+index c5e21785fafe2..02343e88cc618 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-417.c
++++ b/drivers/media/usb/cx231xx/cx231xx-417.c
+@@ -1722,6 +1722,8 @@ static void cx231xx_video_dev_init(
+ 	vfd->lock = &dev->lock;
+ 	vfd->release = video_device_release_empty;
+ 	vfd->ctrl_handler = &dev->mpeg_ctrl_handler.hdl;
++	vfd->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
++			   V4L2_CAP_VIDEO_CAPTURE;
+ 	video_set_drvdata(vfd, dev);
+ 	if (dev->tuner_type == TUNER_ABSENT) {
+ 		v4l2_disable_ioctl(vfd, VIDIOC_G_FREQUENCY);
+-- 
+2.39.5
+
 
 
 
