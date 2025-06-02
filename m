@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A3AACB58D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F341ACB393
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 002D87A2919
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1AAE3A3B2D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1702343AF;
-	Mon,  2 Jun 2025 14:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FD71FBC8C;
+	Mon,  2 Jun 2025 14:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCruVBXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RF7p/rRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFF322A1EF;
-	Mon,  2 Jun 2025 14:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60170226D04;
+	Mon,  2 Jun 2025 14:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876210; cv=none; b=RSiJ2xHK3H8vtOFTD5vW8GsifuULUDoaQxSFpJagCdXyfEbk9lpVqu63uIL3EbwMPP4uobBawOEN8yGAnMb7Q9zF9iF0ibFyo/nOgtxXm1N63AlFuUglHZwUgL5/JHeC7N0AyvIKa8rb3ajh6iG+KIhojF7YmpEzBML6pdImxeI=
+	t=1748874271; cv=none; b=LQiYM1T/7ou4TU2CUcGNIpPpZfqhFDIkggRu7u7qSUjtz4FM1LcUnOP9PayLokuXxoyulug/oLtja4ylUGNOoW+To1sI93WlYsZMsyDDlowb1uG4Fl8QzhiD4t2udWRxjj0wxdcwys8nFf0lKsGQFE+WTlFqH5Y1Apt8Cc9gEuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876210; c=relaxed/simple;
-	bh=rRAFeekxioYgxFCkRzdEGSrIG17WhQq9NbkujgEEsKE=;
+	s=arc-20240116; t=1748874271; c=relaxed/simple;
+	bh=8p6rR8+AkXTc6Ta7WmbVcY56hAVBo7Ut8e82Ao1BoVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlCL/GJ2DbuAOzTHtkBJkB/E1Rc3oApw3m2hWZDMdXZcJn6oViBOvT79E+yItupq1SBrIhP1dseinqfXURlOYqvmIko7KWgL0PHECbLswX8WBlKdy/h861hvBpCvD8tLW4YfF0X9GPaJxAw9gZLq+7CvrzwMvm4t7aB7dDOUWdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCruVBXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A614C4CEEB;
-	Mon,  2 Jun 2025 14:56:50 +0000 (UTC)
+	 MIME-Version; b=C0hzuG90dWMKRi5VDKGb2Ea3JX9Dwn8xlEoWAlyKfhtl9RcIxpkmOsnj3262EEVxhw+5FCynSx2Wk2IhjH9KFhIDPYTuPCAfpLPVDm1bnQBzTFDLiHfYOxMsNJDMJNBCtaAiTFCNY4qnTZls2OTQ4SjtCxjMdwizikh9I+EdDIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RF7p/rRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1BAC4CEEB;
+	Mon,  2 Jun 2025 14:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876210;
-	bh=rRAFeekxioYgxFCkRzdEGSrIG17WhQq9NbkujgEEsKE=;
+	s=korg; t=1748874271;
+	bh=8p6rR8+AkXTc6Ta7WmbVcY56hAVBo7Ut8e82Ao1BoVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCruVBXXjDwfJGxLXZzWzCqk0InRDs9YAV0IlPvO8Ghkvw4mvsz54hcjcmMvAPeJu
-	 x0ZzXnd2yEY7Mg9rh9DJ7Y3PpThLzhSoeP3J5MEPQYR+gejB4l4aRAWsLyGf60aFjJ
-	 c1iSmEFOXrNvZcPhNKXl8loRQeU6/ii9owi1ayKI=
+	b=RF7p/rRj+bL/9camZpLACfq3XTyWLG6oCh3gYzofcN721Zo9/sGHScsA/FkkYDl5/
+	 /D8PScp5UHrCB+c09SX41SUV8rdvuppr3G3aq09f3+yaqKers63XewYe+lVhf6egKZ
+	 E/oCR4BqXpdxoM5DKwAP4ZOtu5tB/9U611XfT0jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Seiderer <ps.report@gmx.net>,
-	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/207] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
-Date: Mon,  2 Jun 2025 15:47:58 +0200
-Message-ID: <20250602134302.886993319@linuxfoundation.org>
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 415/444] af_unix: Remove lock dance in unix_peek_fds().
+Date: Mon,  2 Jun 2025 15:47:59 +0200
+Message-ID: <20250602134357.782001486@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Seiderer <ps.report@gmx.net>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
+commit 118f457da9ed58a79e24b73c2ef0aa1987241f0e upstream.
 
-Honour the user given buffer size for the strn_len() calls (otherwise
-strn_len() will access memory outside of the user given buffer).
+In the previous GC implementation, the shape of the inflight socket
+graph was not expected to change while GC was in progress.
 
-Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+MSG_PEEK was tricky because it could install inflight fd silently
+and transform the graph.
+
+Let's say we peeked a fd, which was a listening socket, and accept()ed
+some embryo sockets from it.  The garbage collection algorithm would
+have been confused because the set of sockets visited in scan_inflight()
+would change within the same GC invocation.
+
+That's why we placed spin_lock(&unix_gc_lock) and spin_unlock() in
+unix_peek_fds() with a fat comment.
+
+In the new GC implementation, we no longer garbage-collect the socket
+if it exists in another queue, that is, if it has a bridge to another
+SCC.  Also, accept() will require the lock if it has edges.
+
+Thus, we need not do the complicated lock dance.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240401173125.92184-3-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/pktgen.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/net/af_unix.h |    1 -
+ net/unix/af_unix.c    |   42 ------------------------------------------
+ net/unix/garbage.c    |    2 +-
+ 3 files changed, 1 insertion(+), 44 deletions(-)
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 28417fe2a7a2a..2b7b1de70cf47 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -1876,8 +1876,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	i = len;
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -17,7 +17,6 @@ static inline struct unix_sock *unix_get
+ }
+ #endif
  
- 	/* Read variable name */
+-extern spinlock_t unix_gc_lock;
+ extern unsigned int unix_tot_inflight;
+ void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver);
+ void unix_del_edges(struct scm_fp_list *fpl);
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1796,48 +1796,6 @@ static void unix_detach_fds(struct scm_c
+ static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
+ {
+ 	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
 -
--	len = strn_len(&user_buffer[i], sizeof(name) - 1);
-+	max = min(sizeof(name) - 1, count - i);
-+	len = strn_len(&user_buffer[i], max);
- 	if (len < 0)
- 		return len;
+-	/*
+-	 * Garbage collection of unix sockets starts by selecting a set of
+-	 * candidate sockets which have reference only from being in flight
+-	 * (total_refs == inflight_refs).  This condition is checked once during
+-	 * the candidate collection phase, and candidates are marked as such, so
+-	 * that non-candidates can later be ignored.  While inflight_refs is
+-	 * protected by unix_gc_lock, total_refs (file count) is not, hence this
+-	 * is an instantaneous decision.
+-	 *
+-	 * Once a candidate, however, the socket must not be reinstalled into a
+-	 * file descriptor while the garbage collection is in progress.
+-	 *
+-	 * If the above conditions are met, then the directed graph of
+-	 * candidates (*) does not change while unix_gc_lock is held.
+-	 *
+-	 * Any operations that changes the file count through file descriptors
+-	 * (dup, close, sendmsg) does not change the graph since candidates are
+-	 * not installed in fds.
+-	 *
+-	 * Dequeing a candidate via recvmsg would install it into an fd, but
+-	 * that takes unix_gc_lock to decrement the inflight count, so it's
+-	 * serialized with garbage collection.
+-	 *
+-	 * MSG_PEEK is special in that it does not change the inflight count,
+-	 * yet does install the socket into an fd.  The following lock/unlock
+-	 * pair is to ensure serialization with garbage collection.  It must be
+-	 * done between incrementing the file count and installing the file into
+-	 * an fd.
+-	 *
+-	 * If garbage collection starts after the barrier provided by the
+-	 * lock/unlock, then it will see the elevated refcount and not mark this
+-	 * as a candidate.  If a garbage collection is already in progress
+-	 * before the file count was incremented, then the lock/unlock pair will
+-	 * ensure that garbage collection is finished before progressing to
+-	 * installing the fd.
+-	 *
+-	 * (*) A -> B where B is on the queue of A or B is on the queue of C
+-	 * which is on the queue of listening socket A.
+-	 */
+-	spin_lock(&unix_gc_lock);
+-	spin_unlock(&unix_gc_lock);
+ }
  
-@@ -1907,7 +1907,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	if (!strcmp(name, "add_device")) {
- 		char f[32];
- 		memset(f, 0, 32);
--		len = strn_len(&user_buffer[i], sizeof(f) - 1);
-+		max = min(sizeof(f) - 1, count - i);
-+		len = strn_len(&user_buffer[i], max);
- 		if (len < 0) {
- 			ret = len;
- 			goto out;
--- 
-2.39.5
-
+ static void unix_destruct_scm(struct sk_buff *skb)
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -183,7 +183,7 @@ static void unix_free_vertices(struct sc
+ 	}
+ }
+ 
+-DEFINE_SPINLOCK(unix_gc_lock);
++static DEFINE_SPINLOCK(unix_gc_lock);
+ unsigned int unix_tot_inflight;
+ 
+ void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
 
 
 
