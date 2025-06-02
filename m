@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F46ACB5F4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:12:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C29CACB41A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C35617952C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A494A2999
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008AF2C325E;
-	Mon,  2 Jun 2025 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A665223315A;
+	Mon,  2 Jun 2025 14:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STa7L9TN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrIVXqSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25531C5D72;
-	Mon,  2 Jun 2025 14:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DFF233155;
+	Mon,  2 Jun 2025 14:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876005; cv=none; b=tBcYjlINddmmkuTl9pl5wg3Zlk+P+6kR/aAquAyYVtwWa01+t7iadPcD5nsAI1jCOrxuoeXdFv2fY324dSkBxvjVYR/kPuDWAyIjdhmbP+yosAV63ch4heWDLnqQOr8R/x8epgSrP+30RPUPklVkUkB1Ihqgn+u7R3RqQTURJzo=
+	t=1748874612; cv=none; b=Ps0CkEMzNjJ1KGShkZ13jcu3o6ci8h0D99biseB1W/pFwOh6briNMB9Rbdu82waMNqKfWxfIzfRhy5BiT1n1IF0Er4tJ5DHBi1hfrpDMm7MRKIDQtytdjNCimjdL2lzhsGS3/XiCRlzSWAUbxRMnvkoUqjkI12nRshrEdIAhw4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876005; c=relaxed/simple;
-	bh=zFLiObP3mxFaW1jAR4ObN1g5d60HSCZns6tZWOS/Gmg=;
+	s=arc-20240116; t=1748874612; c=relaxed/simple;
+	bh=J8DEBbmqgVqHx9zekQbbW8vM7wCFBNCGjVwQ5NtjHQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IUmfixx+pOgrfcdxK3w4f/1iZEpHLaD8doNZpnp5hLO2FnsnjEQS5XJWMiRDYpNLlZzso/bXxh2lJijPfFIuyzzfGfdtDJNcnvFdOlEy6z7TTaUo2PFaWx3n12SEUAefh4HnkxgqAJnn83hh7xseMXzuehwg9yIlk0iTJCLX8EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STa7L9TN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F65C4CEEB;
-	Mon,  2 Jun 2025 14:53:24 +0000 (UTC)
+	 MIME-Version; b=WlsnkX3heLLu3NHjpJd0RpuSJWCXUTIQn5bLM+dOGxOacJmf2XJXb8Dctc1vFQSytpYRPCkVdMo/mqdAkxuKIifJKTziz4fDA8X7KV3qEJrW+/16h4IL6KvziZ+ZC/30ne3rdGorre4OJ8s0XUSuQXyBG2wURnwIxZMbQmmYKyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VrIVXqSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C825EC4CEEB;
+	Mon,  2 Jun 2025 14:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876005;
-	bh=zFLiObP3mxFaW1jAR4ObN1g5d60HSCZns6tZWOS/Gmg=;
+	s=korg; t=1748874612;
+	bh=J8DEBbmqgVqHx9zekQbbW8vM7wCFBNCGjVwQ5NtjHQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STa7L9TNRnlrEL2cq3ptgc92KawWE0lP9EPgQaKjJ+t4UTMyTJa+cpHjBxJfmVxlP
-	 1/b8HtlDwgVnmmbfO7fUy6uVrU5Hdrq7HHRLej5aRD2Pvko/fMoewqqHcHkMhp7AK8
-	 P4jBKvnCc+tBXdr6XQkTpy4gPADy04sb1X142/jE=
+	b=VrIVXqSx4DT6jQfOqUgDYc3XCnYQPocqvWr/DiD68UBiX8+03o+jI7N9lsr+qetP0
+	 10HHH64SPovUl+vPVMRLURVQvERH2M8CToP5WZZzk1RCCVYsBzgdtS3j/h4RQVfQIB
+	 5PByWXmYX7dMyd7bWTzvMbIgXvViTxI/Oj9Ki/q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/207] scsi: st: ERASE does not change tape location
+	Ma Ke <make24@iscas.ac.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 080/204] phy: Fix error handling in tegra_xusb_port_init
 Date: Mon,  2 Jun 2025 15:46:53 +0200
-Message-ID: <20250602134300.368970835@linuxfoundation.org>
+Message-ID: <20250602134258.817230721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit ad77cebf97bd42c93ab4e3bffd09f2b905c1959a ]
+commit b2ea5f49580c0762d17d80d8083cb89bc3acf74f upstream.
 
-The SCSI ERASE command erases from the current position onwards.  Don't
-clear the position variables.
+If device_add() fails, do not use device_unregister() for error
+handling. device_unregister() consists two functions: device_del() and
+put_device(). device_unregister() should only be called after
+device_add() succeeded because device_del() undoes what device_add()
+does if successful. Change device_unregister() to put_device() call
+before returning from the function.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-3-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As comment of device_add() says, 'if device_add() succeeds, you should
+call device_del() when you want to get rid of it. If device_add() has
+not succeeded, use only put_device() to drop the reference count'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 53d2a715c240 ("phy: Add Tegra XUSB pad controller support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250303072739.3874987-1-make24@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/st.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/phy/tegra/xusb.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index a58cb2171f958..26827e94d5e38 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -2884,7 +2884,6 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			timeout = STp->long_timeout * 8;
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -526,16 +526,16 @@ static int tegra_xusb_port_init(struct t
  
- 		DEBC_printk(STp, "Erasing tape.\n");
--		fileno = blkno = at_sm = 0;
- 		break;
- 	case MTSETBLK:		/* Set block length */
- 	case MTSETDENSITY:	/* Set tape density */
--- 
-2.39.5
-
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	err = device_add(&port->dev);
+ 	if (err < 0)
+-		goto unregister;
++		goto put_device;
+ 
+ 	return 0;
+ 
+-unregister:
+-	device_unregister(&port->dev);
++put_device:
++	put_device(&port->dev);
+ 	return err;
+ }
+ 
 
 
 
