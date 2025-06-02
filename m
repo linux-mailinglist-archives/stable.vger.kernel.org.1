@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-149835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45370ACB47A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A70BACB2F2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1638B9E69CC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49CF09414CC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CB8229B21;
-	Mon,  2 Jun 2025 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC1F233D91;
+	Mon,  2 Jun 2025 14:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va5X4fbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vo1MLZ+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1048229B18;
-	Mon,  2 Jun 2025 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E5E23371E;
+	Mon,  2 Jun 2025 14:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875190; cv=none; b=WqYj1K50i5jmMnJRD6UrkQ0ysAoKpQY+v2Da7azB5vMNh2F6Qfe51cpjU1NaK3KgMCuRioZP+GL6wzCg6LxxtE7EwxE7TJjEthJ3tDPXdWAyOyjhKbLk7kZDejOQjusY56UBiWS3UZo5YZqHJ8a/qB7OIZoXx0Vkn5ZpHUi7k30=
+	t=1748873953; cv=none; b=tDF4XB5jmfgsI0+4YrbgJAZ4n269Gd9ma/8E74X16nOfzH4exdY8uXXR1FFYFw7HXH8NX33GAMb36Jk+BwMNkCJyrCSQty2SSdvs6Rhxhv/RN1zrPuRTsqV4x4nVJ9INzkg8fttUyu9GH5vyV7+grxwIGI3x4wFIJDtzGN5vmRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875190; c=relaxed/simple;
-	bh=ScRBQD0FuN+KdxINNlK9XmUrNHeh9lZdXz2oywGyhBk=;
+	s=arc-20240116; t=1748873953; c=relaxed/simple;
+	bh=dXg8y76OE49JWn2dLHIdukgbNu3qj1Ln+OpBOE2CiDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TPCjSopqkzLnICSBe3m0r2OIylr0myick80TibVIhnlAgn5r1jmGPcz+xSZUZ8rmumI0uffRd4SL2lkCn2akiGOHgk0HZeKiAJVShZ8lYXtTl/GfTAUbPKRfMcisaZalHz3FZWBHIAulASQJXU6vnBuGy5VrUxgGbtrfpQkQJpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Va5X4fbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F89C4CEEB;
-	Mon,  2 Jun 2025 14:39:49 +0000 (UTC)
+	 MIME-Version; b=caxQuTBzjTaw7xwsZbM9I6yalgDgbTovsWctkwV8O/fzAXEP9iwS1NKQZEt/FnqEEJM2dQOBLs159EvUpiI8DLhu4UMPQ9wJktaTtOh0mVR5K2Yw8Ss+zzo4ebMyWrrPDtJHgzAwW+CzHbOW5IwZck6IFO5x3tpdLk8sxVkl7wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vo1MLZ+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A510C4CEEB;
+	Mon,  2 Jun 2025 14:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875190;
-	bh=ScRBQD0FuN+KdxINNlK9XmUrNHeh9lZdXz2oywGyhBk=;
+	s=korg; t=1748873953;
+	bh=dXg8y76OE49JWn2dLHIdukgbNu3qj1Ln+OpBOE2CiDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Va5X4fbFd7+udK4b+gulxJup9KhFiUSdiqniTBwtwtFF6zi26VD0/HUwIVx2hRrsU
-	 2YxB0Oyu3/2FVCWpYX1YnJJwqIluHvhiLvocORi7omNiUvPJA1ul3CBbRIxTvEmPy/
-	 QNFvfjQ3qEvARZVtmdoW0Qvs9d4FsGfYJq1m8jXw=
+	b=vo1MLZ+3Lk4H46x87UrUAvI4N+G8nnfJX9rgH3Dm3ZsKTTCyUPw9Dtc8gd24FU2xV
+	 HOlE+AhfFnlGqsn9ctJ97j9/g1pHBTYxy41oKzt3Xa/LI7bPO77NS51JbWD6VIexlx
+	 PNsxuPXcwBCX6u2VhH328F5pC9vQL4461TAHpfDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 056/270] staging: iio: adc: ad7816: Correct conditional logic for store mode
-Date: Mon,  2 Jun 2025 15:45:41 +0200
-Message-ID: <20250602134309.485494585@linuxfoundation.org>
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 278/444] bridge: mdb: Allow replace of a host-joined group
+Date: Mon,  2 Jun 2025 15:45:42 +0200
+Message-ID: <20250602134352.241929592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Petr Machata <petrm@nvidia.com>
 
-commit 2e922956277187655ed9bedf7b5c28906e51708f upstream.
+[ Upstream commit d9e9f6d7b7d0c520bb87f19d2cbc57aeeb2091d5 ]
 
-The mode setting logic in ad7816_store_mode was reversed due to
-incorrect handling of the strcmp return value. strcmp returns 0 on
-match, so the `if (strcmp(buf, "full"))` block executed when the
-input was not "full".
+Attempts to replace an MDB group membership of the host itself are
+currently bounced:
 
-This resulted in "full" setting the mode to AD7816_PD (power-down) and
-other inputs setting it to AD7816_FULL.
+ # ip link add name br up type bridge vlan_filtering 1
+ # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
+ # bridge mdb replace dev br port br grp 239.0.0.1 vid 2
+ Error: bridge: Group is already joined by host.
 
-Fix this by checking it against 0 to correctly check for "full" and
-"power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
+A similar operation done on a member port would succeed. Ignore the check
+for replacement of host group memberships as well.
 
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/stable/20250414152920.467505-1-gshahrouzi%40gmail.com
-Link: https://patch.msgid.link/20250414154050.469482-1-gshahrouzi@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The bit of code that this enables is br_multicast_host_join(), which, for
+already-joined groups only refreshes the MC group expiration timer, which
+is desirable; and a userspace notification, also desirable.
+
+Change a selftest that exercises this code path from expecting a rejection
+to expecting a pass. The rest of MDB selftests pass without modification.
+
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/e5c5188b9787ae806609e7ca3aa2a0a501b9b5c4.1738685648.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/adc/ad7816.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_mdb.c                                  | 2 +-
+ tools/testing/selftests/net/forwarding/bridge_mdb.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
+diff --git a/net/bridge/br_mdb.c b/net/bridge/br_mdb.c
+index 7305f5f8215ca..96bea0c8408fe 100644
+--- a/net/bridge/br_mdb.c
++++ b/net/bridge/br_mdb.c
+@@ -1030,7 +1030,7 @@ static int br_mdb_add_group(const struct br_mdb_config *cfg,
  
--	if (strcmp(buf, "full")) {
-+	if (strcmp(buf, "full") == 0) {
- 		gpiod_set_value(chip->rdwr_pin, 1);
- 		chip->mode = AD7816_FULL;
- 	} else {
+ 	/* host join */
+ 	if (!port) {
+-		if (mp->host_joined) {
++		if (mp->host_joined && !(cfg->nlflags & NLM_F_REPLACE)) {
+ 			NL_SET_ERR_MSG_MOD(extack, "Group is already joined by host");
+ 			return -EEXIST;
+ 		}
+diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+index a3678dfe5848a..c151374ddf040 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+@@ -149,7 +149,7 @@ cfg_test_host_common()
+ 	check_err $? "Failed to add $name host entry"
+ 
+ 	bridge mdb replace dev br0 port br0 grp $grp $state vid 10 &> /dev/null
+-	check_fail $? "Managed to replace $name host entry"
++	check_err $? "Failed to replace $name host entry"
+ 
+ 	bridge mdb del dev br0 port br0 grp $grp $state vid 10
+ 	bridge mdb get dev br0 grp $grp vid 10 &> /dev/null
+-- 
+2.39.5
+
 
 
 
