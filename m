@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-150132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB60DACB736
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE25ACB38C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87ABBA24B09
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2957E943387
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD49226D09;
-	Mon,  2 Jun 2025 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6544E221FD6;
+	Mon,  2 Jun 2025 14:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVbBQ1JH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHcqRkXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A30C226D04;
-	Mon,  2 Jun 2025 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAAD2C327E;
+	Mon,  2 Jun 2025 14:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876136; cv=none; b=H1UqRlSIzk1CFcUtL0AbzGY6p5WCTFVjm9T+tr3Nn3ylUuWf9ubAb/wx7BQlnkJwPLapbaQtnPjMLfZz+fQTSq7HxJHTVAfBuw1xZRk6MQWW/UtXS+ef62SMVODJGTOqdDXvut2U8tFkjbFtcHbxEikp9vV3iUcx0W6VQYkatmU=
+	t=1748874199; cv=none; b=jCxm6rx78U7u2tQ58lSvVhb5FypUkiFPX1RxjBO5WMR+HoVYisTMmvwb1EqoprrxHcV40G6xwphuax94hcyaH5+0FT7wFxm3TEiFHzJ8Ql4wWfz8+wTFMeyuV2z3yH+8Be81g0neXXVOarG8AD9GtP3YYdF5ACMGBXK1O6KJtFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876136; c=relaxed/simple;
-	bh=VGIeEXFzxzYbN5+DEAdy/MG6GE+y/yZmolu6SxJz7lI=;
+	s=arc-20240116; t=1748874199; c=relaxed/simple;
+	bh=6LB++vgicrkM6bI78T5JbFk7GifsAU+pXg0r09LGQAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M86uEq50DtkViRiLitCVwBufLktu1Hx0qQcpvgf4L+d+qFupZtqwMwHPTbnWoLhNP0GZLcSpqZPhUFz6uGX0nRaLU4TV2dePGHeLXNRgle/XgCENS+8gQC6cgaxKHzknQ4qo8Ff+KTM/dvTOcKg058VeSqNN7DdcPE8X7Xt7+UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVbBQ1JH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D87C4CEEB;
-	Mon,  2 Jun 2025 14:55:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tTSOb3DqHK+BD3lVuXwPfDIuO+TtKnVjLCHT5XyzE25gbR167cFR5bbKlZcLJivKhSc//WZo4NA/A0Q7Ey9AOxaRyJ/DdXV/Wg8ZYol20+bMx4jCmulHZHpxylqNZF2riwX5QtyuzwH3eaXS43dATySezX0MBvqHNRcCxK8YYAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHcqRkXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71705C4CEEE;
+	Mon,  2 Jun 2025 14:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876135;
-	bh=VGIeEXFzxzYbN5+DEAdy/MG6GE+y/yZmolu6SxJz7lI=;
+	s=korg; t=1748874199;
+	bh=6LB++vgicrkM6bI78T5JbFk7GifsAU+pXg0r09LGQAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVbBQ1JHCZG9EkoLJBT0OW3qbgylsK675dwdnxecHFJ1wtXhysUMRae7wVZpzj5om
-	 BBHE0ecIqqlcLKKufouqAALTRdQCTNrVaXfVV5w+JVi9ZOe8gMTn1j6xsL1dhOW/NB
-	 GX0RbvRCskAxE3x+qyRwIZNvAKUGuvDYlg7ovzb0=
+	b=bHcqRkXNxp+W1XalpIXoC4wv4BnRUIY2ogZl1jrtUVB9nOQQaVsF3CmnmMzt0s/a9
+	 zG+o4kGoE3hJpVFPe2kuMesm+IkrYC5kpOlFdS8+ysU1gnkumRtARGf07D5NpEN0o4
+	 +Wg+2IUP0fbkw7gZuTGRg4FMQYxtHnTZtFtXSpxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Bin <bin.li@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Ryan Wanner <Ryan.Wanner@microchip.com>,
-	Durai Manickam KR <durai.manickamkr@microchip.com>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/207] ARM: at91: pm: fix at91_suspend_finish for ZQ calibration
-Date: Mon,  2 Jun 2025 15:47:33 +0200
-Message-ID: <20250602134301.905051101@linuxfoundation.org>
+	Bert Karwatzki <spasswolf@web.de>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Subject: [PATCH 6.6 390/444] x86/mm/init: Handle the special case of device private pages in add_pages(), to not increase max_pfn and trigger dma_addressing_limited() bounce buffers bounce buffers
+Date: Mon,  2 Jun 2025 15:47:34 +0200
+Message-ID: <20250602134356.742091064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +71,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Bin <bin.li@microchip.com>
+From: Balbir Singh <balbirs@nvidia.com>
 
-[ Upstream commit bc4722c3598d0e2c2dbf9609a3d3198993093e2b ]
+commit 7170130e4c72ce0caa0cb42a1627c635cc262821 upstream.
 
-For sama7g5 and sama7d65 backup mode, we encountered a "ZQ calibrate error"
-during recalibrating the impedance in BootStrap.
-We found that the impedance value saved in at91_suspend_finish() before
-the DDR entered self-refresh mode did not match the resistor values. The
-ZDATA field in the DDR3PHY_ZQ0CR0 register uses a modified gray code to
-select the different impedance setting.
-But these gray code are incorrect, a workaournd from design team fixed the
-bug in the calibration logic. The ZDATA contains four independent impedance
-elements, but the algorithm combined the four elements into one. The elements
-were fixed using properly shifted offsets.
+As Bert Karwatzki reported, the following recent commit causes a
+performance regression on AMD iGPU and dGPU systems:
 
-Signed-off-by: Li Bin <bin.li@microchip.com>
-[nicolas.ferre@microchip.com: fix indentation and combine 2 patches]
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Tested-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Tested-by: Durai Manickam KR <durai.manickamkr@microchip.com>
-Tested-by: Andrei Simion <andrei.simion@microchip.com>
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Link: https://lore.kernel.org/r/28b33f9bcd0ca60ceba032969fe054d38f2b9577.1740671156.git.Ryan.Wanner@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+
+It exposed a bug with nokaslr and zone device interaction.
+
+The root cause of the bug is that, the GPU driver registers a zone
+device private memory region. When KASLR is disabled or the above commit
+is applied, the direct_map_physmem_end is set to much higher than 10 TiB
+typically to the 64TiB address. When zone device private memory is added
+to the system via add_pages(), it bumps up the max_pfn to the same
+value. This causes dma_addressing_limited() to return true, since the
+device cannot address memory all the way up to max_pfn.
+
+This caused a regression for games played on the iGPU, as it resulted in
+the DMA32 zone being used for GPU allocations.
+
+Fix this by not bumping up max_pfn on x86 systems, when pgmap is passed
+into add_pages(). The presence of pgmap is used to determine if device
+private memory is being added via add_pages().
+
+More details:
+
+devm_request_mem_region() and request_free_mem_region() request for
+device private memory. iomem_resource is passed as the base resource
+with start and end parameters. iomem_resource's end depends on several
+factors, including the platform and virtualization. On x86 for example
+on bare metal, this value is set to boot_cpu_data.x86_phys_bits.
+boot_cpu_data.x86_phys_bits can change depending on support for MKTME.
+By default it is set to the same as log2(direct_map_physmem_end) which
+is 46 to 52 bits depending on the number of levels in the page table.
+The allocation routines used iomem_resource's end and
+direct_map_physmem_end to figure out where to allocate the region.
+
+[ arch/powerpc is also impacted by this problem, but this patch does not fix
+  the issue for PowerPC. ]
+
+Testing:
+
+ 1. Tested on a virtual machine with test_hmm for zone device inseration
+
+ 2. A previous version of this patch was tested by Bert, please see:
+    https://lore.kernel.org/lkml/d87680bab997fdc9fb4e638983132af235d9a03a.camel@web.de/
+
+[ mingo: Clarified the comments and the changelog. ]
+
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Tested-by: Bert Karwatzki <spasswolf@web.de>
+Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
+Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Link: https://lore.kernel.org/r/20250401000752.249348-1-balbirs@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-at91/pm.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/mm/init_64.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
-index 91efc3d4de61d..777a8834b43e2 100644
---- a/arch/arm/mach-at91/pm.c
-+++ b/arch/arm/mach-at91/pm.c
-@@ -350,11 +350,12 @@ extern u32 at91_pm_suspend_in_sram_sz;
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -959,9 +959,18 @@ int add_pages(int nid, unsigned long sta
+ 	ret = __add_pages(nid, start_pfn, nr_pages, params);
+ 	WARN_ON_ONCE(ret);
  
- static int at91_suspend_finish(unsigned long val)
- {
--	unsigned char modified_gray_code[] = {
--		0x00, 0x01, 0x02, 0x03, 0x06, 0x07, 0x04, 0x05, 0x0c, 0x0d,
--		0x0e, 0x0f, 0x0a, 0x0b, 0x08, 0x09, 0x18, 0x19, 0x1a, 0x1b,
--		0x1e, 0x1f, 0x1c, 0x1d, 0x14, 0x15, 0x16, 0x17, 0x12, 0x13,
--		0x10, 0x11,
-+	/* SYNOPSYS workaround to fix a bug in the calibration logic */
-+	unsigned char modified_fix_code[] = {
-+		0x00, 0x01, 0x01, 0x06, 0x07, 0x0c, 0x06, 0x07, 0x0b, 0x18,
-+		0x0a, 0x0b, 0x0c, 0x0d, 0x0d, 0x0a, 0x13, 0x13, 0x12, 0x13,
-+		0x14, 0x15, 0x15, 0x12, 0x18, 0x19, 0x19, 0x1e, 0x1f, 0x14,
-+		0x1e, 0x1f,
- 	};
- 	unsigned int tmp, index;
- 	int i;
-@@ -365,25 +366,25 @@ static int at91_suspend_finish(unsigned long val)
- 		 * restore the ZQ0SR0 with the value saved here. But the
- 		 * calibration is buggy and restoring some values from ZQ0SR0
- 		 * is forbidden and risky thus we need to provide processed
--		 * values for these (modified gray code values).
-+		 * values for these.
- 		 */
- 		tmp = readl(soc_pm.data.ramc_phy + DDR3PHY_ZQ0SR0);
+-	/* update max_pfn, max_low_pfn and high_memory */
+-	update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
+-				  nr_pages << PAGE_SHIFT);
++	/*
++	 * Special case: add_pages() is called by memremap_pages() for adding device
++	 * private pages. Do not bump up max_pfn in the device private path,
++	 * because max_pfn changes affect dma_addressing_limited().
++	 *
++	 * dma_addressing_limited() returning true when max_pfn is the device's
++	 * addressable memory can force device drivers to use bounce buffers
++	 * and impact their performance negatively:
++	 */
++	if (!params->pgmap)
++		/* update max_pfn, max_low_pfn and high_memory */
++		update_end_of_memory_vars(start_pfn << PAGE_SHIFT, nr_pages << PAGE_SHIFT);
  
- 		/* Store pull-down output impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SR0_PDO_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] = modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] = modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDO_OFF;
- 
- 		/* Store pull-up output impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SR0_PUO_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PUO_OFF;
- 
- 		/* Store pull-down on-die termination impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SR0_PDODT_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDODT_OFF;
- 
- 		/* Store pull-up on-die termination impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SRO_PUODT_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SRO_PUODT_OFF;
- 
- 		/*
- 		 * The 1st 8 words of memory might get corrupted in the process
--- 
-2.39.5
-
+ 	return ret;
+ }
 
 
 
