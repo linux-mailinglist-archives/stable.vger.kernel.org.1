@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-148994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4CAACAFA7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:52:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7DAACB00F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F73E7A5E0D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C11418894BE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103CB1C5D72;
-	Mon,  2 Jun 2025 13:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048E52576;
+	Mon,  2 Jun 2025 13:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCT3dfeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xr7iw01I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C095B2C3247;
-	Mon,  2 Jun 2025 13:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47761DE881;
+	Mon,  2 Jun 2025 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872193; cv=none; b=k1GbcSXzgyb33ar0gg7oklQKlo2XBKfnuV2fdy3W+GryDHbAzs7D0o4hGu7jvWKJbXcf4BBVfIj8FIAWB1rcJMwi5iC7cqxtbDyqcoMMzv0jbfXlusv34Zeu+dJ77OxR5hxCdxG531wsam6GMYUk4Zcfyi5Q3T3PMOh48mQdVvA=
+	t=1748872745; cv=none; b=NDfgBUUB8BItcNjllR04HnnldIx1+HTe2xh5aQvM+IY1gKM9DNcpEolnESKkj+CXZWpYxYGALUy3fBqjqNd8TosUfjwTjd1Fhg5fUPaBD4Igjh5reVQSFFZwdVA41hlixSo9fd1wLkRx1eq8MjiIH2L1vUkkqd3mGG/2h6s1cqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872193; c=relaxed/simple;
-	bh=1nKWGXnUrINnAEcQRsaPXAhxUtiP/SvyFGJ9JQkNwZA=;
+	s=arc-20240116; t=1748872745; c=relaxed/simple;
+	bh=pcrUTpmtHO1yEzfLra4bvEZeNeUo4NXj7eKLJzx8kVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+RCPNK8cbhi2kO6T95rGxRWLfUvy5t/mnw6j7/O95uOlgRNs8Zn6cRvc6bbUNxXmaEaJ8s75qCtpBBAuMt/SMkFUzHnty7nFxOhmQUyP7NY9E+mMrsRdiOojPiX2FQnx2ZBJsmAgC/ZIemOpAZJvZGCVWlJ7rqhhyyd1HF/WRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCT3dfeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F84C4CEEB;
-	Mon,  2 Jun 2025 13:49:53 +0000 (UTC)
+	 MIME-Version; b=fedSagiCWqnL3zJFmIrmo0/AekHcDOXYF3cg8z/nEeHtofOAZGh192xD9oLcdS5WGQqeAtZUJ5uHlJiMbNB6aAVvjHlRgBVSKQzWWvYpBQPL9+qHGlEiGrW5xzOLJKlv0K8x52xYawKrcEI9h5iGLmhC9e75Cg3T9G8kIZ0kDHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xr7iw01I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23582C4CEEB;
+	Mon,  2 Jun 2025 13:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872193;
-	bh=1nKWGXnUrINnAEcQRsaPXAhxUtiP/SvyFGJ9JQkNwZA=;
+	s=korg; t=1748872745;
+	bh=pcrUTpmtHO1yEzfLra4bvEZeNeUo4NXj7eKLJzx8kVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCT3dfeGtLpgPEMjgrdy6Pda0Tu38EpAIlWcie2A1m3u47MG55WDlN9UjhudAJQ0A
-	 DQRtRmHUUEqHEDAdW4p6bhH/Ye/p6LiCSR/s3uJha4BPUCekI4XDxu8ERW905Jeucd
-	 XJFQInsMuY9/gaW6ogTzQ7r3Q6i5Stw6rVhDbppc=
+	b=xr7iw01IQS5PyRc0l/Y+RPAkxyYLySEpG7K6K2gstOprMyBjRHrYu505EL0MQKySE
+	 l23FRjXLVvHs4bYbqIzpOpOWkUvIHsFNboTBCzZ/YrrRWRHDYOFuAVDqVehYkNyIzo
+	 TUHgM7dx7dnjNhvkIWTcNFzzk2zNkW6JpNIZR1V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.15 48/49] iommu: Avoid introducing more races
-Date: Mon,  2 Jun 2025 15:47:40 +0200
-Message-ID: <20250602134239.825403013@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 55/73] nvmet: pci-epf: cleanup nvmet_pci_epf_raise_irq()
+Date: Mon,  2 Jun 2025 15:47:41 +0200
+Message-ID: <20250602134243.862899182@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 0c8e9c148e29a983e67060fb4944a8ca79d4362a upstream.
+[ Upstream commit 4236e600bf902202214aa6277e84c4738c56f762 ]
 
-Although the lock-juggling is only a temporary workaround, we don't want
-it to make things avoidably worse. Jason was right to be nervous, since
-bus_iommu_probe() doesn't care *which* IOMMU instance it's probing for,
-so it probably is possible for one walk to finish a probe which a
-different walk started, thus we do want to check for that.
+There is no point in taking the controller irq_lock and calling
+nvmet_pci_epf_should_raise_irq() for a completion queue which does not
+have IRQ enabled (NVMET_PCI_EPF_Q_IRQ_ENABLED flag is not set).
+Move the test for the NVMET_PCI_EPF_Q_IRQ_ENABLED flag out of
+nvmet_pci_epf_should_raise_irq() to the top of nvmet_pci_epf_raise_irq()
+to return early when no IRQ should be raised.
 
-Also there's no need to drop the lock just to have of_iommu_configure()
-do nothing when a fwspec already exists; check that directly and avoid
-opening a window at all in that (still somewhat likely) case.
+Also, use dev_err_ratelimited() to avoid a message storm under load when
+raising IRQs is failing.
 
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/09d901ad11b3a410fbb6e27f7d04ad4609c3fe4a.1741706365.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/nvme/target/pci-epf.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -422,13 +422,15 @@ static int iommu_init_device(struct devi
- 	 * is buried in the bus dma_configure path. Properly unpicking that is
- 	 * still a big job, so for now just invoke the whole thing. The device
- 	 * already having a driver bound means dma_configure has already run and
--	 * either found no IOMMU to wait for, or we're in its replay call right
--	 * now, so either way there's no point calling it again.
-+	 * found no IOMMU to wait for, so there's no point calling it again.
- 	 */
--	if (!dev->driver && dev->bus->dma_configure) {
-+	if (!dev->iommu->fwspec && !dev->driver && dev->bus->dma_configure) {
- 		mutex_unlock(&iommu_probe_device_lock);
- 		dev->bus->dma_configure(dev);
- 		mutex_lock(&iommu_probe_device_lock);
-+		/* If another instance finished the job for us, skip it */
-+		if (!dev->iommu || dev->iommu_group)
-+			return -ENODEV;
+diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
+index fbc167f47d8a6..17c0e5ee731a4 100644
+--- a/drivers/nvme/target/pci-epf.c
++++ b/drivers/nvme/target/pci-epf.c
+@@ -596,9 +596,6 @@ static bool nvmet_pci_epf_should_raise_irq(struct nvmet_pci_epf_ctrl *ctrl,
+ 	struct nvmet_pci_epf_irq_vector *iv = cq->iv;
+ 	bool ret;
+ 
+-	if (!test_bit(NVMET_PCI_EPF_Q_IRQ_ENABLED, &cq->flags))
+-		return false;
+-
+ 	/* IRQ coalescing for the admin queue is not allowed. */
+ 	if (!cq->qid)
+ 		return true;
+@@ -625,7 +622,8 @@ static void nvmet_pci_epf_raise_irq(struct nvmet_pci_epf_ctrl *ctrl,
+ 	struct pci_epf *epf = nvme_epf->epf;
+ 	int ret = 0;
+ 
+-	if (!test_bit(NVMET_PCI_EPF_Q_LIVE, &cq->flags))
++	if (!test_bit(NVMET_PCI_EPF_Q_LIVE, &cq->flags) ||
++	    !test_bit(NVMET_PCI_EPF_Q_IRQ_ENABLED, &cq->flags))
+ 		return;
+ 
+ 	mutex_lock(&ctrl->irq_lock);
+@@ -656,7 +654,9 @@ static void nvmet_pci_epf_raise_irq(struct nvmet_pci_epf_ctrl *ctrl,
  	}
- 	/*
- 	 * At this point, relevant devices either now have a fwspec which will
+ 
+ 	if (ret)
+-		dev_err(ctrl->dev, "Failed to raise IRQ (err=%d)\n", ret);
++		dev_err_ratelimited(ctrl->dev,
++				    "CQ[%u]: Failed to raise IRQ (err=%d)\n",
++				    cq->qid, ret);
+ 
+ unlock:
+ 	mutex_unlock(&ctrl->irq_lock);
+-- 
+2.39.5
+
 
 
 
