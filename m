@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D261ACB4B1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E6ACB262
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC08B4A57BB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D85617626E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899492248A0;
-	Mon,  2 Jun 2025 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92674227E89;
+	Mon,  2 Jun 2025 14:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4AAVN2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1bb8+rX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464792C327E;
-	Mon,  2 Jun 2025 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE191DED64;
+	Mon,  2 Jun 2025 14:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875054; cv=none; b=JujeUDBSxQ4E6swhcxqbeogIvNrCvXblNS0QwSxBs/Jaol1RbFlKuZa6kvR0mb4hDaTAQvZ5TcCx4x2k+ictJnKFMiSlmN5tc5OmkcR/B1c3xtuh9MR7ag/Wy4rGsRoEA98OZ+ehGep1b2PhyMZC4GrXgXXcH+NpoFq9Npwh8s0=
+	t=1748873743; cv=none; b=R/ZqlQD4b8oDV5GPETWOe5WN0TW1Nr/7JLyQwSxiUyBeIy7vi8WH9PN6pB0CIjjKMSDLMCijRc94KaHOVOeikUVfQHa5eeZRQeEmVwm/+p7X+1sZVNJbjMptlRwTOgwbA5bzkdysJm+EpVQ/BHk+HIF3GBI3Krg1HAOT17WyiiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875054; c=relaxed/simple;
-	bh=Nh7ihVqUm7Mpr/imBPiNuJ2WjuzWr0yuO7vvreGalA8=;
+	s=arc-20240116; t=1748873743; c=relaxed/simple;
+	bh=SBakNTplbwVsL9XzTrkAwDawCywIIE04l3iqrg5347I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ddaTyddU097nZa1naKp5RwC5M9J2d4Tvd5RJG3oJwKzO6L44YY7ASwEsVVXs/2IrlQ5DU9bn6aPK6uHnTkZnXkUSgwMOReR6GS/HKiM9xMmAipcik6XpzA4r5LZ8LTYl19oPQLIA0+FPENJAcG5YClpuByAVq0jgT6pCGBV/4iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4AAVN2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC2DC4CEEB;
-	Mon,  2 Jun 2025 14:37:33 +0000 (UTC)
+	 MIME-Version; b=MJqly1q+jyg1+iZmTAEbJRWYgBHgCbPfj8vjCU27nh+es9oT1GmeOe96zephyy1h3UGq0qgBCja1NDYY4+is/yaveRcC7U1XugsRCp/ETQ19PPWWcvEdx643ANld9+7zLvpsgXmPm/iye2J7LpzDdqT2R3cfBk0QvKpsft6xNAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1bb8+rX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE648C4CEEB;
+	Mon,  2 Jun 2025 14:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875054;
-	bh=Nh7ihVqUm7Mpr/imBPiNuJ2WjuzWr0yuO7vvreGalA8=;
+	s=korg; t=1748873743;
+	bh=SBakNTplbwVsL9XzTrkAwDawCywIIE04l3iqrg5347I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4AAVN2gxUXzTn+mW+e08THale6XDYXXbD1O+4cDXMNA/wjN4SjRjWy4yuhCfknH9
-	 LOdhcfjwhZ05Q2RL6ZBYAxlUYa2djER1nx8l6tDNpiUBtIBVac5qupBYDXySc6rGe5
-	 5phuSKx+sjfV8u4xJ+2bSqlbi6KJRSrsm/CUHJB4=
+	b=h1bb8+rXWykuqZmU2LID5BfZ1S445fKb/XuJuKV3L+5SV9jmchtwmEZsVMtXcOQMH
+	 xpgH41tWdu6m8qs3TEgI9Uxer3kPH6bnHkpTjYTKktcHHl2OZD/a8idbpo02sokt7C
+	 5yCEobgPD4csW1NzO4z2PoWduZhRkkWRNvTxniYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 5.10 014/270] tracing: Fix oob write in trace_seq_to_buffer()
+	Kees Cook <kees@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 235/444] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
 Date: Mon,  2 Jun 2025 15:44:59 +0200
-Message-ID: <20250602134307.776619126@linuxfoundation.org>
+Message-ID: <20250602134350.449253676@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
+[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
 
-syzbot reported this bug:
-==================================================================
-BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
-BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
-Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
+GCC can see that the value range for "order" is capped, but this leads
+it to consider that it might be negative, leading to a false positive
+warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
 
-CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
- trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
- tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
- ....
-==================================================================
+../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
+      |                                    ~~~~~~~~~~~^~~
+  'mlx4_alloc_db_from_pgdir': events 1-2
+  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     |                         |                                                   |                     |                         (2) out of array bounds here
+      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
+                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
+../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
+  664 |         unsigned long          *bits[2];
+      |                                 ^~~~
 
-It has been reported that trace_seq_to_buffer() tries to copy more data
-than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
-smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
+Switch the argument to unsigned int, which removes the compiler needing
+to consider negative values.
 
-Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
-Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
-Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
+ include/linux/mlx4/device.h                | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6685,13 +6685,14 @@ static ssize_t tracing_splice_read_pipe(
- 		/* Copy the data into the page, so we can start over. */
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
--					  trace_seq_used(&iter->seq));
-+					  min((size_t)trace_seq_used(&iter->seq),
-+						  PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
- 		}
- 		spd.partial[i].offset = 0;
--		spd.partial[i].len = trace_seq_used(&iter->seq);
-+		spd.partial[i].len = ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+index b330020dc0d67..f2bded847e61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
++++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
+@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
+ }
  
- 		trace_seq_init(&iter->seq);
- 	}
+ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+-				    struct mlx4_db *db, int order)
++				    struct mlx4_db *db, unsigned int order)
+ {
+-	int o;
++	unsigned int o;
+ 	int i;
+ 
+ 	for (o = order; o <= 1; ++o) {
+@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	return 0;
+ }
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 	struct mlx4_db_pgdir *pgdir;
+diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
+index 27f42f713c891..86f0f2a25a3d6 100644
+--- a/include/linux/mlx4/device.h
++++ b/include/linux/mlx4/device.h
+@@ -1135,7 +1135,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
+ 		       struct mlx4_buf *buf);
+ 
+-int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
++int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
+ void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
+ 
+ int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
+-- 
+2.39.5
+
 
 
 
