@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-150049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AB6ACB5C2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB63ACB851
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17FBF1BA4D6D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD044A53DC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1297322C325;
-	Mon,  2 Jun 2025 14:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24B8224AF1;
+	Mon,  2 Jun 2025 15:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i55yuTcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STvk0gIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AEE22ACFA;
-	Mon,  2 Jun 2025 14:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1392248B3;
+	Mon,  2 Jun 2025 15:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875873; cv=none; b=CqDcXN/ciUYVdF6/lkN0sUnHjj2Xt+8QFpsSka9revjTKZln/hNedxvCvbuwINojcT73aiKR5dAo+JhLp8sb9k8IsmpyvKXwKbJf4YXvGhh/Ei2joDio9HyZ7vGAwf8zmKNlVRcJsCeCtgWVL1FSTaoXHp7r8Rcq7HPRkHm6S8g=
+	t=1748877408; cv=none; b=o6GNLV8VS87JODKzTeehrMYkwqJiMO/N6fbKERt48YajIlCTOPExULrjqu99qOpnZwJU4GSGhvdtQhgE07RDX1lKhT1ZBWjy6k59pjfnZlfqPbcGrr/q89svReSA9Cfeb4jijZdCEjlWBb8ninULYBml/AurHhhSshlqOM0Mu48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875873; c=relaxed/simple;
-	bh=+Wlr4PpTfSX2qlIOOYabxfLV037jrY99Lt/o4WIEPsI=;
+	s=arc-20240116; t=1748877408; c=relaxed/simple;
+	bh=gC2wLOM8AFB9mcgVNFMGl1nDLUyGdlHQeAsnOg3Nnqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sv6jqNsVdNaUEcOlfXmQjNoTfXON1jHrQtvHS6vko08O1DMRCQSeuYoslmga1iiyBLHHBTleNMZwJVwC3VRf702Gb8OjajiaDZ/287AoMzHX5FOV+b0Z/P11Aty/h+Pq449XJautaYNhq5PbmwVMbRlQkxZVCAU52aL+R9rUQxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i55yuTcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311C6C4CEEB;
-	Mon,  2 Jun 2025 14:51:12 +0000 (UTC)
+	 MIME-Version; b=ACB+EHLxDLv2ZflIE/Qd39hbJH96w3yGbYokHTz77XGuY7BlFkC+WKfVTBqpSgibeDp7aUNaw235JeDL7J16gYIY/r0mPH0+IHx92hD9xj01bvkwKhe3D8ltltr+pS0IwqZtH9DV52zS48EW/J+7Zif1OmhsCjuLnWKgQV2Wt1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STvk0gIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BFAC4CEEB;
+	Mon,  2 Jun 2025 15:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875873;
-	bh=+Wlr4PpTfSX2qlIOOYabxfLV037jrY99Lt/o4WIEPsI=;
+	s=korg; t=1748877408;
+	bh=gC2wLOM8AFB9mcgVNFMGl1nDLUyGdlHQeAsnOg3Nnqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i55yuTcJIWFk2mEGjDfK5Cyn4CmJYDnSoln0KJOX8XzvDi7orcP99NMAEL7TfXuac
-	 yBUkLpD0+WuSwElXJ1YbPNPfIVsqykV4ArpdxXmpczucY7z6dNtAbh1trTxDX7MKuo
-	 jOx01TLUiscYa0b7nH4MItzVLeYRNEWfv3awOaxo=
+	b=STvk0gIyiys1ytp61+FnHH/pSaeORrbyKi5NtOI+Wzcofv964miyf1EEeHYi2Msdx
+	 t1XMrIrIk9rC3vLlTfQJw+cKySOrzVXiw3eCFOH2FV1MquUVmgS0VLLdGGKl/zVX0W
+	 CWFDbGGaSNK4JC3q5mk044naMEjXzpxAEl29H3YU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 258/270] pid: add pidfd_prepare()
+	Xulin Sun <xulin.sun@windriver.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 267/325] spi: spi-fsl-dspi: restrict register range for regmap access
 Date: Mon,  2 Jun 2025 15:49:03 +0200
-Message-ID: <20250602134317.880978666@linuxfoundation.org>
+Message-ID: <20250602134330.622643950@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-commit 6ae930d9dbf2d093157be33428538c91966d8a9f upstream.
+[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
 
-Add a new helper that allows to reserve a pidfd and allocates a new
-pidfd file that stashes the provided struct pid. This will allow us to
-remove places that either open code this function or that call
-pidfd_create() but then have to call close_fd() because there are still
-failure points after pidfd_create() has been called.
+DSPI registers are NOT continuous, some registers are reserved and
+accessing them from userspace will trigger external abort, add regmap
+register access table to avoid below abort.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230327-pidfd-file-api-v1-1-5c0e9a3158e4@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  For example on S32G:
+
+  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
+
+  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
+  ...
+  Call trace:
+  regmap_mmio_read32le+0x24/0x48
+  regmap_mmio_read+0x48/0x70
+  _regmap_bus_reg_read+0x38/0x48
+  _regmap_read+0x68/0x1b0
+  regmap_read+0x50/0x78
+  regmap_read_debugfs+0x120/0x338
+
+Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
+Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pid.h |    1 
- kernel/fork.c       |   85 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 86 insertions(+)
+ drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/include/linux/pid.h
-+++ b/include/linux/pid.h
-@@ -79,6 +79,7 @@ struct file;
- extern struct pid *pidfd_pid(const struct file *file);
- struct pid *pidfd_get_pid(unsigned int fd, unsigned int *flags);
- int pidfd_create(struct pid *pid, unsigned int flags);
-+int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret);
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 01930b52c4fb8..3f9609edac944 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0+
+ //
+ // Copyright 2013 Freescale Semiconductor, Inc.
+-// Copyright 2020 NXP
++// Copyright 2020-2025 NXP
+ //
+ // Freescale DSPI driver
+ // This file contains a driver for the Freescale DSPI
+@@ -1128,6 +1128,20 @@ static int dspi_resume(struct device *dev)
  
- static inline struct pid *get_pid(struct pid *pid)
- {
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1820,6 +1820,91 @@ const struct file_operations pidfd_fops
- #endif
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 
++static const struct regmap_range dspi_yes_ranges[] = {
++	regmap_reg_range(SPI_MCR, SPI_MCR),
++	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
++	regmap_reg_range(SPI_SR, SPI_TXFR3),
++	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
++	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
++	regmap_reg_range(SPI_SREX, SPI_SREX),
++};
++
++static const struct regmap_access_table dspi_access_table = {
++	.yes_ranges	= dspi_yes_ranges,
++	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
++};
++
+ static const struct regmap_range dspi_volatile_ranges[] = {
+ 	regmap_reg_range(SPI_MCR, SPI_TCR),
+ 	regmap_reg_range(SPI_SR, SPI_SR),
+@@ -1145,6 +1159,8 @@ static const struct regmap_config dspi_regmap_config = {
+ 	.reg_stride	= 4,
+ 	.max_register	= 0x88,
+ 	.volatile_table	= &dspi_volatile_table,
++	.rd_table	= &dspi_access_table,
++	.wr_table	= &dspi_access_table,
  };
  
-+/**
-+ * __pidfd_prepare - allocate a new pidfd_file and reserve a pidfd
-+ * @pid:   the struct pid for which to create a pidfd
-+ * @flags: flags of the new @pidfd
-+ * @pidfd: the pidfd to return
-+ *
-+ * Allocate a new file that stashes @pid and reserve a new pidfd number in the
-+ * caller's file descriptor table. The pidfd is reserved but not installed yet.
-+
-+ * The helper doesn't perform checks on @pid which makes it useful for pidfds
-+ * created via CLONE_PIDFD where @pid has no task attached when the pidfd and
-+ * pidfd file are prepared.
-+ *
-+ * If this function returns successfully the caller is responsible to either
-+ * call fd_install() passing the returned pidfd and pidfd file as arguments in
-+ * order to install the pidfd into its file descriptor table or they must use
-+ * put_unused_fd() and fput() on the returned pidfd and pidfd file
-+ * respectively.
-+ *
-+ * This function is useful when a pidfd must already be reserved but there
-+ * might still be points of failure afterwards and the caller wants to ensure
-+ * that no pidfd is leaked into its file descriptor table.
-+ *
-+ * Return: On success, a reserved pidfd is returned from the function and a new
-+ *         pidfd file is returned in the last argument to the function. On
-+ *         error, a negative error code is returned from the function and the
-+ *         last argument remains unchanged.
-+ */
-+static int __pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
-+{
-+	int pidfd;
-+	struct file *pidfd_file;
-+
-+	if (flags & ~(O_NONBLOCK | O_RDWR | O_CLOEXEC))
-+		return -EINVAL;
-+
-+	pidfd = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
-+	if (pidfd < 0)
-+		return pidfd;
-+
-+	pidfd_file = anon_inode_getfile("[pidfd]", &pidfd_fops, pid,
-+					flags | O_RDWR | O_CLOEXEC);
-+	if (IS_ERR(pidfd_file)) {
-+		put_unused_fd(pidfd);
-+		return PTR_ERR(pidfd_file);
-+	}
-+	get_pid(pid); /* held by pidfd_file now */
-+	*ret = pidfd_file;
-+	return pidfd;
-+}
-+
-+/**
-+ * pidfd_prepare - allocate a new pidfd_file and reserve a pidfd
-+ * @pid:   the struct pid for which to create a pidfd
-+ * @flags: flags of the new @pidfd
-+ * @pidfd: the pidfd to return
-+ *
-+ * Allocate a new file that stashes @pid and reserve a new pidfd number in the
-+ * caller's file descriptor table. The pidfd is reserved but not installed yet.
-+ *
-+ * The helper verifies that @pid is used as a thread group leader.
-+ *
-+ * If this function returns successfully the caller is responsible to either
-+ * call fd_install() passing the returned pidfd and pidfd file as arguments in
-+ * order to install the pidfd into its file descriptor table or they must use
-+ * put_unused_fd() and fput() on the returned pidfd and pidfd file
-+ * respectively.
-+ *
-+ * This function is useful when a pidfd must already be reserved but there
-+ * might still be points of failure afterwards and the caller wants to ensure
-+ * that no pidfd is leaked into its file descriptor table.
-+ *
-+ * Return: On success, a reserved pidfd is returned from the function and a new
-+ *         pidfd file is returned in the last argument to the function. On
-+ *         error, a negative error code is returned from the function and the
-+ *         last argument remains unchanged.
-+ */
-+int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
-+{
-+	if (!pid || !pid_has_task(pid, PIDTYPE_TGID))
-+		return -EINVAL;
-+
-+	return __pidfd_prepare(pid, flags, ret);
-+}
-+
- static void __delayed_free_task(struct rcu_head *rhp)
- {
- 	struct task_struct *tsk = container_of(rhp, struct task_struct, rcu);
+ static const struct regmap_range dspi_xspi_volatile_ranges[] = {
+@@ -1166,6 +1182,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
+ 		.reg_stride	= 4,
+ 		.max_register	= 0x13c,
+ 		.volatile_table	= &dspi_xspi_volatile_table,
++		.rd_table	= &dspi_access_table,
++		.wr_table	= &dspi_access_table,
+ 	},
+ 	{
+ 		.name		= "pushr",
+-- 
+2.39.5
+
 
 
 
