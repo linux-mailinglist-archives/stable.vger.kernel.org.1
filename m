@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C80ACB3A8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59350ACB2C5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAD486D12
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48164407373
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED9122B8D9;
-	Mon,  2 Jun 2025 14:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3368623184F;
+	Mon,  2 Jun 2025 14:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOV7xcen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXvBgvMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ACD22B8CF;
-	Mon,  2 Jun 2025 14:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32FD231846;
+	Mon,  2 Jun 2025 14:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874444; cv=none; b=rjhrg1gsuXi2KxK7Lg0GSd7uSoRlNctSDBg/0M+X3ZfJzvVPzeN3Rn8LI+FeErRgj5gzqpOR53/+M2OWsEviZ5ZDDzswXpt0EfqJLk55pR9MXncbywlLOede9ERX+WIFkT4CfFc23Z5sIYixaygFF1d2svEI71WWBnhmNbrIPuQ=
+	t=1748873912; cv=none; b=TO9Vh86veu69UvjPg/F5Ti0Da7unuDKPTU/cg07BkwO2MMggIf7rLeSC9s5JSyyJCOd72yOU+ahqCS5c3XjdR8C29hA5D/wiLJkY2FFrKgdbs5k5RH+KXetzlObbarLbjbpmppJDAs2bjmotL506aw+4PKWNbe7JAxgKZkQbnmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874444; c=relaxed/simple;
-	bh=6sySjQjg2QFDNA5IMmLmanHjtHsBntiIuOnZQpu6hhQ=;
+	s=arc-20240116; t=1748873912; c=relaxed/simple;
+	bh=Ik/9l/GV4e6YrJZ1CIoL7QlDShCuBFkl7kIaF1oclfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSNfkKUo22M900sodq4MYf+PMPB47eTYnLpJr7KyTMgtLtSg0CKLL3i8NDLQ5Av21LLK/pDtJGFWxShsnA/nZVSkJUoiUtCi3hP+rquIx8I8AotjePdngwv628/unBl/qiMal5CrsySoVwNVRs2uXsAydbTXJuc2IQBnqLeAy+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOV7xcen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7166C4CEEB;
-	Mon,  2 Jun 2025 14:27:23 +0000 (UTC)
+	 MIME-Version; b=dH2bSIAFToOx1clNKKKnWwyqoBhcpQcBXF2+07pj3X82BzRKpIxobFGKz4K02+S40Y3MQXaPBGp5mUeCqWZQThKJoSxDan2CeodWusS1q6S2LR4mZ+HdQ/wh4Ni/8r2FEKLTwCyfyYJ2NtmV8jpt7pi2qmRFu+cPPbLa3Chxt0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXvBgvMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762EBC4CEEB;
+	Mon,  2 Jun 2025 14:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874444;
-	bh=6sySjQjg2QFDNA5IMmLmanHjtHsBntiIuOnZQpu6hhQ=;
+	s=korg; t=1748873911;
+	bh=Ik/9l/GV4e6YrJZ1CIoL7QlDShCuBFkl7kIaF1oclfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOV7xcenrVKuguYgsP1/Sm0Mc1XA7W1K47A4mkARGUjSpC4Ie6wZ70KRHkjaksyP1
-	 EWYm7P27wfUzpqpBTQP/4fFcVu6qWZmfKGvOP68GZosk8B2l78h3np7IykS0/vOw8J
-	 lJPtnf6tOEjX/xdVhezy07szSi5QT0Sv3w8q1LU4=
+	b=CXvBgvMaeedWJ3dEvSToex3HW7DUqi86PfoE05DRyUecCDWWKwOpE9D6zjRXPJMVe
+	 JTf9clOHHsSZ7ZCfgrpOeh4ScEHHRo7TtDtL7sLRmS0jg6quWiClVoQ2UEGT/GzGol
+	 tOTESS1mlDJt77a0DdhTPdyMso8E1JC1y+wPYPOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/204] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
+Subject: [PATCH 6.6 294/444] drm/ast: Find VBIOS mode from regular display size
 Date: Mon,  2 Jun 2025 15:45:58 +0200
-Message-ID: <20250602134256.673218566@linuxfoundation.org>
+Message-ID: <20250602134352.885157834@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 ]
+[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
 
-With ACPI in place, gicv2m_get_fwnode() is registered with the pci
-subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
-during a PCI host bridge probe. But, the call back is wrongly marked as
-__init, causing it to be freed, while being registered with the PCI
-subsystem and could trigger:
+The ast driver looks up supplied display modes from an internal list of
+display modes supported by the VBIOS.
 
- Unable to handle kernel paging request at virtual address ffff8000816c0400
-  gicv2m_get_fwnode+0x0/0x58 (P)
-  pci_set_bus_msi_domain+0x74/0x88
-  pci_register_host_bridge+0x194/0x548
+Do not use the crtc_-prefixed display values from struct drm_display_mode
+for looking up the VBIOS mode. The fields contain raw values that the
+driver programs to hardware. They are affected by display settings like
+double-scan or interlace.
 
-This is easily reproducible on a Juno board with ACPI boot.
+Instead use the regular vdisplay and hdisplay fields for lookup. As the
+programmed values can now differ from the values used for lookup, set
+struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
+mode.
 
-Retain the function for later use.
-
-Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index dbb15daf6ff1c..2468b285c77c2 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -457,7 +457,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- #ifdef CONFIG_ACPI
- static int acpi_num_msi;
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 3de0f457fff6a..5f58da6ebaadb 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -132,7 +132,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		return false;
+ 	}
  
--static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
-+static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
- {
- 	struct v2m_data *data;
+-	switch (mode->crtc_hdisplay) {
++	switch (mode->hdisplay) {
+ 	case 640:
+ 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
+ 		break;
+@@ -146,7 +146,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1152x864[refresh_rate_index];
+ 		break;
+ 	case 1280:
+-		if (mode->crtc_vdisplay == 800)
++		if (mode->vdisplay == 800)
+ 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
+@@ -158,7 +158,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
+ 		break;
+ 	case 1600:
+-		if (mode->crtc_vdisplay == 900)
++		if (mode->vdisplay == 900)
+ 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
+@@ -167,7 +167,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
+ 		break;
+ 	case 1920:
+-		if (mode->crtc_vdisplay == 1080)
++		if (mode->vdisplay == 1080)
+ 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
+@@ -211,6 +211,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
+ 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
  
++	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
+ 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
+ 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
+ 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
+@@ -220,6 +221,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 					 vbios_mode->enh_table->hfp +
+ 					 vbios_mode->enh_table->hsync);
+ 
++	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
+ 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
+ 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
+ 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
 -- 
 2.39.5
 
