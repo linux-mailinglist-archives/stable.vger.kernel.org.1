@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E521ACB460
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8952CACB805
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 842D07B152A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A22B84C2470
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7174226883;
-	Mon,  2 Jun 2025 14:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D09F2236F4;
+	Mon,  2 Jun 2025 15:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FswmgaH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MaxFhL/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F4822576E;
-	Mon,  2 Jun 2025 14:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE252236F0;
+	Mon,  2 Jun 2025 15:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875460; cv=none; b=IpFpJVpI++ltpuUzxjun0oEfhNdWCszSFiOlFoyQuCxqL14i7xp4rF227XeyBdyP4Qicdc3SYqYjpNk+75h+tmCG3Ue1C+8O5vzMP/zWK98p5tdw1l/HQzkkmv/XmZL0ic45vIXZHROSF+ZmysxGDS5m8Y22FWfGxIMk86bM6bc=
+	t=1748877033; cv=none; b=tBlsJXR8FDsSwrtbz7EAHhEpG/Y6gJOXJ2yv3x/1JWxXh8cEIk0JKbTUJD+6z+PtS7E/N90sppvDxg73esaanxVo6OG7crPL7e+E1sfwAbSYkhEvd9cHr36H+jJl3Q5GgH1ligtk3tWW5JtpqaguwQyiuByUhU2qpP8Yya+QP1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875460; c=relaxed/simple;
-	bh=71NVS0avkHOPcs41uTh6Xex65OwG/noOnhgQ2gSh5ak=;
+	s=arc-20240116; t=1748877033; c=relaxed/simple;
+	bh=hkVmhuNmXdux744vr6Tzh3XMvjX4irB8//F1Sq8rc0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RZ4zxp16pCPGQ7XkWMKhcw+49DXESNZiudnu1xOjlgo15O4l9JMlX2lGb1k1+IupsCEUUZMsG/Qlns3paBD2CNK3cwMomYgmWq1xq/hwID2VcT3qhUjG0W0xDMizTpfvTirX+F2bQ4ZEYqIKKBGStZ1vZYtYS8e8+6AvupOqa9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FswmgaH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4880C4CEEB;
-	Mon,  2 Jun 2025 14:44:19 +0000 (UTC)
+	 MIME-Version; b=Inc5jC5SOI8LAy2j0X9h47oZhl4nsTOkFS36hYtF0s4K5FVxJpvHha81pkwLkfm9X/MB9bwGWT94zvwV6Uih4BRN2iaJls3x/9JtNeCHLmVB2zDug41KyjiLy7PoOhc2yodtpO8SWENhbewj7L0dTtdNvja7nHnvhGxmsqDmsnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MaxFhL/8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90473C4CEEB;
+	Mon,  2 Jun 2025 15:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875460;
-	bh=71NVS0avkHOPcs41uTh6Xex65OwG/noOnhgQ2gSh5ak=;
+	s=korg; t=1748877032;
+	bh=hkVmhuNmXdux744vr6Tzh3XMvjX4irB8//F1Sq8rc0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FswmgaH6IHAFUFaso2ughe4tUa3brNZV6tNmU6yl/jmhCOaSJr6x0utbxd4hdXagz
-	 Mv8qAVtNSihB3l0RLumSxM/x5GRdVQguJNm06jO+OthsC9sHh3UnpJCSi3Drk2jqL8
-	 0v/4dNs+XSkRHRWFE2K8GSoqF1uGr+d0Pz/ntX4o=
+	b=MaxFhL/8JK+ErApIRwdlXOkYWungX7BHooVP47wpPWZYvOjBwoxEuU7SZwole3vPr
+	 MkKHP1R6pt4NzBU6i1MQeQUm0D7AmydqhHcMaBkEVIMD+PvuvdBPiAGKQ3UzL9npFp
+	 aKwvORwTv1NkBGiyZl3qza3d7d8Gt2PBPUg/rlMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/270] scsi: st: Tighten the page format heuristics with MODE SELECT
+Subject: [PATCH 6.1 151/325] wifi: rtw88: Fix rtw_desc_to_mcsrate() to handle MCS16-31
 Date: Mon,  2 Jun 2025 15:47:07 +0200
-Message-ID: <20250602134313.039477567@linuxfoundation.org>
+Message-ID: <20250602134325.951068166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
+[ Upstream commit 86d04f8f991a0509e318fe886d5a1cf795736c7d ]
 
-In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
-not correctly implement it. The st driver first tries MODE SELECT with the
-page format bit set to set the block descriptor.  If not successful, the
-non-page format is tried.
+This function translates the rate number reported by the hardware into
+something mac80211 can understand. It was ignoring the 3SS and 4SS HT
+rates. Translate them too.
 
-The test only tests the sense code and this triggers also from illegal
-parameter in the parameter list. The test is limited to "old" devices and
-made more strict to remove false alarms.
+Also set *nss to 0 for the HT rates, just to make sure it's
+initialised.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/d0a5a86b-4869-47f6-a5a7-01c0f987cc7f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/util.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 465fe83b49e98..47e59b74c09d2 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3076,7 +3076,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			   cmd_in == MTSETDRVBUFFER ||
- 			   cmd_in == SET_DENS_AND_BLK) {
- 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
--			    !(STp->use_pf & PF_TESTED)) {
-+				cmdstatp->sense_hdr.asc == 0x24 &&
-+				(STp->device)->scsi_level <= SCSI_2 &&
-+				!(STp->use_pf & PF_TESTED)) {
- 				/* Try the other possible state of Page Format if not
- 				   already tried */
- 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
+diff --git a/drivers/net/wireless/realtek/rtw88/util.c b/drivers/net/wireless/realtek/rtw88/util.c
+index cdfd66a85075a..43cd06aa39b13 100644
+--- a/drivers/net/wireless/realtek/rtw88/util.c
++++ b/drivers/net/wireless/realtek/rtw88/util.c
+@@ -101,7 +101,8 @@ void rtw_desc_to_mcsrate(u16 rate, u8 *mcs, u8 *nss)
+ 		*nss = 4;
+ 		*mcs = rate - DESC_RATEVHT4SS_MCS0;
+ 	} else if (rate >= DESC_RATEMCS0 &&
+-		   rate <= DESC_RATEMCS15) {
++		   rate <= DESC_RATEMCS31) {
++		*nss = 0;
+ 		*mcs = rate - DESC_RATEMCS0;
+ 	}
+ }
 -- 
 2.39.5
 
