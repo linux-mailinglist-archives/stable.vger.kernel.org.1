@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-150605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FB5ACB9D4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:49:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D340EACB9D7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32181172813
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A88DF3BFFD2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CC218FDD5;
-	Mon,  2 Jun 2025 16:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B90C18FDD5;
+	Mon,  2 Jun 2025 16:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJobAp6v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dq+t6lrJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5675E42A8F;
-	Mon,  2 Jun 2025 16:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C75A42A8F;
+	Mon,  2 Jun 2025 16:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748882952; cv=none; b=r8cJtP8gPVV+MyHQ86+eIRfFDTY7kGq1QpiTCCq9riBZWSTT8/dNdVpth+XH8uit+c2Kf97hDwFtvTjjHGOjBmlMWRhV5rXaWZuIJFS1rFSt5JSAiyJJqsnmR1dYGjC9jXoCSa9TLI4tq+sJ1K8ljKr2QhNTUkDwu7xSLNjE14A=
+	t=1748883029; cv=none; b=cJ3mrGsMUWNpukhqe6sCc0XsCF6fSc7mLDTl2GUzhjCaRrDdSkUHrz21StF/lNJc0xI8BT2QvkOHqdalmT5Dm0pDrssN75y7PXxCkZWxZnD8dlI0qDCiDHjRhAbZSzffSRKpfpOZSAOS+8dHSe1rYJjP/CtMQmeiW3OLrHsmPbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748882952; c=relaxed/simple;
-	bh=c0gEGMhBwwH3EsG3J6mtSe3TBHd4NML2arG+mH1i/Eo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PA6eyPaFH5MtbaLlR9HsVBzXkLBTKqlFcf56zinjumjFcm36fw+zR9HHUdY46LD1H+8CgbUrqJMhurWiyZwKuaA7x3c78u+xVVre1B5GSpVLIjMf6F4/+J/zpWr3xHQ+nGVgO42WmgA8KwJ7RdTee+bnJJivFlqPpJaMR+wNPOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJobAp6v; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1748883029; c=relaxed/simple;
+	bh=ZIwZgPHNcQ18TGkQe8WeINE1XIXHcXzAPb10jgUSEeA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=j7SW7/q7GjjjctrQjQtQ/1hVZ4Qr6oDjTOHm0yxnN0P8fyvbgidSl69xORwhLdYHi1Vi2FltQZ6bzn/cYE3un3zOAdHu1bIFbmfkLCjCi92350AxBCJfrkmbuCxOgLKQzSRqc/sRg9lNfzv6GawoSKRFQiiLKsx90r+BJE3RcFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dq+t6lrJ; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2351ffb669cso35979545ad.2;
-        Mon, 02 Jun 2025 09:49:11 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2352400344aso31512005ad.2;
+        Mon, 02 Jun 2025 09:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748882950; x=1749487750; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=HknikpJA2FcmTw342+lb8lkp3yYgT8HLedmbOD4V3nk=;
-        b=bJobAp6vNH5FAdKqBoxSz7GPfuXVWjfwFxaHxX9BPGvBu7VynGFBVwe/p4udxdIv2G
-         TNr6n+pw7fwq4Cb4PVM3ZgHO2MAd/CyoWiZx97uQ5WBKQVEH/5Q6v7TPLcCkpSVIU5Ps
-         u7ic/vLH0SkVBjhxYeMV1x2iodVwaptI/VQLwjq7al+ksfPCNDAB4R/O/Z765YRd07Xu
-         Lu9AEIluO8bnmyoqTX22q5C2ke4vAMQplS2ZAk3bgr+AsAkKnD1w8zQO90XgJKhYhyrP
-         ezna5AJh2d5W0UOxt1W09tbsgQDslrZObLddanlP3GZg0o+EnPEAhhs2+E9njoodnT41
-         dP1g==
+        d=gmail.com; s=20230601; t=1748883027; x=1749487827; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=EDoZvXIVFg1ip/4QjVxd1zFeSBPY4719u7+jKFjyKxY=;
+        b=dq+t6lrJIy2J5iDyTcMCqdajtwK74QWooMhrT7M5fs7ooPY6cFBsLJriejaCKd8oen
+         rX0/2QGJQRdk7FNpkOa7iF8vNhiFYT8b8Duv1MIHiT+ZMXdEAtzV1ViNgxGyM1nJwcwK
+         LmGaJVksXyJMzpy4FMs2zwjX6D+v91h8eB18MYsfRLV0hF2Xt3E7GffmnOzo7C33l5G6
+         XZjI5z2QI53nzk2t1LH68aDf4l6/WDfaIHpo83xWWTn9cmCmLHvwYZkfUaiz7LaJF8A8
+         PzJqZHOiW8bhusXsu5aOlhcb957V+3RTn5hYBZixE4O3JAZdzonr/l6jXWzMOnCZPcjh
+         wZ+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748882950; x=1749487750;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HknikpJA2FcmTw342+lb8lkp3yYgT8HLedmbOD4V3nk=;
-        b=E/uvrNNUZdTvi0nfQoDa0MHDmLCq0nhdaSNg4prYcATBAs0YFdKs19UwtLpQLkNQuf
-         aMlEPEImLwHenNEkj9LumDevhi85d3d66+s0EvxTIf4UA4F9zkS+/EtYaggILDUX9J72
-         NZBYEUuuJwkg6gCJiIhfNB9UyL0cUN02XBIcEga1R9HYLOhlWlZCwheVQ51/VcSDpymf
-         EM7yAErV3bQYdEr5aoYXQIGCgC+lj2JdIJzA9UloFTP0ePk9dxoXq76/brLIzhn/spk5
-         ghmcOuyIE+SH5EQjZeLM8dnTb1S+RxBZRMHf/jDMNyM+qMwWFW4khuQsyGCLy082vnJQ
-         1l4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVFukudEwoFtMUv2oC+Z4og6GhvjbMjfvd4DqK0lowJnEpkPkX5kuin0PytNLHFbwUenxf5jhVm@vger.kernel.org, AJvYcCVQ07jkVUAqgvj90cagerQetFY8qFVVBZN79IfT0utZ9O/7HL/5Du1rwCYWVCYGvvTbSIxF47CCU8AVd/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMGlMYvcT5GquA/XHNqdx1VgIDezJ+0vxfREtMQwIT1woGw2ls
-	WJZKJKRPKbYnmfw+loNY7wX9UFppk3AUmDy5UoF4UNUHBPg/ByJFwswo
-X-Gm-Gg: ASbGncusRmrvuikoPpIkg8NPFioZccteaCbiMbLY8DP5AtuUsCO0GcRFWbPev+D49l5
-	gAfwkelvtKiQhn/f8xIdaI27f9Q3D68Jq33wTf34aHBwkyoLHrRYhOg628SC43eKe6o5Tr1JjoU
-	Xjpg+wH4OcBDGmeQ6Am5+d+HgThWwAUrZ0FzGc9QxdW+lVSJE8Wh+BMBTEYJqlrjm4RGg4BfJQ0
-	qis6JVVbNVPSGZl0ZreKDcp0EGkBsWz9Vd8CH5kCVBlU7koeFVI4VpXAGM9Fqv/Zi2XPmrnqOv/
-	mROPvQ0HGe72jud4ejGb6rTzPZvS1rN5gOebi4EMAB2rxJpVjnF4p5qv+kfcRbs03sVylvcRg8g
-	QBKI=
-X-Google-Smtp-Source: AGHT+IHI1CdVRfDD9bf+nXVVrQOXSVtm+Yt+Yys2GsvFnPNTkgMLFR5+P/Cn+V3/3WtyF1CZOw0dEg==
-X-Received: by 2002:a17:902:dac5:b0:234:a139:11e7 with SMTP id d9443c01a7336-2355f76c20amr137080885ad.35.1748882950526;
-        Mon, 02 Jun 2025 09:49:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748883027; x=1749487827;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EDoZvXIVFg1ip/4QjVxd1zFeSBPY4719u7+jKFjyKxY=;
+        b=tSPw/JQW09k1hqz5+yeklpxJUdvSJ5Ts2B3EySjSXhZA0nTSOlTzBry5l8DMehOcOU
+         YV/fLrOv3OiuoKYMwGaPr2PwYTCjjaP0KmNfyqcmRbuyi5nM1eK6BBjUL2S4ZZFSvTwC
+         vs9iU7Gout1Ff1wkotkWh3PTZAJEFZYFfZ5Szeb8OtSjZDmQ7ocjFdddl4CHXAEnbwH1
+         zB0RA/kpj2GTyFgpr4LOJyHrGA5TEVZNY5Fh7q4HyRaSL8816MygrM4FOnO5Kc+MKRDn
+         RSqQXT6rUnJPVyUmTNIagkw2k4pBZWWCgCPtqvIKU1CWlMJYVo+d9VWmU3diDLTc/rvr
+         7new==
+X-Forwarded-Encrypted: i=1; AJvYcCUp2nHJu9HUzVjW/5Tk/i8Jex3XWx06kFeid8GiCrfncOyO46xmU25AbEUk4aJ2BO3EqKk/YWBq@vger.kernel.org, AJvYcCUtLqoUOkoqJ36ERuhvTpTy2GcoQ+KKDslhVXUPzyT5qQPyMZOUKCRp9WdTMJ9Xzdf6ZN7g1PFzNL6QhnA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/3hwp9GPghHXkR2bkVKHOFJ21/cqHOnkBYdd2jcOp0EWJIP6Q
+	X/8E70BjzSJVqP9I/TRdkADO0jWcOlBtipkvB6Q0KywWZeGS3GGIwVqu
+X-Gm-Gg: ASbGnctziuEOnhPBoOLTm8ldDvokjxmr6eFFkJw+VKwavy9YoasuII7jYlULp7/mCdQ
+	SOt+rI+EXZsZUzhmcAuY8nGlbL1aOokJrDfmj7epG5svjxJh9JzmB3OJAkXHpjyfEi2QdX9+zsT
+	cwiJpFO9HV8AkMI7iFpnJS1q4feoJ9P4u06pLjOsdlQfg2GZU5lc6ZStiyKvrvVbui9eXTYgPzt
+	YKjqo/N152Tjz7MUvSGR6ZHBGeHoeUyN5wJviqG1EsmZhtg5+JgEDtxyJQnmWbl/jMFvnqaJlWF
+	kbFHU1e/hj3HIhFZM5Er5krdpBDcfzMSCOKxSKGfsrHnPHLJ8CoVeNflJt54E0e/eNZcfWMnG6l
+	Y9K+ed0rDHPii/w==
+X-Google-Smtp-Source: AGHT+IGNxiRDe4Ud/5BHEt0ATTLDAtxMlUa3cyZcjVWxv+ZVbNDDtpY239lMj23catSMWAOUQW65KQ==
+X-Received: by 2002:a17:902:f690:b0:234:c8f6:1afb with SMTP id d9443c01a7336-23527bcfd20mr221813195ad.0.1748883026573;
+        Mon, 02 Jun 2025 09:50:26 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb96fe8sm5767803a12.59.2025.06.02.09.49.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506cd3438sm72742015ad.136.2025.06.02.09.50.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Jun 2025 09:49:09 -0700 (PDT)
-Message-ID: <4c608184-5a64-4814-a70a-d2395662d437@gmail.com>
-Date: Mon, 2 Jun 2025 09:49:08 -0700
+        Mon, 02 Jun 2025 09:50:26 -0700 (PDT)
+Message-ID: <52e321d9-2695-4677-b8bf-4be99fc0d681@gmail.com>
+Date: Mon, 2 Jun 2025 09:50:24 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,6 +84,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 5.10 000/270] 5.10.238-rc1 review
+From: Florian Fainelli <f.fainelli@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -92,8 +93,8 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
  conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
 References: <20250602134307.195171844@linuxfoundation.org>
+ <4c608184-5a64-4814-a70a-d2395662d437@gmail.com>
 Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; keydata=
  xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
  xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
@@ -127,53 +128,92 @@ Autocrypt: addr=f.fainelli@gmail.com; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJn
  uAtCBQkxtc7uAAoJEGFXmRW1Y3YOJHUAoLuIJDcJtl7ZksBQa+n2T7T5zXoZAJ9EnFa2JZh7
  WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <4c608184-5a64-4814-a70a-d2395662d437@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/2/25 06:44, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.238 release.
-> There are 270 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 6/2/25 09:49, Florian Fainelli wrote:
+> On 6/2/25 06:44, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 5.10.238 release.
+>> There are 270 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
+>> patch-5.10.238-rc1.gz
+>> or in the git tree and branch at:
+>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable- 
+>> rc.git linux-5.10.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
 > 
-> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
-> Anything received after that time might be too late.
+> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+> BMIPS_GENERIC:
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.238-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 > 
-> thanks,
+> Similar build warning as reported for 5.4, due to the same commit:
 > 
-> greg k-h
+> commit b47e6abc7dc5772ecb45383d9956f9fcb7fdf33c
+> Author: Jeongjun Park <aha310510@gmail.com>
+> Date:   Tue Apr 22 20:30:25 2025 +0900
+> 
+>      tracing: Fix oob write in trace_seq_to_buffer()
+> 
+>      commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
+> 
+> In file included from ./include/linux/kernel.h:15,
+>                   from ./include/asm-generic/bug.h:20,
+>                   from ./arch/arm/include/asm/bug.h:60,
+>                   from ./include/linux/bug.h:5,
+>                   from ./include/linux/mmdebug.h:5,
+>                   from ./include/linux/mm.h:9,
+>                   from ./include/linux/ring_buffer.h:5,
+>                   from kernel/trace/trace.c:15:
+> kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
+> ./include/linux/minmax.h:20:35: warning: comparison of distinct pointer 
+> types lacks a cast
+>     20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+>        |                                   ^~
+> ./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
+>     26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+>        |                  ^~~~~~~~~~~
+> ./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
+>     36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+>        |                               ^~~~~~~~~~
+> ./include/linux/minmax.h:45:25: note: in expansion of macro '__careful_cmp'
+>     45 | #define min(x, y)       __careful_cmp(x, y, <)
+>        |                         ^~~~~~~~~~~~~
+> kernel/trace/trace.c:6688:43: note: in expansion of macro 'min'
+>   6688 | min((size_t)trace_seq_used(&iter->seq),
+>        |                                           ^~~
+> 
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+And also this one:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+commit e0a3a33cecd3ce2fde1de4ff0e223dc1db484a8d
+Author: Eric Dumazet <edumazet@google.com>
+Date:   Wed Mar 5 13:05:50 2025 +0000
 
-Similar build warning as reported for 5.4, due to the same commit:
+     tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
 
-commit b47e6abc7dc5772ecb45383d9956f9fcb7fdf33c
-Author: Jeongjun Park <aha310510@gmail.com>
-Date:   Tue Apr 22 20:30:25 2025 +0900
+     [ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
 
-     tracing: Fix oob write in trace_seq_to_buffer()
 
-     commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
+on ARM64:
 
 In file included from ./include/linux/kernel.h:15,
-                  from ./include/asm-generic/bug.h:20,
-                  from ./arch/arm/include/asm/bug.h:60,
-                  from ./include/linux/bug.h:5,
-                  from ./include/linux/mmdebug.h:5,
-                  from ./include/linux/mm.h:9,
-                  from ./include/linux/ring_buffer.h:5,
-                  from kernel/trace/trace.c:15:
-kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
+                  from ./include/linux/list.h:9,
+                  from ./include/linux/module.h:12,
+                  from net/ipv4/inet_hashtables.c:12:
+net/ipv4/inet_hashtables.c: In function 'inet_ehash_locks_alloc':
 ./include/linux/minmax.h:20:35: warning: comparison of distinct pointer 
 types lacks a cast
     20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
@@ -184,13 +224,14 @@ types lacks a cast
 ./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
     36 |         __builtin_choose_expr(__safe_cmp(x, y), \
        |                               ^~~~~~~~~~
-./include/linux/minmax.h:45:25: note: in expansion of macro '__careful_cmp'
-    45 | #define min(x, y)       __careful_cmp(x, y, <)
+./include/linux/minmax.h:52:25: note: in expansion of macro '__careful_cmp'
+    52 | #define max(x, y)       __careful_cmp(x, y, >)
        |                         ^~~~~~~~~~~~~
-kernel/trace/trace.c:6688:43: note: in expansion of macro 'min'
-  6688 | 
-min((size_t)trace_seq_used(&iter->seq),
-       |                                           ^~~
+net/ipv4/inet_hashtables.c:946:19: note: in expansion of macro 'max'
+   946 |         nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / 
+locksz);
+       |                   ^~~
+
 
 -- 
 Florian
