@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EE6ACB2D0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EEDACB311
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E0897A9F8D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C5E1946B66
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D1E22538F;
-	Mon,  2 Jun 2025 14:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FD2238C35;
+	Mon,  2 Jun 2025 14:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdOo3RBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5hD5pZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039A822331C;
-	Mon,  2 Jun 2025 14:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29C221CA07;
+	Mon,  2 Jun 2025 14:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874566; cv=none; b=VtrwLUnlBPIMUvxCxk3KmLBSm6dLlw9m5xNxALGQI4DNAR8wY/rlZKWMnZGsPtoI4skc0ERoumn8ywpCHpR6Ro8PzYeXg7ibKJcI5MrQEivHoJUNBTgy/mKjFASxe8LnUCd8isUlno6p+d8gaY/seZlTdjB/uyoNtrLtDkSJZJ8=
+	t=1748874032; cv=none; b=dMIWa+SP/JBF6WlqBG2bVD4ry0nMcLB0W89+cNu0GGRlUUtgv6uHikhDJqOCjh1JvWCgBaSVF8Pinp6SFGwReutgIxKLyjhgZZSUbnVg0pwy09wCpsW4rDzkswAONggl1FmP4CSStM7HmgELkXe0LyEAK60QRhq70o2gRt5wW6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874566; c=relaxed/simple;
-	bh=VHeGDj7hfq3sjnbgzyWi5L5kkUazACXlLVZVRv1o58s=;
+	s=arc-20240116; t=1748874032; c=relaxed/simple;
+	bh=qQtNnzVCZrcXS0GmsUKQkEwAxzFsPggCoTWdcFKQgF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9ZN4WSolXEeT/9xt01Ufqe6kbdCgT2lTonn93Cy+5/Bnl5e0Kn7U/fWsPVhVbIeXVyvepHCdT+5U2FPiVwM8CuhpKiZMG1yhnYLBS4k0hqXqjr7eywDftn3x8c5NV7Her0oPVUZh18QD4K4+MUv9gzboW7C6VPLJ+03cIgLE/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdOo3RBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6992BC4CEEB;
-	Mon,  2 Jun 2025 14:29:25 +0000 (UTC)
+	 MIME-Version; b=YIGvw7tvvq/qqoQftbX8LJEkUR+/mYw7iqYTJaOfcdgNLsO1f0QtfDGhYVRW70tr7/wZFJo3o9URJYwR/SiaRs8+62KO6wO+kjW+HBpGiX9UvDX+dSPcZ9rbjjNphhp0YBvmNO7IE2UtTHTtkexfYC7JW+FvkDsypB/D5CLMAvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5hD5pZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85745C4CEEB;
+	Mon,  2 Jun 2025 14:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874565;
-	bh=VHeGDj7hfq3sjnbgzyWi5L5kkUazACXlLVZVRv1o58s=;
+	s=korg; t=1748874031;
+	bh=qQtNnzVCZrcXS0GmsUKQkEwAxzFsPggCoTWdcFKQgF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdOo3RByh6PBpFb+JECXvkBWdWxF8IrYHcl3twsTZzWL+USqzp1+DAXBlA/IJHdS8
-	 LknnpgKXk8cmCVnFy9kodjolr5U3gxWLhOu1iMGUTSzDvfKgcvI48PE6c8JLqeP9J7
-	 6aoGcoTjbHBk/lHyHjnp7qA1/Jcf+0dXttkpr954=
+	b=N5hD5pZF5Ar7hHdaXmec4/GU2uHB96Frm+Ha6XDWhMCWP1to4FN4ZUCO3Rbyg7PH+
+	 ZQEuV1WnX7SNClm+KSLpEWqKBi+XgsuBXcu4Q2kJ4ztJeugn9hCKaXjtIEzXig8U3V
+	 R34mK6luZRjkGTpC5kvtzU73vpAHVgnBh5HBU4Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/204] staging: axis-fifo: Remove hardware resets for user errors
+Subject: [PATCH 6.6 333/444] dmaengine: idxd: Fix allowing write() from different address spaces
 Date: Mon,  2 Jun 2025 15:46:37 +0200
-Message-ID: <20250602134258.195369226@linuxfoundation.org>
+Message-ID: <20250602134354.445861517@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit c6e8d85fafa7193613db37da29c0e8d6e2515b13 ]
+[ Upstream commit 8dfa57aabff625bf445548257f7711ef294cd30e ]
 
-The axis-fifo driver performs a full hardware reset (via
-reset_ip_core()) in several error paths within the read and write
-functions. This reset flushes both TX and RX FIFOs and resets the
-AXI-Stream links.
+Check if the process submitting the descriptor belongs to the same
+address space as the one that opened the file, reject otherwise.
 
-Allow the user to handle the error without causing hardware disruption
-or data loss in other FIFO paths.
-
-Fixes: 4a965c5f89de ("staging: add driver for Xilinx AXI-Stream FIFO v4.1 IP core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Link: https://lore.kernel.org/r/20250419004306.669605-1-gshahrouzi@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6827738dc684 ("dmaengine: idxd: add a write() method for applications to submit work")
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250421170337.3008875-1-dave.jiang@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/axis-fifo/axis-fifo.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/dma/idxd/cdev.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/staging/axis-fifo/axis-fifo.c b/drivers/staging/axis-fifo/axis-fifo.c
-index c1dd01c5c9ea6..42528d4593b83 100644
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -401,16 +401,14 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 7ddf5f933475d..ba53675ced55a 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -412,6 +412,9 @@ static int idxd_cdev_mmap(struct file *filp, struct vm_area_struct *vma)
+ 	if (!idxd->user_submission_safe && !capable(CAP_SYS_RAWIO))
+ 		return -EPERM;
  
- 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
- 	if (!bytes_available) {
--		dev_err(fifo->dt_device, "received a packet of length 0 - fifo core will be reset\n");
--		reset_ip_core(fifo);
-+		dev_err(fifo->dt_device, "received a packet of length 0\n");
- 		ret = -EIO;
- 		goto end_unlock;
- 	}
++	if (current->mm != ctx->mm)
++		return -EPERM;
++
+ 	rc = check_vma(wq, vma, __func__);
+ 	if (rc < 0)
+ 		return rc;
+@@ -478,6 +481,9 @@ static ssize_t idxd_cdev_write(struct file *filp, const char __user *buf, size_t
+ 	ssize_t written = 0;
+ 	int i;
  
- 	if (bytes_available > len) {
--		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu) - fifo core will be reset\n",
-+		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
- 			bytes_available, len);
--		reset_ip_core(fifo);
- 		ret = -EINVAL;
- 		goto end_unlock;
- 	}
-@@ -419,8 +417,7 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
- 		/* this probably can't happen unless IP
- 		 * registers were previously mishandled
- 		 */
--		dev_err(fifo->dt_device, "received a packet that isn't word-aligned - fifo core will be reset\n");
--		reset_ip_core(fifo);
-+		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
- 		ret = -EIO;
- 		goto end_unlock;
- 	}
-@@ -441,7 +438,6 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
++	if (current->mm != ctx->mm)
++		return -EPERM;
++
+ 	for (i = 0; i < len/sizeof(struct dsa_hw_desc); i++) {
+ 		int rc = idxd_submit_user_descriptor(ctx, udesc + i);
  
- 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
- 				 copy * sizeof(u32))) {
--			reset_ip_core(fifo);
- 			ret = -EFAULT;
- 			goto end_unlock;
- 		}
-@@ -551,7 +547,6 @@ static ssize_t axis_fifo_write(struct file *f, const char __user *buf,
+@@ -498,6 +504,9 @@ static __poll_t idxd_cdev_poll(struct file *filp,
+ 	struct idxd_device *idxd = wq->idxd;
+ 	__poll_t out = 0;
  
- 		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
- 				   copy * sizeof(u32))) {
--			reset_ip_core(fifo);
- 			ret = -EFAULT;
- 			goto end_unlock;
- 		}
++	if (current->mm != ctx->mm)
++		return -EPERM;
++
+ 	poll_wait(filp, &wq->err_queue, wait);
+ 	spin_lock(&idxd->dev_lock);
+ 	if (idxd->sw_err.valid)
 -- 
 2.39.5
 
