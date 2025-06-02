@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-149880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D683ACB4D0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5BCACB7B3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1576E4A3E2C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C724C942995
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327F0223715;
-	Mon,  2 Jun 2025 14:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738AA22D9F1;
+	Mon,  2 Jun 2025 15:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnQGTi9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQNjMFk9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4354221FB8;
-	Mon,  2 Jun 2025 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFED1D8DFB;
+	Mon,  2 Jun 2025 15:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875334; cv=none; b=ryo0E58SnEEanUgK5wXmM/JytYhQFOMoNZxzZj/u9trXvY+ZD2ecNQbnqUzGhvIVM6bzn9laImn0oI12Yf0sBVydkHkrB46p8i4kuKgvFnAmgB5DGMKyKiCsVDeXTYeShya+oUfLospfljHJCdhU6IBBLfSXSfk1y5HxCtzsinM=
+	t=1748876884; cv=none; b=sg99YCj1/KVa+z2F5GEGVYY6VnQTamlGOwavHRqCWntM+XFArgfUKJOlPGD4MfR3qaxVtP1kAZ87WRXHmWITWRHIl2FE+54Cl8QvvgIn1EmmoArK1EU6fxYM6/UiFQ3MFKsaKrHpXnWCthU8WYoR5Mt9iQeb7pcV6GvoZZtNEUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875334; c=relaxed/simple;
-	bh=1IVVrkoEa8qlTW3LevI+vGuJYdF6HAlNmbMJcSLf+NQ=;
+	s=arc-20240116; t=1748876884; c=relaxed/simple;
+	bh=1EJxPJDHPJiQ7QmfAzgD10wWHXzy0aaRXvc37F6M/zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3QVhcGJmJSojnyESF865H3SlcxLOmFl8S4VIaXD4d991gwO0UEiQUhugaypEA72OEEK5ywZM7JYiqESWF5vL4c28oNDQ3K3vA/br+pT8T1voG5WDHIu5syp3VC+IN74lbzZP9CxTtrsinIK590bikjpqW/RQ1PbiOZlc0vBqK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnQGTi9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C143C4CEEE;
-	Mon,  2 Jun 2025 14:42:13 +0000 (UTC)
+	 MIME-Version; b=BcAt7mWDLfmYYIBFYTxsZ8HUZoxa+Gyl4kS0rp7nw1keftv2tp4Q0luJUeAUbNEBjfMU1klE10Qf2QkoBUjLtOBaW2lAZDNYPsa0hKZs+knJv3a+vgb3+YMe/4y6u1fOl0KaP78NTYKbrGTAcnbtqpktuq6fAWHCXyEDNURzLRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQNjMFk9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91139C4CEEE;
+	Mon,  2 Jun 2025 15:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875333;
-	bh=1IVVrkoEa8qlTW3LevI+vGuJYdF6HAlNmbMJcSLf+NQ=;
+	s=korg; t=1748876884;
+	bh=1EJxPJDHPJiQ7QmfAzgD10wWHXzy0aaRXvc37F6M/zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZnQGTi9NBDgzKOy/F2+tV7tvDRDFqd8dw/tM5EfvzyPv+F9Pf6KdZtob3nFyrB6hF
-	 NEsfmdrr2icgwxYt63C2XLEWQymTi98z2I5FLFvJbPGzq54RyZbS6mU90GE05HFZB9
-	 wiqtwkhgspRdH7UFvKWCgwgPVxEJr0S8IsBTwPDo=
+	b=iQNjMFk96IocK9f0eqk/DkST2Sy2XN1SVM7ZABwNsr7XzHfICsNi/Q6tI0fpZowFd
+	 IfD8gc95UrFn492e9ASMYzNZN/TjGshpBYCvt2qpU/x4B6dLRWkKDnv5dTUCmPsdR2
+	 QfZzr6wXLaYn6bHAiTTwrT8C0zm2oM7ZgGbgRZ0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/270] NFSv4/pnfs: Reset the layout state after a layoutreturn
+Subject: [PATCH 6.1 103/325] dm cache: prevent BUG_ON by blocking retries on failed device resumes
 Date: Mon,  2 Jun 2025 15:46:19 +0200
-Message-ID: <20250602134311.021144293@linuxfoundation.org>
+Message-ID: <20250602134323.965395625@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 6d6d7f91cc8c111d40416ac9240a3bb9396c5235 ]
+[ Upstream commit 5da692e2262b8f81993baa9592f57d12c2703dea ]
 
-If there are still layout segments in the layout plh_return_lsegs list
-after a layout return, we should be resetting the state to ensure they
-eventually get returned as well.
+A cache device failing to resume due to mapping errors should not be
+retried, as the failure leaves a partially initialized policy object.
+Repeating the resume operation risks triggering BUG_ON when reloading
+cache mappings into the incomplete policy object.
 
-Fixes: 68f744797edd ("pNFS: Do not free layout segments that are marked for return")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reproduce steps:
+
+1. create a cache metadata consisting of 512 or more cache blocks,
+   with some mappings stored in the first array block of the mapping
+   array. Here we use cache_restore v1.0 to build the metadata.
+
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="128" nr_cache_blocks="512" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="0" origin_block="0" dirty="false"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+dmsetup remove cmeta
+
+2. wipe the second array block of the mapping array to simulate
+   data degradations.
+
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try bringing up the cache device. The resume is expected to fail
+   due to the broken array block.
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dmsetup create cache --notable
+dmsetup load cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup resume cache
+
+4. try resuming the cache again. An unexpected BUG_ON is triggered
+   while loading cache mappings.
+
+dmsetup resume cache
+
+Kernel logs:
+
+(snip)
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-cache-policy-smq.c:752!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 332 Comm: dmsetup Not tainted 6.13.4 #3
+RIP: 0010:smq_load_mapping+0x3e5/0x570
+
+Fix by disallowing resume operations for devices that failed the
+initial attempt.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/md/dm-cache-target.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 39ac4824b97de..1800836306a5d 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -733,6 +733,14 @@ pnfs_mark_matching_lsegs_invalid(struct pnfs_layout_hdr *lo,
- 	return remaining;
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index e714114d495a9..66608b42ee1ad 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2875,6 +2875,27 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
+ 	return to_cblock(size);
  }
  
-+static void pnfs_reset_return_info(struct pnfs_layout_hdr *lo)
++static bool can_resume(struct cache *cache)
 +{
-+	struct pnfs_layout_segment *lseg;
++	/*
++	 * Disallow retrying the resume operation for devices that failed the
++	 * first resume attempt, as the failure leaves the policy object partially
++	 * initialized. Retrying could trigger BUG_ON when loading cache mappings
++	 * into the incomplete policy object.
++	 */
++	if (cache->sized && !cache->loaded_mappings) {
++		if (get_cache_mode(cache) != CM_WRITE)
++			DMERR("%s: unable to resume a failed-loaded cache, please check metadata.",
++			      cache_device_name(cache));
++		else
++			DMERR("%s: unable to resume cache due to missing proper cache table reload",
++			      cache_device_name(cache));
++		return false;
++	}
 +
-+	list_for_each_entry(lseg, &lo->plh_return_segs, pls_list)
-+		pnfs_set_plh_return_info(lo, lseg->pls_range.iomode, 0);
++	return true;
 +}
 +
- static void
- pnfs_free_returned_lsegs(struct pnfs_layout_hdr *lo,
- 		struct list_head *free_me,
-@@ -1183,6 +1191,7 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
- 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
- 		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
- 		pnfs_set_layout_stateid(lo, stateid, NULL, true);
-+		pnfs_reset_return_info(lo);
- 	} else
- 		pnfs_mark_layout_stateid_invalid(lo, &freeme);
- out_unlock:
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+@@ -2923,6 +2944,9 @@ static int cache_preresume(struct dm_target *ti)
+ 	struct cache *cache = ti->private;
+ 	dm_cblock_t csize = get_cache_dev_size(cache);
+ 
++	if (!can_resume(cache))
++		return -EINVAL;
++
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
 -- 
 2.39.5
 
