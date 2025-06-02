@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349FBACB87C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44194ACB76F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF221BC1CAE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:22:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95C81BA6524
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA342229B37;
-	Mon,  2 Jun 2025 15:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C11923315A;
+	Mon,  2 Jun 2025 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwMfqJVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zcdIHi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D6220E026;
-	Mon,  2 Jun 2025 15:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CF3223323;
+	Mon,  2 Jun 2025 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877482; cv=none; b=tCaSC3FS+g9km0N+dJFAtrI0dq8E3WigEDLZALtfTPlh2ryonSDZ0xgmA3VQgfoMHws0VHhiQaZLzHF152deuXeirc5HYvjBaT7wbNc4TCuSVozwuyVOGen3HcJdbmMUMy1oFFAsidvIVP7bVHlONJ6r8o5i0ASxAsQU4aEx/O0=
+	t=1748876502; cv=none; b=iuSQyCxmtpjFIWyRb1ilbeuPTmfI81+zfcKzyv0Scg0hJ+6HZsfYuemlP9xgBYvMSA+vLcDV8I6xTG4PLBYH06p1DQ88MqPxKcJtZQjghydlT1nQx3ZKcY73qeEN/8Iz5f5atWOqoo87qGh/pJhGAEfLvxReGzhLmM9CylRIcrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877482; c=relaxed/simple;
-	bh=sFzijGUe2J1e43mYV73sPgCAyUjf14rasx9eBRe+/aY=;
+	s=arc-20240116; t=1748876502; c=relaxed/simple;
+	bh=w/eyyQQvbpLboKu6zPTSwcnfYxbOA2iB7sKTayHHR/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SliF4cIiQLdyH3rSxZ3+lamBUaM6x7Vfbs1attAl/znwaZqdO6ira4SsBqk2BFhXytBgV/p5hGeUza9OHASl+ABR+vTExnccPsuUXIGYk4HA4d0j1LLBGoAROEQBOVnyqKTj3ClVhcok5m0byyjS0Y46Xx/ZecCAeGgRfy4ZtZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwMfqJVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D76C4CEEE;
-	Mon,  2 Jun 2025 15:18:01 +0000 (UTC)
+	 MIME-Version; b=kdzNznai/oBHMjVdTsayrSkwapBCiJNG7lTZxTwgWrc2o6hGOJ4mXHZMoQRq1X8qQJ4Lo+9iukt+VFDbIeYdamNowrmgm1T+oxmnhhHiWFSEcrWSMqqNR5GOMQ1FS2wigrO3chTP40XxSxtXxTjN0psYkp8kS/zua/uexuInfEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zcdIHi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A292C4CEEB;
+	Mon,  2 Jun 2025 15:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877482;
-	bh=sFzijGUe2J1e43mYV73sPgCAyUjf14rasx9eBRe+/aY=;
+	s=korg; t=1748876502;
+	bh=w/eyyQQvbpLboKu6zPTSwcnfYxbOA2iB7sKTayHHR/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwMfqJVV1tJOeD8gErmZy2VwiFSqZ7+jRJHRq5Ly9IoQbhbkA2gZpBIdw7qqCWZSl
-	 kTz6zNJbjv6ZdZpVfgCygTbxchh+F0y1w/ZLJUW6TBUyTee6xBNcSMHO63OWA6xX0Z
-	 FyXvU/aLlVDDffznxhHfJ+o/gXwJC9LyWduq92So=
+	b=0zcdIHi7I07f7s6AOzE/Fg52BabJyLaCm48Uxp8eDQyaJHlp78g2DYsdkYzCkm40B
+	 W+/JpUUfVGvktPhSkjt45vBr4aiDhjYCMGL6yqZn036MHjosPGG7Pb0O8FRm6ey2Rx
+	 IpKEFtM3bHUXPfYn7+/JYcYmOx3epRvk/X1mrZjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 291/325] af_unix: Bulk update unix_tot_inflight/unix_inflight when queuing skb.
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 195/207] pid: add pidfd_prepare()
 Date: Mon,  2 Jun 2025 15:49:27 +0200
-Message-ID: <20250602134331.728639079@linuxfoundation.org>
+Message-ID: <20250602134306.413236780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 22c3c0c52d32f41cc38cd936ea0c93f22ced3315 upstream.
+commit 6ae930d9dbf2d093157be33428538c91966d8a9f upstream.
 
-Currently, we track the number of inflight sockets in two variables.
-unix_tot_inflight is the total number of inflight AF_UNIX sockets on
-the host, and user->unix_inflight is the number of inflight fds per
-user.
+Add a new helper that allows to reserve a pidfd and allocates a new
+pidfd file that stashes the provided struct pid. This will allow us to
+remove places that either open code this function or that call
+pidfd_create() but then have to call close_fd() because there are still
+failure points after pidfd_create() has been called.
 
-We update them one by one in unix_inflight(), which can be done once
-in batch.  Also, sendmsg() could fail even after unix_inflight(), then
-we need to acquire unix_gc_lock only to decrement the counters.
-
-Let's bulk update the counters in unix_add_edges() and unix_del_edges(),
-which is called only for successfully passed fds.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-5-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230327-pidfd-file-api-v1-1-5c0e9a3158e4@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c |   18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ include/linux/pid.h |    1 
+ kernel/fork.c       |   85 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 86 insertions(+)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -144,6 +144,7 @@ static void unix_free_vertices(struct sc
- }
+--- a/include/linux/pid.h
++++ b/include/linux/pid.h
+@@ -79,6 +79,7 @@ struct file;
+ extern struct pid *pidfd_pid(const struct file *file);
+ struct pid *pidfd_get_pid(unsigned int fd, unsigned int *flags);
+ int pidfd_create(struct pid *pid, unsigned int flags);
++int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret);
  
- DEFINE_SPINLOCK(unix_gc_lock);
-+unsigned int unix_tot_inflight;
- 
- void unix_add_edges(struct scm_fp_list *fpl, struct unix_sock *receiver)
+ static inline struct pid *get_pid(struct pid *pid)
  {
-@@ -168,7 +169,10 @@ void unix_add_edges(struct scm_fp_list *
- 		unix_add_edge(fpl, edge);
- 	} while (i < fpl->count_unix);
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1895,6 +1895,91 @@ const struct file_operations pidfd_fops
+ #endif
+ };
  
-+	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + fpl->count_unix);
- out:
-+	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight + fpl->count);
++/**
++ * __pidfd_prepare - allocate a new pidfd_file and reserve a pidfd
++ * @pid:   the struct pid for which to create a pidfd
++ * @flags: flags of the new @pidfd
++ * @pidfd: the pidfd to return
++ *
++ * Allocate a new file that stashes @pid and reserve a new pidfd number in the
++ * caller's file descriptor table. The pidfd is reserved but not installed yet.
 +
- 	spin_unlock(&unix_gc_lock);
- 
- 	fpl->inflight = true;
-@@ -191,7 +195,10 @@ void unix_del_edges(struct scm_fp_list *
- 		unix_del_edge(fpl, edge);
- 	} while (i < fpl->count_unix);
- 
-+	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - fpl->count_unix);
- out:
-+	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight - fpl->count);
++ * The helper doesn't perform checks on @pid which makes it useful for pidfds
++ * created via CLONE_PIDFD where @pid has no task attached when the pidfd and
++ * pidfd file are prepared.
++ *
++ * If this function returns successfully the caller is responsible to either
++ * call fd_install() passing the returned pidfd and pidfd file as arguments in
++ * order to install the pidfd into its file descriptor table or they must use
++ * put_unused_fd() and fput() on the returned pidfd and pidfd file
++ * respectively.
++ *
++ * This function is useful when a pidfd must already be reserved but there
++ * might still be points of failure afterwards and the caller wants to ensure
++ * that no pidfd is leaked into its file descriptor table.
++ *
++ * Return: On success, a reserved pidfd is returned from the function and a new
++ *         pidfd file is returned in the last argument to the function. On
++ *         error, a negative error code is returned from the function and the
++ *         last argument remains unchanged.
++ */
++static int __pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
++{
++	int pidfd;
++	struct file *pidfd_file;
 +
- 	spin_unlock(&unix_gc_lock);
- 
- 	fpl->inflight = false;
-@@ -234,7 +241,6 @@ void unix_destroy_fpl(struct scm_fp_list
- 	unix_free_vertices(fpl);
- }
- 
--unsigned int unix_tot_inflight;
- static LIST_HEAD(gc_candidates);
- static LIST_HEAD(gc_inflight_list);
- 
-@@ -255,13 +261,8 @@ void unix_inflight(struct user_struct *u
- 			WARN_ON_ONCE(list_empty(&u->link));
- 		}
- 		u->inflight++;
--
--		/* Paired with READ_ONCE() in wait_for_unix_gc() */
--		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
- 	}
- 
--	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
--
- 	spin_unlock(&unix_gc_lock);
- }
- 
-@@ -278,13 +279,8 @@ void unix_notinflight(struct user_struct
- 		u->inflight--;
- 		if (!u->inflight)
- 			list_del_init(&u->link);
--
--		/* Paired with READ_ONCE() in wait_for_unix_gc() */
--		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
- 	}
- 
--	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
--
- 	spin_unlock(&unix_gc_lock);
- }
- 
++	if (flags & ~(O_NONBLOCK | O_RDWR | O_CLOEXEC))
++		return -EINVAL;
++
++	pidfd = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
++	if (pidfd < 0)
++		return pidfd;
++
++	pidfd_file = anon_inode_getfile("[pidfd]", &pidfd_fops, pid,
++					flags | O_RDWR | O_CLOEXEC);
++	if (IS_ERR(pidfd_file)) {
++		put_unused_fd(pidfd);
++		return PTR_ERR(pidfd_file);
++	}
++	get_pid(pid); /* held by pidfd_file now */
++	*ret = pidfd_file;
++	return pidfd;
++}
++
++/**
++ * pidfd_prepare - allocate a new pidfd_file and reserve a pidfd
++ * @pid:   the struct pid for which to create a pidfd
++ * @flags: flags of the new @pidfd
++ * @pidfd: the pidfd to return
++ *
++ * Allocate a new file that stashes @pid and reserve a new pidfd number in the
++ * caller's file descriptor table. The pidfd is reserved but not installed yet.
++ *
++ * The helper verifies that @pid is used as a thread group leader.
++ *
++ * If this function returns successfully the caller is responsible to either
++ * call fd_install() passing the returned pidfd and pidfd file as arguments in
++ * order to install the pidfd into its file descriptor table or they must use
++ * put_unused_fd() and fput() on the returned pidfd and pidfd file
++ * respectively.
++ *
++ * This function is useful when a pidfd must already be reserved but there
++ * might still be points of failure afterwards and the caller wants to ensure
++ * that no pidfd is leaked into its file descriptor table.
++ *
++ * Return: On success, a reserved pidfd is returned from the function and a new
++ *         pidfd file is returned in the last argument to the function. On
++ *         error, a negative error code is returned from the function and the
++ *         last argument remains unchanged.
++ */
++int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
++{
++	if (!pid || !pid_has_task(pid, PIDTYPE_TGID))
++		return -EINVAL;
++
++	return __pidfd_prepare(pid, flags, ret);
++}
++
+ static void __delayed_free_task(struct rcu_head *rhp)
+ {
+ 	struct task_struct *tsk = container_of(rhp, struct task_struct, rcu);
 
 
 
