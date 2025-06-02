@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-150220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADAEACB7D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D97ACB785
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C77F1A26BAC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC3661BA6165
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1BE22D4C8;
-	Mon,  2 Jun 2025 15:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CC8224224;
+	Mon,  2 Jun 2025 15:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUZ2FTnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h36evT7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186C822CBEC;
-	Mon,  2 Jun 2025 15:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DED223DC0;
+	Mon,  2 Jun 2025 15:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876424; cv=none; b=r5JUJoC05UBHsGBgQIn00G/DKUwWHsgEco/57eYRqPqFh/l0udD2qPkrQurgenQROUgYvPNVgUmsagNAt38kBpf55TN2YXXRN80NDtDGnz7jazsbanRkDEzFbMqIgiMURpstOL+SyfO5/4gmsq5/Hx3I5Vr0mpl1PS8xKMYgWBk=
+	t=1748877402; cv=none; b=CHSB1MlHpkaXVYX44MBmti7WzWYyEqqEWGYKCTNVxB3l13bAGc1LDZJw3jPL1wb7cguNOo558uInOcnkvxMb9JMScwmkvMKowUm8wxhR/T6V2YCGZPiZdCxR8AV3L0hdP04IjgahS08VifEM5Ju7DoTbS2QBBM+pmjclvJl2fKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876424; c=relaxed/simple;
-	bh=1Ftr4HdEkH2n7WhLDwFywThCnnyq+z0QeULipoHnY8k=;
+	s=arc-20240116; t=1748877402; c=relaxed/simple;
+	bh=wjKW0aKeiGT0Hf9ErfxOK7KIxrdbCRtoBzIl674UZeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WlSra9RImAk0XZhtQVPDoBEDWNT/xYjoWafXa7lEYJd/Y10vP8e59TkrnPiR5smQnIB2zBIq4lB9l6WukeBTnUWzszInt6g83Ao6unWSSOw9XYlPlhMtNi+ormpOZN6T6mLkBAmdByhDN0b78JpHSSjGTiNylWqyu2pKgbI/EJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUZ2FTnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17318C4CEEB;
-	Mon,  2 Jun 2025 15:00:16 +0000 (UTC)
+	 MIME-Version; b=s3KH1G5UmNwDdFBifflvEfAm5pgC57nO8XrcFmtbFccRKMKSZTHw+6hPgsswGoM3iktSK8fXZ7gbPtjsDB16p8X0UUnUcqKxfmj27BjLWuSXybePgq1CiweFKWG+Kbi0R65QrvOUJauSevbcxJASpSscczy67WyvoBPQGMZr9yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h36evT7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E9CC4CEEB;
+	Mon,  2 Jun 2025 15:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876424;
-	bh=1Ftr4HdEkH2n7WhLDwFywThCnnyq+z0QeULipoHnY8k=;
+	s=korg; t=1748877401;
+	bh=wjKW0aKeiGT0Hf9ErfxOK7KIxrdbCRtoBzIl674UZeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUZ2FTnAeWLKxSsF68NQeivcKI6Tz1AKTBYzXOv5bcNdGGmn6VFz27mAk5hTsVqJ/
-	 cfxB+DDRg0P9I4ZpwxLK+QuouQZpmlubYRX2kVd431r1ot1AobPf0rXP/IKDmH0lie
-	 5A9HMjnXv2n9tVQdp6astGgVMf5d0KQ2t6LaPrX8=
+	b=h36evT7u4H8Ij6EkzX7v8o5R0ffQ8Vg1b4AcUviqeWbHhWjWii5i7Sj/BHqHa5dRr
+	 okYF5leXLkV3CyS8e2fMe9UmlmmklVcA6AYyavlb+05TrvYEs3yP9KwWHfkTCkhyoQ
+	 Fpe7TXZB9umDdEkUpacf8JvIfxk6T2WoYLbqXIPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 170/207] crypto: algif_hash - fix double free in hash_accept
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 266/325] ksmbd: fix stream write failure
 Date: Mon,  2 Jun 2025 15:49:02 +0200
-Message-ID: <20250602134305.403178530@linuxfoundation.org>
+Message-ID: <20250602134330.583712381@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit b2df03ed4052e97126267e8c13ad4204ea6ba9b6 upstream.
+[ Upstream commit 1f4bbedd4e5a69b01cde2cc21d01151ab2d0884f ]
 
-If accept(2) is called on socket type algif_hash with
-MSG_MORE flag set and crypto_ahash_import fails,
-sk2 is freed. However, it is also freed in af_alg_release,
-leading to slab-use-after-free error.
+If there is no stream data in file, v_len is zero.
+So, If position(*pos) is zero, stream write will fail
+due to stream write position validation check.
+This patch reorganize stream write position validation.
 
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ca6df4f40cf ("ksmbd: prevent out-of-bounds stream writes by validating *pos")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algif_hash.c |    4 ----
- 1 file changed, 4 deletions(-)
+ fs/smb/server/vfs.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -262,10 +262,6 @@ static int hash_accept(struct socket *so
- 		return err;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index cf1b241a15789..fa647b75fba8a 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -423,10 +423,15 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 	ksmbd_debug(VFS, "write stream data pos : %llu, count : %zd\n",
+ 		    *pos, count);
  
- 	err = crypto_ahash_import(&ctx2->req, state);
--	if (err) {
--		sock_orphan(sk2);
--		sock_put(sk2);
++	if (*pos >= XATTR_SIZE_MAX) {
++		pr_err("stream write position %lld is out of bounds\n",	*pos);
++		return -EINVAL;
++	}
++
+ 	size = *pos + count;
+ 	if (size > XATTR_SIZE_MAX) {
+ 		size = XATTR_SIZE_MAX;
+-		count = (*pos + count) - XATTR_SIZE_MAX;
++		count = XATTR_SIZE_MAX - *pos;
+ 	}
+ 
+ 	v_len = ksmbd_vfs_getcasexattr(user_ns,
+@@ -440,13 +445,6 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 		goto out;
+ 	}
+ 
+-	if (v_len <= *pos) {
+-		pr_err("stream write position %lld is out of bounds (stream length: %zd)\n",
+-				*pos, v_len);
+-		err = -EINVAL;
+-		goto out;
 -	}
- 
- 	return err;
- }
+-
+ 	if (v_len < size) {
+ 		wbuf = kvzalloc(size, GFP_KERNEL);
+ 		if (!wbuf) {
+-- 
+2.39.5
+
 
 
 
