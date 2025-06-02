@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-149068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F66ACB029
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE3BACB025
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DA011BA4156
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55021402690
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2CD221D92;
-	Mon,  2 Jun 2025 13:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F9822259E;
+	Mon,  2 Jun 2025 14:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6yoiX3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hr6JzRlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF8A1E1A3F;
-	Mon,  2 Jun 2025 13:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7260221299;
+	Mon,  2 Jun 2025 14:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872796; cv=none; b=SzGEUUXAbPIfh36JTY044Aqzqs1sBeO88uxLhaRSEw7kYHR/hw7aYmoQCd6TlKzWhWbkOTAIGjhdWfzsoUN2zf+LS1AKLIgADdATLCsZgFwImqv4V6GnorP4kDulGk8wCfj8HBOEA/CJNTiEMAYUiiFnDCscs2dJj9RpHKlXvUA=
+	t=1748872833; cv=none; b=TvLjqw925A6ffEOR/Smp9ddlPT6HbtNCfA9gAoP7Sy1YRvpjyXnT8mA+l2pyhUYRNPWm7LXgXFHcOnrUs+3zPwZFMk4+k1L66zTjcdAmhlLDjSkLqLDeamzzXWPG79odgXRYNYKAkMW4gQKCm4fp0yeRS/WzPCXx0ueZ+Di0h+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872796; c=relaxed/simple;
-	bh=43gqaduqZxu5XcW6e7kHVDW0W+vZRspNrXU2EH9PSDU=;
+	s=arc-20240116; t=1748872833; c=relaxed/simple;
+	bh=jk8UdFBDUCzw/vGmeJAJj10VzVTtNIWCRDa/FQJvtls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oMFPkjAySnSuHsaBYt3YYxKuiQ/GaXm5EmsIs/rd+W4tHMQXWh49wHlqOQv2nvkn8SUQpH6E+Na4IDiN47gSnt7kuPGxF/Z1R/enzfBxUtdAsuP/F4J7eXT9zgEJvenYBb/Z/dwYnX8hYAQfKZ2j6WDK3jL5RFAihlBZRXb15B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6yoiX3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A12C4CEEE;
-	Mon,  2 Jun 2025 13:59:55 +0000 (UTC)
+	 MIME-Version; b=QpfZlY7R2WA9dNfbHx0ALvSLpe/GgeQ4GVYMxPdn3GmiELK82DVQeiCg7tjg7JQwVYXcmbriSqNLbtO9dDY37DvngsqAmb6shNQIWbKCjJoevhZ7Wz+mxnrFvBIMsPjWIZ5rvA/Eb5G4a0W2ilVNqAbKWQtvSShJaETe2fpPfqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hr6JzRlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFFFC4CEEB;
+	Mon,  2 Jun 2025 14:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872796;
-	bh=43gqaduqZxu5XcW6e7kHVDW0W+vZRspNrXU2EH9PSDU=;
+	s=korg; t=1748872832;
+	bh=jk8UdFBDUCzw/vGmeJAJj10VzVTtNIWCRDa/FQJvtls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6yoiX3H2xt8PFtoA1QjI1jOuay+/jMkbJmE+LQEqXBRbRUOShxyT/vHkGTjvq/Ai
-	 12+AkFbrtot9ji7fuHP1IOw6d+y4Beh2g7lZ/nBs/ZwLMBCcaRHbh4tM2wLrsjMD4d
-	 rCcrhM7jiXgu/5vNM2FJLeyf8ETFi1TEIVK7nai0=
+	b=hr6JzRlW7vz2JtK8trQ/39S448bw53WEVJI9LU3QMgp5jwd5ho4AbksKbkIjyZDRG
+	 uyb1yx/Odd//vsDKnbIxEVIaXuNXO0QaCvdHJwz45fnQsRv4H41WHLfoFTbORlSWWg
+	 4577Fb9d1c+HFtUd2HrzLJAfIrtTpzi8uU2hxssk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	William Liu <will@willsroot.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.14 41/73] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 10/55] arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: Fix vreg_l2j_1p2 voltage
 Date: Mon,  2 Jun 2025 15:47:27 +0200
-Message-ID: <20250602134243.310141116@linuxfoundation.org>
+Message-ID: <20250602134238.682341167@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
+commit 4f27ede34ca3369cdcde80c5a4ca84cdb28edbbb upstream.
 
-Savino says:
-    "We are writing to report that this recent patch
-    (141d34391abbb315d68556b7c67ad97885407547) [1]
-    can be bypassed, and a UAF can still occur when HFSC is utilized with
-    NETEM.
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
-    The patch only checks the cl->cl_nactive field to determine whether
-    it is the first insertion or not [2], but this field is only
-    incremented by init_vf [3].
-
-    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
-    check and insert the class twice in the eltree.
-    Under normal conditions, this would lead to an infinite loop in
-    hfsc_dequeue for the reasons we already explained in this report [5].
-
-    However, if TBF is added as root qdisc and it is configured with a
-    very low rate,
-    it can be utilized to prevent packets from being dequeued.
-    This behavior can be exploited to perform subsequent insertions in the
-    HFSC eltree and cause a UAF."
-
-To fix both the UAF and the infinite loop, with netem as an hfsc child,
-check explicitly in hfsc_enqueue whether the class is already in the eltree
-whenever the HFSC_RSC flag is set.
-
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
-[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
-[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
-[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
-[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Reported-by: William Liu <will@willsroot.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-5-24b6a2043025@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -175,6 +175,11 @@ struct hfsc_sched {
+--- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+@@ -484,8 +484,8 @@
  
- #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
  
-+static bool cl_in_el_or_vttree(struct hfsc_class *cl)
-+{
-+	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
-+		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
-+}
- 
- /*
-  * eligible tree holds backlogged classes being sorted by their eligible times.
-@@ -1040,6 +1045,8 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	if (cl == NULL)
- 		return -ENOBUFS;
- 
-+	RB_CLEAR_NODE(&cl->el_node);
-+
- 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
- 	if (err) {
- 		kfree(cl);
-@@ -1572,7 +1579,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
- 	sch->qstats.backlog += len;
- 	sch->q.qlen++;
- 
--	if (first && !cl->cl_nactive) {
-+	if (first && !cl_in_el_or_vttree(cl)) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
 
 
 
