@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EE0ACB63D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E29FACB608
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984671BA422F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:58:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52BCC4A13A4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F0323BCE4;
-	Mon,  2 Jun 2025 14:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B8238C04;
+	Mon,  2 Jun 2025 14:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3ZxUj7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUfTtiwZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2824723A9AD;
-	Mon,  2 Jun 2025 14:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C881F4165;
+	Mon,  2 Jun 2025 14:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875846; cv=none; b=GWKtBlh5sgb8MM6St32KplHn39gvBLljsU+VPbw2nPB+XFhi1Z+m7IRj6wzvzYLVe7QjYkkGuL5U2wsJNJrL0n/8lnTaHx5WFZFOzwb9OO+CU59nGVpd2VpyLxN3u1IioN8dQfXkCMKsntt2cB3lSiFc0pHj4wdOa/n+490Ys2I=
+	t=1748876338; cv=none; b=CKp9V7+ktOch9zn3nLlFreHfgRIW20fPjMT2PwWklIDPh1E1zZlzLRm1rULbjx3877PtdnEB6kQDB7Wo0yKvLkg9rYdzqTOqN+dqclWYK3SDPjU1+Pu5Rg652OTwEY+pgBj2dG6MnOYMatAwFA4sWQMkFjN1O9iF5R/UEO/c+ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875846; c=relaxed/simple;
-	bh=qpGY8ayAZpDLBZbPI0R7axZtRVPmwYen5efFvCu3cZE=;
+	s=arc-20240116; t=1748876338; c=relaxed/simple;
+	bh=wdLS0WjiuLOdD7TeTQvXIULLj7MECuAhppAWKAKymYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrCN0dyY12fiK2jBYXgTWqnndiFcfKmQ6IIRGSIPS6YDDb6UGGno7uRM1CplWFoh1mktk4U90sy2t7a2XALu56WQPmDHsQJ8gG9v8gnkWd5b/cFozxuSVTQRQLFSe240aoq+d2g7Uv6berlDNIznE04LGi1+i6Wxn5xkte81MA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3ZxUj7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D11DC4CEF0;
-	Mon,  2 Jun 2025 14:50:43 +0000 (UTC)
+	 MIME-Version; b=ThcGmDNZ25Y0OHPILm+HJQ58USQ9pVSto4zv2VD24EcxnSShG1fn0eADaOFsY+gnHq4RFc+WqPYoOvCOazeTTplXkbG5dahu+4h4HhfpnMxBlow5BgbXmke691k/w4LvDuGOPvx14KSkTxw2xAWnET5jfDLiQI0os8Vy+kYtZoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUfTtiwZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CA5C4CEEB;
+	Mon,  2 Jun 2025 14:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875844;
-	bh=qpGY8ayAZpDLBZbPI0R7axZtRVPmwYen5efFvCu3cZE=;
+	s=korg; t=1748876338;
+	bh=wdLS0WjiuLOdD7TeTQvXIULLj7MECuAhppAWKAKymYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3ZxUj7S2Tqz6iRM6bxqfdFCAkVAdCoW+k3dR3KGMiW9rEDHD1LbX/cZzjaR4McJV
-	 g+ddq1KY4qwGIDqn0MrxWoHKR1Qeo254BAqNbdO222cqE291aEQ5DkIEewUJc3+8PC
-	 AjSSNQOThthYa8W8yxggS3wukmTgQgKb7dEBnpIg=
+	b=KUfTtiwZ3Slktg/Fodb2s3VMbJ98WKY/AV3Ra8ABMtMGy5NHdvPHHLdigrR35Ts/q
+	 I+sW7BnYYuFvkDpud3mcj3g/vzZPFcs/wTtU4qpARDQZ9e4B9ZM4gnV367U9gV6vW0
+	 JGhWuks14Cs3J7RSd9B6IPo9YcthEj53NufprGPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Goldwyn Rodrigues <rgoldwyn@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 232/270] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
+Subject: [PATCH 5.15 145/207] drm/ast: Find VBIOS mode from regular display size
 Date: Mon,  2 Jun 2025 15:48:37 +0200
-Message-ID: <20250602134316.792995178@linuxfoundation.org>
+Message-ID: <20250602134304.402022009@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.de>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
+[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
 
-btrfs_prelim_ref() calls the old and new reference variables in the
-incorrect order. This causes a NULL pointer dereference because oldref
-is passed as NULL to trace_btrfs_prelim_ref_insert().
+The ast driver looks up supplied display modes from an internal list of
+display modes supported by the VBIOS.
 
-Note, trace_btrfs_prelim_ref_insert() is being called with newref as
-oldref (and oldref as NULL) on purpose in order to print out
-the values of newref.
+Do not use the crtc_-prefixed display values from struct drm_display_mode
+for looking up the VBIOS mode. The fields contain raw values that the
+driver programs to hardware. They are affected by display settings like
+double-scan or interlace.
 
-To reproduce:
-echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
+Instead use the regular vdisplay and hdisplay fields for lookup. As the
+programmed values can now differ from the values used for lookup, set
+struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
+mode.
 
-Perform some writeback operations.
-
-Backtrace:
-BUG: kernel NULL pointer dereference, address: 0000000000000018
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
- RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
- Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
- RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
- RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
- RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
- RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
- R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
- R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
- FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  prelim_ref_insert+0x1c1/0x270
-  find_parent_nodes+0x12a6/0x1ee0
-  ? __entry_text_end+0x101f06/0x101f09
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  btrfs_is_data_extent_shared+0x167/0x640
-  ? fiemap_process_hole+0xd0/0x2c0
-  extent_fiemap+0xa5c/0xbc0
-  ? __entry_text_end+0x101f05/0x101f09
-  btrfs_fiemap+0x7e/0xd0
-  do_vfs_ioctl+0x425/0x9d0
-  __x64_sys_ioctl+0x75/0xc0
-
-Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/btrfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index 041be3ce10718..d8aa1d3570243 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -1788,7 +1788,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
- 	TP_PROTO(const struct btrfs_fs_info *fs_info,
- 		 const struct prelim_ref *oldref,
- 		 const struct prelim_ref *newref, u64 tree_size),
--	TP_ARGS(fs_info, newref, oldref, tree_size),
-+	TP_ARGS(fs_info, oldref, newref, tree_size),
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 08ed0d08d03b8..87d31d3b0e357 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -105,7 +105,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		return false;
+ 	}
  
- 	TP_STRUCT__entry_btrfs(
- 		__field(	u64,  root_id		)
+-	switch (mode->crtc_hdisplay) {
++	switch (mode->hdisplay) {
+ 	case 640:
+ 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
+ 		break;
+@@ -116,7 +116,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1024x768[refresh_rate_index];
+ 		break;
+ 	case 1280:
+-		if (mode->crtc_vdisplay == 800)
++		if (mode->vdisplay == 800)
+ 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
+@@ -128,7 +128,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
+ 		break;
+ 	case 1600:
+-		if (mode->crtc_vdisplay == 900)
++		if (mode->vdisplay == 900)
+ 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
+@@ -137,7 +137,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
+ 		break;
+ 	case 1920:
+-		if (mode->crtc_vdisplay == 1080)
++		if (mode->vdisplay == 1080)
+ 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
+@@ -181,6 +181,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
+ 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
+ 
++	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
+ 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
+ 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
+ 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
+@@ -190,6 +191,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 					 vbios_mode->enh_table->hfp +
+ 					 vbios_mode->enh_table->hsync);
+ 
++	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
+ 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
+ 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
+ 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
 -- 
 2.39.5
 
