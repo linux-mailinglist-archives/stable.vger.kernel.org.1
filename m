@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFBAACB533
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:00:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7A4ACB250
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327869E57FE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD291941AE0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BA8221FCC;
-	Mon,  2 Jun 2025 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C928D221F1E;
+	Mon,  2 Jun 2025 14:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySXdpvyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpPtPGbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C773B221299;
-	Mon,  2 Jun 2025 14:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BAF22578A;
+	Mon,  2 Jun 2025 14:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875101; cv=none; b=mBq3KGZMoRfWoRQQ/Bcd6B4K2O9FylX8IElkgfH/qhCIM9AjJQJNHdo55gQVp4m92XpRxMrSUcQjZVcWxIyUi2W5NoyCGuDiP95MNKC0E0zq6XN1+N2ClY/Y7g8IUOhMQewkAbEnsT74OFPaie+/DtWKb/yIHWHgkE7PmJls/Ko=
+	t=1748873708; cv=none; b=gfJLPHSlEQuf3cLPL0FGzh56RXBwrjVHs1KiiPtNDbGUSKFtI6g4f7kSltg7aouCCroiAv20/xD7ILBlXbZ9FJOpbmZe0+9nI8+pqElLR7ESmWYLbD8WvyRC5tkxcv63IqJLXUTOhJclsaHwcuWsSKsHDTXZsfLncDrcRV/sIIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875101; c=relaxed/simple;
-	bh=hnDHGLz1t/sheuxnyYttIz4cCKxaJ6ZHS717ie3R4bk=;
+	s=arc-20240116; t=1748873708; c=relaxed/simple;
+	bh=/ijmukiV/b7LLfdy2QUDUXWQyNDenYpi0TlldoBaqzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhUFISjZcMdtRf5wSI4sDbkumAMIB2QgYeuxhZp8YIkYW+a+4i810E5gekdt9+i3weNDrcmmacc2QChNmY2hbzrS9nt7m7YQQSGZV1R5zTg88WIs4Ygvm0uM4bERKNh+9b4XMsZSOpGaTjEkeKLUJSpqCYJwT3IO1hFjKR+es5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySXdpvyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D895DC4CEEE;
-	Mon,  2 Jun 2025 14:38:20 +0000 (UTC)
+	 MIME-Version; b=oVdulIEYzZpd0RHdzjGrhNOkpm0kG+uEsTzHWpFN0gcgzJj0AeWM7/CLN2lQrXgIyK+gsqzzqCLmhMv/7r2RWU31lJqYUBDe2vhCSDD1ZBB91A1U3vYBbeM8oHsqW1ZOv4waIVdovMCCHZiRJcVNiT6hoeHnlHzLgE++0ESux6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpPtPGbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E7DC4CEEB;
+	Mon,  2 Jun 2025 14:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875101;
-	bh=hnDHGLz1t/sheuxnyYttIz4cCKxaJ6ZHS717ie3R4bk=;
+	s=korg; t=1748873708;
+	bh=/ijmukiV/b7LLfdy2QUDUXWQyNDenYpi0TlldoBaqzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySXdpvyocQhxSz3vYTgwmN6DKiHXCoHKvt774VHZ2s05k5gW3TxltKcK17vZmBf2j
-	 iuPWgRquUw4aoBL2PSbPl0I4IBoa/0W2clnYSE6dDyIY4Dj1RK8iGReXDS5rnmRRbJ
-	 he6rIQnSaRDpJoIYB55/7FrObxFy9meTenHcxvc8=
+	b=vpPtPGbAFMGEyxTVnKcYmgSFCgWIKgjO9IqWHigid4qHjIg3NTd1PqzdNe0pZwwut
+	 hm8JaovrNclUDvMVh047z7FbbG3HsdFPtgDnFif4dUUEKyzv0L1yLFWX27d40KOY0y
+	 te1WsLojD9LObLSSD6tcmQMF0+ldWzI6RU+ysN5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 5.10 004/270] EDAC/altera: Set DDR and SDMMC interrupt mask before registration
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 225/444] ASoC: tas2764: Add reg defaults for TAS2764_INT_CLK_CFG
 Date: Mon,  2 Jun 2025 15:44:49 +0200
-Message-ID: <20250602134307.376529075@linuxfoundation.org>
+Message-ID: <20250602134350.046425946@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit 6dbe3c5418c4368e824bff6ae4889257dd544892 upstream.
+[ Upstream commit d64c4c3d1c578f98d70db1c5e2535b47adce9d07 ]
 
-Mask DDR and SDMMC in probe function to avoid spurious interrupts before
-registration.  Removed invalid register write to system manager.
-
-Fixes: 1166fde93d5b ("EDAC, altera: Add Arria10 ECC memory init functions")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250425142640.33125-3-matthew.gerlach@altera.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-4-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/altera_edac.c |    7 ++++---
- drivers/edac/altera_edac.h |    2 ++
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/codecs/tas2764.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1006,9 +1006,6 @@ altr_init_a10_ecc_block(struct device_no
- 		}
- 	}
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index e87a07eee9737..4e5381c07f504 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -636,6 +636,7 @@ static const struct reg_default tas2764_reg_defaults[] = {
+ 	{ TAS2764_TDM_CFG2, 0x0a },
+ 	{ TAS2764_TDM_CFG3, 0x10 },
+ 	{ TAS2764_TDM_CFG5, 0x42 },
++	{ TAS2764_INT_CLK_CFG, 0x19 },
+ };
  
--	/* Interrupt mode set to every SBERR */
--	regmap_write(ecc_mgr_map, ALTR_A10_ECC_INTMODE_OFST,
--		     ALTR_A10_ECC_INTMODE);
- 	/* Enable ECC */
- 	ecc_set_bits(ecc_ctrl_en_mask, (ecc_block_base +
- 					ALTR_A10_ECC_CTRL_OFST));
-@@ -2089,6 +2086,10 @@ static int altr_edac_a10_probe(struct pl
- 		return PTR_ERR(edac->ecc_mgr_map);
- 	}
- 
-+	/* Set irq mask for DDR SBE to avoid any pending irq before registration */
-+	regmap_write(edac->ecc_mgr_map, A10_SYSMGR_ECC_INTMASK_SET_OFST,
-+		     (A10_SYSMGR_ECC_INTMASK_SDMMCB | A10_SYSMGR_ECC_INTMASK_DDR0));
-+
- 	edac->irq_chip.name = pdev->dev.of_node->name;
- 	edac->irq_chip.irq_mask = a10_eccmgr_irq_mask;
- 	edac->irq_chip.irq_unmask = a10_eccmgr_irq_unmask;
---- a/drivers/edac/altera_edac.h
-+++ b/drivers/edac/altera_edac.h
-@@ -249,6 +249,8 @@ struct altr_sdram_mc_data {
- #define A10_SYSMGR_ECC_INTMASK_SET_OFST   0x94
- #define A10_SYSMGR_ECC_INTMASK_CLR_OFST   0x98
- #define A10_SYSMGR_ECC_INTMASK_OCRAM      BIT(1)
-+#define A10_SYSMGR_ECC_INTMASK_SDMMCB     BIT(16)
-+#define A10_SYSMGR_ECC_INTMASK_DDR0       BIT(17)
- 
- #define A10_SYSMGR_ECC_INTSTAT_SERR_OFST  0x9C
- #define A10_SYSMGR_ECC_INTSTAT_DERR_OFST  0xA0
+ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
+-- 
+2.39.5
+
 
 
 
