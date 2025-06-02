@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7C2ACB6CB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D683ACB4D0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAE7D1BC5A18
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1576E4A3E2C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EF722D9EB;
-	Mon,  2 Jun 2025 15:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327F0223715;
+	Mon,  2 Jun 2025 14:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJMc/zpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnQGTi9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BEB22D4CE;
-	Mon,  2 Jun 2025 15:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4354221FB8;
+	Mon,  2 Jun 2025 14:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876881; cv=none; b=jkg6iuumHkxhaZTmPCfU+zPt868tGU3iHb1Jzy2OuTPFQCrXmxc+rbjKrV2JJHOKBcNUD/XZ/bumbzUxXlRpHZ8Sh/3mzb9kIWwW8IbAj7ej7iRHoZF6Wr3qW152mQkSAFx+p3lb2QhIRfatjQhA2tJG2AaM4PK7qsb5+C4xfW4=
+	t=1748875334; cv=none; b=ryo0E58SnEEanUgK5wXmM/JytYhQFOMoNZxzZj/u9trXvY+ZD2ecNQbnqUzGhvIVM6bzn9laImn0oI12Yf0sBVydkHkrB46p8i4kuKgvFnAmgB5DGMKyKiCsVDeXTYeShya+oUfLospfljHJCdhU6IBBLfSXSfk1y5HxCtzsinM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876881; c=relaxed/simple;
-	bh=PRCOsLPmR7zN2RA5qsxbLJfCxOd+2hE962vfiSMx/Zg=;
+	s=arc-20240116; t=1748875334; c=relaxed/simple;
+	bh=1IVVrkoEa8qlTW3LevI+vGuJYdF6HAlNmbMJcSLf+NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gn+UpCnnyz50SqB1FecV5y7c65v6agUWk1XujqRAaUEFntcCDMHipJjUbgRxv985D1B3lqPKNxwMYdtlBoRrmo50OvkShdZh6g4DrMQeMvGBefdG1G+uHVJOkfsldn5PBfCAZV+Eddu3C7vIOVZqkX5pwQcNxS8VYFMXB2GIJNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJMc/zpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE59C4CEEB;
-	Mon,  2 Jun 2025 15:08:00 +0000 (UTC)
+	 MIME-Version; b=k3QVhcGJmJSojnyESF865H3SlcxLOmFl8S4VIaXD4d991gwO0UEiQUhugaypEA72OEEK5ywZM7JYiqESWF5vL4c28oNDQ3K3vA/br+pT8T1voG5WDHIu5syp3VC+IN74lbzZP9CxTtrsinIK590bikjpqW/RQ1PbiOZlc0vBqK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnQGTi9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C143C4CEEE;
+	Mon,  2 Jun 2025 14:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876880;
-	bh=PRCOsLPmR7zN2RA5qsxbLJfCxOd+2hE962vfiSMx/Zg=;
+	s=korg; t=1748875333;
+	bh=1IVVrkoEa8qlTW3LevI+vGuJYdF6HAlNmbMJcSLf+NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJMc/zpdHk3uDQ9YNIyiAB7B6iEi5nHJCGVvugXQv3GGDpP1yF2AExxfzoy4MNIdo
-	 TWFjttBMmtnGHuAJyB1JBcDiI89jX6aP1YXG7GolQNiXmyBvxIllC5SA/EyXuCayXF
-	 fhXbwOJ9jOW5Sv4XQgG1rXiaEXJN1UYZSNEoo40s=
+	b=ZnQGTi9NBDgzKOy/F2+tV7tvDRDFqd8dw/tM5EfvzyPv+F9Pf6KdZtob3nFyrB6hF
+	 NEsfmdrr2icgwxYt63C2XLEWQymTi98z2I5FLFvJbPGzq54RyZbS6mU90GE05HFZB9
+	 wiqtwkhgspRdH7UFvKWCgwgPVxEJr0S8IsBTwPDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <elfring@users.sourceforge.net>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/325] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
-Date: Mon,  2 Jun 2025 15:46:18 +0200
-Message-ID: <20250602134323.925056457@linuxfoundation.org>
+Subject: [PATCH 5.10 094/270] NFSv4/pnfs: Reset the layout state after a layoutreturn
+Date: Mon,  2 Jun 2025 15:46:19 +0200
+Message-ID: <20250602134311.021144293@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
+[ Upstream commit 6d6d7f91cc8c111d40416ac9240a3bb9396c5235 ]
 
-An of_node_put(i2c_bus) call was immediately used after a pointer check
-for an of_find_i2c_adapter_by_node() call in this function implementation.
-Thus call such a function only once instead directly before the check.
+If there are still layout segments in the layout plh_return_lsegs list
+after a layout return, we should be resetting the state to ensure they
+eventually get returned as well.
 
-This issue was transformed by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 68f744797edd ("pNFS: Do not free layout segments that are marked for return")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/nfs/pnfs.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-index 1dbb89f0ddb8c..b2a977f1ec18a 100644
---- a/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-+++ b/drivers/media/platform/st/sti/c8sectpfe/c8sectpfe-core.c
-@@ -802,13 +802,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
- 		}
- 		tsin->i2c_adapter =
- 			of_find_i2c_adapter_by_node(i2c_bus);
-+		of_node_put(i2c_bus);
- 		if (!tsin->i2c_adapter) {
- 			dev_err(&pdev->dev, "No i2c adapter found\n");
--			of_node_put(i2c_bus);
- 			ret = -ENODEV;
- 			goto err_node_put;
- 		}
--		of_node_put(i2c_bus);
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 39ac4824b97de..1800836306a5d 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -733,6 +733,14 @@ pnfs_mark_matching_lsegs_invalid(struct pnfs_layout_hdr *lo,
+ 	return remaining;
+ }
  
- 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
- 
++static void pnfs_reset_return_info(struct pnfs_layout_hdr *lo)
++{
++	struct pnfs_layout_segment *lseg;
++
++	list_for_each_entry(lseg, &lo->plh_return_segs, pls_list)
++		pnfs_set_plh_return_info(lo, lseg->pls_range.iomode, 0);
++}
++
+ static void
+ pnfs_free_returned_lsegs(struct pnfs_layout_hdr *lo,
+ 		struct list_head *free_me,
+@@ -1183,6 +1191,7 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
+ 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
+ 		pnfs_free_returned_lsegs(lo, &freeme, range, seq);
+ 		pnfs_set_layout_stateid(lo, stateid, NULL, true);
++		pnfs_reset_return_info(lo);
+ 	} else
+ 		pnfs_mark_layout_stateid_invalid(lo, &freeme);
+ out_unlock:
 -- 
 2.39.5
 
