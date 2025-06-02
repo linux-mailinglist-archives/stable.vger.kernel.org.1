@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C7EACB400
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A791BACB2D7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C6A0943B7A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26BF81940605
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D017922DF85;
-	Mon,  2 Jun 2025 14:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667AE233701;
+	Mon,  2 Jun 2025 14:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqZIQXWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ak2k5T9r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D02F22DF84;
-	Mon,  2 Jun 2025 14:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F4623372E;
+	Mon,  2 Jun 2025 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874486; cv=none; b=JRtt0nBosMTf6hz2C2/eDI6UPT9mxH3q+O8qhf2EUPn4fzybAHHtBB7+kWxQIecvotXIvhbB0g8EcIG3xJCvvzLg5t+br5EK+4sshS7ofCQnij9+4MSklLLdHjjDgdGayUn74v7YAG8C+eGtyrtmtJvMaiaIY8S3oSs6NYbFTVw=
+	t=1748873951; cv=none; b=fqg+JAM1kGBYuVKjyFxCFjkyJGHUnUI2isBMS7sa07vjnw/IOBn45hOvZhWADpfPWYWg9mgPwkmxw9F0jsH6T/ycQAAmnkOoyYs1gAbg9qEh+R9wnnISYPQF4CBbanSGZGBCXp/QpPyfA6fDZMgBBycFisvpHl7trgfdk8MS6N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874486; c=relaxed/simple;
-	bh=q2LWGXIXg7e1TfKi/S+nmJTuQtuTz0kYC/7q6SIOSRw=;
+	s=arc-20240116; t=1748873951; c=relaxed/simple;
+	bh=cpZ9dW+ngSL2DYsBbno5q2iMp5l6oujpiKcJ5k4pg+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6/CeTlje3KLf84HcqXWd7jFjElSL+Lsvu3xZCB2KAbUNhkTp7GzciqGahBKm8k2Vh2XyznJf3wxvYnn6KDjDh5y4JZZim3umzEZXUCa4hDvEoxDe7NYz7U6Pve/oK7IXcR8kZqRJHn0TpmffrWKSaiAU9clifxslUaVwEU4ehA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqZIQXWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0E3C4CEEB;
-	Mon,  2 Jun 2025 14:28:05 +0000 (UTC)
+	 MIME-Version; b=Wn/JhRdlU7307ZVAddBXJFVpacT6SYVvw80JVpXx1QtVOIysl3TLbAkC0vgVuEgzGf6AHTz8Yi1+lfbK7dBzYgtVAOyBjUHIUduMG9zb52X25YT3esqe/9YT8tZunmr5TqScNgsRH9+PEsn6Vv02Ynbtuz8X8gv1zWV4zOwWc4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ak2k5T9r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B59EC4CEF0;
+	Mon,  2 Jun 2025 14:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874486;
-	bh=q2LWGXIXg7e1TfKi/S+nmJTuQtuTz0kYC/7q6SIOSRw=;
+	s=korg; t=1748873950;
+	bh=cpZ9dW+ngSL2DYsBbno5q2iMp5l6oujpiKcJ5k4pg+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bqZIQXWydXzANx/AnRkOy/r69hvdClK8oMY0ieVUcVHB8XFU33n6Tt0AEweVyZqml
-	 qviPb2C/wMvAFuIdexDRcL7goh8kw8WXqumUuHTw7y7FJtWSmZxKufifqj4YEhxacp
-	 w3NbCwVxnzULEveW8jsWfOl6rQKy1yYMARNqQoNE=
+	b=ak2k5T9rhfXcrCbF+etaiacf/PTQhqRne+Tc+91e4gP/FQT03uF7IAN4Kn7usqoU4
+	 cxh1hbDT/0eKOgKizbte3w+HJ7QKp6kLSy7NBX81pHwhH4KIntvxlmlPfnSst+0Ohc
+	 8WD7ffYS06aPR71gbD50NbG+QXUOad/iQIY1Pfm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.4 008/204] dm: always update the array size in realloc_argv on success
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 277/444] r8169: dont scan PHY addresses > 0
 Date: Mon,  2 Jun 2025 15:45:41 +0200
-Message-ID: <20250602134255.802604612@linuxfoundation.org>
+Message-ID: <20250602134352.201727182@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 5a2a6c428190f945c5cbf5791f72dbea83e97f66 upstream.
+[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
 
-realloc_argv() was only updating the array size if it was called with
-old_argv already allocated. The first time it was called to create an
-argv array, it would allocate the array but return the array size as
-zero. dm_split_args() would think that it couldn't store any arguments
-in the array and would call realloc_argv() again, causing it to
-reallocate the initial slots (this time using GPF_KERNEL) and finally
-return a size. Aside from being wasteful, this could cause deadlocks on
-targets that need to process messages without starting new IO. Instead,
-realloc_argv should always update the allocated array size on success.
+The PHY address is a dummy, because r8169 PHY access registers
+don't support a PHY address. Therefore scan address 0 only.
 
-Fixes: a0651926553c ("dm table: don't copy from a NULL pointer in realloc_argv()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -573,9 +573,10 @@ static char **realloc_argv(unsigned *siz
- 		gfp = GFP_NOIO;
- 	}
- 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
--	if (argv && old_argv) {
--		memcpy(argv, old_argv, *size * sizeof(*argv));
-+	if (argv) {
- 		*size = new_size;
-+		if (old_argv)
-+			memcpy(argv, old_argv, *size * sizeof(*argv));
- 	}
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 7e5258b2c4290..5af932a5e70c4 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5125,6 +5125,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 	new_bus->priv = tp;
+ 	new_bus->parent = &pdev->dev;
+ 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
++	new_bus->phy_mask = GENMASK(31, 1);
+ 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
+ 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
  
- 	kfree(old_argv);
+-- 
+2.39.5
+
 
 
 
