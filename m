@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-149240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A28ACB1A3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:22:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772CEACB183
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5004E3AEF60
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:16:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F212B3ADA68
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A6A22FDE8;
-	Mon,  2 Jun 2025 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1B022D793;
+	Mon,  2 Jun 2025 14:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CScismlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA/p6Psh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4405222596;
-	Mon,  2 Jun 2025 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EA822D9E6;
+	Mon,  2 Jun 2025 14:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873348; cv=none; b=fuQYWaTMHbrN4n7gBOwkMjIqs3lAzMZ50BjhDwaQIOlDd1hCE2ncJVLZC5LGWsZ7pVOP11hHAjjcGJK7wwnkxWaglPNsA+93UEIjUgxaKn5AKDynhQeFgOfkpvbMEtLoK5u7aHaPf+B5vx8wecvVZT4PHw7XpID0XVzZujCkk9I=
+	t=1748873253; cv=none; b=QRCcq6a0oHxglL/bkRIw5hUOY3vZSZZdlGkFgb9f2namq9mBvU0s+1xg/3TPm85eeBZfpwg8+4+Bau9XfdcF2kY1bmVGcGVuafZzLKcdI+vKg8Co24+YwRjXX8ktFWkvSanPXVPzUNsSol7BeereFYLHe+QCeFDscPMtWpco1Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873348; c=relaxed/simple;
-	bh=OuNx40xk6IOFFBFr/k0X5i95gnBWnPbWaWcHdrQwqGU=;
+	s=arc-20240116; t=1748873253; c=relaxed/simple;
+	bh=bI2b6FEP3HrAu8Gush+YZ7+H8IfJSRvf97MYtqImIVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuzeJSyz/9JgplINtcD7fNbjbyUrdIwkfYYJ49cnSwmOdT80NtkDOqoVxO/iBBFHO/iufMVFU1T9y8LjqIb0oIxK3Yikt3udu1gmbDjQGzCjTuUW0qwqdlthY5/QmZUM4rkhWcD+/4qkwcrOa1BGrVSX6XYpDabFcPXHgp0o+mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CScismlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69E6C4CEEB;
-	Mon,  2 Jun 2025 14:09:07 +0000 (UTC)
+	 MIME-Version; b=E1UOUQyOdV/MLopV9Y6lVG/UfK64Q28MA1fsFE/yqd4Av7YsW5tml2l1ghhOIhx4u1B+I0gQe4YpeykGygOFYRbBmvzC/2518yduu0JncCEar5246MQJrINZhAxuByJM9o4PwYBdNFOnw9mckHlTCpUL3D3WIk1hSnCiswmfL0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA/p6Psh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B48C4CEEB;
+	Mon,  2 Jun 2025 14:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873348;
-	bh=OuNx40xk6IOFFBFr/k0X5i95gnBWnPbWaWcHdrQwqGU=;
+	s=korg; t=1748873252;
+	bh=bI2b6FEP3HrAu8Gush+YZ7+H8IfJSRvf97MYtqImIVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CScismlovt6ezizwdbZkVQHnmSQSEdqZ8PH2TSPOy91UGrkTKTf7Vpo/rJRyxD2jv
-	 7HraCP16AcIra+n03TNVo+3mUcbjZsw3JIWPK4OHb8xaaDftdWMcsDZmIdUw6scneg
-	 GIGcwbIFZSAhDwUE6Trtlz0AazC0doIyelIhQzrc=
+	b=iA/p6Psh5qDjch9V+2hTXY3HG8mQHwhfiwBP4Qw4GPfEElhxefXrhqlwZgb2SxibX
+	 glKZr1qrviWtHj0uxyMLZ2DhO2vzn0ED66hbQQwc6JtplZFsymvRIP9A4mmZlanX9o
+	 5NvtcMMtz9X5ohzTbLuw7KSjBRrqFt6zowaa5kOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	David Teigland <teigland@redhat.com>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/444] dlm: make tcp still work in multi-link env
-Date: Mon,  2 Jun 2025 15:42:27 +0200
-Message-ID: <20250602134344.270451672@linuxfoundation.org>
+Subject: [PATCH 6.6 084/444] um: Store full CSGSFS and SS register from mcontext
+Date: Mon,  2 Jun 2025 15:42:28 +0200
+Message-ID: <20250602134344.308354371@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -66,35 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit 03d2b62208a336a3bb984b9465ef6d89a046ea22 ]
+[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
 
-This patch bypasses multi-link errors in TCP mode, allowing dlm
-to operate on the first tcp link.
+Doing this allows using registers as retrieved from an mcontext to be
+pushed to a process using PTRACE_SETREGS.
 
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+It is not entirely clear to me why CSGSFS was masked. Doing so creates
+issues when using the mcontext as process state in seccomp and simply
+copying the register appears to work perfectly fine for ptrace.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lowcomms.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/um/os-Linux/mcontext.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 0618af36f5506..3c9ab6461579c 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1826,8 +1826,8 @@ static int dlm_tcp_listen_validate(void)
- {
- 	/* We don't support multi-homed hosts */
- 	if (dlm_local_count > 1) {
--		log_print("TCP protocol can't handle multi-homed hosts, try SCTP");
--		return -EINVAL;
-+		log_print("Detect multi-homed hosts but use only the first IP address.");
-+		log_print("Try SCTP, if you want to enable multi-link.");
- 	}
- 
- 	return 0;
+diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
+index 49c3744cac371..81b9d1f9f4e68 100644
+--- a/arch/x86/um/os-Linux/mcontext.c
++++ b/arch/x86/um/os-Linux/mcontext.c
+@@ -26,7 +26,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
+ 	COPY(RIP);
+ 	COPY2(EFLAGS, EFL);
+ 	COPY2(CS, CSGSFS);
+-	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
+-	regs->gp[CS / sizeof(unsigned long)] |= 3;
++	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
+ #endif
+ }
 -- 
 2.39.5
 
