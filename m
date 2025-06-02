@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-149187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A75ACB15E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:19:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9FEACB171
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C7DE405D02
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2BA17EE8C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BFB227EB1;
-	Mon,  2 Jun 2025 14:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6A122A7E3;
+	Mon,  2 Jun 2025 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbz6b0OX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuX2k3Ka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128B01FBC8C;
-	Mon,  2 Jun 2025 14:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95FD22A4EF;
+	Mon,  2 Jun 2025 14:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873172; cv=none; b=tKOyKHm8k0nEHjhmhXkIx3SjtDrbJ03ZQZApECN9LiA/VL9mEYU3rMddnJAp4jY+lVB81kSw1P0BVBUnU1IQU9Y0YjDqH/PVQEBteH6Lgf1jGTIYNbnRXcyaSmuNgF/DUwZBzPHx5RDpLothzrVbU7iISgDBxBcxPH/CdGYPY9k=
+	t=1748873206; cv=none; b=SWZwl7ASCqNeySRG81u1TzgPR1kElopNfWHnJ+e5kJ0AjIhZlsnY5b4MDVCvHaF2fg/gEGHQa/+lrT69+oFeQs41LNxRPh9/t+ubB3h0Mc/5Rdaa0UO5g8eEwUtxHb6xqXO1gFoqa7FHnuCH26M7iXLFYcH4LPGh37ncjHC3ieU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873172; c=relaxed/simple;
-	bh=XJicglhXPpak1vT/FBScxu+ih6LAjC4plw7lTmyz6og=;
+	s=arc-20240116; t=1748873206; c=relaxed/simple;
+	bh=PR0i8zB1YWfNffpnoEA/0lUDn10Tdqy1XrEXl067HWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BS3+HKmyadbo80/ghgFSaz5ICeq8WXg80kxzrOt4zLGF6MFto18boJv/fJleCGrgdkm0yLLHm3UYAJRjDjzj2aiTBQBhR6jJWO54U3N8/n4G3PPjGlBy3eOMnRXrSORrOowFAEpC91QJtMafQZQJkZhYrEIP/HWQZVH/JMOcb+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbz6b0OX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE57C4CEEB;
-	Mon,  2 Jun 2025 14:06:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aCEy6eNSWUaXWicFGv7T+SDA7QxnYR+ATYaiNGTA8aR6YnCWUn2MEPi3Gb4XMM8r9KzUKwpG/EN9dEYCZnAFL8for84ztzKMG8LQDJ5BCBvm0XsfrBx/slcr1048cuUbzCZoQGoaIpV4r+6RofGSV+uS1piZdksDA0Ty5mpTrnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuX2k3Ka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405F0C4CEEB;
+	Mon,  2 Jun 2025 14:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873171;
-	bh=XJicglhXPpak1vT/FBScxu+ih6LAjC4plw7lTmyz6og=;
+	s=korg; t=1748873206;
+	bh=PR0i8zB1YWfNffpnoEA/0lUDn10Tdqy1XrEXl067HWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbz6b0OXEQTHgC3YBLlYkAMtEGP7VxIJbfSw0+vlkWRS02OIX1ZgvX9KRtvQaIs2t
-	 BHIzvCoRGWNEMHeQARMoKgXZlUrA7oW397vmHGTXBttIHECTVZbK158O/mSM2xTLF0
-	 fJpIxV61PtvPx19rM17GecxrcNoQIlYHHoyZYSFs=
+	b=NuX2k3KakCYMvrdipkQVDB3QiQ6qWc9xah7wwSQW4VgmwMbFzd1bSKJdsUozo2jgG
+	 1NMj6X+V27NB+0YH7cabXJ7vDWjfl4UR47vGWtr+CUKvNiTvHeDo84ffC2ROwWHe6B
+	 OBI8ZqeZYmoscGbyXf94Pf+398wnNdFNaCiO4ojc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinqian Yang <yangjinqian1@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/444] arm64: Add support for HIP09 Spectre-BHB mitigation
-Date: Mon,  2 Jun 2025 15:41:47 +0200
-Message-ID: <20250602134342.675463101@linuxfoundation.org>
+Subject: [PATCH 6.6 044/444] tracing: Mark binary printing functions with __printf() attribute
+Date: Mon,  2 Jun 2025 15:41:48 +0200
+Message-ID: <20250602134342.716687814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -60,62 +61,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinqian Yang <yangjinqian1@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e18c09b204e81702ea63b9f1a81ab003b72e3174 ]
+[ Upstream commit 196a062641fe68d9bfe0ad36b6cd7628c99ad22c ]
 
-The HIP09 processor is vulnerable to the Spectre-BHB (Branch History
-Buffer) attack, which can be exploited to leak information through
-branch prediction side channels. This commit adds the MIDR of HIP09
-to the list for software mitigation.
+Binary printing functions are using printf() type of format, and compiler
+is not happy about them as is:
 
-Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
-Link: https://lore.kernel.org/r/20250325141900.2057314-1-yangjinqian1@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+kernel/trace/trace.c:3292:9: error: function ‘trace_vbprintk’ might be a candidate for ‘gnu_printf’ format attribute [-Werror=suggest-attribute=format]
+kernel/trace/trace_seq.c:182:9: error: function ‘trace_seq_bprintf’ might be a candidate for ‘gnu_printf’ format attribute [-Werror=suggest-attribute=format]
+
+Fix the compilation errors by adding __printf() attribute.
+
+While at it, move existing __printf() attributes from the implementations
+to the declarations. IT also fixes incorrect attribute parameters that are
+used for trace_array_printk().
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20250321144822.324050-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- arch/arm64/kernel/proton-pack.c  | 1 +
- 2 files changed, 3 insertions(+)
+ include/linux/trace.h     |  4 ++--
+ include/linux/trace_seq.h |  8 ++++----
+ kernel/trace/trace.c      | 11 +++--------
+ kernel/trace/trace.h      | 16 +++++++++-------
+ 4 files changed, 18 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 8a6b7feca3e42..d92a0203e5a93 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -132,6 +132,7 @@
- #define FUJITSU_CPU_PART_A64FX		0x001
+diff --git a/include/linux/trace.h b/include/linux/trace.h
+index fdcd76b7be83d..7eaad857dee04 100644
+--- a/include/linux/trace.h
++++ b/include/linux/trace.h
+@@ -72,8 +72,8 @@ static inline int unregister_ftrace_export(struct trace_export *export)
+ static inline void trace_printk_init_buffers(void)
+ {
+ }
+-static inline int trace_array_printk(struct trace_array *tr, unsigned long ip,
+-				     const char *fmt, ...)
++static inline __printf(3, 4)
++int trace_array_printk(struct trace_array *tr, unsigned long ip, const char *fmt, ...)
+ {
+ 	return 0;
+ }
+diff --git a/include/linux/trace_seq.h b/include/linux/trace_seq.h
+index 3691e0e76a1a2..62147eecf931d 100644
+--- a/include/linux/trace_seq.h
++++ b/include/linux/trace_seq.h
+@@ -79,8 +79,8 @@ extern __printf(2, 3)
+ void trace_seq_printf(struct trace_seq *s, const char *fmt, ...);
+ extern __printf(2, 0)
+ void trace_seq_vprintf(struct trace_seq *s, const char *fmt, va_list args);
+-extern void
+-trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary);
++extern __printf(2, 0)
++void trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary);
+ extern int trace_print_seq(struct seq_file *m, struct trace_seq *s);
+ extern int trace_seq_to_user(struct trace_seq *s, char __user *ubuf,
+ 			     int cnt);
+@@ -104,8 +104,8 @@ static inline __printf(2, 3)
+ void trace_seq_printf(struct trace_seq *s, const char *fmt, ...)
+ {
+ }
+-static inline void
+-trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary)
++static inline __printf(2, 0)
++void trace_seq_bprintf(struct trace_seq *s, const char *fmt, const u32 *binary)
+ {
+ }
  
- #define HISI_CPU_PART_TSV110		0xD01
-+#define HISI_CPU_PART_HIP09			0xD02
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 95868c3157300..43d19b69c635b 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -3487,10 +3487,9 @@ int trace_vbprintk(unsigned long ip, const char *fmt, va_list args)
+ }
+ EXPORT_SYMBOL_GPL(trace_vbprintk);
  
- #define APPLE_CPU_PART_M1_ICESTORM	0x022
- #define APPLE_CPU_PART_M1_FIRESTORM	0x023
-@@ -208,6 +209,7 @@
- #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
- #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
- #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
-+#define MIDR_HISI_HIP09 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_HIP09)
- #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
- #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
- #define MIDR_APPLE_M1_ICESTORM_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM_PRO)
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index 28c48bc9c0953..2c81e0efaf378 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -904,6 +904,7 @@ static u8 spectre_bhb_loop_affected(void)
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-+		MIDR_ALL_VERSIONS(MIDR_HISI_HIP09),
- 		{},
- 	};
- 	static const struct midr_range spectre_bhb_k11_list[] = {
+-__printf(3, 0)
+-static int
+-__trace_array_vprintk(struct trace_buffer *buffer,
+-		      unsigned long ip, const char *fmt, va_list args)
++static __printf(3, 0)
++int __trace_array_vprintk(struct trace_buffer *buffer,
++			  unsigned long ip, const char *fmt, va_list args)
+ {
+ 	struct trace_event_call *call = &event_print;
+ 	struct ring_buffer_event *event;
+@@ -3543,7 +3542,6 @@ __trace_array_vprintk(struct trace_buffer *buffer,
+ 	return len;
+ }
+ 
+-__printf(3, 0)
+ int trace_array_vprintk(struct trace_array *tr,
+ 			unsigned long ip, const char *fmt, va_list args)
+ {
+@@ -3573,7 +3571,6 @@ int trace_array_vprintk(struct trace_array *tr,
+  * Note, trace_array_init_printk() must be called on @tr before this
+  * can be used.
+  */
+-__printf(3, 0)
+ int trace_array_printk(struct trace_array *tr,
+ 		       unsigned long ip, const char *fmt, ...)
+ {
+@@ -3618,7 +3615,6 @@ int trace_array_init_printk(struct trace_array *tr)
+ }
+ EXPORT_SYMBOL_GPL(trace_array_init_printk);
+ 
+-__printf(3, 4)
+ int trace_array_printk_buf(struct trace_buffer *buffer,
+ 			   unsigned long ip, const char *fmt, ...)
+ {
+@@ -3634,7 +3630,6 @@ int trace_array_printk_buf(struct trace_buffer *buffer,
+ 	return ret;
+ }
+ 
+-__printf(2, 0)
+ int trace_vprintk(unsigned long ip, const char *fmt, va_list args)
+ {
+ 	return trace_array_vprintk(&global_trace, ip, fmt, args);
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index db0d2641125e7..faf892aecdf49 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -800,13 +800,15 @@ static inline void __init disable_tracing_selftest(const char *reason)
+ 
+ extern void *head_page(struct trace_array_cpu *data);
+ extern unsigned long long ns2usecs(u64 nsec);
+-extern int
+-trace_vbprintk(unsigned long ip, const char *fmt, va_list args);
+-extern int
+-trace_vprintk(unsigned long ip, const char *fmt, va_list args);
+-extern int
+-trace_array_vprintk(struct trace_array *tr,
+-		    unsigned long ip, const char *fmt, va_list args);
++
++__printf(2, 0)
++int trace_vbprintk(unsigned long ip, const char *fmt, va_list args);
++__printf(2, 0)
++int trace_vprintk(unsigned long ip, const char *fmt, va_list args);
++__printf(3, 0)
++int trace_array_vprintk(struct trace_array *tr,
++			unsigned long ip, const char *fmt, va_list args);
++__printf(3, 4)
+ int trace_array_printk_buf(struct trace_buffer *buffer,
+ 			   unsigned long ip, const char *fmt, ...);
+ void trace_printk_seq(struct trace_seq *s);
 -- 
 2.39.5
 
