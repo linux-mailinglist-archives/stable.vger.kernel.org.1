@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A50ACB29D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E27ACB70C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A63053A2C6A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1947EA22DAF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D2622F766;
-	Mon,  2 Jun 2025 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C1722F77F;
+	Mon,  2 Jun 2025 15:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RruR+fXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPLHpaY2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D70222590;
-	Mon,  2 Jun 2025 14:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B1422F772;
+	Mon,  2 Jun 2025 15:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873846; cv=none; b=OeDb3ATtAd7K9t3t7H5yxXd9BbujLP+0SRqqI78ht/wuVHKEeoKNcSHOVbpAf8M9fQ+Upq/0X0n9AlWkSC9+rFSwDE2av3i2MFVBxNn4TiUoUuIRDm2sJDMZdqTZ23cWoh2yaMVUv7IYU1QSxkWBzATbFjolOqJDkYPwsfEp3Bk=
+	t=1748876651; cv=none; b=Ip8ZApPGNzy0uynJFQfBD4NV8DoyUSQHs50uB+Xvn06GfIhIzgQKSsEf36zeUpO3Dxe0L0yzLAo1WeLqZGN0wWH6C54e7sHGjvoJlpb8l+UX/JLsKB+e4d8BBoOAy/OGIG7/KSsauf49Wxc7uS9QWuyHB9j1WBAjJtKuYp1zS54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873846; c=relaxed/simple;
-	bh=fmtJ+lMf6NJ1AY2teVVInixuB6mHzCzw5tkY5JWSOag=;
+	s=arc-20240116; t=1748876651; c=relaxed/simple;
+	bh=Va0FVwksD7S/ka60kz6g2tjulbWxbRRn07xPQoNNtjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6zb8bpZX5pIEmCbdL09JbYBwzDT/77XQwwDs9b3AyfB/EHtmy7q+gybQlv7bu/EGN0gYBH9c8j3jzXlsYlwCW6oIORQZlYQEOkYfJOauD6uXTRFPbhMlDuVvw9woc0Z6wuwuGKBoVTQhNxIMTxmoxLoa0DdKGReEWcImJiRI70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RruR+fXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50100C4CEEB;
-	Mon,  2 Jun 2025 14:17:26 +0000 (UTC)
+	 MIME-Version; b=mNHTViu+eEucT0Z5dwZf0RCMI62/UKGE+n6sQLnBf7Rkc4y2ItvAxQlkkgSQFk6M37+2LevwEnuReIjli10OfWXUAOQdSVKCqKq+yHbbWxrtU5Znnbb964P5VipmatV/1pjbekhFTeDgkgsMD3RTtfvpGKmGgsziYnC8ykUxL9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPLHpaY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDA7C4CEEB;
+	Mon,  2 Jun 2025 15:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873846;
-	bh=fmtJ+lMf6NJ1AY2teVVInixuB6mHzCzw5tkY5JWSOag=;
+	s=korg; t=1748876650;
+	bh=Va0FVwksD7S/ka60kz6g2tjulbWxbRRn07xPQoNNtjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RruR+fXhOZEvxKsDjVpqFYm8rbha0Fpx/Fs2+2aZ4NOZF7WP0Jjunn0Dt+NY5BOKb
-	 xSowz2eevFJilKpoagBFZBZsKd7vPJaXk6O2KCHFblhvfTq6BDU8P88Y0ciQiRVfO7
-	 31piQSpPOEfcZxG1TLqd+b2jHhbcY3DvYllBNNbs=
+	b=lPLHpaY2sAHCDftlDLMcKCbW5gWAWgMXO4oSjF1atWDqCxTt9BSX199AAky52W5P/
+	 B+g32GHGn22XzwVCIgEw04lph+a6tQtOz8LjojKk/4kqPAutwd3zOjalyOhWHFj6Fb
+	 YhGUs6vlNbp5JRxVNUimQ5dYBIoy6HC5Q+BtRcf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/444] soundwire: amd: change the soundwire wake enable/disable sequence
+Subject: [PATCH 6.1 030/325] mailbox: use error ret code of of_parse_phandle_with_args()
 Date: Mon,  2 Jun 2025 15:45:06 +0200
-Message-ID: <20250602134350.737723856@linuxfoundation.org>
+Message-ID: <20250602134320.971412851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit dcc48a73eae7f791b1a6856ea1bcc4079282c88d ]
+[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
 
-During runtime suspend scenario, SoundWire wake should be enabled and
-during system level suspend scenario SoundWire wake should be disabled.
+In case of error, of_parse_phandle_with_args() returns -EINVAL when the
+passed index is negative, or -ENOENT when the index is for an empty
+phandle. The mailbox core overwrote the error return code with a less
+precise -ENODEV. Use the error returned code from
+of_parse_phandle_with_args().
 
-Implement the SoundWire wake enable/disable sequence as per design flow
-for SoundWire poweroff mode.
-
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20250207065841.4718-2-Vijendar.Mukunda@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/amd_manager.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mailbox/mailbox.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
-index 79173ab540a6b..31b203ebbae0c 100644
---- a/drivers/soundwire/amd_manager.c
-+++ b/drivers/soundwire/amd_manager.c
-@@ -1138,6 +1138,7 @@ static int __maybe_unused amd_suspend(struct device *dev)
- 		amd_sdw_wake_enable(amd_manager, false);
- 		return amd_sdw_clock_stop(amd_manager);
- 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
-+		amd_sdw_wake_enable(amd_manager, false);
- 		/*
- 		 * As per hardware programming sequence on AMD platforms,
- 		 * clock stop should be invoked first before powering-off
-@@ -1165,6 +1166,7 @@ static int __maybe_unused amd_suspend_runtime(struct device *dev)
- 		amd_sdw_wake_enable(amd_manager, true);
- 		return amd_sdw_clock_stop(amd_manager);
- 	} else if (amd_manager->power_mode_mask & AMD_SDW_POWER_OFF_MODE) {
-+		amd_sdw_wake_enable(amd_manager, true);
- 		ret = amd_sdw_clock_stop(amd_manager);
- 		if (ret)
- 			return ret;
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 4229b9b5da98f..6f54501dc7762 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+ 
+ 	mutex_lock(&con_mutex);
+ 
+-	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", index, &spec)) {
++	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
++					 index, &spec);
++	if (ret) {
+ 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
+ 		mutex_unlock(&con_mutex);
+-		return ERR_PTR(-ENODEV);
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	chan = ERR_PTR(-EPROBE_DEFER);
 -- 
 2.39.5
 
