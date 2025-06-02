@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE9BACB765
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD6CACB559
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4282B1C21BFF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:08:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8B059E548D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3031FC0EF;
-	Mon,  2 Jun 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E20C2356CF;
+	Mon,  2 Jun 2025 14:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiOtvGAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aw0r3z9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55022ACF3;
-	Mon,  2 Jun 2025 15:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16342356BA;
+	Mon,  2 Jun 2025 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876470; cv=none; b=gthEtQOxGy4gA0MABDQ+VT/HgDK0q2IIkRSc/IrjVNWcTJqs0zAWEuyQIM7iSZdl9m1mq0X9XOS/OQpbd4HNw6aioxyKslhycsGNHCDVDxHjIfqLbvuZms//Ek4GWcTS0aEpoqA8mZjX0QxDQHh4mXXJ2drzinxYKPWrHY90Qn0=
+	t=1748875777; cv=none; b=fi8YJFoAv+p0hpBevZm9n1RI2uwdrltFHqF9Uf09TZD/VDlDGb8I0xgRt2TvrRjXSl/7oC4vdToL2U43EEKkwxgCfWL+EkTKnRobVzFKH0n6b0dmCJpkvw4Qsl2q7liVBTFTA8JsGcrO7ihsCMYc9SaEol9xusoF2fu2pzCobBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876470; c=relaxed/simple;
-	bh=2/goVAt4FXQjzV0AV1o/nA/kUZR9SsK3/ys/StrqSO0=;
+	s=arc-20240116; t=1748875777; c=relaxed/simple;
+	bh=nrzWro6JFXcmeVRhkjABPYPoqQ++EPT7CRYSMfnjap0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8VhzXAVQfGilOZlIWfQ6i3U07hYMWUNHaCO9lzjpam7gGJllw/2gxsY+JHvSLApiXmL/5eCgUPrKa84mwz5gX2fqR8fLC1rTJ8g42jePR/mUW7AJOkixKBHCSAOQlIdsiKNwdF/NHVtuGi/OaIT4YIusVrm7OjOSt6Wz0xPXr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiOtvGAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7604CC4CEEB;
-	Mon,  2 Jun 2025 15:01:09 +0000 (UTC)
+	 MIME-Version; b=oZvOvHlx8cy08PnDawfzp8pUoMkQW5oyKKzOzrbHLVrK1XrTgfKGNlBvg5Gx4Ai8TqrD8ycbThj7AmWcbR/V67tpLbY/mbNI7/fmaY6Oj4l2mxGBHLTx/MNhxu3Aft8iQ8hQBdjGQHSuGO0mFkCEwG3iDxrvuHmf+F0kV5lMJO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aw0r3z9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F6EC4CEEE;
+	Mon,  2 Jun 2025 14:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876470;
-	bh=2/goVAt4FXQjzV0AV1o/nA/kUZR9SsK3/ys/StrqSO0=;
+	s=korg; t=1748875777;
+	bh=nrzWro6JFXcmeVRhkjABPYPoqQ++EPT7CRYSMfnjap0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiOtvGAsxd9/LW9tuxBK/evspqJyalQTAsLQ9I0w5E/uMR2htigQoLuMhyFseU/AH
-	 aMNqS52lk5xsdzQYbexVNa86fmZ7Sw2LaUyu5kPVHfIizQEqlGmsjhiS/xUA6Q6GxY
-	 aGkSYcDDwxLD9/U3socVh4idLuSFyTXvObG5ggjY=
+	b=aw0r3z9PShMglkhsk6ZpJ76wzFfSkVdmEJHLygFr7TA53cffQbo4dmMA36w4plRjr
+	 9hrupnbWIwLANd2Ygp3cnJVNN/F/HWer2JBbLKBA5rZcWG7gAFgzOn7suRVO29pUCJ
+	 e+2/Ey4AttXhz7Ac0j6pPMJC1vThggEjp0Xpgr0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/207] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+	Dominik Grzegorzek <dominik.grzegorzek@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 241/270] padata: do not leak refcount in reorder_work
 Date: Mon,  2 Jun 2025 15:48:46 +0200
-Message-ID: <20250602134304.755377642@linuxfoundation.org>
+Message-ID: <20250602134317.182510653@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
 
-[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
+commit d6ebcde6d4ecf34f8495fb30516645db3aea8993 upstream.
 
-Incorrect types are used as sizeof() arguments in devm_kcalloc().
-It should be sizeof(dai_link_data) for link_data instead of
-sizeof(snd_soc_dai_link).
+A recent patch that addressed a UAF introduced a reference count leak:
+the parallel_data refcount is incremented unconditionally, regardless
+of the return value of queue_work(). If the work item is already queued,
+the incremented refcount is never decremented.
 
-This is found by our static analysis tool.
+Fix this by checking the return value of queue_work() and decrementing
+the refcount when necessary.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Resolves:
+
+Unreferenced object 0xffff9d9f421e3d80 (size 192):
+  comm "cryptomgr_probe", pid 157, jiffies 4294694003
+  hex dump (first 32 bytes):
+    80 8b cf 41 9f 9d ff ff b8 97 e0 89 ff ff ff ff  ...A............
+    d0 97 e0 89 ff ff ff ff 19 00 00 00 1f 88 23 00  ..............#.
+  backtrace (crc 838fb36):
+    __kmalloc_cache_noprof+0x284/0x320
+    padata_alloc_pd+0x20/0x1e0
+    padata_alloc_shell+0x3b/0xa0
+    0xffffffffc040a54d
+    cryptomgr_probe+0x43/0xc0
+    kthread+0xf6/0x1f0
+    ret_from_fork+0x2f/0x50
+    ret_from_fork_asm+0x1a/0x30
+
+Fixes: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/imx-card.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 2b64c0384b6bb..9b14cda56b068 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -517,7 +517,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 	if (!card->dai_link)
- 		return -ENOMEM;
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -363,7 +363,8 @@ static void padata_reorder(struct parall
+ 		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
+ 		 */
+ 		padata_get_pd(pd);
+-		queue_work(pinst->serial_wq, &pd->reorder_work);
++		if (!queue_work(pinst->serial_wq, &pd->reorder_work))
++			padata_put_pd(pd);
+ 	}
+ }
  
--	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
-+	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
- 	if (!data->link_data)
- 		return -ENOMEM;
- 
--- 
-2.39.5
-
 
 
 
