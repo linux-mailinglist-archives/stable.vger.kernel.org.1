@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B185DACAFE5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94228ACAF7B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88E3318941E2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A05B37AE2B7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F92B21FF39;
-	Mon,  2 Jun 2025 13:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9393A22156B;
+	Mon,  2 Jun 2025 13:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQTPJAJ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwerD4/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4FE1401B;
-	Mon,  2 Jun 2025 13:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD7214901B;
+	Mon,  2 Jun 2025 13:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872634; cv=none; b=DsIsWdGjWMAioeWroek41nFvFSkszU3i9IAPjoxVuiDtkUYqZ8k+2oEXg+R45KZrXZ2JKjdCFc79ZiJ8PwG/PmW2h8RrgRjmhTGkvjzb8DE1oys8ZD2wTkg+o5vlvfFJEDpt4oFFfi8DwVa4dQrNe8eXJFm0TjLoOPJHwik1GP4=
+	t=1748872096; cv=none; b=rzyLR8AQYInbwMSjMLNKBH9h40tqbg+sAYo7ALtKulyYupaCQ35CqYRZOytqvzryaggyHczTYNgFY6Cr1fqbCOUnyLgDpiATWe205qgJnXCXpXwIdeCe6rSvuqHuuBq/L6bPBNclfMUBsUd92tJ0FPXEsnNeip7bD4obPRU39Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872634; c=relaxed/simple;
-	bh=T/dI8eA99jBF+qfBUrg9W2fxf3bqZu9jb4uMPQwAM1Q=;
+	s=arc-20240116; t=1748872096; c=relaxed/simple;
+	bh=X0PdvBWxebmiTKchGzbEjOy8nMDeiMDqCFJykZSLaTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W7716g5wmmIs1CkD6qnJMDX6v/rAZcxPPoXgrjaUDq8ID+9oZRpdS7BMFuObloC/j6vQkaLiBuAO5wDAzpAw3zcKLa2GHkm8Xfyx3TRpSqy0TreKT3vu7DHJ5Z/6KlnpoZPTsnV5XoKqOgBgfublNuu/Iku+mF54qrsPnslU2zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQTPJAJ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803C3C4CEEB;
-	Mon,  2 Jun 2025 13:57:13 +0000 (UTC)
+	 MIME-Version; b=asWZCzH9yr7AhQCuQqn01D4leluuxjpvagVEzcqa/4qF2J/RLE4zJve2byS73DiFTKwGaLUahZpnNoHUlMgDYwo7Mmngv/uwEL2ZUj34U7Ol6x9k42gkI5KwdSXcnUkE5rDcVssz9hThQ1beGhgYgIhRIGxnEVDA1vTeh/AZ9fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwerD4/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C384C4CEEB;
+	Mon,  2 Jun 2025 13:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872634;
-	bh=T/dI8eA99jBF+qfBUrg9W2fxf3bqZu9jb4uMPQwAM1Q=;
+	s=korg; t=1748872096;
+	bh=X0PdvBWxebmiTKchGzbEjOy8nMDeiMDqCFJykZSLaTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQTPJAJ209OX7Y5ct6wAz21JoYdsIa1eUoZJpitjDAHTjSfabbmERDhg36DG94KDG
-	 l5zCCE/sXJ/ifKJIDAl9Ldba5WlDeDMjtf+7zmcpND9tflyihrFiLIDhQqwnfUxhrm
-	 j2eEcqcR0N66cQsPcDDqQrz84opTkY4f0zZqOuOo=
+	b=vwerD4/QxW2hQXH7HRX2jATGPdv4ZplezWUzOPiUTFfJLdhmkoGBS7yXNAMEBv0lx
+	 fA89COxsMvLPSPF3A716emumtdWr6j8JpRvI2bsgoe/WWrCgLgcsw9Kby304ZSjcLt
+	 vh8A2VQt20sTecnxN6Guius35ivyvw64cqDVRYmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Stephan Gerhold <stephan.gerhold@linaro.org>,
 	Johan Hovold <johan+linaro@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 23/73] arm64: dts: qcom: x1e80100: Fix video thermal zone
+Subject: [PATCH 6.15 17/49] arm64: dts: qcom: x1e80100-hp-omnibook-x14: Fix vreg_l2j_1p2 voltage
 Date: Mon,  2 Jun 2025 15:47:09 +0200
-Message-ID: <20250602134242.613632004@linuxfoundation.org>
+Message-ID: <20250602134238.623429723@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 801befff4c827aa72e3698367c5afc18987a6a3f upstream.
+commit 4a09dad9d437a13e9cd4383ff7791a816a6e1652 upstream.
 
-A passive trip point at 125°C is pretty high, this is usually the
-temperature for the critical shutdown trip point. Also, we don't have any
-passive cooling devices attached to the video thermal zone.
-
-Change this to be a critical trip point, and add a "hot" trip point at
-90°C for consistency with the other thermal zones.
+In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
+uV instead of the 1200000 uV we have currently in the device tree. Use the
+same for consistency and correctness.
 
 Cc: stable@vger.kernel.org
-Fixes: 4e915987ff5b ("arm64: dts: qcom: x1e80100: Enable tsens and thermal zone nodes")
+Fixes: 6f18b8d4142c ("arm64: dts: qcom: x1e80100-hp-x14: dt for HP Omnibook X Laptop 14")
 Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250219-x1e80100-thermal-fixes-v1-1-d110e44ac3f9@linaro.org
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-4-24b6a2043025@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -8727,15 +8727,19 @@
+--- a/arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-hp-omnibook-x14.dts
+@@ -871,8 +871,8 @@
+ 
+ 		vreg_l2j_1p2: ldo2 {
+ 			regulator-name = "vreg_l2j_1p2";
+-			regulator-min-microvolt = <1200000>;
+-			regulator-max-microvolt = <1200000>;
++			regulator-min-microvolt = <1256000>;
++			regulator-max-microvolt = <1256000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
  		};
  
- 		video-thermal {
--			polling-delay-passive = <250>;
--
- 			thermal-sensors = <&tsens0 12>;
- 
- 			trips {
- 				trip-point0 {
-+					temperature = <90000>;
-+					hysteresis = <2000>;
-+					type = "hot";
-+				};
-+
-+				video-critical {
- 					temperature = <125000>;
- 					hysteresis = <1000>;
--					type = "passive";
-+					type = "critical";
- 				};
- 			};
- 		};
 
 
 
