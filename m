@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-148967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05C3ACAF77
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A52EACAFE7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895B03A6C68
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C0D1BA2F23
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CBE221DA2;
-	Mon,  2 Jun 2025 13:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B0C20F07C;
+	Mon,  2 Jun 2025 13:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9mk1YNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOc8XU20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E227221703;
-	Mon,  2 Jun 2025 13:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AE61401B;
+	Mon,  2 Jun 2025 13:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872108; cv=none; b=n02pGq/m8GCirBkrLvJKh3hFvFeia1WB8Uqt3JFO0TjCO8pz1GOezGQ4NPVulkMujVEimXFoNBZ196rC6lfKMKdZp3fOGx1wsTBCIVytHJ3gY6YXYEhjBTG+ihvK52Lwg67TFi1yWcKK+zXT9Owy6dbZGi3AxoGN6FL9QZNac0Q=
+	t=1748872644; cv=none; b=rixu+shZn6FNN/vwg+7oEujA52Qh+smFHN+XPpQgidwz/qdUGdJQtLYAqngzQZt4Q6t510XP1naoMNtM0h7RME4wuRgSwJNELP6xpttalPfFxlczLlKvZb+shfyib4qJFLEfwT6YiI5zH278flDAZFbBtEjlg9qgCs3b9AJDl50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872108; c=relaxed/simple;
-	bh=2cOeoGZ4yKEbKnsT8ilOfSLvH0Vhtl6AjLCAKG7YV78=;
+	s=arc-20240116; t=1748872644; c=relaxed/simple;
+	bh=b0lE0hAqx0M6AyjGe04PlGPwpCnHIyXXHwhQVvMEcyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9ACmgfUdMRw8iUodE/lCwlzr+VlvmIDsb2Qavl+IXSQqVONHWNG4aZsNzcl4ypuMrHEF10wt5Xr729e/uhgRavAM0qX5x4tj8mFptuznw8BhGdiex17detc/KQpZaGVs+1j/zGIyuWN/ylkKWguCwwyeumQ3XTGxwi7LEX8oCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9mk1YNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90573C4CEEB;
-	Mon,  2 Jun 2025 13:48:27 +0000 (UTC)
+	 MIME-Version; b=thpuAVTx7OJ9rKsCs01lQrMzRU0NX2Q5YW2Z43SlL1IdbFLoo9SAQ5a2fSZMWPYXbHMqKPs2qYF6wThOZQGswnGglSC0F/thZItb8xAyXkaogdlJDytF1B63NhMAVgBznAraQ7zaZGFyfqNVYkbat6I1tx6AUUCK2fHcXdsPJwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOc8XU20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 569B8C4CEEB;
+	Mon,  2 Jun 2025 13:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872108;
-	bh=2cOeoGZ4yKEbKnsT8ilOfSLvH0Vhtl6AjLCAKG7YV78=;
+	s=korg; t=1748872643;
+	bh=b0lE0hAqx0M6AyjGe04PlGPwpCnHIyXXHwhQVvMEcyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9mk1YNCcTh1fypQA0IrxuSg+lJJ8bfLxaSQ3qRUFvK9dJGwhFSKeZVmxBPXRcsyx
-	 uSrAp4AZx7wWablvgUTtKgO3HVrEEHKwdK6jfIfMum/hDeyHsoTaRtZre6lQ5CV501
-	 JL4HWDzWfjxGv2yDM/sT7jmt7sxowkNgJ67ONb2I=
+	b=IOc8XU20RjowDBcpBWEVgxks6ctmVwF7k1nmTIwynzN0EpkYd9gcqiL4pPINmdmwb
+	 rB0RGWCid5zrbuflJRwEj915w/t62d6hWeZzW07HiBAf4cO+MnDqzO6gTHHfYNswLV
+	 qEzqXkRHpnK4vfQ5NlnUb6fgHMVn4AXjbL3FTUe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
 	Abel Vesa <abel.vesa@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 20/49] arm64: dts: qcom: x1e80100-qcp: Fix vreg_l2j_1p2 voltage
+Subject: [PATCH 6.14 26/73] arm64: dts: qcom: x1e80100: Fix PCIe 3rd controller DBI size
 Date: Mon,  2 Jun 2025 15:47:12 +0200
-Message-ID: <20250602134238.738969159@linuxfoundation.org>
+Message-ID: <20250602134242.729133050@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-commit efdbeae860bf0278b050c6c9ad5921afba4596d0 upstream.
+commit 181faec4cc9d90dad0ec7f7c8124269c0ba2e107 upstream.
 
-In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
-uV instead of the 1200000 uV we have currently in the device tree. Use the
-same for consistency and correctness.
+According to documentation, the DBI range size is 0xf20. So fix it.
 
-Cc: stable@vger.kernel.org
-Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Cc: stable@vger.kernel.org # 6.14
+Fixes: f8af195beeb0 ("arm64: dts: qcom: x1e80100: Add support for PCIe3 on x1e80100")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-6-24b6a2043025@linaro.org
+Link: https://lore.kernel.org/r/20250422-x1e80100-dts-fix-pcie3-dbi-size-v1-1-c197701fd7e4@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
-@@ -675,8 +675,8 @@
- 
- 		vreg_l2j_1p2: ldo2 {
- 			regulator-name = "vreg_l2j_1p2";
--			regulator-min-microvolt = <1200000>;
--			regulator-max-microvolt = <1200000>;
-+			regulator-min-microvolt = <1256000>;
-+			regulator-max-microvolt = <1256000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
- 
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index c04a2615ca77..06175b33bd92 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -3126,7 +3126,7 @@ pcie3: pcie@1bd0000 {
+ 			device_type = "pci";
+ 			compatible = "qcom,pcie-x1e80100";
+ 			reg = <0x0 0x01bd0000 0x0 0x3000>,
+-			      <0x0 0x78000000 0x0 0xf1d>,
++			      <0x0 0x78000000 0x0 0xf20>,
+ 			      <0x0 0x78000f40 0x0 0xa8>,
+ 			      <0x0 0x78001000 0x0 0x1000>,
+ 			      <0x0 0x78100000 0x0 0x100000>,
+-- 
+2.49.0
+
 
 
 
