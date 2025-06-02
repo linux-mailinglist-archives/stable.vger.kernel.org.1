@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFB0ACB449
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37FEACB581
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:05:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497811945C04
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64EE93B4E33
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCCC226883;
-	Mon,  2 Jun 2025 14:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D6722CBD9;
+	Mon,  2 Jun 2025 14:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1lOoCtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6XKTpyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37055225416;
-	Mon,  2 Jun 2025 14:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A209B22A1E6;
+	Mon,  2 Jun 2025 14:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874735; cv=none; b=cKlzXGeqv3KFbJHjZYmTYEudmOwGxSFyFlgAHRV8TtbAFP6YNLnw41oCforzI/nB9UIG8n03k4vZVyqWleZakS5VEX9ROKX5jwITg4dEXiMpjGYjiEBF/Tgd76Z4zKdb2BvmBAaze2bDptCFr0JUFU9vrb2PalrBDEUoWqnSVbg=
+	t=1748875543; cv=none; b=l/yve1N/CPeCKg077Yk+zRZTM7sl9jeveek/yHd047pxGhXUHmvRheOr3Ocms6vQomTlaDi4RPXUNtqbgP5sumcjkBCzLTc8pj2b8f8HiHABoq+puFt8bJc586FBkAsY3uMQW5kObT+Whw2Cz20zjvREY7eXAmrfLLPbctktIZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874735; c=relaxed/simple;
-	bh=f7AzeLY2JigMbDLREMYcQt/pkpicRVZ6DV1Y42OZqAY=;
+	s=arc-20240116; t=1748875543; c=relaxed/simple;
+	bh=9/pefiOsxLLklRLuQYhPLApZMGKpcp6JJivSwIK+1Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joyeShSi18PUOJlLgLoQStOr5a4XQRpjdFEanN4NP2r9PWfLZawBFAVPF8SDsdbnnmLGanJ1wkUBvhas051rOZVGlhT2m4i1jOvLzg6btIlnN0FBcvCiwwjLnjyxjNjkPqdak/cG0vKgi81xaIVRhmlrS6Dss6K73IxOIEhewkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1lOoCtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92453C4CEEB;
-	Mon,  2 Jun 2025 14:32:14 +0000 (UTC)
+	 MIME-Version; b=Tm+FOLElla3wnQ179q/T8rjrWEIkw3Tgs7433LYwm/MFUss4aAWVtpNkivum+Er9smhjs38QRGG4GQYb+1K3tDbu5/R/V7JOf+JsV9kRlvonydV6cb4RKNct6KtRduO9HyvmhJAQ/8DTo5J9gmt02iDahVzWmBvMCn5rqIcmWbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6XKTpyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6670C4CEEB;
+	Mon,  2 Jun 2025 14:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874735;
-	bh=f7AzeLY2JigMbDLREMYcQt/pkpicRVZ6DV1Y42OZqAY=;
+	s=korg; t=1748875543;
+	bh=9/pefiOsxLLklRLuQYhPLApZMGKpcp6JJivSwIK+1Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1lOoCtf4se9+kQgVurnNv+b0Jh0eaD5JJtLZ4p3GKNvugXANE5QG7wb+xgISc8Ak
-	 TjMuY7Ut9Ei1RXAbAt7F5yIywoZ01zuXneqiSslW9+MwTRDu1dzip8sL+etI3CQ4CK
-	 CvZzpYWoC0D9zb5pztzfeNYFnBchFTGbiQnxctXw=
+	b=p6XKTpyUz5232+53oepxMu7bZK19xSOi8k0cUK6Vej/UbGYWzPBMjhC9X3t40l9eJ
+	 abjs0NrVjZQ4pwcI9pKqAFPKpixgmel0I2KVxsgJCwU5b4x1iDio4OvGX+qTlZ60JG
+	 APCV56Hgpv96ActLx0gCw4J5XlRecz/Z823GXnPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 120/204] orangefs: Do not truncate file size
+Subject: [PATCH 5.10 168/270] ipv4: fib: Move fib_valid_key_len() to rtm_to_fib_config().
 Date: Mon,  2 Jun 2025 15:47:33 +0200
-Message-ID: <20250602134300.368710837@linuxfoundation.org>
+Message-ID: <20250602134314.088304905@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
+[ Upstream commit 254ba7e6032d3fc738050d500b0c1d8197af90ca ]
 
-'len' is used to store the result of i_size_read(), so making 'len'
-a size_t results in truncation to 4GiB on 32-bit systems.
+fib_valid_key_len() is called in the beginning of fib_table_insert()
+or fib_table_delete() to check if the prefix length is valid.
 
-Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
-Tested-by: Mike Marshall <hubcap@omnibond.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+fib_table_insert() and fib_table_delete() are called from 3 paths
+
+  - ip_rt_ioctl()
+  - inet_rtm_newroute() / inet_rtm_delroute()
+  - fib_magic()
+
+In the first ioctl() path, rtentry_to_fib_config() checks the prefix
+length with bad_mask().  Also, fib_magic() always passes the correct
+prefix: 32 or ifa->ifa_prefixlen, which is already validated.
+
+Let's move fib_valid_key_len() to the rtnetlink path, rtm_to_fib_config().
+
+While at it, 2 direct returns in rtm_to_fib_config() are changed to
+goto to match other places in the same function
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250228042328.96624-12-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/ipv4/fib_frontend.c | 18 ++++++++++++++++--
+ net/ipv4/fib_trie.c     | 22 ----------------------
+ 2 files changed, 16 insertions(+), 24 deletions(-)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index 636892ffec0ba..238773a508bac 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -22,9 +22,9 @@ static int orangefs_writepage_locked(struct page *page,
- 	struct orangefs_write_range *wr = NULL;
- 	struct iov_iter iter;
- 	struct bio_vec bv;
--	size_t len, wlen;
-+	size_t wlen;
- 	ssize_t ret;
--	loff_t off;
-+	loff_t len, off;
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 5e2a003cd83c7..f902cd8cb852b 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -817,19 +817,33 @@ static int rtm_to_fib_config(struct net *net, struct sk_buff *skb,
+ 		}
+ 	}
  
- 	set_page_writeback(page);
++	if (cfg->fc_dst_len > 32) {
++		NL_SET_ERR_MSG(extack, "Invalid prefix length");
++		err = -EINVAL;
++		goto errout;
++	}
++
++	if (cfg->fc_dst_len < 32 && (ntohl(cfg->fc_dst) << cfg->fc_dst_len)) {
++		NL_SET_ERR_MSG(extack, "Invalid prefix for given prefix length");
++		err = -EINVAL;
++		goto errout;
++	}
++
+ 	if (cfg->fc_nh_id) {
+ 		if (cfg->fc_oif || cfg->fc_gw_family ||
+ 		    cfg->fc_encap || cfg->fc_mp) {
+ 			NL_SET_ERR_MSG(extack,
+ 				       "Nexthop specification and nexthop id are mutually exclusive");
+-			return -EINVAL;
++			err = -EINVAL;
++			goto errout;
+ 		}
+ 	}
  
-@@ -98,8 +98,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
- 	struct orangefs_write_range *wrp, wr;
- 	struct iov_iter iter;
- 	ssize_t ret;
--	size_t len;
--	loff_t off;
-+	loff_t len, off;
- 	int i;
+ 	if (has_gw && has_via) {
+ 		NL_SET_ERR_MSG(extack,
+ 			       "Nexthop configuration can not contain both GATEWAY and VIA");
+-		return -EINVAL;
++		err = -EINVAL;
++		goto errout;
+ 	}
  
- 	len = i_size_read(inode);
+ 	if (!cfg->fc_table)
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 1bdcdc79d43f9..6c53381fa36f7 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -1145,22 +1145,6 @@ static int fib_insert_alias(struct trie *t, struct key_vector *tp,
+ 	return 0;
+ }
+ 
+-static bool fib_valid_key_len(u32 key, u8 plen, struct netlink_ext_ack *extack)
+-{
+-	if (plen > KEYLENGTH) {
+-		NL_SET_ERR_MSG(extack, "Invalid prefix length");
+-		return false;
+-	}
+-
+-	if ((plen < KEYLENGTH) && (key << plen)) {
+-		NL_SET_ERR_MSG(extack,
+-			       "Invalid prefix for given prefix length");
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+ static void fib_remove_alias(struct trie *t, struct key_vector *tp,
+ 			     struct key_vector *l, struct fib_alias *old);
+ 
+@@ -1181,9 +1165,6 @@ int fib_table_insert(struct net *net, struct fib_table *tb,
+ 
+ 	key = ntohl(cfg->fc_dst);
+ 
+-	if (!fib_valid_key_len(key, plen, extack))
+-		return -EINVAL;
+-
+ 	pr_debug("Insert table=%u %08x/%d\n", tb->tb_id, key, plen);
+ 
+ 	fi = fib_create_info(cfg, extack);
+@@ -1671,9 +1652,6 @@ int fib_table_delete(struct net *net, struct fib_table *tb,
+ 
+ 	key = ntohl(cfg->fc_dst);
+ 
+-	if (!fib_valid_key_len(key, plen, extack))
+-		return -EINVAL;
+-
+ 	l = fib_find_node(t, &tp, key);
+ 	if (!l)
+ 		return -ESRCH;
 -- 
 2.39.5
 
