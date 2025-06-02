@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-150460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A9BACB746
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:26:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7919ACB3C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 391A84A6173
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9A644A04A5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D409F229B18;
-	Mon,  2 Jun 2025 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D8322540F;
+	Mon,  2 Jun 2025 14:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMhrsbUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bi3+p+zQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905472288F4;
-	Mon,  2 Jun 2025 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D502253F3;
+	Mon,  2 Jun 2025 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877195; cv=none; b=IliNavWzsYaiOX3/dANTOq3XlBICSqzBZcjxtOcLy9/9HyEoJNa6GFV8aCdAeMZEzrfkXMBsRcPB76RiT54pBGZTl/xbyzqTRjaHnoLszzh2hC9lx8BHbDmyriGTPmW0VYM/i5ESF66rRFSPNXH3Jysv1eBeH/E7Tly2tSqBqfE=
+	t=1748874725; cv=none; b=D8jXxLKG3YXxhE5DVqicjYTSFioGu/N5ZPlNNOeKHwJqkaYmgymtUlyblIyxRKnD2YKA82BYTGHU7yxB+ExHPxZlWwD3y5W/ceprziPXjdm21UTNGZWf3XfRxmEs12Rut+wv7j3rUPz4kKl1M8O28vXD2kGxGwWFJmWlC65ubvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877195; c=relaxed/simple;
-	bh=gTCgi4AxJQog4MxJat/Isovv3gR+RauP6nqrJL2vXC4=;
+	s=arc-20240116; t=1748874725; c=relaxed/simple;
+	bh=k3EZ36QuWXKUhH2+ZQT4FtZbVQZdKfXRPX15OMR+tdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQJ25CuovggoRAP/YBqynBWAMSWTNX+oZxFZtLVTJBHSfIKR0UesX86bh4TQqbz89YbADhi/XLz3yRutOHtEuMXukutruE0BrlsCdekVUXMSp01USnamznX6tcOkI6b/mqaRk9v3WOW6Tf3xlsFRbCX7u+MOlrlsisnyg1sC9D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMhrsbUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32DDC4CEEB;
-	Mon,  2 Jun 2025 15:13:14 +0000 (UTC)
+	 MIME-Version; b=DmAXov5mFcM4vKxsi/mZKpSRVh+YUpdUv8kMhyMxBoJc1WjiwumxeEObwg5KCsdzFTHGe4fATSveVUB/wlxow8F0sShoBDY7YDCfXFmbwwJauD1rZ7LjG0yDSv9gsSLkml1eSUdvPa1bhz/QhwlP+RV8c+myK027MrQXZ+yNmbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bi3+p+zQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48843C4CEEB;
+	Mon,  2 Jun 2025 14:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877195;
-	bh=gTCgi4AxJQog4MxJat/Isovv3gR+RauP6nqrJL2vXC4=;
+	s=korg; t=1748874725;
+	bh=k3EZ36QuWXKUhH2+ZQT4FtZbVQZdKfXRPX15OMR+tdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMhrsbUr5pYVp4x6bd6ltIZQHLccjgHhRBEPYrHo1mQU8+/ELXVyrXq/I+iA4JsES
-	 g6CELxytEkinl7TyfLzWZ+ZANaQDeg6GZp/bsXw8vkGJgB9dL0SGmK8YO21095iqVi
-	 3Syzy9h2R/xdHqLFKASt6WJzrOs5TEG+0BagoN0g=
+	b=Bi3+p+zQa6BlCaVvz53aURPkD2dnspa/vnaBG8XwiwvAh1McCUxKPQzIoRfQ1wYRU
+	 CuNoEmExWijbX+VitPzYut63qoG7gvbo5L3Sv0OaxYJ6vH45TtwrLJnpG0QLv7ayNm
+	 Un+lDuSzyChtrtpVu7t6LeU53Ky91aZ8NcspC6Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Jackman <jackmanb@google.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/325] kunit: tool: Use qboot on QEMU x86_64
+Subject: [PATCH 5.4 117/204] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
 Date: Mon,  2 Jun 2025 15:47:30 +0200
-Message-ID: <20250602134326.892756308@linuxfoundation.org>
+Message-ID: <20250602134300.253706836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brendan Jackman <jackmanb@google.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 08fafac4c9f289a9d9a22d838921e4b3eb22c664 ]
+[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
 
-As noted in [0], SeaBIOS (QEMU default) makes a mess of the terminal,
-qboot does not.
+PLLD is usually used as parent clock for internal video devices, like
+DSI for example, while PLLD2 is used as parent for HDMI.
 
-It turns out this is actually useful with kunit.py, since the user is
-exposed to this issue if they set --raw_output=all.
-
-qboot is also faster than SeaBIOS, but it's is marginal for this
-usecase.
-
-[0] https://lore.kernel.org/all/CA+i-1C0wYb-gZ8Mwh3WSVpbk-LF-Uo+njVbASJPe1WXDURoV7A@mail.gmail.com/
-
-Both SeaBIOS and qboot are x86-specific.
-
-Link: https://lore.kernel.org/r/20250124-kunit-qboot-v1-1-815e4d4c6f7c@google.com
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/qemu_configs/x86_64.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/tegra114.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/kunit/qemu_configs/x86_64.py b/tools/testing/kunit/qemu_configs/x86_64.py
-index dc79490768630..4a6bf4e048f5b 100644
---- a/tools/testing/kunit/qemu_configs/x86_64.py
-+++ b/tools/testing/kunit/qemu_configs/x86_64.py
-@@ -7,4 +7,6 @@ CONFIG_SERIAL_8250_CONSOLE=y''',
- 			   qemu_arch='x86_64',
- 			   kernel_path='arch/x86/boot/bzImage',
- 			   kernel_command_line='console=ttyS0',
--			   extra_qemu_params=[])
-+			   # qboot is faster than SeaBIOS and doesn't mess up
-+			   # the terminal.
-+			   extra_qemu_params=['-bios', 'qboot.rom'])
+diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
+index 0d7a6327e404a..fe1ebc3c5aa86 100644
+--- a/arch/arm/boot/dts/tegra114.dtsi
++++ b/arch/arm/boot/dts/tegra114.dtsi
+@@ -123,7 +123,7 @@ dsi@54400000 {
+ 			reg = <0x54400000 0x00040000>;
+ 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
+ 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
+-				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
++				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
+ 			clock-names = "dsi", "lp", "parent";
+ 			resets = <&tegra_car 82>;
+ 			reset-names = "dsi";
 -- 
 2.39.5
 
