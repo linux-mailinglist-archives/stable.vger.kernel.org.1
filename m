@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C805ACB80D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26357ACB364
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFA099E0C63
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 574DA7AED32
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4EB22A7ED;
-	Mon,  2 Jun 2025 14:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA50322FDF2;
+	Mon,  2 Jun 2025 14:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o44u2Y5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPP9tqXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3CF238C2A;
-	Mon,  2 Jun 2025 14:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8505E1ACEAF;
+	Mon,  2 Jun 2025 14:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876348; cv=none; b=tGxQ6z6ZPqYjuFoP/0HZlmjphyBybqxRRIjSLUs8QTXEtJB1nxtF1YGYWH76K8HACgWuUHw6P+dSXaUjMEmzGa56mzaqTvUDyPMUHn1vCBCUKaMtnWjG+xlOeccHwmufOrEDhFeXpnpdZftLSFSftEONRxk6YvcJC/yyuLnLqi0=
+	t=1748874950; cv=none; b=dFlOjiDu2+osxLbX87MRkSCAhLMiAliM8X/ahmYmJWvRcogDruCKEu3Ez93fNJWt5R+t3gMH/7lbby9YjRzYWbfhquSbpQAUQLWojjWH4LrQ9ZnNpm+ub2wx1scprKZHXq3j+01oyQe+7Fk5Y5s0BDUQWZcpcKMi/s9w5kYWDI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876348; c=relaxed/simple;
-	bh=AJGLAyta5h4jt4GzvEGl9VvXrbXTxpUSvESSabxmsik=;
+	s=arc-20240116; t=1748874950; c=relaxed/simple;
+	bh=aQDG8Vgwz6AoMlQ+u1JVL9KPh3DOdUiDplVPcHIQxZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MT0EXLINEHncsIzm0r9MEH6BnGBuWgp9Y2weVENVlkWUapVRYMr2Bnu5oDK+WJJSsiYSVd5U3nnhmJkIkOODgY8ZizG8370i6ouJCH9/5P5w6MqzxW4G9hyIjsmLRkJATYV7oPtpROvMqHV8LgSY38vV5vt+++DoZSH4EZw7xbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o44u2Y5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF9EC4CEEB;
-	Mon,  2 Jun 2025 14:59:07 +0000 (UTC)
+	 MIME-Version; b=ff4gCN/9SmIT9s3TQHaEQfsVnLEmwrbDpG2rr1kWOqTV8hntx6Ti3c5TXeBl1LZnbIi5n6c19K+XMNt97qTDQ01VJiz3JVDUONP/VkFT3mRNBguwlp9BmFAlby/oBxmIBfXrcSxY5vINRU5qzEr7btDzcuff0d10QBuJ/gvytmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPP9tqXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AE1C4CEEB;
+	Mon,  2 Jun 2025 14:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876347;
-	bh=AJGLAyta5h4jt4GzvEGl9VvXrbXTxpUSvESSabxmsik=;
+	s=korg; t=1748874950;
+	bh=aQDG8Vgwz6AoMlQ+u1JVL9KPh3DOdUiDplVPcHIQxZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o44u2Y5lrAhRs1P13urribCljmr+kFcVK/yKbe4u1S7qYMSa5QIrheuKu0M//vA1m
-	 l1WfDZTdL+Krgc2mYpiNvcWN8oq4YqR5t0c+YJExvvr97Epe7UQRpgVrUALjD596mC
-	 4H11MB9lbSTbyXC80Wny6ScXVLspBsffH+HU3maM=
+	b=kPP9tqXN5WIhhnSDktsG2Zj8WEEucSR8aLc4Uz2akcHoQp9ia+zPqXW1lFDIBsfmR
+	 PnFo31mSt9gMAw88QfCvKjzpSx3th1K8SFnoUCBMSjaaMD0b68NtswZyK+gIYgbaM/
+	 f10+WeX3uj87gs+rtm+Zcu88wksx4gpkUCuqYtmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/207] perf/amd/ibs: Fix perf_ibs_op.cnt_mask for CurCnt
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 186/204] netfilter: nf_tables: wait for rcu grace period on net_device removal
 Date: Mon,  2 Jun 2025 15:48:39 +0200
-Message-ID: <20250602134304.480764081@linuxfoundation.org>
+Message-ID: <20250602134302.987913819@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 46dcf85566170d4528b842bf83ffc350d71771fa ]
+commit c03d278fdf35e73dd0ec543b9b556876b9d9a8dc upstream.
 
-IBS Op uses two counters: MaxCnt and CurCnt. MaxCnt is programmed with
-the desired sample period. IBS hw generates sample when CurCnt reaches
-to MaxCnt. The size of these counter used to be 20 bits but later they
-were extended to 27 bits. The 7 bit extension is indicated by CPUID
-Fn8000_001B_EAX[6 / OpCntExt].
+8c873e219970 ("netfilter: core: free hooks with call_rcu") removed
+synchronize_net() call when unregistering basechain hook, however,
+net_device removal event handler for the NFPROTO_NETDEV was not updated
+to wait for RCU grace period.
 
-perf_ibs->cnt_mask variable contains bit masks for MaxCnt and CurCnt.
-But IBS driver does not set upper 7 bits of CurCnt in cnt_mask even
-when OpCntExt CPUID bit is set. Fix this.
+Note that 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks
+on net_device removal") does not remove basechain rules on device
+removal, I was hinted to remove rules on net_device removal later, see
+5ebe0b0eec9d ("netfilter: nf_tables: destroy basechain and rules on
+netdevice removal").
 
-IBS driver uses cnt_mask[CurCnt] bits only while disabling an event.
-Fortunately, CurCnt bits are not read from MSR while re-enabling the
-event, instead MaxCnt is programmed with desired period and CurCnt is
-set to 0. Hence, we did not see any issues so far.
+Although NETDEV_UNREGISTER event is guaranteed to be handled after
+synchronize_net() call, this path needs to wait for rcu grace period via
+rcu callback to release basechain hooks if netns is alive because an
+ongoing netlink dump could be in progress (sockets hold a reference on
+the netns).
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/r/20250115054438.1021-5-ravi.bangoria@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that nf_tables_pre_exit_net() unregisters and releases basechain
+hooks but it is possible to see NETDEV_UNREGISTER at a later stage in
+the netns exit path, eg. veth peer device in another netns:
+
+ cleanup_net()
+  default_device_exit_batch()
+   unregister_netdevice_many_notify()
+    notifier_call_chain()
+     nf_tables_netdev_event()
+      __nft_release_basechain()
+
+In this particular case, same rule of thumb applies: if netns is alive,
+then wait for rcu grace period because netlink dump in the other netns
+could be in progress. Otherwise, if the other netns is going away then
+no netlink dump can be in progress and basechain hooks can be released
+inmediately.
+
+While at it, turn WARN_ON() into WARN_ON_ONCE() for the basechain
+validation, which should not ever happen.
+
+Fixes: 835b803377f5 ("netfilter: nf_tables_netdev: unregister hooks on net_device removal")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/amd/ibs.c         | 3 ++-
- arch/x86/include/asm/perf_event.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h |    3 ++
+ net/netfilter/nf_tables_api.c     |   41 +++++++++++++++++++++++++++++++-------
+ 2 files changed, 37 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index b605e08f9a8ef..2b83056029942 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -803,7 +803,8 @@ static __init int perf_event_ibs_init(void)
- 	if (ibs_caps & IBS_CAPS_OPCNTEXT) {
- 		perf_ibs_op.max_period  |= IBS_OP_MAX_CNT_EXT_MASK;
- 		perf_ibs_op.config_mask	|= IBS_OP_MAX_CNT_EXT_MASK;
--		perf_ibs_op.cnt_mask    |= IBS_OP_MAX_CNT_EXT_MASK;
-+		perf_ibs_op.cnt_mask    |= (IBS_OP_MAX_CNT_EXT_MASK |
-+					    IBS_OP_CUR_CNT_EXT_MASK);
- 	}
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -899,6 +899,7 @@ struct nft_chain {
+ 	u8				flags:6,
+ 					genmask:2;
+ 	char				*name;
++	struct rcu_head			rcu_head;
  
- 	ret = perf_ibs_pmu_init(&perf_ibs_op, "ibs_op");
-diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
-index 0e4efcde07831..cbfca9d2c419b 100644
---- a/arch/x86/include/asm/perf_event.h
-+++ b/arch/x86/include/asm/perf_event.h
-@@ -417,6 +417,7 @@ struct pebs_xmm {
-  */
- #define IBS_OP_CUR_CNT		(0xFFF80ULL<<32)
- #define IBS_OP_CUR_CNT_RAND	(0x0007FULL<<32)
-+#define IBS_OP_CUR_CNT_EXT_MASK	(0x7FULL<<52)
- #define IBS_OP_CNT_CTL		(1ULL<<19)
- #define IBS_OP_VAL		(1ULL<<18)
- #define IBS_OP_ENABLE		(1ULL<<17)
--- 
-2.39.5
-
+ 	/* Only used during control plane commit phase: */
+ 	struct nft_rule			**rules_next;
+@@ -1015,6 +1016,7 @@ static inline void nft_use_inc_restore(u
+  *	@sets: sets in the table
+  *	@objects: stateful objects in the table
+  *	@flowtables: flow tables in the table
++ *	@net: netnamespace this table belongs to
+  *	@hgenerator: handle generator state
+  *	@handle: table handle
+  *	@use: number of chain references to this table
+@@ -1030,6 +1032,7 @@ struct nft_table {
+ 	struct list_head		sets;
+ 	struct list_head		objects;
+ 	struct list_head		flowtables;
++	possible_net_t			net;
+ 	u64				hgenerator;
+ 	u64				handle;
+ 	u32				use;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1109,6 +1109,7 @@ static int nf_tables_newtable(struct net
+ 	INIT_LIST_HEAD(&table->sets);
+ 	INIT_LIST_HEAD(&table->objects);
+ 	INIT_LIST_HEAD(&table->flowtables);
++	write_pnet(&table->net, net);
+ 	table->family = family;
+ 	table->flags = flags;
+ 	table->handle = ++table_handle;
+@@ -8216,22 +8217,48 @@ int nft_data_dump(struct sk_buff *skb, i
+ }
+ EXPORT_SYMBOL_GPL(nft_data_dump);
+ 
+-int __nft_release_basechain(struct nft_ctx *ctx)
++static void __nft_release_basechain_now(struct nft_ctx *ctx)
+ {
+ 	struct nft_rule *rule, *nr;
+ 
+-	if (WARN_ON(!nft_is_base_chain(ctx->chain)))
+-		return 0;
+-
+-	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
+ 	list_for_each_entry_safe(rule, nr, &ctx->chain->rules, list) {
+ 		list_del(&rule->list);
+-		nft_use_dec(&ctx->chain->use);
+ 		nf_tables_rule_release(ctx, rule);
+ 	}
++	nf_tables_chain_destroy(ctx->chain);
++}
++
++static void nft_release_basechain_rcu(struct rcu_head *head)
++{
++	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
++	struct nft_ctx ctx = {
++		.family	= chain->table->family,
++		.chain	= chain,
++		.net	= read_pnet(&chain->table->net),
++	};
++
++	__nft_release_basechain_now(&ctx);
++	put_net(ctx.net);
++}
++
++int __nft_release_basechain(struct nft_ctx *ctx)
++{
++	struct nft_rule *rule;
++
++	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain)))
++		return 0;
++
++	nf_tables_unregister_hook(ctx->net, ctx->chain->table, ctx->chain);
++	list_for_each_entry(rule, &ctx->chain->rules, list)
++		nft_use_dec(&ctx->chain->use);
++
+ 	nft_chain_del(ctx->chain);
+ 	nft_use_dec(&ctx->table->use);
+-	nf_tables_chain_destroy(ctx->chain);
++
++	if (maybe_get_net(ctx->net))
++		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
++	else
++		__nft_release_basechain_now(ctx);
+ 
+ 	return 0;
+ }
 
 
 
