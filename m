@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFD4ACB813
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D78ACB3A5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 568F7940A85
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC3DE18867C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DA223237B;
-	Mon,  2 Jun 2025 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2E422B8B5;
+	Mon,  2 Jun 2025 14:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hipvXpBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDcFpRUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1612343B6;
-	Mon,  2 Jun 2025 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EFA22B5A1;
+	Mon,  2 Jun 2025 14:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876755; cv=none; b=JzHvj2OE1bTvOSK9n7Fp4ilBJ0DEFPM8IKrjBj2ILJogJ2xlPwOFFjzlBW/N7IRwu/aWSPPZx/lotgwGhqShkhu+EWVaIi52ln4RtDwXxCRYdu7dAS8rm+cS+EZpeZ16aXz9l14gsAkWblkY7wiRGSmwqLX55gegRr3T9Bh5NPg=
+	t=1748874438; cv=none; b=fBVVpFIVytX1Dqnoi8ZXClhUXP2m/JCpiactZiggC9NeHwiTnDdvmyxWfkGOS3Pqbz3JPj75qnbTC0eSKGhKZMx8bt1b4MB5nIzJF5HPV6KK5mR+z6OjYw9FNL0FdhjzKaFV0INY0/mzwFZWK2Gld9r0JagT0GiDA65SEnsTGS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876755; c=relaxed/simple;
-	bh=w+EfHVuSwC7xXKyBs9DzUX1Nhr6C6e3APzIpbNTpLK8=;
+	s=arc-20240116; t=1748874438; c=relaxed/simple;
+	bh=LMcCvw2i3ZaO2ZpcCgyLKCmA+8C33EGAR7A/y282QhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ir1VGBGD94BuWVlQIJMt7twJehOykyXWhN5w4INx7UrhLEcmnk1lonKvWwwFPxcXhN7W+R+YqYactzfFfLzbRhNHjVUdgFkFtOJ8L4UNjY0O+/PEcGbeSDSufw4uLrAPe+Gy2ZtPspltw0gdnuF3Xa+bfbRvEm1Po7ZXRsEzAHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hipvXpBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D86C4CEEE;
-	Mon,  2 Jun 2025 15:05:54 +0000 (UTC)
+	 MIME-Version; b=EmdChI+5KJCXN0GxhUpk9W5GN8BA5jGIU0kO3R112p9UnmJ7z2TXldyH65yCXo9Q1/OjDm7ZTay542AcYYIosPfJ49UiajD1+Ft3ISOcidjAmDfajdPYHzw7ip2CxMnmfBouaIH3lToRWqwcXCY//NNP/y0TAJ2pLeTf0mNRcKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDcFpRUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82584C4CEEE;
+	Mon,  2 Jun 2025 14:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876755;
-	bh=w+EfHVuSwC7xXKyBs9DzUX1Nhr6C6e3APzIpbNTpLK8=;
+	s=korg; t=1748874438;
+	bh=LMcCvw2i3ZaO2ZpcCgyLKCmA+8C33EGAR7A/y282QhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hipvXpBKQ7wbZf9Qj4oOUDoXLlDTZMP2Dg6KtXdN1gN5CHMm3pu8HzEHnP4w6wFH5
-	 btWzO7Qa3TTmm2Y2VIpNe+gdXKZJ7W7uIyotdMawic/ILTG4BYyj3hRQVaFUruhiYS
-	 i9S20nVEkVzcnLtfEjxqgSQaLeyIOdEIOV8Iz29A=
+	b=qDcFpRUxccqOzc4EYaN346dTgOxWR+jDcwpb+PTnT5KdamNrMu/FxTmQsFXLYhudr
+	 rdGpS7AlTm17NNkwAPIsHuKTeFcJwln0untIa5HzdGOs3hFlmqvSC42skyIRNoiUTR
+	 MnLL0j6IPTCcR8Na+pso5/GFANTiXzMn2+bgNphg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/325] scsi: st: Tighten the page format heuristics with MODE SELECT
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 006/204] wifi: brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
 Date: Mon,  2 Jun 2025 15:45:39 +0200
-Message-ID: <20250602134322.334398830@linuxfoundation.org>
+Message-ID: <20250602134255.717395050@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8db816c6f176321e42254badd5c1a8df8bfcfdb4 ]
+commit 8e089e7b585d95122c8122d732d1d5ef8f879396 upstream.
 
-In the days when SCSI-2 was emerging, some drives did claim SCSI-2 but did
-not correctly implement it. The st driver first tries MODE SELECT with the
-page format bit set to set the block descriptor.  If not successful, the
-non-page format is tried.
+The function brcmf_usb_dl_writeimage() calls the function
+brcmf_usb_dl_cmd() but dose not check its return value. The
+'state.state' and the 'state.bytes' are uninitialized if the
+function brcmf_usb_dl_cmd() fails. It is dangerous to use
+uninitialized variables in the conditions.
 
-The test only tests the sense code and this triggers also from illegal
-parameter in the parameter list. The test is limited to "old" devices and
-made more strict to remove false alarms.
+Add error handling for brcmf_usb_dl_cmd() to jump to error
+handling path if the brcmf_usb_dl_cmd() fails and the
+'state.state' and the 'state.bytes' are uninitialized.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250311112516.5548-4-Kai.Makisara@kolumbus.fi
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Improve the error message to report more detailed error
+information.
+
+Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+Cc: stable@vger.kernel.org # v3.4+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250422042203.2259-1-vulab@iscas.ac.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/st.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 7f107be344236..284c2cf1ae662 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3074,7 +3074,9 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 			   cmd_in == MTSETDRVBUFFER ||
- 			   cmd_in == SET_DENS_AND_BLK) {
- 			if (cmdstatp->sense_hdr.sense_key == ILLEGAL_REQUEST &&
--			    !(STp->use_pf & PF_TESTED)) {
-+				cmdstatp->sense_hdr.asc == 0x24 &&
-+				(STp->device)->scsi_level <= SCSI_2 &&
-+				!(STp->use_pf & PF_TESTED)) {
- 				/* Try the other possible state of Page Format if not
- 				   already tried */
- 				STp->use_pf = (STp->use_pf ^ USE_PF) | PF_TESTED;
--- 
-2.39.5
-
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -866,14 +866,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usb
+ 	}
+ 
+ 	/* 1) Prepare USB boot loader for runtime image */
+-	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	if (err)
++		goto fail;
+ 
+ 	rdlstate = le32_to_cpu(state.state);
+ 	rdlbytes = le32_to_cpu(state.bytes);
+ 
+ 	/* 2) Check we are in the Waiting state */
+ 	if (rdlstate != DL_WAITING) {
+-		brcmf_err("Failed to DL_START\n");
++		brcmf_err("Invalid DL state: %u\n", rdlstate);
+ 		err = -EINVAL;
+ 		goto fail;
+ 	}
 
 
 
