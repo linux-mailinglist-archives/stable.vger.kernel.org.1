@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA564ACB484
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C075ACB2D9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3C484A0762
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 728F4940D61
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E63022D4FF;
-	Mon,  2 Jun 2025 14:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22F223183D;
+	Mon,  2 Jun 2025 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP22lPXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWCT1HsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0CC22A804;
-	Mon,  2 Jun 2025 14:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806421E3772;
+	Mon,  2 Jun 2025 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875231; cv=none; b=F8ZpAs6RitE627EwNt9kXTs6Fa8NoOahNlGOxowL4wDykwPdNTqAZyG4Ym19M0vo+CyZf9+6bBcFAHqjs1uJfUbuut+9ek4ih24xy+6+M7GVnvKbH/3ATbrt02b9nrqWKcCgpIENb7ekZMve7ZbAwP19X8oDJ//f2lBJu+KFROE=
+	t=1748873903; cv=none; b=KqpsO2NCRGlgoJJkQCu3oN+N8A+M3FkLqVcmSFsLeI15De4k2+di93iAUhl3sy8q7vd2MaRxQat2uFOmMjFn+xungzq7BhrkTpet7DjaGyMmtvz4EaRsSYNu+gKc5js9FUuZ+a5LAiXpS8vfLGo6D0eXyuOm8Zjtjpj2sgWSuy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875231; c=relaxed/simple;
-	bh=+NuOw8SVgUHpX9MjD25Y6pIOEWl3C29u6BP6ggaykl0=;
+	s=arc-20240116; t=1748873903; c=relaxed/simple;
+	bh=geXcXXpPfURGRdTFj3dI6C3EkH4ebtDU4LeqRYtgsUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbhK73ZoKHmnmSkA5sUpKk9Yn33hOZvhqKy6Bl/5sNWIwpsFY3KMhSftpWmz7pLEYqnVwDlK8N/2/YZkyz9duomiJErM3ZCA8RN6YNNDdZBJqUUq2Q765eqyVjXnADCdCDNCUPyqZNVBJteCbff6BBRjkGSZwN1hTwMjNfGVD6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP22lPXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FBFC4CEEB;
-	Mon,  2 Jun 2025 14:40:30 +0000 (UTC)
+	 MIME-Version; b=RM6Cj0zFMM85Yh8AFE5KKIoSv3XXfD8cY0mG/QwH7k6DhC/qv94PFCDqPvOohSByoyI40h8CkD0vMhZQGJRDAezvOdxLJiuSo+MHkUZ7fzwKredxaX6fRh7Bil7SMRhVzttfHsoP+DjTw+QbQeXN1yn8DmtMQv4VY29MUOMOgyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWCT1HsZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9C8C4CEEB;
+	Mon,  2 Jun 2025 14:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875231;
-	bh=+NuOw8SVgUHpX9MjD25Y6pIOEWl3C29u6BP6ggaykl0=;
+	s=korg; t=1748873903;
+	bh=geXcXXpPfURGRdTFj3dI6C3EkH4ebtDU4LeqRYtgsUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yP22lPXEjBF4GR7MYYFolUivyvtV73Qgd5W9Y9/TwqnMw0Hp/D1xGTmVcU4YcOet2
-	 5yeoh0U3y9cjML4ACefAf00thkdSImMeUvgvz1bYmud71GAv3/cOzcLEklJDJYCQiT
-	 X0XP+O+skCVLUZjgVSrinsvCBmwMU3L4DiLKkv7o=
+	b=RWCT1HsZtDwKacUXeSJN4x5DV+mfpKG+yxPS/AmF+xzaFVXv+h+AycqH5xXWAumgR
+	 P2dSkWBjHuR/IqfKpyoFTmwOwxWFhrjoXa1+BSt7muteez8pNnhhBb/efA5imhUc+m
+	 5chtOUoiVweseqoFVZipORSTNVLJHkxhKpWTePGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jim Lin <jilin@nvidia.com>,
-	Wayne Chang <waynec@nvidia.com>
-Subject: [PATCH 5.10 070/270] usb: host: tegra: Prevent host controller crash when OTG port is used
+	Naman Trivedi <naman.trivedimanojbhai@amd.com>,
+	Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 291/444] arm64: zynqmp: add clock-output-names property in clock nodes
 Date: Mon,  2 Jun 2025 15:45:55 +0200
-Message-ID: <20250602134310.047967174@linuxfoundation.org>
+Message-ID: <20250602134352.766747344@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Lin <jilin@nvidia.com>
+From: Naman Trivedi <naman.trivedimanojbhai@amd.com>
 
-commit 732f35cf8bdfece582f6e4a9c659119036577308 upstream.
+[ Upstream commit 385a59e7f7fb3438466a0712cc14672c708bbd57 ]
 
-When a USB device is connected to the OTG port, the tegra_xhci_id_work()
-routine transitions the PHY to host mode and calls xhci_hub_control()
-with the SetPortFeature command to enable port power.
+Add clock-output-names property to clock nodes, so that the resulting
+clock name do not change when clock node name is changed.
+Also, replace underscores with hyphens in the clock node names as per
+dt-schema rule.
 
-In certain cases, the XHCI controller may be in a low-power state
-when this operation occurs. If xhci_hub_control() is invoked while
-the controller is suspended, the PORTSC register may return 0xFFFFFFFF,
-indicating a read failure. This causes xhci_hc_died() to be triggered,
-leading to host controller shutdown.
-
-Example backtrace:
-[  105.445736] Workqueue: events tegra_xhci_id_work
-[  105.445747]  dump_backtrace+0x0/0x1e8
-[  105.445759]  xhci_hc_died.part.48+0x40/0x270
-[  105.445769]  tegra_xhci_set_port_power+0xc0/0x240
-[  105.445774]  tegra_xhci_id_work+0x130/0x240
-
-To prevent this, ensure the controller is fully resumed before
-interacting with hardware registers by calling pm_runtime_get_sync()
-prior to the host mode transition and xhci_hub_control().
-
-Fixes: f836e7843036 ("usb: xhci-tegra: Add OTG support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jim Lin <jilin@nvidia.com>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://lore.kernel.org/r/20250422114001.126367-1-waynec@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Naman Trivedi <naman.trivedimanojbhai@amd.com>
+Acked-by: Senthil Nathan Thangaraj <senthilnathan.thangaraj@amd.com>
+Link: https://lore.kernel.org/r/20241122095712.1166883-1-naman.trivedimanojbhai@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-tegra.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -1178,6 +1178,7 @@ static void tegra_xhci_id_work(struct wo
- 	tegra->otg_usb3_port = tegra_xusb_padctl_get_usb3_companion(tegra->padctl,
- 								    tegra->otg_usb2_port);
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+index ccaca29200bb9..995bd8ce9d43a 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi
+@@ -10,39 +10,44 @@
  
-+	pm_runtime_get_sync(tegra->dev);
- 	if (tegra->host_mode) {
- 		/* switch to host mode */
- 		if (tegra->otg_usb3_port >= 0) {
-@@ -1207,6 +1208,7 @@ static void tegra_xhci_id_work(struct wo
- 		}
+ #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+ / {
+-	pss_ref_clk: pss_ref_clk {
++	pss_ref_clk: pss-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <33333333>;
++		clock-output-names = "pss_ref_clk";
+ 	};
  
- 		tegra_xhci_set_port_power(tegra, true, true);
-+		pm_runtime_mark_last_busy(tegra->dev);
+-	video_clk: video_clk {
++	video_clk: video-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
++		clock-output-names = "video_clk";
+ 	};
  
- 	} else {
- 		if (tegra->otg_usb3_port >= 0)
-@@ -1214,6 +1216,7 @@ static void tegra_xhci_id_work(struct wo
+-	pss_alt_ref_clk: pss_alt_ref_clk {
++	pss_alt_ref_clk: pss-alt-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <0>;
++		clock-output-names = "pss_alt_ref_clk";
+ 	};
  
- 		tegra_xhci_set_port_power(tegra, true, false);
- 	}
-+	pm_runtime_put_autosuspend(tegra->dev);
- }
+-	gt_crx_ref_clk: gt_crx_ref_clk {
++	gt_crx_ref_clk: gt-crx-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <108000000>;
++		clock-output-names = "gt_crx_ref_clk";
+ 	};
  
- static int tegra_xusb_get_usb2_port(struct tegra_xusb *tegra,
+-	aux_ref_clk: aux_ref_clk {
++	aux_ref_clk: aux-ref-clk {
+ 		bootph-all;
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
++		clock-output-names = "aux_ref_clk";
+ 	};
+ };
+ 
+-- 
+2.39.5
+
 
 
 
