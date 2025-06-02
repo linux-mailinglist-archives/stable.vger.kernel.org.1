@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95279ACB7A1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A75ACB2CD
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5510E1C236F2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AB7519453F7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92357238174;
-	Mon,  2 Jun 2025 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E022231A51;
+	Mon,  2 Jun 2025 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixMInxH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tct3FW2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CABA225785;
-	Mon,  2 Jun 2025 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1EE1CBA18;
+	Mon,  2 Jun 2025 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876830; cv=none; b=hOyLHVbS9odeKFoJZ78+LcpQdVSFhWspVNkPcNlWtQG9rhAaSxLAnHwyfjJuDnUyf2MmS5usdA8b6A5qO0G/5KnfzrSuBSleUUYBIsD74ErRQ5rqtMFz8gFKw4Hay62WVDnQGcA5U8MZ4t5aTbOE5xzLPvuzck/L2lmlBEB7jEU=
+	t=1748873933; cv=none; b=usScvnYUIqCexpna0TOKWcYP+uCPAH6oL32qOjn5mPkwVi6lcqLUI3+llTqDoQs0GjgaJCMzY9/I+D9i86i3JIbIkP5BYpiQFYsKFg80pxr/lcW1NqsVlSqFPqCUtGYK1pS2TXDM6Ewxx47J77W1ol1hSP7AQoXDOIGG+yS4SIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876830; c=relaxed/simple;
-	bh=KvLt0M7uljqdd8ckhmJGXzZ2H6jJqv9eSuRfnOQg+XQ=;
+	s=arc-20240116; t=1748873933; c=relaxed/simple;
+	bh=Oo8LxyjRJy0UKVHPm0Psz6IfJsvKFDlyi36Jdj6yY4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uha3xLGcAXICTLKu9DqFAa1/l4YKilW/cVpkMremP4ki+UDSPxzRY9ekwY4zjBbyRpRvW+/lxQdlZbHzNTig++ys37fgwAjQOAplNhbMEevSgAAUYXb6Rkqq7aj2AflVblUTpxQR07X4bvOuyJGg5R6YE0v8kVZiX7pImtsQiFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixMInxH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A97C4CEEB;
-	Mon,  2 Jun 2025 15:07:09 +0000 (UTC)
+	 MIME-Version; b=uRswshimLm75G9LEkbLjNVu//G64fwmr8st/gTWHVvP2GHC9n6NpsP4sW4iw7/M/SCqy9PTEi7b3iuIf2gJUe5l7kFaskZdbWXRU6m3WDI+DtOVd/MD0IKydr7WDX2Xo0mgbtrEV9BHmxI1nL4gKJyoGpzbKmAajx9SQ5Lto8CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tct3FW2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00FCC4CEEB;
+	Mon,  2 Jun 2025 14:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876830;
-	bh=KvLt0M7uljqdd8ckhmJGXzZ2H6jJqv9eSuRfnOQg+XQ=;
+	s=korg; t=1748873933;
+	bh=Oo8LxyjRJy0UKVHPm0Psz6IfJsvKFDlyi36Jdj6yY4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixMInxH6SCeqwY1C5oLczs0TIQGM/Ga59hoYysH2BYAMSI3Ih7R39l0V2FrBO/Lb+
-	 c2bgb+q/L7CZXnALmJANGg1iZh1Gmn+v0TCoDU5tGB4KB39UFVoyuGFbT1QYlT+JSY
-	 V/3OWSV9UwGdUKKoLuEPo6ErwMIWhJJy5f07IqPM=
+	b=Tct3FW2gCV0gp0rynECn0iMnakji7X9UVhVSpumZQC0LIjOIFHQpGE0tEAYTTATe4
+	 pMULjC6gb9YnuYNMewSvtFzHxzxQDcBcm3MTB7xgh3kCNO+kJAMKF7UxbGDRw/UuPZ
+	 08wVB8vawOd0Mkozz8w9+qxYcsZvstQFGk692Rj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Zhikai Zhai <zhikai.zhai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/325] drm/amd/display: calculate the remain segments for all pipes
+Subject: [PATCH 6.6 300/444] wifi: rtw88: Dont use static local variable in rtw8822b_set_tx_power_index_by_rate
 Date: Mon,  2 Jun 2025 15:46:04 +0200
-Message-ID: <20250602134323.356786338@linuxfoundation.org>
+Message-ID: <20250602134353.120853610@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit d3069feecdb5542604d29b59acfd1fd213bad95b ]
+[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
 
-[WHY]
-In some cases the remain de-tile buffer segments will be greater
-than zero if we don't add the non-top pipe to calculate, at
-this time the override de-tile buffer size will be valid and used.
-But it makes the de-tile buffer segments used finally for all of pipes
-exceed the maximum.
+Some users want to plug two identical USB devices at the same time.
+This static variable could theoretically cause them to use incorrect
+TX power values.
 
-[HOW]
-Add the non-top pipe to calculate the remain de-tile buffer segments.
-Don't set override size to use the average according to pipe count
-if the value exceed the maximum.
+Move the variable to the caller and pass a pointer to it to
+rtw8822b_set_tx_power_index_by_rate().
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dcn315/dcn315_resource.c   | 42 +++++++++----------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-index 958170fbfece7..9d643c79afea6 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn315/dcn315_resource.c
-@@ -1717,7 +1717,7 @@ static int dcn315_populate_dml_pipes_from_context(
- 		pipes[pipe_cnt].dout.dsc_input_bpc = 0;
- 		DC_FP_START();
- 		dcn31_zero_pipe_dcc_fraction(pipes, pipe_cnt);
--		if (pixel_rate_crb && !pipe->top_pipe && !pipe->prev_odm_pipe) {
-+		if (pixel_rate_crb) {
- 			int bpp = source_format_to_bpp(pipes[pipe_cnt].pipe.src.source_format);
- 			/* Ceil to crb segment size */
- 			int approx_det_segs_required_for_pstate = dcn_get_approx_det_segs_required_for_pstate(
-@@ -1768,28 +1768,26 @@ static int dcn315_populate_dml_pipes_from_context(
- 				continue;
- 			}
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 3017a9760da8d..99318a82b43f4 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -975,11 +975,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
+ }
  
--			if (!pipe->top_pipe && !pipe->prev_odm_pipe) {
--				bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
--						|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
--
--				if (remaining_det_segs > MIN_RESERVED_DET_SEGS && crb_pipes != 0)
--					pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
--							(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
--				if (pipes[pipe_cnt].pipe.src.det_size_override > 2 * DCN3_15_MAX_DET_SEGS) {
--					/* Clamp to 2 pipe split max det segments */
--					remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override - 2 * (DCN3_15_MAX_DET_SEGS);
--					pipes[pipe_cnt].pipe.src.det_size_override = 2 * DCN3_15_MAX_DET_SEGS;
--				}
--				if (pipes[pipe_cnt].pipe.src.det_size_override > DCN3_15_MAX_DET_SEGS || split_required) {
--					/* If we are splitting we must have an even number of segments */
--					remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override % 2;
--					pipes[pipe_cnt].pipe.src.det_size_override -= pipes[pipe_cnt].pipe.src.det_size_override % 2;
--				}
--				/* Convert segments into size for DML use */
--				pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
--
--				crb_idx++;
-+			bool split_required = pipe->stream->timing.pix_clk_100hz >= dcn_get_max_non_odm_pix_rate_100hz(&dc->dml.soc)
-+					|| (pipe->plane_state && pipe->plane_state->src_rect.width > 5120);
-+
-+			if (remaining_det_segs > MIN_RESERVED_DET_SEGS && crb_pipes != 0)
-+				pipes[pipe_cnt].pipe.src.det_size_override += (remaining_det_segs - MIN_RESERVED_DET_SEGS) / crb_pipes +
-+						(crb_idx < (remaining_det_segs - MIN_RESERVED_DET_SEGS) % crb_pipes ? 1 : 0);
-+			if (pipes[pipe_cnt].pipe.src.det_size_override > 2 * DCN3_15_MAX_DET_SEGS) {
-+				/* Clamp to 2 pipe split max det segments */
-+				remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override - 2 * (DCN3_15_MAX_DET_SEGS);
-+				pipes[pipe_cnt].pipe.src.det_size_override = 2 * DCN3_15_MAX_DET_SEGS;
-+			}
-+			if (pipes[pipe_cnt].pipe.src.det_size_override > DCN3_15_MAX_DET_SEGS || split_required) {
-+				/* If we are splitting we must have an even number of segments */
-+				remaining_det_segs += pipes[pipe_cnt].pipe.src.det_size_override % 2;
-+				pipes[pipe_cnt].pipe.src.det_size_override -= pipes[pipe_cnt].pipe.src.det_size_override % 2;
- 			}
-+			/* Convert segments into size for DML use */
-+			pipes[pipe_cnt].pipe.src.det_size_override *= DCN3_15_CRB_SEGMENT_SIZE_KB;
-+
-+			crb_idx++;
- 			pipe_cnt++;
+ static void
+-rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
++rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
++				    u8 rs, u32 *phy_pwr_idx)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
+-	static u32 phy_pwr_idx;
+ 	u8 rate, rate_idx, pwr_index, shift;
+ 	int j;
+ 
+@@ -987,12 +987,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ 		rate = rtw_rate_section[rs][j];
+ 		pwr_index = hal->tx_pwr_tbl[path][rate];
+ 		shift = rate & 0x3;
+-		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
++		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
+ 		if (shift == 0x3) {
+ 			rate_idx = rate & 0xfc;
+ 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
+-				    phy_pwr_idx);
+-			phy_pwr_idx = 0;
++				    *phy_pwr_idx);
++			*phy_pwr_idx = 0;
  		}
  	}
+ }
+@@ -1000,11 +1000,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
++	u32 phy_pwr_idx = 0;
+ 	int rs, path;
+ 
+ 	for (path = 0; path < hal->rf_path_num; path++) {
+ 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
+-			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
++			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
++							    &phy_pwr_idx);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
