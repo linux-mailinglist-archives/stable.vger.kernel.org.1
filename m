@@ -1,76 +1,116 @@
-Return-Path: <stable+bounces-148947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCECACAE13
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91726ACAE46
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD1616FE4F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:27:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A2D87ACC0E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 12:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DCF21CC40;
-	Mon,  2 Jun 2025 12:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70C921A451;
+	Mon,  2 Jun 2025 12:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDi4TE1R"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="IdN/EfPC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE44218EA2
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 12:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB8838DD1;
+	Mon,  2 Jun 2025 12:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748867221; cv=none; b=CrVk988gnhIpxGRmGja3iTbv1lrc1VpZp7FBg/MEqemmzbcaamRXGnxx1B6EqPSWPOit2GQBa1gBxtH9yfviwJmkBzaXGR4RyyTE8J6AQ1bPVcgwcz9Gb5GOIYFxkPvuQTSIKKnUzbiRDtsLuWoyRidkfLPZsz0TLw7Qxxgg2uk=
+	t=1748868466; cv=none; b=SIbV+O6pMdKQjmuWlll6rQx2LrWK3POYfFCzrZ+Y/NgCLu06+bbZcNxmW+SR7cRiq/5hrGxejKFcvwEx1ehaRpt7t1edz6ra6qPWD9QG8dyPCO00Rs1wXjfvyZLBV2kLu04M0cUpWVY71XMkiU8tEscz3j5/s30rFRcxy6HMnaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748867221; c=relaxed/simple;
-	bh=73nVV1uF7cB5053wJyot0kawQ4HC3GQ8ZCe4vsUqRy4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qX6G+XBNYOZp3cdZ8gnNfEYG1DGDVpcVfOZcyQivch2qKtKpx61BgjCukZ4uZKEWsZ4ReGZmL+S/lg0CdOzzKu+sc9bi02knGYu9LgRJR4rcC0pfxOUn17274Qud+xUQoWPlJnSW4CjbXNLB87OcPCpDR47hdCCLjUG640GSspg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDi4TE1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB61C4CEF2;
-	Mon,  2 Jun 2025 12:27:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748867220;
-	bh=73nVV1uF7cB5053wJyot0kawQ4HC3GQ8ZCe4vsUqRy4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nDi4TE1RYEA6dE4irbQaM6UB5Aiv4MG1Q02LIEbTRtxkCOg+iWnz28T20FtASbJeA
-	 ieeOYHWOKjg3wUEsyf92Ejs/O2JPrrvUKQg+V7mPXDpj3E2JoB9wy7ydwBLKhjAE1b
-	 B0gATDZ+5NAYTwPbawXi+rgMJdz4q+PFGHE+LSLI=
-Date: Mon, 2 Jun 2025 14:26:57 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: stable@vger.kernel.org, Johan Hovold <johan@kernel.org>
-Subject: Re: Please pick 0c8e9c148e29 and da33e87bd2bf for linux-6.15.y
-Message-ID: <2025060228-implant-rupture-481a@gregkh>
-References: <1b4c75ab-4e3b-44ff-9737-5d175b95af5b@arm.com>
+	s=arc-20240116; t=1748868466; c=relaxed/simple;
+	bh=FJkS0QakWU0n6b1qNi8YVrI4yg158AxwuU8g1LMNaos=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hi16V2fhfKvPA1hvx3A01dGwrv5dY1y2KxKCqQM6zwmbIvJUppP27RAYxlrtgpCSGab3iWshuA6p5d/FGvnFaMj92MuJnA3g/sQcctEeT/sXijLCfoCtnA2jqATY47C8r62lrWE6GJPDh+rQCVf83xF49FS1aU0BGEMVoN1fwPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=IdN/EfPC; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1748867988;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=G4+VCuBXlY5f39h1spysLYf7MRhFe7y4qDoXMnXq/a4=;
+	b=IdN/EfPCMarjWDnEMXf0bJPqxwCiB6yyV+w7CV6x7Rk5PaNMxdSbZaCCx9ShJgJaT+Oy9N
+	z6KYriMcnW2HBBEiUtA5B0O6kennx6gxzDYMgn1lJxjCBe38DlODCGDJRqcp4UTqlnavhz
+	bA6fG6jk3GTlrOrdaJ1dWZKeMM6pHSw=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10] netfilter: nft_socket: fix sk refcount leaks
+Date: Mon,  2 Jun 2025 15:39:47 +0300
+Message-ID: <20250602123948.40610-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1b4c75ab-4e3b-44ff-9737-5d175b95af5b@arm.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 02, 2025 at 01:15:14PM +0100, Robin Murphy wrote:
-> Hi Greg, Sasha,
-> 
-> Please could you pick these commits for linux-6.15.y:
-> 
->  0c8e9c148e29 ("iommu: Avoid introducing more races")
->  da33e87bd2bf ("iommu: Handle yet another race around registration")
-> 
-> which in hindsight should ideally have been merged as fixes during the
-> cycle, but for various reasons were queued as 6.16 material at the time.
+From: Florian Westphal <fw@strlen.de>             
 
-Now queued up.  It also looks like the last one above should go to older
-trees?  If so, can you send a backported version, it would only apply to
-6.14.y.
+commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
 
-thanks,
+We must put 'sk' reference before returning.
 
-greg k-h
+Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[Denis: minor fix to resolve merge conflict.]  
+Signed-off-by: Denis Arefev <arefev@swemel.ru> 
+---
+Backport fix for CVE-2024-46855
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-46855
+---
+ net/netfilter/nft_socket.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+index 826e5f8c78f3..07e73e50b713 100644
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -88,13 +88,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 			*dest = sk->sk_mark;
+ 		} else {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ 	case NFT_SOCKET_WILDCARD:
+ 		if (!sk_fullsock(sk)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		nft_socket_wildcard(pkt, regs, sk, dest);
+ 		break;
+@@ -103,6 +103,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 		regs->verdict.code = NFT_BREAK;
+ 	}
+ 
++out_put_sk:
+ 	if (sk != skb->sk)
+ 		sock_gen_put(sk);
+ }
+-- 
+2.43.0
+
 
