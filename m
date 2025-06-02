@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261C9ACB3B4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:44:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFB0ACB449
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0F2794330D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497811945C04
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75372253E0;
-	Mon,  2 Jun 2025 14:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCCC226883;
+	Mon,  2 Jun 2025 14:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAprGRBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1lOoCtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74476224B01;
-	Mon,  2 Jun 2025 14:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37055225416;
+	Mon,  2 Jun 2025 14:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874193; cv=none; b=KONSzLLLuutCbNWrsu3MJtMffNb/R7ngiB/x1LXrM3mrWptX3GDG9WXMD9TDFbfZkqcODTRaeGystQnRnPVbe+XQJtgP6jcvo9hl+eneQdxuc/UQShqjW5Rr1djOO3vuT4dtmFGGsD7fQP/Ebfnkalh0UNAX8IVXPB31aT20Ttk=
+	t=1748874735; cv=none; b=cKlzXGeqv3KFbJHjZYmTYEudmOwGxSFyFlgAHRV8TtbAFP6YNLnw41oCforzI/nB9UIG8n03k4vZVyqWleZakS5VEX9ROKX5jwITg4dEXiMpjGYjiEBF/Tgd76Z4zKdb2BvmBAaze2bDptCFr0JUFU9vrb2PalrBDEUoWqnSVbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874193; c=relaxed/simple;
-	bh=eWulnOs6ADPVkpPqxwtRlZAIsQL9qec8Wna97bKTmR8=;
+	s=arc-20240116; t=1748874735; c=relaxed/simple;
+	bh=f7AzeLY2JigMbDLREMYcQt/pkpicRVZ6DV1Y42OZqAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWz5AYVJ1OYipS6MtOV0OCKosJWXtgi6JIz5sdB10w83sl9faKsbyNpSfChRb45bWNK2efC0a/ncGB7kho1AOC5hZBqrEETXCEhUpTW4M0+49ey+O/WrJZfcD1j7NNLYQEBw/aLlyIM3rb8ChXp+n2DCNbsho0LptTUSdAqoBaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAprGRBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CE1C4CEEB;
-	Mon,  2 Jun 2025 14:23:12 +0000 (UTC)
+	 MIME-Version; b=joyeShSi18PUOJlLgLoQStOr5a4XQRpjdFEanN4NP2r9PWfLZawBFAVPF8SDsdbnnmLGanJ1wkUBvhas051rOZVGlhT2m4i1jOvLzg6btIlnN0FBcvCiwwjLnjyxjNjkPqdak/cG0vKgi81xaIVRhmlrS6Dss6K73IxOIEhewkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1lOoCtf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92453C4CEEB;
+	Mon,  2 Jun 2025 14:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874193;
-	bh=eWulnOs6ADPVkpPqxwtRlZAIsQL9qec8Wna97bKTmR8=;
+	s=korg; t=1748874735;
+	bh=f7AzeLY2JigMbDLREMYcQt/pkpicRVZ6DV1Y42OZqAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAprGRBNEGdItwblcT7ay3ok+PlX9QFMWq03YtjrQ5Bi6o7Qg5XEuUhh55YaTcuXS
-	 yJCcX8ZMhivIqiDN+cTRkYQGcG51WiaCh8M5xBLMOFim9KG9DJClmki01hikg2YzKT
-	 TtKDj0iMbalvesN2SzbfYqb/+a2ci42ppnduT3w8=
+	b=P1lOoCtf4se9+kQgVurnNv+b0Jh0eaD5JJtLZ4p3GKNvugXANE5QG7wb+xgISc8Ak
+	 TjMuY7Ut9Ei1RXAbAt7F5yIywoZ01zuXneqiSslW9+MwTRDu1dzip8sL+etI3CQ4CK
+	 CvZzpYWoC0D9zb5pztzfeNYFnBchFTGbiQnxctXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 388/444] pinctrl: tegra: Fix off by one in tegra_pinctrl_get_group()
-Date: Mon,  2 Jun 2025 15:47:32 +0200
-Message-ID: <20250602134356.655281941@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 120/204] orangefs: Do not truncate file size
+Date: Mon,  2 Jun 2025 15:47:33 +0200
+Message-ID: <20250602134300.368710837@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 5a062c3c3b82004766bc3ece82b594d337076152 upstream.
+[ Upstream commit 062e8093592fb866b8e016641a8b27feb6ac509d ]
 
-This should be >= pmx->soc->ngroups instead of > to avoid an out of
-bounds access.  The pmx->soc->groups[] array is allocated in
-tegra_pinctrl_probe().
+'len' is used to store the result of i_size_read(), so making 'len'
+a size_t results in truncation to 4GiB on 32-bit systems.
 
-Fixes: c12bfa0fee65 ("pinctrl-tegra: Restore SFSEL bit when freeing pins")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Kunwu Chan <kunwu.chan@linux.dev>
-Link: https://lore.kernel.org/82b40d9d-b437-42a9-9eb3-2328aa6877ac@stanley.mountain
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250305204734.1475264-2-willy@infradead.org
+Tested-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/tegra/pinctrl-tegra.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/orangefs/inode.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/pinctrl/tegra/pinctrl-tegra.c
-+++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
-@@ -307,7 +307,7 @@ static const struct tegra_pingroup *tegr
- {
- 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
+diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
+index 636892ffec0ba..238773a508bac 100644
+--- a/fs/orangefs/inode.c
++++ b/fs/orangefs/inode.c
+@@ -22,9 +22,9 @@ static int orangefs_writepage_locked(struct page *page,
+ 	struct orangefs_write_range *wr = NULL;
+ 	struct iov_iter iter;
+ 	struct bio_vec bv;
+-	size_t len, wlen;
++	size_t wlen;
+ 	ssize_t ret;
+-	loff_t off;
++	loff_t len, off;
  
--	if (group_index < 0 || group_index > pmx->soc->ngroups)
-+	if (group_index < 0 || group_index >= pmx->soc->ngroups)
- 		return NULL;
+ 	set_page_writeback(page);
  
- 	return &pmx->soc->groups[group_index];
+@@ -98,8 +98,7 @@ static int orangefs_writepages_work(struct orangefs_writepages *ow,
+ 	struct orangefs_write_range *wrp, wr;
+ 	struct iov_iter iter;
+ 	ssize_t ret;
+-	size_t len;
+-	loff_t off;
++	loff_t len, off;
+ 	int i;
+ 
+ 	len = i_size_read(inode);
+-- 
+2.39.5
+
 
 
 
