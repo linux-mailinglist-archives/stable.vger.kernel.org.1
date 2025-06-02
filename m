@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665E3ACB5A8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E64AACB2E8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F5EA20152
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:48:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA9E3A575C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B9422540B;
-	Mon,  2 Jun 2025 14:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98758235076;
+	Mon,  2 Jun 2025 14:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh6dyfRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnBgWW1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DD01FF61E;
-	Mon,  2 Jun 2025 14:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567CE2343C7;
+	Mon,  2 Jun 2025 14:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875431; cv=none; b=jsk3Ec72EL6C4ychimfxQiEWSuM7kQnpd0gRa9YnFsohQCrRfaBmtr4m2kaZRTdfIYn6Gj49nHAtjh0xzHyFNaVCf6lgKCL6LWIGW1pHEX4UjqJevztVb/4E/dQUqa7Nc1/a08+QB+9F8NBHFJmEbc0sdF169sqGIYuj6EdKudE=
+	t=1748873969; cv=none; b=XnrqHp4NNTf0nRq4gTIlMujCZCVSCsyC8spvDExbRgSCfzjXEZNOrzccspukUhL5phY9D2+4yozx2xGsOtTOk8ZwsdC4cKCoEMOlviHMfheIuTT5c9twoO0qY/59JEJJRKjH9JxqlnWLGn3Sd8ZtM+rsD2WRcId2zcsGt11/h00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875431; c=relaxed/simple;
-	bh=jaGw6YVFG2zSVr6oYN8M453B3uWhWuOZ03MOu+bc3yw=;
+	s=arc-20240116; t=1748873969; c=relaxed/simple;
+	bh=98CT6yQ4Qo7CEsmQPYMFF6S8krE+tSvTYi0YCJ2JO30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJz5C6yuhL/QqPT5C5gabJZD5pzW06oEePc/3w0rUMnxCGaHrIqq+5KL7SwifJb+BqKaBZ6dw0sUaiSrTy/2hp4veKYPzhhiBP/owmk1yRL/Uk2WX/BptguOkSOj60TovnPkZcMeScqMkw7teBG5Y6f4bGlx8q6/BD1il8cH91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh6dyfRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975FDC4CEEB;
-	Mon,  2 Jun 2025 14:43:50 +0000 (UTC)
+	 MIME-Version; b=hvnQCjz3jo3syHFLNNAvMnPcX1PRDLt5yC72wcTv8uobiBXnx2qC0RabXiRc01k4dLHXy81nPUUQPd77A21M2Xy81uletSNFYMKcFwdZfRWOsRaiwgr5kSW1BYaiFSMgK7zPVSqe/bRwNz28tjQXE2RSc7BX8lYybxmAPqdwVac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnBgWW1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FCBC4CEEB;
+	Mon,  2 Jun 2025 14:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875431;
-	bh=jaGw6YVFG2zSVr6oYN8M453B3uWhWuOZ03MOu+bc3yw=;
+	s=korg; t=1748873969;
+	bh=98CT6yQ4Qo7CEsmQPYMFF6S8krE+tSvTYi0YCJ2JO30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wh6dyfROH2YZsPayac0vkFDeGwaGCgsGBrM4FB16DP0fPnaQ/GKJa82xlwV30hlDH
-	 q19WuSBnPKsxxiaPNGC4voi80eS/8gXY0van+ZNGERaz8lqx1Gg5ICFgtQELw/sOwb
-	 0noVmTw4GrjUFMKRbAWJMCnRG4BKTRSoTbMtu1tM=
+	b=tnBgWW1qLDRMfQkFTgHit+7/Y/ngSgrzhKRJREWMO/7iqO+TkBFlxrdrIk7vsQhiP
+	 dGw0AKnkT65TrlFSyy/jrkU5SEHYHt1Ktgmywd9beMFr2WSCH5xsyfERpVu01MCXWV
+	 iYVoAhw1rzAo5hb929CRH02KNY05C66oHKNp2t0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/270] qlcnic: fix memory leak in qlcnic_sriov_channel_cfg_cmd()
+Subject: [PATCH 6.6 314/444] pinctrl: meson: define the pull up/down resistor value as 60 kOhm
 Date: Mon,  2 Jun 2025 15:46:18 +0200
-Message-ID: <20250602134310.981921955@linuxfoundation.org>
+Message-ID: <20250602134353.680354445@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 9d8a99c5a7c7f4f7eca2c168a4ec254409670035 ]
+[ Upstream commit e56088a13708757da68ad035269d69b93ac8c389 ]
 
-In one of the error paths in qlcnic_sriov_channel_cfg_cmd(), the memory
-allocated in qlcnic_sriov_alloc_bc_mbx_args() for mailbox arguments is
-not freed. Fix that by jumping to the error path that frees them, by
-calling qlcnic_free_mbx_args(). This was found using static analysis.
+The public datasheets of the following Amlogic SoCs describe a typical
+resistor value for the built-in pull up/down resistor:
+- Meson8/8b/8m2: not documented
+- GXBB (S905): 60 kOhm
+- GXL (S905X): 60 kOhm
+- GXM (S912): 60 kOhm
+- G12B (S922X): 60 kOhm
+- SM1 (S905D3): 60 kOhm
 
-Fixes: f197a7aa6288 ("qlcnic: VF-PF communication channel implementation")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250512044829.36400-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The public G12B and SM1 datasheets additionally state min and max
+values:
+- min value: 50 kOhm for both, pull-up and pull-down
+- max value for the pull-up: 70 kOhm
+- max value for the pull-down: 130 kOhm
+
+Use 60 kOhm in the pinctrl-meson driver as well so it's shown in the
+debugfs output. It may not be accurate for Meson8/8b/8m2 but in reality
+60 kOhm is closer to the actual value than 1 Ohm.
+
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/20250329190132.855196-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-index 256b19f68caed..bf510d3882cf1 100644
---- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-+++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_common.c
-@@ -1485,8 +1485,11 @@ static int qlcnic_sriov_channel_cfg_cmd(struct qlcnic_adapter *adapter, u8 cmd_o
- 	}
- 
- 	cmd_op = (cmd.rsp.arg[0] & 0xff);
--	if (cmd.rsp.arg[0] >> 25 == 2)
--		return 2;
-+	if (cmd.rsp.arg[0] >> 25 == 2) {
-+		ret = 2;
-+		goto out;
-+	}
-+
- 	if (cmd_op == QLCNIC_BC_CMD_CHANNEL_INIT)
- 		set_bit(QLC_BC_VF_STATE, &vf->state);
- 	else
+diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
+index 524424ee6c4e7..5cc00fdc48d84 100644
+--- a/drivers/pinctrl/meson/pinctrl-meson.c
++++ b/drivers/pinctrl/meson/pinctrl-meson.c
+@@ -486,7 +486,7 @@ static int meson_pinconf_get(struct pinctrl_dev *pcdev, unsigned int pin,
+ 	case PIN_CONFIG_BIAS_PULL_DOWN:
+ 	case PIN_CONFIG_BIAS_PULL_UP:
+ 		if (meson_pinconf_get_pull(pc, pin) == param)
+-			arg = 1;
++			arg = 60000;
+ 		else
+ 			return -EINVAL;
+ 		break;
 -- 
 2.39.5
 
