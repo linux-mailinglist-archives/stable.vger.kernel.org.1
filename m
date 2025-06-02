@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D5CACB62A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6C1ACB423
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FFD2174E3D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC7E19469A2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209732153CB;
-	Mon,  2 Jun 2025 14:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBACF2222B2;
+	Mon,  2 Jun 2025 14:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2B6/Y+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgt7X+Ch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D136A1C5D72;
-	Mon,  2 Jun 2025 14:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997FF221578;
+	Mon,  2 Jun 2025 14:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875995; cv=none; b=FmSz6eMr11LZ8CCCJxoIB8qMmoP228CiOB8ODZAYHHJv45GFmY6juNEzGhUEJAcBn9cpuf4/CyCRozi6OvAOOBzQXJUH3HD6qSqsnmkwR1Op5VhA6xf47U2ouwqqIE6tSwWwQF5g1uPsEhcCNJSL8OucoGBYlaSMi77+vOy1LPo=
+	t=1748874699; cv=none; b=rZ7+D4xiplNdhtET6TjnDHBVLLi5p/dvx7g/q3A/sdBLH4UoW7Er6F9v+9Ni9EctABj/4NMetrYIsNBp24FlNhqoeaxv2QsmAqgCY1YRyiMUFdJqSm7kHK2NsPJuQ/rGWgVaxPzHMKeGkQI88IcwDBgRjq8tewotLfGhD9rWQ8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875995; c=relaxed/simple;
-	bh=PgWpPvhPs8IIU2hM+HjcU1w1/HL6lzB5ONkBQ9DpG/U=;
+	s=arc-20240116; t=1748874699; c=relaxed/simple;
+	bh=z8Tni7csVezwDPTM219D1HCSy+oexFFmorjo5TMNBgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVpMAADWpgZMxQX+DyFbw7HgfdgvkQG0s8h/trL7wojgV1ts2XoqsLCEk9W6xFDNyqSmySKjqaICRhDmLFhhbvaeyEcON5j6ULHobv75MmxBlfxCqGLEEathvbtYQZy7aYSszuy1TARnggwlWAlJA+ueMNoCCCjMS3UZVpqLFGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2B6/Y+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40229C4CEEB;
-	Mon,  2 Jun 2025 14:53:15 +0000 (UTC)
+	 MIME-Version; b=DBrJ98a9jd01g71PjKz2YKlrphtWYenc2rEH6NZ1FVwHLkS5DrU4HQFD2EFGit0ndmHK+oxwIPOH1xBqdNp7HfK7dnDLTU8SQPQTqCazzl1/q+nw0BZ1oMcyEisflbcL7F9wjhGCq7mqFMyzHYgAv8/IsJcJWc2Www+BX68OZCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgt7X+Ch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07B3C4CEEB;
+	Mon,  2 Jun 2025 14:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875995;
-	bh=PgWpPvhPs8IIU2hM+HjcU1w1/HL6lzB5ONkBQ9DpG/U=;
+	s=korg; t=1748874699;
+	bh=z8Tni7csVezwDPTM219D1HCSy+oexFFmorjo5TMNBgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2B6/Y+Cpkm9FUdx2Nggy+1W0TKsHAvHSatk1IXh7LPGvA2otFGsZsghLdc7I8ARg
-	 4QPzyglJIzMhFXjPxZH7wMgu4/ozhBXiWEfWJ4UNKJS/7kDslIODRHMJ0SyL2ZDCdE
-	 wTkblvGVX0qHR1zay2Kz01gw3OOlxc5o+7Ek0KFI=
+	b=mgt7X+Chgo3LuIJBsbdxOCLoayjFIqTrlEI+2eo9qWj5cO2WVsaI16mWCuo2emLBV
+	 wr7mv++ElaIFpnRmigNApH1w65QFwr6+jbyZQGnPeEMkMFkBBavpj/drRqwWVVt0K1
+	 2e+tggwbJYzJMezoQBSelWGt25rJlmD6DlDlNzo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/207] um: Update min_low_pfn to match changes in uml_reserved
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 077/204] dmaengine: Revert "dmaengine: dmatest: Fix dmatest waiting less when interrupted"
 Date: Mon,  2 Jun 2025 15:46:50 +0200
-Message-ID: <20250602134300.251703921@linuxfoundation.org>
+Message-ID: <20250602134258.702139971@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-[ Upstream commit e82cf3051e6193f61e03898f8dba035199064d36 ]
+commit df180e65305f8c1e020d54bfc2132349fd693de1 upstream.
 
-When uml_reserved is updated, min_low_pfn must also be updated
-accordingly. Otherwise, min_low_pfn will not accurately reflect
-the lowest available PFN.
+Several issues with this change:
 
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20250221041855.1156109-1-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* The analysis is flawed and it's unclear what problem is being
+  fixed. There is no difference between wait_event_freezable_timeout()
+  and wait_event_timeout() with respect to device interrupts. And of
+  course "the interrupt notifying the finish of an operation happens
+  during wait_event_freezable_timeout()" -- that's how it's supposed
+  to work.
+
+* The link at the "Closes:" tag appears to be an unrelated
+  use-after-free in idxd.
+
+* It introduces a regression: dmatest threads are meant to be
+  freezable and this change breaks that.
+
+See discussion here:
+https://lore.kernel.org/dmaengine/878qpa13fe.fsf@AUSNATLYNCH.amd.com/
+
+Fixes: e87ca16e9911 ("dmaengine: dmatest: Fix dmatest waiting less when interrupted")
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Link: https://lore.kernel.org/r/20250403-dmaengine-dmatest-revert-waiting-less-v1-1-8227c5a3d7c8@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/kernel/mem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/dmatest.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index 8e636ce029495..50be04f7b40f3 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -49,6 +49,7 @@ void __init mem_init(void)
- 	map_memory(brk_end, __pa(brk_end), uml_reserved - brk_end, 1, 1, 0);
- 	memblock_free(__pa(brk_end), uml_reserved - brk_end);
- 	uml_reserved = brk_end;
-+	min_low_pfn = PFN_UP(__pa(uml_reserved));
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -809,9 +809,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
--- 
-2.39.5
-
+-			wait_event_timeout(thread->done_wait,
+-					   done->done,
+-					   msecs_to_jiffies(params->timeout));
++			wait_event_freezable_timeout(thread->done_wait,
++					done->done,
++					msecs_to_jiffies(params->timeout));
+ 
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 
 
 
