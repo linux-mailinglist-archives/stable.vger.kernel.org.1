@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-150505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A1FACB75B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB3CACB48A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330D14A6589
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F441942A16
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424191C5D72;
-	Mon,  2 Jun 2025 15:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494922F77B;
+	Mon,  2 Jun 2025 14:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tl4wgic1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GHXkNzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A144A1E;
-	Mon,  2 Jun 2025 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5002322F769;
+	Mon,  2 Jun 2025 14:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877337; cv=none; b=CNAmNWkj7P1Zk+TAef58eV/TvLZOvEodO/7a8RU03iPW7uUXj2oRLdoQHXFHCMwJdwkLlyYjxCMPQLzb41ILl/5b+mdIpGJdowpaPQ98sAyYDULAw2R+FiXUYWxeGS1aG4QT1ug3OxlCY2KA/sk1u5plsbbWPcDQ3HTZLGacLLA=
+	t=1748874938; cv=none; b=ivbLk1eYN9rJVdj/2xErJSyAqvKRuWam3rg4JqB8upfmHOVHOtNgrVkCSfxsVAvpLQCuhMb7bI5kkBszwvb4unnlQoDc2bbVvEHpXjQUbr1PYKExWK0jbSzDMHo1ryCraxeVsiJnwPZ85rnRWnEVAlqvRWoK3+ywLDakcn4youo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877337; c=relaxed/simple;
-	bh=FTAFpcCxrNgTlDOFVc5jG1WWPzTd7xhlWtSCvjvX97I=;
+	s=arc-20240116; t=1748874938; c=relaxed/simple;
+	bh=fuG5zlERhWmftJSkzPe/NkqM+WKggxFwRTJRTwFR+20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sS8J7SEq6uHa74vCTChDTs2pQf8yRNsAKbw2QcV740ln8BhFmqhDf4ji3DLLRWd9ZjTO3d4qG7644LqnwWS2m2GD9QV5z3mumujNAxeBowO7vXfbr1owrY/dgCqs/VLqpjzGkmRhm6q6eAqTJOxEwnT7G6yN3V4suxCc3GeVJt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tl4wgic1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FB9C4CEEB;
-	Mon,  2 Jun 2025 15:15:36 +0000 (UTC)
+	 MIME-Version; b=JpQU3h0dwk88ZkZHa4l0QYeYEzZbfY9KGEWqfH2BA6+p0Px5eKrLfKWvtGGUkHuFbRlBCyyu7+kv3LJ6fB9elgVQtd6U7r6sC6dyzOU9uv1agnM0ignnjFYy79AYHxjCbMbiPKyJzCz4Asegi5q6S2QMJY1bVLMjTXoPAZI7GoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2GHXkNzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA83AC4CEEB;
+	Mon,  2 Jun 2025 14:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877336;
-	bh=FTAFpcCxrNgTlDOFVc5jG1WWPzTd7xhlWtSCvjvX97I=;
+	s=korg; t=1748874938;
+	bh=fuG5zlERhWmftJSkzPe/NkqM+WKggxFwRTJRTwFR+20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tl4wgic1Jt1CwtFb+UbSU1hsTuNgmEC+46ob6dD1mY0PcL2Y8uc5P+wFzqNbjfqH5
-	 7H8dpEsd5MLvkpVsCucUvO5Rg7oPsInwWpdl83hSAHNEsJmjCvt01ldmh8zB3yfwM2
-	 Bsd8FzwIdZyNsWUzsorkcb7X/qibl8qJg0dQ5St4=
+	b=2GHXkNzcSg5Kcf9Oy/hStHXS2zArtnBVzco7ZMyoeFOCvCc3A79S8zV18QPJcyPjc
+	 mOaotpcCTNyAYoU2fShuHD7eDr1UVy4jwkWq1cwN5MqrGqwF/6XVf7L8toG5d3rq4G
+	 UNOl5LzPzEov1YGFkRP7UIuyJel55AQQp7Buz6KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/325] Bluetooth: L2CAP: Fix not checking l2cap_chan security level
-Date: Mon,  2 Jun 2025 15:48:34 +0200
-Message-ID: <20250602134329.455126969@linuxfoundation.org>
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 182/204] mm/page_alloc.c: avoid infinite retries caused by cpuset race
+Date: Mon,  2 Jun 2025 15:48:35 +0200
+Message-ID: <20250602134302.810945405@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
 
-[ Upstream commit 7af8479d9eb4319b4ba7b47a8c4d2c55af1c31e1 ]
+commit e05741fb10c38d70bbd7ec12b23c197b6355d519 upstream.
 
-l2cap_check_enc_key_size shall check the security level of the
-l2cap_chan rather than the hci_conn since for incoming connection
-request that may be different as hci_conn may already been
-encrypted using a different security level.
+__alloc_pages_slowpath has no change detection for ac->nodemask in the
+part of retry path, while cpuset can modify it in parallel.  For some
+processes that set mempolicy as MPOL_BIND, this results ac->nodemask
+changes, and then the should_reclaim_retry will judge based on the latest
+nodemask and jump to retry, while the get_page_from_freelist only
+traverses the zonelist from ac->preferred_zoneref, which selected by a
+expired nodemask and may cause infinite retries in some cases
 
-Fixes: 522e9ed157e3 ("Bluetooth: l2cap: Check encryption key size on incoming connection")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cpu 64:
+__alloc_pages_slowpath {
+        /* ..... */
+retry:
+        /* ac->nodemask = 0x1, ac->preferred->zone->nid = 1 */
+        if (alloc_flags & ALLOC_KSWAPD)
+                wake_all_kswapds(order, gfp_mask, ac);
+        /* cpu 1:
+        cpuset_write_resmask
+            update_nodemask
+                update_nodemasks_hier
+                    update_tasks_nodemask
+                        mpol_rebind_task
+                         mpol_rebind_policy
+                          mpol_rebind_nodemask
+		// mempolicy->nodes has been modified,
+		// which ac->nodemask point to
+
+        */
+        /* ac->nodemask = 0x3, ac->preferred->zone->nid = 1 */
+        if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+                                 did_some_progress > 0, &no_progress_loops))
+                goto retry;
+}
+
+Simultaneously starting multiple cpuset01 from LTP can quickly reproduce
+this issue on a multi node server when the maximum memory pressure is
+reached and the swap is enabled
+
+Link: https://lkml.kernel.org/r/20250416082405.20988-1-zhangtianyang@loongson.cn
+Fixes: c33d6c06f60f ("mm, page_alloc: avoid looking up the first zone in a zonelist twice")
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ mm/page_alloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 222105e24d2d8..cb9b1edfcea2a 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -1561,7 +1561,8 @@ static void l2cap_request_info(struct l2cap_conn *conn)
- 		       sizeof(req), &req);
- }
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4573,6 +4573,14 @@ restart:
+ 	}
  
--static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
-+static bool l2cap_check_enc_key_size(struct hci_conn *hcon,
-+				     struct l2cap_chan *chan)
- {
- 	/* The minimum encryption key size needs to be enforced by the
- 	 * host stack before establishing any L2CAP connections. The
-@@ -1575,7 +1576,7 @@ static bool l2cap_check_enc_key_size(struct hci_conn *hcon)
- 	int min_key_size = hcon->hdev->min_enc_key_size;
- 
- 	/* On FIPS security level, key size must be 16 bytes */
--	if (hcon->sec_level == BT_SECURITY_FIPS)
-+	if (chan->sec_level == BT_SECURITY_FIPS)
- 		min_key_size = 16;
- 
- 	return (!test_bit(HCI_CONN_ENCRYPT, &hcon->flags) ||
-@@ -1603,7 +1604,7 @@ static void l2cap_do_start(struct l2cap_chan *chan)
- 	    !__l2cap_no_conn_pending(chan))
- 		return;
- 
--	if (l2cap_check_enc_key_size(conn->hcon))
-+	if (l2cap_check_enc_key_size(conn->hcon, chan))
- 		l2cap_start_connection(chan);
- 	else
- 		__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
-@@ -1685,7 +1686,7 @@ static void l2cap_conn_start(struct l2cap_conn *conn)
- 				continue;
- 			}
- 
--			if (l2cap_check_enc_key_size(conn->hcon))
-+			if (l2cap_check_enc_key_size(conn->hcon, chan))
- 				l2cap_start_connection(chan);
- 			else
- 				l2cap_chan_close(chan, ECONNREFUSED);
-@@ -4187,7 +4188,7 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
- 	/* Check if the ACL is secure enough (if not SDP) */
- 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
- 	    (!hci_conn_check_link_mode(conn->hcon) ||
--	    !l2cap_check_enc_key_size(conn->hcon))) {
-+	    !l2cap_check_enc_key_size(conn->hcon, pchan))) {
- 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
- 		result = L2CAP_CR_SEC_BLOCK;
- 		goto response;
-@@ -8418,7 +8419,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
- 		}
- 
- 		if (chan->state == BT_CONNECT) {
--			if (!status && l2cap_check_enc_key_size(hcon))
-+			if (!status && l2cap_check_enc_key_size(hcon, chan))
- 				l2cap_start_connection(chan);
- 			else
- 				__set_chan_timer(chan, L2CAP_DISC_TIMEOUT);
-@@ -8428,7 +8429,7 @@ static void l2cap_security_cfm(struct hci_conn *hcon, u8 status, u8 encrypt)
- 			struct l2cap_conn_rsp rsp;
- 			__u16 res, stat;
- 
--			if (!status && l2cap_check_enc_key_size(hcon)) {
-+			if (!status && l2cap_check_enc_key_size(hcon, chan)) {
- 				if (test_bit(FLAG_DEFER_SETUP, &chan->flags)) {
- 					res = L2CAP_CR_PEND;
- 					stat = L2CAP_CS_AUTHOR_PEND;
--- 
-2.39.5
-
+ retry:
++	/*
++	 * Deal with possible cpuset update races or zonelist updates to avoid
++	 * infinite retries.
++	 */
++	if (check_retry_cpuset(cpuset_mems_cookie, ac) ||
++	    check_retry_zonelist(zonelist_iter_cookie))
++		goto restart;
++
+ 	/* Ensure kswapd doesn't accidentally go to sleep as long as we loop */
+ 	if (alloc_flags & ALLOC_KSWAPD)
+ 		wake_all_kswapds(order, gfp_mask, ac);
 
 
 
