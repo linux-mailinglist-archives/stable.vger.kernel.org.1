@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30259ACB620
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A12ACB789
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26EA54C40B6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:03:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117B8944251
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB1C1E3772;
-	Mon,  2 Jun 2025 14:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41711DF73C;
+	Mon,  2 Jun 2025 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cT1LROmk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xetjlbvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05E922540F;
-	Mon,  2 Jun 2025 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09DE224B02;
+	Mon,  2 Jun 2025 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876110; cv=none; b=SGok828WqcMnIIWQsuS6n2Ma6S7kD6jzmp6FQoCnPggDg8dQeo05P5k2P7q5uqXpj1uv2nuleVqC0z9CBGnxPuYUkJQ/UgEwSFAZXE50W7qHio4uuq2HsQDG4cFVaW5Rx4Vtr34j02d7bobv+8vJ/7lHt3ao2+vBpc1uxvjKWGs=
+	t=1748877098; cv=none; b=ukHMtgFRnaEw3/HnnmjVBwB6M0wtemPXx+szBq3IUnlUFCaygPMFkuAOuviEwVoex7Hvjlg1hPRc6Xc65xPRW+9DU5AhmriS/YDXDpKl+tJNTeYV9JW8AoyRR5w12EYnmzPk0G7zWlEw7ms7wYe9YNein8yA3LhiPu26IHimF8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876110; c=relaxed/simple;
-	bh=TOAchiHbLl5hYlScoE9XG5I/lqmoT9APQ4E1/fNUJLg=;
+	s=arc-20240116; t=1748877098; c=relaxed/simple;
+	bh=AZyGj/ZFPg/YXj8TUQGOs6BGcaqmHrIyqmqjWh7o8MU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRyWK6PZ1GaMlkE2fqJIh0r+hoRomAwac0qU10rl193/PVScYpcNXRjl+J4PAr/cUzwgsWDA9srfBGXgN3xj+Zas+bcJ1hpIAnmslC5ynz+HKAvHg82Jfv7hTpRHzF0TE1dA2rrwz+FlDk8gUM1NVw8GQdwaVf/vT3ajODu+9CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cT1LROmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40248C4CEEB;
-	Mon,  2 Jun 2025 14:55:10 +0000 (UTC)
+	 MIME-Version; b=jm06PzoYa7sgeFHlLt4Qf7+0zglsC0jfFGbPu3oqqMCNc67Zg+mSQdbEqCY3vHjll6mg7EIYMQSnzcSGpo5fzlWF8KC1kVh6sHf5ihXj6TDInKLR0JayLTH6INn/NDveUTZVfRFOT8MDgvRpxYSr3HlLYviKYcmhmm4JiwxBr+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xetjlbvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F3CC4CEEB;
+	Mon,  2 Jun 2025 15:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876110;
-	bh=TOAchiHbLl5hYlScoE9XG5I/lqmoT9APQ4E1/fNUJLg=;
+	s=korg; t=1748877098;
+	bh=AZyGj/ZFPg/YXj8TUQGOs6BGcaqmHrIyqmqjWh7o8MU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cT1LROmkKEBfuwcNpJY7kIWc+zJhrr4b/dOGi2iD3swLcPsccq0lvEAdHtD+96w05
-	 pVy3gallLaFb/ceUqjM2qcWQ9fNz8+iOwkA9Eji4XUoNiVW9jOgWyyFz4d5iEcsYD8
-	 xQvmURs6p16JYUBGB+sC4Om/+DrPRMhPrWqYxix0=
+	b=xetjlbvhJIMrCINTwvjeMhH8686ipJmr5xSc2qS9gL37q2atOcBNYolPNPypsBK70
+	 NC+JRlfHtYdcP4d0m3k7tHsQaakXtI4g+rFnbJOarWuzQaRoZ/F9GqNJXjoNhcWIN/
+	 tAp8ldNGmFMw4QKza00Fi++v6lSXVNsLSXFHFCKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 074/207] net: ethernet: ti: cpsw_new: populate netdev of_node
+Subject: [PATCH 6.1 170/325] ASoC: tas2764: Power up/down amp on mute ops
 Date: Mon,  2 Jun 2025 15:47:26 +0200
-Message-ID: <20250602134301.636390457@linuxfoundation.org>
+Message-ID: <20250602134326.724556594@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit 7ff1c88fc89688c27f773ba956f65f0c11367269 ]
+[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
 
-So that of_find_net_device_by_node() can find CPSW ports and other DSA
-switches can be stacked downstream. Tested in conjunction with KSZ8873.
+The ASoC convention is that clocks are removed after codec mute, and
+power up/down is more about top level power management. For these chips,
+the "mute" state still expects a TDM clock, and yanking the clock in
+this state will trigger clock errors. So, do the full
+shutdown<->mute<->active transition on the mute operation, so the amp is
+in software shutdown by the time the clocks are removed.
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250303074703.1758297-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This fixes TDM clock errors when streams are stopped.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 13e34ad72f265..923746ba87a61 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -1418,6 +1418,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		ndev->netdev_ops = &cpsw_netdev_ops;
- 		ndev->ethtool_ops = &cpsw_ethtool_ops;
- 		SET_NETDEV_DEV(ndev, dev);
-+		ndev->dev.of_node = slave_data->slave_node;
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 94428487a8855..10f0f07b90ff2 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -182,33 +182,6 @@ static SOC_ENUM_SINGLE_DECL(
+ static const struct snd_kcontrol_new tas2764_asi1_mux =
+ 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
  
- 		if (!napi_ndev) {
- 			/* CPSW Host port CPDMA interface is shared between
+-static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
+-			     struct snd_kcontrol *kcontrol, int event)
+-{
+-	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+-	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	int ret;
+-
+-	switch (event) {
+-	case SND_SOC_DAPM_POST_PMU:
+-		tas2764->dac_powered = true;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	case SND_SOC_DAPM_PRE_PMD:
+-		tas2764->dac_powered = false;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	default:
+-		dev_err(tas2764->dev, "Unsupported event\n");
+-		return -EINVAL;
+-	}
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	return 0;
+-}
+-
+ static const struct snd_kcontrol_new isense_switch =
+ 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
+ static const struct snd_kcontrol_new vsense_switch =
+@@ -221,8 +194,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
+ 			    1, &isense_switch),
+ 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
+ 			    1, &vsense_switch),
+-	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
+-			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
++	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUTPUT("OUT"),
+ 	SND_SOC_DAPM_SIGGEN("VMON"),
+ 	SND_SOC_DAPM_SIGGEN("IMON")
+@@ -243,9 +215,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
+ {
+ 	struct tas2764_priv *tas2764 =
+ 			snd_soc_component_get_drvdata(dai->component);
++	int ret;
++
++	if (!mute) {
++		tas2764->dac_powered = true;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
+ 
+ 	tas2764->unmuted = !mute;
+-	return tas2764_update_pwr_ctrl(tas2764);
++	ret = tas2764_update_pwr_ctrl(tas2764);
++	if (ret)
++		return ret;
++
++	if (mute) {
++		tas2764->dac_powered = false;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
+ }
+ 
+ static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
 -- 
 2.39.5
 
