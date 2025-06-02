@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-150535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87258ACB872
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:41:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DC7ACB367
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422E494810E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C757A7AEE7E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E783225792;
-	Mon,  2 Jun 2025 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9798322FAE1;
+	Mon,  2 Jun 2025 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZt+znib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqNgZfTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF598225776;
-	Mon,  2 Jun 2025 15:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515B822FE17;
+	Mon,  2 Jun 2025 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877427; cv=none; b=mwM821eF167PIQVEO+02wnyVKYum3xuB+8c9e/T6MT6Lj+Ebr4x3Y/L1iXt/XzrS0kDrJGFKd/DC9SFmjz+f3pk7+DY45vvQ28BAXJjJShc8vpk5KiVPqnyA6X3k4l5maAnLBqzE93kHEvtToJKRgiZ2K8YFcL3DJeVbBlo73LM=
+	t=1748874954; cv=none; b=hmGiJYnoBAb6cTv/pntOgsYZjFKXjEufoApct0OJarqI+paHuJvn4XUl4QYJ6C8OEhUWhmZzjcU+88tDCdD1JI4w3TfppvLkog+IIlPUHcmZwnnLSp50eeKuYjjBJj2o6mo6F7Oo+iqp3hjTfVV9WprqU9r/7V6E0V6Iwd0ezSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877427; c=relaxed/simple;
-	bh=D8AZY29T13VlZ1JlTg0SRdQhCjIQY6ceHXERDZNreeI=;
+	s=arc-20240116; t=1748874954; c=relaxed/simple;
+	bh=1BcpEgxOCBn/BWvUU/hRRiZd2+GA1CAX8CXQM/iCvdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IUw3RbK6aoJsPiJ1+EXjiRyAIKF+9DrsdyX7X4ZJAud3GDUEsMeCBC4Ldxv+0vD5DDGrerB5GeGvNkzMD4aLdxzfi9s0V/x3A2Ud8BjCA5tCeDpbgwqn0jXOxfWxjPzVtyCFTp+qJSM3CBOzcxYYgJFGtZHYiiCZceKy/DumlCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZt+znib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E22C4CEEB;
-	Mon,  2 Jun 2025 15:17:06 +0000 (UTC)
+	 MIME-Version; b=FQLfyRBq6ONRrDzUJPuVgkkyyv9gOFgSnCVaViPEdZI4v3TtSaLpNptOZhVg+HYEGzqdZ7Ck4qOUZPbyReokVnKTL7p3yx7/VjRFcB1SsaHo5Zfyuz3TjL/71VhDYyUvVXWl6ZV7NFi4qVbxeHcfOFeG38MrTScvMm/PMjoxqGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqNgZfTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49AEC4CEEB;
+	Mon,  2 Jun 2025 14:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877427;
-	bh=D8AZY29T13VlZ1JlTg0SRdQhCjIQY6ceHXERDZNreeI=;
+	s=korg; t=1748874954;
+	bh=1BcpEgxOCBn/BWvUU/hRRiZd2+GA1CAX8CXQM/iCvdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZt+znib5ir8lCwdyBadp/OAO+L7h6JrYirwRPvTlwaKwYBQ/dBBbN9+DGPVnFeDN
-	 L85/TyysegAH7ZtT+INCwIfZVQkynlDqSTCV1gWeXd/c1gx2FrEh6ZA2lfYW0VyB1l
-	 VQeyGgSzSoSkTtmf9DoG1LBwibMdy8YCC3x3wnG4=
+	b=cqNgZfTZJPzvNhcgnDdQzSPNllbQWQlh2xda1hj/o/5nJM4IlKE9npGwVGLefHp4w
+	 oBIy51QfEEjroDgbP8WrhMBSSwyVbNISe0DUVs0REMNR/uLrG/T96XhriS5Xb/yecJ
+	 WDDvVESKQH08dipkvjHZCjPyMV/zcMunNRVV1UCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/325] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
+	syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 187/204] netfilter: nf_tables: do not defer rule destruction via call_rcu
 Date: Mon,  2 Jun 2025 15:48:40 +0200
-Message-ID: <20250602134329.698616972@linuxfoundation.org>
+Message-ID: <20250602134303.027312575@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
+commit b04df3da1b5c6f6dc7cdccc37941740c078c4043 upstream.
 
-When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
-child qdisc's peek() operation before incrementing sch->q.qlen and
-sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
-trigger an immediate dequeue and potential packet drop. In such cases,
-qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
-have not yet been updated, leading to inconsistent queue accounting. This
-can leave an empty HFSC class in the active list, causing further
-consequences like use-after-free.
+nf_tables_chain_destroy can sleep, it can't be used from call_rcu
+callbacks.
 
-This patch fixes the bug by moving the increment of sch->q.qlen and
-sch->qstats.backlog before the call to the child qdisc's peek() operation.
-This ensures that queue length and backlog are always accurate when packet
-drops or dequeues are triggered during the peek.
+Moreover, nf_tables_rule_release() is only safe for error unwinding,
+while transaction mutex is held and the to-be-desroyed rule was not
+exposed to either dataplane or dumps, as it deactives+frees without
+the required synchronize_rcu() in-between.
 
-Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+nft_rule_expr_deactivate() callbacks will change ->use counters
+of other chains/sets, see e.g. nft_lookup .deactivate callback, these
+must be serialized via transaction mutex.
+
+Also add a few lockdep asserts to make this more explicit.
+
+Calling synchronize_rcu() isn't ideal, but fixing this without is hard
+and way more intrusive.  As-is, we can get:
+
+WARNING: .. net/netfilter/nf_tables_api.c:5515 nft_set_destroy+0x..
+Workqueue: events nf_tables_trans_destroy_work
+RIP: 0010:nft_set_destroy+0x3fe/0x5c0
+Call Trace:
+ <TASK>
+ nf_tables_trans_destroy_work+0x6b7/0xad0
+ process_one_work+0x64a/0xce0
+ worker_thread+0x613/0x10d0
+
+In case the synchronize_rcu becomes an issue, we can explore alternatives.
+
+One way would be to allocate nft_trans_rule objects + one nft_trans_chain
+object, deactivate the rules + the chain and then defer the freeing to the
+nft destroy workqueue.  We'd still need to keep the synchronize_rcu path as
+a fallback to handle -ENOMEM corner cases though.
+
+Reported-by: syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67478d92.050a0220.253251.0062.GAE@google.com/T/
+Fixes: c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/netfilter/nf_tables.h |    3 ---
+ net/netfilter/nf_tables_api.c     |   31 ++++++++++++++-----------------
+ 2 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index fc1370c293730..ec6ee45100132 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1568,6 +1568,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		return err;
- 	}
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -899,7 +899,6 @@ struct nft_chain {
+ 	u8				flags:6,
+ 					genmask:2;
+ 	char				*name;
+-	struct rcu_head			rcu_head;
  
-+	sch->qstats.backlog += len;
-+	sch->q.qlen++;
+ 	/* Only used during control plane commit phase: */
+ 	struct nft_rule			**rules_next;
+@@ -1016,7 +1015,6 @@ static inline void nft_use_inc_restore(u
+  *	@sets: sets in the table
+  *	@objects: stateful objects in the table
+  *	@flowtables: flow tables in the table
+- *	@net: netnamespace this table belongs to
+  *	@hgenerator: handle generator state
+  *	@handle: table handle
+  *	@use: number of chain references to this table
+@@ -1032,7 +1030,6 @@ struct nft_table {
+ 	struct list_head		sets;
+ 	struct list_head		objects;
+ 	struct list_head		flowtables;
+-	possible_net_t			net;
+ 	u64				hgenerator;
+ 	u64				handle;
+ 	u32				use;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1109,7 +1109,6 @@ static int nf_tables_newtable(struct net
+ 	INIT_LIST_HEAD(&table->sets);
+ 	INIT_LIST_HEAD(&table->objects);
+ 	INIT_LIST_HEAD(&table->flowtables);
+-	write_pnet(&table->net, net);
+ 	table->family = family;
+ 	table->flags = flags;
+ 	table->handle = ++table_handle;
+@@ -2824,6 +2823,8 @@ static void nf_tables_rule_destroy(const
+ static void nf_tables_rule_release(const struct nft_ctx *ctx,
+ 				   struct nft_rule *rule)
+ {
++	lockdep_commit_lock_is_held(ctx->net);
 +
- 	if (first && !cl->cl_nactive) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
-@@ -1583,9 +1586,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 
- 	}
- 
--	sch->qstats.backlog += len;
--	sch->q.qlen++;
--
- 	return NET_XMIT_SUCCESS;
+ 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
+ 	nf_tables_rule_destroy(ctx, rule);
+ }
+@@ -4172,6 +4173,8 @@ void nf_tables_deactivate_set(const stru
+ 			      struct nft_set_binding *binding,
+ 			      enum nft_trans_phase phase)
+ {
++	lockdep_commit_lock_is_held(ctx->net);
++
+ 	switch (phase) {
+ 	case NFT_TRANS_PREPARE_ERROR:
+ 		nft_set_trans_unbind(ctx, set);
+@@ -8228,19 +8231,6 @@ static void __nft_release_basechain_now(
+ 	nf_tables_chain_destroy(ctx->chain);
  }
  
--- 
-2.39.5
-
+-static void nft_release_basechain_rcu(struct rcu_head *head)
+-{
+-	struct nft_chain *chain = container_of(head, struct nft_chain, rcu_head);
+-	struct nft_ctx ctx = {
+-		.family	= chain->table->family,
+-		.chain	= chain,
+-		.net	= read_pnet(&chain->table->net),
+-	};
+-
+-	__nft_release_basechain_now(&ctx);
+-	put_net(ctx.net);
+-}
+-
+ int __nft_release_basechain(struct nft_ctx *ctx)
+ {
+ 	struct nft_rule *rule;
+@@ -8255,11 +8245,18 @@ int __nft_release_basechain(struct nft_c
+ 	nft_chain_del(ctx->chain);
+ 	nft_use_dec(&ctx->table->use);
+ 
+-	if (maybe_get_net(ctx->net))
+-		call_rcu(&ctx->chain->rcu_head, nft_release_basechain_rcu);
+-	else
++	if (!maybe_get_net(ctx->net)) {
+ 		__nft_release_basechain_now(ctx);
++		return 0;
++	}
++
++	/* wait for ruleset dumps to complete.  Owning chain is no longer in
++	 * lists, so new dumps can't find any of these rules anymore.
++	 */
++	synchronize_rcu();
+ 
++	__nft_release_basechain_now(ctx);
++	put_net(ctx->net);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(__nft_release_basechain);
 
 
 
