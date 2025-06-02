@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5A9ACB435
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4C0ACB5A6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12D84A42A4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2828D7A181B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1616E223DDF;
-	Mon,  2 Jun 2025 14:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E4022A81F;
+	Mon,  2 Jun 2025 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nOM3hjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="be4Celva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E752C3247;
-	Mon,  2 Jun 2025 14:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103AE22A7E4;
+	Mon,  2 Jun 2025 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875000; cv=none; b=tanrUHub2OTShuyEBrlUuq00uPRmSpcH+9jzuBWMLBXPshmrRlhAcLqnMPLiKDTdGaBv9VVY8bffk/IPnJZ52VXc91HTpVUCZpoPaE41Pnz2dLbZsu7p4xz+KKSYSfSXcET9bMifP4AM6r+KPkgucWblJ/m0mjQCXwFfK6Y46js=
+	t=1748876386; cv=none; b=R9D5CmVlp1X4zTANu+B0h08hebj1H0rik9LYuZEoirBg9PkPH2UBn4UmPSvMPSbLig62g6zsYadOKGmdEuitYtWM/2/K2fbhh9YBNfu6KYQ2c8as9UUwvvcfbn5bKn0CwsxJ1k4y0IFPf6+CRrzlvtnzByhFj7Evl0VfPaMHzJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875000; c=relaxed/simple;
-	bh=eSv8jQBNXbwEa9L6zxBKwBvP9sgCdYF++8fmo18B2Zk=;
+	s=arc-20240116; t=1748876386; c=relaxed/simple;
+	bh=H3iabgjzWGDBvdWTXK+o1wcPcmY4lUN6/AiHT/EToq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsK5MDtxqYoBJFguBOzlgtjA7XxPYILFzoFWifNFcXvAr2O7y8e5k3ajfVTAPBBgkHFM+aIPG0kK/riT+VjfNZXHla+uIzAjFCskJYx4OVI506n4N3qw+0shWw2SRD2Z50pfyAOmcGiC8lY3z4MU9VCOCY1/MRIei+Cbn9SSGZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nOM3hjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EC8C4CEEB;
-	Mon,  2 Jun 2025 14:36:40 +0000 (UTC)
+	 MIME-Version; b=bUybpb4AXUpDprw1thAk29fZ6AocH39qlKcMUv9rs6Hlc2nu/HVmjk6wrOc8TsPyvJF91iKlZ+nE1/+zLwhT/UNuyeacpp3xbgy9F02hC6A83+nYnaTYgJgW/RISeJ1yDeSrEmGhxwrirq3kyMonhcPcMgUbkMXv0DKJmMgH1oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=be4Celva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9D7C4CEEB;
+	Mon,  2 Jun 2025 14:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875000;
-	bh=eSv8jQBNXbwEa9L6zxBKwBvP9sgCdYF++8fmo18B2Zk=;
+	s=korg; t=1748876385;
+	bh=H3iabgjzWGDBvdWTXK+o1wcPcmY4lUN6/AiHT/EToq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0nOM3hjvWplva6Lc4mDYgkYpNdgXP+7CkJJHOM+wGjN3/bArdjMJZDplezacgl9gf
-	 Iupbv47HTHYatOUhgKYA6XY65xGcm5qLUXJUcBjXOQHmu0IxWHKlzcFpWV0/3SAEsR
-	 SDXdQH4U9QQdl+dz6HQq/nwcTWxfXQ6ZdlPWUWS4=
+	b=be4CelvaDUdDiP1HvW+xVhaDwJpcizb05N5wZ/bIcNnozxHNZGRqdMK/UsvYHyCJB
+	 +fGEuvWAj1zCeTJmn0wyz4CjDIr7uK6P5ii3JBefZXIeeT4LTsSXHjLMxF7kO1qayl
+	 ZORS/yvdsTMcogCiBrnJEzpNu6k+kf/GWcsTkOWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	David Gow <davidgow@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 200/204] um: let make clean properly clean underlying SUBARCH as well
+Subject: [PATCH 5.15 161/207] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
 Date: Mon,  2 Jun 2025 15:48:53 +0200
-Message-ID: <20250602134303.532454453@linuxfoundation.org>
+Message-ID: <20250602134305.026554807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
+[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
 
-Building the kernel with O= is affected by stale in-tree build artifacts.
+... or we risk stealing final mntput from sync umount - raising mnt_count
+after umount(2) has verified that victim is not busy, but before it
+has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
+that it's safe to quietly undo mnt_count increment and leaves dropping
+the reference to caller, where it'll be a full-blown mntput().
 
-So, if the source tree is not clean, Kbuild displays the following:
+Check under mount_lock is needed; leaving the current one done before
+taking that makes no sense - it's nowhere near common enough to bother
+with.
 
-  $ make ARCH=um O=build defconfig
-  make[1]: Entering directory '/.../linux/build'
-  ***
-  *** The source tree is not clean, please run 'make ARCH=um mrproper'
-  *** in /.../linux
-  ***
-  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
-  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
-  make[1]: Leaving directory '/.../linux/build'
-  make: *** [Makefile:248: __sub-make] Error 2
-
-Usually, running 'make mrproper' is sufficient for cleaning the source
-tree for out-of-tree builds.
-
-However, building UML generates build artifacts not only in arch/um/,
-but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
-files remain under arch/x86/, Kbuild will reuse them instead of creating
-new ones under the specified build directory.
-
-This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
-
-Reported-by: Shuah Khan <skhan@linuxfoundation.org>
-Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Johannes Berg <johannes@sipsolutions.net>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ fs/namespace.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 94cea8d46b222..daec900ed4631 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -154,5 +154,6 @@ MRPROPER_DIRS += arch/$(SUBARCH)/include/generated
- archclean:
- 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
- 		-o -name '*.gcov' \) -type f -print | xargs rm -f
-+	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
- 
- export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING OS DEV_NULL_PATH
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 27ec6d0a68ff5..a99a060e89316 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -589,12 +589,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+-	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+-		mnt_add_count(mnt, -1);
+-		return 1;
+-	}
+ 	lock_mount_hash();
+-	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
++	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
+ 		mnt_add_count(mnt, -1);
+ 		unlock_mount_hash();
+ 		return 1;
 -- 
 2.39.5
 
