@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-149739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A05ACB46E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C397EACB682
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0075D166541
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E6BE17DB23
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7201222DA19;
-	Mon,  2 Jun 2025 14:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61A722A7F2;
+	Mon,  2 Jun 2025 14:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCmIpjZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCTSw461"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF501CBA18;
-	Mon,  2 Jun 2025 14:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B3C231C87;
+	Mon,  2 Jun 2025 14:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874888; cv=none; b=AfbFqEGuwo7mVF+Cw0bZQECz+6xVv1DbawpQwYN18Nbtk8dr5ntk+K1WoIb5fxRjzBFpStya/p3aF7OzoYzw9c+LHV7JXgl42PtHOss8p5JrbTQ7+wMtsdElBYmm5FAWIIOA8Bp0Wz8//xtERaB0y1fN1cRCdVWV+f8sQlxpSmQ=
+	t=1748876275; cv=none; b=gm4JdB3xyYkvrlKGTtQXoEFdp1yMu/wWIGmXx1r0D3ikXtV6fZsKV2y9uVrVkd+FUxCGo6/YOC6l6i9aG8EQZL0d9PWkdocrhnXeD//rqN9DqunnaLLOrYPbebGMmk3UaAIPfrZE6yF+6I3rNp83nF5JjYuxIpyTrmaJ7lNJF9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874888; c=relaxed/simple;
-	bh=W+zD5hMoZdw1r2fwoAFJeZeByBNNh2PaZEiiHzyR9Ig=;
+	s=arc-20240116; t=1748876275; c=relaxed/simple;
+	bh=hPVv9QOebvGVD9h3zvY7yN/R2mE0cgHbeXcuSmy5+94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLO3CPMGVd2ZNK9jw6K0/Pp7KK7mRskqXQXuFZ/U8Zee8fbCQQIIklqQnzM9D2CsxIO3KaMNaXUfZzlTd7iIusFFTdUii46Pq7sn6+bFfxVeWNJDgoSTAn/JNJ8iKAQRNzdy2fiM3YQ9HnQQn9tdhgmoLxSSNNzdccNkXip2D0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCmIpjZ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8178C4CEEB;
-	Mon,  2 Jun 2025 14:34:47 +0000 (UTC)
+	 MIME-Version; b=V+hziG3fNWtuzeM6LDZwVZRV27e03rgCgYwJywPGrO7XCZ9VZgezRAeycEJUnEbFlQQIyXxqFSt50OgkVaFTgiqXy+3e7bOTrrqT324fXU4zAzoAef0GHGCD0MKgEqhFBK1SLM2Mo7RcDPlpzPj2mwHku4V+t9RSG9P+tlS2vJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCTSw461; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64949C4CEEE;
+	Mon,  2 Jun 2025 14:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874888;
-	bh=W+zD5hMoZdw1r2fwoAFJeZeByBNNh2PaZEiiHzyR9Ig=;
+	s=korg; t=1748876274;
+	bh=hPVv9QOebvGVD9h3zvY7yN/R2mE0cgHbeXcuSmy5+94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCmIpjZ2xXgFC7k4HgUvq5bC45jIDeDGz9a9zQ73BmgTEIfB9wvGikq647P5dx0FN
-	 KwRbDS1HW1GG2KReqiNCyI0LNlmQjJuZfu43hR+taVzXpVR0H7sL8a4yNDQiaFMH4N
-	 HvvLJbOPFqxfKE6iXqTtZ+6IJ0MLeoCHTxh28w1U=
+	b=NCTSw461ux88u9gaG40oJDwQouIvv4nljRvngXTKvj1raW90MCHVmNy88B/wr1tnB
+	 5NGBov5yppaXddilJEVS1j6OIhI+ycJPXvvICsU8AFFlLJK4vSoxedH2peWh5NQ1mO
+	 qhrzvVyZ44wpu6PlHLJSZmELRF+4TaDDncj7yG8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	William Tu <witu@nvidia.com>,
+	Bodong Wang <bodong@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 166/204] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Acer Aspire SW3-013
+Subject: [PATCH 5.15 127/207] net/mlx5e: reduce rep rxq depth to 256 for ECPF
 Date: Mon,  2 Jun 2025 15:48:19 +0200
-Message-ID: <20250602134302.180726053@linuxfoundation.org>
+Message-ID: <20250602134303.684957566@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: William Tu <witu@nvidia.com>
 
-[ Upstream commit a549b927ea3f5e50b1394209b64e6e17e31d4db8 ]
+[ Upstream commit b9cc8f9d700867aaa77aedddfea85e53d5e5d584 ]
 
-Acer Aspire SW3-013 requires the very same quirk as other Acer Aspire
-model for making it working.
+By experiments, a single queue representor netdev consumes kernel
+memory around 2.8MB, and 1.8MB out of the 2.8MB is due to page
+pool for the RXQ. Scaling to a thousand representors consumes 2.8GB,
+which becomes a memory pressure issue for embedded devices such as
+BlueField-2 16GB / BlueField-3 32GB memory.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220011
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250420085716.12095-1-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Since representor netdevs mostly handles miss traffic, and ideally,
+most of the traffic will be offloaded, reduce the default non-uplink
+rep netdev's RXQ default depth from 1024 to 256 if mdev is ecpf eswitch
+manager. This saves around 1MB of memory per regular RQ,
+(1024 - 256) * 2KB, allocated from page pool.
+
+With rxq depth of 256, the netlink page pool tool reports
+$./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
+	 --dump page-pool-get
+ {'id': 277,
+  'ifindex': 9,
+  'inflight': 128,
+  'inflight-mem': 786432,
+  'napi-id': 775}]
+
+This is due to mtu 1500 + headroom consumes half pages, so 256 rxq
+entries consumes around 128 pages (thus create a page pool with
+size 128), shown above at inflight.
+
+Note that each netdev has multiple types of RQs, including
+Regular RQ, XSK, PTP, Drop, Trap RQ. Since non-uplink representor
+only supports regular rq, this patch only changes the regular RQ's
+default depth.
+
+Signed-off-by: William Tu <witu@nvidia.com>
+Reviewed-by: Bodong Wang <bodong@nvidia.com>
+Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250209101716.112774-8-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 104cfb56d225f..5a8e86ba29004 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -428,6 +428,19 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{       /* Acer Aspire SW3-013 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Aspire SW3-013"),
-+		},
-+		.driver_data = (void *)(BYT_RT5640_DMIC1_MAP |
-+					BYT_RT5640_JD_SRC_JD2_IN4N |
-+					BYT_RT5640_OVCD_TH_2000UA |
-+					BYT_RT5640_OVCD_SF_0P75 |
-+					BYT_RT5640_DIFF_MIC |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index 3c8bfedeafffd..8e44fa0d3f371 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -58,6 +58,7 @@
+ #define MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE \
+ 	max(0x7, MLX5E_PARAMS_MINIMUM_LOG_SQ_SIZE)
+ #define MLX5E_REP_PARAMS_DEF_NUM_CHANNELS 1
++#define MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE 0x8
+ 
+ static const char mlx5e_rep_driver_name[] = "mlx5e_rep";
+ 
+@@ -615,6 +616,8 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
+ 
+ 	/* RQ */
+ 	mlx5e_build_rq_params(mdev, params);
++	if (!mlx5e_is_uplink_rep(priv) && mlx5_core_is_ecpf(mdev))
++		params->log_rq_mtu_frames = MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE;
+ 
+ 	/* CQ moderation params */
+ 	params->rx_dim_enabled = MLX5_CAP_GEN(mdev, cq_moderation);
 -- 
 2.39.5
 
