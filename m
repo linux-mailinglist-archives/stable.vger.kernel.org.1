@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C761BACB43E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E459DACB6C6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 401D64A2D50
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6511C2383A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CA723237B;
-	Mon,  2 Jun 2025 14:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D67225785;
+	Mon,  2 Jun 2025 15:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+fjmXbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuTI4oU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFF4225791;
-	Mon,  2 Jun 2025 14:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062E81A83E8;
+	Mon,  2 Jun 2025 15:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874606; cv=none; b=B+J/NYFoRmFmsZIzq238Icd9GiG4ftozdHFi5DS4XNnzzcUaBrkRxbfhKpmtzdEsLg8SCvDyaShW2K00+dpIVWd1OSLt/gI/i9TSHQq6MzbE3iUloo5Q1e155WfmXGH0qKllsnIo62cD3Qt8i8x+PQ5GVwlLyQ3LLaxF9+LluJU=
+	t=1748876856; cv=none; b=pambKJCD2JVpowsFSTaDWbAcut0vrSDoufI3YhFba4voM+b3GIp1aBB4MrNdDFTtk9VTxB9Vdsm1cjpm+PeSHeJ/kI23297xEHjXhWZceVM48OCsGZDFHGxGiBRjTJek0Qo3ph4dxYHYBqzqxLD1thLf17MBv4QZBWy92MtlJkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874606; c=relaxed/simple;
-	bh=+kLxYBbs8OFlhHwCGdPQn2Joa0FP3jv4KbrAVRwt+70=;
+	s=arc-20240116; t=1748876856; c=relaxed/simple;
+	bh=uU5LZquH70og2H93a0vTf/cRVWF1evZ3HHQJ1DeTTVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilCI8IP8TEmexQeOzel1YMzFBNBGy65YM7TbnVr1PjzXRhag4bRTxgGbGDVAaKwchOAKneTfTKUd4Xvh/LsVcE0pI4v/he4hNWuF2lNIXj1eDn59tOPZ0Pna+Dlyu5PH1j4G+aTSRbksv47QscmDY9a8ru1zuUiwpO1deIBg5uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+fjmXbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21DCC4CEEE;
-	Mon,  2 Jun 2025 14:30:05 +0000 (UTC)
+	 MIME-Version; b=kcSWaApgXmkJiRVCyxUaD/xLpDWgqdQDVxVDe0VBA3oGyW8PtIzUqumFUZtNCXWcqtcwgVTT5aicD3qPpbh0xVeIBxCYULo8LSoUzjVnUdS04kUJjwcMV1EjDlyd3sCxNmP98E1gG5BzRjOBRSfqIGot3ewgchSUQWTPfUh5Ts4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuTI4oU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADEAC4CEEB;
+	Mon,  2 Jun 2025 15:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874606;
-	bh=+kLxYBbs8OFlhHwCGdPQn2Joa0FP3jv4KbrAVRwt+70=;
+	s=korg; t=1748876855;
+	bh=uU5LZquH70og2H93a0vTf/cRVWF1evZ3HHQJ1DeTTVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+fjmXbHJx+yfcYuz9Fj1csbEObZ9yBVjopoCHqSKTvDodWIico8CCjyVwH6fnaq1
-	 39fc+sl3mPnoPMDChzU7FHqzkBWkWy/e/dxA4CFdbgFFo2wDZfiQMQel4Bc2gWyDh0
-	 F4uoKJQahGH8Xd7U5RT47nFmEaZ90Qh3dQqurXoM=
+	b=kuTI4oU6MBW3lww94ZbQjw+3WEZJy+++1dld2DTCGQreRbfHyF62KS/N9xtZW2CNT
+	 +dGIpvHv346eXvOcZ83Ozlwki6zZuNfVXkDr+V/vWuOwVs+sRdrztNUYAUBvXRsOXC
+	 a7+0nJJMYw1nfAu2lclDpCxuEYbxOE8KB08tavTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuntao Chi <chotaotao1qaz2wsx@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 038/204] Input: synaptics - enable InterTouch on Dynabook Portege X30L-G
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/325] arm64: tegra: p2597: Fix gpio for vdd-1v8-dis regulator
 Date: Mon,  2 Jun 2025 15:46:11 +0200
-Message-ID: <20250602134257.174363544@linuxfoundation.org>
+Message-ID: <20250602134323.647628924@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-commit 47d768b32e644b56901bb4bbbdb1feb01ea86c85 upstream.
+[ Upstream commit f34621f31e3be81456c903287f7e4c0609829e29 ]
 
-Enable InterTouch mode on Dynabook Portege X30L-G by adding "TOS01f6" to
-the list of SMBus-enabled variants.
+According to the board schematics the enable pin of this regulator is
+connected to gpio line #9 of the first instance of the TCA9539
+GPIO expander, so adjust it.
 
-Reported-by: Xuntao Chi <chotaotao1qaz2wsx@gmail.com>
-Tested-by: Xuntao Chi <chotaotao1qaz2wsx@gmail.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB959786E4AC797160CDA93012B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://lore.kernel.org/r/20250224-diogo-gpio_exp-v1-1-80fb84ac48c6@tecnico.ulisboa.pt
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -189,6 +189,7 @@ static const char * const smbus_pnp_ids[
- 	"SYN3221", /* HP 15-ay000 */
- 	"SYN323d", /* HP Spectre X360 13-w013dx */
- 	"SYN3257", /* HP Envy 13-ad105ng */
-+	"TOS01f6", /* Dynabook Portege X30L-G */
- 	"TOS0213", /* Dynabook Portege X30-D */
- 	NULL
- };
+diff --git a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+index 634373a423ef6..481a88d83a650 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra210-p2597.dtsi
+@@ -1631,7 +1631,7 @@ vdd_1v8_dis: regulator-vdd-1v8-dis {
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <1800000>;
+ 		regulator-always-on;
+-		gpio = <&exp1 14 GPIO_ACTIVE_HIGH>;
++		gpio = <&exp1 9 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
+ 		vin-supply = <&vdd_1v8>;
+ 	};
+-- 
+2.39.5
+
 
 
 
