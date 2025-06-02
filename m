@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE8AACB6A8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BD8ACB28B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29A671946356
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1C833A5EFA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A212356BE;
-	Mon,  2 Jun 2025 15:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5771522DF85;
+	Mon,  2 Jun 2025 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmQuRIYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7L+lanv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80D022A1FA;
-	Mon,  2 Jun 2025 15:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1223F221FBF;
+	Mon,  2 Jun 2025 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876792; cv=none; b=bGc6YYg+SDmrUOEL9w8BvlAfQUSEchqbEz7ZjGSDx6dyLoEqge0UG4w6w3dPY1qriD8L0kkP0Nvscizx3msuXcNTgQ5Gf+xJwpC4yU1Sb24NNd/QxCeKjvjSWy0hgAcc77AaPepfEMOTQHJDNyRjwWRLJKvO6E+gBq/GUCirl84=
+	t=1748873803; cv=none; b=Wo18DYFmtXdRE+Ha8M8O2lsVPkJ57GRFtkhvhbyoiPhLrcESQVanbcI8yGyaee9d6KqEzRk4g6xai91CCGbqtEAr1v9fdwUKTHtgIH2fMF+K/muOW0l0dlcIkaOMxlrJcOCuf+R9251WcXK8JGZ8GM1U2nAUBO3d/Rxp/rlf7OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876792; c=relaxed/simple;
-	bh=VMNAUQnqHhZMiNfvV4Rm0jSy4EtgNvG4lbWn8Z4/His=;
+	s=arc-20240116; t=1748873803; c=relaxed/simple;
+	bh=uVvHOG3tLgzoE9MSccsrE46H1ORyO7oeyyhjOkxBQBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PXgCalO+1Aeul3IVBzy3Fbu9cvfoXX9zhdDbXZdF8Izk7PtKxH0yt4ksamPdlfIshNcfvt3y81sqgjenWxydPrkZfGSya9DbiPbOyUDkSfYQvAVbejZGfw+qyldXuxiQ934Djln/lI/mlfaJJudQvw/IAavmq8VIpGAPfl3eUFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmQuRIYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE363C4CEEB;
-	Mon,  2 Jun 2025 15:06:31 +0000 (UTC)
+	 MIME-Version; b=ZmUJxtsYVeTfEuzfrg5beYEcHGo2oflabGldhp8q9yhYaSntMQ2UIPNdF99JibyHDY+GZobgDAegSH0Yc+E3NE5uHecPrC0kKHwgTNfbzbCNzw47TwDK8l83ek1rBhsfIb61qF2wJtlFmaJ6H8670aaKQSRjzIK8dXFfRq0AHCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7L+lanv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95432C4CEF0;
+	Mon,  2 Jun 2025 14:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876792;
-	bh=VMNAUQnqHhZMiNfvV4Rm0jSy4EtgNvG4lbWn8Z4/His=;
+	s=korg; t=1748873802;
+	bh=uVvHOG3tLgzoE9MSccsrE46H1ORyO7oeyyhjOkxBQBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmQuRIYZ5odPjKsT4P5PzIpmHEsPP4wVoj0qr0iX9Z5JzJEUViv13Htq//QT4OGmC
-	 nSInnpT5EtpIFmq1HR1TF++eHD544ffo4W+94BpXS5CGYk9DkC1Q7uhHwEygb3wf/7
-	 JC22vwnZ7NkhvBncf/40kzUEPtSHnlcIIj46epZY=
+	b=q7L+lanv9+aw4tgClLxHv6GgY9QujY4UCbOTmlxN83JqU96LF+vLR4Z8UHyb2RV6g
+	 M/fiH3Y+jWEY2IQMNKJM5rE+cd0+oq0yZg6G7OZVsxlOzqQ/iIX7QtynPc/tWTLnqQ
+	 Bnc4Nl79TLtSfu0Mh4WPkubf4gPXnEDRHL3vTNt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Juergen Gross <jgross@suse.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/325] PCI: vmd: Disable MSI remapping bypass under Xen
+Subject: [PATCH 6.6 257/444] wifi: mac80211: dont unconditionally call drv_mgd_complete_tx()
 Date: Mon,  2 Jun 2025 15:45:21 +0200
-Message-ID: <20250602134321.583075644@linuxfoundation.org>
+Message-ID: <20250602134351.359704430@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6c4d5aadf5df31ea0ac025980670eee9beaf466b ]
+[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
 
-MSI remapping bypass (directly configuring MSI entries for devices on the
-VMD bus) won't work under Xen, as Xen is not aware of devices in such bus,
-and hence cannot configure the entries using the pIRQ interface in the PV
-case, and in the PVH case traps won't be setup for MSI entries for such
-devices.
+We might not have called drv_mgd_prepare_tx(), so only call
+drv_mgd_complete_tx() under the same conditions.
 
-Until Xen is aware of devices in the VMD bus prevent the
-VMD_FEAT_CAN_BYPASS_MSI_REMAP capability from being used when running as
-any kind of Xen guest.
-
-The MSI remapping bypass is an optional feature of VMD bridges, and hence
-when running under Xen it will be masked and devices will be forced to
-redirect its interrupts from the VMD bridge.  That mode of operation must
-always be supported by VMD bridges and works when Xen is not aware of
-devices behind the VMD bridge.
-
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Message-ID: <20250219092059.90850-3-roger.pau@citrix.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 09995b6e73bcc..771ff0f6971f9 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -17,6 +17,8 @@
- #include <linux/rculist.h>
- #include <linux/rcupdate.h>
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 42e2c84ed2484..37163d84104fa 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2959,7 +2959,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	if (tx)
+ 		ieee80211_flush_queues(local, sdata, false);
  
-+#include <xen/xen.h>
-+
- #include <asm/irqdomain.h>
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (tx || frame_buf)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
  
- #define VMD_CFGBAR	0
-@@ -919,6 +921,24 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	struct vmd_dev *vmd;
- 	int err;
- 
-+	if (xen_domain()) {
-+		/*
-+		 * Xen doesn't have knowledge about devices in the VMD bus
-+		 * because the config space of devices behind the VMD bridge is
-+		 * not known to Xen, and hence Xen cannot discover or configure
-+		 * them in any way.
-+		 *
-+		 * Bypass of MSI remapping won't work in that case as direct
-+		 * write by Linux to the MSI entries won't result in functional
-+		 * interrupts, as Xen is the entity that manages the host
-+		 * interrupt controller and must configure interrupts.  However
-+		 * multiplexing of interrupts by the VMD bridge will work under
-+		 * Xen, so force the usage of that mode which must always be
-+		 * supported by VMD bridges.
-+		 */
-+		features &= ~VMD_FEAT_CAN_BYPASS_MSI_REMAP;
-+	}
-+
- 	if (resource_size(&dev->resource[VMD_CFGBAR]) < (1 << 20))
- 		return -ENOMEM;
- 
+ 	/* clear AP addr only after building the needed mgmt frames */
+ 	eth_zero_addr(sdata->deflink.u.mgd.bssid);
 -- 
 2.39.5
 
