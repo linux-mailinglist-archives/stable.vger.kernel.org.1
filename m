@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-150115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE5BACB56C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848F2ACB353
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92AE37AD02A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF9FD19433C6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E40223714;
-	Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF39225A59;
+	Mon,  2 Jun 2025 14:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMeSbft7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1GKJUZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FE617BBF;
-	Mon,  2 Jun 2025 14:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED39D21885A;
+	Mon,  2 Jun 2025 14:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876082; cv=none; b=um0tg+90dgZx22Lw9Q+P+8QK3YV5bRE7muQYX0RtSns1Dyoed+ebqd9/J7yNeTIBhPovnRO/werDefeGAtycb2ntW2nYOvU1zhNHSHV7QXPNYwQMO9zChOYEWUGE9qdWDNoCMsJ6LB9UeQG/vV2lYsp4/Dd2mTlYEgXYoTm410A=
+	t=1748874239; cv=none; b=nBrA7XRf6f5T+mcfUqixg9yFb2kp5UPCeRB95cTDla1ZwzbK9h+rfTN26yqmlKRHm6HDugdDq1140K8DAKfKGA2l7haLh4eCTh7tuTN680cJjZj9TQZXGABYUhy9Gh4mU3tSvfs+wFApsE6B+uKzKBqHNs8kA5PQnl8m5QRnfRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876082; c=relaxed/simple;
-	bh=cU6IiZyKiTDepseXrZGdgGjKmaAdOBWUwWjpBvX5Odw=;
+	s=arc-20240116; t=1748874239; c=relaxed/simple;
+	bh=VSGw4N0Ts4uDetnSFA3kTDzhqU/fux07fywHlVBWvV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUN1gUn5Iznuk1ELSuhpd0YarectSEKvKzvz0z7OrMAIsA+c5N8gKLTmXwDGqm4bqicUlC2+cEtfaDQq7XNInQmVrN1F7iBsdXPvWr7JWvs2XeCL4VvGtODi1HWQ0bZv3mO/VtrXPZP8jgC7WSIA6kD36Kx3gqDmThUGKp5eghc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMeSbft7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75ED1C4CEEB;
-	Mon,  2 Jun 2025 14:54:41 +0000 (UTC)
+	 MIME-Version; b=LphTVeRyzqUejwHF9ZbsWQS/il2d/Yi+1YBDRUCLvMPsPboXGZUFD3eh7ow4BxZrjXK3Pk3ON9QikZy4L6Noq+d9K7GZ2S3f4ZHvaszEHDk1lP/73c/nx7nW9nnmgQ6AcN7AHKTRdAdKzs4mnY+PFfezWo2HHjK9Z6RToX6Qw4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1GKJUZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C58C4CEEB;
+	Mon,  2 Jun 2025 14:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876082;
-	bh=cU6IiZyKiTDepseXrZGdgGjKmaAdOBWUwWjpBvX5Odw=;
+	s=korg; t=1748874238;
+	bh=VSGw4N0Ts4uDetnSFA3kTDzhqU/fux07fywHlVBWvV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMeSbft7lHSz8Zt9v6ImMmLyzPQ4dMXGIoduGzI6unsougiEvvxTH30mrRwvEq9QS
-	 1mUjO8qNZl20mO+xZRPWYYSl5jxblzWu61IeIDxs9I+m9wS6BNKHtT4OYx4fcG5ohN
-	 BhsHM9wQyv/1YavMe9JkkpzSjPehdY+XH7J3idoU=
+	b=P1GKJUZZdMycNDtvm4k3qOxwOsxihQnY5YqKfe23jOLEg/iXC+hHZj+HWLRLE9C9s
+	 0dviSEvTQnr8cHacfj0ueJynkH5OXOa7j3y6XSx8yNScpLbMBDXafkWFP0al5Swl+X
+	 bmAa5i72Yvv2Yb/JYbR84HJfdw0IDCaKrHpBwNd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/207] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.6 374/444] Revert "drm/amd: Keep display off while going into S4"
 Date: Mon,  2 Jun 2025 15:47:18 +0200
-Message-ID: <20250602134301.327793970@linuxfoundation.org>
+Message-ID: <20250602134356.096885647@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
+commit 7e7cb7a13c81073d38a10fa7b450d23712281ec4 upstream.
 
-PLLD is usually used as parent clock for internal video devices, like
-DSI for example, while PLLD2 is used as parent for HDMI.
+commit 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
+attempted to keep displays off during the S4 sequence by not resuming
+display IP.  This however leads to hangs because DRM clients such as the
+console can try to access registers and cause a hang.
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4155
+Fixes: 68bfdc8dc0a1a ("drm/amd: Keep display off while going into S4")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250522141328.115095-1-mario.limonciello@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e485502c37b097b0bd773baa7e2741bf7bd2909a)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/tegra114.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
-index fb99b3e971c3b..c00097794dab1 100644
---- a/arch/arm/boot/dts/tegra114.dtsi
-+++ b/arch/arm/boot/dts/tegra114.dtsi
-@@ -126,7 +126,7 @@ dsi@54400000 {
- 			reg = <0x54400000 0x00040000>;
- 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
- 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
--				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
-+				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
- 			clock-names = "dsi", "lp", "parent";
- 			resets = <&tegra_car 82>;
- 			reset-names = "dsi";
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2896,11 +2896,6 @@ static int dm_resume(void *handle)
+ 
+ 		return 0;
+ 	}
+-
+-	/* leave display off for S4 sequence */
+-	if (adev->in_s4)
+-		return 0;
+-
+ 	/* Recreate dc_state - DC invalidates it when setting power state to S3. */
+ 	dc_release_state(dm_state->context);
+ 	dm_state->context = dc_create_state(dm->dc);
 
 
 
