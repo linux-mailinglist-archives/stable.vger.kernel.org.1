@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634F8ACB78B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3CCACB543
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F3C1BC4464
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C681946FD2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E00A22F389;
-	Mon,  2 Jun 2025 15:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41A121FF39;
+	Mon,  2 Jun 2025 14:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5bUkqWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL1Mh6Lv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1E62253A7;
-	Mon,  2 Jun 2025 15:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF3519EEBD;
+	Mon,  2 Jun 2025 14:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876946; cv=none; b=Pc07kedJH14zradZ/OZwhaRLXFZ14IXj741ghfWAVcwbWkRt9+n0MC49cysRKIBPrFp9mCa6zdr5UgZhueQEy0xahA8dG4Lh3qq4Hs2Cb7eWV8XqeD1PcuFLEq+vPTWT/SJbbW1XmX3o+iIggC1n+swR0ox7Evk4QtBI40CIsAU=
+	t=1748875377; cv=none; b=K/x9vYpv4KfiUJnOCIlTXydRubOaEujS3E5Hl/zvcjtMqcVmI0YHGuemLTTYGJ20b9VymPzG1AFsS2BR6Er4CxY0ZDGibKb95gZkg73DaqJFC8eUw/wh+UftPSw68Kc/4zcV7ICbklJkCFJfGQJ0PZjlboy0kYj6/WRDHxe6HL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876946; c=relaxed/simple;
-	bh=GNnm36nhNI0Jk9SRSMYbRisruegk+DJ5PTP9ERV8OIw=;
+	s=arc-20240116; t=1748875377; c=relaxed/simple;
+	bh=K21+5Rlo4W0YSF363tiVZ0u5h1V5o51okzxcpx6OIEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bc5RkjhQep9y2tQzd30wKvOcyoav3jjSp1Zq41qEVf12eWe8JcUObv9UIXxTgpvaRyhrMCJTdFGaLMzogIjoIGAKXNKQ+pIw2OGQZ7l8EgAqSGuejZmmfP4OlBK10p90Jg+pDkddP0RVcwjHSFKmqU69+FzTMmiw65+2zApxAGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5bUkqWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E81FC4CEEB;
-	Mon,  2 Jun 2025 15:09:05 +0000 (UTC)
+	 MIME-Version; b=Yc+rMSIYLSLc8bE/AksUP8Hw4uO5QtSIj+XeKJ3PvE7hyd5EavwmyrPTPQ3hcOgx6kf10BFgjqQVdKWUDBtWF+gEBLQgaHnussjZuC7eRgI+bBXGioN03saQZX66idOQeR+S+O5YQ4jaCTm3dWWD3oEbrFjp5wStVtJNYw1mMEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL1Mh6Lv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1372C4CEEB;
+	Mon,  2 Jun 2025 14:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876946;
-	bh=GNnm36nhNI0Jk9SRSMYbRisruegk+DJ5PTP9ERV8OIw=;
+	s=korg; t=1748875377;
+	bh=K21+5Rlo4W0YSF363tiVZ0u5h1V5o51okzxcpx6OIEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k5bUkqWn1GPKdWFMwRwDsganrEW6j2dtJ/8ctTtYoSu5jZCEZSCdlebCsARgywWhZ
-	 UVBpfrK1prAcvMdMlF0jR0cYD6erePDDZ0tnIRg5VUHBabE4oOnwMk7fPtPVCBkiUa
-	 S3EFUCqxU44FXX+HTSlAxDSGRWxc3QM43pNfjRjI=
+	b=FL1Mh6LvzBhoeHJfCWovrwqjLfYNhiI4W/XuV9nhPsP3e4ZzPMvJgm6H33IwRF89s
+	 2N7SLorJVESk8ySC5p4JaVoKnRz+xHuFcikkDPPAm+jnHhSMx0YbuYh95qcXMHSlYI
+	 +FbjNriEgR7pKFMEDBV5IfKd4WMKhYD/Uurb1xOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hector Martin <marcan@marcan.st>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Sven Peter <sven@svenpeter.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/325] soc: apple: rtkit: Implement OSLog buffers properly
+	Ivan Vecera <ivecera@redhat.com>,
+	Alexander Lobakin <alexandr.lobakin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Suraj Jitindar Singh <surajjs@amazon.com>
+Subject: [PATCH 5.10 115/270] ice: arfs: fix use-after-free when freeing @rx_cpu_rmap
 Date: Mon,  2 Jun 2025 15:46:40 +0200
-Message-ID: <20250602134324.830745224@linuxfoundation.org>
+Message-ID: <20250602134311.925782691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,161 +63,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Alexander Lobakin <alexandr.lobakin@intel.com>
 
-[ Upstream commit a06398687065e0c334dc5fc4d2778b5b87292e43 ]
+commit d7442f512b71fc63a99c8a801422dde4fbbf9f93 upstream.
 
-Apparently nobody can figure out where the old logic came from, but it
-seems like it has never been actually used on any supported firmware to
-this day. OSLog buffers were apparently never requested.
+The CI testing bots triggered the following splat:
 
-But starting with 13.3, we actually need this implemented properly for
-MTP (and later AOP) to work, so let's actually do that.
+[  718.203054] BUG: KASAN: use-after-free in free_irq_cpu_rmap+0x53/0x80
+[  718.206349] Read of size 4 at addr ffff8881bd127e00 by task sh/20834
+[  718.212852] CPU: 28 PID: 20834 Comm: sh Kdump: loaded Tainted: G S      W IOE     5.17.0-rc8_nextqueue-devqueue-02643-g23f3121aca93 #1
+[  718.219695] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0012.070720200218 07/07/2020
+[  718.223418] Call Trace:
+[  718.227139]
+[  718.230783]  dump_stack_lvl+0x33/0x42
+[  718.234431]  print_address_description.constprop.9+0x21/0x170
+[  718.238177]  ? free_irq_cpu_rmap+0x53/0x80
+[  718.241885]  ? free_irq_cpu_rmap+0x53/0x80
+[  718.245539]  kasan_report.cold.18+0x7f/0x11b
+[  718.249197]  ? free_irq_cpu_rmap+0x53/0x80
+[  718.252852]  free_irq_cpu_rmap+0x53/0x80
+[  718.256471]  ice_free_cpu_rx_rmap.part.11+0x37/0x50 [ice]
+[  718.260174]  ice_remove_arfs+0x5f/0x70 [ice]
+[  718.263810]  ice_rebuild_arfs+0x3b/0x70 [ice]
+[  718.267419]  ice_rebuild+0x39c/0xb60 [ice]
+[  718.270974]  ? asm_sysvec_apic_timer_interrupt+0x12/0x20
+[  718.274472]  ? ice_init_phy_user_cfg+0x360/0x360 [ice]
+[  718.278033]  ? delay_tsc+0x4a/0xb0
+[  718.281513]  ? preempt_count_sub+0x14/0xc0
+[  718.284984]  ? delay_tsc+0x8f/0xb0
+[  718.288463]  ice_do_reset+0x92/0xf0 [ice]
+[  718.292014]  ice_pci_err_resume+0x91/0xf0 [ice]
+[  718.295561]  pci_reset_function+0x53/0x80
+<...>
+[  718.393035] Allocated by task 690:
+[  718.433497] Freed by task 20834:
+[  718.495688] Last potentially related work creation:
+[  718.568966] The buggy address belongs to the object at ffff8881bd127e00
+                which belongs to the cache kmalloc-96 of size 96
+[  718.574085] The buggy address is located 0 bytes inside of
+                96-byte region [ffff8881bd127e00, ffff8881bd127e60)
+[  718.579265] The buggy address belongs to the page:
+[  718.598905] Memory state around the buggy address:
+[  718.601809]  ffff8881bd127d00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+[  718.604796]  ffff8881bd127d80: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
+[  718.607794] >ffff8881bd127e00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+[  718.610811]                    ^
+[  718.613819]  ffff8881bd127e80: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
+[  718.617107]  ffff8881bd127f00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Link: https://lore.kernel.org/r/20250226-apple-soc-misc-v2-2-c3ec37f9021b@svenpeter.dev
-Signed-off-by: Sven Peter <sven@svenpeter.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is due to that free_irq_cpu_rmap() is always being called
+*after* (devm_)free_irq() and thus it tries to work with IRQ descs
+already freed. For example, on device reset the driver frees the
+rmap right before allocating a new one (the splat above).
+Make rmap creation and freeing function symmetrical with
+{request,free}_irq() calls i.e. do that on ifup/ifdown instead
+of device probe/remove/resume. These operations can be performed
+independently from the actual device aRFS configuration.
+Also, make sure ice_vsi_free_irq() clears IRQ affinity notifiers
+only when aRFS is disabled -- otherwise, CPU rmap sets and clears
+its own and they must not be touched manually.
+
+Fixes: 28bf26724fdb0 ("ice: Implement aRFS")
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
+Tested-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/apple/rtkit-internal.h |  1 +
- drivers/soc/apple/rtkit.c          | 56 ++++++++++++++++++------------
- 2 files changed, 35 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_arfs.c |    9 ++-------
+ drivers/net/ethernet/intel/ice/ice_lib.c  |    5 ++++-
+ drivers/net/ethernet/intel/ice/ice_main.c |   20 ++++++++------------
+ 3 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/soc/apple/rtkit-internal.h b/drivers/soc/apple/rtkit-internal.h
-index 24bd619ec5e48..1da1dfd9cb199 100644
---- a/drivers/soc/apple/rtkit-internal.h
-+++ b/drivers/soc/apple/rtkit-internal.h
-@@ -48,6 +48,7 @@ struct apple_rtkit {
- 
- 	struct apple_rtkit_shmem ioreport_buffer;
- 	struct apple_rtkit_shmem crashlog_buffer;
-+	struct apple_rtkit_shmem oslog_buffer;
- 
- 	struct apple_rtkit_shmem syslog_buffer;
- 	char *syslog_msg_buffer;
-diff --git a/drivers/soc/apple/rtkit.c b/drivers/soc/apple/rtkit.c
-index 1ec0c3ba0be22..968f9f6333936 100644
---- a/drivers/soc/apple/rtkit.c
-+++ b/drivers/soc/apple/rtkit.c
-@@ -65,8 +65,9 @@ enum {
- #define APPLE_RTKIT_SYSLOG_MSG_SIZE  GENMASK_ULL(31, 24)
- 
- #define APPLE_RTKIT_OSLOG_TYPE GENMASK_ULL(63, 56)
--#define APPLE_RTKIT_OSLOG_INIT	1
--#define APPLE_RTKIT_OSLOG_ACK	3
-+#define APPLE_RTKIT_OSLOG_BUFFER_REQUEST 1
-+#define APPLE_RTKIT_OSLOG_SIZE GENMASK_ULL(55, 36)
-+#define APPLE_RTKIT_OSLOG_IOVA GENMASK_ULL(35, 0)
- 
- #define APPLE_RTKIT_MIN_SUPPORTED_VERSION 11
- #define APPLE_RTKIT_MAX_SUPPORTED_VERSION 12
-@@ -255,15 +256,21 @@ static int apple_rtkit_common_rx_get_buffer(struct apple_rtkit *rtk,
- 					    struct apple_rtkit_shmem *buffer,
- 					    u8 ep, u64 msg)
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -577,7 +577,7 @@ void ice_free_cpu_rx_rmap(struct ice_vsi
  {
--	size_t n_4kpages = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_SIZE, msg);
- 	u64 reply;
- 	int err;
+ 	struct net_device *netdev;
  
-+	/* The different size vs. IOVA shifts look odd but are indeed correct this way */
-+	if (ep == APPLE_RTKIT_EP_OSLOG) {
-+		buffer->size = FIELD_GET(APPLE_RTKIT_OSLOG_SIZE, msg);
-+		buffer->iova = FIELD_GET(APPLE_RTKIT_OSLOG_IOVA, msg) << 12;
-+	} else {
-+		buffer->size = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_SIZE, msg) << 12;
-+		buffer->iova = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_IOVA, msg);
+-	if (!vsi || vsi->type != ICE_VSI_PF || !vsi->arfs_fltr_list)
++	if (!vsi || vsi->type != ICE_VSI_PF)
+ 		return;
+ 
+ 	netdev = vsi->netdev;
+@@ -600,7 +600,7 @@ int ice_set_cpu_rx_rmap(struct ice_vsi *
+ 	int base_idx, i;
+ 
+ 	if (!vsi || vsi->type != ICE_VSI_PF)
+-		return -EINVAL;
++		return 0;
+ 
+ 	pf = vsi->back;
+ 	netdev = vsi->netdev;
+@@ -638,7 +638,6 @@ void ice_remove_arfs(struct ice_pf *pf)
+ 	if (!pf_vsi)
+ 		return;
+ 
+-	ice_free_cpu_rx_rmap(pf_vsi);
+ 	ice_clear_arfs(pf_vsi);
+ }
+ 
+@@ -655,9 +654,5 @@ void ice_rebuild_arfs(struct ice_pf *pf)
+ 		return;
+ 
+ 	ice_remove_arfs(pf);
+-	if (ice_set_cpu_rx_rmap(pf_vsi)) {
+-		dev_err(ice_pf_to_dev(pf), "Failed to rebuild aRFS\n");
+-		return;
+-	}
+ 	ice_init_arfs(pf_vsi);
+ }
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2411,6 +2411,8 @@ void ice_vsi_free_irq(struct ice_vsi *vs
+ 		return;
+ 
+ 	vsi->irqs_ready = false;
++	ice_free_cpu_rx_rmap(vsi);
++
+ 	ice_for_each_q_vector(vsi, i) {
+ 		u16 vector = i + base;
+ 		int irq_num;
+@@ -2424,7 +2426,8 @@ void ice_vsi_free_irq(struct ice_vsi *vs
+ 			continue;
+ 
+ 		/* clear the affinity notifier in the IRQ descriptor */
+-		irq_set_affinity_notifier(irq_num, NULL);
++		if (!IS_ENABLED(CONFIG_RFS_ACCEL))
++			irq_set_affinity_notifier(irq_num, NULL);
+ 
+ 		/* clear the affinity_mask in the IRQ descriptor */
+ 		irq_set_affinity_hint(irq_num, NULL);
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2247,6 +2247,13 @@ static int ice_vsi_req_irq_msix(struct i
+ 		irq_set_affinity_hint(irq_num, &q_vector->affinity_mask);
+ 	}
+ 
++	err = ice_set_cpu_rx_rmap(vsi);
++	if (err) {
++		netdev_err(vsi->netdev, "Failed to setup CPU RMAP on VSI %u: %pe\n",
++			   vsi->vsi_num, ERR_PTR(err));
++		goto free_q_irqs;
 +	}
 +
- 	buffer->buffer = NULL;
- 	buffer->iomem = NULL;
- 	buffer->is_mapped = false;
--	buffer->iova = FIELD_GET(APPLE_RTKIT_BUFFER_REQUEST_IOVA, msg);
--	buffer->size = n_4kpages << 12;
+ 	vsi->irqs_ready = true;
+ 	return 0;
  
- 	dev_dbg(rtk->dev, "RTKit: buffer request for 0x%zx bytes at %pad\n",
- 		buffer->size, &buffer->iova);
-@@ -288,11 +295,21 @@ static int apple_rtkit_common_rx_get_buffer(struct apple_rtkit *rtk,
- 	}
+@@ -3242,22 +3249,12 @@ static int ice_setup_pf_sw(struct ice_pf
+ 	 */
+ 	ice_napi_add(vsi);
  
- 	if (!buffer->is_mapped) {
--		reply = FIELD_PREP(APPLE_RTKIT_SYSLOG_TYPE,
--				   APPLE_RTKIT_BUFFER_REQUEST);
--		reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_SIZE, n_4kpages);
--		reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_IOVA,
--				    buffer->iova);
-+		/* oslog uses different fields and needs a shifted IOVA instead of size */
-+		if (ep == APPLE_RTKIT_EP_OSLOG) {
-+			reply = FIELD_PREP(APPLE_RTKIT_OSLOG_TYPE,
-+					   APPLE_RTKIT_OSLOG_BUFFER_REQUEST);
-+			reply |= FIELD_PREP(APPLE_RTKIT_OSLOG_SIZE, buffer->size);
-+			reply |= FIELD_PREP(APPLE_RTKIT_OSLOG_IOVA,
-+					    buffer->iova >> 12);
-+		} else {
-+			reply = FIELD_PREP(APPLE_RTKIT_SYSLOG_TYPE,
-+					   APPLE_RTKIT_BUFFER_REQUEST);
-+			reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_SIZE,
-+					    buffer->size >> 12);
-+			reply |= FIELD_PREP(APPLE_RTKIT_BUFFER_REQUEST_IOVA,
-+					    buffer->iova);
-+		}
- 		apple_rtkit_send_message(rtk, ep, reply, NULL, false);
- 	}
+-	status = ice_set_cpu_rx_rmap(vsi);
+-	if (status) {
+-		dev_err(ice_pf_to_dev(pf), "Failed to set CPU Rx map VSI %d error %d\n",
+-			vsi->vsi_num, status);
+-		status = -EINVAL;
+-		goto unroll_napi_add;
+-	}
+ 	status = ice_init_mac_fltr(pf);
+ 	if (status)
+-		goto free_cpu_rx_map;
++		goto unroll_napi_add;
  
-@@ -474,25 +491,18 @@ static void apple_rtkit_syslog_rx(struct apple_rtkit *rtk, u64 msg)
- 	}
- }
+ 	return status;
  
--static void apple_rtkit_oslog_rx_init(struct apple_rtkit *rtk, u64 msg)
--{
--	u64 ack;
+-free_cpu_rx_map:
+-	ice_free_cpu_rx_rmap(vsi);
 -
--	dev_dbg(rtk->dev, "RTKit: oslog init: msg: 0x%llx\n", msg);
--	ack = FIELD_PREP(APPLE_RTKIT_OSLOG_TYPE, APPLE_RTKIT_OSLOG_ACK);
--	apple_rtkit_send_message(rtk, APPLE_RTKIT_EP_OSLOG, ack, NULL, false);
--}
--
- static void apple_rtkit_oslog_rx(struct apple_rtkit *rtk, u64 msg)
- {
- 	u8 type = FIELD_GET(APPLE_RTKIT_OSLOG_TYPE, msg);
- 
- 	switch (type) {
--	case APPLE_RTKIT_OSLOG_INIT:
--		apple_rtkit_oslog_rx_init(rtk, msg);
-+	case APPLE_RTKIT_OSLOG_BUFFER_REQUEST:
-+		apple_rtkit_common_rx_get_buffer(rtk, &rtk->oslog_buffer,
-+						 APPLE_RTKIT_EP_OSLOG, msg);
- 		break;
- 	default:
--		dev_warn(rtk->dev, "RTKit: Unknown oslog message: %llx\n", msg);
-+		dev_warn(rtk->dev, "RTKit: Unknown oslog message: %llx\n",
-+			 msg);
+ unroll_napi_add:
+ 	if (vsi) {
+ 		ice_napi_del(vsi);
+@@ -4598,7 +4595,6 @@ static int __maybe_unused ice_suspend(st
+ 			continue;
+ 		ice_vsi_free_q_vectors(pf->vsi[v]);
  	}
- }
+-	ice_free_cpu_rx_rmap(ice_get_main_vsi(pf));
+ 	ice_clear_interrupt_scheme(pf);
  
-@@ -773,6 +783,7 @@ int apple_rtkit_reinit(struct apple_rtkit *rtk)
- 
- 	apple_rtkit_free_buffer(rtk, &rtk->ioreport_buffer);
- 	apple_rtkit_free_buffer(rtk, &rtk->crashlog_buffer);
-+	apple_rtkit_free_buffer(rtk, &rtk->oslog_buffer);
- 	apple_rtkit_free_buffer(rtk, &rtk->syslog_buffer);
- 
- 	kfree(rtk->syslog_msg_buffer);
-@@ -935,6 +946,7 @@ static void apple_rtkit_free(void *data)
- 
- 	apple_rtkit_free_buffer(rtk, &rtk->ioreport_buffer);
- 	apple_rtkit_free_buffer(rtk, &rtk->crashlog_buffer);
-+	apple_rtkit_free_buffer(rtk, &rtk->oslog_buffer);
- 	apple_rtkit_free_buffer(rtk, &rtk->syslog_buffer);
- 
- 	kfree(rtk->syslog_msg_buffer);
--- 
-2.39.5
-
+ 	pci_save_state(pdev);
 
 
 
