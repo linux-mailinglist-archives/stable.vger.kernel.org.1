@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E5DACB29A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451A3ACB35B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A04594A1EC1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C24C188BEE2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522AF230D0E;
-	Mon,  2 Jun 2025 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D900522B59D;
+	Mon,  2 Jun 2025 14:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bC7LreDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NJPPPl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3F522FE19;
-	Mon,  2 Jun 2025 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960DC1DD543;
+	Mon,  2 Jun 2025 14:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873885; cv=none; b=Gb+Llx0auP8HtYfOzg+yDMpkcclATDDkxk7C1Tkg7uWV+qQZD2xCDfI6sbJ1T7JyTO5YE8vHWCTpLVqz3U3iXBY8Io7hOqh9pBL2O7Fl51zw99tCmm3onj24IAKgMec/NXhA4QBrvsM+X47ZhkFU9Rj+S2AV9vAFE4yeQOKJIO0=
+	t=1748874416; cv=none; b=qbPPmRFwe8q0IIZRr7H4Oq9QeviZ10qeCAGSpZxYmbHCM7SgMggGfMvfdTCukpwrx6+fJ+0Hi4Q0a5tRtpMyfDZakH/lWbYFIU4V8aAKzDe85C6yErLUM4tKFQWwCgWPlZxYRLfYtFaAJaVI8UF20JYan75RYinF6Qvl/4KaIVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873885; c=relaxed/simple;
-	bh=T2Nb2OfOSOrCrqqruNWwdPt2Slu0tPWMUmJYKuNQjTE=;
+	s=arc-20240116; t=1748874416; c=relaxed/simple;
+	bh=emQtoiGrWemjLPpZxxUZ+++EgCC2PCVYLQM9SFkwm60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTMKl1Q0S2ezAVwZ/D94Yn+7/YNIYEwz1dd02A6NtHTaXmoBq28FmuzdwPIlwhrEHNsaOTFOiHSdooZ8KwRiqJL7/j/l0Lk1W95Exs6wE/O5cwkiWOOvgfQImVunodJ/RsepRcDRvhLmcsO4LeRfq+5YmlraToYpZIJ6VCrb9Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bC7LreDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A159C4CEEB;
-	Mon,  2 Jun 2025 14:18:04 +0000 (UTC)
+	 MIME-Version; b=ItDheVkp7dEMXQYdLbhNbHREq0eRxzgHHMJRIwp3z2Z5dbO/8s1rKKpqxrPrAobwU2knhTQRpEjz+Hetpv+tRSvD0graLRi8FkU6RNxRbu5f4X0m1B375RpvuZmTWOjVtBrjxuatV4sRA5uGLCIospboqJpGWCXnlkXBZ/aHBd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NJPPPl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEA6C4CEEB;
+	Mon,  2 Jun 2025 14:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873884;
-	bh=T2Nb2OfOSOrCrqqruNWwdPt2Slu0tPWMUmJYKuNQjTE=;
+	s=korg; t=1748874416;
+	bh=emQtoiGrWemjLPpZxxUZ+++EgCC2PCVYLQM9SFkwm60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bC7LreDJuobq2EtLg3T3dcE1+67ZI8IzbwFCwsgHoRZwdkJ8z6vGt8ET9Xn8p2N9q
-	 tEyBN4s/YFG8HkNORh/4iFDujBlV8H+zSECBVCSU2DLbg5lxlFbwJlTlJZuZ8b+c3x
-	 bHlMX+o05Esr84quGGLN68D0HREfv0tI37edgJQE=
+	b=0NJPPPl2IOcJwVC1OCXTQKAVn8qF3hxvBd+16DwgF/KxLc+iZroBk4n8UfVDT0s3O
+	 srZjKJ6SkTMDMX65/BgPErPLO2oj1LT1fhNM1D01tkFFNd1K7GbNm9VZ4ShggeVJ14
+	 TZIlIJkdMbq+hFxu8+tBj7oKR3xB9iwZNRDXve+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alexey Denisov <rtgbnm@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/444] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Subject: [PATCH 5.4 017/204] lan743x: fix endianness when accessing descriptors
 Date: Mon,  2 Jun 2025 15:45:50 +0200
-Message-ID: <20250602134352.566205538@linuxfoundation.org>
+Message-ID: <20250602134256.170104183@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,275 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Alexey Denisov <rtgbnm@gmail.com>
 
-[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
+[ Upstream commit 462512824f902a24de794290dd622e664587da1d ]
 
-After a port swap between separate fabrics, there may be multiple nodes in
-the vport's fc_nodes list with the same fabric well known address.
-Duplication is temporary and eventually resolves itself after dev_loss_tmo
-expires, but nameserver queries may still occur before dev_loss_tmo.  This
-possibly results in returning stale fabric ndlp objects.  Fix by adding an
-nlp_state check to ensure the ndlp search routine returns the correct newer
-allocated ndlp fabric object.
+TX/RX descriptor ring fields are always little-endian, but conversion
+wasn't performed for big-endian CPUs, so the driver failed to work.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This patch makes the driver work on big-endian CPUs. It was tested and
+confirmed to work on NXP P1010 processor (PowerPC).
+
+Signed-off-by: Alexey Denisov <rtgbnm@gmail.com>
+Link: https://lore.kernel.org/r/20210128044859.280219-1-rtgbnm@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 2d52e2e38b85 ("net: lan743x: Fix memleak issue when GSO enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 66 +++++++++----------
+ drivers/net/ethernet/microchip/lan743x_main.h | 20 +++---
+ 2 files changed, 43 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index 0ad8a10002ce3..5c9bc8af3c2df 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5646,6 +5646,7 @@ static struct lpfc_nodelist *
- __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- {
- 	struct lpfc_nodelist *ndlp;
-+	struct lpfc_nodelist *np = NULL;
- 	uint32_t data1;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 5d539e4e942cc..ebcbb719e9002 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1221,7 +1221,7 @@ static void lan743x_tx_release_desc(struct lan743x_tx *tx,
+ 	if (!(buffer_info->flags & TX_BUFFER_INFO_FLAG_ACTIVE))
+ 		goto done;
  
- 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
-@@ -5660,14 +5661,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
- 					 ndlp, ndlp->nlp_DID,
- 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
- 					 ndlp->active_rrqs_xri_bitmap);
--			return ndlp;
-+
-+			/* Check for new or potentially stale node */
-+			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
-+				return ndlp;
-+			np = ndlp;
- 		}
+-	descriptor_type = (descriptor->data0) &
++	descriptor_type = le32_to_cpu(descriptor->data0) &
+ 			  TX_DESC_DATA0_DTYPE_MASK_;
+ 	if (descriptor_type == TX_DESC_DATA0_DTYPE_DATA_)
+ 		goto clean_up_data_descriptor;
+@@ -1281,7 +1281,7 @@ static int lan743x_tx_next_index(struct lan743x_tx *tx, int index)
+ 
+ static void lan743x_tx_release_completed_descriptors(struct lan743x_tx *tx)
+ {
+-	while ((*tx->head_cpu_ptr) != (tx->last_head)) {
++	while (le32_to_cpu(*tx->head_cpu_ptr) != (tx->last_head)) {
+ 		lan743x_tx_release_desc(tx, tx->last_head, false);
+ 		tx->last_head = lan743x_tx_next_index(tx, tx->last_head);
+ 	}
+@@ -1367,10 +1367,10 @@ static int lan743x_tx_frame_start(struct lan743x_tx *tx,
+ 	if (dma_mapping_error(dev, dma_ptr))
+ 		return -ENOMEM;
+ 
+-	tx_descriptor->data1 = DMA_ADDR_LOW32(dma_ptr);
+-	tx_descriptor->data2 = DMA_ADDR_HIGH32(dma_ptr);
+-	tx_descriptor->data3 = (frame_length << 16) &
+-		TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_;
++	tx_descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(dma_ptr));
++	tx_descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(dma_ptr));
++	tx_descriptor->data3 = cpu_to_le32((frame_length << 16) &
++		TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_);
+ 
+ 	buffer_info->skb = NULL;
+ 	buffer_info->dma_ptr = dma_ptr;
+@@ -1411,7 +1411,7 @@ static void lan743x_tx_frame_add_lso(struct lan743x_tx *tx,
+ 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
+ 	}
+ 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
+-	tx_descriptor->data0 = tx->frame_data0;
++	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
+ 
+ 	/* move to next descriptor */
+ 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
+@@ -1455,7 +1455,7 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
+ 
+ 	/* wrap up previous descriptor */
+ 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
+-	tx_descriptor->data0 = tx->frame_data0;
++	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
+ 
+ 	/* move to next descriptor */
+ 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
+@@ -1481,10 +1481,10 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
+ 		return -ENOMEM;
  	}
  
--	/* FIND node did <did> NOT FOUND */
--	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
--			 "0932 FIND node did x%x NOT FOUND.\n", did);
--	return NULL;
-+	if (!np)
-+		/* FIND node did <did> NOT FOUND */
-+		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
-+				 "0932 FIND node did x%x NOT FOUND.\n", did);
-+
-+	return np;
+-	tx_descriptor->data1 = DMA_ADDR_LOW32(dma_ptr);
+-	tx_descriptor->data2 = DMA_ADDR_HIGH32(dma_ptr);
+-	tx_descriptor->data3 = (frame_length << 16) &
+-			       TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_;
++	tx_descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(dma_ptr));
++	tx_descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(dma_ptr));
++	tx_descriptor->data3 = cpu_to_le32((frame_length << 16) &
++			       TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_);
+ 
+ 	buffer_info->skb = NULL;
+ 	buffer_info->dma_ptr = dma_ptr;
+@@ -1528,7 +1528,7 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
+ 	if (ignore_sync)
+ 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
+ 
+-	tx_descriptor->data0 = tx->frame_data0;
++	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
+ 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
+ 	tx->last_tail = tx->frame_tail;
+ 
+@@ -1946,11 +1946,11 @@ static int lan743x_rx_init_ring_element(struct lan743x_rx *rx, int index,
+ 	}
+ 
+ 	buffer_info->buffer_length = length;
+-	descriptor->data1 = DMA_ADDR_LOW32(buffer_info->dma_ptr);
+-	descriptor->data2 = DMA_ADDR_HIGH32(buffer_info->dma_ptr);
++	descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(buffer_info->dma_ptr));
++	descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(buffer_info->dma_ptr));
+ 	descriptor->data3 = 0;
+-	descriptor->data0 = (RX_DESC_DATA0_OWN_ |
+-			    (length & RX_DESC_DATA0_BUF_LENGTH_MASK_));
++	descriptor->data0 = cpu_to_le32((RX_DESC_DATA0_OWN_ |
++			    (length & RX_DESC_DATA0_BUF_LENGTH_MASK_)));
+ 	skb_reserve(buffer_info->skb, RX_HEAD_PADDING);
+ 	lan743x_rx_update_tail(rx, index);
+ 
+@@ -1965,12 +1965,12 @@ static void lan743x_rx_reuse_ring_element(struct lan743x_rx *rx, int index)
+ 	descriptor = &rx->ring_cpu_ptr[index];
+ 	buffer_info = &rx->buffer_info[index];
+ 
+-	descriptor->data1 = DMA_ADDR_LOW32(buffer_info->dma_ptr);
+-	descriptor->data2 = DMA_ADDR_HIGH32(buffer_info->dma_ptr);
++	descriptor->data1 = cpu_to_le32(DMA_ADDR_LOW32(buffer_info->dma_ptr));
++	descriptor->data2 = cpu_to_le32(DMA_ADDR_HIGH32(buffer_info->dma_ptr));
+ 	descriptor->data3 = 0;
+-	descriptor->data0 = (RX_DESC_DATA0_OWN_ |
++	descriptor->data0 = cpu_to_le32((RX_DESC_DATA0_OWN_ |
+ 			    ((buffer_info->buffer_length) &
+-			    RX_DESC_DATA0_BUF_LENGTH_MASK_));
++			    RX_DESC_DATA0_BUF_LENGTH_MASK_)));
+ 	lan743x_rx_update_tail(rx, index);
  }
  
- struct lpfc_nodelist *
+@@ -2004,7 +2004,7 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ {
+ 	struct skb_shared_hwtstamps *hwtstamps = NULL;
+ 	int result = RX_PROCESS_RESULT_NOTHING_TO_DO;
+-	int current_head_index = *rx->head_cpu_ptr;
++	int current_head_index = le32_to_cpu(*rx->head_cpu_ptr);
+ 	struct lan743x_rx_buffer_info *buffer_info;
+ 	struct lan743x_rx_descriptor *descriptor;
+ 	int extension_index = -1;
+@@ -2019,14 +2019,14 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ 
+ 	if (rx->last_head != current_head_index) {
+ 		descriptor = &rx->ring_cpu_ptr[rx->last_head];
+-		if (descriptor->data0 & RX_DESC_DATA0_OWN_)
++		if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_OWN_)
+ 			goto done;
+ 
+-		if (!(descriptor->data0 & RX_DESC_DATA0_FS_))
++		if (!(le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_FS_))
+ 			goto done;
+ 
+ 		first_index = rx->last_head;
+-		if (descriptor->data0 & RX_DESC_DATA0_LS_) {
++		if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_LS_) {
+ 			last_index = rx->last_head;
+ 		} else {
+ 			int index;
+@@ -2034,10 +2034,10 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ 			index = lan743x_rx_next_index(rx, first_index);
+ 			while (index != current_head_index) {
+ 				descriptor = &rx->ring_cpu_ptr[index];
+-				if (descriptor->data0 & RX_DESC_DATA0_OWN_)
++				if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_OWN_)
+ 					goto done;
+ 
+-				if (descriptor->data0 & RX_DESC_DATA0_LS_) {
++				if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_LS_) {
+ 					last_index = index;
+ 					break;
+ 				}
+@@ -2046,17 +2046,17 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ 		}
+ 		if (last_index >= 0) {
+ 			descriptor = &rx->ring_cpu_ptr[last_index];
+-			if (descriptor->data0 & RX_DESC_DATA0_EXT_) {
++			if (le32_to_cpu(descriptor->data0) & RX_DESC_DATA0_EXT_) {
+ 				/* extension is expected to follow */
+ 				int index = lan743x_rx_next_index(rx,
+ 								  last_index);
+ 				if (index != current_head_index) {
+ 					descriptor = &rx->ring_cpu_ptr[index];
+-					if (descriptor->data0 &
++					if (le32_to_cpu(descriptor->data0) &
+ 					    RX_DESC_DATA0_OWN_) {
+ 						goto done;
+ 					}
+-					if (descriptor->data0 &
++					if (le32_to_cpu(descriptor->data0) &
+ 					    RX_DESC_DATA0_EXT_) {
+ 						extension_index = index;
+ 					} else {
+@@ -2109,7 +2109,7 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ 			}
+ 			buffer_info->skb = NULL;
+ 			packet_length =	RX_DESC_DATA0_FRAME_LENGTH_GET_
+-					(descriptor->data0);
++					(le32_to_cpu(descriptor->data0));
+ 			skb_put(skb, packet_length - 4);
+ 			skb->protocol = eth_type_trans(skb,
+ 						       rx->adapter->netdev);
+@@ -2147,8 +2147,8 @@ static int lan743x_rx_process_packet(struct lan743x_rx *rx)
+ 			descriptor = &rx->ring_cpu_ptr[extension_index];
+ 			buffer_info = &rx->buffer_info[extension_index];
+ 
+-			ts_sec = descriptor->data1;
+-			ts_nsec = (descriptor->data2 &
++			ts_sec = le32_to_cpu(descriptor->data1);
++			ts_nsec = (le32_to_cpu(descriptor->data2) &
+ 				  RX_DESC_DATA2_TS_NS_MASK_);
+ 			lan743x_rx_reuse_ring_element(rx, extension_index);
+ 			real_last_index = extension_index;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index 1fbcef3910989..a7b97287d84ba 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -655,7 +655,7 @@ struct lan743x_tx {
+ 
+ 	struct lan743x_tx_buffer_info *buffer_info;
+ 
+-	u32		*head_cpu_ptr;
++	__le32		*head_cpu_ptr;
+ 	dma_addr_t	head_dma_ptr;
+ 	int		last_head;
+ 	int		last_tail;
+@@ -685,7 +685,7 @@ struct lan743x_rx {
+ 
+ 	struct lan743x_rx_buffer_info *buffer_info;
+ 
+-	u32		*head_cpu_ptr;
++	__le32		*head_cpu_ptr;
+ 	dma_addr_t	head_dma_ptr;
+ 	u32		last_head;
+ 	u32		last_tail;
+@@ -769,10 +769,10 @@ struct lan743x_adapter {
+ #define TX_DESC_DATA3_FRAME_LENGTH_MSS_MASK_	(0x3FFF0000)
+ 
+ struct lan743x_tx_descriptor {
+-	u32     data0;
+-	u32     data1;
+-	u32     data2;
+-	u32     data3;
++	__le32     data0;
++	__le32     data1;
++	__le32     data2;
++	__le32     data3;
+ } __aligned(DEFAULT_DMA_DESCRIPTOR_SPACING);
+ 
+ #define TX_BUFFER_INFO_FLAG_ACTIVE		BIT(0)
+@@ -807,10 +807,10 @@ struct lan743x_tx_buffer_info {
+ #define RX_HEAD_PADDING		NET_IP_ALIGN
+ 
+ struct lan743x_rx_descriptor {
+-	u32     data0;
+-	u32     data1;
+-	u32     data2;
+-	u32     data3;
++	__le32     data0;
++	__le32     data1;
++	__le32     data2;
++	__le32     data3;
+ } __aligned(DEFAULT_DMA_DESCRIPTOR_SPACING);
+ 
+ #define RX_BUFFER_INFO_FLAG_ACTIVE      BIT(0)
 -- 
 2.39.5
 
