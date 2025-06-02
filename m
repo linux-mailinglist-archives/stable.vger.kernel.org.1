@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70143ACB45C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF62ACB508
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A6619479E0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34C2A7B186E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4935022D792;
-	Mon,  2 Jun 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEF5221F10;
+	Mon,  2 Jun 2025 14:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5KLA16D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hdp+54Iq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0526D2C324D;
-	Mon,  2 Jun 2025 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245831DED64;
+	Mon,  2 Jun 2025 14:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874859; cv=none; b=j5/3UbE2wGwRNgS3o9F64tE4UQJD1rk+FNMglUrBUYTKRNgp2hNFK/pEsd/Esybhux9BFeptfw2qhbwex5arHaETjGiRkIcHaaCO2nf+Gm7Is+KX5OVY00GknTk2mvbEV48pWj/0g7QQxdJhoWheqzqzAtkrvK2NZM3Uhxam1Ek=
+	t=1748875665; cv=none; b=jnqSm5IDu1HH9WpT4qNU4G7CpCkzsEj4u+V1nS+MFTWqRVXr6QiNIwQvc6TVAcouOLfchBQ162rBElakpsI4Owau2vRt6AHde6ORQ28+3EAjq6b1YDKt42TNKB4eUjbGJEUDkAHnNsDccL6RVOndRZKI7PMK7BttztNVQkvDCRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874859; c=relaxed/simple;
-	bh=uSEXDCSEyHNdCHYMRVxgfiTwyKcIndyC2N32ln0s5u0=;
+	s=arc-20240116; t=1748875665; c=relaxed/simple;
+	bh=5JdIpDXYLgWeMD3mAKGiUO2UOfTKf1gFhX/GBkhmm5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jSM2MbMBJnHxTk0u7A5yPw3YxusbMWRcGk7hyJQmSDx+4Ucl0PN5T8srnE0EQQnbKvSrxRfma45w8jWL/H8chSkuCAhzlSS9LcWHPc6JzIAes/si4HdE204KwNEvIwq6hZurR+sw/f0rx+xEqrqo1u3oxMCdHvQK66e0MWwajeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5KLA16D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3705AC4CEEB;
-	Mon,  2 Jun 2025 14:34:18 +0000 (UTC)
+	 MIME-Version; b=YYd2VgR3NgNGBAH8QnwaWL5EwXhK8sd/18kRqK2HNN4ZGeoq2aHw+xAe7pv5kSPU6WQu12+6+3bz+h/ajxMHWKqv8Ahk7jlvMB04ZHPaQygBMt7CDCGmv1oCL5Lp1HwAz8FwlykQMSXB7diZGXhOGWy2lHSgfloXKyOCOUtbPxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hdp+54Iq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C63BC4CEEB;
+	Mon,  2 Jun 2025 14:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874858;
-	bh=uSEXDCSEyHNdCHYMRVxgfiTwyKcIndyC2N32ln0s5u0=;
+	s=korg; t=1748875665;
+	bh=5JdIpDXYLgWeMD3mAKGiUO2UOfTKf1gFhX/GBkhmm5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5KLA16DXIirASQjk/67bG3XSodJLnZI42iAl6/kCKtbDT+8h8CrZe3iC+RVHa5B9
-	 7OVkdtTLtvKkbKkiAl0qy4+SdxaGIUNJaUzQDc+05qe/nNdD0jCk/MOdOshcbE23+V
-	 NfsENvv0eTkyEc+LeL9TZfj+s2/R2EGS0bQwRsuU=
+	b=Hdp+54IqSnttMdMvxpnn+tGtnyMOZqg5k3K/DqBQVaD13TTCdZYyHVwODFuBX3VtJ
+	 7yHKzOMSAT3BwqZlLuYaLshy4G4E81u/jQbaQIVd3H7ML1fydowV+sdHqr7roc/225
+	 qzXQ6Qs3FznuzFmgor3DDGE1zZonC4si2M0OvsK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 158/204] scsi: st: Restore some drive settings after reset
+Subject: [PATCH 5.10 206/270] phy: core: dont require set_mode() callback for phy_get_mode() to work
 Date: Mon,  2 Jun 2025 15:48:11 +0200
-Message-ID: <20250602134301.865815635@linuxfoundation.org>
+Message-ID: <20250602134315.615999758@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
+[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
 
-Some of the allowed operations put the tape into a known position to
-continue operation assuming only the tape position has changed.  But reset
-sets partition, density and block size to drive default values. These
-should be restored to the values before reset.
+As reported by Damon Ding, the phy_get_mode() call doesn't work as
+expected unless the PHY driver has a .set_mode() call. This prompts PHY
+drivers to have empty stubs for .set_mode() for the sake of being able
+to get the mode.
 
-Normally the current block size and density are stored by the drive.  If
-the settings have been changed, the changed values have to be saved by the
-driver across reset.
+Make .set_mode() callback truly optional and update PHY's mode even if
+it there is none.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
+Tested-by: Damon Ding <damon.ding@rock-chips.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 24 +++++++++++++++++++++---
- drivers/scsi/st.h |  2 ++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/phy/phy-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 3f798f87e8d98..d4aef346bfee3 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -949,7 +949,6 @@ static void reset_state(struct scsi_tape *STp)
- 		STp->partition = find_partition(STp);
- 		if (STp->partition < 0)
- 			STp->partition = 0;
--		STp->new_partition = STp->partition;
- 	}
- }
- 
-@@ -2921,14 +2920,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 		if (cmd_in == MTSETDENSITY) {
- 			(STp->buffer)->b_data[4] = arg;
- 			STp->density_changed = 1;	/* At least we tried ;-) */
-+			STp->changed_density = arg;
- 		} else if (cmd_in == SET_DENS_AND_BLK)
- 			(STp->buffer)->b_data[4] = arg >> 24;
- 		else
- 			(STp->buffer)->b_data[4] = STp->density;
- 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
- 			ltmp = arg & MT_ST_BLKSIZE_MASK;
--			if (cmd_in == MTSETBLK)
-+			if (cmd_in == MTSETBLK) {
- 				STp->blksize_changed = 1; /* At least we tried ;-) */
-+				STp->changed_blksize = arg;
-+			}
- 		} else
- 			ltmp = STp->block_size;
- 		(STp->buffer)->b_data[9] = (ltmp >> 16);
-@@ -3629,9 +3631,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 				retval = (-EIO);
- 				goto out;
- 			}
--			reset_state(STp);
-+			reset_state(STp); /* Clears pos_unknown */
- 			/* remove this when the midlevel properly clears was_reset */
- 			STp->device->was_reset = 0;
-+
-+			/* Fix the device settings after reset, ignore errors */
-+			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
-+				mtc.mt_op == MTEOM) {
-+				if (STp->can_partitions) {
-+					/* STp->new_partition contains the
-+					 *  latest partition set
-+					 */
-+					STp->partition = 0;
-+					switch_partition(STp);
-+				}
-+				if (STp->density_changed)
-+					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
-+				if (STp->blksize_changed)
-+					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
-+			}
- 		}
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index 1bcdef37e8aa2..dac0f7f4f3d3d 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -360,13 +360,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
  
- 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
-diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
-index 95d2e7a7988de..c9947abb0a451 100644
---- a/drivers/scsi/st.h
-+++ b/drivers/scsi/st.h
-@@ -168,12 +168,14 @@ struct scsi_tape {
- 	unsigned char compression_changed;
- 	unsigned char drv_buffer;
- 	unsigned char density;
-+	unsigned char changed_density;
- 	unsigned char door_locked;
- 	unsigned char autorew_dev;   /* auto-rewind device */
- 	unsigned char rew_at_close;  /* rewind necessary at close */
- 	unsigned char inited;
- 	unsigned char cleaning_req;  /* cleaning requested? */
- 	int block_size;
-+	int changed_blksize;
- 	int min_block;
- 	int max_block;
- 	int recover_count;     /* From tape opening */
+ int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
+ {
+-	int ret;
++	int ret = 0;
+ 
+-	if (!phy || !phy->ops->set_mode)
++	if (!phy)
+ 		return 0;
+ 
+ 	mutex_lock(&phy->mutex);
+-	ret = phy->ops->set_mode(phy, mode, submode);
++	if (phy->ops->set_mode)
++		ret = phy->ops->set_mode(phy, mode, submode);
+ 	if (!ret)
+ 		phy->attrs.mode = mode;
+ 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
