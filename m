@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-149869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8EFACB56D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABFAACB392
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 129C31BC1D7D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 184183A6420
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841B322F772;
-	Mon,  2 Jun 2025 14:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DC922AE7C;
+	Mon,  2 Jun 2025 14:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2FAzDU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NH/Nf3Q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412F722F762;
-	Mon,  2 Jun 2025 14:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BEC22AE5D;
+	Mon,  2 Jun 2025 14:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875301; cv=none; b=nawknuzr7QQXN4sV5tlcDG5zjHbild/VuuVd/B9PpUinT2ApNjQPEAbJ3sZlW/rOQ+WqcvYVfxe9GTgL+69Bah5CmDQYu/WVg+w/CsAKBLwzHKNFXcQoeZr6a2FBMOFLUgmYgYTDG0uYOp4+QxohSmD9C9JS9+9MvsNiBJTNbLk=
+	t=1748874411; cv=none; b=LMx3BKoKKy6WCbmmEtiOpwFdqpLtPnhuuCuwxdVP6Tu1EjOFmcL05zqVPIZzd6da9ZIsM7ug5UCfdmZHFxhwEd2jDw/9eaN9BS5fhPS2cRJdnkYNQy2vlhbYxtN+dBVsaFgqKYlpTP7mMjbaYTMfKRKtWSgBvEy44I0II4QbKIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875301; c=relaxed/simple;
-	bh=2fdJMZkJa/Z2z2fneCImylIIUR7SBywB+UnZaRSrbgA=;
+	s=arc-20240116; t=1748874411; c=relaxed/simple;
+	bh=T5zCtMugNn8Uok1QomBgbFhpPXO67oVnQdjR2wj2z/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sU+rky5zdP5b9212nehWCPPoCXKuJji5poXZW4IGv1ZNBLtA94Uoqf2mDSaY4/S8+DQ2ao3g0YBuQgn5vVyC1Ljo2HseNJBx93hF2uGRvSfjLvcME587SCwzqVXF+y4w0pTQucZIcwV5F9qteCM2neKNoP6azyK7JwLGSeqArug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2FAzDU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD845C4CEEB;
-	Mon,  2 Jun 2025 14:41:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jNoOTu8Ooo1veFRtmDaSRUuqy9nSR6AbVB8gId41729JzJT1nxv34BthtpN1Tz9qwhGCwlVsJHG35MHKhdwneeNMsN2O1L52mxcX/PyFOVNyRqNiIerx2qx5ismxlFHKn/SkerXV69dgce4F1ZHDjkp+G7Ch6iacyihHPIAMJo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NH/Nf3Q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A337C4CEEB;
+	Mon,  2 Jun 2025 14:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875301;
-	bh=2fdJMZkJa/Z2z2fneCImylIIUR7SBywB+UnZaRSrbgA=;
+	s=korg; t=1748874410;
+	bh=T5zCtMugNn8Uok1QomBgbFhpPXO67oVnQdjR2wj2z/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2FAzDU6lfUvmn9i/JMKPKFro/ZtYaSom9efT3fo27CpDtCcPOUrGF2NJiIwXXxi9
-	 MykcCpGhZxn7hCxTL96a/ZUE7Tr3Gx2LC7pvWEmwPH4RtT/BO3330SPFOyKRNHcBsT
-	 tzcqdmNTHcunLMlG6XqdHBRu+PqMYbmgnopLsYag=
+	b=NH/Nf3Q0Q4CL4ZZ/FfWbLtC0pMXPKeuuA5eNWgX07lEW2QxylrrcqVo68nA1I2m8h
+	 tNrZkzP9qfsLVpIRp/M9z3G+vKrmrgbSMDYpdhDbd8yLk3kw5lxUC/ZLBZ4M4zNhaC
+	 W+c1aAdbqYxrBumytrkE3yuNO38PCi71S1+MZgb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alexey Charkov <alchark@gmail.com>
-Subject: [PATCH 5.10 063/270] usb: uhci-platform: Make the clock really optional
+	Michael Liang <mliang@purestorage.com>,
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Randy Jennings <randyj@purestorage.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 015/204] nvme-tcp: fix premature queue removal and I/O failover
 Date: Mon,  2 Jun 2025 15:45:48 +0200
-Message-ID: <20250602134309.768104774@linuxfoundation.org>
+Message-ID: <20250602134256.090829056@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +63,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Charkov <alchark@gmail.com>
+From: Michael Liang <mliang@purestorage.com>
 
-commit a5c7973539b010874a37a0e846e62ac6f00553ba upstream.
+[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
 
-Device tree bindings state that the clock is optional for UHCI platform
-controllers, and some existing device trees don't provide those - such
-as those for VIA/WonderMedia devices.
+This patch addresses a data corruption issue observed in nvme-tcp during
+testing.
 
-The driver however fails to probe now if no clock is provided, because
-devm_clk_get returns an error pointer in such case.
+In an NVMe native multipath setup, when an I/O timeout occurs, all
+inflight I/Os are canceled almost immediately after the kernel socket is
+shut down. These canceled I/Os are reported as host path errors,
+triggering a failover that succeeds on a different path.
 
-Switch to devm_clk_get_optional instead, so that it could probe again
-on those platforms where no clocks are given.
+However, at this point, the original I/O may still be outstanding in the
+host's network transmission path (e.g., the NIC’s TX queue). From the
+user-space app's perspective, the buffer associated with the I/O is
+considered completed since they're acked on the different path and may
+be reused for new I/O requests.
 
-Cc: stable <stable@kernel.org>
-Fixes: 26c502701c52 ("usb: uhci: Add clk support to uhci-platform")
-Signed-off-by: Alexey Charkov <alchark@gmail.com>
-Link: https://lore.kernel.org/r/20250425-uhci-clock-optional-v1-1-a1d462592f29@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Because nvme-tcp enables zero-copy by default in the transmission path,
+this can lead to corrupted data being sent to the original target,
+ultimately causing data corruption.
+
+We can reproduce this data corruption by injecting delay on one path and
+triggering i/o timeout.
+
+To prevent this issue, this change ensures that all inflight
+transmissions are fully completed from host's perspective before
+returning from queue stop. To handle concurrent I/O timeout from multiple
+namespaces under the same controller, always wait in queue stop
+regardless of queue's state.
+
+This aligns with the behavior of queue stopping in other NVMe fabric
+transports.
+
+Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
+Signed-off-by: Michael Liang <mliang@purestorage.com>
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Randy Jennings <randyj@purestorage.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/uhci-platform.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/uhci-platform.c
-+++ b/drivers/usb/host/uhci-platform.c
-@@ -122,7 +122,7 @@ static int uhci_hcd_platform_probe(struc
- 	}
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 61296032ce6de..364f83c92b182 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1423,7 +1423,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
+ 	cancel_work_sync(&queue->io_work);
+ }
  
- 	/* Get and enable clock if any specified */
--	uhci->clk = devm_clk_get(&pdev->dev, NULL);
-+	uhci->clk = devm_clk_get_optional(&pdev->dev, NULL);
- 	if (IS_ERR(uhci->clk)) {
- 		ret = PTR_ERR(uhci->clk);
- 		goto err_rmr;
+-static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
++static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
+ {
+ 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
+ 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
+@@ -1433,6 +1433,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
+ 	__nvme_tcp_stop_queue(queue);
+ }
+ 
++static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
++{
++	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
++	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
++	int timeout = 100;
++
++	while (timeout > 0) {
++		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
++		    !sk_wmem_alloc_get(queue->sock->sk))
++			return;
++		msleep(2);
++		timeout -= 2;
++	}
++	dev_warn(nctrl->device,
++		 "qid %d: timeout draining sock wmem allocation expired\n",
++		 qid);
++}
++
++static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
++{
++	nvme_tcp_stop_queue_nowait(nctrl, qid);
++	nvme_tcp_wait_queue(nctrl, qid);
++}
++
++
+ static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
+ {
+ 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
+@@ -1539,7 +1564,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
+ 	int i;
+ 
+ 	for (i = 1; i < ctrl->queue_count; i++)
+-		nvme_tcp_stop_queue(ctrl, i);
++		nvme_tcp_stop_queue_nowait(ctrl, i);
++	for (i = 1; i < ctrl->queue_count; i++)
++		nvme_tcp_wait_queue(ctrl, i);
+ }
+ 
+ static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl)
+-- 
+2.39.5
+
 
 
 
