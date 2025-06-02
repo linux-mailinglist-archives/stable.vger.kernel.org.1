@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83766ACB2BC
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0FFACB477
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D463AD346
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A66919482D4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F86229B2A;
-	Mon,  2 Jun 2025 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4A227E90;
+	Mon,  2 Jun 2025 14:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LL/2u6CT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc9/8S3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8582C221FAA;
-	Mon,  2 Jun 2025 14:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64720227E8E;
+	Mon,  2 Jun 2025 14:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873840; cv=none; b=KvSmoY0WtDIqKLjqHywTSbDpm+pCzU0PliRCkOUOWob2yGa0QYwyK5XgQl2FmOARy1kU01PqERJh1mIW9OGRv/Ra5HC41Gc5Zagt9ILnGkR8b+t4xqnLuCPueEtg+8SIZXiOmuXVh6m32jx487bI1byZyXw/nreGcEPHv1M6Y2U=
+	t=1748875162; cv=none; b=XbysvBIeUq7riT5iXrAWXYzMAK6rCcWMKKl3YMFTaMkdtDkZHJVLVHJHN09Qwd2e/lVe/430wnOgtWpUX9aWOpZD0sZpFW6KjNGaOsA9oyHnSajkk1j4orK4AIm+rTtnyvFk+aBw/b7v45KQcts9u241bD4bOTnh9EImO3xePqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873840; c=relaxed/simple;
-	bh=h6GYCR9NunX0Zkqd3BihsT2Dr0EYr3k6Vy6gJYEhB5w=;
+	s=arc-20240116; t=1748875162; c=relaxed/simple;
+	bh=ggCTNRXbVzAhg6MwtD60Wl1aymzuDsoHKPm2k8j1up8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmhTDFXM0Pb4vwykQ3L32w/RMvVraTaHT0S8a6ibb4FPVHcKYh7QCiuUn82mXafERjQrfYZqBa7ybmtJDWdn7lJ3GUAhNOUVcVEZYgmPtew8vRSHRvnJnJgXIF3y6DYGpXJNJaxB5cr98H2+C2fwL0RHrmqLQPL7xFeh37TULHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LL/2u6CT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D63C4CEEB;
-	Mon,  2 Jun 2025 14:17:17 +0000 (UTC)
+	 MIME-Version; b=DVuDsiNAbV4NFgO7ZBfa+gfZSFkGjG+er6GqTYl6ciPfw7yXGcgEmYDHwjwN/guoxvTimmU3WoERmJui2pqaPfYYzvQSTvO5HHqldSq3YTAboICidyHVRay/GEqOFua9a9vSfIWQRBNum0WRfOmKJOpKH0SuJRCGns0nXmigtMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc9/8S3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C3BC4CEEB;
+	Mon,  2 Jun 2025 14:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873838;
-	bh=h6GYCR9NunX0Zkqd3BihsT2Dr0EYr3k6Vy6gJYEhB5w=;
+	s=korg; t=1748875162;
+	bh=ggCTNRXbVzAhg6MwtD60Wl1aymzuDsoHKPm2k8j1up8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LL/2u6CTsB+dPsn9UgiKsaHBDZYPyispB8DCtrsrJdhc6TcDzHtXfIq4msGMtpA2m
-	 RGe0jWHI16b/M6XGe1zIBKg+EioeBraOxtK0lBiNoLXo7Ij2LiR08vjUwg8mPkm1gh
-	 hQX+5LzYluBMGAzn+pZFbT3SvSrzCg6YY0fZ37js=
+	b=Hc9/8S3Nv4D161VmRFbiLo+Sche0M7aYE3M/eAZDIm5tdQ6tNWw5ixytJJYishk5r
+	 irf8BIMK51RkLl6zrQtV3mafRe16Nty2G3VdYLPCkM2TceGTJjGww9qnKI63065otL
+	 CaGR9Jb6/w7SL8ACVy7QBJ2qwKgwGtXPu6Fpg+NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Kota Toda <kota.toda@gmo-cybersecurity.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/444] wifi: rtw88: Fix download_firmware_validate() for RTL8814AU
+Subject: [PATCH 5.10 047/270] netfilter: ipset: fix region locking in hash types
 Date: Mon,  2 Jun 2025 15:45:32 +0200
-Message-ID: <20250602134351.839200251@linuxfoundation.org>
+Message-ID: <20250602134309.121908361@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-[ Upstream commit 9e8243025cc06abc975c876dffda052073207ab3 ]
+[ Upstream commit 8478a729c0462273188263136880480729e9efca ]
 
-After the firmware is uploaded, download_firmware_validate() checks some
-bits in REG_MCUFW_CTRL to see if everything went okay. The
-RTL8814AU power on sequence sets bits 13 and 12 to 2, which this
-function does not expect, so it thinks the firmware upload failed.
+Region locking introduced in v5.6-rc4 contained three macros to handle
+the region locks: ahash_bucket_start(), ahash_bucket_end() which gave
+back the start and end hash bucket values belonging to a given region
+lock and ahash_region() which should give back the region lock belonging
+to a given hash bucket. The latter was incorrect which can lead to a
+race condition between the garbage collector and adding new elements
+when a hash type of set is defined with timeouts.
 
-Make download_firmware_validate() ignore bits 13 and 12.
-
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/049d2887-22fc-47b7-9e59-62627cb525f8@gmail.com
+Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
+Reported-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/reg.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_hash_gen.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index 7c6c11d50ff30..0e76bc07bddef 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -108,6 +108,7 @@
- #define BIT_SHIFT_ROM_PGE	16
- #define BIT_FW_INIT_RDY		BIT(15)
- #define BIT_FW_DW_RDY		BIT(14)
-+#define BIT_CPU_CLK_SEL		(BIT(12) | BIT(13))
- #define BIT_RPWM_TOGGLE		BIT(7)
- #define BIT_RAM_DL_SEL		BIT(7)	/* legacy only */
- #define BIT_DMEM_CHKSUM_OK	BIT(6)
-@@ -125,7 +126,7 @@
- 				 BIT_CHECK_SUM_OK)
- #define FW_READY_LEGACY		(BIT_MCUFWDL_RDY | BIT_FWDL_CHK_RPT |	       \
- 				 BIT_WINTINI_RDY | BIT_RAM_DL_SEL)
--#define FW_READY_MASK		0xffff
-+#define FW_READY_MASK		(0xffff & ~BIT_CPU_CLK_SEL)
- 
- #define REG_MCU_TST_CFG		0x84
- #define VAL_FW_TRIGGER		0x1
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 093ec52140084..636118b0f2ef4 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -88,7 +88,7 @@ struct hbucket {
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+ #define ahash_region(n, htable_bits)		\
+-	((n) % ahash_numof_locks(htable_bits))
++	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+ 		: (h) * jhash_size(HTABLE_REGION_BITS))
 -- 
 2.39.5
 
