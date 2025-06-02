@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-150143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9C0ACB68C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C031ACB4C3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 641C01BC191F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B41D9E1ED3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE565228CB7;
-	Mon,  2 Jun 2025 14:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E92226D12;
+	Mon,  2 Jun 2025 14:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqVvNabP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kwcsckds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2D6227EBB;
-	Mon,  2 Jun 2025 14:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AB6221558;
+	Mon,  2 Jun 2025 14:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876170; cv=none; b=bHOOq+V2LG6xkAuaDJd9XL4cmmN6yzKUuAaV+9o0KGV6usGxLa1Jhr/7t176LuDyeh+6YCUPEhQNx2e5T6ZTXgpTTkeFfA8dQZ3KiGnE/fvnjg9D1Vx/fLjW2VdrPXj5PeKoHMw6D+lMNK3MKijN6RPhX0VvNP7KbjXxdP34St0=
+	t=1748874783; cv=none; b=rE+k3jzLSzA1cfmEJ9srdgke5Q96JWnO8I+b8sOSO/wjCgpZKObJXzL2Q6kOnc8nEBr2XT1Pk60MvKv9+Zd+2jd/4xtq5Qka9qkO0DEc3qQmmL2SF8mm1ODvImefp3AGBTmmKwECo3K/FI0FT0DlaIsIs//1QzF4PXoMXQjKHhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876170; c=relaxed/simple;
-	bh=gYH48MTMQ895llNpciwbE33g0PyBEQ1PV+wLTwhTwOs=;
+	s=arc-20240116; t=1748874783; c=relaxed/simple;
+	bh=U1/zH4LKtcvupLFMSM6tme45y/mYSyUsCmedwBemPs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYf9vzJVDzbaIVRdjiWyDKh9AjWIyefezRi2jBTeyLau3qS3NnloW1Sdf833UIcYYlnyQ+Coex9VG0/rl6rwOxJHz3z9B4/XavM8m1JAdd9+HLzAJ5FIgxGo9/w22l9eU0WrgFe6Y1WZmGM3ChR1NH0xmHIiJGIg5CRPvDddfdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqVvNabP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAB8C4CEEB;
-	Mon,  2 Jun 2025 14:56:10 +0000 (UTC)
+	 MIME-Version; b=FVNZuIxWjjfQr8G2T+SgOk1pk4ZKX9xqGvstZMJYERVy9jf0uXYnS7SRk1HtUovnRxtEtuZ0flbPS5Fik680VVlhhJOaqnjU/m5AQtKJaKuxfHgemhF5MSNcZAjzRYrkFpQ+/8wzEADLvk+6MUJDrJ/gX7RGvUFcUfnszdfSgrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kwcsckds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E6BC4CEEB;
+	Mon,  2 Jun 2025 14:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876170;
-	bh=gYH48MTMQ895llNpciwbE33g0PyBEQ1PV+wLTwhTwOs=;
+	s=korg; t=1748874783;
+	bh=U1/zH4LKtcvupLFMSM6tme45y/mYSyUsCmedwBemPs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqVvNabPKsSz1ssOzN0od9f0dAhUd7XghVtnqERr0BDgG8h3ZjLkH0V8QLvx0Zw/K
-	 1fm4Jn4zPgHCmps/kLLhyysuI0/yTRbHDIpvM9OqwX3OD4NnKQcPlBoDs/0Z9x1/a/
-	 I2csgFkhOdiqmvQTPokdcqAusPifDKdQMj7bsUsU=
+	b=KwcsckdssgDAyAzZxV/SkijpBCIlnN3IO3CpN7CGfgGFOXj0DyV9Q2d2qAT6Sg7vx
+	 nnCMVYWN6EyeWnan/TK9gJ73h8kX+wjJWgQdlNFzmfMMS0/Xe01LqnB1PNk14Dk6Hk
+	 z1C+CRCtZYtepfoByJrc3MgyaH/U5GMaG6TM+K0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/207] drm/amd/display: handle max_downscale_src_width fail check
+Subject: [PATCH 5.4 133/204] cpuidle: menu: Avoid discarding useful information
 Date: Mon,  2 Jun 2025 15:47:46 +0200
-Message-ID: <20250602134302.421731902@linuxfoundation.org>
+Message-ID: <20250602134300.878922057@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
+[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
 
-[WHY]
-If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
-value to the scaling data structure to cause the zero divide in the DML validation.
+When giving up on making a high-confidence prediction,
+get_typical_interval() always returns UINT_MAX which means that the
+next idle interval prediction will be based entirely on the time till
+the next timer.  However, the information represented by the most
+recent intervals may not be completely useless in those cases.
 
-[HOW]
-Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
-max downscale limit exceed.
+Namely, the largest recent idle interval is an upper bound on the
+recently observed idle duration, so it is reasonable to assume that
+the next idle duration is unlikely to exceed it.  Moreover, this is
+still true after eliminating the suspected outliers if the sample
+set still under consideration is at least as large as 50% of the
+maximum sample set size.
 
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Accordingly, make get_typical_interval() return the current maximum
+recent interval value in that case instead of UINT_MAX.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-index 0601c17426af2..27932a32057e3 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
-@@ -386,11 +386,6 @@ bool dpp3_get_optimal_number_of_taps(
- 	int min_taps_y, min_taps_c;
- 	enum lb_memory_config lb_config;
- 
--	if (scl_data->viewport.width > scl_data->h_active &&
--		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
--		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
--		return false;
--
- 	/*
- 	 * Set default taps if none are provided
- 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
-@@ -428,6 +423,12 @@ bool dpp3_get_optimal_number_of_taps(
- 	else
- 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
- 
-+	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
-+	if (scl_data->viewport.width > scl_data->h_active &&
-+		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
-+		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
-+		return false;
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index e5a5d0c8d66b1..bb7288f6adbf6 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -259,8 +259,19 @@ static unsigned int get_typical_interval(struct menu_device *data,
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
+ 	 */
+-	if ((divisor * 4) <= INTERVALS * 3)
++	if (divisor * 4 <= INTERVALS * 3) {
++		/*
++		 * If there are sufficiently many data points still under
++		 * consideration after the outliers have been eliminated,
++		 * returning without a prediction would be a mistake because it
++		 * is likely that the next interval will not exceed the current
++		 * maximum, so return the latter in that case.
++		 */
++		if (divisor >= INTERVALS / 2)
++			return max;
 +
- 	/*Ensure we can support the requested number of vtaps*/
- 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
- 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
+ 		return UINT_MAX;
++	}
+ 
+ 	thresh = max - 1;
+ 	goto again;
 -- 
 2.39.5
 
