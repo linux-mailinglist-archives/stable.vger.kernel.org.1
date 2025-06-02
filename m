@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-150479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028CAACB8EB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:50:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7D7ACB340
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6290E945A61
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2834217F5D2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D344E22A819;
-	Mon,  2 Jun 2025 15:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE529222599;
+	Mon,  2 Jun 2025 14:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzrS8YdF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIJXS8KH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E34322A801;
-	Mon,  2 Jun 2025 15:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B48C1FF61E;
+	Mon,  2 Jun 2025 14:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877259; cv=none; b=kjKEoJDArz2IcuGLQPUbGpvwrHa+5QOgnzNX9N/jCIGNaXBZIDEhFVHRTbe3osHe41Z3NSkI1OQ+ehjjGD/xvi/aG62LTRJLvbaKsL2m02SbGJP82uyHrsxMWV71hsuBdB5d2JH0BGyLYPmpvsXYIAvg4IYmuNeRCIBg04v5L3A=
+	t=1748874388; cv=none; b=IZTkUFzjvapM3sh60C7aOz/YX7TO4tUAwnTgRNBWQ7xqkRnw65MGmmeRJZPv+0kTK54ONEJhnlskWUDQhE0txfyDj3+RJzhVqlBmlwfkTm08uU1/5bL5PQL1Z9TVPtEQwn8fuc466/3ZdCEvQ+44SL2eneC1Aqj10gRqtrAAZgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877259; c=relaxed/simple;
-	bh=BiHEkZF7hrSUOklejltvgy3hfpc15T80njz2pWoyxLk=;
+	s=arc-20240116; t=1748874388; c=relaxed/simple;
+	bh=s9Tk2Va2XeX/VbAoqdWa56bUf2vO7R7MRYvvOH924Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DzfMLl3WTgpU51mZxhtu5b+xpdNHxfgZ58Nd5zAEeqfB/Apms9hUxJXalQ//m8YwOrvJ9u24uSnB1iuZbGh6cUq+ODbsV1be3y8odODkifdtcbU8TNOJVNhrTptzCZobUi1Fmk49XX77NkIv5J2owknsAuj67NYTR9gnkd4jr+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzrS8YdF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8433BC4CEEB;
-	Mon,  2 Jun 2025 15:14:16 +0000 (UTC)
+	 MIME-Version; b=Jha/mvdGBG/oO3r8FdNljpmCFnB/+UNBuj/K9hAtWbf++AtqFXL3nXy9DAWuysn20PedX0Z38TmHhT4ZWnrY3pjigyLb5vqBHkG9KIrlUIa/ZoQJGh1qXswZo1TPH8uCAjmWyA3+eK9P42Lbisx6tMl7UpVrBDrwSQGYjChwZYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIJXS8KH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E63EC4CEEB;
+	Mon,  2 Jun 2025 14:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877257;
-	bh=BiHEkZF7hrSUOklejltvgy3hfpc15T80njz2pWoyxLk=;
+	s=korg; t=1748874388;
+	bh=s9Tk2Va2XeX/VbAoqdWa56bUf2vO7R7MRYvvOH924Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzrS8YdFQWPOrEEc3pwcogOuDmSMLuo62/xJssM4RJR3fsfLjZmlufAwo055xbbKG
-	 WHjiqRYHg4Mg5ng4oi8XF5Glk5Kx4UxvOwBRPUUy2yuaz+HX4di6IfL1Ypwc2LvPIv
-	 hJxA4SsnnD6IViX6JjrMopqyV/uzXYOllF796QXo=
+	b=QIJXS8KHYRHAykY3JNfHfefyDPxo4ykhqurZrpyYClfsd4wn2bV4rfH69WqnvP81n
+	 NRTM11nkxdr8mfFgRi3uGUtwk8+EOsfTFW3iyrdxZtdfjRYWeL5Zei752YIU5D+7lq
+	 97Q8RWO1+sYaHZQTlUkXAICvrToc0mDCAQmqAcLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Omar Sandoval <osandov@osandov.com>,
+	Sargun Dillon <sargun@sargun.me>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 221/325] pinctrl: meson: define the pull up/down resistor value as 60 kOhm
+Subject: [PATCH 6.6 433/444] nfs: dont share pNFS DS connections between net namespaces
 Date: Mon,  2 Jun 2025 15:48:17 +0200
-Message-ID: <20250602134328.766823333@linuxfoundation.org>
+Message-ID: <20250602134358.514727501@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +65,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit e56088a13708757da68ad035269d69b93ac8c389 ]
+[ Upstream commit 6b9785dc8b13d9fb75ceec8cf4ea7ec3f3b1edbc ]
 
-The public datasheets of the following Amlogic SoCs describe a typical
-resistor value for the built-in pull up/down resistor:
-- Meson8/8b/8m2: not documented
-- GXBB (S905): 60 kOhm
-- GXL (S905X): 60 kOhm
-- GXM (S912): 60 kOhm
-- G12B (S922X): 60 kOhm
-- SM1 (S905D3): 60 kOhm
+Currently, different NFS clients can share the same DS connections, even
+when they are in different net namespaces. If a containerized client
+creates a DS connection, another container can find and use it. When the
+first client exits, the connection will close which can lead to stalls
+in other clients.
 
-The public G12B and SM1 datasheets additionally state min and max
-values:
-- min value: 50 kOhm for both, pull-up and pull-down
-- max value for the pull-up: 70 kOhm
-- max value for the pull-down: 130 kOhm
+Add a net namespace pointer to struct nfs4_pnfs_ds, and compare those
+value to the caller's netns in _data_server_lookup_locked() when
+searching for a nfs4_pnfs_ds to match.
 
-Use 60 kOhm in the pinctrl-meson driver as well so it's shown in the
-debugfs output. It may not be accurate for Meson8/8b/8m2 but in reality
-60 kOhm is closer to the actual value than 1 Ohm.
-
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/20250329190132.855196-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-by: Omar Sandoval <osandov@osandov.com>
+Reported-by: Sargun Dillon <sargun@sargun.me>
+Closes: https://lore.kernel.org/linux-nfs/Z_ArpQC_vREh_hEA@telecaster/
+Tested-by: Sargun Dillon <sargun@sargun.me>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Link: https://lore.kernel.org/r/20250410-nfs-ds-netns-v2-1-f80b7979ba80@kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/filelayout/filelayoutdev.c         | 6 +++---
+ fs/nfs/flexfilelayout/flexfilelayoutdev.c | 6 +++---
+ fs/nfs/pnfs.h                             | 4 +++-
+ fs/nfs/pnfs_nfs.c                         | 9 +++++----
+ 4 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
-index 530f3f934e196..1f05f7f1a9aee 100644
---- a/drivers/pinctrl/meson/pinctrl-meson.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson.c
-@@ -487,7 +487,7 @@ static int meson_pinconf_get(struct pinctrl_dev *pcdev, unsigned int pin,
- 	case PIN_CONFIG_BIAS_PULL_DOWN:
- 	case PIN_CONFIG_BIAS_PULL_UP:
- 		if (meson_pinconf_get_pull(pc, pin) == param)
--			arg = 1;
-+			arg = 60000;
- 		else
- 			return -EINVAL;
- 		break;
+diff --git a/fs/nfs/filelayout/filelayoutdev.c b/fs/nfs/filelayout/filelayoutdev.c
+index acf4b88889dc3..d5f1fbfd9a0c7 100644
+--- a/fs/nfs/filelayout/filelayoutdev.c
++++ b/fs/nfs/filelayout/filelayoutdev.c
+@@ -75,6 +75,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	struct page *scratch;
+ 	struct list_head dsaddrs;
+ 	struct nfs4_pnfs_ds_addr *da;
++	struct net *net = server->nfs_client->cl_net;
+ 
+ 	/* set up xdr stream */
+ 	scratch = alloc_page(gfp_flags);
+@@ -158,8 +159,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 
+ 		mp_count = be32_to_cpup(p); /* multipath count */
+ 		for (j = 0; j < mp_count; j++) {
+-			da = nfs4_decode_mp_ds_addr(server->nfs_client->cl_net,
+-						    &stream, gfp_flags);
++			da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+ 			if (da)
+ 				list_add_tail(&da->da_node, &dsaddrs);
+ 		}
+@@ -169,7 +169,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 			goto out_err_free_deviceid;
+ 		}
+ 
+-		dsaddr->ds_list[i] = nfs4_pnfs_ds_add(&dsaddrs, gfp_flags);
++		dsaddr->ds_list[i] = nfs4_pnfs_ds_add(net, &dsaddrs, gfp_flags);
+ 		if (!dsaddr->ds_list[i])
+ 			goto out_err_drain_dsaddrs;
+ 
+diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+index e028f5a0ef5f6..d21c5ecfbf1cc 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
++++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+@@ -49,6 +49,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	struct nfs4_pnfs_ds_addr *da;
+ 	struct nfs4_ff_layout_ds *new_ds = NULL;
+ 	struct nfs4_ff_ds_version *ds_versions = NULL;
++	struct net *net = server->nfs_client->cl_net;
+ 	u32 mp_count;
+ 	u32 version_count;
+ 	__be32 *p;
+@@ -80,8 +81,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 
+ 	for (i = 0; i < mp_count; i++) {
+ 		/* multipath ds */
+-		da = nfs4_decode_mp_ds_addr(server->nfs_client->cl_net,
+-					    &stream, gfp_flags);
++		da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+ 		if (da)
+ 			list_add_tail(&da->da_node, &dsaddrs);
+ 	}
+@@ -149,7 +149,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	new_ds->ds_versions = ds_versions;
+ 	new_ds->ds_versions_cnt = version_count;
+ 
+-	new_ds->ds = nfs4_pnfs_ds_add(&dsaddrs, gfp_flags);
++	new_ds->ds = nfs4_pnfs_ds_add(net, &dsaddrs, gfp_flags);
+ 	if (!new_ds->ds)
+ 		goto out_err_drain_dsaddrs;
+ 
+diff --git a/fs/nfs/pnfs.h b/fs/nfs/pnfs.h
+index d886c8226d8fe..79996d7dad0f7 100644
+--- a/fs/nfs/pnfs.h
++++ b/fs/nfs/pnfs.h
+@@ -59,6 +59,7 @@ struct nfs4_pnfs_ds {
+ 	struct list_head	ds_node;  /* nfs4_pnfs_dev_hlist dev_dslist */
+ 	char			*ds_remotestr;	/* comma sep list of addrs */
+ 	struct list_head	ds_addrs;
++	const struct net	*ds_net;
+ 	struct nfs_client	*ds_clp;
+ 	refcount_t		ds_count;
+ 	unsigned long		ds_state;
+@@ -405,7 +406,8 @@ int pnfs_generic_commit_pagelist(struct inode *inode,
+ int pnfs_generic_scan_commit_lists(struct nfs_commit_info *cinfo, int max);
+ void pnfs_generic_write_commit_done(struct rpc_task *task, void *data);
+ void nfs4_pnfs_ds_put(struct nfs4_pnfs_ds *ds);
+-struct nfs4_pnfs_ds *nfs4_pnfs_ds_add(struct list_head *dsaddrs,
++struct nfs4_pnfs_ds *nfs4_pnfs_ds_add(const struct net *net,
++				      struct list_head *dsaddrs,
+ 				      gfp_t gfp_flags);
+ void nfs4_pnfs_v3_ds_connect_unload(void);
+ int nfs4_pnfs_ds_connect(struct nfs_server *mds_srv, struct nfs4_pnfs_ds *ds,
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index 88e061bd711b7..1b317c44da126 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -651,12 +651,12 @@ _same_data_server_addrs_locked(const struct list_head *dsaddrs1,
+  * Lookup DS by addresses.  nfs4_ds_cache_lock is held
+  */
+ static struct nfs4_pnfs_ds *
+-_data_server_lookup_locked(const struct list_head *dsaddrs)
++_data_server_lookup_locked(const struct net *net, const struct list_head *dsaddrs)
+ {
+ 	struct nfs4_pnfs_ds *ds;
+ 
+ 	list_for_each_entry(ds, &nfs4_data_server_cache, ds_node)
+-		if (_same_data_server_addrs_locked(&ds->ds_addrs, dsaddrs))
++		if (ds->ds_net == net && _same_data_server_addrs_locked(&ds->ds_addrs, dsaddrs))
+ 			return ds;
+ 	return NULL;
+ }
+@@ -763,7 +763,7 @@ nfs4_pnfs_remotestr(struct list_head *dsaddrs, gfp_t gfp_flags)
+  * uncached and return cached struct nfs4_pnfs_ds.
+  */
+ struct nfs4_pnfs_ds *
+-nfs4_pnfs_ds_add(struct list_head *dsaddrs, gfp_t gfp_flags)
++nfs4_pnfs_ds_add(const struct net *net, struct list_head *dsaddrs, gfp_t gfp_flags)
+ {
+ 	struct nfs4_pnfs_ds *tmp_ds, *ds = NULL;
+ 	char *remotestr;
+@@ -781,13 +781,14 @@ nfs4_pnfs_ds_add(struct list_head *dsaddrs, gfp_t gfp_flags)
+ 	remotestr = nfs4_pnfs_remotestr(dsaddrs, gfp_flags);
+ 
+ 	spin_lock(&nfs4_ds_cache_lock);
+-	tmp_ds = _data_server_lookup_locked(dsaddrs);
++	tmp_ds = _data_server_lookup_locked(net, dsaddrs);
+ 	if (tmp_ds == NULL) {
+ 		INIT_LIST_HEAD(&ds->ds_addrs);
+ 		list_splice_init(dsaddrs, &ds->ds_addrs);
+ 		ds->ds_remotestr = remotestr;
+ 		refcount_set(&ds->ds_count, 1);
+ 		INIT_LIST_HEAD(&ds->ds_node);
++		ds->ds_net = net;
+ 		ds->ds_clp = NULL;
+ 		list_add(&ds->ds_node, &nfs4_data_server_cache);
+ 		dprintk("%s add new data server %s\n", __func__,
 -- 
 2.39.5
 
