@@ -1,113 +1,197 @@
-Return-Path: <stable+bounces-150604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDF1ACB9BE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:39:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FB5ACB9D4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 18:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1586D3BE5F9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32181172813
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500A3225397;
-	Mon,  2 Jun 2025 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CC218FDD5;
+	Mon,  2 Jun 2025 16:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlQHfKSk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJobAp6v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BFE2C3258;
-	Mon,  2 Jun 2025 16:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5675E42A8F;
+	Mon,  2 Jun 2025 16:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748882385; cv=none; b=do8wecLCdxFYPef1+9ewsCDsog2e54M9zK7e4tS3Dt+qnJqK+X8lBUZWfO6f5mG9qoTqcy+6NnXHiMr00R32YxxJZa4bvJxZFl1Mj+d1kPdgAWEgYZrTr6QYQ3/CoZ6H8xDXhMov0S8Qk1Hwdcb4KS6SwT8w5NjEvosBSP0k8fU=
+	t=1748882952; cv=none; b=r8cJtP8gPVV+MyHQ86+eIRfFDTY7kGq1QpiTCCq9riBZWSTT8/dNdVpth+XH8uit+c2Kf97hDwFtvTjjHGOjBmlMWRhV5rXaWZuIJFS1rFSt5JSAiyJJqsnmR1dYGjC9jXoCSa9TLI4tq+sJ1K8ljKr2QhNTUkDwu7xSLNjE14A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748882385; c=relaxed/simple;
-	bh=e7pm2A0dvrPnFtemdr71Iq/QgQlb8NO8MxQy+Ry8Xxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pHalI1eaiFbqf12NN+fMTLjXRH3VK8wPoqwxBRVtUpWLZ60t7kFgTpXYg6X25nvq3b9aw3czfOrwk/ZBNuN0T575mUA5QqLoxMd3sytwvMIagt3z0dB7WPNJUfn9ITJhL8A5yj+g6TyMVJgSIgNyR8b0NwWKYsQBEeNGXgLuUPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlQHfKSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACF2C4CEEB;
-	Mon,  2 Jun 2025 16:39:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748882383;
-	bh=e7pm2A0dvrPnFtemdr71Iq/QgQlb8NO8MxQy+Ry8Xxo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WlQHfKSkBUvgS+ppRZ0U+kEkSJ/OkXyu8uskpkl+9ScyP6dEFTF6iVUU5esuKs50R
-	 mXecNucqDFw/CF3eCalR0EBznCFkfQsVniGxuaZbdnGeeTmee8kMUY8S5a1UqInNQ8
-	 2oZj44baPkqD5AhUFX9pphTfs+nceLEbhVN+PyRVv/cj/qxBRAM9VZNCQq8lwfPmdY
-	 MRCTNE7031djyWZO6vYWJnR7xizIGGigrPuSGw2uVgB89CTtZOyMtJbSdeb+G+qD2C
-	 S34LIdNxkV6ZE1Q+UI+U+AHW+XqnU82PMTgiwP3rOR3EhOqU4m/ICJiKZwXwXW6uqP
-	 p0YOuWbfwLNpg==
-Date: Mon, 2 Jun 2025 18:39:40 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Trevor Gamblin <tgamblin@baylibre.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-pwm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] pwm: axi-pwmgen: add external clock
-Message-ID: <m6evwezyzewtbiacqxfh4x6klrnc4425j6vayg7gtbytuodqpm@r72ajswzfo4k>
-References: <20250529-pwm-axi-pwmgen-add-external-clock-v3-0-5d8809a7da91@baylibre.com>
+	s=arc-20240116; t=1748882952; c=relaxed/simple;
+	bh=c0gEGMhBwwH3EsG3J6mtSe3TBHd4NML2arG+mH1i/Eo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PA6eyPaFH5MtbaLlR9HsVBzXkLBTKqlFcf56zinjumjFcm36fw+zR9HHUdY46LD1H+8CgbUrqJMhurWiyZwKuaA7x3c78u+xVVre1B5GSpVLIjMf6F4/+J/zpWr3xHQ+nGVgO42WmgA8KwJ7RdTee+bnJJivFlqPpJaMR+wNPOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJobAp6v; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2351ffb669cso35979545ad.2;
+        Mon, 02 Jun 2025 09:49:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748882950; x=1749487750; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=HknikpJA2FcmTw342+lb8lkp3yYgT8HLedmbOD4V3nk=;
+        b=bJobAp6vNH5FAdKqBoxSz7GPfuXVWjfwFxaHxX9BPGvBu7VynGFBVwe/p4udxdIv2G
+         TNr6n+pw7fwq4Cb4PVM3ZgHO2MAd/CyoWiZx97uQ5WBKQVEH/5Q6v7TPLcCkpSVIU5Ps
+         u7ic/vLH0SkVBjhxYeMV1x2iodVwaptI/VQLwjq7al+ksfPCNDAB4R/O/Z765YRd07Xu
+         Lu9AEIluO8bnmyoqTX22q5C2ke4vAMQplS2ZAk3bgr+AsAkKnD1w8zQO90XgJKhYhyrP
+         ezna5AJh2d5W0UOxt1W09tbsgQDslrZObLddanlP3GZg0o+EnPEAhhs2+E9njoodnT41
+         dP1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748882950; x=1749487750;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HknikpJA2FcmTw342+lb8lkp3yYgT8HLedmbOD4V3nk=;
+        b=E/uvrNNUZdTvi0nfQoDa0MHDmLCq0nhdaSNg4prYcATBAs0YFdKs19UwtLpQLkNQuf
+         aMlEPEImLwHenNEkj9LumDevhi85d3d66+s0EvxTIf4UA4F9zkS+/EtYaggILDUX9J72
+         NZBYEUuuJwkg6gCJiIhfNB9UyL0cUN02XBIcEga1R9HYLOhlWlZCwheVQ51/VcSDpymf
+         EM7yAErV3bQYdEr5aoYXQIGCgC+lj2JdIJzA9UloFTP0ePk9dxoXq76/brLIzhn/spk5
+         ghmcOuyIE+SH5EQjZeLM8dnTb1S+RxBZRMHf/jDMNyM+qMwWFW4khuQsyGCLy082vnJQ
+         1l4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVFukudEwoFtMUv2oC+Z4og6GhvjbMjfvd4DqK0lowJnEpkPkX5kuin0PytNLHFbwUenxf5jhVm@vger.kernel.org, AJvYcCVQ07jkVUAqgvj90cagerQetFY8qFVVBZN79IfT0utZ9O/7HL/5Du1rwCYWVCYGvvTbSIxF47CCU8AVd/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMGlMYvcT5GquA/XHNqdx1VgIDezJ+0vxfREtMQwIT1woGw2ls
+	WJZKJKRPKbYnmfw+loNY7wX9UFppk3AUmDy5UoF4UNUHBPg/ByJFwswo
+X-Gm-Gg: ASbGncusRmrvuikoPpIkg8NPFioZccteaCbiMbLY8DP5AtuUsCO0GcRFWbPev+D49l5
+	gAfwkelvtKiQhn/f8xIdaI27f9Q3D68Jq33wTf34aHBwkyoLHrRYhOg628SC43eKe6o5Tr1JjoU
+	Xjpg+wH4OcBDGmeQ6Am5+d+HgThWwAUrZ0FzGc9QxdW+lVSJE8Wh+BMBTEYJqlrjm4RGg4BfJQ0
+	qis6JVVbNVPSGZl0ZreKDcp0EGkBsWz9Vd8CH5kCVBlU7koeFVI4VpXAGM9Fqv/Zi2XPmrnqOv/
+	mROPvQ0HGe72jud4ejGb6rTzPZvS1rN5gOebi4EMAB2rxJpVjnF4p5qv+kfcRbs03sVylvcRg8g
+	QBKI=
+X-Google-Smtp-Source: AGHT+IHI1CdVRfDD9bf+nXVVrQOXSVtm+Yt+Yys2GsvFnPNTkgMLFR5+P/Cn+V3/3WtyF1CZOw0dEg==
+X-Received: by 2002:a17:902:dac5:b0:234:a139:11e7 with SMTP id d9443c01a7336-2355f76c20amr137080885ad.35.1748882950526;
+        Mon, 02 Jun 2025 09:49:10 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb96fe8sm5767803a12.59.2025.06.02.09.49.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Jun 2025 09:49:09 -0700 (PDT)
+Message-ID: <4c608184-5a64-4814-a70a-d2395662d437@gmail.com>
+Date: Mon, 2 Jun 2025 09:49:08 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="u26q2jrrojj6d6m4"
-Content-Disposition: inline
-In-Reply-To: <20250529-pwm-axi-pwmgen-add-external-clock-v3-0-5d8809a7da91@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/270] 5.10.238-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250602134307.195171844@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 6/2/25 06:44, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.238 release.
+> There are 270 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.238-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
---u26q2jrrojj6d6m4
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 0/3] pwm: axi-pwmgen: add external clock
-MIME-Version: 1.0
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Hello David,
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 
-On Thu, May 29, 2025 at 11:53:17AM -0500, David Lechner wrote:
-> When we created the driver for the AXI PWMGEN IP block, we overlooked
-> the fact that it can optionally be configured to use an external clock
-> in addition to the AXI bus clock. This is easy to miss in testing
-> because the bus clock is always on because it is driving other
-> peripherals as well.
->=20
-> Up to now, users were specifying the external clock if there was one and
-> the AXI bus clock otherwise. But the proper way to do this is to would
-> be to always specify the bus clock and only specify the external clock
-> if the IP block has been configured to use it.
->=20
-> To fix this, we add clock-names to the devicetree bindings and change
-> clocks to allow 1 or 2 clocks.
+Similar build warning as reported for 5.4, due to the same commit:
 
-I applied path #1 for 6.17-rc1 and will send patches #2 and #3 to Linus
-before 6.16.
+commit b47e6abc7dc5772ecb45383d9956f9fcb7fdf33c
+Author: Jeongjun Park <aha310510@gmail.com>
+Date:   Tue Apr 22 20:30:25 2025 +0900
 
-Best regards
-Uwe
+     tracing: Fix oob write in trace_seq_to_buffer()
 
---u26q2jrrojj6d6m4
-Content-Type: application/pgp-signature; name="signature.asc"
+     commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
 
------BEGIN PGP SIGNATURE-----
+In file included from ./include/linux/kernel.h:15,
+                  from ./include/asm-generic/bug.h:20,
+                  from ./arch/arm/include/asm/bug.h:60,
+                  from ./include/linux/bug.h:5,
+                  from ./include/linux/mmdebug.h:5,
+                  from ./include/linux/mm.h:9,
+                  from ./include/linux/ring_buffer.h:5,
+                  from kernel/trace/trace.c:15:
+kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
+./include/linux/minmax.h:20:35: warning: comparison of distinct pointer 
+types lacks a cast
+    20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+       |                                   ^~
+./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
+    26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
+       |                  ^~~~~~~~~~~
+./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
+    36 |         __builtin_choose_expr(__safe_cmp(x, y), \
+       |                               ^~~~~~~~~~
+./include/linux/minmax.h:45:25: note: in expansion of macro '__careful_cmp'
+    45 | #define min(x, y)       __careful_cmp(x, y, <)
+       |                         ^~~~~~~~~~~~~
+kernel/trace/trace.c:6688:43: note: in expansion of macro 'min'
+  6688 | 
+min((size_t)trace_seq_used(&iter->seq),
+       |                                           ^~~
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmg908kACgkQj4D7WH0S
-/k4bVgf/Ye0/AfnDPkgzq/NTliksF484IKG2xWdbQoo1nhmvomETPD7t9dyJSzMZ
-ZGW98pEZyXHJQSrvNt1guNJF/vLUCs/fBpsCunCfkjAhBhMc5/cGfkwlMFSqEBGC
-eyJ7dcP7HB1/U12uvB8jh5uO17kxeDDz3XSlYsiwH+ePgSlLTj5ILn1kuPOHssuI
-yUXh6Up1f9iahnqME6BbP/6DrfKFpfYTMxUr5mqk80W5rcKPTNaqdj1OlVn8ARrt
-RSoxj+hXGYVX6m1Xw0ccJNw9hagzc146Ujlqpo4mC5ClTx+2iUUWPNIH3Yub99vX
-ssJInNm0jBMFWRX70etHpdfjhgmQOg==
-=exv3
------END PGP SIGNATURE-----
-
---u26q2jrrojj6d6m4--
+-- 
+Florian
 
