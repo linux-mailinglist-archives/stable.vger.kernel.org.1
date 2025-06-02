@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAE4ACB2C2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:35:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3ED7ACB452
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A3F9407305
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E9917B1677
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89191231840;
-	Mon,  2 Jun 2025 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD21FCFE2;
+	Mon,  2 Jun 2025 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq96wA4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6YziXzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471B6230D1E;
-	Mon,  2 Jun 2025 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B6A223324;
+	Mon,  2 Jun 2025 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873900; cv=none; b=ueQrESuIqdqnXDppWjDJVVslV3lpdZXiQw936kOg6JT9yoYcJGqjUKjRxrITJ3/vv02F6UbHMvEUyesHERGM7Cb2TTioHyJfEY4mXhSB15QltH/v9pj+s0Z5HNooFX8UNVDvGEC3i0FWWOIF3J9VtJRG+1Uh7uzywXujraQXiZQ=
+	t=1748875328; cv=none; b=FNOgtJFNtVQPyygzH8P5h9z1SrOF68KLfBXhtGRaEtdhuOj2konnUf2ANVLgL4Lc2ijwYiGUR2QRZb/K2nGOqKNmZbzQCNB6MsSIjPuDg4WDi811TE6H7ekd6mDPxIbC37YdTyfM+MDsMOF4K5x0YWtL6+Ty5mLKLYzwAOwIsQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873900; c=relaxed/simple;
-	bh=bIYTQ3lZyyJh6FdXEgRk9u9MeSWvcasplVFNwyd7lHQ=;
+	s=arc-20240116; t=1748875328; c=relaxed/simple;
+	bh=R3NXbNmEUTlz4eA2XkhfwLwBGoGWaqWQ4IRQ4ompFDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4EiUjpISN4pYkZi5CHU04isrFwjXx2ICc5VA1LejN9zVTDs7s6Nn3CXCFMdujV2sXxBL4esGDlzZVMt/UMIFX1aG7qizuHABKk6xBYSQzrVcNdtklb3XmUU2g/jADMkr27UYCU6jxxaR2vB3cD9bxe43lTJl/2GEsF0bWKcMxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq96wA4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF650C4CEEB;
-	Mon,  2 Jun 2025 14:18:19 +0000 (UTC)
+	 MIME-Version; b=uPeOQqBzWKrzbP2q99Ceja2BEELZRbUwmmhppzzORjtvtGkYGlzQg0kQwc6rby1/8VIw38Bl19lmVQZFeTlRwqRz7m6gzJeHQZLD12eqGY1c/yccMOQTgx9+1PnCyYP73ca85shtbBc8+72R3vP7tB+S0VM07a7xT4yJe5P5Ac8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6YziXzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D94DC4CEEB;
+	Mon,  2 Jun 2025 14:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873900;
-	bh=bIYTQ3lZyyJh6FdXEgRk9u9MeSWvcasplVFNwyd7lHQ=;
+	s=korg; t=1748875328;
+	bh=R3NXbNmEUTlz4eA2XkhfwLwBGoGWaqWQ4IRQ4ompFDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yq96wA4bwrvnslsok5jeBVIvYQvfSwMaGFM1O1SywZTVAliKwLn3OFsTkloWt0KAh
-	 D02UFC/maPw1l5CjPCGxONqQLOHqYHTodtCv1hkTf8TtfKXvjqhl420C5FyikNEFOY
-	 vkrae6JChiHML22qHEGzsjKIVoDn8hx+S84G2Ins=
+	b=b6YziXzAB5fUTIaU3iRxic67fv1nYAJdlquRelwF3/hPtzlu357OHUbZ4N4nw7d8J
+	 qhHKYpIH3t3hAW6ARsvqQ86kUKyLTEI2+U8Lln9rFxA1GSBC6AIB4aG6FxPltkvIAn
+	 jaEeRr+uItpbtvZevyoyEYJOnTyE7ELKNSMyeLKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	junan <junan76@163.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 290/444] HID: usbkbd: Fix the bit shift number for LED_KANA
+	stable <stable@kernel.org>,
+	Wayne Chang <waynec@nvidia.com>
+Subject: [PATCH 5.10 069/270] usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
 Date: Mon,  2 Jun 2025 15:45:54 +0200
-Message-ID: <20250602134352.727697365@linuxfoundation.org>
+Message-ID: <20250602134310.008542528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: junan <junan76@163.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
+commit 59820fde001500c167342257650541280c622b73 upstream.
 
-Since "LED_KANA" was defined as "0x04", the shift number should be "4".
+We identified a bug where the ST_RC bit in the status register was not
+being acknowledged after clearing the CTRL_RUN bit in the control
+register. This could lead to unexpected behavior in the USB gadget
+drivers.
 
-Signed-off-by: junan <junan76@163.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch resolves the issue by adding the necessary code to explicitly
+acknowledge ST_RC after clearing CTRL_RUN based on the programming
+sequence, ensuring proper state transition.
+
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://lore.kernel.org/r/20250418081228.1194779-1-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/usbkbd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/tegra-xudc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
-index c439ed2f16dbc..af6bc76dbf649 100644
---- a/drivers/hid/usbhid/usbkbd.c
-+++ b/drivers/hid/usbhid/usbkbd.c
-@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
- 		return -1;
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -1737,6 +1737,10 @@ static int __tegra_xudc_ep_disable(struc
+ 		val = xudc_readl(xudc, CTRL);
+ 		val &= ~CTRL_RUN;
+ 		xudc_writel(xudc, val, CTRL);
++
++		val = xudc_readl(xudc, ST);
++		if (val & ST_RC)
++			xudc_writel(xudc, ST_RC, ST);
+ 	}
  
- 	spin_lock_irqsave(&kbd->leds_lock, flags);
--	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
-+	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
- 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
- 		       (!!test_bit(LED_NUML,    dev->led));
- 
--- 
-2.39.5
-
+ 	dev_info(xudc->dev, "ep %u disabled\n", ep->index);
 
 
 
