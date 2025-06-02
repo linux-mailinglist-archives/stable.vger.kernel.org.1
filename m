@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7C4ACB291
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:33:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A239ACB478
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67E5B485801
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E727E4A5103
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F6022F742;
-	Mon,  2 Jun 2025 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559BD227B88;
+	Mon,  2 Jun 2025 14:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP8c0W9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW53O+AI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216472236F4;
-	Mon,  2 Jun 2025 14:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417F221FC9;
+	Mon,  2 Jun 2025 14:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873826; cv=none; b=BKTGdY+hAAOmsvxIcGpMWSzny7wq84a82TenZzQckf2n0BcYu8QDQRaX5ZWC0ws6y7IpvW1k6WrHI3QmWHJ4aV7M50aKiMPgDU1VYus7Jz2UhgyOcQzWtlYUmklQ4OGDMBh4PSK30NwqVzyitvm/wqJGay/f6bbWuDNGjdYob4k=
+	t=1748875150; cv=none; b=D6yT3fIPduC/MbUCBnjTBsKgTOA4Pgh0ABiij1Gg8m3ggGbehMjwvp6dIBC5zE1jyVuwYWY/Vcq9pTJy2GlcL5xVHnzSNo/x1ouEFvS7cUecBjkXjq3YmnIJAc39PakSrUMA9NKqu+iHEuW7Pe5lnxaIsEWPIuhgJYjil4cDOsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873826; c=relaxed/simple;
-	bh=nRAZ1vbq+LhAJrA6j1KP+EjV8WGKLwtCyej7hrZ5SYw=;
+	s=arc-20240116; t=1748875150; c=relaxed/simple;
+	bh=HohY1lfyStTsulG0XlqK5P1iotVznXSdSWdO1FtILtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnLe18IOAoJQwr1TN6v2RSvaPv7pNbeCWx7y6F0eh7OJpH5YhOLvQfsN423k7IT907kONaDmnZ3i8KBxSTKKRFnUup62GfodKrt0aak1jCQ7ycgSm9bOay8MCMZVK6sHivP+5OkUSTpyISU/tMg8NEXSbIZWQbt8qrOM5ntS3cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP8c0W9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69B6C4CEEB;
-	Mon,  2 Jun 2025 14:17:05 +0000 (UTC)
+	 MIME-Version; b=MVzcFBEYfTrrg3CULltSL7iEFSeTTXdmzfW4eQmdbBiEtlEJRiabQfGf++HadihFK1/w+q1KqaZkEyPqgUxmSpdrAoBf0SXPbvJB8I1GiliErtHiW8lHPAeQ8g4dP3ygiVc8op9dbYsK2Y6O11NSI3PKEJSwC6ecYG+iQ98IhKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW53O+AI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043BCC4CEEB;
+	Mon,  2 Jun 2025 14:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873826;
-	bh=nRAZ1vbq+LhAJrA6j1KP+EjV8WGKLwtCyej7hrZ5SYw=;
+	s=korg; t=1748875149;
+	bh=HohY1lfyStTsulG0XlqK5P1iotVznXSdSWdO1FtILtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CP8c0W9oep64cqdbGTePY3pSWLnO6MCnNxpbm0wJPVdyIXf93ns3yccfQ4KCqC6GQ
-	 QTXvdtjzVo2EblwwvubyFWmBoRXm6owHUs6b6CRs08Wm9SmIrJtwURDufTMoiCvMy+
-	 G33q7c5xIjS5u+tZ/je6bKrapaoyl9ze0+9lMsEU=
+	b=PW53O+AIzc3hGwgX6wftFbeu/RgKBO2fjbNqeYFfiWZSOlya9miiEJqIBKxwC2+nx
+	 lFWxThmU89Lwz8gTPt6nUU883wGbbOhhECe/qfBJYjNmftnadVTCSZwjpaT8r57uDv
+	 1oNBnk5itr0GQYtlPYpfZmBLW1HV7BmmTJzAq3fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Lee Jones <lee@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/444] leds: trigger: netdev: Configure LED blink interval for HW offload
+Subject: [PATCH 5.10 044/270] can: gw: use call_rcu() instead of costly synchronize_rcu()
 Date: Mon,  2 Jun 2025 15:45:29 +0200
-Message-ID: <20250602134351.708379837@linuxfoundation.org>
+Message-ID: <20250602134308.994775292@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c629c972b310af41e9e072febb6dae9a299edde6 ]
+[ Upstream commit 181d4447905d551cc664f1e7e796b482c1eec992 ]
 
-In case a PHY LED implements .blink_set callback to set LED blink
-interval, call it even if .hw_control is already set, as that LED
-blink interval likely controls the blink rate of that HW offloaded
-LED. For PHY LEDs, that can be their activity blinking interval.
+Commit fb8696ab14ad ("can: gw: synchronize rcu operations
+before removing gw job entry") added three synchronize_rcu() calls
+to make sure one rcu grace period was observed before freeing
+a "struct cgw_job" (which are tiny objects).
 
-The software blinking is not affected by this change.
+This should be converted to call_rcu() to avoid adding delays
+in device / network dismantles.
 
-With this change, the LED interval setting looks something like this:
-$ echo netdev > /sys/class/leds/led:green:lan/trigger
-$ echo 1 > /sys/class/leds/led:green:lan/brightness
-$ echo 250 > /sys/class/leds/led:green:lan/interval
+Use the rcu_head that was already in struct cgw_job,
+not yet used.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20250120113740.91807-1-marex@denx.de
-Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/all/20220207190706.1499190-1-eric.dumazet@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Oliver Hartkopp <socketcan@hartkopp.net>
+Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 511e64e13d8c ("can: gw: fix RCU/BH usage in cgw_create_job()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-netdev.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ net/can/gw.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
-index 79719fc8a08fb..f8912fa60c498 100644
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -54,6 +54,7 @@ struct led_netdev_data {
- 	unsigned int last_activity;
+diff --git a/net/can/gw.c b/net/can/gw.c
+index cbb46d3aa9634..59ce23996c6e0 100644
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -515,6 +515,13 @@ static inline void cgw_unregister_filter(struct net *net, struct cgw_job *gwj)
+ 			  gwj->ccgw.filter.can_mask, can_can_gw_rcv, gwj);
+ }
  
- 	unsigned long mode;
-+	unsigned long blink_delay;
- 	int link_speed;
- 	u8 duplex;
- 
-@@ -69,6 +70,10 @@ static void set_baseline_state(struct led_netdev_data *trigger_data)
- 	/* Already validated, hw control is possible with the requested mode */
- 	if (trigger_data->hw_control) {
- 		led_cdev->hw_control_set(led_cdev, trigger_data->mode);
-+		if (led_cdev->blink_set) {
-+			led_cdev->blink_set(led_cdev, &trigger_data->blink_delay,
-+					    &trigger_data->blink_delay);
-+		}
- 
- 		return;
- 	}
-@@ -386,10 +391,11 @@ static ssize_t interval_store(struct device *dev,
- 			      size_t size)
++static void cgw_job_free_rcu(struct rcu_head *rcu_head)
++{
++	struct cgw_job *gwj = container_of(rcu_head, struct cgw_job, rcu);
++
++	kmem_cache_free(cgw_cache, gwj);
++}
++
+ static int cgw_notifier(struct notifier_block *nb,
+ 			unsigned long msg, void *ptr)
  {
- 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
-+	struct led_classdev *led_cdev = trigger_data->led_cdev;
- 	unsigned long value;
- 	int ret;
- 
--	if (trigger_data->hw_control)
-+	if (trigger_data->hw_control && !led_cdev->blink_set)
- 		return -EINVAL;
- 
- 	ret = kstrtoul(buf, 0, &value);
-@@ -398,9 +404,13 @@ static ssize_t interval_store(struct device *dev,
- 
- 	/* impose some basic bounds on the timer interval */
- 	if (value >= 5 && value <= 10000) {
--		cancel_delayed_work_sync(&trigger_data->work);
-+		if (trigger_data->hw_control) {
-+			trigger_data->blink_delay = value;
-+		} else {
-+			cancel_delayed_work_sync(&trigger_data->work);
- 
--		atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
-+			atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
-+		}
- 		set_baseline_state(trigger_data);	/* resets timer */
+@@ -534,8 +541,7 @@ static int cgw_notifier(struct notifier_block *nb,
+ 			if (gwj->src.dev == dev || gwj->dst.dev == dev) {
+ 				hlist_del(&gwj->list);
+ 				cgw_unregister_filter(net, gwj);
+-				synchronize_rcu();
+-				kmem_cache_free(cgw_cache, gwj);
++				call_rcu(&gwj->rcu, cgw_job_free_rcu);
+ 			}
+ 		}
  	}
+@@ -1093,8 +1099,7 @@ static void cgw_remove_all_jobs(struct net *net)
+ 	hlist_for_each_entry_safe(gwj, nx, &net->can.cgw_list, list) {
+ 		hlist_del(&gwj->list);
+ 		cgw_unregister_filter(net, gwj);
+-		synchronize_rcu();
+-		kmem_cache_free(cgw_cache, gwj);
++		call_rcu(&gwj->rcu, cgw_job_free_rcu);
+ 	}
+ }
  
+@@ -1162,8 +1167,7 @@ static int cgw_remove_job(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 
+ 		hlist_del(&gwj->list);
+ 		cgw_unregister_filter(net, gwj);
+-		synchronize_rcu();
+-		kmem_cache_free(cgw_cache, gwj);
++		call_rcu(&gwj->rcu, cgw_job_free_rcu);
+ 		err = 0;
+ 		break;
+ 	}
 -- 
 2.39.5
 
