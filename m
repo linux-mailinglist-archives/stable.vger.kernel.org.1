@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A58FACB7CF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EDFACB07A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 664E81BC2A32
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41FDF1BA61E3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0BD228C99;
-	Mon,  2 Jun 2025 15:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34788223321;
+	Mon,  2 Jun 2025 14:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngGCYDr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2RGvuwp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870052288F4;
-	Mon,  2 Jun 2025 15:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BF021CC4F;
+	Mon,  2 Jun 2025 14:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877180; cv=none; b=b7M9rppkpR2xHOZKGKf8iQ7O9p/rC3lMa28uKkNX40sWG+cYIlIPP3Met2iyaBpe9kUlpwbxKf9kPxSaoPbS3+sptUSCXR4/z3hKTQfFQCOe9ZcWrtgjxvCGW1w/FIi4pelu1xW4clde4wHmfQs3GdtWv9+uklTI7+U5P+skLuw=
+	t=1748872910; cv=none; b=DMqKrjNYFsRjL/nHsbaNGN87XMljJeITe37ClNAXH0Hb0ZNCjof1YuoHQM2BVa76d9vpUD7k/D7bBUwDNniWaDxASbkZX3/yqOI6fhaO2nfUZJyhYPxwYujjCjS3qS1hpXZ8HK2bx5jnJldgeTihfceoTXnzrLMBCm1xWcJXr4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877180; c=relaxed/simple;
-	bh=SP5t5C2zVjaYUzYV4GAPB87VDtmeUYkqtW3kvZmwk44=;
+	s=arc-20240116; t=1748872910; c=relaxed/simple;
+	bh=Fs4MIocid0kw2KCVsu/RJQe+PYcoyVQxureeutZ51Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6Y649bQOsW2jD/xCa9yVYtFrYkVaadthlmGpag02DtczpyXCiYF1VQ5fUkyzZFhJkFxYMZp/8Qe5NG7kBHG3hgBkO0ZmKQMFd8qtB89srytBrTpSg3d3QejEvsymhPSfX+5vMhk7fHtPTeIclfHflLZrim5zvaPSsdzDTZFeGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngGCYDr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF402C4CEEB;
-	Mon,  2 Jun 2025 15:12:58 +0000 (UTC)
+	 MIME-Version; b=CZ8retsp1JfCRKhI2h+aXJ1sqb3pECwHKeetjVyISMX0vsFpsUcytgAIRELLHKD1J4u4NIpnVIQsMPKtxorPTAsGfhu2djRTmjRT0hMVDQWnr68TQ6RalrPB4VmvLH2W13Wme0w7Eb76ozeLHTHBGzxP8U9OUmPh5vF5eh0jNQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2RGvuwp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A42C4CEEB;
+	Mon,  2 Jun 2025 14:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877179;
-	bh=SP5t5C2zVjaYUzYV4GAPB87VDtmeUYkqtW3kvZmwk44=;
+	s=korg; t=1748872909;
+	bh=Fs4MIocid0kw2KCVsu/RJQe+PYcoyVQxureeutZ51Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngGCYDr8FWCezkOAUdzuSaQJzhbHsSC/uvRP83BUI08f+h+4deYGo8jCtGGQzKVV+
-	 02JhOrIiv57g4mSSXc5OaK4pTXpcT172I5klNVFPXRVZoeVBltaz2RKrI+L0EXYzxV
-	 wjeCO9qYzU1JK63zAkU/KOw29MXn7Qj0TBAhMSwE=
+	b=p2RGvuwpzwzEW0fU8wsr/68SeWjmhPqIDG+FK84Wc6T+Xe51s4eUj16RoDAz1gvxh
+	 CCo1DDrGB5IpbGK3E3Pc8a4CNnoF8Ie9tR+E8/d8P7cHGfQa8T8X6H6HJE/C7oB9II
+	 QIJMU9uf3EUV6ulKTDwul8F92LlbbsTtBwxTYWYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/325] r8169: dont scan PHY addresses > 0
+Subject: [PATCH 6.12 35/55] dmaengine: idxd: cdev: Fix uninitialized use of sva in idxd_cdev_open
 Date: Mon,  2 Jun 2025 15:47:52 +0200
-Message-ID: <20250602134327.763961643@linuxfoundation.org>
+Message-ID: <20250602134239.662345824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
+[ Upstream commit 97994333de2b8062d2df4e6ce0dc65c2dc0f40dc ]
 
-The PHY address is a dummy, because r8169 PHY access registers
-don't support a PHY address. Therefore scan address 0 only.
+Fix Smatch-detected issue:
+drivers/dma/idxd/cdev.c:321 idxd_cdev_open() error:
+uninitialized symbol 'sva'.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+'sva' pointer may be used uninitialized in error handling paths.
+Specifically, if PASID support is enabled and iommu_sva_bind_device()
+returns an error, the code jumps to the cleanup label and attempts to
+call iommu_sva_unbind_device(sva) without ensuring that sva was
+successfully assigned. This triggers a Smatch warning about an
+uninitialized symbol.
+
+Initialize sva to NULL at declaration and add a check using
+IS_ERR_OR_NULL() before unbinding the device. This ensures the
+function does not use an invalid or uninitialized pointer during
+cleanup.
+
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://lore.kernel.org/r/20250410110216.21592-1-purvayeshi550@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/idxd/cdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4b461e93ffe9d..6346821d480bd 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5156,6 +5156,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
- 	new_bus->priv = tp;
- 	new_bus->parent = &pdev->dev;
- 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
-+	new_bus->phy_mask = GENMASK(31, 1);
- 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
- 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index 22aa2bab3693c..19a58c4ecef3f 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -225,7 +225,7 @@ static int idxd_cdev_open(struct inode *inode, struct file *filp)
+ 	struct idxd_wq *wq;
+ 	struct device *dev, *fdev;
+ 	int rc = 0;
+-	struct iommu_sva *sva;
++	struct iommu_sva *sva = NULL;
+ 	unsigned int pasid;
+ 	struct idxd_cdev *idxd_cdev;
  
+@@ -322,7 +322,7 @@ static int idxd_cdev_open(struct inode *inode, struct file *filp)
+ 	if (device_user_pasid_enabled(idxd))
+ 		idxd_xa_pasid_remove(ctx);
+ failed_get_pasid:
+-	if (device_user_pasid_enabled(idxd))
++	if (device_user_pasid_enabled(idxd) && !IS_ERR_OR_NULL(sva))
+ 		iommu_sva_unbind_device(sva);
+ failed:
+ 	mutex_unlock(&wq->wq_lock);
 -- 
 2.39.5
 
