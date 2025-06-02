@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9586ACB447
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD5DACB5D2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DC8C4A4180
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3684C122D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850B2222580;
-	Mon,  2 Jun 2025 14:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A51223DE9;
+	Mon,  2 Jun 2025 14:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgN+qENf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTFHViAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4203C1465A1;
-	Mon,  2 Jun 2025 14:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D981A223DD0;
+	Mon,  2 Jun 2025 14:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874802; cv=none; b=ckJTNi3AOScNVITLQV5aOAOm/AYKpSjJtCTlftVOwUOm0jKABMN1nP14HCN/jzatDum4wNhzLaSjHcJc5Yw0ylo8SSw9+rxHyCPN7MWMlg6nv8Yd+EgNR2pNGzpBahCAE1JATlxnlILhzv76IrLrDG/JTOubpxhpqK5jEH5WwP4=
+	t=1748876094; cv=none; b=LJRzbEQr699TDfNNSTjmqnzP49oLMPIv8+5pB6BC2I9RRLw0ZkDwim99CXJAxq97ZgfSDzuCF7v9hYD07q3WPTOhVs4gfHFUbBInZBSnQB+FiLbsxcFM4NoZZSRtBAt9Svtsd+LxUrGWV3tU0izEih6g4QfoSqSV7SFL2hIvFrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874802; c=relaxed/simple;
-	bh=aC9nfvJ1mOuRCClABbt9VBw6HcHUM3WFkK4h28RDxag=;
+	s=arc-20240116; t=1748876094; c=relaxed/simple;
+	bh=T9jYIa/Lpr1bZWZP/9il6aQZUl/KzdJfSLSj4KF8rbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BkoheNKFSVGdDitxcAvrD0USBSuwi9EGIu0qQPeuC8Aj1I+mZfe+vWDO4bq18edrZb50yxnq2Q5TFO9qOnfFUnNt/192BUe/cdJQEfcnjQkRKNTRWXUR+6WBssxT/xcg3jxC7LfcFdNuHH1DdLntm6i8WHYX8/Jm9ldZyHC93IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgN+qENf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3302C4CEEB;
-	Mon,  2 Jun 2025 14:33:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eojaTmkDR9ApvkEQRuBmpYFn78kaIO4sprnZloUDDwDi57RLHG4P+6/F+x8malp4Otow+jbfGTv6Fn5wBYc+evXnpUf/OeAW31x/dHwaU22mHWicOy3Ib0VmYUzCOcgRfwqpjbdI84UNUdapbQASFKUPaqt6Cgwdo4/djlVOq0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTFHViAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EC1C4CEF0;
+	Mon,  2 Jun 2025 14:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874802;
-	bh=aC9nfvJ1mOuRCClABbt9VBw6HcHUM3WFkK4h28RDxag=;
+	s=korg; t=1748876094;
+	bh=T9jYIa/Lpr1bZWZP/9il6aQZUl/KzdJfSLSj4KF8rbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgN+qENfzUN3hC2KkxW5Cc7Knnz0ra+cONvct+NgG4F4yrvUvpR5k0pacuUbyiI3Q
-	 sEblIzrtkL7sUMWbxUiHzMfXkjv8ZYevk3X03dAyufmSheOvGSdCFQAX4dMe0AeO/Z
-	 UzRi1R2p6uw3Uie9zOY7UleNUlJ88jmw/Gkd1rTI=
+	b=JTFHViAeaa1Ctaed/H3rzZlA9LuuONABrail6RvV1Y98gQKsyYnN/RrNUcxSSwPg/
+	 7YtT4KaUcEVTwehMPiJDaiL7Y1prZmSRKeBiWo3jdZAJpems/89/Mz/Zuy026AqbfT
+	 /EnoeGK6JDrV6ndHN4x5qh4btj6R4snfejkMr0EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+	Luca Weiss <luca@lucaweiss.eu>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/204] dm: restrict dm device size to 2^63-512 bytes
+Subject: [PATCH 5.15 070/207] remoteproc: qcom_wcnss: Handle platforms with only single power domain
 Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134259.946113222@linuxfoundation.org>
+Message-ID: <20250602134301.480624689@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 
-[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
+[ Upstream commit 65991ea8a6d1e68effdc01d95ebe39f1653f7b71 ]
 
-The devices with size >= 2^63 bytes can't be used reliably by userspace
-because the type off_t is a signed 64-bit integer.
+Both MSM8974 and MSM8226 have only CX as power domain with MX & PX being
+handled as regulators. Handle this case by reodering pd_names to have CX
+first, and handling that the driver core will already attach a single
+power domain internally.
 
-Therefore, we limit the maximum size of a device mapper device to
-2^63-512 bytes.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+[luca: minor changes]
+Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+Link: https://lore.kernel.org/r/20250206-wcnss-singlepd-v2-2-9a53ee953dee@lucaweiss.eu
+[bjorn: Added missing braces to else after multi-statement if]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/remoteproc/qcom_wcnss.c | 33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index a56d03eefb83c..7002846afb308 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -742,6 +742,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
- 		DMERR("%s: zero-length target", dm_device_name(t->md));
- 		return -EINVAL;
- 	}
-+	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
-+		DMERR("%s: too large device", dm_device_name(t->md));
-+		return -EINVAL;
+diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+index 97a0c0dc4c77a..3e07f5621d0f2 100644
+--- a/drivers/remoteproc/qcom_wcnss.c
++++ b/drivers/remoteproc/qcom_wcnss.c
+@@ -118,10 +118,10 @@ static const struct wcnss_data pronto_v1_data = {
+ 	.pmu_offset = 0x1004,
+ 	.spare_offset = 0x1088,
+ 
+-	.pd_names = { "mx", "cx" },
++	.pd_names = { "cx", "mx" },
+ 	.vregs = (struct wcnss_vreg_info[]) {
+-		{ "vddmx", 950000, 1150000, 0 },
+ 		{ "vddcx", .super_turbo = true},
++		{ "vddmx", 950000, 1150000, 0 },
+ 		{ "vddpx", 1800000, 1800000, 0 },
+ 	},
+ 	.num_pd_vregs = 2,
+@@ -132,10 +132,10 @@ static const struct wcnss_data pronto_v2_data = {
+ 	.pmu_offset = 0x1004,
+ 	.spare_offset = 0x1088,
+ 
+-	.pd_names = { "mx", "cx" },
++	.pd_names = { "cx", "mx" },
+ 	.vregs = (struct wcnss_vreg_info[]) {
+-		{ "vddmx", 1287500, 1287500, 0 },
+ 		{ "vddcx", .super_turbo = true },
++		{ "vddmx", 1287500, 1287500, 0 },
+ 		{ "vddpx", 1800000, 1800000, 0 },
+ 	},
+ 	.num_pd_vregs = 2,
+@@ -387,8 +387,17 @@ static irqreturn_t wcnss_stop_ack_interrupt(int irq, void *dev)
+ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ 			  const char * const pd_names[WCNSS_MAX_PDS])
+ {
++	struct device *dev = wcnss->dev;
+ 	int i, ret;
+ 
++	/* Handle single power domain */
++	if (dev->pm_domain) {
++		wcnss->pds[0] = dev;
++		wcnss->num_pds = 1;
++		pm_runtime_enable(dev);
++		return 0;
++	}
++
+ 	for (i = 0; i < WCNSS_MAX_PDS; i++) {
+ 		if (!pd_names[i])
+ 			break;
+@@ -408,8 +417,15 @@ static int wcnss_init_pds(struct qcom_wcnss *wcnss,
+ 
+ static void wcnss_release_pds(struct qcom_wcnss *wcnss)
+ {
++	struct device *dev = wcnss->dev;
+ 	int i;
+ 
++	/* Handle single power domain */
++	if (wcnss->num_pds == 1 && dev->pm_domain) {
++		pm_runtime_disable(dev);
++		return;
++	}
++
+ 	for (i = 0; i < wcnss->num_pds; i++)
+ 		dev_pm_domain_detach(wcnss->pds[i], false);
+ }
+@@ -427,10 +443,13 @@ static int wcnss_init_regulators(struct qcom_wcnss *wcnss,
+ 	 * the regulators for the power domains. For old device trees we need to
+ 	 * reserve extra space to manage them through the regulator interface.
+ 	 */
+-	if (wcnss->num_pds)
+-		info += num_pd_vregs;
+-	else
++	if (wcnss->num_pds) {
++		info += wcnss->num_pds;
++		/* Handle single power domain case */
++		num_vregs += num_pd_vregs - wcnss->num_pds;
++	} else {
+ 		num_vregs += num_pd_vregs;
 +	}
  
- 	tgt->type = dm_get_target_type(type);
- 	if (!tgt->type) {
+ 	bulk = devm_kcalloc(wcnss->dev,
+ 			    num_vregs, sizeof(struct regulator_bulk_data),
 -- 
 2.39.5
 
