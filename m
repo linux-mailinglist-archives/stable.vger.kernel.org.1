@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDACACB75D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F57CACB573
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB644A69D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 101577A1AE8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBB52248A4;
-	Mon,  2 Jun 2025 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2CC223DFA;
+	Mon,  2 Jun 2025 14:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6EIRHaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eie6m7Uj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599D71FF61E;
-	Mon,  2 Jun 2025 15:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E9B1EA65;
+	Mon,  2 Jun 2025 14:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877083; cv=none; b=Afm+hQJRqbH/DVAyUyEMBvTsNfUw1f2b3yyKRQj3CjK3SuPB9NVNuqKeX+ZF4YdZR7HrxKLXv77o/E6WdWOE5dmzRAArGqSlNj+ASJk7eZ6FHMow0H0U4oO11iEUqAppygnfFfdipj6ii7ZwuhuoFod2OlICWve7K18ljx4GnbM=
+	t=1748876101; cv=none; b=kdAOvJ4I/VYmuuxgTy/qkSBwP3lE6zA2n/UpUqaEbV80fMqHPVCL1Zfag8ffoW2HuDDfxcgFQ4vBVTGpoZbtIjGenm7LSrF33AgbSceaUxPeRlJYsqf2ZNG5BVz1Fln+5iy2WZ5L5PscCGrMpSAcJP+/XvEE7ka0q0qH5bxRq3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877083; c=relaxed/simple;
-	bh=itp0YnXLY1S7z/yIBJorG92Xf2SbQ29Mj52TucBaDNU=;
+	s=arc-20240116; t=1748876101; c=relaxed/simple;
+	bh=GnGVeqmEtbz3r8orxYZtknt3gpJ3NoIZAPriijjtFWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bvxs/3/5+F/L0cjKqDALrnvyd96IVRALJOiR28VY0yIXGxTZyrvuBCs4pNWzsPynAL9L+wn5/Ubsq1dur6OU32ShQcAg//6ZPvFmAiax2AhdqNvuj5pwzDeZ3u3vmtULc0krlWgHXhI4E3ohTsoESkeB3tJU9KFtDCrJq9SQCpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6EIRHaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4630C4CEEB;
-	Mon,  2 Jun 2025 15:11:22 +0000 (UTC)
+	 MIME-Version; b=hQK4ww5ofBtEU+C7zUrupukLcjOhr84ycjDpQK0RZETZY4uaspSaXE4aakAFdM2PMnoum7KlOoOHJvbdSuxeF5Di0qB3c5dc9YYVyEZJpO17k6siTGY6f1o+3eL9oGtFLfmE3D4+lpAm9bcPaQyeFqs2mM1aVpnLdO+2od3SDww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eie6m7Uj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B004C4CEEE;
+	Mon,  2 Jun 2025 14:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877083;
-	bh=itp0YnXLY1S7z/yIBJorG92Xf2SbQ29Mj52TucBaDNU=;
+	s=korg; t=1748876101;
+	bh=GnGVeqmEtbz3r8orxYZtknt3gpJ3NoIZAPriijjtFWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6EIRHaPC/nh7Dcxgo70cRfN4MAJpiuO3mITpzaOi8uc1X+LaWxvfprPHYB8IOCUt
-	 D3MnkUjKJQTWAQ+UZBJCPPJwRfYUdFuqS6Zq+sv3VDJAuKQgZ3VBIGtFQJOtosqJgv
-	 qOXQDQVub/zh1+x5rWUHqtok0M6ZWPP04qZH2XJE=
+	b=Eie6m7Ujv2f2VDO5lAIW0Ua1uEwDpWVo71M/R2DH//GM3MnM0/Wk6f1bBqwiopMD3
+	 NO1CmYQVXEOs1eDVtoj7lloIz4cC09MBBZ1ySeV/2FGSt1Nnhd1PtIlt6jmSDFxMAv
+	 ljZQzCAe8q2g6n4Waj2PP0dLuBRiObcf5cLxl+jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Victor Lu <victorchengchi.lu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/325] net/mlx5: Apply rate-limiting to high temperature warning
-Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134326.544236574@linuxfoundation.org>
+Subject: [PATCH 5.15 071/207] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
+Date: Mon,  2 Jun 2025 15:47:23 +0200
+Message-ID: <20250602134301.518333288@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-[ Upstream commit 9dd3d5d258aceb37bdf09c8b91fa448f58ea81f0 ]
+[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
 
-Wrap the high temperature warning in a temperature event with
-a call to net_ratelimit() to prevent flooding the kernel log
-with repeated warning messages when temperature exceeds the
-threshold multiple times within a short duration.
+SRIOV VF does not have write access to AGP BAR regs.
+Skip the writes to avoid a dmesg warning.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 68b92927c74e9..6aa96d33c210b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -169,9 +169,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+index f51fd0688eca7..9b881d8413b14 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
+ {
+ 	uint64_t value;
  
--	mlx5_core_warn(events->dev,
--		       "High temperature on sensors with bit set %llx %llx",
--		       value_msb, value_lsb);
-+	if (net_ratelimit())
-+		mlx5_core_warn(events->dev,
-+			       "High temperature on sensors with bit set %llx %llx",
-+			       value_msb, value_lsb);
- 
- 	return NOTIFY_OK;
- }
+-	/* Program the AGP BAR */
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
+-
+ 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
++		/* Program the AGP BAR */
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
++
+ 		/* Program the system aperture low logical page number. */
+ 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+ 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
 -- 
 2.39.5
 
