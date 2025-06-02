@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B87ACB2B2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDAFACB49F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3865716BF53
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375254A7AB2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C7723185D;
-	Mon,  2 Jun 2025 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9059221D94;
+	Mon,  2 Jun 2025 14:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moZf/uL3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OCzsIf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FEB1CBA18;
-	Mon,  2 Jun 2025 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85248223301;
+	Mon,  2 Jun 2025 14:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873924; cv=none; b=dawgDleALTlPbhVe/Ec4wAWKE1+LR8CHN9HITubX9MGULE1CIh0IvJrahpoildm7oj56auUQjTvYgmBtHhy8T99bmeG9gYpwb9awjsL24IsvoTov5GXdq4Gbpw7jgddWlVL+1gxMqU6H1np1sdbOPZaxoTFfdip5bFRlfvt/qRM=
+	t=1748875253; cv=none; b=FP9J5+F50VnWPQdnH1kqj/Mzh6opnmj8u1IFWdc+Voi9XzQ0RlocI8QsmglDf6QnqMaRB+HwgEWAapE/KeyfNbJuVHHmq68kKrzOVl+iirXw4JKHzGsQXIn7OmUX69riRAuiMfB3iF6pXPS9D7FfwPH7SB4/3c+iXK0QpOTXIVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873924; c=relaxed/simple;
-	bh=azrvK0XW8IMN5bK6e1D37nXwqZW9FEletUwaGzTMaQs=;
+	s=arc-20240116; t=1748875253; c=relaxed/simple;
+	bh=OrluX6Qi6ifHan0tWcPuXQSpwn/c86ZLpLnLQP+TnjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oxg+tqtDX8aez/m4mDrCsL2+mHBFSnbh16UHIBDkvLofZfAoMKy5hp9XGMADsP9eNbL9s/evkW41j1Rlq74aY/2vbpe2n4wKwMP6CcRm3dvryB2a7m/k6lLwenNXWkv9aqDzOAYpldT0rqp4So45At8ZAUN2lb7z/qJ1F89kpMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moZf/uL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDED9C4CEEB;
-	Mon,  2 Jun 2025 14:18:43 +0000 (UTC)
+	 MIME-Version; b=FWhUqtoq4fe+Kq1QICVn5ciSWQ3MqYxOJSslOpanEzhSWDuGh10snjqGfqzcN9g1mcKe1A8zTxZwWnS+2JXBlS6wWCfaeEs1uIoFT9kA2aLgcwB+tGdCbAsbEUYXLM0y32M/XCK7gI9/iUf+95oA25carfw18juLLUzmCQLprsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OCzsIf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C75C4CEEB;
+	Mon,  2 Jun 2025 14:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873924;
-	bh=azrvK0XW8IMN5bK6e1D37nXwqZW9FEletUwaGzTMaQs=;
+	s=korg; t=1748875253;
+	bh=OrluX6Qi6ifHan0tWcPuXQSpwn/c86ZLpLnLQP+TnjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moZf/uL3ssMmSHAr6dgkFjdmQECCsv90KOUyVN4YnS0/AjhBc3w+0qkgF/yFHEBYH
-	 gI6CetdoBEVVk+msGFa4KWR5M5GJUcidiKKi434rd6S6ccgR+afBlCcOpDxQJUPJpR
-	 WRggyU5ElZb9bTfHik5A1GIn4B1vr7lB2rAmcK60=
+	b=0OCzsIf4rx13iP99gvsOaZl5Brcebkl7ObNQqjmkW1AygpQpBhs/iBG9ZdcRZY0eW
+	 N4L859kEbz8OFIerSa/RC3Ufa7iMluoupv9DI3OAxhdibRB1zw2ujDo2hzHv/9/ue6
+	 a+3fzrxQMGTjnB0FGBylKSiCdPvjVsCU203FT1Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 298/444] perf/amd/ibs: Fix ->config to sample period calculation for OP PMU
+Subject: [PATCH 5.10 077/270] types: Complement the aligned types with signed 64-bit one
 Date: Mon,  2 Jun 2025 15:46:02 +0200
-Message-ID: <20250602134353.043251226@linuxfoundation.org>
+Message-ID: <20250602134310.323303938@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 598bdf4fefff5af4ce6d26d16f7b2a20808fc4cb ]
+[ Upstream commit e4ca0e59c39442546866f3dd514a3a5956577daf ]
 
-Instead of using standard perf_event_attr->freq=0 and ->sample_period
-fields, IBS event in 'sample period mode' can also be opened by setting
-period value directly in perf_event_attr->config in a MaxCnt bit-field
-format.
+Some user may want to use aligned signed 64-bit type.
+Provide it for them.
 
-IBS OP MaxCnt bits are defined as:
-
-  (high bits) IbsOpCtl[26:20] = IbsOpMaxCnt[26:20]
-  (low bits)  IbsOpCtl[15:0]  = IbsOpMaxCnt[19:4]
-
-Perf event sample period can be derived from MaxCnt bits as:
-
-  sample_period = (high bits) | ((low_bits) << 4);
-
-However, current code just masks MaxCnt bits and shifts all of them,
-including high bits, which is incorrect. Fix it.
-
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/r/20250115054438.1021-4-ravi.bangoria@amd.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20240903180218.3640501-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5097eaae98e5 ("iio: adc: dln2: Use aligned_s64 for timestamp")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/ibs.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ include/linux/types.h      | 3 ++-
+ include/uapi/linux/types.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 85731f121feb5..fac3d97111b09 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -272,7 +272,7 @@ static int perf_ibs_init(struct perf_event *event)
- {
- 	struct hw_perf_event *hwc = &event->hw;
- 	struct perf_ibs *perf_ibs;
--	u64 max_cnt, config;
-+	u64 config;
- 	int ret;
+diff --git a/include/linux/types.h b/include/linux/types.h
+index a147977602b5e..cb496d6a8d791 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -109,8 +109,9 @@ typedef u64			u_int64_t;
+ typedef s64			int64_t;
+ #endif
  
- 	perf_ibs = get_ibs_pmu(event->attr.type);
-@@ -306,10 +306,19 @@ static int perf_ibs_init(struct perf_event *event)
- 		if (!hwc->sample_period)
- 			hwc->sample_period = 0x10;
- 	} else {
--		max_cnt = config & perf_ibs->cnt_mask;
-+		u64 period = 0;
-+
-+		if (perf_ibs == &perf_ibs_op) {
-+			period = (config & IBS_OP_MAX_CNT) << 4;
-+			if (ibs_caps & IBS_CAPS_OPCNTEXT)
-+				period |= config & IBS_OP_MAX_CNT_EXT_MASK;
-+		} else {
-+			period = (config & IBS_FETCH_MAX_CNT) << 4;
-+		}
-+
- 		config &= ~perf_ibs->cnt_mask;
--		event->attr.sample_period = max_cnt << 4;
--		hwc->sample_period = event->attr.sample_period;
-+		event->attr.sample_period = period;
-+		hwc->sample_period = period;
- 	}
+-/* this is a special 64bit data type that is 8-byte aligned */
++/* These are the special 64-bit data types that are 8-byte aligned */
+ #define aligned_u64		__aligned_u64
++#define aligned_s64		__aligned_s64
+ #define aligned_be64		__aligned_be64
+ #define aligned_le64		__aligned_le64
  
- 	if (!hwc->sample_period)
+diff --git a/include/uapi/linux/types.h b/include/uapi/linux/types.h
+index f6d2f83cbe297..aa96c4589b71f 100644
+--- a/include/uapi/linux/types.h
++++ b/include/uapi/linux/types.h
+@@ -46,6 +46,7 @@ typedef __u32 __bitwise __wsum;
+  * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
+  */
+ #define __aligned_u64 __u64 __attribute__((aligned(8)))
++#define __aligned_s64 __s64 __attribute__((aligned(8)))
+ #define __aligned_be64 __be64 __attribute__((aligned(8)))
+ #define __aligned_le64 __le64 __attribute__((aligned(8)))
+ 
 -- 
 2.39.5
 
