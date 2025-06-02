@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-150267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7D5ACB67B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD711ACB27E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29ED4C3E60
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:10:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA0424A0D00
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB2C22424C;
-	Mon,  2 Jun 2025 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CB422A1D5;
+	Mon,  2 Jun 2025 14:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwpKKDLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGvLRaIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0A6223DD1;
-	Mon,  2 Jun 2025 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845C4228C99;
+	Mon,  2 Jun 2025 14:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876576; cv=none; b=ZJiPa035sQc67Uoq6M+815JMHZMj3RKiQvDbzNOD7i3FOZLaLkTYIx0VfdAneQZQGA3JYMJBMkEFfNrzX2DVbV4OSC1sYbiLS61LXhSF3KftPjoKqgk0oizKNXP5qw9DUOfHqDXK5LSAuU0O6Y4F7fkIJX3F7WzU8awdLEbKOto=
+	t=1748873764; cv=none; b=XYgkaDXDqwnkVh6S+3LmBJX2wbETCQChJIqVs85eCwDuWk1nKgLoEmTKYSgE/I9FrbW7GsA1Dj4MvCZXkvfXlw1OjRvaeYqLp3LdG27y6RH38Rutz8yQDiLbD2FQr+NuAaHs0AH3J6PRbLdq3knT+1DhM+8lFRDBTpBkjPVRC8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876576; c=relaxed/simple;
-	bh=eKKR/IDrvZboDhiEKnhidrP6e14d+BE2MmuZF7KllRo=;
+	s=arc-20240116; t=1748873764; c=relaxed/simple;
+	bh=kPDCqhcEmmqln6GtZCYZQIG2OBQAOVwAWH5GPBHfEKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYjWwY+3TYgfVWtfxduaaVfKZ6XLJb81zRUXHanwKWYz4b4G9YmWIQbLW00E8gcFtFD0CWjTCh+fZFq2Sd1NDASPvkbFgLrxtBVvQBADeT5xUVngFYl0IoKqJVw1fHU3GCjIt+SACWn5dyxYXdYwWlh8wl93SF5RdY3v+h4IoWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwpKKDLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F067BC4CEEB;
-	Mon,  2 Jun 2025 15:02:55 +0000 (UTC)
+	 MIME-Version; b=d5YCHMeIk8nMo6Em8J8ExNf3U6SY21pvvftut9/UPMmoTUe2CcoxH7kn6PIAf3Luy0/OZ2DKD+5bdigaxZjh6/b9ApMmp5/E9tKZ7bpxplQzyqsnntE3vhX2JaP/OVtEY8cj+LpmA7jadH2klU16S7aOx1HVlLVcn+QJdbKrCsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGvLRaIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99889C4CEF6;
+	Mon,  2 Jun 2025 14:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876576;
-	bh=eKKR/IDrvZboDhiEKnhidrP6e14d+BE2MmuZF7KllRo=;
+	s=korg; t=1748873764;
+	bh=kPDCqhcEmmqln6GtZCYZQIG2OBQAOVwAWH5GPBHfEKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwpKKDLzJkLhSwa929cf7DzemZx2UjKT4y8KPBcT7wiI3975NIUQlMhigrQSbLFLH
-	 bDloezx+1aqDXQH0e3l6fyaSJdYzTp4XHX9M0o0ydup4TWYvK9ZjSdbQDo2Eoy7RGr
-	 p/9naJ0SBS7E23GD4am0RJ0rAL6vJXsuWwl8GRHI=
+	b=MGvLRaIXXYFFC1l/IJ3hsHNyQER8lXubsIQlQgI01cltUcCkNhtVrOIIh5gzHeB7B
+	 rCTdbbTpbTNuX0xiv43hMHt0qM/GRzMmzvoTie8IalApfkqkN4eTIv4BQ0JNfZs/q6
+	 4J+IKWNtY1dJlcsApLizKnyb+6zYvxahEJvp1sGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/325] gpio: pca953x: Add missing header(s)
+Subject: [PATCH 6.6 213/444] pmdomain: imx: gpcv2: use proper helper for property detection
 Date: Mon,  2 Jun 2025 15:44:37 +0200
-Message-ID: <20250602134319.787894318@linuxfoundation.org>
+Message-ID: <20250602134349.554781279@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit c20a395f9bf939ef0587ce5fa14316ac26252e9b ]
+[ Upstream commit 6568cb40e73163fa25e2779f7234b169b2e1a32e ]
 
-Do not imply that some of the generic headers may be always included.
-Instead, include explicitly what we are direct user of.
+Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
+is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
+SoCs leads to warnings when LOCKDEP is enabled.
 
-While at it, sort headers alphabetically.
+Fix this by checking property presence with of_property_present as
+intended.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 3e38f946062b ("gpio: pca953x: fix IRQ storm on system wake up")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pca953x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pmdomain/imx/gpcv2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 262b3d276df78..caf3bb6cb6b9f 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -10,8 +10,8 @@
+diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+index 13fce2b134f60..84d68c805cac8 100644
+--- a/drivers/pmdomain/imx/gpcv2.c
++++ b/drivers/pmdomain/imx/gpcv2.c
+@@ -1350,7 +1350,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
+ 	}
  
- #include <linux/acpi.h>
- #include <linux/bitmap.h>
--#include <linux/gpio/driver.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/gpio/driver.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-@@ -20,6 +20,7 @@
- #include <linux/platform_data/pca953x.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/seq_file.h>
- #include <linux/slab.h>
+ 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
+-	    of_property_read_bool(domain->dev->of_node, "power-domains"))
++	    of_property_present(domain->dev->of_node, "power-domains"))
+ 		lockdep_set_subclass(&domain->genpd.mlock, 1);
  
- #include <asm/unaligned.h>
+ 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
 -- 
 2.39.5
 
