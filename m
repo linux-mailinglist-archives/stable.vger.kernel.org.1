@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-149985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7195ACB574
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F9FACB67A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F4C19460F0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:53:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C5331C21078
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465CF221FD6;
-	Mon,  2 Jun 2025 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94CF239E74;
+	Mon,  2 Jun 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxera9B4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHdcEqcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0194821885A;
-	Mon,  2 Jun 2025 14:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A806B239E6B;
+	Mon,  2 Jun 2025 14:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875668; cv=none; b=EiOBdo5m+WSeDQHf5Lh+VhA+2eKaU8MyuTDZWD4FyLPo7UWr4nhsZiJBLC32ppci7S6sv8FyVSLO5R7bjTHtxUlZ34Ak3L3x2vBpMPs0q+DoguFUCxB0AXNlDd5mVyrNQgBU8YLmn0FMPs1eh2T1IbwjGmiZ+X6xP2kPamoWi+A=
+	t=1748876356; cv=none; b=BX/aN5ZZvmMiCo2zSRmG0cdQStv5rZGeCPLDF7iO/4czWK17mYpwBePTQ1MdwHexHARFx8cfJC/MFpsbXDt/KVL1m2gaqwBi2kOo1HFwDtfLZn8uXytKBYY/4rPf7V5g0b4zN9aEU++xYcADmKtM8GHACAsNTtxnOkacLC9C/5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875668; c=relaxed/simple;
-	bh=fLxxHNzWssvnSE96LODGmVLFYaeJHCGNieZ5jCaEuKU=;
+	s=arc-20240116; t=1748876356; c=relaxed/simple;
+	bh=cnTpDVKZfSSjS5P5BzGwJMnWy0Fy4HJbpd9+Tz8BtTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkWwJNEXmTxPmayfViZ2Je5y4IEQmPqDyN3cNyYbTyrUEIlv6UQgYb7YvwBdtJNmizhDZ6Jj7flUb6IsSjnLoeGflWh9wu66txSZfT7icydlt/LFklcVm1ZquL/o0EcbooLh0c7N9f2lLlnUVnjbQ8cSKNNaTRmgcnUIeqdXnzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxera9B4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B317C4CEEB;
-	Mon,  2 Jun 2025 14:47:47 +0000 (UTC)
+	 MIME-Version; b=ktwCpUCm+0CYUTBsMySRRJ49zILhnFQjH5ibEmmCIUXspkTln7+8jpCN6inXTNu6+wzSZCX13KO42qWoTsSR+lZyubAAYg4BVHWncUyUSXBllERRq7zmxh2lwxp0aYkotiQvJ6w4heTh9FwE842KjLgC17OPiP8kF2ZnnA6Pe+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHdcEqcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332EC4CEEB;
+	Mon,  2 Jun 2025 14:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875667;
-	bh=fLxxHNzWssvnSE96LODGmVLFYaeJHCGNieZ5jCaEuKU=;
+	s=korg; t=1748876354;
+	bh=cnTpDVKZfSSjS5P5BzGwJMnWy0Fy4HJbpd9+Tz8BtTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxera9B4RoEGtwpaCFRH0F4jcx05QYcsZy2aF5cNiwuoEHOIF3TtUKPkzHzfqdd40
-	 7RnlHt8yhggUH3aJL6ltCPK+1Ccc2+uFMp+CNotvusRXOmbHwVY3uRmTJKy7IElMRX
-	 d6TDb/YAnh/2+LFK+rY2wcduOVXLw9NhZeLvwBzE=
+	b=jHdcEqcfWTzmzsBgQDDWOEx0WjedEx2BxlaTH8xZd3KkZOwErQ85PIE06EdXsD/XM
+	 wbJyRyXHUPyCKGNhLOGwclDfI7N0XJDAyOB1CX5gkF30KtSIG7L7uqxEqd+6bl66DK
+	 MSyS7I7Nybeid6YhBZciP/ROYcZ7+iI2EyqdvlcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/270] drm/amd/display: Initial psr_version with correct setting
+Subject: [PATCH 5.15 120/207] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
 Date: Mon,  2 Jun 2025 15:48:12 +0200
-Message-ID: <20250602134315.655416155@linuxfoundation.org>
+Message-ID: <20250602134303.419675295@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,42 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit d8c782cac5007e68e7484d420168f12d3490def6 ]
+[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
 
-[Why & How]
-The initial setting for psr_version is not correct while
-create a virtual link.
+Memset the config argument to get_mbus_config V4L2 sub-device pad
+operation to zero before calling the operation. This ensures the callers
+don't need to bother with it nor the implementations need to set all
+fields that may not be relevant to them.
 
-The default psr_version should be DC_PSR_VERSION_UNSUPPORTED.
-
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ include/media/v4l2-subdev.h           | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 84fb1377ec934..88a9473ccf531 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -228,6 +228,7 @@ static bool create_links(
- 		link->link_id.type = OBJECT_TYPE_CONNECTOR;
- 		link->link_id.id = CONNECTOR_ID_VIRTUAL;
- 		link->link_id.enum_id = ENUM_ID_1;
-+		link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
- 		link->link_enc = kzalloc(sizeof(*link->link_enc), GFP_KERNEL);
- 
- 		if (!link->link_enc) {
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index 5d27a27cc2f24..6f2267625c7ea 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -314,6 +314,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
+ static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
+ 				struct v4l2_mbus_config *config)
+ {
++	memset(config, 0, sizeof(*config));
++
+ 	return check_pad(sd, pad) ? :
+ 	       sd->ops->pad->get_mbus_config(sd, pad, config);
+ }
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index 9a476f902c425..262b5e5cebc4c 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -714,7 +714,9 @@ struct v4l2_subdev_state {
+  *		     possible configuration from the remote end, likely calling
+  *		     this operation as close as possible to stream on time. The
+  *		     operation shall fail if the pad index it has been called on
+- *		     is not valid or in case of unrecoverable failures.
++ *		     is not valid or in case of unrecoverable failures. The
++ *		     config argument has been memset to 0 just before calling
++ *		     the op.
+  *
+  * @set_mbus_config: set the media bus configuration of a remote sub-device.
+  *		     This operations is intended to allow, in combination with
 -- 
 2.39.5
 
