@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8D8ACB39A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E2DACB4F9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CB6A1940516
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12409194513B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FA822E01E;
-	Mon,  2 Jun 2025 14:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6348122DFB5;
+	Mon,  2 Jun 2025 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abcC788H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KupnhXDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93622330F;
-	Mon,  2 Jun 2025 14:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D18420E6E3;
+	Mon,  2 Jun 2025 14:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874509; cv=none; b=RGyhPo5mdeabiz7RszLv0I5YBLs4IJ5TieWavM3sM6Z2oj6HuUVfMttr1RW9EuDFaMf1h+zrbbBkdV8bO5InFmO0TUAAqMcYjo1tcp4wDblS4PlAujfle33vzvDTCHdMtsgbAw0xGUkJJQ/r5YxWElTT+qgPLtdDYijcUaaOdw0=
+	t=1748875292; cv=none; b=LmnsqMc1p50uxM6w0FvMh782u02Adfkybys6cii25WbZiySRK4jAu2T5FmACWYDQuUUzEL1TdoWR5MjPf+sJuuFegsdT2gsicAzYErt2J1/MPeeUyTrQmXWVia9jB982TxGsLMDjpEPI+L6jv1iWY/4/KRbyCn/ienLw5BQ6XaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874509; c=relaxed/simple;
-	bh=t23FnSEZmkumq9WhAZxjeGs+q/cSN1M742TwWi7fpgk=;
+	s=arc-20240116; t=1748875292; c=relaxed/simple;
+	bh=2V6vcNKKz+hkhbcLRaZR/D6JW8UtP1S9pCuZEynuDT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqK+Sp2mkNy3LzfzdACQdVQAfhHKFp1ECDHPtcsMe1TO8ePzby/Wh/L8p+Ax6mHiXeY+aCx0xx0jVp2odZDIVMPFkk165t6KGGR1QWWEboGlplRshHRzYbvKxJ7KG/k1v4yScxBsGnU1ycpPeIbdjp/Htp15Y4ysyZCZxz5E4Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abcC788H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DEAC4CEEB;
-	Mon,  2 Jun 2025 14:28:27 +0000 (UTC)
+	 MIME-Version; b=dF1I6lOlCak6zbqhbh+NTG8DF3j4kkN2cFKlcBKvstnQUozLU3Wmj1MVcxxcVjw5KjCO2fcOnbylw76Eh5vrKai737x4IqQ76urflVG+r2HCJnDVxH83T11sPAL49PoRpUjrWW5P7JuliERStV+3cIXKYkweIzA/Weh3GId4nps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KupnhXDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9409BC4CEEB;
+	Mon,  2 Jun 2025 14:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874508;
-	bh=t23FnSEZmkumq9WhAZxjeGs+q/cSN1M742TwWi7fpgk=;
+	s=korg; t=1748875292;
+	bh=2V6vcNKKz+hkhbcLRaZR/D6JW8UtP1S9pCuZEynuDT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abcC788H/3Ig7aWDnth6WibtM8j9jUh6soXordAPPs/2RAko1GKIaoYbugEwckby3
-	 fAYXd8vPaJeilK1aALpAPIHFhEmhZ7mmgajTVmXjfjmIyDdJOkXQN6/47tZzUQWdgF
-	 9H0sL0o66CMaWM3MeRG8VWUN0Io8lxhXCha+Arck=
+	b=KupnhXDnlIQddaeG9eW+/Hs4E0ZS28I4GVfY4h3Q+V9qznc9Rwv5m0E6hu4qZK3Cy
+	 klCbHCspclUr9XfmuKoupwOfritLS3TRuZIqzaDSCiLoovW30FzsSPQgbv5bJaJXHV
+	 OfA18+PW26wgizx2o7fXPb9HzHbGk9Ttqzj1mHN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Rathgeb <maggu2810@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 039/204] Input: synaptics - enable InterTouch on Dell Precision M3800
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 087/270] nfs: handle failure of nfs_get_lock_context in unlock path
 Date: Mon,  2 Jun 2025 15:46:12 +0200
-Message-ID: <20250602134257.212561718@linuxfoundation.org>
+Message-ID: <20250602134310.720467933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit a609cb4cc07aa9ab8f50466622814356c06f2c17 upstream.
+[ Upstream commit c457dc1ec770a22636b473ce5d35614adfe97636 ]
 
-Enable InterTouch mode on Dell Precision M3800 by adding "DLL060d" to
-the list of SMBus-enabled variants.
+When memory is insufficient, the allocation of nfs_lock_context in
+nfs_get_lock_context() fails and returns -ENOMEM. If we mistakenly treat
+an nfs4_unlockdata structure (whose l_ctx member has been set to -ENOMEM)
+as valid and proceed to execute rpc_run_task(), this will trigger a NULL
+pointer dereference in nfs4_locku_prepare. For example:
 
-Reported-by: Markus Rathgeb <maggu2810@gmail.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB959789DD6D574E16141E5DC4B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: kernel NULL pointer dereference, address: 000000000000000c
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 15 UID: 0 PID: 12 Comm: kworker/u64:0 Not tainted 6.15.0-rc2-dirty #60
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40
+Workqueue: rpciod rpc_async_schedule
+RIP: 0010:nfs4_locku_prepare+0x35/0xc2
+Code: 89 f2 48 89 fd 48 c7 c7 68 69 ef b5 53 48 8b 8e 90 00 00 00 48 89 f3
+RSP: 0018:ffffbbafc006bdb8 EFLAGS: 00010246
+RAX: 000000000000004b RBX: ffff9b964fc1fa00 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: fffffffffffffff4 RDI: ffff9ba53fddbf40
+RBP: ffff9ba539934000 R08: 0000000000000000 R09: ffffbbafc006bc38
+R10: ffffffffb6b689c8 R11: 0000000000000003 R12: ffff9ba539934030
+R13: 0000000000000001 R14: 0000000004248060 R15: ffffffffb56d1c30
+FS: 0000000000000000(0000) GS:ffff9ba5881f0000(0000) knlGS:00000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000000000c CR3: 000000093f244000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __rpc_execute+0xbc/0x480
+ rpc_async_schedule+0x2f/0x40
+ process_one_work+0x232/0x5d0
+ worker_thread+0x1da/0x3d0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x10d/0x240
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+Modules linked in:
+CR2: 000000000000000c
+---[ end trace 0000000000000000 ]---
+
+Free the allocated nfs4_unlockdata when nfs_get_lock_context() fails and
+return NULL to terminate subsequent rpc_run_task, preventing NULL pointer
+dereference.
+
+Fixes: f30cb757f680 ("NFS: Always wait for I/O completion before unlock")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/20250417072508.3850532-1-lilingfeng3@huawei.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/nfs4proc.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -163,6 +163,7 @@ static const char * const topbuttonpad_p
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index ac3fab214df12..1005ecf7c250b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6732,10 +6732,18 @@ static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
+ 	struct nfs4_unlockdata *p;
+ 	struct nfs4_state *state = lsp->ls_state;
+ 	struct inode *inode = state->inode;
++	struct nfs_lock_context *l_ctx;
  
- static const char * const smbus_pnp_ids[] = {
- 	/* all of the topbuttonpad_pnp_ids are valid, we just add some extras */
-+	"DLL060d", /* Dell Precision M3800 */
- 	"LEN0048", /* X1 Carbon 3 */
- 	"LEN0046", /* X250 */
- 	"LEN0049", /* Yoga 11e */
+ 	p = kzalloc(sizeof(*p), GFP_NOFS);
+ 	if (p == NULL)
+ 		return NULL;
++	l_ctx = nfs_get_lock_context(ctx);
++	if (!IS_ERR(l_ctx)) {
++		p->l_ctx = l_ctx;
++	} else {
++		kfree(p);
++		return NULL;
++	}
+ 	p->arg.fh = NFS_FH(inode);
+ 	p->arg.fl = &p->fl;
+ 	p->arg.seqid = seqid;
+@@ -6743,7 +6751,6 @@ static struct nfs4_unlockdata *nfs4_alloc_unlockdata(struct file_lock *fl,
+ 	p->lsp = lsp;
+ 	/* Ensure we don't close file until we're done freeing locks! */
+ 	p->ctx = get_nfs_open_context(ctx);
+-	p->l_ctx = nfs_get_lock_context(ctx);
+ 	locks_init_lock(&p->fl);
+ 	locks_copy_lock(&p->fl, fl);
+ 	p->server = NFS_SERVER(inode);
+-- 
+2.39.5
+
 
 
 
