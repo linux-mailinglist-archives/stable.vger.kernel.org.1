@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5717ACB403
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC441ACB3BA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4FA1BA58AB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A98517E60B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDE61FF61E;
-	Mon,  2 Jun 2025 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0192A225768;
+	Mon,  2 Jun 2025 14:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvH6UO2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lpl38iXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057832AE9A;
-	Mon,  2 Jun 2025 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06A22222A9;
+	Mon,  2 Jun 2025 14:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874815; cv=none; b=XAfL4KcsDjDMvFv4JVuPz4QfKvYTqfP/rH5fNr/MpUxGaM0iyHYP++ivSUSK05CChucj0/BFwKywh134+o7pPRrl5Db/QMkBip/QWSaKvRqdAxIU4Nsw6DjX5oZCifFZO0pUkaRHvGV2Ffb4mSP2UnMrxeZMoEF3JzqpHOxbywY=
+	t=1748874232; cv=none; b=pC/Bq/0fFceev+VdCEI6wU0efxC45BrwfkvS8Z6ekp4qzuKHZQxOzShSFatqlbKbt4Wc7scbTm8ImVI3j2/9amGTw1W0wAR0ys8TGGvgSQqvatCidaHL80SnpQ0F5FVCU/mNfH9DQ6o/qc90CFQhQHOj3M6gfKtbjdyxmj2E9lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874815; c=relaxed/simple;
-	bh=kYS0A7lSf8NNjaFiTtAUQkUbDO1XAuGvIYBgm5MlpHU=;
+	s=arc-20240116; t=1748874232; c=relaxed/simple;
+	bh=DRzqPZjq+NN5VXvSZygxNnhuFxQRQIpKaSUhXJNbd8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9msFjEIBmWqJS4IXBwSt2vzWZqK+Fbco/7ub50cul0JWgbIHzhkc7irGW/WSR8E3ksbzOKNzRuHLxiJhUlqn48UhMniC0t4+GVm4SQqsvR1wbMjv9pdePQQUzZplcpyeE+dUEWzfmX6FBTZd3ct2IGl0MdvAkIlZFLO4nF/3n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvH6UO2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E66C4CEEB;
-	Mon,  2 Jun 2025 14:33:34 +0000 (UTC)
+	 MIME-Version; b=Aa7sWzuQAubwVpnDez9DyNzyl9Nc4xEyUILXW+4sNnTZY5CmUjQRloYWbu9m1Jh1F5WbfjHnOgls8hrfnOEHMYQtAX9KkMlbSluBgI4Y3/CIzuBc8BElRV+Jvg7gjQxnz7nk68R4kzoVeIR8VTgrX+cZ4E8gNOjQ3VN4qHEB6mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lpl38iXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAA3C4CEEB;
+	Mon,  2 Jun 2025 14:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874814;
-	bh=kYS0A7lSf8NNjaFiTtAUQkUbDO1XAuGvIYBgm5MlpHU=;
+	s=korg; t=1748874232;
+	bh=DRzqPZjq+NN5VXvSZygxNnhuFxQRQIpKaSUhXJNbd8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvH6UO2zPVOTtF/mb1QT67TToYLU6AiVNQN1Q4z0upXpOcjXoIhvXUjk/QwMMngkn
-	 jmDAQX8bqJ4sZmbnJzOunS96/rMPbIF7gbouLdXxOaag6PkN3IEAQyNzoxpheleU84
-	 uUKUM/5GD1aKHwuTzXiYssDFmiS242NJWZEr2Qgs=
+	b=Lpl38iXnSeNWaFJPhxy7j6w56MudXE6NCQux1EO+jg/DdYZxeivSXsbsNXv+dhzUF
+	 lz934ZI9fq9BTcU1HoMUzRo5ookbfp4mokdHlNJYfF5/utiO5sdC4J/0yF3TrzbyH2
+	 zwPtCsmZag/FKgDILvLLNUxPw/FNQ4rpOF7qITQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/204] um: Store full CSGSFS and SS register from mcontext
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.6 372/444] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
 Date: Mon,  2 Jun 2025 15:47:16 +0200
-Message-ID: <20250602134259.709240231@linuxfoundation.org>
+Message-ID: <20250602134356.014247542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit cef721e0d53d2b64f2ba177c63a0dfdd7c0daf17 ]
+commit b04f0d89e880bc2cca6a5c73cf287082c91878da upstream.
 
-Doing this allows using registers as retrieved from an mcontext to be
-pushed to a process using PTRACE_SETREGS.
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-It is not entirely clear to me why CSGSFS was masked. Doing so creates
-issues when using the mcontext as process state in seccomp and simply
-copying the register appears to work perfectly fine for ptrace.
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
 
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Link: https://patch.msgid.link/20250224181827.647129-2-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
+
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
+
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/um/os-Linux/mcontext.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/um/os-Linux/mcontext.c b/arch/x86/um/os-Linux/mcontext.c
-index 49c3744cac371..81b9d1f9f4e68 100644
---- a/arch/x86/um/os-Linux/mcontext.c
-+++ b/arch/x86/um/os-Linux/mcontext.c
-@@ -26,7 +26,6 @@ void get_regs_from_mc(struct uml_pt_regs *regs, mcontext_t *mc)
- 	COPY(RIP);
- 	COPY2(EFLAGS, EFL);
- 	COPY2(CS, CSGSFS);
--	regs->gp[CS / sizeof(unsigned long)] &= 0xffff;
--	regs->gp[CS / sizeof(unsigned long)] |= 3;
-+	regs->gp[SS / sizeof(unsigned long)] = mc->gregs[REG_CSGSFS] >> 48;
- #endif
- }
--- 
-2.39.5
-
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+@@ -26,6 +26,8 @@
+ 
+ 	leds {
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
+ 
+ 		led-power1 {
+ 			label = "udpu:green:power";
+@@ -82,8 +84,6 @@
+ 
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	flash@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -108,6 +108,10 @@
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
++
+ &pinctrl_nb {
+ 	i2c2_recovery_pins: i2c2-recovery-pins {
+ 		groups = "i2c2";
 
 
 
