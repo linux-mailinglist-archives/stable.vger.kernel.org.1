@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-150006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C1EACB564
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9A8ACB338
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C8959E3E27
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827CA4A113F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3449225768;
-	Mon,  2 Jun 2025 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFE9226D19;
+	Mon,  2 Jun 2025 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HckoOccT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/wz5vc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B821FF61E;
-	Mon,  2 Jun 2025 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D112222CA;
+	Mon,  2 Jun 2025 14:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875735; cv=none; b=cEfn70tTEKMBV4wP0LdCYXvMnyo+u4wxNYFsU8CXyK91Gsb7f5ylmxCJ+XDAooDkhHgp8dt/5tTmtCONQtI+cgffpyGESxTBkjHkWotQJyp8VTbXDX2Wo2NzpRG+MF9njIJCHSbA5S5AB64SV4lOBwmij1HssL7Fa57P8d1kfDA=
+	t=1748874280; cv=none; b=FRPZEgv42Xe1cPNkGNB9ngwIMLHBGkSbjJQVmxevfXoodD+gd7J8700+nCdyqGglfr5LtA5EYEXiV0lHkbQtki87ILUEsut0lXmtXAay8R8NSGsuVNz13+i58Z2W/VxNJxay0sn/Cd1fVcfR9WMhujOt3ulSYbVeomYpfIosX98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875735; c=relaxed/simple;
-	bh=MjvOitvLGL4V9y6W6RQ3CXYBu5ukEDlzI/RljGdHHao=;
+	s=arc-20240116; t=1748874280; c=relaxed/simple;
+	bh=INvF3psh6b0Q74LMvaI+nxlRDdlPett82R+NJjcnW+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Siulxh144pcksRLrbZDC0cknMpXPPa8h4VXo1cophAtO+NbpBxn5vniqFnHiLAQtg/WEWQ8I0TlaxSQxXH5tZA2vlUfOqWPM2siM2UWmufL3mzCDONENNad3uMlLaE/drEF/vQw9rf8Za13tNHKKfCNQAkCk6nZl5cg3WnjBc/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HckoOccT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9F5C4CEEB;
-	Mon,  2 Jun 2025 14:48:54 +0000 (UTC)
+	 MIME-Version; b=AObHFEbFAVHwA6vOM50TgXMIPoqGs7AV31EaDcQMCHJslYaMW8MFkKPDNmR8PjQfMOM2YyRaok6sE5vK3Wm8DThkaDCtxcW59ESdpsMJQkDX2FLmQxbqRlfk4S7yOE8aw/GJ0UfjaAWxBzRrRKYtevwHyNdPbJCV4vGXQ0GtCgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/wz5vc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483C5C4CEEB;
+	Mon,  2 Jun 2025 14:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875735;
-	bh=MjvOitvLGL4V9y6W6RQ3CXYBu5ukEDlzI/RljGdHHao=;
+	s=korg; t=1748874280;
+	bh=INvF3psh6b0Q74LMvaI+nxlRDdlPett82R+NJjcnW+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HckoOccTUNYmbniOgQGLd4U+2RC647gvropU237BN8raRgwjJ2cFOkEAoXeGUEdvO
-	 MVtqVtls8U2HiVCVDpSz+LbpK/w/EGDSPGWg7noxSpwhZDl1b/pTQskUbl9knnhGFb
-	 BuCTirYUSsJglcjzHmNhRupksE3Xq/lsAj0NcBgk=
+	b=z/wz5vc39gnlJb9R5/cSAytDV8udfudLsqg07Hai3ADRdkDCs7NVUM2hKqWvMPeWL
+	 GPOPCkq23jSAxj/Uudt8XpjYy0PB/LTR771S4hwTyUvMw8VDqCJLFvdKck9WcLoffm
+	 ya6/rkxIFWisNe7jaCWPex26c+kYduH7o1kbOdwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/270] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 418/444] af_unix: Add dead flag to struct scm_fp_list.
 Date: Mon,  2 Jun 2025 15:48:02 +0200
-Message-ID: <20250602134315.250265330@linuxfoundation.org>
+Message-ID: <20250602134357.908089166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
+commit 7172dc93d621d5dc302d007e95ddd1311ec64283 upstream.
 
-In the sensor_count field of the MTEWE register, bits 1-62 are
-supported only for unmanaged switches, not for NICs, and bit 63
-is reserved for internal use.
+Commit 1af2dface5d2 ("af_unix: Don't access successor in unix_del_edges()
+during GC.") fixed use-after-free by avoid accessing edge->successor while
+GC is in progress.
 
-To prevent confusing output that may include set bits that are
-not relevant to NIC sensors, we update the bitmask to retain only
-the first bit, which corresponds to the sensor ASIC.
+However, there could be a small race window where another process could
+call unix_del_edges() while gc_in_progress is true and __skb_queue_purge()
+is on the way.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
-Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
+So, we need another marker for struct scm_fp_list which indicates if the
+skb is garbage-collected.
+
+This patch adds dead flag in struct scm_fp_list and set it true before
+calling __skb_queue_purge().
+
+Fixes: 1af2dface5d2 ("af_unix: Don't access successor in unix_del_edges() during GC.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240508171150.50601-1-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/scm.h  |    1 +
+ net/core/scm.c     |    1 +
+ net/unix/garbage.c |   14 ++++++++++----
+ 3 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-index 3ce17c3d7a001..9d7b0a4cc48a9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
-@@ -156,6 +156,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
- 	u64 value_msb;
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -32,6 +32,7 @@ struct scm_fp_list {
+ 	short			max;
+ #ifdef CONFIG_UNIX
+ 	bool			inflight;
++	bool			dead;
+ 	struct list_head	vertices;
+ 	struct unix_edge	*edges;
+ #endif
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -91,6 +91,7 @@ static int scm_fp_copy(struct cmsghdr *c
+ 		fpl->user = NULL;
+ #if IS_ENABLED(CONFIG_UNIX)
+ 		fpl->inflight = false;
++		fpl->dead = false;
+ 		fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&fpl->vertices);
+ #endif
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -158,13 +158,11 @@ static void unix_add_edge(struct scm_fp_
+ 	unix_update_graph(unix_edge_successor(edge));
+ }
  
- 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
-+	/* bit 1-63 are not supported for NICs,
-+	 * hence read only bit 0 (asic) from lsb.
-+	 */
-+	value_lsb &= 0x1;
- 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
+-static bool gc_in_progress;
+-
+ static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
+ {
+ 	struct unix_vertex *vertex = edge->predecessor->vertex;
  
- 	mlx5_core_warn(events->dev,
--- 
-2.39.5
-
+-	if (!gc_in_progress)
++	if (!fpl->dead)
+ 		unix_update_graph(unix_edge_successor(edge));
+ 
+ 	list_del(&edge->vertex_entry);
+@@ -240,7 +238,7 @@ void unix_del_edges(struct scm_fp_list *
+ 		unix_del_edge(fpl, edge);
+ 	} while (i < fpl->count_unix);
+ 
+-	if (!gc_in_progress) {
++	if (!fpl->dead) {
+ 		receiver = fpl->edges[0].successor;
+ 		receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
+ 	}
+@@ -559,9 +557,12 @@ static void unix_walk_scc_fast(struct sk
+ 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
+ }
+ 
++static bool gc_in_progress;
++
+ static void __unix_gc(struct work_struct *work)
+ {
+ 	struct sk_buff_head hitlist;
++	struct sk_buff *skb;
+ 
+ 	spin_lock(&unix_gc_lock);
+ 
+@@ -579,6 +580,11 @@ static void __unix_gc(struct work_struct
+ 
+ 	spin_unlock(&unix_gc_lock);
+ 
++	skb_queue_walk(&hitlist, skb) {
++		if (UNIXCB(skb).fp)
++			UNIXCB(skb).fp->dead = true;
++	}
++
+ 	__skb_queue_purge(&hitlist);
+ skip_gc:
+ 	WRITE_ONCE(gc_in_progress, false);
 
 
 
