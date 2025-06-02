@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4C2ACB89F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EE8ACB6B3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3676F1945E3A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD744194339C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4E0232785;
-	Mon,  2 Jun 2025 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC98E215F6B;
+	Mon,  2 Jun 2025 15:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIqgK0CP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jP/E72t4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEC823024D;
-	Mon,  2 Jun 2025 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FAE290F;
+	Mon,  2 Jun 2025 15:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877502; cv=none; b=F2qrT0CLbJ/irQN3dXXTrrLOc4tq43PXBX4MiMPJ/7xSLkvfX2h/PQU6xLcyO9VUnk6nbG58H56T0KQzYABQ9EqWczblUwvYBbQH34QRd5G6YAst4/lXeadUhCG7QhLCdmUHACUM3cR2Jn8QgQKrWKznLjNUOqB3E0DJOVlqKKc=
+	t=1748876520; cv=none; b=Ccl5zjykXX2Zc5hsMY2visUfG7QWg3SzuqFw9egsEII8Evjx4IB7ZiLQdlOZGz4H4bLb8AS2Yh1BgwDf0wyPqvHqFiKIEYFYTSSH113qsZEyaeuRSOTElIMhyzm/l+f+KBgPYCYH1RHU35Imc97gV/ROZd5IQzARRzFKe/bcnXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877502; c=relaxed/simple;
-	bh=4OpAi8ZU2xFbT9+pXpZCLotOHYI+QPRvzQA9r5Q8M4o=;
+	s=arc-20240116; t=1748876520; c=relaxed/simple;
+	bh=i5QW6dukcxgk0rspEYMV/+ZDysHqR6UG0CAwGxbJphg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skOOEU6oSCoWkGHLaY5qOFBRScGftUE5ENi4AnnV7O3YnC5eTsyRVkFaz+sEaq0N00fXmNjwAfw3Ktf7cT59/VSYLBC2cwIYc0x2y0DOWdSKIS4mUtx1M00/wRncqxSep41RraD0p014jmuIe9aYquRK4M8uZPFbZ0HaAX5dk4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIqgK0CP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903CBC4CEEE;
-	Mon,  2 Jun 2025 15:18:21 +0000 (UTC)
+	 MIME-Version; b=qgDbjaap8gli8ucx6rOWxTCq07glX7nVmkc+Zf46DSp17Lqwxf/lg3X2UWf5XVVhSQjhQ9pJYWOsB1G63j69/mj5gNZ2M9VTMO1tJ+geBQKon1zSXQLDLPJkbIbkMg2164WJ7DMmdo8Zq2BIi+Od6c0TI/pX+jD7FONyWxMu+2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jP/E72t4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1149CC4CEEB;
+	Mon,  2 Jun 2025 15:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877502;
-	bh=4OpAi8ZU2xFbT9+pXpZCLotOHYI+QPRvzQA9r5Q8M4o=;
+	s=korg; t=1748876520;
+	bh=i5QW6dukcxgk0rspEYMV/+ZDysHqR6UG0CAwGxbJphg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIqgK0CPlpecKnWpM6pgkHDlxrI8N4cO+riCyD9c6kxk4tI7B1PL7Yf1nJpVyZnrn
-	 zGOcGreFO22qGl9mAE2obnK4BAMACzezm1NV7i6LTG9Yan00vM70KLSqsQEt/Gt18m
-	 5b5lJxV45hGC39NiP0Q6vDzcYLSI+5mlSvzYxECA=
+	b=jP/E72t4+biQrSuMfuSFBv20fWel0Bicc/29tiUcgueM85Kbs6xohWCRfqxeztGu5
+	 PPXE+bh4zC9NLS8aVGJxVv+kK+jkgTnvzX2gGuzNhMelpS9JQ9gOF/oD5fXoLokzB8
+	 poe6KKDu6uHHvlvCdctDnhzLiwx9Wi7UZxr9zD5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 297/325] af_unix: Skip GC if no cycle exists.
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	David Gow <davidgow@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 201/207] um: let make clean properly clean underlying SUBARCH as well
 Date: Mon,  2 Jun 2025 15:49:33 +0200
-Message-ID: <20250602134331.973810349@linuxfoundation.org>
+Message-ID: <20250602134306.656657961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,159 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 77e5593aebba823bcbcf2c4b58b07efcd63933b8 upstream.
+[ Upstream commit ab09da75700e9d25c7dfbc7f7934920beb5e39b9 ]
 
-We do not need to run GC if there is no possible cyclic reference.
-We use unix_graph_maybe_cyclic to decide if we should run GC.
+Building the kernel with O= is affected by stale in-tree build artifacts.
 
-If a fd of an AF_UNIX socket is passed to an already inflight AF_UNIX
-socket, they could form a cyclic reference.  Then, we set true to
-unix_graph_maybe_cyclic and later run Tarjan's algorithm to group
-them into SCC.
+So, if the source tree is not clean, Kbuild displays the following:
 
-Once we run Tarjan's algorithm, we are 100% sure whether cyclic
-references exist or not.  If there is no cycle, we set false to
-unix_graph_maybe_cyclic and can skip the entire garbage collection
-next time.
+  $ make ARCH=um O=build defconfig
+  make[1]: Entering directory '/.../linux/build'
+  ***
+  *** The source tree is not clean, please run 'make ARCH=um mrproper'
+  *** in /.../linux
+  ***
+  make[2]: *** [/.../linux/Makefile:673: outputmakefile] Error 1
+  make[1]: *** [/.../linux/Makefile:248: __sub-make] Error 2
+  make[1]: Leaving directory '/.../linux/build'
+  make: *** [Makefile:248: __sub-make] Error 2
 
-When finalising SCC, we set true to unix_graph_maybe_cyclic if SCC
-consists of multiple vertices.
+Usually, running 'make mrproper' is sufficient for cleaning the source
+tree for out-of-tree builds.
 
-Even if SCC is a single vertex, a cycle might exist as self-fd passing.
-Given the corner case is rare, we detect it by checking all edges of
-the vertex and set true to unix_graph_maybe_cyclic.
+However, building UML generates build artifacts not only in arch/um/,
+but also in the SUBARCH directory (i.e., arch/x86/). If in-tree stale
+files remain under arch/x86/, Kbuild will reuse them instead of creating
+new ones under the specified build directory.
 
-With this change, __unix_gc() is just a spin_lock() dance in the normal
-usage.
+This commit makes 'make ARCH=um clean' recurse into the SUBARCH directory.
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-11-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Shuah Khan <skhan@linuxfoundation.org>
+Closes: https://lore.kernel.org/lkml/20250502172459.14175-1-skhan@linuxfoundation.org/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Johannes Berg <johannes@sipsolutions.net>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/garbage.c |   48 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ arch/um/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -112,6 +112,19 @@ static struct unix_vertex *unix_edge_suc
- 	return edge->successor->vertex;
- }
+diff --git a/arch/um/Makefile b/arch/um/Makefile
+index 3dbd0e3b660ea..1257ef03d1b7a 100644
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -153,5 +153,6 @@ MRPROPER_FILES += $(HOST_DIR)/include/generated
+ archclean:
+ 	@find . \( -name '*.bb' -o -name '*.bbg' -o -name '*.da' \
+ 		-o -name '*.gcov' \) -type f -print | xargs rm -f
++	$(Q)$(MAKE) -f $(srctree)/Makefile ARCH=$(HEADER_ARCH) clean
  
-+static bool unix_graph_maybe_cyclic;
-+
-+static void unix_update_graph(struct unix_vertex *vertex)
-+{
-+	/* If the receiver socket is not inflight, no cyclic
-+	 * reference could be formed.
-+	 */
-+	if (!vertex)
-+		return;
-+
-+	unix_graph_maybe_cyclic = true;
-+}
-+
- static LIST_HEAD(unix_unvisited_vertices);
- 
- enum unix_vertex_index {
-@@ -138,12 +151,16 @@ static void unix_add_edge(struct scm_fp_
- 
- 	vertex->out_degree++;
- 	list_add_tail(&edge->vertex_entry, &vertex->edges);
-+
-+	unix_update_graph(unix_edge_successor(edge));
- }
- 
- static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
- 	struct unix_vertex *vertex = edge->predecessor->vertex;
- 
-+	unix_update_graph(unix_edge_successor(edge));
-+
- 	list_del(&edge->vertex_entry);
- 	vertex->out_degree--;
- 
-@@ -227,6 +244,7 @@ out:
- void unix_update_edges(struct unix_sock *receiver)
- {
- 	spin_lock(&unix_gc_lock);
-+	unix_update_graph(unix_sk(receiver->listener)->vertex);
- 	receiver->listener = NULL;
- 	spin_unlock(&unix_gc_lock);
- }
-@@ -268,6 +286,26 @@ void unix_destroy_fpl(struct scm_fp_list
- 	unix_free_vertices(fpl);
- }
- 
-+static bool unix_scc_cyclic(struct list_head *scc)
-+{
-+	struct unix_vertex *vertex;
-+	struct unix_edge *edge;
-+
-+	/* SCC containing multiple vertices ? */
-+	if (!list_is_singular(scc))
-+		return true;
-+
-+	vertex = list_first_entry(scc, typeof(*vertex), scc_entry);
-+
-+	/* Self-reference or a embryo-listener circle ? */
-+	list_for_each_entry(edge, &vertex->edges, vertex_entry) {
-+		if (unix_edge_successor(edge) == vertex)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static LIST_HEAD(unix_visited_vertices);
- static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
- 
-@@ -353,6 +391,9 @@ prev_vertex:
- 			vertex->index = unix_vertex_grouped_index;
- 		}
- 
-+		if (!unix_graph_maybe_cyclic)
-+			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-+
- 		list_del(&scc);
- 	}
- 
-@@ -363,6 +404,8 @@ prev_vertex:
- 
- static void unix_walk_scc(void)
- {
-+	unix_graph_maybe_cyclic = false;
-+
- 	/* Visit every vertex exactly once.
- 	 * __unix_walk_scc() moves visited vertices to unix_visited_vertices.
- 	 */
-@@ -524,6 +567,9 @@ static void __unix_gc(struct work_struct
- 
- 	spin_lock(&unix_gc_lock);
- 
-+	if (!unix_graph_maybe_cyclic)
-+		goto skip_gc;
-+
- 	unix_walk_scc();
- 
- 	/* First, select candidates for garbage collection.  Only
-@@ -633,7 +679,7 @@ static void __unix_gc(struct work_struct
- 
- 	/* All candidates should have been detached by now. */
- 	WARN_ON_ONCE(!list_empty(&gc_candidates));
--
-+skip_gc:
- 	/* Paired with READ_ONCE() in wait_for_unix_gc(). */
- 	WRITE_ONCE(gc_in_progress, false);
- 
+ export HEADER_ARCH SUBARCH USER_CFLAGS CFLAGS_NO_HARDENING OS DEV_NULL_PATH
+-- 
+2.39.5
+
 
 
 
