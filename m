@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-149098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C3AACB04F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:03:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05CF6ACB020
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366813A84C7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:02:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C9D189D22A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83990221737;
-	Mon,  2 Jun 2025 14:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BFB221DBD;
+	Mon,  2 Jun 2025 13:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rloahgxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDHxRHQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F05C2C327B;
-	Mon,  2 Jun 2025 14:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA05A1E1A3F;
+	Mon,  2 Jun 2025 13:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872889; cv=none; b=eNfgCy/MxzeACT3x4u7vyreQBbqxBq9l1WToORISlx1mxCwVPG3rCKNvyGSMxPUEVF8FsCNNCZx+fscdAJABR9LkSDTBLiOoraM6OWM17Jg2YIjErQdtR0mE/+YbSy+4Q6KEURLx4eK8LjJoj2p/S/8+B2UfNzZPvi4dAddBarE=
+	t=1748872781; cv=none; b=pQ/j5iPWASmu50DDhCuAR/D4HVkYOPuGVhKqr2ytRZw9uzgrCvD+TxDf3Lupl6ToDQjgpd0Pj7W+Y3lnKiuSrmfx0C/ZSFdxCayEW+6aZh/wFhHw4Bf3nNXeaiKwM6pw0yNfRvq+79MAaxcy4w3lr9z7yoj+M2D7zWJEWg6vYLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872889; c=relaxed/simple;
-	bh=gBteSSYCzoB+nARsQqe0kjskAPq55I2IfuQO+2VKqPg=;
+	s=arc-20240116; t=1748872781; c=relaxed/simple;
+	bh=Wk7aPHnliwnElzbS4Ph6NfXEen9aqTq6qv4FAATPvJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTe4RJ5uGyDfohdKuor0Yylm+EJgxS2RiHB2DklZ54BMo4JcNitmtmNFw8P6yN+xyZla9D48UrQpg8hu9jG+D503jEAv/EvfUaFFzsChzzR1tDrPkfoRn6ZeG9i5Q8MQEK+d/xHlmGLoQBQITqsp762mpcqDPdpVJeUKB0wZKaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rloahgxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62507C4CEEB;
-	Mon,  2 Jun 2025 14:01:28 +0000 (UTC)
+	 MIME-Version; b=qENrOZcwWYWSgTo+ks2xq5E+Bv8T4dcUlzJ/hSIKrD/3GDcQwEPe32FWMJkuzByaRHTLMJdMxYoThd5BttIWUhmLjzpPGtEZ0GDdnPxhd+6JdfsgQzJN0BBzXf3ctiVPTJYp6N97KuaQLQEWPnR/8W9saQv23ibtUZRnL6Qg/Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDHxRHQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5D2C4CEEB;
+	Mon,  2 Jun 2025 13:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872889;
-	bh=gBteSSYCzoB+nARsQqe0kjskAPq55I2IfuQO+2VKqPg=;
+	s=korg; t=1748872780;
+	bh=Wk7aPHnliwnElzbS4Ph6NfXEen9aqTq6qv4FAATPvJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rloahgxhI8XWKAl+P6vzjXGwDFZ0PvoabVRGhvla1inwIRBRZQOMoGhQQOfPypsJF
-	 z+UuB4MpmeQotlPmBI+2YdoeP47dK3zurZ79+N+ROzt1J5bKXDnwyzCu+eCbH4OYa+
-	 7/ND202mN/vYGtDtrvOfko8KNHDu6RaqaSRokw1Y=
+	b=ZDHxRHQMd+tH5/AUR5W6kGNsXSmv3IGww2kFO14T/yIr20gWFs3UrFF4vDYPrftR6
+	 X95s4LB7eydBpZbNDTXb/jC/xYZr+LzHDJjVOiNZ0GUc+GFzTt7rzBIY2jJSXqCxbw
+	 kTWYHZdsM5jPwxiSIsNMJ4RORRi6J66F+ykOZWpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 05/55] arm64: dts: qcom: sm8350: Fix typo in pil_camera_mem node
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Neha Malcom Francis <n-francis@ti.com>,
+	Jai Luthra <jai.luthra@linux.dev>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.14 36/73] arm64: dts: ti: k3-j721e-sk: Remove clock-names property from IMX219 overlay
 Date: Mon,  2 Jun 2025 15:47:22 +0200
-Message-ID: <20250602134238.481858849@linuxfoundation.org>
+Message-ID: <20250602134243.120258886@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-commit 295217420a44403a33c30f99d8337fe7b07eb02b upstream.
+commit 24ab76e55ef15450c6681a2b5db4d78f45200939 upstream.
 
-There is a typo in sm8350.dts where the node label
-mmeory@85200000 should be memory@85200000.
-This patch corrects the typo for clarity and consistency.
+The IMX219 sensor device tree bindings do not include a clock-names
+property. Remove the incorrectly added clock-names entry to avoid
+dtbs_check warnings.
 
-Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
+Fixes: f767eb918096 ("arm64: dts: ti: k3-j721e-sk: Add overlay for IMX219")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250514114656.2307828-1-alok.a.tiwari@oracle.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Reviewed-by: Neha Malcom Francis <n-francis@ti.com>
+Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
+Link: https://lore.kernel.org/r/20250415111328.3847502-4-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -455,7 +455,7 @@
- 			no-map;
- 		};
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk-csi2-dual-imx219.dtso
+@@ -34,7 +34,6 @@
+ 		reg = <0x10>;
  
--		pil_camera_mem: mmeory@85200000 {
-+		pil_camera_mem: memory@85200000 {
- 			reg = <0x0 0x85200000 0x0 0x500000>;
- 			no-map;
- 		};
+ 		clocks = <&clk_imx219_fixed>;
+-		clock-names = "xclk";
+ 
+ 		port {
+ 			csi2_cam0: endpoint {
+@@ -56,7 +55,6 @@
+ 		reg = <0x10>;
+ 
+ 		clocks = <&clk_imx219_fixed>;
+-		clock-names = "xclk";
+ 
+ 		port {
+ 			csi2_cam1: endpoint {
 
 
 
