@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-149649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F81ACB3C5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE32ACB837
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EC731940E07
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3B4E1C24054
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C49232785;
-	Mon,  2 Jun 2025 14:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D467223327;
+	Mon,  2 Jun 2025 15:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFjrnro7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O29hqxM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6192C231C9C;
-	Mon,  2 Jun 2025 14:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B99A22258C;
+	Mon,  2 Jun 2025 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874603; cv=none; b=Aer30nO/4zZDf5CAwM7/JJcmbqkU9aXcBMuvIGRR/UnmzSYULdEMuGKVIH74f5MCMjoukwNzyChNkX/ovPzjDXQNKQZ2stxsuAQwhhT5bgEgtxDA9mlCceSi3GyHqlOZWt0mCvCx/qHUaDyCR8REOFsV4fN5YmrlTDvduHFdKuk=
+	t=1748877020; cv=none; b=oHPquv5a8UvqzFmrCQrprEPh76himSSXFjpsR5MIMbJE1CpuO82JqCt/0hPuXxMLME9UzfDCdiGg18JYww8Nb4V5TsMBm5pv4d2uA3GMb41KGAVwkw7oYW8njuSu9Z60SLkmy1Dj1zYikkTjetqH7Hopnmcv4FlGHpydZnMynn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874603; c=relaxed/simple;
-	bh=NmovvHZ83CDjL1Y90mr06epUCMlVzQNtTkfFnTGpf4c=;
+	s=arc-20240116; t=1748877020; c=relaxed/simple;
+	bh=X1XGES9yok0sA/OBvKvQsWZmMcaa1U9omSgXdjuAKTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfpoNiHagINM0GzLC+jDGsFfsUcl2Cct7cfVIy+T3a0qXcaoY9N6AITjrihMZTFD7TktlCLGs74zvdrHBGb6UbAWSrM/k2pgfWJTXn6+F7Dx+qIk5FYME2SUjI9Oq1OkuacUlPsEOvnxJLo7X/R0h7VgR4KwNSFAWSPfErQ49BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFjrnro7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60D7C4CEEB;
-	Mon,  2 Jun 2025 14:30:02 +0000 (UTC)
+	 MIME-Version; b=oKF9qtF/V2BK307qYdj3U/BB2glsFM0qCdmw2/Q8aq+e5MIWfskEW8zxYBJ7OpAmlBY+NT2yY+OMphWRaUu49xcyx6hu0gH48Q2REZRIB3hwDF++icNjChJkXRibPYkFWOR6NUnBFP6wQixkcXd/Jri9Ga5fKDnLuri+jXdDaJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O29hqxM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321F9C4CEEB;
+	Mon,  2 Jun 2025 15:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874603;
-	bh=NmovvHZ83CDjL1Y90mr06epUCMlVzQNtTkfFnTGpf4c=;
+	s=korg; t=1748877016;
+	bh=X1XGES9yok0sA/OBvKvQsWZmMcaa1U9omSgXdjuAKTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFjrnro7NLxvDWGRizSfAP2QbyOJ1aImt6w/0oL6NZuX1oZ5uKLsqYU5onB1BZ/qH
-	 FXK+i9yk96pH4pYogvLuyWVCM4GXYFEbOgh3V8bSNeVDKs98waAhNGQ36mQki8igEn
-	 ztRQqXfAkV+4UINxjRkLi389kqgREHeVJoRlqu50=
+	b=O29hqxM5sprqlzK5+Kl+BY96sXP671lA48d50VbCkapPVUcd/Hi4o52ZxPWusnd+2
+	 98mfolvyF9DpMGJ+JE5zwBJ9Pzkrub/DmCp0GE4ZkiOxuB4yXuhY83xOO9c5b4Ldih
+	 MI1A9qCJtFcIj3qHZ3D9BirN8d0WopLcwjcaSJaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 5.4 047/204] module: ensure that kobject_put() is safe for module type kobjects
-Date: Mon,  2 Jun 2025 15:46:20 +0200
-Message-ID: <20250602134257.531970151@linuxfoundation.org>
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/325] net: phylink: use pl->link_interface in phylink_expects_phy()
+Date: Mon,  2 Jun 2025 15:46:21 +0200
+Message-ID: <20250602134324.048948021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Choong Yong Liang <yong.liang.choong@linux.intel.com>
 
-commit a6aeb739974ec73e5217c75a7c008a688d3d5cf1 upstream.
+[ Upstream commit b63263555eaafbf9ab1a82f2020bbee872d83759 ]
 
-In 'lookup_or_create_module_kobject()', an internal kobject is created
-using 'module_ktype'. So call to 'kobject_put()' on error handling
-path causes an attempt to use an uninitialized completion pointer in
-'module_kobject_release()'. In this scenario, we just want to release
-kobject without an extra synchronization required for a regular module
-unloading process, so adding an extra check whether 'complete()' is
-actually required makes 'kobject_put()' safe.
+The phylink_expects_phy() function allows MAC drivers to check if they are
+expecting a PHY to attach. The checking condition in phylink_expects_phy()
+aims to achieve the same result as the checking condition in
+phylink_attach_phy().
 
-Reported-by: syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7fb8a372e1f6add936dd
-Fixes: 942e443127e9 ("module: Fix mod->mkobj.kobj potentially freed too early")
-Cc: stable@vger.kernel.org
-Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20250507065044.86529-1-dmantipov@yandex.ru
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the checking condition in phylink_expects_phy() uses
+pl->link_config.interface, while phylink_attach_phy() uses
+pl->link_interface.
+
+Initially, both pl->link_interface and pl->link_config.interface are set
+to SGMII, and pl->cfg_link_an_mode is set to MLO_AN_INBAND.
+
+When the interface switches from SGMII to 2500BASE-X,
+pl->link_config.interface is updated by phylink_major_config().
+At this point, pl->cfg_link_an_mode remains MLO_AN_INBAND, and
+pl->link_config.interface is set to 2500BASE-X.
+Subsequently, when the STMMAC interface is taken down
+administratively and brought back up, it is blocked by
+phylink_expects_phy().
+
+Since phylink_expects_phy() and phylink_attach_phy() aim to achieve the
+same result, phylink_expects_phy() should check pl->link_interface,
+which never changes, instead of pl->link_config.interface, which is
+updated by phylink_major_config().
+
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Choong Yong Liang <yong.liang.choong@linux.intel.com>
+Link: https://patch.msgid.link/20250227121522.1802832-2-yong.liang.choong@linux.intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/params.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/phy/phylink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -946,7 +946,9 @@ int module_sysfs_initialized;
- static void module_kobj_release(struct kobject *kobj)
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index fc58e4afb38dd..3069a7df25d3f 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1566,7 +1566,7 @@ bool phylink_expects_phy(struct phylink *pl)
  {
- 	struct module_kobject *mk = to_module_kobject(kobj);
--	complete(mk->kobj_completion);
-+
-+	if (mk->kobj_completion)
-+		complete(mk->kobj_completion);
+ 	if (pl->cfg_link_an_mode == MLO_AN_FIXED ||
+ 	    (pl->cfg_link_an_mode == MLO_AN_INBAND &&
+-	     phy_interface_mode_is_8023z(pl->link_config.interface)))
++	     phy_interface_mode_is_8023z(pl->link_interface)))
+ 		return false;
+ 	return true;
  }
- 
- struct kobj_type module_ktype = {
+-- 
+2.39.5
+
 
 
 
