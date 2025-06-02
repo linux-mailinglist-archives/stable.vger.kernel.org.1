@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-149599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DF4ACB354
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:41:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8F3ACB617
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 873C31948353
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 620BB7A4767
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA3322B8CF;
-	Mon,  2 Jun 2025 14:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4581B238145;
+	Mon,  2 Jun 2025 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm1kDNXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lL1CpPzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F4C1CBA18;
-	Mon,  2 Jun 2025 14:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D2223644F;
+	Mon,  2 Jun 2025 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874447; cv=none; b=JwiVvg97x4y6e33I6zILVV4m0WDxZf0x920WMhcpA2lgbtlItbpZoM+EeAzmCFqAoVyh3El0jVRqVZgWNiIC0S1DT0fs3YdvmofgFsikHb3J/mz1uXtcqLbW0jPMOqmIHzPb+BHQbp2RbRF4M3GeEntmy8PS8zsnZxEYSyxZ6mo=
+	t=1748876814; cv=none; b=E/yfBsnRkUvcxnMoRvKpqqkOJFMhzhkpOiAjkdzreUK98qcLdtpp8xVsj5TT1Gk6qzL+vSDCjRCPed7jgbjzmmfix8yfkaB1Eh8etOn5+cBr1qMpT0K6hfnj+ajQX5TDvxBhyn43oNzm7vrT5QAIU2p5hCmY85EtzC8Xq6Y9olk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874447; c=relaxed/simple;
-	bh=GhlcC37eAoiIWb+iJXN2nniluH09D3qtMLYQSPgEqyo=;
+	s=arc-20240116; t=1748876814; c=relaxed/simple;
+	bh=cY2ny3TSupB+xy+obsMLXMCKNtWfGtp62MypO7UTF0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0yyX6CDKsR656Lg/LlScd/WOwyRoo+PRzXh74wZvOVjJYKSEdotruC8j4Dx6Hr78Wf5JeP6c7rZBbk0YRHI3gOH6B9QcO1Tce7xJbj/PEe25gPOZ9GYXSFqjlFV9eEppfIMA2+9Dq/rJhlFe73kTjR6dNBCgK1t3D7yUOen19s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm1kDNXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C4C4CEEB;
-	Mon,  2 Jun 2025 14:27:26 +0000 (UTC)
+	 MIME-Version; b=EkuxZ3p/rvIAkWNXGJP+Bke/4c1ldZ7/iJIUvlFav+L3Pb38xdT168FNcW2KTWWEDQ92kFlb7b7JcifNJIB6DHjwQ/I5gKuWFxl96XUIaiYsw+I1MZtDur+mVW8hgegmp7eja04KQOPQ3F0pDzaq/n9wNFhbNJCqrtLPwqYWeWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lL1CpPzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E61C4CEEB;
+	Mon,  2 Jun 2025 15:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874447;
-	bh=GhlcC37eAoiIWb+iJXN2nniluH09D3qtMLYQSPgEqyo=;
+	s=korg; t=1748876813;
+	bh=cY2ny3TSupB+xy+obsMLXMCKNtWfGtp62MypO7UTF0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hm1kDNXlEfOauMHo1ZbqUKXAeCpvJVSzQhI9T6vH3EamNQ3TS8fhwCwPbLh2yKShe
-	 8boxTn1hz/jG6O+lXNBwpoZxF67WYXBlEP7YjUbtcZrBOpTY9BZ672vEi7TrLDFhEZ
-	 aPVTagQpN9oQYdEubvRJwFA4HELLpM2XYYYvx7C8=
+	b=lL1CpPzFkinb2vRs2lb9aNLUS8R5BWAk6QOu/HPTi2ezamgScZ99Xe3tlj3f53x5D
+	 7q88f955Pc6r7+97lziIlnECFfpg9ynt5gWhWYe9rctStADHwlZsqBP3pQAkFnlePA
+	 uIWjrNPTyvHhQ7Ie9OyUpx31p3Uxyp0wThznWk8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@nxp.com>,
+	Will Deacon <will@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/204] usb: chipidea: imx: change hsic power regulator as optional
+Subject: [PATCH 6.1 083/325] arm64/mm: Check PUD_TYPE_TABLE in pud_bad()
 Date: Mon,  2 Jun 2025 15:45:59 +0200
-Message-ID: <20250602134256.712401903@linuxfoundation.org>
+Message-ID: <20250602134323.154358758@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +68,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@nxp.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 7d5ec335f94e74e885ca2f6c97a3479fe9fe3b15 ]
+[ Upstream commit bfb1d2b9021c21891427acc86eb848ccedeb274e ]
 
-Not every platform needs this regulator.
+pud_bad() is currently defined in terms of pud_table(). Although for some
+configs, pud_table() is hard-coded to true i.e. when using 64K base pages
+or when page table levels are less than 3.
 
-Signed-off-by: Peter Chen <peter.chen@nxp.com>
-Stable-dep-of: 8c531e0a8c2d ("usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling")
+pud_bad() is intended to check that the pud is configured correctly. Hence
+let's open-code the same check that the full version of pud_table() uses
+into pud_bad(). Then it always performs the check regardless of the config.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250221044227.1145393-7-anshuman.khandual@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c | 3 ++-
+ arch/arm64/include/asm/pgtable.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 0fe545815c5ce..09a7bee7203c5 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -369,7 +369,8 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
- 			return PTR_ERR(data->pinctrl_hsic_active);
- 		}
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 1d713cfb0af16..426c3cb3e3bb1 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -677,7 +677,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+ 	pr_err("%s:%d: bad pmd %016llx.\n", __FILE__, __LINE__, pmd_val(e))
  
--		data->hsic_pad_regulator = devm_regulator_get(dev, "hsic");
-+		data->hsic_pad_regulator =
-+				devm_regulator_get_optional(dev, "hsic");
- 		if (PTR_ERR(data->hsic_pad_regulator) == -EPROBE_DEFER) {
- 			return -EPROBE_DEFER;
- 		} else if (PTR_ERR(data->hsic_pad_regulator) == -ENODEV) {
+ #define pud_none(pud)		(!pud_val(pud))
+-#define pud_bad(pud)		(!pud_table(pud))
++#define pud_bad(pud)		((pud_val(pud) & PUD_TYPE_MASK) != \
++				 PUD_TYPE_TABLE)
+ #define pud_present(pud)	pte_present(pud_pte(pud))
+ #define pud_leaf(pud)		(pud_present(pud) && !pud_table(pud))
+ #define pud_valid(pud)		pte_valid(pud_pte(pud))
 -- 
 2.39.5
 
