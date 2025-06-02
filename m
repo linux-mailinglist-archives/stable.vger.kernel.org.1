@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D084ACB33C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 117A9ACB7DE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F61564011C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4C11C24D3C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FEB227586;
-	Mon,  2 Jun 2025 14:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF85223338;
+	Mon,  2 Jun 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gUR3b9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHS9a4AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E73226D16;
-	Mon,  2 Jun 2025 14:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4521A83E8;
+	Mon,  2 Jun 2025 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874278; cv=none; b=C0HI1xyN4HJ3wLFSGYcVltHLdio1CmYZLyvTNHYi0K0vjiC7x0OaTwQORt4Ctiysm0ktmgHEslCEGmjyyNhJXHfbL2csxlFQJ8EAkRPcwnUM5aHjduTDCGZq8td1pb/362aLPotGF+wXbceEsmBKv66/jf4dkq7fKMsLPAPEtUQ=
+	t=1748877266; cv=none; b=sxaEj2R3tlZK0/1DJ0NTT0h1pX/AFnb99iXk9dohEt22bSXtdR/LxJhM7WA0DI/n4HZLtjNm2vr2QDsdquDn1eVy9hAmhYH6ypqgTAl6Ut7U0Q5EQjTjJzca6qYskMSX3M5XtMwbnlfByjErkSTOijKzC7bpsiHNamvR6wpDjeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874278; c=relaxed/simple;
-	bh=IY8+OM2uZYSPqWfJZ9GSBEGBHKXisG7D2tbPzWbjlJ0=;
+	s=arc-20240116; t=1748877266; c=relaxed/simple;
+	bh=hQ/EcjyK5k+AhsFCsqwMjnVitDpyK8bfsY1AJZpIGPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o95MOKX8uYsr7Ps1Mv998o4wG5czoxaS1yk0cOj6SOf0jpgTRaO59zNTfLU8Q0cvDuhGG2LjqEvFlC5gKuI47pQxU05ecaSsAH8DTIlKSY6xURxVFBMhueZsm1aq8h9FCBvZxcaWfn8ZY3T7hjGSCpZmIftwYDabjKf30lTpjro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gUR3b9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFEFC4CEEB;
-	Mon,  2 Jun 2025 14:24:36 +0000 (UTC)
+	 MIME-Version; b=mqZfNDIILsrTw8x8hLujUoaRlMM1bvpgTyKu8VpjbQtuCK7PakBQsPy66O0E0yL1+GuMkvKTRnaxWI7m9O74kQxaiX2uNYx4Ze70JfQpOL1cw1ynFErLG/zMWSJ+Z4evbZuh9eb22mFYCOJlrQ55OLIcXI0Equ3N7+HAcDXZoh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHS9a4AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29611C4CEF0;
+	Mon,  2 Jun 2025 15:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874277;
-	bh=IY8+OM2uZYSPqWfJZ9GSBEGBHKXisG7D2tbPzWbjlJ0=;
+	s=korg; t=1748877266;
+	bh=hQ/EcjyK5k+AhsFCsqwMjnVitDpyK8bfsY1AJZpIGPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gUR3b9fvZGN4TF3jB9zbNOLHRHj+DmfrOLtJ1ERVZbEWvoIbJazB3oyAHula+iKd
-	 KeIuBMF8R32AJ18Q34/kZDMDBU5MeD1ZIDEciE4CdUbVUMTEV4Ju+xwnN9xT4Ul+Is
-	 2sMhBxuxHYIlCpKnJ/uN4COqQbzZm3n4ld5PRjSQ=
+	b=GHS9a4ABDVFnM/6UpmqFEfiMfbPB+Nfl7MwpIAEvdC+Dp2t3adZ7zTDlCWEM7i5fp
+	 Da6TjT/bWPrlLfyRtLAmtTvqHGnk522NBLpXgAqCksmLMm58H0U7mDfhkY9Dp8JtLt
+	 olktqAXRqdqfO/GjQOqeoYkF307GZxoaD10CnH1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f3f3eef1d2100200e593@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 417/444] af_unix: Dont access successor in unix_del_edges() during GC.
-Date: Mon,  2 Jun 2025 15:48:01 +0200
-Message-ID: <20250602134357.867055892@linuxfoundation.org>
+	junan <junan76@163.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 206/325] HID: usbkbd: Fix the bit shift number for LED_KANA
+Date: Mon,  2 Jun 2025 15:48:02 +0200
+Message-ID: <20250602134328.159271566@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,232 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: junan <junan76@163.com>
 
-commit 1af2dface5d286dd1f2f3405a0d6fa9f2c8fb998 upstream.
+[ Upstream commit d73a4bfa2881a6859b384b75a414c33d4898b055 ]
 
-syzbot reported use-after-free in unix_del_edges().  [0]
+Since "LED_KANA" was defined as "0x04", the shift number should be "4".
 
-What the repro does is basically repeat the following quickly.
-
-  1. pass a fd of an AF_UNIX socket to itself
-
-    socketpair(AF_UNIX, SOCK_DGRAM, 0, [3, 4]) = 0
-    sendmsg(3, {..., msg_control=[{cmsg_len=20, cmsg_level=SOL_SOCKET,
-                                   cmsg_type=SCM_RIGHTS, cmsg_data=[4]}], ...}, 0) = 0
-
-  2. pass other fds of AF_UNIX sockets to the socket above
-
-    socketpair(AF_UNIX, SOCK_SEQPACKET, 0, [5, 6]) = 0
-    sendmsg(3, {..., msg_control=[{cmsg_len=48, cmsg_level=SOL_SOCKET,
-                                   cmsg_type=SCM_RIGHTS, cmsg_data=[5, 6]}], ...}, 0) = 0
-
-  3. close all sockets
-
-Here, two skb are created, and every unix_edge->successor is the first
-socket.  Then, __unix_gc() will garbage-collect the two skb:
-
-  (a) free skb with self-referencing fd
-  (b) free skb holding other sockets
-
-After (a), the self-referencing socket will be scheduled to be freed
-later by the delayed_fput() task.
-
-syzbot repeated the sequences above (1. ~ 3.) quickly and triggered
-the task concurrently while GC was running.
-
-So, at (b), the socket was already freed, and accessing it was illegal.
-
-unix_del_edges() accesses the receiver socket as edge->successor to
-optimise GC.  However, we should not do it during GC.
-
-Garbage-collecting sockets does not change the shape of the rest
-of the graph, so we need not call unix_update_graph() to update
-unix_graph_grouped when we purge skb.
-
-However, if we clean up all loops in the unix_walk_scc_fast() path,
-unix_graph_maybe_cyclic remains unchanged (true), and __unix_gc()
-will call unix_walk_scc_fast() continuously even though there is no
-socket to garbage-collect.
-
-To keep that optimisation while fixing UAF, let's add the same
-updating logic of unix_graph_maybe_cyclic in unix_walk_scc_fast()
-as done in unix_walk_scc() and __unix_walk_scc().
-
-Note that when unix_del_edges() is called from other places, the
-receiver socket is always alive:
-
-  - sendmsg: the successor's sk_refcnt is bumped by sock_hold()
-             unix_find_other() for SOCK_DGRAM, connect() for SOCK_STREAM
-
-  - recvmsg: the successor is the receiver, and its fd is alive
-
-[0]:
-BUG: KASAN: slab-use-after-free in unix_edge_successor net/unix/garbage.c:109 [inline]
-BUG: KASAN: slab-use-after-free in unix_del_edge net/unix/garbage.c:165 [inline]
-BUG: KASAN: slab-use-after-free in unix_del_edges+0x148/0x630 net/unix/garbage.c:237
-Read of size 8 at addr ffff888079c6e640 by task kworker/u8:6/1099
-
-CPU: 0 PID: 1099 Comm: kworker/u8:6 Not tainted 6.9.0-rc4-next-20240418-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Workqueue: events_unbound __unix_gc
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- unix_edge_successor net/unix/garbage.c:109 [inline]
- unix_del_edge net/unix/garbage.c:165 [inline]
- unix_del_edges+0x148/0x630 net/unix/garbage.c:237
- unix_destroy_fpl+0x59/0x210 net/unix/garbage.c:298
- unix_detach_fds net/unix/af_unix.c:1811 [inline]
- unix_destruct_scm+0x13e/0x210 net/unix/af_unix.c:1826
- skb_release_head_state+0x100/0x250 net/core/skbuff.c:1127
- skb_release_all net/core/skbuff.c:1138 [inline]
- __kfree_skb net/core/skbuff.c:1154 [inline]
- kfree_skb_reason+0x16d/0x3b0 net/core/skbuff.c:1190
- __skb_queue_purge_reason include/linux/skbuff.h:3251 [inline]
- __skb_queue_purge include/linux/skbuff.h:3256 [inline]
- __unix_gc+0x1732/0x1830 net/unix/garbage.c:575
- process_one_work kernel/workqueue.c:3218 [inline]
- process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3299
- worker_thread+0x86d/0xd70 kernel/workqueue.c:3380
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-Allocated by task 14427:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- unpoison_slab_object mm/kasan/common.c:312 [inline]
- __kasan_slab_alloc+0x66/0x80 mm/kasan/common.c:338
- kasan_slab_alloc include/linux/kasan.h:201 [inline]
- slab_post_alloc_hook mm/slub.c:3897 [inline]
- slab_alloc_node mm/slub.c:3957 [inline]
- kmem_cache_alloc_noprof+0x135/0x290 mm/slub.c:3964
- sk_prot_alloc+0x58/0x210 net/core/sock.c:2074
- sk_alloc+0x38/0x370 net/core/sock.c:2133
- unix_create1+0xb4/0x770
- unix_create+0x14e/0x200 net/unix/af_unix.c:1034
- __sock_create+0x490/0x920 net/socket.c:1571
- sock_create net/socket.c:1622 [inline]
- __sys_socketpair+0x33e/0x720 net/socket.c:1773
- __do_sys_socketpair net/socket.c:1822 [inline]
- __se_sys_socketpair net/socket.c:1819 [inline]
- __x64_sys_socketpair+0x9b/0xb0 net/socket.c:1819
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 1805:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
- poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
- __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2190 [inline]
- slab_free mm/slub.c:4393 [inline]
- kmem_cache_free+0x145/0x340 mm/slub.c:4468
- sk_prot_free net/core/sock.c:2114 [inline]
- __sk_destruct+0x467/0x5f0 net/core/sock.c:2208
- sock_put include/net/sock.h:1948 [inline]
- unix_release_sock+0xa8b/0xd20 net/unix/af_unix.c:665
- unix_release+0x91/0xc0 net/unix/af_unix.c:1049
- __sock_release net/socket.c:659 [inline]
- sock_close+0xbc/0x240 net/socket.c:1421
- __fput+0x406/0x8b0 fs/file_table.c:422
- delayed_fput+0x59/0x80 fs/file_table.c:445
- process_one_work kernel/workqueue.c:3218 [inline]
- process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3299
- worker_thread+0x86d/0xd70 kernel/workqueue.c:3380
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-The buggy address belongs to the object at ffff888079c6e000
- which belongs to the cache UNIX of size 1920
-The buggy address is located 1600 bytes inside of
- freed 1920-byte region [ffff888079c6e000, ffff888079c6e780)
-
-Reported-by: syzbot+f3f3eef1d2100200e593@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f3f3eef1d2100200e593
-Fixes: 77e5593aebba ("af_unix: Skip GC if no cycle exists.")
-Fixes: fd86344823b5 ("af_unix: Try not to hold unix_gc_lock during accept().")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240419235102.31707-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: junan <junan76@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/garbage.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/hid/usbhid/usbkbd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -158,11 +158,14 @@ static void unix_add_edge(struct scm_fp_
- 	unix_update_graph(unix_edge_successor(edge));
- }
+diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+index c439ed2f16dbc..af6bc76dbf649 100644
+--- a/drivers/hid/usbhid/usbkbd.c
++++ b/drivers/hid/usbhid/usbkbd.c
+@@ -160,7 +160,7 @@ static int usb_kbd_event(struct input_dev *dev, unsigned int type,
+ 		return -1;
  
-+static bool gc_in_progress;
-+
- static void unix_del_edge(struct scm_fp_list *fpl, struct unix_edge *edge)
- {
- 	struct unix_vertex *vertex = edge->predecessor->vertex;
+ 	spin_lock_irqsave(&kbd->leds_lock, flags);
+-	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 3) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
++	kbd->newleds = (!!test_bit(LED_KANA,    dev->led) << 4) | (!!test_bit(LED_COMPOSE, dev->led) << 3) |
+ 		       (!!test_bit(LED_SCROLLL, dev->led) << 2) | (!!test_bit(LED_CAPSL,   dev->led) << 1) |
+ 		       (!!test_bit(LED_NUML,    dev->led));
  
--	unix_update_graph(unix_edge_successor(edge));
-+	if (!gc_in_progress)
-+		unix_update_graph(unix_edge_successor(edge));
- 
- 	list_del(&edge->vertex_entry);
- 	vertex->out_degree--;
-@@ -237,8 +240,10 @@ void unix_del_edges(struct scm_fp_list *
- 		unix_del_edge(fpl, edge);
- 	} while (i < fpl->count_unix);
- 
--	receiver = fpl->edges[0].successor;
--	receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
-+	if (!gc_in_progress) {
-+		receiver = fpl->edges[0].successor;
-+		receiver->scm_stat.nr_unix_fds -= fpl->count_unix;
-+	}
- 	WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - fpl->count_unix);
- out:
- 	WRITE_ONCE(fpl->user->unix_inflight, fpl->user->unix_inflight - fpl->count);
-@@ -526,6 +531,8 @@ static void unix_walk_scc(struct sk_buff
- 
- static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- {
-+	unix_graph_maybe_cyclic = false;
-+
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
- 		struct list_head scc;
-@@ -543,6 +550,8 @@ static void unix_walk_scc_fast(struct sk
- 
- 		if (scc_dead)
- 			unix_collect_skb(&scc, hitlist);
-+		else if (!unix_graph_maybe_cyclic)
-+			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
- 
- 		list_del(&scc);
- 	}
-@@ -550,8 +559,6 @@ static void unix_walk_scc_fast(struct sk
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- }
- 
--static bool gc_in_progress;
--
- static void __unix_gc(struct work_struct *work)
- {
- 	struct sk_buff_head hitlist;
+-- 
+2.39.5
+
 
 
 
