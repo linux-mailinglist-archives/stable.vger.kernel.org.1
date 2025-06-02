@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645D4ACB6AA
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:19:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C97BACB6E4
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759A119433A1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A25417A8DE8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A432822259E;
-	Mon,  2 Jun 2025 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3C122839A;
+	Mon,  2 Jun 2025 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCC9OK6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH4OGqTM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D2B22259C;
-	Mon,  2 Jun 2025 14:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B71020E026;
+	Mon,  2 Jun 2025 15:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875889; cv=none; b=nSBTqSgmWBBZRM0pOV5AbGN7WkwDqtQ8WN1B0LUAvacJRwBkqPg7lSzkWRGHB7qt3XEcKxCzGuXut2+uHJCkiM7e890MrqYQeZwQVPvcikik5IHdPKlLbiYB1wna9RWFp2dAGsfP9i0khG+3ZbnJBLJvGG9Dxv9PxEdOPnuR0Uw=
+	t=1748877476; cv=none; b=uGN8/GLMnjkWIg3Okdu4RpOI+AsKUt/4xAeC+vW8vMvKS/xDFxuPg9KGtmbLVHd5oMyEheV16FEiGdClyVF0AD6wiNUeM7BGFFo9Uhp0NSpnb2m1CHJyCCfCNHtU8STaINHeMUcRaXzaoG16YZ+rFN2XHpX3NDUuEa0AOBPAoDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875889; c=relaxed/simple;
-	bh=RqJANCq+3SyYwWoDxkdwbymxwcXNz/aLI8kFI0WAW5s=;
+	s=arc-20240116; t=1748877476; c=relaxed/simple;
+	bh=z2G3UMBmpSrxLcGeS658lbRLtB1E17IIus96ytzqDSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ByfOsZ/GICj8abdOXVWMeDpNX4ipTyduk+8JChP5YZro0JPQ6tvKs3uDUl9Bzl2tBMCWClO8YLQZUDOeFH3YCG4e+SxFcPflhBbberScu6c5V7C0Oa8v/b7dxwQS3yNkXPqcCkVXzyllES6hWk9Rb/LbY2B1P9Ld91CnVe7wXuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCC9OK6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568D7C4CEEB;
-	Mon,  2 Jun 2025 14:51:28 +0000 (UTC)
+	 MIME-Version; b=JJ0fqilgsmBNnz4NJHjb9SRd4WLKz+8MqxeN9KuU6TGqWKn2OYRO2byC+jg269fvc44hXkvRhB71TWubJ37Wah5kCWJLzEbD5YkmRBd8nIfv7WCDtLevxbZR+Irn3QNwdaXq/6pvuVpBT2gp97Scq7l3S8NpdSwUe2/0++kiCzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH4OGqTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7402EC4CEEB;
+	Mon,  2 Jun 2025 15:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875888;
-	bh=RqJANCq+3SyYwWoDxkdwbymxwcXNz/aLI8kFI0WAW5s=;
+	s=korg; t=1748877475;
+	bh=z2G3UMBmpSrxLcGeS658lbRLtB1E17IIus96ytzqDSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCC9OK6RzRvV/MTscdVnDduAK6el30Ca3tV0fmLkbmlvxloOfLcJ2VcAyzB0ANAKO
-	 1aRvWtQ7X15BhkklTJBSBkFa9S+3eRVGkjddNno4DZa6DRGFOGE3gKrW/ox9prRPkA
-	 fcTZ/aao04RZbPAGxf+XyYzCCNerQxMntmI3pa6U=
+	b=WH4OGqTM1nAuXFQ40hWFwBKGNKaBfkOJrV0w65Ut3E+35+HFiSlwk3dUpyuoG2n7K
+	 6TasBkHzSGUgEXpvz12aPg4RKr+KyNs4ATfXP3oE6V1M6eErYIeSeizOl+IHNRWvNd
+	 WM1TcON45sGM6J/uimkBvNdxoTS9qqIyiM4v2uEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Chau <johnchau@0atlas.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 263/270] platform/x86: thinkpad_acpi: Support also NEC Lavie X1475JAS
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kunwu Chan <kunwu.chan@linux.dev>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 272/325] pinctrl: tegra: Fix off by one in tegra_pinctrl_get_group()
 Date: Mon,  2 Jun 2025 15:49:08 +0200
-Message-ID: <20250602134318.090336401@linuxfoundation.org>
+Message-ID: <20250602134330.818382992@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Chau <johnchau@0atlas.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit a032f29a15412fab9f4352e0032836d51420a338 ]
+commit 5a062c3c3b82004766bc3ece82b594d337076152 upstream.
 
-Change get_thinkpad_model_data() to check for additional vendor name
-"NEC" in order to support NEC Lavie X1475JAS notebook (and perhaps
-more).
+This should be >= pmx->soc->ngroups instead of > to avoid an out of
+bounds access.  The pmx->soc->groups[] array is allocated in
+tegra_pinctrl_probe().
 
-The reason of this works with minimal changes is because NEC Lavie
-X1475JAS is a Thinkpad inside. ACPI dumps reveals its OEM ID to be
-"LENOVO", BIOS version "R2PET30W" matches typical Lenovo BIOS version,
-the existence of HKEY of LEN0268, with DMI fw string is "R2PHT24W".
-
-I compiled and tested with my own machine, attached the dmesg
-below as proof of work:
-[    6.288932] thinkpad_acpi: ThinkPad ACPI Extras v0.26
-[    6.288937] thinkpad_acpi: http://ibm-acpi.sf.net/
-[    6.288938] thinkpad_acpi: ThinkPad BIOS R2PET30W (1.11 ), EC R2PHT24W
-[    6.307000] thinkpad_acpi: radio switch found; radios are enabled
-[    6.307030] thinkpad_acpi: This ThinkPad has standard ACPI backlight brightness control, supported by the ACPI video driver
-[    6.307033] thinkpad_acpi: Disabling thinkpad-acpi brightness events by default...
-[    6.320322] thinkpad_acpi: rfkill switch tpacpi_bluetooth_sw: radio is unblocked
-[    6.371963] thinkpad_acpi: secondary fan control detected & enabled
-[    6.391922] thinkpad_acpi: battery 1 registered (start 0, stop 85, behaviours: 0x7)
-[    6.398375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input13
-
-Signed-off-by: John Chau <johnchau@0atlas.com>
-Link: https://lore.kernel.org/r/20250504165513.295135-1-johnchau@0atlas.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c12bfa0fee65 ("pinctrl-tegra: Restore SFSEL bit when freeing pins")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Kunwu Chan <kunwu.chan@linux.dev>
+Link: https://lore.kernel.org/82b40d9d-b437-42a9-9eb3-2328aa6877ac@stanley.mountain
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/tegra/pinctrl-tegra.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index c07b3bcbf795d..e9e63d8cbfbfd 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10233,6 +10233,8 @@ static int __must_check __init get_thinkpad_model_data(
- 		tp->vendor = PCI_VENDOR_ID_IBM;
- 	else if (dmi_name_in_vendors("LENOVO"))
- 		tp->vendor = PCI_VENDOR_ID_LENOVO;
-+	else if (dmi_name_in_vendors("NEC"))
-+		tp->vendor = PCI_VENDOR_ID_LENOVO;
- 	else
- 		return 0;
+--- a/drivers/pinctrl/tegra/pinctrl-tegra.c
++++ b/drivers/pinctrl/tegra/pinctrl-tegra.c
+@@ -305,7 +305,7 @@ static const struct tegra_pingroup *tegr
+ {
+ 	struct tegra_pmx *pmx = pinctrl_dev_get_drvdata(pctldev);
  
--- 
-2.39.5
-
+-	if (group_index < 0 || group_index > pmx->soc->ngroups)
++	if (group_index < 0 || group_index >= pmx->soc->ngroups)
+ 		return NULL;
+ 
+ 	return &pmx->soc->groups[group_index];
 
 
 
