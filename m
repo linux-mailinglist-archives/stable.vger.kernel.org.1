@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537BBACB3A3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3D2ACB2AA
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61A8D4061B2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1474188CF00
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3299A22A80F;
-	Mon,  2 Jun 2025 14:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36DE230BD9;
+	Mon,  2 Jun 2025 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq8n0owV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gy7sptOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA809224AF1;
-	Mon,  2 Jun 2025 14:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4DD22FF35;
+	Mon,  2 Jun 2025 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874407; cv=none; b=jBeSRMTKbNLxoZBDNlkIZzf92cFMCdFJqCi4L7rmCsLQTpm3D/MlVLdgYEbhE7LU3O++YuNS8SBEGcgosh/9wJPeD8dC56A6zqR97es4dw72CoD2VBG8Kh3JyAAHqvD2VpCflT3qjhjaoWB8WWR59fr/RXDFg3QGVLhD9UDLKPM=
+	t=1748873876; cv=none; b=g6CAeM33mZ2km8BAglvB2/hDtpiqqnx7UQDmODmpsaiki5PVkkAT1jSOybBuXRmx6+BJmz5Jsy6bfNYVrKVG1Hwaa6J3PioUVP/wIiKq7NnzrTbrhu7H7lZBGPT/p3akdxadwXRkApam5XX7jtSlj+ktOD3R0gYtgm+NKISB77Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874407; c=relaxed/simple;
-	bh=r6H0gAQC9Iaw/RXRoAMiN1vmQbrTGoEMF3c/F5ywawI=;
+	s=arc-20240116; t=1748873876; c=relaxed/simple;
+	bh=5rIXr8KYko/w7oswBe8IEoVYTeou0KOSeG/v/9XBo68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnG5iBNf4soAgP3yzuOBjUBev5YioLwMxaZY1KAvRDGSe9SmIho05M+eMZEvy9lbYr47uQLuYJfG+lTHvvT9I7JZt7/S/x+I/5QsOU81tb0I+xfQ0WH2ovOKvPLfpbN86S56lTMYAg0YFcIaTaAt2kD6M+WQvEH15BnTl5GBpiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq8n0owV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64064C4CEEB;
-	Mon,  2 Jun 2025 14:26:46 +0000 (UTC)
+	 MIME-Version; b=eX2tbcUeQgks76yA8h3olG9+k5dADI4sgVKANWzlOJx73s/I0ryJ0GoSSS/789G8G2N9BeDzfjB+qZpntHGMST5wIPvQAALj4ybJUzyPTZMqqQjjUxFc705ThI87iaNH/+IwBsfmAcXtZpx/ENDs9kEPizKugqt2D3ncfxj+v+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gy7sptOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F00C4CEEB;
+	Mon,  2 Jun 2025 14:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874406;
-	bh=r6H0gAQC9Iaw/RXRoAMiN1vmQbrTGoEMF3c/F5ywawI=;
+	s=korg; t=1748873876;
+	bh=5rIXr8KYko/w7oswBe8IEoVYTeou0KOSeG/v/9XBo68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qq8n0owV5/pgN4x4DdMCgsRzLIoRzsLr5MfhZY3e6loB78OxK96RA7W7XkK+NQqtV
-	 Xk3qNzZFdUn0nt5d0/jgICL3NKhwb3bG3j7VQWFZhN161HgWFzyuzeNzWZuDkMhVl/
-	 6Gxrr1FDSpVJ9o5ytdPOpXZ42+EJ0ET6PEFER/Zk=
+	b=Gy7sptOx0oF9lbZSLm4ctCHNkU2OcS+TqfJg4LzuxBRLjRhOLYRixbbljnLD3XP+T
+	 7llOh2bnlyTlzzs1RezvAm2GCjXmhzWpwvQ82RJsILJLo864PtEMNUjsF7ucMNQCqp
+	 CpGhkDdXBFKfXcrdn/JXNTCBQG/sd7MMVYIVEkRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/204] net: dlink: Correct endianness handling of led_mode
+Subject: [PATCH 6.6 283/444] perf: Avoid the read if the count is already updated
 Date: Mon,  2 Jun 2025 15:45:47 +0200
-Message-ID: <20250602134256.050831565@linuxfoundation.org>
+Message-ID: <20250602134352.442663908@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
+[ Upstream commit 8ce939a0fa194939cc1f92dbd8bc1a7806e7d40a ]
 
-As it's name suggests, parse_eeprom() parses EEPROM data.
+The event may have been updated in the PMU-specific implementation,
+e.g., Intel PEBS counters snapshotting. The common code should not
+read and overwrite the value.
 
-This is done by reading data, 16 bits at a time as follows:
+The PERF_SAMPLE_READ in the data->sample_type can be used to detect
+whether the PMU-specific value is available. If yes, avoid the
+pmu->read() in the common code. Add a new flag, skip_read, to track the
+case.
 
-	for (i = 0; i < 128; i++)
-                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
+Factor out a perf_pmu_read() to clean up the code.
 
-sromdata is at the same memory location as psrom.
-And the type of psrom is a pointer to struct t_SROM.
-
-As can be seen in the loop above, data is stored in sromdata, and thus psrom,
-as 16-bit little-endian values.
-
-However, the integer fields of t_SROM are host byte order integers.
-And in the case of led_mode this leads to a little endian value
-being incorrectly treated as host byte order.
-
-Looking at rio_set_led_mode, this does appear to be a bug as that code
-masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
-reversed byte order.
-
-This problem would only manifest on big endian hosts.
-
-Found by inspection while investigating a sparse warning
-regarding the crc field of t_SROM.
-
-I believe that warning is a false positive. And although I plan
-to send a follow-up to use little-endian types for other the integer
-fields of PSROM_t I do not believe that will involve any bug fixes.
-
-Compile tested only.
-
-Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250121152303.3128733-3-kan.liang@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- drivers/net/ethernet/dlink/dl2k.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/perf_event.h  |  8 +++++++-
+ kernel/events/core.c        | 33 ++++++++++++++++-----------------
+ kernel/events/ring_buffer.c |  1 +
+ 3 files changed, 24 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 55e720d2ea0c7..eb23157641343 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -358,7 +358,7 @@ parse_eeprom (struct net_device *dev)
- 		dev->dev_addr[i] = psrom->mac_addr[i];
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index fcb834dd75c24..90c782749b055 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1016,7 +1016,13 @@ struct perf_output_handle {
+ 	struct perf_buffer		*rb;
+ 	unsigned long			wakeup;
+ 	unsigned long			size;
+-	u64				aux_flags;
++	union {
++		u64			flags;		/* perf_output*() */
++		u64			aux_flags;	/* perf_aux_output*() */
++		struct {
++			u64		skip_read : 1;
++		};
++	};
+ 	union {
+ 		void			*addr;
+ 		unsigned long		head;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 987807b1040ae..5dd6424e62fa8 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1163,6 +1163,12 @@ static void perf_assert_pmu_disabled(struct pmu *pmu)
+ 	WARN_ON_ONCE(*this_cpu_ptr(pmu->pmu_disable_count) == 0);
+ }
  
- 	if (np->chip_id == CHIP_IP1000A) {
--		np->led_mode = psrom->led_mode;
-+		np->led_mode = le16_to_cpu(psrom->led_mode);
- 		return 0;
- 	}
++static inline void perf_pmu_read(struct perf_event *event)
++{
++	if (event->state == PERF_EVENT_STATE_ACTIVE)
++		event->pmu->read(event);
++}
++
+ static void get_ctx(struct perf_event_context *ctx)
+ {
+ 	refcount_inc(&ctx->refcount);
+@@ -3397,8 +3403,7 @@ static void __perf_event_sync_stat(struct perf_event *event,
+ 	 * we know the event must be on the current CPU, therefore we
+ 	 * don't need to use it.
+ 	 */
+-	if (event->state == PERF_EVENT_STATE_ACTIVE)
+-		event->pmu->read(event);
++	perf_pmu_read(event);
  
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 195dc6cfd8955..0e33e2eaae960 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -335,7 +335,7 @@ typedef struct t_SROM {
- 	u16 sub_system_id;	/* 0x06 */
- 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
- 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
--	u16 led_mode;		/* 0x0c (IP1000A only) */
-+	__le16 led_mode;	/* 0x0c (IP1000A only) */
- 	u16 reserved1[9];	/* 0x0e-0x1f */
- 	u8 mac_addr[6];		/* 0x20-0x25 */
- 	u8 reserved2[10];	/* 0x26-0x2f */
+ 	perf_event_update_time(event);
+ 
+@@ -4524,15 +4529,8 @@ static void __perf_event_read(void *info)
+ 
+ 	pmu->read(event);
+ 
+-	for_each_sibling_event(sub, event) {
+-		if (sub->state == PERF_EVENT_STATE_ACTIVE) {
+-			/*
+-			 * Use sibling's PMU rather than @event's since
+-			 * sibling could be on different (eg: software) PMU.
+-			 */
+-			sub->pmu->read(sub);
+-		}
+-	}
++	for_each_sibling_event(sub, event)
++		perf_pmu_read(sub);
+ 
+ 	data->ret = pmu->commit_txn(pmu);
+ 
+@@ -7297,9 +7295,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
+ 		values[n++] = running;
+ 
+-	if ((leader != event) &&
+-	    (leader->state == PERF_EVENT_STATE_ACTIVE))
+-		leader->pmu->read(leader);
++	if ((leader != event) && !handle->skip_read)
++		perf_pmu_read(leader);
+ 
+ 	values[n++] = perf_event_count(leader);
+ 	if (read_format & PERF_FORMAT_ID)
+@@ -7312,9 +7309,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 	for_each_sibling_event(sub, leader) {
+ 		n = 0;
+ 
+-		if ((sub != event) &&
+-		    (sub->state == PERF_EVENT_STATE_ACTIVE))
+-			sub->pmu->read(sub);
++		if ((sub != event) && !handle->skip_read)
++			perf_pmu_read(sub);
+ 
+ 		values[n++] = perf_event_count(sub);
+ 		if (read_format & PERF_FORMAT_ID)
+@@ -7369,6 +7365,9 @@ void perf_output_sample(struct perf_output_handle *handle,
+ {
+ 	u64 sample_type = data->type;
+ 
++	if (data->sample_flags & PERF_SAMPLE_READ)
++		handle->skip_read = 1;
++
+ 	perf_output_put(handle, *header);
+ 
+ 	if (sample_type & PERF_SAMPLE_IDENTIFIER)
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 52de76ef8723b..dc1193b779c08 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -181,6 +181,7 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 
+ 	handle->rb    = rb;
+ 	handle->event = event;
++	handle->flags = 0;
+ 
+ 	have_lost = local_read(&rb->lost);
+ 	if (unlikely(have_lost)) {
 -- 
 2.39.5
 
