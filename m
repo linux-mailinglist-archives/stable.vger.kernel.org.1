@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-150035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6C8ACB5CB
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:09:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A48ACB80E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64F244C01D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E6CE1C25C80
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE6522A4E4;
-	Mon,  2 Jun 2025 14:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21B2224893;
+	Mon,  2 Jun 2025 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZnTVPKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xV7tTTFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B102AE9A;
-	Mon,  2 Jun 2025 14:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0CD223DC0;
+	Mon,  2 Jun 2025 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875829; cv=none; b=QmoXIqy7JT9XdyZ98P9xRAP5wRfglu4jljVJC5LLxj04+Ahsn9D/97XAFgGk45vPH06DYVA9S1LJbFYrM8dicNkup9vetdYzbiN1C4tShN4dAYPPrVRArMlcUolR7FoymkRSrXxuUJ6mLb8RWGpBg42DF1LXWTISdELLiXDR2I8=
+	t=1748877398; cv=none; b=oAuZYO7uHsyN/k9Zb4cWFWr/8k2gBZDKdZNpZrrpIqpjmV9fgSSDfCmyBxvZan4owreMBk0z3rx43dKV7Imo0dLPhXWfLLZ+aUQSpCrByNRWkg6x9Xn7DuwMyud1oPp06cMnZm4KPfm59fiZ5q1vENuOTKd9v1qGQnXJGqex1So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875829; c=relaxed/simple;
-	bh=8LfElo+kjMH5Y88nYU/666d1gKGchxD4RSlA9iNG+6k=;
+	s=arc-20240116; t=1748877398; c=relaxed/simple;
+	bh=qbexh9BaOn1zFGKfAzFm7DkzIDbsKOuQMk3I8I4hRPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6+o/aW9uuL16KGCSW1TqqJKGJrdEmQBwrCmRAI8wNFYYspE90tVcbyiujH8nuIcSYd+BEjUwHtifrDH+Zn7TTE+ijbLXlHkIG1fCjPjnYGZUM6R+yj/o7jf4n94hb6TxMOvZgJ27IW512nbgpKHdt0Ru28qzj82MQ3ObIZe3R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZnTVPKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F11C4CEEE;
-	Mon,  2 Jun 2025 14:50:27 +0000 (UTC)
+	 MIME-Version; b=Jswlcf5E9JzMTe4BzAWpI0hK+FbVnvbPaI7sv7Z0hH/LAa9xW4Z1UJ3cCvgk6rbBEs/vszWTrH98QCo1f28+Rth9m5JF1uvH5J+gS63CSWlYqu9xzEYWD/qtZ79L4w3IINyEn21wYtfb2gAG/BjjbZbiWvanlg9QiayYuiEEzxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xV7tTTFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CC7C4CEEB;
+	Mon,  2 Jun 2025 15:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875828;
-	bh=8LfElo+kjMH5Y88nYU/666d1gKGchxD4RSlA9iNG+6k=;
+	s=korg; t=1748877398;
+	bh=qbexh9BaOn1zFGKfAzFm7DkzIDbsKOuQMk3I8I4hRPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZnTVPKb9RIskfezf2ZgCYCjHDcS0EXVznGCmuDMlvdxfJszhfn3uoGqgvHRdTU0U
-	 cgc9xPbaMAGOqPPCqho4Z3CLXCzixbTOjUKeP4mDkIvQnNqIZALuL1GMzbXKb09YIC
-	 M43c1djJSv6fgIfNpQ47bPLGko8j8Ao9VlY9FcbY=
+	b=xV7tTTFUKUdn648R+Uznwplca5+HCaFzC8j/chLi4iAWsL+297f4YPO1OIUxZcxSd
+	 TOhleo6jxIyxijox050nZjYy4s6j1mVGsz3aBpPAbZmNKAqUXmQiaCJ0JWDtsA0oOx
+	 O+SaMxMpBzLeaQKuRw8HFcInDnFRTpYd5AmIR3uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.10 255/270] smb: client: Reset all search buffer pointers when releasing buffer
-Date: Mon,  2 Jun 2025 15:49:00 +0200
-Message-ID: <20250602134317.761682406@linuxfoundation.org>
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 265/325] Revert "arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection"
+Date: Mon,  2 Jun 2025 15:49:01 +0200
+Message-ID: <20250602134330.544379504@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-commit e48f9d849bfdec276eebf782a84fd4dfbe1c14c0 upstream.
+[ Upstream commit 573f99c7585f597630f14596550c79e73ffaeef4 ]
 
-Multiple pointers in struct cifs_search_info (ntwrk_buf_start,
-srch_entries_start, and last_entry) point to the same allocated buffer.
-However, when freeing this buffer, only ntwrk_buf_start was set to NULL,
-while the other pointers remained pointing to freed memory.
+This reverts commit 531fdbeedeb89bd32018a35c6e137765c9cc9e97.
 
-This is defensive programming to prevent potential issues with stale
-pointers. While the active UAF vulnerability is fixed by the previous
-patch, this change ensures consistent pointer state and more robust error
-handling.
+Hardware that uses I2C wasn't designed with high speeds in mind, so
+communication with PMIC via RSB can intermittently fail. Go back to I2C
+as higher speed and efficiency isn't worth the trouble.
 
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 531fdbeedeb8 ("arm64: dts: allwinner: h6: Use RSB for AXP805 PMIC connection")
+Link: https://github.com/LibreELEC/LibreELEC.tv/issues/7731
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20250413135848.67283-1-jernej.skrabec@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/readdir.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../dts/allwinner/sun50i-h6-beelink-gs1.dts   | 38 +++++++++----------
+ .../dts/allwinner/sun50i-h6-orangepi-3.dts    | 14 +++----
+ .../dts/allwinner/sun50i-h6-orangepi.dtsi     | 22 +++++------
+ 3 files changed, 37 insertions(+), 37 deletions(-)
 
---- a/fs/cifs/readdir.c
-+++ b/fs/cifs/readdir.c
-@@ -755,7 +755,10 @@ find_cifs_entry(const unsigned int xid,
- 			else
- 				cifs_buf_release(cfile->srch_inf.
- 						ntwrk_buf_start);
-+			/* Reset all pointers to the network buffer to prevent stale references */
- 			cfile->srch_inf.ntwrk_buf_start = NULL;
-+			cfile->srch_inf.srch_entries_start = NULL;
-+			cfile->srch_inf.last_entry = NULL;
- 		}
- 		rc = initiate_cifs_search(xid, file, full_path);
- 		if (rc) {
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+index 381d58cea092d..c854c7e310519 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-beelink-gs1.dts
+@@ -151,28 +151,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	linux,rc-map-name = "rc-beelink-gs1";
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	/*
+-	 * FIXME: We can't add that supply for now since it would
+-	 * create a circular dependency between pinctrl, the regulator
+-	 * and the RSB Bus.
+-	 *
+-	 * vcc-pl-supply = <&reg_aldo1>;
+-	 */
+-	vcc-pm-supply = <&reg_aldo1>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -290,6 +274,22 @@
+ 	};
+ };
+ 
++&r_ir {
++	linux,rc-map-name = "rc-beelink-gs1";
++	status = "okay";
++};
++
++&r_pio {
++	/*
++	 * PL0 and PL1 are used for PMIC I2C
++	 * don't enable the pl-supply else
++	 * it will fail at boot
++	 *
++	 * vcc-pl-supply = <&reg_aldo1>;
++	 */
++	vcc-pm-supply = <&reg_aldo1>;
++};
++
+ &spdif {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&spdif_tx_pin>;
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+index 6fc65e8db2206..8c476e089185b 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3.dts
+@@ -175,16 +175,12 @@
+ 	vcc-pg-supply = <&reg_vcc_wifi_io>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -295,6 +291,10 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+index 92745128fcfeb..4ec4996592bef 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi.dtsi
+@@ -112,20 +112,12 @@
+ 	vcc-pg-supply = <&reg_aldo1>;
+ };
+ 
+-&r_ir {
+-	status = "okay";
+-};
+-
+-&r_pio {
+-	vcc-pm-supply = <&reg_bldo3>;
+-};
+-
+-&r_rsb {
++&r_i2c {
+ 	status = "okay";
+ 
+-	axp805: pmic@745 {
++	axp805: pmic@36 {
+ 		compatible = "x-powers,axp805", "x-powers,axp806";
+-		reg = <0x745>;
++		reg = <0x36>;
+ 		interrupt-parent = <&r_intc>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_LOW>;
+ 		interrupt-controller;
+@@ -240,6 +232,14 @@
+ 	};
+ };
+ 
++&r_ir {
++	status = "okay";
++};
++
++&r_pio {
++	vcc-pm-supply = <&reg_bldo3>;
++};
++
+ &rtc {
+ 	clocks = <&ext_osc32k>;
+ };
+-- 
+2.39.5
+
 
 
 
