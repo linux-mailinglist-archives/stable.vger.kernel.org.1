@@ -1,71 +1,94 @@
-Return-Path: <stable+bounces-148901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA96ACA91C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 07:50:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E35ACAA4F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 10:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CB8F7AA62D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 05:49:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8637C3BB7C5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 08:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F9618DF8D;
-	Mon,  2 Jun 2025 05:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C518B1ACEAF;
+	Mon,  2 Jun 2025 08:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgjAxFxm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n49JKo/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BB618E20;
-	Mon,  2 Jun 2025 05:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD6C54763;
+	Mon,  2 Jun 2025 08:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748843417; cv=none; b=ASimCCwTSYtu8rfqsgHCeCho7+grL8ph/aOaACCoETTHN99aO0/CVVgbHMo2HQRdVM93umdquE43x+eAaz2DRK+4fRSbCiPZdAKXeanGvgeHKVgvjcl1EmW+F8uYMF1gnuf/3MemuPjq5ylZkHocGky6+ZaWDmWDUtSa/Anb2AA=
+	t=1748851243; cv=none; b=DNFWr9ehSuCtkKVoFTSHx2gpqX220a/O8fdIS5W1r2LIlFinWEKkG1WlXtyvnFzy6JCj0LwrAK46Nfzhg7VJzhNf8wEAeUEBonDchRZMQGaZUeV9aqKH4eep9UHYah4WBmhpHtuNiZJDWyfFJGcQmwrjNoiqDMyfaGyXJpNAOBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748843417; c=relaxed/simple;
-	bh=wExWTR9doFTPzuPNcFKSPCzLiF9SavNGYWxoU1RBEzk=;
+	s=arc-20240116; t=1748851243; c=relaxed/simple;
+	bh=37ye/eSIVajhgIxL7yVeCYHQXe4eGw/GyWJRdlDwrbw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bOxgpT3tv//rE70CkUjexqMPUf7InxosnO3rS8VjefCXDJol8tFlEVsb4A/7n/2b9aRTpQ6Yn3uPm3HFAcuC+RadHM7ABFLSaFpX0qrPMueaYtDb/Q/2FKxrrrI8KYMTcnbecgWUprtXuRgpMnAzTF644eEA3BEZMrKuUXJi5YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgjAxFxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31E5C4CEF0;
-	Mon,  2 Jun 2025 05:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748843414;
-	bh=wExWTR9doFTPzuPNcFKSPCzLiF9SavNGYWxoU1RBEzk=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQU5oe2BSQUG0Hhra5hPfVU6XyOkxdkPESxsIUm0Rf6xXENRNuggtaPPO16T2WewOSpdLuDH+SPzBgum4QlSq1SkFhFS2OCWL+CELjPaSMcF8yjKRmeuinsBEp8xN0FSt53ilxohIW63bYX3uimWDMY5PCqISTRFX4AfVVt51+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n49JKo/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686C4C4CEEB;
+	Mon,  2 Jun 2025 08:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748851243;
+	bh=37ye/eSIVajhgIxL7yVeCYHQXe4eGw/GyWJRdlDwrbw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SgjAxFxmvZTEGPt4fPTbCs4kXUhHUpY6dTEWjKf2S1Rzknc3k/ULdRmmbiqDxkQSl
-	 jO9g9Jg5DhEMqWNxsAheb8/E68BlXydZJxRXScVG7sWcMuO1DeWoJ0xWCm+nMHqRDx
-	 EMCO/Km25lmf7pNd12nZaZ/12+LkD40Pnzw0S2d0=
-Date: Mon, 2 Jun 2025 07:50:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Achill Gilgenast <fossdd@pwned.life>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] kallsyms: fix build without execinfo
-Message-ID: <2025060248-splendor-riverside-c8fe@gregkh>
-References: <20250601183309.225569-1-fossdd@pwned.life>
+	b=n49JKo/3sLrucLQwr2GfSd1RZFVrBqEyhxjft52ouIAH1y/yU2ziEu67mQ7qeWPH3
+	 hP9QPmpdZl1dreknxp7xgimzfTcaP+nT3YIo6rU+Z/doHcKvjlvyzFBCTRxrO9YDQ9
+	 RqaOYxXLS7jtaLRKwejl2o5fQWikWUljy2aDEY4wTz4cvjBU5DwWRraYTIOTqGItMk
+	 DHhGIB6tQKbB8jVK1Njuu8SAJ83hk1O0meStJ6CPYhQPDSK2azUXziHptNYAd8X/hI
+	 MiVGRqsHBcfUJY1Lw2rWavpu3xIBLljrOcbwTAi+EKGv/e52teOeSQvgsiD2703DMI
+	 +lP0i39yPxAsA==
+Date: Mon, 2 Jun 2025 10:00:40 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Trevor Gamblin <tgamblin@baylibre.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-pwm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] dt-bindings: pwm: adi,axi-pwmgen: fix clocks
+Message-ID: <20250602-glorious-horned-beluga-f396da@kuoka>
+References: <20250529-pwm-axi-pwmgen-add-external-clock-v3-0-5d8809a7da91@baylibre.com>
+ <20250529-pwm-axi-pwmgen-add-external-clock-v3-2-5d8809a7da91@baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250601183309.225569-1-fossdd@pwned.life>
+In-Reply-To: <20250529-pwm-axi-pwmgen-add-external-clock-v3-2-5d8809a7da91@baylibre.com>
 
-On Sun, Jun 01, 2025 at 08:32:50PM +0200, Achill Gilgenast wrote:
-> Signed-off-by: Achill Gilgenast <fossdd@pwned.life>
+On Thu, May 29, 2025 at 11:53:19AM GMT, David Lechner wrote:
+> Fix a shortcoming in the bindings that doesn't allow for a separate
+> external clock.
+> 
+> The AXI PWMGEN IP block has a compile option ASYNC_CLK_EN that allows
+> the use of an external clock for the PWM output separate from the AXI
+> clock that runs the peripheral.
+> 
+> This was missed in the original bindings and so users were writing dts
+> files where the one and only clock specified would be the external
+> clock, if there was one, incorrectly missing the separate AXI clock.
+> 
+> The correct bindings are that the AXI clock is always required and the
+> external clock is optional (must be given only when HDL compile option
+> ASYNC_CLK_EN=1).
+> 
 > Cc: stable@vger.kernel.org
+> Fixes: 1edf2c2a2841 ("dt-bindings: pwm: Add AXI PWM generator")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
->  tools/include/linux/kallsyms.h | 4 ++++
->  1 file changed, 4 insertions(+)
+>  Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 
-I know I can't take patches without any changelog text, but maybe other
-maintainers are more lax.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-good luck!
+Best regards,
+Krzysztof
 
-greg k-h
 
