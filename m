@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-150226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A219ACB662
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:17:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ADCEACB8E3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90624A7BC5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78EA99E4E56
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B885C22D781;
-	Mon,  2 Jun 2025 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812E223643F;
+	Mon,  2 Jun 2025 15:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1I8gx4C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdKzSNAQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C0C22D4D7;
-	Mon,  2 Jun 2025 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C56A2356DB;
+	Mon,  2 Jun 2025 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876446; cv=none; b=nZmefcnYTwu1vrt+PWzguZCtfYtadNKYEc+yBGS3jm/ht6z1ZDia9rTugbInAl6MempiTRyZePgOWRnpDt99RRxyjTJesJBEZoiiP6hFGB0oL4oe6WeAHVpWTG5NGFD+5gy10MvpAsB/Wg8MjMTNWkRSUnDvrIOrLFkyCuCSOzs=
+	t=1748877512; cv=none; b=Ua+pnr9ulCHcaeWuqUOIr+r8YN38jH5eAmgiJLzGmUBQ0Yv4yNHRLgRgoz7WDiz1OfBOQPenybhIhJvQj8zoNYHRc8JUXE9LFOcH6/9mtBLyRGwfklMwDFM5+p3oQ7JtQQfXUvTYVCAa9PRDjdLc6t1yoqJf7OYg3IUBiSdiYkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876446; c=relaxed/simple;
-	bh=Oo8CJ9g7ANV9fBtHfVCL3pqUM10N1u7QdD61ihowpFo=;
+	s=arc-20240116; t=1748877512; c=relaxed/simple;
+	bh=HrLE0deh4e7SdE1LIHx5vT39nnNVNUbf9MneQ00Thcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hhVPFwX6Cpc0AkgRft5dh36P6AQevUsxxIz3VP/uVuAJRs6uszmlcRmgxc1v+OEibhBXB+oq1TBw6KUiWFJ/kzfMU0wvWB8uAgeniJ6Hkk6Os+4El1xRsbY5fPPLvtzU2CtoyiuAmDFGXolyRFd99AMNbG9UplhPPaLwhMEn7bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1I8gx4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5491EC4CEEB;
-	Mon,  2 Jun 2025 15:00:45 +0000 (UTC)
+	 MIME-Version; b=NQXouAflBgEQpFy5DogLChV4H+v7radup0+iqZ6E4ob1xTIhwQ2V2jwKhHGKKjRF3eV4LmdG0YYXMK9B+ZIqWQwnk8EBHQz+A3dgRscm9D2nejwSTm98ET3BxS8E6SbinShAD4QHS1TfWvRETvqry31lKcHlTlgROl+Z3xK/5qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdKzSNAQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CF5C4CEEB;
+	Mon,  2 Jun 2025 15:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876445;
-	bh=Oo8CJ9g7ANV9fBtHfVCL3pqUM10N1u7QdD61ihowpFo=;
+	s=korg; t=1748877511;
+	bh=HrLE0deh4e7SdE1LIHx5vT39nnNVNUbf9MneQ00Thcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1I8gx4Caepm6S3xijZHsEK7RvIbHySaxFuZo7C1XMhVT4dGltmJvXCln3SjVsKKW
-	 59wa0CvvcRP7xubkR8ci4B7i7hUAdCwC7lVAtHKCM+WSiUWu3vR5Cz5wNo+O8Ar9H9
-	 k5EPLPEu0nRK7YtvEL03d4lwLBWeZGiJlAQlMtiw=
+	b=FdKzSNAQtZRP3TBBNCqHfJ/2Fj+QAYbwrgl6FaV7nlk2vxhx23yEYEo/jJyICxKkW
+	 XosNw/yr/3PrvyhfAQpYXRQ55vZ3ig7/VYettRLzdYRM6qNfIXwZkqdVCGGRb8iHv4
+	 l7G7plfDpm3X7tRermk/Gpxw413FCx+7nGLgqyQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 176/207] platform/x86: dell-wmi-sysman: Avoid buffer overflow in current_password_store()
-Date: Mon,  2 Jun 2025 15:49:08 +0200
-Message-ID: <20250602134305.643883131@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 273/325] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
+Date: Mon,  2 Jun 2025 15:49:09 +0200
+Message-ID: <20250602134330.857876058@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 4e89a4077490f52cde652d17e32519b666abf3a6 upstream.
+commit e8d2d287e26d9bd9114cf258a123a6b70812442e upstream.
 
-If the 'buf' array received from the user contains an empty string, the
-'length' variable will be zero. Accessing the 'buf' array element with
-index 'length - 1' will result in a buffer overflow.
+Clang warns (or errors with CONFIG_WERROR=y):
 
-Add a check for an empty string.
+  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+    596 |         default:
+        |         ^
+  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+    596 |         default:
+        |         ^
+        |         break;
+  1 error generated.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Clang is a little more pedantic than GCC, which does not warn when
+falling through to a case that is just break or return. Clang's version
+is more in line with the kernel's own stance in deprecated.rst, which
+states that all switch/case blocks must end in either break,
+fallthrough, continue, goto, or return. Add the missing break to silence
+the warning.
 
-Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vladimir Moskovkin <Vladimir.Moskovkin@kaspersky.com>
-Link: https://lore.kernel.org/r/39973642a4f24295b4a8fad9109c5b08@kaspersky.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-+++ b/drivers/platform/x86/dell/dell-wmi-sysman/passobj-attributes.c
-@@ -45,7 +45,7 @@ static ssize_t current_password_store(st
- 	int length;
- 
- 	length = strlen(buf);
--	if (buf[length-1] == '\n')
-+	if (length && buf[length - 1] == '\n')
- 		length--;
- 
- 	/* firmware does verifiation of min/max password length,
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -496,6 +496,7 @@ static void svc_i3c_master_ibi_work(stru
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++		break;
+ 	default:
+ 		break;
+ 	}
 
 
 
