@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DFCCACB47B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AB1ACB547
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E6814078FD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E740B9E7B45
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABA522539F;
-	Mon,  2 Jun 2025 14:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057C82222A9;
+	Mon,  2 Jun 2025 14:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtHMOQzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+4T+0yL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EA123184E;
-	Mon,  2 Jun 2025 14:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FCB2153CB;
+	Mon,  2 Jun 2025 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874581; cv=none; b=DOm6Q+Ph8JD5VLKTAIkC7qDhzFUvjRHBYBDrYqhTHT8UbBDyagMfT0Ulx20Dt6OgSiy4v+1klOgj3HlYpk+Kia2gULqrMw4tfPTKpjJ62igQ9x4yQYdTJc1ySrIebBCF2P1rglwS099rTCrO1NLyblI+bx7vmpVTuxfm6J9y72Q=
+	t=1748875380; cv=none; b=Btv8uk1b+yISufEtd8F6GVO5GWH2K6JYYgO/Cs9BmdxN4iBkiUawSPHgrhmxyvTs5GVcb8ZLQbWiArgO5Qa1Wyx73N3oUviGBnINbnFODWBjGiChYMFG7wZRSSgwEn2/kvrBjV15YV+GvNveNK3eV0QTzDGcMX6wWXAYLwwXJTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874581; c=relaxed/simple;
-	bh=QJJEFX958S69sOtuHIZ7L2ZALXUCj/EBQSa+BaTj0SM=;
+	s=arc-20240116; t=1748875380; c=relaxed/simple;
+	bh=n2mfovEamOTReBG/leyOsyNmrOi+CXSkAX+mDyKoDeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZNCtqMX1ypfkhMDxb7gbtJ7eBzlSikYiI2ieYxrn5L0X7ZtCnqHmR+3znngORDos94cL4NWI6jeZftfR6jCd5OXe+4nMr7okwx1ybcLIcq01D+2IFtKEMsXgJ4x+dDI5l0XQj/bN3KU8PFK1HewwXXGlQh5LlTi7ONt/vPIClZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtHMOQzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3AFC4CEEB;
-	Mon,  2 Jun 2025 14:29:41 +0000 (UTC)
+	 MIME-Version; b=GfrX7V1S4GUssxWSTdLrYHGshKGleZ6x0IXrOuV8aR5CwHULanlXLkqUUTe9498SqOmpIM06nLx34nTvuS+KjWmWLAzXgJ/VvwLUFailAIl5KubGdKKsAG67pvKtbrI4fOiRM6L2z+5slul8V2w0vPbwnD+Q3sefk4ZnCoNCssE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+4T+0yL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E89C4CEEB;
+	Mon,  2 Jun 2025 14:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874581;
-	bh=QJJEFX958S69sOtuHIZ7L2ZALXUCj/EBQSa+BaTj0SM=;
+	s=korg; t=1748875380;
+	bh=n2mfovEamOTReBG/leyOsyNmrOi+CXSkAX+mDyKoDeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtHMOQzMfKL+iRKYGZhPect409PbV405NnogkaGjOVYBlQbo1OYq1qD9OwiTyk+lh
-	 zLp6YAyLWry7aLBHUxN24g4cztn/q7lZzn9yXZ0X6qBs0mfi/5E4F+47V8gQjfB2Tf
-	 i47WN/Olv6ogFOjX60Hj6doj1TEqlYWG8sSBcuLY=
+	b=d+4T+0yLZ/zaNUKldpKrbO/6Iwfo1UyMLrxjY79Gn4u1x4W4lSUQ7W/yplMamU2+Q
+	 XOoOy1g7+Sdr6y4CMCfkMwC7XbID0rt4OxIvKvBP+9t+Y7dF8gDHmxuDLO2U1PB6zH
+	 b70vMS/jNhn9VrrLCzEp4MBnTuL41vCWcRCQvSd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/204] iio: chemical: sps30: use aligned_s64 for timestamp
+Subject: [PATCH 5.10 116/270] scsi: target: iscsi: Fix timeout on deleted connection
 Date: Mon,  2 Jun 2025 15:46:41 +0200
-Message-ID: <20250602134258.353174076@linuxfoundation.org>
+Message-ID: <20250602134311.970801244@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-[ Upstream commit bb49d940344bcb8e2b19e69d7ac86f567887ea9a ]
+[ Upstream commit 7f533cc5ee4c4436cee51dc58e81dfd9c3384418 ]
 
-Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure that the timestamp is correctly aligned on
-all architectures.
+NOPIN response timer may expire on a deleted connection and crash with
+such logs:
 
-Fixes: a5bf6fdd19c3 ("iio:chemical:sps30: Fix timestamp alignment")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-5-eafac1e22318@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Did not receive response to NOPIN on CID: 0, failing connection for I_T Nexus (null),i,0x00023d000125,iqn.2017-01.com.iscsi.target,t,0x3d
+
+BUG: Kernel NULL pointer dereference on read at 0x00000000
+NIP  strlcpy+0x8/0xb0
+LR iscsit_fill_cxn_timeout_err_stats+0x5c/0xc0 [iscsi_target_mod]
+Call Trace:
+ iscsit_handle_nopin_response_timeout+0xfc/0x120 [iscsi_target_mod]
+ call_timer_fn+0x58/0x1f0
+ run_timer_softirq+0x740/0x860
+ __do_softirq+0x16c/0x420
+ irq_exit+0x188/0x1c0
+ timer_interrupt+0x184/0x410
+
+That is because nopin response timer may be re-started on nopin timer
+expiration.
+
+Stop nopin timer before stopping the nopin response timer to be sure
+that no one of them will be re-started.
+
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://lore.kernel.org/r/20241224101757.32300-1-d.bogdanov@yadro.com
+Reviewed-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/sps30.c | 2 +-
+ drivers/target/iscsi/iscsi_target.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/chemical/sps30.c b/drivers/iio/chemical/sps30.c
-index c0845d892faad..0e466106becb4 100644
---- a/drivers/iio/chemical/sps30.c
-+++ b/drivers/iio/chemical/sps30.c
-@@ -232,7 +232,7 @@ static irqreturn_t sps30_trigger_handler(int irq, void *p)
- 	int ret;
- 	struct {
- 		s32 data[4]; /* PM1, PM2P5, PM4, PM10 */
--		s64 ts;
-+		aligned_s64 ts;
- 	} scan;
+diff --git a/drivers/target/iscsi/iscsi_target.c b/drivers/target/iscsi/iscsi_target.c
+index 075e2a6fb474f..48fe53323f84c 100644
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -4168,8 +4168,8 @@ int iscsit_close_connection(
+ 	spin_unlock(&iscsit_global->ts_bitmap_lock);
  
- 	mutex_lock(&state->lock);
+ 	iscsit_stop_timers_for_cmds(conn);
+-	iscsit_stop_nopin_response_timer(conn);
+ 	iscsit_stop_nopin_timer(conn);
++	iscsit_stop_nopin_response_timer(conn);
+ 
+ 	if (conn->conn_transport->iscsit_wait_conn)
+ 		conn->conn_transport->iscsit_wait_conn(conn);
 -- 
 2.39.5
 
