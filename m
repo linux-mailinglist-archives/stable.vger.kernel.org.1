@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-149011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62946ACAFE0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4420ACAF8B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B2D188A082
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:57:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8CB01BA24FE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA75722156B;
-	Mon,  2 Jun 2025 13:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02FB22156B;
+	Mon,  2 Jun 2025 13:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1XrBgCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8PBM+zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A332576;
-	Mon,  2 Jun 2025 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E98E221729;
+	Mon,  2 Jun 2025 13:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872605; cv=none; b=FSs0vJpGlZIiGvRV+UdvWyVNQLdqaGuiCZG82HVNuCkwqTFxtT0XDTyXeLnlBkX7vZbzQkYIXvWD2dYnx27baaSA949coQDj9c4ARdBZMjeNAj1xsJMJ4c8Dyt1oybNhZsvVvyA8RlWd1IdBC2JQbmuiJ4HDk0u82p4QMEFEBJo=
+	t=1748872162; cv=none; b=W5FHQ78Uzet3MCrUgZP7lcnNA54H6vr0jQt+B2g5ZEeRfOSmP/HQl9XoPh1dDsSPPOBpC6M43ghbBoinTyqXc6HqXBJAMJtDtTazpbc1mwY9zo1PjItZYyg4N5ZgJERph+a1yDvHgRf1fsGeltfiOyFRt/PiXach0C5CZlCfimI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872605; c=relaxed/simple;
-	bh=PyDcmJ0c/r2tgPTNj/cCpsTuY79JK67L12Qev2E51v4=;
+	s=arc-20240116; t=1748872162; c=relaxed/simple;
+	bh=BExlBKhPciHkjBukf/UJ5FYeh1g0KzTm4374Z2Tyf4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHIOiHlREajQh47soVEasuGXGr9duIRXQ083Wd3gNroFvTrrtSs+H19JJYq6tB3QD9YD/lP3U2Ka1QACwGsVouFxrJAgpXC4sMyjnQj45CU9r2IauFa+ZVegBVEdf72LJ0BI3MoZ2KFpMldPxqJgg+1r976b2/N7Mz3CZJj+1wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1XrBgCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACE2C4CEEB;
-	Mon,  2 Jun 2025 13:56:43 +0000 (UTC)
+	 MIME-Version; b=hRxhT2dszleY1bRddfPJRitF7Ezl8MnX5g22rhzptHcQYxrO2e8yTCbNlVIVBap51xvAy67I5R01isjnrdKYqQyhGb+zKvyQD4K+n6ljPB5mny65GeAHL1MeAiG6KJhwyDPEivWfO3Qiv+f67mbQoYke9kHGcBLt51ilzF4K1ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8PBM+zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CB1C4CEEB;
+	Mon,  2 Jun 2025 13:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872604;
-	bh=PyDcmJ0c/r2tgPTNj/cCpsTuY79JK67L12Qev2E51v4=;
+	s=korg; t=1748872162;
+	bh=BExlBKhPciHkjBukf/UJ5FYeh1g0KzTm4374Z2Tyf4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1XrBgCefpB5z48xNOCfOtOcBr1fBK8aJxKQ/aezdMCS0uREnm8p+VfWHltF5zi77
-	 AVWnRJi3jL9jnGiRMEjLpdoZuJtJ/M7rb4uMeBI53VNj/x5cEK3L4dSOnqS5Le+jjo
-	 SYpadoDy4v/DtrT+i4Oq0JmWlJeqn5rpjFCrYNA0=
+	b=z8PBM+zrbz4XH06sZwbFwVkvEogRcpDztzasQLK4LyrdD08WeMevFM8KYcTIr2Y2I
+	 nDKBMf7+xULZu2RfpmLU67ufixkU/9bxjbhWCKNRkR8cyBd3x0DR7D9+mxIxcOEmV6
+	 wYwPu/7axbGDEAhTrf3P6NKVea1+lkamsUEbZlzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.14 15/73] arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on
+Subject: [PATCH 6.15 09/49] arm64: dts: qcom: sm8450: Add missing properties for cryptobam
 Date: Mon,  2 Jun 2025 15:47:01 +0200
-Message-ID: <20250602134242.297746337@linuxfoundation.org>
+Message-ID: <20250602134238.308007334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
-References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
+References: <20250602134237.940995114@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 63169c07d74031c5e10a9f91229dabade880cf0f upstream.
+commit 0fe6357229cb15a64b6413c62f1c3d4de68ce55f upstream.
 
-The l12b and l15b supplies are used by components that are not (fully)
-described (and some never will be) and must never be disabled.
+num-channels and qcom,num-ees are required for BAM nodes without clock,
+because the driver cannot ensure the hardware is powered on when trying to
+obtain the information from the hardware registers. Specifying the node
+without these properties is unsafe and has caused early boot crashes for
+other SoCs before [1, 2].
 
-Mark the regulators as always-on to prevent them from being disabled,
-for example, when consumers probe defer or suspend.
+Add the missing information from the hardware registers to ensure the
+driver can probe successfully without causing crashes.
 
-Note that these supplies currently have no consumers described in
-mainline.
+[1]: https://lore.kernel.org/r/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+[2]: https://lore.kernel.org/r/20230626145959.646747-1-krzysztof.kozlowski@linaro.org/
 
-Fixes: f5b788d0e8cd ("arm64: dts: qcom: Add support for X1-based Dell XPS 13 9345")
-Cc: stable@vger.kernel.org	# 6.13
-Reviewed-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Tested-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-5-johan+linaro@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: b92b0d2f7582 ("arm64: dts: qcom: sm8450: add crypto nodes")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250212-bam-dma-fixes-v1-2-f560889e65d8@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts |    2 ++
+ arch/arm64/boot/dts/qcom/sm8450.dtsi |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-dell-xps13-9345.dts
-@@ -359,6 +359,7 @@
- 			regulator-min-microvolt = <1200000>;
- 			regulator-max-microvolt = <1200000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l13b_3p0: ldo13 {
-@@ -380,6 +381,7 @@
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l17b_2p5: ldo17 {
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -5283,6 +5283,8 @@
+ 			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,num-ees = <4>;
++			num-channels = <16>;
+ 			qcom,controlled-remotely;
+ 			iommus = <&apps_smmu 0x584 0x11>,
+ 				 <&apps_smmu 0x588 0x0>,
 
 
 
