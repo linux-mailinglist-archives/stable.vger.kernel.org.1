@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-150216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7ABACB6E2
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4810BACB59B
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236DEA2295D
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAE204A62C3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0E42397A4;
-	Mon,  2 Jun 2025 15:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05998231830;
+	Mon,  2 Jun 2025 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKk1X0H/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOaMmuqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A45422AE5D;
-	Mon,  2 Jun 2025 15:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73CC22A4DB;
+	Mon,  2 Jun 2025 14:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876403; cv=none; b=WVotm1en5MfkxU1B6MhEBBOU7sY52hKNZRzsGjrr4ntCVWZUlwb4q/iRKUuB1vN5SjN+++5rkHHAg8Nvg0NprYqQiQkikYlewxXbwUWREbG4PgB6yk2xMcKU4K0EXfUf9GcrqzSYdpnolQR+JAZN79vZ3OlsS2zifdFa5Cg3JNI=
+	t=1748875825; cv=none; b=Xofirz007VLNql++qRDyxNp1RU54Hwi6uG03rBlF00icVgAZcr6IA+2rdPaHRkAchn2C7GjW198mMme6qTrt3nIbSvPr13YIWcSGZR0jKQUhKFH5+PSCSwlTueos1u9smnGu3VxPI5yLMrJYV3pPf2ycJVImImAeCEE2bw3ubfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876403; c=relaxed/simple;
-	bh=noHCdlg77Xv/tonY2RLxtr3/z/rDcrhkjSqy8Ur59H8=;
+	s=arc-20240116; t=1748875825; c=relaxed/simple;
+	bh=31GuNpZnmDjtV1HQQqhLJIEZEaiaptl3xPDLWqLj/Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQaJ1pa+C570d+0v91lwG7MYxDtx807q/dBc0DMrlfNnGwQL6vn6LPJt0JB3sxZtHmxxMJLFBymCVWDvnfo4ciqREUNMrJDWsrD0+jgbEaV+WRPmsi+q0aVXsie1CgK+ay/7TDA0QyKaRJuzapRCymIc5penMy5NUE6S7l/NNQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKk1X0H/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75787C4CEEB;
-	Mon,  2 Jun 2025 15:00:02 +0000 (UTC)
+	 MIME-Version; b=uPWVxUnOdVfFI3ZpydtFTD4ixOKfe8xc4AGeR/fmoSUsoMV0qm4QT/VQSR5RIKBIRWnaV9ClQHLcXpX22WaThnrqDxIwxxdm0d+HPaeyGj/4ub9/m0SiO82MuSk9fmOymFlAihnbKpC15zPm+fw6DJepcf2YolTgR8/pyle+lWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOaMmuqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA4AFC4CEEB;
+	Mon,  2 Jun 2025 14:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876403;
-	bh=noHCdlg77Xv/tonY2RLxtr3/z/rDcrhkjSqy8Ur59H8=;
+	s=korg; t=1748875825;
+	bh=31GuNpZnmDjtV1HQQqhLJIEZEaiaptl3xPDLWqLj/Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKk1X0H/9ULm3UOFlfpSE58Axfw7T6rbwEOx+3P/s87211li1EtBqDSsN+99ib6gO
-	 AiQVCiRjBGLarCUzdoMp36R7kqodEjxm90S3HykihwUpds95HDgf4Yo2dI24fSyRTC
-	 LJtHW5BY6xrRXBtrTaGaOzzL6YDwbHStUq9Et0QI=
+	b=uOaMmuqTYQqPRjMwrlaHLCM+PjVfezk9ganIE6Zj9960jj8rGblKAGQRkXU4n1QSg
+	 32LWh4UmSPowe2ESDj2iy4dgV4ootS+Itzkoc4iVbZNFaWRpUQMZnsa675Vvza90EB
+	 henHwnLqDc55qiSeslLINfDfPXeN1T1BcYJZq8Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingi Cho <mincho@theori.io>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/207] sch_hfsc: Fix qlen accounting bug when using peek in hfsc_enqueue()
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Wang Zhaolong <wangzhaolong1@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.10 254/270] smb: client: Fix use-after-free in cifs_fill_dirent
 Date: Mon,  2 Jun 2025 15:48:59 +0200
-Message-ID: <20250602134305.279725802@linuxfoundation.org>
+Message-ID: <20250602134317.721383627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Wang Zhaolong <wangzhaolong1@huawei.com>
 
-[ Upstream commit 3f981138109f63232a5fb7165938d4c945cc1b9d ]
+commit a7a8fe56e932a36f43e031b398aef92341bf5ea0 upstream.
 
-When enqueuing the first packet to an HFSC class, hfsc_enqueue() calls the
-child qdisc's peek() operation before incrementing sch->q.qlen and
-sch->qstats.backlog. If the child qdisc uses qdisc_peek_dequeued(), this may
-trigger an immediate dequeue and potential packet drop. In such cases,
-qdisc_tree_reduce_backlog() is called, but the HFSC qdisc's qlen and backlog
-have not yet been updated, leading to inconsistent queue accounting. This
-can leave an empty HFSC class in the active list, causing further
-consequences like use-after-free.
+There is a race condition in the readdir concurrency process, which may
+access the rsp buffer after it has been released, triggering the
+following KASAN warning.
 
-This patch fixes the bug by moving the increment of sch->q.qlen and
-sch->qstats.backlog before the call to the child qdisc's peek() operation.
-This ensures that queue length and backlog are always accurate when packet
-drops or dequeues are triggered during the peek.
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in cifs_fill_dirent+0xb03/0xb60 [cifs]
+ Read of size 4 at addr ffff8880099b819c by task a.out/342975
 
-Fixes: 12d0ad3be9c3 ("net/sched/sch_hfsc.c: handle corner cases where head may change invalidating calculated deadline")
-Reported-by: Mingi Cho <mincho@theori.io>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250518222038.58538-2-xiyou.wangcong@gmail.com
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ CPU: 2 UID: 0 PID: 342975 Comm: a.out Not tainted 6.15.0-rc6+ #240 PREEMPT(full)
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.fc37 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x53/0x70
+  print_report+0xce/0x640
+  kasan_report+0xb8/0xf0
+  cifs_fill_dirent+0xb03/0xb60 [cifs]
+  cifs_readdir+0x12cb/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ RIP: 0033:0x7f996f64b9f9
+ Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89
+ f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+ f0 ff ff  0d f7 c3 0c 00 f7 d8 64 89 8
+ RSP: 002b:00007f996f53de78 EFLAGS: 00000207 ORIG_RAX: 000000000000004e
+ RAX: ffffffffffffffda RBX: 00007f996f53ecdc RCX: 00007f996f64b9f9
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+ RBP: 00007f996f53dea0 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000207 R12: ffffffffffffff88
+ R13: 0000000000000000 R14: 00007ffc8cd9a500 R15: 00007f996f51e000
+  </TASK>
+
+ Allocated by task 408:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  __kasan_slab_alloc+0x6e/0x70
+  kmem_cache_alloc_noprof+0x117/0x3d0
+  mempool_alloc_noprof+0xf2/0x2c0
+  cifs_buf_get+0x36/0x80 [cifs]
+  allocate_buffers+0x1d2/0x330 [cifs]
+  cifs_demultiplex_thread+0x22b/0x2690 [cifs]
+  kthread+0x394/0x720
+  ret_from_fork+0x34/0x70
+  ret_from_fork_asm+0x1a/0x30
+
+ Freed by task 342979:
+  kasan_save_stack+0x20/0x40
+  kasan_save_track+0x14/0x30
+  kasan_save_free_info+0x3b/0x60
+  __kasan_slab_free+0x37/0x50
+  kmem_cache_free+0x2b8/0x500
+  cifs_buf_release+0x3c/0x70 [cifs]
+  cifs_readdir+0x1c97/0x3190 [cifs]
+  iterate_dir+0x1a1/0x520
+  __x64_sys_getdents64+0x134/0x220
+  do_syscall_64+0x4b/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+ The buggy address belongs to the object at ffff8880099b8000
+  which belongs to the cache cifs_request of size 16588
+ The buggy address is located 412 bytes inside of
+  freed 16588-byte region [ffff8880099b8000, ffff8880099bc0cc)
+
+ The buggy address belongs to the physical page:
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x99b8
+ head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ anon flags: 0x80000000000040(head|node=0|zone=1)
+ page_type: f5(slab)
+ raw: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ raw: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000040 ffff888001e03400 0000000000000000 dead000000000001
+ head: 0000000000000000 0000000000010001 00000000f5000000 0000000000000000
+ head: 0080000000000003 ffffea0000266e01 00000000ffffffff 00000000ffffffff
+ head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffff8880099b8080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ >ffff8880099b8180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                             ^
+  ffff8880099b8200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff8880099b8280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ==================================================================
+
+POC is available in the link [1].
+
+The problem triggering process is as follows:
+
+Process 1                       Process 2
+-----------------------------------------------------------------
+cifs_readdir
+  /* file->private_data == NULL */
+  initiate_cifs_search
+    cifsFile = kzalloc(sizeof(struct cifsFileInfo), GFP_KERNEL);
+    smb2_query_dir_first ->query_dir_first()
+      SMB2_query_directory
+        SMB2_query_directory_init
+        cifs_send_recv
+        smb2_parse_query_directory
+          srch_inf->ntwrk_buf_start = (char *)rsp;
+          srch_inf->srch_entries_start = (char *)rsp + ...
+          srch_inf->last_entry = (char *)rsp + ...
+          srch_inf->smallBuf = true;
+  find_cifs_entry
+    /* if (cfile->srch_inf.ntwrk_buf_start) */
+    cifs_small_buf_release(cfile->srch_inf // free
+
+                        cifs_readdir  ->iterate_shared()
+                          /* file->private_data != NULL */
+                          find_cifs_entry
+                            /* in while (...) loop */
+                            smb2_query_dir_next  ->query_dir_next()
+                              SMB2_query_directory
+                                SMB2_query_directory_init
+                                cifs_send_recv
+                                  compound_send_recv
+                                    smb_send_rqst
+                                    __smb_send_rqst
+                                      rc = -ERESTARTSYS;
+                                      /* if (fatal_signal_pending()) */
+                                      goto out;
+                                      return rc
+                            /* if (cfile->srch_inf.last_entry) */
+                            cifs_save_resume_key()
+                              cifs_fill_dirent // UAF
+                            /* if (rc) */
+                            return -ENOENT;
+
+Fix this by ensuring the return code is checked before using pointers
+from the srch_inf.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220131 [1]
+Fixes: a364bc0b37f1 ("[CIFS] fix saving of resume key before CIFSFindNext")
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/cifs/readdir.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index d6c5fc543f652..05ac7d55482b8 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1572,6 +1572,9 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		return err;
+--- a/fs/cifs/readdir.c
++++ b/fs/cifs/readdir.c
+@@ -778,11 +778,11 @@ find_cifs_entry(const unsigned int xid,
+ 		rc = server->ops->query_dir_next(xid, tcon, &cfile->fid,
+ 						 search_flags,
+ 						 &cfile->srch_inf);
++		if (rc)
++			return -ENOENT;
+ 		/* FindFirst/Next set last_entry to NULL on malformed reply */
+ 		if (cfile->srch_inf.last_entry)
+ 			cifs_save_resume_key(cfile->srch_inf.last_entry, cfile);
+-		if (rc)
+-			return -ENOENT;
  	}
- 
-+	sch->qstats.backlog += len;
-+	sch->q.qlen++;
-+
- 	if (first && !cl->cl_nactive) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
-@@ -1587,9 +1590,6 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 
- 	}
- 
--	sch->qstats.backlog += len;
--	sch->q.qlen++;
--
- 	return NET_XMIT_SUCCESS;
- }
- 
--- 
-2.39.5
-
+ 	if (index_to_find < cfile->srch_inf.index_of_last_entry) {
+ 		/* we found the buffer that contains the entry */
 
 
 
