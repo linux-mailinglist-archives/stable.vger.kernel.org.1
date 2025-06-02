@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B158ACB55A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:03:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385CDACB766
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDDC9E6D58
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4C01C23234
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8C622A7EA;
-	Mon,  2 Jun 2025 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244B523536A;
+	Mon,  2 Jun 2025 15:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM3Mjjyd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDIy51Io"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FB52147E7;
-	Mon,  2 Jun 2025 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D655322A4EB;
+	Mon,  2 Jun 2025 15:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875215; cv=none; b=GlnpJe51+6RY87b1RGhbbBFci3vgefF0SFFzUvXF8V4KB9Fr9Sz7BoviK8jrGG6PgF/VbO03OHF3tGf5zLQXyi/gfaNbazjG92qREMc+PnqCcLiMAr9AC/91w3ZyRFPYSwT+AThEHjsiUULt45GcTUfz6gTMiqQpIW2UXWxcPPk=
+	t=1748876785; cv=none; b=MozpuE5r2yUQo00EJJH2SGhNJFMjKS8dxP1Atvrgj5qVGddHXH/KP5Y4FZ5FAQJnUa2u0qRsbE4A6ANmnc3diD2ihG/zrRqvEIJi5TjW4Z6vGmVNAg5lAR8SeMGcJJRjcFNOv5VW/qbq3a+N5l/haEtu1P43OYRQw7nyyaBeBQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875215; c=relaxed/simple;
-	bh=X5nO/zXARPiZLmSpkC/nAhiAItWXmtHB6QnOeH0ABKY=;
+	s=arc-20240116; t=1748876785; c=relaxed/simple;
+	bh=KYkYWdEmBe77EdLxcWFEYLCseUN4XUFmfWlIj6nQHEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqP60OwxDtCJRx783lJOJKAwNep41HYiV4XShAM6qv2oCiyCVPh/D46ebCFW6ELohJKMwrk1C618gflAmt9tgoJiXxAglzTqAc1V3XZSTN88ib3T41qdNUsNIuS3lEEml6hdalbkzOuz0J+pjvH2qLnDqnKCn7sVr6Hk7/4OiyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM3Mjjyd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14245C4CEEB;
-	Mon,  2 Jun 2025 14:40:14 +0000 (UTC)
+	 MIME-Version; b=GjgdrLWdBLu9ECNfwG7SqLueHmXUO394VwyKi+TZ3pd0B9p/b11A1gmMlFS3HVaZSNrBkS0g3ExUBHg9XmuRkD5RV/wgd+/j1YP+7dPaOJRsEPC8+wijsH8Ngvkgb5qQ9QSGJf1XighW5E4W9LbRMvJuFjBpkFfLdVyRBXY6lSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDIy51Io; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C49C4CEF0;
+	Mon,  2 Jun 2025 15:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875215;
-	bh=X5nO/zXARPiZLmSpkC/nAhiAItWXmtHB6QnOeH0ABKY=;
+	s=korg; t=1748876785;
+	bh=KYkYWdEmBe77EdLxcWFEYLCseUN4XUFmfWlIj6nQHEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xM3Mjjyd8bs9ucQAn9jhgw+f2/jT4m3knXbB5BtL7HyJ2rb7D9oRu93NUunEWieEo
-	 ypnUfbk4TdER0f8EmdZnz8xKx55QZj58SLL6jYtloEFY2v4vCBPMXYE5daio473eoK
-	 tV7c2FQRFgytZ2ed1VmS2MoVJS831aa1z5vHw1tI=
+	b=eDIy51IoDicZz13eDD2U5noLNuK2WLnNPTVdwil5y+xhV8RtLY9KWA8eEmSg9zJqH
+	 u4t1N9G0tjbnW/rj/NDuNS1Ius7eml3ctG/Kpll9eK+CIwokFhNpu1OgyhIorSL4fM
+	 42KqNwKgBVuNjf5lJd/sJ5mhqB04gTTIiq1JJOtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/270] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
+Subject: [PATCH 6.1 043/325] tools/build: Dont pass test log files to linker
 Date: Mon,  2 Jun 2025 15:45:19 +0200
-Message-ID: <20250602134308.591700894@linuxfoundation.org>
+Message-ID: <20250602134321.501414564@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hewitt <christianshewitt@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit f37bb5486ea536c1d61df89feeaeff3f84f0b560 ]
+[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
 
-This reverts commit bfbc68e.
+Separate test log files from object files. Depend on test log output
+but don't pass to the linker.
 
-The patch does permit the offending YUV420 @ 59.94 phy_freq and
-vclk_freq mode to match in calculations. It also results in all
-fractional rates being unavailable for use. This was unintended
-and requires the patch to be reverted.
-
-Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/build/Makefile.build | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 37127ba40aa97..0eb86943a3588 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
- 				 FREQ_1000_1001(params[i].pixel_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
- 				 i, params[i].phy_freq,
--				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
-+				 FREQ_1000_1001(params[i].phy_freq/10)*10);
- 		/* Match strict frequency */
- 		if (phy_freq == params[i].phy_freq &&
- 		    vclk_freq == params[i].vclk_freq)
- 			return MODE_OK;
- 		/* Match 1000/1001 variant */
--		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
-+		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
- 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
- 			return MODE_OK;
- 	}
-@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index 715092fc6a239..6a043b729b367 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -130,6 +130,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
+ obj-y        := $(addprefix $(objprefix),$(obj-y))
+ subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
  
- 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
- 		if ((phy_freq == params[freq].phy_freq ||
--		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
-+		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
- 		    (vclk_freq == params[freq].vclk_freq ||
- 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
- 			if (vclk_freq != params[freq].vclk_freq)
++# Separate out test log files from real build objects.
++test-y       := $(filter %_log, $(obj-y))
++obj-y        := $(filter-out %_log, $(obj-y))
++
+ # Final '$(obj)-in.o' object
+ in-target := $(objprefix)$(obj)-in.o
+ 
+@@ -140,7 +144,7 @@ $(subdir-y):
+ 
+ $(sort $(subdir-obj-y)): $(subdir-y) ;
+ 
+-$(in-target): $(obj-y) FORCE
++$(in-target): $(obj-y) $(test-y) FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed,$(host)ld_multi)
+ 
 -- 
 2.39.5
 
