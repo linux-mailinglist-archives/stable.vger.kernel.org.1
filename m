@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B114ACB0D6
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70143ACB45C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74211164CBD
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A6619479E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E843231C9F;
-	Mon,  2 Jun 2025 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4935022D792;
+	Mon,  2 Jun 2025 14:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgIW9hAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5KLA16D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF83F231A51;
-	Mon,  2 Jun 2025 14:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0526D2C324D;
+	Mon,  2 Jun 2025 14:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872973; cv=none; b=aC4k8CJAeh0x19sEMV1r0PKdKuIkibqDJKHmppofqoW2mXKQPVIW1S8clnSUH9ee2cxPC2X5pTV2o6cvOGUGikPTPY/Aha4ykh0J5CyAwLzNW7ZSRY1BteN7+kRn8/5BuGlf1NQE75e0tFTaZNrpQw+U7ogXOAQsi32DOpyXLsc=
+	t=1748874859; cv=none; b=j5/3UbE2wGwRNgS3o9F64tE4UQJD1rk+FNMglUrBUYTKRNgp2hNFK/pEsd/Esybhux9BFeptfw2qhbwex5arHaETjGiRkIcHaaCO2nf+Gm7Is+KX5OVY00GknTk2mvbEV48pWj/0g7QQxdJhoWheqzqzAtkrvK2NZM3Uhxam1Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872973; c=relaxed/simple;
-	bh=Ma7QPiCJCFK4ijRA5ysBtHmMrIxUvntwWyUGpu0MhDE=;
+	s=arc-20240116; t=1748874859; c=relaxed/simple;
+	bh=uSEXDCSEyHNdCHYMRVxgfiTwyKcIndyC2N32ln0s5u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nS/4OA1Qe3T9vMKkHuFCbVvsLYxdRU+g0lKxQIdj0W9KuVyOFPxnA2m2T6kapLG/zF5Ygmb4IJRbHISs1cOOBdek7MlfO6JrJ5RoGi1hrPvmVBuLQ5xJqfdU30net45ZBU7kO37erp5S/xuwnJvJD8uhB90PWWUx601D/svLU5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgIW9hAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A589C4CEEE;
-	Mon,  2 Jun 2025 14:02:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jSM2MbMBJnHxTk0u7A5yPw3YxusbMWRcGk7hyJQmSDx+4Ucl0PN5T8srnE0EQQnbKvSrxRfma45w8jWL/H8chSkuCAhzlSS9LcWHPc6JzIAes/si4HdE204KwNEvIwq6hZurR+sw/f0rx+xEqrqo1u3oxMCdHvQK66e0MWwajeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5KLA16D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3705AC4CEEB;
+	Mon,  2 Jun 2025 14:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872972;
-	bh=Ma7QPiCJCFK4ijRA5ysBtHmMrIxUvntwWyUGpu0MhDE=;
+	s=korg; t=1748874858;
+	bh=uSEXDCSEyHNdCHYMRVxgfiTwyKcIndyC2N32ln0s5u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgIW9hAqcUScaYLs4m2mqzGJbxkFHl8INk0YA/iDDw2z6OiPYYAiT+5H12PQvjP3n
-	 8eaXCC7t7/2V/PNv6GAnOW92bgK77HUAEiEwNjcUJ1xK3Z5WWBDFSE/9YqRNwcs6nm
-	 x7Mabh2m7u4BSDSXwvvVTgP8J5qKcYdOCvc0AN58=
+	b=o5KLA16DXIirASQjk/67bG3XSodJLnZI42iAl6/kCKtbDT+8h8CrZe3iC+RVHa5B9
+	 7OVkdtTLtvKkbKkiAl0qy4+SdxaGIUNJaUzQDc+05qe/nNdD0jCk/MOdOshcbE23+V
+	 NfsENvv0eTkyEc+LeL9TZfj+s2/R2EGS0bQwRsuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nishanth Menon <nm@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 54/55] net: ethernet: ti: am65-cpsw: Lower random mac address error print to info
+Subject: [PATCH 5.4 158/204] scsi: st: Restore some drive settings after reset
 Date: Mon,  2 Jun 2025 15:48:11 +0200
-Message-ID: <20250602134240.403762758@linuxfoundation.org>
+Message-ID: <20250602134301.865815635@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 50980d8da71a0c2e045e85bba93c0099ab73a209 ]
+[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
 
-Using random mac address is not an error since the driver continues to
-function, it should be informative that the system has not assigned
-a MAC address. This is inline with other drivers such as ax88796c,
-dm9051 etc. Drop the error level to info level.
+Some of the allowed operations put the tape into a known position to
+continue operation assuming only the tape position has changed.  But reset
+sets partition, density and block size to drive default values. These
+should be restored to the values before reset.
 
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://patch.msgid.link/20250516122655.442808-1-nm@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Normally the current block size and density are stored by the drive.  If
+the settings have been changed, the changed values have to be saved by the
+driver across reset.
+
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/st.c | 24 +++++++++++++++++++++---
+ drivers/scsi/st.h |  2 ++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index a21e7c0afbfdc..61788a43cb861 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2699,7 +2699,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 							port->slave.mac_addr);
- 			if (!is_valid_ether_addr(port->slave.mac_addr)) {
- 				eth_random_addr(port->slave.mac_addr);
--				dev_err(dev, "Use random MAC address\n");
-+				dev_info(dev, "Use random MAC address\n");
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index 3f798f87e8d98..d4aef346bfee3 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -949,7 +949,6 @@ static void reset_state(struct scsi_tape *STp)
+ 		STp->partition = find_partition(STp);
+ 		if (STp->partition < 0)
+ 			STp->partition = 0;
+-		STp->new_partition = STp->partition;
+ 	}
+ }
+ 
+@@ -2921,14 +2920,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
+ 		if (cmd_in == MTSETDENSITY) {
+ 			(STp->buffer)->b_data[4] = arg;
+ 			STp->density_changed = 1;	/* At least we tried ;-) */
++			STp->changed_density = arg;
+ 		} else if (cmd_in == SET_DENS_AND_BLK)
+ 			(STp->buffer)->b_data[4] = arg >> 24;
+ 		else
+ 			(STp->buffer)->b_data[4] = STp->density;
+ 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
+ 			ltmp = arg & MT_ST_BLKSIZE_MASK;
+-			if (cmd_in == MTSETBLK)
++			if (cmd_in == MTSETBLK) {
+ 				STp->blksize_changed = 1; /* At least we tried ;-) */
++				STp->changed_blksize = arg;
++			}
+ 		} else
+ 			ltmp = STp->block_size;
+ 		(STp->buffer)->b_data[9] = (ltmp >> 16);
+@@ -3629,9 +3631,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 				retval = (-EIO);
+ 				goto out;
  			}
+-			reset_state(STp);
++			reset_state(STp); /* Clears pos_unknown */
+ 			/* remove this when the midlevel properly clears was_reset */
+ 			STp->device->was_reset = 0;
++
++			/* Fix the device settings after reset, ignore errors */
++			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
++				mtc.mt_op == MTEOM) {
++				if (STp->can_partitions) {
++					/* STp->new_partition contains the
++					 *  latest partition set
++					 */
++					STp->partition = 0;
++					switch_partition(STp);
++				}
++				if (STp->density_changed)
++					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
++				if (STp->blksize_changed)
++					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
++			}
  		}
  
+ 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
+diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
+index 95d2e7a7988de..c9947abb0a451 100644
+--- a/drivers/scsi/st.h
++++ b/drivers/scsi/st.h
+@@ -168,12 +168,14 @@ struct scsi_tape {
+ 	unsigned char compression_changed;
+ 	unsigned char drv_buffer;
+ 	unsigned char density;
++	unsigned char changed_density;
+ 	unsigned char door_locked;
+ 	unsigned char autorew_dev;   /* auto-rewind device */
+ 	unsigned char rew_at_close;  /* rewind necessary at close */
+ 	unsigned char inited;
+ 	unsigned char cleaning_req;  /* cleaning requested? */
+ 	int block_size;
++	int changed_blksize;
+ 	int min_block;
+ 	int max_block;
+ 	int recover_count;     /* From tape opening */
 -- 
 2.39.5
 
