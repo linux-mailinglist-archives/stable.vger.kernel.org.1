@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-149616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69A3ACB3D9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:46:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36602ACB702
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F1EE4A5AD4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A76C3BE19D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9061222DF9D;
-	Mon,  2 Jun 2025 14:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB3922A7E5;
+	Mon,  2 Jun 2025 15:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xx5JE2Rg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijmaRqJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF0F22259B;
-	Mon,  2 Jun 2025 14:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE05235362;
+	Mon,  2 Jun 2025 15:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874499; cv=none; b=swP84LoZfb9tNFJOsVB+utViG86zXWvo5u7KXoIx/uR9fo/fYkhjNftIitkKueN45H0pc6ltlFtuhMs/s/DVgFomMJ/o2NAwQvi/p4Pz8udlvAPX00V2bO6/c594R2bNzqQsybuPV4NAHLrR/skmAkulM+cJt2lMrzAhOzMHUSE=
+	t=1748876780; cv=none; b=LQY325XrLR+asEPIC5hj5f4eOzhwI52DwOrsGsdhMuw/VLz1r587srBceAehm6tLVMtWIk856lJ/fdimDERLYpS8EQVKJLtjVWIKKjhkepkKcuaaX9bIByoCqzmwxz1H9KKKjogwWmJz9fVAOTtAzk7xJOO2Nh8CtM0DliTdfwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874499; c=relaxed/simple;
-	bh=FgSHl9GFibSVUmQ7cc96r6+jinGzY4qB2HZFFkp7hlw=;
+	s=arc-20240116; t=1748876780; c=relaxed/simple;
+	bh=OiqZ19h9Ty7yW+bXGV3cqO3rVPXaKg4vfT9mRg80lAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjmhSvTJw3GmZClTEfx5+et0pzGuu2pZ4iu7hiANMAbmTSYV9aHIZYTHvL0TD27JMmdF2UVqiHEEIUrGOLrNjhpGNflx9CVDFHCDx4aTqqVU7vxqnBSlDtSwH/7YwZ7p0QUq70blWRjSdUijqwUEMGK6csand2phLslWqxznlQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xx5JE2Rg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB96DC4CEF0;
-	Mon,  2 Jun 2025 14:28:18 +0000 (UTC)
+	 MIME-Version; b=k8uLPvAM8Nyn/uWyDRYOo7u8j/4198dc8jM2A1pzrmmyKSzakIuQGowR9CMYbpZzBobePSfd7k5yCVApJfRzLBvhXC6ix7fuJtnGb5Xs5RRSbILIHE69MQmNLBjE8QuvkUAXhXEKtgAWNo2QkIUI8+PI0MHxN+mLrtKi57u3hfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijmaRqJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CB3C4CEEB;
+	Mon,  2 Jun 2025 15:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874499;
-	bh=FgSHl9GFibSVUmQ7cc96r6+jinGzY4qB2HZFFkp7hlw=;
+	s=korg; t=1748876776;
+	bh=OiqZ19h9Ty7yW+bXGV3cqO3rVPXaKg4vfT9mRg80lAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xx5JE2Rg/NOXsudyb1nDE+G1AEDbdacjKdIqjqB4r+ORJSGtO3puR6KAE8Klgf8Dd
-	 LQ016O3BJfyswFLh6VAE+CFriEWkVeZ9EdFZr0xQyaStZ3qo7+KK/B98Qnf2SHgiv0
-	 8Xe5XaHlDndxdWQVPVApJtN4Jsvk3LDP2QHU5HB8=
+	b=ijmaRqJLO9MLnsVorhrEnVpOI4zAzztjI5DzKfsErh7UWiqn+9JTXsk0H71WadEKU
+	 /TkoIUoariEJ87u0zxJ/d98WxMRJoOManxXBp6IZpjNIezgdlJ41oKz1b5/nlp2w5T
+	 iVNexxRucQPH3wlmYeLkra+9iHEjI03AfiR4xoe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 012/204] net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc
+Subject: [PATCH 6.1 069/325] thunderbolt: Do not add non-active NVM if NVM upgrade is disabled for retimer
 Date: Mon,  2 Jun 2025 15:45:45 +0200
-Message-ID: <20250602134255.970665884@linuxfoundation.org>
+Message-ID: <20250602134322.590033999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 141d34391abbb315d68556b7c67ad97885407547 ]
+[ Upstream commit ad79c278e478ca8c1a3bf8e7a0afba8f862a48a1 ]
 
-As described in Gerrard's report [1], we have a UAF case when an hfsc class
-has a netem child qdisc. The crux of the issue is that hfsc is assuming
-that checking for cl->qdisc->q.qlen == 0 guarantees that it hasn't inserted
-the class in the vttree or eltree (which is not true for the netem
-duplicate case).
+This is only used to write a new NVM in order to upgrade the retimer
+firmware. It does not make sense to expose it if upgrade is disabled.
+This also makes it consistent with the router NVM upgrade.
 
-This patch checks the n_active class variable to make sure that the code
-won't insert the class in the vttree or eltree twice, catering for the
-reentrant case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-3-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/retimer.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 79c63c4610d3a..5d73d02b8dce7 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1573,7 +1573,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		return err;
- 	}
+diff --git a/drivers/thunderbolt/retimer.c b/drivers/thunderbolt/retimer.c
+index 5bd5c22a5085d..d2038337ea03b 100644
+--- a/drivers/thunderbolt/retimer.c
++++ b/drivers/thunderbolt/retimer.c
+@@ -89,9 +89,11 @@ static int tb_retimer_nvm_add(struct tb_retimer *rt)
+ 	if (ret)
+ 		goto err_nvm;
  
--	if (first) {
-+	if (first && !cl->cl_nactive) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
+-	ret = tb_nvm_add_non_active(nvm, nvm_write);
+-	if (ret)
+-		goto err_nvm;
++	if (!rt->no_nvm_upgrade) {
++		ret = tb_nvm_add_non_active(nvm, nvm_write);
++		if (ret)
++			goto err_nvm;
++	}
+ 
+ 	rt->nvm = nvm;
+ 	return 0;
 -- 
 2.39.5
 
