@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-150212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DDEACB61A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:14:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0329ACB75C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2147E4C2C71
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1C116A2D5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A38C22A813;
-	Mon,  2 Jun 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5D5221FBB;
+	Mon,  2 Jun 2025 15:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QM3ZvVNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPqgEL8R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479BE22A7E4;
-	Mon,  2 Jun 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECD1221DBD;
+	Mon,  2 Jun 2025 15:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876392; cv=none; b=MYpLzMgAWa2qFD0S/f0A+kDLh9RX9I3kBMzSa4/quiP7SdFzalwkq3I8gyrBuTpzm3sBCcw9EFYG2N9qqirX/fLg+i7k6S0yo7g/LlHy51ZYiSZiHe2Z7Xh1ig0hdDQFNUxsizB5kHYv+CZucIqKFl7Sfoc6YyU1bd3LhyurQrY=
+	t=1748877380; cv=none; b=rNvNGJRrf8VWr/vrb+TOESF+EGGk46B+YtImKj9MjLU0uDUNF90+Nh+n8VhHwDhdqMs74AsVNK0ZpaZv5z52uoZDFSauv9VJARASL7FdJi+viV2fioAolFa8PjGLJIuo0E+8ovYkUuQ1hREQHY9ugS3SIisUS2kMUv8ZFvd/bko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876392; c=relaxed/simple;
-	bh=YP6rEBZQapLMvTuCJEOQytMoEzXCWlfVZOLkXOJZ3So=;
+	s=arc-20240116; t=1748877380; c=relaxed/simple;
+	bh=7wSnjBXveqwBg6AgAj4QOjN6u7NbBfqmsttfxRJfXYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNV/3YVjU25oNxYA1Xd5cyNlAZ7psW5bJxpeTm14g/uyrniGoq3pgBe+QIida3a0y5Utoi1TqZSPsfQ48/m3cjSsMBI3YSbxT2Se7QXfnhQS0Jmp4FZr+lBJoNSWuqN5VPeZ+EDyVEWBZLZOxqqmGrun6NkpIjEVv3VjtSt4inI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QM3ZvVNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE415C4CEEB;
-	Mon,  2 Jun 2025 14:59:51 +0000 (UTC)
+	 MIME-Version; b=psgCU+gzzJ/CPGFspSAZ1PxBj1HYODHmRuW7YuFzR06aYtDrQA7WDn+iitIIQycNwkmtcHDJf/otT0PEAYcDPF+CBOgnX8ZciUe9dvtahSaFUPYLAgA3RMhTaW7ecu7/LgmiLrU+rABUeiRT0mVzSbuzUMRHO/XKzbJ2A2fLHxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPqgEL8R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAE4C4CEEB;
+	Mon,  2 Jun 2025 15:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876392;
-	bh=YP6rEBZQapLMvTuCJEOQytMoEzXCWlfVZOLkXOJZ3So=;
+	s=korg; t=1748877379;
+	bh=7wSnjBXveqwBg6AgAj4QOjN6u7NbBfqmsttfxRJfXYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QM3ZvVNT37ES86/DSFMueaOcVD98SPADHR4x6Ggd3ykyNJglmkA6s2PfnDz5Gw6+c
-	 aFCLhfAHMD+Rvaxy2dGFmxv028Ue1d3E00KLI8lwYcN9AuOSckCcQKZ3rhmlDkeZyZ
-	 axOQcjv5VdPg/uQ9h1eQAudJir7n8j4ze9EC7D3g=
+	b=VPqgEL8RItTF3qhz4hxPOCgHpHJg4buMPD9aUG2Y0dHyMQcVLpVu8xGLhYrqzg+No
+	 XQt8NTUvNZo7T7qSGNL3WWNpxgG6N29ZHjd1bW+k1NJF8HpKLri9JAZoGQngIIr9YJ
+	 3d1nxtFrZVjjEQ6apUbbUSxK7KW1epKtk4Dtr/ZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Louis DeLosSantos <louis.delos.devel@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/207] xfrm: Sanitize marks before insert
+	"feijuan.li" <feijuan.li@samsung.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 259/325] drm/edid: fixed the bug that hdr metadata was not reset
 Date: Mon,  2 Jun 2025 15:48:55 +0200
-Message-ID: <20250602134305.121858902@linuxfoundation.org>
+Message-ID: <20250602134330.300282965@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: feijuan.li <feijuan.li@samsung.com>
 
-[ Upstream commit 0b91fda3a1f044141e1e615456ff62508c32b202 ]
+commit 6692dbc15e5ed40a3aa037aced65d7b8826c58cd upstream.
 
-Prior to this patch, the mark is sanitized (applying the state's mask to
-the state's value) only on inserts when checking if a conflicting XFRM
-state or policy exists.
+When DP connected to a device with HDR capability,
+the hdr structure was filled.Then connected to another
+sink device without hdr capability, but the hdr info
+still exist.
 
-We discovered in Cilium that this same sanitization does not occur
-in the hot-path __xfrm_state_lookup. In the hot-path, the sk_buff's mark
-is simply compared to the state's value:
-
-    if ((mark & x->mark.m) != x->mark.v)
-        continue;
-
-Therefore, users can define unsanitized marks (ex. 0xf42/0xf00) which will
-never match any packet.
-
-This commit updates __xfrm_state_insert and xfrm_policy_insert to store
-the sanitized marks, thus removing this footgun.
-
-This has the side effect of changing the ip output, as the
-returned mark will have the mask applied to it when printed.
-
-Fixes: 3d6acfa7641f ("xfrm: SA lookups with mark")
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Signed-off-by: Louis DeLosSantos <louis.delos.devel@gmail.com>
-Co-developed-by: Louis DeLosSantos <louis.delos.devel@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e85959d6cbe0 ("drm: Parse HDR metadata info from EDID")
+Cc: <stable@vger.kernel.org> # v5.3+
+Signed-off-by: "feijuan.li" <feijuan.li@samsung.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20250514063511.4151780-1-feijuan.li@samsung.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_policy.c | 3 +++
- net/xfrm/xfrm_state.c  | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/gpu/drm/drm_edid.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 55ef8e8329243..16958656b6d43 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -1594,6 +1594,9 @@ int xfrm_policy_insert(int dir, struct xfrm_policy *policy, int excl)
- 	struct xfrm_policy *delpol;
- 	struct hlist_head *chain;
+--- a/drivers/gpu/drm/drm_edid.c
++++ b/drivers/gpu/drm/drm_edid.c
+@@ -6164,6 +6164,7 @@ static void drm_reset_display_info(struc
+ 	info->has_hdmi_infoframe = false;
+ 	info->rgb_quant_range_selectable = false;
+ 	memset(&info->hdmi, 0, sizeof(info->hdmi));
++	memset(&connector->hdr_sink_metadata, 0, sizeof(connector->hdr_sink_metadata));
  
-+	/* Sanitize mark before store */
-+	policy->mark.v &= policy->mark.m;
-+
- 	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
- 	chain = policy_hash_bysel(net, &policy->selector, policy->family, dir);
- 	if (chain)
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index ff8159bae7bbf..c1bc5d780f640 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1277,6 +1277,9 @@ static void __xfrm_state_insert(struct xfrm_state *x)
- 
- 	list_add(&x->km.all, &net->xfrm.state_all);
- 
-+	/* Sanitize mark before store */
-+	x->mark.v &= x->mark.m;
-+
- 	h = xfrm_dst_hash(net, &x->id.daddr, &x->props.saddr,
- 			  x->props.reqid, x->props.family);
- 	hlist_add_head_rcu(&x->bydst, net->xfrm.state_bydst + h);
--- 
-2.39.5
-
+ 	info->edid_hdmi_rgb444_dc_modes = 0;
+ 	info->edid_hdmi_ycbcr444_dc_modes = 0;
 
 
 
