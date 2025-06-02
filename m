@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-149385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEF4ACB29E
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:34:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DCBAACB54F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DA1C481CA5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 883603ABDE2
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EDC22D9F5;
-	Mon,  2 Jun 2025 14:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89522687C;
+	Mon,  2 Jun 2025 14:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O2dfcTCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRGbkpdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA369221299;
-	Mon,  2 Jun 2025 14:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E8E225A3E;
+	Mon,  2 Jun 2025 14:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873805; cv=none; b=oSjrFvNFFElKb7xUc3Q1r4E02vhFDc/u1DPicqy850ZUcvaNdWK2cLA+lXHRv9JFUKGl43gj8DhzSNwOyoLaYqYfN22c+XlOWmvfVyVmi/tMv7Ve9T7Lp37xzjx5oNZYBDsyOX5OAUXMyGAbMTeDCSZNT8++a1u9tV/40ytM0SY=
+	t=1748875127; cv=none; b=syQ+VCj5NDw2UfDzYBaA33wMGRPcytYAy8DSeiDTXY0mZmfzsliqwTaZCHyRUze8s/ovzaib+jOfca/s9I99NlCzSWa9Y6+SSIa5uOJtkj2w23FkdENBgXnYBnUhaBl1wd6LnPsMxKv1L3hQ4ahJL8+QigbePBgkcSKgZRStkL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873805; c=relaxed/simple;
-	bh=OXldEu8VXMYwb+suDim8mQdBid9/KQaEpMpUSLR/aY8=;
+	s=arc-20240116; t=1748875127; c=relaxed/simple;
+	bh=vWuhXWNW3C25OP5HVLYOgHNulUCkv0PHrp6whIGhsbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+r+r972HQi/9KNJ6TsIXqucc2Hy8ygqRF7U1enRF70jwYNogxhO8MKF0dmgJH8DsY8bjs/6LQZpDxCVRPZgqPin/ChrnrEgdbypYi1dc24onIfKF8T+27A2mXHY4V0PXmt7q98SUieXNB7SMkDcV2VMsjw6BX2GkaM9MV0EzSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O2dfcTCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67557C4CEEB;
-	Mon,  2 Jun 2025 14:16:45 +0000 (UTC)
+	 MIME-Version; b=UgoFKdTO33BgENAPPU7PDw8GSYWsdAEKixEwsQgV/2RLkFkKiWIuHrz9FPs2L9WzAfurSdSasFI0ZxL9FERYatyc+A22gkzZy+jgJfhrQiE88O9URMPdvlvCAqz2gYuZMD2fh3rdJhNqdNxVULsS5vMoDVSunqJ+KXHcybP3DUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRGbkpdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8603C4CEF0;
+	Mon,  2 Jun 2025 14:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873805;
-	bh=OXldEu8VXMYwb+suDim8mQdBid9/KQaEpMpUSLR/aY8=;
+	s=korg; t=1748875127;
+	bh=vWuhXWNW3C25OP5HVLYOgHNulUCkv0PHrp6whIGhsbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O2dfcTCY25nINCF5Y+u4W65Ve6r0i6Zw1/8eXYhE/CjGwqtPtNtj03kOKmHpm1C4G
-	 lzBunoxK4IxD2L07otpBjeDcoB5lCsybl0xerOpa4m09Qhadk5C3GI0VVFWJlqHBzA
-	 3QHnWAHgBSzvdq5tyeCNIFo5jZSwyLxQTVvI9SSk=
+	b=jRGbkpdtU2uVNGmdYRxRWuZDBuFB3bJC5O5b2ySBAIwV+atkwBLuYX+P9dCAnwx9x
+	 BIPOMDHH10lc7YosRRs9INOXE3CnuP+BX8q4H1+4nrjorHcngxHLXjch1bGV89wcKR
+	 k76BqAYDmqoPzEjmllCZwYr0gTdL3cyMez106y7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/444] wifi: mac80211: remove misplaced drv_mgd_complete_tx() call
+Subject: [PATCH 5.10 037/270] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
 Date: Mon,  2 Jun 2025 15:45:22 +0200
-Message-ID: <20250602134351.398659041@linuxfoundation.org>
+Message-ID: <20250602134308.708333024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit f4995cdc4d02d0abc8e9fcccad5c71ce676c1e3f ]
+[ Upstream commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 ]
 
-In the original commit 15fae3410f1d ("mac80211: notify driver on
-mgd TX completion") I evidently made a mistake and placed the
-call in the "associated" if, rather than the "assoc_data". Later
-I noticed the missing call and placed it in commit c042600c17d8
-("wifi: mac80211: adding missing drv_mgd_complete_tx() call"),
-but didn't remove the wrong one. Remove it now.
+With ACPI in place, gicv2m_get_fwnode() is registered with the pci
+subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
+during a PCI host bridge probe. But, the call back is wrongly marked as
+__init, causing it to be freed, while being registered with the PCI
+subsystem and could trigger:
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250205110958.6ed954179bbf.Id8ef8835b7e6da3bf913c76f77d201017dc8a3c9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+ Unable to handle kernel paging request at virtual address ffff8000816c0400
+  gicv2m_get_fwnode+0x0/0x58 (P)
+  pci_set_bus_msi_domain+0x74/0x88
+  pci_register_host_bridge+0x194/0x548
+
+This is easily reproducible on a Juno board with ACPI boot.
+
+Retain the function for later use.
+
+Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/irqchip/irq-gic-v2m.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 37163d84104fa..2c7e139efd532 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7822,7 +7822,6 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_report_disconnect(sdata, frame_buf,
- 					    sizeof(frame_buf), true,
- 					    req->reason_code, false);
--		drv_mgd_complete_tx(sdata->local, sdata, &info);
- 		return 0;
- 	}
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 0b57ac48e18b6..b17deec1c5d4d 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -458,7 +458,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
+ #ifdef CONFIG_ACPI
+ static int acpi_num_msi;
+ 
+-static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
++static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ {
+ 	struct v2m_data *data;
  
 -- 
 2.39.5
