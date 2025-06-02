@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA35ACB328
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:39:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAE2ACB420
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E17C94A32F1
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:29:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB7816AE5F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF7C23507C;
-	Mon,  2 Jun 2025 14:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56B9224B09;
+	Mon,  2 Jun 2025 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3w0OxTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V20VaLyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B47B226863;
-	Mon,  2 Jun 2025 14:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62954231851;
+	Mon,  2 Jun 2025 14:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874049; cv=none; b=nYNkahlNVHga1y4wX+6vLboIKbynNfdhxXSfB0QepdJD7JpNa3zI38G0PKwelbIuuQ1m35CRdLmBs2zVR7eM4SpihoN8TXyy/43flzRlWLaL4vKY8gL4SitKqAI1m6BBSwFWgVUzTXD0z2S3BJPSgk4YkrbgRnBKh6RrRw7SVJw=
+	t=1748874588; cv=none; b=L9/PNfeWSOt0wsqDlMK/mvY/6SAEJQciwfLx5AJzbQl7pTol0uJ+y8/6b3brdKKq9RJtfIS1MFQWwIGewyepJYoiTytfGSAghWMBke9yOWEI72jkNzdEMuf20myaoNPt0yaT3UWMWB7vWfJJsclUyEKP55lyZl58z3rJ04cTh2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874049; c=relaxed/simple;
-	bh=7ULt6qXlfCx5WbDvymhoJ3ik1dMxBaGIC+PQlmshxio=;
+	s=arc-20240116; t=1748874588; c=relaxed/simple;
+	bh=OPfqgJoXV/CmALAloEP/TP5dxoEL7z5meNrl3iuHYFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+NKnHPWijJaCblB8rWF3eKQRdIeuc6CYzBOYdVkrYQXYDLLmGPT1VX70mtMO62FgfxJe/YKDEO87ofbGffx+9rrtyUfDTsbhIwvEkU8228U5S1WXS2WPzlom55ZdkJ5terBvUIx0tSwxRPrhx13xE9hxgkoynNc4GIJes8p0XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3w0OxTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E851C4CEEB;
-	Mon,  2 Jun 2025 14:20:48 +0000 (UTC)
+	 MIME-Version; b=TOI/9MuA7vQsD/EQ6cdD7J29/yIZxJcU8bTXWlN5BxQfJnb6+b95T6lGNOIPWmzoDhltmQ+BCPlP1Q0TBAf48Q/6jhwBh9ZBaxVyaA+G1e1QJYAKAo4CMWPX4cO/BCEywWL33RmlkIUd68MyBxOJUJvlJfyt2Tn7izuThVsi0+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V20VaLyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8BEC4CEEB;
+	Mon,  2 Jun 2025 14:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874049;
-	bh=7ULt6qXlfCx5WbDvymhoJ3ik1dMxBaGIC+PQlmshxio=;
+	s=korg; t=1748874587;
+	bh=OPfqgJoXV/CmALAloEP/TP5dxoEL7z5meNrl3iuHYFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3w0OxTpEscQf15K5tDYlqPzi+sD46hVxArLO2xabRCDC+xOI0b0xbaCrQSTG12XU
-	 ITdX5h8/WdlH8KJ+eZUd6qeV5dUnbZhB9bjYb0fnxuAi5KYI0oEVyD0OpGToqiHtbm
-	 wV/+jA8zy7UoUCxy8Taq1u1BkdnXSZXP6Hr7D9mA=
+	b=V20VaLyVwE1NJPCyLFMm3Z1xOiQ/AYKGS88qCqMvFmkBUO6i4W8GzHyuzrzH1Gxm+
+	 BlDkQCVcXgSALScyikrzeY2q9us7LTIiC0k4rhdgB9YBmeB/P/8onapjKZ9FpWEl9e
+	 DLNkLkmOL8U1dow4vBKzbWINRPdw3RxsJQFlZKLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/444] drm: Add valid clones check
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 042/204] iio: adis16201: Correct inclinometer channel resolution
 Date: Mon,  2 Jun 2025 15:46:15 +0200
-Message-ID: <20250602134353.553716581@linuxfoundation.org>
+Message-ID: <20250602134257.333818081@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+commit 609bc31eca06c7408e6860d8b46311ebe45c1fef upstream.
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+The inclinometer channels were previously defined with 14 realbits.
+However, the ADIS16201 datasheet states the resolution for these output
+channels is 12 bits (Page 14, text description; Page 15, table 7).
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Correct the realbits value to 12 to accurately reflect the hardware.
+
+Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Link: https://patch.msgid.link/20250421131539.912966-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/iio/accel/adis16201.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index f3681970887cc..1aa59586c8f81 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -573,6 +573,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+--- a/drivers/iio/accel/adis16201.c
++++ b/drivers/iio/accel/adis16201.c
+@@ -214,9 +214,9 @@ static const struct iio_chan_spec adis16
+ 			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
+ 	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
+ 	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
+-			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
++			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+ 	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
+-			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
++			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
+ 	IIO_CHAN_SOFT_TIMESTAMP(7)
+ };
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -744,6 +768,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
- 
- 	/*
--- 
-2.39.5
-
 
 
 
