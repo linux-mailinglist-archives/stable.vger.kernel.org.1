@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-150028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0416DACB575
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAC4ACB465
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA08E4C2899
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:56:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8F7819480F7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF1E230BC0;
-	Mon,  2 Jun 2025 14:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67210223DEE;
+	Mon,  2 Jun 2025 14:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPo/g5aq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="camztdWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A84B229B1E;
-	Mon,  2 Jun 2025 14:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2577019EEBD;
+	Mon,  2 Jun 2025 14:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875806; cv=none; b=JJF76VLai0BHe7q13i4yPd0/isaKdvQU5XiaqNGtx0A0jObpVeOyO1LJX7cBDADx8RFQMHw1PoswRNSyfkFaIaIm9+mmH8Gk19Wi08KkGS7uz8uHWpImTyWgziIm/7xtDqqFE2G+kJbZ++jo5nY9mw1srFZua6JROmwtiEA/Tqk=
+	t=1748875005; cv=none; b=W4d28W66tS5enAQH5aNj81OD1rFH+09qKF6qreQ3gxc/4PMa6dUDUVRI2zVf9YBrZbubfcdFe20lcmZIBoa9VUb+B/Mcqb5SBalZ5kHh19opnDKns3LotLGPpp7XN6tdZmZei5wpsqp+Z/mwqMZTOeNp3lSky9l17DWZ6aQP8sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875806; c=relaxed/simple;
-	bh=6OaLxzM7S13cVsmSuwGqla5QRyxwiTkJjc4/N34KOAQ=;
+	s=arc-20240116; t=1748875005; c=relaxed/simple;
+	bh=kEimrVSgp59fLpjwoxM50erot04KMdjS0LrrhdirU3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8sqIiWj0IUbO8EXgJ8TCc4Efoob7d+koXOZRn3KWrBQYPUaDlK4MrSwgrB8MRsrezXZFB3d6ke4PWug/uywxbYWpaPNrGKtnE8TgD81B+cpNPGDNRTo8QfPRaeI4atdw4U9yBy7rq+Cq6FQUrcM+MNRuzxGxo4bsMe9oKjbQhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPo/g5aq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D089C4CEEE;
-	Mon,  2 Jun 2025 14:50:05 +0000 (UTC)
+	 MIME-Version; b=eG0r6ZlVeFSqK2CJmYSmvw7UxSWhtCt65v7WkPAWR8ebJl54hQKcWNsSc2XlIdz5mFUxkicOFAnAEHdPaKD7NvgtxmhDQzu2yGV/VjbGwUskABIBUsSXuM5HfEzlyFwHhPnbUoa/pdnioqvsDdRMlZhHzTM7ddqzCTMczXCXCMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=camztdWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BA6C4CEEB;
+	Mon,  2 Jun 2025 14:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875806;
-	bh=6OaLxzM7S13cVsmSuwGqla5QRyxwiTkJjc4/N34KOAQ=;
+	s=korg; t=1748875003;
+	bh=kEimrVSgp59fLpjwoxM50erot04KMdjS0LrrhdirU3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPo/g5aqLeNr5GIaeZkW5j69Ds9xPBK8KEUV+q/d47wDQ8S16IVHC6eyjsHYrmOuc
-	 BZ1fD1kpDTankPAPlsZqFkTNNVGU5ctJh4/SVEbAWTRM2drbS1+rbmZGe9QmiccXN9
-	 ENgAiel+QwXHZWfdYy5oD7x4tOLFEqLGnpkG2a/A=
+	b=camztdWMHlTWv8q/QJFizJoO+fUHg9oR82QcoEo1w+9nhl73ixH7G7K50F8Kd2RPP
+	 9FFrNliNtzDCbBMgi0o38aa4HseOBMs2afHdiN1CW87M5v78tlpIcJor+PeK7FpTFg
+	 DowpTNyMkBQnRfsQlBZQjgQN3yS7urmWG6VACsJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xulin Sun <xulin.sun@windriver.com>,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
+	Alessandro Grassi <alessandro.grassi@mailbox.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 249/270] spi: spi-fsl-dspi: restrict register range for regmap access
+Subject: [PATCH 5.4 201/204] spi: spi-sun4i: fix early activation
 Date: Mon,  2 Jun 2025 15:48:54 +0200
-Message-ID: <20250602134317.511200899@linuxfoundation.org>
+Message-ID: <20250602134303.570815318@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Alessandro Grassi <alessandro.grassi@mailbox.org>
 
-[ Upstream commit 283ae0c65e9c592f4a1ba4f31917f5e766da7f31 ]
+[ Upstream commit fb98bd0a13de2c9d96cb5c00c81b5ca118ac9d71 ]
 
-DSPI registers are NOT continuous, some registers are reserved and
-accessing them from userspace will trigger external abort, add regmap
-register access table to avoid below abort.
+The SPI interface is activated before the CPOL setting is applied. In
+that moment, the clock idles high and CS goes low. After a short delay,
+CPOL and other settings are applied, which may cause the clock to change
+state and idle low. This transition is not part of a clock cycle, and it
+can confuse the receiving device.
 
-  For example on S32G:
+To prevent this unexpected transition, activate the interface while CPOL
+and the other settings are being applied.
 
-  # cat /sys/kernel/debug/regmap/401d8000.spi/registers
-
-  Internal error: synchronous external abort: 96000210 1 PREEMPT SMP
-  ...
-  Call trace:
-  regmap_mmio_read32le+0x24/0x48
-  regmap_mmio_read+0x48/0x70
-  _regmap_bus_reg_read+0x38/0x48
-  _regmap_read+0x68/0x1b0
-  regmap_read+0x50/0x78
-  regmap_read_debugfs+0x120/0x338
-
-Fixes: 1acbdeb92c87 ("spi/fsl-dspi: Convert to use regmap and add big-endian support")
-Co-developed-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Xulin Sun <xulin.sun@windriver.com>
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250522-james-nxp-spi-v2-1-bea884630cfb@linaro.org
+Signed-off-by: Alessandro Grassi <alessandro.grassi@mailbox.org>
+Link: https://patch.msgid.link/20250502095520.13825-1-alessandro.grassi@mailbox.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sun4i.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 0d9201a2999de..7c26eef0570e7 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0+
- //
- // Copyright 2013 Freescale Semiconductor, Inc.
--// Copyright 2020 NXP
-+// Copyright 2020-2025 NXP
- //
- // Freescale DSPI driver
- // This file contains a driver for the Freescale DSPI
-@@ -1128,6 +1128,20 @@ static int dspi_resume(struct device *dev)
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index cbfac6596fad5..2bdac65789b62 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -263,6 +263,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
+ 	else
+ 		reg |= SUN4I_CTL_DHB;
  
- static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
- 
-+static const struct regmap_range dspi_yes_ranges[] = {
-+	regmap_reg_range(SPI_MCR, SPI_MCR),
-+	regmap_reg_range(SPI_TCR, SPI_CTAR(3)),
-+	regmap_reg_range(SPI_SR, SPI_TXFR3),
-+	regmap_reg_range(SPI_RXFR0, SPI_RXFR3),
-+	regmap_reg_range(SPI_CTARE(0), SPI_CTARE(3)),
-+	regmap_reg_range(SPI_SREX, SPI_SREX),
-+};
++	/* Now that the settings are correct, enable the interface */
++	reg |= SUN4I_CTL_ENABLE;
 +
-+static const struct regmap_access_table dspi_access_table = {
-+	.yes_ranges	= dspi_yes_ranges,
-+	.n_yes_ranges	= ARRAY_SIZE(dspi_yes_ranges),
-+};
-+
- static const struct regmap_range dspi_volatile_ranges[] = {
- 	regmap_reg_range(SPI_MCR, SPI_TCR),
- 	regmap_reg_range(SPI_SR, SPI_SR),
-@@ -1145,6 +1159,8 @@ static const struct regmap_config dspi_regmap_config = {
- 	.reg_stride	= 4,
- 	.max_register	= 0x88,
- 	.volatile_table	= &dspi_volatile_table,
-+	.rd_table	= &dspi_access_table,
-+	.wr_table	= &dspi_access_table,
- };
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
  
- static const struct regmap_range dspi_xspi_volatile_ranges[] = {
-@@ -1166,6 +1182,8 @@ static const struct regmap_config dspi_xspi_regmap_config[] = {
- 		.reg_stride	= 4,
- 		.max_register	= 0x13c,
- 		.volatile_table	= &dspi_xspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
- 	},
- 	{
- 		.name		= "pushr",
+ 	/* Ensure that we have a parent clock fast enough */
+@@ -403,7 +406,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
+ 	}
+ 
+ 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
+-			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
++			SUN4I_CTL_MASTER | SUN4I_CTL_TP);
+ 
+ 	return 0;
+ 
 -- 
 2.39.5
 
