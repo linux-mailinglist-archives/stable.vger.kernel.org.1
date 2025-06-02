@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE9BACB3CE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A42ACB2E7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73C548223B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E90486E38
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43C7221F12;
-	Mon,  2 Jun 2025 14:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AB2230D14;
+	Mon,  2 Jun 2025 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5hrIENt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygcPeWLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605F81DD543;
-	Mon,  2 Jun 2025 14:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01AC230BDF;
+	Mon,  2 Jun 2025 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874419; cv=none; b=g2sTeVFBWCSiZXIt9IWVblXsurgp+cDLyWMQkFPlMdK1FmatgC4guA6eMW5VmF8heuIA/Tq2TJRj4XYFJ1jn+YE5vryUjgVLIA747RdW4QDuZhTM+xRqlWFuTPbgr5aWwY0oFkbukxYa89wFISG3FK9QZIWm8BATPdWmPex56ag=
+	t=1748873887; cv=none; b=lxWA7XbMYVRShESCoQreqiztMyDJRAvifPFNW1M1LD8SBGdN7b31OzarcIEc1Pd3kV5+p5l4+EGiyurMyTWgvUM3sdOAUVmO41La9tdZ3Melpd3tOKuB/9QZ5s8KWnWLNfRX4vWrH/J8qje2UBYAYWYZV+OSQOjC+aYe/Mssl4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874419; c=relaxed/simple;
-	bh=fhsUQeIY+Jv4hekzHYifF2vRfHIIa1MM3nXYbr/8M2s=;
+	s=arc-20240116; t=1748873887; c=relaxed/simple;
+	bh=tfyd2sXDaZOl1qPIoNXQ3VTB+9+zRaV1bN1DGItT2PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmKHAICw83oJNEnXyPjPm1bNTPiBTLE0Q+duSk2X7qorlTi6OHHX0ewkCtl+Poz/W14wuZGZG0tSMJjOFNhWvevIO5Zj2SI6A6f8eOaXFohHvGxFP98Y8JXTBAqjS5vkI48GqJBoNto3rVJYStnVNSVuF7RWTr70omrmRWsv1Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5hrIENt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D559AC4CEEB;
-	Mon,  2 Jun 2025 14:26:58 +0000 (UTC)
+	 MIME-Version; b=NVRuXAjVQSXb5OV2vclJdTjSvN83jwSl91TQFip6Yo1BbNAnJkJlD8IMLwabqtueZ0OKu92VH4FtQ8GOmt4iDvhNHXeqoxVDVG5DlDgy9oWnI29Npd5xw0iMDjxbYilRv2J5o3VrWvLC9odP7t675HyyD40yAFkbMwOcbmDTFDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygcPeWLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515C8C4CEEB;
+	Mon,  2 Jun 2025 14:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874419;
-	bh=fhsUQeIY+Jv4hekzHYifF2vRfHIIa1MM3nXYbr/8M2s=;
+	s=korg; t=1748873887;
+	bh=tfyd2sXDaZOl1qPIoNXQ3VTB+9+zRaV1bN1DGItT2PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5hrIENtLTx1Nhw8ZoyurkZTvIMaVZ/pq5/WL3rwM8qX1optzym/qymGfMXck3a62
-	 eSA31LQAORAT6cbP5cq5SUbQmhh0n/JRdEOipSAH8CiPzNh92rCfeQNp95987JndH0
-	 f/cAXGT6JR/1WggV+O4RGz250V3Y98/OxiiD8t0M=
+	b=ygcPeWLp7ay8ey1zB5Ghup5HXcCeKYaM5cRW8B3ALRbQTNLy0y5J8vGKzqS2IFD1B
+	 DFeTwYkYU6YQofldwiIjKPwTAXjPag2w6gajsXaGcgLg8ZqMysd1jg5KTlkJvRpIzO
+	 TmETSRXidnhKVYg/14Hf5ksd6T0DLjoKM99IsD+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/204] net: lan743x: Fix memleak issue when GSO enabled
+Subject: [PATCH 6.6 287/444] scsi: lpfc: Free phba irq in lpfc_sli4_enable_msi() when pci_irq_vector() fails
 Date: Mon,  2 Jun 2025 15:45:51 +0200
-Message-ID: <20250602134256.217483217@linuxfoundation.org>
+Message-ID: <20250602134352.604041836@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 2d52e2e38b85c8b7bc00dca55c2499f46f8c8198 ]
+[ Upstream commit f0842902b383982d1f72c490996aa8fc29a7aa0d ]
 
-Always map the `skb` to the LS descriptor. Previously skb was
-mapped to EXT descriptor when the number of fragments is zero with
-GSO enabled. Mapping the skb to EXT descriptor prevents it from
-being freed, leading to a memory leak
+Fix smatch warning regarding missed calls to free_irq().  Free the phba IRQ
+in the failed pci_irq_vector cases.
 
-Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250429052527.10031-1-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+lpfc_init.c: lpfc_sli4_enable_msi() warn: 'phba->pcidev->irq' from
+             request_irq() not released.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 8 ++++++--
- drivers/net/ethernet/microchip/lan743x_main.h | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index ebcbb719e9002..a69a34d93ad62 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1409,6 +1409,7 @@ static void lan743x_tx_frame_add_lso(struct lan743x_tx *tx,
- 	if (nr_frags <= 0) {
- 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
-+		tx->frame_last = tx->frame_first;
- 	}
- 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
-@@ -1478,6 +1479,7 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
- 		tx->frame_first = 0;
- 		tx->frame_data0 = 0;
- 		tx->frame_tail = 0;
-+		tx->frame_last = 0;
- 		return -ENOMEM;
- 	}
- 
-@@ -1518,16 +1520,18 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
- 	    TX_DESC_DATA0_DTYPE_DATA_) {
- 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
-+		tx->frame_last = tx->frame_tail;
- 	}
- 
--	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
--	buffer_info = &tx->buffer_info[tx->frame_tail];
-+	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_last];
-+	buffer_info = &tx->buffer_info[tx->frame_last];
- 	buffer_info->skb = skb;
- 	if (time_stamp)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_TIMESTAMP_REQUESTED;
- 	if (ignore_sync)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
- 
-+	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
- 	tx->last_tail = tx->frame_tail;
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index a7b97287d84ba..44b107caba84f 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -652,6 +652,7 @@ struct lan743x_tx {
- 	u32		frame_first;
- 	u32		frame_data0;
- 	u32		frame_tail;
-+	u32		frame_last;
- 
- 	struct lan743x_tx_buffer_info *buffer_info;
- 
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 424b39a8155cb..7c8e0e1d36da9 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -13180,6 +13180,7 @@ lpfc_sli4_enable_msi(struct lpfc_hba *phba)
+ 	eqhdl = lpfc_get_eq_hdl(0);
+ 	rc = pci_irq_vector(phba->pcidev, 0);
+ 	if (rc < 0) {
++		free_irq(phba->pcidev->irq, phba);
+ 		pci_free_irq_vectors(phba->pcidev);
+ 		lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
+ 				"0496 MSI pci_irq_vec failed (%d)\n", rc);
+@@ -13260,6 +13261,7 @@ lpfc_sli4_enable_intr(struct lpfc_hba *phba, uint32_t cfg_mode)
+ 			eqhdl = lpfc_get_eq_hdl(0);
+ 			retval = pci_irq_vector(phba->pcidev, 0);
+ 			if (retval < 0) {
++				free_irq(phba->pcidev->irq, phba);
+ 				lpfc_printf_log(phba, KERN_WARNING, LOG_INIT,
+ 					"0502 INTR pci_irq_vec failed (%d)\n",
+ 					 retval);
 -- 
 2.39.5
 
