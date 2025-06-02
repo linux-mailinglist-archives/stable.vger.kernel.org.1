@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-150038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF759ACB5A3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:07:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37360ACB7A7
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72AB74C2C68
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:57:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C80C4C0E16
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C3723237B;
-	Mon,  2 Jun 2025 14:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A403221F38;
+	Mon,  2 Jun 2025 15:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJQQUrr5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SATzdfet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D923183A;
-	Mon,  2 Jun 2025 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460D4221DBD;
+	Mon,  2 Jun 2025 15:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875838; cv=none; b=rGR5Sz3kGfbkHSn128FMTICWPGEW4th7znYXNC+1RBCgH48CT0U6u24i2rGWPbAnSqwP4D7nW6huACTJFSEq+smxzThydTF5cTsFTPGfnSxBygHakRzoN4u/1Inrfl1oYyLL5zw3/lpIqywRKCv874PeU9+vYKraJcwVXIqmc4c=
+	t=1748877370; cv=none; b=kEiyKTRmN7nRz4Brm80G3dYI5HsnORBSe//ZIFeKDwVnlnoVvbQ0tflDZGfp3xgs6QrutfFBF/w/flSK2ei+MFB3ZDN2weehMpOdw2cBZQrmUgGKd8ltx7ilTYCko48sMuR73l0cGvPzqVwoQtmNLWX9HqPdYMUOP1lmRyXkEeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875838; c=relaxed/simple;
-	bh=ct535AfbtBL04TpGB/1wre+wJz8hhIUhsrFGTFZgRd0=;
+	s=arc-20240116; t=1748877370; c=relaxed/simple;
+	bh=NbpOnDN9Yx6SXQpZfiaAFBsbKYr3fsWkdGDmlkzVVGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+xh6UKm61Zo/uRTmmhBRFuBVDEOLJsuxMxwKDMdSgB68bZ3oG4gZ5lxYvn/ZSEGOuOC1g6yZiwS1ChmIAku/4NKvq1zJb2IPmSs554DHm7b4ljxd8cZMwY0BNhjrso67Jsyn0wyHUycKu1AMEUNEAn/waxVUQ7Q1Rbgz7EyyHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJQQUrr5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC107C4CEEE;
-	Mon,  2 Jun 2025 14:50:37 +0000 (UTC)
+	 MIME-Version; b=rRhfKQv8mcZkV+DyfOM2orNIg6joVPVotLTtbx8RpBlxxgAWlxE6+0VGmIjsb0/NFou8gHaJOh8i1zG5/6PT37qTfFcAjtBBRH6nBSYPaRE3qmrr+59Cfa7ht9X75auHZVpV9KAOiKifXegvRuU/3SovwjD3ZGohWQpIQcqoSgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SATzdfet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB57CC4CEEB;
+	Mon,  2 Jun 2025 15:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875838;
-	bh=ct535AfbtBL04TpGB/1wre+wJz8hhIUhsrFGTFZgRd0=;
+	s=korg; t=1748877370;
+	bh=NbpOnDN9Yx6SXQpZfiaAFBsbKYr3fsWkdGDmlkzVVGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJQQUrr59GGgK48NnDSUmEWQbX87UlODvGeL1mDAG0Ld82I/jawAJeyqdSbyw8/8/
-	 JQLeF57wTOexvapBbJ6CtOC1t94zCqJBO+EOhUF/i/wLL0EXjRBw4y8DLWAP5xPTsI
-	 Mel8cotCYErtKcFhW1eGlL2Ygla6bfCrowW1KSgo=
+	b=SATzdfetuJES0iZxmmYmSpIWpCGJAnUvLWiD/miTK1g7AqGju9gkwhj2xTvPqk1Hj
+	 ByalEuqyJN8LRvoXQTbL5zbgEE3+silbJKqKy2wGQ+c44HpSEL8+xGTgCziE57fBmr
+	 IKvqTSAQc0y9xdunyiyC1CheWHDUL6Ds2U3ScdnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 230/270] ALSA: hda/realtek: Add quirk for HP Spectre x360 15-df1xxx
+Subject: [PATCH 6.1 239/325] bridge: netfilter: Fix forwarding of fragmented packets
 Date: Mon,  2 Jun 2025 15:48:35 +0200
-Message-ID: <20250602134316.714586634@linuxfoundation.org>
+Message-ID: <20250602134329.495134440@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit be0c40da888840fe91b45474cb70779e6cbaf7ca ]
+[ Upstream commit 91b6dbced0ef1d680afdd69b14fc83d50ebafaf3 ]
 
-HP Spectre x360 15-df1xxx with SSID 13c:863e requires similar
-workarounds that were applied to another HP Spectre x360 models;
-it has a mute LED only, no micmute LEDs, and needs the speaker GPIO
-seup.
+When netfilter defrag hooks are loaded (due to the presence of conntrack
+rules, for example), fragmented packets entering the bridge will be
+defragged by the bridge's pre-routing hook (br_nf_pre_routing() ->
+ipv4_conntrack_defrag()).
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220054
-Link: https://patch.msgid.link/20250427081035.11567-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Later on, in the bridge's post-routing hook, the defragged packet will
+be fragmented again. If the size of the largest fragment is larger than
+what the kernel has determined as the destination MTU (using
+ip_skb_dst_mtu()), the defragged packet will be dropped.
+
+Before commit ac6627a28dbf ("net: ipv4: Consolidate ipv4_mtu and
+ip_dst_mtu_maybe_forward"), ip_skb_dst_mtu() would return dst_mtu() as
+the destination MTU. Assuming the dst entry attached to the packet is
+the bridge's fake rtable one, this would simply be the bridge's MTU (see
+fake_mtu()).
+
+However, after above mentioned commit, ip_skb_dst_mtu() ends up
+returning the route's MTU stored in the dst entry's metrics. Ideally, in
+case the dst entry is the bridge's fake rtable one, this should be the
+bridge's MTU as the bridge takes care of updating this metric when its
+MTU changes (see br_change_mtu()).
+
+Unfortunately, the last operation is a no-op given the metrics attached
+to the fake rtable entry are marked as read-only. Therefore,
+ip_skb_dst_mtu() ends up returning 1500 (the initial MTU value) and
+defragged packets are dropped during fragmentation when dealing with
+large fragments and high MTU (e.g., 9k).
+
+Fix by moving the fake rtable entry's metrics to be per-bridge (in a
+similar fashion to the fake rtable entry itself) and marking them as
+writable, thereby allowing MTU changes to be reflected.
+
+Fixes: 62fa8a846d7d ("net: Implement read-only protection and COW'ing of metrics.")
+Fixes: 33eb9873a283 ("bridge: initialize fake_rtable metrics")
+Reported-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
+Closes: https://lore.kernel.org/netdev/PH0PR10MB4504888284FF4CBA648197D0ACB82@PH0PR10MB4504.namprd10.prod.outlook.com/
+Tested-by: Venkat Venkatsubra <venkat.x.venkatsubra@oracle.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250515084848.727706-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 42 +++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ net/bridge/br_nf_core.c | 7 ++-----
+ net/bridge/br_private.h | 1 +
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3fdd2337919e1..b2df53215279d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6702,6 +6702,41 @@ static void alc285_fixup_hp_spectre_x360_eb1(struct hda_codec *codec,
- 	}
- }
- 
-+/* GPIO1 = amplifier on/off */
-+static void alc285_fixup_hp_spectre_x360_df1(struct hda_codec *codec,
-+					     const struct hda_fixup *fix,
-+					     int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const hda_nid_t conn[] = { 0x02 };
-+	static const struct hda_pintbl pincfgs[] = {
-+		{ 0x14, 0x90170110 },  /* front/high speakers */
-+		{ 0x17, 0x90170130 },  /* back/bass speakers */
-+		{ }
-+	};
-+
-+	// enable mute led
-+	alc285_fixup_hp_mute_led_coefbit(codec, fix, action);
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		/* needed for amp of back speakers */
-+		spec->gpio_mask |= 0x01;
-+		spec->gpio_dir |= 0x01;
-+		snd_hda_apply_pincfgs(codec, pincfgs);
-+		/* share DAC to have unified volume control */
-+		snd_hda_override_conn_list(codec, 0x14, ARRAY_SIZE(conn), conn);
-+		snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
-+		break;
-+	case HDA_FIXUP_ACT_INIT:
-+		/* need to toggle GPIO to enable the amp of back speakers */
-+		alc_update_gpio_data(codec, 0x01, true);
-+		msleep(100);
-+		alc_update_gpio_data(codec, 0x01, false);
-+		break;
-+	}
-+}
-+
- static void alc285_fixup_hp_spectre_x360(struct hda_codec *codec,
- 					  const struct hda_fixup *fix, int action)
+diff --git a/net/bridge/br_nf_core.c b/net/bridge/br_nf_core.c
+index 8c69f0c95a8ed..b8c8deb87407d 100644
+--- a/net/bridge/br_nf_core.c
++++ b/net/bridge/br_nf_core.c
+@@ -65,17 +65,14 @@ static struct dst_ops fake_dst_ops = {
+  * ipt_REJECT needs it.  Future netfilter modules might
+  * require us to fill additional fields.
+  */
+-static const u32 br_dst_default_metrics[RTAX_MAX] = {
+-	[RTAX_MTU - 1] = 1500,
+-};
+-
+ void br_netfilter_rtable_init(struct net_bridge *br)
  {
-@@ -6984,6 +7019,7 @@ enum {
- 	ALC280_FIXUP_HP_9480M,
- 	ALC245_FIXUP_HP_X360_AMP,
- 	ALC285_FIXUP_HP_SPECTRE_X360_EB1,
-+	ALC285_FIXUP_HP_SPECTRE_X360_DF1,
- 	ALC285_FIXUP_HP_ENVY_X360,
- 	ALC288_FIXUP_DELL_HEADSET_MODE,
- 	ALC288_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -8818,6 +8854,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_spectre_x360_eb1
- 	},
-+	[ALC285_FIXUP_HP_SPECTRE_X360_DF1] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc285_fixup_hp_spectre_x360_df1
-+	},
- 	[ALC285_FIXUP_HP_ENVY_X360] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc285_fixup_hp_envy_x360,
-@@ -9223,6 +9263,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x86c1, "HP Laptop 15-da3001TU", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x86c7, "HP Envy AiO 32", ALC274_FIXUP_HP_ENVY_GPIO),
- 	SND_PCI_QUIRK(0x103c, 0x86e7, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
-+	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
- 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
- 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
-@@ -9750,6 +9791,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC295_FIXUP_HP_OMEN, .name = "alc295-hp-omen"},
- 	{.id = ALC285_FIXUP_HP_SPECTRE_X360, .name = "alc285-hp-spectre-x360"},
- 	{.id = ALC285_FIXUP_HP_SPECTRE_X360_EB1, .name = "alc285-hp-spectre-x360-eb1"},
-+	{.id = ALC285_FIXUP_HP_SPECTRE_X360_DF1, .name = "alc285-hp-spectre-x360-df1"},
- 	{.id = ALC285_FIXUP_HP_ENVY_X360, .name = "alc285-hp-envy-x360"},
- 	{.id = ALC287_FIXUP_IDEAPAD_BASS_SPK_AMP, .name = "alc287-ideapad-bass-spk-amp"},
- 	{.id = ALC623_FIXUP_LENOVO_THINKSTATION_P340, .name = "alc623-lenovo-thinkstation-p340"},
+ 	struct rtable *rt = &br->fake_rtable;
+ 
+ 	atomic_set(&rt->dst.__refcnt, 1);
+ 	rt->dst.dev = br->dev;
+-	dst_init_metrics(&rt->dst, br_dst_default_metrics, true);
++	dst_init_metrics(&rt->dst, br->metrics, false);
++	dst_metric_set(&rt->dst, RTAX_MTU, br->dev->mtu);
+ 	rt->dst.flags	= DST_NOXFRM | DST_FAKE_RTABLE;
+ 	rt->dst.ops = &fake_dst_ops;
+ }
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 940de95167689..19fb505492521 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -478,6 +478,7 @@ struct net_bridge {
+ 		struct rtable		fake_rtable;
+ 		struct rt6_info		fake_rt6_info;
+ 	};
++	u32				metrics[RTAX_MAX];
+ #endif
+ 	u16				group_fwd_mask;
+ 	u16				group_fwd_mask_required;
 -- 
 2.39.5
 
