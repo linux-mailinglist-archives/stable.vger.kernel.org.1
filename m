@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-150401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC52FACB642
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:15:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBCBACB6DE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE24D7A6065
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:14:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC0C1BC655C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FE1221FCA;
-	Mon,  2 Jun 2025 15:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F4122DF84;
+	Mon,  2 Jun 2025 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8W8BaeP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+LyvEu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5D4221FBB;
-	Mon,  2 Jun 2025 15:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B339322330F;
+	Mon,  2 Jun 2025 14:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877007; cv=none; b=iAYi8zfu7zfZk6HQkWsxde46AQJ6oa+5p6ewpY5B1vo5uzZb/fn/BjkyAl4iGarIsZ8VVIhMxfSM6gbNuKFLKcsDS/g4nh5GdaGdgpDDPJHml5F39/8K42fVjywa19APQZVhAyH7k1E26LVmpmey3gRLa7GYhtNh5r7cLfurWu0=
+	t=1748875922; cv=none; b=BGPubq5ZsxMYc/MRY3aXcDk+S9n+3D9/LEIdvotwiNMRZwXAt7NzRTAEcAKbUmR483pin1ryGDsbl068tRNuHZTWTxRaUjZyJayNnAPiT4dddmZGUwLweMfakqaWG2obTaSu6bR6WRCdktZppzk2CxX5nzVxeIqltR0cmhXf4ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877007; c=relaxed/simple;
-	bh=4ceOGnpddeSp7IzHzU2s+NDwnl8C9Mzl0tED0Z6XTAU=;
+	s=arc-20240116; t=1748875922; c=relaxed/simple;
+	bh=0Zd9efVg3Iqo6CukTrCBoCidUy7gYCFsrhch41FQUuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdq4D0duTcRoclIB0xwa1n6LgApQbzGIdMCxIXpzywX7neb031wT1kMW61X0Jv4G/ZmG9tujB1dGAj1joZBvLKbulgsspCA197v1EgqvcAbrCh1OzNK9V8twlRvJ9s+7A1YlflKuotwcQpdsItfLVuYz45xb7F5fOVtyRF6gBRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8W8BaeP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C29CC4CEEB;
-	Mon,  2 Jun 2025 15:10:06 +0000 (UTC)
+	 MIME-Version; b=FOMX47EWoIkub6u6D6+qkA5uEvwi7C33Bt4VeRrSWhtosWcBnUYY/EBXbR6/A4PdvUpSxHqYUJlaVF4dQOii/0INy0GobM9VxtuvGPhzU6KoSl0L3nEnU3f5rZ7qGwcqSpQ/NahvazI2oKf65M9U0rdZ0LjdJ5uCR+gSCRsEO3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+LyvEu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2402BC4CEEB;
+	Mon,  2 Jun 2025 14:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877006;
-	bh=4ceOGnpddeSp7IzHzU2s+NDwnl8C9Mzl0tED0Z6XTAU=;
+	s=korg; t=1748875922;
+	bh=0Zd9efVg3Iqo6CukTrCBoCidUy7gYCFsrhch41FQUuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8W8BaePYiMHI0JniDSZ0tZdskz8vZZMR0E2qFkkV34JiCm99kj4WuxruRQlvMHwE
-	 WDfoFyi9ruWceMOAvh9+AoBKZk3c6nM19jOXzAJfgnoNE5y8P1er79ussr1WOJdDn7
-	 ovXQ0wxe5Q58A3jzpnfPHtNfGWIR6DCXfRPTsVdU=
+	b=J+LyvEu6XXUIhYE3N4hfGN8sqE/wTIPy/1Rctsml7dkZl0PQCUaZLwgyUSxO6MvMj
+	 IglKH7+0fPHxVttpwLCnZeJ8A9SUYIG05d+HADofrAqUH576jpwdofNRADR+JYUHdh
+	 2168A9JUcrKOEizBXWsl9/VpTXY+MwtaS21dV4e8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Ian Rogers <irogers@google.com>,
-	Frederic Weisbecker <fweisbec@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/325] perf/hw_breakpoint: Return EOPNOTSUPP for unsupported breakpoint type
+Subject: [PATCH 5.15 016/207] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
 Date: Mon,  2 Jun 2025 15:46:28 +0200
-Message-ID: <20250602134324.335711650@linuxfoundation.org>
+Message-ID: <20250602134259.409770155@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 061c991697062f3bf87b72ed553d1d33a0e370dd ]
+[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
 
-Currently, __reserve_bp_slot() returns -ENOSPC for unsupported
-breakpoint types on the architecture. For example, powerpc
-does not support hardware instruction breakpoints. This causes
-the perf_skip BPF selftest to fail, as neither ENOENT nor
-EOPNOTSUPP is returned by perf_event_open for unsupported
-breakpoint types. As a result, the test that should be skipped
-for this arch is not correctly identified.
+The autobind setting was supposed to be determined in rpc_create(),
+since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
+remote transport endpoints").
 
-To resolve this, hw_breakpoint_event_init() should exit early by
-checking for unsupported breakpoint types using
-hw_breakpoint_slots_cached() and return the appropriate error
-(-EOPNOTSUPP).
-
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Frederic Weisbecker <fweisbec@gmail.com>
-Link: https://lore.kernel.org/r/20250303092451.1862862-1-skb99@linux.ibm.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/hw_breakpoint.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/sunrpc/clnt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-index c3797701339cb..382a3b04f6d33 100644
---- a/kernel/events/hw_breakpoint.c
-+++ b/kernel/events/hw_breakpoint.c
-@@ -978,9 +978,10 @@ static int hw_breakpoint_event_init(struct perf_event *bp)
- 		return -ENOENT;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 5de2fc7af268a..48ffdd4192538 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -275,9 +275,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
+ 	old = rcu_dereference_protected(clnt->cl_xprt,
+ 			lockdep_is_held(&clnt->cl_lock));
  
- 	/*
--	 * no branch sampling for breakpoint events
-+	 * Check if breakpoint type is supported before proceeding.
-+	 * Also, no branch sampling for breakpoint events.
- 	 */
--	if (has_branch_stack(bp))
-+	if (!hw_breakpoint_slots_cached(find_slot_idx(bp->attr.bp_type)) || has_branch_stack(bp))
- 		return -EOPNOTSUPP;
- 
- 	err = register_perf_hw_breakpoint(bp);
+-	if (!xprt_bound(xprt))
+-		clnt->cl_autobind = 1;
+-
+ 	clnt->cl_timeout = timeout;
+ 	rcu_assign_pointer(clnt->cl_xprt, xprt);
+ 	spin_unlock(&clnt->cl_lock);
 -- 
 2.39.5
 
