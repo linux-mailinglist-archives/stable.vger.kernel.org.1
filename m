@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-150454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938E5ACB7ED
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0193ACB334
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88423944F45
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D6C1943BC9
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C5228C92;
-	Mon,  2 Jun 2025 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBF92222DA;
+	Mon,  2 Jun 2025 14:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVVVbsJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTcZmzIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D6F20E026;
-	Mon,  2 Jun 2025 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C352576;
+	Mon,  2 Jun 2025 14:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877176; cv=none; b=kpWcBE4HYab1g2LTCqtGHgHG/wa3dbJxwLEPvVzdY8TnbMARsjt1PBYatvfoXPgXdZkvY1OX4+Xhr5NXgmi9osBJ8+qyzAUXlsDIyWifEaJPIWdlg/M/I0Wi0YQnC53xfncjkcHAe/d97PNTMyjyd8Tu3f/sayW18lE5TQvD0mg=
+	t=1748874344; cv=none; b=RpFYiqCOPS6iwydTAbZbzzwNWBkQyfXFTsKDUsQHd8UGJoU24HYeMtB0MJljhm0/IM3pV2Dl8mpIUS0ZX1bhIfz2+DUDA8qC9IMQileNvfV3zs7V90GjVheJjupcwNHptLbyKQon46OMVZONZNF/u0welFKKwqpKgSlr3Xvz5fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877176; c=relaxed/simple;
-	bh=AVivlVTHYWGNtqYzZ2Eso6gzPW89ZHeeRohyTJX2UBU=;
+	s=arc-20240116; t=1748874344; c=relaxed/simple;
+	bh=0rMAJWqPfJXqV+CS0E3KADiPG99EWsA/+kA7pHZfoaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7Y2SuKgRl7WeDQZotkyeBKee48hYKAI5ijrf6ZsTxBhWxWMaDM1v8T1xcUFh1Ic+D8dQ4RwZh9eplcbNeD8Mu7XGJodtWwc0bajmQ9HHJioClzoscRoVIUJgtWyOqn6AsKpCj1R8uMcQgBIdVlHW+oRv8qVqt+7WcXe4YMHR7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVVVbsJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5E0C4CEEB;
-	Mon,  2 Jun 2025 15:12:55 +0000 (UTC)
+	 MIME-Version; b=q5WXZafaxEblEIeTbKStMN3gOkdZyYy1dyJ4p6iqYvJn517qTojqubMEGoof0L2s3WYSf6FQvjLnVTufzYNXIYzrcsbYTsFbWJORXgzkn0u0vaklwldVY/fAd5jipZcEhy/bHdg1Q1rqFaHwvOHlCpXPKCVBy3ytUdniy1bhszY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTcZmzIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA19C4CEEB;
+	Mon,  2 Jun 2025 14:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877175;
-	bh=AVivlVTHYWGNtqYzZ2Eso6gzPW89ZHeeRohyTJX2UBU=;
+	s=korg; t=1748874343;
+	bh=0rMAJWqPfJXqV+CS0E3KADiPG99EWsA/+kA7pHZfoaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVVVbsJVM+5GSn/YHXNqPFUpcyChebUHHAW7LagZkCr+SPheoGrib+pCmYF8qoLpj
-	 98teOAgPaOT6wjNrcgouuT2zXjtCH/cQDo3hcpPdoNcPrF8RbtSAs7jKe/qNlTJzdW
-	 gmygimdsHTqheWwIBjNNBk0dwop7TnEaxjlgCIss=
+	b=OTcZmzIR178LOWK0zwb/en46rzpcPuI2sKrT20EBg3s4hpEmf9NE9JTj6OtC4qiqU
+	 atgBImw8UgUV+jfUL1UlqI874Nw0oO3Zl6//KGi2zapqr8tGd9oSjtgikdK7LZ0NOg
+	 Td8HHClOl32dZd+Ga44TPax8y+7/9wh1lkRA5+bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/325] vxlan: Annotate FDB data races
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 407/444] af_unix: Save listener for embryo socket.
 Date: Mon,  2 Jun 2025 15:47:51 +0200
-Message-ID: <20250602134327.725421749@linuxfoundation.org>
+Message-ID: <20250602134357.447442849@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,149 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
+commit aed6ecef55d70de3762ce41c561b7f547dbaf107 upstream.
 
-The 'used' and 'updated' fields in the FDB entry structure can be
-accessed concurrently by multiple threads, leading to reports such as
-[1]. Can be reproduced using [2].
+This is a prep patch for the following change, where we need to
+fetch the listening socket from the successor embryo socket
+during GC.
 
-Suppress these reports by annotating these accesses using
-READ_ONCE() / WRITE_ONCE().
+We add a new field to struct unix_sock to save a pointer to a
+listening socket.
 
-[1]
-BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
+We set it when connect() creates a new socket, and clear it when
+accept() is called.
 
-write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
- vxlan_xmit+0xb29/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
- vxlan_xmit+0xadf/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-
-[2]
- #!/bin/bash
-
- set +H
- echo whitelist > /sys/kernel/debug/kcsan
- echo !vxlan_xmit > /sys/kernel/debug/kcsan
-
- ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
- taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
- taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-8-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ include/net/af_unix.h |    1 +
+ net/unix/af_unix.c    |    5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 0afd7eb976e6c..ef61eab81707c 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -274,9 +274,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
- 			be32_to_cpu(fdb->vni)))
- 		goto nla_put_failure;
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -83,6 +83,7 @@ struct unix_sock {
+ 	struct path		path;
+ 	struct mutex		iolock, bindlock;
+ 	struct sock		*peer;
++	struct sock		*listener;
+ 	struct unix_vertex	*vertex;
+ 	struct list_head	link;
+ 	unsigned long		inflight;
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -978,6 +978,7 @@ static struct sock *unix_create1(struct
+ 	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
+ 	sk->sk_destruct		= unix_sock_destructor;
+ 	u = unix_sk(sk);
++	u->listener = NULL;
+ 	u->inflight = 0;
+ 	u->vertex = NULL;
+ 	u->path.dentry = NULL;
+@@ -1582,6 +1583,7 @@ restart:
+ 	newsk->sk_type		= sk->sk_type;
+ 	init_peercred(newsk);
+ 	newu = unix_sk(newsk);
++	newu->listener = other;
+ 	RCU_INIT_POINTER(newsk->sk_wq, &newu->peer_wq);
+ 	otheru = unix_sk(other);
  
--	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
-+	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
- 	ci.ndm_confirmed = 0;
--	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
-+	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
- 	ci.ndm_refcnt	 = 0;
+@@ -1677,8 +1679,8 @@ static int unix_accept(struct socket *so
+ 		       bool kern)
+ {
+ 	struct sock *sk = sock->sk;
+-	struct sock *tsk;
+ 	struct sk_buff *skb;
++	struct sock *tsk;
+ 	int err;
  
- 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
-@@ -482,8 +482,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
- 	struct vxlan_fdb *f;
- 
- 	f = __vxlan_find_mac(vxlan, mac, vni);
--	if (f && f->used != jiffies)
--		f->used = jiffies;
-+	if (f && READ_ONCE(f->used) != jiffies)
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	return f;
- }
-@@ -1057,12 +1057,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
- 		if (f->state != state) {
- 			f->state = state;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 		if (f->flags != fdb_flags) {
- 			f->flags = fdb_flags;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 	}
-@@ -1096,7 +1096,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	err = -EOPNOTSUPP;
+@@ -1703,6 +1705,7 @@ static int unix_accept(struct socket *so
  	}
  
- 	if (ndm_flags & NTF_USE)
--		f->used = jiffies;
-+		WRITE_ONCE(f->used, jiffies);
+ 	tsk = skb->sk;
++	unix_sk(tsk)->listener = NULL;
+ 	skb_free_datagram(sk, skb);
+ 	wake_up_interruptible(&unix_sk(sk)->peer_wait);
  
- 	if (notify) {
- 		if (rd == NULL)
-@@ -1525,7 +1525,7 @@ static bool vxlan_snoop(struct net_device *dev,
- 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
- 
- 		rdst->remote_ip = *src_ip;
--		f->updated = jiffies;
-+		WRITE_ONCE(f->updated, jiffies);
- 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
- 	} else {
- 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
-@@ -2936,7 +2936,7 @@ static void vxlan_cleanup(struct timer_list *t)
- 			if (f->flags & NTF_EXT_LEARNED)
- 				continue;
- 
--			timeout = f->used + vxlan->cfg.age_interval * HZ;
-+			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
- 			if (time_before_eq(timeout, jiffies)) {
- 				netdev_dbg(vxlan->dev,
- 					   "garbage collect %pM\n",
--- 
-2.39.5
-
 
 
 
