@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-148931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA6FACABF8
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 11:50:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBC1ACABFE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 11:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C710917B4E7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 09:50:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A75189C73E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 09:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D4A197A7A;
-	Mon,  2 Jun 2025 09:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BD31A285;
+	Mon,  2 Jun 2025 09:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ3KDqDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9CwpL2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EC4F9EC
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 09:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998898BE5
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 09:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748857821; cv=none; b=bdBsaTP9WQBKlKnWxrkUDkz/sczirWlryXOM0VO/8BtHZvBEkd9zS0M9WnicXDoV2LQ9b9rPGZKNveMEJ4g/Xye3/dlvqXkMRl5x/yrfYikDsfcxK18i17vBSPItWg+U4fXWifJ+kH4wGrlDCdtv5yjEYV4Rjk8gpG/CwmrdvIY=
+	t=1748857899; cv=none; b=CsbEPou+nZxqkSR3LM9nyAj16tVCHOzMAWDqHy/zegTmb3zopMt4K2gIOGhXzgIGGInfcozS6xBRWme/w94xP5DwVo5BySXeZ+PV0nAS7P9dJX/qQel8yYrxe/McJw60VL3LmLG2AjraWkz2WyGBeR5zUwQgdxYnY2Cv8d3C7Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748857821; c=relaxed/simple;
-	bh=FY91Bxwbula10RML0Un5zmJNJC2Ze7fNfh50+2Ipfbc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UXzXGSPsRUcsxrJJyyW7VPGoije5lIYW7i6jhMow57ECtqH5g4XXTVPeA3ppt3+MZzOySTwqcmAywrcMglWtGmHB2AWcbddUzUXzALDsttKZhJSR40u8PRx2ZpnFNh1NIBs9S8aRxzwpPnm47ewmlTsiq1EVFai6attf1SoMaWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ3KDqDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FD4C4CEED;
-	Mon,  2 Jun 2025 09:50:20 +0000 (UTC)
+	s=arc-20240116; t=1748857899; c=relaxed/simple;
+	bh=raEJrH4G/Fkzawno873eiigg15SxuGCFNHtJ5sY/YN8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XE7R3TUNG6o6NUrEKNp+GaxcD2QEofsIR8E3g95GvoXLSNuoV6qoJqOesMVX65PaA5n9/QtM8GRriB2pK1p/ahXSFlYGikrPDupqj5uEk/78b2/+Dgl4BiCURUN95LQqLGzAUfqdSzEfEG4Z5tOg2j4Pgn+INHDpXZ6Ehxz2ZIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9CwpL2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA54C4CEEB;
+	Mon,  2 Jun 2025 09:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748857821;
-	bh=FY91Bxwbula10RML0Un5zmJNJC2Ze7fNfh50+2Ipfbc=;
+	s=korg; t=1748857899;
+	bh=raEJrH4G/Fkzawno873eiigg15SxuGCFNHtJ5sY/YN8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BJ3KDqDFsEzY3d/oKmTGVNAsa+imabZBF/Ijqpccqehi8UjpSoJMe9GN/UNE+dWm0
-	 yA19+ufBWoSnS0U51LwHl32fMJiAi4hv5aqqsDhpLmpdSChzjCMjXQH/AucxTqc2Ja
-	 IGjlUTD3+XTnD+nPmIFwTNJ1aj+NlM1OcUZxHKdg=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on" failed to apply to 6.12-stable tree
-To: johan+linaro@kernel.org,abel.vesa@linaro.org,andersson@kernel.org,konrad.dybcio@oss.qualcomm.com,quic_rjendra@quicinc.com,quic_sibis@quicinc.com
+	b=W9CwpL2ovJNUzu8puwVi+GqKcTMDg/BvCFMU3Xza6lbZS9xv/jDDdnjzYUT+8lHcD
+	 w/BUSaQnZYp2DkFvPM9P7jNlmCwhLL9i8RonNEP/pFTBM6vUCrv9MWhCdr9PRyMPw0
+	 w4fah66SPWaNGRVzXRMn9eCVN27oymZsIp7EAWtc=
+Subject: FAILED: patch "[PATCH] perf/arm-cmn: Initialise cmn->cpu earlier" failed to apply to 5.10-stable tree
+To: robin.murphy@arm.com,ilkka@os.amperecomputing.com,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 02 Jun 2025 11:50:02 +0200
-Message-ID: <2025060202-important-scribing-f981@gregkh>
+Date: Mon, 02 Jun 2025 11:51:28 +0200
+Message-ID: <2025060228-pureness-wildcat-f43e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x abf89bc4bb09c16a53d693b09ea85225cf57ff39
+git cherry-pick -x 597704e201068db3d104de3c7a4d447ff8209127
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060202-important-scribing-f981@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060228-pureness-wildcat-f43e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,46 +77,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From abf89bc4bb09c16a53d693b09ea85225cf57ff39 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Fri, 14 Mar 2025 15:54:33 +0100
-Subject: [PATCH] arm64: dts: qcom: x1e80100-crd: mark l12b and l15b always-on
+From 597704e201068db3d104de3c7a4d447ff8209127 Mon Sep 17 00:00:00 2001
+From: Robin Murphy <robin.murphy@arm.com>
+Date: Mon, 12 May 2025 18:11:54 +0100
+Subject: [PATCH] perf/arm-cmn: Initialise cmn->cpu earlier
 
-The l12b and l15b supplies are used by components that are not (fully)
-described (and some never will be) and must never be disabled.
+For all the complexity of handling affinity for CPU hotplug, what we've
+apparently managed to overlook is that arm_cmn_init_irqs() has in fact
+always been setting the *initial* affinity of all IRQs to CPU 0, not the
+CPU we subsequently choose for event scheduling. Oh dear.
 
-Mark the regulators as always-on to prevent them from being disabled,
-for example, when consumers probe defer or suspend.
+Cc: stable@vger.kernel.org
+Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 
-Fixes: bd50b1f5b6f3 ("arm64: dts: qcom: x1e80100: Add Compute Reference Device")
-Cc: stable@vger.kernel.org	# 6.8
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250314145440.11371-2-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-
-diff --git a/arch/arm64/boot/dts/qcom/x1-crd.dtsi b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
-index 5ea7b30983d9..f73f053a46a0 100644
---- a/arch/arm64/boot/dts/qcom/x1-crd.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1-crd.dtsi
-@@ -606,6 +606,7 @@ vreg_l12b_1p2: ldo12 {
- 			regulator-min-microvolt = <1200000>;
- 			regulator-max-microvolt = <1200000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 83f4ef985255..668c581e932a 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2551,6 +2551,7 @@ static int arm_cmn_probe(struct platform_device *pdev)
  
- 		vreg_l13b_3p0: ldo13 {
-@@ -627,6 +628,7 @@ vreg_l15b_1p8: ldo15 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
+ 	cmn->dev = &pdev->dev;
+ 	cmn->part = (unsigned long)device_get_match_data(cmn->dev);
++	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
+ 	platform_set_drvdata(pdev, cmn);
  
- 		vreg_l16b_2p9: ldo16 {
+ 	if (cmn->part == PART_CMN600 && has_acpi_companion(cmn->dev)) {
+@@ -2578,7 +2579,6 @@ static int arm_cmn_probe(struct platform_device *pdev)
+ 	if (err)
+ 		return err;
+ 
+-	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
+ 	cmn->pmu = (struct pmu) {
+ 		.module = THIS_MODULE,
+ 		.parent = cmn->dev,
 
 
