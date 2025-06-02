@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-149547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C80ACB371
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9C0ACB68C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EB824A4D00
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 641C01BC191F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780EB2222CC;
-	Mon,  2 Jun 2025 14:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE565228CB7;
+	Mon,  2 Jun 2025 14:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVqs/kyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqVvNabP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF41FBC90;
-	Mon,  2 Jun 2025 14:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2D6227EBB;
+	Mon,  2 Jun 2025 14:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874286; cv=none; b=UQc/GulMSMfx1YgbQhwcKbkQquXt09nVX7dDQfulaofnZOMeUX/AJwFDc4rojCa4PK3XB36k7BgQ5bdijtGYSz+M2DkfJ7qRMNhbbG/kYCK9tdDTw5LGtEXSvldI6ilvKZSKdYEkuS7t0oCxxjtObCu2ldMXPzj3u3vE9xFrt6M=
+	t=1748876170; cv=none; b=bHOOq+V2LG6xkAuaDJd9XL4cmmN6yzKUuAaV+9o0KGV6usGxLa1Jhr/7t176LuDyeh+6YCUPEhQNx2e5T6ZTXgpTTkeFfA8dQZ3KiGnE/fvnjg9D1Vx/fLjW2VdrPXj5PeKoHMw6D+lMNK3MKijN6RPhX0VvNP7KbjXxdP34St0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874286; c=relaxed/simple;
-	bh=NqHHVjh0DPeFcKI6TfJBU3/N0agNJZ5cdEmBoPk5vGM=;
+	s=arc-20240116; t=1748876170; c=relaxed/simple;
+	bh=gYH48MTMQ895llNpciwbE33g0PyBEQ1PV+wLTwhTwOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEbn/D5RSSMxCK2lA6Rch+8h8Tjjtp/48OgAP4i7hekA4G1cfAaDsTMzh6RnHnwOCPRMdmgwymnXhukT1/gG6/n71rXIhe2xIvmLXw6oGU1fibdm8ehyOi79wpGb6guyL1Pf8+zIhx+aIUbuRAlMvEix3Zk122YnAMWKm7iyZOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVqs/kyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB2CC4CEEB;
-	Mon,  2 Jun 2025 14:24:45 +0000 (UTC)
+	 MIME-Version; b=aYf9vzJVDzbaIVRdjiWyDKh9AjWIyefezRi2jBTeyLau3qS3NnloW1Sdf833UIcYYlnyQ+Coex9VG0/rl6rwOxJHz3z9B4/XavM8m1JAdd9+HLzAJ5FIgxGo9/w22l9eU0WrgFe6Y1WZmGM3ChR1NH0xmHIiJGIg5CRPvDddfdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqVvNabP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAB8C4CEEB;
+	Mon,  2 Jun 2025 14:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874286;
-	bh=NqHHVjh0DPeFcKI6TfJBU3/N0agNJZ5cdEmBoPk5vGM=;
+	s=korg; t=1748876170;
+	bh=gYH48MTMQ895llNpciwbE33g0PyBEQ1PV+wLTwhTwOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVqs/kygGH5MzfJxt2xL/1Cw7xSB0dGqqtD6tAUU+NnpzUOV+5hGwX9rUehH+MW2c
-	 yXaPMJaAXVpG2y9r5oMMNb5b3Qf4GHHQZzGMX3Kz8q6m78QsmvSk7wjennqYSydfOM
-	 n/xCFHjSOvR3BD5vxcuqcbhpcJHb2VWYzLKTrbLI=
+	b=iqVvNabPKsSz1ssOzN0od9f0dAhUd7XghVtnqERr0BDgG8h3ZjLkH0V8QLvx0Zw/K
+	 1fm4Jn4zPgHCmps/kLLhyysuI0/yTRbHDIpvM9OqwX3OD4NnKQcPlBoDs/0Z9x1/a/
+	 I2csgFkhOdiqmvQTPokdcqAusPifDKdQMj7bsUsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 402/444] af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
+	Samson Tam <samson.tam@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 094/207] drm/amd/display: handle max_downscale_src_width fail check
 Date: Mon,  2 Jun 2025 15:47:46 +0200
-Message-ID: <20250602134357.232336393@linuxfoundation.org>
+Message-ID: <20250602134302.421731902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-commit 29b64e354029cfcf1eea4d91b146c7b769305930 upstream.
+[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
 
-As with the previous patch, we preallocate to skb's scm_fp_list an
-array of struct unix_edge in the number of inflight AF_UNIX fds.
+[WHY]
+If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
+value to the scaling data structure to cause the zero divide in the DML validation.
 
-There we just preallocate memory and do not use immediately because
-sendmsg() could fail after this point.  The actual use will be in
-the next patch.
+[HOW]
+Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
+max downscale limit exceed.
 
-When we queue skb with inflight edges, we will set the inflight
-socket's unix_sock as unix_edge->predecessor and the receiver's
-unix_sock as successor, and then we will link the edge to the
-inflight socket's unix_vertex.edges.
-
-Note that we set NULL to cloned scm_fp_list.edges in scm_fp_dup()
-so that MSG_PEEK does not change the shape of the directed graph.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240325202425.60930-3-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Samson Tam <samson.tam@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/af_unix.h |    6 ++++++
- include/net/scm.h     |    5 +++++
- net/core/scm.c        |    2 ++
- net/unix/garbage.c    |    6 ++++++
- 4 files changed, 19 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -33,6 +33,12 @@ struct unix_vertex {
- 	unsigned long out_degree;
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
+index 0601c17426af2..27932a32057e3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dpp.c
+@@ -386,11 +386,6 @@ bool dpp3_get_optimal_number_of_taps(
+ 	int min_taps_y, min_taps_c;
+ 	enum lb_memory_config lb_config;
  
-+struct unix_edge {
-+	struct unix_sock *predecessor;
-+	struct unix_sock *successor;
-+	struct list_head vertex_entry;
-+};
+-	if (scl_data->viewport.width > scl_data->h_active &&
+-		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
+-		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
+-		return false;
+-
+ 	/*
+ 	 * Set default taps if none are provided
+ 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
+@@ -428,6 +423,12 @@ bool dpp3_get_optimal_number_of_taps(
+ 	else
+ 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
+ 
++	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
++	if (scl_data->viewport.width > scl_data->h_active &&
++		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
++		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
++		return false;
 +
- struct sock *unix_peer_get(struct sock *sk);
- 
- #define UNIX_HASH_MOD	(256 - 1)
---- a/include/net/scm.h
-+++ b/include/net/scm.h
-@@ -22,12 +22,17 @@ struct scm_creds {
- 	kgid_t	gid;
- };
- 
-+#ifdef CONFIG_UNIX
-+struct unix_edge;
-+#endif
-+
- struct scm_fp_list {
- 	short			count;
- 	short			count_unix;
- 	short			max;
- #ifdef CONFIG_UNIX
- 	struct list_head	vertices;
-+	struct unix_edge	*edges;
- #endif
- 	struct user_struct	*user;
- 	struct file		*fp[SCM_MAX_FD];
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -90,6 +90,7 @@ static int scm_fp_copy(struct cmsghdr *c
- 		fpl->max = SCM_MAX_FD;
- 		fpl->user = NULL;
- #if IS_ENABLED(CONFIG_UNIX)
-+		fpl->edges = NULL;
- 		INIT_LIST_HEAD(&fpl->vertices);
- #endif
- 	}
-@@ -383,6 +384,7 @@ struct scm_fp_list *scm_fp_dup(struct sc
- 		new_fpl->max = new_fpl->count;
- 		new_fpl->user = get_uid(fpl->user);
- #if IS_ENABLED(CONFIG_UNIX)
-+		new_fpl->edges = NULL;
- 		INIT_LIST_HEAD(&new_fpl->vertices);
- #endif
- 	}
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -127,6 +127,11 @@ int unix_prepare_fpl(struct scm_fp_list
- 		list_add(&vertex->entry, &fpl->vertices);
- 	}
- 
-+	fpl->edges = kvmalloc_array(fpl->count_unix, sizeof(*fpl->edges),
-+				    GFP_KERNEL_ACCOUNT);
-+	if (!fpl->edges)
-+		goto err;
-+
- 	return 0;
- 
- err:
-@@ -136,6 +141,7 @@ err:
- 
- void unix_destroy_fpl(struct scm_fp_list *fpl)
- {
-+	kvfree(fpl->edges);
- 	unix_free_vertices(fpl);
- }
- 
+ 	/*Ensure we can support the requested number of vtaps*/
+ 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
+ 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
+-- 
+2.39.5
+
 
 
 
