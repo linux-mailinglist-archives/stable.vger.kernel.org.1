@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-149860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7F4ACB545
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FF0ACB387
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 852CE194097F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2971BA01E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040ED22E004;
-	Mon,  2 Jun 2025 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6593522D4E9;
+	Mon,  2 Jun 2025 14:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpdsovU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ww6m0b4P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36A71A4F12;
-	Mon,  2 Jun 2025 14:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224F92C324D;
+	Mon,  2 Jun 2025 14:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875269; cv=none; b=XO7DlFNygtXvmSUPgwbzTGu4qJkUmrO/inJbLBv2YuUkmOCeSgihKUWZ3wRaZwP1I/9nSQq3nhXovTNY7QnIEekKS1Et8bvWTNJYDuFo48BGaKUI+LS0TqFrFBYwpajM3zyrW3/4phrW+aXoQ6HN15YxcJt8gS0n6f8GugyF43c=
+	t=1748874468; cv=none; b=rnIatPmT6toEoc1xSp3oqNgE6s8qiaqxrmmbQBFQpsIJQcBIn9LS0OaOQSAX0ySLlsgCvSsalqgBySq/Exq2gHzQd4SQnH5//31i6t97gsfyU+AcVluXQckkpstvaQVy2wkYyMk9UlxnrOxt+HOtGiqqTYPqNZhwxxblYTvkCps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875269; c=relaxed/simple;
-	bh=/2jllYUZYpX0HFftHPDNUeCFGDOUojMNIyzko05U+uw=;
+	s=arc-20240116; t=1748874468; c=relaxed/simple;
+	bh=ugXuCbbbwH1+VU73Ag/YUHkUfIcfOJkH60yJBk29iyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISoUMl+pv0S+7fqkqbWkPW0JSqHsXvNMcFuErF8Xqq7TqLEStjh6gygwQjWTyjg3I4fuiCgCj8WIPjcJ3nrGvT734GwLl/V+ddvttipg+J7JfRjaDFIP2RRMnn5tLPPrBx+Z6n+RPRTK9t+yz7xDTpqIdakmO+TJceLXwPOJ3bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpdsovU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40081C4CEEB;
-	Mon,  2 Jun 2025 14:41:09 +0000 (UTC)
+	 MIME-Version; b=bWZJ7vjsRk0zXBVJZMlY2EYO/UnuSKdNWHWqh6R+0Yd2BwxsZtl0ONdeQaGm7pOaGNpCCC5qYiOs/YccfRSj8ylx98rjEazkWLtdJMhSMidwbBKM2rBEmmehqlZPd0imEKYV/6F1T2y2OErK/6yi8DOop4sH3dUM2RYYRtpbjQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ww6m0b4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A583EC4CEEE;
+	Mon,  2 Jun 2025 14:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875269;
-	bh=/2jllYUZYpX0HFftHPDNUeCFGDOUojMNIyzko05U+uw=;
+	s=korg; t=1748874468;
+	bh=ugXuCbbbwH1+VU73Ag/YUHkUfIcfOJkH60yJBk29iyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XpdsovU2hzXS72E9/+d1rwLRlEWl/sHC8bWY3dig6vUNOBKqO7P3Dz3nSFBBYs8OC
-	 0NmC+hq1hRpDBgh9p5aUJa7bsXGyMyT7M2B71OhS7jzjpC52G6NhWf5nCFqzSMgIZJ
-	 99sBBIUo3+pw485RCQVwIWMb/WZHxtILZGTK/xqw=
+	b=ww6m0b4PId5J43wrOZwIoskHfuRiKUENTJm3610PPAQXFsCclGr3NZyenNJ8Nst+9
+	 pQCPpR2G3qiZCbncIKgqmt6W68Y3CdyLyLDiQUWOGbymiHrvlJfMPOJEZqbtnD81k+
+	 58X1pWohSl67Vdj05QE+VIXVXWpVhwHyEA+8qpVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/270] nvme: unblock ctrl state transition for firmware update
+	Christoph Hellwig <hch@lst.de>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 033/204] scsi: target: Fix WRITE_SAME No Data Buffer crash
 Date: Mon,  2 Jun 2025 15:46:06 +0200
-Message-ID: <20250602134310.485861574@linuxfoundation.org>
+Message-ID: <20250602134256.980762579@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 650415fca0a97472fdd79725e35152614d1aad76 ]
+commit ccd3f449052449a917a3e577d8ba0368f43b8f29 upstream.
 
-The original nvme subsystem design didn't have a CONNECTING state; the
-state machine allowed transitions from RESETTING to LIVE directly.
+In newer version of the SBC specs, we have a NDOB bit that indicates there
+is no data buffer that gets written out. If this bit is set using commands
+like "sg_write_same --ndob" we will crash in target_core_iblock/file's
+execute_write_same handlers when we go to access the se_cmd->t_data_sg
+because its NULL.
 
-With the introduction of nvme fabrics the CONNECTING state was
-introduce. Over time the nvme-pci started to use the CONNECTING state as
-well.
+This patch adds a check for the NDOB bit in the common WRITE SAME code
+because we don't support it. And, it adds a check for zero SG elements in
+each handler in case the initiator tries to send a normal WRITE SAME with
+no data buffer.
 
-Eventually, a bug fix for the nvme-fc started to depend that the only
-valid transition to LIVE was from CONNECTING. Though this change didn't
-update the firmware update handler which was still depending on
-RESETTING to LIVE transition.
-
-The simplest way to address it for the time being is to switch into
-CONNECTING state before going to LIVE state.
-
-Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Closes: https://lore.kernel.org/all/0134ea15-8d5f-41f7-9e9a-d7e6d82accaa@roeck-us.net
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20220628022325.14627-2-michael.christie@oracle.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/target/target_core_file.c   |    3 +++
+ drivers/target/target_core_iblock.c |    4 ++++
+ drivers/target/target_core_sbc.c    |    6 ++++++
+ 3 files changed, 13 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index b19fba64beb09..cb9b38e142edd 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4429,7 +4429,8 @@ static void nvme_fw_act_work(struct work_struct *work)
- 		msleep(100);
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -455,6 +455,9 @@ fd_execute_write_same(struct se_cmd *cmd
+ 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
  	}
  
--	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
-+	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
- 		return;
++	if (!cmd->t_data_nents)
++		return TCM_INVALID_CDB_FIELD;
++
+ 	if (cmd->t_data_nents > 1 ||
+ 	    cmd->t_data_sg[0].length != cmd->se_dev->dev_attrib.block_size) {
+ 		pr_err("WRITE_SAME: Illegal SGL t_data_nents: %u length: %u"
+--- a/drivers/target/target_core_iblock.c
++++ b/drivers/target/target_core_iblock.c
+@@ -458,6 +458,10 @@ iblock_execute_write_same(struct se_cmd
+ 		       " backends not supported\n");
+ 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
+ 	}
++
++	if (!cmd->t_data_nents)
++		return TCM_INVALID_CDB_FIELD;
++
+ 	sg = &cmd->t_data_sg[0];
  
- 	nvme_start_queues(ctrl);
--- 
-2.39.5
-
+ 	if (cmd->t_data_nents > 1 ||
+--- a/drivers/target/target_core_sbc.c
++++ b/drivers/target/target_core_sbc.c
+@@ -312,6 +312,12 @@ sbc_setup_write_same(struct se_cmd *cmd,
+ 		pr_warn("WRITE SAME with ANCHOR not supported\n");
+ 		return TCM_INVALID_CDB_FIELD;
+ 	}
++
++	if (flags & 0x01) {
++		pr_warn("WRITE SAME with NDOB not supported\n");
++		return TCM_INVALID_CDB_FIELD;
++	}
++
+ 	/*
+ 	 * Special case for WRITE_SAME w/ UNMAP=1 that ends up getting
+ 	 * translated into block discard requests within backend code.
 
 
 
