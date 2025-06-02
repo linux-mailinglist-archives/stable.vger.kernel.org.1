@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-149361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1050ACB268
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA10ACB260
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6415C19423D3
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126DA4A0AEF
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A458221FCF;
-	Mon,  2 Jun 2025 14:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63420227EA4;
+	Mon,  2 Jun 2025 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYRJAhc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HymKYX7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E611DED64;
-	Mon,  2 Jun 2025 14:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF8F227E95;
+	Mon,  2 Jun 2025 14:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873737; cv=none; b=DxETMraMAmBpFBYhlUCw6hXMsuLH9mWb2dfxIS4koCmuvPw1ZsiaxZsEKUAQnGOhonFWB5FEzZR+26u5PyQn/2IQrEE6hhlS6zPG/6h91rdB8T4uIMVK+wizp7Q5t6ZKwKt9Ve1Seqy/ccYHdxkhiiBrHERHFn4g6MR39hdFfuo=
+	t=1748873749; cv=none; b=aBmNRwq1OW3ARyTFu362G+4jhx/mt52/Dzv/pfWjQMY+1Ywg2/WkcMfmxk7B2WaKLTRqiOKbj3GcD6EnBqi7Bun9NubEqVQ4p2oZra0VUfn9OTVP5ga8dwECPNN/ARzPPijuoC4wP1OxNda/h8LP06f0L7riO4JgJdzgez8o0KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873737; c=relaxed/simple;
-	bh=WRav0Otm4mZsAfomFaqt91KVTOWyXKnD5j2l9n2QQIs=;
+	s=arc-20240116; t=1748873749; c=relaxed/simple;
+	bh=3FltJJd1xHd6anSD5N5r0jtHjRmyjfjtEAR2MLfGeG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWxHdUZWhRWUBU4muVgIofNr4v4twI0rYzPBzmfZCmNqDBJNMY3hxvHikdSZJB+eWjxvQ5FUmP8uJYqRzAQazsomMXwnsGVnemZ+ekNUFrQHM/Fqz5iD0BiWJi5cBfyGYgjsPyEBDbnwtMY0nkBnBAZ5499dPH8RXCiPN6UxBHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYRJAhc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BADC4CEEB;
-	Mon,  2 Jun 2025 14:15:36 +0000 (UTC)
+	 MIME-Version; b=oAOUrcaygFsOuk4g4Zvm4WIrUe6l4iA4eb2IM1F19wl/ZsJ0N7RikaU0ptTPX2YWebFvk3GbGPtyz/Pi1BHSXh78H1o0cbZDxW8Bfz3BPLpRILxHcALlWlbVasd0kozxXYL3AttQbApfsknfi40XGGdGigdIEOHAKp0MqCcPyAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HymKYX7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E11EC4CEEB;
+	Mon,  2 Jun 2025 14:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873737;
-	bh=WRav0Otm4mZsAfomFaqt91KVTOWyXKnD5j2l9n2QQIs=;
+	s=korg; t=1748873748;
+	bh=3FltJJd1xHd6anSD5N5r0jtHjRmyjfjtEAR2MLfGeG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYRJAhc568kRv5u3kiJs/IamiGHrpuVnnb93YmUc6k+xCNTzGpLMxbRXoP1TuU3Yc
-	 AC8tFOaN278vALm1a/S1UD3Ys6LVzWQMZIoZlGs6yrFbbKNdHPLJLTGROIsIV+NjDO
-	 yY3cF8nXrqmNa5O+cCTZeMOroYcHcRharXoWWfQY=
+	b=HymKYX7uNjqqblJuNVy9tjkWH//3R+bKdoEfqKjCuZn03qigqUckvp9NYjZxgZO5e
+	 5QNt/+bMC+T1/Uanlck4qttGfPvJom+I6K+Xa6Z9Vt92Nz3OlsgiSdWS1A0d01MnTr
+	 wj5BTcaG9sM1upxZRSousns5km3vF8pbf03ASNJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Seiderer <ps.report@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/444] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
-Date: Mon,  2 Jun 2025 15:44:31 +0200
-Message-ID: <20250602134349.308190226@linuxfoundation.org>
+Subject: [PATCH 6.6 208/444] EDAC/ie31200: work around false positive build warning
+Date: Mon,  2 Jun 2025 15:44:32 +0200
+Message-ID: <20250602134349.347919951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
 References: <20250602134340.906731340@linuxfoundation.org>
@@ -67,47 +67,103 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Seiderer <ps.report@gmx.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-Honour the user given buffer size for the strn_len() calls (otherwise
-strn_len() will access memory outside of the user given buffer).
+gcc-14 produces a bogus warning in some configurations:
 
-Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
+
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
+
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/pktgen.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index 1decd6300f34c..6afea369ca213 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -1877,8 +1877,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	i = len;
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index 56be8ef40f376..e3635fba63b49 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -405,10 +405,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
  
- 	/* Read variable name */
--
--	len = strn_len(&user_buffer[i], sizeof(name) - 1);
-+	max = min(sizeof(name) - 1, count - i);
-+	len = strn_len(&user_buffer[i], max);
- 	if (len < 0)
- 		return len;
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -466,19 +465,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
+ 	}
  
-@@ -1908,7 +1908,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	if (!strcmp(name, "add_device")) {
- 		char f[32];
- 		memset(f, 0, 32);
--		len = strn_len(&user_buffer[i], sizeof(f) - 1);
-+		max = min(sizeof(f) - 1, count - i);
-+		len = strn_len(&user_buffer[i], max);
- 		if (len < 0) {
- 			ret = len;
- 			goto out;
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
+ 	/*
+@@ -489,14 +479,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
++
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
+ 
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
+ 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
