@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-149119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A105ACB068
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:05:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84BF3ACB550
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5AA57A8EE9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2F601945252
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B95229B29;
-	Mon,  2 Jun 2025 14:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CAE22FF4C;
+	Mon,  2 Jun 2025 14:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJzm3/hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEwf3L1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DD7229B1E;
-	Mon,  2 Jun 2025 14:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4FC22FF30;
+	Mon,  2 Jun 2025 14:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872954; cv=none; b=Ku9DKjLH1hBrnMqTOtOWst2xdruhpntsNTNevIQQhZzNZt92gepsMjp+OyxKkqKeTaBcYF1ewDXNTUGQc0D3z9M8yVXuv4Msh2hmg4XbIpVSDXIJh69uGV2fg+P2RaY1d4VeiVAm843oXHW4X61mawxUCwBMZ4rRZSaRe235/z0=
+	t=1748875745; cv=none; b=BNrkcnnzCr3yeTH0bFfdA/hRPw2MVWLI5C0tM6Q1d6eN40AF5MT/XMLYFTN/EzTd3P42Q58YlY6wkXM4YGWAoao6pH0dpZguRnfKkwfmjkH+ZKXCFTt6YwXtxkjjVoplEy6Gmu0Sw/I6z4EEfiFcIzicI4Haz4RPEwR5IJ+tVys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872954; c=relaxed/simple;
-	bh=tX8cqv8ShOeLJ3tZlX/sCBkYvFQAgNuDDCaKbLJDRcM=;
+	s=arc-20240116; t=1748875745; c=relaxed/simple;
+	bh=Qe/YLSYBuF4CpXsLw0V4SoF1fUXZRhPwU10IBuvR78k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/81R1q9D1UZvxyuE2/HYWrUljUKj9fKdy0XVvBjJ+9KNvPFEz0qEU13mkBpq3WTbTCFapocIf9TDOUo/kVgWEX052Wp6x+ETY8+JLYnhzk3sRLBFGs1felQrq8jmvOvcA6QHff8M0iNehP6euvIE5iNB2LdhIxAD87eB5as9XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJzm3/hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789C8C4CEF3;
-	Mon,  2 Jun 2025 14:02:33 +0000 (UTC)
+	 MIME-Version; b=SJQ2azVTSFpzzkKaG0mFmc7gH88DzjWxool+euiTEi27gqZgwPaG8sbMCbugT0AJa+q1SlbaHZHc6nDC8AxDJ73c0BovR/+MfimQsMBU0q2RW6QuguGRfQEFqMmuNZqCK5g7nHlIqoEcSipiRwLvVsQVdLvoaiWriQ6d+SFyVhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEwf3L1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0514C4CEEB;
+	Mon,  2 Jun 2025 14:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872953;
-	bh=tX8cqv8ShOeLJ3tZlX/sCBkYvFQAgNuDDCaKbLJDRcM=;
+	s=korg; t=1748875745;
+	bh=Qe/YLSYBuF4CpXsLw0V4SoF1fUXZRhPwU10IBuvR78k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJzm3/hj57Ie16WQhiyqAUvaQoCy+nt409bj78ysuljF0I2grs/FUp7zkxx7togfN
-	 D9DJtSAud+q8V1s16C/Y6uKKT12okBQ5OVNVpnCiuKBBYy6BEl0e7pBWuYDpX8cL+c
-	 aspCFo7tqWM38+Qy/A0r5fvsxLkPz8PqvsS1IjsU=
+	b=wEwf3L1RpvltIZgAUKhacxmjX/K2qV8WPji3CEufmnz2wdgBRSsQM7LTZ7tnafD4o
+	 ymYWhN38OvNGVqWnGymPqvLQlQ55gub2cJ6//KrW/qWYDcngm45oNBCaK9Gqb/PrqG
+	 4fPZ+30JUS9KUTNhhRvbZbtR3AOK6zWzXJD9MSe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 48/55] drm/xe: Save the gt pointer in lrc and drop the tile
+Subject: [PATCH 5.10 200/270] ASoC: tas2764: Power up/down amp on mute ops
 Date: Mon,  2 Jun 2025 15:48:05 +0200
-Message-ID: <20250602134240.170711222@linuxfoundation.org>
+Message-ID: <20250602134315.365653230@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Hector Martin <marcan@marcan.st>
 
-[ Upstream commit ce15563e49fb0b5c802564433ff8468acd1339eb ]
+[ Upstream commit 1c3b5f37409682184669457a5bdf761268eafbe5 ]
 
-Save the gt pointer in the lrc so that it can used for gt based helpers.
+The ASoC convention is that clocks are removed after codec mute, and
+power up/down is more about top level power management. For these chips,
+the "mute" state still expects a TDM clock, and yanking the clock in
+this state will trigger clock errors. So, do the full
+shutdown<->mute<->active transition on the mute operation, so the amp is
+in software shutdown by the time the clocks are removed.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250509161159.2173069-7-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 741d3ef8b8b88fab2729ca89de1180e49bc9cef0)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+This fixes TDM clock errors when streams are stopped.
+
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-1-dbab892a69b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_lrc.c       | 4 ++--
- drivers/gpu/drm/xe/xe_lrc_types.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/tas2764.c | 51 ++++++++++++++++----------------------
+ 1 file changed, 21 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-index 2d4e38b3bab19..ce6d2167b94ad 100644
---- a/drivers/gpu/drm/xe/xe_lrc.c
-+++ b/drivers/gpu/drm/xe/xe_lrc.c
-@@ -874,7 +874,7 @@ static void *empty_lrc_data(struct xe_hw_engine *hwe)
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index dd8eeafa223e8..e09480e4c54c2 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -130,33 +130,6 @@ static SOC_ENUM_SINGLE_DECL(
+ static const struct snd_kcontrol_new tas2764_asi1_mux =
+ 	SOC_DAPM_ENUM("ASI1 Source", tas2764_ASI1_src_enum);
  
- static void xe_lrc_set_ppgtt(struct xe_lrc *lrc, struct xe_vm *vm)
+-static int tas2764_dac_event(struct snd_soc_dapm_widget *w,
+-			     struct snd_kcontrol *kcontrol, int event)
+-{
+-	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+-	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
+-	int ret;
+-
+-	switch (event) {
+-	case SND_SOC_DAPM_POST_PMU:
+-		tas2764->dac_powered = true;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	case SND_SOC_DAPM_PRE_PMD:
+-		tas2764->dac_powered = false;
+-		ret = tas2764_update_pwr_ctrl(tas2764);
+-		break;
+-	default:
+-		dev_err(tas2764->dev, "Unsupported event\n");
+-		return -EINVAL;
+-	}
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	return 0;
+-}
+-
+ static const struct snd_kcontrol_new isense_switch =
+ 	SOC_DAPM_SINGLE("Switch", TAS2764_PWR_CTRL, TAS2764_ISENSE_POWER_EN, 1, 1);
+ static const struct snd_kcontrol_new vsense_switch =
+@@ -169,8 +142,7 @@ static const struct snd_soc_dapm_widget tas2764_dapm_widgets[] = {
+ 			    1, &isense_switch),
+ 	SND_SOC_DAPM_SWITCH("VSENSE", TAS2764_PWR_CTRL, TAS2764_VSENSE_POWER_EN,
+ 			    1, &vsense_switch),
+-	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2764_dac_event,
+-			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
++	SND_SOC_DAPM_DAC("DAC", NULL, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_OUTPUT("OUT"),
+ 	SND_SOC_DAPM_SIGGEN("VMON"),
+ 	SND_SOC_DAPM_SIGGEN("IMON")
+@@ -191,9 +163,28 @@ static int tas2764_mute(struct snd_soc_dai *dai, int mute, int direction)
  {
--	u64 desc = xe_vm_pdp4_descriptor(vm, lrc->tile);
-+	u64 desc = xe_vm_pdp4_descriptor(vm, gt_to_tile(lrc->gt));
+ 	struct tas2764_priv *tas2764 =
+ 			snd_soc_component_get_drvdata(dai->component);
++	int ret;
++
++	if (!mute) {
++		tas2764->dac_powered = true;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
  
- 	xe_lrc_write_ctx_reg(lrc, CTX_PDP0_UDW, upper_32_bits(desc));
- 	xe_lrc_write_ctx_reg(lrc, CTX_PDP0_LDW, lower_32_bits(desc));
-@@ -905,6 +905,7 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 	int err;
+ 	tas2764->unmuted = !mute;
+-	return tas2764_update_pwr_ctrl(tas2764);
++	ret = tas2764_update_pwr_ctrl(tas2764);
++	if (ret)
++		return ret;
++
++	if (mute) {
++		tas2764->dac_powered = false;
++		ret = tas2764_update_pwr_ctrl(tas2764);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
+ }
  
- 	kref_init(&lrc->refcount);
-+	lrc->gt = gt;
- 	lrc->flags = 0;
- 	lrc_size = ring_size + xe_gt_lrc_size(gt, hwe->class);
- 	if (xe_gt_has_indirect_ring_state(gt))
-@@ -923,7 +924,6 @@ static int xe_lrc_init(struct xe_lrc *lrc, struct xe_hw_engine *hwe,
- 		return PTR_ERR(lrc->bo);
- 
- 	lrc->size = lrc_size;
--	lrc->tile = gt_to_tile(hwe->gt);
- 	lrc->ring.size = ring_size;
- 	lrc->ring.tail = 0;
- 	lrc->ctx_timestamp = 0;
-diff --git a/drivers/gpu/drm/xe/xe_lrc_types.h b/drivers/gpu/drm/xe/xe_lrc_types.h
-index 71ecb453f811a..cd38586ae9893 100644
---- a/drivers/gpu/drm/xe/xe_lrc_types.h
-+++ b/drivers/gpu/drm/xe/xe_lrc_types.h
-@@ -25,8 +25,8 @@ struct xe_lrc {
- 	/** @size: size of lrc including any indirect ring state page */
- 	u32 size;
- 
--	/** @tile: tile which this LRC belongs to */
--	struct xe_tile *tile;
-+	/** @gt: gt which this LRC belongs to */
-+	struct xe_gt *gt;
- 
- 	/** @flags: LRC flags */
- #define XE_LRC_FLAG_INDIRECT_RING_STATE		0x1
+ static int tas2764_set_bitwidth(struct tas2764_priv *tas2764, int bitwidth)
 -- 
 2.39.5
 
