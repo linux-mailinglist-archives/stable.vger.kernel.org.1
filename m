@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-149960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C31ACB4F7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C80ACB371
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 027417A2E51
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:51:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EB824A4D00
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B43233D7B;
-	Mon,  2 Jun 2025 14:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780EB2222CC;
+	Mon,  2 Jun 2025 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oufA5Obg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVqs/kyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35218233733;
-	Mon,  2 Jun 2025 14:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF41FBC90;
+	Mon,  2 Jun 2025 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875589; cv=none; b=kzy/O8tSjDMN9KamsKDQJy4SA04F3bCJvxnamiAjPnhwReToSMHkbZKyb0FA50Eeo1uAKn1Y/GjmZDpvX4JN4gzqm8+8NiiyFoCe/Ne+L9OhfU6dLdGJGV/fecoCP3OFsnXgbNdbbS8Wnfccf2yJffIcpobI0xTufzgdWnRyFYU=
+	t=1748874286; cv=none; b=UQc/GulMSMfx1YgbQhwcKbkQquXt09nVX7dDQfulaofnZOMeUX/AJwFDc4rojCa4PK3XB36k7BgQ5bdijtGYSz+M2DkfJ7qRMNhbbG/kYCK9tdDTw5LGtEXSvldI6ilvKZSKdYEkuS7t0oCxxjtObCu2ldMXPzj3u3vE9xFrt6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875589; c=relaxed/simple;
-	bh=+8ZOnHP45HPBdspk8hWd8Of3NzSQ9NN1VfnnrVySC9g=;
+	s=arc-20240116; t=1748874286; c=relaxed/simple;
+	bh=NqHHVjh0DPeFcKI6TfJBU3/N0agNJZ5cdEmBoPk5vGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkcIfw6RlBAWwtJ87fe8vENheB1M0JPZ3zZA44M2kZug4Z0f0RNKi7s1ijcVe9t9l5MSL+8rvIvXu5z0g3hNldnRXycAUuV2r7qALASGBd3EOqi+0JsSj7N5ysFBOkiDyM0xv2xYhZ7LNq2ZA2YLKK3cQgg19fhX5FCR2opkn+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oufA5Obg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E771C4CEEB;
-	Mon,  2 Jun 2025 14:46:28 +0000 (UTC)
+	 MIME-Version; b=mEbn/D5RSSMxCK2lA6Rch+8h8Tjjtp/48OgAP4i7hekA4G1cfAaDsTMzh6RnHnwOCPRMdmgwymnXhukT1/gG6/n71rXIhe2xIvmLXw6oGU1fibdm8ehyOi79wpGb6guyL1Pf8+zIhx+aIUbuRAlMvEix3Zk122YnAMWKm7iyZOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVqs/kyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB2CC4CEEB;
+	Mon,  2 Jun 2025 14:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875589;
-	bh=+8ZOnHP45HPBdspk8hWd8Of3NzSQ9NN1VfnnrVySC9g=;
+	s=korg; t=1748874286;
+	bh=NqHHVjh0DPeFcKI6TfJBU3/N0agNJZ5cdEmBoPk5vGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oufA5ObgrOU+BIIq4uEozNye5mkn3Kczn3ybMLy0ODwTp6jYNLN1A4WDAtc4ZGxdG
-	 ha+18p4XMAlOLIf7JTf4jpKBqrh/kozPpSHSr4CEiGN5O+QChLY7+mSP9/12yhmOZi
-	 bXb/7/pwopk+xep3CvEktBuLS/vO1EgAvfDGVLPk=
+	b=ZVqs/kygGH5MzfJxt2xL/1Cw7xSB0dGqqtD6tAUU+NnpzUOV+5hGwX9rUehH+MW2c
+	 yXaPMJaAXVpG2y9r5oMMNb5b3Qf4GHHQZzGMX3Kz8q6m78QsmvSk7wjennqYSydfOM
+	 n/xCFHjSOvR3BD5vxcuqcbhpcJHb2VWYzLKTrbLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/270] x86/nmi: Add an emergency handler in nmi_desc & use it in nmi_shootdown_cpus()
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 402/444] af_unix: Allocate struct unix_edge for each inflight AF_UNIX fd.
 Date: Mon,  2 Jun 2025 15:47:46 +0200
-Message-ID: <20250602134314.610019240@linuxfoundation.org>
+Message-ID: <20250602134357.232336393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,177 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit fe37c699ae3eed6e02ee55fbf5cb9ceb7fcfd76c ]
+commit 29b64e354029cfcf1eea4d91b146c7b769305930 upstream.
 
-Depending on the type of panics, it was found that the
-__register_nmi_handler() function can be called in NMI context from
-nmi_shootdown_cpus() leading to a lockdep splat:
+As with the previous patch, we preallocate to skb's scm_fp_list an
+array of struct unix_edge in the number of inflight AF_UNIX fds.
 
-  WARNING: inconsistent lock state
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+There we just preallocate memory and do not use immediately because
+sendmsg() could fail after this point.  The actual use will be in
+the next patch.
 
-   lock(&nmi_desc[0].lock);
-   <Interrupt>
-     lock(&nmi_desc[0].lock);
+When we queue skb with inflight edges, we will set the inflight
+socket's unix_sock as unix_edge->predecessor and the receiver's
+unix_sock as successor, and then we will link the edge to the
+inflight socket's unix_vertex.edges.
 
-  Call Trace:
-    _raw_spin_lock_irqsave
-    __register_nmi_handler
-    nmi_shootdown_cpus
-    kdump_nmi_shootdown_cpus
-    native_machine_crash_shutdown
-    __crash_kexec
+Note that we set NULL to cloned scm_fp_list.edges in scm_fp_dup()
+so that MSG_PEEK does not change the shape of the directed graph.
 
-In this particular case, the following panic message was printed before:
-
-  Kernel panic - not syncing: Fatal hardware error!
-
-This message seemed to be given out from __ghes_panic() running in
-NMI context.
-
-The __register_nmi_handler() function which takes the nmi_desc lock
-with irq disabled shouldn't be called from NMI context as this can
-lead to deadlock.
-
-The nmi_shootdown_cpus() function can only be invoked once. After the
-first invocation, all other CPUs should be stuck in the newly added
-crash_nmi_callback() and cannot respond to a second NMI.
-
-Fix it by adding a new emergency NMI handler to the nmi_desc
-structure and provide a new set_emergency_nmi_handler() helper to set
-crash_nmi_callback() in any context. The new emergency handler will
-preempt other handlers in the linked list. That will eliminate the need
-to take any lock and serve the panic in NMI use case.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rik van Riel <riel@surriel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250206191844.131700-1-longman@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240325202425.60930-3-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nmi.h |  2 ++
- arch/x86/kernel/nmi.c      | 42 ++++++++++++++++++++++++++++++++++++++
- arch/x86/kernel/reboot.c   | 10 +++------
- 3 files changed, 47 insertions(+), 7 deletions(-)
+ include/net/af_unix.h |    6 ++++++
+ include/net/scm.h     |    5 +++++
+ net/core/scm.c        |    2 ++
+ net/unix/garbage.c    |    6 ++++++
+ 4 files changed, 19 insertions(+)
 
-diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
-index 9d5d949e662e1..dfb483c8c98b6 100644
---- a/arch/x86/include/asm/nmi.h
-+++ b/arch/x86/include/asm/nmi.h
-@@ -59,6 +59,8 @@ int __register_nmi_handler(unsigned int, struct nmiaction *);
- 
- void unregister_nmi_handler(unsigned int, const char *);
- 
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler);
-+
- void stop_nmi(void);
- void restart_nmi(void);
- void local_touch_nmi(void);
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index f2e53b20df7e3..09997eee7b6fe 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -38,8 +38,12 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/nmi.h>
- 
-+/*
-+ * An emergency handler can be set in any context including NMI
-+ */
- struct nmi_desc {
- 	raw_spinlock_t lock;
-+	nmi_handler_t emerg_handler;
- 	struct list_head head;
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -33,6 +33,12 @@ struct unix_vertex {
+ 	unsigned long out_degree;
  };
  
-@@ -121,9 +125,22 @@ static void nmi_check_duration(struct nmiaction *action, u64 duration)
- static int nmi_handle(unsigned int type, struct pt_regs *regs)
- {
- 	struct nmi_desc *desc = nmi_to_desc(type);
-+	nmi_handler_t ehandler;
- 	struct nmiaction *a;
- 	int handled=0;
- 
-+	/*
-+	 * Call the emergency handler, if set
-+	 *
-+	 * In the case of crash_nmi_callback() emergency handler, it will
-+	 * return in the case of the crashing CPU to enable it to complete
-+	 * other necessary crashing actions ASAP. Other handlers in the
-+	 * linked list won't need to be run.
-+	 */
-+	ehandler = desc->emerg_handler;
-+	if (ehandler)
-+		return ehandler(type, regs);
++struct unix_edge {
++	struct unix_sock *predecessor;
++	struct unix_sock *successor;
++	struct list_head vertex_entry;
++};
 +
- 	rcu_read_lock();
+ struct sock *unix_peer_get(struct sock *sk);
  
- 	/*
-@@ -209,6 +226,31 @@ void unregister_nmi_handler(unsigned int type, const char *name)
+ #define UNIX_HASH_MOD	(256 - 1)
+--- a/include/net/scm.h
++++ b/include/net/scm.h
+@@ -22,12 +22,17 @@ struct scm_creds {
+ 	kgid_t	gid;
+ };
+ 
++#ifdef CONFIG_UNIX
++struct unix_edge;
++#endif
++
+ struct scm_fp_list {
+ 	short			count;
+ 	short			count_unix;
+ 	short			max;
+ #ifdef CONFIG_UNIX
+ 	struct list_head	vertices;
++	struct unix_edge	*edges;
+ #endif
+ 	struct user_struct	*user;
+ 	struct file		*fp[SCM_MAX_FD];
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -90,6 +90,7 @@ static int scm_fp_copy(struct cmsghdr *c
+ 		fpl->max = SCM_MAX_FD;
+ 		fpl->user = NULL;
+ #if IS_ENABLED(CONFIG_UNIX)
++		fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&fpl->vertices);
+ #endif
+ 	}
+@@ -383,6 +384,7 @@ struct scm_fp_list *scm_fp_dup(struct sc
+ 		new_fpl->max = new_fpl->count;
+ 		new_fpl->user = get_uid(fpl->user);
+ #if IS_ENABLED(CONFIG_UNIX)
++		new_fpl->edges = NULL;
+ 		INIT_LIST_HEAD(&new_fpl->vertices);
+ #endif
+ 	}
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -127,6 +127,11 @@ int unix_prepare_fpl(struct scm_fp_list
+ 		list_add(&vertex->entry, &fpl->vertices);
+ 	}
+ 
++	fpl->edges = kvmalloc_array(fpl->count_unix, sizeof(*fpl->edges),
++				    GFP_KERNEL_ACCOUNT);
++	if (!fpl->edges)
++		goto err;
++
+ 	return 0;
+ 
+ err:
+@@ -136,6 +141,7 @@ err:
+ 
+ void unix_destroy_fpl(struct scm_fp_list *fpl)
+ {
++	kvfree(fpl->edges);
+ 	unix_free_vertices(fpl);
  }
- EXPORT_SYMBOL_GPL(unregister_nmi_handler);
  
-+/**
-+ * set_emergency_nmi_handler - Set emergency handler
-+ * @type:    NMI type
-+ * @handler: the emergency handler to be stored
-+ *
-+ * Set an emergency NMI handler which, if set, will preempt all the other
-+ * handlers in the linked list. If a NULL handler is passed in, it will clear
-+ * it. It is expected that concurrent calls to this function will not happen
-+ * or the system is screwed beyond repair.
-+ */
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler)
-+{
-+	struct nmi_desc *desc = nmi_to_desc(type);
-+
-+	if (WARN_ON_ONCE(desc->emerg_handler == handler))
-+		return;
-+	desc->emerg_handler = handler;
-+
-+	/*
-+	 * Ensure the emergency handler is visible to other CPUs before
-+	 * function return
-+	 */
-+	smp_wmb();
-+}
-+
- static void
- pci_serr_error(unsigned char reason, struct pt_regs *regs)
- {
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 4d8c0e2581500..a09060b9bd151 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -874,15 +874,11 @@ void nmi_shootdown_cpus(nmi_shootdown_cb callback)
- 	shootdown_callback = callback;
- 
- 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
--	/* Would it be better to replace the trap vector here? */
--	if (register_nmi_handler(NMI_LOCAL, crash_nmi_callback,
--				 NMI_FLAG_FIRST, "crash"))
--		return;		/* Return what? */
-+
- 	/*
--	 * Ensure the new callback function is set before sending
--	 * out the NMI
-+	 * Set emergency handler to preempt other handlers.
- 	 */
--	wmb();
-+	set_emergency_nmi_handler(NMI_LOCAL, crash_nmi_callback);
- 
- 	apic_send_IPI_allbutself(NMI_VECTOR);
- 
--- 
-2.39.5
-
 
 
 
