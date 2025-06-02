@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-150373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD09ACB87A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F65ACB3FE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE741947ED9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:15:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F8B89E0184
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E6722DF9A;
-	Mon,  2 Jun 2025 15:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29C822FF22;
+	Mon,  2 Jun 2025 14:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPfprNLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNnAqkPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC95D188907;
-	Mon,  2 Jun 2025 15:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7044222FDEC;
+	Mon,  2 Jun 2025 14:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876916; cv=none; b=hlLnk0UlW0rTcLujAUnlj2lhvT4prbSIYQcyBrsNo2xmRFGQuX9Wr0c5pM2IgLB9SOuo5bWSiROwgpVrnXIhfOa5PGkcLINbt4yX3yAGqgTx6C0lsQuVPm7d/ntYxYoGbf+BjMpCSfYpVxrj+K/XjdOiktm/MrOUiXlwGKvBJxU=
+	t=1748874546; cv=none; b=m5a1yXFmdOeGV5biM+NMcCDHG+u+Me12AU4UDGoliwgkwDtk+Jwk1lVZ1t6nzzOgBxGAxNFtCEZtfkJHit0AHLuM/Se/b5FS1DYE8YDj0KU5tMKubiH0kUwyXP25xyHDVAnnknqDBBvQWnuLCjAhidR4PtTAqILiokzXAO8oaPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876916; c=relaxed/simple;
-	bh=7kjJRdOek0Wg21cqq4xfU0CnTw0zvjU85i/XjE/E8Ls=;
+	s=arc-20240116; t=1748874546; c=relaxed/simple;
+	bh=0xyWemI2tVg6Omp+tgFQ4q9PVjfuWYATqM9c+PioJ8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nb1N3AJldRwuyVFyd09EQa0rGWn9V6Bh8lSi5q1DnEKFi0B8bEfLE1nVza1x6glqdeM5stLnnfWx1YHFMYAl9iA6Drzoj5hHJ+jHPp3kjcP41bfMVnmqRv329N2MAyyI9cA3JUeEQ1/pot/tR11hdZXGOZVrbPFXdShPVy41Wdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPfprNLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E200C4CEEB;
-	Mon,  2 Jun 2025 15:08:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q5uHKDblPzF87OXBUEj+8H9TPUxJN19hX6xrp/DB7JPMsihRRt+1aKa3YvceVLnu6/E/O1swOOYL2ELiv97FU64E2U/G7ejb3e39FhFNYMcCL/WJ4xy+dkDUcShXnJL8oJendxvXKXZkAAuHq7klDyeo27P1hMIF2BoHFgfChMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNnAqkPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5ADAC4CEEB;
+	Mon,  2 Jun 2025 14:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876916;
-	bh=7kjJRdOek0Wg21cqq4xfU0CnTw0zvjU85i/XjE/E8Ls=;
+	s=korg; t=1748874546;
+	bh=0xyWemI2tVg6Omp+tgFQ4q9PVjfuWYATqM9c+PioJ8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPfprNLyP3eRI+w0Syvd4YQL+StXyQkoPkNw+8js2bEn3E1rBM/twVBjrRE1msJx8
-	 xjh4K5i0KhP8l3k/JbQ69tp6wKy0E5GZuyeKl8GcGGeSWYVMLh/DQCz5ngZNjypCxN
-	 KpIrIckjfRu2ys2YL0Kz/fOjqWjQ/tkuCJunCMdM=
+	b=lNnAqkPImukOr7/Ez9hUhBUPqWEUTXbYgWDD6ao4Ncks313MAnOk/6izAaBTQEmV3
+	 JUGsnssE3Vtvo8jfOSMvdI1/8nioVEe+wWAmoRT9Iiri9yHvkTUzkpa36CbGpyzxjP
+	 RlY2tlmwksn6g/vzlxl9atqi82e3fBevsju1nK8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Michael Riesch <michael.riesch@wolfvision.net>
-Subject: [PATCH 6.1 115/325] drm/rockchip: vop2: Add uv swap for cluster window
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 058/204] iio: adc: dln2: Use aligned_s64 for timestamp
 Date: Mon,  2 Jun 2025 15:46:31 +0200
-Message-ID: <20250602134324.452427860@linuxfoundation.org>
+Message-ID: <20250602134257.963131700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit e7aae9f6d762139f8d2b86db03793ae0ab3dd802 ]
+[ Upstream commit 5097eaae98e53f9ab9d35801c70da819b92ca907 ]
 
-The Cluster windows of upcoming VOP on rk3576 also support
-linear YUV support, we need to set uv swap bit for it.
+Here the lack of marking allows the overall structure to not be
+sufficiently aligned resulting in misplacement of the timestamp
+in iio_push_to_buffers_with_timestamp(). Use aligned_s64 to
+force the alignment on all architectures.
 
-As the VOP2_WIN_UV_SWA register defined on rk3568/rk3588 is
-0xffffffff, so this register will not be touched on these
-two platforms.
-
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Michael Riesch <michael.riesch@wolfvision.net> # on RK3568
-Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250303034436.192400-4-andyshrk@163.com
+Fixes: 7c0299e879dd ("iio: adc: Add support for DLN2 ADC")
+Reported-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250413103443.2420727-4-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/adc/dln2-adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 955ef2caac89f..6efa0a51b7d65 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1289,10 +1289,8 @@ static void vop2_plane_atomic_update(struct drm_plane *plane,
- 
- 	rb_swap = vop2_win_rb_swap(fb->format->format);
- 	vop2_win_write(win, VOP2_WIN_RB_SWAP, rb_swap);
--	if (!vop2_cluster_window(win)) {
--		uv_swap = vop2_win_uv_swap(fb->format->format);
--		vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
--	}
-+	uv_swap = vop2_win_uv_swap(fb->format->format);
-+	vop2_win_write(win, VOP2_WIN_UV_SWAP, uv_swap);
- 
- 	if (fb->format->is_yuv) {
- 		vop2_win_write(win, VOP2_WIN_UV_VIR, DIV_ROUND_UP(fb->pitches[1], 4));
+diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+index 2e37834633ff8..02addbd33ebe6 100644
+--- a/drivers/iio/adc/dln2-adc.c
++++ b/drivers/iio/adc/dln2-adc.c
+@@ -483,7 +483,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct {
+ 		__le16 values[DLN2_ADC_MAX_CHANNELS];
+-		int64_t timestamp_space;
++		aligned_s64 timestamp_space;
+ 	} data;
+ 	struct dln2_adc_get_all_vals dev_data;
+ 	struct dln2_adc *dln2 = iio_priv(indio_dev);
 -- 
 2.39.5
 
