@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F0AACB33A
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B7CACB60D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FDF6170145
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7074C274E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9640523AE87;
-	Mon,  2 Jun 2025 14:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1B4223DED;
+	Mon,  2 Jun 2025 14:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cOYDsYr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dv7TgKbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B6F223323;
-	Mon,  2 Jun 2025 14:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254CB1EA65;
+	Mon,  2 Jun 2025 14:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874109; cv=none; b=swGVRNied1kCV4B9+Mcz14B7hc541Gxpsb2miC1dwd5RTqQX+KxbKTA06TeaCk+cffv2UAH44IrULmZRywiPLiCkoAaerUWLtu1z/LbQSq0qcaTQpgkkI9x6BWcxqXTYK74eHYrWMkr3quEbmydPNdIl1y6qvOJboT+Ud0Ojj3E=
+	t=1748876098; cv=none; b=r04ju0k57SNN1yWnuBB1VAiXjHR4tJ5CR1SSqD30iNr8YoPteXC4kFUhJeE9lLI44OAJrTKYFHChh4fEX19tDZUvNYlxyTg2y1lc6NZvoTn6p8Dssh0TFyexpBRdb1uH6AmlwSRPncrnhOPLNOQ/yRtOXFPBF+AH1+1QmI1PohM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874109; c=relaxed/simple;
-	bh=dD0fTV+A97NAssOAb2PTv6hjsaMfs1a5EnonL2erZFk=;
+	s=arc-20240116; t=1748876098; c=relaxed/simple;
+	bh=OvWqsjDufIMPSvE6dSeBnuiQXaEdDRJI83KAWH5v/bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGX4sH0KAxydfay+4ihJLFPE6w476q/TTgIbWK7ApC0TtCS0l0G5SxidqKqlKhjBdrMGOwngkTysjLxTvFJTfRRkp5xK9S9URCgC9Caniy+2ua+vR9MKEJa/Ff3WjpXeyB1qU5YbdC6N6Sl1/GsBCFxt5UMWM6LKFOFXDRz7GSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cOYDsYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE594C4CEEB;
-	Mon,  2 Jun 2025 14:21:48 +0000 (UTC)
+	 MIME-Version; b=f0cvdFoQDGvwgMEeGiQAQdbyO3fm6r9SJrDqrU6zZkfQuE9m/JfVUDr8Dux/blKGtgglIOO+KznOqWumREsflLiYp5xyN9P8JkqgJISHJs0NlqDcXLlrEB+ZZ5pfQDhJUu1GMk0lt/qMIqpYLPwq/VwcqadsYn1VPZ3ZCepc6Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dv7TgKbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89887C4CEEB;
+	Mon,  2 Jun 2025 14:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874109;
-	bh=dD0fTV+A97NAssOAb2PTv6hjsaMfs1a5EnonL2erZFk=;
+	s=korg; t=1748876098;
+	bh=OvWqsjDufIMPSvE6dSeBnuiQXaEdDRJI83KAWH5v/bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2cOYDsYrRpx+wS39VMJ7ti8z/PQ7OnEAQxhHfMGs2OflrX+IwvYoNVXMXTAhY2f2Z
-	 x5wh1QuPg0Qb6pnlaP7Q7wseasStnAY6vFQCc0U76OjmRl02XVSZ4rqNuZcI+xqCbD
-	 o724mkHJ8509JjeFYTr6/fntSCp1R+FgFvPyXIuo=
+	b=dv7TgKbPMhgWVKO1/j4xxaDRDPx7IenW/9sPx7DQ2TLjj4Iw9X1wZjllmCFVxCPj8
+	 z41NC6W3pfS/rksZXkhC3ftQx/RMGY/jGmRvFCLENEyHBLdSJ2QP9KSB3SEDg79eov
+	 v8Q1SBnmIdsIcWqmMg4FP9M19Tz5xVhpl/L2uAL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 360/444] can: bcm: add missing rcu read protection for procfs content
-Date: Mon,  2 Jun 2025 15:47:04 +0200
-Message-ID: <20250602134355.531202808@linuxfoundation.org>
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 053/207] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Date: Mon,  2 Jun 2025 15:47:05 +0200
+Message-ID: <20250602134300.830073794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
+References: <20250602134258.769974467@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-commit dac5e6249159ac255dad9781793dbe5908ac9ddb upstream.
+[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
 
-When the procfs content is generated for a bcm_op which is in the process
-to be removed the procfs output might show unreliable data (UAF).
+nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
+be written any negative value, which would then be stored in the
+unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
 
-As the removal of bcm_op's is already implemented with rcu handling this
-patch adds the missing rcu_read_lock() and makes sure the list entries
-are properly removed under rcu protection.
+While the do_proc_dointvec_conv function is supposed to limit writing
+handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
+being written in an unsigned int leads to a very high value, exceeding
+this limit.
 
-Fixes: f1b4e32aca08 ("can: bcm: use call_rcu() instead of costly synchronize_rcu()")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Suggested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250519125027.11900-2-socketcan@hartkopp.net
-Cc: stable@vger.kernel.org # >= 5.4
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
+minimum value is 1.
+
+The proc_handlers have thus been updated to proc_dointvec_minmax in
+order to specify the following write bounds :
+
+* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
+  and SYSCTL_INT_MAX.
+
+* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+
+With this patch applied, sysctl writes outside the defined in the bound
+will thus lead to a write error :
+
+```
+sysctl -w net.netfilter.nf_conntrack_expect_max=-1
+sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
+```
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/bcm.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -207,7 +207,9 @@ static int bcm_proc_show(struct seq_file
- 	seq_printf(m, " / bound %s", bcm_proc_getifname(net, ifname, bo->ifindex));
- 	seq_printf(m, " <<<\n");
- 
--	list_for_each_entry(op, &bo->rx_ops, list) {
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(op, &bo->rx_ops, list) {
- 
- 		unsigned long reduction;
- 
-@@ -263,6 +265,9 @@ static int bcm_proc_show(struct seq_file
- 		seq_printf(m, "# sent %ld\n", op->frames_abs);
- 	}
- 	seq_putc(m, '\n');
-+
-+	rcu_read_unlock();
-+
- 	return 0;
- }
- #endif /* CONFIG_PROC_FS */
-@@ -816,7 +821,7 @@ static int bcm_delete_rx_op(struct list_
- 						  REGMASK(op->can_id),
- 						  bcm_rx_handler, op);
- 
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
-@@ -836,7 +841,7 @@ static int bcm_delete_tx_op(struct list_
- 	list_for_each_entry_safe(op, n, ops, list) {
- 		if ((op->can_id == mh->can_id) && (op->ifindex == ifindex) &&
- 		    (op->flags & CAN_FD_FRAME) == (mh->flags & CAN_FD_FRAME)) {
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return 1; /* done */
- 		}
-@@ -1258,7 +1263,7 @@ static int bcm_rx_setup(struct bcm_msg_h
- 					      bcm_rx_handler, op, "bcm", sk);
- 		if (err) {
- 			/* this bcm rx op is broken -> remove it */
--			list_del(&op->list);
-+			list_del_rcu(&op->list);
- 			bcm_remove_op(op);
- 			return err;
- 		}
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 7515705583bcf..770590041c549 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -629,7 +629,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_COUNT] = {
+ 		.procname	= "nf_conntrack_count",
+@@ -665,7 +667,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+@@ -976,7 +980,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{ }
+ };
+-- 
+2.39.5
+
 
 
 
