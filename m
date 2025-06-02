@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-150208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675BAACB7CE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EE6ACB493
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799679E5933
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4802C9E45FE
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A25F239E95;
-	Mon,  2 Jun 2025 14:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4748223DD1;
+	Mon,  2 Jun 2025 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b48Kr/K8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUO8Ep30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929022A808;
-	Mon,  2 Jun 2025 14:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6307F230BC0;
+	Mon,  2 Jun 2025 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876379; cv=none; b=QiHtirqz+EKe45qrdVz6u4kG0EohRTsDcCxYDa5Yjm30qKJQGH7CC8PrVwni4gcn8qrkzUGDPEkFYX8xCOV21EDiZb9xF0+XkfBGmCtKi6AiZpiwID57BVZcrPgR0V+0gvGtJUS0z1E7A21mgdEiMrEX0Ac4yEAGv3pIlOEZFRU=
+	t=1748874991; cv=none; b=dwNrFFnHS3oQTDtq6RkAhWUGpbPV0bohTUWMIt1jpekBYkB0InnDu3QylS5JujbqIYG+Ms73i7NtbViTfCCTcCaSSjHjokpJnLdLgEReTn4vXErCZAhIStShR5pP20OvtW/yiyBff6c37e8npZha7l3Z4/kI0Vy0VveDba9C1K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876379; c=relaxed/simple;
-	bh=hRIpSpSiVzt+lWjxJtRtjKagjdlWgqOl5be7CpTLPIA=;
+	s=arc-20240116; t=1748874991; c=relaxed/simple;
+	bh=fPKqKrfVDiyZW5VMmJLYvOQgNN4f7hIB6rulrzZIMco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OX5wLAlQ+fMTnkRlJAsXke794Er28KtsNO4y48L88MBQdYspeqCegkeUAQNYhZSzerA1FJTrd8ZBHDSyCqpC4X9G0AcFOXxhiK+S375SgNXG19X9gvtV4CeS+yMQ8hGAf/OpJiR1M/bz6EZgNFker5xZsxvyqE2eofiAeNlpmZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b48Kr/K8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28964C4CEF0;
-	Mon,  2 Jun 2025 14:59:38 +0000 (UTC)
+	 MIME-Version; b=d6LheMkUIESIOGHjcWUom8+rFFWJgj4LU6OCy7wP1rKtJcBV1kX+lrYOrebyi6q1gfB5zzAfENlM4EJBCxA+5fhJuDkvJ+bOpa9edJSzPilCYsL/VFhyNksdWhza8Vj8/r8FL5fjVGs8fE6TqU6DgTD5Mj83kUbbiBYPoIhvoA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUO8Ep30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93071C4CEF0;
+	Mon,  2 Jun 2025 14:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876379;
-	bh=hRIpSpSiVzt+lWjxJtRtjKagjdlWgqOl5be7CpTLPIA=;
+	s=korg; t=1748874991;
+	bh=fPKqKrfVDiyZW5VMmJLYvOQgNN4f7hIB6rulrzZIMco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b48Kr/K8YttcfbPLar7Cnbn3PluSJ5hXR0P7CzoY/+z32wyuWo2mJITq4NiQF/Io4
-	 HqqZhREob8MInnLHiw+nRHfTzHxquPZlQraB9JpD4uTDXuf8x80R55UKfINB8+2cQX
-	 vVyOrPjalnnf8vPST9nyLA+5fSJGOeC7vUFqk4i4=
+	b=lUO8Ep303+nT8r/J801UCSMcRDNoH1XWOWbJBGPt085n5RI9BjyNG1BE9uTF3s5KW
+	 CHL0M5laH0Ym5DtINW590SBBnWyh7Nvw52GS60AISHSdzEVru/IVmLo+30o3xy52+l
+	 FesZe5UOaQE15qtLkItnMVGGYPRqLNHi0JzXh1yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Goldwyn Rodrigues <rgoldwyn@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Omar Sandoval <osandov@osandov.com>,
+	Sargun Dillon <sargun@sargun.me>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/207] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
+Subject: [PATCH 5.4 198/204] nfs: dont share pNFS DS connections between net namespaces
 Date: Mon,  2 Jun 2025 15:48:51 +0200
-Message-ID: <20250602134304.949351304@linuxfoundation.org>
+Message-ID: <20250602134303.450017740@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.de>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
+[ Upstream commit 6b9785dc8b13d9fb75ceec8cf4ea7ec3f3b1edbc ]
 
-btrfs_prelim_ref() calls the old and new reference variables in the
-incorrect order. This causes a NULL pointer dereference because oldref
-is passed as NULL to trace_btrfs_prelim_ref_insert().
+Currently, different NFS clients can share the same DS connections, even
+when they are in different net namespaces. If a containerized client
+creates a DS connection, another container can find and use it. When the
+first client exits, the connection will close which can lead to stalls
+in other clients.
 
-Note, trace_btrfs_prelim_ref_insert() is being called with newref as
-oldref (and oldref as NULL) on purpose in order to print out
-the values of newref.
+Add a net namespace pointer to struct nfs4_pnfs_ds, and compare those
+value to the caller's netns in _data_server_lookup_locked() when
+searching for a nfs4_pnfs_ds to match.
 
-To reproduce:
-echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
-
-Perform some writeback operations.
-
-Backtrace:
-BUG: kernel NULL pointer dereference, address: 0000000000000018
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
- RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
- Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
- RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
- RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
- RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
- RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
- R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
- R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
- FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  prelim_ref_insert+0x1c1/0x270
-  find_parent_nodes+0x12a6/0x1ee0
-  ? __entry_text_end+0x101f06/0x101f09
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  ? srso_alias_return_thunk+0x5/0xfbef5
-  btrfs_is_data_extent_shared+0x167/0x640
-  ? fiemap_process_hole+0xd0/0x2c0
-  extent_fiemap+0xa5c/0xbc0
-  ? __entry_text_end+0x101f05/0x101f09
-  btrfs_fiemap+0x7e/0xd0
-  do_vfs_ioctl+0x425/0x9d0
-  __x64_sys_ioctl+0x75/0xc0
-
-Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Omar Sandoval <osandov@osandov.com>
+Reported-by: Sargun Dillon <sargun@sargun.me>
+Closes: https://lore.kernel.org/linux-nfs/Z_ArpQC_vREh_hEA@telecaster/
+Tested-by: Sargun Dillon <sargun@sargun.me>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Link: https://lore.kernel.org/r/20250410-nfs-ds-netns-v2-1-f80b7979ba80@kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/btrfs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/filelayout/filelayoutdev.c         | 6 +++---
+ fs/nfs/flexfilelayout/flexfilelayoutdev.c | 6 +++---
+ fs/nfs/pnfs.h                             | 4 +++-
+ fs/nfs/pnfs_nfs.c                         | 9 +++++----
+ 4 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
-index 9271b5dfae4c4..a5f77b685c55f 100644
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -1788,7 +1788,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
- 	TP_PROTO(const struct btrfs_fs_info *fs_info,
- 		 const struct prelim_ref *oldref,
- 		 const struct prelim_ref *newref, u64 tree_size),
--	TP_ARGS(fs_info, newref, oldref, tree_size),
-+	TP_ARGS(fs_info, oldref, newref, tree_size),
+diff --git a/fs/nfs/filelayout/filelayoutdev.c b/fs/nfs/filelayout/filelayoutdev.c
+index d913e818858f3..82bba1ede717c 100644
+--- a/fs/nfs/filelayout/filelayoutdev.c
++++ b/fs/nfs/filelayout/filelayoutdev.c
+@@ -75,6 +75,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	struct page *scratch;
+ 	struct list_head dsaddrs;
+ 	struct nfs4_pnfs_ds_addr *da;
++	struct net *net = server->nfs_client->cl_net;
  
- 	TP_STRUCT__entry_btrfs(
- 		__field(	u64,  root_id		)
+ 	/* set up xdr stream */
+ 	scratch = alloc_page(gfp_flags);
+@@ -160,8 +161,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 
+ 		mp_count = be32_to_cpup(p); /* multipath count */
+ 		for (j = 0; j < mp_count; j++) {
+-			da = nfs4_decode_mp_ds_addr(server->nfs_client->cl_net,
+-						    &stream, gfp_flags);
++			da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+ 			if (da)
+ 				list_add_tail(&da->da_node, &dsaddrs);
+ 		}
+@@ -171,7 +171,7 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 			goto out_err_free_deviceid;
+ 		}
+ 
+-		dsaddr->ds_list[i] = nfs4_pnfs_ds_add(&dsaddrs, gfp_flags);
++		dsaddr->ds_list[i] = nfs4_pnfs_ds_add(net, &dsaddrs, gfp_flags);
+ 		if (!dsaddr->ds_list[i])
+ 			goto out_err_drain_dsaddrs;
+ 
+diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+index 1f12297109b41..e6d7473e1a32a 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
++++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+@@ -49,6 +49,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	struct nfs4_pnfs_ds_addr *da;
+ 	struct nfs4_ff_layout_ds *new_ds = NULL;
+ 	struct nfs4_ff_ds_version *ds_versions = NULL;
++	struct net *net = server->nfs_client->cl_net;
+ 	u32 mp_count;
+ 	u32 version_count;
+ 	__be32 *p;
+@@ -80,8 +81,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 
+ 	for (i = 0; i < mp_count; i++) {
+ 		/* multipath ds */
+-		da = nfs4_decode_mp_ds_addr(server->nfs_client->cl_net,
+-					    &stream, gfp_flags);
++		da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+ 		if (da)
+ 			list_add_tail(&da->da_node, &dsaddrs);
+ 	}
+@@ -147,7 +147,7 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server *server, struct pnfs_device *pdev,
+ 	new_ds->ds_versions = ds_versions;
+ 	new_ds->ds_versions_cnt = version_count;
+ 
+-	new_ds->ds = nfs4_pnfs_ds_add(&dsaddrs, gfp_flags);
++	new_ds->ds = nfs4_pnfs_ds_add(net, &dsaddrs, gfp_flags);
+ 	if (!new_ds->ds)
+ 		goto out_err_drain_dsaddrs;
+ 
+diff --git a/fs/nfs/pnfs.h b/fs/nfs/pnfs.h
+index b0f91a4592cb5..7976886a47db9 100644
+--- a/fs/nfs/pnfs.h
++++ b/fs/nfs/pnfs.h
+@@ -57,6 +57,7 @@ struct nfs4_pnfs_ds {
+ 	struct list_head	ds_node;  /* nfs4_pnfs_dev_hlist dev_dslist */
+ 	char			*ds_remotestr;	/* comma sep list of addrs */
+ 	struct list_head	ds_addrs;
++	const struct net	*ds_net;
+ 	struct nfs_client	*ds_clp;
+ 	refcount_t		ds_count;
+ 	unsigned long		ds_state;
+@@ -378,7 +379,8 @@ int pnfs_generic_commit_pagelist(struct inode *inode,
+ int pnfs_generic_scan_commit_lists(struct nfs_commit_info *cinfo, int max);
+ void pnfs_generic_write_commit_done(struct rpc_task *task, void *data);
+ void nfs4_pnfs_ds_put(struct nfs4_pnfs_ds *ds);
+-struct nfs4_pnfs_ds *nfs4_pnfs_ds_add(struct list_head *dsaddrs,
++struct nfs4_pnfs_ds *nfs4_pnfs_ds_add(const struct net *net,
++				      struct list_head *dsaddrs,
+ 				      gfp_t gfp_flags);
+ void nfs4_pnfs_v3_ds_connect_unload(void);
+ int nfs4_pnfs_ds_connect(struct nfs_server *mds_srv, struct nfs4_pnfs_ds *ds,
+diff --git a/fs/nfs/pnfs_nfs.c b/fs/nfs/pnfs_nfs.c
+index aff44a7b98f86..e2d90239d042d 100644
+--- a/fs/nfs/pnfs_nfs.c
++++ b/fs/nfs/pnfs_nfs.c
+@@ -414,12 +414,12 @@ _same_data_server_addrs_locked(const struct list_head *dsaddrs1,
+  * Lookup DS by addresses.  nfs4_ds_cache_lock is held
+  */
+ static struct nfs4_pnfs_ds *
+-_data_server_lookup_locked(const struct list_head *dsaddrs)
++_data_server_lookup_locked(const struct net *net, const struct list_head *dsaddrs)
+ {
+ 	struct nfs4_pnfs_ds *ds;
+ 
+ 	list_for_each_entry(ds, &nfs4_data_server_cache, ds_node)
+-		if (_same_data_server_addrs_locked(&ds->ds_addrs, dsaddrs))
++		if (ds->ds_net == net && _same_data_server_addrs_locked(&ds->ds_addrs, dsaddrs))
+ 			return ds;
+ 	return NULL;
+ }
+@@ -512,7 +512,7 @@ nfs4_pnfs_remotestr(struct list_head *dsaddrs, gfp_t gfp_flags)
+  * uncached and return cached struct nfs4_pnfs_ds.
+  */
+ struct nfs4_pnfs_ds *
+-nfs4_pnfs_ds_add(struct list_head *dsaddrs, gfp_t gfp_flags)
++nfs4_pnfs_ds_add(const struct net *net, struct list_head *dsaddrs, gfp_t gfp_flags)
+ {
+ 	struct nfs4_pnfs_ds *tmp_ds, *ds = NULL;
+ 	char *remotestr;
+@@ -530,13 +530,14 @@ nfs4_pnfs_ds_add(struct list_head *dsaddrs, gfp_t gfp_flags)
+ 	remotestr = nfs4_pnfs_remotestr(dsaddrs, gfp_flags);
+ 
+ 	spin_lock(&nfs4_ds_cache_lock);
+-	tmp_ds = _data_server_lookup_locked(dsaddrs);
++	tmp_ds = _data_server_lookup_locked(net, dsaddrs);
+ 	if (tmp_ds == NULL) {
+ 		INIT_LIST_HEAD(&ds->ds_addrs);
+ 		list_splice_init(dsaddrs, &ds->ds_addrs);
+ 		ds->ds_remotestr = remotestr;
+ 		refcount_set(&ds->ds_count, 1);
+ 		INIT_LIST_HEAD(&ds->ds_node);
++		ds->ds_net = net;
+ 		ds->ds_clp = NULL;
+ 		list_add(&ds->ds_node, &nfs4_data_server_cache);
+ 		dprintk("%s add new data server %s\n", __func__,
 -- 
 2.39.5
 
