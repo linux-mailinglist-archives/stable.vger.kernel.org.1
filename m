@@ -1,147 +1,171 @@
-Return-Path: <stable+bounces-150232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEF8ACB794
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:29:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606BEACB7F3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CD68A271F4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:07:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDD5F1BC6BC6
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8E323184C;
-	Mon,  2 Jun 2025 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A952B22DF8B;
+	Mon,  2 Jun 2025 15:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hU+2bDb/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="FEcLL2Yj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BEB221F00
-	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 15:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CB223182B
+	for <stable@vger.kernel.org>; Mon,  2 Jun 2025 15:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876463; cv=none; b=YJRouZCcKUytF4aoHJUWIMY5dZBLWw0KKlq0XOq3+JJ5In7Srgc28os4iH9+TDwsvo8Z9z/M5vz6tHBQiAqPXbS94tcoFWl7QT9BcUPI+bWL21cK/v7gXpwKsxKUd+PXT55zi/Bjp7g6fhtegfh2JK4r8qImj5DXGf2FwcCMvKA=
+	t=1748877309; cv=none; b=YSERAuX4NDi/lytb4FxcfS7k59FwTCpsWE/LNQMsXXwiQbloWrjWVDbmwc4ASGnQieFn+RKTj+0Olrxr/baoU6fDHLQCgkmtlPa6++Q1YnJiW/nUwyWKkUxSuBK9mpejvMYcEK7D8qmoarpb9ntMqQzO6kVh5s4kWclo80l6abU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876463; c=relaxed/simple;
-	bh=5dRvYuDZHJt4dxtRSL6dPD9so8Zn1bK1pE7CkV2g2Ys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F01Ts44tHj+a3W2kXqjP2VF7DfxV6IJMCq40yzwnivGGXBYRyUHCYt0ZtQv2S+7ZoIr8bPKuYP5OqUqyucGCxYfongfH56Exi9aG92YygYuWdGcr8QGWkr1bavGzg6VjGW7+Hxt2jWkYRbhf2lnuPRTUer2dgNs8BZHJxL1INmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hU+2bDb/; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-72bd5f25ea6so1029684a34.1
-        for <stable@vger.kernel.org>; Mon, 02 Jun 2025 08:01:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1748876459; x=1749481259; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BKRRslHq9l+I796/Ew8fuJsvx+yR6BWkXnH67RqDqcg=;
-        b=hU+2bDb/YufFv5TP3/Vt4IJ2p5GaGEr1PigKVuaZUr7Ib5W4nyT35HT1C0G/RcLMci
-         JGZKpXIzvxGdCcTxaCq4Ntfn89Jxhdsm41zAZTDX8Yjd4JpNPzE+J6EkOu8X9tRPl3CG
-         rH0+6mBCJESkwo0kF05vPdTj6aTWQv/Ci46Uq9EJawpcfW/Rt1h25pah94HgnmascrxH
-         SJ6tVWzRNLD8EaKxiZV9qx0mNzIlKzUskx0+mHdEZyInlPzoZI8H5FMbwsp7xIZ28JMV
-         RKdeW7IhiP5BIvV/KOIztNp15VMLAqU+zLORon3ozBQBiJpYF9o23rAlvx/Yq66URdWD
-         qYZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748876459; x=1749481259;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BKRRslHq9l+I796/Ew8fuJsvx+yR6BWkXnH67RqDqcg=;
-        b=lrLxXVb8RlLPJuI1KROFZk0w3xdSXZAm3HYz4QJv0jlEHytqtIJhUL3ExfUQvEtdDC
-         9FnMxHX80bTJAnZzMlRTBXq8UmnZ98eLiniJ5vswe78BU2ogMlPceiFCXW1pYzHuQRmt
-         OYuYE71ZcMAFGqJzJL56Z6KZbeQliWQcKx9uMWd9o7bO77ae3jG//VWLMuywI+x1E+c4
-         wy/K4LHHh2CuLY6CgxVcErrqFGRjxQi6hDRUPN+Fr8P+hMdUTEXq/KLue70hLkspDAz4
-         7eHAuwqXK+DzwNB4LOrMScND/6ddyJep0SsKUApj48P5rr3nArk4Ok1TaqH72Uy4RkMh
-         OIdw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwykZT17vsXDiACGcJYIRNVcQAoE8+z2u4umvahgIMGS4HotoqU785SfzsEPypH6tAQrzoJNg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7+W0O2nsuZFDMPtag+5L+aUIG2JidASsl9QwQ+nJsQKsJ3n0u
-	NtyZhDjUf/IBdSJ4655NTiWvM/fMsDz6eWHs6t7X2YetuYA73E1y0tZ+fIjJgffpXMM=
-X-Gm-Gg: ASbGnctjJ6rfL6attBgiyAIwkXwb1kLMZKWsXKa5rG9/ruswGtdwIlrrE6YTGvzsw4S
-	fol5UCOiOMXNHbYNngRDCbXDaZA1V93TmqZsj6UadFsK1RUVoDEdQTv7hiCyzCfz9/qG2k/dlvS
-	FaHAQBPewyNViZJ6VAQF+YPHAtWd2REdLKQfh8YGC+2Wdez4jS4/wLiFit66P6qbYyxGmaiFSVv
-	6tV9rGRQR4UcBi/ul0xS3sSOG5DQ10YDgqUzzafRiAZkc0uu7p4YygceRlm6UAdnzHYFArFS09N
-	Co6z6sFx2gqSyLcs7HP67kXkNQP84R2nd61cLkBoC/hW4R9BRxLPIk3kuA9Uw8kdtiHeWZ9vDiZ
-	Dk+Qy+IMo1e8e8rW258quF/+0EK2we314akZHnc8=
-X-Google-Smtp-Source: AGHT+IE+kAIBR0NheiTCHpkl4+yPXWEfW3+c5RK6WjfBdTqWkx83ge6s8Nuep+dL1P8pXQzSBEB20Q==
-X-Received: by 2002:a05:6830:6582:b0:727:36a0:a2ae with SMTP id 46e09a7af769-736ece4918emr8154398a34.14.1748876457933;
-        Mon, 02 Jun 2025 08:00:57 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:1d00:74f4:5886:86e1:3bcf? ([2600:8803:e7e4:1d00:74f4:5886:86e1:3bcf])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-735af82d086sm1555913a34.11.2025.06.02.08.00.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Jun 2025 08:00:57 -0700 (PDT)
-Message-ID: <f0c94748-7d09-41c0-9557-b37a1f6a8f7b@baylibre.com>
-Date: Mon, 2 Jun 2025 10:00:56 -0500
+	s=arc-20240116; t=1748877309; c=relaxed/simple;
+	bh=78miCybR8LU8CmkvXnZZg09JgO6HjiNj8BFjAGMPWgI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bmoMoX/JtHlkFV6ZXPN1zZIku86uyVaOXdoFsQA9XQREO3pK+1YDG/LhJ5hz+tqVG1cm8m3Pwi/EGDywegkRFRjykKuQryWkYV1pXfCsJarnrxkbcvF/4GKq0wXOPVDnUDSN3mxGZScuSeU9jnth87i0HV6hV9w7CRTUHN5lpSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=FEcLL2Yj; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=iI9F9bA71hdn1cl7Zfr8EmWR5mdqdnC5kqujwPShxtw=; b=FEcLL2YjljKJcj4Q0pfIJ79yU4
+	OZvBzQjZwv5K9y2hxzSSkSZxzrrOmY/P6KgNq07CayQsagZV8A364/W83sftgf396fdVx61hOK4Og
+	LjJ8HySoalKrvnufoyFJA3HBLSOnkHSZb1c7oxrfBCnbGtBDyjOChpcClXs/oIYofXxQzF9xGkMb3
+	ZhXyDW1sTTwP0P0eNhz7n4pLtTgTmrG6L0qhSJAArOqivy/Z571zlGFgtZQ5qua2S4FktKtmTAOwY
+	cN1kxO0LFRtoS6Cs2RTkGXSbKcFi9cgrQMbbedJZMdPmlnpcvt37ZHfNKhB+nmAjhk7apUXFBY/Gi
+	OYZTIrDw==;
+Received: from [189.7.87.52] (helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA512__CHACHA20_POLY1305:256) (Exim)
+	id 1uM6sN-00GK49-LV; Mon, 02 Jun 2025 17:15:00 +0200
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: Melissa Wen <mwen@igalia.com>,
+	Iago Toral <itoral@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Cc: dri-devel@lists.freedesktop.org,
+	kernel-dev@igalia.com,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/v3d: Avoid NULL pointer dereference in `v3d_job_update_stats()`
+Date: Mon,  2 Jun 2025 12:14:02 -0300
+Message-ID: <20250602151451.10161-1-mcanal@igalia.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: accel: fxls8962af: Fix use after free in
- fxls8962af_fifo_flush
-To: Sean Nyekjaer <sean@geanix.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com>
- <20250531175302.05b2da17@jic23-huawei>
- <x6lmsxsz6njt22z23l3nbetlstkwn4jk5ohgtpyd23idwleeg5@szatvfu4drjj>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <x6lmsxsz6njt22z23l3nbetlstkwn4jk5ohgtpyd23idwleeg5@szatvfu4drjj>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/2/25 5:50 AM, Sean Nyekjaer wrote:
-> Hi Jonathan,
-> 
-> On Sat, May 31, 2025 at 05:53:02PM +0100, Jonathan Cameron wrote:
->> On Sat, 24 May 2025 12:34:09 +0200
->> Sean Nyekjaer <sean@geanix.com> wrote:
->>
->>> fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
->>> iio_for_each_active_channel()) without making sure the indio_dev
->>> stays in buffer mode.
->>> There is a race if indio_dev exits buffer mode in the middle of the
->>> interrupt that flushes the fifo. Fix this by calling
->>> iio_device_claim_buffer_mode() to ensure indio_dev can't exit buffer
->>> mode during the flush.
->>>
->>> Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
->>> [...]
->>> _find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
->>> fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
->>> fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
->>> irq_thread_fn from irq_thread+0x110/0x1f4
->>> irq_thread from kthread+0xe0/0xfc
->>> kthread from ret_from_fork+0x14/0x2c
->>>
->>> Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
->>
->> That's nasty and a case I'd never thought about.  Most of the
->> races around disabling end up with an extra sample or two which then gets
->> dropped because there are no buffers enabled.
->>
->> We need to consider the active scan mask as part of the buffer state.
->> So effectively taking mlock if we enter this code will delay the state
->> transition (and change of active_scan_mask until after this interrupt is done).
->>
->> If David's synchronize_irq() is enough maybe that's a lighter weight path?
-> 
-> I agree if David's proposal is sufficient, I can try it.
-> It's something we have seen once in some unrelated testing, so it's
-> quite hard to reproduce :/
-> 
-> /Sean
+The following kernel Oops was recently reported by Mesa CI:
 
-Maybe temporarily adding a time delay of one sample period towards the
-beginning of fxls8962af_interrupt() could make it easier to reproduce?
+[  800.139824] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000588
+[  800.148619] Mem abort info:
+[  800.151402]   ESR = 0x0000000096000005
+[  800.155141]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  800.160444]   SET = 0, FnV = 0
+[  800.163488]   EA = 0, S1PTW = 0
+[  800.166619]   FSC = 0x05: level 1 translation fault
+[  800.171487] Data abort info:
+[  800.174357]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[  800.179832]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  800.184873]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  800.190176] user pgtable: 4k pages, 39-bit VAs, pgdp=00000001014c2000
+[  800.196607] [0000000000000588] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+[  800.205305] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+[  800.211564] Modules linked in: vc4 snd_soc_hdmi_codec drm_display_helper v3d cec gpu_sched drm_dma_helper drm_shmem_helper drm_kms_helper drm drm_panel_orientation_quirks snd_soc_core snd_compress snd_pcm_dmaengine snd_pcm i2c_brcmstb snd_timer snd backlight
+[  800.234448] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.25+rpt-rpi-v8 #1  Debian 1:6.12.25-1+rpt1
+[  800.244182] Hardware name: Raspberry Pi 4 Model B Rev 1.4 (DT)
+[  800.250005] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  800.256959] pc : v3d_job_update_stats+0x60/0x130 [v3d]
+[  800.262112] lr : v3d_job_update_stats+0x48/0x130 [v3d]
+[  800.267251] sp : ffffffc080003e60
+[  800.270555] x29: ffffffc080003e60 x28: ffffffd842784980 x27: 0224012000000000
+[  800.277687] x26: ffffffd84277f630 x25: ffffff81012fd800 x24: 0000000000000020
+[  800.284818] x23: ffffff8040238b08 x22: 0000000000000570 x21: 0000000000000158
+[  800.291948] x20: 0000000000000000 x19: ffffff8040238000 x18: 0000000000000000
+[  800.299078] x17: ffffffa8c1bd2000 x16: ffffffc080000000 x15: 0000000000000000
+[  800.306208] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[  800.313338] x11: 0000000000000040 x10: 0000000000001a40 x9 : ffffffd83b39757c
+[  800.320468] x8 : ffffffd842786420 x7 : 7fffffffffffffff x6 : 0000000000ef32b0
+[  800.327598] x5 : 00ffffffffffffff x4 : 0000000000000015 x3 : ffffffd842784980
+[  800.334728] x2 : 0000000000000004 x1 : 0000000000010002 x0 : 000000ba4c0ca382
+[  800.341859] Call trace:
+[  800.344294]  v3d_job_update_stats+0x60/0x130 [v3d]
+[  800.349086]  v3d_irq+0x124/0x2e0 [v3d]
+[  800.352835]  __handle_irq_event_percpu+0x58/0x218
+[  800.357539]  handle_irq_event+0x54/0xb8
+[  800.361369]  handle_fasteoi_irq+0xac/0x240
+[  800.365458]  handle_irq_desc+0x48/0x68
+[  800.369200]  generic_handle_domain_irq+0x24/0x38
+[  800.373810]  gic_handle_irq+0x48/0xd8
+[  800.377464]  call_on_irq_stack+0x24/0x58
+[  800.381379]  do_interrupt_handler+0x88/0x98
+[  800.385554]  el1_interrupt+0x34/0x68
+[  800.389123]  el1h_64_irq_handler+0x18/0x28
+[  800.393211]  el1h_64_irq+0x64/0x68
+[  800.396603]  default_idle_call+0x3c/0x168
+[  800.400606]  do_idle+0x1fc/0x230
+[  800.403827]  cpu_startup_entry+0x40/0x50
+[  800.407742]  rest_init+0xe4/0xf0
+[  800.410962]  start_kernel+0x5e8/0x790
+[  800.414616]  __primary_switched+0x80/0x90
+[  800.418622] Code: 8b170277 8b160296 11000421 b9000861 (b9401ac1)
+[  800.424707] ---[ end trace 0000000000000000 ]---
+[  800.457313] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+
+This issue happens when the file descriptor is closed before the jobs
+submitted by it are completed. When the job completes, we update the
+global GPU stats and the per-fd GPU stats, which are exposed through
+fdinfo. If the file descriptor was closed, then the struct `v3d_file_priv`
+and its stats were already freed and we can't update the per-fd stats.
+
+Therefore, if the file descriptor was already closed, don't update the
+per-fd GPU stats, only update the global ones.
+
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+---
+ drivers/gpu/drm/v3d/v3d_sched.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 466d28ceee28..5ed676304964 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -199,7 +199,6 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	struct v3d_dev *v3d = job->v3d;
+ 	struct v3d_file_priv *file = job->file->driver_priv;
+ 	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
+-	struct v3d_stats *local_stats = &file->stats[queue];
+ 	u64 now = local_clock();
+ 	unsigned long flags;
+ 
+@@ -209,7 +208,12 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
+ 	else
+ 		preempt_disable();
+ 
+-	v3d_stats_update(local_stats, now);
++	/* Don't update the local stats if the file context has already closed */
++	if (file)
++		v3d_stats_update(&file->stats[queue], now);
++	else
++		drm_dbg(&v3d->drm, "The file descriptor was closed before job completion\n");
++
+ 	v3d_stats_update(global_stats, now);
+ 
+ 	if (IS_ENABLED(CONFIG_LOCKDEP))
+-- 
+2.49.0
+
 
