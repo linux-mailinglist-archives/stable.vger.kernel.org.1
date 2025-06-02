@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-149858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3FAACB48B
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:53:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8EFACB56D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCCD94A58D5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 129C31BC1D7D
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FE522D9EE;
-	Mon,  2 Jun 2025 14:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841B322F772;
+	Mon,  2 Jun 2025 14:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1/Pa4Zh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2FAzDU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4472022DA17;
-	Mon,  2 Jun 2025 14:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412F722F762;
+	Mon,  2 Jun 2025 14:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875263; cv=none; b=T5+4meHM2Z6Z08cn9Vq6AGgsTgNoVOCbspOYNF+qIVqaYcNk3Hx/MEGa1b/xcywiQgGpkheF5J0GUmcTmJbnY9skl2fRZQyzU3gE1UDlBxEaPBmYi6+jmygrzamRqN5RlHEJn5LUuxl637fVO7ZZ+hmq114AorqZjnePW/NnPxA=
+	t=1748875301; cv=none; b=nawknuzr7QQXN4sV5tlcDG5zjHbild/VuuVd/B9PpUinT2ApNjQPEAbJ3sZlW/rOQ+WqcvYVfxe9GTgL+69Bah5CmDQYu/WVg+w/CsAKBLwzHKNFXcQoeZr6a2FBMOFLUgmYgYTDG0uYOp4+QxohSmD9C9JS9+9MvsNiBJTNbLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875263; c=relaxed/simple;
-	bh=2KEmEc5f+DKDfF++oPpYdXRHRQKU5gW0JLxqjQVmsFU=;
+	s=arc-20240116; t=1748875301; c=relaxed/simple;
+	bh=2fdJMZkJa/Z2z2fneCImylIIUR7SBywB+UnZaRSrbgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8BOOjpGE2XFSZ0Z60K81kHUOBK8sxSPujCuOR35z08H130pAPY1Z0waedTZ2cEKqC+ZfLQDmKA9u4TwaVdTJ/Lsyxy3cnpnjOofROqEjiH5F/wj7DyJmCJhpsSatzuUDmW6f0bC8XxXdxQrhjlReQQUvnoxd77Nwm4afcUjcyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1/Pa4Zh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7EBC4CEEB;
-	Mon,  2 Jun 2025 14:41:02 +0000 (UTC)
+	 MIME-Version; b=sU+rky5zdP5b9212nehWCPPoCXKuJji5poXZW4IGv1ZNBLtA94Uoqf2mDSaY4/S8+DQ2ao3g0YBuQgn5vVyC1Ljo2HseNJBx93hF2uGRvSfjLvcME587SCwzqVXF+y4w0pTQucZIcwV5F9qteCM2neKNoP6azyK7JwLGSeqArug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2FAzDU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD845C4CEEB;
+	Mon,  2 Jun 2025 14:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875263;
-	bh=2KEmEc5f+DKDfF++oPpYdXRHRQKU5gW0JLxqjQVmsFU=;
+	s=korg; t=1748875301;
+	bh=2fdJMZkJa/Z2z2fneCImylIIUR7SBywB+UnZaRSrbgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1/Pa4ZhAaESMhbYipMjbucGa9OxsTSk/iDIM7p2ocOq329+6KTKFKVaFz6A/0Mau
-	 tCqt1/IibhbPgfwl9aEELdu3d/yeYoTHOxM1m9igVa+f3axEJv9OaC2riXhT3P+AJy
-	 l+x8vvsjYWvsbwgimOEqh8yUGPp9gRq6s/f7fpTk=
+	b=j2FAzDU6lfUvmn9i/JMKPKFro/ZtYaSom9efT3fo27CpDtCcPOUrGF2NJiIwXXxi9
+	 MykcCpGhZxn7hCxTL96a/ZUE7Tr3Gx2LC7pvWEmwPH4RtT/BO3330SPFOyKRNHcBsT
+	 tzcqdmNTHcunLMlG6XqdHBRu+PqMYbmgnopLsYag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Silvano Seva <s.seva@4sigma.it>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 062/270] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
-Date: Mon,  2 Jun 2025 15:45:47 +0200
-Message-ID: <20250602134309.726933212@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Alexey Charkov <alchark@gmail.com>
+Subject: [PATCH 5.10 063/270] usb: uhci-platform: Make the clock really optional
+Date: Mon,  2 Jun 2025 15:45:48 +0200
+Message-ID: <20250602134309.768104774@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
 References: <20250602134307.195171844@linuxfoundation.org>
@@ -67,36 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Silvano Seva <s.seva@4sigma.it>
+From: Alexey Charkov <alchark@gmail.com>
 
-commit 8114ef86e2058e2554111b793596f17bee23fa15 upstream.
+commit a5c7973539b010874a37a0e846e62ac6f00553ba upstream.
 
-Prevent st_lsm6dsx_read_tagged_fifo from falling in an infinite loop in
-case pattern_len is equal to zero and the device FIFO is not empty.
+Device tree bindings state that the clock is optional for UHCI platform
+controllers, and some existing device trees don't provide those - such
+as those for VIA/WonderMedia devices.
 
-Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Silvano Seva <s.seva@4sigma.it>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250311085030.3593-4-s.seva@4sigma.it
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The driver however fails to probe now if no clock is provided, because
+devm_clk_get returns an error pointer in such case.
+
+Switch to devm_clk_get_optional instead, so that it could probe again
+on those platforms where no clocks are given.
+
+Cc: stable <stable@kernel.org>
+Fixes: 26c502701c52 ("usb: uhci: Add clk support to uhci-platform")
+Signed-off-by: Alexey Charkov <alchark@gmail.com>
+Link: https://lore.kernel.org/r/20250425-uhci-clock-optional-v1-1-a1d462592f29@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/uhci-platform.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -589,6 +589,9 @@ int st_lsm6dsx_read_tagged_fifo(struct s
- 	if (!fifo_len)
- 		return 0;
+--- a/drivers/usb/host/uhci-platform.c
++++ b/drivers/usb/host/uhci-platform.c
+@@ -122,7 +122,7 @@ static int uhci_hcd_platform_probe(struc
+ 	}
  
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-+
- 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
- 		err = st_lsm6dsx_read_block(hw,
- 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
+ 	/* Get and enable clock if any specified */
+-	uhci->clk = devm_clk_get(&pdev->dev, NULL);
++	uhci->clk = devm_clk_get_optional(&pdev->dev, NULL);
+ 	if (IS_ERR(uhci->clk)) {
+ 		ret = PTR_ERR(uhci->clk);
+ 		goto err_rmr;
 
 
 
