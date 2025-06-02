@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-149805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C988ACB469
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813D0ACB6C8
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACB534A5303
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9FE74A734F
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E642222AA;
-	Mon,  2 Jun 2025 14:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94571230274;
+	Mon,  2 Jun 2025 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsImrA/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjwKvbGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419E51B81DC;
-	Mon,  2 Jun 2025 14:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8EB228C92;
+	Mon,  2 Jun 2025 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875095; cv=none; b=T7s9/BxWn3tqlo4vqpy4EAbM8CmY+v043RNIOT9b7j7pLxrhnO5lfPayjT8SP3H7rO5onLC36e+RWSIjNijYt/ZjghOUZLD+bK7QW73WDKMJWtdPeRA1L00wwnRciUgq1uCtOqmaxFpi6a8gdxpcoqzKladGVp75zGHac7XiyGM=
+	t=1748876666; cv=none; b=lb7KqUe2FDKzdzBznQAhEPSFPrVZX0eFKPEZO5yk5Ff/jNux+Wp5wCYbTB/+VK6ZPF87bIeZv6Wi6BLMjZHb/jvRx3XS7HXJUoVCf+mwusB9gRZwE47OSBCdMFsC2rZPIgALkR9eaW9k85wKwNmJb364oJRMuGViF/7aTilIzlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875095; c=relaxed/simple;
-	bh=FtLFN68pdpL8tV8sHIjc49juKvvcqMIWLq6UFChdiUQ=;
+	s=arc-20240116; t=1748876666; c=relaxed/simple;
+	bh=KNLlNJIXqvvWVV3mct2g1P18vFr0H0uomn5ToVVkRZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TUVYFmW8PvUWdfQIoaoJTBSnqzvgKYheTeG0pUZcWsDiWQcxqO6S3dFpu6Bo/OwbOzbp3sYqLQLTgdSD4iPX4uZ18gmEVl7xfysRdifSc4HB1cQgviEEPdkk9eFuOpLA/+mpeD2Ayu/ZhbTlqcCvsupk4NYI8PENTRm0g2G639g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsImrA/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0205C4CEEB;
-	Mon,  2 Jun 2025 14:38:14 +0000 (UTC)
+	 MIME-Version; b=QO0/0igs69J7+7y707UkdlQ2SOOyqx1E/ZwobdIa0vjRAA4WfZA+NWs1yyhHdigdw8TQwUHeIlqStgnmhQPvEsNkYrLcvvqh/9H4w8VgvB6Fa5rA6W4r64x18ZV9UyyFDn+IV30FIn3cumYdCRhyCu528k8GXEk6RqedTAdxDso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjwKvbGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7435C4CEF0;
+	Mon,  2 Jun 2025 15:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875095;
-	bh=FtLFN68pdpL8tV8sHIjc49juKvvcqMIWLq6UFChdiUQ=;
+	s=korg; t=1748876666;
+	bh=KNLlNJIXqvvWVV3mct2g1P18vFr0H0uomn5ToVVkRZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsImrA/4ZpQ+Wqc1F7u/aPwf8E7e3Ao5forykiBT65AAvdvPQLeykENH+gSQG3sfx
-	 9g+JKgBsPTXNKLB1hGYuvBrg4N6NqtijbeVU0HiZgiJ/o3/eWJByUY/9ySPBiffdHn
-	 V7NwHEvDCIDwcE3vzeDa9ziKU2M2n7HFTJplEvq8=
+	b=tjwKvbGHch6RPtVSWetkWG+gQ9FZDsPynyWoHbWP+yNgPBQLKi2d13m7eONEVt73I
+	 X5uOyP58jlOjuuzOA31ZlEreD6SP+M8mHIlPzjaXc7FoKJJligPlW8B2QPPlXuZS79
+	 gkjZ8Amdbqdvu1+eyCM87A1VPzjefZlQIRKCfDfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Liang <mliang@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Randy Jennings <randyj@purestorage.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/270] nvme-tcp: fix premature queue removal and I/O failover
+Subject: [PATCH 6.1 035/325] NFSv4: Treat ENETUNREACH errors as fatal for state recovery
 Date: Mon,  2 Jun 2025 15:45:11 +0200
-Message-ID: <20250602134308.270318565@linuxfoundation.org>
+Message-ID: <20250602134321.179104159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-References: <20250602134307.195171844@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Liang <mliang@purestorage.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
+[ Upstream commit 0af5fb5ed3d2fd9e110c6112271f022b744a849a ]
 
-This patch addresses a data corruption issue observed in nvme-tcp during
-testing.
+If a containerised process is killed and causes an ENETUNREACH or
+ENETDOWN error to be propagated to the state manager, then mark the
+nfs_client as being dead so that we don't loop in functions that are
+expecting recovery to succeed.
 
-In an NVMe native multipath setup, when an I/O timeout occurs, all
-inflight I/Os are canceled almost immediately after the kernel socket is
-shut down. These canceled I/Os are reported as host path errors,
-triggering a failover that succeeds on a different path.
-
-However, at this point, the original I/O may still be outstanding in the
-host's network transmission path (e.g., the NIC’s TX queue). From the
-user-space app's perspective, the buffer associated with the I/O is
-considered completed since they're acked on the different path and may
-be reused for new I/O requests.
-
-Because nvme-tcp enables zero-copy by default in the transmission path,
-this can lead to corrupted data being sent to the original target,
-ultimately causing data corruption.
-
-We can reproduce this data corruption by injecting delay on one path and
-triggering i/o timeout.
-
-To prevent this issue, this change ensures that all inflight
-transmissions are fully completed from host's perspective before
-returning from queue stop. To handle concurrent I/O timeout from multiple
-namespaces under the same controller, always wait in queue stop
-regardless of queue's state.
-
-This aligns with the behavior of queue stopping in other NVMe fabric
-transports.
-
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Randy Jennings <randyj@purestorage.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4state.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 93835c019b8e3..7709a604d0bef 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1573,7 +1573,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
- 	cancel_work_sync(&queue->io_work);
- }
- 
--static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
- {
- 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
- 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-@@ -1584,6 +1584,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
- 	mutex_unlock(&queue->queue_lock);
- }
- 
-+static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
-+	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-+	int timeout = 100;
-+
-+	while (timeout > 0) {
-+		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
-+		    !sk_wmem_alloc_get(queue->sock->sk))
-+			return;
-+		msleep(2);
-+		timeout -= 2;
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 48ea406604229..80a7c5bd7a476 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2737,7 +2737,15 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 	pr_warn_ratelimited("NFS: state manager%s%s failed on NFSv4 server %s"
+ 			" with error %d\n", section_sep, section,
+ 			clp->cl_hostname, -status);
+-	ssleep(1);
++	switch (status) {
++	case -ENETDOWN:
++	case -ENETUNREACH:
++		nfs_mark_client_ready(clp, -EIO);
++		break;
++	default:
++		ssleep(1);
++		break;
 +	}
-+	dev_warn(nctrl->device,
-+		 "qid %d: timeout draining sock wmem allocation expired\n",
-+		 qid);
-+}
-+
-+static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	nvme_tcp_stop_queue_nowait(nctrl, qid);
-+	nvme_tcp_wait_queue(nctrl, qid);
-+}
-+
-+
- static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
- {
- 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
-@@ -1691,7 +1716,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
- 	int i;
- 
- 	for (i = 1; i < ctrl->queue_count; i++)
--		nvme_tcp_stop_queue(ctrl, i);
-+		nvme_tcp_stop_queue_nowait(ctrl, i);
-+	for (i = 1; i < ctrl->queue_count; i++)
-+		nvme_tcp_wait_queue(ctrl, i);
- }
- 
- static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl)
+ out_drain:
+ 	memalloc_nofs_restore(memflags);
+ 	nfs4_end_drain_session(clp);
 -- 
 2.39.5
 
