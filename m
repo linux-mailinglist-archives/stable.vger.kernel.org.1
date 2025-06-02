@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-148965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1493ACAF75
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05C3ACAF77
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F96173D2F
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895B03A6C68
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A88E221D92;
-	Mon,  2 Jun 2025 13:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CBE221DA2;
+	Mon,  2 Jun 2025 13:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKCCs+hA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9mk1YNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ACD22068E;
-	Mon,  2 Jun 2025 13:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E227221703;
+	Mon,  2 Jun 2025 13:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872103; cv=none; b=E0f0vLnRNYmTYF+ns0LfZOrmkEdAuin9RAmNC8kjadpDXGcFvx3tDU8UtGwBM/kaKw2OR6E0xYNDm/oekRYDh0obgstcARUwg1FfTbTNTzBYgaPIcF5knH0L76Gq+l1RpAH2orkgKIKUogLDMm1lw8SBAV24uPjtW7fNRYUaKMA=
+	t=1748872108; cv=none; b=n02pGq/m8GCirBkrLvJKh3hFvFeia1WB8Uqt3JFO0TjCO8pz1GOezGQ4NPVulkMujVEimXFoNBZ196rC6lfKMKdZp3fOGx1wsTBCIVytHJ3gY6YXYEhjBTG+ihvK52Lwg67TFi1yWcKK+zXT9Owy6dbZGi3AxoGN6FL9QZNac0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872103; c=relaxed/simple;
-	bh=l+JOu/h6aMm/w5NdIfdmMSqgxy7GyjfGyqfn6yq9j3A=;
+	s=arc-20240116; t=1748872108; c=relaxed/simple;
+	bh=2cOeoGZ4yKEbKnsT8ilOfSLvH0Vhtl6AjLCAKG7YV78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItSu+5dDoGjh1uKP54bwVBOxOvFrDC9OcDS85RhkEZIgv7pXm+xggAlLm20Rn7w9toaG9/eP0HzoJGK3bRMDN1VHy0Q4Ubb1TTo3AuWV7EOXgfxNoj0b5CWYxh5JQNetgmT87Twr6kIiib6CdGkyHOVyMVTgSnx1AEz6ufjTWdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKCCs+hA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF5C4CEEB;
-	Mon,  2 Jun 2025 13:48:21 +0000 (UTC)
+	 MIME-Version; b=m9ACmgfUdMRw8iUodE/lCwlzr+VlvmIDsb2Qavl+IXSQqVONHWNG4aZsNzcl4ypuMrHEF10wt5Xr729e/uhgRavAM0qX5x4tj8mFptuznw8BhGdiex17detc/KQpZaGVs+1j/zGIyuWN/ylkKWguCwwyeumQ3XTGxwi7LEX8oCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9mk1YNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90573C4CEEB;
+	Mon,  2 Jun 2025 13:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872102;
-	bh=l+JOu/h6aMm/w5NdIfdmMSqgxy7GyjfGyqfn6yq9j3A=;
+	s=korg; t=1748872108;
+	bh=2cOeoGZ4yKEbKnsT8ilOfSLvH0Vhtl6AjLCAKG7YV78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKCCs+hAfyIZXJPiUtR5k73k6EKOsQS++nUPfh2OWci3o/XsqdHUA4ivx8puUZaZ7
-	 lhFpysUrORmn23B8at3xI1QwN4+wzlgCHUbAbwXtpqP4xm7qiOiUiClj7wBYgvwAP1
-	 JBvMLLR0NQo/N1fN7fl7s9ZqK7fm6z5vDc5qKtgc=
+	b=M9mk1YNCcTh1fypQA0IrxuSg+lJJ8bfLxaSQ3qRUFvK9dJGwhFSKeZVmxBPXRcsyx
+	 uSrAp4AZx7wWablvgUTtKgO3HVrEEHKwdK6jfIfMum/hDeyHsoTaRtZre6lQ5CV501
+	 JL4HWDzWfjxGv2yDM/sT7jmt7sxowkNgJ67ONb2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Abel Vesa <abel.vesa@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 19/49] arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: Fix vreg_l2j_1p2 voltage
-Date: Mon,  2 Jun 2025 15:47:11 +0200
-Message-ID: <20250602134238.700969223@linuxfoundation.org>
+Subject: [PATCH 6.15 20/49] arm64: dts: qcom: x1e80100-qcp: Fix vreg_l2j_1p2 voltage
+Date: Mon,  2 Jun 2025 15:47:12 +0200
+Message-ID: <20250602134238.738969159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
 References: <20250602134237.940995114@linuxfoundation.org>
@@ -70,28 +70,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 4f27ede34ca3369cdcde80c5a4ca84cdb28edbbb upstream.
+commit efdbeae860bf0278b050c6c9ad5921afba4596d0 upstream.
 
 In the ACPI DSDT table, PPP_RESOURCE_ID_LDO2_J is configured with 1256000
 uV instead of the 1200000 uV we have currently in the device tree. Use the
 same for consistency and correctness.
 
 Cc: stable@vger.kernel.org
-Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
 Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
 Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-5-24b6a2043025@linaro.org
+Link: https://lore.kernel.org/r/20250423-x1e-vreg-l2j-voltage-v1-6-24b6a2043025@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts |    4 ++--
+ arch/arm64/boot/dts/qcom/x1e80100-qcp.dts |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-@@ -508,8 +508,8 @@
+--- a/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
++++ b/arch/arm64/boot/dts/qcom/x1e80100-qcp.dts
+@@ -675,8 +675,8 @@
  
  		vreg_l2j_1p2: ldo2 {
  			regulator-name = "vreg_l2j_1p2";
