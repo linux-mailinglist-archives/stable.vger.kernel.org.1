@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-150310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9DAACB760
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:28:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A62ACB517
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4861E4A6D65
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:12:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C4871BA3024
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815C8230BC5;
-	Mon,  2 Jun 2025 15:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE7C226D1F;
+	Mon,  2 Jun 2025 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP+XS5GQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVVjJ+e6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7032AE9A;
-	Mon,  2 Jun 2025 15:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6FD221FC9;
+	Mon,  2 Jun 2025 14:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748876717; cv=none; b=RMI0Nov99TVwJqt2UkywKSjgVnWCQNdcXIYKcVSy9w9MR40rXqaEmolmttoZm377zad/SFzeedcwZlz1J0RNQ+R7Raoj3PZsYBl/e9wrBGHY00TTJGgroaZ6vkYaGgE2F+czGXAhYqDWqa/BBXX20URJ7R2pmZPmG2Q2zSj5qSI=
+	t=1748875146; cv=none; b=uXlEdb4nNj69o5dY4mguxhDkp3HMY2t+xDKzy2frxhqoVuGbdF4ylYQvW0pFp/G0FM03tALEDnewhfVCtmQGNnrD14S95POk8qn9WfucsSjrNw2rmKEegvT5GJCgRg6cB8IV9B8WYM9PnadYAJdNXmz95F6aLunne5m11KiT0UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748876717; c=relaxed/simple;
-	bh=YdpDOVuJLvgzzaSITlrsbNghUXwXe64O2mXyBMyXxqY=;
+	s=arc-20240116; t=1748875146; c=relaxed/simple;
+	bh=wZpIpJwg7Nuh5RmmFlWOtnd1KvENwheJez8+TmATutA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlTSt4uyWYOvtFe1QBKCn/wjq/wwiNSdWBs14Gdmi9c3UDHXvfmVzRorXDvivEj6Qzzjz7vKP5G3TQI0EPKgKjKVHKS9qsHi0Pmf0XYlWw7ThiX/8Z9F2U2im771Fx4FAgCQQPL2r9m8Dv6CYftMML1r/SNTuHX1Js+oC4c+xL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP+XS5GQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF60FC4CEEB;
-	Mon,  2 Jun 2025 15:05:16 +0000 (UTC)
+	 MIME-Version; b=MFYZRJoLjIPz721yi1QeqGdJmJ5AOLC+6Qts/o4aD9wza3y/h/dr5KHUAiMlvd/pvG+jyulnF2fBAsOkzCkw0RBLO3gMDNGb8k/ZD6Pd8YB70uCqftMU4A3Z1G3ThWyEaJ+dfI5ygDQnt7A9qDCLaH9N4ipKWx0pR+9U4Xc95JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVVjJ+e6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7067C4CEEB;
+	Mon,  2 Jun 2025 14:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748876717;
-	bh=YdpDOVuJLvgzzaSITlrsbNghUXwXe64O2mXyBMyXxqY=;
+	s=korg; t=1748875146;
+	bh=wZpIpJwg7Nuh5RmmFlWOtnd1KvENwheJez8+TmATutA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tP+XS5GQjc3MRrjMN2z11jzXGRgm/nNvAZ6O1GpmpSzPzkvsjkIqMSYEtXAwj9vYh
-	 Va0rOgJjQv9bVZkqIR6PovBQP1qFFIu6WS2q3YqFAFY58Ux2/3Ja3kPiyJHBPLyXtB
-	 1uZE6DAlRnmLubYqX5Q+QkdH/DIVR97nOZstDjs0=
+	b=IVVjJ+e6qQP39ZtjxkdDLQf37GGOV2QfqZ/6EaJmyi0DwmU0A+zjL9f3TV0m6GEt6
+	 5U1uNlJ7ICzaePU7Oz4w07Ow8qtOUhQvs6fqp72ENWCUHPBoRHb2NS6njIYYg3Aw2y
+	 sPfrXy/mGao7p4RcTzJv7FfCgBBNdSBXdJOelDi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <maharmstone@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/325] btrfs: avoid linker error in btrfs_find_create_tree_block()
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 043/270] openvswitch: Fix unsafe attribute parsing in output_userspace()
 Date: Mon,  2 Jun 2025 15:45:28 +0200
-Message-ID: <20250602134321.877025177@linuxfoundation.org>
+Message-ID: <20250602134308.949483882@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
-References: <20250602134319.723650984@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <maharmstone@fb.com>
+From: Eelco Chaudron <echaudro@redhat.com>
 
-[ Upstream commit 7ef3cbf17d2734ca66c4ed8573be45f4e461e7ee ]
+commit 6beb6835c1fbb3f676aebb51a5fee6b77fed9308 upstream.
 
-The inline function btrfs_is_testing() is hardcoded to return 0 if
-CONFIG_BTRFS_FS_RUN_SANITY_TESTS is not set. Currently we're relying on
-the compiler optimizing out the call to alloc_test_extent_buffer() in
-btrfs_find_create_tree_block(), as it's not been defined (it's behind an
- #ifdef).
+This patch replaces the manual Netlink attribute iteration in
+output_userspace() with nla_for_each_nested(), which ensures that only
+well-formed attributes are processed.
 
-Add a stub version of alloc_test_extent_buffer() to avoid linker errors
-on non-standard optimization levels. This problem was seen on GCC 14
-with -O0 and is helps to see symbols that would be otherwise optimized
-out.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <maharmstone@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/openvswitch/actions.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 72227c0b4b5a1..d5552875f872a 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4459,10 +4459,10 @@ struct extent_buffer *find_extent_buffer(struct btrfs_fs_info *fs_info,
- 	return eb;
- }
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -953,8 +953,7 @@ static int output_userspace(struct datap
+ 	upcall.cmd = OVS_PACKET_CMD_ACTION;
+ 	upcall.mru = OVS_CB(skb)->mru;
  
--#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- 					u64 start)
- {
-+#ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- 	struct extent_buffer *eb, *exists = NULL;
- 	int ret;
- 
-@@ -4498,8 +4498,11 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
- free_eb:
- 	btrfs_release_extent_buffer(eb);
- 	return exists;
--}
-+#else
-+	/* Stub to avoid linker error when compiled with optimizations turned off. */
-+	return NULL;
- #endif
-+}
- 
- static struct extent_buffer *grab_extent_buffer(
- 		struct btrfs_fs_info *fs_info, struct page *page)
--- 
-2.39.5
-
+-	for (a = nla_data(attr), rem = nla_len(attr); rem > 0;
+-	     a = nla_next(a, &rem)) {
++	nla_for_each_nested(a, attr, rem) {
+ 		switch (nla_type(a)) {
+ 		case OVS_USERSPACE_ATTR_USERDATA:
+ 			upcall.userdata = a;
 
 
 
