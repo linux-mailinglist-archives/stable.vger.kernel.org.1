@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-148998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1790ACAF99
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:50:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F66ACB029
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF3D23BBBC4
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 13:50:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DA011BA4156
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68955221DB1;
-	Mon,  2 Jun 2025 13:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2CD221D92;
+	Mon,  2 Jun 2025 13:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXh3XK2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6yoiX3H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2675D2C3247;
-	Mon,  2 Jun 2025 13:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF8A1E1A3F;
+	Mon,  2 Jun 2025 13:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748872217; cv=none; b=OvIh2MBxG05EAs2pMSMVqQPxIYY7tJYzpSnmkR4My96sqgIfAJsuK+gmkpx5mK2Snw9SDf8hm/2ip5Z2ML8tkgtO5B184oN1+g6DP66Wfar8mk8CRmSSlXu5cUwixFFIUjPc7B/H3wf5Tv+GD0Ys/QTmsSooKEO3OsvQCQ9idJs=
+	t=1748872796; cv=none; b=SzGEUUXAbPIfh36JTY044Aqzqs1sBeO88uxLhaRSEw7kYHR/hw7aYmoQCd6TlKzWhWbkOTAIGjhdWfzsoUN2zf+LS1AKLIgADdATLCsZgFwImqv4V6GnorP4kDulGk8wCfj8HBOEA/CJNTiEMAYUiiFnDCscs2dJj9RpHKlXvUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748872217; c=relaxed/simple;
-	bh=ahyxMrQaBjpzdq9DrdLlr0FspcPI5A6Chz+zdeIkCpQ=;
+	s=arc-20240116; t=1748872796; c=relaxed/simple;
+	bh=43gqaduqZxu5XcW6e7kHVDW0W+vZRspNrXU2EH9PSDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzH/14l+3n5MpGI/aGYY+sD9Rq5G2Qupd0XoB12M577+Ma677Fd5eNWiPRl8XbCRwSOqOcki1Vd08hrCG71zqK6dd51uNfj6N1+YWq1lpHJRb4yAGQ07vLWVsvkk1Ru90Hu/CVS4Tl9oIMMbauV6QNHN2GLNSB9jRem2qEc5EBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXh3XK2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B29C4CEEB;
-	Mon,  2 Jun 2025 13:50:12 +0000 (UTC)
+	 MIME-Version; b=oMFPkjAySnSuHsaBYt3YYxKuiQ/GaXm5EmsIs/rd+W4tHMQXWh49wHlqOQv2nvkn8SUQpH6E+Na4IDiN47gSnt7kuPGxF/Z1R/enzfBxUtdAsuP/F4J7eXT9zgEJvenYBb/Z/dwYnX8hYAQfKZ2j6WDK3jL5RFAihlBZRXb15B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6yoiX3H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A12C4CEEE;
+	Mon,  2 Jun 2025 13:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748872214;
-	bh=ahyxMrQaBjpzdq9DrdLlr0FspcPI5A6Chz+zdeIkCpQ=;
+	s=korg; t=1748872796;
+	bh=43gqaduqZxu5XcW6e7kHVDW0W+vZRspNrXU2EH9PSDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXh3XK2ObgeENH/PErTFsTbQ2X2InwTwcZYJNfKGkMF+52gEV00rLo1cgTnMYrA2Z
-	 l0GJs8dUb1zv3MR5mvQAqqMebbdbTQvS11NEZ88doXlynwiaM7Q8RpLd7BE4eOMMTO
-	 XM2JgFLM/TSWo+xHHWtFiVyTTobeGhC0ezE2NGsQ=
+	b=e6yoiX3H2xt8PFtoA1QjI1jOuay+/jMkbJmE+LQEqXBRbRUOShxyT/vHkGTjvq/Ai
+	 12+AkFbrtot9ji7fuHP1IOw6d+y4Beh2g7lZ/nBs/ZwLMBCcaRHbh4tM2wLrsjMD4d
+	 rCcrhM7jiXgu/5vNM2FJLeyf8ETFi1TEIVK7nai0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Nishanth Menon <nm@ti.com>
-Subject: [PATCH 6.15 35/49] arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	William Liu <will@willsroot.io>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.14 41/73] net_sched: hfsc: Address reentrant enqueue adding class to eltree twice
 Date: Mon,  2 Jun 2025 15:47:27 +0200
-Message-ID: <20250602134239.318608454@linuxfoundation.org>
+Message-ID: <20250602134243.310141116@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
-References: <20250602134237.940995114@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+References: <20250602134241.673490006@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 97b67cc102dc2cc8aa39a569c22a196e21af5a21 upstream.
+commit ac9fe7dd8e730a103ae4481147395cc73492d786 upstream.
 
-Add device tree nodes for two power regulators on the J721E SK board.
-vsys_5v0: A fixed regulator representing the 5V supply output from the
-LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
+Savino says:
+    "We are writing to report that this recent patch
+    (141d34391abbb315d68556b7c67ad97885407547) [1]
+    can be bypassed, and a UAF can still occur when HFSC is utilized with
+    NETEM.
 
-J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
+    The patch only checks the cl->cl_nactive field to determine whether
+    it is the first insertion or not [2], but this field is only
+    incremented by init_vf [3].
 
-Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Link: https://lore.kernel.org/r/20250415111328.3847502-2-y-abhilashchandra@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+    By using HFSC_RSC (which uses init_ed) [4], it is possible to bypass the
+    check and insert the class twice in the eltree.
+    Under normal conditions, this would lead to an infinite loop in
+    hfsc_dequeue for the reasons we already explained in this report [5].
+
+    However, if TBF is added as root qdisc and it is configured with a
+    very low rate,
+    it can be utilized to prevent packets from being dequeued.
+    This behavior can be exploited to perform subsequent insertions in the
+    HFSC eltree and cause a UAF."
+
+To fix both the UAF and the infinite loop, with netem as an hfsc child,
+check explicitly in hfsc_enqueue whether the class is already in the eltree
+whenever the HFSC_RSC flag is set.
+
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=141d34391abbb315d68556b7c67ad97885407547
+[2] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1572
+[3] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L677
+[4] https://elixir.bootlin.com/linux/v6.15-rc5/source/net/sched/sch_hfsc.c#L1574
+[5] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/T/#u
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Reported-by: William Liu <will@willsroot.io>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://patch.msgid.link/20250522181448.1439717-2-pctammela@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk.dts |   31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ net/sched/sch_hfsc.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-@@ -184,6 +184,17 @@
- 		regulator-boot-on;
- 	};
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -175,6 +175,11 @@ struct hfsc_sched {
  
-+	vsys_5v0: fixedregulator-vsys5v0 {
-+		/* Output of LM61460 */
-+		compatible = "regulator-fixed";
-+		regulator-name = "vsys_5v0";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vusb_main>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+
- 	vdd_mmc1: fixedregulator-sd {
- 		compatible = "regulator-fixed";
- 		pinctrl-names = "default";
-@@ -211,6 +222,20 @@
- 			 <3300000 0x1>;
- 	};
+ #define	HT_INFINITY	0xffffffffffffffffULL	/* infinite time value */
  
-+	vdd_sd_dv: gpio-regulator-TLV71033 {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&vdd_sd_dv_pins_default>;
-+		regulator-name = "tlv71033";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-boot-on;
-+		vin-supply = <&vsys_5v0>;
-+		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x0>,
-+			 <3300000 0x1>;
-+	};
-+
- 	transceiver1: can-phy1 {
- 		compatible = "ti,tcan1042";
- 		#phy-cells = <0>;
-@@ -613,6 +638,12 @@
- 		>;
- 	};
++static bool cl_in_el_or_vttree(struct hfsc_class *cl)
++{
++	return ((cl->cl_flags & HFSC_FSC) && cl->cl_nactive) ||
++		((cl->cl_flags & HFSC_RSC) && !RB_EMPTY_NODE(&cl->el_node));
++}
  
-+	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
-+		>;
-+	};
+ /*
+  * eligible tree holds backlogged classes being sorted by their eligible times.
+@@ -1040,6 +1045,8 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 	if (cl == NULL)
+ 		return -ENOBUFS;
+ 
++	RB_CLEAR_NODE(&cl->el_node);
 +
- 	wkup_uart0_pins_default: wkup-uart0-default-pins {
- 		pinctrl-single,pins = <
- 			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
+ 	err = tcf_block_get(&cl->block, &cl->filter_list, sch, extack);
+ 	if (err) {
+ 		kfree(cl);
+@@ -1572,7 +1579,7 @@ hfsc_enqueue(struct sk_buff *skb, struct
+ 	sch->qstats.backlog += len;
+ 	sch->q.qlen++;
+ 
+-	if (first && !cl->cl_nactive) {
++	if (first && !cl_in_el_or_vttree(cl)) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+ 		if (cl->cl_flags & HFSC_FSC)
 
 
 
