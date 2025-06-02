@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-150065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBCBACB6DE
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:22:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB660ACB4F1
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC0C1BC655C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:00:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 882E04A247E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F4122DF84;
-	Mon,  2 Jun 2025 14:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D02223DCF;
+	Mon,  2 Jun 2025 14:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+LyvEu6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBkJSBdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B339322330F;
-	Mon,  2 Jun 2025 14:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF97221F3E;
+	Mon,  2 Jun 2025 14:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875922; cv=none; b=BGPubq5ZsxMYc/MRY3aXcDk+S9n+3D9/LEIdvotwiNMRZwXAt7NzRTAEcAKbUmR483pin1ryGDsbl068tRNuHZTWTxRaUjZyJayNnAPiT4dddmZGUwLweMfakqaWG2obTaSu6bR6WRCdktZppzk2CxX5nzVxeIqltR0cmhXf4ho=
+	t=1748875336; cv=none; b=uKbuRLQD4CoSdo9PvdM9/0VE9vCqioU2QZST7GH8B2cwRxCO3TlhyGYHOpDoFNbNmm4T9cKgvkVxQ1MctdtIvLeZMOmG0Iq13onmjPz+YGXpGFiHs3XDs0Sl6Rg/zrw8RG6SKWaYFI9SGGHUOHkn+t7wBdZTA7AcRJaW5+3wghE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875922; c=relaxed/simple;
-	bh=0Zd9efVg3Iqo6CukTrCBoCidUy7gYCFsrhch41FQUuo=;
+	s=arc-20240116; t=1748875336; c=relaxed/simple;
+	bh=lZTwK7Gs7NmzzHGA1xN8NLtgl2hvZtnpyRT0tu1apcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOMX47EWoIkub6u6D6+qkA5uEvwi7C33Bt4VeRrSWhtosWcBnUYY/EBXbR6/A4PdvUpSxHqYUJlaVF4dQOii/0INy0GobM9VxtuvGPhzU6KoSl0L3nEnU3f5rZ7qGwcqSpQ/NahvazI2oKf65M9U0rdZ0LjdJ5uCR+gSCRsEO3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+LyvEu6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2402BC4CEEB;
-	Mon,  2 Jun 2025 14:52:01 +0000 (UTC)
+	 MIME-Version; b=eoN/+sCNL4HCRkQcDwoSkl9T4ViGS+sOE32ozCKPkKzdq+SxQPGO9/SSakSFL1HRK7Y2MhDOkvB66McU/hMCoTLWDyq7/cfnhRVQGqIieXkARSpUNgToW+FzA+LkGi7UO+ucMWa6F9rPykwZM/QHmUSDd324CU9gAyzmoJvE3bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBkJSBdV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B604C4CEEB;
+	Mon,  2 Jun 2025 14:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748875922;
-	bh=0Zd9efVg3Iqo6CukTrCBoCidUy7gYCFsrhch41FQUuo=;
+	s=korg; t=1748875336;
+	bh=lZTwK7Gs7NmzzHGA1xN8NLtgl2hvZtnpyRT0tu1apcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+LyvEu6XXUIhYE3N4hfGN8sqE/wTIPy/1Rctsml7dkZl0PQCUaZLwgyUSxO6MvMj
-	 IglKH7+0fPHxVttpwLCnZeJ8A9SUYIG05d+HADofrAqUH576jpwdofNRADR+JYUHdh
-	 2168A9JUcrKOEizBXWsl9/VpTXY+MwtaS21dV4e8=
+	b=QBkJSBdVHyekMmEEIYIO4bilJ+LYhbKm66Uf3CnB+q/bRKMYQllf/SZxOpsz4ERHI
+	 0wAlUOEOFo7YWFDnZXbJVmIDd3/Fwb/NsunrxZJ8CwPUjwFHRz4cksGg+1FHIZnMZL
+	 BPpKFfOT4Cw59PIYMHJ73cx5kNTWFVQTpG1vWE2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/207] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
+	Vaishnav Achath <vaishnav.a@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 103/270] dmaengine: ti: k3-udma: Use cap_mask directly from dma_device structure instead of a local copy
 Date: Mon,  2 Jun 2025 15:46:28 +0200
-Message-ID: <20250602134259.409770155@linuxfoundation.org>
+Message-ID: <20250602134311.442978267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
+commit 8ca9590c39b69b55a8de63d2b21b0d44f523b43a upstream.
 
-The autobind setting was supposed to be determined in rpc_create(),
-since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
-remote transport endpoints").
+Currently, a local dma_cap_mask_t variable is used to store device
+cap_mask within udma_of_xlate(). However, the DMA_PRIVATE flag in
+the device cap_mask can get cleared when the last channel is released.
+This can happen right after storing the cap_mask locally in
+udma_of_xlate(), and subsequent dma_request_channel() can fail due to
+mismatch in the cap_mask. Fix this by removing the local dma_cap_mask_t
+variable and directly using the one from the dma_device structure.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Link: https://lore.kernel.org/r/20250417075521.623651-1-y-abhilashchandra@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/clnt.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/dma/ti/k3-udma.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 5de2fc7af268a..48ffdd4192538 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -275,9 +275,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
- 	old = rcu_dereference_protected(clnt->cl_xprt,
- 			lockdep_is_held(&clnt->cl_lock));
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -3082,7 +3082,6 @@ static struct dma_chan *udma_of_xlate(st
+ 				      struct of_dma *ofdma)
+ {
+ 	struct udma_dev *ud = ofdma->of_dma_data;
+-	dma_cap_mask_t mask = ud->ddev.cap_mask;
+ 	struct udma_filter_param filter_param;
+ 	struct dma_chan *chan;
  
--	if (!xprt_bound(xprt))
--		clnt->cl_autobind = 1;
--
- 	clnt->cl_timeout = timeout;
- 	rcu_assign_pointer(clnt->cl_xprt, xprt);
- 	spin_unlock(&clnt->cl_lock);
--- 
-2.39.5
-
+@@ -3095,7 +3094,7 @@ static struct dma_chan *udma_of_xlate(st
+ 	else
+ 		filter_param.atype = 0;
+ 
+-	chan = __dma_request_channel(&mask, udma_dma_filter_fn, &filter_param,
++	chan = __dma_request_channel(&ud->ddev.cap_mask, udma_dma_filter_fn, &filter_param,
+ 				     ofdma->of_node);
+ 	if (!chan) {
+ 		dev_err(ud->dev, "get channel fail in %s.\n", __func__);
 
 
 
