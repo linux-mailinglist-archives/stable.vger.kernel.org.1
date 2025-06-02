@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-149576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAF4ACB3F7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7E9ACB802
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B692A4054EF
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:32:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D073945DBC
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A99622A4F1;
-	Mon,  2 Jun 2025 14:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2E522B8B0;
+	Mon,  2 Jun 2025 15:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZus6W3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WHYd9sd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEA3221299;
-	Mon,  2 Jun 2025 14:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDC722A7EF;
+	Mon,  2 Jun 2025 15:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874375; cv=none; b=EEnGutf8Ur7YBh1bA34ZStX/IPCUJiwIfHymzwYMnJaCx5/HhIuVJFL2BAzti1iDdDuLBF04wEusT+5Oe4LOF4x3P4SLirMsnwKLkeFuKp8RMH1QsQkNqFd9GsvfNIuIKiZfSWuxgSN8fXN7c+3MfueoPus2b/6bP2ATS/vCAwo=
+	t=1748877279; cv=none; b=BkE+oL6ObsVL3ub3GFXqFb0qJNC8qbqvgicePXJrxy6aRfN9jCzW8Hmbs41wgZ0UD6qMhw05DwF4JW7iByTsvVOB6tAn9fKIfd9ZTs6SJx6IzSbJGNZ5T3+dAJ95ZK9aOcXc/lDle1JC0K5vPl/DKgMdxXSDBdOotrGaJ0xf8Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874375; c=relaxed/simple;
-	bh=Df47sWrmrk5M9d4vGenquA65Sz+ZBSWdfDPsPyVF25s=;
+	s=arc-20240116; t=1748877279; c=relaxed/simple;
+	bh=E614vNxhDf4HanEAh26JN8K9vNBOWNwu0BVmek8LDzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzEmYEhj4LTdX8dFnxpzrjKUmvyH+3RJPqPC0ZHLg29gOZJSqdrfE3fDGIl4kmn+H41/oTwWg/zqX1UtqvPZbvnQmLqsAi8ghZwkpbR4ak/ZqBHlvZGTIz2VfYtKZxlJVEmKf7m6CLGESb+fEBEh8KkVI6QGPRB2q1+95S3Z2VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZus6W3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BEBC4CEEB;
-	Mon,  2 Jun 2025 14:26:14 +0000 (UTC)
+	 MIME-Version; b=a5gOpIQKOgHXWhXrkjlxn8AkpL2sBKiTMEzDZoyThCmCFZjf/1jE96+x/gTDXto2VH/el5KhlhH8en77Xk2TAM6EGA5BA7/nAmoe3xRmwoVfj6Azkt87+4O7waEs9p/YzE4Fw78/JiksDRJS7SB/naaIyMfVHPNmg6hzg/4tQyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WHYd9sd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43229C4CEEB;
+	Mon,  2 Jun 2025 15:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874374;
-	bh=Df47sWrmrk5M9d4vGenquA65Sz+ZBSWdfDPsPyVF25s=;
+	s=korg; t=1748877279;
+	bh=E614vNxhDf4HanEAh26JN8K9vNBOWNwu0BVmek8LDzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZus6W3v2o6+FLBo8zvG9D5qEim1FL9VLE6pWrsXL3DlXv/97fnmqGDThRk3t0lSW
-	 LToDYw27srdCmLimfFeTQB7igZiW2yMw6rJhwQo9KhVx4S+LmwB8M/vau2G7vbvg1Z
-	 YXFD/fcRcOw5p+5eHMyksqHHHKEBN/0Sgn/EplwQ=
+	b=1WHYd9sdHGfaa6j4adm+xXLv3UgYUHdrVGiFbBbMI9+o6uAzkUUql112it7OKIkHq
+	 qIkNFAeBLDs7RprGpMg1JbceAS6i2W/J3EXK7dgRwCtnSE7Yv60Ka/C4tTikvWqAET
+	 WXhw1wS98/w5EMLq6YHhH/aeLgjvkoklLlK5ApMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Guterman <amfernusus@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 439/444] nvme-pci: add NVME_QUIRK_NO_DEEPEST_PS quirk for SOLIDIGM P44 Pro
+Subject: [PATCH 6.1 227/325] wifi: iwlwifi: add support for Killer on MTL
 Date: Mon,  2 Jun 2025 15:48:23 +0200
-Message-ID: <20250602134358.755138992@linuxfoundation.org>
+Message-ID: <20250602134329.007048562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Guterman <amfernusus@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e765bf89f42b5c82132a556b630affeb82b2a21f ]
+[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
 
-This commit adds the NVME_QUIRK_NO_DEEPEST_PS quirk for device
-[126f:2262], which belongs to device SOLIDIGM P44 Pro SSDPFKKW020X7
+For now, we need another entry for these devices, this
+will be changed completely for 6.16.
 
-The device frequently have trouble exiting the deepest power state (5),
-resulting in the entire disk being unresponsive.
-
-Verified by setting nvme_core.default_ps_max_latency_us=10000 and
-observing the expected behavior.
-
-Signed-off-by: Ilya Guterman <amfernusus@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
+Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 1a33be577397f..97ab91a479d11 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3541,6 +3541,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
- 	{ PCI_DEVICE(0x1e49, 0x0041),   /* ZHITAI TiPro7000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
-+	{ PCI_DEVICE(0x025e, 0xf1ac),   /* SOLIDIGM  P44 pro SSDPFKKW020X7  */
-+		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
- 	{ PCI_DEVICE(0xc0a9, 0x540a),   /* Crucial P2 */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(0x1d97, 0x2263), /* Lexar NM610 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 7f30e6add9933..39ac9d81d10d6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -552,6 +552,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
++	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
++	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 
+ 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
+ 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma_a0_gf4_a0, iwl_ax411_killer_1690s_name),
 -- 
 2.39.5
 
