@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-149719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE23ACB41C
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:48:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6A6ACB080
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0118D3AF741
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 757251BA3FF5
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1A6227E90;
-	Mon,  2 Jun 2025 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D367223715;
+	Mon,  2 Jun 2025 14:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtXSShPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq9V7XPx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964C4227E80;
-	Mon,  2 Jun 2025 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAC4221D92;
+	Mon,  2 Jun 2025 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874821; cv=none; b=ZOMTv98hwBxVAtvAvcC4O17nSYdxkfjjE8OnrhnelkNb9cs9zm4W9CHdFWuoFX4NRF39Wo47Vqhwriqvf0D864EJAzfKwql0E+b+jDsYaCMSTuZ/9w20eIz0FaTSR4rRHHdEDA1bx05Bis8dKLx3F1SUSQORQKdAaC++H0lePsY=
+	t=1748872935; cv=none; b=V+QyMM/fB+CXcZvlqY74tT5iofkDr9NHtpKjjWsA24lWmZkNveFYQIWDLRFDj5fCOvo2Bs6rec6rXnLfGXWleBCXr0sHIZpxhVbwOE42mdfpgHj40cICJo9WL2ONSJBSfFXovM0RvEWcFEgD4kuwWEdLOBpSJ2NkPmX/Pcvk7aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874821; c=relaxed/simple;
-	bh=4dqhVFJ/gisX6mhgDYp7qHoY57TbWP5GwXP8aeZmRfw=;
+	s=arc-20240116; t=1748872935; c=relaxed/simple;
+	bh=cMxwA7LVfv7cuW4Jcg7pd0yGKvSlioL45gSjc5HJAK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FY/kW/EJEsOQxpXVQsshyjjlMAyA15F1cCSgNePt1zbDlHYsLoSCyGWCRAzBEsdPCHnzv7Tegm6sk6aOUkkVn+9kxNKk7H+GJMx+y13gTsmGuYUhpnUj69l2yW/esR2OxrJURnC7hhcZaajvH5WwWgyY7cy12sNXK4OrLvi4y+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtXSShPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83EFC4CEEE;
-	Mon,  2 Jun 2025 14:33:40 +0000 (UTC)
+	 MIME-Version; b=unDFZ+tBG4Oj1P/xrlLDHiIlWZFTMnkhGaia1aTfYDGVC3JopLuVFluPqa9G91WfueXuGiu7dtEfNQ6fmXZZ+loLCatK9Sve5AazcoH/AlmLXfldpVFYUQ+d+1pRGhqKmTiDKGQ32UI2Uzf2/qmJwX6p6UDoWVRpUHJzU1mUlcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oq9V7XPx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF86C4CEEB;
+	Mon,  2 Jun 2025 14:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874821;
-	bh=4dqhVFJ/gisX6mhgDYp7qHoY57TbWP5GwXP8aeZmRfw=;
+	s=korg; t=1748872934;
+	bh=cMxwA7LVfv7cuW4Jcg7pd0yGKvSlioL45gSjc5HJAK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtXSShPTh2DXhwOTL2t0KQMI5Vzf0wqMTvazqJuklaCszFn5+VX84/WPo6W5JLt2h
-	 QGd2pky/AAtuvO/jnklXwnbS1+dBAhsqE3awUMe7X8F0AijaeBefBlDf9BiVXjzV2c
-	 SmOUBYDBn0c2vM2Ocgsagmq6SPWn0H8O3GUoX8oI=
+	b=Oq9V7XPx4p2DPmT5bA+cMb3IfbFW2hPAg5qqleq6fEnlnWHyoAOm8mS0JulVtRArq
+	 Z6W9rs5ukidrY8TyoeanerbtgvC14J3QGUDfRF3EJOTS/EPvXqc/JJ5RHlf5wViDS9
+	 pw+yM8H8dED2fcklGq+krJI0zZyzr8rgqaknHetI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hal Feng <hal.feng@starfivetech.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 147/204] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
+Subject: [PATCH 6.12 43/55] phy: starfive: jh7110-usb: Fix USB 2.0 host occasional detection failure
 Date: Mon,  2 Jun 2025 15:48:00 +0200
-Message-ID: <20250602134301.428236055@linuxfoundation.org>
+Message-ID: <20250602134239.977516386@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+References: <20250602134238.271281478@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Hal Feng <hal.feng@starfivetech.com>
 
-[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
+[ Upstream commit 3f097adb9b6c804636bcf8d01e0e7bc037bee0d3 ]
 
-GCC can see that the value range for "order" is capped, but this leads
-it to consider that it might be negative, leading to a false positive
-warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
+JH7110 USB 2.0 host fails to detect USB 2.0 devices occasionally. With a
+long time of debugging and testing, we found that setting Rx clock gating
+control signal to normal power consumption mode can solve this problem.
 
-../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
-      |                                    ~~~~~~~~~~~^~~
-  'mlx4_alloc_db_from_pgdir': events 1-2
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                     |                         |                                                   |                     |                         (2) out of array bounds here
-      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
-                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
-../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
-  664 |         unsigned long          *bits[2];
-      |                                 ^~~~
-
-Switch the argument to unsigned int, which removes the compiler needing
-to consider negative values.
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hal Feng <hal.feng@starfivetech.com>
+Link: https://lore.kernel.org/r/20250422101244.51686-1-hal.feng@starfivetech.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
- include/linux/mlx4/device.h                | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/starfive/phy-jh7110-usb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-index b330020dc0d67..f2bded847e61d 100644
---- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
- }
+diff --git a/drivers/phy/starfive/phy-jh7110-usb.c b/drivers/phy/starfive/phy-jh7110-usb.c
+index cb5454fbe2c8f..b505d89860b43 100644
+--- a/drivers/phy/starfive/phy-jh7110-usb.c
++++ b/drivers/phy/starfive/phy-jh7110-usb.c
+@@ -18,6 +18,8 @@
+ #include <linux/usb/of.h>
  
- static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
--				    struct mlx4_db *db, int order)
-+				    struct mlx4_db *db, unsigned int order)
+ #define USB_125M_CLK_RATE		125000000
++#define USB_CLK_MODE_OFF		0x0
++#define USB_CLK_MODE_RX_NORMAL_PWR	BIT(1)
+ #define USB_LS_KEEPALIVE_OFF		0x4
+ #define USB_LS_KEEPALIVE_ENABLE		BIT(4)
+ 
+@@ -78,6 +80,7 @@ static int jh7110_usb2_phy_init(struct phy *_phy)
  {
--	int o;
-+	unsigned int o;
- 	int i;
+ 	struct jh7110_usb2_phy *phy = phy_get_drvdata(_phy);
+ 	int ret;
++	unsigned int val;
  
- 	for (o = order; o <= 1; ++o) {
-@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
+ 	ret = clk_set_rate(phy->usb_125m_clk, USB_125M_CLK_RATE);
+ 	if (ret)
+@@ -87,6 +90,10 @@ static int jh7110_usb2_phy_init(struct phy *_phy)
+ 	if (ret)
+ 		return ret;
+ 
++	val = readl(phy->regs + USB_CLK_MODE_OFF);
++	val |= USB_CLK_MODE_RX_NORMAL_PWR;
++	writel(val, phy->regs + USB_CLK_MODE_OFF);
++
  	return 0;
  }
  
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
- {
- 	struct mlx4_priv *priv = mlx4_priv(dev);
- 	struct mlx4_db_pgdir *pgdir;
-diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
-index 35b4e324e17f2..7c399831540d7 100644
---- a/include/linux/mlx4/device.h
-+++ b/include/linux/mlx4/device.h
-@@ -1128,7 +1128,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- 		       struct mlx4_buf *buf);
- 
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
- void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
- 
- int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
 -- 
 2.39.5
 
