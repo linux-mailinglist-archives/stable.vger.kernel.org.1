@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-150594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5DFACB7C9
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:31:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86851ACB75A
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 17:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CDB77AE5B5
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:26:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06F227AB35C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 15:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32921221F24;
-	Mon,  2 Jun 2025 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304B52397AA;
+	Mon,  2 Jun 2025 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZxNG7bM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wC+eNLTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59B6221F10;
-	Mon,  2 Jun 2025 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CFE22259F;
+	Mon,  2 Jun 2025 15:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748877620; cv=none; b=ey0alV1CSFVXum0o7cYMog+fwgp+Gr7ZQkzEnv3Wi6ovKnCJvFFhlw6rh+yyO5F/rtwQSK2LwmKlIFCpLInnLLkgv1rQ8FaJ3yyIDdKx6JiBZjMqBy5VY/uasQfGPY4C8qWBqd5WHS8YRUKVAh+kkF9a+I0x+VbAmIhd2Ac9/Wk=
+	t=1748877547; cv=none; b=uAK3WQ/m5TIEux8dYkYC/q99+1Bm/mk4+Jt74qekkZLM9WbCu83lT2h5ehlECTfa+5mL/YBvTHoZp1FxYcLdJ45zoIRe8cwPiKy+eIfAn4YxYOfcQo4OP57s6z9NF9YjPR0gezi+keCSyTEaThz0i2STkitF568Vj0tHRZuWBOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748877620; c=relaxed/simple;
-	bh=ITVR3HMiYg5l6AZK7u7+eOql7sEf/xt3aCyBIPRjeWk=;
+	s=arc-20240116; t=1748877547; c=relaxed/simple;
+	bh=mzglAR3bDNMNASRzIE54JjRdb6FQw1BpZ+Cp6ZvqplA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KevTU8sePdAQhvs2hW0YCTBBfwYZfD0QwrmikBkQD/ecScg9jCSd9Yom2xtLu/H1QxIT2Nz9PHM6Fk7ks33wmE3/HnNowAqGCwWEU1Xx/uxEHP8NCpw2+88zefp6nfsC7yo7WeapmpIES79p/FJn/J2wAPfK2+ZyRTyPtdwpAEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZxNG7bM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6C3C4CEEB;
-	Mon,  2 Jun 2025 15:20:14 +0000 (UTC)
+	 MIME-Version; b=A7lT/AM5IC/6R6coPDhzyJHzLgQNhU6UBACjME7Vfw1sxzrzeMsQJtxMVoyVwk5RzYnT+75Ns1BaYHpsZJoIbzmCaFMi7rBIiCPJcgd75Wj9fGr2xaHHvB1XJggb+eP8Y8rNfX+PU01yw9N471nzApMZkT++dIBTyJi4G4ioy3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wC+eNLTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE6EC4CEEB;
+	Mon,  2 Jun 2025 15:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748877615;
-	bh=ITVR3HMiYg5l6AZK7u7+eOql7sEf/xt3aCyBIPRjeWk=;
+	s=korg; t=1748877547;
+	bh=mzglAR3bDNMNASRzIE54JjRdb6FQw1BpZ+Cp6ZvqplA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZxNG7bMTBQwp8X5ADhqyzS6LgQt6ms6rGKaGE5Tut6u9Crz++kXcJ5dv3TRXaPpa
-	 4FtEgtJtZ2uCzlreG1/jf2rngBZXfWbNQwvZXv8KVRm6gAPKBgxOiSBFLwF1rgHFL/
-	 jbIrTRe12O+EZDlFfa2oL/n9hwykE1g0x8Zu3pRY=
+	b=wC+eNLTIJ9tDnjhoHSu5fQcWP0JBs+kgb0vZhf9yJ5LU+urnM5GYsvTR5CwfyvT1Y
+	 nKfqVOXBRnYp3UHXqwsPlAtmKifFcY9Gl+0SSFf1L4sAyVGuCuH4ehMHMin6g58hxU
+	 /xlfz25ASu6X5b124A1TSXJ5CTfu0lxcSwvI7d2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 311/325] perf/arm-cmn: Initialise cmn->cpu earlier
-Date: Mon,  2 Jun 2025 15:49:47 +0200
-Message-ID: <20250602134332.560430740@linuxfoundation.org>
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 312/325] coredump: fix error handling for replace_fd()
+Date: Mon,  2 Jun 2025 15:49:48 +0200
+Message-ID: <20250602134332.612394149@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
 References: <20250602134319.723650984@linuxfoundation.org>
@@ -66,44 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 597704e201068db3d104de3c7a4d447ff8209127 upstream.
+commit 95c5f43181fe9c1b5e5a4bd3281c857a5259991f upstream.
 
-For all the complexity of handling affinity for CPU hotplug, what we've
-apparently managed to overlook is that arm_cmn_init_irqs() has in fact
-always been setting the *initial* affinity of all IRQs to CPU 0, not the
-CPU we subsequently choose for event scheduling. Oh dear.
+The replace_fd() helper returns the file descriptor number on success
+and a negative error code on failure. The current error handling in
+umh_pipe_setup() only works because the file descriptor that is replaced
+is zero but that's pretty volatile. Explicitly check for a negative
+error code.
 
-Cc: stable@vger.kernel.org
-Fixes: 0ba64770a2f2 ("perf: Add Arm CMN-600 PMU driver")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Link: https://lore.kernel.org/r/b12fccba6b5b4d2674944f59e4daad91cd63420b.1747069914.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/20250414-work-coredump-v2-2-685bf231f828@kernel.org
+Tested-by: Luca Boccassi <luca.boccassi@gmail.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm-cmn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/coredump.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2313,6 +2313,7 @@ static int arm_cmn_probe(struct platform
- 
- 	cmn->dev = &pdev->dev;
- 	cmn->part = (unsigned long)device_get_match_data(cmn->dev);
-+	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
- 	platform_set_drvdata(pdev, cmn);
- 
- 	if (cmn->part == PART_CMN600 && has_acpi_companion(cmn->dev)) {
-@@ -2340,7 +2341,6 @@ static int arm_cmn_probe(struct platform
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -493,7 +493,9 @@ static int umh_pipe_setup(struct subproc
+ {
+ 	struct file *files[2];
+ 	struct coredump_params *cp = (struct coredump_params *)info->data;
+-	int err = create_pipe_files(files, 0);
++	int err;
++
++	err = create_pipe_files(files, 0);
  	if (err)
  		return err;
  
--	cmn->cpu = cpumask_local_spread(0, dev_to_node(cmn->dev));
- 	cmn->pmu = (struct pmu) {
- 		.module = THIS_MODULE,
- 		.attr_groups = arm_cmn_attr_groups,
+@@ -501,10 +503,13 @@ static int umh_pipe_setup(struct subproc
+ 
+ 	err = replace_fd(0, files[0], 0);
+ 	fput(files[0]);
++	if (err < 0)
++		return err;
++
+ 	/* and disallow core files too */
+ 	current->signal->rlim[RLIMIT_CORE] = (struct rlimit){1, 1};
+ 
+-	return err;
++	return 0;
+ }
+ 
+ void do_coredump(const kernel_siginfo_t *siginfo)
 
 
 
