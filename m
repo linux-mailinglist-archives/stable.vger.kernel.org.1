@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4809EACB399
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:43:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF69ACB306
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90C101940F25
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D533B4021
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1557E230BD0;
-	Mon,  2 Jun 2025 14:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6EB238C2A;
+	Mon,  2 Jun 2025 14:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7dLywGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXi0Wkdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B112C3247;
-	Mon,  2 Jun 2025 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142923875D;
+	Mon,  2 Jun 2025 14:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748874559; cv=none; b=H9cUdwNP2PcI2ZvgrJoCMBl3SpE6Vz3zzd6cjPkmWz6vVHhwq/QXnkx3wLtgT8ayZTV3KwCSFnczeETQ4qmbTCpe3uS+SDUueFmiDpJ9jZYMIwk17teVBaLPQlv6uPJ68Q+ehj3ioaDJRnfkx1ANT70nymyj1vBdbjSYzMb8tqI=
+	t=1748874024; cv=none; b=s9GLPU0IJd2/YD0vqdu1KcDOZwB4gFIAKU+wFDYUQWD0sGNinP/ZUD1WnHfApg0WYPZnqPod1jO7+x7HVVp5lare5RFZLvfij9VHPPD/JUC8rshwY09SzjYD9Z8sC/s5royfpbMaVWNEvd/nMrO0bP0wALBOFUV1GyaJmJBp/ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748874559; c=relaxed/simple;
-	bh=xxThgzYuBVNZOtQ9mbfhG97Kdhuv3DVFK4S3nruVbq4=;
+	s=arc-20240116; t=1748874024; c=relaxed/simple;
+	bh=5SnHh0MDSTZxJWA0/RpKN8Dom1lpsNVhnN28p1jg/Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DzYWCqOIEB625IzIJs6uxaRB/7SNkLHc3AN7dIwz5CsB1Ul+yb9+hHknmw8aMZfWGjAJLLDXCYRSxddrwEWYlJDUeTzptQojXjqLS8QNJjIPXT0DgKcDWmjOeTv/dLP77Kjpo+TaprYZiMXbim0L07yVaUFojTBJLa4hopZrs/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7dLywGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CE4C4CEEB;
-	Mon,  2 Jun 2025 14:29:18 +0000 (UTC)
+	 MIME-Version; b=Yfs0/kX1amvNhAXDxRUUNkSdOrIGCFv213MYov1pk0zooKy+hFu6mwMm3bq0R648suLXSSbIPlZuRG9YH831L/K76C6Sm4nELSAYP9wlgUtVNpzzCB1PTCErxUhdK5WbZ20hL4TYkbVCmDc1kxFcnfBjtU52M3jZU0mTp0Fajic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXi0Wkdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8FBC4CEEB;
+	Mon,  2 Jun 2025 14:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748874559;
-	bh=xxThgzYuBVNZOtQ9mbfhG97Kdhuv3DVFK4S3nruVbq4=;
+	s=korg; t=1748874023;
+	bh=5SnHh0MDSTZxJWA0/RpKN8Dom1lpsNVhnN28p1jg/Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7dLywGgeWeXhGWc/oBHsFCC2diZe1CSEGqVtQAQsKMOZL8ZjBVuQTLOUEFylrNnv
-	 IU4Gv5JarGDJfZcumR14nPPYdlUHnN+KgA6y7Ok9WxQtaaDdf+7lnI5+pu+N7h5v+9
-	 8cwEZ+G5w/SwProzJWBB0JERI2lm+noOD7DFVg1U=
+	b=wXi0Wkdk+7e/kfXxpwpOuVKrr/RJRB4FnDjtEF3oEGHkJ+Vw4G3abkwMLsBdGsU5I
+	 crkV8DVEqPUvnOeOodZCNBjjep036lVzM1jVieXXGHdczrCMF5ddTxSdSjYOmmbH21
+	 CCiwcdjQLmPR/Cch091CxjIeyFgf7R3sZqSyfBOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/204] platform/x86: asus-wmi: Fix wlan_ctrl_by_user detection
+Subject: [PATCH 6.6 331/444] espintcp: remove encap socket caching to avoid reference leak
 Date: Mon,  2 Jun 2025 15:46:35 +0200
-Message-ID: <20250602134258.115108616@linuxfoundation.org>
+Message-ID: <20250602134354.368205025@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
-References: <20250602134255.449974357@linuxfoundation.org>
+In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
+References: <20250602134340.906731340@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,256 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit bfcfe6d335a967f8ea0c1980960e6f0205b5de6e ]
+[ Upstream commit 028363685bd0b7a19b4a820f82dd905b1dc83999 ]
 
-The wlan_ctrl_by_user detection was introduced by commit a50bd128f28c
-("asus-wmi: record wlan status while controlled by userapp").
+The current scheme for caching the encap socket can lead to reference
+leaks when we try to delete the netns.
 
-Quoting from that commit's commit message:
+The reference chain is: xfrm_state -> enacp_sk -> netns
 
-"""
-When you call WMIMethod(DSTS, 0x00010011) to get WLAN status, it may return
+Since the encap socket is a userspace socket, it holds a reference on
+the netns. If we delete the espintcp state (through flush or
+individual delete) before removing the netns, the reference on the
+socket is dropped and the netns is correctly deleted. Otherwise, the
+netns may not be reachable anymore (if all processes within the ns
+have terminated), so we cannot delete the xfrm state to drop its
+reference on the socket.
 
-(1) 0x00050001 (On)
-(2) 0x00050000 (Off)
-(3) 0x00030001 (On)
-(4) 0x00030000 (Off)
-(5) 0x00000002 (Unknown)
+This patch results in a small (~2% in my tests) performance
+regression.
 
-(1), (2) means that the model has hardware GPIO for WLAN, you can call
-WMIMethod(DEVS, 0x00010011, 1 or 0) to turn WLAN on/off.
-(3), (4) means that the model doesn’t have hardware GPIO, you need to use
-API or driver library to turn WLAN on/off, and call
-WMIMethod(DEVS, 0x00010012, 1 or 0) to set WLAN LED status.
-After you set WLAN LED status, you can see the WLAN status is changed with
-WMIMethod(DSTS, 0x00010011). Because the status is recorded lastly
-(ex: Windows), you can use it for synchronization.
-(5) means that the model doesn’t have WLAN device.
+A GC-type mechanism could be added for the socket cache, to clear
+references if the state hasn't been used "recently", but it's a lot
+more complex than just not caching the socket.
 
-WLAN is the ONLY special case with upper rule.
-"""
-
-The wlan_ctrl_by_user flag should be set on 0x0003000? ((3), (4) above)
-return values, but the flag mistakenly also gets set on laptops with
-0x0005000? ((1), (2)) return values. This is causing rfkill problems on
-laptops where 0x0005000? is returned.
-
-Fix the check to only set the wlan_ctrl_by_user flag for 0x0003000?
-return values.
-
-Fixes: a50bd128f28c ("asus-wmi: record wlan status while controlled by userapp")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219786
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250501131702.103360-2-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/xfrm.h    |  1 -
+ net/ipv4/esp4.c       | 49 ++++---------------------------------------
+ net/ipv6/esp6.c       | 49 ++++---------------------------------------
+ net/xfrm/xfrm_state.c |  3 ---
+ 4 files changed, 8 insertions(+), 94 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 761cab698c750..9e8be6c52e3d3 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -2458,7 +2458,8 @@ static int asus_wmi_add(struct platform_device *pdev)
- 		goto fail_leds;
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index b33d27e42cff3..fd550c0b56345 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -228,7 +228,6 @@ struct xfrm_state {
  
- 	asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_WLAN, &result);
--	if (result & (ASUS_WMI_DSTS_PRESENCE_BIT | ASUS_WMI_DSTS_USER_BIT))
-+	if ((result & (ASUS_WMI_DSTS_PRESENCE_BIT | ASUS_WMI_DSTS_USER_BIT)) ==
-+	    (ASUS_WMI_DSTS_PRESENCE_BIT | ASUS_WMI_DSTS_USER_BIT))
- 		asus->driver->wlan_ctrl_by_user = 1;
+ 	/* Data for encapsulator */
+ 	struct xfrm_encap_tmpl	*encap;
+-	struct sock __rcu	*encap_sk;
  
- 	if (!(asus->driver->wlan_ctrl_by_user && ashs_present())) {
+ 	/* Data for care-of address */
+ 	xfrm_address_t	*coaddr;
+diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+index eeace9b509cec..49fd664f50fc0 100644
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -118,47 +118,16 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ }
+ 
+ #ifdef CONFIG_INET_ESPINTCP
+-struct esp_tcp_sk {
+-	struct sock *sk;
+-	struct rcu_head rcu;
+-};
+-
+-static void esp_free_tcp_sk(struct rcu_head *head)
+-{
+-	struct esp_tcp_sk *esk = container_of(head, struct esp_tcp_sk, rcu);
+-
+-	sock_put(esk->sk);
+-	kfree(esk);
+-}
+-
+ static struct sock *esp_find_tcp_sk(struct xfrm_state *x)
+ {
+ 	struct xfrm_encap_tmpl *encap = x->encap;
+ 	struct net *net = xs_net(x);
+-	struct esp_tcp_sk *esk;
+ 	__be16 sport, dport;
+-	struct sock *nsk;
+ 	struct sock *sk;
+ 
+-	sk = rcu_dereference(x->encap_sk);
+-	if (sk && sk->sk_state == TCP_ESTABLISHED)
+-		return sk;
+-
+ 	spin_lock_bh(&x->lock);
+ 	sport = encap->encap_sport;
+ 	dport = encap->encap_dport;
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (sk && sk == nsk) {
+-		esk = kmalloc(sizeof(*esk), GFP_ATOMIC);
+-		if (!esk) {
+-			spin_unlock_bh(&x->lock);
+-			return ERR_PTR(-ENOMEM);
+-		}
+-		RCU_INIT_POINTER(x->encap_sk, NULL);
+-		esk->sk = sk;
+-		call_rcu(&esk->rcu, esp_free_tcp_sk);
+-	}
+ 	spin_unlock_bh(&x->lock);
+ 
+ 	sk = inet_lookup_established(net, net->ipv4.tcp_death_row.hashinfo, x->id.daddr.a4,
+@@ -171,20 +140,6 @@ static struct sock *esp_find_tcp_sk(struct xfrm_state *x)
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	spin_lock_bh(&x->lock);
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (encap->encap_sport != sport ||
+-	    encap->encap_dport != dport) {
+-		sock_put(sk);
+-		sk = nsk ?: ERR_PTR(-EREMCHG);
+-	} else if (sk == nsk) {
+-		sock_put(sk);
+-	} else {
+-		rcu_assign_pointer(x->encap_sk, sk);
+-	}
+-	spin_unlock_bh(&x->lock);
+-
+ 	return sk;
+ }
+ 
+@@ -207,6 +162,8 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+ 		err = espintcp_push_skb(sk, skb);
+ 	bh_unlock_sock(sk);
+ 
++	sock_put(sk);
++
+ out:
+ 	rcu_read_unlock();
+ 	return err;
+@@ -391,6 +348,8 @@ static struct ip_esp_hdr *esp_output_tcp_encap(struct xfrm_state *x,
+ 	if (IS_ERR(sk))
+ 		return ERR_CAST(sk);
+ 
++	sock_put(sk);
++
+ 	*lenp = htons(len);
+ 	esph = (struct ip_esp_hdr *)(lenp + 1);
+ 
+diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+index 62bb9651133c4..7e4c8628cf983 100644
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -135,47 +135,16 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb)
+ }
+ 
+ #ifdef CONFIG_INET6_ESPINTCP
+-struct esp_tcp_sk {
+-	struct sock *sk;
+-	struct rcu_head rcu;
+-};
+-
+-static void esp_free_tcp_sk(struct rcu_head *head)
+-{
+-	struct esp_tcp_sk *esk = container_of(head, struct esp_tcp_sk, rcu);
+-
+-	sock_put(esk->sk);
+-	kfree(esk);
+-}
+-
+ static struct sock *esp6_find_tcp_sk(struct xfrm_state *x)
+ {
+ 	struct xfrm_encap_tmpl *encap = x->encap;
+ 	struct net *net = xs_net(x);
+-	struct esp_tcp_sk *esk;
+ 	__be16 sport, dport;
+-	struct sock *nsk;
+ 	struct sock *sk;
+ 
+-	sk = rcu_dereference(x->encap_sk);
+-	if (sk && sk->sk_state == TCP_ESTABLISHED)
+-		return sk;
+-
+ 	spin_lock_bh(&x->lock);
+ 	sport = encap->encap_sport;
+ 	dport = encap->encap_dport;
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (sk && sk == nsk) {
+-		esk = kmalloc(sizeof(*esk), GFP_ATOMIC);
+-		if (!esk) {
+-			spin_unlock_bh(&x->lock);
+-			return ERR_PTR(-ENOMEM);
+-		}
+-		RCU_INIT_POINTER(x->encap_sk, NULL);
+-		esk->sk = sk;
+-		call_rcu(&esk->rcu, esp_free_tcp_sk);
+-	}
+ 	spin_unlock_bh(&x->lock);
+ 
+ 	sk = __inet6_lookup_established(net, net->ipv4.tcp_death_row.hashinfo, &x->id.daddr.in6,
+@@ -188,20 +157,6 @@ static struct sock *esp6_find_tcp_sk(struct xfrm_state *x)
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	spin_lock_bh(&x->lock);
+-	nsk = rcu_dereference_protected(x->encap_sk,
+-					lockdep_is_held(&x->lock));
+-	if (encap->encap_sport != sport ||
+-	    encap->encap_dport != dport) {
+-		sock_put(sk);
+-		sk = nsk ?: ERR_PTR(-EREMCHG);
+-	} else if (sk == nsk) {
+-		sock_put(sk);
+-	} else {
+-		rcu_assign_pointer(x->encap_sk, sk);
+-	}
+-	spin_unlock_bh(&x->lock);
+-
+ 	return sk;
+ }
+ 
+@@ -224,6 +179,8 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
+ 		err = espintcp_push_skb(sk, skb);
+ 	bh_unlock_sock(sk);
+ 
++	sock_put(sk);
++
+ out:
+ 	rcu_read_unlock();
+ 	return err;
+@@ -427,6 +384,8 @@ static struct ip_esp_hdr *esp6_output_tcp_encap(struct xfrm_state *x,
+ 	if (IS_ERR(sk))
+ 		return ERR_CAST(sk);
+ 
++	sock_put(sk);
++
+ 	*lenp = htons(len);
+ 	esph = (struct ip_esp_hdr *)(lenp + 1);
+ 
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 8a6e8656d014f..7222ba50390d6 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -754,9 +754,6 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 		net->xfrm.state_num--;
+ 		spin_unlock(&net->xfrm.xfrm_state_lock);
+ 
+-		if (x->encap_sk)
+-			sock_put(rcu_dereference_raw(x->encap_sk));
+-
+ 		xfrm_dev_state_delete(x);
+ 
+ 		/* All xfrm_state objects are created by xfrm_state_alloc.
 -- 
 2.39.5
 
