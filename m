@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-149387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-149817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6306ACB287
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:32:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D211EACB4E0
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 16:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5BB9405C0
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:25:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4D819E020C
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 14:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924CC22D9EE;
-	Mon,  2 Jun 2025 14:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE96226D04;
+	Mon,  2 Jun 2025 14:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06eoYKNr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1zIqn17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD49221299;
-	Mon,  2 Jun 2025 14:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A507226CF0;
+	Mon,  2 Jun 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748873811; cv=none; b=lPMw0IZQnaYPlwWEYOCS66TUNcGpjorEbPRk9co5IH/Hj1I3z6DUEB/+Xv41uZMo5XEI7ZiQczNdDJs0HDSjj3zUEHx60C945V0yht2kDPaGFThjivwdn1mQttfbWxes3yjjLa7rZ5yemsiDpt3g9dw5gUj2ggzcHNHP+aopbmw=
+	t=1748875134; cv=none; b=uadGIV6JKlfaQ3cTYcqfzcJbojmjvClxbGuerZd3eUUB61jpC8X6NejLp8pxFJh98ITnBn4XOiVXTvgwAmXeoOKoImpJwSMImlb6A6+NfrL0Fh9OlXtEH39XX4BdV7JAfJg9xwFFjBtXTNaUQ2ru/NjQaKQbN2Oc0yABHQKUAiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748873811; c=relaxed/simple;
-	bh=eu+lBNnz6cpTUOwpwn63mQ4+VJ3W2UtqALDpc+uu8a0=;
+	s=arc-20240116; t=1748875134; c=relaxed/simple;
+	bh=LHbpd2W7AOTcqh9z3M28gg89e964uDDHrNN+v/VuaMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCZqYnLckGTizjAjhRqtuZpzmHLjZjExd9SrNv4DSCBuyuNeEEDNP4AOSJDkhooVQwbBuVNNyIb0ed9LdcHjJFwowrbpz8t2tys/yosBVLZoTnf1UJVc4Y2w71GkdIg7ODcYg8EEXxwGEu8ocImL3QyjAfU2gzwOnjSRkhq0BDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06eoYKNr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFF7C4CEEB;
-	Mon,  2 Jun 2025 14:16:50 +0000 (UTC)
+	 MIME-Version; b=MNBZwNB2mqhvX4UiTeCWnyan3yoo9Wp8BrkvUAtj/NBiQipjgygzCqje8h1Rc5WyhHCqfUEbBZE2vJYWeCmLDpLTf+Dz52bfNWC0MbbrEy+8Wts5xw4w1Vl++gB7EX+aHUbtV5nKRHUcLocKi9dCFlajJt/JdiZ5txf+5Tp3e8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1zIqn17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EB5C4CEEB;
+	Mon,  2 Jun 2025 14:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748873811;
-	bh=eu+lBNnz6cpTUOwpwn63mQ4+VJ3W2UtqALDpc+uu8a0=;
+	s=korg; t=1748875133;
+	bh=LHbpd2W7AOTcqh9z3M28gg89e964uDDHrNN+v/VuaMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06eoYKNrCZ2SyhbBq92GfI13SAkcXpP88FPtFlBStXksjUcyLyRu1lfHTgd/ovDKI
-	 4Oq7ccYSK0b/ooWXN+GgKKP7H6m9wT1n7ASzN2d/uvja9CYxrmRY8y2bmrJDqj4qgf
-	 xu55U6fLvzZ4B+R7qFX71mdlM33X7fWiwuPAMKmg=
+	b=O1zIqn17NlAC1S+58nNxcRMe+e1oWzGNci96kkpuH/n1xEEVCZgMrz+5GstAHvzwg
+	 IrhNR9q3kREak3Z8NKWeNylhginTUktZgPPo64DWRUkVWsS5tgop7NIPbeJ+BTnYDf
+	 0a76+x9b+qg+HfqGdhiRv0kMXZoH8HMeRCuSFUZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.ibm.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 260/444] powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory
+Subject: [PATCH 5.10 039/270] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
 Date: Mon,  2 Jun 2025 15:45:24 +0200
-Message-ID: <20250602134351.482556456@linuxfoundation.org>
+Message-ID: <20250602134308.785976794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250602134340.906731340@linuxfoundation.org>
-References: <20250602134340.906731340@linuxfoundation.org>
+In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
+References: <20250602134307.195171844@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.ibm.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 6aa989ab2bd0d37540c812b4270006ff794662e7 ]
+[ Upstream commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d ]
 
-iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
-notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
-(DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
-for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
-dynamically mapped when the device driver instructs to do so.
+usb_phy_init() may return an error code if e.g. its implementation fails
+to prepare/enable some clocks. And properly rollback on probe error path
+by calling the counterpart usb_phy_shutdown().
 
-The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
-after LPAR boot. The command to do so is -
+Found by Linux Verification Center (linuxtesting.org).
 
-daxctl reconfigure-device --mode=system-ram dax0.0 --force
-
-This will dynamically add pmemory range to LPAR RAM eventually invoking
-iommu_mem_notifier(). The address range of pmemory is way beyond the Max
-RAM that the LPAR can have. Which means, this range is beyond the DDW
-created for the device, at device initialization time.
-
-As a result when TCEs are pre-mapped for the pmemory range, by
-iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
-command, daxctl, to add pmemory as RAM.
-
-The solution is to not pre-map TCEs for pmemory.
-
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250130183854.92258-1-gbatra@linux.ibm.com
+Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmzone.h      |  1 +
- arch/powerpc/mm/numa.c                 |  2 +-
- arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
- 3 files changed, 18 insertions(+), 14 deletions(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index da827d2d08666..f2c4457c94c39 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -35,6 +35,7 @@ extern cpumask_var_t node_to_cpumask_map[];
- #ifdef CONFIG_MEMORY_HOTPLUG
- extern unsigned long max_pfn;
- u64 memory_hotplug_max(void);
-+u64 hot_add_drconf_memory_max(void);
- #else
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index f6c4ace3b2219..65a9df0b9e5a0 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1342,7 +1342,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
- 	return nid;
- }
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index abe162cd729e9..03d883f5a4cc7 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -446,7 +446,11 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
+ 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
+ 		data->override_phy_control = true;
+-		usb_phy_init(pdata.usb_phy);
++		ret = usb_phy_init(pdata.usb_phy);
++		if (ret) {
++			dev_err(dev, "Failed to init phy\n");
++			goto err_clk;
++		}
+ 	}
  
--static u64 hot_add_drconf_memory_max(void)
-+u64 hot_add_drconf_memory_max(void)
- {
- 	struct device_node *memory = NULL;
- 	struct device_node *dn = NULL;
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index b1e6d275cda9e..bf02f94a973db 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1183,17 +1183,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
+ 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+@@ -455,7 +459,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	ret = imx_usbmisc_init(data->usbmisc_data);
+ 	if (ret) {
+ 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
  
- static phys_addr_t ddw_memory_hotplug_max(void)
- {
--	resource_size_t max_addr = memory_hotplug_max();
--	struct device_node *memory;
-+	resource_size_t max_addr;
+ 	data->ci_pdev = ci_hdrc_add_device(dev,
+@@ -464,7 +468,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ 	if (IS_ERR(data->ci_pdev)) {
+ 		ret = PTR_ERR(data->ci_pdev);
+ 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
  
--	for_each_node_by_type(memory, "memory") {
--		struct resource res;
--
--		if (of_address_to_resource(memory, 0, &res))
--			continue;
--
--		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
--	}
-+#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-+	max_addr = hot_add_drconf_memory_max();
-+#else
-+	max_addr = memblock_end_of_DRAM();
-+#endif
+ 	if (data->usbmisc_data) {
+@@ -498,6 +502,9 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
  
- 	return max_addr;
- }
-@@ -1471,7 +1467,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		window->direct = true;
- 
- 		/* DDW maps the whole partition, so enable direct DMA mapping */
--		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
-+		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
- 					    win64->value, tce_setrange_multi_pSeriesLP_walk);
- 		if (ret) {
- 			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
-@@ -1658,11 +1654,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
- 	struct memory_notify *arg = data;
- 	int ret = 0;
- 
-+	/* This notifier can get called when onlining persistent memory as well.
-+	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
-+	 * always be above ddw_memory_hotplug_max()
-+	 */
-+
- 	switch (action) {
- 	case MEM_GOING_ONLINE:
- 		spin_lock(&dma_win_list_lock);
- 		list_for_each_entry(window, &dma_win_list, list) {
--			if (window->direct) {
-+			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-+				ddw_memory_hotplug_max()) {
- 				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
- 						arg->nr_pages, window->prop);
- 			}
-@@ -1674,7 +1676,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
- 	case MEM_OFFLINE:
- 		spin_lock(&dma_win_list_lock);
- 		list_for_each_entry(window, &dma_win_list, list) {
--			if (window->direct) {
-+			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-+				ddw_memory_hotplug_max()) {
- 				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
- 						arg->nr_pages, window->prop);
- 			}
+ disable_device:
+ 	ci_hdrc_remove_device(data->ci_pdev);
++phy_shutdown:
++	if (data->override_phy_control)
++		usb_phy_shutdown(data->phy);
+ err_clk:
+ 	imx_disable_unprepare_clks(dev);
+ disable_hsic_regulator:
 -- 
 2.39.5
 
