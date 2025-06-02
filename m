@@ -1,51 +1,62 @@
-Return-Path: <stable+bounces-148898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-148899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CBDACA8B7
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 07:01:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E89ACA8E3
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 07:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15F78177C99
-	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 05:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 622DA17835E
+	for <lists+stable@lfdr.de>; Mon,  2 Jun 2025 05:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F8444C63;
-	Mon,  2 Jun 2025 05:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772B5156F4A;
+	Mon,  2 Jun 2025 05:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1CpqV/Y"
 X-Original-To: stable@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D342C325B;
-	Mon,  2 Jun 2025 05:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEBE2C3255;
+	Mon,  2 Jun 2025 05:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748840493; cv=none; b=EMSNPHukTjthRn45qOg6P9hR+s4VadFlTmqNNxfA7lrn6mNfzLjoFmSWzqziu4Q0stbzLyTfZ4luQxua9gg+VEt+W9PLLep9deK/fzNHE9mdQBtcKRZKLyjVqKDoj36x3pI+91v8n91OJRo1qww8Unizt0GaOPE1G7jdbEWTmak=
+	t=1748842283; cv=none; b=pZGFmbr81UR/fR8bPkg/biOr9HgqXFU8m+rLo5sOXHKdgKHqSFmlPPgH96kxqTrgPkYgb4Imee47JzJvzdypGmhQdJ0wkNPeAHkU1YFO5UABN05RDYAbzM56xVgzZfMaDTPM23Omzeo2eyfjAzshuOj3O9q+E+v0lxBk1FEmZAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748840493; c=relaxed/simple;
-	bh=CkzyrVKBqeDESZDeEtPTudQj9SBDw/o+5BJY/pHtw/s=;
+	s=arc-20240116; t=1748842283; c=relaxed/simple;
+	bh=htmy+IjUpSNIPz1gu7az+7dIDslLsgMksI5QpgRTWMg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IzbmGfMMp+5YA8BFlbWt8gfdkqBFlqkHPLcFCZ00iUCF5ldvSf3vJfkUJrQCCaQD7ppSMI9d7ZSdXRHLxfghagN6Hv/HTbvbHhqOrSGwLe2zrKXM3pEXA2lR908CxeaV/dZf0hoKBIHNt8slDt2heHH8rX46xpML126g0QqpUKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 3E49E68C7B; Mon,  2 Jun 2025 07:01:27 +0200 (CEST)
-Date: Mon, 2 Jun 2025 07:01:26 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hongyu Ning <hongyu.ning@linux.intel.com>, stable@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH] mm: Fix vmstat after removing NR_BOUNCE
-Message-ID: <20250602050126.GB21716@lst.de>
-References: <20250529103832.2937460-1-kirill.shutemov@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ad5xrurzY8Y/V2sXd9JO99gUq3fYGVK9HFSoZjb5mrWpP+b2vF4P0Ic9ktMS2QhxeCA1NrnUIeJi1uT70YoINFeV+4aAQBh9bCu7xGHgsY8ILItirpVG0++wXB1GCKpzAP2jN+6BMwnJcn99ODHb5zWL0FqawkRkZMaf7I4fAFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1CpqV/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB996C4CEEB;
+	Mon,  2 Jun 2025 05:31:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748842282;
+	bh=htmy+IjUpSNIPz1gu7az+7dIDslLsgMksI5QpgRTWMg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d1CpqV/YCZGbD2mb0xnDolaakWCo40GeeaZKc3TU44PLnRq3UwxEamArfybPHO8Cq
+	 OdWIZxumNk0N7f8r3Aycu6ziAGjbGQd71Uz9YJQ1+h8FRXyGszY104AfDJE03V3hWU
+	 Eyj649v0TJI9iCSf+46GVyJqBZX9QgCXfA7nVzsI=
+Date: Mon, 2 Jun 2025 07:31:19 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Christopher Obbard <chris.obbard@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>, ezequiel@vanguardiasur.com.ar,
+	mchehab@kernel.org, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.15 052/110] media: rkvdec: h264: Use
+ bytesperline and buffer height as virstride
+Message-ID: <2025060258-properly-pristine-f112@gregkh>
+References: <20250601232435.3507697-1-sashal@kernel.org>
+ <20250601232435.3507697-52-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,42 +65,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250529103832.2937460-1-kirill.shutemov@linux.intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20250601232435.3507697-52-sashal@kernel.org>
 
-On Thu, May 29, 2025 at 01:38:32PM +0300, Kirill A. Shutemov wrote:
-> Hongyu noticed that the nr_unaccepted counter kept growing even in the
-> absence of unaccepted memory on the machine.
+On Sun, Jun 01, 2025 at 07:23:34PM -0400, Sasha Levin wrote:
+> From: Jonas Karlman <jonas@kwiboo.se>
 > 
-> This happens due to a commit that removed NR_BOUNCE: it removed the
-> counter from the enum zone_stat_item, but left it in the vmstat_text
-> array.
+> [ Upstream commit d5e0aa61470c48ddc04d433a00e79cef8716377a ]
 > 
-> As a result, all counters below nr_bounce in /proc/vmstat are
-> shifted by one line, causing the numa_hit counter to be labeled as
-> nr_unaccepted.
+> Use bytesperline and buffer height to calculate the strides configured.
 > 
-> To fix this issue, remove nr_bounce from the vmstat_text array.
+> This does not really change anything other than ensuring the
+> bytesperline that is signaled to userspace matches what is configured
+> in HW.
+> 
+> Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+> Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Tested-by: Christopher Obbard <chris.obbard@collabora.com>
+> Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> 
+> ### Key Reasons for NO Backport: 1. **Not a Bug Fix**: The commit
+> message explicitly states "This does not really change anything other
+> than ensuring the bytesperline that is signaled to userspace matches
+> what is configured in HW." This is not fixing a functional bug but
+> rather improving consistency between userspace and hardware
+> configuration.
 
-Ooops, yes:
+As the bot said "NO", why was this picked up?
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+thanks,
 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 4c268ce39ff2..ae9882063d89 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1201,7 +1201,6 @@ const char * const vmstat_text[] = {
->  	"nr_zone_unevictable",
->  	"nr_zone_write_pending",
->  	"nr_mlock",
-> -	"nr_bounce",
->  #if IS_ENABLED(CONFIG_ZSMALLOC)
->  	"nr_zspages",
->  #endif
-
-It would be really useful if such pretty printing arrays used
-named initializers, as that would make it obvious that an entry
-needs removal.
-
+greg k-h
 
