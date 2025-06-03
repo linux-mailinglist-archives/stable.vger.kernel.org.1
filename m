@@ -1,96 +1,107 @@
-Return-Path: <stable+bounces-150688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B51ACC491
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:42:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C758ACC49E
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5370F188F9ED
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 10:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB15B18932AC
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 10:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BF6227E9B;
-	Tue,  3 Jun 2025 10:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E5322A4F1;
+	Tue,  3 Jun 2025 10:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3dZkP9S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ulgtjzp2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8143F2C3263
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 10:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2E11C32FF;
+	Tue,  3 Jun 2025 10:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748947334; cv=none; b=f2V3g7JMHZaWcHNrJlukBsMCQQ6LySLKWZ99V2EE1nENBBriXprGJXLeKiHmu68K7m5iD9pmsgttRJpOV3ni9mR0bSGR8J/VRepwhyxib47oOsFApIb+Qv2TwZt5uUvHcR1Rd0YOx6LMad/gnKngpEfE1y7Wu8gM7B7dRYvX1Eo=
+	t=1748947573; cv=none; b=JHyanoRqNFgV7yK+DEX2+hpFGNkzQZftRgKFviKA0GECGRbBxRXvFOlWfPbykHUNaiSuNkRCMLH43tqBUrT0s35O8GUh6AsNIruPVg6ckzvpW4LE1JktCTG8POXZ8tTwBApt+kuNKSON31uhK+zoBgmOo1aYFIy6k350X3bpgPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748947334; c=relaxed/simple;
-	bh=9f3UWrlbz8iP19nncpSwogZ8NndbfVlsVMfGxCiHk6o=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=cVqgUMCJQsL5+VCfsMIbu+zn4UWwPEN/OVBpBHrEv/BAWXXiLv/oIB9LsYDU2xNpoOY6Y3Hubw64Oyt4N/I8pGcTmPPOHcir1qs7QdPzqdljcL53bJyDmxDvZhffg/gm1CQmvf99cV29mRDRcrbV1yye+t9NHJMMfAZR6MnAebE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3dZkP9S; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748947333; x=1780483333;
-  h=message-id:date:mime-version:to:from:subject:
-   content-transfer-encoding;
-  bh=9f3UWrlbz8iP19nncpSwogZ8NndbfVlsVMfGxCiHk6o=;
-  b=H3dZkP9SPiV6j0VrfDufZWcJB+lnE1uMdCvQRBdVJ3jWKpWtAKgCvQNu
-   3bPpXNdTHMBC6AJJ5KeksPPaWn8sme3sPgIPU31w8HbgxhChFJzym9yZa
-   fM8gW6CpcqwWALrf0cNReYPUcJnTZuVe4g1MT2syI9ikK5GWKdccuNy0Y
-   pUzX8LAktF+Muz+kuaw0CaNFzzJWT+NJ6U/Gx1EM0Ajq26G6t+8jtbvIZ
-   9/7OoN9yYel6rAWBGP8flNSMBahslbqHgjaNDUoV0ioZe3Pr4utx+cccz
-   l2Y3djkn0QB9k4MWF21HeKpMtf7GltWu+IniHCvMJCcsWOQM0o/ZkX8+J
-   A==;
-X-CSE-ConnectionGUID: 9Kd+SvVnScOQOFdtse8xbw==
-X-CSE-MsgGUID: zy1S+FvtSRymspSQWn4jCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11451"; a="62371006"
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="62371006"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 03:42:12 -0700
-X-CSE-ConnectionGUID: wkm+QVYuSp2iejcn5qwhHw==
-X-CSE-MsgGUID: yXMDXVHrQPKe3FVOvSFgRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,205,1744095600"; 
-   d="scan'208";a="144704749"
-Received: from unknown (HELO [10.217.160.151]) ([10.217.160.151])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 03:42:11 -0700
-Message-ID: <fe7c8681-83de-4f3e-8dab-04185f0f9416@linux.intel.com>
-Date: Tue, 3 Jun 2025 12:42:09 +0200
+	s=arc-20240116; t=1748947573; c=relaxed/simple;
+	bh=u7+rGQR8YnbIhg+Ut8CGfnXe/MVcQN46BQ98CcOI8fY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=saM9m2rcLzNkchLZ8/mhMKbVt0crMrM0uTWHs+YOf97B2U0q1eP42IN42EVN88Ptt8WVUQQ5ac32ZQN2GbavxtZTbALW5LoYyPc9B2IhG7lzMeAjwyjxMRJIcXwobPvcQIZUBA9asaANO2rf+wdagZxp22xy8SZtx5B4EQZJCx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ulgtjzp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94E5C4CEEF;
+	Tue,  3 Jun 2025 10:46:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748947572;
+	bh=u7+rGQR8YnbIhg+Ut8CGfnXe/MVcQN46BQ98CcOI8fY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ulgtjzp2AB78bDGrXDgZ274uy3DfdBwjyd0AjuHDZyzxbEPsBjCxpRfmHavIXog+Q
+	 Qp37E+MPWPok+dKPp08aa+37hMNKi6E7/yoK9KCW+KEyUsYmRGdh/uhacUAowWPIW0
+	 bjnLKnGJIZt6Yz2DgCtZAo0Fanowx31vB2phdEkLjW+3jcxFGyRUWMC4jDjNC31HUQ
+	 eu5gM7jduEotuBIv26BscgF71F+iwgB6LeaqNrBZLVR6mwn9t40wWIpMUU5TcDaEAT
+	 TGNFMBwnrOUspBxb7f6yVgGL5wB7RW6OqoSjqHY34aq+LKqhU8R4mQ/R9R43RjuH/r
+	 esGRfOsnGHtUA==
+Date: Tue, 3 Jun 2025 11:46:06 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 5.10 000/270] 5.10.238-rc1 review
+Message-ID: <4ba58b4c-414d-480b-b02b-c1724f6761f9@sirena.org.uk>
+References: <20250602134307.195171844@linuxfoundation.org>
+ <6dd7aac1-4ca1-46c5-8a07-22a4851a9b34@sirena.org.uk>
+ <2025060302-reflected-tarot-acfc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org, gregkh@linuxfoundation.org
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: Request for backporting accel/ivpu PTL patches to 6.12
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oKdheFR3ZFNHnJa7"
+Content-Disposition: inline
+In-Reply-To: <2025060302-reflected-tarot-acfc@gregkh>
+X-Cookie: Avec!
 
-Hi,
 
-Please cherry-pick following 9 patches to 6.12:
-525a3858aad73 accel/ivpu: Set 500 ns delay between power island TRICKLE and ENABLE
-08eb99ce911d3 accel/ivpu: Do not fail on cmdq if failed to allocate preemption buffers
-755fb86789165 accel/ivpu: Use whole user and shave ranges for preemption buffers
-98110eb5924bd accel/ivpu: Increase MS info buffer size
-c140244f0cfb9 accel/ivpu: Add initial Panther Lake support
-88bdd1644ca28 accel/ivpu: Update power island delays
-ce68f86c44513 accel/ivpu: Do not fail when more than 1 tile is fused
-83b6fa5844b53 accel/ivpu: Increase DMA address range
-e91191efe75a9 accel/ivpu: Move secondary preemption buffer allocation to DMA range
+--oKdheFR3ZFNHnJa7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-These add support for new Panther Lake HW.
-They should apply without conflicts.
+On Tue, Jun 03, 2025 at 12:06:34PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jun 03, 2025 at 10:45:34AM +0100, Mark Brown wrote:
 
-Thanks,
-Jacek
+> > This fails to boot with a NFS root on Raspberry Pi 3b+, due to
+> > 558a48d4fabd70213117ec20f476adff48f72365 ("net: phy: microchip: force
+> > IRQ polling mode for lan88xx") as was also a problem for other stables.
+
+> Odd, I see it in the 5.15.y released tree, so did we get a fix for it
+> with a different commit or should it just be dropped entirely from the
+> 5.10.y queue?
+
+There's a revert in the v5.15 tree as 2edc296e2107a003e383f87cdc7e29bddcb6b17e,
+IIRC it went it while I was on holiday so I didn't test the release it
+went into.
+
+--oKdheFR3ZFNHnJa7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmg+0m0ACgkQJNaLcl1U
+h9Dozwf+PW62Yrq5PadUHzc2/xbOeKGHAIUPf6zvLH7xXV1V7F39peA/1jlAEXnt
+iwV45c255KpF5qTI/kOJKNscoERg+Rukzs0a2KXxuINbPYY0vfMGuFdPy9Dd7JFG
+OMg8L/D0Tz8XDNfqOp1oAohGoMqSa58/XPwa7KW5Y8q33jZj35/BfwoaF2cDo22K
+txzmADAfl4i44adRzbS41ArO3zn4bFiX5HpHfPdj6b0z24VcDoE0ckc7ayUOGRmv
+cCZUjsHspC1nMvodOazhvWg9eNgbaI8fI/dMjjMLBbf51W2wZahuN/WREgTzTHXC
+PIm4rEwDMbbrM4dv2i7eGRUeh8TIsA==
+=a9cn
+-----END PGP SIGNATURE-----
+
+--oKdheFR3ZFNHnJa7--
 
