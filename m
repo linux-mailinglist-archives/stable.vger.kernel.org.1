@@ -1,145 +1,130 @@
-Return-Path: <stable+bounces-150722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F19ACC9D6
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 17:09:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5086ACCA63
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 17:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF1863A6036
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A48511665EB
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852F523C4EC;
-	Tue,  3 Jun 2025 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEDA23C8D6;
+	Tue,  3 Jun 2025 15:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YbTk7AFu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dn5Lp0bK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594123BCF7;
-	Tue,  3 Jun 2025 15:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2C23C509
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 15:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748963233; cv=none; b=h7YloyBZJ99KDTdSMvVWHehCCQtkrsLXB2VQ1lwhbX8ETPcNO97keHfmEV9e4W4IPOxP2ry2tsuRk1F8O1mRnRTZBEIlvRGyJkOuyx9um0GRChTqKct5UGryMPmORF0hyKTSYJ3lO53EsyhCHirRb3JajETsDhB/DZ93g+89XgM=
+	t=1748965404; cv=none; b=Lpl/UfPY2Mhuokya7w+/GUuf2mzFLG7rOMiVPfZ99eICQccHiuo00yputECAk0YJVJ4plYSaBYRkjqq7sxYdMOkKz5a8HkkX9t/8oLkIZZU+6m7gB5Z8w/3SkW6JConAZWxEsD1d99bOUvuk6aqPbkl7MdEMRBVVSYskzgSdEXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748963233; c=relaxed/simple;
-	bh=8V2kmbUZiu9hSlXFWJGJ4smleoQNWTcBNXYPPBlHjmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JNm1UerunCfxN/9Fe2PeRI2meKn1gikJzTZB/FmYgZZEV8/SNHZ5tPQP0omML/DFZR1qyHFDzEPVPDGZtyrMmoENFb8ip2Vq5ceHGq0GF5ms5iQ6XWmpFpEqlxWrQrIjGSvEBIEo1KBJKgzG1J/oQ7mGXhkxofvyjtY5HvXMmGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YbTk7AFu; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-747fba9f962so951584b3a.0;
-        Tue, 03 Jun 2025 08:07:10 -0700 (PDT)
+	s=arc-20240116; t=1748965404; c=relaxed/simple;
+	bh=aKo9WNWRBL0f8HmrtPSASNW+mdOzeR3AWVqy7W4T820=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K73tzahRWIwJ3U44h0TzjqfNZvdqIzapJFdk0H874HbQ9uA1Y7PpFEpiB9o3yn4Bbi2m0Ah8rf8upARGophPiiz3Cp2q5NupzgefQ+5LqrLCasnBruuoauNtLDYZYCnBx+6/zQBsz99yh08JUoZhX6BuR7sqrXd5i5fri+19ius=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dn5Lp0bK; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ad89f9bb725so1155696066b.2
+        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 08:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748963229; x=1749568029; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rHRcx0Q2kd7s5w9xmY/qLmUUkyxdFzsoRB5ggIvT+6M=;
-        b=YbTk7AFu9Ekm9Aod/0bD39/25yQrjNj68yTj5shjJBHZee2LDeefp53mdyKrc04DT1
-         LUwEhkS054F2vXJY0zPyyiPGvKoAc8PQ7ubhRcTdWHnyAEEnul/ouLt2/cOmtLB3oSZq
-         VI8tQZDoTUqlP0MBjhL4tQoZXIkEM2MQRATBX7wfs81UlMylf3PAs2wcRJeYX16qZIhV
-         DGpy+kBhcOJu06+mcveYTSS/k8W7pUtKrVVa3McyCo0v7jGsKrNhyN6dJZ9SicqrVf8H
-         6jvcvs7gmd4QKZpvptxsX5PjT2AB+zEHQMuxbVi5tBk8SDFy40Zosx8tx3URVy3uz0Ik
-         L81A==
+        d=linaro.org; s=google; t=1748965401; x=1749570201; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=172AOsAQz4QlRBaW+nRn36onwnXefgQKgc9WvkOzeXc=;
+        b=dn5Lp0bKDGpLka3BIU+PNOMDBTnjqJ6TcNBnKA9IurpOBFORDMHiLUAEjLqZeRP41o
+         Zj6fUUGPeYh/id/u7KywDsovgxjJuhM+SeRFTOS8O4uQxx4T9Hlq7teWVVH14RHccAHL
+         Od0g948M8zIZEtLNuEnq4tLUr3UNLpSWDqJIA88+8RVqcJ3BHQKCULikJ9jRbpO1AB/i
+         HtOz15pKID+N50w7l8dV6YG5ynL9aro1I1VFXxwJgmujgHhpununNuG2C2qiPp0+V61B
+         tiJNJoUh9aFI1BU3UEe1qlLuLZqV45Jah85mO1oioqLh4nF77pWv9WH3QWYLQJiBS2j2
+         h3yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748963229; x=1749568029;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1748965401; x=1749570201;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rHRcx0Q2kd7s5w9xmY/qLmUUkyxdFzsoRB5ggIvT+6M=;
-        b=isi4MSGk0JHX7M+Aslx3t2I4eBkP2Imv7SpG/V2Omwh5i6jNoAeAGKCZiROPLjgOZy
-         F1CvDKGiqjg/knc8RC5Naof4VdceaV7UnHXpDlq6yaAGSkQ9pW/oENr1Y5uXpnX/MUwt
-         eyfgv7iWSY3jt93hNp+kh+pO41HP7RpsMLlQWKhLTglqHdZbQOyPjR/jJYbbOoqPiYE9
-         /qBX0/59kEnv09rrQzN4yzMsB8zXGJiwy0ursl9xJrrA2Vlz6BsEQnT9oImnLIT2eWri
-         eQyBT26eZ6nI3wx71dgp/Fg9yvunDuU1lPc3oDLOa1B4ql1dzfsX7IplLWxa8dYR0R2j
-         rUxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+LIeY78Y/3ALe9UodHe0gy5AZiVW1sOB/XQd3q4Fz5Y1OnpmOgsxZbxn5dhUBGZHFsmGVmr0jaTNTcnbg@vger.kernel.org, AJvYcCUEl/SkggVTTSGFtlyyGnrgLiFdB6xIbGuZGr2YfRhqwuhBH8/W7b9i0DI8c07Xi189dyI=@vger.kernel.org, AJvYcCUVUnlgmdAJneRoUcTK314lgNe7RDxrEUg3PEkV4i7LqA5/HC7BfdWJjfBa9aG9QeD7aLoF+g32@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7XBTiXBv4zz5GyBVAa0b3QnMrTg/5LCp6H+jubgIhd64JUozK
-	tnuZhZGjy7k+wFXuOj0hL/C4HPqLKqtcYFpN9LJS94LSSwBZUpltTwMhaCLjSg==
-X-Gm-Gg: ASbGncvXo/7RXftK2Q+vNEPJrsZYfZkahLIZJ71bhSTkSQMBLR0Yps+kbGHQKQWC4On
-	Ry0PYyzxwcPgD1j6DL3E6kjddnfPgmoGM9gUCwY4RQvWsVI0baNmqzfDQL5PlyN60RsjRIObVlp
-	bPpM6czUE3jyxEyyAlxRwf1cRj+bvyHnn1EIqYJo+tTGc3UIkYb6qlt5hdhjvUqBkq4rmZMHWj0
-	Pf6bM/Z10uq1qh5AxxpISDOyGGlT4/F4rT4Vt7kFngAa2Y/t7gIq70TT2EnuDHGGFKWE78EShDD
-	qGA+cT+LGVIofN9naxjJB6w1NeXdQKAHAxzTuP5iF93zT5iG9htyHx1mjyE8imTa0anQeB41A1R
-	rTw==
-X-Google-Smtp-Source: AGHT+IF0pZpF9yVqhFdo6KrG71N2ZNsh9D4aeXFDJnmId/+aHoYpiDUuxam3stwW5F7pvrA6H0vAzA==
-X-Received: by 2002:a05:6a00:194a:b0:746:2ae9:fc49 with SMTP id d2e1a72fcca58-747fe29e165mr3581505b3a.9.1748963229373;
-        Tue, 03 Jun 2025 08:07:09 -0700 (PDT)
-Received: from minh.192.168.1.1 ([2001:ee0:4f0e:fb30:c672:ef11:a97b:5717])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-747afeab0d0sm9461782b3a.44.2025.06.03.08.07.02
+        bh=172AOsAQz4QlRBaW+nRn36onwnXefgQKgc9WvkOzeXc=;
+        b=iYWPzqrUjUN/IA7ft/Bs84vEU/iYvU4baeLxvMQBFaWrHl8Odu8EqiwWHvB7nkYFVQ
+         Nfony1SKJdX7J2gRDmZ6esAwxAxXy3i0fFnjiKRfLzEy5xFydfJzqPIitmFnIbLgV6zV
+         TTpsD3gXYp+KPSe1MWGewV2XceHhUg7KUdgqOZ/iaPAE6QRqQxoYZINxtI2TTHM9B/+f
+         GJ1L5C75sNXIoq1QylKKj7WMbXT+Yt+7I5ar5LAish63K0gd11x30milns/sRf+ekg6m
+         KZBBzuPx3SjkRn9zysiC9L3rriGB06VbIwKw5EWrqI1qla/u79GPnYDYJn3VY+MsgfCQ
+         iS3w==
+X-Forwarded-Encrypted: i=1; AJvYcCXYRPtMNz1/tJjTOOsCHOe+HZ2P+T8PenndyV9GrCHKmPiWz8ZBnGkcSZfVXzqa2qltpDAvZBE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLXYrH3uFYVo/sMELVF9PVNv4uvY/TihVXTXsAYMia9WbY4Rk+
+	hH5+/tUA0M9XhtEAPrECTmuWdG3ZBlxur4gItRpIwwW6Eb6upcAoEIHVtXjMBZPHU6w=
+X-Gm-Gg: ASbGnctkS4SXUqLJXlLkCfTNuGslxuTypNZiRAXH0r0DfmUtRVzQbiLj/OnAWQ6DaSg
+	K1ZK1kjtLSpC1wNoTYv5nf/ngzbCWhBUkX6iGpGoNjcF4n8S+wGbz+WEuis13KEGRYLkLzkCNI9
+	PFaOEmPM8iOfqrxjJXJuLY3tkjASMJJ7qSZQAUu9lyj2oe2VBPd52ulnkHIviQVXxbarhctOC54
+	mo9/yKOmPjaai+pyuA/Dbhgwb0og08P9PVmwOQhncBBQyK5527ZU9/7AjqtMMhnm2vQOq0MWie+
+	rRPF3fmVj7YWrYHXSzJHvN8n7FOnNcBx1m7HM+gAGX2frUMU3rVhx/DBXxsurp1uVaTOoPzAYoQ
+	uscv+mrraNZJTBEVmj+oljfysK7s082xLhwg=
+X-Google-Smtp-Source: AGHT+IGloNqlwgmA2JLdwpv1Sfgyhpoy3jA6UsqagxeRD/QCKnQisvHafq6ll76RsV6qpOjXtFvGFg==
+X-Received: by 2002:a17:906:478d:b0:ace:5461:81dd with SMTP id a640c23a62f3a-adb36b05802mr1654872166b.3.1748965401077;
+        Tue, 03 Jun 2025 08:43:21 -0700 (PDT)
+Received: from puffmais.c.googlers.com (140.20.91.34.bc.googleusercontent.com. [34.91.20.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d82de9bsm959277166b.47.2025.06.03.08.43.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 08:07:08 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] virtio-net: drop the multi-buffer XDP packet in zerocopy
-Date: Tue,  3 Jun 2025 22:06:13 +0700
-Message-ID: <20250603150613.83802-1-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 03 Jun 2025 08:43:20 -0700 (PDT)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Subject: [PATCH 0/3] clk: samsung: gs101 & exynos850 fixes
+Date: Tue, 03 Jun 2025 16:43:18 +0100
+Message-Id: <20250603-samsung-clk-fixes-v1-0-49daf1ff4592@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABYYP2gC/x3LSwqAMAwA0atI1gbqp4heRVzUmtagVmlQBPHuF
+ pePYR4QikwCXfZApIuF95BQ5BnY2QRPyFMylKrUShctitnkDB7tuqDjmwRN7fToRl3bpoL0HZH
+ +kLZ+eN8PPxlKomMAAAA=
+X-Change-ID: 20250519-samsung-clk-fixes-a4f5bfb54c73
+To: Peter Griffin <peter.griffin@linaro.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Sam Protsenko <semen.protsenko@linaro.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-In virtio-net, we have not yet supported multi-buffer XDP packet in
-zerocopy mode when there is a binding XDP program. However, in that
-case, when receiving multi-buffer XDP packet, we skip the XDP program
-and return XDP_PASS. As a result, the packet is passed to normal network
-stack which is an incorrect behavior. This commit instead returns
-XDP_DROP in that case.
+Hi,
 
-Fixes: 99c861b44eb1 ("virtio_net: xsk: rx: support recv merge mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+The patches fix some errors in the gs101 clock driver as well as a
+trivial comment typo in the Exynos E850 clock driver.
+
+Cheers,
+Andre
+
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
 ---
- drivers/net/virtio_net.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+André Draszik (3):
+      clk: samsung: gs101: fix CLK_DOUT_CMU_G3D_BUSD
+      clk: samsung: gs101: fix alternate mout_hsi0_usb20_ref parent clock
+      clk: samsung: exynos850: fix a comment
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index e53ba600605a..4c35324d6e5b 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -1309,9 +1309,14 @@ static struct sk_buff *virtnet_receive_xsk_merge(struct net_device *dev, struct
- 	ret = XDP_PASS;
- 	rcu_read_lock();
- 	prog = rcu_dereference(rq->xdp_prog);
--	/* TODO: support multi buffer. */
--	if (prog && num_buf == 1)
--		ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit, stats);
-+	if (prog) {
-+		/* TODO: support multi buffer. */
-+		if (num_buf == 1)
-+			ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit,
-+						  stats);
-+		else
-+			ret = XDP_DROP;
-+	}
- 	rcu_read_unlock();
- 
- 	switch (ret) {
+ drivers/clk/samsung/clk-exynos850.c | 2 +-
+ drivers/clk/samsung/clk-gs101.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: a0bea9e39035edc56a994630e6048c8a191a99d8
+change-id: 20250519-samsung-clk-fixes-a4f5bfb54c73
+
+Best regards,
 -- 
-2.43.0
+André Draszik <andre.draszik@linaro.org>
 
 
