@@ -1,164 +1,114 @@
-Return-Path: <stable+bounces-150704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E68ACC5C7
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:49:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E76ACC5CB
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEA3A166AEE
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:49:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 826C43A2D41
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2316C22E3E0;
-	Tue,  3 Jun 2025 11:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E600322B8D5;
+	Tue,  3 Jun 2025 11:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EjwPsOj0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dUYsPeG9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhM3ICak"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2307C22DFE8;
-	Tue,  3 Jun 2025 11:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAC51D7E4A;
+	Tue,  3 Jun 2025 11:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748951358; cv=none; b=J/iGs2+9UyHvHpneIbAbJMiyn38xe5lzOHLTjaesZMntN5fwzOQvkWNZw215rsdnJUnBOV+asH3YXopQI2DxLGzT1aX7J7WxjFTeQ1gpBqLXjtDBN8Ts54UIQBbgQUSGklUMi4nVTiylRFa1dLEWwWCPpstXCjB/DYAQN8h3OEc=
+	t=1748951508; cv=none; b=TAxTbBpUCoMJRIXkEsMkLfHFM5DrO0OXqT6I1OHT8ZQBvcSGOvmR2b6Ayw8mmzsUy4OLJSZQlCWGkUwJJQLuYW+TWwtSyGFCJ+Vo4leY8ShMA0iM3Osp3sLmLmbjNwmKTtIbWFNZmlzYA6Ccx7CZEo7XQ1o/XakT5fs0YJUtt0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748951358; c=relaxed/simple;
-	bh=wom79q92oCFLcZlN7tEa7jlXzfWsnWnHafZTXK6l0Iw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tmoGk2eYnWZyOf9ajxdD257BNkKO5KqR7tcV5DHpmFuaDo7JcxgqaK6pNuHhAyroJ7xiqBDt7h8DbY4iF/hj7KO9H/IluctabwMNqY9lf8QtNuaYtnf66z1gwYnBtD97KVKwaF6106r4wRee3JBId8a7/6drU17b3TqvHjYau34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EjwPsOj0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dUYsPeG9; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1748951355;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oMdxVtTtFnSvdmEEqBijs6M91boPnIabeZHBVmqzvPk=;
-	b=EjwPsOj0dLQE/8aFL3ohPMaRoo0e/s2GZB+PG+3m2tfAa0LMtAm9nqn1rx7IfHR5Z7OWBv
-	KVIIGzw5Z27uqRzZBxJXZmtv9E5hwe07m1wuksd5wdsLObVyjh/uu2KJpfI8f4Fds1JYPO
-	Moech0JSHXX71BQa1opFTYUj04mZpCnh39o84ooVyMtgoSBwF9jL2vQQdVW/jXQx9SZsWq
-	VlxCReNVl+d1ThaJPuyYE3r35k2gl69BT7zrjy470Y21AXvko1o4YwwWimTd/EQFixPNnS
-	TrNce6WbFBJDRP0B0cVSwztYjelLwszM/kDe0OMd9q/rkEBfmjBWtBpSJYVKcQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1748951355;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oMdxVtTtFnSvdmEEqBijs6M91boPnIabeZHBVmqzvPk=;
-	b=dUYsPeG9AFR7ZdVKavNrhR4xPgd4/ZYrgxEEAoShaQm7l8kfScYHN/Pz4hEkoECXOJFfLt
-	0bpn1r+RHnbsesAQ==
-Date: Tue, 03 Jun 2025 13:48:54 +0200
-Subject: [PATCH] LoongArch: vDSO: correctly use asm parameters in syscall
- wrappers
+	s=arc-20240116; t=1748951508; c=relaxed/simple;
+	bh=+0+FjG1D5+BMAtWOeQZfZLKkO7QEDZvJWmT8YImYI40=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tOZWVpW2AFBhMFFO38ppAniqhgAQEaeTfE+WPTNaCelbC2RUOK+3/Wl8qe2AocTKGePEQ4anTt7zYXFZkVPVSnFlIsxFk+xpOosNuJsG8iraQDmrAqck3/3VtiXeo+naliYDZ5HDQS0b1jjQTgWJnC47R9GE75F1+tYJPzme95I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhM3ICak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146F3C4CEED;
+	Tue,  3 Jun 2025 11:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748951508;
+	bh=+0+FjG1D5+BMAtWOeQZfZLKkO7QEDZvJWmT8YImYI40=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MhM3ICakdOUq8YMMClJ+Aoem1yJe+icrKA7IEd+rPdVC3y6OyPe3x2Ua8ZLtD4y4F
+	 NLRhmQHZPKtJXpP+Ys1fw2FEzvFYC/qnqmXa3F5Ve73EnS5kn8dHALzsJVSigeF8Tg
+	 0A9mEsNgn8HKMQjFFyo975nKpA/cITqwIpEph2ZAq8FAGl9MYT33dMT7SsDQFlh+o1
+	 JCxCZH2XJ5KiWQuG/u20Ir+5XWwj5bnsqDwRM+eSe2mlHq8etUwOrW2E/j6pGILH3g
+	 Qqx04b+t/jqlgk8qSUcyWJ6QCYjZMN3/gZLVgJhP3HxgIP8zHg7qRW78WbPqCSP6SD
+	 HsxqrHG8G51PQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uMQBE-00000000453-1hpd;
+	Tue, 03 Jun 2025 13:51:45 +0200
+Date: Tue, 3 Jun 2025 13:51:44 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
+Message-ID: <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
+References: <20250526114803.2122-1-johan+linaro@kernel.org>
+ <20250526114803.2122-2-johan+linaro@kernel.org>
+ <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
+ <aD1axxSAJsbUfnHH@hovoldconsulting.com>
+ <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250603-loongarch-vdso-syscall-v1-1-6d12d6dfbdd0@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIACXhPmgC/x3MMQqAMAxA0atIZgNVqahXEYdYowZKKw2IIt7d4
- viG/x9QTsIKQ/FA4lNUYsioygLcTmFjlCUbalNb05oGfYxho+R2PBeNqLc68h5X21nq+5nJNJD
- jI/Eq1z8ep/f9AAP8HJpoAAAA
-X-Change-ID: 20250603-loongarch-vdso-syscall-f585a99bea03
-To: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Xi Ruoyao <xry111@xry111.site>
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748951353; l=3225;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=wom79q92oCFLcZlN7tEa7jlXzfWsnWnHafZTXK6l0Iw=;
- b=3jgZcQJ3gm6pwD+AzZ1xE/BHuSfeZIiVw/+Nnhy3PUYU1fJnM8+f0WObpafBHQrqu/2ZDkpTc
- 4bUHhFr2fhpA/aVAes5K8IZ/IBAp4j39bk92v8lblXzB0kMOLsKwQKp
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
 
-The syscall wrappers use the "a0" register for two different register
-variables, both the first argument and the return value. The "ret"
-variable is used as both input and output while the argument register is
-only used as input. Clang treats the conflicting input parameters as
-undefined behaviour and optimizes away the argument assignment.
+On Tue, Jun 03, 2025 at 06:52:37PM +0800, Baochen Qiang wrote:
+> On 6/2/2025 4:03 PM, Johan Hovold wrote:
 
-The code seems to work by chance for the most part today but that may
-change in the future. Specifically clock_gettime_fallback() fails with
-clockids from 16 to 23, as implemented by the upcoming auxiliary clocks.
+> > No, the barrier is needed between reading the head pointer and accessing
+> > descriptor fields, that's what matters.
+> > 
+> > You can still end up with reading stale descriptor data even when
+> > ath11k_hal_srng_dst_get_next_entry() returns non-NULL due to speculation
+> > (that's what happens on the X13s).
+> 
+> The fact is that a dma_rmb() does not even prevent speculation, no matter where it is
+> placed, right?
 
-Switch the "ret" register variable to a pure output, similar to the other
-architectures' vDSO code. This works in both clang and GCC.
+It prevents the speculated load from being used.
 
-Link: https://lore.kernel.org/lkml/20250602102825-42aa84f0-23f1-4d10-89fc-e8bbaffd291a@linutronix.de/
-Link: https://lore.kernel.org/lkml/20250519082042.742926976@linutronix.de/
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Fixes: 18efd0b10e0f ("LoongArch: vDSO: Wire up getrandom() vDSO implementation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- arch/loongarch/include/asm/vdso/getrandom.h    | 2 +-
- arch/loongarch/include/asm/vdso/gettimeofday.h | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+> If so the whole point of dma_rmb() is to prevent from compiler reordering
+> or CPU reordering, but is it really possible?
+> 
+> The sequence is
+> 
+> 	1# reading HP
+> 		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> 
+> 	2# validate HP
+> 		if (srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp)
+> 			return NULL;
+> 
+> 	3# get desc
+> 		desc = srng->ring_base_vaddr + srng->u.dst_ring.tp;
+> 
+> 	4# accessing desc
+> 		ath11k_hal_desc_reo_parse_err(... desc, ...)
+> 
+> Clearly each step depends on the results of previous steps. In this case the compiler/CPU
+> is expected to be smart enough to not do any reordering, isn't it?
 
-diff --git a/arch/loongarch/include/asm/vdso/getrandom.h b/arch/loongarch/include/asm/vdso/getrandom.h
-index 48c43f55b039b42168698614d0479b7a872d20f3..a81724b69f291ee49dd1f46b12d6893fc18442b8 100644
---- a/arch/loongarch/include/asm/vdso/getrandom.h
-+++ b/arch/loongarch/include/asm/vdso/getrandom.h
-@@ -20,7 +20,7 @@ static __always_inline ssize_t getrandom_syscall(void *_buffer, size_t _len, uns
- 
- 	asm volatile(
- 	"      syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (buffer), "r" (len), "r" (flags)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8",
- 	  "memory");
-diff --git a/arch/loongarch/include/asm/vdso/gettimeofday.h b/arch/loongarch/include/asm/vdso/gettimeofday.h
-index 88cfcf13311630ed5f1a734d23a2bc3f65d79a88..f15503e3336ca1bdc9675ec6e17bbb77abc35ef4 100644
---- a/arch/loongarch/include/asm/vdso/gettimeofday.h
-+++ b/arch/loongarch/include/asm/vdso/gettimeofday.h
-@@ -25,7 +25,7 @@ static __always_inline long gettimeofday_fallback(
- 
- 	asm volatile(
- 	"       syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (tv), "r" (tz)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
- 	  "$t8", "memory");
-@@ -44,7 +44,7 @@ static __always_inline long clock_gettime_fallback(
- 
- 	asm volatile(
- 	"       syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (clkid), "r" (ts)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
- 	  "$t8", "memory");
-@@ -63,7 +63,7 @@ static __always_inline int clock_getres_fallback(
- 
- 	asm volatile(
- 	"       syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (clkid), "r" (ts)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
- 	  "$t8", "memory");
+Steps 3 and 4 can be done speculatively before the load in step 1 is
+complete as long as the result is discarded if it turns out not to be
+needed.
 
----
-base-commit: 546b1c9e93c2bb8cf5ed24e0be1c86bb089b3253
-change-id: 20250603-loongarch-vdso-syscall-f585a99bea03
-
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-
+Johan
 
