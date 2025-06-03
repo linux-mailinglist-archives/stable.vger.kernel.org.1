@@ -1,130 +1,214 @@
-Return-Path: <stable+bounces-150726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF31ACCA70
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 17:43:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F813ACCA98
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 17:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88FCA7A23C4
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBB613A479D
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FB923ED74;
-	Tue,  3 Jun 2025 15:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B638123D283;
+	Tue,  3 Jun 2025 15:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BxutIJ/d"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tlHAVM2W";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rUE07HBX";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LWr5n/Au";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/yIPd/Dv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B75B23C8A0
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 15:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1FE23D2B2
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 15:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748965407; cv=none; b=U/PkJoZ6QHVF0CNg08QG+lO20UDA22ktoFvYLmrCRNuMEKw/AEdIZdkwXJLWWOP3p/gR3hPK8HMnCw+lr7iWJYe3+I0qwUdGYOqaChZ0gFMXzaT9ogHXvcKxeSTgb5BmTtSjC+vUtBI9CPfn3RoVIvdn0SHETI0W6oXaQrL2h4A=
+	t=1748965939; cv=none; b=Kmikju2m+huVharLSKJfzxfUldC8keGuJ5a+rOyEZymmcLssOFiVxDY3K1oQswDljPlIWp2bmsrGjUo3vwWesI4H5j2ucLXkCIPq2t8Zb2wHMs1LSFOTlh6WGXOrobJZlX5s94LX1ULZDx3tZy8S4SsE+y3Xn2vgV11RrVsMLOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748965407; c=relaxed/simple;
-	bh=EkPTYV1qpD5I8FZtfNjsSjTt+gP3LGJ+qju8+Sz9SVA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WIjFHgINECyGwQs+LZVeKd35rUb6e9OhI+PNXEMO/pDzPxMmPjSseYEApwhPqbC67mUfZYyc67lOL5PSTELivJPj0Sfxie3mliYDK6FvzJYQ+CEZb0SX1t8v+sJmwtjGEoXgDq03mVPZ2QlnsswAV5SUN0W3kl20zxxZf//95Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BxutIJ/d; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-adb2bb25105so922936566b.0
-        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 08:43:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748965403; x=1749570203; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CIaiXwYKVn8R6QIWY00MiAnh81IbvOV/xhrE7RJnhkc=;
-        b=BxutIJ/dVVDkhqTn+rJvrPb7YRQGvrzcANNN2JEvBYp4hUy0g9iZUXtuYKAgKeU0hb
-         hq/jB6ehs+43rPfuWyv8aBOEtaUc83xRYBmYjAYjjElXC0s9PJx6PKWDvfgir7W12cEr
-         8YxxBrcPIn9pWBb70sPeC5iw6VLEBUuwY+u4i46Z8bLWiCziydrlMQqalyL6N6E8a/By
-         B/Fzk9iPHtpZIf2N8+K7q/WNZtDq6eZLGGRa1lV5HQ482Oq2Ix6a+nnTZTB3FsjGrei2
-         oV+qhtAPDgyj4/oaTQbQdEK4DYP/KRjVjBz6sH7oGJvgO+yaNvanYQQXxP/elG9xj6ta
-         gSAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748965403; x=1749570203;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CIaiXwYKVn8R6QIWY00MiAnh81IbvOV/xhrE7RJnhkc=;
-        b=MY7pBAo5sFJVDAkDbIE/fOpr5TEux+2Rp+DwAbGH2HPiWFI6B+dETSv+XokNmlxAVC
-         y+qAqdb0x3Z5iJAdi+gE9lrNLYZjoBoo/uTXeaJ20hqWZv5q+T2ZIqlAp1M5HXrPqNbo
-         avztD963hoaCin51ABcQQcOMd8Et6o6yZTuvDwBsJ5AUGwcV/+67LZIyJWzzR51rOFSF
-         qUjc8v2n6RSkLwSqPUlejU8Bfjsc5LsMiAn8dlSgBtztKj0kfEmIuKKcsEZeoxK/s208
-         rte76tmVIBj6++CcuoG5Mwsda27BQRISYKKFT1zYSTZ6Xv24+082gBingZ2eP36NeFGr
-         rdkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJfRd4odZywYjU8SV9ZecwAOJoPdXol96AdxIn2j2nKgRt7F/Gtl6jEuTAMOv0tjJA7Hn60eY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5ttp3lz7CYW/XYOrqHSdP9hMok5T+uUh3UMeC0qk9f63fsRhE
-	MCV5TUBBcJ+HRikIphTXCWr8EzxHvz8H4iglSjjDhxVTgfntyjBc/jBuiSRTzOtmVzM=
-X-Gm-Gg: ASbGnctCVkbDFZ3e0AEXgdokSJ8VMpz6Rr/FhCMLFz61yPH3PX670jrlpVDKMfQ8dGg
-	Pt59fJ2fO9t+KOHh83M7k8p98uwa/0TfDaGbXw2HIndBCOnO+9K/j6mJ1p+5KJZvIsmjT3nbdxN
-	PVvELV/0bxNs045RNhtmPkz8U3iXMSS2FxkA+qb9f+5VcvvNGLw+YBJif161ONjW+A5h/UZgLH0
-	U2ZCf0zkNzvzcxqrfS70k9rahJPm3MJ4EHb82aLIQEvM5W+zPX7suEwUIBVIfOOTGOGWCv/QJ4z
-	1n67fIjUV4kzE3CU+HHNUwbZNOMuCZJLP/2noNM4BsiX/73RxQNnu/WTHSgB1aZyssUGxiZxuZD
-	DdMBs5lUjA/ib50g0DDrO8bFOOz1lrOUcIK0=
-X-Google-Smtp-Source: AGHT+IHuYQHqV4Udvsmxd2a4zxZaKbBte+8oMefdUwG0LYe9b8Y64CtnGXRSZ5iS6KwNcCvJD1IEPw==
-X-Received: by 2002:a17:907:db03:b0:ad2:28be:9a16 with SMTP id a640c23a62f3a-adb36c117ffmr1500580166b.51.1748965402578;
-        Tue, 03 Jun 2025 08:43:22 -0700 (PDT)
-Received: from puffmais.c.googlers.com (140.20.91.34.bc.googleusercontent.com. [34.91.20.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d82de9bsm959277166b.47.2025.06.03.08.43.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 08:43:22 -0700 (PDT)
-From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Tue, 03 Jun 2025 16:43:21 +0100
-Subject: [PATCH 3/3] clk: samsung: exynos850: fix a comment
+	s=arc-20240116; t=1748965939; c=relaxed/simple;
+	bh=/44qJs2HfdGw2OUEI5WOBfoJIrm5ef8d7RM1T2h8OPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mBj90W67qcKF1ixH8Gl/jcRb+fsfU0H6q8azXk1FJ6dAF48CgdgcIuPSFUCOYEcDUoSxigEhpm+WPWT/3VheHgtaIkAOSXkNR92D2trmHr5Uye5LK0osE01zul3PUYguDXkGSEbaND3x6RxZ7VFWxSLfmArWwOsY7DWx1LN+vaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tlHAVM2W; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rUE07HBX; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LWr5n/Au; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/yIPd/Dv; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D62FD21AAE;
+	Tue,  3 Jun 2025 15:52:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748965936; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnYa67cqiWnPUqruK5qg6QSnua73y8Kcq4VF0lmQj/M=;
+	b=tlHAVM2WezBxXX/tBJvyKQ5CcGntV6d+M0vykYW6sIhRx1U5DpZWdgMu5W+l6/tfjHk3X4
+	cX7ST35YsjIKlk/KINXBsNpSS704V3+bJJMGq+mfet2Lo5jNyST5zvW7V41YIUJAyY/v+m
+	PwO6osQEFoxZB1K2EcJClF50r86EcA8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748965936;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnYa67cqiWnPUqruK5qg6QSnua73y8Kcq4VF0lmQj/M=;
+	b=rUE07HBXslhRIiCBYLKr03x9EnOJNTRVhMHoBc61swIrc40juE+6hiYfu0BVmjWjasbHo0
+	EKzNyxafxhZ8O5BQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1748965935; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnYa67cqiWnPUqruK5qg6QSnua73y8Kcq4VF0lmQj/M=;
+	b=LWr5n/AuFo2/M7gnxepHhn8A81bNW4noPSn8nzXbfiijY6DIa40C5DQJt3QMbAdVIVbobT
+	EljsLd/fI88Q1oalZMb/04QDmxttvj1Mdb6sslaNAWS8q+Kr2AsQTbNxR1aO9juRHGAFPC
+	Vja4cKs2NIPOc1SXKtmR5ZEYLZ4kfzk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1748965935;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FnYa67cqiWnPUqruK5qg6QSnua73y8Kcq4VF0lmQj/M=;
+	b=/yIPd/DvZa3xsX3iSFGapQsVpAj+aRA9K7o22xDsGLVUC6MILi1PbBWK8ILvLwHywVekBW
+	avgDHxeh8VpEpRBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D99A13A92;
+	Tue,  3 Jun 2025 15:52:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eR7kIC8aP2gCPwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 03 Jun 2025 15:52:15 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Zsolt Kajtar <soci@c64.rulez.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] sysfb: Fix screen_info type check for VGA
+Date: Tue,  3 Jun 2025 17:48:20 +0200
+Message-ID: <20250603154838.401882-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250603-samsung-clk-fixes-v1-3-49daf1ff4592@linaro.org>
-References: <20250603-samsung-clk-fixes-v1-0-49daf1ff4592@linaro.org>
-In-Reply-To: <20250603-samsung-clk-fixes-v1-0-49daf1ff4592@linaro.org>
-To: Peter Griffin <peter.griffin@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Sam Protsenko <semen.protsenko@linaro.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,vger.kernel.org,suse.de,amd.com,kernel.org,gmx.de,baylibre.com,c64.rulez.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,suse.de:email,suse.de:mid]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
 
-The code below the updated comment is for CMU_CPUCL1, not CMU_CPUCL0.
+Use the helper screen_info_video_type() to get the framebuffer
+type from struct screen_info. Handle supported values in sorted
+switch statement.
 
-Fixes: dedf87341ad6 ("clk: samsung: exynos850: Add CMU_CPUCL0 and CMU_CPUCL1")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Reading orig_video_isVGA is unreliable. On most systems it is a
+VIDEO_TYPE_ constant. On some systems with VGA it is simply set
+to 1 to signal the presence of a VGA output. See vga_probe() for
+an example. Retrieving the screen_info type with the helper
+screen_info_video_type() detects these cases and returns the
+appropriate VIDEO_TYPE_ constant. For VGA, sysfb creates a device
+named "vga-framebuffer".
+
+The sysfb code has been taken from vga16fb, where it likely didn't
+work correctly either. With this bugfix applied, vga16fb loads for
+compatible vga-framebuffer devices.
+
+Fixes: 0db5b61e0dc0 ("fbdev/vga16fb: Create EGA/VGA devices in sysfb code")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "Uwe Kleine-König" <u.kleine-koenig@baylibre.com>
+Cc: Zsolt Kajtar <soci@c64.rulez.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/clk/samsung/clk-exynos850.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/sysfb.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/samsung/clk-exynos850.c b/drivers/clk/samsung/clk-exynos850.c
-index cf7e08cca78e04e496703b565881bf64dcf979c8..56f27697c76b13276831b151db28074387293077 100644
---- a/drivers/clk/samsung/clk-exynos850.c
-+++ b/drivers/clk/samsung/clk-exynos850.c
-@@ -1360,7 +1360,7 @@ static const unsigned long cpucl1_clk_regs[] __initconst = {
- 	CLK_CON_GAT_GATE_CLK_CPUCL1_CPU,
- };
+diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
+index 7c5c03f274b9..889e5b05c739 100644
+--- a/drivers/firmware/sysfb.c
++++ b/drivers/firmware/sysfb.c
+@@ -143,6 +143,7 @@ static __init int sysfb_init(void)
+ {
+ 	struct screen_info *si = &screen_info;
+ 	struct device *parent;
++	unsigned int type;
+ 	struct simplefb_platform_data mode;
+ 	const char *name;
+ 	bool compatible;
+@@ -170,17 +171,26 @@ static __init int sysfb_init(void)
+ 			goto put_device;
+ 	}
  
--/* List of parent clocks for Muxes in CMU_CPUCL0 */
-+/* List of parent clocks for Muxes in CMU_CPUCL1 */
- PNAME(mout_pll_cpucl1_p)		 = { "oscclk", "fout_cpucl1_pll" };
- PNAME(mout_cpucl1_switch_user_p)	 = { "oscclk", "dout_cpucl1_switch" };
- PNAME(mout_cpucl1_dbg_user_p)		 = { "oscclk", "dout_cpucl1_dbg" };
-
++	type = screen_info_video_type(si);
++
+ 	/* if the FB is incompatible, create a legacy framebuffer device */
+-	if (si->orig_video_isVGA == VIDEO_TYPE_EFI)
+-		name = "efi-framebuffer";
+-	else if (si->orig_video_isVGA == VIDEO_TYPE_VLFB)
+-		name = "vesa-framebuffer";
+-	else if (si->orig_video_isVGA == VIDEO_TYPE_VGAC)
+-		name = "vga-framebuffer";
+-	else if (si->orig_video_isVGA == VIDEO_TYPE_EGAC)
++	switch (type) {
++	case VIDEO_TYPE_EGAC:
+ 		name = "ega-framebuffer";
+-	else
++		break;
++	case VIDEO_TYPE_VGAC:
++		name = "vga-framebuffer";
++		break;
++	case VIDEO_TYPE_VLFB:
++		name = "vesa-framebuffer";
++		break;
++	case VIDEO_TYPE_EFI:
++		name = "efi-framebuffer";
++		break;
++	default:
+ 		name = "platform-framebuffer";
++		break;
++	}
+ 
+ 	pd = platform_device_alloc(name, 0);
+ 	if (!pd) {
 -- 
-2.49.0.1204.g71687c7c1d-goog
+2.49.0
 
 
