@@ -1,241 +1,150 @@
-Return-Path: <stable+bounces-150708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EABFACC64C
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 14:16:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC7DACC652
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 14:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 256193A2E49
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:16:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CE051885508
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78A82B2CF;
-	Tue,  3 Jun 2025 12:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97F91B393C;
+	Tue,  3 Jun 2025 12:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z1vtRpJQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AU/0cjFk"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9CB440C
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 12:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175241E480
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 12:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748953005; cv=none; b=VlRLe86jxYxy6YPr32npsiglF1Jd6rP6/m6Z9cMdoANqCTQHGoQT5dC6YlbR8S9bBsxFnJ7XKql65Tps/0XWmhZUH+z9wqoBC5gLouX9mr2bW3hBQ8hJSkzM++zVBTwjLaj9rxLvqMH7CViproKNluFFU0lYX2uNo2eCR+hTWHI=
+	t=1748953121; cv=none; b=LaR0QZJ7PcP1vAWSXIwIAWXLqXzCF+eBUrPw83uZCw/O3YK3Ij3bVD30BZvTz4zrRVtZNM0x7RUreVvoc1hthCvYMb8+ZkpaSz+Xr8loqAcQP5Jo49sZEVnz/75SfYw8gibo7Mt2aO0NVB7DkK1UAPmPcWHX/CrG774l2NaYSiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748953005; c=relaxed/simple;
-	bh=idG4OPS38xvnojkFXb6OAtxBXPgYhX6sJRAn0jf0zp4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PtIUghlOe2Rn4On1Bz9GyQ1OrlO3LVb0DWA7eA3gUW13Yg7SxM1KeONXf/qJJAOglOnyXziKSHH8HdRJAWKQSPEfqy94P2dv66Y5twm0jE3oBsFHIwMjYM7qmllHz4XNXoi/rWoLPoB/Re9qWZ6BwijMeb6f7+iHSugbJ9KUQ0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z1vtRpJQ; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1748953121; c=relaxed/simple;
+	bh=hRBfjkyXDEB8n6PRaJohwZBVd9S/I2B0A30GC3UZkSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p4kcCT8xnRPbIBsY1SCHzDDA7UMtcQ54CLg6UL8FoFP3pysv2Pwheg2uV0WDQ/1vvBD5M9MhFx9eFwefv1pmb+AgctRa2s+Y37UVjdER0y6zVObPd2uG1zpC/qc78qC72bchWOWuwugW6pgQESAHqwYmf6EyTbkUpNSI+2rGNLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AU/0cjFk; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748953002;
+	s=mimecast20190719; t=1748953119;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zFkVskIoPLKZci5KmRyw1Ujf2GM9YO/6k18+0dJGRXI=;
-	b=Z1vtRpJQmo2crZ9HaHiEydTn550iFCrmHMZPNYGAL4t5HItn4q4wU4OI7QJAsUvyRl/PqW
-	nWDRMoGsD4dOKwQ9TE08d6v/3SHaIiwHz472RqSbtqukJl7VeGV/QOWmRNvOYoQY40xcF8
-	6dNn+wiw/H3V71apM3aoSrrRdjasuI8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 in-reply-to:in-reply-to:references:references;
+	bh=ffXIBf29sZb1K6xWm0mL1At/DHNtjLOFFnwn7PxkVT4=;
+	b=AU/0cjFk5dRLReuzDmljTgdwH/+rhwwc1IcAD/xLfnbnpzhZLmE7dGxpFpPDonZNbyACXA
+	M/DDr0qSCwoh6qeQg9ayPPBPSFkwrlWvBg6MCY9MU0L23bN1y6dh2L/t/+YmEkAIdotQrt
+	Z1f6E+NkzBaQuJo4QlKx6V+2Z5TnpzU=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-JpQNpzrhNkmF5f6-aDUpIA-1; Tue, 03 Jun 2025 08:16:41 -0400
-X-MC-Unique: JpQNpzrhNkmF5f6-aDUpIA-1
-X-Mimecast-MFC-AGG-ID: JpQNpzrhNkmF5f6-aDUpIA_1748953000
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-451d30992bcso21667905e9.2
-        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 05:16:40 -0700 (PDT)
+ us-mta-171-PGtSdc8xO0a7GUrqCLtoKg-1; Tue, 03 Jun 2025 08:18:36 -0400
+X-MC-Unique: PGtSdc8xO0a7GUrqCLtoKg-1
+X-Mimecast-MFC-AGG-ID: PGtSdc8xO0a7GUrqCLtoKg_1748953115
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-401c6b8b674so5223444b6e.2
+        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 05:18:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748953000; x=1749557800;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zFkVskIoPLKZci5KmRyw1Ujf2GM9YO/6k18+0dJGRXI=;
-        b=ViawAyJmjmOsTuPncrv/xKPzIWgcYAHYq7vyXVnYvF4IwouPc5JaFXDVvZWR2EFyTu
-         V4ofgrYlnUZux7eyhAZ9kqFf+tqvY+YMuQrDYiZMMXTd/rJdKtt51DUog/wkCk0/+Fo4
-         afElzUK5M9lIzbVDTU1jKgKvMG98VirPVpFsHaLImYEMUOk7fV4/UlO0ewF5RkPkKVsL
-         ADjDNUKI9mQYmOP7ZwwKvDkCxSH8vgBG+Tipt88FklEvuDazPVLyi7OcXuAP81Gv1Y5f
-         C5jaGAtEY87ZxoGKikMvf3SP5fRB4uPzXgct7VGIZKYjm2sD+ooDBQ0++q0NShbW91gV
-         JGOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvUw4V1hf2bI4W+JgzMMthJ/UCZsxb3GfJHNYoDPCN0lYnbTyug2ofEqiW4XVQKDQqhi0xl6g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw3uffTK2wOSG0g9paVoNwh4m3VLTk22plzFwyaKx2j4eOVAGA
-	SVRtZTNUhnpzNdLJirv5vSsen+LPdlA0o+1AdcLtuHCvyOQ0NFvli0HdWapyt0rmTwkOoQ2Ob8K
-	qOH1VILdhkUT8FB+WOFWphCbX0AgeRX/tTUAGO2o2ge0E6PJg84fAaFRrUg==
-X-Gm-Gg: ASbGncsY5bU2qZFRL4ujcNgFMAUYliSCas4sKL+/lwaV9TuJSaEbCxaZoLIWZXJQtOR
-	7JPw57sE1lMyYrnuHB+AQcn6nrHl2Z0Ht+cTRaHYQM9T1xgSdk1oWw29EuIro4K0MWQzstRZ6Wr
-	woBZBpBnLZ6Dbyb4q3+pg2M98u8cp3IStut2tAxf+9lj6qdY9nFxUaGOZtHksvUy+6Amsw4CKk+
-	K8qRVEt5OotuAxE3yJk2RCI81dH+ECOrWIUp7EYQ2xgx7Y4GlPH3KoICdN2+dliQuEB7+LUEpoC
-	OgMd2VYHwLFSL0U8wzPefTSe0WVWFNousNldNVFpbwySemuDmYmHFOWe0UXUxIIdepr2/2d+PDf
-	Z8fEZkGKh+NYaw0498Aove1AozpDn6rhHqgxXtYo=
-X-Received: by 2002:a05:600c:6219:b0:43c:ec97:75db with SMTP id 5b1f17b1804b1-4511ecc3e06mr108883725e9.11.1748952999757;
-        Tue, 03 Jun 2025 05:16:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGS1DnA0XkpW31VCHiq9SeAcnd5vAQKnQl/rGx7fh5/gtTlrZFw/1Wvm8mBkCINymrUlGLFLQ==
-X-Received: by 2002:a05:600c:6219:b0:43c:ec97:75db with SMTP id 5b1f17b1804b1-4511ecc3e06mr108883385e9.11.1748952999325;
-        Tue, 03 Jun 2025 05:16:39 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f0d:f000:eec9:2b8d:4913:f32a? (p200300d82f0df000eec92b8d4913f32a.dip0.t-ipconnect.de. [2003:d8:2f0d:f000:eec9:2b8d:4913:f32a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7f8edebsm158198345e9.6.2025.06.03.05.16.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Jun 2025 05:16:38 -0700 (PDT)
-Message-ID: <6d7c2cd2-061e-4295-8e9a-832cd0185d8c@redhat.com>
-Date: Tue, 3 Jun 2025 14:16:37 +0200
+        d=1e100.net; s=20230601; t=1748953115; x=1749557915;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ffXIBf29sZb1K6xWm0mL1At/DHNtjLOFFnwn7PxkVT4=;
+        b=nUMS8uwa3jcaZtT9woJSxCLPOILejNEZVhX8nNWVSooITJHvrF70JqzDvYuzgFlPGR
+         Iyv4NdXBSMlRuXJ3alUdCHNmtCT8GQnyTSKD2/G9E9+H7Qyo9GueI7kd5nckSY4xzp1g
+         cxDGGgNlCo/BXlYuVKZqsVWyn1FhocJvEWfsk5Sgt1OPFJAG2wPrWz+C494pP8UV1O9q
+         DMahYODrD5+Y8gyMnsFvgEqDC6cFePQvpRzZV4rYEPFBrlvzyvICXNLpRNyM9Chb/gbD
+         jcYRbBv3ihiaTAjqccCOxIm9PNbpq9s23Ci6eyGleQdvwl/BR1ZXevLT8D0MoJORC+/Z
+         WOXg==
+X-Gm-Message-State: AOJu0YyOm4dCtqF1vCLWXXVhENOjMHX8Ia3tPipOW5tCvlDWH1Bd8cJd
+	gb7ErG7jIbI0wsEFssh4Glpy/OCwNlpcQOaenYSZz1tL9jWf/VmVi5kfgnR77pDhIGs8qZ4dG+F
+	uFkg8uvxufjxvtCx3RGRQDrLmaKitoMuflEroqkW6NCeZckHsjGydF9wuwJVsAFqhcpYlfm4dmy
+	rKIPpd34psOMt5wb6Ad+/zENz7MWogVc7RPq1Rc4/SjQg=
+X-Gm-Gg: ASbGncsWcolUAUZyhFHX6pc4sJU1j91DpmFYGeaMqZAc88e8+bd2+rfzr9BGLkn67qP
+	cenmFIEt0PZ19OP4aKrtirJVW42Vyq5YWTUmAq3GW9Hn7eq+hSvcTAquLyr80/Gl9kM4=
+X-Received: by 2002:a05:6808:6f84:b0:403:3195:58cb with SMTP id 5614622812f47-407a65ef7demr8150042b6e.28.1748953114919;
+        Tue, 03 Jun 2025 05:18:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8KvDsdDkgI+1PNoaL+B3Q6bgNuhvgw/iB+KFAL38XMwrBiuIXT9ZI7YntDi9tKBM5UX0PsshNsCF2QikhX9s=
+X-Received: by 2002:a05:690c:6e01:b0:70e:1ef7:6eff with SMTP id
+ 00721157ae682-71097c2a91amr162686157b3.3.1748953103596; Tue, 03 Jun 2025
+ 05:18:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm: Fix uprobe pte be overwritten when expanding
- vma
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Pu Lehui <pulehui@huaweicloud.com>, mhiramat@kernel.org, oleg@redhat.com,
- peterz@infradead.org, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
- vbabka@suse.cz, jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, pulehui@huawei.com
-References: <20250529155650.4017699-1-pulehui@huaweicloud.com>
- <20250529155650.4017699-2-pulehui@huaweicloud.com>
- <962c6be7-e37a-4990-8952-bf8b17f6467d@redhat.com>
- <009fe1d5-9d98-45f1-89f0-04e2ee8f0ade@lucifer.local>
- <6dd3af08-b3be-4a68-af3d-1fc1b79f4279@redhat.com>
- <117e92c1-d514-4661-a04b-abe663a72995@lucifer.local>
- <702d4035-281f-4045-aaa7-3d6c3f7bdb68@redhat.com>
- <86b7cfb9-65d2-4737-a84d-e151702895f1@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <86b7cfb9-65d2-4737-a84d-e151702895f1@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250602134340.906731340@linuxfoundation.org> <20250602134341.897528821@linuxfoundation.org>
+In-Reply-To: <20250602134341.897528821@linuxfoundation.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 3 Jun 2025 14:18:12 +0200
+X-Gm-Features: AX0GCFt5-R5_l1JcZoLRDhSODZkzwizMtWUfInGyGiuuSHRx5X0zU78Q3RYWgCE
+Message-ID: <CAGxU2F7fRUn1H_-CF5SJJ1DZDEt3xfm+er0kqa_XS9nn6uJi0g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 024/444] vhost_task: fix vhost_task_create() documentation
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 02.06.25 19:01, Lorenzo Stoakes wrote:
-> On Mon, Jun 02, 2025 at 06:28:58PM +0200, David Hildenbrand wrote:
->> On 02.06.25 15:26, Lorenzo Stoakes wrote:
->>> On Mon, Jun 02, 2025 at 02:26:21PM +0200, David Hildenbrand wrote:
->>>> On 02.06.25 13:55, Lorenzo Stoakes wrote:
->>>>> On Fri, May 30, 2025 at 08:51:14PM +0200, David Hildenbrand wrote:
->>>>>>>      	if (vp->remove) {
->>>>>>> @@ -1823,6 +1829,14 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
->>>>>>>      		faulted_in_anon_vma = false;
->>>>>>>      	}
->>>>>>> +	/*
->>>>>>> +	 * If the VMA we are copying might contain a uprobe PTE, ensure
->>>>>>> +	 * that we do not establish one upon merge. Otherwise, when mremap()
->>>>>>> +	 * moves page tables, it will orphan the newly created PTE.
->>>>>>> +	 */
->>>>>>> +	if (vma->vm_file)
->>>>>>> +		vmg.skip_vma_uprobe = true;
->>>>>>> +
->>>>>>
->>>>>> Assuming we extend the VMA on the way (not merge), would we handle that
->>>>>> properly?
->>>>>>
->>>>>> Or is that not possible on this code path or already broken either way?
->>>>>
->>>>> I'm not sure in what context you mean expand, vma_merge_new_range() calls
->>>>> vma_expand() so we call an expand a merge here, and this flag will be
->>>>> obeyed.
->>>>
->>>> Essentially, an mremap() that grows an existing mapping while moving it.
->>>>
->>>> Assume we have
->>>>
->>>> [ VMA 0 ] [ VMA X]
->>>>
->>>> And want to grow VMA 0 by 1 page.
->>>>
->>>> We cannot grow in-place, so we'll have to copy VMA 0 to another VMA, and
->>>> while at it, expand it by 1 page.
->>>>
->>>> expand_vma()->move_vma()->copy_vma_and_data()->copy_vma()
->>>
->>> OK so in that case you'd not have a merge at all, you'd have a new VMA and all
->>> would be well and beautiful :) or I mean hopefully. Maybe?
->>
->> I'm really not sure. :)
->>
->> Could there be some very odd cases like
->>
->> [VMA 0 ][ VMA 1 ][ VMA X]
->>
->> and when we mremap() [ VMA 1 ] to grow, we would place it before [VMA 0 ],
->> and just by pure lick end up merging with that if the ranges match?
-> 
-> When we invoke copy_vma() we pass vrm->new_addr and vrm->new_len so this would
-> trigger a merge and the correct uprobe handling.
-> 
-> Since we just don't trigger the breakpoint install in this situation, we'd
-> correctly move over the breakpoint to the right position, and overwrite anything
-> we expanded into.
-> 
-> I do want to do a mremap doc actually to cover all the weird cases, because
-> there's some weird stuff in there and it's worth covering off stuff for users
-> and stuff for kernel people :)
-> 
->>
->> We're in the corner cases now, ... so this might not be relevant. But I hope
->> we can clean up that uprobe mmap call later ...
-> 
-> Yeah with this initial fix in we can obviously revisit as needed!
+On Mon, 2 Jun 2025 at 16:04, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 
-As Andrew was asking off-list:
+It seems that commit cb380909ae3b ("vhost: return task creation error
+instead of NULL") is not backported to 6.6, so we can skip this patch.
+BTW it's just a fix in a comment, so if it's too late, it should not
+be a big issue.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Just for my understanding, next time should I add a Fixes tag in this
+case, also if the patch doesn't touch code?
 
+Thanks,
+Stefano
 
-:)
-
--- 
-Cheers,
-
-David / dhildenb
+>
+> ------------------
+>
+> From: Stefano Garzarella <sgarzare@redhat.com>
+>
+> [ Upstream commit fec0abf52609c20279243699d08b660c142ce0aa ]
+>
+> Commit cb380909ae3b ("vhost: return task creation error instead of NULL")
+> changed the return value of vhost_task_create(), but did not update the
+> documentation.
+>
+> Reflect the change in the documentation: on an error, vhost_task_create()
+> returns an ERR_PTR() and no longer NULL.
+>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> Message-Id: <20250327124435.142831-1-sgarzare@redhat.com>
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  kernel/vhost_task.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+> index 8800f5acc0071..0e4455742190c 100644
+> --- a/kernel/vhost_task.c
+> +++ b/kernel/vhost_task.c
+> @@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
+>   * @arg: data to be passed to fn and handled_kill
+>   * @name: the thread's name
+>   *
+> - * This returns a specialized task for use by the vhost layer or NULL on
+> + * This returns a specialized task for use by the vhost layer or ERR_PTR() on
+>   * failure. The returned task is inactive, and the caller must fire it up
+>   * through vhost_task_start().
+>   */
+> --
+> 2.39.5
+>
+>
+>
 
 
