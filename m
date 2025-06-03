@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-150764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9AC5ACCE1B
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 22:22:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30F1ACCE27
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 22:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E0D16793A
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 20:22:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52A27189413D
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 20:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64262200B99;
-	Tue,  3 Jun 2025 20:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9975E221DBD;
+	Tue,  3 Jun 2025 20:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="X4CHQA7k"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ed8DN34o"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC4AC2E0;
-	Tue,  3 Jun 2025 20:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28737C2E0;
+	Tue,  3 Jun 2025 20:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748982149; cv=none; b=lPJWQdml0BUmPbOkOxQ10tGy5MR57AJPx2kQrRra/Vvwk0Vfa0Q4/UMwkWneXmpDGmKCSi2H2T0HT5TB1xj68AbP6/jH6eZK/J9oZ9EF/cxp2fs7/PuQ2VHFGU2dImWAW2oKg4DHWgkfw7R1qaGz6h3b/sp1DH5Nwisqb8RXGkk=
+	t=1748982408; cv=none; b=Pk3z4g2isKRKwm0LqkG4G0RrwodUaHd+sUSrXVnV/VWJJGhjixgOzJuqMs3BouKV/WJQ+HlKI5Qkw7Oqaw2vH0XbG/AGYqR1hP09kFcWGt73GHX+1+5Vmy5AMuhNbtCP5Eftf8kaAkdcxV7lSAUyzqxXM1BwYgtuetqP313SKHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748982149; c=relaxed/simple;
-	bh=vtcsE5rJwJv14ImZ8CR1t6ehCxH9+7W7tLtV/aP5bl0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Tm48tcLWwAf+l8dKTfne7is4qKV0sZuTbvelDw7svGsuYloXm+8YF0U4tYdykERbtK0+OluRLoj5+Np4iAWKwyyS7ryBGqeXIFulVBXXhGXb4wr5X76BZ5W/66gPSTIWLT/2dkbQ/uxTd5sSktCzpO9A6bHfQ/qipijS4PQnpXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=X4CHQA7k; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1748982408; c=relaxed/simple;
+	bh=R9z1IlSni6rCY6oWmdrHGktLe/B8lhC9VM9i5V+1QTo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=lkQIYu1mI26enw9s5OCugwNOg/PRBKYcIBYfC3pQ2wMOhuz8siljyU5331YXyAKNstI2Uz/wxKsXhxyrlws1yxUgTWE+6YaKuXkitz2Xd0FUqxXyRmnYRg7jv/C9BzF8Eg/CItBtDyegzO5L55O8vo5pTFAarBfATfRovqBvqXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ed8DN34o; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 506A9203EE0A; Tue,  3 Jun 2025 13:22:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 506A9203EE0A
+	id 91A0D207861B; Tue,  3 Jun 2025 13:26:46 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 91A0D207861B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1748982147;
-	bh=UifUjLfzvwUDZxOiix1KsvQ8S7ETonKUekbSG5x6ksA=;
+	s=default; t=1748982406;
+	bh=IfitNqzs7m57IFAsJSygbJfWzzlKa7wwPBN0IJBjni4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4CHQA7kuzynMYW2VkMEln4BfuWAXO1bY5FYVwRzbMyfuqGVY/qPYF3rUs4KcOoOk
-	 3PpxWwYfprxVieWF0UooXWkb2ZOsTAVI8+4F2Qzvjr9TXB8LFLRqNBDYGnWanTrFEL
-	 ORSO+LKbALWXGaFkFtSRVA2tj74SnG7PKi5z+N4Q=
+	b=Ed8DN34oTUJVf1zlpSd/uIXrPwARmgWHTMyLzrlP6KN1n33uhudehO7mpKSVEleZu
+	 /QJ0gBUuTkWFcqptiQWgRZhgb1pAlQ5QgRug2mpMhw3RrF86fnwWjU3O9Ck+TuBsjI
+	 aYTxCk1vqSEKVph8MRLqcVvz6G77e45OhmjZMJwc=
 From: Hardik Garg <hargar@linux.microsoft.com>
 To: gregkh@linuxfoundation.org
 Cc: akpm@linux-foundation.org,
@@ -58,27 +58,27 @@ Cc: akpm@linux-foundation.org,
 	stable@vger.kernel.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org
-Subject: Re: [PATCH 5.15 000/207] 5.15.185-rc1 review
-Date: Tue,  3 Jun 2025 13:22:27 -0700
-Message-Id: <1748982147-4835-1-git-send-email-hargar@linux.microsoft.com>
+Subject: Re: [PATCH 6.1 000/325] 6.1.141-rc1 review
+Date: Tue,  3 Jun 2025 13:26:46 -0700
+Message-Id: <1748982406-5679-1-git-send-email-hargar@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20250602134258.769974467@linuxfoundation.org>
-References: <20250602134258.769974467@linuxfoundation.org>
+In-Reply-To: <20250602134319.723650984@linuxfoundation.org>
+References: <20250602134319.723650984@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-The kernel, bpf tool, and perf tool builds fine for v5.15.185-rc1 on x86 and arm64 Azure VM.
+The kernel, bpf tool, and perf tool builds fine for v6.1.141-rc1 on x86 and arm64 Azure VM.
 
 Kernel binary size for x86 build:
 text      data      bss      dec       hex      filename
-23550276  11257962  16400384 51208622  30d61ae  vmlinux
+25847143  11304250  16613376 53764769  33462a1  vmlinux
 
 Kernel binary size for arm64 build:
 text      data      bss      dec       hex      filename
-30787125  12642704  858044   44287873  2a3c781  vmlinux
+31273699  12549552  831088   44654339  2a95f03  vmlinux
 
 
 Tested-by: Hardik Garg <hargar@linux.microsoft.com>
