@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-150666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F3DACC2CC
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:20:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C866ACC2E9
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82C13A5544
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 09:19:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15470189398B
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 09:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9409E2686A8;
-	Tue,  3 Jun 2025 09:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21C0281364;
+	Tue,  3 Jun 2025 09:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YkvFGDtD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TJIjiZSu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3572C327A;
-	Tue,  3 Jun 2025 09:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996AD271461;
+	Tue,  3 Jun 2025 09:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748942404; cv=none; b=EZ1sX1kVUKkIhsmss9kIuq3La8fqRToR6lkBfhzh5Z0qZKPakw8N82r7SDXzMkIzzaabim9EStb287gnGhzKCEcuTYZC8oXheF+o2KtuKICAr8ICRZD+pU3GiqorJkPLHa0UGZX9E2UOMSYMgCKaWfP1WMloo/h2p1D5NK4R6Wk=
+	t=1748942591; cv=none; b=kC0GxcNyTXqOek38AfUDBvvHyucfvJ4IVyQSXlyCGXbJ51K2FQBfGqmR2aZ6fqa2WqeGSbaYYuHtx9qTDC+C/cWvJgiYENb/Cp6Ppaa8cec2nYWP14xjhCs1Fp6EzVOZrH5vihi/KRgxek6sJHkxyblRIoCHLOdcfwjxzrZR9Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748942404; c=relaxed/simple;
-	bh=D2lggQk3a3nV1nBHtk+iJkwOoenb1YJy1BvjQYbgU90=;
+	s=arc-20240116; t=1748942591; c=relaxed/simple;
+	bh=IGxkwBHaTsBUHdsGu2r4HU2W/z03tesVyjqacAklwc4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kDVZhquGBlUjKmkBWI6oWHAnH2pjUlu4j+x56WsnPkC9pOOxj5vpUS3erv5l3qBIBDN93gZGn5yWVWMY87JDhoDyts+iuRCtacuU6jMUHIQU9ESu0HT257r8gY/wiZ7HRjUr6T0Q29pK3VKX25rMgKrgjU62feY3B6/xjdTvIiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YkvFGDtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC24C4CEED;
-	Tue,  3 Jun 2025 09:20:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z2ab11Ub5uVU85B0sa8avTbxU77SHbG/GLAU6Fyk/JCk7jg/w9DmRoj0Aq9N0nbEklSt7MVfJRzVKTPA3RQwUGvwphrW5OdWVqXeHUwszD0194GZBbb30u7K34I1Pswmcv29ZNR/hy7ooWM4MdOF50XACBfOPHypKNwZZYBOLA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TJIjiZSu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9E6C4CEED;
+	Tue,  3 Jun 2025 09:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748942403;
-	bh=D2lggQk3a3nV1nBHtk+iJkwOoenb1YJy1BvjQYbgU90=;
+	s=k20201202; t=1748942591;
+	bh=IGxkwBHaTsBUHdsGu2r4HU2W/z03tesVyjqacAklwc4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YkvFGDtDNaPrIjtugI7KogxKffDn9XcJXkr+hcQTzmZpvRY5QAJMguz4BtdOFJQDL
-	 Ri9/GbJQ7NrkKNe6zbA1S1mFN32jUQIQOay5d0aVSAS3539q6nqo6VgpLJJeEmu+Kl
-	 HtcibZPgSpRThPXAyU84RFyWe2fGujofQfk6U7F0mI7CDqij9ePOj5nYzYt/A3BQJV
-	 /pXjr3zKZzHwKNe0t0mSdFL0IgaoZZLKRIGAVN9S/XMN+CqH2puA2fkRmF9vhsveaq
-	 qfAbJLkauUidSxydZ7mqSJyQzzT82pEzF9nAnJGVMVpfRo0UOkgvwmak+xZpQaj4hC
-	 4jgLpcZQcoNOw==
-Date: Tue, 3 Jun 2025 10:19:57 +0100
+	b=TJIjiZSu5Mmd4zBgad4lFUUywDnQ8aqALWcWOcN9xypQlWDrglDSbXRr6yWioumlP
+	 y/gjMAZ6/m/y7erZl7pfc+Gbnf6NPaAVZjmCeUvFEjwuOSKCpsxsEFnxdhR+L3A7SI
+	 qh6E/J1sg4lR4SHPICRoAhbVvfVbVcEuvKie7GXo8NtAMnN5ok/w0x1rGcIXA/ftU/
+	 F0Zf3ej0zvbQ1gN26Vlg7n+pTZNUYQrIVhm0x7mgXo8UKlA4hk37qyscNZkLJKZ8Xh
+	 4lrrUROyudaXnoobHgHz8CGcbGhljCWRZs71zgfv5I2xJsnysBh5eL/ao8d9O/sHuQ
+	 zDYSGt5pn861w==
+Date: Tue, 3 Jun 2025 10:23:05 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -51,9 +51,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.14 00/73] 6.14.10-rc1 review
-Message-ID: <8f0e1686-699a-4cf2-b930-df846026d466@sirena.org.uk>
-References: <20250602134241.673490006@linuxfoundation.org>
+Subject: Re: [PATCH 6.15 00/49] 6.15.1-rc1 review
+Message-ID: <da42848e-4ee7-42c1-b291-8bf3c1c80c31@sirena.org.uk>
+References: <20250602134237.940995114@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,38 +61,38 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Dsnk04l3ZLjMy+c0"
+	protocol="application/pgp-signature"; boundary="pPvxfX2beJbnEfrA"
 Content-Disposition: inline
-In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134237.940995114@linuxfoundation.org>
 X-Cookie: Avec!
 
 
---Dsnk04l3ZLjMy+c0
+--pPvxfX2beJbnEfrA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jun 02, 2025 at 03:46:46PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.14.10 release.
-> There are 73 patches in this series, all will be posted as a response
+On Mon, Jun 02, 2025 at 03:46:52PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.15.1 release.
+> There are 49 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 Tested-by: Mark Brown <broonie@kernel.org>
 
---Dsnk04l3ZLjMy+c0
+--pPvxfX2beJbnEfrA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmg+vjwACgkQJNaLcl1U
-h9AiAgf/WCRc6aaGBUn1vmHOUEzCRocuPq9vXPh9amlP01Tpnw+IXiH3uZgef5Wc
-yseC5vZ1EISxiLW+PN+8U0geAeKaJiPz7wqpb+8PsTOIn1p+VmXde3s7KWEtr5hd
-tmcfOQcnbl/OiDRS7Whwr+HfKFNMbWWEVXW/XdOP5SJWRs1r6GRYBVwbQN0CqDVc
-lKGE7aQhqZAyhNya+b8HMvfjFryhQfp/HSPDqHnNQGxRMKvYnWERJSnGFlSyY8u2
-Bwtt7iKKxLg2omNliedg/BM7DUGpmqM3SbEyuVjhj4FRWNCsiUfYKiF2gvokyN0X
-+ob2fO7k4c6rpDHxOos6+YyPIut+Vg==
-=6Izc
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmg+vvgACgkQJNaLcl1U
+h9BYuwf8CwrLq+WhMB2xH0Otrum69fwpXeZGNK6BiOSMjfaSUOr7mUUA1Phte+pJ
+gVvblK3vEitA0zCR/s2RtCoLC0qj2C93gP5RVzbqbe2mBANDm13Ifyfyg3cR7YbK
+kkTXIfj3l8VreVQSHPZQr9T5BWlzrpk0PDAqDFwEvyStTfjW3Zg2C18WTBBeZOzY
+OXziGvH8hbQ9+4h0IGgRYO8xAWaGcvduR5dOSGfulsPL8KHEQRVldjYgC3yEdjSD
+tBqKt6fKimoj0Qwta9sELIP30ImbcKJc0/gBVJFpUWB9VczxLpnXtA9Jn/5b8Y05
+paAnSD9pZmfsa4Y6VIhyyXBRiULJrw==
+=lDDW
 -----END PGP SIGNATURE-----
 
---Dsnk04l3ZLjMy+c0--
+--pPvxfX2beJbnEfrA--
 
