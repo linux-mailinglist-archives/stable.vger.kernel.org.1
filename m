@@ -1,100 +1,140 @@
-Return-Path: <stable+bounces-150678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A8AACC364
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:45:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 639A3ACC368
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34FBA3A5B3F
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 09:45:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D392D1884F54
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 09:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593332C3271;
-	Tue,  3 Jun 2025 09:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNaqoOl3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339CC28312E;
+	Tue,  3 Jun 2025 09:46:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AEC54763;
-	Tue,  3 Jun 2025 09:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D9B664C6;
+	Tue,  3 Jun 2025 09:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748943941; cv=none; b=AtSTMVxce9oJkDmGTLAW6ksI3SV4fOsaLZTU/IReWrCt9SkHbQHm6LmqUTFa1cuEh26hh+eMs6NPsRZHicwkPoQGHUm41sV75NNIiCycJJFiw5Bz0EkDUa7P7gtRtAj8vsuDWbLWwA0yBvGXCHk0W4tjWv3SPrNzJehHHsRm8G8=
+	t=1748943985; cv=none; b=obPr0e1C7+U1oWIWElZBuwrd0JfHAcB0F07EKPDZWnAyctd0YKl71s38IxTBfVJyt7m1Wv2y47ykwPc4D4Z4hjyP661SesDMVIcwHpMjQzx1p8KlHsHJQ2SaQZvDyfc1+2vhEa2mlsVV3DWKzdz/0I4LT3TB4O+RYVunpVJz+2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748943941; c=relaxed/simple;
-	bh=iCvMXHxiA2qgEAPvWQqhM0E7rkAR/e+OuO1o5IdduxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lmgTWJSMfnBQzyLMKEoy69XpPPN+DJKcgz+xTyivyd1q68xx8Mgr1CbLzRKKLCA+evkukmzxRIRkri6HKYRDjaayyp6EXHc2sBS5EobwVea4lT3AoclLMYsx9tAZ/ekdlrXHuKTk0LqOiQmQk7ynMJ2/kezfrN30/AIne4ziN/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNaqoOl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165ECC4CEF3;
-	Tue,  3 Jun 2025 09:45:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748943940;
-	bh=iCvMXHxiA2qgEAPvWQqhM0E7rkAR/e+OuO1o5IdduxQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aNaqoOl3KebbXvqU/Ts9faLHynUQB4wim3w/XcmHi1D39kf8VhNkMwQhHZyR53kHz
-	 kV4ITOCa6i9qPdwKvMZRa+akjj9yo8Er18FIGhlai09URBXKXnPKSertHZuPmQL/ME
-	 o8rbnWopgDwqmgcPTK6BoICK4FQt15j5r8kQfwBk5Qf2FPLjnjvRyx+tsp5IdIg1JJ
-	 AV0o+FJn44CEOCb7nH7u230R/C+G7pJaJ0AfDAVArotlahCK6aG4MkTTrjPkHD5uvh
-	 bjpC08lMAGh1p/0BHjfyr4CoUt2CahUZBZCeK/Qu2AyYJBoWSZypZpVOqcDk7UO0Hr
-	 VQuRtoHEDWD0A==
-Date: Tue, 3 Jun 2025 10:45:34 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 5.10 000/270] 5.10.238-rc1 review
-Message-ID: <6dd7aac1-4ca1-46c5-8a07-22a4851a9b34@sirena.org.uk>
-References: <20250602134307.195171844@linuxfoundation.org>
+	s=arc-20240116; t=1748943985; c=relaxed/simple;
+	bh=JYTWJ4bzufmG4/W3c+dyWMhzf9Zd60/BveoZVPfRXoo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gA2+8iIHakMLs9xInMN2FFMfmEmiQRbEUmZjB05v6yeyklTqSl0mcTeFmnWDTxK+vEHpgrNMfzc9PnLhxQYv7ACxU3zNWbC1wcmewJNkvHBItKBA0gMHPDjBkHDoqpadpakBlX/YdnE28/ERQQEnJx/uWxp/A5az9+REvj1GKMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8DxDeNnxD5oTAwKAQ--.63128S3;
+	Tue, 03 Jun 2025 17:46:15 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMDxH+VfxD5ot8gGAQ--.23188S3;
+	Tue, 03 Jun 2025 17:46:14 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Xianglai Li <lixianglai@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/7] LoongArch: KVM: Fix interrupt route update with eiointc
+Date: Tue,  3 Jun 2025 17:46:00 +0800
+Message-Id: <20250603094606.1053622-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250603094606.1053622-1-maobibo@loongson.cn>
+References: <20250603094606.1053622-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0iTAqS3VjQIYAC1n"
-Content-Disposition: inline
-In-Reply-To: <20250602134307.195171844@linuxfoundation.org>
-X-Cookie: Avec!
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDxH+VfxD5ot8gGAQ--.23188S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
+With function eiointc_update_sw_coremap(), there is forced assignment
+like val = *(u64 *)pvalue. Parameter pvalue may be pointer to char type
+or others, there is problem with forced assignment with u64 type.
 
---0iTAqS3VjQIYAC1n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Here the detailed value is passed rather address pointer.
 
-On Mon, Jun 02, 2025 at 03:44:45PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.238 release.
-> There are 270 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Cc: stable@vger.kernel.org
+Fixes: 3956a52bc05b ("LoongArch: KVM: Add EIOINTC read and write functions")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ arch/loongarch/kvm/intc/eiointc.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-This fails to boot with a NFS root on Raspberry Pi 3b+, due to
-558a48d4fabd70213117ec20f476adff48f72365 ("net: phy: microchip: force
-IRQ polling mode for lan88xx") as was also a problem for other stables.
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index f39929d7bf8a..d2c521b0e923 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -66,10 +66,9 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ }
+ 
+ static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
+-					int irq, void *pvalue, u32 len, bool notify)
++					int irq, u64 val, u32 len, bool notify)
+ {
+ 	int i, cpu;
+-	u64 val = *(u64 *)pvalue;
+ 
+ 	for (i = 0; i < len; i++) {
+ 		cpu = val & 0xff;
+@@ -398,7 +397,7 @@ static int loongarch_eiointc_writeb(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq;
+ 		s->coremap.reg_u8[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -484,7 +483,7 @@ static int loongarch_eiointc_writew(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq >> 1;
+ 		s->coremap.reg_u16[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -570,7 +569,7 @@ static int loongarch_eiointc_writel(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq >> 2;
+ 		s->coremap.reg_u32[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -656,7 +655,7 @@ static int loongarch_eiointc_writeq(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq >> 3;
+ 		s->coremap.reg_u64[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -809,7 +808,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
+ 		for (i = 0; i < (EIOINTC_IRQS / 4); i++) {
+ 			start_irq = i * 4;
+ 			eiointc_update_sw_coremap(s, start_irq,
+-					(void *)&s->coremap.reg_u32[i], sizeof(u32), false);
++					s->coremap.reg_u32[i], sizeof(u32), false);
+ 		}
+ 		break;
+ 	default:
+-- 
+2.39.3
 
---0iTAqS3VjQIYAC1n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmg+xD0ACgkQJNaLcl1U
-h9Dlhgf/Y9EqkliRPIbWMWkUcwKCHQ63zfTF/8vSegPGW2jI/aIjNnlqxxSa+QqC
-Desp7L/14lU9BNAVzlaNjE2dzVXluP3U9UxuDzVANHKRww9TRgjzpglUV2lnT0AM
-UihkqBapjhbXK5wAmYO3ZDAApu37eGFQVuSqJ0kohddSlfqCai5Ce6wDaIPH2bJL
-Q6kUEoOA+Zyxo9ZJInGPp227dbwHh4Zxj4rjFpKr6whL6HXrCcZXtBxw5YgzGmOS
-xmSKSkpIo2DYFL3b5orj5fOE20+UBHxt4BZfiptkdxlIhgcMiDbY+ao+EEhDPRin
-FshKmajlQebGuQfmUrJ7bFqAAm1KEg==
-=+pht
------END PGP SIGNATURE-----
-
---0iTAqS3VjQIYAC1n--
 
