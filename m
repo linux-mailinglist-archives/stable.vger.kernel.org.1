@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-150752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AB4ACCD23
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 20:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFB5ACCD25
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 20:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 069EF3A67F8
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 18:35:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDDAD3A696D
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 18:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AAC23BCE2;
-	Tue,  3 Jun 2025 18:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934D11E7C10;
+	Tue,  3 Jun 2025 18:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSbh/RZs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiV4gB+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6386BBA34
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 18:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FEEBA34
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 18:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748975761; cv=none; b=PU0rvNiG2/+xCPzdT0ilNsI+bDJ6ZsN3n9qIpdfvcWD/RbDZ6n2OMXjSgHxQo8xwlQmXcCNOycWRO0xDKhFE7RFyL/aLu9LfeOydoo3JC4D8Pr4J3YllZTvVrjCkIsUCUz8pbGdMZsI1dXhL2lkhHNEM7bngZTCAXboSaNyzk64=
+	t=1748975763; cv=none; b=UYN4wd/OPd0m/2urA//hqXyVy9fsxq1sHnZG3FRH4KOUa6una7RjSmj7m1Ye3nv+2P3PMaMJbJXKOT3HAyzmx4QWHSIlu47GbXaCAtr3jRLxK87ZoUMSOGtBor3m6BGtVn88j5m2fKWxsKyxcLnjA26SMJ7lAW4hBZQzaTYtWWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748975761; c=relaxed/simple;
-	bh=sj12GX9zL103L2i5oC8eSPpUWT3o56foKYeuHCSxo/I=;
+	s=arc-20240116; t=1748975763; c=relaxed/simple;
+	bh=gooi+2JdSwugxxU4EVTFjnHZaq36YmlG84fviMGBzPc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SEABSRVXo7/1F/xDcnnFST+cghPKxEkl4P+qQE7NT6vaEVFjCeT2Tl+W/hWmpz5FdOk8RNNzu30Lu+f7YFIBC/JTs4+q1OWWCpffqS9clC0SYUmLRy35e1Lf/xiC3f34A7mNdM6a//LAOGjpCU14GSeFAc3749zipapQ4E1LWGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSbh/RZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44F9C4CEED;
-	Tue,  3 Jun 2025 18:36:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n+cCJjZgWj8SY4CA2reWXWCFvME7DujZ35PB2NluFaQNq90nQ5wAJogB4J+JkTVHiOv+KARevMXdoSCuR1bFYkShpFyrmTF65ZQAPfLusKWMaEiMphrmW3zOkWNdkTvro8kKiqksFrq86LuAsXrHWhvFnvzkXPYR508Wn9rJQlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiV4gB+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC612C4CEED;
+	Tue,  3 Jun 2025 18:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748975761;
-	bh=sj12GX9zL103L2i5oC8eSPpUWT3o56foKYeuHCSxo/I=;
+	s=k20201202; t=1748975763;
+	bh=gooi+2JdSwugxxU4EVTFjnHZaq36YmlG84fviMGBzPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSbh/RZs6vukfpNGxZqWJJdFW+tLbR5phOkSFBLlLiWaz5B5k9TdcwusYvcyBDoZG
-	 rgtzW2XPR0S9GG7O5qHrUzXM5ErHmOZwkC9Ik6k3eh5Dfmc6nfpXlovvaxJR6uqHMB
-	 9LKIO3RABWd1jZqi9hxOGCdS31IMuTjufvj724qKCzYFQL+yyJM755QvEQBZmc7VX/
-	 HlcKKwHl9ZoknXoCbAiEJ1f1PTBikClY7O8xw9mOYc6q2V+4ceV+skk7QUKUOQ6OC+
-	 A802bQaq6EYr0Heajtr7zb4gqfxviWBCcC7b/kLSW6eVnFSDk3UUbh8Yu0Pz2S+7dk
-	 z67yUwHlq6tJw==
+	b=oiV4gB+Tgtpo0BRJ2NAr8DJtC5GiYaEkM3KF0ge2vmoyp2Xi4wbAzdRoE4DbvEgWK
+	 WsB20+O6qI3+De9XAuiLpgVWEHlARYpJ7/DJYCKgnlWSC/PEE9KeniqAwhl7f8cTrC
+	 5xz0dvCqlwMU1YMdau5gVx9wUu5ttp0LkBetsAMmuK6DxgsXARVTMUFQy7OQA4dSbD
+	 Q7SmaLu+62x3RTqZCo8RrnkV6VK/bqmSOUA4Egrc/2DASGhjH/3T9wWkjxwllIokWq
+	 z1LbRf4pjdvcqsqCzHcXvFOML42sDbVzARtSoWmVKgvcjJGTRuc1XfsjQs/g7pHhgU
+	 xl/svUaMvvUwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Claudiu <claudiu.beznea@tuxon.dev>,
+Cc: Francesco Dolcini <francesco@dolcini.it>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y 3/4] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
-Date: Tue,  3 Jun 2025 14:35:59 -0400
-Message-Id: <20250603142718-0fc0e63f5e602a4e@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] arm64: dts: imx8mm: Drop sd-vsel-gpios from i.MX8M Mini Verdin SoM
+Date: Tue,  3 Jun 2025 14:36:01 -0400
+Message-Id: <20250603134959-1f578cd8b4bcb4c2@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250603093701.3928327-4-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To:  <20250602155845.227354-1-francesco@dolcini.it>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,45 +67,35 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 5f1017069933489add0c08659673443c9905659e
+The upstream commit SHA1 provided is correct: 8bad8c923f217d238ba4f1a6d19d761e53bfbd26
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Claudiu<claudiu.beznea@tuxon.dev>
-Commit author: Claudiu Beznea<claudiu.beznea.uj@bp.renesas.com>
+Backport author: Francesco Dolcini<francesco@dolcini.it>
+Commit author: Marek Vasut<marex@denx.de>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
 6.14.y | Present (exact SHA1)
-6.12.y | Not found
-6.6.y | Not found
-6.1.y | Not found
-5.15.y | Not found
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  5f10170699334 ! 1:  b68647923713a serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+1:  8bad8c923f217 ! 1:  a0da60f537dd7 arm64: dts: imx8mm: Drop sd-vsel-gpios from i.MX8M Mini Verdin SoM
     @@ Metadata
       ## Commit message ##
-         serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+         arm64: dts: imx8mm: Drop sd-vsel-gpios from i.MX8M Mini Verdin SoM
      
-    +    commit 5f1017069933489add0c08659673443c9905659e upstream.
+    +    [ Upstream commit 8bad8c923f217d238ba4f1a6d19d761e53bfbd26 ]
     +
-         The early_console_setup() function initializes sci_ports[0].port with an
-         object of type struct uart_port obtained from the struct earlycon_device
-         passed as an argument to early_console_setup().
-    @@ Commit message
-         Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-         Link: https://lore.kernel.org/r/20250116182249.3828577-5-claudiu.beznea.uj@bp.renesas.com
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-     
-      ## drivers/tty/serial/sh-sci.c ##
-     @@ drivers/tty/serial/sh-sci.c: static struct sci_port sci_ports[SCI_NPORTS];
+         The VSELECT pin is configured as MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT
+         and not as a GPIO, drop the bogus sd-vsel-gpios property as the eSDHC
+         block handles the VSELECT pin on its own.
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
