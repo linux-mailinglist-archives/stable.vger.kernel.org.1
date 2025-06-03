@@ -1,276 +1,392 @@
-Return-Path: <stable+bounces-150702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285ABACC5B2
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:46:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B793FACC5C5
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE904162D64
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:46:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EC003A289E
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E8118C91F;
-	Tue,  3 Jun 2025 11:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85696229B12;
+	Tue,  3 Jun 2025 11:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="lIhrbO0/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CD3U2aQ/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754C12C327E
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 11:45:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5C03597C;
+	Tue,  3 Jun 2025 11:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748951160; cv=none; b=SK/2gpYfdMrYoM+F3V41D/61CnR6ZGm12JC5HwdnE1Z2Fmlyl/c3gu97c/mRB9aJMyVdYJUoJ53cG94+T/5eem+Sv4PRHZAjI2waYMrzpMmf/NyhzzQ1dTHGXYgoJM2iSP8/+0vv1t0QxiTFzzUFBG6Vi9cdL5hM11FHyZQg0CQ=
+	t=1748951352; cv=none; b=TBNidhoUQ5HXwIOe7paI3ik+gK1ghDLBR7WT5k58Xb14cm3yYvoZa8lvQYrdVAuW5b9Yg2VT7l1XH6I7XKLxD/LMM30Yh8nMuoyRBLE8VS8mapY4/hGQwkfv9ZN/RZroUrAVZAayAZiljklD4hLn/QvmPgJ1k8peRSXA5MEvckY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748951160; c=relaxed/simple;
-	bh=W46jAY8DvFTlxLUKlqbalfmzAmQGw+lUgSp1JCGBacY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cL5Oo7ZLOfA/UNEKgyX8rgtflipOtUx0yriCgO4CafVQX8kT75zQrtNC315e5sMbSP+o3SvKwYsaQELBZQjgXKfu3h0P++ZI25RMTZ1hAXdIqIiDru2mrXHU+GI5DBWcPETctIpRP42rqFTGPKp92+3na26zcM/GG2jRN+sBGP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=lIhrbO0/; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-604f26055c6so12398636a12.1
-        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 04:45:58 -0700 (PDT)
+	s=arc-20240116; t=1748951352; c=relaxed/simple;
+	bh=YFRAfVQT/IsrC7NSXrBMkZvKbXmwtLxA+4zLmBoHs28=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TaKJq6kTZDdZdAIqbb4u+/N3X2n15SjH8JL3JsRFHsjpCmt/yfgEHkGxwAAbOSElEpdxAAjvP7XmiMzVjOg1PhNf+1CroQgGJILQV6J3JBk3ZhWSuOZzM+pvjXnfRclZQN0GYulj7Z43MhBg9ZkZ+VLaaN7pfo3FC9Eu5cqb+6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CD3U2aQ/; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32a6a91f0easo19269511fa.0;
+        Tue, 03 Jun 2025 04:49:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1748951157; x=1749555957; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IfazfPYNHju0jH7hIPSEI9ULtmklFpa91hwq4k84SSc=;
-        b=lIhrbO0/Lt8FtkYFvu5VwQMbMS+0LISKPRcGqmFfpYYdV7FfsfrrQN+oP6cVtk6Z34
-         1DqFPI15Qz0tcrldUYq5SLez85hT8q4zzDZ0sEzV7mueaEgPZ3JT+7kVlzZa5asrR0XU
-         z6N1F+tutU6RjNzRiVXkllIk+LVkSfO5IomHY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748951157; x=1749555957;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748951348; x=1749556148; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IfazfPYNHju0jH7hIPSEI9ULtmklFpa91hwq4k84SSc=;
-        b=Gb7bg9p7g5Fa+9ezaEaWI1MgkTb6O6L36H56Nz91nXEUen85Wkz5euwYikc+QFzCwM
-         5FYyaf6VYKOFSpZ+C5jlFFLS42Jzc4bJwwwxUVwNvGqjNm5o2lxn+9YV8zfBfmC18oue
-         j+CYWsLCjnsMQ52Q5t9P92+GKzmBeR7d7hH45lrEBp6LFqdP8EKaexpQ1PjTlDK2vx1R
-         eb8o0XIkRqpLiQy/2NE9YZhcSLv0yHmtBkhIiwSSbbnIbAzpEfQGEZbrTaniVYPujZNJ
-         1FGCrQIxoRq7yEaALaZ6qf6bZXUQfRfaFLiNskrdBBrPdLuGlk97MbZ6LpplWRemRgnb
-         nxBg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHwIkCZeT+24qk+mtw4lCFk+lNNtcYXxN8EwL3IlQ7n/F1Cvw57pnVLP/fmTmGJ1R3AGad6AY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygHeTbcHmFFGr4Yhd3CYMHgpn8+FL2E+Udn8O6OdQZFcb1DFMd
-	Eiq0TVOXykFhzMTCmKf+V/TZbxboP2NqAWJMRSpq/k1LreBCmqz+RtbDwcSKeoU3cEs=
-X-Gm-Gg: ASbGncumBh4n7pyVrifp0tWNVX/L/l87GEozGowGzmcryRyx4et36oJd7Zjue1DGRIP
-	7WnNcenVAQi8ygm29Nx4eYd2l8jRsfmi8tehrp2snhU28rpYGWHFIodMODnivSrItwOzGPWMf0m
-	1iY9KxfM7KAIX/gsd5qFsyWs4ov2Y9h24uWpBgLaXsZ2oil+WjvlsBM3788U5VogroOcocaqpDO
-	1HapIDx8k+aUY60JozpCNQKwoOCyZO7r8kzHGIqj/9vU+P0LNeBUlgoIDmBLwQG60JYNecWBy7i
-	LPf1wJnXEUPFffXFVltRZ1o6ZabUEcSbkzwdZHjpfZPiAf+Fg8Hga93+ZPUnuqU=
-X-Google-Smtp-Source: AGHT+IG/yc1I09xXOpkrWC6fXgtwTaHTRCmhg1Bxq/oy8J2wc7t8jcYMlZLv+2Y63auTPM2uqnqVUQ==
-X-Received: by 2002:a17:907:2d0e:b0:adb:4085:fb88 with SMTP id a640c23a62f3a-adde5e98e24mr233475866b.1.1748951156582;
-        Tue, 03 Jun 2025 04:45:56 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada6ad3a6ccsm934847366b.156.2025.06.03.04.45.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 04:45:56 -0700 (PDT)
-Date: Tue, 3 Jun 2025 13:45:54 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>,
-	DRI Development <dri-devel@lists.freedesktop.org>,
-	intel-xe@lists.freedesktop.org,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	stable@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Simona Vetter <simona.vetter@intel.com>
-Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
-Message-ID: <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
-References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
- <20250528091307.1894940-2-simona.vetter@ffwll.ch>
- <2e60074d-8efd-4880-8620-9d9572583c88@suse.de>
+        bh=CDRcA+T6Fi9CfWPBz64dW6ekkPgHNPPDc7aXpEK7++Y=;
+        b=CD3U2aQ/IzPDCgctsrJr8CtSpIcrUsWP45k4NLzDOpBKMlbbwBO1VHvUM7j17wiWDI
+         CwYEg4btbDoeGb74H81HWupn8j1lLyz1uW5DiQ8fbUky6puUJx6CQ+cjohriirTSckha
+         y89UHxVJvlLJywEf9jCgVzQElFyTVbKKKIW9m6CANh2OWwtV61UKqbLHj0nFXCAO5zZ7
+         I8wSPSaznALYsdkhsGWUma0VUuQx84+puBJ3fLUccvJW7FMBSv2UVJ4/4IjYFWOqhlGM
+         Iw9XRbVsmhBMvbPPWoh7lfDaJwrDjS460dN+O5uiWUzXWo+k6cn24w23tPGu2HXxuCUa
+         aaJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748951348; x=1749556148;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CDRcA+T6Fi9CfWPBz64dW6ekkPgHNPPDc7aXpEK7++Y=;
+        b=aSpE/dhXWqRTvQ7GkgNQDG5sxa8jl/FHp/Abjb83VGoTER+jUuYvkkwLucelYrVAnc
+         pmBAMBVH1k+SyM2jJ5UZB5ST0roMl55lOTDOCT0+67KApqTD7nAG82P9RxLrIyFwbKwA
+         mvCfNge3mWDeTH1SFSjZyZGP5Hns5F3D3svirGmuAZDvklvmmbAkVxlDfIUD68hovQhA
+         WGlQmGJxkNGK4ZfE0dRavDzAPpH6KzTLv51uVsobcBdfItvSMgGsvWj9Oz4zhkMqDhnK
+         TykoFjeuu3fFJH3L7vX6QNhY6S6xx9o9aG4Sm448O+sm3XMuozxQhfAmgt2L9WbSeOBC
+         XnfA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPZjKzMKH6e6IK+D5YsCrzbsmiADOBrrjgg6ElYVrOW5Mik7YV1o0PZWbrNVaVrz7TjkmQ0wbf@vger.kernel.org, AJvYcCUoR9yDBvjsF4/KqUpbqUDK+WBHFQK5cnRGMQF9dMeCimugVkPwfAcpcORcoQQLW8NmH2uZHLRGv4SyfLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxX3sna9fHlz6k7JeE5C+TpyjgLduRItqeb5T0ic2EhgtfRZX0W
+	LcjM1VKZOYt61UFyKFd93oFALsbFr0n7WUFIac1vnAZ1/C+nEhbwB4f6YTh53dwD8usYClg5+F4
+	Hkq7d56XctBaG5yicLml0FWr2evUKA5A54gF9TWs=
+X-Gm-Gg: ASbGnctdGBRIuR+GLTDbp3A7Y2PH1y6iahYgHAGhCFITItQQ3i4BYaFCpyGXNA/nO17
+	qtC9nHqbHwq4VdFzhiN1eZeBy1agdWTqlMMnNZCX9Fd/ABwY5W0o5nLJwrjMXkxK8fEeJpOztdD
+	E3tWlOjAfzcXnp47TsZBLu7zVPNVP9LDygwXzLCNTqCqY=
+X-Google-Smtp-Source: AGHT+IGM/SASzWhhUTrY3uUzMWyJSMweqBgIdXZyU0E7noNfgJkGiCnAdF8at5x8bukX8dJz5+IH+N1p4N9YAoNkADk=
+X-Received: by 2002:a2e:bc19:0:b0:32a:7a2d:a589 with SMTP id
+ 38308e7fff4ca-32a906cec93mr41852711fa.13.1748951347781; Tue, 03 Jun 2025
+ 04:49:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2e60074d-8efd-4880-8620-9d9572583c88@suse.de>
-X-Operating-System: Linux phenom 6.12.25-amd64 
+References: <20250602181419.20478-1-ryncsn@gmail.com> <aD4KyHz_H5WPLLf4@x1.local>
+ <CAGsJ_4wbU=4ECxNPEB0dKGXibrAKuR-N3i8wwmVCYAgWCuupnQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4wbU=4ECxNPEB0dKGXibrAKuR-N3i8wwmVCYAgWCuupnQ@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 3 Jun 2025 19:48:49 +0800
+X-Gm-Features: AX0GCFvpZgb4jbkGTHBdzZSITw6Z_SdDPq42ADh9_afW-sX_weoyjolG37LBaHQ
+Message-ID: <CAMgjq7C_nVynRpMV8xkyVuhpyDY6qZX_ShzxChen5Fh5gXSJVg@mail.gmail.com>
+Subject: Re: [PATCH v3] mm: userfaultfd: fix race of userfaultfd_move and swap cache
+To: Barry Song <21cnbao@gmail.com>
+Cc: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Andrea Arcangeli <aarcange@redhat.com>, David Hildenbrand <david@redhat.com>, 
+	Lokesh Gidra <lokeshgidra@google.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 02, 2025 at 05:15:58PM +0200, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 28.05.25 um 11:12 schrieb Simona Vetter:
-> > Object creation is a careful dance where we must guarantee that the
-> > object is fully constructed before it is visible to other threads, and
-> > GEM buffer objects are no difference.
-> > 
-> > Final publishing happens by calling drm_gem_handle_create(). After
-> > that the only allowed thing to do is call drm_gem_object_put() because
-> > a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-> > (which is trivial since we have a linear allocator) can already tear
-> > down the object again.
-> > 
-> > Luckily most drivers get this right, the very few exceptions I've
-> > pinged the relevant maintainers for. Unfortunately we also need
-> > drm_gem_handle_create() when creating additional handles for an
-> > already existing object (e.g. GETFB ioctl or the various bo import
-> > ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-> > the only exported function to stop these issues from happening.
-> > 
-> > Now unfortunately the implementation of drm_gem_handle_create() isn't
-> > living up to standards: It does correctly finishe object
-> > initialization at the global level, and hence is safe against a
-> > concurrent tear down. But it also sets up the file-private aspects of
-> > the handle, and that part goes wrong: We fully register the object in
-> > the drm_file.object_idr before calling drm_vma_node_allow() or
-> > obj->funcs->open, which opens up races against concurrent removal of
-> > that handle in drm_gem_handle_delete().
-> > 
-> > Fix this with the usual two-stage approach of first reserving the
-> > handle id, and then only registering the object after we've completed
-> > the file-private setup.
-> > 
-> > Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-> > on a freshly-created object (which also destroys the object), but it
-> > should be possible to hit this with just additional handles created
-> > through import or GETFB without completed destroying the underlying
-> > object with the concurrent GEM_CLOSE ioctl calls.
-> > 
-> > Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-> > Release driver references to handle before making it available
-> > again"), which means a cool 9 years have passed until someone noticed
-> > that we need to make this symmetry or there's still gaps left :-/
-> > Without the 2-stage close approach we'd still have a race, therefore
-> > that's an integral part of this bugfix.
-> > 
-> > More importantly, this means we can have NULL pointers behind
-> > allocated id in our drm_file.object_idr. We need to check for that
-> > now:
-> > 
-> > - drm_gem_handle_delete() checks for ERR_OR_NULL already
-> > 
-> > - drm_gem.c:object_lookup() also chekcs for NULL
-> > 
-> > - drm_gem_release() should never be called if there's another thread
-> >    still existing that could call into an IOCTL that creates a new
-> >    handle, so cannot race. For paranoia I added a NULL check to
-> >    drm_gem_object_release_handle() though.
-> > 
-> > - most drivers (etnaviv, i915, msm) are find because they use
-> >    idr_find, which maps both ENOENT and NULL to NULL.
-> > 
-> > - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
-> >    pointers might exist due to drm_gem_handle_delete(). This needs a
-> >    separate patch. This is because idr_for_each_entry terminates on the
-> >    first NULL entry and so might not iterate over everything.
-> > 
-> > - similar for amd in amdgpu_debugfs_gem_info_show() and
-> >    amdgpu_gem_force_release(). The latter is really questionable though
-> >    since it's a best effort hack and there's no way to close all the
-> >    races. Needs separate patches.
-> > 
-> > - xe is really broken because it not uses idr_for_each_entry() but
-> >    also drops the drm_file.table_lock, which can wreak the idr iterator
-> >    state if you're unlucky enough. Maybe another reason to look into
-> >    the drm fdinfo memory stats instead of hand-rolling too much.
-> > 
-> > - drm_show_memory_stats() is also broken since it uses
-> >    idr_for_each_entry. But since that's a preexisting bug I'll follow
-> >    up with a separate patch.
-> > 
-> > Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> > Cc: stable@vger.kernel.org
-> > Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Maxime Ripard <mripard@kernel.org>
-> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > Cc: David Airlie <airlied@gmail.com>
-> > Cc: Simona Vetter <simona@ffwll.ch>
-> > Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-> > Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-> > ---
-> >   drivers/gpu/drm/drm_gem.c | 10 +++++++++-
-> >   include/drm/drm_file.h    |  3 +++
-> >   2 files changed, 12 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-> > index 1e659d2660f7..e4e20dda47b1 100644
-> > --- a/drivers/gpu/drm/drm_gem.c
-> > +++ b/drivers/gpu/drm/drm_gem.c
-> > @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
-> >   	struct drm_file *file_priv = data;
-> >   	struct drm_gem_object *obj = ptr;
-> > +	if (WARN_ON(!data))
-> > +		return 0;
-> > +
-> >   	if (obj->funcs->close)
-> >   		obj->funcs->close(obj, file_priv);
-> > @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
-> >   	idr_preload(GFP_KERNEL);
-> >   	spin_lock(&file_priv->table_lock);
-> > -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-> > +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
-> >   	spin_unlock(&file_priv->table_lock);
-> >   	idr_preload_end();
-> > @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
-> >   			goto err_revoke;
-> >   	}
-> > +	/* mirrors drm_gem_handle_delete to avoid races */
-> > +	spin_lock(&file_priv->table_lock);
-> > +	obj = idr_replace(&file_priv->object_idr, obj, handle);
-> > +	WARN_ON(obj != NULL);
-> 
-> A DRM print function would be preferable. The obj here is an errno pointer.
-> Should the errno code be part of the error message?
-> 
-> If it fails, why does the function still succeed?
+On Tue, Jun 3, 2025 at 6:08=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrote=
+:
+>
+> On Tue, Jun 3, 2025 at 8:34=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote=
+:
+> >
+> > On Tue, Jun 03, 2025 at 02:14:19AM +0800, Kairui Song wrote:
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > On seeing a swap entry PTE, userfaultfd_move does a lockless swap cac=
+he
+> > > lookup, and try to move the found folio to the faulting vma when.
+> > > Currently, it relies on the PTE value check to ensure the moved folio
+> > > still belongs to the src swap entry, which turns out is not reliable.
+> > >
+> > > While working and reviewing the swap table series with Barry, followi=
+ng
+> > > existing race is observed and reproduced [1]:
+> > >
+> > > ( move_pages_pte is moving src_pte to dst_pte, where src_pte is a
+> > >  swap entry PTE holding swap entry S1, and S1 isn't in the swap cache=
+.)
+> > >
+> > > CPU1                               CPU2
+> > > userfaultfd_move
+> > >   move_pages_pte()
+> > >     entry =3D pte_to_swp_entry(orig_src_pte);
+> > >     // Here it got entry =3D S1
+> > >     ... < Somehow interrupted> ...
+> > >                                    <swapin src_pte, alloc and use fol=
+io A>
+> > >                                    // folio A is just a new allocated=
+ folio
+> > >                                    // and get installed into src_pte
+> > >                                    <frees swap entry S1>
+> > >                                    // src_pte now points to folio A, =
+S1
+> > >                                    // has swap count =3D=3D 0, it can=
+ be freed
+> > >                                    // by folio_swap_swap or swap
+> > >                                    // allocator's reclaim.
+> > >                                    <try to swap out another folio B>
+> > >                                    // folio B is a folio in another V=
+MA.
+> > >                                    <put folio B to swap cache using S=
+1 >
+> > >                                    // S1 is freed, folio B could use =
+it
+> > >                                    // for swap out with no problem.
+> > >                                    ...
+> > >     folio =3D filemap_get_folio(S1)
+> > >     // Got folio B here !!!
+> > >     ... < Somehow interrupted again> ...
+> > >                                    <swapin folio B and free S1>
+> > >                                    // Now S1 is free to be used again=
+.
+> > >                                    <swapout src_pte & folio A using S=
+1>
+> > >                                    // Now src_pte is a swap entry pte
+> > >                                    // holding S1 again.
+> > >     folio_trylock(folio)
+> > >     move_swap_pte
+> > >       double_pt_lock
+> > >       is_pte_pages_stable
+> > >       // Check passed because src_pte =3D=3D S1
+> > >       folio_move_anon_rmap(...)
+> > >       // Moved invalid folio B here !!!
+> > >
+> > > The race window is very short and requires multiple collisions of
+> > > multiple rare events, so it's very unlikely to happen, but with a
+> > > deliberately constructed reproducer and increased time window, it can=
+ be
+> > > reproduced [1].
+> > >
+> > > It's also possible that folio (A) is swapped in, and swapped out agai=
+n
+> > > after the filemap_get_folio lookup, in such case folio (A) may stay i=
+n
+> > > swap cache so it needs to be moved too. In this case we should also t=
+ry
+> > > again so kernel won't miss a folio move.
+> > >
+> > > Fix this by checking if the folio is the valid swap cache folio after
+> > > acquiring the folio lock, and checking the swap cache again after
+> > > acquiring the src_pte lock.
+> > >
+> > > SWP_SYNCRHONIZE_IO path does make the problem more complex, but so fa=
+r
+> > > we don't need to worry about that since folios only might get exposed=
+ to
+> > > swap cache in the swap out path, and it's covered in this patch too b=
+y
+> > > checking the swap cache again after acquiring src_pte lock.
+> >
+> > [1]
+> >
+> > >
+> > > Testing with a simple C program to allocate and move several GB of me=
+mory
+> > > did not show any observable performance change.
+> > >
+> > > Cc: <stable@vger.kernel.org>
+> > > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> > > Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=3D6OOrK2OUZ0-tqCz=
+i+EJt+2_K97TPGoSt=3D9+JwP7Q@mail.gmail.com/ [1]
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > >
+> > > ---
+> > >
+> > > V1: https://lore.kernel.org/linux-mm/20250530201710.81365-1-ryncsn@gm=
+ail.com/
+> > > Changes:
+> > > - Check swap_map instead of doing a filemap lookup after acquiring th=
+e
+> > >   PTE lock to minimize critical section overhead [ Barry Song, Lokesh=
+ Gidra ]
+> > >
+> > > V2: https://lore.kernel.org/linux-mm/20250601200108.23186-1-ryncsn@gm=
+ail.com/
+> > > Changes:
+> > > - Move the folio and swap check inside move_swap_pte to avoid skippin=
+g
+> > >   the check and potential overhead [ Lokesh Gidra ]
+> > > - Add a READ_ONCE for the swap_map read to ensure it reads a up to da=
+ted
+> > >   value.
+> > >
+> > >  mm/userfaultfd.c | 23 +++++++++++++++++++++--
+> > >  1 file changed, 21 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > > index bc473ad21202..5dc05346e360 100644
+> > > --- a/mm/userfaultfd.c
+> > > +++ b/mm/userfaultfd.c
+> > > @@ -1084,8 +1084,18 @@ static int move_swap_pte(struct mm_struct *mm,=
+ struct vm_area_struct *dst_vma,
+> > >                        pte_t orig_dst_pte, pte_t orig_src_pte,
+> > >                        pmd_t *dst_pmd, pmd_t dst_pmdval,
+> > >                        spinlock_t *dst_ptl, spinlock_t *src_ptl,
+> > > -                      struct folio *src_folio)
+> > > +                      struct folio *src_folio,
+> > > +                      struct swap_info_struct *si, swp_entry_t entry=
+)
+> > >  {
+> > > +     /*
+> > > +      * Check if the folio still belongs to the target swap entry af=
+ter
+> > > +      * acquiring the lock. Folio can be freed in the swap cache whi=
+le
+> > > +      * not locked.
+> > > +      */
+> > > +     if (src_folio && unlikely(!folio_test_swapcache(src_folio) ||
+> > > +                               entry.val !=3D src_folio->swap.val))
+> > > +             return -EAGAIN;
+> > > +
+> > >       double_pt_lock(dst_ptl, src_ptl);
+> > >
+> > >       if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_s=
+rc_pte,
+> > > @@ -1102,6 +1112,15 @@ static int move_swap_pte(struct mm_struct *mm,=
+ struct vm_area_struct *dst_vma,
+> > >       if (src_folio) {
+> > >               folio_move_anon_rmap(src_folio, dst_vma);
+> > >               src_folio->index =3D linear_page_index(dst_vma, dst_add=
+r);
+> > > +     } else {
+> > > +             /*
+> > > +              * Check if the swap entry is cached after acquiring th=
+e src_pte
+> > > +              * lock. Or we might miss a new loaded swap cache folio=
+.
+> > > +              */
+> > > +             if (READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_H=
+AS_CACHE) {
+> >
+> > Do we need data_race() for this, if this is an intentionally lockless r=
+ead?
+>
+> Not entirely sure. But I recommend this pattern, borrowed from
+> zap_nonpresent_ptes() -> free_swap_and_cache_nr(),
+> where the PTL is also held and READ_ONCE is used.
+>
+>                 if (READ_ONCE(si->swap_map[offset]) =3D=3D SWAP_HAS_CACHE=
+) {
+>                        ..
+>                         nr =3D __try_to_reclaim_swap(si, offset,
+>                                                    TTRS_UNMAPPED | TTRS_F=
+ULL);
+>
+>                         if (nr =3D=3D 0)
+>                                 nr =3D 1;
+>                         else if (nr < 0)
+>                                 nr =3D -nr;
+>                         nr =3D ALIGN(offset + 1, nr) - offset;
+>                 }
 
-This is an internal error that should never happen, at that point just
-bailing out is the way to go.
+Thanks for the explanation, I also agree that holding PTL here is good
+enough here.
 
-Also note that the error code here is just to satisfy the function
-signature that id_for_each expects, we don't look at it ever (since if
-there's no bugs, it should never fail). I learned this because I actually
-removed the int return value and stuff didn't compile :-)
+>
+> I think we could use this to further optimize the existing
+> filemap_get_folio(), since in the vast majority of cases we don't
+> have a swapcache, yet we still always call filemap_get_folio().
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index bc473ad21202..c527ec73c3b4 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+>
+> @@ -1388,7 +1388,7 @@ static int move_pages_pte(struct mm_struct *mm,
+> pmd_t *dst_pmd, pmd_t *src_pmd,
+>                  * folios in the swapcache. This issue needs to be resolv=
+ed
+>                  * separately to allow proper handling.
+>                  */
+>
+> -               if (!src_folio)
+> +               if (!src_folio & (swap_map[offset] & SWAP_HAS_CACHE))
+>                         folio =3D filemap_get_folio(swap_address_space(en=
+try),
+>                                         swap_cache_index(entry));
+>                 if (!IS_ERR_OR_NULL(folio)) {
+>
+> To be future-proof, we may want to keep the READ_ONCE to ensure
+> the compiler doesn't skip the second read inside move_swap_pte().
 
-I can use drm_WARN_ON if you want me to though?
+Maybe we can do this optimization in another patch I think.
 
-I'll also explain this in the commit message for the next round.
--Sima
+>
+> >
+> > Another pure swap question: the comment seems to imply this whole thing=
+ is
+> > protected by src_pte lock, but is it?
+> >
+> > I'm not familiar enough with swap code, but it looks to me the folio ca=
+n be
+> > added into swap cache and set swap_map[] with SWAP_HAS_CACHE as long as=
+ the
+> > folio is locked.  It doesn't seem to be directly protected by pgtable l=
+ock.
+> >
+> > Perhaps you meant this: since src_pte lock is held, then it'll serializ=
+e
+> > with another thread B concurrently swap-in the swap entry, but only _la=
+ter_
+> > when thread B's do_swap_page() will check again on pte_same(), then it'=
+ll
+> > see the src pte gone (after thread A uffdio_move happened releasing src=
+_pte
+> > lock), hence thread B will release the newly allocated swap cache folio=
+?
+> >
+> > There's another trivial detail that IIUC pte_same() must fail because
+> > before/after the uffdio_move the swap entry will be occupied so no way =
+to
+> > have it reused, hence src_pte, even if re-populated again after uffdio_=
+move
+> > succeeded, cannot become the orig_pte (points to the swap entry in
+> > question) that thread B read, hence pte_same() must check fail.
+>
+> in v1 of this patch, we had some similar discussions [1][2]:
+>
+> [1] https://lore.kernel.org/linux-mm/CAGsJ_4wBMxQSeoTwpKoWwEGRAr=3DiohbYf=
+64aYyJ55t0Z11FkwA@mail.gmail.com/
+> [2] https://lore.kernel.org/linux-mm/CAGsJ_4wM8Tph0Mbc-1Y9xNjgMPL7gqEjp=
+=3DArBuv3cJijHVXe6w@mail.gmail.com/
+>
+> At the very least, [2] is possible, although the probability is extremely=
+ low.
+>
+> "It seems also possible for the sync zRAM device.
+>
+>  step 1: src pte points to a swap entry S without swapcache
+>  step 2: we call move_swap_pte()
+>  step 3: someone swap-in src_pte by sync path, no swapcache; swap slot
+> S is freed.
+>              -- for zRAM;
+>  step 4: someone swap-out src_pte, get the exactly same swap slot S as st=
+ep 1,
+>              adds folio to swapcache due to swapout;
+>  step 5: move_swap_pte() gets ptl and finds page tables are stable
+> since swap-out
+>              happens to have the same swap slot as step1;
+>  step 6: we clear src_pte, move src_pte to dst_pte; but miss to move the =
+folio.
+>
+> Yep, we really need to re-check pte for swapcache after holding PTL.
+> "
+>
+> Personally, I agree that improving the changelog or the comments
+> would be more helpful. In fact, there are two bugs here, and Kairui=E2=80=
+=99s
+> changelog clearly describes the first one.
 
-> 
-> Best regards
-> Thomas
-> 
-> > +	spin_unlock(&file_priv->table_lock);
-> >   	*handlep = handle;
-> >   	return 0;
-> > diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
-> > index 5c3b2aa3e69d..d344d41e6cfe 100644
-> > --- a/include/drm/drm_file.h
-> > +++ b/include/drm/drm_file.h
-> > @@ -300,6 +300,9 @@ struct drm_file {
-> >   	 *
-> >   	 * Mapping of mm object handles to object pointers. Used by the GEM
-> >   	 * subsystem. Protected by @table_lock.
-> > +	 *
-> > +	 * Note that allocated entries might be NULL as a transient state when
-> > +	 * creating or deleting a handle.
-> >   	 */
-> >   	struct idr object_idr;
-> 
-> -- 
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Frankenstrasse 146, 90461 Nuernberg, Germany
-> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-> HRB 36809 (AG Nuernberg)
-> 
-
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Yeah, the first one is quite a long and complex race already, so I
+made the description on the second issue shorter. I thought it
+wouldn't be too difficult to understand given the first example. I can
+add some more details.
 
