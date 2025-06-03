@@ -1,359 +1,120 @@
-Return-Path: <stable+bounces-150712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE57DACC6CE
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 14:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A7EACC758
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC421188C3D5
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0300F1895728
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725DA22E402;
-	Tue,  3 Jun 2025 12:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMFK6w35";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="l/O9T+6O";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMFK6w35";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="l/O9T+6O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A953D2309B5;
+	Tue,  3 Jun 2025 13:05:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB241E50E
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 12:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A39922F740;
+	Tue,  3 Jun 2025 13:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748954444; cv=none; b=P2wPZazTf9ozG7AighUoiH0+wdOZsnpmHksRAVCaiEyj3XCl9ySOKJY4SnRO/2QIHgZyJZERmdszhLnonL3mZlX0K5oR7/rNYPIeTTvn4fbYwyoUSssR1wD86x7cdWS1d6DzPYGB/kM1yZ18xixARyRZgPMjM1Rp9OkvY9VetaI=
+	t=1748955936; cv=none; b=Nf5WsoMwkQF15XJwAmyk6PqEnuLGFO7faLCqm7okCtlnw8FnF1VfOG3yUooyJJKXW+V48YykuGUlxq43tEE0rDhNuhRBG414WiHGKEpwASNtdEtDSGIAaYp5DFLXL/Fug6Q2+GddJ1x1zq9HOKY94gbcip4qKiq1k/SJN2YVpQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748954444; c=relaxed/simple;
-	bh=8V62u08qhI0AefJbHUsa/9MZGMxJ6YmTunRu9mDYI2w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hSNutBhcHB3gnBOrq27FD4464mvSJIBM5lknUB2wW5lDzbIu8otq/5SeeB7u3CoJbQC3MNOhUx6m/JmTbdWiPi1MIi5phzmLrEAgb7yeSt/35cdkKGL/POBUx/hCw+9xtjoN45DXjZSMVQltffh9auHY4A9nzrVZ9GZnEmjPnJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMFK6w35; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=l/O9T+6O; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMFK6w35; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=l/O9T+6O; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2ACA11F7B5;
-	Tue,  3 Jun 2025 12:40:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748954439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MmB0IG5i/ot/uj8oiNr6ycLyY1acTI0Bjk/0dnYdgUU=;
-	b=EMFK6w3555N4zZCyeab240OMkr9lXLZFsBLwlXMOof9W//ABEtSKm68rqPLIlSwv1JoE/H
-	mADaaxei4n0jAeqSAne6vVqU2QF3ESmCIgY/iFrQvlD4VbvEKEH1BhgqGib5X8t8lq+/ba
-	5C/6j5oF1RBgGnajpngTSCYfGrQIOVw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748954439;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MmB0IG5i/ot/uj8oiNr6ycLyY1acTI0Bjk/0dnYdgUU=;
-	b=l/O9T+6OCL4gABskVPPQBdPJ3uKUoXwnBOAzmmWMqTblHlxEGFRqZwQusXzJ8aU+EtENQB
-	44SUjulBslp5z/Aw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1748954439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MmB0IG5i/ot/uj8oiNr6ycLyY1acTI0Bjk/0dnYdgUU=;
-	b=EMFK6w3555N4zZCyeab240OMkr9lXLZFsBLwlXMOof9W//ABEtSKm68rqPLIlSwv1JoE/H
-	mADaaxei4n0jAeqSAne6vVqU2QF3ESmCIgY/iFrQvlD4VbvEKEH1BhgqGib5X8t8lq+/ba
-	5C/6j5oF1RBgGnajpngTSCYfGrQIOVw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1748954439;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=MmB0IG5i/ot/uj8oiNr6ycLyY1acTI0Bjk/0dnYdgUU=;
-	b=l/O9T+6OCL4gABskVPPQBdPJ3uKUoXwnBOAzmmWMqTblHlxEGFRqZwQusXzJ8aU+EtENQB
-	44SUjulBslp5z/Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA89F13A1D;
-	Tue,  3 Jun 2025 12:40:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZHEMNEbtPmjyfAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 03 Jun 2025 12:40:38 +0000
-Message-ID: <35b01b87-6345-4d59-99be-e39daa226dd5@suse.de>
-Date: Tue, 3 Jun 2025 14:40:38 +0200
+	s=arc-20240116; t=1748955936; c=relaxed/simple;
+	bh=Zknqswh8USYRXH9E7sikPWaoUxkbdqaBWulo21WEy5M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dm5HpTrgvQT/CTo3TVEHWAX3H4aSsYIUR6pbj+qH970gMyjU5bPLrmeMlPERlqjbezAXW6rId5lCwgIGlDeLowph7DYCXRQOVMA/qWMcADC0s9T/6mIEM58lmkLc5etfygpvUjifbIaoTsbJbQcLBOcc4x1ynE0GZRwMyOyjTPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bBWCv6b7tzKHNFR;
+	Tue,  3 Jun 2025 21:05:31 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id 4E9D81A17C1;
+	Tue,  3 Jun 2025 21:05:30 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP3 (Coremail) with SMTP id _Ch0CgCn+MIQ8z5osdqmOA--.37720S2;
+	Tue, 03 Jun 2025 21:05:30 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	ardb@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huawei.com
+Subject: [PATCH stable 6.6.y] arm64: kaslr: fix nokaslr cmdline parsing
+Date: Tue,  3 Jun 2025 12:52:33 +0000
+Message-Id: <20250603125233.2707474-1-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
-To: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: DRI Development <dri-devel@lists.freedesktop.org>,
- intel-xe@lists.freedesktop.org,
- Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
- stable@vger.kernel.org, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Simona Vetter <simona.vetter@intel.com>
-References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
- <20250528091307.1894940-2-simona.vetter@ffwll.ch>
- <2e60074d-8efd-4880-8620-9d9572583c88@suse.de>
- <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,linux.intel.com,vger.kernel.org,kernel.org,gmail.com,ffwll.ch,intel.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,intel.com:email,ffwll.ch:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_Ch0CgCn+MIQ8z5osdqmOA--.37720S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WrWUXr43Ar15tF13AFykGrg_yoW8WrW3pw
+	s8Ww1ayrs5uF1UAa4DX3W5uFW5u393t3sIya4UK34fJay5AryUKFWFqasI9F4UtFyUu3W2
+	yrZI9ryktayUAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyKb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI
+	7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY
+	6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6x
+	AIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
+	1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUFBT5DUUUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
-Hi
+From: Chen Ridong <chenridong@huawei.com>
 
-Am 03.06.25 um 13:45 schrieb Simona Vetter:
-> On Mon, Jun 02, 2025 at 05:15:58PM +0200, Thomas Zimmermann wrote:
->> Hi
->>
->> Am 28.05.25 um 11:12 schrieb Simona Vetter:
->>> Object creation is a careful dance where we must guarantee that the
->>> object is fully constructed before it is visible to other threads, and
->>> GEM buffer objects are no difference.
->>>
->>> Final publishing happens by calling drm_gem_handle_create(). After
->>> that the only allowed thing to do is call drm_gem_object_put() because
->>> a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
->>> (which is trivial since we have a linear allocator) can already tear
->>> down the object again.
->>>
->>> Luckily most drivers get this right, the very few exceptions I've
->>> pinged the relevant maintainers for. Unfortunately we also need
->>> drm_gem_handle_create() when creating additional handles for an
->>> already existing object (e.g. GETFB ioctl or the various bo import
->>> ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
->>> the only exported function to stop these issues from happening.
->>>
->>> Now unfortunately the implementation of drm_gem_handle_create() isn't
->>> living up to standards: It does correctly finishe object
->>> initialization at the global level, and hence is safe against a
->>> concurrent tear down. But it also sets up the file-private aspects of
->>> the handle, and that part goes wrong: We fully register the object in
->>> the drm_file.object_idr before calling drm_vma_node_allow() or
->>> obj->funcs->open, which opens up races against concurrent removal of
->>> that handle in drm_gem_handle_delete().
->>>
->>> Fix this with the usual two-stage approach of first reserving the
->>> handle id, and then only registering the object after we've completed
->>> the file-private setup.
->>>
->>> Jacek reported this with a testcase of concurrently calling GEM_CLOSE
->>> on a freshly-created object (which also destroys the object), but it
->>> should be possible to hit this with just additional handles created
->>> through import or GETFB without completed destroying the underlying
->>> object with the concurrent GEM_CLOSE ioctl calls.
->>>
->>> Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
->>> Release driver references to handle before making it available
->>> again"), which means a cool 9 years have passed until someone noticed
->>> that we need to make this symmetry or there's still gaps left :-/
->>> Without the 2-stage close approach we'd still have a race, therefore
->>> that's an integral part of this bugfix.
->>>
->>> More importantly, this means we can have NULL pointers behind
->>> allocated id in our drm_file.object_idr. We need to check for that
->>> now:
->>>
->>> - drm_gem_handle_delete() checks for ERR_OR_NULL already
->>>
->>> - drm_gem.c:object_lookup() also chekcs for NULL
->>>
->>> - drm_gem_release() should never be called if there's another thread
->>>     still existing that could call into an IOCTL that creates a new
->>>     handle, so cannot race. For paranoia I added a NULL check to
->>>     drm_gem_object_release_handle() though.
->>>
->>> - most drivers (etnaviv, i915, msm) are find because they use
->>>     idr_find, which maps both ENOENT and NULL to NULL.
->>>
->>> - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
->>>     pointers might exist due to drm_gem_handle_delete(). This needs a
->>>     separate patch. This is because idr_for_each_entry terminates on the
->>>     first NULL entry and so might not iterate over everything.
->>>
->>> - similar for amd in amdgpu_debugfs_gem_info_show() and
->>>     amdgpu_gem_force_release(). The latter is really questionable though
->>>     since it's a best effort hack and there's no way to close all the
->>>     races. Needs separate patches.
->>>
->>> - xe is really broken because it not uses idr_for_each_entry() but
->>>     also drops the drm_file.table_lock, which can wreak the idr iterator
->>>     state if you're unlucky enough. Maybe another reason to look into
->>>     the drm fdinfo memory stats instead of hand-rolling too much.
->>>
->>> - drm_show_memory_stats() is also broken since it uses
->>>     idr_for_each_entry. But since that's a preexisting bug I'll follow
->>>     up with a separate patch.
->>>
->>> Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>> Cc: stable@vger.kernel.org
->>> Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->>> Cc: Maxime Ripard <mripard@kernel.org>
->>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>> Cc: David Airlie <airlied@gmail.com>
->>> Cc: Simona Vetter <simona@ffwll.ch>
->>> Signed-off-by: Simona Vetter <simona.vetter@intel.com>
->>> Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
->>> ---
->>>    drivers/gpu/drm/drm_gem.c | 10 +++++++++-
->>>    include/drm/drm_file.h    |  3 +++
->>>    2 files changed, 12 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->>> index 1e659d2660f7..e4e20dda47b1 100644
->>> --- a/drivers/gpu/drm/drm_gem.c
->>> +++ b/drivers/gpu/drm/drm_gem.c
->>> @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
->>>    	struct drm_file *file_priv = data;
->>>    	struct drm_gem_object *obj = ptr;
->>> +	if (WARN_ON(!data))
->>> +		return 0;
->>> +
->>>    	if (obj->funcs->close)
->>>    		obj->funcs->close(obj, file_priv);
->>> @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->>>    	idr_preload(GFP_KERNEL);
->>>    	spin_lock(&file_priv->table_lock);
->>> -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
->>> +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
->>>    	spin_unlock(&file_priv->table_lock);
->>>    	idr_preload_end();
->>> @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
->>>    			goto err_revoke;
->>>    	}
->>> +	/* mirrors drm_gem_handle_delete to avoid races */
->>> +	spin_lock(&file_priv->table_lock);
->>> +	obj = idr_replace(&file_priv->object_idr, obj, handle);
->>> +	WARN_ON(obj != NULL);
->> A DRM print function would be preferable. The obj here is an errno pointer.
->> Should the errno code be part of the error message?
->>
->> If it fails, why does the function still succeed?
-> This is an internal error that should never happen, at that point just
-> bailing out is the way to go.
->
-> Also note that the error code here is just to satisfy the function
-> signature that id_for_each expects, we don't look at it ever (since if
-> there's no bugs, it should never fail). I learned this because I actually
-> removed the int return value and stuff didn't compile :-)
+Currently, when the command line contains "nokaslrxxx", it was incorrectly
+treated as a request to disable KASLR virtual memory. However, the behavior
+is different from physical address handling.
 
-I see.
+This issue exists before the commit af73b9a2dd39 ("arm64: kaslr: Use
+feature override instead of parsing the cmdline again"). This patch fixes
+the parsing logic for the 'nokaslr' command line argument. Only the exact
+strings, 'nokaslr', will disable KASLR. Other inputs such as 'xxnokaslr',
+'xxnokaslrxx', or 'xxnokaslr=xx' will not disable KASLR.
 
->
-> I can use drm_WARN_ON if you want me to though?
+Fixes: f80fb3a3d508 ("arm64: add support for kernel ASLR")
+Cc: stable@vger.kernel.org # <= v6.6
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ arch/arm64/kernel/pi/kaslr_early.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-If you use drm_WARN_ON, you can add
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Best regards
-Thomas
-
->
-> I'll also explain this in the commit message for the next round.
-> -Sima
->
->> Best regards
->> Thomas
->>
->>> +	spin_unlock(&file_priv->table_lock);
->>>    	*handlep = handle;
->>>    	return 0;
->>> diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
->>> index 5c3b2aa3e69d..d344d41e6cfe 100644
->>> --- a/include/drm/drm_file.h
->>> +++ b/include/drm/drm_file.h
->>> @@ -300,6 +300,9 @@ struct drm_file {
->>>    	 *
->>>    	 * Mapping of mm object handles to object pointers. Used by the GEM
->>>    	 * subsystem. Protected by @table_lock.
->>> +	 *
->>> +	 * Note that allocated entries might be NULL as a transient state when
->>> +	 * creating or deleting a handle.
->>>    	 */
->>>    	struct idr object_idr;
->> -- 
->> --
->> Thomas Zimmermann
->> Graphics Driver Developer
->> SUSE Software Solutions Germany GmbH
->> Frankenstrasse 146, 90461 Nuernberg, Germany
->> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
->> HRB 36809 (AG Nuernberg)
->>
-
+diff --git a/arch/arm64/kernel/pi/kaslr_early.c b/arch/arm64/kernel/pi/kaslr_early.c
+index 17bff6e399e4..731d0a3f1a89 100644
+--- a/arch/arm64/kernel/pi/kaslr_early.c
++++ b/arch/arm64/kernel/pi/kaslr_early.c
+@@ -35,9 +35,14 @@ static char *__strstr(const char *s1, const char *s2)
+ static bool cmdline_contains_nokaslr(const u8 *cmdline)
+ {
+ 	const u8 *str;
++	size_t len = strlen("nokaslr");
++	const char *after = cmdline + len;
+ 
+ 	str = __strstr(cmdline, "nokaslr");
+-	return str == cmdline || (str > cmdline && *(str - 1) == ' ');
++	if ((str == cmdline || (str > cmdline && *(str - 1) == ' ')) &&
++	    (*after == ' ' || *after == '\0'))
++		return true;
++	return false;
+ }
+ 
+ static bool is_kaslr_disabled_cmdline(void *fdt)
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+2.34.1
 
 
