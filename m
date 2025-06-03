@@ -1,123 +1,244 @@
-Return-Path: <stable+bounces-150710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B86EACC67D
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 14:26:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CF8ACC6B5
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 14:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C90ED171AEC
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:26:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D5333A4024
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 12:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330F122F152;
-	Tue,  3 Jun 2025 12:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C594322DA02;
+	Tue,  3 Jun 2025 12:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="M33qxHlW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LKvP3EzW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFE522B5B8;
-	Tue,  3 Jun 2025 12:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B661F237A
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 12:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748953564; cv=none; b=UGVVEW1O/9LhUamojXRcVwmroDfpLwWZcRB7bYXw4AE86Cp46nwBSfJw2lgQaTQVHCRRB05nW+kfuhJcwd2qNfRR3BfXfq8oWQQElyYY3G6C+LIQfK2OTCAWVyDhx1WRdQMmi4dG/FR8RwUnn8UoP+EY9D1H82qVK6RdBg21YyY=
+	t=1748953852; cv=none; b=ar5dL7N5zwDK0nEsLk3GvJbxF1seRkagQ5qWY+mOr3VI0rViheCfPey3Yic25mGDIFDq1R5DZoCznJIeVDGQdK7T9ZB/UccJch9GHnSHEumZy22dBZHrYB5gJoHKAmDNH8QpRLtmwMs1nKSXzlHvwccxzwlGheoWSBrSbNob/cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748953564; c=relaxed/simple;
-	bh=/yXZlGDs4md91/o0FVCW0coTLoknhoIAGtxjk/CnPB8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PS6TqtSWVp92SlDJDjGmxGaKJdkl4ct0ZK1WR43trWbd3qjvXhLus/oMqYtV1eMie4/Gd5/liZDYMQnpoEVMN5063LgGl12opQvT8DBbNvtx0dgtPSTEfOu4Cwr2HXd08CfTo+KQthd7HAVdWSLt5sjdCSmOZomwMrVQmC8CXAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=M33qxHlW; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1748953552; x=1749212752;
-	bh=3ez5X2N+es+sI87jrlyxEtNtyTKsgzhcCRRSrcaEdco=;
-	h=From:Date:Subject:Message-Id:To:Cc:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector:List-Unsubscribe:
-	 List-Unsubscribe-Post;
-	b=M33qxHlWhiExvR2Gqi6iP+7rnIC5jZekvPmMVCnPfneOZkhJ5nlQl69QIe67pQwhF
-	 1ByWlj5XfdndnbJ2QTiFg+GaEZjLVM86TkAwDTYTHYMqbw6oMhokonwXewWKeAJdR1
-	 mHWAK5Qp+ACqMU9DcLBb6SABpw8tmMQyykBNHyAk/RMK8L3oi9GRG1oUP/jIB1DI27
-	 sv2pNYybbGm6POQRcza9ukBtpM/cJ7ikrdSBn2BwbU8LAnWux/BuWxVK9QMFjeX4Ip
-	 WLIJEFnqim5H9LArQwVsrOYY8EarXeFVPe9869aRfROxhMnEy+JGgDr7M6nwsBhB7Y
-	 TSm3WSsmM1TUg==
-X-Pm-Submission-Id: 4bBVL63mZqz1DDSS
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Tue, 03 Jun 2025 14:25:44 +0200
-Subject: [PATCH v2] iio: accel: fxls8962af: Fix use after free in
- fxls8962af_fifo_flush
+	s=arc-20240116; t=1748953852; c=relaxed/simple;
+	bh=EmQ/A9vSfKWWPB/K/T8g8cr639C8K9rcW3d2OXMslYI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tZaGk/ocvjICz7nt0nvFZ1BYPgyHfkdB62xFJhdU6lYofIQrBWQMBoHIUz2bbnwProYLajd+ExyEztCc9Lmh7KYwJbj7fCOBw3Q2cvobrkAeu7GZMK29IHWI+FjudWpDmTnqpo1cgfj8HUuRb2NpVTVRqk9i6fQIwSUtRkOT6Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LKvP3EzW; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-52b2290e292so1834121e0c.3
+        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 05:30:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1748953850; x=1749558650; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LY/1nUmGBa6dpDChrxvy7BQ7e4yIy3xA/coyZFocW/0=;
+        b=LKvP3EzWGddE4uWuB7OfVy5oDwkJQu8QXp+kbSInopfsq0Dt/ulzjij3bknit7gUH3
+         9COBmnOrbiJ+hrIkCRvQTRQ8WLqCYpzNA3wSybQw9Wlag1pzanfyizd1xNNuJMT5f46l
+         hJ9iB6lE66bI7x8ClQznWI2GW58iivl2fBIcMOalw2QlY40USWLDf0cq6lhPlPiXx+g1
+         Aze9ZbE32pc1JOufsj+UA4jLRMsc68minAvhz0/Ca0RiVaw77b46aKr0JIODAF0aPNaC
+         DUTQu/zlNzX4HsMa+2dSzcz4MM/3McAjU2fgWoKCzRO841yEblS2mHuXi3p0x8Zx6Fu0
+         r35A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748953850; x=1749558650;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LY/1nUmGBa6dpDChrxvy7BQ7e4yIy3xA/coyZFocW/0=;
+        b=uWaBMX6bOfZ4+gwDwHvJr/A74kShdS3NjM38Bg+N/v+40kUsGSpMc3XSN+cpgZBK5W
+         ZkLiOxDcKJhFWv/VcxR4lRAcy0HKZgYba0DaIWB+IsE3jCK6KDj7DiAdhu19/WdkAHJy
+         PM+PyJPRW4/MOJ2srB8wqZXzbZ28dHGQwZCCjMJgQK2jXzsaPt+SbOD8D57F9gkX8f99
+         bQ5BtjY3n6CcwjzAbpWSIQvzXLuEv0NDwawC80HgWrreaB4tQp0foNEUXwMoWYUaWwlW
+         b6sP8zZ4Z99YmZC6yd6zjRaN8DCZaOBU/bmta0VnfWxUzGeeeQpiPYF2HVNfQ7UX6QQ5
+         SXgQ==
+X-Gm-Message-State: AOJu0Yz82bTAhBpau/wL0UL9o77L+yWRJ1WXxzjY/Ab5EkxGUhSgF6DH
+	LRWZ3ITikr/VtHAWhFo1hFrtEQguT7kgxpvtlVlTB7H7iGYk/+ii8/VWggixL2KTT/MRi/eGQKZ
+	M7d7q78fBMj33dVS2eLavMsSlw3WFkuQU+y412xVr0g==
+X-Gm-Gg: ASbGncspSWtEsNRMYzH097DWkcY0XHr5HWJqU2DtZ4LCwyl1J6pFmUuHKpso1yLoG6z
+	p66oE9v4USwb9e/SO/v6YIfn5Mlpnb7h/C1jNg74KpUYvhh5zHn7SSjVzYSdLO1tSJbXb5JGe/Q
+	taa/n2viFNC2rczvpvoBQ5+F4yPZ2ffog=
+X-Google-Smtp-Source: AGHT+IHTosQvOBKF0L3D0Inb+MoWZZ3cSRXCp014dL+KqAo8fezAvJU5scdjR5Ga9Sawg0g6JBdjG2QGVG+FJzLfAfg=
+X-Received: by 2002:a05:6122:1ad4:b0:52c:4eb0:118d with SMTP id
+ 71dfb90a1353d-53084be0280mr12838886e0c.4.1748953849537; Tue, 03 Jun 2025
+ 05:30:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250603-fxlsrace-v2-1-5381b36ba1db@geanix.com>
-X-B4-Tracking: v=1; b=H4sIAMfpPmgC/23MQQ7CIBCF4as0sxZDJ0WtK+9hukAY2kkUGjAE0
- 3B3sWuX/8vLt0GiyJTg2m0QKXPi4FvgoQOzaD+TYNsaUKKSCgfhyjNFbUi4waIkHN0DR2j3NZL
- jslP3qfXC6R3iZ5dz/1v/ILkXvbBklDxZczlrus2kPZejCS+Yaq1fB8s/maEAAAA=
-X-Change-ID: 20250524-fxlsrace-f4d20e29fb29
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.14.2
+References: <20250602134241.673490006@linuxfoundation.org>
+In-Reply-To: <20250602134241.673490006@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 3 Jun 2025 18:00:38 +0530
+X-Gm-Features: AX0GCFumOsdVyieNJlmgoVB__zbTkcpeuCdAKy4COLBbvEc6SfoIbneNR7OPeWM
+Message-ID: <CA+G9fYtrUYsAtZgJg4b8ZxCUzWmekp9v0USDVC5dKgZ3XNe7UA@mail.gmail.com>
+Subject: Re: [PATCH 6.14 00/73] 6.14.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-fxls8962af_fifo_flush() uses indio_dev->active_scan_mask (with
-iio_for_each_active_channel()) without making sure the indio_dev
-stays in buffer mode.
-There is a race if indio_dev exits buffer mode in the middle of the
-interrupt that flushes the fifo. Fix this by calling
-synchronize_irq() to ensure that no interrupt is currently running when
-disabling buffer mode.
+On Mon, 2 Jun 2025 at 19:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.14.10 release.
+> There are 73 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.14.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-[...]
-_find_first_bit_le from fxls8962af_fifo_flush+0x17c/0x290
-fxls8962af_fifo_flush from fxls8962af_interrupt+0x80/0x178
-fxls8962af_interrupt from irq_thread_fn+0x1c/0x7c
-irq_thread_fn from irq_thread+0x110/0x1f4
-irq_thread from kthread+0xe0/0xfc
-kthread from ret_from_fork+0x14/0x2c
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-Cc: stable@vger.kernel.org
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-Changes in v2:
-- As per David's suggestion; switched to use synchronize_irq() instead.
-- Link to v1: https://lore.kernel.org/r/20250524-fxlsrace-v1-1-dec506dc87ae@geanix.com
----
- drivers/iio/accel/fxls8962af-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-index 6d23da3e7aa22c61f2d9348bb91d70cc5719a732..f2558fba491dffa78b26d47d2cd9f1f4d9811f54 100644
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -866,6 +866,8 @@ static int fxls8962af_buffer_predisable(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
- 
-+	synchronize_irq(data->irq);
-+
- 	ret = __fxls8962af_fifo_set_mode(data, false);
- 
- 	if (data->enable_event)
+## Build
+* kernel: 6.14.10-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: d9764ae2492695b2e87e4cd07bf1c61426d3693d
+* git describe: v6.14.9-74-gd9764ae24926
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14=
+.9-74-gd9764ae24926
 
----
-base-commit: 5c3fcb36c92443a9a037683626a2e43d8825f783
-change-id: 20250524-fxlsrace-f4d20e29fb29
+## Test Regressions (compared to v6.14.8-784-g10804dbee7fa)
 
-Best regards,
--- 
-Sean Nyekjaer <sean@geanix.com>
+## Metric Regressions (compared to v6.14.8-784-g10804dbee7fa)
 
+## Test Fixes (compared to v6.14.8-784-g10804dbee7fa)
+
+## Metric Fixes (compared to v6.14.8-784-g10804dbee7fa)
+
+## Test result summary
+total: 332025, pass: 306599, fail: 4596, skip: 20041, xfail: 789
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 137 passed, 2 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 33 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 40 passed, 0 failed
+* riscv: 25 total, 22 passed, 3 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 48 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
