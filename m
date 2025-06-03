@@ -1,179 +1,98 @@
-Return-Path: <stable+bounces-150676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E238BACC33F
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:37:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DAFACC360
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 11:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6B8169D52
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 09:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B68216CF84
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 09:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC33F281524;
-	Tue,  3 Jun 2025 09:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBEF283FCF;
+	Tue,  3 Jun 2025 09:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="mUtfJxzg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9w2DS1v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02739281505
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 09:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F472820B5;
+	Tue,  3 Jun 2025 09:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748943430; cv=none; b=cPykMa4SWgKNhKB6S2tGsqyBkIlPH+1mwm5mhkf9u91xTJRPDfF3caMr4Y899WqaoqIHGWap9kpuW2/gdM8q+5Ujxuc5QJqA20fAiHbos9P8UVhII9CvK6EMfKwG2JFGqPuYy+vwhGHPlm7SE6Hn5p0Qp9nvlAT5N5Pzv0l0uus=
+	t=1748943816; cv=none; b=LlYEHvk4mlwAT5oVy1LHQ79068JteNt7uYE6xf61/Jm9AxawS/a5z4QAFkY3qVAij6LEUs9PPJOHaB+UVuPvYJbRESsN2TsHJlG2Z3CTbfzxrXZb2pqgMxwXHUr8FJUpLDAiKQUDfT6aY+UOR6fvgGK2Cr/NOGOkqg9E9uyo8qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748943430; c=relaxed/simple;
-	bh=T753QEGZinNlv/C3kLNOxMTQmZgDCVy0TztIe1ulPpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAr3zi0ha3QLGsxyvcLWCkRwWp9N0mbIDf/Yo0ciE204RvxcNXjJAkNB/RC3ZHC+4AqBUnCRE7ueKycevaI6BICPEYQIqDlhvXB8mbL6vqbxRGn8lXFIZui8q4gSyPYUh/jmlW60ZJ5SP0aoVvqRsvEJ8eu0H4tpzx3lshsjMzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=mUtfJxzg; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ad88eb71eb5so668052666b.0
-        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 02:37:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1748943427; x=1749548227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DWJfLLS27QWEPyo6rHGegekVxELrhw4yk4Q3OJJM/8U=;
-        b=mUtfJxzgSTtRyzTCza9bhpX4jULJJV91r+F9UT8/EgyTDwLIFzeTY+trLQs9qNa357
-         UqgAb8heVju6hVPS/nmJWPMwWSypvkPrEnJcX83ZsTNwCzTMPl9bcmBrUkB0NFzu7Lp4
-         ndY8kx/MhnBKObGDbguah9yiFifB56FoVwIJptzD20hbA53lu6NXNLZCUcfFyl68WEl9
-         88vwEZkKjKqeTaIyZ08r8yNUthivqPI7Kjt+RCLiNj4k9pphyb9S6hAnh+DTB+dMJNyw
-         qR2YXVlEb5snzWwH7TxTpWNi6I8WgS96BlRvny7hXGGLzy+NItP5xFV3UuZRLo6dRts4
-         96Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748943427; x=1749548227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DWJfLLS27QWEPyo6rHGegekVxELrhw4yk4Q3OJJM/8U=;
-        b=ddhMt3Ij9vB9TFiB3ZMbAfL4bx9zhLPHd5pE+u+StcPftBkg0TuVXwSfByHEjFEDX5
-         PNOwKoeV4YqiRWxEzTwKvo8gAJHhItyPLSgMKwsQgm6y5nDw5ihlk7UmNhdppToPMQF9
-         XhnYRX+TPUs6mUnjyMQuvYBTWmaohncmBOf+8pxp+bTkJ5UGJ5w7QM5bbGAY9AFjxn05
-         p2xBr1LmN6ukelV3wmhD6v0hIvCKl7zxdfdJxJmgRTaRpbmkkDW6FnO4da373uWLKFkI
-         4N45aNwx4MkLOmso3Nk+eKDebeyTqTyDaWp0+SjE3YaOd/dqbmNgYyeQH3JwvfFQaTIy
-         8lMg==
-X-Gm-Message-State: AOJu0YwaUUMedA9QTw/mTVqw932Wc3L6grZavWHMYFG6ASv4ZboAUNQ+
-	qIsU41dguuawijNVJ05IOQz3cJ0Gw1HAWG4VbW6aSHmDkEb3CBoBVABp3KGwkC9iNjectDdOI1f
-	cDK/5
-X-Gm-Gg: ASbGncuoZe6UcymRFKTUNIazXU7Nqmf0xPmbc01wf7SvJijb39GOek136ZP7erhTAYX
-	WTRTrwAwKp0zpHmZRTFvyBI1f0ktk5Zx3cn9sN+24IkXwDkY7klBwXuIXOteTXf014YVR6QQ7WW
-	6siyvM+EKFupKdrQgrcsjJ8UfVxTZTcfdUsEngAlPZs0JwfczfA2wO0k82+/1nDGqlC47811UQq
-	xGsO2lcRAMkCNgWe2yWRB4G8+Mpyi+cOczBZuJ0oho7D+TMQHydfvHwB9o6FNBOBlH5cIiAlhN/
-	suevTyPUyIvOBkIiLtVP8tqIxkEx+5B5k7unxtkTOomfXKo7Z+3COJ3ZGsgz+YpuxxnwXEaKxN8
-	GqB4PWw==
-X-Google-Smtp-Source: AGHT+IGzppZkx1oLNoUouwLt5nZzQMcS/B+XQ41FEQxJAuI6dI+W+fD78AnnuFdoolSEbTGqkc03Wg==
-X-Received: by 2002:a17:907:3f12:b0:ad8:9d41:371e with SMTP id a640c23a62f3a-adb322fe389mr1814750766b.36.1748943426879;
-        Tue, 03 Jun 2025 02:37:06 -0700 (PDT)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.126])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-606af7bafedsm779334a12.57.2025.06.03.02.37.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 02:37:06 -0700 (PDT)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: stable@vger.kernel.org
-Cc: claudiu.beznea@tuxon.dev
-Subject: [PATCH 5.10.y 4/4] serial: sh-sci: Increment the runtime usage counter for the earlycon device
-Date: Tue,  3 Jun 2025 12:37:01 +0300
-Message-ID: <20250603093701.3928327-5-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250603093701.3928327-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20250603093701.3928327-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1748943816; c=relaxed/simple;
+	bh=31pIEHa2Idxs9LHlFCUwsetTyDoUekPPlVa9Y7yJ3jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yejxm+RuKkpRWUSaAUziFCpTPqyS35GL5YXYI18e8+lpnE8lDksSVeSCXpB8DNEa45h/z9SYSFtsW3dCqBkDtPRG6bPI6w4nbqIqTdoCPFYjHdPkrhaLO3UJr/aIhw+wU5lpE7GjM/rFxUx5y4fRaG0BQsB3VjGk0GJVi3Vqo3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9w2DS1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DC3C4CEEF;
+	Tue,  3 Jun 2025 09:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748943814;
+	bh=31pIEHa2Idxs9LHlFCUwsetTyDoUekPPlVa9Y7yJ3jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J9w2DS1vq5R8VjaEy4sKadz88Dyv0/GCgQzuogukzWnjJCtzVaakn98hW8YNezP/C
+	 gju3S8GJz4FT8lp4o/KPY0AxXPHcT3Ko605aH3rRIl4jfHNK1et/YCuk1aNeiCdJWU
+	 M7vC6xVB79TfSp7tu5DzY2vTS3GJ90HSamk7At6NUJOwrcUoHQliKq1d+9VEeG6SWF
+	 XB0pRmxkYLlXBrct1+pmjY81Tu0EBJ6nSKz6XV9CCrplVUMmZdJL+8fW9kvuWplKRE
+	 j4HTv2PP5EToO2pBcnPEbFIoSWEr2RIZ5x5rhiIqu/BRJ/JlH34rTWySlT8Z7zGl88
+	 l+WLU1rAkJkTg==
+Date: Tue, 3 Jun 2025 10:43:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.12 00/55] 6.12.32-rc1 review
+Message-ID: <698172d7-6531-4989-a6a9-62b831155721@sirena.org.uk>
+References: <20250602134238.271281478@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hRfw/P4giXKukNbe"
+Content-Disposition: inline
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+X-Cookie: Avec!
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
+--hRfw/P4giXKukNbe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
-with earlycon mapped at index zero.
+On Mon, Jun 02, 2025 at 03:47:17PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.32 release.
+> There are 55 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-The uart_add_one_port() function eventually calls __device_attach(),
-which, in turn, calls pm_request_idle(). The identified code path is as
-follows:
+Tested-by: Mark Brown <broonie@kernel.org>
 
-uart_add_one_port() ->
-  serial_ctrl_register_port() ->
-    serial_core_register_port() ->
-      serial_core_port_device_add() ->
-        serial_base_port_add() ->
-          device_add() ->
-            bus_probe_device() ->
-              device_initial_probe() ->
-                __device_attach() ->
-                  // ...
-                  if (dev->p->dead) {
-                    // ...
-                  } else if (dev->driver) {
-                    // ...
-                  } else {
-                    // ...
-                    pm_request_idle(dev);
-                    // ...
-                  }
+--hRfw/P4giXKukNbe
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The earlycon device clocks are enabled by the bootloader. However, the
-pm_request_idle() call in __device_attach() disables the SCI port clocks
-while earlycon is still active.
+-----BEGIN PGP SIGNATURE-----
 
-The earlycon write function, serial_console_write(), calls
-sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
-are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
-remain unset indefinitely, causing the while loop in sci_poll_put_char()
-to never exit. On single-core SoCs, this can result in the system being
-blocked during boot when this issue occurs.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmg+w8AACgkQJNaLcl1U
+h9BbFAf/bWPn90WfHW2Lt8XrrtUCKvMgfoeN/vaJI06L5JhE2qZh0UoRkz8hnpxW
+q2a9PH5rQ5nobmr8M7S+qr0zCc5Sdcd/PlFiOZTva5vBAoTJhYNzkUd/ShCl00K1
+E+ulfUEhb9mOPPK6PnXH0WUnvLmRL4gSWO+OYp3h1Lh2nlvPhAUQ8SC3LBj3bPOW
+UFoCcl9XX8eDyoVvYCSjIydDI0rypdNHM2aU3j0+LkToTNBY/WFdOMtQ4jhjmyhq
+S3mqC85a57g7krAjAStGP2iLsnre/ecxUbNxwbZrpForR7aj1OH/T75wUBvtxmYZ
+O1by88WSacLg1hB5hn6sZbT/I/pfNA==
+=9Zjq
+-----END PGP SIGNATURE-----
 
-To resolve this, increment the runtime PM usage counter for the earlycon
-SCI device before registering the UART port.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
- drivers/tty/serial/sh-sci.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 000a920727b3..3b30cf09bb9b 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3358,6 +3358,22 @@ static int sci_probe_single(struct platform_device *dev,
- 	}
- 
- 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
-+		/*
-+		 * In case:
-+		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
-+		 * - it now maps to an alias other than zero and
-+		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
-+		 *   available in bootargs)
-+		 *
-+		 * we need to avoid disabling clocks and PM domains through the runtime
-+		 * PM APIs called in __device_attach(). For this, increment the runtime
-+		 * PM reference counter (the clocks and PM domains were already enabled
-+		 * by the bootloader). Otherwise the earlycon may access the HW when it
-+		 * has no clocks enabled leading to failures (infinite loop in
-+		 * sci_poll_put_char()).
-+		 */
-+		pm_runtime_get_noresume(&dev->dev);
-+
- 		/*
- 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
- 		 * port is the same as the earlycon one.
--- 
-2.43.0
-
+--hRfw/P4giXKukNbe--
 
