@@ -1,124 +1,188 @@
-Return-Path: <stable+bounces-150717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32973ACC878
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBD4ACC88C
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D59CD1750F2
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:52:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5866C173D82
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72F7238C04;
-	Tue,  3 Jun 2025 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3AA231A55;
+	Tue,  3 Jun 2025 13:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="Tam+iuDd"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="wAbAVYtN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C4238C1E
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 13:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57FD1DFF8;
+	Tue,  3 Jun 2025 13:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748958705; cv=none; b=fiYyRu6aVItEwx5x/7PK3oAtWeSZ/7HktHBd394pPUQDq3/zlxJ5LtOTBTVQw9MffBQS/mLz3s9O5SPCB3fPkHk7VQxpUoE9oHwUSlrpa1UVF7NzcpPpVx28YtWRIOp5KhDyug/fwQXcQ88AnVDo+DqEqopwpjJlaeADaVFLy0c=
+	t=1748959136; cv=none; b=b8Vbs2ww2WgTswFwSBqRpDonjGOCkjJjFVTdyZoG021ZKHhth8+uvisBqNul5XPS9Tn8ir3Nf0jl3We6v5V3mwtiDTpfG4XnhoxT7jXttnN5f3DiQzPlnDRnBJZCrOitF/6d28VHvvXoa7JrE3VtHim2LwZNPvUp39DqQsvwDjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748958705; c=relaxed/simple;
-	bh=rFcIgJL6pSIoKVcI/z9SFNckeWUMqMI1IGtxsU9Wq20=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V8pUms4uj9iydb91xos7oCg3zuo33VJTH9bZnvRxekGTcwRWg+y/qfrjvkgG1Y6RMXSwQ5yKPbUbOlVOdxHvylopF3GX7zUHq1WwIlZsZGeI76HH6fxGci6zjuxn4sP5D17wMSqiTahk85ghK6VvRvBDHhXd/4xZ9EQvhVCctlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=Tam+iuDd; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4a58f79d6e9so22757661cf.2
-        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 06:51:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1748958703; x=1749563503; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u43wnlxB4xsEV+8bCEfmi8jE6ClnVJwePdx4GrJSMeY=;
-        b=Tam+iuDd7mlzOdtC5wy5g6b/AI1/Ns58pbnICy1R4kCvH91vw0T58ESgqRnD7Jxb1v
-         jDqzYlzuY6+vEwi1UCGU7AWlI6prOPyStSTJxORqtiJYlRiNkrLEKkEmE3uVuh94r8eH
-         tY7AK5BA11WHAI55xAVyfX8celKhXQ+trMWPuXNxMrykG77rV4Ktkkw7+OwPHWzywNgC
-         fM4iy+5uAwrOy3VGxHNqw2QZeU58F0U+N8ZKkBAcnn0csfASwqQZBLgpcR4tiRpfJmSK
-         XGv7xkr/CUN010+Z0b8jJXPO2/4BPwjnLhHJgTJYmojrL1CcbfbInJzG0qdEi9H9FJsX
-         YtfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748958703; x=1749563503;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u43wnlxB4xsEV+8bCEfmi8jE6ClnVJwePdx4GrJSMeY=;
-        b=KBw+/hvC3r69gvSRsXGTBN7CJ18NowbOKrkISbyQRDmbboWRB6vGbFKUa3sdq4lFIm
-         2liUG1f/cELF/VlC56+jgrMyMBP9aLV8Y8dwUpuc+7Yk9ozUjdshhbW/E79yHn/Uib+P
-         ZKwuQOublS7xJg5UTo9fH/TyuQ4drbo828zCmNVeWkyOrryX+WdzMXZdn0j5kl1ON3Rs
-         ZXzrZNIuHpqJzLThpP96pOSOJj42w5LSaQMo5r9h+MVZsxo6jkD4oHm0jKg2GNvwElcR
-         PJYPMzjTv+0i20QDxUu3kJh7Xux0jf4i9nts+Inxm8YudTxv35MN3VVKlsM7DB7dmyxb
-         aywQ==
-X-Gm-Message-State: AOJu0YxNVr5tyQqmyu7MxYAaVRxJGXsTNqN3XbOGhHvroO/NQaLXOsFt
-	z6pHuk0Dgifupz5pHAZwxiMLP9ZZVipzA4YySe4ZO4Ds4kmvcR+tyL58SBXMZSYi1LlH+dc01BJ
-	ifGnq1XaFRn5VL/T4Dk+Ssy3DeBpjyVuRfOAnDWZchg==
-X-Gm-Gg: ASbGnctqIL8QBZtDOQGdi+usGiWlez7hT1/SSe1Fw3rIMcSR9tYBjcxXaEFQptvO/fR
-	CsWNgHnJ/58ThQUie+/i5P1Jc1d4z6y8vckCV5PnR20w+Sb6KyWe+GJQOQiWdLi3z1T6xZItDWv
-	stF4hABXGqajX8EmMKwCVKXHW/naFiqPZG
-X-Google-Smtp-Source: AGHT+IFQVvOosag3wuPv5W+XIJzYaSdxGYD1UMd/R8W8Pxh76H5erVKE3YMDyz7J1K6JRiB3EIiz78IA4aDaPOiyz/k=
-X-Received: by 2002:a05:622a:1e8e:b0:479:2509:528a with SMTP id
- d75a77b69052e-4a4400b3557mr277320501cf.42.1748958702536; Tue, 03 Jun 2025
- 06:51:42 -0700 (PDT)
+	s=arc-20240116; t=1748959136; c=relaxed/simple;
+	bh=j5N9G+nyk7+XghWSjF4Qe/rQo8Nq2qXo1/v145Lf3FA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FhTMDAutWiLHy52LWsqXzeTeyd7I+/A+uitqnQawrnaIUCPC/cQgf9Rb3GaWFbS2wAtCHt2hY2zl4d1KlU0grhE9CtwKSBV0PGS97pndt4dBlN3601gEwmNUM/lq5+SFoIIQ6C1JazntzckR1aqEokzjEzXl+5RDAXOJxitm+pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=wAbAVYtN; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6MP6zOtCaG9WYZELPPHBRIx4k+xnrNHoojsmFur+VLU=; b=wAbAVYtN36EzsXXrHITfdPFHH5
+	jgAiTcxdpnvhnOl3qST5v3KFs5qtP40d5NDx2eioSzP5avd6whShorzHTpENm4EBqTZabXvBiAxci
+	+sibE16411TlsEt8mdCJcA8aKWPTvKDLLZZV8BhV3G5faexbLdgfdw+wY2hbEJj0eSCMvaraRBvQG
+	jdoec+At5nGWLh/k+mPzGOtZ6fzBgPopL3CVTW9u+SkRJXsquUd1UbyuNzknycsplw+O3yNvsJgfD
+	8WnYdAgqA8AkFcSNPchkDi/FdPCW564dSAUpIvvjufnoBHO+yCrn8cL2qlY0cLONWkdMCRMwDzM9k
+	ooLM1jtw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uMSAB-000000025Um-0gwD;
+	Tue, 03 Jun 2025 13:58:47 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B6E54300780; Tue,  3 Jun 2025 15:58:45 +0200 (CEST)
+Date: Tue, 3 Jun 2025 15:58:45 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	=?utf-8?B?Su+/vXJnZW4=?= Gro <jgross@suse.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Xin Li <xin@zytor.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH 4/5] x86/its: explicitly manage permissions for ITS pages
+Message-ID: <20250603135845.GA38114@noisy.programming.kicks-ass.net>
+References: <20250603111446.2609381-1-rppt@kernel.org>
+ <20250603111446.2609381-5-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602134238.271281478@linuxfoundation.org>
-In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Tue, 3 Jun 2025 09:51:31 -0400
-X-Gm-Features: AX0GCFu5TBNRaAAJJpvK8wBD6H5lRVWrlVadCPrD1KQA20azEjh8PY5cFY_N-ps
-Message-ID: <CAOBMUvhhS9RpZoOkgkdLaDv19VpGvSDab7oi7nNupJ-P4siD_A@mail.gmail.com>
-Subject: Re: [PATCH 6.12 00/55] 6.12.32-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250603111446.2609381-5-rppt@kernel.org>
 
-On Mon, Jun 2, 2025 at 10:05=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.32 release.
-> There are 55 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.32-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Tue, Jun 03, 2025 at 02:14:44PM +0300, Mike Rapoport wrote:
+> From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+> 
+> execmem_alloc() sets permissions differently depending on the kernel
+> configuration, CPU support for PSE and whether a page is allocated
+> before or after mark_rodata_ro().
+> 
+> Add tracking for pages allocated for ITS when patching the core kernel
+> and make sure the permissions for ITS pages are explicitly managed for
+> both kernel and module allocations.
+> 
+> Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+How about something like this on top?
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
-
-Thanks,
-Brett
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -121,7 +121,6 @@ struct its_array its_pages;
+ static void *__its_alloc(struct its_array *pages)
+ {
+ 	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
+-
+ 	if (!page)
+ 		return NULL;
+ 
+@@ -172,6 +171,9 @@ static void *its_init_thunk(void *thunk,
+ 
+ static void its_pages_protect(struct its_array *pages)
+ {
++	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
++		return;
++
+ 	for (int i = 0; i < pages->num; i++) {
+ 		void *page = pages->pages[i];
+ 		execmem_restore_rox(page, PAGE_SIZE);
+@@ -180,8 +182,7 @@ static void its_pages_protect(struct its
+ 
+ static void its_fini_core(void)
+ {
+-	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+-		its_pages_protect(&its_pages);
++	its_pages_protect(&its_pages);
+ 	kfree(its_pages.pages);
+ }
+ 
+@@ -207,8 +208,7 @@ void its_fini_mod(struct module *mod)
+ 	its_page = NULL;
+ 	mutex_unlock(&text_mutex);
+ 
+-	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+-		its_pages_protect(&mod->arch.its_pages);
++	its_pages_protect(&mod->arch.its_pages);
+ }
+ 
+ void its_free_mod(struct module *mod)
+@@ -222,40 +222,29 @@ void its_free_mod(struct module *mod)
+ 	}
+ 	kfree(mod->arch.its_pages.pages);
+ }
++#endif /* CONFIG_MODULES */
+ 
+-static void *its_alloc_mod(void)
++static void *its_alloc(void)
+ {
+-	void *page = __its_alloc(&its_mod->arch.its_pages);
+-
+-	if (page)
+-		execmem_make_temp_rw(page, PAGE_SIZE);
++	struct its_array *pages = &its_pages;
++	void *page;
+ 
+-	return page;
+-}
+-#endif /* CONFIG_MODULES */
++#ifdef CONFIG_MODULE
++	if (its_mod)
++		pages = &its_mod->arch.its_pages;
++#endif
+ 
+-static void *its_alloc_core(void)
+-{
+-	void *page = __its_alloc(&its_pages);
++	page = __its_alloc(pages);
++	if (!page)
++		return NULL;
+ 
+-	if (page) {
+-		execmem_make_temp_rw(page, PAGE_SIZE);
++	execmem_make_temp_rw(page, PAGE_SIZE);
++	if (pages == &its_pages)
+ 		set_memory_x((unsigned long)page, 1);
+-	}
+ 
+ 	return page;
+ }
+ 
+-static void *its_alloc(void)
+-{
+-#ifdef CONFIG_MODULES
+-	if (its_mod)
+-		return its_alloc_mod();
+-#endif /* CONFIG_MODULES */
+-
+-	return its_alloc_core();
+-}
+-
+ static void *its_allocate_thunk(int reg)
+ {
+ 	int size = 3 + (reg / 8);
 
