@@ -1,137 +1,124 @@
-Return-Path: <stable+bounces-150716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3BCACC821
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:43:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32973ACC878
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 15:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7658A16FBCF
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D59CD1750F2
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 13:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D92423506E;
-	Tue,  3 Jun 2025 13:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72F7238C04;
+	Tue,  3 Jun 2025 13:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTrW3brN"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="Tam+iuDd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236082040B6;
-	Tue,  3 Jun 2025 13:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C4238C1E
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 13:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748958193; cv=none; b=N8IKI3Q7V8H9iA83mAtb0YsI+5iH+DfyMBdbXs8+/9341M7cFwYgX27q2obfhdKrZfUnC/fShgaxfr2k29M681eGOc+Q5jUaO6uXd+zpGiXvwss9Cu6Ex3pz40UQTOtJEu4khdmeV08exaXS0FaD2AyQtxTD9VmfqfqGzybEXrw=
+	t=1748958705; cv=none; b=fiYyRu6aVItEwx5x/7PK3oAtWeSZ/7HktHBd394pPUQDq3/zlxJ5LtOTBTVQw9MffBQS/mLz3s9O5SPCB3fPkHk7VQxpUoE9oHwUSlrpa1UVF7NzcpPpVx28YtWRIOp5KhDyug/fwQXcQ88AnVDo+DqEqopwpjJlaeADaVFLy0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748958193; c=relaxed/simple;
-	bh=f0Vts21CODFgvUIe6d7miDR1R94z5uujshns22T5DEI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NQPziMzcyvQb305locu05MkyiJgj8l4b+OFkF4CpisyucJsMAErxvkTT4zp0OTyQxvqXBtBUnWIjPNYjmfmq2FKAmwwm9/OpTpW04XfmnEULSrD0cTTimnFqdRfFw2tU/NeOJupvKDHpUHd0pjSMVNDt2Dxwqs4+D7jSgEt7l70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTrW3brN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20277C4CEED;
-	Tue,  3 Jun 2025 13:43:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748958192;
-	bh=f0Vts21CODFgvUIe6d7miDR1R94z5uujshns22T5DEI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dTrW3brNAI40yQ+lEJJtV1PRO+6XB7A++lkDT8TKFAkaWimNeZRoOak2au8RDl9jA
-	 waUdu1K+xPDBKrH/HEIWTrO63K4Y6GPstVfSW2gtMBTAYmIGgliSSfUS4QGp6Pno/i
-	 MfmXkcYstcIYzqN+Hpg4EUiRu1E5i4KEOmClvnZzNgQk/NUlL5GDSGoPc9kzzwCvE0
-	 RQ9t3veMWZ8VCNmyUkq1YYdukmqbRbuSop0EXD4QRz9GwvZpjccBp941Q/wFrwgtNz
-	 8/kDyMQ9bMn2Hv2dPwGHKMZJydmduDUimlUygi9Ik0TI/8wtBCznxBl564wusPIU+x
-	 gntJdxl36jx8Q==
-Message-ID: <2a5432be-41b7-4adc-b68a-1f706036a59f@kernel.org>
-Date: Tue, 3 Jun 2025 15:43:09 +0200
+	s=arc-20240116; t=1748958705; c=relaxed/simple;
+	bh=rFcIgJL6pSIoKVcI/z9SFNckeWUMqMI1IGtxsU9Wq20=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V8pUms4uj9iydb91xos7oCg3zuo33VJTH9bZnvRxekGTcwRWg+y/qfrjvkgG1Y6RMXSwQ5yKPbUbOlVOdxHvylopF3GX7zUHq1WwIlZsZGeI76HH6fxGci6zjuxn4sP5D17wMSqiTahk85ghK6VvRvBDHhXd/4xZ9EQvhVCctlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=Tam+iuDd; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4a58f79d6e9so22757661cf.2
+        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 06:51:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1748958703; x=1749563503; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u43wnlxB4xsEV+8bCEfmi8jE6ClnVJwePdx4GrJSMeY=;
+        b=Tam+iuDd7mlzOdtC5wy5g6b/AI1/Ns58pbnICy1R4kCvH91vw0T58ESgqRnD7Jxb1v
+         jDqzYlzuY6+vEwi1UCGU7AWlI6prOPyStSTJxORqtiJYlRiNkrLEKkEmE3uVuh94r8eH
+         tY7AK5BA11WHAI55xAVyfX8celKhXQ+trMWPuXNxMrykG77rV4Ktkkw7+OwPHWzywNgC
+         fM4iy+5uAwrOy3VGxHNqw2QZeU58F0U+N8ZKkBAcnn0csfASwqQZBLgpcR4tiRpfJmSK
+         XGv7xkr/CUN010+Z0b8jJXPO2/4BPwjnLhHJgTJYmojrL1CcbfbInJzG0qdEi9H9FJsX
+         YtfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748958703; x=1749563503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u43wnlxB4xsEV+8bCEfmi8jE6ClnVJwePdx4GrJSMeY=;
+        b=KBw+/hvC3r69gvSRsXGTBN7CJ18NowbOKrkISbyQRDmbboWRB6vGbFKUa3sdq4lFIm
+         2liUG1f/cELF/VlC56+jgrMyMBP9aLV8Y8dwUpuc+7Yk9ozUjdshhbW/E79yHn/Uib+P
+         ZKwuQOublS7xJg5UTo9fH/TyuQ4drbo828zCmNVeWkyOrryX+WdzMXZdn0j5kl1ON3Rs
+         ZXzrZNIuHpqJzLThpP96pOSOJj42w5LSaQMo5r9h+MVZsxo6jkD4oHm0jKg2GNvwElcR
+         PJYPMzjTv+0i20QDxUu3kJh7Xux0jf4i9nts+Inxm8YudTxv35MN3VVKlsM7DB7dmyxb
+         aywQ==
+X-Gm-Message-State: AOJu0YxNVr5tyQqmyu7MxYAaVRxJGXsTNqN3XbOGhHvroO/NQaLXOsFt
+	z6pHuk0Dgifupz5pHAZwxiMLP9ZZVipzA4YySe4ZO4Ds4kmvcR+tyL58SBXMZSYi1LlH+dc01BJ
+	ifGnq1XaFRn5VL/T4Dk+Ssy3DeBpjyVuRfOAnDWZchg==
+X-Gm-Gg: ASbGnctqIL8QBZtDOQGdi+usGiWlez7hT1/SSe1Fw3rIMcSR9tYBjcxXaEFQptvO/fR
+	CsWNgHnJ/58ThQUie+/i5P1Jc1d4z6y8vckCV5PnR20w+Sb6KyWe+GJQOQiWdLi3z1T6xZItDWv
+	stF4hABXGqajX8EmMKwCVKXHW/naFiqPZG
+X-Google-Smtp-Source: AGHT+IFQVvOosag3wuPv5W+XIJzYaSdxGYD1UMd/R8W8Pxh76H5erVKE3YMDyz7J1K6JRiB3EIiz78IA4aDaPOiyz/k=
+X-Received: by 2002:a05:622a:1e8e:b0:479:2509:528a with SMTP id
+ d75a77b69052e-4a4400b3557mr277320501cf.42.1748958702536; Tue, 03 Jun 2025
+ 06:51:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] tty: Fix race against tty_open() in
- tty_register_device_attr()
-To: Max Staudt <max@enpas.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johan Hovold <johan@kernel.org>, linux-serial
- <linux-serial@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- stable@vger.kernel.org
-References: <20250528132816.11433-1-max@enpas.org>
- <20250528132816.11433-2-max@enpas.org>
- <6068387e-7064-0c2b-700a-3817bea1045b@linux.intel.com>
- <16cc8c9d-f89a-406c-9427-94ca75984752@enpas.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <16cc8c9d-f89a-406c-9427-94ca75984752@enpas.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250602134238.271281478@linuxfoundation.org>
+In-Reply-To: <20250602134238.271281478@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Tue, 3 Jun 2025 09:51:31 -0400
+X-Gm-Features: AX0GCFu5TBNRaAAJJpvK8wBD6H5lRVWrlVadCPrD1KQA20azEjh8PY5cFY_N-ps
+Message-ID: <CAOBMUvhhS9RpZoOkgkdLaDv19VpGvSDab7oi7nNupJ-P4siD_A@mail.gmail.com>
+Subject: Re: [PATCH 6.12 00/55] 6.12.32-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 02. 06. 25, 15:40, Max Staudt wrote:
-> On 6/2/25 19:31, Ilpo Järvinen wrote:
->>> +    mutex_lock(&tty_mutex);
->>
->> Use guard() so you don't need to change the returns and rollback path.
-> 
-> Thanks, I didn't know about this new kind of helper.
-> 
-> I'll leave it up to the TTY maintainers - if they don't express a 
-> preference for guard(), 
+On Mon, Jun 2, 2025 at 10:05=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.32 release.
+> There are 55 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.32-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I prefer guard(). Actually, I have a patchset to add a support for 
-guard() for uart_lock and console_lock too and use it all over (incl. 
-__free). They untangle the code on many places and get rid of much 
-unneeded churn.
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-But in this very case, I see there is a label, I am not sure if it works 
-right here. Try compiling with clang -- it will tell you. You likely 
-won't cross the label with the guard().
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-thanks,
--- 
-js
-suse labs
+Thanks,
+Brett
 
