@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-150756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99ECBACCD27
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA3DACCD28
 	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 20:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB7793A6867
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 18:35:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC598175BF7
+	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 18:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8257288C0C;
-	Tue,  3 Jun 2025 18:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC9224BBEC;
+	Tue,  3 Jun 2025 18:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hSi/CqBA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzZqN2xC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AE0BA34
-	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 18:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1D1BA34
+	for <stable@vger.kernel.org>; Tue,  3 Jun 2025 18:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748975769; cv=none; b=PFB8UsoKxPMg63OB5OqQkZ2m178NNjIAtuHy62VSz6uLlJLMPaa9zmX1cVZjr5J64USwqVorLyuJ5aOFGfLOvzxUhqVis/6IlNjDgq/kxyVd5t7S5SJ0ysPZTKdB4WTR0ohkafzW6eJHjqDJdRzKHp4ICGI9cWwAq86HD05Mmak=
+	t=1748975770; cv=none; b=k8ZHOEyaSMn61FWTVasJEhuW3mFwLOHhAmYphYd2MJaAufhfgSUZzD2V20B8Rggktz8624XULCQf3JXtTtoTBdOdl3QcRFwA83EpoErzwf0XqMOI8vR8T7850zTrs8lSPrsuevNvmVD/kajHemPxUGnCDDQ3NTSs4jjX9BXqBLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748975769; c=relaxed/simple;
-	bh=iUpMeVLFfJQG3fRSio+u/a6ji3wTaLInl8dlABKwlJo=;
+	s=arc-20240116; t=1748975770; c=relaxed/simple;
+	bh=jSfOp+6f0nIKW6XCwK3OADnmqgBmSws5N/+U/K85P/E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LXVXG9RlvoDE/Mopaq8uA8ri1NOSgJZjkmn4Ozfrn63XXGULsrYH8wWI+GTQ0mxQU3bunY/ER+d5RdOk/qO7WNKqqxv/qMdSQSe7zv5YeP/NypqlZuquCQDLNNv54v8BkE1uerYzwUeH157qFvzMIAvvGwdiTcFCmQxdwKbelUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hSi/CqBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3E1C4CEED;
-	Tue,  3 Jun 2025 18:36:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NoYp8npZ6/yD+CWJ/YATMt9H663IXx2pisQ8b+QP6NV3f8b18dxqqq4CuO6br8NV4hxFA+NtwEGqEdOoEgDvRLOgGqRskLu5ReW2p/tp3GfjZZYOGJaGpLg/PgeyKl9scydH9ZJCEanqtVveCB4miSq2nBIlkDt5t5rmupEWsRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzZqN2xC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64854C4CEEF;
+	Tue,  3 Jun 2025 18:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748975769;
-	bh=iUpMeVLFfJQG3fRSio+u/a6ji3wTaLInl8dlABKwlJo=;
+	s=k20201202; t=1748975770;
+	bh=jSfOp+6f0nIKW6XCwK3OADnmqgBmSws5N/+U/K85P/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSi/CqBAvDoSK5dTYtPU6+qEIKhmMpF+bUviCZ5UiWnu6owteaY/MHEJaRTiL3JuC
-	 fHCkfaJx1Nk8wBSrwDb0BmNKVM+iymBuehoGQ6H+OQr9dLVfVpiQYm1/h+Jdj28kSK
-	 WEmSizZqeMmI9IshL/HvGNJrXN9MnmOdNAboY/4XnjvSK5YM2u5V4EXlvGw8g6VjZn
-	 iYCYLLtm4fkeBRdcbP9oybNZfsdWDEFCHtrNrMF+FroHB10BMX7WUUyEbIvR80cA3M
-	 KKLix7IdVPX4KfA6bgrPi2A77Wkt6mjsNbarhUCSeEFYodLCZq4N2IcZ5kA7NMgl6C
-	 Tkn/LbzdF/dHA==
+	b=hzZqN2xCPrZWVoVyPj0tfUTV9b3cbUp5ZiSWY9V6q1hKeXA5B0Zuf13DQfIsrmmZb
+	 ikjETjYjpoqpWYvQsyCOdq39h7tdHwwcOYkbbqH831VmYy0V0YiCJme5xhrPET04Zh
+	 jyT1TpBRMKM3gE7ov4RkkPwrVJWjLAgP0uqzonVCN7Zt14eZ7hZSpdN0H/8sHPxcoN
+	 CQS5O9wqpnNu5yehGCKKUY9QJwVr+vW/4lWAbFwkLasHNCB4CB6cuzAtx2hqFfnTTW
+	 MuLoLWSdEi2H2MOyAlpdTVBmmwn5z23cPg0FfkAc2HA9REODJyUQtB8169ePjYrA+R
+	 /IwcbH5oyHjOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: alvalan9@foxmail.com,
+Cc: Claudiu <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] f2fs: fix to avoid accessing uninitialized curseg
-Date: Tue,  3 Jun 2025 14:36:07 -0400
-Message-Id: <20250603141552-7a6a230121fa0c39@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y 4/4] serial: sh-sci: Increment the runtime usage counter for the earlycon device
+Date: Tue,  3 Jun 2025 14:36:09 -0400
+Message-Id: <20250603143106-0705216c62eb86a6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <tencent_381A1068DD6A903EBA2513AD817046602209@qq.com>
+In-Reply-To:  <20250603093701.3928327-5-claudiu.beznea.uj@bp.renesas.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,41 +67,45 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 986c50f6bca109c6cf362b4e2babcb85aba958f6
+The upstream commit SHA1 provided is correct: 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: alvalan9@foxmail.com
-Commit author: Chao Yu<chao@kernel.org>
+Backport author: Claudiu<claudiu.beznea@tuxon.dev>
+Commit author: Claudiu Beznea<claudiu.beznea.uj@bp.renesas.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
-6.14.y | Present (different SHA1: 7f90e5d423cd)
+6.14.y | Present (exact SHA1)
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  986c50f6bca10 ! 1:  7a4b17ea75981 f2fs: fix to avoid accessing uninitialized curseg
+1:  651dee03696e1 ! 1:  523044130a840 serial: sh-sci: Increment the runtime usage counter for the earlycon device
     @@ Metadata
       ## Commit message ##
-         f2fs: fix to avoid accessing uninitialized curseg
+         serial: sh-sci: Increment the runtime usage counter for the earlycon device
      
-    +    [ Upstream commit 986c50f6bca109c6cf362b4e2babcb85aba958f6 ]
+    +    commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
     +
-         syzbot reports a f2fs bug as below:
+         In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
+         with earlycon mapped at index zero.
      
-         F2FS-fs (loop3): Stopped filesystem due to reason: 7
     @@ Commit message
-         Closes: https://lore.kernel.org/all/67973c2b.050a0220.11b1bb.0089.GAE@google.com
-         Signed-off-by: Chao Yu <chao@kernel.org>
-         Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+         Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+         Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
+         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    +    Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
      
-      ## fs/f2fs/inode.c ##
-     @@ fs/f2fs/inode.c: int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
+      ## drivers/tty/serial/sh-sci.c ##
+     @@ drivers/tty/serial/sh-sci.c: static int sci_probe_single(struct platform_device *dev,
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
