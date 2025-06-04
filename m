@@ -1,242 +1,124 @@
-Return-Path: <stable+bounces-151308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B01ACDA37
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABD2ACDA56
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E70F1889FE2
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E603A4B29
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C39D289E0C;
-	Wed,  4 Jun 2025 08:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6C028A408;
+	Wed,  4 Jun 2025 08:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Or78OMGs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6148025E823;
-	Wed,  4 Jun 2025 08:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0481DED6D
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 08:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749026861; cv=none; b=dwMkwYpeUJFfqy651oR+V2rAkwKIBwj6BLh3apk3oStNBauyVxPhEROBvhxq5dfYUkXHauwSNM71kk8SICAGYdqbPG2Cosy2jD0zurgkJpwcBL/UYEebjBHtw59WyCOO/Yzf3qknFKoyLGKiHt2/TY85GCR8x3dDNv6+xTB6hU4=
+	t=1749027264; cv=none; b=AhZrn3q5yje8TGUErrMnAF5VGmz/NiS7e/7zW3BLxbQcC8QiF+9a/RTG/QLRA+IzOY8DJj5OM1Ml0cP25+mUQATNB5yC3TnTbicHsKDJYT4MV4MiiboA/9Hb/C75oTFFP68anrUc8IKaHLrg71kuONw2wnWm4P5nQlw49nkFIt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749026861; c=relaxed/simple;
-	bh=a9TbUaO1TfAiCgheoo2NWL5dPzCHTdt+2GOzPjUsjYc=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=NmOpsyVv2Qaya6Usj3intTQVbf87bnemCl9SzUT70cCm/q+3KWR/63QWDyyTqfND8Epe6aaV22NIxirLjlOCnuYCATycbhPYK/77hPzy34N5Wqea/YnYuyVIEbFXtS1UEAwBGRkFEhjBKYe48JfrErJbq4/h2S+9089WHycEUZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-6020ff8d35dso1503338a12.0;
-        Wed, 04 Jun 2025 01:47:39 -0700 (PDT)
+	s=arc-20240116; t=1749027264; c=relaxed/simple;
+	bh=g0ppivEkoM1bf4Myn91O2YnyqHNJElL0LhGMOzqDmBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WWRrGpPxjFy7gGKCBBIXgJHd/UtHLKsKqewilQT/NDtENmBz4oLdIHof6is6lzSfHMX4cmGU5OJQ6KBoDWQ0IMAYn0iMUCi6tUKAJmithM1ts60kjdYXgLoVKdyDVcNeYRH2mbZ4i4JUfF0M/nDVBJSGQvtziljj0WNj+suBWJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Or78OMGs; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749027261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AvsoGpn4vrP9au9LXRzA3/0BBfANYNVTOadYG+jd6TY=;
+	b=Or78OMGsoG1g9Lfdn8fp50sf1Teu1M0vbg2F2hFTogBzrYl9kAC0tbu02hyPy7JvFUhe39
+	C4jnmNRNd70+Z+1QJS7oiUxdX15OmCF+lj6Bssm0t65X6GZspCzgkCsbc5uEyo1F5T8ExN
+	a2sF/mFtapjNKszY32ccX8x8TbPTWv0=
+Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
+ [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644--zENBJVxM8C03xyJdZj4xQ-1; Wed, 04 Jun 2025 04:54:19 -0400
+X-MC-Unique: -zENBJVxM8C03xyJdZj4xQ-1
+X-Mimecast-MFC-AGG-ID: -zENBJVxM8C03xyJdZj4xQ_1749027259
+Received: by mail-yb1-f199.google.com with SMTP id 3f1490d57ef6-e7b4e43d31aso4294632276.1
+        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 01:54:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749026858; x=1749631658;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=62JGJ/Xq7LRXk0voKMYfVJQLY3ULxXeW5vT59SDkGNI=;
-        b=QoV3behuEvFvKjP4fAa2kd4l8kUwfbgJaQU6jzY6ZPspkq5x5LK98qd7yqforjeQds
-         rMTLT/hOUldBY7BIFR0uou1K72BW/o7FgqfJWnt3xAoRnZk8CZCqRN5j+5at4YKM/Ryb
-         FkrAZxfJRLNCw63d7UNsrXkzK4RVXGUcw/gEhzWTM8Anu8hkMxdEpUOh/YlOfUbvmjTW
-         lpyW4R572hQrpKhwdzVRsUCrt6JoXUkX7gNMGcOqqyJ3psF3d7YBxM/dg9p+lF1bf+Ki
-         1YzdZn+RRPuzVz0ZMaKJHaU7LCi+aBnOdhKvXzXLyPvsPQdFXEiMFsHG1ksi0oE9GqzN
-         hasQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6oTG3ptiI3Wp+JtE+5uA5Z1lYZpknCQxRBFmbTfDTwFCtUNAq8QRSvGH6ALWXPqrqE5SFz5do@vger.kernel.org, AJvYcCXkPkA8cXI0M5P3vZ+CqHuAKHas3FxoLM0biXAgjmx5Q/vqsCKR6oMrd5XYtwYOBs+R7tAg6UU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7NwWf6LWVUj5i9SIsEVTORxAmd0AMvoGkrHjcw1uCZgC5OlB8
-	HJl0C/hiSEbGxTPd4mwGradJzHY3hul2N2u9SVTrDlTe8g4lyrqo4QXE
-X-Gm-Gg: ASbGncuxhrZVWUV+5JQiBmQnT0dgNoBREcAuYjdNEqvX1agm/7EB5tuATxGSlKBALnv
-	s6BJWtXmHXVy5kLLBOyoLIpeOubqZXMn7OkY2KhSZUn6qe0F8VhON0UGnbU4LsefsIdZRlIfFGD
-	kgFSSUae5sIrrXwMjh1ZwnhN7vfgDzgGyug7YgVwTRhu7TIh3dJ5uUILF7Yv4UKbMb6d2IFYRFQ
-	CzZRxG7xjFJWiB9hVRi9bPvetBOG3Gu44Eowme8GB8X3LDUxWShD0a30ei/Nk/airmtFxEL5x15
-	YvIuwNUYcdE70wSMNdsex50IwlIxvPfcdT4ykn7BOMywZNag/C8lXEyYBq/gUjwYTkQ99me/qUA
-	dpJlNhDmLBd5xB36R+A==
-X-Google-Smtp-Source: AGHT+IHxDCY+IJgCsYSr1Ndzscu9x/er2bKncVFzpBwbH6IxUf5AP9iXYEI2u8fg5DkMKHxsdxq0gw==
-X-Received: by 2002:a05:6402:13cc:b0:602:53:cb06 with SMTP id 4fb4d7f45d1cf-606aff96fe9mr5931960a12.17.1749026857316;
-        Wed, 04 Jun 2025 01:47:37 -0700 (PDT)
-Received: from [192.168.88.252] (78-80-16-19.customers.tmcz.cz. [78.80.16.19])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-60566c5a758sm8550407a12.19.2025.06.04.01.47.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 01:47:36 -0700 (PDT)
-Message-ID: <b2e46bfc-2c20-4c51-95a6-7b4b1199f32f@ovn.org>
-Date: Wed, 4 Jun 2025 10:47:35 +0200
+        d=1e100.net; s=20230601; t=1749027259; x=1749632059;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AvsoGpn4vrP9au9LXRzA3/0BBfANYNVTOadYG+jd6TY=;
+        b=nTGgT5tPlHg05MvnT+bH+eVla2ZxAl9MvRxwvMYm3Ih5aJoJiT48brsnwo5UviURlf
+         pew5k21QuHWXcFIuLIyLAb2kbYkejWnAfGJOlqksky5LTzzz/llCn/hT2n9wWUReAlkp
+         9ckuyI8bXBfJWkQPAxoYzDArEPTsoXQ/b27vZhWtq9tUtkTP4L4V8nJj3C9sXXK4Py2f
+         f1Do7YT0+XkADxi1COY54rTztb5DTgxTLkCLPDKZlQdjV9qsVU0Su819Ak+iesGIUCrk
+         PAJI71Hzj1axaW2wYhRhmutOYrIvdRTcsZrM7QoUzy2AiNu/BJvDIV6MJ/ITzG7lsF8w
+         66UA==
+X-Gm-Message-State: AOJu0YwLNooOPDvsXqPLPtyNi8GvE9mRvF8KUlPr4NF0Axll+0AE0u6D
+	v5HP1rsyzkFZh/kO4v4JzVKQtPgKpj+eMErzzfdLlF5Qw4BZoVtQ3WpPvtAEarGQtfhHmliNYug
+	RAm2P8NfMsXPnUJSDyyDtbRSuaFO1S7W2FKefAP4F15XCYhOcJJEzOMZlqRDEEZ2AYoDFW7+2Fs
+	AkhmjHFMQp0G0qqs4Ww2Z1MDE/NRzrS3aP
+X-Gm-Gg: ASbGncvtMbk2hxQQAMvFbLlVnZD2q1Uj46dd780ycqdfCi3bY5CPTrN3OUAUKjJDRvt
+	HJZfePSOKdxwaMwPOgyABbhpYeAke9qCG0SKwl8Xmuy4eJnZ7ukH7foP5CRzKXBioCx9PSTTzC3
+	5MGwA=
+X-Received: by 2002:a05:6902:2d06:b0:e7d:d002:da94 with SMTP id 3f1490d57ef6-e8179c0191dmr2531828276.20.1749027258985;
+        Wed, 04 Jun 2025 01:54:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2C121V7OjYlteSOkifolsWZy/x2Ol1f4a1SiVTnu+7fvufC/08o+ydl4x6iDTlhXDzxen3FpEn318g2cKE4M=
+X-Received: by 2002:a05:6902:2d06:b0:e7d:d002:da94 with SMTP id
+ 3f1490d57ef6-e8179c0191dmr2531819276.20.1749027258689; Wed, 04 Jun 2025
+ 01:54:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, Sasha Levin <sashal@kernel.org>,
- patches@lists.linux.dev, stable@vger.kernel.org,
- Eelco Chaudron <echaudro@redhat.com>, Simon Horman <horms@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, aconole@redhat.com,
- netdev@vger.kernel.org, dev@openvswitch.org
-Subject: Re: [PATCH AUTOSEL 6.15 044/118] openvswitch: Stricter validation for
- the userspace action
-To: Greg KH <greg@kroah.com>
-References: <20250604005049.4147522-1-sashal@kernel.org>
- <20250604005049.4147522-44-sashal@kernel.org>
- <38ef1815-5bc1-4391-b487-05a18e84c94e@ovn.org>
- <2025060449-arena-exceeding-a090@gregkh>
- <7bc258ad-3f65-4d6e-a9f5-840a6c174d90@ovn.org>
- <2025060440-gristle-viewable-ef6a@gregkh>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <2025060440-gristle-viewable-ef6a@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250602134340.906731340@linuxfoundation.org> <20250602134341.897528821@linuxfoundation.org>
+ <CAGxU2F7fRUn1H_-CF5SJJ1DZDEt3xfm+er0kqa_XS9nn6uJi0g@mail.gmail.com> <2025060443-morse-reentry-9573@gregkh>
+In-Reply-To: <2025060443-morse-reentry-9573@gregkh>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Wed, 4 Jun 2025 10:54:07 +0200
+X-Gm-Features: AX0GCFuyEeJEQ6h8-T5G-nE_57PXCHmHGBprnsW2EwdMbKXOArs7EAI3zPnaWyU
+Message-ID: <CAGxU2F60xQoWT3JBHQfGAgjPSJAMwVpynbiLXnbZw72Q2QqJ2Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 024/444] vhost_task: fix vhost_task_create() documentation
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/4/25 10:28 AM, Greg KH wrote:
-> On Wed, Jun 04, 2025 at 10:19:45AM +0200, Ilya Maximets wrote:
->> On 6/4/25 10:03 AM, Greg KH wrote:
->>> On Wed, Jun 04, 2025 at 09:57:20AM +0200, Ilya Maximets wrote:
->>>> On 6/4/25 2:49 AM, Sasha Levin wrote:
->>>>> From: Eelco Chaudron <echaudro@redhat.com>
->>>>>
->>>>> [ Upstream commit 88906f55954131ed2d3974e044b7fb48129b86ae ]
->>>>>
->>>>> This change enhances the robustness of validate_userspace() by ensuring
->>>>> that all Netlink attributes are fully contained within the parent
->>>>> attribute. The previous use of nla_parse_nested_deprecated() could
->>>>> silently skip trailing or malformed attributes, as it stops parsing at
->>>>> the first invalid entry.
->>>>>
->>>>> By switching to nla_parse_deprecated_strict(), we make sure only fully
->>>>> validated attributes are copied for later use.
->>>>>
->>>>> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
->>>>> Reviewed-by: Simon Horman <horms@kernel.org>
->>>>> Acked-by: Ilya Maximets <i.maximets@ovn.org>
->>>>> Link: https://patch.msgid.link/67eb414e2d250e8408bb8afeb982deca2ff2b10b.1747037304.git.echaudro@redhat.com
->>>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>>> ---
->>>>>
->>>>> **YES** This commit should be backported to stable kernel trees. ##
->>>>> Analysis **Commit Overview:** The commit changes `validate_userspace()`
->>>>> function in `net/openvswitch/flow_netlink.c` by replacing
->>>>> `nla_parse_nested_deprecated()` with `nla_parse_deprecated_strict()` to
->>>>> ensure stricter validation of Netlink attributes for the userspace
->>>>> action. **Specific Code Changes:** The key change is on lines 3052-3054:
->>>>> ```c // Before: error = nla_parse_nested_deprecated(a,
->>>>> OVS_USERSPACE_ATTR_MAX, attr, userspace_policy, NULL); // After: error =
->>>>> nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX, nla_data(attr),
->>>>> nla_len(attr), userspace_policy, NULL); ``` **Why This Should Be
->>>>> Backported:** 1. **Security Enhancement:** This commit addresses a
->>>>> parsing vulnerability where malformed attributes could be silently
->>>>> ignored. The original `nla_parse_nested_deprecated()` stops parsing at
->>>>> the first invalid entry, potentially allowing trailing malformed data to
->>>>> bypass validation. 2. **Robustness Fix:** The change ensures all netlink
->>>>> attributes are fully contained within the parent attribute bounds,
->>>>> preventing potential buffer over-reads or under-reads that could lead to
->>>>> security issues. 3. **Pattern Consistency:** Looking at the git blame
->>>>> output (lines 3085-3087), we can see that
->>>>> `nla_parse_deprecated_strict()` was already introduced in 2019 by commit
->>>>> 8cb081746c031 and is used elsewhere in the same file for similar
->>>>> validation (e.g., `validate_and_copy_check_pkt_len()` function). 4.
->>>>> **Low Risk:** This is a small, contained change that only affects input
->>>>> validation - it doesn't change functionality or introduce new features.
->>>>> The change is defensive and follows existing patterns in the codebase.
->>>>> 5. **Similar Precedent:** This commit is very similar to the validated
->>>>> "Similar Commit #2" which was marked for backporting (status: YES). That
->>>>> commit also dealt with netlink attribute validation safety in
->>>>> openvswitch (`validate_set()` function) and was considered suitable for
->>>>> stable trees. 6. **Critical Subsystem:** Open vSwitch is a critical
->>>>> networking component used in virtualization and container environments.
->>>>> Input validation issues in this subsystem could potentially be exploited
->>>>> for privilege escalation or denial of service. 7. **Clear Intent:** The
->>>>> commit message explicitly states this "enhances robustness" and ensures
->>>>> "only fully validated attributes are copied for later use," indicating
->>>>> this is a defensive security improvement. **Risk Assessment:** - Very
->>>>> low regression risk - No API changes - Only affects error handling paths
->>>>> - Follows established validation patterns in the same codebase This
->>>>> commit fits perfectly into the stable tree criteria: it's an important
->>>>> security/robustness fix, has minimal risk of regression, is well-
->>>>> contained, and addresses a clear validation vulnerability in a critical
->>>>> kernel subsystem.
->>>>
->>>> This change is one of two patches created for userspace action.  With an
->>>> intentional split - one for net and one for net-next  First one was the
->>>> actual fix that addressed a real bug:
->>>>   6beb6835c1fb ("openvswitch: Fix unsafe attribute parsing in output_userspace()")
->>>>   https://lore.kernel.org/netdev/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com/
->>>>
->>>> This second change (this patch) was intended for -next only as it doesn't
->>>> fix any real issue, but affects uAPI, and so should NOT be backported.
->>>
->>> Why would you break the user api in a newer kernel?  That feels wrong,
->>> as any change should be able to be backported without any problems.
->>>
->>> If this is a userspace break, why isn't it reverted?
->>
->> It doesn't break existing userspace that we know of.  However, it does make
->> the parsing of messages from userspace a bit more strict, and some messages
->> that would've worked fine before (e.g. having extra unrecognized attributes)
->> will no longer work.  There is no reason for userspace to ever rely on such
->> behavior, but AFAICT, historically, different parts of kernel networking
->> (e.g. tc-flower) introduced similar changes (making netlink stricter) on
->> net-next without backporting them.  Maybe Jakub can comment on that.
->>
->> All in all, I do not expect any existing applications to break, but it seems
->> a little strange to touch uAPI in stable trees.
-> 
-> Nothing that ends up on Linus's tree should not be allowed also to be in
-> a stable kernel release as there is no difference in the "rule" that "we
-> will not break userspace".
-> 
-> So this isn't an issue here, if you need/want to make parsing more
-> strict, due to bugs or whatever, then great, let's make it more strict
-> as long as it doesn't break anyone's current system.  It doesn't matter
-> if this is in Linus's release or in a stable release, same rule holds
-> for both.
+On Wed, 4 Jun 2025 at 10:40, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jun 03, 2025 at 02:18:12PM +0200, Stefano Garzarella wrote:
+> > On Mon, 2 Jun 2025 at 16:04, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> >
+> > It seems that commit cb380909ae3b ("vhost: return task creation error
+> > instead of NULL") is not backported to 6.6, so we can skip this patch.
+> > BTW it's just a fix in a comment, so if it's too late, it should not
+> > be a big issue.
+> >
+> > Just for my understanding, next time should I add a Fixes tag in this
+> > case, also if the patch doesn't touch code?
+>
+> Yes, as you did say that in the changelog, which is what triggered this
+> backport, but our tools that automatically check for Fixes: tags missed
+> it :(
 
-Makes total sense, thanks.  No objections from my side then.
+Sorry about that, I'll keep that in mind for next times.
 
-Best regards, Ilya Maximets.
+>
+> I'll go drop this now, thanks!
+
+Great, thanks!
+Stefano
+
 
