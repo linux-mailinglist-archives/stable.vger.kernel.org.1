@@ -1,128 +1,123 @@
-Return-Path: <stable+bounces-151413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DBBACDF0B
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 15:28:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CD8ACDF11
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 15:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F32B188D284
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 13:29:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1F13A3EA7
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 13:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D385828EA44;
-	Wed,  4 Jun 2025 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D0128FA87;
+	Wed,  4 Jun 2025 13:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+MWY6uP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU1R/kXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF9228E5F4;
-	Wed,  4 Jun 2025 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4317F28E609
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 13:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749043725; cv=none; b=jV1eo7FYJXf9LPW7dlM1mIchBHJ7OmnZM7YdBjS/1aHwsVao7/1dpF/FS1MQTOjA3bRn/VYr6myx9dldYMbYeErZwC4Sw6nSqIZVbzav3AWGLiXhbO8bR63m+DTJBjZcETnJcnqXZRASr8mkEv12IYOhLKJyuUA9eCTy/Y82xyI=
+	t=1749043801; cv=none; b=Lr0g4FWQe5/l4eEytT44+RjS1foVTE+Qee6pFQpqXxeBWH77gaJ8ASeNCf6i5Vw6qrtxFmtjItgdt9Eb3r/Tz0iihMUfmgjNKaoMiqjazBdurxSrRCvVU6xiDyIuI1ArS3V2d9+5bUyqMusgIF86MoHiLZeRfLgZMXTLg1XQ88I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749043725; c=relaxed/simple;
-	bh=EtYNXrwdjeQMy5hhXvDN/L4Y98+z7ZeKJjwYdpvwtS0=;
+	s=arc-20240116; t=1749043801; c=relaxed/simple;
+	bh=uAGF1rGgwXCCFTMw3y6E5QwiVbOIGvouMM0eNw+XRz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q3XnwpSrROMbVFqvEdN8mYoCQ3BRCr1ovCsC7jpzdWLAREeiYDerdf7fYzimHU2vUsV58EFGd6uh1PGlww1mwfIGBL/qQd/nsyKebjW7GgyDX4illTPfLtl1oI701xRn2EbcFqojJPGBo8e2FJsAdlE9jxjnxHQjgHBDWRKJ2DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+MWY6uP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1524C4CEE7;
-	Wed,  4 Jun 2025 13:28:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWfLi4Jr5ySDJWqnOOepyw4EROS9Qh0MoBZezXbw14Nf2uJ1/nLURP0MjeRSWMhewg1WkgINxWEbMxyP72RVTjtBJcgATV7cTC7nvxBjU0VPa+j4lXT5Xf9NRifGtBO8W+52F9DwiDyvnCxK18UnNo3PDF0XosS3ZmS/0QgX5wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU1R/kXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAD0C4CEF0;
+	Wed,  4 Jun 2025 13:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749043725;
-	bh=EtYNXrwdjeQMy5hhXvDN/L4Y98+z7ZeKJjwYdpvwtS0=;
+	s=korg; t=1749043801;
+	bh=uAGF1rGgwXCCFTMw3y6E5QwiVbOIGvouMM0eNw+XRz0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F+MWY6uPm2sV7U6/G78GX0MVVufjul6GtlgGc/tW+junQz3A49bZD/XqQljSUEI8e
-	 tSa8CrOAQnY9H38VHesjYxnSK1S5vxA+4g1uKJhFGwD/+gTpGodObmQ5CKgy/DQMtB
-	 xQInpk/o9C8kUmEXifUkn3gmR9mdgS1tVNJWALTA=
-Date: Wed, 4 Jun 2025 15:28:42 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Jeff Chen <jeff.chen_1@nxp.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Vitor Soares <ivitro@gmail.com>
-Subject: Re: [PATCH 6.12 130/626] wifi: mwifiex: Fix HT40 bandwidth issue.
-Message-ID: <2025060427-putdown-rumble-fefb@gregkh>
-References: <20250527162445.028718347@linuxfoundation.org>
- <20250527162450.311998747@linuxfoundation.org>
- <20250603203337.GA109929@francesco-nb>
- <2025060408-concur-bubbly-04ea@gregkh>
- <20250604102352.GB31115@francesco-nb>
- <2025060419-gloomily-exclusive-dc3c@gregkh>
- <20250604131724.GA273097@francesco-nb>
+	b=qU1R/kXKp9D6+jx5VYTlP7L0TWBw4HwzAe/nBG7841zDc0hNJnT/FgXj0h3Sy5Syx
+	 VLic0jaMZDl6jLnrJPzQc/m19ZOHyxAsvhF67K0xV5MR0NAqRRJ3lKUU+sfVwl7Uw7
+	 x5rkOTr8SInBk1mby7fViWxyxBJLqPPocmLapX7U=
+Date: Wed, 4 Jun 2025 15:29:58 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>, stable@vger.kernel.org,
+	Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] Revert "drm/amd/display: more liberal vmin/vmax update
+ for freesync"
+Message-ID: <2025060410-skinning-unguided-a3de@gregkh>
+References: <20250530200918.391912-1-aurabindo.pillai@amd.com>
+ <CADnq5_P1Wf+QmV7Xivk7j-0uSsZHD3VcoROUoSoRa2oYmcO2jw@mail.gmail.com>
+ <jn3rvqffhemwjltd6z5ssa2lfpszsw4w7c4kjmkqqbum6zqvmi@pv6x2rkbeys6>
+ <CADnq5_PHv+yxYqH8QxjMorn=PBpLekmLkW4XNNYaCN0iMLjZQw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250604131724.GA273097@francesco-nb>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADnq5_PHv+yxYqH8QxjMorn=PBpLekmLkW4XNNYaCN0iMLjZQw@mail.gmail.com>
 
-On Wed, Jun 04, 2025 at 03:17:24PM +0200, Francesco Dolcini wrote:
-> On Wed, Jun 04, 2025 at 12:36:12PM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Jun 04, 2025 at 12:23:52PM +0200, Francesco Dolcini wrote:
-> > > On Wed, Jun 04, 2025 at 10:39:09AM +0200, Greg Kroah-Hartman wrote:
-> > > > On Tue, Jun 03, 2025 at 10:33:54PM +0200, Francesco Dolcini wrote:
-> > > > > Hello Greg, Sasha
-> > > > > 
-> > > > > On Tue, May 27, 2025 at 06:20:23PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > > > > > 
-> > > > > > ------------------
-> > > > > > 
-> > > > > > From: Jeff Chen <jeff.chen_1@nxp.com>
-> > > > > > 
-> > > > > > [ Upstream commit 4fcfcbe457349267fe048524078e8970807c1a5b ]
-> > > > > > 
-> > > > > > This patch addresses an issue where, despite the AP supporting 40MHz
-> > > > > > bandwidth, the connection was limited to 20MHz. Without this fix,
-> > > > > > even if the access point supports 40MHz, the bandwidth after
-> > > > > > connection remains at 20MHz. This issue is not a regression.
-> > > > > > 
-> > > > > > Signed-off-by: Jeff Chen <jeff.chen_1@nxp.com>
-> > > > > > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > > > > > Link: https://patch.msgid.link/20250314094238.2097341-1-jeff.chen_1@nxp.com
-> > > > > > Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> > > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > > 
-> > > > > Can you please drop this patch from any additional stable kernel update?
-> > > > > It seems that on 6.12.y it introduced a regression, we are currently
-> > > > > investigating it and we'll eventually send a revert for 6.12.y.
-> > > > 
-> > > > This is already in the following released kernels:
-> > > > 	6.12.31 6.14.9 6.15
-> > > > I'll be glad to queue up the revert when it hits Linus's tree.  Is that
-> > > > planned anytime soon?
-> > > 
-> > > mainline is not affected, the issues seems specific of the backport on
-> > > 6.12 (6.14 not tested yet), therefore I do not expect any revert in
-> > > Linus tree.
-> > 
-> > So 6.15 is not an issue either?
-> > 
-> > > I am looking into the details now, to be sure about my finding, I'll
-> > > confirm you in the next few days.
-> > > 
-> > > If you prefer to not wait, given that this fix was just improving the
-> > > performance of a specific use case, you can just revert from 6.12.y and
-> > > 6.14.y.
-> > 
-> > And 6.15?  I'd prefer if you submit the revert as that way it can
-> > contain the relevant information about why the revert is only needed
-> > in the stable kernel(s) and not also in Linus's tree.
+On Wed, Jun 04, 2025 at 09:15:14AM -0400, Alex Deucher wrote:
+> On Wed, Jun 4, 2025 at 5:40 AM Uwe Kleine-König
+> <u.kleine-koenig@baylibre.com> wrote:
+> >
+> > Hello Alex,
+> >
+> > On Fri, May 30, 2025 at 04:14:09PM -0400, Alex Deucher wrote:
+> > > On Fri, May 30, 2025 at 4:09 PM Aurabindo Pillai
+> > > <aurabindo.pillai@amd.com> wrote:
+> > > >
+> > > > This reverts commit 219898d29c438d8ec34a5560fac4ea8f6b8d4f20 since it
+> > > > causes regressions on certain configs. Revert until the issue can be
+> > > > isolated and debugged.
+> > > >
+> > > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4238
+> > > > Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+> > > > Acked-by: Alex Deucher <alexander.deucher@amd.com>
+> > >
+> > > Already included in my -fixes PR for this week:
+> > > https://lists.freedesktop.org/archives/amd-gfx/2025-May/125350.html
+> >
+> > Note the way this was done isn't maximally friendly to our stable
+> > maintainers though.
+> >
+> > The commit in your tree (1b824eef269db44d068bbc0de74c94a8e8f9ce02) is a
+> > tad better than the patch that Aurabindo sent as it has:
+> >
+> >         This reverts commit cfb2d41831ee5647a4ae0ea7c24971a92d5dfa0d ...
+> >
+> > which at least is a known commit and has Cc: stable.
+> >
+> > However this is still a bit confusing as commit cfb2d41831ee has no Cc:
+> > stable, but a duplicate in mainline: f1c6be3999d2 that has Cc: stable.
+> >
+> > So f1c6be3999d2 was backported to 6.14.7 (commit
+> > 4ec308a4104bc71a431c75cc9babf49303645617), 6.12.29 (commit
+> > 468034a06a6e8043c5b50f9cd0cac730a6e497b5) and 6.6.91 (commit
+> > c8a91debb020298c74bba0b9b6ed720fa98dc4a9). But it might not be obvious
+> > that 1b824eef269db44d068bbc0de74c94a8e8f9ce02 needs backporting to trees
+> > that don't contain cfb2d41831ee (or a backport of it).
+> >
+> > Please keep an eye on that change that it gets properly backported.
 > 
-> After more testing I can say that this commit is just broken on
-> every tree, I'll send a revert to mainline soon, and after that you
-> should get it like any other fix.
+> DRM patches land in -next first since that is where the developers
+> work and then bug fixes get cherry-picked to -fixes.  When a patch is
+> cherry-picked to -fixes, we use cherry-pick -x to keep the reference
+> to the original commit and then add stable CC's as needed.  See this
+> thread for background:
+> https://lore.kernel.org/dri-devel/871px5iwbx.fsf@intel.com/T/#t
 
-Make sure to have a cc: stable on it so that we do get it properly :)
+And that thread shows how the confusion between git ids that are
+reverted and committed to the tree cause reverts to get missed with our
+automatic tools, so you HAVE to explicitly tag them as cc: stable, which
+is not always done :(
 
 thanks,
 
