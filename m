@@ -1,156 +1,155 @@
-Return-Path: <stable+bounces-150770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6F1ACCF6A
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 23:54:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA72CACD0B2
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 02:37:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D3F16FFFC
-	for <lists+stable@lfdr.de>; Tue,  3 Jun 2025 21:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1492189271E
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 00:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F624BBE4;
-	Tue,  3 Jun 2025 21:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417F4B665;
+	Wed,  4 Jun 2025 00:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYClOzA/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z/o5wGeB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C1823BCE4;
-	Tue,  3 Jun 2025 21:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8886FC3
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 00:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748987674; cv=none; b=KOF/jZi2qkRTwI7sKn59TnpR9fib86xH7ivjBkFTWYGFI/mzYdKgltmLy0fiB6zwKx01T7QMyJMLZaD2rG5W1dyNutOp/P9NwzsvdjhKUC0YtH1ei+uFOUgzJOueTsHqe4ddhyBH+0NMAz1BLKgMYIT3Z2XSIYAd0NFf6O888Rw=
+	t=1748997454; cv=none; b=EfmIgI5qmSkDfe5sQJwpIxutbSrFhCnXpo/VCNp4gYRer7lAEb22LwXBr7b2nhtD7oiwPU3JIazNbjB1z99PXUpKCT4JyTen59smmiCS6w2LHyDiGpmQ3qv4c2MHjlX0F0RLsxEcMX7maGMjbVdfFqXldgENelV+HwId4GygN/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748987674; c=relaxed/simple;
-	bh=zZE3sqGdwymSsm8+G9zuai/4BA8hi6aRGnzezn7VdJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QAznPn4jGw3PqLzfksQAfLE9ZdYGzXqa4dzYEc6OuLgItxZT3hUcUVmnSAilQUJ7GPY4nNfwIelLcktrxlrIPHxfJiEG+QeVuHu1cYyVjwU6ZbniE4Pg8h2SO+enVeGHdqKv/eJErK8wPLrqHdTgp0lirWeWxlk9MA+sHWdEB1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYClOzA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02954C4CEED;
-	Tue,  3 Jun 2025 21:54:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748987673;
-	bh=zZE3sqGdwymSsm8+G9zuai/4BA8hi6aRGnzezn7VdJ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hYClOzA/a9OT+R6dBzOMSbI5dMErWu7R/kDsvMsAQYMoNrBrvaXnUHokvssDKwCRd
-	 nDA7KtQmADZUVCuu06x0sa/NtSgtwO8t97nhzCI5ly21Tpcnofs0eynZcSbnXYURA3
-	 X9gNoXcU7q9AmP8DY6ybe92149TdmM4e6TsEF9cQnHXCfmvbqOoESC6Du/Swh7iKnH
-	 tx3tPBjSmPXOmvv3FGOmY2SfLQSliUmzRmYHLzDlXXEYNlUGeM+Xg2Wh/t/2/TB+s4
-	 PN8by/Z6/Y3h6siNP2SpPNFG8GbLMxAtNqR2mnwWnTjrFF0OKIRUOcXDrvuvM5B0zl
-	 K66u0FRPFlRcw==
-Date: Tue, 3 Jun 2025 14:54:27 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-	Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Xi Ruoyao <xry111@xry111.site>, loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] LoongArch: vDSO: correctly use asm parameters in syscall
- wrappers
-Message-ID: <20250603215427.GB3631276@ax162>
-References: <20250603-loongarch-vdso-syscall-v1-1-6d12d6dfbdd0@linutronix.de>
+	s=arc-20240116; t=1748997454; c=relaxed/simple;
+	bh=FIhhwRMnEvPjuGUpf9qf+tqZDLEP9lZKLjQ3YYZd4as=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UHAsLGLSSXofxQ+XYWViEAjgoqpD7xaHGHGevWsPUBMksV/7SkGN5nkrUttys9x7hn/AwTG6j5wRvNEKLdTBFeJ+Jbm3SywXt2MI/ctKUG2oSX/Bzuu5gHzbd7uMvaYTjGXgFOtgx4EBvURFIrlWp2i7lXNZE7Hh06DpsgZ6XSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z/o5wGeB; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748997451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TCJQT/kav5ff3pRxvzcaTAEwPIznqrXjhdq5yD+vQEE=;
+	b=Z/o5wGeBme9/4XAfl5w58aOWuOBMRVmqHPSpYxc36VkyY5Ud/lu2TMiAd0tzpoYYH0HuPl
+	IGO4weXHrhFKWa2LKl2b57lGfZhg091mdFk5Cv23hHRJRBWx1bqA6FMFkYgS/se8YKX8CX
+	Ey7ddhiJpmkPQIcLzJJzdlAmFtgtDmI=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-iFhPAftiOx2UMIHBLA6VdQ-1; Tue, 03 Jun 2025 20:37:30 -0400
+X-MC-Unique: iFhPAftiOx2UMIHBLA6VdQ-1
+X-Mimecast-MFC-AGG-ID: iFhPAftiOx2UMIHBLA6VdQ_1748997449
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-30ea0e890ccso5957433a91.2
+        for <stable@vger.kernel.org>; Tue, 03 Jun 2025 17:37:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748997449; x=1749602249;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TCJQT/kav5ff3pRxvzcaTAEwPIznqrXjhdq5yD+vQEE=;
+        b=iPSpqpxdfmkEUb5WlfYsMx+V8QPvpQYXw1K87N4UMACIk9Y6SSdoGozqR1f1+ls9zM
+         fhe3J45kEsmsY1Ut+gQG4i+c5vA3XfIa81F/9emc6E/f40r+vhIjnn8KDRUKVgKyfZzg
+         PBICEcnGm9bu9cupKf0DvMnJJEw3BtNOS/KvuA6Cef9D+8scyp2RlquBkvMNEJtggPMf
+         zjfz7mqwGJ6N5zcwJJVbPf1O8dewrfUEdRfIAwM8w0XF3zn1DFzu7Vl4UzqElizMwoF8
+         6G5r4Ml4QL/I0PbRKLfLieuhCl2KRhd7NxKb8C/0n15lwzyaxI1AR7lS7+1ygCja2tb9
+         poWA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1Rv/Rae8ud8jbm4520imnmRcKmwZ6h9phjE2m84oxkiORQ6k/aUUUwGt+iiDbJRBcrLRQSJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKdk6oA7LqIYt92SfTLUey1dD+nCWURum94oleYSRZ1SjWrQG9
+	BOs9ttXXE2O0BI+p1iSsBDGkVEFEIEltXPGlBOzo+9CrmKly9XRZdhLz92eGWxbxbc4ME0qK/Gc
+	li24OkhGxsa4RbNQo9uFXW7Wa1FgIEhB/8I1OUFHq2ibFw3pfT5s8HRP18KmNOL/lZQa4Nt4Kf+
+	30yenfud/RrPs3j5SKuNC2B0dcxq/Gp3FQ
+X-Gm-Gg: ASbGncvxPViIWLBXjvL9uEOJ9vxHUjf2NgbxghSckKUK4/JTJBfVJAZMLIwjtnzvKoT
+	0wywb19+a6a1uTzN6wy8yVA+V7EtFJsNfiDiFIitxetkWhvoaBIaoqV3ovCGyjJoEFUq7gA==
+X-Received: by 2002:a17:90b:51c4:b0:311:c1ec:7d0c with SMTP id 98e67ed59e1d1-3130cd65aaemr1426531a91.27.1748997449155;
+        Tue, 03 Jun 2025 17:37:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQeODWbQfUbRlPw0j1gKXQJysD64GEXXnB2RuYnjq0y+PzQoFeIG5PN3PQdqbkgUndiDNUyG9oiwKSrJbbewE=
+X-Received: by 2002:a17:90b:51c4:b0:311:c1ec:7d0c with SMTP id
+ 98e67ed59e1d1-3130cd65aaemr1426509a91.27.1748997448759; Tue, 03 Jun 2025
+ 17:37:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250603-loongarch-vdso-syscall-v1-1-6d12d6dfbdd0@linutronix.de>
+References: <20250603150613.83802-1-minhquangbui99@gmail.com>
+In-Reply-To: <20250603150613.83802-1-minhquangbui99@gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 4 Jun 2025 08:37:16 +0800
+X-Gm-Features: AX0GCFt_tMiNdtyDIBlXvuQJILPten36fjn0u2OKQnhU-6uwjA7mU6t1xM2SrDY
+Message-ID: <CACGkMEuHDLJiw=VdX38xqkaS-FJPTAU6+XUNwfGkNZGfp+6tKg@mail.gmail.com>
+Subject: Re: [PATCH net] virtio-net: drop the multi-buffer XDP packet in zerocopy
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 03, 2025 at 01:48:54PM +0200, Thomas Weiﬂschuh wrote:
-> The syscall wrappers use the "a0" register for two different register
-> variables, both the first argument and the return value. The "ret"
-> variable is used as both input and output while the argument register is
-> only used as input. Clang treats the conflicting input parameters as
-> undefined behaviour and optimizes away the argument assignment.
-> 
-> The code seems to work by chance for the most part today but that may
-> change in the future. Specifically clock_gettime_fallback() fails with
-> clockids from 16 to 23, as implemented by the upcoming auxiliary clocks.
-> 
-> Switch the "ret" register variable to a pure output, similar to the other
-> architectures' vDSO code. This works in both clang and GCC.
-> 
-> Link: https://lore.kernel.org/lkml/20250602102825-42aa84f0-23f1-4d10-89fc-e8bbaffd291a@linutronix.de/
-> Link: https://lore.kernel.org/lkml/20250519082042.742926976@linutronix.de/
-> Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-> Fixes: 18efd0b10e0f ("LoongArch: vDSO: Wire up getrandom() vDSO implementation")
+On Tue, Jun 3, 2025 at 11:07=E2=80=AFPM Bui Quang Minh <minhquangbui99@gmai=
+l.com> wrote:
+>
+> In virtio-net, we have not yet supported multi-buffer XDP packet in
+> zerocopy mode when there is a binding XDP program. However, in that
+> case, when receiving multi-buffer XDP packet, we skip the XDP program
+> and return XDP_PASS. As a result, the packet is passed to normal network
+> stack which is an incorrect behavior. This commit instead returns
+> XDP_DROP in that case.
+>
+> Fixes: 99c861b44eb1 ("virtio_net: xsk: rx: support recv merge mode")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-
-This is definitely an odd interaction because of the register variables
-using the same value.
-
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-
+> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 > ---
->  arch/loongarch/include/asm/vdso/getrandom.h    | 2 +-
->  arch/loongarch/include/asm/vdso/gettimeofday.h | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/loongarch/include/asm/vdso/getrandom.h b/arch/loongarch/include/asm/vdso/getrandom.h
-> index 48c43f55b039b42168698614d0479b7a872d20f3..a81724b69f291ee49dd1f46b12d6893fc18442b8 100644
-> --- a/arch/loongarch/include/asm/vdso/getrandom.h
-> +++ b/arch/loongarch/include/asm/vdso/getrandom.h
-> @@ -20,7 +20,7 @@ static __always_inline ssize_t getrandom_syscall(void *_buffer, size_t _len, uns
->  
->  	asm volatile(
->  	"      syscall 0\n"
-> -	: "+r" (ret)
-> +	: "=r" (ret)
->  	: "r" (nr), "r" (buffer), "r" (len), "r" (flags)
->  	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8",
->  	  "memory");
-> diff --git a/arch/loongarch/include/asm/vdso/gettimeofday.h b/arch/loongarch/include/asm/vdso/gettimeofday.h
-> index 88cfcf13311630ed5f1a734d23a2bc3f65d79a88..f15503e3336ca1bdc9675ec6e17bbb77abc35ef4 100644
-> --- a/arch/loongarch/include/asm/vdso/gettimeofday.h
-> +++ b/arch/loongarch/include/asm/vdso/gettimeofday.h
-> @@ -25,7 +25,7 @@ static __always_inline long gettimeofday_fallback(
->  
->  	asm volatile(
->  	"       syscall 0\n"
-> -	: "+r" (ret)
-> +	: "=r" (ret)
->  	: "r" (nr), "r" (tv), "r" (tz)
->  	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
->  	  "$t8", "memory");
-> @@ -44,7 +44,7 @@ static __always_inline long clock_gettime_fallback(
->  
->  	asm volatile(
->  	"       syscall 0\n"
-> -	: "+r" (ret)
-> +	: "=r" (ret)
->  	: "r" (nr), "r" (clkid), "r" (ts)
->  	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
->  	  "$t8", "memory");
-> @@ -63,7 +63,7 @@ static __always_inline int clock_getres_fallback(
->  
->  	asm volatile(
->  	"       syscall 0\n"
-> -	: "+r" (ret)
-> +	: "=r" (ret)
->  	: "r" (nr), "r" (clkid), "r" (ts)
->  	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
->  	  "$t8", "memory");
-> 
-> ---
-> base-commit: 546b1c9e93c2bb8cf5ed24e0be1c86bb089b3253
-> change-id: 20250603-loongarch-vdso-syscall-f585a99bea03
-> 
-> Best regards,
-> -- 
-> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> 
+>  drivers/net/virtio_net.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index e53ba600605a..4c35324d6e5b 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -1309,9 +1309,14 @@ static struct sk_buff *virtnet_receive_xsk_merge(s=
+truct net_device *dev, struct
+>         ret =3D XDP_PASS;
+
+It would be simpler to just assign XDP_DROP here?
+
+Or if you wish to stick to the way, we can simply remove this assignment.
+
+>         rcu_read_lock();
+>         prog =3D rcu_dereference(rq->xdp_prog);
+> -       /* TODO: support multi buffer. */
+> -       if (prog && num_buf =3D=3D 1)
+> -               ret =3D virtnet_xdp_handler(prog, xdp, dev, xdp_xmit, sta=
+ts);
+> +       if (prog) {
+> +               /* TODO: support multi buffer. */
+> +               if (num_buf =3D=3D 1)
+> +                       ret =3D virtnet_xdp_handler(prog, xdp, dev, xdp_x=
+mit,
+> +                                                 stats);
+> +               else
+> +                       ret =3D XDP_DROP;
+> +       }
+>         rcu_read_unlock();
+>
+>         switch (ret) {
+> --
+> 2.43.0
+>
+
+Thanks
+
 
