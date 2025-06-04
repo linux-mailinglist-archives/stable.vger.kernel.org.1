@@ -1,83 +1,251 @@
-Return-Path: <stable+bounces-151284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D8CACD5B9
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 04:37:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5F8ACD647
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 05:03:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CF4E3A4768
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 02:36:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84263189E3C9
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 03:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A6914F9D6;
-	Wed,  4 Jun 2025 02:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B6E231857;
+	Wed,  4 Jun 2025 02:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="a7jqy7Wr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xd/67w2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2231827713;
-	Wed,  4 Jun 2025 02:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8380B230D14;
+	Wed,  4 Jun 2025 02:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749004603; cv=none; b=uNIvUW9gujAb86ESLjjUI75NkMY0KgQDV/sAErAorPGRjql9XJ26hZjkTFdrKN4xvWDuRNGnaspLuULSev62e4gIYBY1yczOPyCcmsNirvwIBJKlXDX29MHdvdmPHW1qNcSchvsXFlp2JLEcg+a84BIx/jSxZaS/ez3ECa5LDX0=
+	t=1749005880; cv=none; b=ai19N1ebMCRm7CKTbutt9u4rjPCSIU3R+30yiX36S4URnBFpjn3xwwRX757NcvcNi5pYDpNVE7+q8rS8T3RKXKPyrF0pKwJ1hfr/l2UVY84QDINDl4zCyY+I4SSq4Lyk2TApt1L89/J+pQuvi2e/Q6vTNHHHR093t+R/kTQwFQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749004603; c=relaxed/simple;
-	bh=IGuNb1E0mXd8jgBnyXrO0bwJQS/mqrkSYujfMnWNrNM=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=K4Yej6VeQ49B3jJQEC1fJPXHdb+aG4h3QE82brfNrSnDqoIvwgfC5hkUCfHuNlhH++tNH4Tk7RMhCinSeUtqghbopLUMRg1avZdYHmpA3XkODH7aLKI133/4kPSw9p2pufsLEZOy8/asGe7ZPtmQIHH+GqSf8NLoUDp5qdM5MBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=a7jqy7Wr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E32AC4CEED;
-	Wed,  4 Jun 2025 02:36:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1749004602;
-	bh=IGuNb1E0mXd8jgBnyXrO0bwJQS/mqrkSYujfMnWNrNM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=a7jqy7Wr7DpKsld7VzW16igjr/MD5vDgfNYkJBWO6MSWHiGJEMTS8M6l8hDoFzBJm
-	 kwGVrWkmB8EFcaScnDRaEwfEVlhQqWqcp3Pux3uxvibB2nxuLjsxXfct7elaXwZY/P
-	 wi1cYrfbjCA+WzA5zVX/M1yRPGjP32Dt/NT0InmM=
-Date: Tue, 3 Jun 2025 19:36:41 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Pu Lehui <pulehui@huaweicloud.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, mhiramat@kernel.org,
- oleg@redhat.com, peterz@infradead.org, Liam.Howlett@oracle.com,
- vbabka@suse.cz, jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, pulehui@huawei.com
-Subject: Re: [PATCH v1 3/4] selftests/mm: Extract read_sysfs and write_sysfs
- into vm_util
-Message-Id: <20250603193641.f24bf13623565d2b02ae86ce@linux-foundation.org>
-In-Reply-To: <8ea3ec70-dbe7-424f-b07f-add7c1cb1852@huaweicloud.com>
-References: <20250529155650.4017699-1-pulehui@huaweicloud.com>
-	<20250529155650.4017699-4-pulehui@huaweicloud.com>
-	<f1dfdffa-23b3-4d4a-8912-3a35e65963e4@lucifer.local>
-	<8ea3ec70-dbe7-424f-b07f-add7c1cb1852@huaweicloud.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1749005880; c=relaxed/simple;
+	bh=+kWzTcHBzf1aWzkd8t80rJRxvNyHpEOLoaEfIgMWrfE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZMDTS4eDPXxNIAkhRkVIfzbVtKjrrhivh6nV5fTWYzYuiwJQhlBg7A98e56Ta+LloaTwkuLBub0bWpmx2Ge2AhH3+4snAPija7FIXrIxGSj0b52h4DTliwIOfUPFoCAfXCNCh/5ejv0B9Mqt3JDUYuswjF/6+Zq2VeQcf2E91DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xd/67w2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F2003C4CEED;
+	Wed,  4 Jun 2025 02:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749005880;
+	bh=+kWzTcHBzf1aWzkd8t80rJRxvNyHpEOLoaEfIgMWrfE=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Xd/67w2FGFzhKoecDXaBGboCpchiPTFDJ160nqIuMS1Q096tGdCFiQ9RhdHIHZjaV
+	 Wu/b8BFqtRLbm9fcmtGhlbNyytanKqlibllPSZOG15wWK9nZ0TtjhbXmUNKxoIyDXh
+	 Hq+GobjFY5GZ42FXmyJE89ml+hWHUPRI03GA7dQet3mLAIFRFHxqGulwua6akIpyLd
+	 mC6FLLHfiFO5CmP7X6F1dhwIqh3iYPP7wiSS8sqtBCACPUL9cFS9biealVkqCG+xwp
+	 y6flQepgPU0ZBCiJoGNm3mPRRvA+aWuQWKV/vbF2xCQJ+yTHowY1ia8zGTlnL2gVBK
+	 /zLluGj07Dsqw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E070FC5AD49;
+	Wed,  4 Jun 2025 02:57:59 +0000 (UTC)
+From: Mingcong Bai via B4 Relay <devnull+jeffbai.aosc.io@kernel.org>
+Subject: [PATCH v2 0/5] drm/xe: enable driver usage on non-4KiB kernels
+Date: Wed, 04 Jun 2025 10:57:54 +0800
+Message-Id: <20250604-upstream-xe-non-4k-v2-v2-0-ce7905da7b08@aosc.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADK2P2gC/x3MTQqAIBBA4avErBuQ6QfqKtHCbKwhstCSILx70
+ vJbvPdCYC8coC9e8BwlyOEyqCzArNotjDJnAylqVKsqvM9wedY7PozucFhvGAlrbSw1lekmO0N
+ uT89Wnv87jCl9WgHjAWcAAAA=
+X-Change-ID: 20250603-upstream-xe-non-4k-v2-4acf253c9bfd
+To: Lucas De Marchi <lucas.demarchi@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Francois Dugast <francois.dugast@intel.com>, 
+ =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>, 
+ Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ Zhanjun Dong <zhanjun.dong@intel.com>, 
+ Matt Roper <matthew.d.roper@intel.com>, 
+ Alan Previn <alan.previn.teres.alexis@intel.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Mateusz Naklicki <mateusz.naklicki@intel.com>
+Cc: intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Kexy Biscuit <kexybiscuit@aosc.io>, Shang Yatsen <429839446@qq.com>, 
+ Mingcong Bai <jeffbai@aosc.io>, Wenbin Fang <fangwenbin@vip.qq.com>, 
+ Haien Liang <27873200@qq.com>, Jianfeng Liu <liujianfeng1994@gmail.com>, 
+ Shirong Liu <lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749005878; l=6957;
+ i=jeffbai@aosc.io; s=20250604; h=from:subject:message-id;
+ bh=+kWzTcHBzf1aWzkd8t80rJRxvNyHpEOLoaEfIgMWrfE=;
+ b=8vLx3q8e3BZJxJ9aZzsi7/ARRfa8W/HOCMhz7n7nEEXlakwDOZJxYlSWjxQ5WFl0/eD1i4DDJ
+ YtWI0ZZPdoOAeby8AdcKMBxTEHKgBZNySUkxLe0wHfVdPD+xatwl0RJ
+X-Developer-Key: i=jeffbai@aosc.io; a=ed25519;
+ pk=MJdgklflDF+Xz9x2Lp+ogEnEyk8HRosMGiqLgWbFctY=
+X-Endpoint-Received: by B4 Relay for jeffbai@aosc.io/20250604 with
+ auth_id=422
+X-Original-From: Mingcong Bai <jeffbai@aosc.io>
+Reply-To: jeffbai@aosc.io
 
-On Tue, 3 Jun 2025 15:17:49 +0800 Pu Lehui <pulehui@huaweicloud.com> wrote:
+This patch series attempts to enable the use of xe DRM driver on non-4KiB
+kernel page platforms. This involves fixing the ttm/bo interface, as well
+as parts of the userspace API to make use of kernel `PAGE_SIZE' for
+alignment instead of the assumed `SZ_4K', it also fixes incorrect usage of
+`PAGE_SIZE' in the GuC and ring buffer interface code to make sure all
+instructions/commands were aligned to 4KiB barriers (per the Programmer's
+Manual for the GPUs covered by this DRM driver).
 
-> 
-> 
-> > Not a big deal though, perhaps a bit out of scope here, more of a nice-to-have.
-> 
-> ...
->
-> Yep, we can do it more. But, actually, I am not sure about the merge 
-> process of mm module. Do I need to resend the whole series or just the 
-> diff below?
-> 
+This issue was first discovered and reported by members of the LoongArch
+user communities, whose hardware commonly ran on 16KiB-page kernels. The
+patch series began on an unassuming branch of a downstream kernel tree
+maintained by Shang Yatsen.[^1]
 
-A little diff like this is great, although this one didn't apply for me.
+It worked well but remained sparsely documented, a lot of the work done
+here relied on Shang Yatsen's original patch.
 
-But if we're to get this series into 6.16-rc1, now is not the time to
-be changing it.  Please send out a formal patch after -rc1?
+AOSC OS then picked it up[^2] to provide Intel Xe/Arc support for users of
+its LoongArch port, for which I worked extensively on. After months of
+positive user feedback and from encouragement from Kexy Biscuit, my
+colleague at the community, I decided to examine its potential for
+upstreaming, cross-reference kernel and Intel documentation to better
+document and revise this patch.
+
+Now that this series has been tested good (for boot up, OpenGL, and
+playback of a standardised set of video samples[^3] on the following
+platforms (motherboard + GPU model):
+
+- x86-64, 4KiB kernel page:
+    - MS-7D42 + Intel Arc A580
+    - COLORFIRE B760M-MEOW WIFI D5 + Intel Arc B580
+- LoongArch, 16KiB kernel page:
+    - XA61200 + GUNNIR DG1 Blue Halberd (Intel DG1)
+    - XA61200 + GUNNIR Iris Xe Index 4 (Intel DG1)
+    - XA61200 + GUNNIR Intel Iris Xe Max Index V2 (Intel DG1)
+    - XA61200 + GUNNIR Intel Arc A380 Index 6G (Intel Arc A380)
+    - XA61200 + ASRock Arc A380 Challenger ITX OC (Intel Arc A380)
+    - XA61200 + Intel Arc A580
+    - XA61200 + GUNNIR Intel Arc A750 Photon 8G OC (Intel Arc A750)
+    - XA61200 + Intel Arc B580
+    - XB612B0 + GUNNIR Intel Iris Xe Max Index V2 (Intel DG1)
+    - XB612B0 + GUNNIR Intel Arc A380 Index 6G (Intel Arc A380)
+    - ASUS XC-LS3A6M + GUNNIR Intel Arc B580 INDEX 12G (Intel Arc B580)
+
+On these platforms, basic functionalities tested good but the driver was
+unstable with occasional resets (I do suspect however, that this platform
+suffers from PCIe coherence issues, as instability only occurs under heavy
+VRAM I/O load):
+
+- AArch64, 4KiB/64KiB kernel pages:
+    - ERUN-FD3000 (Phytium D3000) + GUNNIR Intel Iris Xe Max Index V2
+      (Intel DG1)
+    - ERUN-FD3000 (Phytium D3000) + GUNNIR Intel Arc A380 Index 6G
+      (Intel Arc A380)
+    - ERUN-FD3000 (Phytium D3000) + GUNNIR Intel Arc A750 Photon 8G OC
+      (Intel Arc A750)
+
+I think that this patch series is now ready for your comment and review.
+Please forgive me if I made any simple mistake or used wrong terminologies,
+but I have never worked on a patch for the DRM subsystem and my experience
+is still quite thin.
+
+But anyway, just letting you all know that Intel Xe/Arc works on non-4KiB
+kernel page platforms (and honestly, it's great to use, especially for
+games and media playback)!
+
+[^1]: https://github.com/FanFansfan/loongson-linux/tree/loongarch-xe
+[^2]: We maintained Shang Yatsen's patch until our v6.13.3 tree, until
+      we decided to test and send this series upstream,
+      https://github.com/AOSC-Tracking/linux/tree/aosc/v6.13.3
+[^3]: Delicious hot pot!
+      https://repo.aosc.io/ahvl/sample-videos-20250223.tar.zst
+
+---
+Matthew(s), Lucas, and Francois:
+
+Thanks again for your patience and review.
+
+I recently had a job change and it put me off this series for months, but
+I'm back (and should be a lot more responsive now) - sorry! Let's get this
+ball rolling again.
+
+I was unfortunately unable to revise 1/5 from v1 as you requested, neither
+of your suggestions to allow allocation of VRAM smaller than page size
+worked... So I kept that part as is.
+
+As for the your comment in 5/5, I'm not sure about what the right approach
+to implement a SZ_64K >= PAGE_SIZE assert was, as there are many other
+instances of similar ternary conditional operators in the xe code. Correct
+me if I'm wrong but I felt that it might be better handled in a separate
+patch series?
+
+---
+Changes in v2:
+
+- Define `GUC_ALIGN' and use them in GuC code to improve clarity.
+- Update documentation on `DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT'.
+- Rebase, and other minor changes.
+- Link to v1:
+  https://lore.kernel.org/all/20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io/
+
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Maxime Ripard <mripard@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+To: David Airlie <airlied@gmail.com>
+To: Simona Vetter <simona@ffwll.ch>
+To: José Roberto de Souza <jose.souza@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+To: Zhanjun Dong <zhanjun.dong@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+To: Mateusz Naklicki <mateusz.naklicki@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: intel-xe@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Suggested-by: Kexy Biscuit <kexybiscuit@aosc.io>
+Co-developed-by: Shang Yatsen <429839446@qq.com>
+Signed-off-by: Shang Yatsen <429839446@qq.com>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+
+---
+Mingcong Bai (5):
+      drm/xe/bo: fix alignment with non-4KiB kernel page sizes
+      drm/xe/guc: use GUC_SIZE (SZ_4K) for alignment
+      drm/xe/regs: fix RING_CTL_SIZE(size) calculation
+      drm/xe: use 4KiB alignment for cursor jumps
+      drm/xe/query: use PAGE_SIZE as the minimum page alignment
+
+ drivers/gpu/drm/xe/regs/xe_engine_regs.h |  2 +-
+ drivers/gpu/drm/xe/xe_bo.c               |  8 ++++----
+ drivers/gpu/drm/xe/xe_guc.c              |  4 ++--
+ drivers/gpu/drm/xe/xe_guc.h              |  3 +++
+ drivers/gpu/drm/xe/xe_guc_ads.c          | 32 ++++++++++++++++----------------
+ drivers/gpu/drm/xe/xe_guc_capture.c      |  8 ++++----
+ drivers/gpu/drm/xe/xe_guc_ct.c           |  2 +-
+ drivers/gpu/drm/xe/xe_guc_log.c          |  5 +++--
+ drivers/gpu/drm/xe/xe_guc_pc.c           |  4 ++--
+ drivers/gpu/drm/xe/xe_migrate.c          |  4 ++--
+ drivers/gpu/drm/xe/xe_query.c            |  2 +-
+ include/uapi/drm/xe_drm.h                |  7 +++++--
+ 12 files changed, 44 insertions(+), 37 deletions(-)
+---
+base-commit: 546b1c9e93c2bb8cf5ed24e0be1c86bb089b3253
+change-id: 20250603-upstream-xe-non-4k-v2-4acf253c9bfd
+
+Best regards,
+-- 
+Mingcong Bai <jeffbai@aosc.io>
+
+
 
