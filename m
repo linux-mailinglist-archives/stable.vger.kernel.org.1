@@ -1,289 +1,200 @@
-Return-Path: <stable+bounces-151310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BB90ACDA79
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 11:03:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50D7ACDB2F
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 11:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCAF5173D89
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 09:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D05518874C0
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 09:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DD628C849;
-	Wed,  4 Jun 2025 09:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E5B28D83F;
+	Wed,  4 Jun 2025 09:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="GDL3iS1j"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XnU5wmgf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2084.outbound.protection.outlook.com [40.107.94.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C2A28C5A1
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 09:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749027782; cv=none; b=MuGpJrXPrnclbVWmKgnoT3RACGhEVjT7ha+9sDHAEtUsOiG/vU4nF+zr2C3h38vthjxWdsh+kRqsPmvlrEj5wqolt3mX4mQhx15AFs8+BvoqTyQb15WAuGCLAJAnPwJAI6xJy+OVs6EFJWQrOpx3pmR0p5OjfUeMw0rf7tJrOxs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749027782; c=relaxed/simple;
-	bh=CoQ2oPycx3vh52+agnKYGvJyBR+SJ/Eg1jXsNpHVIyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EEWPJF+oRpJiio71CgP1+edR98xH2NWR7hS/f4QecfuhsAweCHu8GP2mBdBIsc/B/nEigiaQM+FGgGk3iKpfuUM2Xoomar78/PPeuapFxCPUpkpCfdaebYmZjZfccVpn+sxSxfj2TRWwjnJ56D9EPy1vEbFekewDmSUk6jWYBTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=GDL3iS1j; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ad51ba0af48so135489066b.0
-        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 02:03:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1749027779; x=1749632579; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OWXCxfPn5mxMyAc/RvJYvkJY+WkXczRM7a4xRFzAqfc=;
-        b=GDL3iS1jlIihoXGzQ2/CNjs4Vn1Bq4QhfHzEezc9nPV61fKkSkdgD/wGU/4o/vpzuR
-         zhYXdGD2t7coTqvn1W3RHsYeb1SXBprDFqXFQt15K5rKEPdB3XkQz0O9U9RP/p82vDdI
-         8SqilzKdT+X7NJqYIKeZzbdXlMHtt9B1QXRGA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749027779; x=1749632579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OWXCxfPn5mxMyAc/RvJYvkJY+WkXczRM7a4xRFzAqfc=;
-        b=XuAlhR/uPhcYiu6t38nhztYo9ReMGrNnX54oB9cdHGL+dLDGNKEQowy0I57s3LzvIs
-         FcTet8pihvgpCAA1wCPz+1gbsyaTkgKN/Jh0YyzotAXLIeIQBYLd6yyfBDFrxxOapvNQ
-         FGpKsPSoTz93XFB5tFE73MpdF/0cfIRKRTI8KqllWOJJILR/FFDxn2U8CDYhS0di/q3f
-         gnmlVTwIE8VvRYkdkDext8BPVpsLWAA6osrmEUM+ZJrN0n2xy/RFGIl25uFiJx2sRWt1
-         DzfeiFg0tJ/577doIqwefwNmcPPFGmpBvV9Iawbj+mxeGyZxszwRDwkEpzG6kz+bA1PR
-         BJUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIkEz68IcJ2mQAn/lfxoLYV5YYKuTRMG77FfXan3dcCbZMDwirkhMEUkMnvTUScOobSUcqBr0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhcu/7JrBSM1Xc8Ml+ky1OT6ytVkqrUuO+m5zE/kla1c95GEDR
-	JeDnDdyNfU6j6dv0jB9ccL93s2i6zHi2695I63ZUx4cGmi5aLhe2A0g0v+Rlie9V5RI=
-X-Gm-Gg: ASbGncveY/9xDf8vKAs6XsUxTFjdE9TUftxMY/ggliJP/4E6+DO0KA6XEroHe7vXe/e
-	Vp9jf7xr6J0fLGHxqIWmE2xOqsZOnC2YQ/HWJFMZns15ixkMSI2tDjwXUJ0n5wbuoAD2wBGmdtC
-	FKeQXxG4S0IEQOpwlNhzeK0TjPIbbnfAgpFYkMj/wuzg8dOHwCmXuVxvhIPh0uk+jQMrN49nsrz
-	4OIaixJenYJxEFrgqgg5rj+oatkBrNmFueCYuWKfLjQMQm71puZtYxiOrB0X2Eq8arYkJXL+v4u
-	p+D6rFCRKcTYiDnq76Bhij4rSg7QsPFmLmGS1gtUm06ps+CCiR1Gnl3uXSExq54=
-X-Google-Smtp-Source: AGHT+IEsJ97eDX1ULIm8eXkHndMHDh6m9SOTcFVQvV2ShGufPJtYbcCaZ0sz612r1GZStWeNAsIcRg==
-X-Received: by 2002:a17:907:7284:b0:ad5:7048:5177 with SMTP id a640c23a62f3a-adde5fe14camr526806866b.23.1749027777891;
-        Wed, 04 Jun 2025 02:02:57 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5dd045c8sm1074517766b.103.2025.06.04.02.02.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jun 2025 02:02:57 -0700 (PDT)
-Date: Wed, 4 Jun 2025 11:02:55 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>,
-	DRI Development <dri-devel@lists.freedesktop.org>,
-	intel-xe@lists.freedesktop.org,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	stable@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Simona Vetter <simona.vetter@intel.com>
-Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
-Message-ID: <aEALvw-H8OmCnNWD@phenom.ffwll.local>
-References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
- <20250528091307.1894940-2-simona.vetter@ffwll.ch>
- <2e60074d-8efd-4880-8620-9d9572583c88@suse.de>
- <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A509A28D824;
+	Wed,  4 Jun 2025 09:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749030026; cv=fail; b=E2UkYBaVxFoIYJKWi+nUnc5cYeY6XHaR1G2ImcxcDKtc1qhd7epkTbQk+ntaFZYcYZFuUh/LLvzgANUcP10VTYUsGui7JOwBQiwwLuE9anpUOqrXUnPh8dqQKzU7XGmmmoDz3zKqId81djir2yti8UUxxSMtY7GfrS9TdzUJ/aw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749030026; c=relaxed/simple;
+	bh=bF282Sm3QeVPOhQ2PRTwEnm9Kuppu1b2OZ+tZSfOqL4=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=aljimwyYuAL0/vWzPh1jfWh5GZFqGXl8hbOyD6k8/eEm4q9wSX7W0eaaUlZF0vwlamhDGEzmmscbQLmN+bWVy+mOT/pe2v3s6GqMPEhwCe5ZKqTBuE+i1FFZbpBspyV80JCBT+0XPJHW3AaCCnmhk/R5E1FP1iFMj199BDiS0w4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XnU5wmgf; arc=fail smtp.client-ip=40.107.94.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lQ25bLockpTqkBfTncVK45oNF4/PMqYixBSpL7sEg+0QIcfC8XkGukIrfj/AJpGfjRbPoT99CY+CXTKEur7cTDm1+zQBH+GmqkSjDgY+VITp1hM+wuKeiZX6030c5W2stn6XkAWj7SQxloGkoA48gowx711A68SJ0ZGEIJa7RkyiwIZm+kWthXzli19reJUcCw449oEtXCiOUfFkBD7JdcPMuDCM0jzddquF5ZNjOBBYPHDOg90C8cLHVGqFeiX0EugOYyVpq3fqv/Z4G7Lo2IxrTgeruRXobnmOXg870M+8PrKDkbNJd9kskI3kELvMWy7tQzBt+mYrtMJaFfnQTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qte4hbuiSpO+PHhzWwbW7+hX2TGq1Z5YVG1L8fcj5FE=;
+ b=sHUrxNSs/Y3gygiM+OscPKnWG0EJxop9a+ewHuEFAM7bSVd0+BciMZ0/pzKPamdI91/THLckHoH9YGMZQ1LPOv+yobIKmD3sl5yzwWiDnJEjQu8JW17fk3/91jKtwrxHG/BUNX2qfvquK0HLomuupkSOZDPdCbtGyvy74rawC7X4Fxs1dwrh/7jyLg902WAHUKWxsKOsfUn0I4EbdS2gZzaz8HXxIFNggxcBXu2q54wqOYslCrQv37rT23b8jUqjk/NFDHk9Xu+oQE+yCStjMW+FgLNkPGnsocpTw37w8JoP+YzSQ8lWliV3mpwIe6uYrBc0jOzu8XfdGsR8PeMDtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qte4hbuiSpO+PHhzWwbW7+hX2TGq1Z5YVG1L8fcj5FE=;
+ b=XnU5wmgfIBhFUGEF1d2NN2EWx0scxhOjfkC6J+c52J/gs6nQx01+dkIjJfRG250a+nfecgU3QzrgY2r4gcQq+3LhFX+cin0uo2xL7e1OzpPtR8Bu4wBpMGr9gwVoen7PyvvU1D6laJsBoUiMcta2RERh5cYH96rPj6tJx1D4DEUgMFsqMYtVHt1taFhMTKHIEcytqsbW3LO2nXPX+IjqXBJZmPiUCZlFUhJw7RvRQmCQ8Qn7CP1q3+IsyjI4BHLfceYfX1H9Nl/xkilb0xOOnYucDrt+j/5aUbbH/0DNWagRq9FWOpInACtXGuXsmJ/FTY7ku7la7Q2pWD0fjyAR4Q==
+Received: from SJ0PR05CA0204.namprd05.prod.outlook.com (2603:10b6:a03:330::29)
+ by BL3PR12MB6426.namprd12.prod.outlook.com (2603:10b6:208:3b5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.35; Wed, 4 Jun
+ 2025 09:40:19 +0000
+Received: from CO1PEPF000066EA.namprd05.prod.outlook.com
+ (2603:10b6:a03:330:cafe::53) by SJ0PR05CA0204.outlook.office365.com
+ (2603:10b6:a03:330::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.23 via Frontend Transport; Wed,
+ 4 Jun 2025 09:40:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000066EA.mail.protection.outlook.com (10.167.249.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8792.29 via Frontend Transport; Wed, 4 Jun 2025 09:40:18 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 4 Jun 2025
+ 02:40:03 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 4 Jun
+ 2025 02:40:03 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Wed, 4 Jun 2025 02:40:02 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 000/204] 5.4.294-rc1 review
+In-Reply-To: <20250602134255.449974357@linuxfoundation.org>
+References: <20250602134255.449974357@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
-X-Operating-System: Linux phenom 6.12.25-amd64 
+Message-ID: <9550e42f-473a-4fae-8ee2-506c261f6bcf@rnnvmail203.nvidia.com>
+Date: Wed, 4 Jun 2025 02:40:02 -0700
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066EA:EE_|BL3PR12MB6426:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0d2ce919-3ea4-4555-4a8c-08dda34bd162
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|7416014|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?THpwRVJHRk02TktoVFNaVnhaTFZYb3RMRXpTeTVUckFtVENwUjJtWlRmOUxn?=
+ =?utf-8?B?R1VZV2ZWc2J4cVI5dndEdFFGMjhVVkE4eEhzVS94QlRSMlArZVVwV2lNNXJ0?=
+ =?utf-8?B?ZklmWmZ2Z3FhMVB2djFCS1FQRjd4TWdzWkNweHdhY0l5aTJiNlhLbFpZUlVw?=
+ =?utf-8?B?YkdJVldjMnZCVVRXaE9aY3VyY0VtaWpuenBuNU9UL1pncCtsRWNObWtFQ1Q5?=
+ =?utf-8?B?OG5xc0lvQzA0KzhPL3lKTG5vQURTR3lDcVVrTHUvMElYL0lOYTE5cEhyNmxH?=
+ =?utf-8?B?dS9DY1VyTTZTeDlTckVQQzk0RzRFMU5sL2VkYVRQeE1GOTFoZmFCZ2pYU2Va?=
+ =?utf-8?B?dlAwTFFkcjNWVUZTMDVyZGozUldCSjIzL0lGOUk1ZERpMDc1UjgrK2g3QkVN?=
+ =?utf-8?B?djZad3pMMitLZlN5b1hhNWlNKzc3OCtPbTdPODVzZW9Bblg4SmMzeEJlL2F1?=
+ =?utf-8?B?UUJsb3Rza2x1elplMVhRdXJ3VnAvc0E2aWdtcWNjaUdVN1B3bmVHVkFsYnJR?=
+ =?utf-8?B?QmNpUzQwRmNJUkFJU0J4b1p4TDJOZ2RjRnRjRFBZZEtlbFZRS3BNMlFKM3Ax?=
+ =?utf-8?B?aUFzelE0SHIydTFzM1FtWHh3a3pvTXRXWmVIR21pK051MmFyd3cxTnhXOEpH?=
+ =?utf-8?B?Q0EyMzFJb0h0OUd6djMrM01XcGRqYzQzSXNRRi9zdXVIbWEwYndnRDNaN0pW?=
+ =?utf-8?B?TU5RMjFBWDNzY3ZEWmZYUE9QSEw3V2hNRHl2MnBsQWZEeElLYlp5MG1xbkY4?=
+ =?utf-8?B?aDZLanZwM0l2alFxdThsTEJRblZMaUJ5eXhlVlBLQ2E2WTRQRHhqZitiQTlu?=
+ =?utf-8?B?ZlpEUjZ1Unh4V1IrRVNiS29taHVWUEN2S1lhM09EbzZ0M2hWRGdIejFYSjJy?=
+ =?utf-8?B?bjhwOE04b1NJY0s5L3AxYXArdDBXMEhkbENla3VqcDRKbTZUUHQxSWt2T2Nr?=
+ =?utf-8?B?Y3haMlBnTXpSUVIyd1ZBcDVTSjAwUmtQVXQ4bDVQa2NpWFl0K2lqSDJ1RGFO?=
+ =?utf-8?B?VWNvWVZmQnMrNTRoU1JPV0tuZFdWUkhNZjdndzlWMkZyRGs5bG1URVNEMlRG?=
+ =?utf-8?B?eGM5SURxdmFydlNFZDFBRlNIN2NVNndVdkR3dTN0TGtGUXdoejdQV1FYRW82?=
+ =?utf-8?B?NnA0T3JpMGErZ3h5SXZoSHZLcVRRSHZEY3hmSmZzN3hMR1hZdWtIcGJrKzVs?=
+ =?utf-8?B?YzlPRlFVWkFvdnFjd0wycnZkWnRWMVE2eG5idmhRUlArdk5xcGNLendWVzha?=
+ =?utf-8?B?bnRsTTA0cFlsN2F3NmFnNUtkQTlkcm5tK1lxQW90VXNQTjZMWXdkQ1FuR3BK?=
+ =?utf-8?B?U1h1Q3I1NnpCRGx1ZlhNR1RmeWdLVHBLUTBEd2VxVW5GMFd0Y0ZOZndmaStB?=
+ =?utf-8?B?MS9mSVF0Z3hIQ1k3cWdjSm8ySGhLMExmNGdvOHdsNzVqK3VHNFhram54QjA2?=
+ =?utf-8?B?aCtKeUdmZHUrZEJnVG1kMzJmOEtSak9rTVNaTit2cmZkQmdkMktXb3dmSi9l?=
+ =?utf-8?B?OFcxNHJ2Wi9KM0Fxc1cxS1grcUNtQmVjcWUvUHh1RTdieVo4YU1FVnhHb1R4?=
+ =?utf-8?B?Z0MxU0lkN3UyZFpOcWNKK0hCK1E4aE8yOFcxNjZsYldMVmZTMFQ2eWI1QVJo?=
+ =?utf-8?B?TzhoTlpsYTZxakpaWW5YeFBjL2FvT0xLWnNBVVVQdUx5eEdtU2lhMkR4QkJl?=
+ =?utf-8?B?MklqcW0xWFdhUnpwaHBtbllYU3F2V2tGQWs4K0QyZisvMGNkcXZscksrd0J3?=
+ =?utf-8?B?TllXNHRCS05qalBQZnVENk9rSFhyeXR5ZHlaSmlNajgxKytyWjEvTDBLbzhX?=
+ =?utf-8?B?elFpZ1p3bmx1TFBZU1pXVjU4TVZ6R2g2aCthK3BCaXJMUVJqdHpMMldkTWIz?=
+ =?utf-8?B?UUhGYzdRU1NFaHZrYzh5Rk5TRGkvcERQc3hCODlJYVk4NGYxN054cC9NMnVJ?=
+ =?utf-8?B?L0gvYjdEaTlRRnJEeW93MnNQbnZvOHZlVnJUeGR1Z3l0VWlyRzhERUJHcnR5?=
+ =?utf-8?B?Y2VxcmxYdzBIL2lDUGQrK2VuNVFLd2Z2aGFzSUUwNDdqUUI5VHJtVlZ5a1NU?=
+ =?utf-8?B?V2lrUkp6VXdJU1VGN2ZpdnkyRHQwUHd2WWdndz09?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(7416014)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2025 09:40:18.6856
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d2ce919-3ea4-4555-4a8c-08dda34bd162
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066EA.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6426
 
-On Tue, Jun 03, 2025 at 01:45:54PM +0200, Simona Vetter wrote:
-> On Mon, Jun 02, 2025 at 05:15:58PM +0200, Thomas Zimmermann wrote:
-> > Hi
-> > 
-> > Am 28.05.25 um 11:12 schrieb Simona Vetter:
-> > > Object creation is a careful dance where we must guarantee that the
-> > > object is fully constructed before it is visible to other threads, and
-> > > GEM buffer objects are no difference.
-> > > 
-> > > Final publishing happens by calling drm_gem_handle_create(). After
-> > > that the only allowed thing to do is call drm_gem_object_put() because
-> > > a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
-> > > (which is trivial since we have a linear allocator) can already tear
-> > > down the object again.
-> > > 
-> > > Luckily most drivers get this right, the very few exceptions I've
-> > > pinged the relevant maintainers for. Unfortunately we also need
-> > > drm_gem_handle_create() when creating additional handles for an
-> > > already existing object (e.g. GETFB ioctl or the various bo import
-> > > ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
-> > > the only exported function to stop these issues from happening.
-> > > 
-> > > Now unfortunately the implementation of drm_gem_handle_create() isn't
-> > > living up to standards: It does correctly finishe object
-> > > initialization at the global level, and hence is safe against a
-> > > concurrent tear down. But it also sets up the file-private aspects of
-> > > the handle, and that part goes wrong: We fully register the object in
-> > > the drm_file.object_idr before calling drm_vma_node_allow() or
-> > > obj->funcs->open, which opens up races against concurrent removal of
-> > > that handle in drm_gem_handle_delete().
-> > > 
-> > > Fix this with the usual two-stage approach of first reserving the
-> > > handle id, and then only registering the object after we've completed
-> > > the file-private setup.
-> > > 
-> > > Jacek reported this with a testcase of concurrently calling GEM_CLOSE
-> > > on a freshly-created object (which also destroys the object), but it
-> > > should be possible to hit this with just additional handles created
-> > > through import or GETFB without completed destroying the underlying
-> > > object with the concurrent GEM_CLOSE ioctl calls.
-> > > 
-> > > Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
-> > > Release driver references to handle before making it available
-> > > again"), which means a cool 9 years have passed until someone noticed
-> > > that we need to make this symmetry or there's still gaps left :-/
-> > > Without the 2-stage close approach we'd still have a race, therefore
-> > > that's an integral part of this bugfix.
-> > > 
-> > > More importantly, this means we can have NULL pointers behind
-> > > allocated id in our drm_file.object_idr. We need to check for that
-> > > now:
-> > > 
-> > > - drm_gem_handle_delete() checks for ERR_OR_NULL already
-> > > 
-> > > - drm_gem.c:object_lookup() also chekcs for NULL
-> > > 
-> > > - drm_gem_release() should never be called if there's another thread
-> > >    still existing that could call into an IOCTL that creates a new
-> > >    handle, so cannot race. For paranoia I added a NULL check to
-> > >    drm_gem_object_release_handle() though.
-> > > 
-> > > - most drivers (etnaviv, i915, msm) are find because they use
-> > >    idr_find, which maps both ENOENT and NULL to NULL.
-> > > 
-> > > - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
-> > >    pointers might exist due to drm_gem_handle_delete(). This needs a
-> > >    separate patch. This is because idr_for_each_entry terminates on the
-> > >    first NULL entry and so might not iterate over everything.
-> > > 
-> > > - similar for amd in amdgpu_debugfs_gem_info_show() and
-> > >    amdgpu_gem_force_release(). The latter is really questionable though
-> > >    since it's a best effort hack and there's no way to close all the
-> > >    races. Needs separate patches.
-> > > 
-> > > - xe is really broken because it not uses idr_for_each_entry() but
-> > >    also drops the drm_file.table_lock, which can wreak the idr iterator
-> > >    state if you're unlucky enough. Maybe another reason to look into
-> > >    the drm fdinfo memory stats instead of hand-rolling too much.
-> > > 
-> > > - drm_show_memory_stats() is also broken since it uses
-> > >    idr_for_each_entry. But since that's a preexisting bug I'll follow
-> > >    up with a separate patch.
-> > > 
-> > > Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> > > Cc: stable@vger.kernel.org
-> > > Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > > Cc: Maxime Ripard <mripard@kernel.org>
-> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> > > Cc: David Airlie <airlied@gmail.com>
-> > > Cc: Simona Vetter <simona@ffwll.ch>
-> > > Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-> > > Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-> > > ---
-> > >   drivers/gpu/drm/drm_gem.c | 10 +++++++++-
-> > >   include/drm/drm_file.h    |  3 +++
-> > >   2 files changed, 12 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-> > > index 1e659d2660f7..e4e20dda47b1 100644
-> > > --- a/drivers/gpu/drm/drm_gem.c
-> > > +++ b/drivers/gpu/drm/drm_gem.c
-> > > @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
-> > >   	struct drm_file *file_priv = data;
-> > >   	struct drm_gem_object *obj = ptr;
-> > > +	if (WARN_ON(!data))
-> > > +		return 0;
-> > > +
-> > >   	if (obj->funcs->close)
-> > >   		obj->funcs->close(obj, file_priv);
-> > > @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
-> > >   	idr_preload(GFP_KERNEL);
-> > >   	spin_lock(&file_priv->table_lock);
-> > > -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
-> > > +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
-> > >   	spin_unlock(&file_priv->table_lock);
-> > >   	idr_preload_end();
-> > > @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
-> > >   			goto err_revoke;
-> > >   	}
-> > > +	/* mirrors drm_gem_handle_delete to avoid races */
-> > > +	spin_lock(&file_priv->table_lock);
-> > > +	obj = idr_replace(&file_priv->object_idr, obj, handle);
-> > > +	WARN_ON(obj != NULL);
-> > 
-> > A DRM print function would be preferable. The obj here is an errno pointer.
-> > Should the errno code be part of the error message?
-> > 
-> > If it fails, why does the function still succeed?
+On Mon, 02 Jun 2025 15:45:33 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.294 release.
+> There are 204 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> This is an internal error that should never happen, at that point just
-> bailing out is the way to go.
+> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
+> Anything received after that time might be too late.
 > 
-> Also note that the error code here is just to satisfy the function
-> signature that id_for_each expects, we don't look at it ever (since if
-> there's no bugs, it should never fail). I learned this because I actually
-> removed the int return value and stuff didn't compile :-)
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.294-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Ok this part was nonsense, I mixed it up with handle_delete(). I still
-don't think we should return an error code here, because we've
-successfully installed the handle. It's just that something happened with
-the idr that should be impossible, so all bets are off.
--Sima
+All tests passing for Tegra ...
 
-> I can use drm_WARN_ON if you want me to though?
-> 
-> I'll also explain this in the commit message for the next round.
-> -Sima
-> 
-> > 
-> > Best regards
-> > Thomas
-> > 
-> > > +	spin_unlock(&file_priv->table_lock);
-> > >   	*handlep = handle;
-> > >   	return 0;
-> > > diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
-> > > index 5c3b2aa3e69d..d344d41e6cfe 100644
-> > > --- a/include/drm/drm_file.h
-> > > +++ b/include/drm/drm_file.h
-> > > @@ -300,6 +300,9 @@ struct drm_file {
-> > >   	 *
-> > >   	 * Mapping of mm object handles to object pointers. Used by the GEM
-> > >   	 * subsystem. Protected by @table_lock.
-> > > +	 *
-> > > +	 * Note that allocated entries might be NULL as a transient state when
-> > > +	 * creating or deleting a handle.
-> > >   	 */
-> > >   	struct idr object_idr;
-> > 
-> > -- 
-> > --
-> > Thomas Zimmermann
-> > Graphics Driver Developer
-> > SUSE Software Solutions Germany GmbH
-> > Frankenstrasse 146, 90461 Nuernberg, Germany
-> > GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-> > HRB 36809 (AG Nuernberg)
-> > 
-> 
-> -- 
-> Simona Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+Test results for stable-v5.4:
+    10 builds:	10 pass, 0 fail
+    24 boots:	24 pass, 0 fail
+    54 tests:	54 pass, 0 fail
 
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Linux version:	5.4.294-rc1-gdbf9e583326d
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
