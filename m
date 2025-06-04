@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-151092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823F6ACD372
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 03:18:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41DBACD35F
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 03:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 262E71623A6
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 01:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A073A53CE
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 01:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9571FE47B;
-	Wed,  4 Jun 2025 01:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F65263F27;
+	Wed,  4 Jun 2025 01:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G2KMcyR7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISPFnhRl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E422B2DA;
-	Wed,  4 Jun 2025 01:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3491FF1A1;
+	Wed,  4 Jun 2025 01:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998937; cv=none; b=u9nRg68sjUyNaHaNEKaHElHxegxp6UMpAVmCMP1za9vvcbXTP1bmcGq5wC2i6fyl0zaEst/JZdXjHW8FzfeK/fXBUW3FD7m/Ml+8RudeheQlY3VPpP/EvWRmzaibEsh3nMefHS1b28Sd8uL1OBCXgdZqh2dVEAT1B3bGa/OJPMA=
+	t=1748998940; cv=none; b=ETBtlDWze5s2GgapZuveA/yPK4N1o9wJmCef/BXVShYw48S4Sg5TsbFx30CBQ6XZ271Fa7BS+8qK8wzirCe+n6sYCmuZ1m0miF81KXYgkZTDprJKGzi992nd3ND1/mZU3imaaAF8Xlxuwb9n418fesyqDA8LODWUtlER2LqvqfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998937; c=relaxed/simple;
-	bh=LKlsFn1b5blqCeRsuOxtnObvqHMO/2WG53glYOhqzO8=;
+	s=arc-20240116; t=1748998940; c=relaxed/simple;
+	bh=6NZgrgaUc9ARO8n1NP1J2dv68Wc41FddipzyybgZRx0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dBdQdGGBvKvOLEYHffUMXnFytkIsT+g7Ap0HyQAFkLgg3dqhFIKExxV5Dd4Q8WbmdLnhyDqz7rVYvprGsasKBMBxKh1s3Ie5O6JGFeuKhtMwYqvPNv22dOehY/IheFNYy4DqvJPX9SJ3NSKdNyiDDObaiRRcM9qorUv/ZcEnd78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G2KMcyR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615F4C4CEED;
-	Wed,  4 Jun 2025 01:02:16 +0000 (UTC)
+	 MIME-Version; b=CbQO8ltPa5Srtz8RKJ2HugQNFjv2pmjLnmE7Y0cBHo4tQAWNq6H6AX17nE8dxJ4x1ZcpzS66WpRmwk3XzEX9biXNN/L0kVQOwn+uAtL7pLh1nA8fuuOB7EW6aqLHbEhzDnLlkM0IW/MZ+3wQl0H3R8kXMSj2KxVnJD837c9gW/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISPFnhRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2432C4CEF1;
+	Wed,  4 Jun 2025 01:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998937;
-	bh=LKlsFn1b5blqCeRsuOxtnObvqHMO/2WG53glYOhqzO8=;
+	s=k20201202; t=1748998938;
+	bh=6NZgrgaUc9ARO8n1NP1J2dv68Wc41FddipzyybgZRx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2KMcyR7509Rgpb4/o4uHZBvlRG8Eedydqta7A6TYvYqjvoa+oxgBlG9uqy8hTxX3
-	 cQ5pNFrnhV7tXU446CIEfurnT+8WnhdZbjdaz3AFMWT0YJUS0jBazIhg0LLBoBiU51
-	 ReDPMSLBdWKO5SR2bI7OWAFzMeG99ikbQ4koGmKiOjuRw5KHhuW7wxpvkHNRxvfxRN
-	 R5a22jXtaNzE7yDuxkOMTpGJV8ikrST+KeuAK2qllb4h2qto/Y6CD5HG2sLXmYBtkg
-	 aqFWTPwAEDJ5ZAABQRSmnlkRZ+HXgJQr5f58oUBZ8zGKMaECYbuy21CDgIVBr0hmdb
-	 urRyIgqygffMw==
+	b=ISPFnhRlaJSS1Nolnkr2iDKxsYe+sjfZhV3lm3ZGaJbmrexUhuN126/IXrseKM6h7
+	 kH00JPjJgaY2ux7cTJaA9EGZbZbLdrwpH/htUNVfR0b9tlKHruIRBMDuK4MVJlpY7E
+	 wI+URecGWVdicpCTgaxBg5PBbU7OCjbcGRAGiQNwlh4c3ni4Lj00obf6mR8oCxQ9/3
+	 r4vZ54xMe5bg8tZTkB7cMhCU7oWihLmArq+jWtn3d9ewz6M9x3kGn8mhEhZI+Aec7/
+	 9M+OYE2CJJASL08Naz9RgfbmSIh9tYXopoKn4NCOeMUm5bMABZxA1rBCbcxrdhNqC5
+	 CgEi7NiaCHEjA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Rengarajan S <rengarajan.s@microchip.com>,
+Cc: Zilin Guan <zilin@seu.edu.cn>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bryan.whitehead@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 02/62] net: lan743x: Modify the EEPROM and OTP size for PCI1xxxx devices
-Date: Tue,  3 Jun 2025 21:01:13 -0400
-Message-Id: <20250604010213.3462-2-sashal@kernel.org>
+	jmaloy@redhat.com,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.6 03/62] tipc: use kfree_sensitive() for aead cleanup
+Date: Tue,  3 Jun 2025 21:01:14 -0400
+Message-Id: <20250604010213.3462-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604010213.3462-1-sashal@kernel.org>
 References: <20250604010213.3462-1-sashal@kernel.org>
@@ -65,137 +66,88 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.92
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Rengarajan S <rengarajan.s@microchip.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 3b9935586a9b54d2da27901b830d3cf46ad66a1e ]
+[ Upstream commit c8ef20fe7274c5766a317f9193b70bed717b6b3d ]
 
-Maximum OTP and EEPROM size for hearthstone PCI1xxxx devices are 8 Kb
-and 64 Kb respectively. Adjust max size definitions and return correct
-EEPROM length based on device. Also prevent out-of-bound read/write.
+The tipc_aead_free() function currently uses kfree() to release the aead
+structure. However, this structure contains sensitive information, such
+as key's SALT value, which should be securely erased from memory to
+prevent potential leakage.
 
-Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
-Link: https://patch.msgid.link/20250523173326.18509-1-rengarajan.s@microchip.com
+To enhance security, replace kfree() with kfree_sensitive() when freeing
+the aead structure. This change ensures that sensitive data is explicitly
+cleared before memory deallocation, aligning with the approach used in
+tipc_aead_init() and adhering to best practices for handling confidential
+information.
+
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250523114717.4021518-1-zilin@seu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 **YES** This commit should be backported to stable kernel trees. Here's
-my detailed analysis: ## Security Fix Classification This commit
-addresses a **security vulnerability** by adding bounds checking to
-prevent out-of-bounds reads and writes in EEPROM/OTP operations for
-PCI1xxxx devices. The commit explicitly states "Also prevent out-of-
-bound read/write" in the commit message, making this a clear security
-fix. ## Code Analysis Details The commit adds critical bounds checking
-in four functions: 1. **`lan743x_hs_otp_read()`** - Adds `if (offset +
-length > MAX_HS_OTP_SIZE) return -EINVAL;` 2.
-**`lan743x_hs_otp_write()`** - Adds `if (offset + length >
-MAX_HS_OTP_SIZE) return -EINVAL;` 3. **`lan743x_hs_eeprom_read()`** -
-Adds `if (offset + length > MAX_HS_EEPROM_SIZE) return -EINVAL;` 4.
-**`lan743x_hs_eeprom_write()`** - Adds `if (offset + length >
-MAX_HS_EEPROM_SIZE) return -EINVAL;` The new size limits are: -
-`MAX_HS_OTP_SIZE = 8 linux 1024` (8KB) - `MAX_HS_EEPROM_SIZE = 64 linux
-1024` (64KB) ## Vulnerability Impact Without these bounds checks, the
-functions could perform out-of-bounds memory operations when: - User-
-space provides large `offset` or `length` values via ethtool EEPROM/OTP
-access - The hardware access operations could read/write beyond the
-intended EEPROM/OTP memory regions - This could potentially lead to
-memory corruption or information disclosure ## Context from Kernel Tree
-Analysis The kernel tree analysis confirms that: - The original LAN743x
-functions already had proper bounds checking - The newer Hearthstone
-PCI1xxxx variants lacked these critical safety checks - This creates an
-inconsistency where newer hardware had weaker security protections - The
-commit message explicitly mentions preventing "out-of-bound read/write"
-## Backport Suitability Criteria ✅ **Fixes important security
-vulnerability**: Prevents out-of-bounds memory access ✅ **Small and
-contained change**: Only adds 4 simple bounds checks, minimal code
-change ✅ **Low regression risk**: Simple validation logic that only
-rejects invalid inputs ✅ **Clear side effects**: Only affects invalid
-operations that should fail anyway ✅ **No architectural changes**:
-Maintains existing function interfaces and behavior ✅ **Affects critical
-subsystem**: Network driver EEPROM/OTP access with potential security
-implications ## Comparison with Similar Commits The similar commits
-shown all have "Backport Status: NO" but they are primarily feature
-additions (new EEPROM support, SGMII support, performance improvements).
-This commit is fundamentally different as it's a **security fix**
-addressing missing bounds validation, not a new feature. ## Conclusion
-This commit represents a textbook example of a stable tree backport
-candidate: it's a small, targeted security fix that prevents out-of-
-bounds memory access with minimal code changes and negligible regression
-risk. The absence of bounds checking in the Hearthstone variants while
-present in the original LAN743x functions suggests this was an oversight
-that needs correction across all supported kernel versions.
+my detailed analysis: ## Security Justification The commit addresses a
+clear security vulnerability by replacing `kfree()` with
+`kfree_sensitive()` for the `tipc_aead` structure in `tipc_aead_free()`.
+This is a critical security improvement because: 1. **Sensitive Data
+Content**: The `tipc_aead` structure contains highly sensitive
+cryptographic information: - `salt` field: Cryptographic salt used in
+key derivation - `key` pointer: References actual cryptographic key
+material - `hint` field: Contains key identification information 2.
+**Memory Security Risk**: Using regular `kfree()` leaves sensitive
+cryptographic data in freed memory, creating a potential information
+leakage vector where: - Attackers could potentially recover salt values
+and key hints from freed memory - Subsequent memory allocations might
+access residual cryptographic data - This violates cryptographic
+security best practices ## Code Change Analysis The specific change from
+`kfree(aead)` to `kfree_sensitive(aead)` on line 428 of
+`net/tipc/crypto.c` is: ```c - kfree(aead); + kfree_sensitive(aead); ```
+This change is: - **Minimal and contained**: Single line change with no
+functional impact - **Low risk**: `kfree_sensitive()` performs the same
+deallocation as `kfree()` but adds explicit memory zeroing -
+**Consistent**: The same file already uses `kfree_sensitive(aead->key)`
+on line 427, showing this practice is established ## Alignment with
+Similar Commits This commit closely parallels the "YES" backport
+examples: 1. **Similar Commit #1**: Used `aead_request_free()` instead
+of `kfree()` for proper crypto data handling 2. **Similar Commit #2**:
+Applied `kfree_sensitive()` to crypto buffers containing key material 3.
+**Similar Commit #5**: Fixed TIPC crypto security issue (preemption
+problem) The pattern of replacing standard memory deallocation with
+secure alternatives for cryptographic structures is well-established and
+consistently approved for backporting. ## Stable Tree Criteria
+Compliance This commit meets all stable tree requirements: - **Important
+bugfix**: Fixes potential cryptographic information leakage - **Minimal
+risk**: Single line change with no behavioral modifications - **No
+architectural changes**: Uses existing kernel API - **Contained scope**:
+Limited to TIPC crypto subsystem cleanup ## Security Impact Given TIPC's
+history of security vulnerabilities (including heap overflows and use-
+after-free issues), this defensive security measure is particularly
+valuable for preventing information disclosure attacks targeting
+cryptographic material. The commit represents a clear security hardening
+improvement with negligible risk, making it an excellent candidate for
+stable kernel backporting.
 
- .../net/ethernet/microchip/lan743x_ethtool.c   | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ net/tipc/crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
-index 72b3092d35f71..39a58c3578a02 100644
---- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
-+++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
-@@ -18,6 +18,8 @@
- #define EEPROM_MAC_OFFSET		    (0x01)
- #define MAX_EEPROM_SIZE			    (512)
- #define MAX_OTP_SIZE			    (1024)
-+#define MAX_HS_OTP_SIZE			    (8 * 1024)
-+#define MAX_HS_EEPROM_SIZE		    (64 * 1024)
- #define OTP_INDICATOR_1			    (0xF3)
- #define OTP_INDICATOR_2			    (0xF7)
- 
-@@ -272,6 +274,9 @@ static int lan743x_hs_otp_read(struct lan743x_adapter *adapter, u32 offset,
- 	int ret;
- 	int i;
- 
-+	if (offset + length > MAX_HS_OTP_SIZE)
-+		return -EINVAL;
-+
- 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
- 	if (ret < 0)
- 		return ret;
-@@ -320,6 +325,9 @@ static int lan743x_hs_otp_write(struct lan743x_adapter *adapter, u32 offset,
- 	int ret;
- 	int i;
- 
-+	if (offset + length > MAX_HS_OTP_SIZE)
-+		return -EINVAL;
-+
- 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
- 	if (ret < 0)
- 		return ret;
-@@ -497,6 +505,9 @@ static int lan743x_hs_eeprom_read(struct lan743x_adapter *adapter,
- 	u32 val;
- 	int i;
- 
-+	if (offset + length > MAX_HS_EEPROM_SIZE)
-+		return -EINVAL;
-+
- 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
- 	if (retval < 0)
- 		return retval;
-@@ -539,6 +550,9 @@ static int lan743x_hs_eeprom_write(struct lan743x_adapter *adapter,
- 	u32 val;
- 	int i;
- 
-+	if (offset + length > MAX_HS_EEPROM_SIZE)
-+		return -EINVAL;
-+
- 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
- 	if (retval < 0)
- 		return retval;
-@@ -604,9 +618,9 @@ static int lan743x_ethtool_get_eeprom_len(struct net_device *netdev)
- 	struct lan743x_adapter *adapter = netdev_priv(netdev);
- 
- 	if (adapter->flags & LAN743X_ADAPTER_FLAG_OTP)
--		return MAX_OTP_SIZE;
-+		return adapter->is_pci11x1x ? MAX_HS_OTP_SIZE : MAX_OTP_SIZE;
- 
--	return MAX_EEPROM_SIZE;
-+	return adapter->is_pci11x1x ? MAX_HS_EEPROM_SIZE : MAX_EEPROM_SIZE;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index c524421ec6525..904f1cbe8e7b0 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -425,7 +425,7 @@ static void tipc_aead_free(struct rcu_head *rp)
+ 	}
+ 	free_percpu(aead->tfm_entry);
+ 	kfree_sensitive(aead->key);
+-	kfree(aead);
++	kfree_sensitive(aead);
  }
  
- static int lan743x_ethtool_get_eeprom(struct net_device *netdev,
+ static int tipc_aead_users(struct tipc_aead __rcu *aead)
 -- 
 2.39.5
 
