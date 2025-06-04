@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-150833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-150835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7067CACD19A
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 02:58:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C495ACD188
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 02:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE71B189B048
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 00:56:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41C98177386
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 00:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE0F70838;
-	Wed,  4 Jun 2025 00:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F8F1993B9;
+	Wed,  4 Jun 2025 00:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+fl/g+O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYAItiex"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9768554769;
-	Wed,  4 Jun 2025 00:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4484192D6B;
+	Wed,  4 Jun 2025 00:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748998397; cv=none; b=i9kXla6TnIgB7kbu9QrcWdrd6sowSrRBgMuJ8LEPjeiKoYqaM828NYTERplHe8niZ1fIGalxv9Omhl1NGLC2pPRlXKDPsoWq27TfT0ID/gIaVp7rKcqqu0cbus+yjX/TnOlQmPuqvRj6GsLm7yL8a7WaLZ/bKMw+9X7ufVKUF7I=
+	t=1748998400; cv=none; b=CQXflf63vR+RihwTB3ZVeWTYjVft9kMhR/C1zr4noqqrG3Zc/5xxT79hu0fpLIY7nCpFn7MauV1MzomnB0ZBOLFob6Zz61rSfh7qR045A0udp44NMr17u8hXX/9diN/wCpMBc9yKIXls6VhCoAHZrhNYMzRZn8WzZF4/EgbaT+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748998397; c=relaxed/simple;
-	bh=axkEuClrDEyDL+B3BjOzjzBjrVkp3Y8nU8mEnJirXmU=;
+	s=arc-20240116; t=1748998400; c=relaxed/simple;
+	bh=kNrTHjvKm2VWJs6SvCLmvxpTeN4B9WR3gAIli9ok2gc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H+ShlDs6JOq/QdYUF/O000O5PWxt+QY7AsC6+n1TIUFn/j8XN5mpQiRYsLLR29mLB/SEvCBaYxQok8i6tYxAEP/bU+eIMAX2q0C9h54X13qwMTh3XLs/fJc89STYqMRGfWs5PU+YzZMpBv6xc5h4UjJ/ShYN4SOPPpcWbGYS8ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+fl/g+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CC0C4CEEF;
-	Wed,  4 Jun 2025 00:53:16 +0000 (UTC)
+	 MIME-Version; b=peYwou0RhOcrLnDJTv0IHgfhAZJ2PPoI6MbLCPjPhsmMu89ArfKmuOSTGG09OXrUJyEe6epZtQ3/jykLtp32HKdRq9ZD+5fHZi5iS4GMWPYIM9D4SjliOoJHD02TjYHY8nRYR2cGMuhz2jldQI9eu1QHa37cCQNOfTrSaCs7YQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYAItiex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B87C4CEEF;
+	Wed,  4 Jun 2025 00:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748998397;
-	bh=axkEuClrDEyDL+B3BjOzjzBjrVkp3Y8nU8mEnJirXmU=;
+	s=k20201202; t=1748998400;
+	bh=kNrTHjvKm2VWJs6SvCLmvxpTeN4B9WR3gAIli9ok2gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+fl/g+OwSiSnp3HUOdQmPRFDVurc3lxZIu5yZIIuijqWWRJNdJaE7SJbuvMToNNO
-	 n5Xdst1dAwZv52ZoLkiYhHcxRGwrvbZDzgzg24E21hTEnO/qf2mP7nHrVvzqlNBjH5
-	 qfOg2pnCp6FubLzEZ6sgO84KL0jXwRNBqiGlLHVOUVpNrLObpClmpyREhSb6df7scQ
-	 3tN79Hd6bBP5PmLQecRMIPJLcGPvOTaR307V7dgnaPRVnBoL6J47JlLQ9SjIFbUvwu
-	 dGU7dunyAYTZT8g/1cmML/y+kv0vDOtmLWmwXQh6RnNxtxjwIPaAmnToqPP6vmylR9
-	 yqGy4PFExUuBA==
+	b=PYAItiexPqGDqwK6VbIFS82BWKsS6Dt8uD3C/2mWci4/Wp5zMKZfvaRFfTBqK6oks
+	 VAFTUpsYLITb0JQ0hlS7lvU/YxibuYrUNiPpXVVm0ild6PSY0yLUxQk4p1hqJaWj6r
+	 okLhXIV/kCxj97OLDzHG/6Ua6FMZur9PItW57ho6ov6qbatR0I/9xgseMWTnveDEr9
+	 xRXaA3oF+xdn/QQbnd+JSp+Jcw4grsnzw3wlMsgWo0bv/lGCRoIT2vhjeIJtoQcE32
+	 eXB4HFaV8veTixG60pmskLrMeWixdKAWZ3m3hyTUdjMLCsW9np/mceXbHcMHrLN32v
+	 fk1HlT+PtW+Rg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Corey Minyard <corey@minyard.net>,
-	Corey Minyard <cminyard@mvista.com>,
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Haiyong Sun <sunhaiyong@loongson.cn>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>,
-	openipmi-developer@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.15 063/118] ipmi:ssif: Fix a shutdown race
-Date: Tue,  3 Jun 2025 20:49:54 -0400
-Message-Id: <20250604005049.4147522-63-sashal@kernel.org>
+	tglozar@redhat.com,
+	jstancek@redhat.com
+Subject: [PATCH AUTOSEL 6.15 064/118] rtla: Define __NR_sched_setattr for LoongArch
+Date: Tue,  3 Jun 2025 20:49:55 -0400
+Message-Id: <20250604005049.4147522-64-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604005049.4147522-1-sashal@kernel.org>
 References: <20250604005049.4147522-1-sashal@kernel.org>
@@ -65,97 +67,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.15
 Content-Transfer-Encoding: 8bit
 
-From: Corey Minyard <corey@minyard.net>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 6bd0eb6d759b9a22c5509ea04e19c2e8407ba418 ]
+[ Upstream commit 6a38c51a2557d4d50748818a858d507c250f3bee ]
 
-It was possible for the SSIF thread to stop and quit before the
-kthread_stop() call because ssif->stopping was set before the
-stop.  So only exit the SSIF thread is kthread_should_stop()
-returns true.
+When executing "make -C tools/tracing/rtla" on LoongArch, there exists
+the following error:
 
-There is no need to wake the thread, as the wait will be interrupted
-by kthread_stop().
+  src/utils.c:237:24: error: '__NR_sched_setattr' undeclared
 
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
+Just define __NR_sched_setattr for LoongArch if not exist.
+
+Link: https://lore.kernel.org/20250422074917.25771-1-yangtiezhu@loongson.cn
+Reported-by: Haiyong Sun <sunhaiyong@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-Based on my analysis of the commit and the current kernel code, here's
-my assessment: **YES** This commit should be backported to stable kernel
-trees. ## Detailed Analysis: ### Nature of the Bug Fix: The commit fixes
-a **race condition during shutdown** in the IPMI SSIF driver. This is a
-critical synchronization bug that can lead to system instability during
-driver cleanup. ### Specific Race Condition: Looking at the code
-changes, the race occurs between: 1. **Thread termination logic**: In
-`ipmi_ssif_thread()` at line 484, there was a check for
-`ssif_info->stopping` that would break out of the thread loop 2.
-**Shutdown sequence**: In `shutdown_ssif()` at line 1270,
-`ssif_info->stopping` is set to `true`, followed by
-`complete(&ssif_info->wake_thread)` and then `kthread_stop()` ### The
-Race Window: The problematic sequence was: 1. `shutdown_ssif()` sets
-`ssif_info->stopping = true` (line 1270) 2. `shutdown_ssif()` calls
-`complete(&ssif_info->wake_thread)` (line 1274) 3. The thread wakes up,
-sees `stopping = true`, and exits the loop (line 484-485) 4. The thread
-function returns and the thread terminates 5. `shutdown_ssif()` calls
-`kthread_stop()` (line 1275) on an already-dead thread ### The Fix: The
-commit removes the `ssif_info->stopping` check from the thread loop
-(lines 484-485 removed) and the unnecessary
-`complete(&ssif_info->wake_thread)` call from shutdown (line 1274
-removed). Now: 1. The thread **only** exits when `kthread_should_stop()`
-returns true (line 478) 2. `kthread_stop()` will properly signal the
-thread to stop and wait for it 3. The
-`wait_for_completion_interruptible()` call will be interrupted by
-`kthread_stop()` ### Why This Should Be Backported: 1. **Critical Bug**:
-Race conditions during shutdown can lead to kernel crashes, memory
-corruption, or system hangs during reboot/module unload 2. **Minimal
-Risk**: The changes are very small and surgical: - Removes 2 lines from
-thread logic - Removes 1 line from shutdown logic - No new functionality
-introduced - No architectural changes 3. **Follows Stable Tree
-Criteria**: - Important bugfix (race condition) - Small, contained
-change - Low regression risk - Affects critical kernel subsystem (IPMI)
-4. **Similar Pattern**: Looking at the historical commits, commit #4
-("Remove rtc_us_timer") and commit #5 ("Rename idle state and check")
-both had `Cc: stable@vger.kernel.org` tags and were marked as
-backportable, showing this maintainer's pattern of marking important
-SSIF fixes for stable backporting 5. **Production Impact**: IPMI is
-commonly used in server environments where system stability during
-shutdown/reboot is critical 6. **Clean Fix**: The fix aligns with proper
-kernel thread management practices - relying on the standard
-`kthread_should_stop()` mechanism rather than custom stopping flags The
-commit addresses a real concurrency bug with a clean, minimal fix that
-follows kernel best practices for thread management. The risk of
-regression is extremely low while the benefit of preventing shutdown
-races is significant.
+Based on my analysis of the commit and examination of the kernel source
+tree, here is my assessment: **YES** This commit should be backported to
+stable kernel trees for the following reasons: **1. Build Fix for
+Supported Architecture**: This commit fixes a compilation error on
+LoongArch architecture where `__NR_sched_setattr` is undeclared. The
+error message shows: ``` src/utils.c:237:24: error: '__NR_sched_setattr'
+undeclared ``` **2. Minimal and Safe Change**: The change adds just two
+lines to define the syscall number for LoongArch: ```c # elif
+__loongarch__ # define __NR_sched_setattr 274 ``` **3. Follows
+Established Pattern**: From examining
+`/home/sasha/linux/include/uapi/asm-generic/unistd.h`, I confirmed that
+`__NR_sched_setattr` is indeed syscall number 274 in the generic syscall
+table. LoongArch uses the generic syscall ABI (as evidenced by
+`/home/sasha/linux/tools/arch/loongarch/include/uapi/asm/unistd.h`
+including `asm-generic/unistd.h`), so using 274 is correct and
+consistent. **4. Consistency with Similar Commits**: Looking at the
+historical commits provided: - Similar Commit #5 (Status: NO) added
+RISC-V support with the same syscall number 274 - Similar Commit #3
+(Status: YES) was a build fix that removed unused functions - Similar
+Commit #2 (Status: YES) fixed compilation issues with glibc The pattern
+shows that build fixes for architecture support are typically backported
+when they're minimal and safe. **5. Essential Functionality**: The rtla
+tool is a real-time latency analysis tool that requires scheduler
+attribute syscalls to function properly. Without this fix, the tool
+cannot be built on LoongArch systems, making it completely unusable on
+that architecture. **6. No Risk of Regression**: This change only
+affects LoongArch builds and follows the exact same pattern used for
+other architectures. It defines a constant that prevents compilation
+failure without changing any runtime behavior. **7. Stable Tree Criteria
+Met**: - Fixes an important build issue affecting users - Change is
+minimal and contained - No architectural changes or new features -
+Extremely low risk of regression - Follows established patterns The
+commit perfectly fits the stable tree criteria for important bugfixes
+with minimal risk.
 
- drivers/char/ipmi/ipmi_ssif.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tools/tracing/rtla/src/utils.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index 0b45b07dec22c..5bf038e620c75 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -481,8 +481,6 @@ static int ipmi_ssif_thread(void *data)
- 		/* Wait for something to do */
- 		result = wait_for_completion_interruptible(
- 						&ssif_info->wake_thread);
--		if (ssif_info->stopping)
--			break;
- 		if (result == -ERESTARTSYS)
- 			continue;
- 		init_completion(&ssif_info->wake_thread);
-@@ -1270,10 +1268,8 @@ static void shutdown_ssif(void *send_info)
- 	ssif_info->stopping = true;
- 	timer_delete_sync(&ssif_info->watch_timer);
- 	timer_delete_sync(&ssif_info->retry_timer);
--	if (ssif_info->thread) {
--		complete(&ssif_info->wake_thread);
-+	if (ssif_info->thread)
- 		kthread_stop(ssif_info->thread);
--	}
- }
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index 4995d35cf3ec6..d6ab15dcb4907 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -227,6 +227,8 @@ long parse_ns_duration(char *val)
+ #  define __NR_sched_setattr	355
+ # elif __s390x__
+ #  define __NR_sched_setattr	345
++# elif __loongarch__
++#  define __NR_sched_setattr	274
+ # endif
+ #endif
  
- static void ssif_remove(struct i2c_client *client)
 -- 
 2.39.5
 
