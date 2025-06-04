@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-151172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0B2ACD3F5
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 03:24:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C32ACD471
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 03:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988D4162DC3
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 01:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86929188EED8
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 01:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4234F78F5E;
-	Wed,  4 Jun 2025 01:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B4526C3B0;
+	Wed,  4 Jun 2025 01:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqrAhTRU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pqq03vnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13B626C395;
-	Wed,  4 Jun 2025 01:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEB11A29A;
+	Wed,  4 Jun 2025 01:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748999082; cv=none; b=SHpjAvOphVAAu6nXZ7VZVg2KvIXMg0b12/NrfRpOg/224Pxwa6MgJuivax+cuLVney3lk8xw8JmUwlH9Lfj2t3DE+oBNkywGhZyJf4tNQwrPpdZpscFS1hltVJVm6OHyvjVb8lnNQKac/9hsPzyKBKmyc7EhTydLLAOAOQvnyVM=
+	t=1748999086; cv=none; b=aTxY6C7XTTdDOcQS8OutSF+Wu7OcrThP5qh7juYtZTEhMmBAha201HnF/oDQ72i5sk/3OpvJAXvaGfs05zA7T/B8YEBQQQvNaeIRCuXHu7i058p2yM5HOD71RlwjDBqN+Cc8qNV3ft0TB0/pugUw2C42YQJpgu6Pga8LaS+B4bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748999082; c=relaxed/simple;
-	bh=td/7Dh3mqOOw2DiHz1CbL1MM7D/Far5x9qQf9hWkOxk=;
+	s=arc-20240116; t=1748999086; c=relaxed/simple;
+	bh=MufHod0A/BdviTTzQlbdv34CCtmNQk+UQzrnAhhW2fs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KREjHYwcEUP7XznFIFjloL7vf09zMlDp3VXaFpXs1Ldkg/oIFkJ5S1ljd/F/XzXW2pifz0fN5juzjhi21EZDkRemN9LlggZGS7CDLY9XB3nAt4ItREC/yKnWX6fc3bBNEcoKEiEPtCz4sVc8J6Ox6JY2zjkBCrW1AWx780pAfD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqrAhTRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F049DC4CEED;
-	Wed,  4 Jun 2025 01:04:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OaAobS3cw5W0fUQK5gA3Bor4vhWqLSnDXoRDwaBQZi2MzuevGbOYzbVF5fwvRnurJx8F2xM/qVWX8cndEtAeFou81wsKW6ldoM4SQuHjaR7l9s6OKAji/QjYlBvJi4dZxA5+0541yDrHftKQ4Fjr1viDMb6mM1zgznR4P9C8IqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pqq03vnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFB5C4CEED;
+	Wed,  4 Jun 2025 01:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748999081;
-	bh=td/7Dh3mqOOw2DiHz1CbL1MM7D/Far5x9qQf9hWkOxk=;
+	s=k20201202; t=1748999083;
+	bh=MufHod0A/BdviTTzQlbdv34CCtmNQk+UQzrnAhhW2fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqrAhTRUicZGSKA8cInYXnSXLXd5jCYt8KuKO4oXAt+XDUOedbXQIRk+Ewt3p+x2K
-	 ak+miFifUoCXVKVGecxkFRO0vqnDbypccETnDZ9LcS+LzFLLj1lJr+8FngrkZUfKfp
-	 ZmJNrUEHQ1bf1oxfUzGhEQ7kLMRtjYO+4LN3RVFt5xaegaxyTPGpxNW5RA3pHV/4dq
-	 zcWFoSi4pScKMPWE28Ph2ZJNY8H9R2Q8sc+ZbangTADJ/NBmY2vBi6Xvq0/xaXWLYS
-	 JgEkbw0ovHo8itzsmR88Q4FeF25FV/Y0gwvRexlKiMZytgzlDmy59iVw6CsfI9mvJJ
-	 G8sVhaDq38LgQ==
+	b=Pqq03vnIL+eE11SJCKkhCvsEeObSP79n91M/rPKTlyRxuG92FWbgB+K9fEfWsT5O6
+	 FStAkem9YhWGqAfiC9xnRStwHn4oRT8351Gm8Xifg0r/r9QnlWhvmURLZZQQxOCYTQ
+	 /Zczf3fTt2wcckTI2sozIK0WJ9bQdVWUaNdGPzBK3qXLcB2lDlg6lnssJcV8ZL+nf7
+	 QEeeEEnQmPpqcFuMKRq69DprCIU5KgCLJQlCsnWerpaUsbRvSgk7wnmrUa4IXPiNQ7
+	 OWv+9zjrgZsRmNb1Dben7rkGvxnU4WQ8oqoOBg5EAXAtOebbz9npI+QmR09cp/SQfs
+	 S0UqecSjopgdg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jason Xing <kernelxing@tencent.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	irusskikh@marvell.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 20/46] net: atlantic: generate software timestamp just before the doorbell
-Date: Tue,  3 Jun 2025 21:03:38 -0400
-Message-Id: <20250604010404.5109-20-sashal@kernel.org>
+	gregory.clement@bootlin.com,
+	sebastian.hesselbarth@gmail.com,
+	brgl@bgdev.pl,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 21/46] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
+Date: Tue,  3 Jun 2025 21:03:39 -0400
+Message-Id: <20250604010404.5109-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250604010404.5109-1-sashal@kernel.org>
 References: <20250604010404.5109-1-sashal@kernel.org>
@@ -67,104 +72,78 @@ X-stable-base: Linux 6.1.140
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 285ad7477559b6b5ceed10ba7ecfed9d17c0e7c6 ]
+[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
 
-Make sure the call of skb_tx_timestamp is as close as possible to the
-doorbell.
+The regmap_update_bits() function can fail, so propagate its error
+up to the stack instead of silently ignoring that.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Link: https://patch.msgid.link/20250510134812.48199-2-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees. Here's
-my comprehensive analysis: ## Primary Analysis **This is a timestamp
-accuracy fix that addresses when software timestamps are recorded
-relative to hardware transmission**. The commit moves
-`skb_tx_timestamp(skb)` from before the hardware doorbell to immediately
-after it, ensuring timestamps are recorded as close as possible to
-actual packet transmission. ## Code Change Analysis ### What Changed 1.
-**In `aq_main.c`**: Removed `skb_tx_timestamp(skb)` from the main
-transmission path 2. **In `aq_nic.c`**: Added `skb_tx_timestamp(skb)` in
-`aq_nic_xmit()` right after `aq_nic_map_skb()` but before the hardware
-doorbell via `hw_ring_tx_xmit()` ### Critical Timing Issue Fixed The
-original sequence was: ```c // BEFORE (problematic):
-skb_tx_timestamp(skb); // Timestamp recorded before hardware
-notification return aq_nic_xmit(aq_nic, skb); └─ frags =
-aq_nic_map_skb(self, skb, ring); └─ hw_ring_tx_xmit() // Hardware
-doorbell rung HERE ``` The fixed sequence is: ```c // AFTER (correct):
-return aq_nic_xmit(aq_nic, skb); └─ frags = aq_nic_map_skb(self, skb,
-ring); └─ skb_tx_timestamp(skb); // Timestamp recorded right before
-hardware doorbell └─ hw_ring_tx_xmit() // Hardware doorbell rung
-immediately after ``` ## Backporting Assessment ### 1. **Fixes Important
-Timing Bug** ✅ - **Software timestamp accuracy** is critical for network
-applications, especially PTP (Precision Time Protocol) - **Wrong
-timestamp ordering** can cause timing skew and affect time-sensitive
-applications - **Low-latency networking** applications depend on
-accurate TX timestamps ### 2. **Minimal Risk** ✅ - **Small, contained
-change**: Only moves one function call - **No behavioral changes**: Same
-timestamp function, just better timing - **No architectural
-modifications**: Same code path, different ordering - **No new
-dependencies**: Uses existing functionality ### 3. **Clear Bug Fix** ✅ -
-**Specific problem**: Timestamps recorded too early in TX pipeline -
-**Well-defined solution**: Move timestamp closer to hardware
-transmission - **Matches stable criteria**: Important bugfix with
-minimal regression risk ### 4. **Comparison with Similar Commits** This
-commit is **nearly identical** to Similar Commit #1 (marked YES for
-backporting): - **Subject: "nfp: TX time stamp packets before HW
-doorbell is rung"** - **Same exact issue**: Moving timestamp call to be
-closer to hardware doorbell - **Same pattern**: `skb_tx_timestamp(skb)`
-moved from after to before hardware notification - **Same stable tree
-acceptance**: The NFP driver fix was accepted The only differences are:
-- Different driver (atlantic vs nfp) - Same underlying network timing
-issue - Same solution approach ### 5. **User Impact** ✅ - **Affects all
-atlantic driver users** who rely on software timestamps - **Time-
-sensitive applications** like PTP, trading systems, and real-time
-monitoring - **Improves timestamp precision** without breaking existing
-functionality ### 6. **Stable Tree Compatibility** ✅ - **No API
-changes**: Uses standard `skb_tx_timestamp()` function - **No kernel
-version dependencies**: Should work across stable versions - **Self-
-contained**: Limited to atlantic driver code ## Conclusion This commit
-meets all stable backporting criteria: - **Fixes important timestamp
-accuracy bug** - **Minimal regression risk** - **Clear, contained
-solution** - **Matches proven pattern** from Similar Commit #1 (NFP
-driver fix) - **Benefits time-sensitive network applications** The fix
-ensures software timestamps are recorded as close as possible to when
-hardware actually starts transmitting packets, which is crucial for
-applications requiring precise timing information.
+Based on my analysis of the commit and the code context, here's my
+assessment: **YES** This commit should be backported to stable kernel
+trees. Here's my extensive analysis: ## Code Analysis The commit changes
+`armada_37xx_pmx_set_by_name()` function from: ```c
+regmap_update_bits(info->regmap, reg, mask, val); return 0; ``` To: ```c
+return regmap_update_bits(info->regmap, reg, mask, val); ``` ## Why This
+Should Be Backported 1. **Bug Fix Nature**: This is a clear bug fix that
+addresses silent error handling. The `regmap_update_bits()` function
+returns an integer error code (0 on success, negative on failure), but
+the original code was ignoring this return value and always returning
+success (0). 2. **Error Propagation Impact**: The function
+`armada_37xx_pmx_set_by_name()` is called from: -
+`armada_37xx_pmx_set()` - the main pinmux set function -
+`armada_37xx_gpio_request_enable()` - GPIO request handler that already
+checks return values 3. **Consistency with Similar Fixes**: Looking at
+the historical commits provided: - **Similar Commit #2** (Backport
+Status: YES) shows the exact same pattern where
+`armada_37xx_gpio_request_enable()` was updated to check return values
+from `armada_37xx_pmx_set_by_name()` - This current commit completes
+that fix by ensuring the function actually returns errors when they
+occur 4. **Critical Subsystem**: This affects the pinctrl subsystem
+which is fundamental to GPIO and pin configuration. Silent failures in
+pin configuration can lead to: - Hardware not being configured correctly
+- GPIO requests appearing to succeed when they actually failed -
+Difficult-to-debug hardware issues 5. **Minimal Risk**: The change is
+extremely small and contained: - No new functionality added - No
+architectural changes - Simple error propagation fix - Maintains
+existing API contract 6. **Stable Tree Criteria Compliance**: - ✅ Fixes
+an important bug affecting users - ✅ Small, contained change - ✅ No new
+features - ✅ Minimal regression risk - ✅ Affects critical kernel
+subsystem 7. **Real-World Impact**: Without this fix, regmap failures
+(which can occur due to hardware issues, power management problems, or
+I2C/SPI communication errors) would be silently ignored, leading to
+unpredictable system behavior where pin configurations appear successful
+but are actually failed. The commit follows the pattern established in
+the historical commit #2 which was marked for backporting, and
+represents the completion of proper error handling in this driver's
+critical path.
 
- drivers/net/ethernet/aquantia/atlantic/aq_main.c | 1 -
- drivers/net/ethernet/aquantia/atlantic/aq_nic.c  | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
-index 77609dc0a08d6..9d877f436e335 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
-@@ -122,7 +122,6 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	}
- #endif
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index 261b46841b9f6..df0683bd663b5 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -360,9 +360,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
  
--	skb_tx_timestamp(skb);
- 	return aq_nic_xmit(aq_nic, skb);
+ 	val = grp->val[func];
+ 
+-	regmap_update_bits(info->regmap, reg, mask, val);
+-
+-	return 0;
++	return regmap_update_bits(info->regmap, reg, mask, val);
  }
  
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-index a467c8f91020b..3bfd9027cccac 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-@@ -893,6 +893,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
- 
- 	frags = aq_nic_map_skb(self, skb, ring);
- 
-+	skb_tx_timestamp(skb);
-+
- 	if (likely(frags)) {
- 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
- 						       ring, frags);
+ static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
 -- 
 2.39.5
 
