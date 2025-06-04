@@ -1,145 +1,99 @@
-Return-Path: <stable+bounces-151466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68FA3ACE5B4
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:19:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257B7ACE5B6
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07221898000
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:20:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0DF83A9700
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354981A08BC;
-	Wed,  4 Jun 2025 20:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C46D1940A1;
+	Wed,  4 Jun 2025 20:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NQftJ4EJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m3xIbnmN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A6A139B
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C1F3C463
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749068389; cv=none; b=ZJmQoIIajXmIhnh/wYU5gN7wbQhsOD5usOEHxABzt31Cl314P2ybeY3sJyU0PHpEpY3ufs6y+HnNFuuliRaTIBfk8mO6dyrU8a70tgtE30VAypmYgOptKNEFW5y3wyA+nl1PzNwSkwID+aO37acSoLZUNuJSa+GRCkl5ZaaD+7s=
+	t=1749068433; cv=none; b=Kfp8I6PjuFc7afUM1ankouAOIq6YuzZjPmx/0HUahiqbEPDRL/b2PIxMMx3x8jlGgd1ZdaWBTzSwmDjeunGLmRuKz3KvI3jzQROeUkz5ElRDdAPTNSTbugr+XO6eI67x/ZwZE5d8XFf9dykY0UXIGBoh1HomlpHw9Dfyk0gEwR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749068389; c=relaxed/simple;
-	bh=tAtxHC7qZ7jeSHnLePLhJjlc91XZnhHCHLoD7E41dog=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MEzw8fHYasEb1MY9z1tLzgOH6/usgjxjqK1LNzIFgG9+31YDUmXBmEaAHCZeCc27A2ka3pwQsmlEdGEh9Scx2+AXOGOF9c7IGiflNYo4CZ5Y9K6ebj+B6BifBBEPOLNdcuDaheHhkiuiDewY5us2NTgw5Sdiu5sC7/mBJQejYrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NQftJ4EJ; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-747a9ef52a4so333788b3a.2
-        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 13:19:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749068387; x=1749673187; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=P60/9rRjl/n0+ugli5ZClLozb1vi4680ihN8tmN7rvc=;
-        b=NQftJ4EJXW8gN0pBerUozWf0IY8cQz5R82SDidbzZ6oNaVd7dETyoutiatgX69YJgx
-         fxUVmdGQvqpFhq0CkhXSSJap3sQD3TDpC1oQqU7jcV/Tj8luS3KLyEZ71MgxPVFaT0Ir
-         0R1ZUOc7SmP/9l8gDkP9KK7z2/ygwmJ+LK9UYgenZwzYsHdT031Um+LDgLd/huuAWgXK
-         UiXy2AmrKFkuRBH/czEKzNo05+iSSiAbL7CufWQRoEeQ+5b6NSA59QK9Kzs5DP5m7919
-         HMsVVkcbAwvPfgvub0r4/wmCUXV1qdr08MEfYbCcHwNsNH74lNVJUczero4T3kkPBXYY
-         iOJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749068387; x=1749673187;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P60/9rRjl/n0+ugli5ZClLozb1vi4680ihN8tmN7rvc=;
-        b=tkXU3kDgnTAuOCHM6o+TePX3NjOKPYaxEw2CyTOWLgb/3DcTsTuyHRwuoV0i4KASgO
-         CZ0U8q6HCa3k+zDAKnQF0srrnnQVa4LaeYlyLB2V7uY94kSRWTTIin2d3RWITMNiW/1D
-         H7aFqMMUgsfqLNln9gNjW3IlPvpIG4IS+yHTC2DTUXyD4IcBPsZ4UukXa5LYKb9HIpdW
-         Iq0qLaHT+Kl7jRR1/agPXrOk6b0334ssvvG60nt6QEkB4aUFbqt0ysSdLhhaYCwUglJl
-         aBPqKZ5xxPeCJUMBjXygOsx/vb/4ZaUEyopAcCpUPSMIKVygwUsB3ZIkF/EM9GaEeou7
-         eAoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+B396Qt4CwsItd2R49IzEdzD7RLPmWlBOdbHnOKylNP3p/hw95q8t4jyQlVbfbqwUIekSdVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpoAl+GZKJp0RzhzoItajQYUm8ujmE55LsCzzMtYapqNXBb8Ek
-	m/lc/G4Ba0mrqav4Hqp6ystpTJ6IaqB08hvrAs+QMoUiMCvgpmkkg8lQIc5bi2ccezvp0Hw7I6k
-	yOnHzM6hDR5huWaqHaK1IwNVUPg==
-X-Google-Smtp-Source: AGHT+IGwdJMuQrwY53X+i859MrqAreWMi6S6yxe7x3iwv7BiRCwF47VgcwDIpRVNYc5qyOGVVzWpTKTh2aB7BOoHMA==
-X-Received: from pfwp30.prod.google.com ([2002:a05:6a00:26de:b0:746:22b3:4c0d])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3c85:b0:736:5664:53f3 with SMTP id d2e1a72fcca58-7480b42473cmr5159660b3a.15.1749068386754;
- Wed, 04 Jun 2025 13:19:46 -0700 (PDT)
-Date: Wed,  4 Jun 2025 20:19:38 +0000
+	s=arc-20240116; t=1749068433; c=relaxed/simple;
+	bh=3h4Wo9IfcLVwLZx+6/628c/4ZC/VAYqy7o8Uurk1hiI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rflik8IMz3YV5dSq5KhYqipi4xpSF2J/gEbC1lG0BTIccOOJdFrQMUgNyJlWMBloLY/OzcoIokrUYgqmKLfAKhpFQ6AiT0WhGfZsSDxKvwSWQuCzNoYSPUh0tm82YiGqyM/81qc9InG5FDzYNDcvldut2Spsro56e3JkLWbABCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m3xIbnmN; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749068432; x=1780604432;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=3h4Wo9IfcLVwLZx+6/628c/4ZC/VAYqy7o8Uurk1hiI=;
+  b=m3xIbnmNlg/4CIoOuH0hekmiEBRnpEvL3OVepK//ZOuxSL5GI2FRckiE
+   gEFtVnegwc4uMGuoKz6Fx79CfYrKf43mBnmzE6/T5XhnmwxoyGrTleiz9
+   rkrSwiqZVpQyA2m3lBi2uXBr1N2HQxwTcRhZY3DlqSNqJCISHOw1xgvYr
+   BlHlOCEQS7hKYN4xrh0TdIzMr42ySLVx75Zh4bnV6OPO5vZ90wjkBN/7i
+   c7XLXpat5XKrqg7msbx7XshS/s6BPpyiZGdGNeZAUAgjiBJ4y+OCTUCSj
+   N9DVpY2nU5BBsg2+D9So6Czt+2S8nNxMDRsq6PEo6p3WIIjppVey3WHMq
+   g==;
+X-CSE-ConnectionGUID: rpHHek7yQt+TErh7aumS2w==
+X-CSE-MsgGUID: urGdnjyRT7uER5mY/hgiTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="73703218"
+X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; 
+   d="scan'208";a="73703218"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 13:20:31 -0700
+X-CSE-ConnectionGUID: QpaRov1hSKm7bHYxC+Xxuw==
+X-CSE-MsgGUID: 0FTgKk8KRNaBUQCku91N2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; 
+   d="scan'208";a="145331702"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 04 Jun 2025 13:20:30 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uMub6-0003RV-0W;
+	Wed, 04 Jun 2025 20:20:28 +0000
+Date: Thu, 5 Jun 2025 04:20:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net] gve: Fix stuck TX queue for DQ queue format
+Message-ID: <aECqi11CoMBbVAVx@acd742588394>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.1266.g31b7d2e469-goog
-Message-ID: <20250604201938.1409219-1-hramamurthy@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250604201938.1409219-1-hramamurthy@google.com>
+
+Hi,
+
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
 Subject: [PATCH net] gve: Fix stuck TX queue for DQ queue format
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, jeroendb@google.com, hramamurthy@google.com, 
-	andrew+netdev@lunn.ch, willemb@google.com, pkaligineedi@google.com, 
-	joshwash@google.com, thostet@google.com, jfraker@google.com, 
-	awogbemila@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Link: https://lore.kernel.org/stable/20250604201938.1409219-1-hramamurthy%40google.com
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
-
-gve_tx_timeout was calculating missed completions in a way that is only
-relevant in the GQ queue format. Additionally, it was attempting to
-disable device interrupts, which is not needed in either GQ or DQ queue
-formats.
-
-As a result, TX timeouts with the DQ queue format likely would have
-triggered early resets without kicking the queue at all.
-
-This patch drops the check for pending work altogether and always kicks
-the queue after validating the queue has not seen a TX timeout too
-recently.
-
-Fixes: 87a7f321bb6a ("gve: Recover from queue stall due to missed IRQ")
-Co-developed-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Tim Hostetler <thostet@google.com>
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
- drivers/net/ethernet/google/gve/gve_main.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index c3791cf..0c6328b 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1921,7 +1921,6 @@ static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
- 	struct gve_notify_block *block;
- 	struct gve_tx_ring *tx = NULL;
- 	struct gve_priv *priv;
--	u32 last_nic_done;
- 	u32 current_time;
- 	u32 ntfy_idx;
- 
-@@ -1941,17 +1940,10 @@ static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
- 	if (tx->last_kick_msec + MIN_TX_TIMEOUT_GAP > current_time)
- 		goto reset;
- 
--	/* Check to see if there are missed completions, which will allow us to
--	 * kick the queue.
--	 */
--	last_nic_done = gve_tx_load_event_counter(priv, tx);
--	if (last_nic_done - tx->done) {
--		netdev_info(dev, "Kicking queue %d", txqueue);
--		iowrite32be(GVE_IRQ_MASK, gve_irq_doorbell(priv, block));
--		napi_schedule(&block->napi);
--		tx->last_kick_msec = current_time;
--		goto out;
--	} // Else reset.
-+	netdev_info(dev, "Kicking queue %d", txqueue);
-+	napi_schedule(&block->napi);
-+	tx->last_kick_msec = current_time;
-+	goto out;
- 
- reset:
- 	gve_schedule_reset(priv);
 -- 
-2.49.0.805.g082f7c87e0-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
