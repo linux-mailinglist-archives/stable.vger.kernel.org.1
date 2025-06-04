@@ -1,175 +1,187 @@
-Return-Path: <stable+bounces-151422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF00ACE010
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:17:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CBBCACE02D
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3786B7A7266
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:16:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 201B43A70F2
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824A428F504;
-	Wed,  4 Jun 2025 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA4628F935;
+	Wed,  4 Jun 2025 14:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DO5iJMat"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="Q4ErSjeW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="D0j+LQ7c"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD3870810;
-	Wed,  4 Jun 2025 14:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C42426ACC;
+	Wed,  4 Jun 2025 14:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749046640; cv=none; b=GhecgNakvgXcuAwiWLWbo+Qw0Blp3VtayZyrPO+x5Xor09f48AM26KKeBnYge3U5pysk7P7IeiWzQKhvFsfSFzA0PaZdrwxOMt/MPQ0XYquGufAgm8uCSJ1G8lM1Hm5mYI9duqkqkSOxFVLMcQTZ06qGWjk/2dRI5cGA278lG1Q=
+	t=1749046943; cv=none; b=FB23tD793sTAGpyDAFhZY1bc+XVQlba5hBdbv8LA5LiLjFOXmMyk3wOWaf9Nu6iVUIxNTUpPZq03ANtuLhPsY5/0faidPS1oUyZ9d+FgZnKSKwXOb//bii4DuyDbHe7IJpRXJRYc9GC+Ga/YundbxMjmTd2L9vJK2uXdlJV7fhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749046640; c=relaxed/simple;
-	bh=N3zAS7KbRmxSSWpgx3DYsurs4M4ohLgCBpXoeWFUkw0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=udv7KiIuiohS5PjCDNv39iJGo4T+rSmXHlVwoIqDLMDwVjXVTe2aErOZx9DbjIN4lKFARHQSLpfYzWViV1Iu+cFJlqD8Jj33HcLXNHRnGrRggF1Jbtc3/Hubtr/pOOr3ps6Ud8pfLNl9IcMduc7NKTTE/EJ27N36iu2jdkBhdIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DO5iJMat; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749046638; x=1780582638;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=N3zAS7KbRmxSSWpgx3DYsurs4M4ohLgCBpXoeWFUkw0=;
-  b=DO5iJMatiaPgo0B+pKqysW/ezQSUbW/50nyWb6orpugLeqrvpCWYO348
-   EoXB5f2eqKw6WVfn+bHtqSi659XwvBHhVASD/TCxOEiXjrXPedgCJRkyd
-   M7seKPOm7rEk8nz6pGTocx6o7uGZyWUYdxcLEHbqFWaYSvixk8qGPBfTz
-   3fgI9vMnGN0aDt/53lYNrHDSboLw1xCV7bKYzmCBG6R1hXFbkJbLHlvq/
-   bEBzqRT4sK25M04lJkQYlKcxm3NVUbfkg7TYMOJCPXR/MWjf57rFAgLTl
-   1QO/FYXQdw7ePbSCzwpMUUWJ8ruaulP8Bj89fKkxK4MIbZ6iXK1y91MBc
-   Q==;
-X-CSE-ConnectionGUID: rWzHQ6hdT+uRNpUeFdz49g==
-X-CSE-MsgGUID: fqTOauj6QgOI6NVqdudaeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="62489080"
-X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
-   d="scan'208";a="62489080"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 07:17:17 -0700
-X-CSE-ConnectionGUID: zm8arlrJTxmzd+YMP9V39w==
-X-CSE-MsgGUID: 231SeiXeTnuDl2uDP9aoOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
-   d="scan'208";a="145169480"
-Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmviesa007.fm.intel.com with ESMTP; 04 Jun 2025 07:17:15 -0700
-Message-ID: <459184db-6fc6-453b-933d-299f827bdc55@linux.intel.com>
-Date: Wed, 4 Jun 2025 17:17:14 +0300
+	s=arc-20240116; t=1749046943; c=relaxed/simple;
+	bh=21q2Hgnh+ETCIq892NOXpcaeeVs0BPFo0vdeaSX1P5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OejlejE0E1el9O0MmAo2lihyxB1ImO/I6+ZUgFdSalsUDG1/6Tu8xFo9EweDbSk8eMNNoabmhKqeh8sf4zGtt9kmQfebkGbJ7OiDHCZAmsBWO+6OpedxxLsLllFTgCUnyNSzSJbCYsAe67EVmyT250AZDBOGbFkyTQfRKYOClKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=Q4ErSjeW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=D0j+LQ7c; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 417A21140237;
+	Wed,  4 Jun 2025 10:22:20 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 04 Jun 2025 10:22:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1749046940;
+	 x=1749133340; bh=l9qTL6VyDfkoyc94nfz6CdcDFNs7QiHmBUzDCEMHvgE=; b=
+	Q4ErSjeW4VOznKj0N+l3iczNlcBj+NXKv2ttSNWavCZIq8sDZ9aSXq6qnKzCuMsG
+	K5In3r//KTUnq7X3M4aNES5WcC+p1RdR16RNz8VHhbvFYGcxnnODJGsc6p/D7OCs
+	cky8j3l8OKDIkYrT4eiKkaYXYRWgm5/wOCGEYGA93nmrED45BFUKl+TeZIvmUHDx
+	4r22XvBct4APiCGsoXjbFtSN+xZfCOz5tnKcN0m6gR1NvPlilC1MqyXdYE9Uqp+4
+	ZfWkw0JiMdovs2aE4Mn3pQ3xKcQR8J63AhorWedPjEsZ/ZnX9qQMCOemxn1VyoUZ
+	UrOQ9TirfiFKwq0Z/x/elg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1749046940; x=1749133340; bh=l9qTL6VyDfkoyc94nfz6CdcDFNs7QiHmBUz
+	DCEMHvgE=; b=D0j+LQ7cOJA1nQG4pbbCqsU+8T60bcyhWBSItXL5xkQ2AScoRup
+	D6g4gDmau1B431JqpfNxV3xt57U4JDhFpjfZ+nhowCNxV4g4f/rJ+htSU9nXGg3o
+	74J+lhyCe1zhavHk5HjkbV2NtYsXrLddg1LY6oYfM0d5FzrpEgbNxLawWBpNF7B9
+	J2asq5O3u4rMDl4ayVWbUvR1Or1mSbYOuDfy403SsoLyDEwcaPtx3oUM/bWPZdeF
+	u+Glkou7WcVwQHq6SKjdRXVkE7ZXYEkq8mBzvqvbs6VEMAd94p393OhV+ckBkhne
+	fVinQQncbTo5iuwokYLteKc5APqImwNbZzg==
+X-ME-Sender: <xms:m1ZAaPw6UWuK9hpeyxebyC6A52423UjSdibmiQKlGTFVdUVfMejm0w>
+    <xme:m1ZAaHSh2tywL0-gFkcmuHcEBkbc70T-H7K4mJybqLp1XTy1rjeOh1Nve0O9AN7YL
+    u8P6zxXU0V6XA>
+X-ME-Received: <xmr:m1ZAaJVOddxB3gO064bczIBpuj1OQ_vGKB4MPRikzRCKr0eQhzkg0jpWVpOm4iHKKpNjmQ1bfcgDd0QY8H3VcaLdHBTph-YOq6k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtroertddtjeen
+    ucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomh
+    grrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggft
+    rfgrthhtvghrnheptdetvdfhkedutedvleffgeeutdektefhtefhfffhfeetgefhieegle
+    dvtddtkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
+    mhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdpnh
+    gspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhoghgv
+    rhdrphgruhestghithhrihigrdgtohhmpdhrtghpthhtohepjhhgrhhoshhssehsuhhsvg
+    drtghomhdprhgtphhtthhopeigvghnqdguvghvvghlsehlihhsthhsrdigvghnphhrohhj
+    vggtthdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehjrghsohhnrdgrnhgurhihuhhksegrmhgurdgt
+    ohhmpdhrtghpthhtohepjhifsehnuhgtlhgvrghrfhgrlhhlohhuthdrnhgvthdprhgtph
+    htthhopehsshhtrggsvghllhhinhhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopeho
+    lhgvkhhsrghnughrpghthihshhgthhgvnhhkohesvghprghmrdgtohhmpdhrtghpthhtoh
+    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:m1ZAaJi_yy7OaaEYivfAL-FTDb0mEe_8_itFv7hYF8TfdadF9Da2xQ>
+    <xmx:m1ZAaBDoRqc-amRoTlDHMh_luKJYVdJJq8m2ZY10fIqFT5830IZaLQ>
+    <xmx:m1ZAaCLLVT38noOg_E7NdYhKtNB50na0NfVage2tJKiaOL-_4fAA7Q>
+    <xmx:m1ZAaACb_WNon-eBBvWPrABlBSzf3x4PwdbrF_dWVL47s0fa_Ugsug>
+    <xmx:nFZAaP2ldpj4cJl3_ertUruqbAmMgG4SV2TvOG0W_agpxzhVp9iSGrxX>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Jun 2025 10:22:18 -0400 (EDT)
+Date: Wed, 4 Jun 2025 16:22:16 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Roger Pau Monne <roger.pau@citrix.com>
+Cc: Juergen Gross <jgross@suse.com>, xen-devel@lists.xenproject.org,
+	linux-kernel@vger.kernel.org, jason.andryuk@amd.com,
+	John <jw@nuclearfallout.net>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] xen/x86: fix initial memory balloon target
+Message-ID: <aEBWmAoDSaNpsrvQ@mail-itl>
+References: <20250514080427.28129-1-roger.pau@citrix.com>
+ <aCWtZNxfhazmmj_S@mail-itl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] usb: xhci: Skip xhci_reset in xhci_resume if xhci
- is being removed
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: "mathias.nyman@intel.com" <mathias.nyman@intel.com>,
- Roy Luo <royluo@google.com>,
- "quic_ugoswami@quicinc.com" <quic_ugoswami@quicinc.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "michal.pecio@gmail.com" <michal.pecio@gmail.com>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20250522190912.457583-1-royluo@google.com>
- <20250522190912.457583-2-royluo@google.com>
- <20250523230633.u46zpptaoob5jcdk@synopsys.com>
- <b982ff0e-1ae8-429d-aa11-c3e81a9c14e5@linux.intel.com>
- <20250529011745.xkssevnj2u44dxqm@synopsys.com>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20250529011745.xkssevnj2u44dxqm@synopsys.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="rjdcZPeLS3c+Qw6Y"
+Content-Disposition: inline
+In-Reply-To: <aCWtZNxfhazmmj_S@mail-itl>
 
-On 29.5.2025 4.17, Thinh Nguyen wrote:
-> On Mon, May 26, 2025, Mathias Nyman wrote:
->> On 24.5.2025 2.06, Thinh Nguyen wrote:
->>> Hi Mathias, Roy,
->>>
->>> On Thu, May 22, 2025, Roy Luo wrote:
->>>> xhci_reset() currently returns -ENODEV if XHCI_STATE_REMOVING is
->>>> set, without completing the xhci handshake, unless the reset completes
->>>> exceptionally quickly. This behavior causes a regression on Synopsys
->>>> DWC3 USB controllers with dual-role capabilities.
->>>>
->>>> Specifically, when a DWC3 controller exits host mode and removes xhci
->>>> while a reset is still in progress, and then attempts to configure its
->>>> hardware for device mode, the ongoing, incomplete reset leads to
->>>> critical register access issues. All register reads return zero, not
->>>> just within the xHCI register space (which might be expected during a
->>>> reset), but across the entire DWC3 IP block.
->>>>
->>>> This patch addresses the issue by preventing xhci_reset() from being
->>>> called in xhci_resume() and bailing out early in the reinit flow when
->>>> XHCI_STATE_REMOVING is set.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state() helper")
->>>> Suggested-by: Mathias Nyman <mathias.nyman@intel.com>
->>>> Signed-off-by: Roy Luo <royluo@google.com>
->>>> ---
->>>>    drivers/usb/host/xhci.c | 5 ++++-
->>>>    1 file changed, 4 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
->>>> index 90eb491267b5..244b12eafd95 100644
->>>> --- a/drivers/usb/host/xhci.c
->>>> +++ b/drivers/usb/host/xhci.c
->>>> @@ -1084,7 +1084,10 @@ int xhci_resume(struct xhci_hcd *xhci, bool power_lost, bool is_auto_resume)
->>>>    		xhci_dbg(xhci, "Stop HCD\n");
->>>>    		xhci_halt(xhci);
->>>>    		xhci_zero_64b_regs(xhci);
->>>> -		retval = xhci_reset(xhci, XHCI_RESET_LONG_USEC);
->>>> +		if (xhci->xhc_state & XHCI_STATE_REMOVING)
->>>> +			retval = -ENODEV;
->>>> +		else
->>>> +			retval = xhci_reset(xhci, XHCI_RESET_LONG_USEC);
->>>
->>> How can this prevent the xhc_state from changing while in reset? There's
->>> no locking in xhci-plat.
->>
->> Patch 2/2, which is the revert of 6ccb83d6c497 prevents xhci_reset() from
->> aborting due to xhc_state flags change.
->>
->> This patch makes sure xHC is not reset twice if xhci is resuming due to
->> remove being called. (XHCI_STATE_REMOVING is set).
-> 
-> Wouldn't it still be possible for xhci to be removed in the middle of
-> reset on resume? The watchdog may still timeout afterward if there's an
-> issue with reset right?
-> 
 
-Probably yes, but that problem is the same if we only revert 6ccb83d6c497.
+--rjdcZPeLS3c+Qw6Y
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 4 Jun 2025 16:22:16 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Roger Pau Monne <roger.pau@citrix.com>
+Cc: Juergen Gross <jgross@suse.com>, xen-devel@lists.xenproject.org,
+	linux-kernel@vger.kernel.org, jason.andryuk@amd.com,
+	John <jw@nuclearfallout.net>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] xen/x86: fix initial memory balloon target
 
->> Why intentionally bring back the Qcom watchdog issue by only reverting
->> 6ccb83d6c497 ?. Can't we solve both in one go?
-> 
-> I feel that the fix is doesn't cover all the scenarios, that's why I
-> suggest the revert for now and wait until the fix is properly tested
-> before applying it to stable?
+On Thu, May 15, 2025 at 11:01:24AM +0200, Marek Marczykowski-G=C3=B3recki w=
+rote:
+> On Wed, May 14, 2025 at 10:04:26AM +0200, Roger Pau Monne wrote:
+> > When adding extra memory regions as ballooned pages also adjust the bal=
+loon
+> > target, otherwise when the balloon driver is started it will populate
+> > memory to match the target value and consume all the extra memory regio=
+ns
+> > added.
+> >=20
+> > This made the usage of the Xen `dom0_mem=3D,max:` command line paramete=
+r for
+> > dom0 not work as expected, as the target won't be adjusted and when the
+> > balloon is started it will populate memory straight to the 'max:' value.
+> > It would equally affect domUs that have memory !=3D maxmem.
+> >=20
+> > Kernels built with CONFIG_XEN_UNPOPULATED_ALLOC are not affected, becau=
+se
+> > the extra memory regions are consumed by the unpopulated allocation dri=
+ver,
+> > and then balloon_add_regions() becomes a no-op.
+> >=20
+> > Reported-by: John <jw@nuclearfallout.net>
+> > Fixes: 87af633689ce ('x86/xen: fix balloon target initialization for PV=
+H dom0')
+> > Signed-off-by: Roger Pau Monn=C3=A9 <roger.pau@citrix.com>
+>=20
+> Tested-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab.c=
+om>
 
-Ok, we have different views on this.
+I think this wants Cc: stable, since the commit named in Fixes: got
+backported too. Or is the Fixes tag enough?
 
-I think we should avoid causing as much known regression as possible even
-if the patch  might not cover all scenarios.
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
 
-By reverting 6ccb83d6c497 we fix a SNPS DWC3 regression, but at the same
-time bring back the Qcom issue, so cause another regression.
+--rjdcZPeLS3c+Qw6Y
+Content-Type: application/pgp-signature; name=signature.asc
 
-We can avoid the main part or the Qcom regression by adding this patch as
-issue is with (long) xhci reset during resume if xhci is being removed, and
-driver always resumes xhci during ->remove callback.
+-----BEGIN PGP SIGNATURE-----
 
-If we discover the patch is not perfect then we fix it
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmhAVpgACgkQ24/THMrX
+1yxTXAf/f2m+HJfB41dbfKE54f3JNUqW0V87ci8kZTbhmd1/JxZFU+o1phpKn9Dd
+PW4Dd2qzBqcu7h+rlG6C3q9Y6ugtR17qU3eTWA3OCNmBgwK34ga3oJ6bJ5Fbvkyv
+//B71ZXIXTv3KxjQgRUH6v3n1WNNqLjkFQBtHqjlC/1K8NCierXgiQK25ysueo/K
+yybT8woevQgoZm1E6VINtDYo6c8sbtGE+RorVX8Q4DeSn3AutWRG/AFL/yw1RF7U
+QAgZq297ZSLAyHFVtNiGoWY5zELHTVb9EW/ajvPE0jPnuOjEgGw+Mwg2SnAmHejb
+rgokQ7UTD84BW7b58MHEMK0W190lRA==
+=Birs
+-----END PGP SIGNATURE-----
 
-Thanks
-Mathias
+--rjdcZPeLS3c+Qw6Y--
 
