@@ -1,142 +1,103 @@
-Return-Path: <stable+bounces-151469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C42ACE5D7
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:43:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82067ACE5E2
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73327173872
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:43:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 810DF7AA967
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AF4202961;
-	Wed,  4 Jun 2025 20:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C69B1FCFF1;
+	Wed,  4 Jun 2025 20:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fMc01F25"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qui73LPg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6BD1D7E54
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14675BA42;
+	Wed,  4 Jun 2025 20:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749069799; cv=none; b=hb7ZeuKzmHfB5hkAfhDBI4wG28AT7JTIwFlP1rEKAesgESKFr5sipL8ropX2qiT1UbENlJD1rf0pFSu1/t6PBUM68fPjwXLyLoTgygRVzXSoD/2+ydcNq6+SgiXGzAKpcVrifC5MOC3J2z11xGGEMVmIWhZAnDV8ruEkVm0kFbg=
+	t=1749070315; cv=none; b=mzEdbObBOy/YJ+MmXnzSE7tFWG6fKEdlDQ0N8TV56Aou4A7eD3eH8zW9szkYwmZK2/CvAgIDjp+Je/LZuwnh09ma8wTHarP2S0Ffy5/4dU4oHy05hiWApF3Gn8S6vsl5NIVuawCGsSlglXykOfhRHl4LNwdqslV2lxjWjpZyflE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749069799; c=relaxed/simple;
-	bh=5WPb+lWA8clJGxbCsXGFShGWo8nOHVCL1pkAlgZhQsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sl4fhmhxP3ht0Gy/PKVQDRK7OGgRkdd5mcTOgIIMYi2R1BwgcSV/sb73L9lYHQuWn/lDk47rmlPH3iZo8NLx+R2vj5udPwLuF8YLgclkOGjQ2aX2WUhqgZqkhbbs6Tgp0nTKKICf21n1Yp6ASj66DUTfyduHG9yNJQz8OD3kFLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fMc01F25; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so333875a12.2
-        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 13:43:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749069794; x=1749674594; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7kKRVoqiT4EzLmAvw3c+r2/DBP5Y3NNX9QqIrEZPJ4M=;
-        b=fMc01F25leMzFFdCvZ9yMGLFsg+DniT0o0ulj8vIspaZF0LVqHUWVoKP6yOoWdO4BU
-         0e/mXoAWTttHTq4b4+i502RdsEkd5phdgyUOXHTyXVnDgnFgSSwejKm8mhqDLzdV61/L
-         M8R+g2cjB6Fr3Ddd1mmCRlQA9LrpPp9nrivVEbLOEEKnZmBNmR84El0ZAH0ncdIhK9fq
-         23/99OH6VWx1aXNu6DYEaLPNjzMp7aI+T/8dI4KLEj9Lx/fp8sTkrr0ujaLfQSPXo/CS
-         V6HpWnRn5kN85wnH7bRxin0WSYoaDhcla0Dnlf/GiWWPrTczMLBgicWaiFjeIbGHij7s
-         4lCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749069794; x=1749674594;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7kKRVoqiT4EzLmAvw3c+r2/DBP5Y3NNX9QqIrEZPJ4M=;
-        b=lgBRy/K4Vcm32LGvms2ko84HfN2Ikkt/UryLTq1umyype5gM3j6zaEHhTMsGpEgnNJ
-         Uix6gOro6MuHxADkn3NZ4kXnSxcRgP4mtjIxHq0LHwA5Y8GGkKaZ7WvU2jBdcrMa7RjH
-         qimcBJIO/5ZenRBo0tIYXM4xPTQ0tpIe7WwvH6yqyS6OW6B68G9ujyC3WJc4YrK8E6wP
-         skpF//l8gPT5/5nOL12HK7DVM6PlthFrH6JDDRfMVybagKJ9SKDI8J/LQeSuzVf46l8x
-         Lp+xsXHNHSA0SqXLaqw0B0+WEWPqgFFiDNhagh7JLctY5Vm3G4KHLqVsAa9mfgXjfI4I
-         lSHg==
-X-Gm-Message-State: AOJu0Ywl2SpAMErWcaVbvmuNqe/5lAjgY79S1fqoCbHr4FAS6P8gbHuy
-	WP7WyQYMtYPPHbN0yRl7c++QAzOO0+YhZ7RQ/y8MuRf18AmAf0U4BwU07x9+QBo6pMM=
-X-Gm-Gg: ASbGncvsnrXLKhEZs+glp3b/SqhEOnGPE9BM0a7gz/ee5N4WNCuiyvIZq2sSkUwo6or
-	BUbyJG0VMB5vW01hEVHaAA+y4LAWkt0ml/u6b8WI71WNouvwovYx9hn2/gvmytHhiLp3mwk2ePP
-	Ytbv507w5tUxwSxEqu8P9qMiqkQ2Z+galQUgy1OamVdpx++FrXKcRiQ505lYdpcOPsEaLk9YeF/
-	bpdegkkCBaVerKuWhYmAkkAUi5upP9DoWEOnAXLVO7jf+ioB3MGplvwfj71lFbrL2W/iuSEw9Jc
-	cYaOegxDynTNcgYcGyxyTyJdY3HIPNzWu/h5W9YFnGpirb8NecM1oodL
-X-Google-Smtp-Source: AGHT+IEs4wThNrmRwHTKgvzNLLVLpYDCc/8CQVSXFRNcZ5WF5QPNe8tLYxPsqR2izqa8UFqnuKGNYw==
-X-Received: by 2002:a05:6402:2351:b0:607:1973:2082 with SMTP id 4fb4d7f45d1cf-6071973209cmr1820906a12.11.1749069794543;
-        Wed, 04 Jun 2025 13:43:14 -0700 (PDT)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-6059b007c66sm8002439a12.62.2025.06.04.13.43.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jun 2025 13:43:14 -0700 (PDT)
-Date: Wed, 4 Jun 2025 22:43:11 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Ingo Saitz <ingo@hannover.ccc.de>, 1104745@bugs.debian.org
-Cc: stable@vger.kernel.org
-Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
- CONFIG_RANDSTRUCT
-Message-ID: <hix7rqnglwxgmhamcu5sjkbaeexsogb5it4dyuu7f5bzovygnj@3sn4an7qgd6g>
-References: <174645965734.16657.5032027654487191240.reportbug@spatz.zoo>
+	s=arc-20240116; t=1749070315; c=relaxed/simple;
+	bh=q1ItLl8hb0svlGL7qApVhJBy3xKiqmCvNH/oYjin/vs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FVnq+qRI5lGVN8Sh1gTK/Pnz5rei/dS1B6Xq0482L/Np7GogWR6dCTG/mNJZZ6zcug7XQfGybSHRmHY/fDTu/2Hd5eH1ZYjAqVjRTUlX3rW4O5YcMYwYch+oVecN4+FEru5otdw0+9VmYzri85PoB8mxVauUYGqc24/utjmwpdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qui73LPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C892FC4CEE4;
+	Wed,  4 Jun 2025 20:51:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749070313;
+	bh=q1ItLl8hb0svlGL7qApVhJBy3xKiqmCvNH/oYjin/vs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Qui73LPg7EfNN7/jeHKpwSzKMrxZMqvIl1HcRIlW+hjdFjyxP9Tzg4QZ4nf59Veoh
+	 SwRdWykduwrcnGod3vnQqHyM+UhVaEBwWGB6SS8JKuMMcFVPo8u/XpZV1Z9eeML35p
+	 DqtNS18k+FgcXzloW3t98+1cgiXPGyaqsvVBaLDzCwAc/NGGOF4pj/ROoxCoLDWRdX
+	 7Yb/l3gdG3CWYm6NnXfhXejii7Y5SW0lPG0qxpVEEdpaBbzyyrsfvpulUQIDvuT/mJ
+	 1jJqf345MRr/bYOHUpLGbaMCidEI7mqBrmYIe3Z0zc63qma89/5iqU1pPF8polRGnH
+	 wh3AdHMGBZ/ig==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org,
+	Mike Yuan <me@yhndnzj.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Luca Boccassi <luca.boccassi@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] pidfs: never refuse ppid == 0 in PIDFD_GET_INFO
+Date: Wed,  4 Jun 2025 22:50:29 +0200
+Message-ID: <20250604-umtreiben-pulle-3a0f7ffb961b@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250604150238.42664-1-me@yhndnzj.com>
+References: <20250604150238.42664-1-me@yhndnzj.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vvttx254iueuslev"
-Content-Disposition: inline
-In-Reply-To: <174645965734.16657.5032027654487191240.reportbug@spatz.zoo>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1551; i=brauner@kernel.org; h=from:subject:message-id; bh=q1ItLl8hb0svlGL7qApVhJBy3xKiqmCvNH/oYjin/vs=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ4bHwcl2NoYjcxoeSsoluB7+Y/d3oWCuakh/48J6N32 qYl+++8jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkcXsXwT22HzYFtGVeMFoi9 3JY9c7ZsU/BEnr2bfI5Ou95ZtXrN8RCGf7qKcVY+e+a09fc4R6/eYVngon/wiu/R+8dfv5KYu7r gJRcA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
+On Wed, 04 Jun 2025 15:03:42 +0000, Mike Yuan wrote:
+> In systemd we spotted an issue after switching to ioctl(PIDFD_GET_INFO)
+> for obtaining pid number the pidfd refers to, that for processes
+> with a parent from outer pidns PIDFD_GET_INFO unexpectedly yields
+> -ESRCH [1]. It turned out that there's an arbitrary check blocking
+> this, which is not really sensible given getppid() happily returns
+> 0 for such processes. Just drop the spurious check and userspace
+> ought to handle ppid == 0 properly everywhere.
+> 
+> [...]
 
---vvttx254iueuslev
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
- CONFIG_RANDSTRUCT
-MIME-Version: 1.0
+The original motivation has likely been to exclude calling
+PIDFD_GET_INFO for kthreads. But it's questionable whether that's a
+sensible restriction given that we allow to retrieve information about
+kthreads via /proc/<pid>/status already.
 
-Control: tag -1 + fixed-upstream
-Control: forwarded -1 https://lore.kernel.org/r/20250530221824.work.623-kee=
-s@kernel.org
+---
 
-Hello,
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-On Mon, May 05, 2025 at 05:40:57PM +0200, Ingo Saitz wrote:
-> When compiling the linux kernel (tested on 6.15-rc5 and 6.14.5 from
-> kernel.org) with CONFIG_RANDSTRUCT enabled, gcc-15 throws an ICE:
->=20
-> arch/x86/kernel/cpu/proc.c:174:14: internal compiler error: in comptypes_=
-check_enum_int, at c/c-typeck.cc:1516
->   174 | const struct seq_operations cpuinfo_op =3D {
->       |              ^~~~~~~~~~~~~~
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-This is claimed to be fixed in upstream by commit
-https://git.kernel.org/linus/f39f18f3c3531aa802b58a20d39d96e82eb96c14
-that is scheduled to be included in 6.16-rc1.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-This wasn't explicitly marked for stable, but I think a backport would
-be good.
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Best regards
-Uwe
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
---vvttx254iueuslev
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhAr9kACgkQj4D7WH0S
-/k7tOgf+LKeRJxqZooP95Bh18VIuhHKYonO0De80uNjR2yACLaxcBWZFZK1VzX7w
-qlAmgjgQ/mS0umTFlUN3B4satEOnfwuea/pBwjbtqcYq/OrKvnkmWNkwR/3KWKiL
-ywU7O578w8zGiTlgEA+eEgoqcZtDYuLInuvxLXRppihaadXA9u6ci3m6mJK3acW3
-7mrILlrx7n/j79OINqIzGMdpEgy5uQoQyUHf6ROvBQFg7xZ0jQ9Gq5I0fyN7cs/A
-VrPltgVIVvLcjltKWs4D5Nid0sEEZ7oWAiPenAlitkpkPc4Vxk62YwoIqbA5L/SJ
-chXmkTriZggLYrDeFQXoARXLQjxTbA==
-=BUO8
------END PGP SIGNATURE-----
-
---vvttx254iueuslev--
+[1/1] pidfs: never refuse ppid == 0 in PIDFD_GET_INFO
+      https://git.kernel.org/vfs/vfs/c/b55eb6eb2a74
 
