@@ -1,194 +1,196 @@
-Return-Path: <stable+bounces-151296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEFEACD926
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:03:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9F6ACD938
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC7D189B1B9
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:00:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 402DB165345
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2CF2620D1;
-	Wed,  4 Jun 2025 07:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D60328A70D;
+	Wed,  4 Jun 2025 08:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fXLuZ/aO"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="G8lfm4MR";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="rQwmN9bb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE672512C8;
-	Wed,  4 Jun 2025 07:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20C8219A72;
+	Wed,  4 Jun 2025 08:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749023889; cv=none; b=A6DgSFoZKgSCiYVq5nhl9YbVnc4weZ24hIJLZpJl8N9AR0j+m9X5lu2XNBV9Hud4A9C6AFTBabMuvYrMbnEfBr6YlS/wZ+tSEUpZgFBR9oHyPqDKBWe9kOk08M6H9jlF4PsP+vba35a2jjLNL9ILYsxI4rW7Czn7JVwgvv5vzYg=
+	t=1749024217; cv=none; b=QzRdlWP/msr9UE+7HbGyjO7AjIvMK46M7uJUY6nTRmJn8tJA+Wk5D2aCS9T/IghwcKnHMvf1Qc4KvL1WHC++lhQzu+QkUoeVQuqwSkg+LPjXREMeu6Qb+to12J84lRmq6cbegwlZ4hI9HYTdtesfvudBNYQZAQNj2y8xrww0ngw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749023889; c=relaxed/simple;
-	bh=UYbkKmFr5UeqFtFI+nJW2S2A5YoPkpfAfOm6qQvwN/Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=pOicfUmyXk+t7WW09/3QkSFuwRNgmYYQooOpSboXroQqeXyNhUORgSQ9lyeyObHxljo/pf8aOlfBPl6fJVj+3fhssY4kLeDXUzviLqEVFvv7FzyDoiBDuAMNPV/WjLYY1zQ8+OCuCoIxoD0PVJkMma6QYZkV1/muLycSQgpPuoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fXLuZ/aO; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5547gt5q013476;
-	Wed, 4 Jun 2025 07:58:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	anivJ2eg09Hruutk0YLTt4SfGPp8ix1kxgXyCn4T76w=; b=fXLuZ/aOrTB57i9a
-	+3VpTTRfVuBUGtRYzZpzJuIzfWsljZ1ZYCQmA4+A34l47BPPBaEvYgJNrO7+U4P8
-	+yHFWHz0DbUVN3fBE6UDI6pDeW/eFsqosoq0kwmITqsCjbCjU64JFwGT00Di4FJL
-	psSd7wakUutcz332LHskC74HFCvWXJHYFIeVUt20W6jh4tOBPszztuV+87Ad5Y3O
-	P2m4g9wOWBEW67VfUG4CdHePXT88FhBngj8dolW/BLFQvVKg4pntUQH+BESb0LZb
-	51eHW0lldXmI/M//0WyDlhA6UC1F0wZjwDlyk50UjmljifHrc+JxVi6ANmuuFQjo
-	a4M5Ww==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8nn93k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 07:58:03 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5547w2se011415
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 4 Jun 2025 07:58:02 GMT
-Received: from [10.133.33.119] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Jun 2025
- 00:58:00 -0700
-Message-ID: <79b4bac1-6e55-408c-a334-006eded4229f@quicinc.com>
-Date: Wed, 4 Jun 2025 15:57:57 +0800
+	s=arc-20240116; t=1749024217; c=relaxed/simple;
+	bh=wjfzhqrBPODRSE8RYfiGeS2o/7JAHL/Dr5+Vci1seWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L2UfDgE8iywcRoRFzJ7B5e70lgEG978snh2OaE76uqpEdTVPrIRaKrDToDVwiV/QBpM+c8hcfVGE+38dntQ6cOrHP94e52AD1Rz/5uJmqXN9qqZbxWf97gUtxfdNzECfdywgFeB1JRk80kOF+Gf3SKFQo2QH9ihfNLSNWt25k0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=G8lfm4MR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=rQwmN9bb; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id 59A5711400D1;
+	Wed,  4 Jun 2025 04:03:32 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Wed, 04 Jun 2025 04:03:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1749024212; x=1749110612; bh=nN8Fc49WUE
+	+N2x9qM0p7pP7gZnp0Kb/U4L4WHyccsao=; b=G8lfm4MRSrlMBizYsl0Qfdsveg
+	qOoyF3EqIRVou35cf4CZDrvwkVSHULp97U2N711Suk7x5vrFrQgv1/fgIlp/5Vgw
+	ebUysklHTte1FLAoCiHfYIBluhiArxiSSrzv8Si8g+1ZbKiCY8ErE3nIkzGIXX50
+	VpOJiay/XjZ1gUP7MEERm5rM+6jJqGdB7KmV3Rh5LzSd385ViLlDyBs7UgjHEMcT
+	PuACiXx8AVxvwL7PSDl55nKd4VlP64ZYD0pe0EDNXayixi9Ci4MFzca42dyJqUB1
+	L1xk2QZ76AbfCHUfekGxcIvUkP3gRENumlYdTe8dT6+SOUq5cMCmIVTmKKmA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1749024212; x=1749110612; bh=nN8Fc49WUE+N2x9qM0p7pP7gZnp0Kb/U4L4
+	WHyccsao=; b=rQwmN9bbFV4RBdSTcbNaL8SKgKSbasgPvvpQuIhEsAPAAGmmXnl
+	zGacttvIV66vDYwgKjno27j6FAxP0Gy8os70Na3Kda6K4uCuyoo3WXkV5mHRcAym
+	96RUmFzgB3ddRylglhev7U8hNxQ8zAEt7YU9FfKxofZTysihujN1gDTu8yh/6Z0Y
+	fgth63Tnz7FnR1bF7ZuPY/Ly1tIZr5d3Go20vjJSvdd1WX5GRLWFirr3isI45LJi
+	is3ofA1TfAHZM+55za9FCDT4NGZHICOlLXsr01u6pbXw0YbQKz9ZKLc3lMS4cWzx
+	6JM/q56A9JshmLI5w2X5P+PP0vHPUhXCK4Q==
+X-ME-Sender: <xms:0_0_aCighfJHE9wZ_K0McvoE8VvhOWru0veFLEH3SV5-JKwg4WuSXQ>
+    <xme:0_0_aDA9n-2fCcNYJBP5kiBIfnawdzwENb4abJeiZjZa0trAqt4nOtYYJAoIc5i1V
+    YCBrVaQPuLg8A>
+X-ME-Received: <xmr:0_0_aKGFZj22nRDI6GKNYsXsiQSCVSUGy1_Ck3GTWGzt27es_5b4XAHa>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
+    grthhtvghrnhepueegledvgfeuffetffehfffgkeegtddtudejudeiiedvuedtteelleej
+    vddtgfefnecuffhomhgrihhnpehmshhgihgurdhlihhnkhdpkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghg
+    sehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepihdrmhgrgihimhgvthhssehovhhnrdhorhhgpdhrtghpthhtohep
+    shgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvghssehlih
+    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepvggthhgruhgurhhosehrvgguhhgrthdrtghomh
+    dprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgs
+    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggtohhnohhlvgesrhgvughhrghtrd
+    gtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:0_0_aLT3BFSEezen8cxMHj_qXnqrkkFk2V2O582FwM21IXg1Fi-xGA>
+    <xmx:1P0_aPzz3Oo_RSuaTm0mQQLwL9P-BjDWPhpMRPjMxv8Sdvtu04--HA>
+    <xmx:1P0_aJ7mfngfbbzimfLS1opZjAPURp2aLIiLpxneYnzh6dfvIvyKtA>
+    <xmx:1P0_aMy2f2EL2BQnTZRrRPj17DY7isFql5ldz-wwPYqph34IwxTqfw>
+    <xmx:1P0_aJedQQxTSAnKNn-eRcw3yFo3mTqJ38-uLdrgPzyb3BQid_sRWN1b>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Jun 2025 04:03:31 -0400 (EDT)
+Date: Wed, 4 Jun 2025 10:03:29 +0200
+From: Greg KH <greg@kroah.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+	stable@vger.kernel.org, Eelco Chaudron <echaudro@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	aconole@redhat.com, netdev@vger.kernel.org, dev@openvswitch.org
+Subject: Re: [PATCH AUTOSEL 6.15 044/118] openvswitch: Stricter validation
+ for the userspace action
+Message-ID: <2025060449-arena-exceeding-a090@gregkh>
+References: <20250604005049.4147522-1-sashal@kernel.org>
+ <20250604005049.4147522-44-sashal@kernel.org>
+ <38ef1815-5bc1-4391-b487-05a18e84c94e@ovn.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
-To: Johan Hovold <johan@kernel.org>
-CC: Baochen Qiang <quic_bqiang@quicinc.com>,
-        Johan Hovold
-	<johan+linaro@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
- <20250526114803.2122-2-johan+linaro@kernel.org>
- <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
- <aD1axxSAJsbUfnHH@hovoldconsulting.com>
- <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
- <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
- <01634993-80b1-496e-8453-e94b2efe658c@quicinc.com>
- <7025db40-dda0-4cbb-80bd-09bd590584da@quicinc.com>
- <aD_wgACEfm1_1GNz@hovoldconsulting.com>
-Content-Language: en-US
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-In-Reply-To: <aD_wgACEfm1_1GNz@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: w_XPjTFSZNiX8ks9rHAHNceZHHXIJp0p
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDA2MiBTYWx0ZWRfX5vrSLcCIdqi5
- bhMR3JPe4iY/k3ige1RY1H7RQSJ/omLn1XbPiOAOiIroEPNKxxKgVOondJDinyKtswOXO9cgC8x
- KFZ4+ONI+tHtxnt0/meVDm8dl3MyYKGKVvngoDNHGUSQCWgYGqg008rsssN3t23bLhr2VZzbArv
- Lufq0ggEgsxbanj1xy2lmqkA3nQv8FBcQyYbEemghTrkndo8A0ABR7bRe02GJuGOcGa5w0Ub+Yx
- /bX9Phn2rPfLAgfYTWm2MKv8RuqJxNo1L/m9EOskR1x1OM/h/HZszMZGSik+rrGTD7T5F+gp0Fj
- 62a3nG9wzeDELtxjRCJ02Evg6JrnP6++haOuU/XLJ3HefQPAdsYJci5f8dk0GS2dqUm3V9oogb6
- nvc724v9eGOIroMOOqcKrGvs8BBP+Q8OCKpRwhwN/tcsSU/2LQzjCCT0Zpp6a+X+uSilRslt
-X-Proofpoint-ORIG-GUID: w_XPjTFSZNiX8ks9rHAHNceZHHXIJp0p
-X-Authority-Analysis: v=2.4 cv=UphjN/wB c=1 sm=1 tr=0 ts=683ffc8b cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
- a=vX_C0UsDqE-s7w2R9qsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-04_02,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 impostorscore=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=478 clxscore=1015 malwarescore=0 adultscore=0
- bulkscore=0 mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506040062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <38ef1815-5bc1-4391-b487-05a18e84c94e@ovn.org>
 
-
-
-On 6/4/2025 3:06 PM, Johan Hovold wrote:
-> On Wed, Jun 04, 2025 at 01:32:08PM +0800, Miaoqing Pan wrote:
->> On 6/4/2025 10:34 AM, Miaoqing Pan wrote:
->>> On 6/3/2025 7:51 PM, Johan Hovold wrote:
->>>> On Tue, Jun 03, 2025 at 06:52:37PM +0800, Baochen Qiang wrote:
->>>>> On 6/2/2025 4:03 PM, Johan Hovold wrote:
->>>>
->>>>>> No, the barrier is needed between reading the head pointer and
->>>>>> accessing
->>>>>> descriptor fields, that's what matters.
->>>>>>
->>>>>> You can still end up with reading stale descriptor data even when
->>>>>> ath11k_hal_srng_dst_get_next_entry() returns non-NULL due to
->>>>>> speculation
->>>>>> (that's what happens on the X13s).
->>>>>
->>>>> The fact is that a dma_rmb() does not even prevent speculation, no
->>>>> matter where it is
->>>>> placed, right?
->>>>
->>>> It prevents the speculated load from being used.
->>>>
->>>>> If so the whole point of dma_rmb() is to prevent from compiler
->>>>> reordering
->>>>> or CPU reordering, but is it really possible?
->>>>>
->>>>> The sequence is
->>>>>
->>>>>      1# reading HP
->>>>>          srng->u.dst_ring.cached_hp = READ_ONCE(*srng-
->>>>>> u.dst_ring.hp_addr);
->>>>>
->>>>>      2# validate HP
->>>>>          if (srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp)
->>>>>              return NULL;
->>>>>
->>>>>      3# get desc
->>>>>          desc = srng->ring_base_vaddr + srng->u.dst_ring.tp;
->>>>>
->>>>>      4# accessing desc
->>>>>          ath11k_hal_desc_reo_parse_err(... desc, ...)
->>>>>
->>>>> Clearly each step depends on the results of previous steps. In this
->>>>> case the compiler/CPU
->>>>> is expected to be smart enough to not do any reordering, isn't it?
->>>>
->>>> Steps 3 and 4 can be done speculatively before the load in step 1 is
->>>> complete as long as the result is discarded if it turns out not to be
->>>> needed.
+On Wed, Jun 04, 2025 at 09:57:20AM +0200, Ilya Maximets wrote:
+> On 6/4/25 2:49 AM, Sasha Levin wrote:
+> > From: Eelco Chaudron <echaudro@redhat.com>
+> > 
+> > [ Upstream commit 88906f55954131ed2d3974e044b7fb48129b86ae ]
+> > 
+> > This change enhances the robustness of validate_userspace() by ensuring
+> > that all Netlink attributes are fully contained within the parent
+> > attribute. The previous use of nla_parse_nested_deprecated() could
+> > silently skip trailing or malformed attributes, as it stops parsing at
+> > the first invalid entry.
+> > 
+> > By switching to nla_parse_deprecated_strict(), we make sure only fully
+> > validated attributes are copied for later use.
+> > 
+> > Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+> > Reviewed-by: Simon Horman <horms@kernel.org>
+> > Acked-by: Ilya Maximets <i.maximets@ovn.org>
+> > Link: https://patch.msgid.link/67eb414e2d250e8408bb8afeb982deca2ff2b10b.1747037304.git.echaudro@redhat.com
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> > 
+> > **YES** This commit should be backported to stable kernel trees. ##
+> > Analysis **Commit Overview:** The commit changes `validate_userspace()`
+> > function in `net/openvswitch/flow_netlink.c` by replacing
+> > `nla_parse_nested_deprecated()` with `nla_parse_deprecated_strict()` to
+> > ensure stricter validation of Netlink attributes for the userspace
+> > action. **Specific Code Changes:** The key change is on lines 3052-3054:
+> > ```c // Before: error = nla_parse_nested_deprecated(a,
+> > OVS_USERSPACE_ATTR_MAX, attr, userspace_policy, NULL); // After: error =
+> > nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX, nla_data(attr),
+> > nla_len(attr), userspace_policy, NULL); ``` **Why This Should Be
+> > Backported:** 1. **Security Enhancement:** This commit addresses a
+> > parsing vulnerability where malformed attributes could be silently
+> > ignored. The original `nla_parse_nested_deprecated()` stops parsing at
+> > the first invalid entry, potentially allowing trailing malformed data to
+> > bypass validation. 2. **Robustness Fix:** The change ensures all netlink
+> > attributes are fully contained within the parent attribute bounds,
+> > preventing potential buffer over-reads or under-reads that could lead to
+> > security issues. 3. **Pattern Consistency:** Looking at the git blame
+> > output (lines 3085-3087), we can see that
+> > `nla_parse_deprecated_strict()` was already introduced in 2019 by commit
+> > 8cb081746c031 and is used elsewhere in the same file for similar
+> > validation (e.g., `validate_and_copy_check_pkt_len()` function). 4.
+> > **Low Risk:** This is a small, contained change that only affects input
+> > validation - it doesn't change functionality or introduce new features.
+> > The change is defensive and follows existing patterns in the codebase.
+> > 5. **Similar Precedent:** This commit is very similar to the validated
+> > "Similar Commit #2" which was marked for backporting (status: YES). That
+> > commit also dealt with netlink attribute validation safety in
+> > openvswitch (`validate_set()` function) and was considered suitable for
+> > stable trees. 6. **Critical Subsystem:** Open vSwitch is a critical
+> > networking component used in virtualization and container environments.
+> > Input validation issues in this subsystem could potentially be exploited
+> > for privilege escalation or denial of service. 7. **Clear Intent:** The
+> > commit message explicitly states this "enhances robustness" and ensures
+> > "only fully validated attributes are copied for later use," indicating
+> > this is a defensive security improvement. **Risk Assessment:** - Very
+> > low regression risk - No API changes - Only affects error handling paths
+> > - Follows established validation patterns in the same codebase This
+> > commit fits perfectly into the stable tree criteria: it's an important
+> > security/robustness fix, has minimal risk of regression, is well-
+> > contained, and addresses a clear validation vulnerability in a critical
+> > kernel subsystem.
 > 
->>> If the condition in step 2 is true and step 3 speculatively loads
->>> descriptor from TP before step 1, could this cause issues?
->>
->> Sorry for typo, if the condition in step 2 is false and step 3
->> speculatively loads descriptor from TP before step 1, could this cause
->> issues?
+> This change is one of two patches created for userspace action.  With an
+> intentional split - one for net and one for net-next  First one was the
+> actual fix that addressed a real bug:
+>   6beb6835c1fb ("openvswitch: Fix unsafe attribute parsing in output_userspace()")
+>   https://lore.kernel.org/netdev/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com/
 > 
-> Almost correct; the descriptor can be loaded (from TP) before the head
-> pointer is loaded and thus before the condition in step 2 has been
-> evaluated. And if the condition in step 2 later turns out to be false,
-> step 4 may use stale data from before the head pointer was updated.
-> 
+> This second change (this patch) was intended for -next only as it doesn't
+> fix any real issue, but affects uAPI, and so should NOT be backported.
 
-Actually, there's a missing step between step 3 and step 4: TP+1.
+Why would you break the user api in a newer kernel?  That feels wrong,
+as any change should be able to be backported without any problems.
 
-TP+1:
-	srng->u.dst_ring.tp += srng->entry_size
+If this is a userspace break, why isn't it reverted?
 
-TP is managed by the CPU and points to the current first unprocessed 
-descriptor, while HP and the descriptor are asynchronously updated by 
-DMA. So are you saying that the descriptor obtained through speculative 
-loading has not yet been updated, or is in the process of being updated?
+confused,
 
-
-
+greg k-h
 
