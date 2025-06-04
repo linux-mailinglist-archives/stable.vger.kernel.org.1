@@ -1,76 +1,143 @@
-Return-Path: <stable+bounces-151431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C892ACE09A
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:44:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A3BACE0A0
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64CF2188AF1C
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:45:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AACA67A7F5D
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA010290DA8;
-	Wed,  4 Jun 2025 14:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ABE29115A;
+	Wed,  4 Jun 2025 14:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9VDzhNr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHv8Tzxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681C92820A3
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 14:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFDF32C85;
+	Wed,  4 Jun 2025 14:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749048285; cv=none; b=Uju0APs4lpjM/tKju3OMorZzOgZTu9LTqlxsMf+K6PtGtJaKH51Cazwj3PQu/j1BkLXDjPCOy9xsbveLvMWGrOhpbY33fa9W7uRso+tfMch/GlfQpND4x0ZKo2AtBeyUDnPdWtyfIK0zKIiRGc/RBUeZwPgftpRFaSCV/QpUdKk=
+	t=1749048349; cv=none; b=T03IIDVE1Pd1yhydhlCSWGJI9J5mnl5UcQe/YhAqcAYFnV7DnjtOEaG3Yz0Dh9iS6nmYePx5AJ15X/VVNQPtvqKI3yjCvpK0r5J1/M8Y+gBGNBt4f9QVXw8q4AyX3dR4wHKQtOKPfsQutHrC45zZoWZlQki7i/CSeJUXLMnMfNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749048285; c=relaxed/simple;
-	bh=so6jQasQL8pZv25cPRI0mgmO4eBodOpMZY86jLff504=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UZXoM588eNVwISPFcyVF6h/Ot9VivM1l4rsAdAiPRR/w7VNjFG3ex4Silbp0XZuKriSktOOPADEzZkoFc/t028pQkJfXO2fWpeuYlk8O/jaDL0E+hw2esX938hhFpnntAq72/2vfMLaiVd1QAGoBaMEjNcirk2lnmtYZevhidXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9VDzhNr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CADC4CEE4;
-	Wed,  4 Jun 2025 14:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749048284;
-	bh=so6jQasQL8pZv25cPRI0mgmO4eBodOpMZY86jLff504=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=z9VDzhNrtZJFOikl8BN55vXog0qvL7TfMSQZItSC1G7IFAWGvZuphZBPejSnSJqNp
-	 kDfMGj4BUoTXrQlGJun/O19Kvp/AEkzipUaWmbFs/w2Kz75tyOBMMbz23gyn1wkx9Y
-	 ytsGw9UOjQQyinkOXV2no6jS9mDrZAYbI5WBTmLY=
-Date: Wed, 4 Jun 2025 16:44:42 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: hubcap@kernel.org
-Cc: stable@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
-	hubcapsc@gmail.com
-Subject: Re: [PATCH 6.14] orangefs: adjust counting code to recover from
- 665575cf
-Message-ID: <2025060401-symphony-boasting-8d5e@gregkh>
-References: <20250604143414.213477-1-hubcap@kernel.org>
+	s=arc-20240116; t=1749048349; c=relaxed/simple;
+	bh=AahTbiL0j1lHqgp6tMq8JeHQ5K8h8e6zfnJJYbWsUc0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fcEMHvQ5TgjxBkZhS/41HSjePhOpBYtZ66UgPhso+GvDvmcVl7YaEIW1GBetKLXz9Wn9PdQsnuf4kaID6vOzW2b2rUwcvoUBBE4L89+7v1vwJWM0XcWuxNwZNlfQpvXbRXrG35D69oYa93HXFVG8uQaj7dGtivTMm2+fpKQrzc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHv8Tzxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2ABC4CEF1;
+	Wed,  4 Jun 2025 14:45:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749048349;
+	bh=AahTbiL0j1lHqgp6tMq8JeHQ5K8h8e6zfnJJYbWsUc0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bHv8TzxaZHukiEWdht1QcuRlHO9xmK/M+5GLLPyEstC2Ehyn++Usz8tx2FV+mpjG2
+	 pXjvObsHHKorU8W6CbN1kGvZUi1Z+7Ca+bqSJQBBF+ZuvwwgexQhA9wi/zoSn1Fq8l
+	 Nw12m1EGo6aFwPdBtLI7LaAiPafjAgw6ihZo38dYkyH4aI3JjO2cseTSyDE3vujzBY
+	 nK+s0LzaLKlEmdqBPKpsGp+8sgySANx3/FEhDOmslVL6MLYTR78ymUNI6IA57rTDXs
+	 0sGtzvH5Ih1CroG5x+HEZUu5peIjVsE7P/i0C8XXeREs/rGW5etxoFbTHOdXkwNyWy
+	 VRqWXddF2Qbbg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1uMpND-000000007OY-0oJh;
+	Wed, 04 Jun 2025 16:45:47 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Jeff Johnson <jjohnson@kernel.org>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/4] wifi: ath12k: fix dest ring-buffer corruption
+Date: Wed,  4 Jun 2025 16:45:06 +0200
+Message-ID: <20250604144509.28374-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250604144509.28374-1-johan+linaro@kernel.org>
+References: <20250604144509.28374-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604143414.213477-1-hubcap@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 04, 2025 at 10:34:02AM -0400, hubcap@kernel.org wrote:
-> From: Mike Marshall <hubcap@omnibond.com>
-> 
-> A late commit to 6.14-rc7 (665575cf) broke orangefs. I made a patch that
-> fixes orangefs in 6.15, but some pagecache/folio code got pulled into
-> 6.15 that causes my 6.15 patch not to apply to 6.14. Here is a tested
-> 6.14 flavored patch that was never upstream that I hope can get applied
-> to 6.14-stable...
+Add the missing memory barrier to make sure that destination ring
+descriptors are read after the head pointers to avoid using stale data
+on weakly ordered architectures like aarch64.
 
-Can you make a real changelog saying what this is, AND provide a
-signed-off-by line like a normal patch?  As is, I can't take this (nor
-would you want me to...)
+The barrier is added to the ath12k_hal_srng_access_begin() helper for
+symmetry with follow-on fixes for source ring buffer corruption which
+will add barriers to ath12k_hal_srng_access_end().
 
-thanks,
+Note that this may fix the empty descriptor issue recently worked around
+by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
+monitor ring").
 
-greg k-h
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/net/wireless/ath/ath12k/ce.c  |  3 ---
+ drivers/net/wireless/ath/ath12k/hal.c | 17 ++++++++++++++---
+ 2 files changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+index 740586fe49d1..b66d23d6b2bd 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe *pipe,
+ 		goto err;
+ 	}
+ 
+-	/* Make sure descriptor is read after the head pointer. */
+-	dma_rmb();
+-
+ 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+ 
+ 	*skb = pipe->dest_ring->skb[sw_index];
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index 91d5126ca149..9eea13ed5565 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -2126,13 +2126,24 @@ void *ath12k_hal_srng_src_get_next_reaped(struct ath12k_base *ab,
+ 
+ void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+ {
++	u32 hp;
++
+ 	lockdep_assert_held(&srng->lock);
+ 
+-	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
++	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+-	else
+-		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++	} else {
++		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
++
++		if (hp != srng->u.dst_ring.cached_hp) {
++			srng->u.dst_ring.cached_hp = hp;
++			/* Make sure descriptor is read after the head
++			 * pointer.
++			 */
++			dma_rmb();
++		}
++	}
+ }
+ 
+ /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
+-- 
+2.49.0
+
 
