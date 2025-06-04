@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-151295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D670AACD8E4
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 09:57:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEFEACD926
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:03:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB44B3A48D8
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 07:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC7D189B1B9
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7171A23C51B;
-	Wed,  4 Jun 2025 07:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2CF2620D1;
+	Wed,  4 Jun 2025 07:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fXLuZ/aO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C481422156D;
-	Wed,  4 Jun 2025 07:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE672512C8;
+	Wed,  4 Jun 2025 07:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749023846; cv=none; b=RfVMs7a8cnVrYeGVV9i8OUhj+H3vpI9jdnuHUeSsAqMm4EY/tHm6ZYSMvBxs2/5cgOGqrXX51VY0RXCBRdmAg39FlyBTerwC7L4m/DG4iwDBVRpqH+hxoqR2wAA3rADDWd+DqnXKystRXkSR7ewFRwDh7301hO7X4CqrWJD0TTY=
+	t=1749023889; cv=none; b=A6DgSFoZKgSCiYVq5nhl9YbVnc4weZ24hIJLZpJl8N9AR0j+m9X5lu2XNBV9Hud4A9C6AFTBabMuvYrMbnEfBr6YlS/wZ+tSEUpZgFBR9oHyPqDKBWe9kOk08M6H9jlF4PsP+vba35a2jjLNL9ILYsxI4rW7Czn7JVwgvv5vzYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749023846; c=relaxed/simple;
-	bh=L46qMq+D+EBrCxQHPK4bgVL7HHhc0eQbNNC3ccWBnwg=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=R0tpx8VFk+uHUKiJbktXWhJ0ZVSX6M9G4LjL4YXkA1xyqN2cAkm2/2/YmX9cqRhVUmTewAyhQoRJDMcTAPo2fRzTjLB4KmqFUhERqvTR7arKs/f6JnPbPfLRfLqI4juDdteGfMS/ghfQW/2+8mcv/SB2u/PzLsookMomIhAZFFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-5fff52493e0so9100970a12.3;
-        Wed, 04 Jun 2025 00:57:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749023842; x=1749628642;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:cc:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XHNpHqmGP7U60UZaiDJu6Szs2+L4LA+55N7lpFChv+o=;
-        b=FlVk0xmFywCoTsNw4sebzjxLweZ6EVX9REeEhSg/dEqTlL0bNlcsyEVeQFTUnbr34L
-         rQP8Avg/rp/W632ZovL3xZ+YdNuvqkW+rFk8eNeWmUwdKUuNtDbQuRaEwlZ0bPs9kGBs
-         l9S3xwfz/j+MOhJN4wLul/kMCNIiV/lUtIU73IabDyZ4aZxx6uyw+2ITm6b+xexWqyF1
-         BVCgpi5LMpGH+fa/7fmzAlP2y8JBEo0FvRfCQAaM5EokbYy3siq2RSoyWCX9tfX+rBwr
-         fkXFrR9O2K2orN+2YRl4JnjQbLQW0Y4/Hf7KyGzkISdcX4HAjMw7YLn8OqTZe+7/OjLJ
-         de1g==
-X-Forwarded-Encrypted: i=1; AJvYcCWDGHg6Tl/9xqSreCZvtYdIr2TV+J1oq2PCLjheun6P4GoVQO1qW4MR/akFc4mVd7/B/CnXHlI=@vger.kernel.org, AJvYcCWgrlPh00aw3DXt5sAy/XwyAGCkS4+y8L9UpaMcIXoS8zH4kKsNHwHe7+xXItsQbQathhtCI9IT@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKgEqnFTpxAlgHFRdE220hz5t/MbRNGWTuCU8HctdFfVE5unej
-	qy9Cwrf3PgUsJSYJXMAVNEBsc1smp7a5sOuotIBV+v4bU19B/oFfL9AX
-X-Gm-Gg: ASbGncvQa7beUY2U4aQzAzKjNcx7evw9Pr+IR0QRNK2KnR7lIuH+zctmoKfyK5jQqbr
-	FSRk4kZthfj0uKJ9dVAjrd3hs3yN0+r9r4UbeF3f5f87reCq4m2Ycr4RfZ3mFGcQVLHqfFTmU8c
-	xW/3dZF7AAvwmGzyAFz4b9vk0BqCw7bRIgqg8w4BXrml9/pLRi2cACktcBRO5JLEH24jvbGrX7p
-	qB9BcBZoLz9vDApZLoBx434gDlcfV53CQP5O4SCUY6rHM1CCaGDlx5nV0odEIfLoIW6ghlkKsq9
-	qLv5bVaC/iP+OBIGW5NJbBHTBcqJVVHW79zLl8qhS1Dp1VPH4X8rCzGBq1yAB5YjaOYgm6Kxu9Z
-	ACYBjnZNUcwHAtZyTAg==
-X-Google-Smtp-Source: AGHT+IEhk37rbANfdiENcZ1PpPl1Pqx01O4xsScKv4/4eC4FM1JHHLRgR7RXjlq8dDa+pO7/QsIFgQ==
-X-Received: by 2002:a17:907:9625:b0:ad5:372d:87e3 with SMTP id a640c23a62f3a-addf8d5f86fmr160880766b.27.1749023841666;
-        Wed, 04 Jun 2025 00:57:21 -0700 (PDT)
-Received: from [192.168.88.252] (78-80-16-19.customers.tmcz.cz. [78.80.16.19])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada6ad6ac52sm1066859466b.170.2025.06.04.00.57.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 00:57:21 -0700 (PDT)
-Message-ID: <38ef1815-5bc1-4391-b487-05a18e84c94e@ovn.org>
-Date: Wed, 4 Jun 2025 09:57:20 +0200
+	s=arc-20240116; t=1749023889; c=relaxed/simple;
+	bh=UYbkKmFr5UeqFtFI+nJW2S2A5YoPkpfAfOm6qQvwN/Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pOicfUmyXk+t7WW09/3QkSFuwRNgmYYQooOpSboXroQqeXyNhUORgSQ9lyeyObHxljo/pf8aOlfBPl6fJVj+3fhssY4kLeDXUzviLqEVFvv7FzyDoiBDuAMNPV/WjLYY1zQ8+OCuCoIxoD0PVJkMma6QYZkV1/muLycSQgpPuoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fXLuZ/aO; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5547gt5q013476;
+	Wed, 4 Jun 2025 07:58:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	anivJ2eg09Hruutk0YLTt4SfGPp8ix1kxgXyCn4T76w=; b=fXLuZ/aOrTB57i9a
+	+3VpTTRfVuBUGtRYzZpzJuIzfWsljZ1ZYCQmA4+A34l47BPPBaEvYgJNrO7+U4P8
+	+yHFWHz0DbUVN3fBE6UDI6pDeW/eFsqosoq0kwmITqsCjbCjU64JFwGT00Di4FJL
+	psSd7wakUutcz332LHskC74HFCvWXJHYFIeVUt20W6jh4tOBPszztuV+87Ad5Y3O
+	P2m4g9wOWBEW67VfUG4CdHePXT88FhBngj8dolW/BLFQvVKg4pntUQH+BESb0LZb
+	51eHW0lldXmI/M//0WyDlhA6UC1F0wZjwDlyk50UjmljifHrc+JxVi6ANmuuFQjo
+	a4M5Ww==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8nn93k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Jun 2025 07:58:03 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5547w2se011415
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 4 Jun 2025 07:58:02 GMT
+Received: from [10.133.33.119] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Jun 2025
+ 00:58:00 -0700
+Message-ID: <79b4bac1-6e55-408c-a334-006eded4229f@quicinc.com>
+Date: Wed, 4 Jun 2025 15:57:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,157 +65,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: i.maximets@ovn.org, Eelco Chaudron <echaudro@redhat.com>,
- Simon Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- aconole@redhat.com, netdev@vger.kernel.org, dev@openvswitch.org
-Subject: Re: [PATCH AUTOSEL 6.15 044/118] openvswitch: Stricter validation for
- the userspace action
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-References: <20250604005049.4147522-1-sashal@kernel.org>
- <20250604005049.4147522-44-sashal@kernel.org>
+Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
+To: Johan Hovold <johan@kernel.org>
+CC: Baochen Qiang <quic_bqiang@quicinc.com>,
+        Johan Hovold
+	<johan+linaro@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250526114803.2122-1-johan+linaro@kernel.org>
+ <20250526114803.2122-2-johan+linaro@kernel.org>
+ <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
+ <aD1axxSAJsbUfnHH@hovoldconsulting.com>
+ <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
+ <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
+ <01634993-80b1-496e-8453-e94b2efe658c@quicinc.com>
+ <7025db40-dda0-4cbb-80bd-09bd590584da@quicinc.com>
+ <aD_wgACEfm1_1GNz@hovoldconsulting.com>
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- xsFNBF77bOMBEADVZQ4iajIECGfH3hpQMQjhIQlyKX4hIB3OccKl5XvB/JqVPJWuZQRuqNQG
- /B70MP6km95KnWLZ4H1/5YOJK2l7VN7nO+tyF+I+srcKq8Ai6S3vyiP9zPCrZkYvhqChNOCF
- pNqdWBEmTvLZeVPmfdrjmzCLXVLi5De9HpIZQFg/Ztgj1AZENNQjYjtDdObMHuJQNJ6ubPIW
- cvOOn4WBr8NsP4a2OuHSTdVyAJwcDhu+WrS/Bj3KlQXIdPv3Zm5x9u/56NmCn1tSkLrEgi0i
- /nJNeH5QhPdYGtNzPixKgPmCKz54/LDxU61AmBvyRve+U80ukS+5vWk8zvnCGvL0ms7kx5sA
- tETpbKEV3d7CB3sQEym8B8gl0Ux9KzGp5lbhxxO995KWzZWWokVUcevGBKsAx4a/C0wTVOpP
- FbQsq6xEpTKBZwlCpxyJi3/PbZQJ95T8Uw6tlJkPmNx8CasiqNy2872gD1nN/WOP8m+cIQNu
- o6NOiz6VzNcowhEihE8Nkw9V+zfCxC8SzSBuYCiVX6FpgKzY/Tx+v2uO4f/8FoZj2trzXdLk
- BaIiyqnE0mtmTQE8jRa29qdh+s5DNArYAchJdeKuLQYnxy+9U1SMMzJoNUX5uRy6/3KrMoC/
- 7zhn44x77gSoe7XVM6mr/mK+ViVB7v9JfqlZuiHDkJnS3yxKPwARAQABzSJJbHlhIE1heGlt
- ZXRzIDxpLm1heGltZXRzQG92bi5vcmc+wsGUBBMBCAA+AhsDBQsJCAcCBhUKCQgLAgQWAgMB
- Ah4BAheAFiEEh+ma1RKWrHCY821auffsd8gpv5YFAmfB9JAFCQyI7q0ACgkQuffsd8gpv5YQ
- og/8DXt1UOznvjdXRHVydbU6Ws+1iUrxlwnFH4WckoFgH4jAabt25yTa1Z4YX8Vz0mbRhTPX
- M/j1uORyObLem3of4YCd4ymh7nSu++KdKnNsZVHxMcoiic9ILPIaWYa8kTvyIDT2AEVfn9M+
- vskM0yDbKa6TAHgr/0jCxbS+mvN0ZzDuR/LHTgy3e58097SWJohj0h3Dpu+XfuNiZCLCZ1/G
- AbBCPMw+r7baH/0evkX33RCBZwvh6tKu+rCatVGk72qRYNLCwF0YcGuNBsJiN9Aa/7ipkrA7
- Xp7YvY3Y1OrKnQfdjp3mSXmknqPtwqnWzXvdfkWkZKShu0xSk+AjdFWCV3NOzQaH3CJ67NXm
- aPjJCIykoTOoQ7eEP6+m3WcgpRVkn9bGK9ng03MLSymTPmdINhC5pjOqBP7hLqYi89GN0MIT
- Ly2zD4m/8T8wPV9yo7GRk4kkwD0yN05PV2IzJECdOXSSStsf5JWObTwzhKyXJxQE+Kb67Wwa
- LYJgltFjpByF5GEO4Xe7iYTjwEoSSOfaR0kokUVM9pxIkZlzG1mwiytPadBt+VcmPQWcO5pi
- WxUI7biRYt4aLriuKeRpk94ai9+52KAk7Lz3KUWoyRwdZINqkI/aDZL6meWmcrOJWCUMW73e
- 4cMqK5XFnGqolhK4RQu+8IHkSXtmWui7LUeEvO/OwU0EXvts4wEQANCXyDOic0j2QKeyj/ga
- OD1oKl44JQfOgcyLVDZGYyEnyl6b/tV1mNb57y/YQYr33fwMS1hMj9eqY6tlMTNz+ciGZZWV
- YkPNHA+aFuPTzCLrapLiz829M5LctB2448bsgxFq0TPrr5KYx6AkuWzOVq/X5wYEM6djbWLc
- VWgJ3o0QBOI4/uB89xTf7mgcIcbwEf6yb/86Cs+jaHcUtJcLsVuzW5RVMVf9F+Sf/b98Lzrr
- 2/mIB7clOXZJSgtV79Alxym4H0cEZabwiXnigjjsLsp4ojhGgakgCwftLkhAnQT3oBLH/6ix
- 87ahawG3qlyIB8ZZKHsvTxbWte6c6xE5dmmLIDN44SajAdmjt1i7SbAwFIFjuFJGpsnfdQv1
- OiIVzJ44kdRJG8kQWPPua/k+AtwJt/gjCxv5p8sKVXTNtIP/sd3EMs2xwbF8McebLE9JCDQ1
- RXVHceAmPWVCq3WrFuX9dSlgf3RWTqNiWZC0a8Hn6fNDp26TzLbdo9mnxbU4I/3BbcAJZI9p
- 9ELaE9rw3LU8esKqRIfaZqPtrdm1C+e5gZa2gkmEzG+WEsS0MKtJyOFnuglGl1ZBxR1uFvbU
- VXhewCNoviXxkkPk/DanIgYB1nUtkPC+BHkJJYCyf9Kfl33s/bai34aaxkGXqpKv+CInARg3
- fCikcHzYYWKaXS6HABEBAAHCwXwEGAEIACYCGwwWIQSH6ZrVEpascJjzbVq59+x3yCm/lgUC
- Z8H0qQUJDIjuxgAKCRC59+x3yCm/loAdD/wJCOhPp9711J18B9c4f+eNAk5vrC9Cj3RyOusH
- Hebb9HtSFm155Zz3xiizw70MSyOVikjbTocFAJo5VhkyuN0QJIP678SWzriwym+EG0B5P97h
- FSLBlRsTi4KD8f1Ll3OT03lD3o/5Qt37zFgD4mCD6OxAShPxhI3gkVHBuA0GxF01MadJEjMu
- jWgZoj75rCLG9sC6L4r28GEGqUFlTKjseYehLw0s3iR53LxS7HfJVHcFBX3rUcKFJBhuO6Ha
- /GggRvTbn3PXxR5UIgiBMjUlqxzYH4fe7pYR7z1m4nQcaFWW+JhY/BYHJyMGLfnqTn1FsIwP
- dbhEjYbFnJE9Vzvf+RJcRQVyLDn/TfWbETf0bLGHeF2GUPvNXYEu7oKddvnUvJK5U/BuwQXy
- TRFbae4Ie96QMcPBL9ZLX8M2K4XUydZBeHw+9lP1J6NJrQiX7MzexpkKNy4ukDzPrRE/ruui
- yWOKeCw9bCZX4a/uFw77TZMEq3upjeq21oi6NMTwvvWWMYuEKNi0340yZRrBdcDhbXkl9x/o
- skB2IbnvSB8iikbPng1ihCTXpA2yxioUQ96Akb+WEGopPWzlxTTK+T03G2ljOtspjZXKuywV
- Wu/eHyqHMyTu8UVcMRR44ki8wam0LMs+fH4dRxw5ck69AkV+JsYQVfI7tdOu7+r465LUfg==
-In-Reply-To: <20250604005049.4147522-44-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+In-Reply-To: <aD_wgACEfm1_1GNz@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: w_XPjTFSZNiX8ks9rHAHNceZHHXIJp0p
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDA2MiBTYWx0ZWRfX5vrSLcCIdqi5
+ bhMR3JPe4iY/k3ige1RY1H7RQSJ/omLn1XbPiOAOiIroEPNKxxKgVOondJDinyKtswOXO9cgC8x
+ KFZ4+ONI+tHtxnt0/meVDm8dl3MyYKGKVvngoDNHGUSQCWgYGqg008rsssN3t23bLhr2VZzbArv
+ Lufq0ggEgsxbanj1xy2lmqkA3nQv8FBcQyYbEemghTrkndo8A0ABR7bRe02GJuGOcGa5w0Ub+Yx
+ /bX9Phn2rPfLAgfYTWm2MKv8RuqJxNo1L/m9EOskR1x1OM/h/HZszMZGSik+rrGTD7T5F+gp0Fj
+ 62a3nG9wzeDELtxjRCJ02Evg6JrnP6++haOuU/XLJ3HefQPAdsYJci5f8dk0GS2dqUm3V9oogb6
+ nvc724v9eGOIroMOOqcKrGvs8BBP+Q8OCKpRwhwN/tcsSU/2LQzjCCT0Zpp6a+X+uSilRslt
+X-Proofpoint-ORIG-GUID: w_XPjTFSZNiX8ks9rHAHNceZHHXIJp0p
+X-Authority-Analysis: v=2.4 cv=UphjN/wB c=1 sm=1 tr=0 ts=683ffc8b cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
+ a=vX_C0UsDqE-s7w2R9qsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-04_02,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=478 clxscore=1015 malwarescore=0 adultscore=0
+ bulkscore=0 mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506040062
 
-On 6/4/25 2:49 AM, Sasha Levin wrote:
-> From: Eelco Chaudron <echaudro@redhat.com>
-> 
-> [ Upstream commit 88906f55954131ed2d3974e044b7fb48129b86ae ]
-> 
-> This change enhances the robustness of validate_userspace() by ensuring
-> that all Netlink attributes are fully contained within the parent
-> attribute. The previous use of nla_parse_nested_deprecated() could
-> silently skip trailing or malformed attributes, as it stops parsing at
-> the first invalid entry.
-> 
-> By switching to nla_parse_deprecated_strict(), we make sure only fully
-> validated attributes are copied for later use.
-> 
-> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Acked-by: Ilya Maximets <i.maximets@ovn.org>
-> Link: https://patch.msgid.link/67eb414e2d250e8408bb8afeb982deca2ff2b10b.1747037304.git.echaudro@redhat.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> 
-> **YES** This commit should be backported to stable kernel trees. ##
-> Analysis **Commit Overview:** The commit changes `validate_userspace()`
-> function in `net/openvswitch/flow_netlink.c` by replacing
-> `nla_parse_nested_deprecated()` with `nla_parse_deprecated_strict()` to
-> ensure stricter validation of Netlink attributes for the userspace
-> action. **Specific Code Changes:** The key change is on lines 3052-3054:
-> ```c // Before: error = nla_parse_nested_deprecated(a,
-> OVS_USERSPACE_ATTR_MAX, attr, userspace_policy, NULL); // After: error =
-> nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX, nla_data(attr),
-> nla_len(attr), userspace_policy, NULL); ``` **Why This Should Be
-> Backported:** 1. **Security Enhancement:** This commit addresses a
-> parsing vulnerability where malformed attributes could be silently
-> ignored. The original `nla_parse_nested_deprecated()` stops parsing at
-> the first invalid entry, potentially allowing trailing malformed data to
-> bypass validation. 2. **Robustness Fix:** The change ensures all netlink
-> attributes are fully contained within the parent attribute bounds,
-> preventing potential buffer over-reads or under-reads that could lead to
-> security issues. 3. **Pattern Consistency:** Looking at the git blame
-> output (lines 3085-3087), we can see that
-> `nla_parse_deprecated_strict()` was already introduced in 2019 by commit
-> 8cb081746c031 and is used elsewhere in the same file for similar
-> validation (e.g., `validate_and_copy_check_pkt_len()` function). 4.
-> **Low Risk:** This is a small, contained change that only affects input
-> validation - it doesn't change functionality or introduce new features.
-> The change is defensive and follows existing patterns in the codebase.
-> 5. **Similar Precedent:** This commit is very similar to the validated
-> "Similar Commit #2" which was marked for backporting (status: YES). That
-> commit also dealt with netlink attribute validation safety in
-> openvswitch (`validate_set()` function) and was considered suitable for
-> stable trees. 6. **Critical Subsystem:** Open vSwitch is a critical
-> networking component used in virtualization and container environments.
-> Input validation issues in this subsystem could potentially be exploited
-> for privilege escalation or denial of service. 7. **Clear Intent:** The
-> commit message explicitly states this "enhances robustness" and ensures
-> "only fully validated attributes are copied for later use," indicating
-> this is a defensive security improvement. **Risk Assessment:** - Very
-> low regression risk - No API changes - Only affects error handling paths
-> - Follows established validation patterns in the same codebase This
-> commit fits perfectly into the stable tree criteria: it's an important
-> security/robustness fix, has minimal risk of regression, is well-
-> contained, and addresses a clear validation vulnerability in a critical
-> kernel subsystem.
 
-This change is one of two patches created for userspace action.  With an
-intentional split - one for net and one for net-next  First one was the
-actual fix that addressed a real bug:
-  6beb6835c1fb ("openvswitch: Fix unsafe attribute parsing in output_userspace()")
-  https://lore.kernel.org/netdev/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com/
 
-This second change (this patch) was intended for -next only as it doesn't
-fix any real issue, but affects uAPI, and so should NOT be backported.
-
-Best regards, Ilya Maximets.
-
+On 6/4/2025 3:06 PM, Johan Hovold wrote:
+> On Wed, Jun 04, 2025 at 01:32:08PM +0800, Miaoqing Pan wrote:
+>> On 6/4/2025 10:34 AM, Miaoqing Pan wrote:
+>>> On 6/3/2025 7:51 PM, Johan Hovold wrote:
+>>>> On Tue, Jun 03, 2025 at 06:52:37PM +0800, Baochen Qiang wrote:
+>>>>> On 6/2/2025 4:03 PM, Johan Hovold wrote:
+>>>>
+>>>>>> No, the barrier is needed between reading the head pointer and
+>>>>>> accessing
+>>>>>> descriptor fields, that's what matters.
+>>>>>>
+>>>>>> You can still end up with reading stale descriptor data even when
+>>>>>> ath11k_hal_srng_dst_get_next_entry() returns non-NULL due to
+>>>>>> speculation
+>>>>>> (that's what happens on the X13s).
+>>>>>
+>>>>> The fact is that a dma_rmb() does not even prevent speculation, no
+>>>>> matter where it is
+>>>>> placed, right?
+>>>>
+>>>> It prevents the speculated load from being used.
+>>>>
+>>>>> If so the whole point of dma_rmb() is to prevent from compiler
+>>>>> reordering
+>>>>> or CPU reordering, but is it really possible?
+>>>>>
+>>>>> The sequence is
+>>>>>
+>>>>>      1# reading HP
+>>>>>          srng->u.dst_ring.cached_hp = READ_ONCE(*srng-
+>>>>>> u.dst_ring.hp_addr);
+>>>>>
+>>>>>      2# validate HP
+>>>>>          if (srng->u.dst_ring.tp == srng->u.dst_ring.cached_hp)
+>>>>>              return NULL;
+>>>>>
+>>>>>      3# get desc
+>>>>>          desc = srng->ring_base_vaddr + srng->u.dst_ring.tp;
+>>>>>
+>>>>>      4# accessing desc
+>>>>>          ath11k_hal_desc_reo_parse_err(... desc, ...)
+>>>>>
+>>>>> Clearly each step depends on the results of previous steps. In this
+>>>>> case the compiler/CPU
+>>>>> is expected to be smart enough to not do any reordering, isn't it?
+>>>>
+>>>> Steps 3 and 4 can be done speculatively before the load in step 1 is
+>>>> complete as long as the result is discarded if it turns out not to be
+>>>> needed.
 > 
->  net/openvswitch/flow_netlink.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>>> If the condition in step 2 is true and step 3 speculatively loads
+>>> descriptor from TP before step 1, could this cause issues?
+>>
+>> Sorry for typo, if the condition in step 2 is false and step 3
+>> speculatively loads descriptor from TP before step 1, could this cause
+>> issues?
 > 
-> diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-> index 518be23e48ea9..ad64bb9ab5e25 100644
-> --- a/net/openvswitch/flow_netlink.c
-> +++ b/net/openvswitch/flow_netlink.c
-> @@ -3049,7 +3049,8 @@ static int validate_userspace(const struct nlattr *attr)
->  	struct nlattr *a[OVS_USERSPACE_ATTR_MAX + 1];
->  	int error;
->  
-> -	error = nla_parse_nested_deprecated(a, OVS_USERSPACE_ATTR_MAX, attr,
-> +	error = nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX,
-> +					    nla_data(attr), nla_len(attr),
->  					    userspace_policy, NULL);
->  	if (error)
->  		return error;
+> Almost correct; the descriptor can be loaded (from TP) before the head
+> pointer is loaded and thus before the condition in step 2 has been
+> evaluated. And if the condition in step 2 later turns out to be false,
+> step 4 may use stale data from before the head pointer was updated.
+> 
+
+Actually, there's a missing step between step 3 and step 4: TP+1.
+
+TP+1:
+	srng->u.dst_ring.tp += srng->entry_size
+
+TP is managed by the CPU and points to the current first unprocessed 
+descriptor, while HP and the descriptor are asynchronously updated by 
+DMA. So are you saying that the descriptor obtained through speculative 
+loading has not yet been updated, or is in the process of being updated?
+
+
 
 
