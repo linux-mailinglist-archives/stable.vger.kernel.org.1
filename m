@@ -1,124 +1,289 @@
-Return-Path: <stable+bounces-151309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABD2ACDA56
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:54:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB90ACDA79
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 11:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5E603A4B29
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCAF5173D89
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 09:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6C028A408;
-	Wed,  4 Jun 2025 08:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DD628C849;
+	Wed,  4 Jun 2025 09:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Or78OMGs"
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="GDL3iS1j"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0481DED6D
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 08:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C2A28C5A1
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 09:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749027264; cv=none; b=AhZrn3q5yje8TGUErrMnAF5VGmz/NiS7e/7zW3BLxbQcC8QiF+9a/RTG/QLRA+IzOY8DJj5OM1Ml0cP25+mUQATNB5yC3TnTbicHsKDJYT4MV4MiiboA/9Hb/C75oTFFP68anrUc8IKaHLrg71kuONw2wnWm4P5nQlw49nkFIt4=
+	t=1749027782; cv=none; b=MuGpJrXPrnclbVWmKgnoT3RACGhEVjT7ha+9sDHAEtUsOiG/vU4nF+zr2C3h38vthjxWdsh+kRqsPmvlrEj5wqolt3mX4mQhx15AFs8+BvoqTyQb15WAuGCLAJAnPwJAI6xJy+OVs6EFJWQrOpx3pmR0p5OjfUeMw0rf7tJrOxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749027264; c=relaxed/simple;
-	bh=g0ppivEkoM1bf4Myn91O2YnyqHNJElL0LhGMOzqDmBs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WWRrGpPxjFy7gGKCBBIXgJHd/UtHLKsKqewilQT/NDtENmBz4oLdIHof6is6lzSfHMX4cmGU5OJQ6KBoDWQ0IMAYn0iMUCi6tUKAJmithM1ts60kjdYXgLoVKdyDVcNeYRH2mbZ4i4JUfF0M/nDVBJSGQvtziljj0WNj+suBWJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Or78OMGs; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749027261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AvsoGpn4vrP9au9LXRzA3/0BBfANYNVTOadYG+jd6TY=;
-	b=Or78OMGsoG1g9Lfdn8fp50sf1Teu1M0vbg2F2hFTogBzrYl9kAC0tbu02hyPy7JvFUhe39
-	C4jnmNRNd70+Z+1QJS7oiUxdX15OmCF+lj6Bssm0t65X6GZspCzgkCsbc5uEyo1F5T8ExN
-	a2sF/mFtapjNKszY32ccX8x8TbPTWv0=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644--zENBJVxM8C03xyJdZj4xQ-1; Wed, 04 Jun 2025 04:54:19 -0400
-X-MC-Unique: -zENBJVxM8C03xyJdZj4xQ-1
-X-Mimecast-MFC-AGG-ID: -zENBJVxM8C03xyJdZj4xQ_1749027259
-Received: by mail-yb1-f199.google.com with SMTP id 3f1490d57ef6-e7b4e43d31aso4294632276.1
-        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 01:54:19 -0700 (PDT)
+	s=arc-20240116; t=1749027782; c=relaxed/simple;
+	bh=CoQ2oPycx3vh52+agnKYGvJyBR+SJ/Eg1jXsNpHVIyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EEWPJF+oRpJiio71CgP1+edR98xH2NWR7hS/f4QecfuhsAweCHu8GP2mBdBIsc/B/nEigiaQM+FGgGk3iKpfuUM2Xoomar78/PPeuapFxCPUpkpCfdaebYmZjZfccVpn+sxSxfj2TRWwjnJ56D9EPy1vEbFekewDmSUk6jWYBTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=GDL3iS1j; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ad51ba0af48so135489066b.0
+        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 02:03:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1749027779; x=1749632579; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OWXCxfPn5mxMyAc/RvJYvkJY+WkXczRM7a4xRFzAqfc=;
+        b=GDL3iS1jlIihoXGzQ2/CNjs4Vn1Bq4QhfHzEezc9nPV61fKkSkdgD/wGU/4o/vpzuR
+         zhYXdGD2t7coTqvn1W3RHsYeb1SXBprDFqXFQt15K5rKEPdB3XkQz0O9U9RP/p82vDdI
+         8SqilzKdT+X7NJqYIKeZzbdXlMHtt9B1QXRGA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749027259; x=1749632059;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AvsoGpn4vrP9au9LXRzA3/0BBfANYNVTOadYG+jd6TY=;
-        b=nTGgT5tPlHg05MvnT+bH+eVla2ZxAl9MvRxwvMYm3Ih5aJoJiT48brsnwo5UviURlf
-         pew5k21QuHWXcFIuLIyLAb2kbYkejWnAfGJOlqksky5LTzzz/llCn/hT2n9wWUReAlkp
-         9ckuyI8bXBfJWkQPAxoYzDArEPTsoXQ/b27vZhWtq9tUtkTP4L4V8nJj3C9sXXK4Py2f
-         f1Do7YT0+XkADxi1COY54rTztb5DTgxTLkCLPDKZlQdjV9qsVU0Su819Ak+iesGIUCrk
-         PAJI71Hzj1axaW2wYhRhmutOYrIvdRTcsZrM7QoUzy2AiNu/BJvDIV6MJ/ITzG7lsF8w
-         66UA==
-X-Gm-Message-State: AOJu0YwLNooOPDvsXqPLPtyNi8GvE9mRvF8KUlPr4NF0Axll+0AE0u6D
-	v5HP1rsyzkFZh/kO4v4JzVKQtPgKpj+eMErzzfdLlF5Qw4BZoVtQ3WpPvtAEarGQtfhHmliNYug
-	RAm2P8NfMsXPnUJSDyyDtbRSuaFO1S7W2FKefAP4F15XCYhOcJJEzOMZlqRDEEZ2AYoDFW7+2Fs
-	AkhmjHFMQp0G0qqs4Ww2Z1MDE/NRzrS3aP
-X-Gm-Gg: ASbGncvtMbk2hxQQAMvFbLlVnZD2q1Uj46dd780ycqdfCi3bY5CPTrN3OUAUKjJDRvt
-	HJZfePSOKdxwaMwPOgyABbhpYeAke9qCG0SKwl8Xmuy4eJnZ7ukH7foP5CRzKXBioCx9PSTTzC3
-	5MGwA=
-X-Received: by 2002:a05:6902:2d06:b0:e7d:d002:da94 with SMTP id 3f1490d57ef6-e8179c0191dmr2531828276.20.1749027258985;
-        Wed, 04 Jun 2025 01:54:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2C121V7OjYlteSOkifolsWZy/x2Ol1f4a1SiVTnu+7fvufC/08o+ydl4x6iDTlhXDzxen3FpEn318g2cKE4M=
-X-Received: by 2002:a05:6902:2d06:b0:e7d:d002:da94 with SMTP id
- 3f1490d57ef6-e8179c0191dmr2531819276.20.1749027258689; Wed, 04 Jun 2025
- 01:54:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749027779; x=1749632579;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OWXCxfPn5mxMyAc/RvJYvkJY+WkXczRM7a4xRFzAqfc=;
+        b=XuAlhR/uPhcYiu6t38nhztYo9ReMGrNnX54oB9cdHGL+dLDGNKEQowy0I57s3LzvIs
+         FcTet8pihvgpCAA1wCPz+1gbsyaTkgKN/Jh0YyzotAXLIeIQBYLd6yyfBDFrxxOapvNQ
+         FGpKsPSoTz93XFB5tFE73MpdF/0cfIRKRTI8KqllWOJJILR/FFDxn2U8CDYhS0di/q3f
+         gnmlVTwIE8VvRYkdkDext8BPVpsLWAA6osrmEUM+ZJrN0n2xy/RFGIl25uFiJx2sRWt1
+         DzfeiFg0tJ/577doIqwefwNmcPPFGmpBvV9Iawbj+mxeGyZxszwRDwkEpzG6kz+bA1PR
+         BJUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIkEz68IcJ2mQAn/lfxoLYV5YYKuTRMG77FfXan3dcCbZMDwirkhMEUkMnvTUScOobSUcqBr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzhcu/7JrBSM1Xc8Ml+ky1OT6ytVkqrUuO+m5zE/kla1c95GEDR
+	JeDnDdyNfU6j6dv0jB9ccL93s2i6zHi2695I63ZUx4cGmi5aLhe2A0g0v+Rlie9V5RI=
+X-Gm-Gg: ASbGncveY/9xDf8vKAs6XsUxTFjdE9TUftxMY/ggliJP/4E6+DO0KA6XEroHe7vXe/e
+	Vp9jf7xr6J0fLGHxqIWmE2xOqsZOnC2YQ/HWJFMZns15ixkMSI2tDjwXUJ0n5wbuoAD2wBGmdtC
+	FKeQXxG4S0IEQOpwlNhzeK0TjPIbbnfAgpFYkMj/wuzg8dOHwCmXuVxvhIPh0uk+jQMrN49nsrz
+	4OIaixJenYJxEFrgqgg5rj+oatkBrNmFueCYuWKfLjQMQm71puZtYxiOrB0X2Eq8arYkJXL+v4u
+	p+D6rFCRKcTYiDnq76Bhij4rSg7QsPFmLmGS1gtUm06ps+CCiR1Gnl3uXSExq54=
+X-Google-Smtp-Source: AGHT+IEsJ97eDX1ULIm8eXkHndMHDh6m9SOTcFVQvV2ShGufPJtYbcCaZ0sz612r1GZStWeNAsIcRg==
+X-Received: by 2002:a17:907:7284:b0:ad5:7048:5177 with SMTP id a640c23a62f3a-adde5fe14camr526806866b.23.1749027777891;
+        Wed, 04 Jun 2025 02:02:57 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5dd045c8sm1074517766b.103.2025.06.04.02.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jun 2025 02:02:57 -0700 (PDT)
+Date: Wed, 4 Jun 2025 11:02:55 +0200
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>,
+	DRI Development <dri-devel@lists.freedesktop.org>,
+	intel-xe@lists.freedesktop.org,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	stable@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Simona Vetter <simona.vetter@intel.com>
+Subject: Re: [PATCH 1/8] drm/gem: Fix race in drm_gem_handle_create_tail()
+Message-ID: <aEALvw-H8OmCnNWD@phenom.ffwll.local>
+References: <20250528091307.1894940-1-simona.vetter@ffwll.ch>
+ <20250528091307.1894940-2-simona.vetter@ffwll.ch>
+ <2e60074d-8efd-4880-8620-9d9572583c88@suse.de>
+ <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602134340.906731340@linuxfoundation.org> <20250602134341.897528821@linuxfoundation.org>
- <CAGxU2F7fRUn1H_-CF5SJJ1DZDEt3xfm+er0kqa_XS9nn6uJi0g@mail.gmail.com> <2025060443-morse-reentry-9573@gregkh>
-In-Reply-To: <2025060443-morse-reentry-9573@gregkh>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Wed, 4 Jun 2025 10:54:07 +0200
-X-Gm-Features: AX0GCFuyEeJEQ6h8-T5G-nE_57PXCHmHGBprnsW2EwdMbKXOArs7EAI3zPnaWyU
-Message-ID: <CAGxU2F60xQoWT3JBHQfGAgjPSJAMwVpynbiLXnbZw72Q2QqJ2Q@mail.gmail.com>
-Subject: Re: [PATCH 6.6 024/444] vhost_task: fix vhost_task_create() documentation
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aD7gcvEaZzoDRRc1@phenom.ffwll.local>
+X-Operating-System: Linux phenom 6.12.25-amd64 
 
-On Wed, 4 Jun 2025 at 10:40, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jun 03, 2025 at 02:18:12PM +0200, Stefano Garzarella wrote:
-> > On Mon, 2 Jun 2025 at 16:04, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> >
-> > It seems that commit cb380909ae3b ("vhost: return task creation error
-> > instead of NULL") is not backported to 6.6, so we can skip this patch.
-> > BTW it's just a fix in a comment, so if it's too late, it should not
-> > be a big issue.
-> >
-> > Just for my understanding, next time should I add a Fixes tag in this
-> > case, also if the patch doesn't touch code?
->
-> Yes, as you did say that in the changelog, which is what triggered this
-> backport, but our tools that automatically check for Fixes: tags missed
-> it :(
+On Tue, Jun 03, 2025 at 01:45:54PM +0200, Simona Vetter wrote:
+> On Mon, Jun 02, 2025 at 05:15:58PM +0200, Thomas Zimmermann wrote:
+> > Hi
+> > 
+> > Am 28.05.25 um 11:12 schrieb Simona Vetter:
+> > > Object creation is a careful dance where we must guarantee that the
+> > > object is fully constructed before it is visible to other threads, and
+> > > GEM buffer objects are no difference.
+> > > 
+> > > Final publishing happens by calling drm_gem_handle_create(). After
+> > > that the only allowed thing to do is call drm_gem_object_put() because
+> > > a concurrent call to the GEM_CLOSE ioctl with a correctly guessed id
+> > > (which is trivial since we have a linear allocator) can already tear
+> > > down the object again.
+> > > 
+> > > Luckily most drivers get this right, the very few exceptions I've
+> > > pinged the relevant maintainers for. Unfortunately we also need
+> > > drm_gem_handle_create() when creating additional handles for an
+> > > already existing object (e.g. GETFB ioctl or the various bo import
+> > > ioctl), and hence we cannot have a drm_gem_handle_create_and_put() as
+> > > the only exported function to stop these issues from happening.
+> > > 
+> > > Now unfortunately the implementation of drm_gem_handle_create() isn't
+> > > living up to standards: It does correctly finishe object
+> > > initialization at the global level, and hence is safe against a
+> > > concurrent tear down. But it also sets up the file-private aspects of
+> > > the handle, and that part goes wrong: We fully register the object in
+> > > the drm_file.object_idr before calling drm_vma_node_allow() or
+> > > obj->funcs->open, which opens up races against concurrent removal of
+> > > that handle in drm_gem_handle_delete().
+> > > 
+> > > Fix this with the usual two-stage approach of first reserving the
+> > > handle id, and then only registering the object after we've completed
+> > > the file-private setup.
+> > > 
+> > > Jacek reported this with a testcase of concurrently calling GEM_CLOSE
+> > > on a freshly-created object (which also destroys the object), but it
+> > > should be possible to hit this with just additional handles created
+> > > through import or GETFB without completed destroying the underlying
+> > > object with the concurrent GEM_CLOSE ioctl calls.
+> > > 
+> > > Note that the close-side of this race was fixed in f6cd7daecff5 ("drm:
+> > > Release driver references to handle before making it available
+> > > again"), which means a cool 9 years have passed until someone noticed
+> > > that we need to make this symmetry or there's still gaps left :-/
+> > > Without the 2-stage close approach we'd still have a race, therefore
+> > > that's an integral part of this bugfix.
+> > > 
+> > > More importantly, this means we can have NULL pointers behind
+> > > allocated id in our drm_file.object_idr. We need to check for that
+> > > now:
+> > > 
+> > > - drm_gem_handle_delete() checks for ERR_OR_NULL already
+> > > 
+> > > - drm_gem.c:object_lookup() also chekcs for NULL
+> > > 
+> > > - drm_gem_release() should never be called if there's another thread
+> > >    still existing that could call into an IOCTL that creates a new
+> > >    handle, so cannot race. For paranoia I added a NULL check to
+> > >    drm_gem_object_release_handle() though.
+> > > 
+> > > - most drivers (etnaviv, i915, msm) are find because they use
+> > >    idr_find, which maps both ENOENT and NULL to NULL.
+> > > 
+> > > - vmgfx is already broken vmw_debugfs_gem_info_show() because NULL
+> > >    pointers might exist due to drm_gem_handle_delete(). This needs a
+> > >    separate patch. This is because idr_for_each_entry terminates on the
+> > >    first NULL entry and so might not iterate over everything.
+> > > 
+> > > - similar for amd in amdgpu_debugfs_gem_info_show() and
+> > >    amdgpu_gem_force_release(). The latter is really questionable though
+> > >    since it's a best effort hack and there's no way to close all the
+> > >    races. Needs separate patches.
+> > > 
+> > > - xe is really broken because it not uses idr_for_each_entry() but
+> > >    also drops the drm_file.table_lock, which can wreak the idr iterator
+> > >    state if you're unlucky enough. Maybe another reason to look into
+> > >    the drm fdinfo memory stats instead of hand-rolling too much.
+> > > 
+> > > - drm_show_memory_stats() is also broken since it uses
+> > >    idr_for_each_entry. But since that's a preexisting bug I'll follow
+> > >    up with a separate patch.
+> > > 
+> > > Reported-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> > > Cc: stable@vger.kernel.org
+> > > Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> > > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > > Cc: Maxime Ripard <mripard@kernel.org>
+> > > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > > Cc: David Airlie <airlied@gmail.com>
+> > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+> > > Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+> > > ---
+> > >   drivers/gpu/drm/drm_gem.c | 10 +++++++++-
+> > >   include/drm/drm_file.h    |  3 +++
+> > >   2 files changed, 12 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> > > index 1e659d2660f7..e4e20dda47b1 100644
+> > > --- a/drivers/gpu/drm/drm_gem.c
+> > > +++ b/drivers/gpu/drm/drm_gem.c
+> > > @@ -279,6 +279,9 @@ drm_gem_object_release_handle(int id, void *ptr, void *data)
+> > >   	struct drm_file *file_priv = data;
+> > >   	struct drm_gem_object *obj = ptr;
+> > > +	if (WARN_ON(!data))
+> > > +		return 0;
+> > > +
+> > >   	if (obj->funcs->close)
+> > >   		obj->funcs->close(obj, file_priv);
+> > > @@ -399,7 +402,7 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+> > >   	idr_preload(GFP_KERNEL);
+> > >   	spin_lock(&file_priv->table_lock);
+> > > -	ret = idr_alloc(&file_priv->object_idr, obj, 1, 0, GFP_NOWAIT);
+> > > +	ret = idr_alloc(&file_priv->object_idr, NULL, 1, 0, GFP_NOWAIT);
+> > >   	spin_unlock(&file_priv->table_lock);
+> > >   	idr_preload_end();
+> > > @@ -420,6 +423,11 @@ drm_gem_handle_create_tail(struct drm_file *file_priv,
+> > >   			goto err_revoke;
+> > >   	}
+> > > +	/* mirrors drm_gem_handle_delete to avoid races */
+> > > +	spin_lock(&file_priv->table_lock);
+> > > +	obj = idr_replace(&file_priv->object_idr, obj, handle);
+> > > +	WARN_ON(obj != NULL);
+> > 
+> > A DRM print function would be preferable. The obj here is an errno pointer.
+> > Should the errno code be part of the error message?
+> > 
+> > If it fails, why does the function still succeed?
+> 
+> This is an internal error that should never happen, at that point just
+> bailing out is the way to go.
+> 
+> Also note that the error code here is just to satisfy the function
+> signature that id_for_each expects, we don't look at it ever (since if
+> there's no bugs, it should never fail). I learned this because I actually
+> removed the int return value and stuff didn't compile :-)
 
-Sorry about that, I'll keep that in mind for next times.
+Ok this part was nonsense, I mixed it up with handle_delete(). I still
+don't think we should return an error code here, because we've
+successfully installed the handle. It's just that something happened with
+the idr that should be impossible, so all bets are off.
+-Sima
 
->
-> I'll go drop this now, thanks!
+> I can use drm_WARN_ON if you want me to though?
+> 
+> I'll also explain this in the commit message for the next round.
+> -Sima
+> 
+> > 
+> > Best regards
+> > Thomas
+> > 
+> > > +	spin_unlock(&file_priv->table_lock);
+> > >   	*handlep = handle;
+> > >   	return 0;
+> > > diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
+> > > index 5c3b2aa3e69d..d344d41e6cfe 100644
+> > > --- a/include/drm/drm_file.h
+> > > +++ b/include/drm/drm_file.h
+> > > @@ -300,6 +300,9 @@ struct drm_file {
+> > >   	 *
+> > >   	 * Mapping of mm object handles to object pointers. Used by the GEM
+> > >   	 * subsystem. Protected by @table_lock.
+> > > +	 *
+> > > +	 * Note that allocated entries might be NULL as a transient state when
+> > > +	 * creating or deleting a handle.
+> > >   	 */
+> > >   	struct idr object_idr;
+> > 
+> > -- 
+> > --
+> > Thomas Zimmermann
+> > Graphics Driver Developer
+> > SUSE Software Solutions Germany GmbH
+> > Frankenstrasse 146, 90461 Nuernberg, Germany
+> > GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+> > HRB 36809 (AG Nuernberg)
+> > 
+> 
+> -- 
+> Simona Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
 
-Great, thanks!
-Stefano
-
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
