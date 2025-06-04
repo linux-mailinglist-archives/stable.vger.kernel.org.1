@@ -1,275 +1,341 @@
-Return-Path: <stable+bounces-151453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F13ACE453
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:29:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8887DACE50A
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 21:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7788C3A7CB1
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 18:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C898C1893D94
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 19:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA24171A1;
-	Wed,  4 Jun 2025 18:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C014422F164;
+	Wed,  4 Jun 2025 19:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9Dzfw50"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="k4E7Ae6T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2088.outbound.protection.outlook.com [40.107.223.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292561D5CC4;
-	Wed,  4 Jun 2025 18:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749061792; cv=none; b=BkK+pDCPVgiC+P1Dy+CBNOcjPhD+Dfba6vXuo/YyxsmlJS7grFmAvElL+b3Ez88Qh3h2fpgW4sH7KYCl2l/iBokV4tW9VSnuy9HHzX8Fm67rPupk/QWCiBbD3+JQQNnR10QSJ1U9fczYlvDaGy/LtbZvzsi53si/cqGX+0OStv0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749061792; c=relaxed/simple;
-	bh=PXhhNODjG+cNsHNAcTpDxpcRWqKbXa6CHcvSPuhg5MM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HJnwdvF1+kwHfITGOFHtsHv4j3WdDR/vVcZ/lpLk9WksQ3zK+Z3A/r5YmVu6JkB5D0l2p10lePY9dd4MW+zRNAb1OrqNvUEDrv3/jWwkhrvlTNl7iG/MKbK8zPJBaEb3lIME8w2Pgajx4bwkpuT2PVZaJibKRKzGCB/anZ/nWrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9Dzfw50; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-306b6ae4fb2so188557a91.3;
-        Wed, 04 Jun 2025 11:29:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749061790; x=1749666590; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qBOjMHTgyBfthw0tiIniALs2SFPGVC9Hhjqg9y5VsQU=;
-        b=M9Dzfw50H7KG6lkT93PPe+WzDiXzRQJ4YbNdVRitWlYO3AG9yVKC3oAB5PWamQXpxU
-         iCtX/PlH9q1LJ0jt7rZvw/5x74OckzFqj99hz9xtiPCCCQyxPVYiTAzlpGQS/DRu8Ofd
-         5Xsza/XIUO4x+Ofszwc2a1kUOrbvK8d9OC9NNnmLHO7pH1j6Oef06MswRJ1n2VQC5Qpi
-         H4IkZX4dYlsnMToUmF/OC1HJF/68ctRgJtmLoq5qDl5ufLZCloQoL+mkFSrA9pgnGSct
-         yyH8ImvJU83BTgQqSjLf3dRDznONlDw2TuHTHsBzpEWnDpAv/aSPcEzmWBTRW8v0ruiE
-         nWaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749061790; x=1749666590;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qBOjMHTgyBfthw0tiIniALs2SFPGVC9Hhjqg9y5VsQU=;
-        b=cy8yNluLF2PjTFO2WXSggV5iVB5IsM9KS07Ypjnmrg+8Uh5ur2bHn0qmfvQO4G2AAL
-         c3+n84sUpCRXZsRfqANPeHqN0+ho+NP3AF3inPHS3FqadxXdmnoZF77+1TFgClOxqU+H
-         pqwP4MnhidHVQz0Q8IORPyw2moKJf6b9+D1s/Sxt5CxvceLzpdkI+fcyGaMbxqii9PHs
-         VnbhJKaif+a9nQvoXUdz5Qoss/TrsxuXpgNFqEo09cuIK+xvlUwWSOOWknDuJgY/Tkvv
-         SLJ+TbjFiIter4YTali51tv3srYLUbWW+bUWDfVfRHSiTziCFvU/HFRVrmMB+kWlyjp7
-         fowg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpLb3Lmnl0HMqK2HFmJLToHJiwIcuOf40KHLgMvk0CFqEJxxtj4hTn8gWtRL2WOy0ZJZtj0jV2JUDXdPY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ7j307YJYYUkkgFPzUvfOWjGRAg7g3lw+mAwKiPGmtiP5l8LU
-	8Hqet5TOk45vpuoGkk5JhRmYacmJz+1ub9I3B3YjxHKvnWjObuxvSWAo
-X-Gm-Gg: ASbGnctXABJmu3Ka1ce6JhC2M0PoFgBpKUrrkCZmzpAhnefqZWz51mFLzC8KdUOhWIo
-	UCxG4yWjJWZN2PdvhMsO9kKjGzs43JpuH5CZ3b3/jf3MnifSKk+bbR4b0kGkWNSea97MhvLZ5jE
-	7jwHDpx0MzEP/7PYZd0ELnqHJ/3bmSyjI8EoLSKpzVJ/GSWWq6qNx+/krYkwh2OPF4+4Su2Otqu
-	pGR92sB+gJ1Y2BSwjYO+qj5JDpXzuOi5JKAos9IyrJu1QtnQyo9Sa2Aew9YjVjHEiNPfmFlo1ns
-	6nBLolft7HBSeIs8LKmbhNImhkhJfqXMfGvxx1mvAOg8Pd7zx1jVf3C6PWStreOr397M65i5W9e
-	fqhU=
-X-Google-Smtp-Source: AGHT+IHgXXIILR3WmLPSIeFXhuYxVqOuCyJSD5UAr00UNN9VGJr7ID5l5RzwQwieEltc73vttdrpPg==
-X-Received: by 2002:a17:90b:3d07:b0:312:def0:e2dc with SMTP id 98e67ed59e1d1-3130ccf6f89mr5559806a91.7.1749061790274;
-        Wed, 04 Jun 2025 11:29:50 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506cf53a9sm106955545ad.196.2025.06.04.11.29.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 11:29:49 -0700 (PDT)
-Message-ID: <630fc4c2-dacb-45c8-9cca-0b843365b212@gmail.com>
-Date: Wed, 4 Jun 2025 11:29:47 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A876422D790
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 19:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.88
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749065877; cv=fail; b=S8ndA1rF2QF9V6N7MyIfvxw5Q9MOkwbTh2R36E7DEKorkTU7lBls3dx9tB2/bgEwv6OLNzTakDNYjui6dXZSNTKNzUbR6EortxT1KVQP+muoEMR1DR+Ct8nugIu84Dw1z5Ln6fcKBXWWIrwic13krpAf8rKD96skEXAbl+LZsgM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749065877; c=relaxed/simple;
+	bh=nnu5pfYGAjGya1FETHuZzdI1Z9AmZ6vE59b9W/EcQ8A=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i7a+ZdZ4jCu2jEvyw+3ylN7L3naI0RA0B2SepeNEmSHqb4hr2amUUfjESl2uGsZc8UI+KoeOcA5XDW78egBpsvHHcSX7xwb6+mf4S50jK5BerG9gmCT1egRd7hK7ouVIUdqDydfbQaJsJJ0jpy6gG9KlPJ/Af1j+R67beb49a90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=k4E7Ae6T; arc=fail smtp.client-ip=40.107.223.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rBBax5MG4csR/ijAhpz+rosPX5nvWxJOFu4QKQgsxP8m4GoNSGnVfXpTjfERT4TKDHy/1wxqOC0KjEGwsb09BLqsIxWbNtOI5OhKvuP+plgkFvlS8fDbKxBepNRttaEpJ3+C0mtLKn4OYdk2T3x90lRucF/dYu3npmzn+QVd5A+UtTjpk8RAoxjylZ6c3qEoGXMfTDkphkZHFh5B/3uAjaFcEixCVrscyxoZdSCOTdnGZjdDPB3bV+X7gABntYQpR6HeEmIYZvS8PICkrxz7jyMDJV5pgLpRn570rxrKqZcOrKydlO/p0scpTUR/9y68YGQH5u2TSSyqYpBV8uzVwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mRNxu+xVf9DoZc3qOS+cW0bjXSVfZ0Q7ekrf08naWhg=;
+ b=JMuw+IiJYdeT9pHwwIzCmu9BiHmNaUj02uxQ+L8AGoUO5cTaUiDks1CE+VAIK7Wqvm+lrJRbFLT9Mem7SD+D94bMYWoeUJwf+yaY6faUk2+grSP5fiD3J62yHg040rnP9dYdKoS7q1kFnAI6uaZtaZtnp5/7oy6cI3/21mOcrsXccR7CNwhkr+MS3zfqSXvPnmfcHxe3zDybMQnS8Q6wkE0+4JFbNfxHgzjtNih5CHe+1jFy3sCFk82jAM6NfNrhn6LNP40Zi8+ffVA+54DpUOWDw8nQ5sbYO1US4aE5uz2Km3i3i1cGKWjx2KY+8ITfzXRpgJjpu51zDwphvovmZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mRNxu+xVf9DoZc3qOS+cW0bjXSVfZ0Q7ekrf08naWhg=;
+ b=k4E7Ae6TIC4LvzPqRmKoT5i1Pg6xRiGWMjZdZjQ4ugsg9WtQSj9t/PRj3+/lr6afpNSL80B/dQz52AxEk7TPvG030TuPdeVYMlkppqoiyelrPqSjAKk2JS5CLDcb0a5+47AQnOEIH7ozxXYblM9jEdhWe9i3FobIHFDiyH7W9CM=
+Received: from CH3P220CA0006.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1e8::34)
+ by MW5PR12MB5622.namprd12.prod.outlook.com (2603:10b6:303:198::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.36; Wed, 4 Jun
+ 2025 19:37:52 +0000
+Received: from DS3PEPF000099E2.namprd04.prod.outlook.com
+ (2603:10b6:610:1e8:cafe::7e) by CH3P220CA0006.outlook.office365.com
+ (2603:10b6:610:1e8::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.24 via Frontend Transport; Wed,
+ 4 Jun 2025 19:37:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099E2.mail.protection.outlook.com (10.167.17.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8792.29 via Frontend Transport; Wed, 4 Jun 2025 19:37:51 +0000
+Received: from smtp.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 4 Jun
+ 2025 14:37:49 -0500
+From: Alex Hung <alex.hung@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
+ Zuo" <jerry.zuo@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Ray Wu
+	<Ray.Wu@amd.com>, Alex Hung <alex.hung@amd.com>, Peichen Huang
+	<PeiChen.Huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
+ Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>, Cruise Hung
+	<cruise.hung@amd.com>
+Subject: [PATCH 02/23] drm/amd/display: Add dc cap for dp tunneling
+Date: Wed, 4 Jun 2025 12:43:13 -0600
+Message-ID: <20250604193659.2462225-3-alex.hung@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250604193659.2462225-1-alex.hung@amd.com>
+References: <20250604193659.2462225-1-alex.hung@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/270] 5.10.238-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250602134307.195171844@linuxfoundation.org>
- <4c608184-5a64-4814-a70a-d2395662d437@gmail.com>
- <52e321d9-2695-4677-b8bf-4be99fc0d681@gmail.com>
- <2025060344-kiwi-anagram-fc9e@gregkh>
- <b60e753c-eb13-46af-9365-1b33ae2e7859@gmail.com>
- <2025060412-cursor-navigate-126d@gregkh>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <2025060412-cursor-navigate-126d@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099E2:EE_|MW5PR12MB5622:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1dd1f1b4-1420-4dd9-ff21-08dda39f4b61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JdogG7KZpkOwrNzSFD8ooF9AL+HAG4d7fT4SgvtOpdixw7NHQnO1DhlKcLwc?=
+ =?us-ascii?Q?IbovS+tb3EH0FtzBTdebWeYG98sP9pxr+Df+A39+URNMdlZTTBFkgH9cWOfz?=
+ =?us-ascii?Q?Z5chN3ur/xT7bE0HgGs33Wz0HLL+QIXhDcReNzbrLMiNnJkDki3/5howP46L?=
+ =?us-ascii?Q?cVZMsfyzGMgxtcpK2M8ZUn3EWJgJ4OfZpQ5wH5qW1vBRSKSQ9rBAbJI8lwYJ?=
+ =?us-ascii?Q?uPfgw0GJQAcgzJqhcXeuHPpVPq7iyTJ6qkFI3rLG4SY1G3sVWL72M3caqMlZ?=
+ =?us-ascii?Q?hw0zVlb9mgWicyfICf9XpPmZeeWMyC3fXxmFhi77v16KnaPVhlkq6r9cpu/p?=
+ =?us-ascii?Q?FwRVyP8yUtxuUPhcyN1C8HJFo+sXTH+PbtfgQ/3+NHPT4XIZx3tItq3eI0pG?=
+ =?us-ascii?Q?977fhNH2HI0vdiYItGnvaYzFlXyh1EzOxINfNSvoSy4P5bU1owFHS2DWN48/?=
+ =?us-ascii?Q?+FeZCe8aGgc4uAlnPTy+FfvUrf69ox5rgTKckdG9ku8zx59WL47CVCO07BoF?=
+ =?us-ascii?Q?6st8nmAqQvziwl7lc90Sw6lqq5kAykc6zLVSYbJl2+6tUgiGni+5spWGu0BV?=
+ =?us-ascii?Q?F+OxxtyFbfA8nSaQ7KZVEEthKsSkIWF/VVJIGR1zSk1qDpRCzAccIzv9DnZ5?=
+ =?us-ascii?Q?sUSYWy0C8asxQj8eCb0rsuHtHsdGmIuZTkLC8EOSEY/bi+jlJ0GRBL6UBLMX?=
+ =?us-ascii?Q?aMwGtiMRCVyWspmuFy/2kbmFoTXe4IpXH9u5VdjYz9WwqHLD88ZfxZi75fQq?=
+ =?us-ascii?Q?lRYJHq6YQcoup9ajZA2Alqhk1+igX0FkK6Hach5gHtDerbn8yItugH1FZ+fC?=
+ =?us-ascii?Q?uV96XeC1cx948TofhbzcpLYjOdT1uwC1o4quzI9tFsiHA/LQiyF7lGVTPMBq?=
+ =?us-ascii?Q?E3kNNp5F05kaffnLkmBY9EIGiAsIsxT4uW5H42+SLbAkYQzM76tpNcKegsui?=
+ =?us-ascii?Q?zDPmaYzVuV2vO3tQmh73Cq0cin8yzjlKJ2vB0DROhe5irnUR9mKVrrV8WpML?=
+ =?us-ascii?Q?7gQGwKLEQwkeFd4zex3W6osWzy73nBKeqHZx7ihvTIjt/UL5JSOe/He3Ac6j?=
+ =?us-ascii?Q?5lwTqIYqmEM10PxG7Zo+S7qt7vgRN53jgYgdOgKiY0dr7d/gcYjaHuHDn2wo?=
+ =?us-ascii?Q?2xHHXd++XMiYvXLxgL2njLgWgAfi3R9mMInsyIBNvIZjd++kejKB/2JRfxs7?=
+ =?us-ascii?Q?vjX3ojvliLXLbuFMldNHh57cl4ij3B/EZLD/JuYeVLt0rRPi9SVmJxxRIw2R?=
+ =?us-ascii?Q?gkMZDqLq37+IfMFMaRSvfLE7t2iBlwjyt/+Io8pPQL1SCKImttso6bJ+vrNp?=
+ =?us-ascii?Q?E2gebZjyovAsdq0cO6ECmpLsI6EgfloGfb3BkQDDmVbgyCWeftQyhq/iPZdi?=
+ =?us-ascii?Q?E85Vd5khvbkS4fqPossh+9M/4ceWeMqQHDG6pOuKg6DAq4XAlKPm+mBCxDcP?=
+ =?us-ascii?Q?a4i8+0BEoeZOPi1c4T+X+L4sfhpdblEjLkpZRJT9Zg46AeVgAcMuSGDuLloE?=
+ =?us-ascii?Q?GlFcdaiSKVhavByrXvGELHPfw+abPbPS1qzJ?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2025 19:37:51.5519
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1dd1f1b4-1420-4dd9-ff21-08dda39f4b61
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF000099E2.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5622
 
-On 6/4/25 01:06, Greg Kroah-Hartman wrote:
-> On Tue, Jun 03, 2025 at 09:00:58AM -0700, Florian Fainelli wrote:
->> On 6/3/25 00:58, Greg Kroah-Hartman wrote:
->>> On Mon, Jun 02, 2025 at 09:50:24AM -0700, Florian Fainelli wrote:
->>>> On 6/2/25 09:49, Florian Fainelli wrote:
->>>>> On 6/2/25 06:44, Greg Kroah-Hartman wrote:
->>>>>> This is the start of the stable review cycle for the 5.10.238 release.
->>>>>> There are 270 patches in this series, all will be posted as a response
->>>>>> to this one.  If anyone has any issues with these being applied, please
->>>>>> let me know.
->>>>>>
->>>>>> Responses should be made by Wed, 04 Jun 2025 13:42:20 +0000.
->>>>>> Anything received after that time might be too late.
->>>>>>
->>>>>> The whole patch series can be found in one patch at:
->>>>>>       https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/
->>>>>> patch-5.10.238-rc1.gz
->>>>>> or in the git tree and branch at:
->>>>>>       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-
->>>>>> rc.git linux-5.10.y
->>>>>> and the diffstat can be found below.
->>>>>>
->>>>>> thanks,
->>>>>>
->>>>>> greg k-h
->>>>>
->>>>> On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
->>>>> BMIPS_GENERIC:
->>>>>
->>>>> Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
->>>>>
->>>>> Similar build warning as reported for 5.4, due to the same commit:
->>>>>
->>>>> commit b47e6abc7dc5772ecb45383d9956f9fcb7fdf33c
->>>>> Author: Jeongjun Park <aha310510@gmail.com>
->>>>> Date:   Tue Apr 22 20:30:25 2025 +0900
->>>>>
->>>>>        tracing: Fix oob write in trace_seq_to_buffer()
->>>>>
->>>>>        commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
->>>>>
->>>>> In file included from ./include/linux/kernel.h:15,
->>>>>                     from ./include/asm-generic/bug.h:20,
->>>>>                     from ./arch/arm/include/asm/bug.h:60,
->>>>>                     from ./include/linux/bug.h:5,
->>>>>                     from ./include/linux/mmdebug.h:5,
->>>>>                     from ./include/linux/mm.h:9,
->>>>>                     from ./include/linux/ring_buffer.h:5,
->>>>>                     from kernel/trace/trace.c:15:
->>>>> kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
->>>>> ./include/linux/minmax.h:20:35: warning: comparison of distinct pointer
->>>>> types lacks a cast
->>>>>       20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
->>>>>          |                                   ^~
->>>>> ./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
->>>>>       26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
->>>>>          |                  ^~~~~~~~~~~
->>>>> ./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
->>>>>       36 |         __builtin_choose_expr(__safe_cmp(x, y), \
->>>>>          |                               ^~~~~~~~~~
->>>>> ./include/linux/minmax.h:45:25: note: in expansion of macro '__careful_cmp'
->>>>>       45 | #define min(x, y)       __careful_cmp(x, y, <)
->>>>>          |                         ^~~~~~~~~~~~~
->>>>> kernel/trace/trace.c:6688:43: note: in expansion of macro 'min'
->>>>>     6688 | min((size_t)trace_seq_used(&iter->seq),
->>>>>          |                                           ^~~
->>>>>
->>>>
->>>> And also this one:
->>>>
->>>> commit e0a3a33cecd3ce2fde1de4ff0e223dc1db484a8d
->>>> Author: Eric Dumazet <edumazet@google.com>
->>>> Date:   Wed Mar 5 13:05:50 2025 +0000
->>>>
->>>>       tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
->>>>
->>>>       [ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
->>>>
->>>>
->>>> on ARM64:
->>>>
->>>> In file included from ./include/linux/kernel.h:15,
->>>>                    from ./include/linux/list.h:9,
->>>>                    from ./include/linux/module.h:12,
->>>>                    from net/ipv4/inet_hashtables.c:12:
->>>> net/ipv4/inet_hashtables.c: In function 'inet_ehash_locks_alloc':
->>>> ./include/linux/minmax.h:20:35: warning: comparison of distinct pointer
->>>> types lacks a cast
->>>>      20 |         (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
->>>>         |                                   ^~
->>>> ./include/linux/minmax.h:26:18: note: in expansion of macro '__typecheck'
->>>>      26 |                 (__typecheck(x, y) && __no_side_effects(x, y))
->>>>         |                  ^~~~~~~~~~~
->>>> ./include/linux/minmax.h:36:31: note: in expansion of macro '__safe_cmp'
->>>>      36 |         __builtin_choose_expr(__safe_cmp(x, y), \
->>>>         |                               ^~~~~~~~~~
->>>> ./include/linux/minmax.h:52:25: note: in expansion of macro '__careful_cmp'
->>>>      52 | #define max(x, y)       __careful_cmp(x, y, >)
->>>>         |                         ^~~~~~~~~~~~~
->>>> net/ipv4/inet_hashtables.c:946:19: note: in expansion of macro 'max'
->>>>     946 |         nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE /
->>>> locksz);
->>>>         |                   ^~~
->>>>
->>>
->>> For both of these, I'll just let them be as they are ok, it's just the
->>> mess of our min/max macro unwinding causes these issues.
->>>
->>> Unless they really bother someone, and in that case, a patch to add the
->>> correct type to the backport to make the noise go away would be greatly
->>> appreciated.
->>
->> Yeah that's a reasonable resolution, I will try to track down the missing
->> patches for minmax.h so we are warning free for the stable kernels.
-> 
-> I tried in the past, it's non-trivial.  What would be easier is to just
-> properly cast the variables in the places where this warning is showing
-> up to get rid of that warning.  We've done that in some backports in the
-> past as well.
-> 
-> good luck!
+From: Peichen Huang <PeiChen.Huang@amd.com>
 
-I see now that in 5.4.295-rc1 you have backported:
+[WHAT]
+1. add dc cap for dp tunneling
+2. add function to get index of host router
 
-commit 36d6c6cd65043d553126b934bf1fcb79dcb58499
-Author: Pan Taixi <pantaixi@huaweicloud.com>
-Date:   Mon May 26 09:37:31 2025 +0800
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Cruise Hung <cruise.hung@amd.com>
+Signed-off-by: Peichen Huang <PeiChen.Huang@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+ drivers/gpu/drm/amd/display/dc/core/dc.c      | 33 +++++++++++++++++++
+ drivers/gpu/drm/amd/display/dc/dc.h           |  8 ++++-
+ .../dc/resource/dcn31/dcn31_resource.c        |  3 ++
+ .../dc/resource/dcn314/dcn314_resource.c      |  3 ++
+ .../dc/resource/dcn35/dcn35_resource.c        |  3 ++
+ .../dc/resource/dcn351/dcn351_resource.c      |  3 ++
+ .../dc/resource/dcn36/dcn36_resource.c        |  3 ++
+ 7 files changed, 55 insertions(+), 1 deletion(-)
 
-     tracing: Fix compilation warning on arm32
-
-     commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
-
-
-which takes care of resolving the warning, thanks!
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 284261cd372f..eaf44e6046b5 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -241,6 +241,7 @@ static bool create_links(
+ 	DC_LOG_DC("BIOS object table - end");
+ 
+ 	/* Create a link for each usb4 dpia port */
++	dc->lowest_dpia_link_index = MAX_LINKS;
+ 	for (i = 0; i < dc->res_pool->usb4_dpia_count; i++) {
+ 		struct link_init_data link_init_params = {0};
+ 		struct dc_link *link;
+@@ -253,6 +254,9 @@ static bool create_links(
+ 
+ 		link = dc->link_srv->create_link(&link_init_params);
+ 		if (link) {
++			if (dc->lowest_dpia_link_index > dc->link_count)
++				dc->lowest_dpia_link_index = dc->link_count;
++
+ 			dc->links[dc->link_count] = link;
+ 			link->dc = dc;
+ 			++dc->link_count;
+@@ -6378,6 +6382,35 @@ unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context)
+ 	else
+ 		return 0;
+ }
++/**
++ ***********************************************************************************************
++ * dc_get_host_router_index: Get index of host router from a dpia link
++ *
++ * This function return a host router index of the target link. If the target link is dpia link.
++ *
++ * @param [in] link: target link
++ * @param [out] host_router_index: host router index of the target link
++ *
++ * @return: true if the host router index is found and valid.
++ *
++ ***********************************************************************************************
++ */
++bool dc_get_host_router_index(const struct dc_link *link, unsigned int *host_router_index)
++{
++	struct dc *dc = link->ctx->dc;
++
++	if (link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
++		return false;
++
++	if (link->link_index < dc->lowest_dpia_link_index)
++		return false;
++
++	*host_router_index = (link->link_index - dc->lowest_dpia_link_index) / dc->caps.num_of_dpias_per_host_router;
++	if (*host_router_index < dc->caps.num_of_host_routers)
++		return true;
++	else
++		return false;
++}
+ 
+ bool dc_is_cursor_limit_pending(struct dc *dc)
+ {
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index d0839a679901..5c01a535b4fa 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -68,7 +68,8 @@ struct dmub_notification;
+ #define MAX_STREAMS 6
+ #define MIN_VIEWPORT_SIZE 12
+ #define MAX_NUM_EDP 2
+-#define MAX_HOST_ROUTERS_NUM 2
++#define MAX_HOST_ROUTERS_NUM 3
++#define MAX_DPIA_PER_HOST_ROUTER 2
+ #define MAX_SUPPORTED_FORMATS 7
+ 
+ /* Display Core Interfaces */
+@@ -338,6 +339,8 @@ struct dc_caps {
+ 	/* Conservative limit for DCC cases which require ODM4:1 to support*/
+ 	uint32_t dcc_plane_width_limit;
+ 	struct dc_scl_caps scl_caps;
++	uint8_t num_of_host_routers;
++	uint8_t num_of_dpias_per_host_router;
+ };
+ 
+ struct dc_bug_wa {
+@@ -1637,6 +1640,7 @@ struct dc {
+ 
+ 	uint8_t link_count;
+ 	struct dc_link *links[MAX_LINKS];
++	uint8_t lowest_dpia_link_index;
+ 	struct link_service *link_srv;
+ 
+ 	struct dc_state *current_state;
+@@ -2625,6 +2629,8 @@ struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state
+ 
+ unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context);
+ 
++bool dc_get_host_router_index(const struct dc_link *link, unsigned int *host_router_index);
++
+ /* DSC Interfaces */
+ #include "dc_dsc.h"
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
+index 6b6efc2e75c0..2a33c82cfedb 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
+@@ -1954,6 +1954,9 @@ static bool dcn31_resource_construct(
+ 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
+ 	dc->caps.color.mpc.ocsc = 1;
+ 
++	dc->caps.num_of_host_routers = 2;
++	dc->caps.num_of_dpias_per_host_router = 2;
++
+ 	/* Use pipe context based otg sync logic */
+ 	dc->config.use_pipe_ctx_sync_logic = true;
+ 	dc->config.disable_hbr_audio_dp2 = true;
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+index e84526c51590..cec03e81c6bd 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+@@ -1885,6 +1885,9 @@ static bool dcn314_resource_construct(
+ 
+ 	dc->caps.max_disp_clock_khz_at_vmin = 650000;
+ 
++	dc->caps.num_of_host_routers = 2;
++	dc->caps.num_of_dpias_per_host_router = 2;
++
+ 	/* Use pipe context based otg sync logic */
+ 	dc->config.use_pipe_ctx_sync_logic = true;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+index 62f6c7abb9c6..1f20069018ca 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -1894,6 +1894,9 @@ static bool dcn35_resource_construct(
+ 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
+ 	dc->caps.color.mpc.ocsc = 1;
+ 
++	dc->caps.num_of_host_routers = 2;
++	dc->caps.num_of_dpias_per_host_router = 2;
++
+ 	/* max_disp_clock_khz_at_vmin is slightly lower than the STA value in order
+ 	 * to provide some margin.
+ 	 * It's expected for furture ASIC to have equal or higher value, in order to
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
+index 85a96258bce8..6266fc77c7eb 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
+@@ -1866,6 +1866,9 @@ static bool dcn351_resource_construct(
+ 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
+ 	dc->caps.color.mpc.ocsc = 1;
+ 
++	dc->caps.num_of_host_routers = 2;
++	dc->caps.num_of_dpias_per_host_router = 2;
++
+ 	/* max_disp_clock_khz_at_vmin is slightly lower than the STA value in order
+ 	 * to provide some margin.
+ 	 * It's expected for furture ASIC to have equal or higher value, in order to
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+index e977866802bf..10d3182b3058 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+@@ -1867,6 +1867,9 @@ static bool dcn36_resource_construct(
+ 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
+ 	dc->caps.color.mpc.ocsc = 1;
+ 
++	dc->caps.num_of_host_routers = 2;
++	dc->caps.num_of_dpias_per_host_router = 2;
++
+ 	/* max_disp_clock_khz_at_vmin is slightly lower than the STA value in order
+ 	 * to provide some margin.
+ 	 * It's expected for furture ASIC to have equal or higher value, in order to
 -- 
-Florian
+2.43.0
+
 
