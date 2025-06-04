@@ -1,107 +1,221 @@
-Return-Path: <stable+bounces-151304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B417ACD99E
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:22:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2269CACD9BE
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1FC188F13B
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:21:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23ACC172C08
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC36239561;
-	Wed,  4 Jun 2025 08:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6349D289364;
+	Wed,  4 Jun 2025 08:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="ZTLGAGTQ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VffKvdNP"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4C72040B6;
-	Wed,  4 Jun 2025 08:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D93288C0F;
+	Wed,  4 Jun 2025 08:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749025266; cv=none; b=hnFq070aKbiBlAoeE1t02ZsM6NszD+Szx86M958LCYsm1Y4/HYopPsxlxwrtoc56KpvR9Tpq7J/afPu6onP1tJJ6440qD6aRM1sjTIkdbRJr1t4QHTumTX85y+4Xo19q9EdWQ9aggUGatA/Esh1kKSgRJ+ciFRuS+AWSKsFhyE0=
+	t=1749025696; cv=none; b=jni1/kSeUiN2KsYhSis4iP4+cSthWUGbk+spXc4luM5GSiLbEWJxTIJCEwaiovV/GH51/2BB69OzlnJMGYa05E5eBFWTWZKaDqsHIllr7v141K+5sKb9yWHuPy2ULAeD3vkXofw5WUy2ryFh5+wHsyA3ygWl2WkEQJhaDwx+SXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749025266; c=relaxed/simple;
-	bh=CAEqzG7Ha8WoSTpkmcaTF8TQ20P1NJVbOgSuJVYZ14Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=negoaOQ1GYLSh647ywciTPiQ89m1H8uKLkoEGTf6QniD1Hq+qvObo3fIxGGD9gQKr5sM05viXOHi6DF21iezW+1mEyDXP/jqR+XAL1wFssoLtPlwfNb9qCfW4/Ms898R5mQ4ILxDyIuOPi0bfJpbuHszOKddWGlHIbJzl3fsZh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4bC0sB6QDLzYQtHv;
-	Wed,  4 Jun 2025 16:21:02 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id E6D111A1956;
-	Wed,  4 Jun 2025 16:21:01 +0800 (CST)
-Received: from [10.67.109.184] (unknown [10.67.109.184])
-	by APP3 (Coremail) with SMTP id _Ch0CgBnBcDsAUBokXT4OA--.57770S2;
-	Wed, 04 Jun 2025 16:21:01 +0800 (CST)
-Message-ID: <2b992e24-fe0a-4a20-a0d0-db21851e67d3@huaweicloud.com>
-Date: Wed, 4 Jun 2025 16:21:00 +0800
+	s=arc-20240116; t=1749025696; c=relaxed/simple;
+	bh=IAu9069MlDY11KvkCRivzKNwq2jb2lY+pQIFqYoFmFY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dwLjZgWTCpuCGs7TEAq/+YHlmBewxvojcLMDFp3biQU0UK+oQG+9CK6Pr5DF7ovlJIb9YTzplRmRt8jn07wCDkNvfQp1d0+NJoBeb/4nRfvfsvR+QH61e+AebAF6lEIiLJtWhZpgNERm9wBKVSdDZPUeuI3Vw2NM1Ef3r3UZcqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=ZTLGAGTQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VffKvdNP; arc=none smtp.client-ip=202.12.124.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id E5D171140129;
+	Wed,  4 Jun 2025 04:28:11 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 04 Jun 2025 04:28:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1749025691; x=1749112091; bh=ZHzKIFBTor
+	3RBiZqC5ZGFVvqq+Bdb/sPWcMYDxZye1w=; b=ZTLGAGTQjFvbFwdEQoXKCtUAQJ
+	Y7v1KKjtGtIFGuTDOlQZQ1qe1dPnAFz1Ic+zdMQBbirm9b0gGa7euFC4nt79nas5
+	BH6PtViccDmXT68WWj2G+9s6C2wHbhBcP2t4TvslUE07dnd9PU37//DjCrBsEqpx
+	wbe8D4OvsvwXtx3fnJZiX2/tiaNhGpmsm/v21xIXqD8h0X/7w99353VYnSmyPMPF
+	IUAwn8lc8gv0EXnF4taNOK07h/pBxe+Fj+M0CuU7+cwGKPVmCCvDPd36l6JDcAO0
+	EugscJvtzQZW0kpBVWxS4KVp+U8Pw/jp1tovsDkQ29xjoW7p+Mjzjdkevueg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1749025691; x=1749112091; bh=ZHzKIFBTor3RBiZqC5ZGFVvqq+Bdb/sPWcM
+	YDxZye1w=; b=VffKvdNPBG09xxwi6ldbXGOoAlQunYP7sF2K5nOpOitTG51mPlo
+	mw1lxxxEEzVS+eaTdCb7rwXDHyCDCl3a/WZzUmuMRNDE2Jt3qU8IYWul4n3/Uf7z
+	Wpmre7lBAhm9w7IpkILwxRTBLNE2QXNDsNnFKgKkZt9TpJRi2RJdNORbY7UF59cZ
+	fuk/UlRWPxWfQKmVcMzVUiok0lHS4PDNtnEPQGIdPIbzQqQjoO5VQGSS9Ib6B4v6
+	i5FP1MzDE3opwyZ2LQRR7MLhQNBDJL/mghhl014I24Vl3S29usR/NutDPiqoz9Vb
+	YGFtUClPRELG7PJ4PtgvJEGCjX4KzZ1E0fA==
+X-ME-Sender: <xms:mwNAaC0BDY0jhxcmZ-VuPS6bspv9FDG-e_5kH89kLEgJ9GBb7T3pnQ>
+    <xme:mwNAaFEKCiGg_QjqOQIWhAN13MgSghaKIepja7jL5tsJnCmZhGYHHSDxsYL2pwvuS
+    WJ1u-ZCk_vJSg>
+X-ME-Received: <xmr:mwNAaK6Cl84ZORYGlgRAGHAdSNhNAaN2A8qlAYy-NbtlDy4Y9v0zMfvC>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
+    grthhtvghrnhepueegledvgfeuffetffehfffgkeegtddtudejudeiiedvuedtteelleej
+    vddtgfefnecuffhomhgrihhnpehmshhgihgurdhlihhnkhdpkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghg
+    sehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouh
+    htpdhrtghpthhtohepihdrmhgrgihimhgvthhssehovhhnrdhorhhgpdhrtghpthhtohep
+    shgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvghssehlih
+    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepvggthhgruhgurhhosehrvgguhhgrthdrtghomh
+    dprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhgs
+    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggtohhnohhlvgesrhgvughhrghtrd
+    gtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:mwNAaD1kNre2XA1dwDHkOxId67JamopJYv8yClCXNUj79oBuAKC6pw>
+    <xmx:mwNAaFFAt2qTuvuLuRBfCp6ot45Q-h462wfZOLZn4ueYZtpNxFcW9w>
+    <xmx:mwNAaM_EYR34nBGvv3tThZwancBd8PwV_eKuYFN52LTttbmdaoS79w>
+    <xmx:mwNAaKlX5LwqH65zNCPNVGS_ByEYvAjzEU5wpMdFfqgbbPXfcbGPKg>
+    <xmx:mwNAaMkp9BqNe9LPmz0Yvxv35zCxV5x4CRtkfCXCRRlHoJq8VQngirY6>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Jun 2025 04:28:10 -0400 (EDT)
+Date: Wed, 4 Jun 2025 10:28:09 +0200
+From: Greg KH <greg@kroah.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+	stable@vger.kernel.org, Eelco Chaudron <echaudro@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	aconole@redhat.com, netdev@vger.kernel.org, dev@openvswitch.org
+Subject: Re: [PATCH AUTOSEL 6.15 044/118] openvswitch: Stricter validation
+ for the userspace action
+Message-ID: <2025060440-gristle-viewable-ef6a@gregkh>
+References: <20250604005049.4147522-1-sashal@kernel.org>
+ <20250604005049.4147522-44-sashal@kernel.org>
+ <38ef1815-5bc1-4391-b487-05a18e84c94e@ovn.org>
+ <2025060449-arena-exceeding-a090@gregkh>
+ <7bc258ad-3f65-4d6e-a9f5-840a6c174d90@ovn.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/4] selftests/mm: Extract read_sysfs and write_sysfs
- into vm_util
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, mhiramat@kernel.org,
- oleg@redhat.com, peterz@infradead.org, Liam.Howlett@oracle.com,
- vbabka@suse.cz, jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, pulehui@huawei.com
-References: <20250529155650.4017699-1-pulehui@huaweicloud.com>
- <20250529155650.4017699-4-pulehui@huaweicloud.com>
- <f1dfdffa-23b3-4d4a-8912-3a35e65963e4@lucifer.local>
- <8ea3ec70-dbe7-424f-b07f-add7c1cb1852@huaweicloud.com>
- <20250603193641.f24bf13623565d2b02ae86ce@linux-foundation.org>
-From: Pu Lehui <pulehui@huaweicloud.com>
-In-Reply-To: <20250603193641.f24bf13623565d2b02ae86ce@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_Ch0CgBnBcDsAUBokXT4OA--.57770S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYV7kC6x804xWl14x267AKxVW8JVW5JwAF
-	c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
-	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xv
-	wVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4
-	x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r
-	1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kI
-	c2xKxwCF04k20xvY0x0EwIxGrwCF54CYxVCY1x0262kKe7AKxVWUtVW8ZwCFx2IqxVCFs4
-	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-	MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
-	WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
-	BIdaVFxhVjvjDU0xZFpf9x07UWE__UUUUU=
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7bc258ad-3f65-4d6e-a9f5-840a6c174d90@ovn.org>
 
-
-
-On 2025/6/4 10:36, Andrew Morton wrote:
-> On Tue, 3 Jun 2025 15:17:49 +0800 Pu Lehui <pulehui@huaweicloud.com> wrote:
+On Wed, Jun 04, 2025 at 10:19:45AM +0200, Ilya Maximets wrote:
+> On 6/4/25 10:03 AM, Greg KH wrote:
+> > On Wed, Jun 04, 2025 at 09:57:20AM +0200, Ilya Maximets wrote:
+> >> On 6/4/25 2:49 AM, Sasha Levin wrote:
+> >>> From: Eelco Chaudron <echaudro@redhat.com>
+> >>>
+> >>> [ Upstream commit 88906f55954131ed2d3974e044b7fb48129b86ae ]
+> >>>
+> >>> This change enhances the robustness of validate_userspace() by ensuring
+> >>> that all Netlink attributes are fully contained within the parent
+> >>> attribute. The previous use of nla_parse_nested_deprecated() could
+> >>> silently skip trailing or malformed attributes, as it stops parsing at
+> >>> the first invalid entry.
+> >>>
+> >>> By switching to nla_parse_deprecated_strict(), we make sure only fully
+> >>> validated attributes are copied for later use.
+> >>>
+> >>> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+> >>> Reviewed-by: Simon Horman <horms@kernel.org>
+> >>> Acked-by: Ilya Maximets <i.maximets@ovn.org>
+> >>> Link: https://patch.msgid.link/67eb414e2d250e8408bb8afeb982deca2ff2b10b.1747037304.git.echaudro@redhat.com
+> >>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> >>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >>> ---
+> >>>
+> >>> **YES** This commit should be backported to stable kernel trees. ##
+> >>> Analysis **Commit Overview:** The commit changes `validate_userspace()`
+> >>> function in `net/openvswitch/flow_netlink.c` by replacing
+> >>> `nla_parse_nested_deprecated()` with `nla_parse_deprecated_strict()` to
+> >>> ensure stricter validation of Netlink attributes for the userspace
+> >>> action. **Specific Code Changes:** The key change is on lines 3052-3054:
+> >>> ```c // Before: error = nla_parse_nested_deprecated(a,
+> >>> OVS_USERSPACE_ATTR_MAX, attr, userspace_policy, NULL); // After: error =
+> >>> nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX, nla_data(attr),
+> >>> nla_len(attr), userspace_policy, NULL); ``` **Why This Should Be
+> >>> Backported:** 1. **Security Enhancement:** This commit addresses a
+> >>> parsing vulnerability where malformed attributes could be silently
+> >>> ignored. The original `nla_parse_nested_deprecated()` stops parsing at
+> >>> the first invalid entry, potentially allowing trailing malformed data to
+> >>> bypass validation. 2. **Robustness Fix:** The change ensures all netlink
+> >>> attributes are fully contained within the parent attribute bounds,
+> >>> preventing potential buffer over-reads or under-reads that could lead to
+> >>> security issues. 3. **Pattern Consistency:** Looking at the git blame
+> >>> output (lines 3085-3087), we can see that
+> >>> `nla_parse_deprecated_strict()` was already introduced in 2019 by commit
+> >>> 8cb081746c031 and is used elsewhere in the same file for similar
+> >>> validation (e.g., `validate_and_copy_check_pkt_len()` function). 4.
+> >>> **Low Risk:** This is a small, contained change that only affects input
+> >>> validation - it doesn't change functionality or introduce new features.
+> >>> The change is defensive and follows existing patterns in the codebase.
+> >>> 5. **Similar Precedent:** This commit is very similar to the validated
+> >>> "Similar Commit #2" which was marked for backporting (status: YES). That
+> >>> commit also dealt with netlink attribute validation safety in
+> >>> openvswitch (`validate_set()` function) and was considered suitable for
+> >>> stable trees. 6. **Critical Subsystem:** Open vSwitch is a critical
+> >>> networking component used in virtualization and container environments.
+> >>> Input validation issues in this subsystem could potentially be exploited
+> >>> for privilege escalation or denial of service. 7. **Clear Intent:** The
+> >>> commit message explicitly states this "enhances robustness" and ensures
+> >>> "only fully validated attributes are copied for later use," indicating
+> >>> this is a defensive security improvement. **Risk Assessment:** - Very
+> >>> low regression risk - No API changes - Only affects error handling paths
+> >>> - Follows established validation patterns in the same codebase This
+> >>> commit fits perfectly into the stable tree criteria: it's an important
+> >>> security/robustness fix, has minimal risk of regression, is well-
+> >>> contained, and addresses a clear validation vulnerability in a critical
+> >>> kernel subsystem.
+> >>
+> >> This change is one of two patches created for userspace action.  With an
+> >> intentional split - one for net and one for net-next  First one was the
+> >> actual fix that addressed a real bug:
+> >>   6beb6835c1fb ("openvswitch: Fix unsafe attribute parsing in output_userspace()")
+> >>   https://lore.kernel.org/netdev/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com/
+> >>
+> >> This second change (this patch) was intended for -next only as it doesn't
+> >> fix any real issue, but affects uAPI, and so should NOT be backported.
+> > 
+> > Why would you break the user api in a newer kernel?  That feels wrong,
+> > as any change should be able to be backported without any problems.
+> > 
+> > If this is a userspace break, why isn't it reverted?
 > 
->>
->>
->>> Not a big deal though, perhaps a bit out of scope here, more of a nice-to-have.
->>
->> ...
->>
->> Yep, we can do it more. But, actually, I am not sure about the merge
->> process of mm module. Do I need to resend the whole series or just the
->> diff below?
->>
+> It doesn't break existing userspace that we know of.  However, it does make
+> the parsing of messages from userspace a bit more strict, and some messages
+> that would've worked fine before (e.g. having extra unrecognized attributes)
+> will no longer work.  There is no reason for userspace to ever rely on such
+> behavior, but AFAICT, historically, different parts of kernel networking
+> (e.g. tc-flower) introduced similar changes (making netlink stricter) on
+> net-next without backporting them.  Maybe Jakub can comment on that.
 > 
-> A little diff like this is great, although this one didn't apply for me.
-> 
-> But if we're to get this series into 6.16-rc1, now is not the time to
-> be changing it.  Please send out a formal patch after -rc1?
+> All in all, I do not expect any existing applications to break, but it seems
+> a little strange to touch uAPI in stable trees.
 
-ok, I will handle this clean after -rc1.
+Nothing that ends up on Linus's tree should not be allowed also to be in
+a stable kernel release as there is no difference in the "rule" that "we
+will not break userspace".
 
+So this isn't an issue here, if you need/want to make parsing more
+strict, due to bugs or whatever, then great, let's make it more strict
+as long as it doesn't break anyone's current system.  It doesn't matter
+if this is in Linus's release or in a stable release, same rule holds
+for both.
+
+thanks,
+
+greg k-h
 
