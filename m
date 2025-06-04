@@ -1,85 +1,102 @@
-Return-Path: <stable+bounces-151437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F55ACE0D5
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:57:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAADDACE0E8
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 17:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C99ED3A6A99
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9386188AD33
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 15:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE07290098;
-	Wed,  4 Jun 2025 14:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E27F290DA0;
+	Wed,  4 Jun 2025 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eouLETmS"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b="SpA45vI3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A4918E1F;
-	Wed,  4 Jun 2025 14:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F8328F950;
+	Wed,  4 Jun 2025 15:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749049046; cv=none; b=bp6UDPdBjF97vJwSVsfzFSClXZgmHdSncrncluojQF5FJanVfVo6OvzRVkrkTMKOyQeGJ+zmzYcvlfJMM/4WuwJmrvB1oHsjpvruaDIbIS4tpy8cvPqB6ehujuqGOynEHHZvcOeSomF/nQmUBXSCPSwOmkt6tZoYyBZlrWnAfzc=
+	t=1749049440; cv=none; b=DXFX7RMpnWZmfJaeU8c18Mmzu1kvTA9QUd2Sbbr3J+j4Qiu07JDvmX769vnrufRNSomY+e1wiJLyh50jGZ8K1y7Irs5bewJqAZfBRaapufHX5qnUe+Pzrg9c2nc+d1QjFuNh3ZCcgOJbc/0+kPEvx6wDqhW6NRtxprt16k4X7Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749049046; c=relaxed/simple;
-	bh=UhPTibu2IhtkcKdHuNBFIISA2CSr5AomV//Yoh1cW5I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HjfEkbaO9vNNeJCPgwL/zq7RsqYPBt/+y0KjgaY/aoBqd61Dl3VPoqblcn9vFqdTGF6mLxK5af0xhHDN1MF9BmdZwkQKJobcdFucv3ld2mRYHLJI5v3ob9tcR331y+qx84TU9DO7BSplFePzETFKBHTTVSc6p3EUHdD2lJSq5cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eouLETmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090C3C4CEE4;
-	Wed,  4 Jun 2025 14:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749049045;
-	bh=UhPTibu2IhtkcKdHuNBFIISA2CSr5AomV//Yoh1cW5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eouLETmStjV448LcUxr0zSk3b5b6OBdg2nwOMQO0gNWKXj1HtvkHTT4f9d8bCkiZ3
-	 PivTAnqQ+wDxw+8M1ReVDqRIU32ERhrm9JyA0Ta344a6mmPGQAB/1KQRrhdEViflgG
-	 +zH9/AgxZzH8oS4ggb86yUA6E+hpIxU8vT8UZnMI=
-Date: Wed, 4 Jun 2025 16:57:23 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: Re: [PATCH 5.4 009/204] tracing: Fix oob write in
- trace_seq_to_buffer()
-Message-ID: <2025060425-saddled-sliceable-fd12@gregkh>
-References: <20250602134255.449974357@linuxfoundation.org>
- <20250602134255.842400124@linuxfoundation.org>
- <20250602103639.6d9776d5@gandalf.local.home>
- <2025060414-dreamily-reentry-ab52@gregkh>
- <20250604104549.32f980db@gandalf.local.home>
+	s=arc-20240116; t=1749049440; c=relaxed/simple;
+	bh=CIpzUojtQhvIyp+XnuiKf+nHjc5Qg2ySGvwqy1jh3ks=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=P3mqM1uGj4Y/7tLHdI79YjPYv86dPRpaHfr357GPLhKwL/DMAhtficzloyQNWX3kpxJw+FpPPeGPGWfhE56yfIPpvCVvvEIH7nE86mMI8Zxi7F6GjEI8kaELEekfKL5KOBAknqLS+96msR6cvwh2YnZr5g0iUZhSBpdI6K375F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com; spf=pass smtp.mailfrom=yhndnzj.com; dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b=SpA45vI3; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yhndnzj.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yhndnzj.com;
+	s=protonmail3; t=1749049429; x=1749308629;
+	bh=CIpzUojtQhvIyp+XnuiKf+nHjc5Qg2ySGvwqy1jh3ks=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=SpA45vI3ZnwLHT6abyQyNe5BGCt6rrUEnuwKqwWLQ3f9/72JVwREmRdA5Wks2jbYe
+	 9JNCAT1x14UJPgXDuR4pnG30BCxIi/S3qVJltcoRiFcfhzGwOWZEvRZlSGae7hQF/g
+	 UnRrMFKnGnQT0AXnJc4RyzAkF0/TuC9LsmwZTJzLAqZqUbqRnvLw3Q9EZqrXrs3MgF
+	 kdOqf3DQ4wKygvHQIBpzmlP7JZlBxWKgmaRFXijAlBSrS3tyv/kCcjIPYapNfjRlng
+	 n5DcQQyj9oZDVxf/ySjAf8GPn3O+UJUnERbBmbEYEDhoiJ2AAhJ7xLAtpk0jvOsx9z
+	 m64DzRFU6lRLg==
+Date: Wed, 04 Jun 2025 15:03:42 +0000
+To: linux-fsdevel@vger.kernel.org
+From: Mike Yuan <me@yhndnzj.com>
+Cc: Mike Yuan <me@yhndnzj.com>, linux-kernel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, Luca Boccassi <luca.boccassi@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] pidfs: never refuse ppid == 0 in PIDFD_GET_INFO
+Message-ID: <20250604150238.42664-1-me@yhndnzj.com>
+Feedback-ID: 102487535:user:proton
+X-Pm-Message-ID: dcdfa44f123118e899d72f662f3bee462608b543
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604104549.32f980db@gandalf.local.home>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 04, 2025 at 10:45:49AM -0400, Steven Rostedt wrote:
-> On Wed, 4 Jun 2025 14:31:49 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> 
-> > > Note this will require this patch too:
-> > > 
-> > >    Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
-> > > 
-> > > commit 2fbdb6d8e03b ("tracing: Fix compilation warning on arm32")  
-> > 
-> > Thanks for the link, I'll queue this up once it hits a released kernel.
-> 
-> Oh, stable patches have to be in released kernels now? Just being in
-> Linus's tree isn't enough?
+In systemd we spotted an issue after switching to ioctl(PIDFD_GET_INFO)
+for obtaining pid number the pidfd refers to, that for processes
+with a parent from outer pidns PIDFD_GET_INFO unexpectedly yields
+-ESRCH [1]. It turned out that there's an arbitrary check blocking
+this, which is not really sensible given getppid() happily returns
+0 for such processes. Just drop the spurious check and userspace
+ought to handle ppid =3D=3D 0 properly everywhere.
 
-Yes, unless a maintainer or developer asks for it to be added sooner.
+[1] https://github.com/systemd/systemd/issues/37715
 
-thanks,
+Fixes: cdda1f26e74b ("pidfd: add ioctl to retrieve pid info")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Luca Boccassi <luca.boccassi@gmail.com>
+Cc: <stable@vger.kernel.org>
+---
+ fs/pidfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/fs/pidfs.c b/fs/pidfs.c
+index c1f0a067be40..69919be1c9d8 100644
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -366,7 +366,7 @@ static long pidfd_info(struct file *file, unsigned int =
+cmd, unsigned long arg)
+ =09kinfo.pid =3D task_pid_vnr(task);
+ =09kinfo.mask |=3D PIDFD_INFO_PID;
+=20
+-=09if (kinfo.pid =3D=3D 0 || kinfo.tgid =3D=3D 0 || (kinfo.ppid =3D=3D 0 &=
+& kinfo.pid !=3D 1))
++=09if (kinfo.pid =3D=3D 0 || kinfo.tgid =3D=3D 0)
+ =09=09return -ESRCH;
+=20
+ copy_out:
+
+base-commit: 5abc7438f1e9d62e91ad775cc83c9594c48d2282
+--=20
+2.49.0
+
+
 
