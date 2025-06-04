@@ -1,99 +1,124 @@
-Return-Path: <stable+bounces-151467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257B7ACE5B6
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:20:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA47ACE5C0
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0DF83A9700
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA166178A86
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C46D1940A1;
-	Wed,  4 Jun 2025 20:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CD01F4703;
+	Wed,  4 Jun 2025 20:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m3xIbnmN"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="TYDy0fo0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C1F3C463
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7B21EB5C2
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749068433; cv=none; b=Kfp8I6PjuFc7afUM1ankouAOIq6YuzZjPmx/0HUahiqbEPDRL/b2PIxMMx3x8jlGgd1ZdaWBTzSwmDjeunGLmRuKz3KvI3jzQROeUkz5ElRDdAPTNSTbugr+XO6eI67x/ZwZE5d8XFf9dykY0UXIGBoh1HomlpHw9Dfyk0gEwR8=
+	t=1749068954; cv=none; b=iaBppAQoUPRHses9wUGC9AcFiA8cz1dBZAdVnAPgISz7jZU4kjUGahBehfNG/mL0KyJjyn3nIyDvIAuApy2yU53dCnDLLiZhVi1t4964QUMqJMhQD1WvrspPMZZIcuerfWZYERSpFrMgNA6RGNGEnxqf9276Oirbx7yNsf6Slxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749068433; c=relaxed/simple;
-	bh=3h4Wo9IfcLVwLZx+6/628c/4ZC/VAYqy7o8Uurk1hiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rflik8IMz3YV5dSq5KhYqipi4xpSF2J/gEbC1lG0BTIccOOJdFrQMUgNyJlWMBloLY/OzcoIokrUYgqmKLfAKhpFQ6AiT0WhGfZsSDxKvwSWQuCzNoYSPUh0tm82YiGqyM/81qc9InG5FDzYNDcvldut2Spsro56e3JkLWbABCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m3xIbnmN; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749068432; x=1780604432;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=3h4Wo9IfcLVwLZx+6/628c/4ZC/VAYqy7o8Uurk1hiI=;
-  b=m3xIbnmNlg/4CIoOuH0hekmiEBRnpEvL3OVepK//ZOuxSL5GI2FRckiE
-   gEFtVnegwc4uMGuoKz6Fx79CfYrKf43mBnmzE6/T5XhnmwxoyGrTleiz9
-   rkrSwiqZVpQyA2m3lBi2uXBr1N2HQxwTcRhZY3DlqSNqJCISHOw1xgvYr
-   BlHlOCEQS7hKYN4xrh0TdIzMr42ySLVx75Zh4bnV6OPO5vZ90wjkBN/7i
-   c7XLXpat5XKrqg7msbx7XshS/s6BPpyiZGdGNeZAUAgjiBJ4y+OCTUCSj
-   N9DVpY2nU5BBsg2+D9So6Czt+2S8nNxMDRsq6PEo6p3WIIjppVey3WHMq
-   g==;
-X-CSE-ConnectionGUID: rpHHek7yQt+TErh7aumS2w==
-X-CSE-MsgGUID: urGdnjyRT7uER5mY/hgiTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="73703218"
-X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; 
-   d="scan'208";a="73703218"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 13:20:31 -0700
-X-CSE-ConnectionGUID: QpaRov1hSKm7bHYxC+Xxuw==
-X-CSE-MsgGUID: 0FTgKk8KRNaBUQCku91N2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,210,1744095600"; 
-   d="scan'208";a="145331702"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 04 Jun 2025 13:20:30 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uMub6-0003RV-0W;
-	Wed, 04 Jun 2025 20:20:28 +0000
-Date: Thu, 5 Jun 2025 04:20:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net] gve: Fix stuck TX queue for DQ queue format
-Message-ID: <aECqi11CoMBbVAVx@acd742588394>
+	s=arc-20240116; t=1749068954; c=relaxed/simple;
+	bh=7Vka/a7srNrY341gvWXRamDvv2uHEGS89KEna72dgGQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ebhOW3ITVuiMEgewGWY+tAMPYnFvZV5Z0goIx2QOnN/QuKP/FOf243Te39+Zp3EVaxnyuSH+PXTGd+ia5viR8nlEQSPzOQkzLu2z1jkcKijmVWgdQ0Hqrk2e1UgyqguBhyqxpcbNF7BPNYcGyaMC0pLxdzFZZPL1L2BbQX1gw04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=TYDy0fo0; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 4AECE1C2ABC
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 23:29:05 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:to:subject:subject
+	:user-agent:mime-version:date:date:message-id; s=dkim; t=
+	1749068945; x=1749932946; bh=7Vka/a7srNrY341gvWXRamDvv2uHEGS89KE
+	na72dgGQ=; b=TYDy0fo068EA8KmxYo2f9PT5f5a/s6ClXcHkPQ4GI2mWpvDt7Ub
+	rAphoQbZmU7A1eM/3kUdeLDclqucIFZLT8CVNbQ1DswfNkGlUAsbp6tZfe3hxaCo
+	t98+tmt0gnmlJMIdVPzwM9B4ORav/mMoDIzW2c4D67rhSLFMQTbWXc9M=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id XSAJ4nowjGM8 for <stable@vger.kernel.org>;
+	Wed,  4 Jun 2025 23:29:05 +0300 (MSK)
+Received: from [192.168.1.67] (unknown [46.72.98.152])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 236421C08AD;
+	Wed,  4 Jun 2025 23:28:55 +0300 (MSK)
+Message-ID: <f4d1268f-bbf3-49c1-be27-6199ec685329@nppct.ru>
+Date: Wed, 4 Jun 2025 23:28:54 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250604201938.1409219-1-hramamurthy@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amdgpu: fix NULL dereference in gfx_v9_0_kcq() and
+ kiq_init_queue()
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sunil Khatri <sunil.khatri@amd.com>, Vitaly Prosyak
+ <vitaly.prosyak@amd.com>, Srinivasan Shanmugam
+ <srinivasan.shanmugam@amd.com>, Jiadong Zhu <Jiadong.Zhu@amd.com>,
+ Yang Wang <kevinyang.wang@amd.com>, Prike Liang <Prike.Liang@amd.com>,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org
+References: <20250524055546.1001268-1-sdl@nppct.ru>
+ <CADnq5_MyV_C-XJCQEiXKLQhhEGErq7SnvhqFE1AauQPJvt5aYw@mail.gmail.com>
+ <bee381b3-305b-46e5-ae59-d816c491fce5@nppct.ru>
+ <CADnq5_P-1xGEjJpe--HFFQUaz9A=AO7mQwTXNCZJ693UgdaW0w@mail.gmail.com>
+Content-Language: ru
+From: SDL <sdl@nppct.ru>
+In-Reply-To: <CADnq5_P-1xGEjJpe--HFFQUaz9A=AO7mQwTXNCZJ693UgdaW0w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-Thanks for your patch.
+04.06.2025 22:34, Alex Deucher пишет:
+> On Wed, Jun 4, 2025 at 3:30 PM SDL <sdl@nppct.ru> wrote:
+>>
+>>> On Sat, May 24, 2025 at 2:14 AM Alexey Nepomnyashih <sdl@nppct.ru> wrote:
+>>>> A potential NULL pointer dereference may occur when accessing
+>>>> tmp_mqd->cp_hqd_pq_control without verifying that tmp_mqd is non-NULL.
+>>>> This may happen if mqd_backup[mqd_idx] is unexpectedly NULL.
+>>>>
+>>>> Although a NULL check for mqd_backup[mqd_idx] existed previously, it was
+>>>> moved to a position after the dereference in a recent commit, which
+>>>> renders it ineffective.
+>>> I don't think it's possible for mqd_backup to be NULL at this point.
+>>> We would have failed earlier in init if the mqd backup allocation
+>>> failed.
+>>>
+>>> Alex
+>> In scenarios such as GPU reset or power management resume, there is no
+>> strict
+>> guarantee that amdgpu_gfx_mqd_sw_init() (via ->sw_init()) is invoked before
+>> gfx_v9_0_kiq_init_queue(). As a result, mqd_backup[] may remain
+>> uninitialized,
+>> and dereferencing it without a NULL check can lead to a crash.
+>>
+>> Most other uses of mqd_backup[] in the driver explicitly check for NULL,
+>> indicating that uninitialized entries are an expected condition and
+>> should be handled
+>> accordingly.
+> sw_init() is only called once at driver load time.  everything is
+> allocated at that point.  If that fails, the driver would not have
+> loaded in the first place.  I don't think it's possible for it to be
+> NULL.
+>
+> Alex
+Thanks for the review! I agree with your point.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net] gve: Fix stuck TX queue for DQ queue format
-Link: https://lore.kernel.org/stable/20250604201938.1409219-1-hramamurthy%40google.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Alexey
 
