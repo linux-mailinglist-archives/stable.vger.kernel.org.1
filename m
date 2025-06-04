@@ -1,265 +1,162 @@
-Return-Path: <stable+bounces-151420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDAD8ACDFF3
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18062ACE013
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19948188A514
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:11:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410EE189AE22
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D065290BA5;
-	Wed,  4 Jun 2025 14:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A3B290D99;
+	Wed,  4 Jun 2025 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meL2To8G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DQ6cHHDv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF1D290BB0
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 14:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4BE290D8B;
+	Wed,  4 Jun 2025 14:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749046298; cv=none; b=BCkLKm4ift3JwVnqwYyUtydZuZ/+u0IGficSnefpsrLX2Cz4n/K6yJDbcb/b+Y16Pa4qtswfXQtGrtf/Mbm0BlHGpfPm0JXS6Q+ymjFzcdZEgJWKvbPA1fodxS0Wwq9zPnTGE69KaEFpXmXCkq2nhKHPzAvExHa8QpxwZaCKpSM=
+	t=1749046643; cv=none; b=QzUdKQrSoVt4kyq/pYHGdqp9IrCOW0DEb1Vml8z/SqsSE+JSk58/EJn9cv/GpSWt07fsD9tYb5ZBdxMhzsYkh2+1rmSRjnmB5Anb4Km5lW/TiUn3wtGO/DO4659al2WdLm7kYqok2uhj8cOhP57Bo4zjaEAnRvNLqQXTkbcGJnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749046298; c=relaxed/simple;
-	bh=5Ivowj7iKyrLg7YKBIRI3FGuFqxGMa96VwQLigzd2qM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z9CGbOKP3hUD0k6+QSYxNEbPqZTaWSzKvoXDg+U4eUN3aBibISMhf8Lq+BFFDvo6IM0hrzG6BS6fOfue7GF5SlZhH/txZB0A7wGKkIfZYdnG81VkZrFmNu+UJPDozM8Kr5AQAGwwWUj92O/jsYyxefkHYRTWySjSn7VAeWU99og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meL2To8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139FDC4CEE7;
-	Wed,  4 Jun 2025 14:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749046297;
-	bh=5Ivowj7iKyrLg7YKBIRI3FGuFqxGMa96VwQLigzd2qM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=meL2To8GRME/GdacHMjHgLX2CKRh+JZOfL+xnfcPeCGZQYgihwz5efM/+T9TcFgnh
-	 vDjuZ4ctJtlf8a3SvtEcH1dLnPy9hSxZGeJeIeWh60Lr8vrsZlZlYN0aR4MHMSXLfD
-	 G0PklIhlp7ExKE6qSv5Tl6kfMqoDWxP36++h0mQk=
-Subject: FAILED: patch "[PATCH] pinctrl: samsung: add gs101 specific eint suspend/resume" failed to apply to 6.14-stable tree
-To: peter.griffin@linaro.org,andre.draszik@linaro.org,krzysztof.kozlowski@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 04 Jun 2025 16:11:26 +0200
-Message-ID: <2025060426-catsup-vitalize-6254@gregkh>
+	s=arc-20240116; t=1749046643; c=relaxed/simple;
+	bh=Nnuyl9wD25Z9WoJOMjCag6e7edZarcfbMnxn+kgonFI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qE5L/4RGsSdfrZ9OXHdJ6ARln2k76NiIjAKN5lAM3lolt5v2Cykt9iti2QDJWeXrocYxhsXHAY87HX5Uv/xejLCDtc2qs0zMcBZ3DVVBpnsDbS6aRr+lsL2CDM65eKXoZgMTNsxqlayJVnaLDP4N9tEzwixaCABIH4GrypY3QXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DQ6cHHDv; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-234b9dfb842so65165595ad.1;
+        Wed, 04 Jun 2025 07:17:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749046642; x=1749651442; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cbNMtoTuh7H5yqZEP3R1sHyOOtxrJsRVIWBb21IBiJI=;
+        b=DQ6cHHDvTraqcsf/V6XzWpJh0wRCZ6GNIGeAJlTc6gB8vmEs+9HrytmMwZ6d6MPoNz
+         6nx4pq17I4nvMDF4VT03hfRi0coR4lDO74O7kNOvkAHszEZ/PjS6DGAvUXXlksNj6Y4k
+         uPRaKp3c40nc9Vzs03noNcHewp1YYYU/N4xSQswOfh+ppeevaVrrlSGePBHCzvqh/s80
+         RvWPdoarWGGlAI2pxELJGa6CqUGP+ON+BPGQZ57XTo9TJkytNif0aiKxkucpnRIMmQOE
+         6dlASWoZN22/7EZlk5qt8NEq+a/pf269bI9MdgUpr9qzxYancwjNH6ZOcvkX31HjqlIU
+         MitA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749046642; x=1749651442;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cbNMtoTuh7H5yqZEP3R1sHyOOtxrJsRVIWBb21IBiJI=;
+        b=kIWwDmzCJJi83MHjz9rwsfYHdOuZNFVZ0Y4qYGUKhsIsDxl9LZpLsXaJzDOZX0Hedn
+         qlbTqHif3FV7JDAy424q8ZAKa69u3iFxHL3svAOAAW2w73dm8I8Hz8fMtmPTWrVlmXWS
+         DPIecgnDvCE3n2QnZQqqdZQg5TBhMsJl2dtShQRN7L+sQGAV9wVJwM5aSoQCubjvqqxW
+         M5Qfu/JFZ2EIh+oMui3cQ1LeW18m6h8MudLH4GMUj/zceqe636QxAMBUoNyre5K2+PQA
+         inY8QkxVLivViTmUA8b4OQpcLUg65l9DdxKAPKXbcsCxGTa25sJsODBIwFW6FO+Wy4BR
+         9Zkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgRXznLIKqF+5EqTW72JdD9xksl0ueeCZBv+P33pRlk/cAka4/0CMXh+IZUPwDOMVRI7U=@vger.kernel.org, AJvYcCVCcvT5xW+9quX2/ZAklhtt6Yegn4KB2uD7sprd5GFHutR+hXX6FNLE2KRXd1fvJJn+ZZnw7gbV@vger.kernel.org, AJvYcCXpQO0Yf0k85sqPoUMq/+3Iwy+ZOibUP3s55M6c2rL/GRM4nOHraJMcaVqU9YX3KF7Emc4mQ9YZxDxVzNJq@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDVJqeHqbG6AdDrfZf2Sxwk3Lt5f1NTqdzujYLIUvAnG1BQoNU
+	VgFWhe6mBSe5Wpo2txBoOaArEhIaR2lMzD+bAoSGSwigRskHRM2o3LIP
+X-Gm-Gg: ASbGncuyMJncbv2+MqxPv4tW0yo0qbAe4Cy1rNuuCud+9BNWYjwFxjzmCsD2Au0oZ8X
+	WGz+KQ9hMAIntKiB+Duv290NDAfNzXe6kmWBOV+bT41WSuK3cftQmYg+LT39CzQm5iTqvu8CpzE
+	mVZaN+Fsu5jwiQzs+S8t8lXrgDD8sM+JdBZuqXLO+UIS9eGEf9mZ2kpbb57LiCUgo28ok7iE5jR
+	g4ukmov13oPXHzHD6b0SeSR4a3me3MIdz6pNXYW5H25dk778RUYHth/zHomw6V5rtB3WFhWhu4V
+	yVaJVJqG1F/uJ1l9LBtBhzVM+LbHzAQmvsDGrh8QRMZqjE/THthfkdf4AtZqK9lCDlZBAkw4ib9
+	wJ5feSnlnjKa38ypp/b+HZuvT1y5HGw==
+X-Google-Smtp-Source: AGHT+IE828D8E7wNAmkp2vuWIY7rdgflYp7evYs/pZp1n9PqsG0ZfmxYtWnexCMgGjwdtHSFbk9D6Q==
+X-Received: by 2002:a17:902:c94d:b0:234:bca7:2920 with SMTP id d9443c01a7336-235e11c91abmr48459595ad.24.1749046641673;
+        Wed, 04 Jun 2025 07:17:21 -0700 (PDT)
+Received: from ?IPV6:2001:ee0:4f0e:fb30:8915:1d85:9b14:f198? ([2001:ee0:4f0e:fb30:8915:1d85:9b14:f198])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506bd93f7sm103883575ad.95.2025.06.04.07.17.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 07:17:21 -0700 (PDT)
+Message-ID: <0bc8547d-aa8f-4d96-9191-fd52d1bec74e@gmail.com>
+Date: Wed, 4 Jun 2025 21:17:09 +0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] virtio-net: drop the multi-buffer XDP packet in
+ zerocopy
+To: Jason Wang <jasowang@redhat.com>
+Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
+References: <20250603150613.83802-1-minhquangbui99@gmail.com>
+ <CACGkMEuHDLJiw=VdX38xqkaS-FJPTAU6+XUNwfGkNZGfp+6tKg@mail.gmail.com>
+Content-Language: en-US
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <CACGkMEuHDLJiw=VdX38xqkaS-FJPTAU6+XUNwfGkNZGfp+6tKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 6/4/25 07:37, Jason Wang wrote:
+> On Tue, Jun 3, 2025 at 11:07 PM Bui Quang Minh <minhquangbui99@gmail.com> wrote:
+>> In virtio-net, we have not yet supported multi-buffer XDP packet in
+>> zerocopy mode when there is a binding XDP program. However, in that
+>> case, when receiving multi-buffer XDP packet, we skip the XDP program
+>> and return XDP_PASS. As a result, the packet is passed to normal network
+>> stack which is an incorrect behavior. This commit instead returns
+>> XDP_DROP in that case.
+>>
+>> Fixes: 99c861b44eb1 ("virtio_net: xsk: rx: support recv merge mode")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+>> ---
+>>   drivers/net/virtio_net.c | 11 ++++++++---
+>>   1 file changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+>> index e53ba600605a..4c35324d6e5b 100644
+>> --- a/drivers/net/virtio_net.c
+>> +++ b/drivers/net/virtio_net.c
+>> @@ -1309,9 +1309,14 @@ static struct sk_buff *virtnet_receive_xsk_merge(struct net_device *dev, struct
+>>          ret = XDP_PASS;
+> It would be simpler to just assign XDP_DROP here?
+>
+> Or if you wish to stick to the way, we can simply remove this assignment.
 
-The patch below does not apply to the 6.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This XDP_PASS is returned for the case when there is no XDP program 
+binding (!prog).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+>
+>>          rcu_read_lock();
+>>          prog = rcu_dereference(rq->xdp_prog);
+>> -       /* TODO: support multi buffer. */
+>> -       if (prog && num_buf == 1)
+>> -               ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit, stats);
+>> +       if (prog) {
+>> +               /* TODO: support multi buffer. */
+>> +               if (num_buf == 1)
+>> +                       ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit,
+>> +                                                 stats);
+>> +               else
+>> +                       ret = XDP_DROP;
+>> +       }
+>>          rcu_read_unlock();
+>>
+>>          switch (ret) {
+>> --
+>> 2.43.0
+>>
+> Thanks
+>
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060426-catsup-vitalize-6254@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
-Possible dependencies:
+Thanks,
+Quang Minh.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7 Mon Sep 17 00:00:00 2001
-From: Peter Griffin <peter.griffin@linaro.org>
-Date: Wed, 2 Apr 2025 16:17:32 +0100
-Subject: [PATCH] pinctrl: samsung: add gs101 specific eint suspend/resume
- callbacks
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-gs101 differs to other SoCs in that fltcon1 register doesn't
-always exist. Additionally the offset of fltcon0 is not fixed
-and needs to use the newly added eint_fltcon_offset variable.
-
-Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
-Cc: stable@vger.kernel.org  # depends on the previous three patches
-Reviewed-by: André Draszik <andre.draszik@linaro.org>
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250402-pinctrl-fltcon-suspend-v6-3-78ce0d4eb30c@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
-index 4b5d4e436a33..9fd894729a7b 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
-@@ -1762,15 +1762,15 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
- 		.pin_banks	= gs101_pin_alive,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_alive),
- 		.eint_wkup_init = exynos_eint_wkup_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (FAR_ALIVE) */
- 		.pin_banks	= gs101_pin_far_alive,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_far_alive),
- 		.eint_wkup_init = exynos_eint_wkup_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (GSACORE) */
- 		.pin_banks	= gs101_pin_gsacore,
-@@ -1784,29 +1784,29 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
- 		.pin_banks	= gs101_pin_peric0,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric0),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (PERIC1) */
- 		.pin_banks	= gs101_pin_peric1,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric1),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume	= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (HSI1) */
- 		.pin_banks	= gs101_pin_hsi1,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi1),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	}, {
- 		/* pin banks of gs101 pin-controller (HSI2) */
- 		.pin_banks	= gs101_pin_hsi2,
- 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi2),
- 		.eint_gpio_init = exynos_eint_gpio_init,
--		.suspend	= exynos_pinctrl_suspend,
--		.resume		= exynos_pinctrl_resume,
-+		.suspend	= gs101_pinctrl_suspend,
-+		.resume		= gs101_pinctrl_resume,
- 	},
- };
- 
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
-index 18c327f7e313..0879684338c7 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.c
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
-@@ -800,6 +800,41 @@ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
- 	}
- }
- 
-+void gs101_pinctrl_suspend(struct samsung_pin_bank *bank)
-+{
-+	struct exynos_eint_gpio_save *save = bank->soc_priv;
-+	const void __iomem *regs = bank->eint_base;
-+
-+	if (bank->eint_type == EINT_TYPE_GPIO) {
-+		save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
-+				       + bank->eint_offset);
-+
-+		save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
-+					   + bank->eint_fltcon_offset);
-+
-+		/* fltcon1 register only exists for pins 4-7 */
-+		if (bank->nr_pins > 4)
-+			save->eint_fltcon1 = readl(regs +
-+						EXYNOS_GPIO_EFLTCON_OFFSET
-+						+ bank->eint_fltcon_offset + 4);
-+
-+		save->eint_mask = readl(regs + bank->irq_chip->eint_mask
-+					+ bank->eint_offset);
-+
-+		pr_debug("%s: save     con %#010x\n",
-+			 bank->name, save->eint_con);
-+		pr_debug("%s: save fltcon0 %#010x\n",
-+			 bank->name, save->eint_fltcon0);
-+		if (bank->nr_pins > 4)
-+			pr_debug("%s: save fltcon1 %#010x\n",
-+				 bank->name, save->eint_fltcon1);
-+		pr_debug("%s: save    mask %#010x\n",
-+			 bank->name, save->eint_mask);
-+	} else if (bank->eint_type == EINT_TYPE_WKUP) {
-+		exynos_set_wakeup(bank);
-+	}
-+}
-+
- void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
-@@ -819,6 +854,42 @@ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
- 	}
- }
- 
-+void gs101_pinctrl_resume(struct samsung_pin_bank *bank)
-+{
-+	struct exynos_eint_gpio_save *save = bank->soc_priv;
-+
-+	void __iomem *regs = bank->eint_base;
-+	void __iomem *eint_fltcfg0 = regs + EXYNOS_GPIO_EFLTCON_OFFSET
-+		     + bank->eint_fltcon_offset;
-+
-+	if (bank->eint_type == EINT_TYPE_GPIO) {
-+		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
-+			 readl(regs + EXYNOS_GPIO_ECON_OFFSET
-+			       + bank->eint_offset), save->eint_con);
-+
-+		pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
-+			 readl(eint_fltcfg0), save->eint_fltcon0);
-+
-+		/* fltcon1 register only exists for pins 4-7 */
-+		if (bank->nr_pins > 4)
-+			pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
-+				 readl(eint_fltcfg0 + 4), save->eint_fltcon1);
-+
-+		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
-+			 readl(regs + bank->irq_chip->eint_mask
-+			       + bank->eint_offset), save->eint_mask);
-+
-+		writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
-+		       + bank->eint_offset);
-+		writel(save->eint_fltcon0, eint_fltcfg0);
-+
-+		if (bank->nr_pins > 4)
-+			writel(save->eint_fltcon1, eint_fltcfg0 + 4);
-+		writel(save->eint_mask, regs + bank->irq_chip->eint_mask
-+		       + bank->eint_offset);
-+	}
-+}
-+
- void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
- {
- 	struct exynos_eint_gpio_save *save = bank->soc_priv;
-diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
-index 3a771862b4b1..2bee52b61b93 100644
---- a/drivers/pinctrl/samsung/pinctrl-exynos.h
-+++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
-@@ -244,6 +244,8 @@ void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank);
- void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank);
- void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
- void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
-+void gs101_pinctrl_suspend(struct samsung_pin_bank *bank);
-+void gs101_pinctrl_resume(struct samsung_pin_bank *bank);
- struct samsung_retention_ctrl *
- exynos_retention_init(struct samsung_pinctrl_drv_data *drvdata,
- 		      const struct samsung_retention_data *data);
 
 
