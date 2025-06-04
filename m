@@ -1,103 +1,105 @@
-Return-Path: <stable+bounces-151470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82067ACE5E2
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:52:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C6AACE622
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 23:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 810DF7AA967
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 158F63A901E
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 21:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C69B1FCFF1;
-	Wed,  4 Jun 2025 20:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAC21E1DF2;
+	Wed,  4 Jun 2025 21:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qui73LPg"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="N2S6WXXq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14675BA42;
-	Wed,  4 Jun 2025 20:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA7F1E47AD
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 21:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749070315; cv=none; b=mzEdbObBOy/YJ+MmXnzSE7tFWG6fKEdlDQ0N8TV56Aou4A7eD3eH8zW9szkYwmZK2/CvAgIDjp+Je/LZuwnh09ma8wTHarP2S0Ffy5/4dU4oHy05hiWApF3Gn8S6vsl5NIVuawCGsSlglXykOfhRHl4LNwdqslV2lxjWjpZyflE=
+	t=1749072171; cv=none; b=d52jr+6XVb3VV3d1AqW8tvnfzV5g5lepgazPUONUqyIJsuTAXtrBmtgEex5BBpeozyK4NvI86rtmKFguuFzs66W2S2LtNuwXcbxx84cNeHLjiokW51sUg3ACynqceEooApaMGJuGxINpx8QVbNehgTjslbMUk/3HiLnRf4yn0aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749070315; c=relaxed/simple;
-	bh=q1ItLl8hb0svlGL7qApVhJBy3xKiqmCvNH/oYjin/vs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FVnq+qRI5lGVN8Sh1gTK/Pnz5rei/dS1B6Xq0482L/Np7GogWR6dCTG/mNJZZ6zcug7XQfGybSHRmHY/fDTu/2Hd5eH1ZYjAqVjRTUlX3rW4O5YcMYwYch+oVecN4+FEru5otdw0+9VmYzri85PoB8mxVauUYGqc24/utjmwpdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qui73LPg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C892FC4CEE4;
-	Wed,  4 Jun 2025 20:51:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749070313;
-	bh=q1ItLl8hb0svlGL7qApVhJBy3xKiqmCvNH/oYjin/vs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qui73LPg7EfNN7/jeHKpwSzKMrxZMqvIl1HcRIlW+hjdFjyxP9Tzg4QZ4nf59Veoh
-	 SwRdWykduwrcnGod3vnQqHyM+UhVaEBwWGB6SS8JKuMMcFVPo8u/XpZV1Z9eeML35p
-	 DqtNS18k+FgcXzloW3t98+1cgiXPGyaqsvVBaLDzCwAc/NGGOF4pj/ROoxCoLDWRdX
-	 7Yb/l3gdG3CWYm6NnXfhXejii7Y5SW0lPG0qxpVEEdpaBbzyyrsfvpulUQIDvuT/mJ
-	 1jJqf345MRr/bYOHUpLGbaMCidEI7mqBrmYIe3Z0zc63qma89/5iqU1pPF8polRGnH
-	 wh3AdHMGBZ/ig==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org,
-	Mike Yuan <me@yhndnzj.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Luca Boccassi <luca.boccassi@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pidfs: never refuse ppid == 0 in PIDFD_GET_INFO
-Date: Wed,  4 Jun 2025 22:50:29 +0200
-Message-ID: <20250604-umtreiben-pulle-3a0f7ffb961b@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250604150238.42664-1-me@yhndnzj.com>
-References: <20250604150238.42664-1-me@yhndnzj.com>
+	s=arc-20240116; t=1749072171; c=relaxed/simple;
+	bh=2SwoQaA9d9553yjNgGkPlmIqRjZns8Pzz4Wv1Hbo4RU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=nNKKMMeBSnLQqAohifCG0XVEN4Czjjh8hH8selgCe4j9nWt96q3mSgioul6C2qg4ng9bRa6OdjqVpGWlguN8d3QkfQP68qxd9S5uVQ+5oDYQTDRCrvuu/6h2tPufh2cY5ZLeVfUIeNW+pVMUDBgoB07hmtRyalSS6W6SKBKuFG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=N2S6WXXq; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Message-ID: <19a68e9f-584c-4d9e-aace-c3764725aa0a@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1749072166;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cZWI3Ym45MiKR73NKXRFp1d7/vePEqitj8L7OL8vkkY=;
+	b=N2S6WXXqDqp/oSJcl690LhDK7UdVD180QZV5BmVXne4G2eEwzMRVhR7VwTtvedv/RdairX
+	Mro6xNTQHrAHA5rW08FZYUnPyu9m48LFBwMVujVnrc/REtywFmDEH4RgZ51InOFmj3js/K
+	pYWcnkgVD/RFOtV4BNc5YUmQVaHBmYEw37wd77d1VfmDUkGpAwh1OKeRf8BtEwwnWZmKXq
+	oDeMvAgm+OiDiF0w+VkV31wB/mCy+gaGpygDxBjd62VkgdYBrmYuLsSSaZllPYaRWhgCYJ
+	fM0U1MLo/y7HxAZgjz0d1yefYn9jkQBWB/oPG3X7iAMxXKH5AWxUM+kzfcAGUg==
+Date: Wed, 4 Jun 2025 23:22:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1551; i=brauner@kernel.org; h=from:subject:message-id; bh=q1ItLl8hb0svlGL7qApVhJBy3xKiqmCvNH/oYjin/vs=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ4bHwcl2NoYjcxoeSsoluB7+Y/d3oWCuakh/48J6N32 qYl+++8jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkcXsXwT22HzYFtGVeMFoi9 3JY9c7ZsU/BEnr2bfI5Ou95ZtXrN8RCGf7qKcVY+e+a09fc4R6/eYVngon/wiu/R+8dfv5KYu7r gJRcA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Subject: Re: [Compiler Error] 5.10.238 - Werror=incompatible-pointer-types
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <3af41509-a243-4b64-8c49-af7263be22ef@manjaro.org>
+Content-Language: en-US
+Organization: Manjaro Community
+Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
+ <philm@manjaro.org>
+In-Reply-To: <3af41509-a243-4b64-8c49-af7263be22ef@manjaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
 
-On Wed, 04 Jun 2025 15:03:42 +0000, Mike Yuan wrote:
-> In systemd we spotted an issue after switching to ioctl(PIDFD_GET_INFO)
-> for obtaining pid number the pidfd refers to, that for processes
-> with a parent from outer pidns PIDFD_GET_INFO unexpectedly yields
-> -ESRCH [1]. It turned out that there's an arbitrary check blocking
-> this, which is not really sensible given getppid() happily returns
-> 0 for such processes. Just drop the spurious check and userspace
-> ought to handle ppid == 0 properly everywhere.
+On 6/4/25 21:12, Philip Müller wrote:
+> I see the following compiler error with:
 > 
-> [...]
+> 2025-06-04T18:53:58.6366470Z   CC      net/core/skmsg.o
+> 2025-06-04T18:53:58.7689837Z   CC [M]  sound/pci/ca0106/ca0106_proc.o
+> 2025-06-04T18:53:58.9485675Z drivers/video/fbdev/core/dummyblit.c: In 
+> function ‘fbcon_set_dummyops’:
+> 2025-06-04T18:53:58.9488404Z drivers/video/fbdev/core/dummyblit.c:78:20: 
+> error: assignment to ‘void (*)(struct vc_data *, struct fb_info *, int, 
+> int,  int,  int,  int,  int)’ from incompatible pointer type ‘void (*) 
+> (struct vc_data *, struct fb_info *, int,  int,  int,  int)’ [- 
+> Werror=incompatible-pointer-types]
+> 2025-06-04T18:53:58.9490536Z    78 |         ops->clear = dummy_clear;
+> 2025-06-04T18:53:58.9491362Z       |                    ^
+> 2025-06-04T18:53:58.9492571Z drivers/video/fbdev/core/dummyblit.c:33:13: 
+> note: ‘dummy_clear’ declared here
+> 2025-06-04T18:53:58.9494125Z    33 | static void dummy_clear(struct 
+> vc_data *vc, struct fb_info *info, int sy,
+> 2025-06-04T18:53:58.9495247Z       |             ^~~~~~~~~~~
+> 2025-06-04T18:53:59.0185422Z cc1: some warnings being treated as errors
+> 2025-06-04T18:53:59.0229239Z make[4]: *** [scripts/Makefile.build:286: 
+> drivers/video/fbdev/core/dummyblit.o] Error 1
+> 2025-06-04T18:53:59.0235041Z make[3]: *** [scripts/Makefile.build:503: 
+> drivers/video/fbdev/core] Error 2
+> 2025-06-04T18:53:59.0243143Z make[2]: *** [scripts/Makefile.build:503: 
+> drivers/video/fbdev] Error 2
+> 2025-06-04T18:53:59.0257657Z make[1]: *** [scripts/Makefile.build:503: 
+> drivers/video] Error 2
+> 2025-06-04T18:53:59.0262623Z make: *** [Makefile:1852: drivers] Error 2
+> 
+> Full build log attached;
 
-The original motivation has likely been to exclude calling
-PIDFD_GET_INFO for kthreads. But it's questionable whether that's a
-sensible restriction given that we allow to retrieve information about
-kthreads via /proc/<pid>/status already.
+Same happens with 5.15.185 and 6.1.141 as well.
 
----
-
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] pidfs: never refuse ppid == 0 in PIDFD_GET_INFO
-      https://git.kernel.org/vfs/vfs/c/b55eb6eb2a74
+-- 
+Best, Philip
 
