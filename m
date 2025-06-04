@@ -1,331 +1,216 @@
-Return-Path: <stable+bounces-151443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B64AACE1A1
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 17:39:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670BCACE1B0
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 17:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC39173AB3
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 15:39:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7912E7A7375
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 15:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B01198E7B;
-	Wed,  4 Jun 2025 15:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1D019E7D0;
+	Wed,  4 Jun 2025 15:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xLjRE2n+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qk3leJ1s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E5146D6A
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 15:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C1E187332
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 15:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749051587; cv=none; b=V2ahmYD0yfI26pO6lWmC5N3ZaK+3NpfDI91vf3MotbZjmiRdNM1VCrQA+u35IaV1e/7udVydL9titjB3Z/66/0vx//Avovnh/sbTKY9wTl4x8Xi+hXMdxm7MH+AOfEqADSMmczp6RpvNVrIyu/qxtBbPtWXVzY7P5caNcLWsxpk=
+	t=1749051749; cv=none; b=qBGN/mlxeOJFYHUSP7sA4xDzi3ta0uF/bkekwg17I6bwJe0Nf6dgCTJl1RXgRzKjQDo4TLxVQPP+yX+rz5ilriUlgajVh+k+r+xrRHqyYx9+ORKMC0UlWy1lgT58d54NSxZdyR6uPMZZri4uk5oAlwrBR5gECRoyYAACzahH5XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749051587; c=relaxed/simple;
-	bh=DRbtIFSLrs9jcYvzqOyx2Auzxn1+blLgpV3of5W2K3k=;
+	s=arc-20240116; t=1749051749; c=relaxed/simple;
+	bh=hhP/A7RLvwyRKQC/O9VmZbiaAZnWTJN7KauhrQU2JQE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gPQGyvifBcX7NtMrfwxwCET+/HILgs8Pdm2vFQZPClPoYjmcgwJUbUnmyIdB94pEe3YJVVrXNWTEhNLwc6rKtMDVFoyvDsjLnB8271ALshWu0SHU9e/bOYANUjvWz7Kf8oVTJcKV4qSnaH/ytjBRpXr9HdfaJNdHzU4CYbw800A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xLjRE2n+; arc=none smtp.client-ip=209.85.160.172
+	 To:Cc:Content-Type; b=n6a7Xm2AcCqXTZ/wejHiLS8mvAcL3nheeAS9Cs0jK8Cz9H+Ftw0OPZn1FhnPztW9KQQXT1NgSYOHWLafWTGFujrYXllim8ffNpReCA4HJAIR+qOt6Xkg0JZYolxE/p0xB0oOYGxB+DW839FY2VWwjBY03XhnYPek9CgNR/p5WSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qk3leJ1s; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a58ef58a38so256971cf.0
-        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 08:39:45 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6024087086dso14144a12.0
+        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 08:42:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749051584; x=1749656384; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749051746; x=1749656546; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jaIUTtis4g7w9h9/ucFToLx1kZiFQCisI5TV2JiWp7U=;
-        b=xLjRE2n+pBtwYK5s20RYtIokKS9LL/N5xTXdszymuijM1wbQcwE+g3xvSWAWa0N8a3
-         uW23ZgTUEM8jhbgtX9O2L9u17TsaGzVUjfy/KEAaiqh+vttvHcfso0fj5Wth1YELiTfY
-         UnCf9/Dask43QyEIVjNZqJwXHYQCUpUyZy9TjVpKKpWjdieyOAIHHCefZFQLl4pAeta5
-         ph1ur1J+oGZ+XsOXbxU38DuY1kCmcKdX1FF3A9y/D0DNF6d3ExHAod9ULxvtl4AxIoPe
-         wRuQgzlRALlI8E4qkLKtqpWgOJP5SaJSCid1Uopil15VxvI7cz7+anR5VJHnYuhv349q
-         nk8Q==
+        bh=G7t9vtmyioTV7HgLglXfMiupzKVCAToEG32ldpNqXxc=;
+        b=qk3leJ1sLkzmXV1+gxW6N3B+/brtpW9ZXyXW+pvebFw8FeomAjHD6tRA+znmnCmNjB
+         A4U0idLE1xOmZxTP4Pw3FAtHNEyHG/VVvP5RuKIV2C83sr3QmsfbxK6QcVn1XRdnuQ/L
+         OzXKCGKH8d40pfH/xh0zUJhUSYZxpVpnvHqo4/g9TkOCWGENd/YxfVHHucz/M/YTWzHs
+         o28gLU8V7QzEL67I2P2ysSUrzjWq4eNpsW3TpPiLFuOLdhOiKkJZ+40QMGBf5n6P3b1T
+         XCHPzZc3aQE56Qf/1jyebCDtVB9ccwPU0yj1PiRO/0cBUW5crH5KX7/1euysXqYwGhrT
+         igOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749051584; x=1749656384;
+        d=1e100.net; s=20230601; t=1749051746; x=1749656546;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jaIUTtis4g7w9h9/ucFToLx1kZiFQCisI5TV2JiWp7U=;
-        b=G8Fq157DGYUFemRfW3XwxyrAaW1qK1BeoRKQlEyLNJleTqrs1m1zf0kAL/2Vnb51+9
-         yVfUisASueKftW4iSKaEPP2Qm5OKA8/eIyI+8PBGDTKGRWnAy7O9fZd8rD2bL4ar6P/R
-         EJtwqllXLuLyFOPWOfk/2tjesCVTsm1qZzWfRlclrgTociz4awcr9Brl1xFS04bjZWlR
-         Xrog/nHAwBThiBhoETAGsupgWAaolCZQSwcwiDwQfbcOhTPs4QjIlpfzaaQxLcbjxdIp
-         R/f8pQzhoXzWrLEIPZQqiiCQaEYqmMhSR5D5GUwb8ROxF3bIzI0uLG66adiYe9K0Mv/r
-         YC7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWOZalJSCGBgEmhXpj113WS5rCBrfhmV85Sc3i3lQPpirKTNX7ZR36TEFS5tpqFuo7J80LjCOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytiQXUyTOZ62txEmpFdl9YpQ5CPmHbPqRRwfPO5B0ntPcU9q6w
-	yxHw3RHZ8eM5tEHsvCUnK+akce+Vq0Y8UpR6Opq+p1HKNpu4XHnXJYUp+hmMFHmxXbn/bQ5JoqE
-	RDkJXhzFdHgtMDWlLKpAXt+FNJoCZHDNlUTThSHP9
-X-Gm-Gg: ASbGnct9gCzyUXQxBkYYbK0A8HmE21kdHaUV9w3iw2hkwz9WrdVKIpU+YvCTumSQTNI
-	O4mORfsOyVO7nHstHNnkitbRebs/W971nUyb+cf+BlzU0qKgMpfSE962UfS2i4dL8ui6ArNum7J
-	cOlsXCpLu2FePxvAgeN+Me+sLJEmCp2o2VxeU23cp4Yy4lvE0RrQQjBPsmTI/gBZC15Ap6EEIj
-X-Google-Smtp-Source: AGHT+IGRNN0Nu/Cd9xexZVozmzGYncXDcXneYvDGwMtEg8bwYQBRyVY6g+btTzUvAuW4Pg8yQBu3fuKnwJ8vlqK4mkY=
-X-Received: by 2002:a05:622a:551b:b0:494:b641:4851 with SMTP id
- d75a77b69052e-4a5a60fed52mr4023891cf.27.1749051583921; Wed, 04 Jun 2025
- 08:39:43 -0700 (PDT)
+        bh=G7t9vtmyioTV7HgLglXfMiupzKVCAToEG32ldpNqXxc=;
+        b=xHu/n2CFMi988smGrLDhUFa/Nyfh3KUm96oe+K70Lhdja3m0iid1q4PUitrathx6JI
+         SRxwvGXiPF/0eNkDpIEN5f4W8J35Or92t8GoswyLKh3snPjSm4nAFSYnYdR/c2aCo3jw
+         svL63x+pMlbRT2p6794HLMUKpTvEJuJUZCOhOmmazfJn5LVmGVDo7coxQQFJwiG+p3rw
+         YiikDkGIGx6ZkWy7ap05x+eSk8Tjben+EjdemTJKtUS2JbrLID74Pj2wQcQNyyhH/Q8Z
+         m5t58A74eoGs5yuFXk2DeWvKdQZQsA/GlAQQ8kGxf/3quAqAuImZHcL37Irav5cqqJWf
+         87VA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZZ47Ckx7tcGNHnIPkyqY6/fuLwMMAMHawIRWjHk+SUi7FpEgPJEeKekBc9Qd4xHwryQji36Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8hMiH6pL7wTLQuZ3wI3r8bKoqzghzKoavsrE5BXRGpA/9Q30c
+	YahPcQflVGOgo/nElB1CNG011Q6ctlAIQbZ1J6hdgO0PKXWOCgCH92peC+cCyw7H2pvgP2Lt9ak
+	O0qvA4yFY1sjNSXrepC2A1CSenENK4KZ4luqyuCvl
+X-Gm-Gg: ASbGncseGVp7Y2cLmLmF2gXnvC7VTHx4/UxSmM88LqxgNTWluYRLrxq5ge9qm7RjVI/
+	DVWpaY8vFcj/acp65vPVBWCFeAI95U1pPdbnRdNWwq+Q9VgSSJxRF0xcr1E+ARdwPYWC3gS0Qm2
+	2HSYEwxJiWGhdFMaxDeHzJsFFDoSrE1NwZ2y0NfHhacLeCAGXqaZHqwdh1tPm6f506n8SLeoMQq
+	gcJfe5u
+X-Google-Smtp-Source: AGHT+IGfPx1qQPMXmJnjVKhaEVQluNKuo3ENlcH6cBs0pacjJK5V/ek72eM4MKfZg2Ho+J1PAnctmEkhuhZRW6TjsQE=
+X-Received: by 2002:a50:ee0d:0:b0:606:efc1:949b with SMTP id
+ 4fb4d7f45d1cf-606efc199femr93289a12.3.1749051745229; Wed, 04 Jun 2025
+ 08:42:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250604151038.21968-1-ryncsn@gmail.com> <aEBnjWkghvXqlYZo@x1.local>
-In-Reply-To: <aEBnjWkghvXqlYZo@x1.local>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 4 Jun 2025 08:39:32 -0700
-X-Gm-Features: AX0GCFsWpIOVI6OZ80FViRxGFHREe5YmcX2RyGPtytnkb9wTVut9NUMVmwCE9zc
-Message-ID: <CAJuCfpHC3eZuTWtzafbNWQHpKxx+vsLkXQcaf5_bZUtjbJos+g@mail.gmail.com>
-Subject: Re: [PATCH v4] mm: userfaultfd: fix race of userfaultfd_move and swap cache
-To: Peter Xu <peterx@redhat.com>
-Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Barry Song <21cnbao@gmail.com>, 
-	Andrea Arcangeli <aarcange@redhat.com>, David Hildenbrand <david@redhat.com>, 
-	Lokesh Gidra <lokeshgidra@google.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
+ <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com> <t5uqs6kbzmcl2sjplxa5tqy6luinuysi7lfimbademagop7323@gveunpi3eqyo>
+In-Reply-To: <t5uqs6kbzmcl2sjplxa5tqy6luinuysi7lfimbademagop7323@gveunpi3eqyo>
+From: Jann Horn <jannh@google.com>
+Date: Wed, 4 Jun 2025 17:41:47 +0200
+X-Gm-Features: AX0GCFsCvblCWcy9XKdf8MqurIoG-ndCCsP0NcLQgarcwuDEBT9XXvHYP38LsIc
+Message-ID: <CAG48ez29awjpSXnupQGyxCLoLds72QcYtbhmkAyLT2dCqFzA5Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory snapshot
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 4, 2025 at 8:34=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
->
-> On Wed, Jun 04, 2025 at 11:10:38PM +0800, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
+On Tue, Jun 3, 2025 at 10:32=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wr=
+ote:
+> On Tue, Jun 03, 2025 at 08:21:02PM +0200, Jann Horn wrote:
+> > When fork() encounters possibly-pinned pages, those pages are immediate=
+ly
+> > copied instead of just marking PTEs to make CoW happen later. If the pa=
+rent
+> > is multithreaded, this can cause the child to see memory contents that =
+are
+> > inconsistent in multiple ways:
 > >
-> > On seeing a swap entry PTE, userfaultfd_move does a lockless swap
-> > cache lookup, and tries to move the found folio to the faulting vma.
-> > Currently, it relies on checking the PTE value to ensure that the moved
-> > folio still belongs to the src swap entry and that no new folio has
-> > been added to the swap cache, which turns out to be unreliable.
-> >
-> > While working and reviewing the swap table series with Barry, following
-> > existing races are observed and reproduced [1]:
-> >
-> > In the example below, move_pages_pte is moving src_pte to dst_pte,
-> > where src_pte is a swap entry PTE holding swap entry S1, and S1
-> > is not in the swap cache:
-> >
-> > CPU1                               CPU2
-> > userfaultfd_move
-> >   move_pages_pte()
-> >     entry =3D pte_to_swp_entry(orig_src_pte);
-> >     // Here it got entry =3D S1
-> >     ... < interrupted> ...
-> >                                    <swapin src_pte, alloc and use folio=
- A>
-> >                                    // folio A is a new allocated folio
-> >                                    // and get installed into src_pte
-> >                                    <frees swap entry S1>
-> >                                    // src_pte now points to folio A, S1
-> >                                    // has swap count =3D=3D 0, it can b=
-e freed
-> >                                    // by folio_swap_swap or swap
-> >                                    // allocator's reclaim.
-> >                                    <try to swap out another folio B>
-> >                                    // folio B is a folio in another VMA=
-.
-> >                                    <put folio B to swap cache using S1 =
->
-> >                                    // S1 is freed, folio B can use it
-> >                                    // for swap out with no problem.
-> >                                    ...
-> >     folio =3D filemap_get_folio(S1)
-> >     // Got folio B here !!!
-> >     ... < interrupted again> ...
-> >                                    <swapin folio B and free S1>
-> >                                    // Now S1 is free to be used again.
-> >                                    <swapout src_pte & folio A using S1>
-> >                                    // Now src_pte is a swap entry PTE
-> >                                    // holding S1 again.
-> >     folio_trylock(folio)
-> >     move_swap_pte
-> >       double_pt_lock
-> >       is_pte_pages_stable
-> >       // Check passed because src_pte =3D=3D S1
-> >       folio_move_anon_rmap(...)
-> >       // Moved invalid folio B here !!!
-> >
-> > The race window is very short and requires multiple collisions of
-> > multiple rare events, so it's very unlikely to happen, but with a
-> > deliberately constructed reproducer and increased time window, it
-> > can be reproduced easily.
-> >
-> > This can be fixed by checking if the folio returned by filemap is the
-> > valid swap cache folio after acquiring the folio lock.
-> >
-> > Another similar race is possible: filemap_get_folio may return NULL, bu=
-t
-> > folio (A) could be swapped in and then swapped out again using the same
-> > swap entry after the lookup. In such a case, folio (A) may remain in th=
+> > 1. We are copying the contents of a page with a memcpy() while userspac=
 e
-> > swap cache, so it must be moved too:
+> >    may be writing to it. This can cause the resulting data in the child=
+ to
+> >    be inconsistent.
+>
+> This is an interesting problem, but we'll get to it later.
+>
+> > 2. After we've copied this page, future writes to other pages may
+> >    continue to be visible to the child while future writes to this page=
+ are
+> >    no longer visible to the child.
 > >
-> > CPU1                               CPU2
-> > userfaultfd_move
-> >   move_pages_pte()
-> >     entry =3D pte_to_swp_entry(orig_src_pte);
-> >     // Here it got entry =3D S1, and S1 is not in swap cache
-> >     folio =3D filemap_get_folio(S1)
-> >     // Got NULL
-> >     ... < interrupted again> ...
-> >                                    <swapin folio A and free S1>
-> >                                    <swapout folio A re-using S1>
-> >     move_swap_pte
-> >       double_pt_lock
-> >       is_pte_pages_stable
-> >       // Check passed because src_pte =3D=3D S1
-> >       folio_move_anon_rmap(...)
-> >       // folio A is ignored !!!
+>
+> Yes, and this is not fixable. It's also a problem for the regular write-p=
+rotect
+> pte path where inevitably only a part of the address space will be write-=
+protected.
+
+I don't understand what you mean by "inevitably only a part of the
+address space will be write-protected". Are you talking about how
+shared pages are kept shared between parent in child? Or are you
+talking about how there is a point in time at which part of the
+address space is write-protected while another part is not yet
+write-protected? In that case: Yes, that can happen, but that's not a
+problem.
+
+> This would only be fixable if e.g we suspended every thread on a multi-th=
+readed fork.
+
+No, I think it is fine to keep threads running in parallel on a
+multi-threaded fork as long as all the writes they do are guaranteed
+to also be observable in the child. Such writes are no different from
+writes performed before fork().
+
+It would only get problematic if something in the parent first wrote
+to page A, which has already been copied to the child (so the child no
+longer sees the write) and then wrote to page B, which is CoWed (so
+the child would see the write). I prevent this scenario by effectively
+suspending the thread that tries to write to page A until the fork is
+over (by making it block on the mmap lock in the fault handling path).
+
+> > This means the child could theoretically see incoherent states where
+> > allocator freelists point to objects that are actually in use or stuff =
+like
+> > that. A mitigating factor is that, unless userspace already has a deadl=
+ock
+> > bug, userspace can pretty much only observe such issues when fancy lock=
+less
+> > data structures are used (because if another thread was in the middle o=
+f
+> > mutating data during fork() and the post-fork child tried to take the m=
+utex
+> > protecting that data, it might wait forever).
 > >
-> > Fix this by checking the swap cache again after acquiring the src_pte
-> > lock. And to avoid the filemap overhead, we check swap_map directly [2]=
+>
+> Ok, so the issue here is that atomics + memcpy (or our kernel variants) w=
+ill
+> possibly observe tearing. This is indeed a problem, and POSIX doesn't _re=
+ally_
+> tell us anything about this. _However_:
+>
+> POSIX says:
+> > Any locks held by any thread in the calling process that have been set =
+to be process-shared
+> > shall not be held by the child process. For locks held by any thread in=
+ the calling process
+> > that have not been set to be process-shared, any attempt by the child p=
+rocess to perform
+> > any operation on the lock results in undefined behavior (regardless of =
+whether the calling
+> > process is single-threaded or multi-threaded).
+>
+> The interesting bit here is "For locks held by any thread [...] any attem=
+pt by
+> the child [...] results in UB". I don't think it's entirely far-fetched t=
+o say
+> the spirit of the law is that atomics may also be UB (just like a lock[1]=
+ that was
+> held by a separate thread, then unlocked mid-concurrent-fork is in a UB s=
+tate).
+
+I think interpreting atomic operations as locks is far-fetched. Also,
+POSIX is a sort of minimal bar, and if we only implemented things
+explicitly required by POSIX, we might not have a particularly useful
+operating system.
+
+Besides, I think things specified by the C standard override whatever
+POSIX says, and C23 specifies that there are atomic operations, and I
+haven't seen anything in C23 that restricts availability of those to
+before fork().
+
+> In any way, I think the bottom-line is that fork memory snapshot coherenc=
+y is
+> a fallacy. It's really impossible to reach without adding insane constrai=
+nts
+> (like the aforementioned thread suspending + resume). It's not even possi=
+ble
+> when going through normal write-protect paths that have been conceptually=
+ stable since
+> the BSDs in the 1980s (due to the write-protect-a-page-at-a-time-problem)=
 .
-> >
-> > The SWP_SYNCHRONOUS_IO path does make the problem more complex, but so
-> > far we don't need to worry about that, since folios can only be exposed
-> > to the swap cache in the swap out path, and this is covered in this
-> > patch by checking the swap cache again after acquiring the src_pte lock=
-.
-> >
-> > Testing with a simple C program that allocates and moves several GB of
-> > memory did not show any observable performance change.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=3D6OOrK2OUZ0-tqCzi+=
-EJt+2_K97TPGoSt=3D9+JwP7Q@mail.gmail.com/ [1]
-> > Link: https://lore.kernel.org/all/CAGsJ_4yJhJBo16XhiC-nUzSheyX-V3-nFE+t=
-Ai=3D8Y560K8eT=3DA@mail.gmail.com/ [2]
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > Reviewed-by: Lokesh Gidra <lokeshgidra@google.com>
 
-Very interesting races. Thanks for the fix!
-
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-
-> >
-> > ---
-> >
-> > V1: https://lore.kernel.org/linux-mm/20250530201710.81365-1-ryncsn@gmai=
-l.com/
-> > Changes:
-> > - Check swap_map instead of doing a filemap lookup after acquiring the
-> >   PTE lock to minimize critical section overhead [ Barry Song, Lokesh G=
-idra ]
-> >
-> > V2: https://lore.kernel.org/linux-mm/20250601200108.23186-1-ryncsn@gmai=
-l.com/
-> > Changes:
-> > - Move the folio and swap check inside move_swap_pte to avoid skipping
-> >   the check and potential overhead [ Lokesh Gidra ]
-> > - Add a READ_ONCE for the swap_map read to ensure it reads a up to date=
-d
-> >   value.
-> >
-> > V3: https://lore.kernel.org/all/20250602181419.20478-1-ryncsn@gmail.com=
-/
-> > Changes:
-> > - Add more comments and more context in commit message.
-> >
-> >  mm/userfaultfd.c | 33 +++++++++++++++++++++++++++++++--
-> >  1 file changed, 31 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index bc473ad21202..8253978ee0fb 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1084,8 +1084,18 @@ static int move_swap_pte(struct mm_struct *mm, s=
-truct vm_area_struct *dst_vma,
-> >                        pte_t orig_dst_pte, pte_t orig_src_pte,
-> >                        pmd_t *dst_pmd, pmd_t dst_pmdval,
-> >                        spinlock_t *dst_ptl, spinlock_t *src_ptl,
-> > -                      struct folio *src_folio)
-> > +                      struct folio *src_folio,
-> > +                      struct swap_info_struct *si, swp_entry_t entry)
-> >  {
-> > +     /*
-> > +      * Check if the folio still belongs to the target swap entry afte=
-r
-> > +      * acquiring the lock. Folio can be freed in the swap cache while
-> > +      * not locked.
-> > +      */
-> > +     if (src_folio && unlikely(!folio_test_swapcache(src_folio) ||
-> > +                               entry.val !=3D src_folio->swap.val))
-> > +             return -EAGAIN;
-> > +
-> >       double_pt_lock(dst_ptl, src_ptl);
-> >
-> >       if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src=
-_pte,
-> > @@ -1102,6 +1112,25 @@ static int move_swap_pte(struct mm_struct *mm, s=
-truct vm_area_struct *dst_vma,
-> >       if (src_folio) {
-> >               folio_move_anon_rmap(src_folio, dst_vma);
-> >               src_folio->index =3D linear_page_index(dst_vma, dst_addr)=
-;
-> > +     } else {
-> > +             /*
-> > +              * Check if the swap entry is cached after acquiring the =
-src_pte
-> > +              * lock. Otherwise, we might miss a newly loaded swap cac=
-he folio.
-> > +              *
-> > +              * Check swap_map directly to minimize overhead, READ_ONC=
-E is sufficient.
-> > +              * We are trying to catch newly added swap cache, the onl=
-y possible case is
-> > +              * when a folio is swapped in and out again staying in sw=
-ap cache, using the
-> > +              * same entry before the PTE check above. The PTL is acqu=
-ired and released
-> > +              * twice, each time after updating the swap_map's flag. S=
-o holding
-> > +              * the PTL here ensures we see the updated value. False p=
-ositive is possible,
-> > +              * e.g. SWP_SYNCHRONOUS_IO swapin may set the flag withou=
-t touching the
-> > +              * cache, or during the tiny synchronization window betwe=
-en swap cache and
-> > +              * swap_map, but it will be gone very quickly, worst resu=
-lt is retry jitters.
-> > +              */
->
-> The comment above may not be the best I can think of, but I think I'm
-> already too harsh. :)  That's good enough to me.  It's also great to
-> mention the 2nd race too as Barry suggested in the commit log.
->
-> Thank you!
->
-> Acked-by: Peter Xu <peterx@redhat.com>
->
-> > +             if (READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_HAS=
-_CACHE) {
-> > +                     double_pt_unlock(dst_ptl, src_ptl);
-> > +                     return -EAGAIN;
-> > +             }
-> >       }
-> >
-> >       orig_src_pte =3D ptep_get_and_clear(mm, src_addr, src_pte);
-> > @@ -1412,7 +1441,7 @@ static int move_pages_pte(struct mm_struct *mm, p=
-md_t *dst_pmd, pmd_t *src_pmd,
-> >               }
-> >               err =3D move_swap_pte(mm, dst_vma, dst_addr, src_addr, ds=
-t_pte, src_pte,
-> >                               orig_dst_pte, orig_src_pte, dst_pmd, dst_=
-pmdval,
-> > -                             dst_ptl, src_ptl, src_folio);
-> > +                             dst_ptl, src_ptl, src_folio, si, entry);
-> >       }
-> >
-> >  out:
-> > --
-> > 2.49.0
-> >
->
-> --
-> Peter Xu
->
+No, Linux already had memory snapshot coherency before commit
+70e806e4e645 ("mm: Do early cow for pinned pages during fork() for
+ptes"). Write-protecting a page at a time does not cause coherency
+issues, because letting a concurrent thread write into such memory
+during fork() is no different from letting it do so before fork() from
+a memory coherency perspective, as long as fork() write-locks memory
+management for the process.
 
