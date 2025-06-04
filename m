@@ -1,199 +1,152 @@
-Return-Path: <stable+bounces-151446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3E3ACE206
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 18:16:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C2CACE211
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 18:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E26D7AAE37
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:15:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64AAA3A16DA
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE86150997;
-	Wed,  4 Jun 2025 16:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD681624C5;
+	Wed,  4 Jun 2025 16:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JW3s5E4w";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GiDYZjk3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qvVMw7e2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Ib421YMQ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="MJf2oh15"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C72339A1
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 16:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854A7339A1
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 16:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749053776; cv=none; b=WLkhLXvSMBhEtguIHVrya+lyLNARWl25hluhyXkyIfV37/PT6sckayq4yln2RGRBRvnz8SowqZ/NEfU3rqHdU1iPbg9PDMzP02HzuOd9uuupRFBCsKZcwTKIctT0kCFv50r/zf8djj5MkEiNvCA9QuWq19jQk4UEa9sd4CSoxBE=
+	t=1749053895; cv=none; b=L38x+g5XBjtHYyJ/5sohWr6tsTPcW8rjJ0cbFBraRsui3mkv0ZENbghqgWr6OtZHmUMJfVejJWSUP0PGjhM4U5yHGQKLB02F6KGe2I+yUOIns2Twx/ypyM6ItQuLxU8mNPQo0VD+/Elr0ruxhKCYb2Gi5qG7rB+fKqwi/dgoDCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749053776; c=relaxed/simple;
-	bh=weHQwns0gJTioruMnZ6e+lbjxPJy1R3/J0uJNHbei/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GfSFVsSwbPyxs3F4ds1nQB8V4MO6P+tXxKSW+1kfQPBFYCYHdjKX99yBO5bIBXkm9Yj8Mz8XMhji1408VHYBmUV3cnjZbOeNvkK1l10RXuy26FiGYlK8M6q6bU6aXYxJbLsJl/Z1KsrW7ArXZdfXZXmo9w+S8v0JseDrGbOMu3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JW3s5E4w; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GiDYZjk3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qvVMw7e2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Ib421YMQ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DEB912033D;
-	Wed,  4 Jun 2025 16:16:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749053773; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YmdkHicZ9vMglOkN9sId8WADOZ0AiEKxD+HKkXswifw=;
-	b=JW3s5E4w/Lq8bnMW7jFK4SnNpKvFd6SXiT2E5iKZJSsFk75BrW0vJSwSpL+o9geysesFIf
-	8saaOt3PhJj/bYi16+BZ2p1pDIfcTU8d1K2D3QaLnzWK5VPGEC1BnBxbqzedDmyKkKumrP
-	fdkwgF/NfXZ7iHY5+9MW07K1gZkegVY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749053773;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YmdkHicZ9vMglOkN9sId8WADOZ0AiEKxD+HKkXswifw=;
-	b=GiDYZjk3W/3b75T4+UMWn/ckf3lpcrUELe7rDdgSyeE4QJz59fduZu9ndYMV0lTLB5KTTg
-	Bmea3lFDHcTYpoDw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qvVMw7e2;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ib421YMQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749053772; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YmdkHicZ9vMglOkN9sId8WADOZ0AiEKxD+HKkXswifw=;
-	b=qvVMw7e2XoaVcUE2le8pfxYUhFk5XJfc1fLEqRPChbEQ2ko9L3bWU7sSua9U3yYkZChYj8
-	FNONXjiWXRwXRKKeKdoHyUTZKRyxn09x4R/J2yhO1uyyB3090bijaEwEhX+tbGjTrOH3Op
-	xYOYUD2e1+7+hOltBZXxlfOYTr16prI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749053772;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YmdkHicZ9vMglOkN9sId8WADOZ0AiEKxD+HKkXswifw=;
-	b=Ib421YMQE2vfLRFvp8nrk30gIIOH/ThJCJEgYSbQgQYBc+TNJ5/X5OaqRLUMRx9BRpn374
-	J2mCcWDj3aWdxTBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1D13C13A63;
-	Wed,  4 Jun 2025 16:16:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GNQYBExxQGhiIAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 04 Jun 2025 16:16:12 +0000
-Date: Wed, 4 Jun 2025 17:16:10 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory
- snapshot
-Message-ID: <gm6gm4hmojfhgwjgyzxfzxjlr7yz2gtkspdocsufzxydyfc4ri@n5iynjdpoe33>
-References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
- <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
- <t5uqs6kbzmcl2sjplxa5tqy6luinuysi7lfimbademagop7323@gveunpi3eqyo>
- <CAG48ez29awjpSXnupQGyxCLoLds72QcYtbhmkAyLT2dCqFzA5Q@mail.gmail.com>
+	s=arc-20240116; t=1749053895; c=relaxed/simple;
+	bh=7MowuELV49A6vO/Jfah08WGLvL3dsHGBOzLVv1nf/Vk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TD+xV6xlit1FSnTaTpKZ/tjkzZ3Xd1UapUFBYRZPTaYe/bR5v/v/FscQMMqQrk9DD++WtyK4q1AU8AD8tf97VJ6g0x2YYZvdXeXDD1ceyVac/tzxEcspuovRWa4mKRFfLVKx4kI8Lgr7QjqgbclgX9PjK2XA/wJsAtW6sEc7Lig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=MJf2oh15; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5547gt0d013476
+	for <stable@vger.kernel.org>; Wed, 4 Jun 2025 16:18:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/FKalLodIY+3cT9Xt0G1l7UIsgPISWBmeyASaI94Pws=; b=MJf2oh1583p/fAql
+	cBM6gNOQUiQ08Q8LoFU7I679R315ixTjNItYAbyN/93DrpJbZNPHi89pnTqW8LQx
+	PVQhlUmM94eVf8EEA8W/HkgjM1onIAFG0fWSyZRr5qZwT08/vO7US2WWLMQiAlEb
+	rnsZ/uQZj/WVwuBGfaQi6DqT89+OLVpl4796ihbJ5SEKmYmOhrkQV98qdhrdtB0R
+	NRSrfs8BqWpC+nLyuIIHEOmcJ3owTkeGiaED+8quTpLHzoR2EEj1hQQwjU+BmVRm
+	a5U6CHrp/xwAoQdZB0qs82IJ5g9WDENpvSYuPEH+u0JS5cRt2DBV5wGY/ocmajRL
+	0P24Pg==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8npnsv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 04 Jun 2025 16:18:12 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-747fa83d81dso48718b3a.3
+        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 09:18:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749053891; x=1749658691;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/FKalLodIY+3cT9Xt0G1l7UIsgPISWBmeyASaI94Pws=;
+        b=GXs6qpP8+Z0uBJjW7IaahLh6cMbb+RDl0Dycxj5UBAMH/SPcGMkJ8GR5CtTEC4f7LJ
+         qPjV2z8WQ92ctYVi+q8VT2IYkO0WgrxDpubEbwnnZ/rhECLky4Ydx85ZxIvjP7m8QWD1
+         MtdYxVdxMdlQFm3uwBDZ+QklSwjV2jmpH8YTJoNEj3hkDcGPv2DsZDBl+U7OraRrvz9L
+         sXM4pSP8pFqFKZ/oBPMNR2MbIlvmJcuW0zzs5wxFLfysrJ8/OrBXLnyd13TD/TJXS4ut
+         n1e3CRRmV87g5hh8gtkRmlcF304GhXEvw4LKinSnKc/AYk8CWnd+v7dehoq/vlYQ2xDs
+         AHWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXkGTr5++xoW3QvgR37m9sEeOsXwBCbJ/uqnp4vT5/bYBwbMIly+rSlR93O0K7uYTKNCCjzLfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjxGpAph+qeTmQT/bSY6QO+QxtmnCwH+7oNcqyiSt58QKRSuQJ
+	HE589Ak/SGjNZUwm6fl0g6rX8cTcuDnrffSi/hvXiwhzur5k2mA9H8yzitLgbE7jLwR7Mmgw+NI
+	+l3N+wBji2HLNDCSHnLk/xHoquR0Usjx6EmsYNcYzLKoLlnBj60zx3p1xCdGcUeLpivk=
+X-Gm-Gg: ASbGnctqnlklvvlGf188DVuyhrAR8pBpv1ADFYkB6EWmbwT5TnCpm+Xq/BlUqreOS40
+	3GgHPeupyycRH5AAfSRM39WhleBO8/TA9/p5tVQ05B1vb41uN+jLnT535LvP9r31ipH0x3iO0b5
+	PlDVjQE/+5iccARf3WkpwjQZJJCQ+mAwcAE21qKIVCvjPLe/PjuVvoahgedD0a9EiCmZP/rMPJA
+	MwxCMVKtV3YmbZM3LgujNB3MWV54M8vHiFV8J2syY61vLHVyovz8HwYqek0ruuWN4oV9SFlMOcP
+	NQ09gtQRkJGTgAgU6oNefkpnWfiZ1JGrijzPO1/EVPZOKAC2LbnitwKpr9uBxwbwsmbADVRt
+X-Received: by 2002:a05:6a21:338f:b0:1f5:92ac:d6a1 with SMTP id adf61e73a8af0-21d22a6d399mr5102658637.4.1749053891319;
+        Wed, 04 Jun 2025 09:18:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHso7G09k9UvuycvraO1NDz4fm/Vag8N+EPM5/nbAn3PNvuV5tem1zGbbXZtmexx1nDcVU5uQ==
+X-Received: by 2002:a05:6a21:338f:b0:1f5:92ac:d6a1 with SMTP id adf61e73a8af0-21d22a6d399mr5102616637.4.1749053890774;
+        Wed, 04 Jun 2025 09:18:10 -0700 (PDT)
+Received: from [10.226.59.182] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2eceb02e93sm8956129a12.16.2025.06.04.09.18.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 09:18:10 -0700 (PDT)
+Message-ID: <0423ac43-0a12-4f0f-ade3-61364d4abf93@oss.qualcomm.com>
+Date: Wed, 4 Jun 2025 10:18:08 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez29awjpSXnupQGyxCLoLds72QcYtbhmkAyLT2dCqFzA5Q@mail.gmail.com>
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: DEB912033D
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-1.61 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_SPAM_SHORT(2.20)[0.733];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -1.61
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] accel/ivpu: Reorder doorbell unregister and command queue
+ destruction
+To: Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+        dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com, jacek.lawrynowicz@linux.intel.com,
+        lizhi.hou@amd.com, Karol Wachowski <karol.wachowski@intel.com>,
+        stable@vger.kernel.org
+References: <20250604154450.1209596-1-maciej.falkowski@linux.intel.com>
+Content-Language: en-US
+From: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+In-Reply-To: <20250604154450.1209596-1-maciej.falkowski@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: vsK-WVmJkgy1okLHB8ROc-6qvNqPSN5m
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDEyMyBTYWx0ZWRfX3l5dXZ2BugmW
+ 5xZLvhrVRQhLZ3CXlJPh6qR3h/wApkF9Ztsa/ChfxCv3b8shpmTFMc7AS6+N3BazZDjxIXiy+WD
+ oSReBQuQAhsSetOlynijP0a6ILzepnYnVOk/m+MxC6twCxdRxn2ts4nZUNO8tyFmkQ+eVcoZsFZ
+ 02TWdN7HgVwCAufIUAvIyP/fZ2LDCV+m3iWElF9NC8kk1yRbID4BI8fc4LVURxLrBsirBi0wKmi
+ gNjTR6I3rzRh6QwCYD3kK/9RcGMrpjLw7ywgMO9TRe70qYpLV33WhvPsa65VavZBTVV9ZiPbjI8
+ Aw4guvlwqjJ1BJQpSOI1GUF9Mp6uxIGzJlt/+qJLuibylIrfDLC+B8vkeiv9AymPLfvCItctNoI
+ iMZpjtIF3P370x850TtbAEULOEqRuumOh0/4JbY7pSqUcSacYuk5yFnurZXrGM0DRqA5qSoz
+X-Proofpoint-ORIG-GUID: vsK-WVmJkgy1okLHB8ROc-6qvNqPSN5m
+X-Authority-Analysis: v=2.4 cv=UphjN/wB c=1 sm=1 tr=0 ts=684071c4 cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8
+ a=XIlkvbPez1Y0lOnEMrgA:9 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-04_03,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 impostorscore=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 clxscore=1015 malwarescore=0 adultscore=0
+ bulkscore=0 mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506040123
 
-On Wed, Jun 04, 2025 at 05:41:47PM +0200, Jann Horn wrote:
-> On Tue, Jun 3, 2025 at 10:32 PM Pedro Falcato <pfalcato@suse.de> wrote:
-> > On Tue, Jun 03, 2025 at 08:21:02PM +0200, Jann Horn wrote:
-> > > When fork() encounters possibly-pinned pages, those pages are immediately
-> > > copied instead of just marking PTEs to make CoW happen later. If the parent
-> > > is multithreaded, this can cause the child to see memory contents that are
-> > > inconsistent in multiple ways:
-> > >
-> > > 1. We are copying the contents of a page with a memcpy() while userspace
-> > >    may be writing to it. This can cause the resulting data in the child to
-> > >    be inconsistent.
-> >
-> > This is an interesting problem, but we'll get to it later.
-> >
-> > > 2. After we've copied this page, future writes to other pages may
-> > >    continue to be visible to the child while future writes to this page are
-> > >    no longer visible to the child.
-> > >
-> >
-> > Yes, and this is not fixable. It's also a problem for the regular write-protect
-> > pte path where inevitably only a part of the address space will be write-protected.
+On 6/4/2025 9:44 AM, Maciej Falkowski wrote:
+> From: Karol Wachowski <karol.wachowski@intel.com>
 > 
-> I don't understand what you mean by "inevitably only a part of the
-> address space will be write-protected". Are you talking about how
-> shared pages are kept shared between parent in child? Or are you
-> talking about how there is a point in time at which part of the
-> address space is write-protected while another part is not yet
-> write-protected? In that case: Yes, that can happen, but that's not a
-> problem.
+> Refactor ivpu_cmdq_unregister() to ensure the doorbell is unregistered
+> before destroying the command queue. The NPU firmware requires doorbells
+> to be unregistered prior to command queue destruction.
 > 
-> > This would only be fixable if e.g we suspended every thread on a multi-threaded fork.
+> If doorbell remains registered when command queue destroy command is sent
+> firmware will automatically unregister the doorbell, making subsequent
+> unregister attempts no-operations (NOPs).
 > 
-> No, I think it is fine to keep threads running in parallel on a
-> multi-threaded fork as long as all the writes they do are guaranteed
-> to also be observable in the child. Such writes are no different from
-> writes performed before fork().
+> Ensure compliance with firmware expectations by moving the doorbell
+> unregister call ahead of the command queue destruction logic,
+> thus preventing unnecessary NOP operation.
 > 
-> It would only get problematic if something in the parent first wrote
-> to page A, which has already been copied to the child (so the child no
-> longer sees the write) and then wrote to page B, which is CoWed (so
-> the child would see the write). I prevent this scenario by effectively
-> suspending the thread that tries to write to page A until the fork is
-> over (by making it block on the mmap lock in the fault handling path).
-> 
+> Fixes: 2a18ceff9482 ("accel/ivpu: Implement support for hardware scheduler")
+> Cc: <stable@vger.kernel.org> # v6.11+
+> Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
 
-Ah yes, I see my mistake - we write lock all VMAs as we dup them, so
-the problem I described can't happen. Thanks for the explanation :)
+Huh?  This was posted to the list on May 15th, and Jacek applied it to 
+drm-misc-fixes on May 28th.
 
--- 
-Pedro
+-Jeff
 
