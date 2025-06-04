@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-151302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B7D2ACD992
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCB7ACD996
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 10:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E0841892F3C
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:20:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF3918953CF
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 08:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731DC264A86;
-	Wed,  4 Jun 2025 08:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="N7z1itmJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D652E28C2CA;
+	Wed,  4 Jun 2025 08:19:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467742690D4;
-	Wed,  4 Jun 2025 08:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBD428C2C2;
+	Wed,  4 Jun 2025 08:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749025185; cv=none; b=bQdqC2SzZmwmWorzCtv5feJ9b4WkLGBrTHlo98iVPfnW4Es+oK4L/FBEm+jaHfFF5S2ifBkqBpJwUGUfYpsvZZEMUttC8hMI1/31vIL236Agqsy2WJBCFhjcbhBwL4osOstyZo+yl+xuNv8gepH1rfWL5/R4zmEPJrinqo378hc=
+	t=1749025190; cv=none; b=L4BGWXaERzRWPmScJgqvNOIqPmZw0qF1pdGVldIodUx1fT7cc+/Z+TLh0j+K7CC1pLZi0/GQWY8LSBAGVLrzOGIRekSUeHiQsH1ERAr5uYNOS15hEh2Fdl2+/Yai0qX4ENMmVG6AnR/Tci2FSKEDsoWqO26ex3X3gSFxGERnPHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749025185; c=relaxed/simple;
-	bh=ah/1l7NWZGuXZNkxhxl003S1bcdw6wA8ArbLwrkGtMU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hjQ4IxGnoWdXLamxaON3jbIOQZebVlrDxtHp/QjACfXAYTgFoz2myVU3L9kvWrDbwnY9usk0LVq6xhVZrTHdGoTUMn3apM+IUfVNOSvxMV7H7KDtXkj1aLgos6Hr9stXDzLEDgsJ4D8kHva4g6y2nOVyMJGVVO5+aoaSN/R6HmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=N7z1itmJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 553Leo8u010362;
-	Wed, 4 Jun 2025 08:19:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GiAicXB4orilSgc1wX/z9RXRyEqhVTBQmfR4VXtHObc=; b=N7z1itmJMHTn3rAj
-	27gmg/+4fzLbfWOxev4iwyJjzYVaxuBgFYxBzglxsrYvrM59IRO7m4Oy0kxPWY4f
-	jeNkBHs3R7htogMGQZQO8zIyd1edO0O9RJezY6f8qNcoLkevtafqTEGi7n/3IAiI
-	xaqWWVyuh+30qkaoYa7tYm7/MV3hfbj7FgKLWfVxwcXV1YjfXXv79WaP2V10unnp
-	y+ZlpSObXwT484MtnD+QRgbi70eZYC8Df5dcbDEPDUuVQHJqjXpWUsymKxH3xCY4
-	9eTBDxA7riBCkTCRdfiUAGfVQBfdrJTErWnnrvxzk4D9NmJenpLzIhB6IK5aajYU
-	edfSWg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8ynb2v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 08:19:35 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5548JYEN018737
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 4 Jun 2025 08:19:34 GMT
-Received: from [10.133.33.119] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Jun 2025
- 01:19:33 -0700
-Message-ID: <e7db7936-1bcf-4179-88e8-c3f6b1b072bf@quicinc.com>
-Date: Wed, 4 Jun 2025 16:19:30 +0800
+	s=arc-20240116; t=1749025190; c=relaxed/simple;
+	bh=bQ84DRDUGM/vrrvXX6yLgAEmZ08XaYJyEV3UqK7L0rc=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=CIzLyFv88f7F9iM3lFK4WYiRcq9qUExYVRHn1B9QVxwh/A+LSvdP8Ve6z2wI2VIoLmV9TbsxcfNcpEXV+2e+jzW2n2y38FwsCJfCf97gS36CCjenyOt82Q1Ioe5wtbMIxzDJa9rKCbd+2515CnylJ5UMz7FLxiWYUQ7moBoVslk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-ad51ba0af48so128060466b.0;
+        Wed, 04 Jun 2025 01:19:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749025187; x=1749629987;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:cc:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tfVmh22uH/XY6fu0DSGOy+Uf3o1rAERV70DDOSVnSfM=;
+        b=TYJyUJGAEto3YxxcgOlD+2EOp+MToNu+BTXoWRhunu1vZ4VlFcNe9XdUr4boLvW6Q4
+         sUmurRLaFShUKVzAlGUyiFsOkXF9hRG8HkrwbyH56t6F4mloTV+g0mc1hsmHf2pOGQIL
+         l897KrWgROLyt/kVdBPlz0U0Vpzud1PAE48s5aXckxw4v0+PLCuHfhrUMy+G4UNJsQiX
+         Cmj8H26mqJT33+C5WoMEkqw4jf3zyOoyi3jNou4rlVJfG9arwHencpgRix058dUK2rFZ
+         jCh+/JBoMwLbzAynL5mdvYWLQoe3o6KaMkQ44FA2tnUqW5aiXNf6UXxZABMtNHSCpvdo
+         fSbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUnf7qMgLUW+rScYMdCoxus6zsciZW/7g8c1dr5WCkNFxv8YMKEtdgu4GvHFC2HSuQEhUO8oCc=@vger.kernel.org, AJvYcCXleCe19/D1JNvklNBlCXZIPbwSSXKPs0UqoI3tTE1eiZf1Eq6keaezfWz2h3osyycbWsFFhprR@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLTTjE/J+BQ1MBKToz5BBEqcQSb9H0Dh/LFYoPMVu/ZY8U8Zro
+	R+Vzu7hFOjhd0QD0zLeGjVOvd/ItwKDzhHMc+tvZ6PlLL4X1sPUgivLk
+X-Gm-Gg: ASbGncvPpBe3Jk+WWWq9iaoAYGXtd9WfoZRglOLka/wWHm1P9dQ0oaKLSs4dRCPL2rJ
+	QjUZaVLi6Iv/jLqOirl2WxYjazna1OR5fIcURxLf7H/bL4NgPXBBSKMLzj5r2Kyfo3vw0WJnFzp
+	1jQ8StkJf4/bZDtZzh1x7LDR5t/+FKk/B2aOwrb3FGJBauFtMyJtbZ306Os9J9Ra0JYmxOirR+h
+	MO1yPXomkgiC15KkkccT4d1qU7zlrbZhkXdIz5AoDy9whNVAl3/Kx7R3kbv2Oxft7gcSq3xbmw5
+	quH/beai5y6mDsazZKxk68nu9HnL6z2HAHFc1bbZTvhWg0fSL0iQlgzT+RGERl54z4TYDLjPU6z
+	NbGjLpnM=
+X-Google-Smtp-Source: AGHT+IGN3HuQKjDfNVbbLBxgr9tEQkbEtev931mQhDwMH68L54z6vS4HwKR1dgmRBxaH1xXJp8ilCw==
+X-Received: by 2002:a17:907:7ba7:b0:ad8:5850:7332 with SMTP id a640c23a62f3a-addf6ea12abmr173934666b.9.1749025186577;
+        Wed, 04 Jun 2025 01:19:46 -0700 (PDT)
+Received: from [192.168.88.252] (78-80-16-19.customers.tmcz.cz. [78.80.16.19])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d82de8fsm1080057066b.66.2025.06.04.01.19.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 01:19:46 -0700 (PDT)
+Message-ID: <7bc258ad-3f65-4d6e-a9f5-840a6c174d90@ovn.org>
+Date: Wed, 4 Jun 2025 10:19:45 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,140 +69,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath12k: fix dest ring-buffer corruption
-To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: Remi Pommarel <repk@triplefau.lt>, <linux-wireless@vger.kernel.org>,
-        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250526115137.2490-1-johan+linaro@kernel.org>
- <20250526115137.2490-2-johan+linaro@kernel.org>
+Cc: i.maximets@ovn.org, Sasha Levin <sashal@kernel.org>,
+ patches@lists.linux.dev, stable@vger.kernel.org,
+ Eelco Chaudron <echaudro@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, aconole@redhat.com,
+ netdev@vger.kernel.org, dev@openvswitch.org
+Subject: Re: [PATCH AUTOSEL 6.15 044/118] openvswitch: Stricter validation for
+ the userspace action
+To: Greg KH <greg@kroah.com>
+References: <20250604005049.4147522-1-sashal@kernel.org>
+ <20250604005049.4147522-44-sashal@kernel.org>
+ <38ef1815-5bc1-4391-b487-05a18e84c94e@ovn.org>
+ <2025060449-arena-exceeding-a090@gregkh>
 Content-Language: en-US
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-In-Reply-To: <20250526115137.2490-2-johan+linaro@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <2025060449-arena-exceeding-a090@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDA2NCBTYWx0ZWRfX1Iu+GA69DAkS
- fhJHV3QONBIivJtj3GbobWzxVk90yv4qnyIaTeUTQ5jTxYXLRjv+1vCrZcbuRRI0zFK2+5Dgmik
- E50jXCe1Z56yYbfwwEEjpuz1WMgZOR473RJeIDXJfbKPjKnHk1J+769Xs/GqkkIynqfqoLtiI9i
- yRRlMmyFvl/ENyPlcpxzr4oLzomuy6fFjdr9aVrD5cOZmsmOergTozvrmCFtlN6EwD2UISAjrsc
- GzhYEjRuwV7YhxAhuibcVj8oYlKBDTnFsPFcdaho5FsXE26mmlYAF4jRBoM2IPvv3EemwWWVVk/
- nI/BKX/gsRm7CxYHGFWiyL795A9BMxYFb3Gpn3Y9HXmfhwx+5NMa33QnYTdQoKKJ5TGh+pK5BL1
- aUBENQ3umHmzlqwlHuXycWLC/9VR0N8zeu0vgrBjB0iqfeZORR8aXwfchZM1mcJ/VjydE6yH
-X-Proofpoint-ORIG-GUID: qek3o-R4C2fC3tZ1clUGeUly7_pfAhiV
-X-Proofpoint-GUID: qek3o-R4C2fC3tZ1clUGeUly7_pfAhiV
-X-Authority-Analysis: v=2.4 cv=T/uMT+KQ c=1 sm=1 tr=0 ts=68400197 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=qEKYatp5oTCtzB8XyWEA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-04_02,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=893 suspectscore=0 impostorscore=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 clxscore=1011 spamscore=0 malwarescore=0 phishscore=0
- adultscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506040064
 
+On 6/4/25 10:03 AM, Greg KH wrote:
+> On Wed, Jun 04, 2025 at 09:57:20AM +0200, Ilya Maximets wrote:
+>> On 6/4/25 2:49 AM, Sasha Levin wrote:
+>>> From: Eelco Chaudron <echaudro@redhat.com>
+>>>
+>>> [ Upstream commit 88906f55954131ed2d3974e044b7fb48129b86ae ]
+>>>
+>>> This change enhances the robustness of validate_userspace() by ensuring
+>>> that all Netlink attributes are fully contained within the parent
+>>> attribute. The previous use of nla_parse_nested_deprecated() could
+>>> silently skip trailing or malformed attributes, as it stops parsing at
+>>> the first invalid entry.
+>>>
+>>> By switching to nla_parse_deprecated_strict(), we make sure only fully
+>>> validated attributes are copied for later use.
+>>>
+>>> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+>>> Reviewed-by: Simon Horman <horms@kernel.org>
+>>> Acked-by: Ilya Maximets <i.maximets@ovn.org>
+>>> Link: https://patch.msgid.link/67eb414e2d250e8408bb8afeb982deca2ff2b10b.1747037304.git.echaudro@redhat.com
+>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>> ---
+>>>
+>>> **YES** This commit should be backported to stable kernel trees. ##
+>>> Analysis **Commit Overview:** The commit changes `validate_userspace()`
+>>> function in `net/openvswitch/flow_netlink.c` by replacing
+>>> `nla_parse_nested_deprecated()` with `nla_parse_deprecated_strict()` to
+>>> ensure stricter validation of Netlink attributes for the userspace
+>>> action. **Specific Code Changes:** The key change is on lines 3052-3054:
+>>> ```c // Before: error = nla_parse_nested_deprecated(a,
+>>> OVS_USERSPACE_ATTR_MAX, attr, userspace_policy, NULL); // After: error =
+>>> nla_parse_deprecated_strict(a, OVS_USERSPACE_ATTR_MAX, nla_data(attr),
+>>> nla_len(attr), userspace_policy, NULL); ``` **Why This Should Be
+>>> Backported:** 1. **Security Enhancement:** This commit addresses a
+>>> parsing vulnerability where malformed attributes could be silently
+>>> ignored. The original `nla_parse_nested_deprecated()` stops parsing at
+>>> the first invalid entry, potentially allowing trailing malformed data to
+>>> bypass validation. 2. **Robustness Fix:** The change ensures all netlink
+>>> attributes are fully contained within the parent attribute bounds,
+>>> preventing potential buffer over-reads or under-reads that could lead to
+>>> security issues. 3. **Pattern Consistency:** Looking at the git blame
+>>> output (lines 3085-3087), we can see that
+>>> `nla_parse_deprecated_strict()` was already introduced in 2019 by commit
+>>> 8cb081746c031 and is used elsewhere in the same file for similar
+>>> validation (e.g., `validate_and_copy_check_pkt_len()` function). 4.
+>>> **Low Risk:** This is a small, contained change that only affects input
+>>> validation - it doesn't change functionality or introduce new features.
+>>> The change is defensive and follows existing patterns in the codebase.
+>>> 5. **Similar Precedent:** This commit is very similar to the validated
+>>> "Similar Commit #2" which was marked for backporting (status: YES). That
+>>> commit also dealt with netlink attribute validation safety in
+>>> openvswitch (`validate_set()` function) and was considered suitable for
+>>> stable trees. 6. **Critical Subsystem:** Open vSwitch is a critical
+>>> networking component used in virtualization and container environments.
+>>> Input validation issues in this subsystem could potentially be exploited
+>>> for privilege escalation or denial of service. 7. **Clear Intent:** The
+>>> commit message explicitly states this "enhances robustness" and ensures
+>>> "only fully validated attributes are copied for later use," indicating
+>>> this is a defensive security improvement. **Risk Assessment:** - Very
+>>> low regression risk - No API changes - Only affects error handling paths
+>>> - Follows established validation patterns in the same codebase This
+>>> commit fits perfectly into the stable tree criteria: it's an important
+>>> security/robustness fix, has minimal risk of regression, is well-
+>>> contained, and addresses a clear validation vulnerability in a critical
+>>> kernel subsystem.
+>>
+>> This change is one of two patches created for userspace action.  With an
+>> intentional split - one for net and one for net-next  First one was the
+>> actual fix that addressed a real bug:
+>>   6beb6835c1fb ("openvswitch: Fix unsafe attribute parsing in output_userspace()")
+>>   https://lore.kernel.org/netdev/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com/
+>>
+>> This second change (this patch) was intended for -next only as it doesn't
+>> fix any real issue, but affects uAPI, and so should NOT be backported.
+> 
+> Why would you break the user api in a newer kernel?  That feels wrong,
+> as any change should be able to be backported without any problems.
+> 
+> If this is a userspace break, why isn't it reverted?
 
+It doesn't break existing userspace that we know of.  However, it does make
+the parsing of messages from userspace a bit more strict, and some messages
+that would've worked fine before (e.g. having extra unrecognized attributes)
+will no longer work.  There is no reason for userspace to ever rely on such
+behavior, but AFAICT, historically, different parts of kernel networking
+(e.g. tc-flower) introduced similar changes (making netlink stricter) on
+net-next without backporting them.  Maybe Jakub can comment on that.
 
-On 5/26/2025 7:51 PM, Johan Hovold wrote:
-> Add the missing memory barriers to make sure that destination ring
-> descriptors are read after the head pointers to avoid using stale data
-> on weakly ordered architectures like aarch64.
-> 
-> Note that this may fix the empty descriptor issue recently worked around
-> by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
-> monitor ring").
-> 
-> Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Cc: stable@vger.kernel.org	# 6.3
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->   drivers/net/wireless/ath/ath12k/dp_mon.c |  3 +++
->   drivers/net/wireless/ath/ath12k/dp_rx.c  | 12 ++++++++++++
->   drivers/net/wireless/ath/ath12k/dp_tx.c  |  3 +++
->   3 files changed, 18 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-> index d22800e89485..90a7763502c8 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-> @@ -3258,6 +3258,9 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, int *budget,
->   	spin_lock_bh(&srng->lock);
->   	ath12k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while (likely(*budget)) {
->   		*budget -= 1;
->   		mon_dst_desc = ath12k_hal_srng_dst_peek(ab, srng);
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> index 75bf4211ad42..68fceb4201d7 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> @@ -2753,6 +2753,9 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
->   try_again:
->   	ath12k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while ((desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
->   		struct rx_mpdu_desc *mpdu_info;
->   		struct rx_msdu_desc *msdu_info;
-> @@ -3599,6 +3602,9 @@ int ath12k_dp_rx_process_err(struct ath12k_base *ab, struct napi_struct *napi,
->   
->   	ath12k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while (budget &&
->   	       (reo_desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
->   		drop = false;
-> @@ -3941,6 +3947,9 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
->   
->   	ath12k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while (budget) {
->   		rx_desc = ath12k_hal_srng_dst_get_next_entry(ab, srng);
->   		if (!rx_desc)
-> @@ -4122,6 +4131,9 @@ void ath12k_dp_rx_process_reo_status(struct ath12k_base *ab)
->   
->   	ath12k_hal_srng_access_begin(ab, srng);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while ((hdr = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
->   		tag = le64_get_bits(hdr->tl, HAL_SRNG_TLV_HDR_TAG);
->   
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-> index ced232bf4aed..3124eafa0201 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-> @@ -853,6 +853,9 @@ void ath12k_dp_tx_completion_handler(struct ath12k_base *ab, int ring_id)
->   
->   	ath12k_hal_srng_access_begin(ab, status_ring);
->   
-> +	/* Make sure descriptor is read after the head pointer. */
-> +	dma_rmb();
-> +
->   	while (ATH12K_TX_COMPL_NEXT(tx_ring->tx_status_head) != tx_ring->tx_status_tail) {
->   		desc = ath12k_hal_srng_dst_get_next_entry(ab, status_ring);
->   		if (!desc)
+All in all, I do not expect any existing applications to break, but it seems
+a little strange to touch uAPI in stable trees.
 
-Reviewed-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Best regards, Ilya Maximets.
 
