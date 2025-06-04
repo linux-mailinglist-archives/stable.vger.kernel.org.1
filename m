@@ -1,124 +1,142 @@
-Return-Path: <stable+bounces-151468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA47ACE5C0
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C42ACE5D7
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 22:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA166178A86
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:29:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73327173872
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 20:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CD01F4703;
-	Wed,  4 Jun 2025 20:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AF4202961;
+	Wed,  4 Jun 2025 20:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="TYDy0fo0"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fMc01F25"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7B21EB5C2
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6BD1D7E54
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 20:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749068954; cv=none; b=iaBppAQoUPRHses9wUGC9AcFiA8cz1dBZAdVnAPgISz7jZU4kjUGahBehfNG/mL0KyJjyn3nIyDvIAuApy2yU53dCnDLLiZhVi1t4964QUMqJMhQD1WvrspPMZZIcuerfWZYERSpFrMgNA6RGNGEnxqf9276Oirbx7yNsf6Slxw=
+	t=1749069799; cv=none; b=hb7ZeuKzmHfB5hkAfhDBI4wG28AT7JTIwFlP1rEKAesgESKFr5sipL8ropX2qiT1UbENlJD1rf0pFSu1/t6PBUM68fPjwXLyLoTgygRVzXSoD/2+ydcNq6+SgiXGzAKpcVrifC5MOC3J2z11xGGEMVmIWhZAnDV8ruEkVm0kFbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749068954; c=relaxed/simple;
-	bh=7Vka/a7srNrY341gvWXRamDvv2uHEGS89KEna72dgGQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ebhOW3ITVuiMEgewGWY+tAMPYnFvZV5Z0goIx2QOnN/QuKP/FOf243Te39+Zp3EVaxnyuSH+PXTGd+ia5viR8nlEQSPzOQkzLu2z1jkcKijmVWgdQ0Hqrk2e1UgyqguBhyqxpcbNF7BPNYcGyaMC0pLxdzFZZPL1L2BbQX1gw04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=TYDy0fo0; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 4AECE1C2ABC
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 23:29:05 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:to:subject:subject
-	:user-agent:mime-version:date:date:message-id; s=dkim; t=
-	1749068945; x=1749932946; bh=7Vka/a7srNrY341gvWXRamDvv2uHEGS89KE
-	na72dgGQ=; b=TYDy0fo068EA8KmxYo2f9PT5f5a/s6ClXcHkPQ4GI2mWpvDt7Ub
-	rAphoQbZmU7A1eM/3kUdeLDclqucIFZLT8CVNbQ1DswfNkGlUAsbp6tZfe3hxaCo
-	t98+tmt0gnmlJMIdVPzwM9B4ORav/mMoDIzW2c4D67rhSLFMQTbWXc9M=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id XSAJ4nowjGM8 for <stable@vger.kernel.org>;
-	Wed,  4 Jun 2025 23:29:05 +0300 (MSK)
-Received: from [192.168.1.67] (unknown [46.72.98.152])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 236421C08AD;
-	Wed,  4 Jun 2025 23:28:55 +0300 (MSK)
-Message-ID: <f4d1268f-bbf3-49c1-be27-6199ec685329@nppct.ru>
-Date: Wed, 4 Jun 2025 23:28:54 +0300
+	s=arc-20240116; t=1749069799; c=relaxed/simple;
+	bh=5WPb+lWA8clJGxbCsXGFShGWo8nOHVCL1pkAlgZhQsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sl4fhmhxP3ht0Gy/PKVQDRK7OGgRkdd5mcTOgIIMYi2R1BwgcSV/sb73L9lYHQuWn/lDk47rmlPH3iZo8NLx+R2vj5udPwLuF8YLgclkOGjQ2aX2WUhqgZqkhbbs6Tgp0nTKKICf21n1Yp6ASj66DUTfyduHG9yNJQz8OD3kFLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fMc01F25; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so333875a12.2
+        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 13:43:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749069794; x=1749674594; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7kKRVoqiT4EzLmAvw3c+r2/DBP5Y3NNX9QqIrEZPJ4M=;
+        b=fMc01F25leMzFFdCvZ9yMGLFsg+DniT0o0ulj8vIspaZF0LVqHUWVoKP6yOoWdO4BU
+         0e/mXoAWTttHTq4b4+i502RdsEkd5phdgyUOXHTyXVnDgnFgSSwejKm8mhqDLzdV61/L
+         M8R+g2cjB6Fr3Ddd1mmCRlQA9LrpPp9nrivVEbLOEEKnZmBNmR84El0ZAH0ncdIhK9fq
+         23/99OH6VWx1aXNu6DYEaLPNjzMp7aI+T/8dI4KLEj9Lx/fp8sTkrr0ujaLfQSPXo/CS
+         V6HpWnRn5kN85wnH7bRxin0WSYoaDhcla0Dnlf/GiWWPrTczMLBgicWaiFjeIbGHij7s
+         4lCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749069794; x=1749674594;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7kKRVoqiT4EzLmAvw3c+r2/DBP5Y3NNX9QqIrEZPJ4M=;
+        b=lgBRy/K4Vcm32LGvms2ko84HfN2Ikkt/UryLTq1umyype5gM3j6zaEHhTMsGpEgnNJ
+         Uix6gOro6MuHxADkn3NZ4kXnSxcRgP4mtjIxHq0LHwA5Y8GGkKaZ7WvU2jBdcrMa7RjH
+         qimcBJIO/5ZenRBo0tIYXM4xPTQ0tpIe7WwvH6yqyS6OW6B68G9ujyC3WJc4YrK8E6wP
+         skpF//l8gPT5/5nOL12HK7DVM6PlthFrH6JDDRfMVybagKJ9SKDI8J/LQeSuzVf46l8x
+         Lp+xsXHNHSA0SqXLaqw0B0+WEWPqgFFiDNhagh7JLctY5Vm3G4KHLqVsAa9mfgXjfI4I
+         lSHg==
+X-Gm-Message-State: AOJu0Ywl2SpAMErWcaVbvmuNqe/5lAjgY79S1fqoCbHr4FAS6P8gbHuy
+	WP7WyQYMtYPPHbN0yRl7c++QAzOO0+YhZ7RQ/y8MuRf18AmAf0U4BwU07x9+QBo6pMM=
+X-Gm-Gg: ASbGncvsnrXLKhEZs+glp3b/SqhEOnGPE9BM0a7gz/ee5N4WNCuiyvIZq2sSkUwo6or
+	BUbyJG0VMB5vW01hEVHaAA+y4LAWkt0ml/u6b8WI71WNouvwovYx9hn2/gvmytHhiLp3mwk2ePP
+	Ytbv507w5tUxwSxEqu8P9qMiqkQ2Z+galQUgy1OamVdpx++FrXKcRiQ505lYdpcOPsEaLk9YeF/
+	bpdegkkCBaVerKuWhYmAkkAUi5upP9DoWEOnAXLVO7jf+ioB3MGplvwfj71lFbrL2W/iuSEw9Jc
+	cYaOegxDynTNcgYcGyxyTyJdY3HIPNzWu/h5W9YFnGpirb8NecM1oodL
+X-Google-Smtp-Source: AGHT+IEs4wThNrmRwHTKgvzNLLVLpYDCc/8CQVSXFRNcZ5WF5QPNe8tLYxPsqR2izqa8UFqnuKGNYw==
+X-Received: by 2002:a05:6402:2351:b0:607:1973:2082 with SMTP id 4fb4d7f45d1cf-6071973209cmr1820906a12.11.1749069794543;
+        Wed, 04 Jun 2025 13:43:14 -0700 (PDT)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-6059b007c66sm8002439a12.62.2025.06.04.13.43.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jun 2025 13:43:14 -0700 (PDT)
+Date: Wed, 4 Jun 2025 22:43:11 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Ingo Saitz <ingo@hannover.ccc.de>, 1104745@bugs.debian.org
+Cc: stable@vger.kernel.org
+Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
+ CONFIG_RANDSTRUCT
+Message-ID: <hix7rqnglwxgmhamcu5sjkbaeexsogb5it4dyuu7f5bzovygnj@3sn4an7qgd6g>
+References: <174645965734.16657.5032027654487191240.reportbug@spatz.zoo>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amdgpu: fix NULL dereference in gfx_v9_0_kcq() and
- kiq_init_queue()
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sunil Khatri <sunil.khatri@amd.com>, Vitaly Prosyak
- <vitaly.prosyak@amd.com>, Srinivasan Shanmugam
- <srinivasan.shanmugam@amd.com>, Jiadong Zhu <Jiadong.Zhu@amd.com>,
- Yang Wang <kevinyang.wang@amd.com>, Prike Liang <Prike.Liang@amd.com>,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org
-References: <20250524055546.1001268-1-sdl@nppct.ru>
- <CADnq5_MyV_C-XJCQEiXKLQhhEGErq7SnvhqFE1AauQPJvt5aYw@mail.gmail.com>
- <bee381b3-305b-46e5-ae59-d816c491fce5@nppct.ru>
- <CADnq5_P-1xGEjJpe--HFFQUaz9A=AO7mQwTXNCZJ693UgdaW0w@mail.gmail.com>
-Content-Language: ru
-From: SDL <sdl@nppct.ru>
-In-Reply-To: <CADnq5_P-1xGEjJpe--HFFQUaz9A=AO7mQwTXNCZJ693UgdaW0w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="vvttx254iueuslev"
+Content-Disposition: inline
+In-Reply-To: <174645965734.16657.5032027654487191240.reportbug@spatz.zoo>
 
 
-04.06.2025 22:34, Alex Deucher пишет:
-> On Wed, Jun 4, 2025 at 3:30 PM SDL <sdl@nppct.ru> wrote:
->>
->>> On Sat, May 24, 2025 at 2:14 AM Alexey Nepomnyashih <sdl@nppct.ru> wrote:
->>>> A potential NULL pointer dereference may occur when accessing
->>>> tmp_mqd->cp_hqd_pq_control without verifying that tmp_mqd is non-NULL.
->>>> This may happen if mqd_backup[mqd_idx] is unexpectedly NULL.
->>>>
->>>> Although a NULL check for mqd_backup[mqd_idx] existed previously, it was
->>>> moved to a position after the dereference in a recent commit, which
->>>> renders it ineffective.
->>> I don't think it's possible for mqd_backup to be NULL at this point.
->>> We would have failed earlier in init if the mqd backup allocation
->>> failed.
->>>
->>> Alex
->> In scenarios such as GPU reset or power management resume, there is no
->> strict
->> guarantee that amdgpu_gfx_mqd_sw_init() (via ->sw_init()) is invoked before
->> gfx_v9_0_kiq_init_queue(). As a result, mqd_backup[] may remain
->> uninitialized,
->> and dereferencing it without a NULL check can lead to a crash.
->>
->> Most other uses of mqd_backup[] in the driver explicitly check for NULL,
->> indicating that uninitialized entries are an expected condition and
->> should be handled
->> accordingly.
-> sw_init() is only called once at driver load time.  everything is
-> allocated at that point.  If that fails, the driver would not have
-> loaded in the first place.  I don't think it's possible for it to be
-> NULL.
->
-> Alex
-Thanks for the review! I agree with your point.
+--vvttx254iueuslev
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
+ CONFIG_RANDSTRUCT
+MIME-Version: 1.0
 
-Alexey
+Control: tag -1 + fixed-upstream
+Control: forwarded -1 https://lore.kernel.org/r/20250530221824.work.623-kee=
+s@kernel.org
+
+Hello,
+
+On Mon, May 05, 2025 at 05:40:57PM +0200, Ingo Saitz wrote:
+> When compiling the linux kernel (tested on 6.15-rc5 and 6.14.5 from
+> kernel.org) with CONFIG_RANDSTRUCT enabled, gcc-15 throws an ICE:
+>=20
+> arch/x86/kernel/cpu/proc.c:174:14: internal compiler error: in comptypes_=
+check_enum_int, at c/c-typeck.cc:1516
+>   174 | const struct seq_operations cpuinfo_op =3D {
+>       |              ^~~~~~~~~~~~~~
+
+This is claimed to be fixed in upstream by commit
+https://git.kernel.org/linus/f39f18f3c3531aa802b58a20d39d96e82eb96c14
+that is scheduled to be included in 6.16-rc1.
+
+This wasn't explicitly marked for stable, but I think a backport would
+be good.
+
+Best regards
+Uwe
+
+--vvttx254iueuslev
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhAr9kACgkQj4D7WH0S
+/k7tOgf+LKeRJxqZooP95Bh18VIuhHKYonO0De80uNjR2yACLaxcBWZFZK1VzX7w
+qlAmgjgQ/mS0umTFlUN3B4satEOnfwuea/pBwjbtqcYq/OrKvnkmWNkwR/3KWKiL
+ywU7O578w8zGiTlgEA+eEgoqcZtDYuLInuvxLXRppihaadXA9u6ci3m6mJK3acW3
+7mrILlrx7n/j79OINqIzGMdpEgy5uQoQyUHf6ROvBQFg7xZ0jQ9Gq5I0fyN7cs/A
+VrPltgVIVvLcjltKWs4D5Nid0sEEZ7oWAiPenAlitkpkPc4Vxk62YwoIqbA5L/SJ
+chXmkTriZggLYrDeFQXoARXLQjxTbA==
+=BUO8
+-----END PGP SIGNATURE-----
+
+--vvttx254iueuslev--
 
