@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-151421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4B2ACDFF7
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDD4ACDFF2
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019A73A71E1
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371DB3A78DF
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44241290D82;
-	Wed,  4 Jun 2025 14:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512323595A;
+	Wed,  4 Jun 2025 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNUNVsJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywMTWmH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4519290BDE
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 14:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04984290BA5
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749046301; cv=none; b=pY2irqQhyIMff0mWm7E96rCCKpBQhz0TU1645Fp7jExkJWlTkQP2yha/fL6swIOdOMRdI60Mx+0KDain9lj1c3XatmdWC6wc1CZ+DWavjdqCYCIt/4NlBbe9FpEFm769Q1mVaeqeXFe6aT4jnNNxsGMQjW4M8ux4gmHo8BotsSg=
+	t=1749046290; cv=none; b=mn2LeCsU5Ne4ucOjTGlAONnev1ueRMxl85lZydkrMjuRbpiUebjlJkQCbjjD058hI3NYBaZCEamWdQk0Z51pK5bsi04/ddnIQBQSzA4OqBfoq9NgwnbnviHSh5sYVD1+k5MbMqmIfXduTftl05JqXnyJ0xJ4J1MYwWtY6INN9lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749046301; c=relaxed/simple;
-	bh=zofFrwnuLElAl5kZnSQLsc4b15HxDVXoeI+ErIVbllA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dvuKXwEh2xl8hZDPsomGDgyGlBSHHEKAUX+VrwXDjA1AW4qhWW8BxeLkP3vlUJYgwi6aEn5OMJel7LepbjKBSbPuyBcJsysc4qXQWxtrMjXPbDQCv5Q6V3yeFN/t27hlD33IzWpeKdNC03J82IoYbqd9sXd87zpAImDsTB4Xxtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNUNVsJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21425C4CEE7;
-	Wed,  4 Jun 2025 14:11:39 +0000 (UTC)
+	s=arc-20240116; t=1749046290; c=relaxed/simple;
+	bh=J0j9XaM6yjVQ/VDH0AaF+sQ6KBqZYjSGG+xF7/ZRVKo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p9Pf2mPLPgPxmuLo0JrPMcw4O0P1rjSVkXc5SGBw2O1tnScje4JOcgPnNmCSmhyPCzgEuVlktzi2UdDdFxpia0OyhWTzzUEZrAkUI3TWIhdQzYIlVxhqoCJFeGp/dGj/J00uvgmjphroTGa0y2W/1FnqhDI3a1xvJWRXYuRm7Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywMTWmH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF53C4CEE4;
+	Wed,  4 Jun 2025 14:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749046300;
-	bh=zofFrwnuLElAl5kZnSQLsc4b15HxDVXoeI+ErIVbllA=;
+	s=korg; t=1749046289;
+	bh=J0j9XaM6yjVQ/VDH0AaF+sQ6KBqZYjSGG+xF7/ZRVKo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YNUNVsJmSx909ZRfUb3BnwZvGlYC4euE4OYcVPNZwqumtBCa3DPebyHrEiRAlnJok
-	 qszDa0kGE39wWpnFxgu3/8cYGD7t6rrWJpGPbEAE0aD2g0THxyRslgrc2vx4ZxTT5J
-	 /DE7QFvJS0VfxlYmlX5wo3y35VR72HxPkdnB8gaQ=
-Subject: FAILED: patch "[PATCH] pinctrl: samsung: add gs101 specific eint suspend/resume" failed to apply to 6.12-stable tree
+	b=ywMTWmH8enRifctwMphnfOA8Yt76/Tgl3HBDmVuRohwocti0W/rxJtOoO0yM/gmvu
+	 OnvlvchNg5AqmZJby8KCYBSzZzBColqozTgzycvkVBp6eh52pQP4jeaoYEjNHuSuSx
+	 SjiAZzVVArMrn7rLKBZiz8glqX5TPenWdTDon2Nw=
+Subject: FAILED: patch "[PATCH] pinctrl: samsung: add gs101 specific eint suspend/resume" failed to apply to 6.15-stable tree
 To: peter.griffin@linaro.org,andre.draszik@linaro.org,krzysztof.kozlowski@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 04 Jun 2025 16:11:26 +0200
-Message-ID: <2025060426-broiling-facility-b691@gregkh>
+Message-ID: <2025060426-panhandle-gothic-137c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060426-broiling-facility-b691@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060426-panhandle-gothic-137c@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
