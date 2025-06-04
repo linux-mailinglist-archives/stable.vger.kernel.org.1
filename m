@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-151418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C87ACDFF1
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:11:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4B2ACDFF7
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 16:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E981B170312
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:11:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019A73A71E1
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22741290BCE;
-	Wed,  4 Jun 2025 14:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44241290D82;
+	Wed,  4 Jun 2025 14:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg9iLF0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNUNVsJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAC528EA65
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4519290BDE
+	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 14:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749046277; cv=none; b=VVPdT15fLm5XXZTWCatzckF7Ar18tVQhWtDpjDF6BcO5Kk2F/b6A8jB43KfQwiK1xvCl+3QltCsrGDNkN1gEQSfMXvyxebMOT/qEkA1CkvmfGl0xb6AxnvKVecWtrf3da100EUGGa3Trh029MA/EUeonSwK6ur6oc/3IFPQmY3o=
+	t=1749046301; cv=none; b=pY2irqQhyIMff0mWm7E96rCCKpBQhz0TU1645Fp7jExkJWlTkQP2yha/fL6swIOdOMRdI60Mx+0KDain9lj1c3XatmdWC6wc1CZ+DWavjdqCYCIt/4NlBbe9FpEFm769Q1mVaeqeXFe6aT4jnNNxsGMQjW4M8ux4gmHo8BotsSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749046277; c=relaxed/simple;
-	bh=pcE6GDbR3ZTyF94j4bU9tVRa3iZUIJ0O2KdBtM00XWw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mhqiHafS/QmJJ8W1+bNQN/1+3goBFwO99VFGohP/52oOWZNMUrugr/bScYyX3pLqQC6ZNQNW8RMwkZ5sS+39S8L4OlzH6frOqHGtSCE7zCF7Pbnald+KMnSnTC1rCIfm6fQKRM0HtOkPvB3RJ9OOq0MgKBK2Z8Y/WeH6bmPOR18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg9iLF0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1EDC4CEE4;
-	Wed,  4 Jun 2025 14:11:16 +0000 (UTC)
+	s=arc-20240116; t=1749046301; c=relaxed/simple;
+	bh=zofFrwnuLElAl5kZnSQLsc4b15HxDVXoeI+ErIVbllA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dvuKXwEh2xl8hZDPsomGDgyGlBSHHEKAUX+VrwXDjA1AW4qhWW8BxeLkP3vlUJYgwi6aEn5OMJel7LepbjKBSbPuyBcJsysc4qXQWxtrMjXPbDQCv5Q6V3yeFN/t27hlD33IzWpeKdNC03J82IoYbqd9sXd87zpAImDsTB4Xxtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNUNVsJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21425C4CEE7;
+	Wed,  4 Jun 2025 14:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749046277;
-	bh=pcE6GDbR3ZTyF94j4bU9tVRa3iZUIJ0O2KdBtM00XWw=;
+	s=korg; t=1749046300;
+	bh=zofFrwnuLElAl5kZnSQLsc4b15HxDVXoeI+ErIVbllA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rg9iLF0sOpL9oRaHwm4I35RySvpEwmIX8jif8wR6tfZ6FzSF5SWB0nCP73yLhpd6Y
-	 Z3B2FlRPvnB3YHxlvOwcyy9nEvx80YjOJ4JcG+cQ/P7/0totY4vcCjzyEhQLDeVyXs
-	 JcJPdqTIUWfq2b0BhNvNkXhZ+SRXo9dpKI8NFslU=
-Subject: FAILED: patch "[PATCH] clk: samsung: correct clock summary for hsi1 block" failed to apply to 6.12-stable tree
-To: pritam.sutar@samsung.com,alim.akhtar@samsung.com,krzysztof.kozlowski@linaro.org,stable@kernel.org
+	b=YNUNVsJmSx909ZRfUb3BnwZvGlYC4euE4OYcVPNZwqumtBCa3DPebyHrEiRAlnJok
+	 qszDa0kGE39wWpnFxgu3/8cYGD7t6rrWJpGPbEAE0aD2g0THxyRslgrc2vx4ZxTT5J
+	 /DE7QFvJS0VfxlYmlX5wo3y35VR72HxPkdnB8gaQ=
+Subject: FAILED: patch "[PATCH] pinctrl: samsung: add gs101 specific eint suspend/resume" failed to apply to 6.12-stable tree
+To: peter.griffin@linaro.org,andre.draszik@linaro.org,krzysztof.kozlowski@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 04 Jun 2025 16:11:14 +0200
-Message-ID: <2025060414-sprinkler-species-7979@gregkh>
+Date: Wed, 04 Jun 2025 16:11:26 +0200
+Message-ID: <2025060426-broiling-facility-b691@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 81214185e7e1fc6dfc8661a574c457accaf9a5a4
+git cherry-pick -x bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060414-sprinkler-species-7979@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060426-broiling-facility-b691@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,47 +77,189 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 81214185e7e1fc6dfc8661a574c457accaf9a5a4 Mon Sep 17 00:00:00 2001
-From: Pritam Manohar Sutar <pritam.sutar@samsung.com>
-Date: Tue, 6 May 2025 13:31:54 +0530
-Subject: [PATCH] clk: samsung: correct clock summary for hsi1 block
+From bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7 Mon Sep 17 00:00:00 2001
+From: Peter Griffin <peter.griffin@linaro.org>
+Date: Wed, 2 Apr 2025 16:17:32 +0100
+Subject: [PATCH] pinctrl: samsung: add gs101 specific eint suspend/resume
+ callbacks
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-clk_summary shows wrong value for "mout_hsi1_usbdrd_user".
-It shows 400Mhz instead of 40Mhz as below.
+gs101 differs to other SoCs in that fltcon1 register doesn't
+always exist. Additionally the offset of fltcon0 is not fixed
+and needs to use the newly added eint_fltcon_offset variable.
 
-dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
-  mout_hsi1_usbdrd_user     0 0 0 400000000 0 0 50000 Y ...
-    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
-
-Correct the clk_tree by adding correct clock parent for
-"mout_hsi1_usbdrd_user".
-
-Post this change, clk_summary shows correct value.
-
-dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
-  mout_clkcmu_hsi1_usbdrd   0 0 0 400000000 0 0 50000 Y ...
-    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
-      mout_hsi1_usbdrd_user 0 0 0 40000000  0 0 50000 Y ...
-
-Fixes: 485e13fe2fb6 ("clk: samsung: add top clock support for ExynosAuto v920 SoC")
-Cc: <stable@kernel.org>
-Signed-off-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Link: https://lore.kernel.org/r/20250506080154.3995512-1-pritam.sutar@samsung.com
+Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
+Cc: stable@vger.kernel.org  # depends on the previous three patches
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250402-pinctrl-fltcon-suspend-v6-3-78ce0d4eb30c@linaro.org
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/drivers/clk/samsung/clk-exynosautov920.c b/drivers/clk/samsung/clk-exynosautov920.c
-index f8168eed4a66..da4afe8ac2ab 100644
---- a/drivers/clk/samsung/clk-exynosautov920.c
-+++ b/drivers/clk/samsung/clk-exynosautov920.c
-@@ -1729,7 +1729,7 @@ static const unsigned long hsi1_clk_regs[] __initconst = {
- /* List of parent clocks for Muxes in CMU_HSI1 */
- PNAME(mout_hsi1_mmc_card_user_p) = {"oscclk", "dout_clkcmu_hsi1_mmc_card"};
- PNAME(mout_hsi1_noc_user_p) = { "oscclk", "dout_clkcmu_hsi1_noc" };
--PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "mout_clkcmu_hsi1_usbdrd" };
-+PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "dout_clkcmu_hsi1_usbdrd" };
- PNAME(mout_hsi1_usbdrd_p) = { "dout_tcxo_div2", "mout_hsi1_usbdrd_user" };
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+index 4b5d4e436a33..9fd894729a7b 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+@@ -1762,15 +1762,15 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
+ 		.pin_banks	= gs101_pin_alive,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_alive),
+ 		.eint_wkup_init = exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (FAR_ALIVE) */
+ 		.pin_banks	= gs101_pin_far_alive,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_far_alive),
+ 		.eint_wkup_init = exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (GSACORE) */
+ 		.pin_banks	= gs101_pin_gsacore,
+@@ -1784,29 +1784,29 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
+ 		.pin_banks	= gs101_pin_peric0,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric0),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (PERIC1) */
+ 		.pin_banks	= gs101_pin_peric1,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric1),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume	= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (HSI1) */
+ 		.pin_banks	= gs101_pin_hsi1,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi1),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (HSI2) */
+ 		.pin_banks	= gs101_pin_hsi2,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi2),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	},
+ };
  
- static const struct samsung_mux_clock hsi1_mux_clks[] __initconst = {
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
+index 18c327f7e313..0879684338c7 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
+@@ -800,6 +800,41 @@ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
+ 	}
+ }
+ 
++void gs101_pinctrl_suspend(struct samsung_pin_bank *bank)
++{
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++	const void __iomem *regs = bank->eint_base;
++
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
++				       + bank->eint_offset);
++
++		save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++					   + bank->eint_fltcon_offset);
++
++		/* fltcon1 register only exists for pins 4-7 */
++		if (bank->nr_pins > 4)
++			save->eint_fltcon1 = readl(regs +
++						EXYNOS_GPIO_EFLTCON_OFFSET
++						+ bank->eint_fltcon_offset + 4);
++
++		save->eint_mask = readl(regs + bank->irq_chip->eint_mask
++					+ bank->eint_offset);
++
++		pr_debug("%s: save     con %#010x\n",
++			 bank->name, save->eint_con);
++		pr_debug("%s: save fltcon0 %#010x\n",
++			 bank->name, save->eint_fltcon0);
++		if (bank->nr_pins > 4)
++			pr_debug("%s: save fltcon1 %#010x\n",
++				 bank->name, save->eint_fltcon1);
++		pr_debug("%s: save    mask %#010x\n",
++			 bank->name, save->eint_mask);
++	} else if (bank->eint_type == EINT_TYPE_WKUP) {
++		exynos_set_wakeup(bank);
++	}
++}
++
+ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+@@ -819,6 +854,42 @@ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ 	}
+ }
+ 
++void gs101_pinctrl_resume(struct samsung_pin_bank *bank)
++{
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++
++	void __iomem *regs = bank->eint_base;
++	void __iomem *eint_fltcfg0 = regs + EXYNOS_GPIO_EFLTCON_OFFSET
++		     + bank->eint_fltcon_offset;
++
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
++			 readl(regs + EXYNOS_GPIO_ECON_OFFSET
++			       + bank->eint_offset), save->eint_con);
++
++		pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
++			 readl(eint_fltcfg0), save->eint_fltcon0);
++
++		/* fltcon1 register only exists for pins 4-7 */
++		if (bank->nr_pins > 4)
++			pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
++				 readl(eint_fltcfg0 + 4), save->eint_fltcon1);
++
++		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
++			 readl(regs + bank->irq_chip->eint_mask
++			       + bank->eint_offset), save->eint_mask);
++
++		writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
++		       + bank->eint_offset);
++		writel(save->eint_fltcon0, eint_fltcfg0);
++
++		if (bank->nr_pins > 4)
++			writel(save->eint_fltcon1, eint_fltcfg0 + 4);
++		writel(save->eint_mask, regs + bank->irq_chip->eint_mask
++		       + bank->eint_offset);
++	}
++}
++
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
+index 3a771862b4b1..2bee52b61b93 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.h
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
+@@ -244,6 +244,8 @@ void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank);
+ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
++void gs101_pinctrl_suspend(struct samsung_pin_bank *bank);
++void gs101_pinctrl_resume(struct samsung_pin_bank *bank);
+ struct samsung_retention_ctrl *
+ exynos_retention_init(struct samsung_pinctrl_drv_data *drvdata,
+ 		      const struct samsung_retention_data *data);
 
 
