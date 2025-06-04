@@ -1,129 +1,173 @@
-Return-Path: <stable+bounces-151332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5B9ACDC55
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 13:15:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFC7ACDCD9
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 13:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8532217187B
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 11:15:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18BFA7A5149
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 11:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D6028E57C;
-	Wed,  4 Jun 2025 11:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6761221FD2;
+	Wed,  4 Jun 2025 11:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DhQtsuSX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0f9P83c"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5437828EA42
-	for <stable@vger.kernel.org>; Wed,  4 Jun 2025 11:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCB151C5A;
+	Wed,  4 Jun 2025 11:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749035708; cv=none; b=vEhINBeD4NiBS65h+U7MFMuTqe+lWTZy66bDHtRzaU/ygw+i3+sV8eEVwc49gshsM5sKx2IRJRYqThxJ5y+EI/UXUpm5tBaZ+2foFX7CqkWybkwr/HRiUI13he1/Xii/LsvT/tanXH2n5bpk7nFpH1GYbl+Pb+6djtulXwU0WYk=
+	t=1749037766; cv=none; b=Zb5Z+ebv7b0oCcQIM/rAGOT5vzM1+82TR1U1zNRMDftXV0MQ/ZllBnyQLVXNlkWa9x69/Cnzi9W4lpF6FBt+vcNkVhvQrHqsPHNvNfxaSEmBGdHD0ab51nJaNL5KxhYrSHDs5DzbibYjWMWhH0vHOqq79+60EOu4fJz7xn9RnQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749035708; c=relaxed/simple;
-	bh=DDIrx6qniSjWoPqZ1+FQ6cvCHnIr1IHnMhtHEPpu3Uk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SbtnerMbZpoKfKAiQCfhjOyFuBrwJdBN9cwmRUyDkEup6cMTy7An1fa9jDK4rd1igzsgyBbmgrb0GA7BQ8OQxFviB/sKyv1LDLmVFRlC+ypcbiq2Ow95v+CEAKADjT2/1O0YC7IQrI3zCkaG0jBfiZV4mhT6aLtQWkwLBLUQMwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DhQtsuSX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749035705;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H5bmvoV528ZDMkA8vQ3GG9k3siMYViBoGzRoypMVKOg=;
-	b=DhQtsuSXVgzmSCn0wnyUdW+YVlr9NUQyYvR5IRxjHF9idM8PTO2hvSqlgxuDjuDpEj8d2X
-	5D7R5lMhfyonIVigVscUQbBVXUxGTSTlrE7WDAy2n8qO5xaarBmrRZthsveEvD+rkLrxTJ
-	i2e5IsCNIyZX8dc4r+4gb56u1ESbQ3o=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-_HyiYfveNcCp61u3DvqRWw-1; Wed, 04 Jun 2025 07:15:04 -0400
-X-MC-Unique: _HyiYfveNcCp61u3DvqRWw-1
-X-Mimecast-MFC-AGG-ID: _HyiYfveNcCp61u3DvqRWw_1749035703
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-450cb8f8b1bso17674455e9.3
-        for <stable@vger.kernel.org>; Wed, 04 Jun 2025 04:15:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749035703; x=1749640503;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H5bmvoV528ZDMkA8vQ3GG9k3siMYViBoGzRoypMVKOg=;
-        b=liKCA7SYFv0sVu6n8xMoJDR8xOLtyQ4GWCLTV1J5jfbnqCWVcxZpKc8u39BnJqfyvL
-         AVdhSU7WxkC+WzKJaoI1bHFImWzACeyb27AjdDCGXHVNuTGVbusqxMIJP/z6D55/Dw52
-         G9XuUv5YPdUXdM0db5E9dHq24/xhMqLibfUp4zGU6duw9akOeexzt/nDoCEKUSOIVbzJ
-         PJm4HZhGjjhDcLntw8ZVjbwlNQi3VwYp4AfzRrjFAyfR0mDT7wj5x8RD1AOfCFvwUFOO
-         sMHMr20Pw12yxdbEaQrpBkixFgG+PYQuULiOLNh1h8BqISAFJmrGY2ZpuDITL55GIjOy
-         RwVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3fGFSYswa8hNsroHlhVpWin5G5o/QP9GFNDkAmFevM2+/vkKua0pfR3e3Hr06uMXWB/fjwm8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMiiTD0/6PuBSMbLR3iyIrCx7dtdV85ynMukhe0cLhJrxS6/wm
-	MkNYPdHVei/++P8dvf/O23sXxhaB2g6jYBhOk4nGoKTp34lhR9wbZChYtkhbAF41GBO5h0IyOgy
-	nURllrYIM6fipIABxNmrTw6ZrtQ21t7ClkTlAA+wP8LDHGcoQidDdBrwhmw==
-X-Gm-Gg: ASbGncsmTYu1Hx/7DfaWhWN5BzblFIzLaOjOB7wMSbGlWfkQBubrUKZfwkooIZo8mH+
-	rsMA+UPEwbtNYfIzwC511GmhgoSkjtm0tyy8YBDjx+yUDrz/UhCmjI/KpGRpxTubPjHuldgLn23
-	HfzB0asnT3EJBZ8r6tlPCB7DpNHwDhpngOkT6VXiqsmgY/qgCqlcNax5Q4oekzzR5WXW6KOG2Lo
-	3S7NYzGU8iaQPbMhTTKIYl2BJsZzS+Hq+f3EXCes3dfchHqqcXnH6uL/j1CialPIPizqS7ECPQ5
-	d2ZCKiohWPutRPPUrCXFaRM+KicS6gtoXanCbGgZOSiFnDhAp58NyILRInn8Slk49Z7M5Q==
-X-Received: by 2002:a05:600c:3542:b0:439:86fb:7340 with SMTP id 5b1f17b1804b1-451f0b3938cmr24124115e9.30.1749035702775;
-        Wed, 04 Jun 2025 04:15:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEkyu2yxy9u1E10EDNHkq0GJQg9fveXJ4AfXqJRU2A9xpka6O8heUM24yU/Pjyhp3aJF3xAA==
-X-Received: by 2002:a05:600c:3542:b0:439:86fb:7340 with SMTP id 5b1f17b1804b1-451f0b3938cmr24123775e9.30.1749035702404;
-        Wed, 04 Jun 2025 04:15:02 -0700 (PDT)
-Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a522ab67dbsm916950f8f.62.2025.06.04.04.15.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Jun 2025 04:15:01 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, Thomas
- Zimmermann <tzimmermann@suse.de>, Alex Deucher
- <alexander.deucher@amd.com>, Tzung-Bi Shih <tzungbi@kernel.org>, Helge
- Deller <deller@gmx.de>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=
- <u.kleine-koenig@baylibre.com>,
- Zsolt Kajtar <soci@c64.rulez.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] sysfb: Fix screen_info type check for VGA
-In-Reply-To: <20250603154838.401882-1-tzimmermann@suse.de>
-References: <20250603154838.401882-1-tzimmermann@suse.de>
-Date: Wed, 04 Jun 2025 13:15:00 +0200
-Message-ID: <87ecvzahcb.fsf@minerva.mail-host-address-is-not-set>
+	s=arc-20240116; t=1749037766; c=relaxed/simple;
+	bh=k5m/5LQvP/c2IAWLDddodHTGsfCxoNlv3nl0csDSPlY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=XThQKd6DFqg6P7KKRqJv4cIWJgdsuqPsRre/vrZOEaqBnBfzXpyRZDUSbdzAxcIhtsUhx2YU/hEb5bPiROb7WwKAbdQxEtMCHm2HOcAIbSG/Z6lSIDBylndMSXY1Lk5IuYKGbhPa/GPkNRjAmc7z1zOLRzy3Iz/GrAiXVAsAtqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0f9P83c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93990C4CEE7;
+	Wed,  4 Jun 2025 11:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749037765;
+	bh=k5m/5LQvP/c2IAWLDddodHTGsfCxoNlv3nl0csDSPlY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G0f9P83cBVR6RFnzRyyLxLOzLBKDMrI+cLLA2WD3+LncduXd8sH6joPhFyjyq5hYS
+	 cM1FVlpq6ZVvCDeOmjYDLcGk8j7t12GAsxF0jW0FL/PWQ30u1HeH0TqzMp14cAZRN0
+	 DeB9yoFIsZPqDvb8feiwwiZKPwVTGLJvjSFUhMAA8QzbQAyx/uQ2eBQbtA+Tuktuxs
+	 tXHYgOf8Wtv+J4Htp5BmBc6rMpS3fuJa/JvpRhD3SXluZz3pgz1A8U7LGo92FjCeyw
+	 PVM3TFkjeyRIWb/PIm+zYTPrUtw2z2vTD6hWoeVAyZ56S0Py/1YjCQJbWdxjc+NGwU
+	 kIBCdzTSeyQjw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>,
+	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	simona@ffwll.ch,
+	jfalempe@redhat.com,
+	qianqiang.liu@163.com,
+	soci@c64.rulez.org,
+	oushixiong@kylinos.cn
+Subject: [PATCH AUTOSEL 6.15 1/9] fbcon: Make sure modelist not set on unregistered console
+Date: Wed,  4 Jun 2025 07:49:14 -0400
+Message-Id: <20250604114923.208380-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+From: Kees Cook <kees@kernel.org>
 
-> Use the helper screen_info_video_type() to get the framebuffer
-> type from struct screen_info. Handle supported values in sorted
-> switch statement.
->
-> Reading orig_video_isVGA is unreliable. On most systems it is a
-> VIDEO_TYPE_ constant. On some systems with VGA it is simply set
-> to 1 to signal the presence of a VGA output. See vga_probe() for
-> an example. Retrieving the screen_info type with the helper
-> screen_info_video_type() detects these cases and returns the
-> appropriate VIDEO_TYPE_ constant. For VGA, sysfb creates a device
-> named "vga-framebuffer".
->
-> The sysfb code has been taken from vga16fb, where it likely didn't
-> work correctly either. With this bugfix applied, vga16fb loads for
-> compatible vga-framebuffer devices.
->
+[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+It looks like attempting to write to the "store_modes" sysfs node will
+run afoul of unregistered consoles:
 
+UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
+index -1 is out of range for type 'fb_info *[32]'
+...
+ fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
+ fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
+ store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
+ dev_attr_store+0x55/0x80 drivers/base/core.c:2439
+
+static struct fb_info *fbcon_registered_fb[FB_MAX];
+...
+static signed char con2fb_map[MAX_NR_CONSOLES];
+...
+static struct fb_info *fbcon_info_from_console(int console)
+...
+        return fbcon_registered_fb[con2fb_map[console]];
+
+If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
+as callers of fbcon_info_from_console() are trying to compare against
+existing "info" pointers, so error handling should kick in correctly.
+
+Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+**YES** This commit should be backported to stable kernel trees. Here's
+my analysis: ## Security and Stability Issue This commit fixes a
+critical **array-index-out-of-bounds vulnerability** that can be
+triggered via sysfs. The issue occurs when `con2fb_map[console]`
+contains `-1`, causing `fbcon_info_from_console()` to access
+`fbcon_registered_fb[-1]`, which is an out-of-bounds array access. ##
+Bug Analysis The problem is in the `fbcon_info_from_console()` function
+at line 122: ```c // Before fix: return
+fbcon_registered_fb[con2fb_map[console]]; // After fix: fb =
+con2fb_map[console]; if (fb < 0 || fb >=
+ARRAY_SIZE(fbcon_registered_fb)) return NULL; return
+fbcon_registered_fb[fb]; ``` ## Trigger Path The vulnerability can be
+triggered through: 1. **sysfs interface**: Writing to
+`/sys/class/graphics/fbX/modes` 2. **Call chain**: `store_modes()` →
+`fb_new_modelist()` → `fbcon_new_modelist()` →
+`fbcon_info_from_console()` 3. **User-accessible**: This is exploitable
+from userspace through the sysfs interface ## Code Context from Analysis
+Based on the git blame, the vulnerable code path in
+`fbcon_new_modelist()` has existed since: - Original code from **2005**
+(Linus Torvalds) - The problematic `fbcon_info_from_console()` call was
+added in **2022** by commit `409d6c95f9c6` ("fbcon: Introduce wrapper
+for console->fb_info lookup") ## Risk Assessment 1. **High Impact**:
+UBSAN array bounds violation, potential for memory corruption 2. **User
+Triggerable**: Accessible via standard sysfs interface 3. **Long-
+standing**: The vulnerable pattern has existed since 2022 when the
+wrapper was introduced 4. **Active Exploitation**: Reported by syzbot,
+indicating active fuzzing found this issue ## Backport Suitability 1.
+**Small & Contained**: Only 6 lines changed in a single function 2.
+**Safe Fix**: Adds bounds checking without changing logic flow 3. **No
+Dependencies**: The fix is self-contained and doesn't require other
+commits 4. **Clear Bug**: Definitively fixes out-of-bounds access with
+proper NULL return 5. **Stable Pattern**: Callers already handle NULL
+returns from `fbcon_info_from_console()` ## Comparison to Historical
+Precedent Looking at the similar commits provided: - **Similar Commit
+#1** (Backport Status: YES): Fixed boundary checks in fbcon parameter
+parsing - this follows the same pattern of fixing bounds issues in fbcon
+- The other NO commits were architectural changes or refactoring, not
+security fixes This commit perfectly fits the stable tree criteria: it's
+an important bugfix, has minimal regression risk, is contained to a
+single subsystem, and fixes a user-triggerable vulnerability.
+
+ drivers/video/fbdev/core/fbcon.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index ac3c99ed92d1a..2df48037688d1 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -117,9 +117,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
+ 
+ static struct fb_info *fbcon_info_from_console(int console)
+ {
++	signed char fb;
+ 	WARN_CONSOLE_UNLOCKED();
+ 
+-	return fbcon_registered_fb[con2fb_map[console]];
++	fb = con2fb_map[console];
++	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
++		return NULL;
++
++	return fbcon_registered_fb[fb];
+ }
+ 
+ static int logo_lines;
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+2.39.5
 
 
