@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-151387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD54ACDDF4
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B32BACDE2B
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 14:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CE4C1893C7E
-	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 12:32:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD8941884ADC
+	for <lists+stable@lfdr.de>; Wed,  4 Jun 2025 12:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2381A23BCE2;
-	Wed,  4 Jun 2025 12:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CEA28EA76;
+	Wed,  4 Jun 2025 12:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGRNAc2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2xSW+QB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898341EF094;
-	Wed,  4 Jun 2025 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443A328D8DD;
+	Wed,  4 Jun 2025 12:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749040313; cv=none; b=I9dM4dDySR5f79JHrzodrlijPgNLq7M/AsZgWtC8v9m8rvUAmkYLxV2lrY+cEG2d8RKW77B9NE7sNvSoqXbO39zLMbVl+srjh8mvUJI3iZ4EVvKVEgVHXqdRbv57UGe1lanvKVq4s98CKEVnpBj1ynaZrOXi0UlJfEWtGA3xl+0=
+	t=1749040703; cv=none; b=Xfim9p1F5I/QKZTM/YONwAcphsjLrwdkbCNsSr61wMj63weFJR7kJgvu6WqbmHzO1PktjdEZPVlc/e00UYpqaU70yRRGUmsijyRAWBScnOzRMFse146O1IB2CthW09NVcjpnrXALJD98S/DU7pOlczZllGiSlhD6/y9u2f4tB34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749040313; c=relaxed/simple;
-	bh=TrXtM1E9qeh0reHLNw5PD86uabM3Wq90I2FvMMDenCA=;
+	s=arc-20240116; t=1749040703; c=relaxed/simple;
+	bh=7tHoRWpClE5dLKc7eKaOJE0EBswVDCbH75bRZ0dvDtw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FiC4buhrmVHOZKnZaHHxyUl4drGPi3dH2NMW8Yz0kClQztXFOyZRireYybOfc5GIdSXUe7CZoKgZCoD1OYfP9sfUgXohQ+VSRSBqnI9B+1H55s1JyxmghxusId/0Duaufyvk+ZgfemSQwiGIhg+SAPFkgcV4n2Hs2KbzCKbR/Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGRNAc2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A293AC4CEE7;
-	Wed,  4 Jun 2025 12:31:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8t8YR6egeW11X3ucyif9MlFfhFZ4zEqC33j7zT5Mpo1rZG0Nh9CbM+ALqCP0/GM1KW8bn/CS634JhmYYNY6E6jmS5xlzS21ICRxGpwfDNMwY43JDSoW6/thuSTb7vdKDYPYvwrvbylxEyu3X8Khfz9NOLJ5a/M4pdpHsO93Gsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2xSW+QB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1572BC4CEEF;
+	Wed,  4 Jun 2025 12:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749040312;
-	bh=TrXtM1E9qeh0reHLNw5PD86uabM3Wq90I2FvMMDenCA=;
+	s=korg; t=1749040702;
+	bh=7tHoRWpClE5dLKc7eKaOJE0EBswVDCbH75bRZ0dvDtw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bGRNAc2OfiEw/PboRedKKVMeVYBfNNVTAZd8eJxqigSWHLjZTCYqldkdx6LNG+wuL
-	 o5NTVELpQYmXW4Vl13RpQiBGJ0byBIjIVKgG8JqxP9gNDBdrVSvISKgRVCefrBR5Pd
-	 jNcD4OFCYFh+h5gbRK5uDcYRtXqsL5vqBfD7XBvk=
-Date: Wed, 4 Jun 2025 14:31:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: Re: [PATCH 5.4 009/204] tracing: Fix oob write in
- trace_seq_to_buffer()
-Message-ID: <2025060414-dreamily-reentry-ab52@gregkh>
-References: <20250602134255.449974357@linuxfoundation.org>
- <20250602134255.842400124@linuxfoundation.org>
- <20250602103639.6d9776d5@gandalf.local.home>
+	b=z2xSW+QBOUmyM2yWlcdXcasGDUIDdoKL+FVRkca1oDExVNmQFUMTFBhfYxzMf081m
+	 seIkXDCaBdvIqEkSL21CwhsLPL5o2rEjQhPoKgmelIB+BIwGgqCOsPipyrZ1oSCNCy
+	 2amykKUElpsO18F5eiHtk0mj5QVMWgFQ7KK1sCsE=
+Date: Wed, 4 Jun 2025 14:38:19 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: catalin.marinas@arm.com, will@kernel.org, ardb@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, lujialin4@huawei.com, chenridong@huawei.com
+Subject: Re: [PATCH stable 6.6.y] arm64: kaslr: fix nokaslr cmdline parsing
+Message-ID: <2025060409-fidgeting-basil-abf7@gregkh>
+References: <20250603125233.2707474-1-chenridong@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,75 +55,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250602103639.6d9776d5@gandalf.local.home>
+In-Reply-To: <20250603125233.2707474-1-chenridong@huaweicloud.com>
 
-On Mon, Jun 02, 2025 at 10:36:39AM -0400, Steven Rostedt wrote:
-> On Mon,  2 Jun 2025 15:45:42 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Tue, Jun 03, 2025 at 12:52:33PM +0000, Chen Ridong wrote:
+> From: Chen Ridong <chenridong@huawei.com>
 > 
-> > 5.4-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Jeongjun Park <aha310510@gmail.com>
-> > 
-> > commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
-> > 
-> > syzbot reported this bug:
-> > ==================================================================
-> > BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
-> > BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
-> > Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
-> > 
-> > CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
-> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-> > Call Trace:
-> >  <TASK>
-> >  __dump_stack lib/dump_stack.c:94 [inline]
-> >  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-> >  print_address_description mm/kasan/report.c:408 [inline]
-> >  print_report+0xc3/0x670 mm/kasan/report.c:521
-> >  kasan_report+0xe0/0x110 mm/kasan/report.c:634
-> >  check_region_inline mm/kasan/generic.c:183 [inline]
-> >  kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
-> >  __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
-> >  trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
-> >  tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
-> >  ....
-> > ==================================================================
-> > 
-> > It has been reported that trace_seq_to_buffer() tries to copy more data
-> > than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
-> > smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
-> > 
-> > Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
-> > Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
-> > Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
-> > Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> > Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >  kernel/trace/trace.c |    5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > --- a/kernel/trace/trace.c
-> > +++ b/kernel/trace/trace.c
-> > @@ -6331,13 +6331,14 @@ static ssize_t tracing_splice_read_pipe(
-> >  		/* Copy the data into the page, so we can start over. */
-> >  		ret = trace_seq_to_buffer(&iter->seq,
-> >  					  page_address(spd.pages[i]),
-> > -					  trace_seq_used(&iter->seq));
-> > +					  min((size_t)trace_seq_used(&iter->seq),
-> > +						  PAGE_SIZE));
+> Currently, when the command line contains "nokaslrxxx", it was incorrectly
+> treated as a request to disable KASLR virtual memory. However, the behavior
+> is different from physical address handling.
 > 
-> Note this will require this patch too:
+> This issue exists before the commit af73b9a2dd39 ("arm64: kaslr: Use
+> feature override instead of parsing the cmdline again"). This patch fixes
+> the parsing logic for the 'nokaslr' command line argument. Only the exact
+> strings, 'nokaslr', will disable KASLR. Other inputs such as 'xxnokaslr',
+> 'xxnokaslrxx', or 'xxnokaslr=xx' will not disable KASLR.
 > 
->    Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
+> Fixes: f80fb3a3d508 ("arm64: add support for kernel ASLR")
+> Cc: stable@vger.kernel.org # <= v6.6
+> Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> ---
+>  arch/arm64/kernel/pi/kaslr_early.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> commit 2fbdb6d8e03b ("tracing: Fix compilation warning on arm32")
 
-Thanks for the link, I'll queue this up once it hits a released kernel.
+<formletter>
 
-greg k-h
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
+
+</formletter>
 
