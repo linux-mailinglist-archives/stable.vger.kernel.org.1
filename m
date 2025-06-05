@@ -1,61 +1,104 @@
-Return-Path: <stable+bounces-151526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED56BACEF03
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 14:15:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB9EACEF3A
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 14:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB0B61745E1
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 12:15:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AAE33ACC6C
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 12:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F4421770D;
-	Thu,  5 Jun 2025 12:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADC319BBA;
+	Thu,  5 Jun 2025 12:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="w+GQi1BB"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tGtr2Dy3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IeK+w307";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="F6TWfQsw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="zXpyJk0M"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA3420C026;
-	Thu,  5 Jun 2025 12:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B8D1853
+	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 12:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749125701; cv=none; b=jZi5HSpZhY/qzA0KL3cxAZuPI0X7iV3cNzjQ2T13M2YvMtNHQpE+VPNZsmfmyXWvUjPDP7pXmrM0okgsPA2yoX40hRr/EAycC7OWDIiQ49UVhd5LFMXx07odOD/A3GZQFvx66jUre7hEI31LPuxhDrnVoCORMQdkMM3oYuohfaA=
+	t=1749126648; cv=none; b=M6ct7IBM+FZ3Vcw7R0gdxCJamjYE6j+QwgDIK/qEWZwAsJbB+WgbnaqYNbn5khjH8456DNpXNsJC3LqnPnjM0btdRmAt/tqObqyWPlaaFl/SQ9PF8vaB0Kmc17WkFkCskK76yIs/R7YVtKeGahKoYPW4u0ZS7pslQNPvYLLvZ6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749125701; c=relaxed/simple;
-	bh=uXPuySW/2mRvaR0v35BShBQ43Iwx1yz1Vo1lzg4NP84=;
+	s=arc-20240116; t=1749126648; c=relaxed/simple;
+	bh=ZLq2zUXzWtbF7mIp3pVsit6RncSI4+1+z+OBT70Zp8A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=myyvqUZ9BlrlKzcWugeYyUE919EfCFCGbByfOe7GxPPzsKm5bJFN6LOyUHCj24l+CPWdRnTuNEXGi8IaLx8oRH3BZeXxxnp+1M1ICqFyXsHf1hw1HMh0LBcVS4TRX84iq5NZfbnTUi9w/AMn38D8Zs4Iyn+pbSf1Rmbkg4qu74g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=w+GQi1BB; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5187A22475;
-	Thu,  5 Jun 2025 14:14:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1749125696;
-	bh=sAXF4RHm4VzO/0RxTV4aH2pTUaWhFW39ZUyi8/v0sHI=; h=From:To:Subject;
-	b=w+GQi1BBPUWOmXFPV0prb48zim6Mp7BVudEAFZN+QK6QIpXIlGkggqaXNvGPydqIh
-	 SsEZdoxL8b6IpYXTnReYxIjHeKsqPh374zKnfxg2yborgSG5UIsBHAuYmajM0BLl0W
-	 th+D5bumLID1jN5sp2bjBsRKs9Xqy2U/BWjd9yOY8mmxDD9To6/bKHeopaIVEBZCkY
-	 C7mPPDRY9eii+D20pn6aeW0dx4/NQfYPKIeSrQFu1/FAoNBzC2JNyZNOL5fPm1wW6/
-	 Ca6FcmwK49pOT5facDLiBnSZeWXo01Z/lU8lUMzLEY51sHO3TnMXzZw4eYi1zrwdGN
-	 UF4PZnkNcc17g==
-Date: Thu, 5 Jun 2025 14:14:52 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jeff Chen <jeff.chen_1@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH wireless v1] Revert "wifi: mwifiex: Fix HT40 bandwidth
- issue."
-Message-ID: <20250605121452.GA48603@francesco-nb>
-References: <20250605100313.34014-1-francesco@dolcini.it>
- <0706792a7d08d7bcfdf7fa929cd5f1afc80e3f19.camel@sipsolutions.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fja/e1aKU/D0Y2TVLCmvQtufC8v1nTUtjxXR3CciCqg2j3TzBeqdERo7FaK+X22jwjIyw9SEN1fUb45iBvkj1cqlfM6vazkZxZ/N+9Fd/crigG9JOWNzgPeICqUvfNm4pFAIAsfX7Sce5ERA5odzcA5EGsVcdc0L4I0y+J/karM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tGtr2Dy3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IeK+w307; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=F6TWfQsw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=zXpyJk0M; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DCCDC5C1F6;
+	Thu,  5 Jun 2025 12:30:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749126644; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAgu98E1bIifkTUOiXNpdPWPnGDf9XZuLBI7jjfvBBg=;
+	b=tGtr2Dy3C/GpKweEEI9DHbgUKTTNhfhiqJgbj75tlgEAJNn6W8ySsORuvzeXfHiXOgABAo
+	o4KE9hX4Rn5z3PMa+bUbwTClWS3FGsFL1YIIzAkJjfnXrJ9Hkyow7SutdUu1QTkzJNQ6o4
+	gjRISWBYD/pZtAN0JTuZ0XITB+ucByc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749126644;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAgu98E1bIifkTUOiXNpdPWPnGDf9XZuLBI7jjfvBBg=;
+	b=IeK+w3075fMh+8B7J58UiOjp9Isy7/MAqGRTPgI/g85DaIUIDVUuGlGVtVqhq0VTEXezMT
+	kD0kezbdSQmtukBw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749126643; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAgu98E1bIifkTUOiXNpdPWPnGDf9XZuLBI7jjfvBBg=;
+	b=F6TWfQswfJZexme0kiCnKgKFSCP0akK6Yov5eQ6pZ/WiDPCn2Ttp5ByY9d2jCUf25tZyGt
+	YSJE5QCp4ydpnNz8dyPrNN1YKbnP68QPIe545zIpJ+R9jhRGvgD0wmabvYrNIPS3VtkVAh
+	DwG68iN5V4k6qdh6x2IaF4ibtacV2oQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749126643;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YAgu98E1bIifkTUOiXNpdPWPnGDf9XZuLBI7jjfvBBg=;
+	b=zXpyJk0Mlc3IihdBf2SNSsA8wthXdxSB6O3sKt5WQ3o6r/J3GKTWQVwMKcJCi847iqFOWQ
+	xVMQUhfjznO6vlBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 132EA137FE;
+	Thu,  5 Jun 2025 12:30:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wxpmAfONQWgbHgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 05 Jun 2025 12:30:43 +0000
+Date: Thu, 5 Jun 2025 13:30:37 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, Peter Xu <peterx@redhat.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory
+ snapshot
+Message-ID: <tvlqhsldouhdocdf3zsgepv4klq4646yuafsls67n6bwntsnb4@ucsrfbweeumv>
+References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
+ <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
+ <ba208d76-7992-4c70-be8f-49082001f194@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,21 +107,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0706792a7d08d7bcfdf7fa929cd5f1afc80e3f19.camel@sipsolutions.net>
+In-Reply-To: <ba208d76-7992-4c70-be8f-49082001f194@suse.cz>
+X-Spamd-Result: default: False [-7.80 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.de:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -7.80
 
-On Thu, Jun 05, 2025 at 01:40:41PM +0200, Johannes Berg wrote:
-> On Thu, 2025-06-05 at 12:03 +0200, Francesco Dolcini wrote:
-> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Thu, Jun 05, 2025 at 09:33:24AM +0200, Vlastimil Babka wrote:
+> On 6/3/25 20:21, Jann Horn wrote:
+> > When fork() encounters possibly-pinned pages, those pages are immediately
+> > copied instead of just marking PTEs to make CoW happen later. If the parent
+> > is multithreaded, this can cause the child to see memory contents that are
+> > inconsistent in multiple ways:
 > > 
-> > This reverts commit 34253084291cb210b251d64657958b8041ce4ab1.
+> > 1. We are copying the contents of a page with a memcpy() while userspace
+> >    may be writing to it. This can cause the resulting data in the child to
+> >    be inconsistent.
+> > 2. After we've copied this page, future writes to other pages may
+> >    continue to be visible to the child while future writes to this page are
+> >    no longer visible to the child.
+> > 
+> > This means the child could theoretically see incoherent states where
+> > allocator freelists point to objects that are actually in use or stuff like
+> > that. A mitigating factor is that, unless userspace already has a deadlock
+> > bug, userspace can pretty much only observe such issues when fancy lockless
+> > data structures are used (because if another thread was in the middle of
+> > mutating data during fork() and the post-fork child tried to take the mutex
+> > protecting that data, it might wait forever).
+> > 
+> > On top of that, this issue is only observable when pages are either
+> > DMA-pinned or appear false-positive-DMA-pinned due to a page having >=1024
+> > references and the parent process having used DMA-pinning at least once
+> > before.
 > 
-> I'm confused. If you want it reverted in wireless, this is the wrong
-> sha1? If you want bit only reverted in stable, why are you tagging it
-> for wireless?
+> Seems the changelog seems to be missing the part describing what it's doing
+> to fix the issue? Some details are not immediately obvious (the writing
+> threads become blocked in page fault) as the conversation has shown.
+> 
+> > Fixes: 70e806e4e645 ("mm: Do early cow for pinned pages during fork() for ptes")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> 
+> Given how the fix seems to be localized to the already rare slowpath and
+> doesn't require us to pessimize every trivial fork(), it seems reasonable to
+> me even if don't have a concrete example of a sane code in the wild that's
+> broken by the current behavior, so:
+> 
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Because I did a mistake :-( This is supposed to be reverted on Linus
-tree, not just in stable, I'll send a v2 with this fixed, sorry.
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
-Francesco
-
+-- 
+Pedro
 
