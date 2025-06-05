@@ -1,282 +1,190 @@
-Return-Path: <stable+bounces-151510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A45ACEC83
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 11:00:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AD3ACECA5
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 11:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05CB016ECDD
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 09:00:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD041899B20
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 09:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F95143748;
-	Thu,  5 Jun 2025 09:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDAF207A25;
+	Thu,  5 Jun 2025 09:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="02fpIwko"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="peX41RTT"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2059.outbound.protection.outlook.com [40.107.236.59])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBE3366
-	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 09:00:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749114040; cv=fail; b=Hvon9Wrchyi8d+IVMbF8z5/AjAZQRvzFu7DVtRcmUOFYbypCjv01uYQi/1hsn3Si8pOe8tb+qylGqk3kRNB24a0sVRyT3CGaasbefnuLpIDvbsf0RnrRDUC/2X7p6voIQtLaJaOTQP6haZomIj+/PIzpy2IXegNQ+7iQhqdkAk4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749114040; c=relaxed/simple;
-	bh=tliWXFJy1aONX3SybbZlbAaUJEFKUirLT4G8rmlFUxA=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DD3A927;
+	Thu,  5 Jun 2025 09:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749114790; cv=none; b=gEFmw8mSEAnnYAbIrPe7m9ynO7keH7m89589vLKWQylEEV9DrDVnPmIZTnjnbcAtTGSOQxIJVyotNeBIxUczvQLvuCKiHiZGmpJYDjhilJuBOQmdd3QL+WWCbYHmsljk5k7Zre11Jdr8z4IuO3ywxPhJOzuRV2daMWlb66NnaA0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749114790; c=relaxed/simple;
+	bh=G++elx2LCqVPMzd1qaMXiMItgUkW1e7Mp3r17N/MptE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=TKl1CRegUNCXHKJQUlCT6o0Ibx5JQd8pkGrfdrPPQy5LyKSaym6QFQ76Ppn/Z/RKp0DBnSwGHJnQwqoAK+yNW4YOG2ooPK/O1OuAs8QmpaA70z0bi9W9TtFQjgJAKCV1bL0jztFoJiP/ENIoG3J9Ludsx3gFMtR3WwLgi2h/uQY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=02fpIwko; arc=fail smtp.client-ip=40.107.236.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dnnP5+/bmOW3reT89I1TONDXryU+mJoglUhr0qDM0ITmli86M3vcW9htqzyTkge+sLhKh2F/VK06etRcdcSWzVaMOFiFulknh4QBGj1so7XofR2TlOYQOuwHHwPA2eqJzDbu0zJk6IhZWBes9ymKzoIDeYNH8QmiwNlPJZFMnH1mX6NHkQmQQFpjM3tgZbRM5CK40IUnVRF19AGn/RFnoJKD27rH02J4S8vMvewct/9RExMX9iZPxc46r4IgD8weD9z9VxCU13ci+osduT6F91XqhsP5rVlhOYli9MWInzLV+67pK2ieqWnCw+fuADjS6Rc8bSLRLxAJGz5DGC0/jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VRzv0GpSnySfpC1aB5JTAISMlT0XdKK7hSAUdiCYkBs=;
- b=tr98ximqE3LiQ1LGWqXFNNf+hblkZ+ZU5fxkFnQC8kZ9WTby4I0vmDDe1pVpxv/yDtEAllKENVCI55jXi4taYK4kYZBsf/JZaAuMCDI6QIs+ZnDvBDCEfoMMTpxvULI9uqOrbpxSz+e2Yhsx4f+AmWQOKPzwwij93LFMNqFd2lvdxXwtGc+gbU/lEySv8dkbom7PVtTFH2NTM29IDn2ProHelAqXeJd4ZoEuAAW4ZgUOxQSPbGQVk15VuBvLqy2arjv/j42O1WfaaC0djyNlPtGkIiTgnPSA54LeUG/6vYTDXhcyBNdUUBZm3AAh+Th2cWUIWlt9KY9pJr7pCqELmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VRzv0GpSnySfpC1aB5JTAISMlT0XdKK7hSAUdiCYkBs=;
- b=02fpIwkoNRwH3gTMc5418x6wcLfsAE1H1A03RgOjBL6KsaO3lyAH6ar4zxLqxMg7kjY7ogu4W41Ir0maY3CIAfOe/JKErl9qiIqD57Jqb9pIZ2reWY5eNo9Hy7U3ow5U8xKzjXMOaUdc4XRDOxwO02DJVSlRGKEGJN08HUGHU1o=
-Received: from SJ0PR05CA0041.namprd05.prod.outlook.com (2603:10b6:a03:33f::16)
- by MW4PR12MB6707.namprd12.prod.outlook.com (2603:10b6:303:1ee::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Thu, 5 Jun
- 2025 09:00:32 +0000
-Received: from BY1PEPF0001AE1A.namprd04.prod.outlook.com
- (2603:10b6:a03:33f:cafe::24) by SJ0PR05CA0041.outlook.office365.com
- (2603:10b6:a03:33f::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.9 via Frontend Transport; Thu, 5
- Jun 2025 09:00:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BY1PEPF0001AE1A.mail.protection.outlook.com (10.167.242.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8792.29 via Frontend Transport; Thu, 5 Jun 2025 09:00:31 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Jun
- 2025 04:00:29 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 5 Jun
- 2025 04:00:29 -0500
-Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Thu, 5 Jun 2025 04:00:28 -0500
-Message-ID: <6a4f4df9-0305-a89d-0ed7-8fedf0e31ffc@amd.com>
-Date: Thu, 5 Jun 2025 02:00:28 -0700
+	 In-Reply-To:Content-Type; b=F9y/BX0xa627qMcTX1NhGLJ6lzSjDbFC/LifY8EVidqOIJt9JEX6Hp1DiSwj/4lXbKBo+kE5QgWQafRgugtEo6uS+5HkWNNS5RB3DUfppYepO+MKxzLRWMsayPUjpd5A6+9cg43H9yqYTeS4PRlm3eeeDyOI045tZHmzJ6JZz60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=peX41RTT; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5557AioQ006342;
+	Thu, 5 Jun 2025 09:13:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	+sJbkp7Z3oHzA6Mj9+h6lPD2ASqtY2mNiec+zkMik5s=; b=peX41RTToAJaAcnr
+	Rzuck/hJovHhbeTKuu1csfkwy7RwUJW1XlCvC9KQ80TEpHAJ/33+6a5sLa1GiNon
+	3RzhPk7YoHsk3vMgvVmMYTqahc9S2JfpMw1lfSlizOwPFq9v0qA06L2C9bPxa9Ho
+	9BII5uqU+tmHOuVk2IXIOAomRP1OyPcmLxStxSYTkxkDWQCIiBzHYhTL6f8G6Q7W
+	cKDmSUJ5UMwnJSGjBQmBHuRy7PQhjV6mFW/kiqc9W8wD8I5T0ftNZXS1yxflSEqR
+	LKdUi3YqZhxhgEX6CGBGyFFmq9VoPelvg2bR0Jt6LwKLdPDQVqSBd2ECi1vbs2o1
+	hR1nQw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471g8t0sg4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Jun 2025 09:13:03 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5559D2iF010348
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 5 Jun 2025 09:13:02 GMT
+Received: from [10.253.10.58] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Jun 2025
+ 02:13:00 -0700
+Message-ID: <b3432e80-9a54-4338-8991-606d1484dcc5@quicinc.com>
+Date: Thu, 5 Jun 2025 17:12:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] accel/ivpu: Use dma_resv_lock() instead of a custom mutex
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] wifi: ath11k: fix dest ring-buffer corruption
+To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+CC: Miaoqing Pan <quic_miaoqing@quicinc.com>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250604143457.26032-1-johan+linaro@kernel.org>
+ <20250604143457.26032-2-johan+linaro@kernel.org>
 Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	<dri-devel@lists.freedesktop.org>
-CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
-References: <20250528154325.500684-1-jacek.lawrynowicz@linux.intel.com>
- <26b8a17e-500d-d89d-de9f-c17108a6831d@amd.com>
- <a52588be-b487-433a-a74f-eaa1d7a88654@linux.intel.com>
-From: Lizhi Hou <lizhi.hou@amd.com>
-In-Reply-To: <a52588be-b487-433a-a74f-eaa1d7a88654@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB05.amd.com: lizhi.hou@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1A:EE_|MW4PR12MB6707:EE_
-X-MS-Office365-Filtering-Correlation-Id: e87bbed1-e464-4e17-4ba9-08dda40f6d1a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YTJCMzNkQU81UGRHNGgwby9BM0ZwVEZIZU1ZS01YM29Ec3ZJb2hXeHYwbXhW?=
- =?utf-8?B?cWJmWm1JRmNHaWhPVXpkYlFjSENUSmRheUZpTXNtblYzVkZSRzJvc1VPbUJ3?=
- =?utf-8?B?L2dWdythUG42TnhuYUpLZVFFRTk1VXBabGFrRkJudDU2RjJFK1EzUjhRcmpG?=
- =?utf-8?B?ZGJsWmpUWVF2NUZ5VGNCTUp2c1ZGdDlVYVd4MnE5VVhsWmVpTmR2MGZadEdX?=
- =?utf-8?B?clM5S0VZOVhRcDZySVRReHZjd0dNd1k1ei9sRTZ0M0RFUTRGQ0U1SWJwM1VJ?=
- =?utf-8?B?Slc3RERCc1d6WGhYaUMvV1Fwa1ZzZU1nWmFsNmtzeThkSDhWeXJqQ1V6azhD?=
- =?utf-8?B?cnNiNWxuemZra1RBcWxySlI5WjR3UXN3WHVPMmpyN2tER1dPb3k1N3BNYjlQ?=
- =?utf-8?B?QTZRN1JoVkpKenZUVFprSGJuKzIwc0RlSVgzOURRMC9GclhzOXAveHNmcm1J?=
- =?utf-8?B?OEJ2U0JWekpoVER6SFVCS04yN1VxODVndDc2THN5dmZ1bThJOW5LcTBHUXY3?=
- =?utf-8?B?a3ByVlREZXl1UE5uSjZiMVNubUxrdjlINHlDZTFYeHRtWU4wNlJ6Tm9SZjdI?=
- =?utf-8?B?ekZJSHdWM3hiSU4xOHdZbVFhZDFwUGNGcnBrM0hGZGNWeDQ0RWxKS1JTYm9j?=
- =?utf-8?B?V3ZEYVVoaWtqS3Y0c0tUYVgrblJBMjZ6UkplTm1kWVZRUkxIWTJoWk53UTFw?=
- =?utf-8?B?aUtIY2lIN1hkSHRVUTRHZHhSeDZ3ejlzOXlERm5LcVJXdEY0RnVDV1psWjdR?=
- =?utf-8?B?QmI2YSttWE5INXMzMmczN2Z1dEk2VUMyQnlNeUQvT0JxOHZROGFYQVpzU3Yy?=
- =?utf-8?B?UnBuYkFKOXZUMDg1aThtdG42WTgzSERnRlZMNGczM2tyL1FKT2x5ZDFXRFBW?=
- =?utf-8?B?L3pWeUQ3QnMxTVlMRVY2bTcvWUdnVFVkZWR5NG95R1YvazdBT2lsWDQwQTU4?=
- =?utf-8?B?bzBySmpuM2lEU2FXa2ZtOGMvaU4ySlRiK002TmJKbmp5QWxvckJRK3NpemtC?=
- =?utf-8?B?ZE9BNFpzOHduSmJ0YnB0WjFWbHdTeGtqaDVMNm1ZaGRVUnRZZlg5bjZROHN6?=
- =?utf-8?B?RFZFR2xCNHFOK0R4S2RTN0VzdHBDUHdVeGpjb2hGQitLSytnVUVwK2hEL2FJ?=
- =?utf-8?B?RGkxMVhRc3JLQjBQODRJZ0dyYUhHRWVrRzdzMVF5U0JvMjJQOHNnNElIbmVB?=
- =?utf-8?B?aDBseDNXcG5xRGdoQWpHR0ZGZDJ6TGpWdzVSUWNrOWxURXo0T3hFUlBIT2RE?=
- =?utf-8?B?d3lQaFBzaWozMlNtWUNRR1JWUkN2TWdZSm5pSnEzeU1aT1hnVjFGYVA1UkhE?=
- =?utf-8?B?TDlUNUVGaFVvT0tCbTdKZXRhOXlqMEZGbmlkRU1FcElibnBkUlEvVlg1a2R5?=
- =?utf-8?B?UmtXZ2lqdkdQUkl5ZTNaTVpOaGw4RWRiVXk4Y3o1VWNhM0l5ZWRLSG5ScWdh?=
- =?utf-8?B?MyswRGU0MmdERGZZTlhqS0dreUNXM0xQc2tXdVhEWjFuMzg5aW5qNFpHQzN6?=
- =?utf-8?B?ODNXZGVXbE84Sm9ISXVVa1RPZVQ4WHZvVVoxS0tmcVFCMnUyVURDZ0ZOcElj?=
- =?utf-8?B?a1l5WklUZ1VoL01qSUFPQTBxOE9NVkJKSUhnT1ZJMk5TTmdrclg2dTlnNG1I?=
- =?utf-8?B?d0ZNMXR5NXNDbHlHOCthUjNMQm1HaElZMUNGeHc5NzREQ3NEYkdhOHhnMUV1?=
- =?utf-8?B?QmVRNm9aNExuSnBub1pKWUc0SXV6N29iSUtmVVlPT04yUmZ4RzhPM2FwcXlO?=
- =?utf-8?B?WGU1OFZFVWJ6czRaWnJCemdWaGtGNTFpbzl5WXVjZFVndjdHaFRvU3E3Y2VT?=
- =?utf-8?B?RHhDbGVISTNsa2VtN3RjWUFocjRZMmZJVU5pVktiZC83UldhVFJDb2t6V283?=
- =?utf-8?B?RHZwSktZSmgzTUxTTmdTb3JvWmVpbjZRcC8zVFJ5M0NTYTBKWlFZNks3dHpu?=
- =?utf-8?B?TENLVklDUkdoRytEN3MxR1BTMWluMXhFNzhhTHpSbkFNaERqS2U5SEpSMkpt?=
- =?utf-8?B?L2pTVUt4Y3B4WHFIU3IwMHBwZ0VkVTlLTGdyM2tCYTJ4YVBiYmNTUDhzK1dB?=
- =?utf-8?Q?DFsZlr?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2025 09:00:31.7121
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e87bbed1-e464-4e17-4ba9-08dda40f6d1a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE1A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6707
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20250604143457.26032-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: rCjR7tm-7zmN6W2-66X499j-GCsEmhtX
+X-Authority-Analysis: v=2.4 cv=EPcG00ZC c=1 sm=1 tr=0 ts=68415f9f cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
+ a=ISufsDh2QXdYQW1nCwMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: rCjR7tm-7zmN6W2-66X499j-GCsEmhtX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDA3OSBTYWx0ZWRfX7DGYr96K5foe
+ W4Lyk7sqlm0Uw3O/sibVX07X64AnNWkAYka2cQFqZhQQgb01kzjxKYLO3Qt+onVCW8fdyyyKmBt
+ Idu+xoM3SFLdynu3K2Yqy85DJRUYFTvrWl3PLmrdx1OwU5eu2L/QKiE8opu0VtPRBtkDsUG9onD
+ +NnuSVERbpno0hLp/dZEJeTg0UPOoiwQQIbqHJAau8AGnefGwmg60bsJLu0z3slvek6xESmtelc
+ wVCVmAYHe35H7Ar9ohC3Hhc153a/3CfPOlVZVOxkv70/UFnaRp4KViEjSiDgzPZPu2xLKE3Un5H
+ eOdks9uQnNQBHqT954HRYomjw8l2SVu5NGRtOCZ0GeaMfrnJskr/A9Gb1FZkedzteDvfAYwppag
+ ij0OGiayAXxO0OGKKy4P+syBfd5lu7XwnsSYu0CxpIdKVgiHy/4ERWx+AVWojusChfto8UTi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-05_02,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 mlxscore=0
+ clxscore=1015 mlxlogscore=880 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506050079
 
 
-On 6/2/25 05:58, Jacek Lawrynowicz wrote:
-> Hi,
->
-> On 5/28/2025 7:50 PM, Lizhi Hou wrote:
->> On 5/28/25 08:43, Jacek Lawrynowicz wrote:
->>> This fixes a potential race conditions in:
->>>    - ivpu_bo_unbind_locked() where we modified the shmem->sgt without
->>>      holding the dma_resv_lock().
->>>    - ivpu_bo_print_info() where we read the shmem->pages without
->>>      holding the dma_resv_lock().
->>>
->>> Using dma_resv_lock() also protects against future syncronisation
->>> issues that may arise when accessing drm_gem_shmem_object or
->>> drm_gem_object members.
->>>
->>> Fixes: 42328003ecb6 ("accel/ivpu: Refactor BO creation functions")
->>> Cc: <stable@vger.kernel.org> # v6.9+
->>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>> ---
->>>    drivers/accel/ivpu/ivpu_gem.c | 63 +++++++++++++++++++----------------
->>>    drivers/accel/ivpu/ivpu_gem.h |  1 -
->>>    2 files changed, 34 insertions(+), 30 deletions(-)
->>>
->>> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
->>> index c193a80241f5f..5908268ca45e9 100644
->>> --- a/drivers/accel/ivpu/ivpu_gem.c
->>> +++ b/drivers/accel/ivpu/ivpu_gem.c
->>> @@ -33,6 +33,16 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->>>             (bool)bo->base.base.import_attach);
->>>    }
->>>    +static inline int ivpu_bo_lock(struct ivpu_bo *bo)
->>> +{
->>> +    return dma_resv_lock(bo->base.base.resv, NULL);
->>> +}
->>> +
->>> +static inline void ivpu_bo_unlock(struct ivpu_bo *bo)
->>> +{
->>> +    dma_resv_unlock(bo->base.base.resv);
->>> +}
->>> +
->>>    /*
->>>     * ivpu_bo_pin() - pin the backing physical pages and map them to VPU.
->>>     *
->>> @@ -43,22 +53,22 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->>>    int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
->>>    {
->>>        struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
->>> +    struct sg_table *sgt;
->>>        int ret = 0;
->>>    -    mutex_lock(&bo->lock);
->>> -
->>>        ivpu_dbg_bo(vdev, bo, "pin");
->>> -    drm_WARN_ON(&vdev->drm, !bo->ctx);
->>>    -    if (!bo->mmu_mapped) {
->>> -        struct sg_table *sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
->>> +    sgt = drm_gem_shmem_get_pages_sgt(&bo->base);
->>> +    if (IS_ERR(sgt)) {
->>> +        ret = PTR_ERR(sgt);
->>> +        ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
->>> +        return ret;
->>> +    }
->>>    -        if (IS_ERR(sgt)) {
->>> -            ret = PTR_ERR(sgt);
->>> -            ivpu_err(vdev, "Failed to map BO in IOMMU: %d\n", ret);
->>> -            goto unlock;
->>> -        }
->>> +    ivpu_bo_lock(bo);
->>>    +    if (!bo->mmu_mapped) {
->>> +        drm_WARN_ON(&vdev->drm, !bo->ctx);
->>>            ret = ivpu_mmu_context_map_sgt(vdev, bo->ctx, bo->vpu_addr, sgt,
->>>                               ivpu_bo_is_snooped(bo));
->>>            if (ret) {
->>> @@ -69,7 +79,7 @@ int __must_check ivpu_bo_pin(struct ivpu_bo *bo)
->>>        }
->>>      unlock:
->>> -    mutex_unlock(&bo->lock);
->>> +    ivpu_bo_unlock(bo);
->>>          return ret;
->>>    }
->>> @@ -84,7 +94,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->>>        if (!drm_dev_enter(&vdev->drm, &idx))
->>>            return -ENODEV;
->>>    -    mutex_lock(&bo->lock);
->>> +    ivpu_bo_lock(bo);
->>>          ret = ivpu_mmu_context_insert_node(ctx, range, ivpu_bo_size(bo), &bo->mm_node);
->>>        if (!ret) {
->>> @@ -94,7 +104,7 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->>>            ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
->>>        }
->>>    -    mutex_unlock(&bo->lock);
->>> +    ivpu_bo_unlock(bo);
->>>          drm_dev_exit(idx);
->>>    @@ -105,7 +115,7 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
->>>    {
->>>        struct ivpu_device *vdev = ivpu_bo_to_vdev(bo);
->>>    -    lockdep_assert(lockdep_is_held(&bo->lock) || !kref_read(&bo->base.base.refcount));
->>> +    lockdep_assert(dma_resv_held(bo->base.base.resv) || !kref_read(&bo->base.base.refcount));
->>>          if (bo->mmu_mapped) {
->>>            drm_WARN_ON(&vdev->drm, !bo->ctx);
->>> @@ -123,14 +133,12 @@ static void ivpu_bo_unbind_locked(struct ivpu_bo *bo)
->>>        if (bo->base.base.import_attach)
->>>            return;
->>>    -    dma_resv_lock(bo->base.base.resv, NULL);
->>>        if (bo->base.sgt) {
->>>            dma_unmap_sgtable(vdev->drm.dev, bo->base.sgt, DMA_BIDIRECTIONAL, 0);
->>>            sg_free_table(bo->base.sgt);
->>>            kfree(bo->base.sgt);
->>>            bo->base.sgt = NULL;
->> Maybe not directly modify sgt but use drm_gem_shmem_purge()?
-> drm_gem_shmem_purge() also removes user mapping and backing pages.
-> In ivpu_bo_unbind_locked() we only want to unmap the buffer from the device as it being turned off.
-> We don't want to crash user process in this case and this will probably be the result of drm_gem_shmem_purge() na mmpapped buffer.
->
->> Will it potentially memleak without calling drm_gem_shmem_put_pages()? (if the bo is mmap, vmap etc)
-> There is no memory leak. We are calling drm_gem_shmem_get_pages_sgt() only once per object and drm_gem_shmem_free() frees all backing memory.
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
->
-> Regards,
-> Jacek
+
+On 6/4/2025 10:34 PM, Johan Hovold wrote:
+> Add the missing memory barrier to make sure that destination ring
+> descriptors are read after the head pointers to avoid using stale data
+> on weakly ordered architectures like aarch64.
+> 
+> The barrier is added to the ath11k_hal_srng_access_begin() helper for
+> symmetry with follow-on fixes for source ring buffer corruption which
+> will add barriers to ath11k_hal_srng_access_end().
+> 
+> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Cc: stable@vger.kernel.org	# 5.6
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/ce.c    |  3 ---
+>  drivers/net/wireless/ath/ath11k/dp_rx.c |  3 ---
+>  drivers/net/wireless/ath/ath11k/hal.c   | 12 +++++++++++-
+>  3 files changed, 11 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
+> index 9d8efec46508..39d9aad33bc6 100644
+> --- a/drivers/net/wireless/ath/ath11k/ce.c
+> +++ b/drivers/net/wireless/ath/ath11k/ce.c
+> @@ -393,9 +393,6 @@ static int ath11k_ce_completed_recv_next(struct ath11k_ce_pipe *pipe,
+>  		goto err;
+>  	}
+>  
+> -	/* Make sure descriptor is read after the head pointer. */
+> -	dma_rmb();
+> -
+>  	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+>  
+>  	*skb = pipe->dest_ring->skb[sw_index];
+> diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> index ea2959305dec..d8dab182a9af 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+> @@ -2650,9 +2650,6 @@ int ath11k_dp_process_rx(struct ath11k_base *ab, int ring_id,
+>  try_again:
+>  	ath11k_hal_srng_access_begin(ab, srng);
+>  
+> -	/* Make sure descriptor is read after the head pointer. */
+> -	dma_rmb();
+> -
+>  	while (likely(desc =
+>  	      (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_entry(ab,
+>  									     srng))) {
+> diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+> index 8cb1505a5a0c..921114686ba3 100644
+> --- a/drivers/net/wireless/ath/ath11k/hal.c
+> +++ b/drivers/net/wireless/ath/ath11k/hal.c
+> @@ -823,13 +823,23 @@ u32 *ath11k_hal_srng_src_peek(struct ath11k_base *ab, struct hal_srng *srng)
+>  
+>  void ath11k_hal_srng_access_begin(struct ath11k_base *ab, struct hal_srng *srng)
+>  {
+> +	u32 hp;
+> +
+>  	lockdep_assert_held(&srng->lock);
+>  
+>  	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+>  		srng->u.src_ring.cached_tp =
+>  			*(volatile u32 *)srng->u.src_ring.tp_addr;
+>  	} else {
+> -		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> +		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> +
+> +		if (hp != srng->u.dst_ring.cached_hp) {
+
+My ath12k comments apply here: this consumes more CPU cycles
+
+> +			srng->u.dst_ring.cached_hp = hp;
+> +			/* Make sure descriptor is read after the head
+> +			 * pointer.
+> +			 */
+> +			dma_rmb();
+> +		}
+>  
+>  		/* Try to prefetch the next descriptor in the ring */
+>  		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+
 
