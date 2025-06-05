@@ -1,153 +1,270 @@
-Return-Path: <stable+bounces-151518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0389ACEE29
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 12:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B27DACEE2C
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 12:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D840F7A74E4
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 10:54:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF7CA7A8929
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 10:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DED1224B03;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756B0225A34;
 	Thu,  5 Jun 2025 10:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WChuD8cC"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="O04NL8IO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF9621CC7D;
-	Thu,  5 Jun 2025 10:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6715C20E031;
+	Thu,  5 Jun 2025 10:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749120902; cv=none; b=oG3QNV3pg7B2ikMcOKoz6+JUUxWQkixyULJXAkBSrINa9bk/zDxauEEQEkVSJOLGiiLaNESJ6BjVwQvP0JA4SOvEqBYfa0bXmOfocdROAFe2AQbCVa9t0dZcxAkNnUYRnDbvs+DidHVC9CLMKMzl222Ams/khbF2uKSzBziqpNU=
+	t=1749120903; cv=none; b=OLLPrnenUW7O/Qcp4hl2UjhwRkKhluypX0mYDJ61QKn2/OqE7/cxzZGURfl7NO1uDq6slsf/buGWMgx0ZddERtW1kjROymPZHsbfGrb8IIeUVBrD8sMBmQuLSakDzcg12GdveSxwEtl+eR69LEODSym+A33NcW3afOJ0um1C1m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749120902; c=relaxed/simple;
-	bh=oL8UNlItjO09rTo/5XXHp2PV65ll8PtmJwdChEGWZRo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ypstx+B1cbaZbVcG+X1IjicbEwNwSDbUCKYn7LU1wmU10Xc+cn9cT5KdvKnO3gALmuLf3Y8v5q0y1zmKKsn/yASi/1/5hBIFy2ngjGSf2HGHdNZw21EzpXRLPsXWtZvTn4SaWaYZMrssxHJ6Rz+/qPGKpm5FTDqXUy31OjVON0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WChuD8cC; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5557vuRC032470;
-	Thu, 5 Jun 2025 10:54:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	85+ceBbvXngkgMCPnXPPIeodiqDgYYYVEM3rpeazG10=; b=WChuD8cCU7ZxiJmq
-	fXJK2w0Jrdzpf7KArYziGA6EZqQJxasAg9Of7J+AvDWA+b2hjxdlbs9hjWKIN6ra
-	SifxyZSO8VWhbKHhzVbRb1Kfq+KF1WMlytTmDEKsPr2MEHlc5kw/X3oI2DULcE6d
-	BTs5LcxCSFJ8IX12qOh3/UG0k3JwkhVm6ujrVCESffXaEno+hSX0USUUogUuc81c
-	yEOH0jQ8nxmF/9x43/4odhXGpvG766G5pWW4icu5NqRvL/TAEc+7wD/z4UyxVImy
-	39+t64K9WgnH/3CutS7meF5MBlI5lwRI2D7uYO2O32X+bI/HCV8Jaue1WP9ArvJD
-	X/4Gmw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 471sfuyw89-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Jun 2025 10:54:54 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 555AsrRZ004235
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 5 Jun 2025 10:54:53 GMT
-Received: from [10.253.10.58] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Jun 2025
- 03:54:50 -0700
-Message-ID: <bc2afbd6-2876-4f36-81cf-ad8960588a02@quicinc.com>
-Date: Thu, 5 Jun 2025 18:54:48 +0800
+	s=arc-20240116; t=1749120903; c=relaxed/simple;
+	bh=BJhDMBKLutN6bQ70rTQ7mqCX0KoexCLwP6/5+3FocaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lSSeJlQk0NXfu2ic+4zi/6mRt++WJeM8nQwZo1DOYM9z+BxUshVTmECDpFamOAu3Nuf+6qe5GgZVaP9IGLFWQY46d7b43J6c7m7rvi70qnDxpAblGcbZ3JAgUcHjcqmtAzOaOZdorqbCHf31xrg7r98YszgUNMEtSqPp5f5+6FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=O04NL8IO; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1749120889;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=D6G2HkjrkL6nr8Edkp+AWJ29iDqYOc8E5u90Ucockvc=;
+	b=O04NL8IOZWVX+Hp8Fr+0MOzb9AibVZvJraKLlbPOeMwZ+/3yf9TcJ1pd/IkKenXOXpPweU
+	bocqV6xzzlw9bbSZU4tQthG7/6Ea/7H1SYAxtSigTZqdUigFTw4j5jCFEA+krb0OlOcHZ2
+	miPgttWqY2es/PTB4zTU8UlM/LJ7f7I=
+To: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nikita Marushkin <hfggklm@gmail.com>,
+	Ilya Shchipletsov <rabbelkin@mail.ru>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	linux-hams@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org,
+	syzbot+ccdfb85a561b973219c7@syzkaller.appspotmail.com
+Subject: [PATCH net] netrom: fix possible deadlock in nr_rt_device_down
+Date: Thu,  5 Jun 2025 13:54:48 +0300
+Message-ID: <20250605105449.12803-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
-To: Johan Hovold <johan@kernel.org>, Miaoqing Pan <quic_miaoqing@quicinc.com>
-CC: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Johan Hovold
-	<johan+linaro@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
- <20250526114803.2122-2-johan+linaro@kernel.org>
- <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
- <aD1axxSAJsbUfnHH@hovoldconsulting.com>
- <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
- <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
- <01634993-80b1-496e-8453-e94b2efe658c@quicinc.com>
- <50555c1a-c200-4ac0-8dfb-424ff121b41d@oss.qualcomm.com>
- <03354d56-ed21-47e0-a52e-14f559ff3bfb@quicinc.com>
- <aEFupJ_nd9ryaTVt@hovoldconsulting.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <aEFupJ_nd9ryaTVt@hovoldconsulting.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=CY8I5Krl c=1 sm=1 tr=0 ts=6841777e cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=DTG5F7EvfL9Zed4wNp8A:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-ORIG-GUID: H-rPxJXCvxRqa9JH4MYBZbZ804JfA2mL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDA5NCBTYWx0ZWRfX5JbS4xF+m6V3
- RjURspgqSScU3yp6x+9pwC5B73Ai2FgHc+CmoiS4c1IbnUVbFK7ddh/p4FKHjocHjCy5e3i8sMU
- unUYo0mb2PPeaWcxg+bCWGFwIO8kkVJVtTdSPcU3/CacHWC9d4bbT/INYIUZ5r6WPtRebGRzoYe
- bsgY0zqy12OGpk7Vr42h+8IK5na3c5NhVQlSXCWLXFc8xKnLbITK2MdTIkb/xlHNx6G0bUh1vGo
- UEur7xdWl9z1XHPJYUChbpnySRtnis8HdBOQbW7jlmdpVejpQLIJnh++IMRSWqajfwVaHZta9CM
- 560OyhyMkvqlesAoga/E4GySmkYfwOmHSeNIHr1dhpVLf7nyYymonpw0tKVWKerjaSWJ6TtEue9
- IOzOIZE+pwentze2bOm8dfRET1HWLYV3StrwywlUhVGNruwdpBW0AA4IlAmXaoN+Xy8kEQbg
-X-Proofpoint-GUID: H-rPxJXCvxRqa9JH4MYBZbZ804JfA2mL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-05_02,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 spamscore=0 impostorscore=0
- phishscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506050094
+Content-Transfer-Encoding: 8bit
 
+Syzkaller detected a possible deadlock in nr_rt_device_down [1]
 
+Locking in concurrent threads can cause deadlock.
 
-On 6/5/2025 6:17 PM, Johan Hovold wrote:
-> On Thu, Jun 05, 2025 at 12:01:29PM +0800, Miaoqing Pan wrote:
->> On 6/5/2025 12:24 AM, Jeff Johnson wrote:
->>> On 6/3/2025 7:34 PM, Miaoqing Pan wrote:
->>>> We previously had extensive discussions on this topic in the
->>>> https://lore.kernel.org/linux-wireless/ecfe850c-b263-4bee-b888-c34178e690fc@quicinc.com/
->>>> thread. On my platform, dma_rmb() did not work as expected. The issue
->>>> only disappeared after disabling PCIe endpoint relaxed ordering in
->>>> firmware side. So it seems that HP was updated (Memory write) before
->>>> descriptor (Memory write), which led to the problem.
->>>
->>> Have all ath11k and ath12k firmware been updated to prevent this problem from
->>> the firmware side?
->>>
->> No, as this is not a widespread issue, and addressing it would require 
->> modifying the core underlying modules of the firmware. Therefore, we 
->> chose not to proceed with that approach but instead used the workaround 
->> patch I previously submitted.
+           CPU0                           
+           ----                           
+  nr_rt_device_down()
+  |-> spin_lock_bh(&nr_neigh_list_lock);   capture
+    . . .
+  |-> spin_lock_bh(&nr_node_list_lock);    waiting and deadlock
 
-If firmware has a concern, how about doing it in host? As I know it is only a register in
-PCI config space?
+           CPU1
+           ----
+  nr_del_node()
+  |-> spin_lock_bh(&nr_node_list_lock);    capture
+   . . .
+  |-> nr_remove_neigh(nr_neigh);
+      |-> spin_lock_bh(&nr_neigh_list_lock); waiting for capture
 
-> 
-> I strongly suggest you fix this at the firmware level rather than try to
-> work around it in the kernel to avoid playing whack-a-mole whenever a
-> new (hard to track down) bug shows up.
-> 
-> The barriers should be enough, but if they are not then the firmware
-> must be fixed.
-> 
-> Johan
+Make sure we always get nr_neigh_list_lock before nr_node_list_lock.
+
+[1]
+WARNING: possible circular locking dependency detected
+6.15.0-rc2-syzkaller-00278-gfc96b232f8e7 #0 Not tainted
+------------------------------------------------------
+syz-executor107/6105 is trying to acquire lock:
+ffffffff902543b8 (nr_node_list_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+ffffffff902543b8 (nr_node_list_lock){+...}-{3:3}, at: nr_rt_device_down+0xb5/0x7b0 net/netrom/nr_route.c:517
+
+but task is already holding lock:
+ffffffff90254358 (nr_neigh_list_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+ffffffff90254358 (nr_neigh_list_lock){+...}-{3:3}, at: nr_rt_device_down+0x28/0x7b0 net/netrom/nr_route.c:514
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (nr_neigh_list_lock){+...}-{3:3}:
+       lock_acquire+0x116/0x2f0 kernel/locking/lockdep.c:5866
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+       _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+       spin_lock_bh include/linux/spinlock.h:356 [inline]
+       nr_remove_neigh net/netrom/nr_route.c:307 [inline]
+       nr_dec_obs net/netrom/nr_route.c:472 [inline]
+       nr_rt_ioctl+0x39a/0xff0 net/netrom/nr_route.c:692
+       sock_do_ioctl+0x152/0x400 net/socket.c:1190
+       sock_ioctl+0x644/0x900 net/socket.c:1311
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:906 [inline]
+       __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xf3/0x210 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&nr_node->node_lock){+...}-{3:3}:
+       lock_acquire+0x116/0x2f0 kernel/locking/lockdep.c:5866
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+       _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+       spin_lock_bh include/linux/spinlock.h:356 [inline]
+       nr_node_lock include/net/netrom.h:152 [inline]
+       nr_dec_obs net/netrom/nr_route.c:459 [inline]
+       nr_rt_ioctl+0x194/0xff0 net/netrom/nr_route.c:692
+       sock_do_ioctl+0x152/0x400 net/socket.c:1190
+       sock_ioctl+0x644/0x900 net/socket.c:1311
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:906 [inline]
+       __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xf3/0x210 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (nr_node_list_lock){+...}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3166 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3285 [inline]
+       validate_chain+0xa69/0x24e0 kernel/locking/lockdep.c:3909
+       __lock_acquire+0xad5/0xd80 kernel/locking/lockdep.c:5235
+       lock_acquire+0x116/0x2f0 kernel/locking/lockdep.c:5866
+       __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+       _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+       spin_lock_bh include/linux/spinlock.h:356 [inline]
+       nr_rt_device_down+0xb5/0x7b0 net/netrom/nr_route.c:517
+       nr_device_event+0x134/0x150 net/netrom/af_netrom.c:126
+       notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
+       __dev_notify_flags+0x209/0x410 net/core/dev.c:-1
+       netif_change_flags+0xf0/0x1a0 net/core/dev.c:9434
+       dev_change_flags+0x146/0x270 net/core/dev_api.c:68
+       dev_ioctl+0x80f/0x1260 net/core/dev_ioctl.c:821
+       sock_do_ioctl+0x22f/0x400 net/socket.c:1204
+       sock_ioctl+0x644/0x900 net/socket.c:1311
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:906 [inline]
+       __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xf3/0x210 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  nr_node_list_lock --> &nr_node->node_lock --> nr_neigh_list_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(nr_neigh_list_lock);
+                               lock(&nr_node->node_lock);
+                               lock(nr_neigh_list_lock);
+  lock(nr_node_list_lock);
+
+ *** DEADLOCK ***
+
+2 locks held by syz-executor107/6105:
+ #0: ffffffff900fd788 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:130 [inline]
+ #0: ffffffff900fd788 (rtnl_mutex){+.+.}-{4:4}, at: dev_ioctl+0x7fd/0x1260 net/core/dev_ioctl.c:820
+ #1: ffffffff90254358 (nr_neigh_list_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:356 [inline]
+ #1: ffffffff90254358 (nr_neigh_list_lock){+...}-{3:3}, at: nr_rt_device_down+0x28/0x7b0 net/netrom/nr_route.c:514
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 6105 Comm: syz-executor107 Not tainted 6.15.0-rc2-syzkaller-00278-gfc96b232f8e7 #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2079
+ check_noncircular+0x142/0x160 kernel/locking/lockdep.c:2211
+ check_prev_add kernel/locking/lockdep.c:3166 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3285 [inline]
+ validate_chain+0xa69/0x24e0 kernel/locking/lockdep.c:3909
+ __lock_acquire+0xad5/0xd80 kernel/locking/lockdep.c:5235
+ lock_acquire+0x116/0x2f0 kernel/locking/lockdep.c:5866
+ __raw_spin_lock_bh include/linux/spinlock_api_smp.h:126 [inline]
+ _raw_spin_lock_bh+0x35/0x50 kernel/locking/spinlock.c:178
+ spin_lock_bh include/linux/spinlock.h:356 [inline]
+ nr_rt_device_down+0xb5/0x7b0 net/netrom/nr_route.c:517
+ nr_device_event+0x134/0x150 net/netrom/af_netrom.c:126
+ notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
+ __dev_notify_flags+0x209/0x410 net/core/dev.c:-1
+ netif_change_flags+0xf0/0x1a0 net/core/dev.c:9434
+ dev_change_flags+0x146/0x270 net/core/dev_api.c:68
+ dev_ioctl+0x80f/0x1260 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x22f/0x400 net/socket.c:1204
+ sock_ioctl+0x644/0x900 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl+0xf1/0x160 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+ccdfb85a561b973219c7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ccdfb85a561b973219c7 
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+---
+ net/netrom/nr_route.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
+index b94cb2ffbaf8..aae0923dbcf0 100644
+--- a/net/netrom/nr_route.c
++++ b/net/netrom/nr_route.c
+@@ -331,6 +331,7 @@ static int nr_del_node(ax25_address *callsign, ax25_address *neighbour, struct n
+ 		return -EINVAL;
+ 	}
+ 
++	spin_lock_bh(&nr_neigh_list_lock);
+ 	spin_lock_bh(&nr_node_list_lock);
+ 	nr_node_lock(nr_node);
+ 	for (i = 0; i < nr_node->count; i++) {
+@@ -339,7 +340,7 @@ static int nr_del_node(ax25_address *callsign, ax25_address *neighbour, struct n
+ 			nr_neigh_put(nr_neigh);
+ 
+ 			if (nr_neigh->count == 0 && !nr_neigh->locked)
+-				nr_remove_neigh(nr_neigh);
++				nr_remove_neigh_locked(nr_neigh);
+ 			nr_neigh_put(nr_neigh);
+ 
+ 			nr_node->count--;
+@@ -361,13 +362,14 @@ static int nr_del_node(ax25_address *callsign, ax25_address *neighbour, struct n
+ 			}
+ 			nr_node_unlock(nr_node);
+ 			spin_unlock_bh(&nr_node_list_lock);
+-
++			spin_unlock_bh(&nr_neigh_list_lock);
+ 			return 0;
+ 		}
+ 	}
+ 	nr_neigh_put(nr_neigh);
+ 	nr_node_unlock(nr_node);
+ 	spin_unlock_bh(&nr_node_list_lock);
++	spin_unlock_bh(&nr_neigh_list_lock);
+ 	nr_node_put(nr_node);
+ 
+ 	return -EINVAL;
+-- 
+2.43.0
 
 
