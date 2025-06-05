@@ -1,148 +1,124 @@
-Return-Path: <stable+bounces-151555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857BEACF768
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 20:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE94DACF7FF
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 21:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D2B01892AE9
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 18:45:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A061D189C703
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 19:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1402427B505;
-	Thu,  5 Jun 2025 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A5527CCE7;
+	Thu,  5 Jun 2025 19:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iIJVP0kx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0By54sI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D79527A46E;
-	Thu,  5 Jun 2025 18:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A9827CCCD;
+	Thu,  5 Jun 2025 19:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749149122; cv=none; b=tfNTn87k8W7A9DP2Hqd5xuvhT/CWcpCNLEdv4d035a4RzUiJ6JouzdFNFtpV5l6NocBLn34EZjANp0um+CYpul/RdJpr5Xf9U1owQoAO69CD5vqbDNvoI/NXaUoKXVOgSGJTOSrvsI77dh38VzgTYtNUATS/T7GZj3cHbGJbJQk=
+	t=1749151796; cv=none; b=Rnyt8cEIfE3jAMwEX2n91wIcwUzAixYfLUEWqCh1xy8EU+/18blJD2ptStaa+nY9Xq9NvDM5jcIbKGcbOAeeB71Otx+3l5qL/zJGQGr5JNKm6vXl1SvUDAlnFVRQ/mkqjDx7vXyQWz54+JOja/2/WRjPr8zz6waQwpfHqMgbW0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749149122; c=relaxed/simple;
-	bh=vmfk+XbbJDzxMKnIqxi7v5BJuMAG1OuC9cWEsY93Uzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKjM8zpqALOgw1UzK5WB9DU4gwPdWgMshqAXpjIYTdpbuqSLT5BOnr2EgV7f9LjnUbYeErIfvIC2JklIILEJAIrTcvvG7sEpFaTSLtgmSEIuJAvLS30b4RVO27MKWsG9ose4ElSG6z2SN82cKptuBn1tIKbBOmOhX3uiNBQAL1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iIJVP0kx; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749149121; x=1780685121;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vmfk+XbbJDzxMKnIqxi7v5BJuMAG1OuC9cWEsY93Uzc=;
-  b=iIJVP0kxJ2tUO9tjGpWBMC0s01nwLRSI0kB1M2gqu/L8jkc1XZ1bFDUk
-   N5XdK6KFU3VzYYnovhOeOABO0HMOrx5hK64hH+Y/qnneR/nv6AFnTTqLD
-   pzznE8OVP2Fkl/nSf9X29mUaM5WGM/53UwjqLFi47f3UouIO73NKBsQd2
-   LK4XhhR+HCYaV7XT1+DO2g+fy3Hw6llUTgU/xTGSvVWlLZe6v4aGb+Bf0
-   3/jIjURLhFVkZeybj6+ew3HgjcpUNItHwULXMIr8cbdnLJ4erAfxeMZqH
-   a5aTF1jA8FUmoIKwW9CmrIdQSfot/0W1bxcgcUIaFTvCLnWV2pkicixit
-   A==;
-X-CSE-ConnectionGUID: NM54N9eNTT2bo/ouhFK6gA==
-X-CSE-MsgGUID: Z3H08NTySimB+YK5VOmbLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="38916608"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; 
-   d="scan'208";a="38916608"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 11:45:21 -0700
-X-CSE-ConnectionGUID: UYch9V9PTo2v+xNnCmq2Pg==
-X-CSE-MsgGUID: 8pb4kvs/SCOCLr0WT+ivrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; 
-   d="scan'208";a="182782448"
-Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.222.42])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 11:45:19 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: platform-driver-x86@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	david.e.box@linux.intel.com
-Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 02/11] platform/x86/intel/pmt: crashlog binary file endpoint
-Date: Thu,  5 Jun 2025 14:44:35 -0400
-Message-ID: <20250605184444.515556-3-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250605184444.515556-1-michael.j.ruhl@intel.com>
-References: <20250605184444.515556-1-michael.j.ruhl@intel.com>
+	s=arc-20240116; t=1749151796; c=relaxed/simple;
+	bh=KXHyUh+OtRsl2pelaAJoE/6mIIAsOHMnaVL2nVOHDwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pe4s8u5CutbTK2MJecWdISAW6P8yNoZWEf9aL4041GlErlR7nNMiP6M/1D95eWBXgoH35dPiShcHIJnmoCnF8i7jlq8AnPq6GVZflhi0gq4wEUwKy8NQrxT1VrOHIUoe7mq4pgUDcEUu5CGlr2hbSr5SvDxgQANW7pvGoRlkHVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0By54sI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBDCC4CEE7;
+	Thu,  5 Jun 2025 19:29:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749151796;
+	bh=KXHyUh+OtRsl2pelaAJoE/6mIIAsOHMnaVL2nVOHDwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U0By54sIwEk2LjzqgjimW1UX3NrTsZhnPrhqgr01hNZDIuTeq0Aon61FK9FBZyUE6
+	 fgfi5zwRkms+MsvEtKLTJ80poWuOCg6kHKvBnu0EVIYx9MzQZIT73ir5gI/MNKoda8
+	 s0ZeYqNN2l3oQQnHd9yv3GyeN/FL0XBrEDcxX8jM0im2DyDKardPTXHuQQDE4XjWIw
+	 blmDxRLmFy0dVZMnF5j4o0tCMURfHhVgWTxOdySfYdRaLOqOkNgce8qQ0UrePD7sVn
+	 WGscio8Yn10xwdVY4nNggx/jW65L5qJayHK5BPNfocWIThynJrhpuUXH9qydFxSi+g
+	 0po1MX+htDcIg==
+Date: Thu, 5 Jun 2025 14:29:53 -0500
+From: Bjorn Andersson <andersson@kernel.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@foundries.io>
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
+	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>, 
+	Doug Anderson <dianders@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] soc: qcom: mdt_loader: Ensure we don't read past the
+ ELF header
+Message-ID: <4ruhapzeti5hiufdkws27w2q3h4psfcpmcfsqrhsnyr2u4sktp@5itmiqxydwrj>
+References: <20250605-mdt-loader-validation-and-fixes-v1-0-29e22e7a82f4@oss.qualcomm.com>
+ <20250605-mdt-loader-validation-and-fixes-v1-1-29e22e7a82f4@oss.qualcomm.com>
+ <bsnn6xpkubifuwxz4kccvves3ifq4ocp53qmbobv6ilmnfuh7x@eejawp7thorm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bsnn6xpkubifuwxz4kccvves3ifq4ocp53qmbobv6ilmnfuh7x@eejawp7thorm>
 
-Usage of the intel_pmt_read() for binary sysfs, requires an allocated
-endpoint struct. The crashlog driver does not allocate the endpoint.
+On Thu, Jun 05, 2025 at 06:57:41PM +0300, Dmitry Baryshkov wrote:
+> On Thu, Jun 05, 2025 at 08:43:00AM -0500, Bjorn Andersson wrote:
+> > When the MDT loader is used in remoteproc, the ELF header is sanitized
+> > beforehand, but that's not necessary the case for other clients.
+> > 
+> > Validate the size of the firmware buffer to ensure that we don't read
+> > past the end as we iterate over the header.
+> > 
+> > Fixes: 2aad40d911ee ("remoteproc: Move qcom_mdt_loader into drivers/soc/qcom")
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: Doug Anderson <dianders@chromium.org>
+> > Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+> > ---
+> >  drivers/soc/qcom/mdt_loader.c | 37 +++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 37 insertions(+)
+> > 
+> > diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+> > index b2c0fb55d4ae678ee333f0d6b8b586de319f53b1..1da22b23d19d28678ec78cccdf8c328b50d3ffda 100644
+> > --- a/drivers/soc/qcom/mdt_loader.c
+> > +++ b/drivers/soc/qcom/mdt_loader.c
+> > @@ -18,6 +18,31 @@
+> >  #include <linux/slab.h>
+> >  #include <linux/soc/qcom/mdt_loader.h>
+> >  
+> > +static bool mdt_header_valid(const struct firmware *fw)
+> > +{
+> > +	const struct elf32_hdr *ehdr;
+> > +	size_t phend;
+> > +	size_t shend;
+> > +
+> > +	if (fw->size < sizeof(*ehdr))
+> > +		return false;
+> > +
+> > +	ehdr = (struct elf32_hdr *)fw->data;
+> > +
+> > +	if (memcmp(ehdr->e_ident, ELFMAG, SELFMAG))
+> > +		return false;
+> > +
+> > +	phend = size_add(size_mul(sizeof(struct elf32_phdr), ehdr->e_phnum), ehdr->e_phoff);
+> 
+> Nit, this should be a max(sizeof() and ehdr->e_phentsize.
+> 
 
-Without the ep, the crashlog usage causes the following NULL pointer
-exception:
+Hmm, I forgot about e_phentsize.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Oops: Oops: 0000 [#1] SMP NOPTI
-RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-Code:
-Call Trace:
- <TASK>
- ? sysfs_kf_bin_read+0xc0/0xe0
- kernfs_fop_read_iter+0xac/0x1a0
- vfs_read+0x26d/0x350
- ksys_read+0x6b/0xe0
- __x64_sys_read+0x1d/0x30
- x64_sys_call+0x1bc8/0x1d70
- do_syscall_64+0x6d/0x110
+But the fact is that the check matches what we do below and validates
+that we won't reach outside the provided buffer.
+If e_phentsize != sizeof(struct elf32_phdr) we're not going to be able
+to parse the header.
 
-Add the endpoint information to the crashlog driver to avoid the NULL
-pointer exception.
+Not sure if it's worth it, but that would make sense to change
+separately. In which case ehdr->e_phentsize * ehdr->e_phnum would be the
+correct thing to check (no max()). Or perhaps just a check to ensure
+that e_phentsize == sizeof(struct elf32_phdr)?
 
-Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to read telemetry")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
----
- drivers/platform/x86/intel/pmt/crashlog.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/platform/x86/intel/pmt/crashlog.c b/drivers/platform/x86/intel/pmt/crashlog.c
-index 6a9eb3c4b313..74ce199e59f0 100644
---- a/drivers/platform/x86/intel/pmt/crashlog.c
-+++ b/drivers/platform/x86/intel/pmt/crashlog.c
-@@ -252,6 +252,7 @@ static struct intel_pmt_namespace pmt_crashlog_ns = {
- 	.xa = &crashlog_array,
- 	.attr_grp = &pmt_crashlog_group,
- 	.pmt_header_decode = pmt_crashlog_header_decode,
-+	.pmt_add_endpoint = intel_pmt_add_endpoint,
- };
- 
- /*
-@@ -262,8 +263,12 @@ static void pmt_crashlog_remove(struct auxiliary_device *auxdev)
- 	struct pmt_crashlog_priv *priv = auxiliary_get_drvdata(auxdev);
- 	int i;
- 
--	for (i = 0; i < priv->num_entries; i++)
--		intel_pmt_dev_destroy(&priv->entry[i].entry, &pmt_crashlog_ns);
-+	for (i = 0; i < priv->num_entries; i++) {
-+		struct intel_pmt_entry *entry = &priv->entry[i].entry;
-+
-+		intel_pmt_release_endpoint(entry->ep);
-+		intel_pmt_dev_destroy(entry, &pmt_crashlog_ns);
-+	}
- }
- 
- static int pmt_crashlog_probe(struct auxiliary_device *auxdev,
--- 
-2.49.0
-
+Regards,
+Bjorn
 
