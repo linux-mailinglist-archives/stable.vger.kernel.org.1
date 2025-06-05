@@ -1,63 +1,74 @@
-Return-Path: <stable+bounces-151560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287D4ACF899
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 22:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EADACF8B1
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 22:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77EB3AF812
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 20:12:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C76C3AF752
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 20:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1251FECDD;
-	Thu,  5 Jun 2025 20:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E91227D779;
+	Thu,  5 Jun 2025 20:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="kqZ87fSQ"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="emr3/nIj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D0B17548
-	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 20:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985CE1DFF8
+	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 20:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749154338; cv=none; b=QYCHpYS3daNKqfFkpc+75c8tuvs9kpDw5rlXCq2EW4i5y3InlUio5hSi9yBVE3cfCKzhsIejGbcNG2vbsjLa/5n4VMuxtJnrzhDjLieIApqz9I1kjUNjMNT2POsH+a0dYRNPgt4zMi7SzCHkU8yJOHUxm2TF5v695r03DOP8pHU=
+	t=1749154801; cv=none; b=Cf7jIkY3wcVL0A0doBGHqjr8W3qxvFzCfVPJle+q7ntUHbSOcgXDiLQjnq1HoquNKzwaa/RhVZ4z5TM9zeLDhBTmCsCJnXpwY8ZFFOcqgJ2m6Q/Ab9tvHjGCFuuDm/OOjKki9FJKPwKZs+z+KNlfbwT9Mp+Ttba77F9/hJe8utM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749154338; c=relaxed/simple;
-	bh=Y6Q7BuFQMf3YmlCaooTk1n7+rZt5p8d1d1qhs4uciwM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OQvZ0hS5Y5rzYRSMTQJuitrZ5oyuwXQ5heNpqqrhtM8eVqMGM6iusfLBzWKifVMuV08vKP7WMwf89nQI10K8CLNzkY/oLOcyQqJqh7SGh0xoPUYogFwUOtC/3HeI3JHNLizgSUpEzWklWQeNfzbVaWFXVYPhEKxhyAY0Mvj/2BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=kqZ87fSQ; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4bCwb91d9jz9tmW;
-	Thu,  5 Jun 2025 22:12:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1749154325;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=sdJ+N/GZxqBNyTDfTK6U6akNeML/Biqg6TNGDf4GHM4=;
-	b=kqZ87fSQtTHGyKqZRdClJQPsmr92jnlAgKVjmUVGI4prLd5JYpcL/fafiulyWCzaV81XoV
-	wNcuLKyrMG0sM7RkCfFNcEK1mslkoCpxYycMviZZQh9c7MDKjryux5W7YuOd4i9ci9OAfP
-	YP6hjRcXGxggkhYUGQv8jkU4yT/QCAu1EsLN53DYH2rJJfpu2SVFIvYc7Xz+wn0E8JXIKV
-	PG7qGjVeUUHdjISEACOODb+qiFvJZ2E4cyTRzAxO5Hn2LYtpgajl05PPGMzY22DYcIibAe
-	IvmJIELJZetPH36hf9mP9FsKlaEofhCNFeG0juXfDhr1f4MpytBCGwWoXul+9g==
-From: Brahmajit Das <listout@listout.xyz>
-To: stable@kernel.org,
-	patches@lists.linux.dev
-Cc: linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	gregkh@linuxfoundation.org,
-	mpatocka@redhat.com,
+	s=arc-20240116; t=1749154801; c=relaxed/simple;
+	bh=o1vWj2peYFzT+9B8W1tqxLwFgYA9lzDCmka4MeMf2gg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=phA6d3Le85XXbAOcq4iXMX8vkHU9PveVdmqiIZIvBbxcAzmTs611hubau5LrbQZ30JxCeed8xRoYSsig/5+L9KixAbD+Cs3bAXHF88mOYgRUC9vMgH3xoOO1IIDAxXxbL2NsPhiR1q1ZZ3vCI7vehezN4VpXSzX5BePR5BzP684=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=emr3/nIj; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 29A7B1C2AAF
+	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 23:19:54 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1749154789; x=
+	1750018790; bh=o1vWj2peYFzT+9B8W1tqxLwFgYA9lzDCmka4MeMf2gg=; b=e
+	mr3/nIjvbsJKIlluD5A2AXt79HamKalwBQHC4j2cvl/O2lIQGo58K3+ROOxiXWEc
+	/wT6BROuNrM1PiriGehwgjCYwpouiEboydme81nqxbdxJQfB3pRm9BQx9jUQHanB
+	NO0Gl8pPh3T1RkrWBhx8GKhPCwPIk57VLI2JOvfPBI=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id qVfBcM00K6Kp for <stable@vger.kernel.org>;
+	Thu,  5 Jun 2025 23:19:49 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 5176C1C0D75;
+	Thu,  5 Jun 2025 23:19:43 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Lyude Paul <lyude@redhat.com>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/1] dm-verity: fix a memory leak if some arguments are specified multiple times
-Date: Fri,  6 Jun 2025 01:41:16 +0530
-Message-ID: <20250605201116.24492-1-listout@listout.xyz>
+Subject: [PATCH v2 1/2] drm/nouveau/instmem/gk20a: fix overflow in IOVA calculation for iommu_map/unmap
+Date: Thu,  5 Jun 2025 20:19:20 +0000
+Message-ID: <20250605201927.339352-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,121 +76,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4bCwb91d9jz9tmW
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+Fix possible overflow in the address expression used as the second
+argument to iommu_map() and iommu_unmap(). Without an explicit cast,
+this expression may overflow when 'r->offset' or 'i' are large. Cast
+the result to unsigned long before shifting to ensure correct IOVA
+computation and prevent unintended wraparound.
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-[ Upstream commit 66be40a14e496689e1f0add50118408e22c96169 ]
-
-If some of the arguments "check_at_most_once", "ignore_zero_blocks",
-"use_fec_from_device", "root_hash_sig_key_desc" were specified more than
-once on the target line, a memory leak would happen.
-
-This commit fixes the memory leak. It also fixes error handling in
-verity_verify_sig_parse_opt_args.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Cc: stable@vger.kernel.org # v4.4+
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- drivers/md/dm-verity-fec.c        |  4 ++++
- drivers/md/dm-verity-target.c     |  8 +++++++-
- drivers/md/dm-verity-verify-sig.c | 17 +++++++++++++----
- 3 files changed, 24 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-index 0c41949db784..631a887b487c 100644
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -593,6 +593,10 @@ int verity_fec_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
- 	(*argc)--;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c
+index 201022ae9214..17a0e1a46211 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/gk20a.c
+@@ -334,7 +334,7 @@ gk20a_instobj_dtor_iommu(struct nvkm_memory *memory)
+ 	/* Unmap pages from GPU address space and free them */
+ 	for (i = 0; i < node->base.mn->length; i++) {
+ 		iommu_unmap(imem->domain,
+-			    (r->offset + i) << imem->iommu_pgshift, PAGE_SIZE);
++			    ((unsigned long)r->offset + i) << imem->iommu_pgshift, PAGE_SIZE);
+ 		dma_unmap_page(dev, node->dma_addrs[i], PAGE_SIZE,
+ 			       DMA_BIDIRECTIONAL);
+ 		__free_page(node->pages[i]);
+@@ -472,7 +472,7 @@ gk20a_instobj_ctor_iommu(struct gk20a_instmem *imem, u32 npages, u32 align,
  
- 	if (!strcasecmp(arg_name, DM_VERITY_OPT_FEC_DEV)) {
-+		if (v->fec->dev) {
-+			ti->error = "FEC device already specified";
-+			return -EINVAL;
-+		}
- 		r = dm_get_device(ti, arg_value, BLK_OPEN_READ, &v->fec->dev);
- 		if (r) {
- 			ti->error = "FEC device lookup failed";
-diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-index 3c427f18a04b..ed49bcbd224f 100644
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -1120,6 +1120,9 @@ static int verity_alloc_most_once(struct dm_verity *v)
- {
- 	struct dm_target *ti = v->ti;
+ 	/* Map into GPU address space */
+ 	for (i = 0; i < npages; i++) {
+-		u32 offset = (r->offset + i) << imem->iommu_pgshift;
++		unsigned long offset = ((unsigned long)r->offset + i) << imem->iommu_pgshift;
  
-+	if (v->validated_blocks)
-+		return 0;
-+
- 	/* the bitset can only handle INT_MAX blocks */
- 	if (v->data_blocks > INT_MAX) {
- 		ti->error = "device too large to use check_at_most_once";
-@@ -1143,6 +1146,9 @@ static int verity_alloc_zero_digest(struct dm_verity *v)
- 	struct dm_verity_io *io;
- 	u8 *zero_data;
- 
-+	if (v->zero_digest)
-+		return 0;
-+
- 	v->zero_digest = kmalloc(v->digest_size, GFP_KERNEL);
- 
- 	if (!v->zero_digest)
-@@ -1577,7 +1583,7 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 			goto bad;
- 	}
- 
--	/* Root hash signature is  a optional parameter*/
-+	/* Root hash signature is an optional parameter */
- 	r = verity_verify_root_hash(root_hash_digest_to_validate,
- 				    strlen(root_hash_digest_to_validate),
- 				    verify_args.sig,
-diff --git a/drivers/md/dm-verity-verify-sig.c b/drivers/md/dm-verity-verify-sig.c
-index a9e2c6c0a33c..d5261a0e4232 100644
---- a/drivers/md/dm-verity-verify-sig.c
-+++ b/drivers/md/dm-verity-verify-sig.c
-@@ -71,9 +71,14 @@ int verity_verify_sig_parse_opt_args(struct dm_arg_set *as,
- 				     const char *arg_name)
- {
- 	struct dm_target *ti = v->ti;
--	int ret = 0;
-+	int ret;
- 	const char *sig_key = NULL;
- 
-+	if (v->signature_key_desc) {
-+		ti->error = DM_VERITY_VERIFY_ERR("root_hash_sig_key_desc already specified");
-+		return -EINVAL;
-+	}
-+
- 	if (!*argc) {
- 		ti->error = DM_VERITY_VERIFY_ERR("Signature key not specified");
- 		return -EINVAL;
-@@ -83,14 +88,18 @@ int verity_verify_sig_parse_opt_args(struct dm_arg_set *as,
- 	(*argc)--;
- 
- 	ret = verity_verify_get_sig_from_key(sig_key, sig_opts);
--	if (ret < 0)
-+	if (ret < 0) {
- 		ti->error = DM_VERITY_VERIFY_ERR("Invalid key specified");
-+		return ret;
-+	}
- 
- 	v->signature_key_desc = kstrdup(sig_key, GFP_KERNEL);
--	if (!v->signature_key_desc)
-+	if (!v->signature_key_desc) {
-+		ti->error = DM_VERITY_VERIFY_ERR("Could not allocate memory for signature key");
- 		return -ENOMEM;
-+	}
- 
--	return ret;
-+	return 0;
- }
- 
- /*
+ 		ret = iommu_map(imem->domain, offset, node->dma_addrs[i],
+ 				PAGE_SIZE, IOMMU_READ | IOMMU_WRITE,
 -- 
-2.49.0
+2.43.0
 
 
