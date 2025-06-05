@@ -1,72 +1,61 @@
-Return-Path: <stable+bounces-151549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624DCACF575
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 19:33:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6776FACF614
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 19:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5DF3ADF34
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 17:32:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEBF0189CB32
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 17:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003971A76D4;
-	Thu,  5 Jun 2025 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FC727E1D7;
+	Thu,  5 Jun 2025 17:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KZYr3dVm"
+	dkim=pass (2048-bit key) header.d=libero.it header.i=@libero.it header.b="T8K2vxG7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from libero.it (smtp-18.italiaonline.it [213.209.10.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2030213B2A4
-	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 17:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57C327D76A
+	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 17:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.209.10.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749144790; cv=none; b=d0d0vs3cylW4oXa9R04QltFRY5ZT/duqVt/ac22270t/W99BbZrQ0r4P+og6F9GnN20cGHEivOUfCi0hzZ7YxawQTxl/enCRxCJSfWsDWrhnNGby1KDPGvIPwKvmFl2ieo+VP6tl4/Si9R4dxW/QbpTt/Kbi5HmV/RQ+HNXnZaU=
+	t=1749146207; cv=none; b=LbOFUx7p0u8NlAounLYruH4QmKRYdwFleW15QtzUE7RLD2LhqTa7un1cRDyXFXejLeA5w9urFh2+EQgH6qLsYyNP1KooyyU/oJNdUDXxNxyZK2I8lzYL2FQfdFKa6XUVylswpaFYFM/sBMsTyygY08NfFTQCcRXPKHFJDm65j6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749144790; c=relaxed/simple;
-	bh=vmfk+XbbJDzxMKnIqxi7v5BJuMAG1OuC9cWEsY93Uzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORQgYnbKzMVfNThQh6jYPovZcszNDEe2R8EjB6sqWMpnwU777jUSTvWABSUdmPCRYSNIhhR35Jn+GPxCvjyirRkZpFJX8+o0xXZLQEnec4VE4MKNOjqRWt8R+uju/hNCUOXWT3J1Cp8gbXErb5l12UjUyj/gBbJMr9jjGBVBNKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KZYr3dVm; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749144789; x=1780680789;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vmfk+XbbJDzxMKnIqxi7v5BJuMAG1OuC9cWEsY93Uzc=;
-  b=KZYr3dVmmMmx0dAxL7qOZdhm3Fq8JtClVL6p3KdmKtTobSEvNJhdgzH3
-   hrm3W01d5xnmlvNY0YIq9yux3Yv9ejcYXbTS45o9TA1o1ty3aStqpwpWD
-   dadTn4CsHJltwlie8d9HPod3BNTY4YV77LVFlc00FOtbqMKgo6f9lCy+E
-   7G4Q9oaSFeQC1MHhpRZRd8HE9UQBLA6WfI6a8sA2fB760GNnR67qW2DYR
-   OPV0NcRYmLiWs6wxIzbTeDdhPK50E78ucgbNwux19SrdnR1tGczYc02Mz
-   rtshOPNvq4UmyFfQLdUpOCBYXxbbmfUweb/GIr0OkSOvfuX/EdVLVBcIj
-   Q==;
-X-CSE-ConnectionGUID: 6ueQ5rySSGaubdEVbV5WGQ==
-X-CSE-MsgGUID: oQ/0894BRnOfWShCosJuSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="61899228"
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; 
-   d="scan'208";a="61899228"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 10:33:06 -0700
-X-CSE-ConnectionGUID: 2V44j+YZSHSU3RpjVp62ew==
-X-CSE-MsgGUID: jg9UDJrFQh682Yc0r0PjxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,212,1744095600"; 
-   d="scan'208";a="146074779"
-Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.222.42])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 10:32:59 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: michael.j.ruhl@intel.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v3 02/11] platform/x86/intel/pmt: crashlog binary file endpoint
-Date: Thu,  5 Jun 2025 13:32:39 -0400
-Message-ID: <20250605173248.510441-3-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250605173248.510441-1-michael.j.ruhl@intel.com>
-References: <20250605173248.510441-1-michael.j.ruhl@intel.com>
+	s=arc-20240116; t=1749146207; c=relaxed/simple;
+	bh=UDbyyU289DpiKEMXJKbMueeNS458Kw0ebYMljjBVTE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Imd9DwnWfKwGTfa02nzMoe2CEHMirKhV6WUWphPmMpm3JrySbSQBTpGXzVfttCX5WLbeEXoPy3CWSHGyvxZuXSCUyv3D+MsQmTS7FfK28mTsQPXAJEW+MRc+734uIfxBj2osJLDmStRoHSVnfvhas9kV3rJjOP4R2mmIAg0QgE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=libero.it; spf=pass smtp.mailfrom=libero.it; dkim=pass (2048-bit key) header.d=libero.it header.i=@libero.it header.b=T8K2vxG7; arc=none smtp.client-ip=213.209.10.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=libero.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=libero.it
+Received: from HP-Pavilion.home ([82.84.39.179])
+	by smtp-18.iol.local with ESMTPA
+	id NEoguUyL3YObTNEpPuMfvK; Thu, 05 Jun 2025 19:56:35 +0200
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+	t=1749146196; bh=scq481/vJIzHOcwPmp8rc3B2A4DiECInIg6hf4LLLjY=;
+	h=From;
+	b=T8K2vxG7GUOEY25wkk+jsLrNWd1D/jPljTWDkaj8OgiOQmnhYsSsFxoNqpkxexq4D
+	 x4+Z9HRvXhkvhgcNTbchOZa0kq9Ow9nFZvH+yypYGCzeUGIpRtNcUfZ8e3YMoYlBzF
+	 iKqiqpBRhz0zSPWg26ODjKBcIcyY26iDHixPyU6qzICCqqrSjxiQFmi/9S0TeqlFyE
+	 hcvOJ9R5wZarJcxuSelstiTsCm+C1trcAlsPizxoQATqocyQLCJdJsJNWfNM7ANnvg
+	 D2YfYsaEEC3a18KU+STV60I8JKnabuSHEyHrOWhBtqPPjEt2pHwFADc7ePXhEE0Sb1
+	 F711pk+KiGw8w==
+X-CNFS-Analysis: v=2.4 cv=T/qMT+KQ c=1 sm=1 tr=0 ts=6841da54 cx=a_exe
+ a=vLznef9V9GWkD4NuElIRWw==:117 a=vLznef9V9GWkD4NuElIRWw==:17 a=VwQbUJbxAAAA:8
+ a=tqaCDwS5ghsgyJy-KEMA:9
+From: Iusico Maxim <iusico.maxim@libero.it>
+To: linux-input@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] HID: lenovo: Restrict F7/9/11 mode to compact keyboards only
+Date: Thu,  5 Jun 2025 19:55:50 +0200
+Message-ID: <20250605175550.641392-1-iusico.maxim@libero.it>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,65 +63,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfHk8/5YcbjZsrFKxLg4acxOIm6ujU6RM3iLq+z1T5FHBOZ9SFWc75SJ+eM+x0KHkN6cIfhJpzqo8Y3aUl+LYoxkVFjK5gfap3lxN8oiIJsgErRTg8NIU
+ 02cTrkThROQAI/1eFs6GMENwCXwWj5MOGxTalupaqQR53lky6RLpmoWSbJvl0d3F6o0A7jHHeMU4UbqL7cNxhWoPvjR5VKE4bU1rh/u8yNMrF00zBBRTezuA
+ b2ub8Px6op4SAkpuTURepbgcKRpOjnIBK4DeDhpM/VKfw9/xnlfhvcMAWkSeNVFPmL9Qzyqofj1Eofx6IYkWIKRzl3vZ1QUlfpsGAG5enkU=
 
-Usage of the intel_pmt_read() for binary sysfs, requires an allocated
-endpoint struct. The crashlog driver does not allocate the endpoint.
+Commit 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume
+for compact keyboards") introduced a regression for ThinkPad TrackPoint
+Keyboard II by removing the conditional check for enabling F7/9/11 mode
+needed for compact keyboards only. As a result, the non-compact
+keyboards can no longer toggle Fn-lock via Fn+Esc, although it can be
+controlled via sysfs knob that directly sends raw commands.
 
-Without the ep, the crashlog usage causes the following NULL pointer
-exception:
+This patch restores the previous conditional check without any
+additions.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Oops: Oops: 0000 [#1] SMP NOPTI
-RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-Code:
-Call Trace:
- <TASK>
- ? sysfs_kf_bin_read+0xc0/0xe0
- kernfs_fop_read_iter+0xac/0x1a0
- vfs_read+0x26d/0x350
- ksys_read+0x6b/0xe0
- __x64_sys_read+0x1d/0x30
- x64_sys_call+0x1bc8/0x1d70
- do_syscall_64+0x6d/0x110
-
-Add the endpoint information to the crashlog driver to avoid the NULL
-pointer exception.
-
-Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to read telemetry")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume for compact keyboards")
+Signed-off-by: Iusico Maxim <iusico.maxim@libero.it>
 ---
- drivers/platform/x86/intel/pmt/crashlog.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/hid/hid-lenovo.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmt/crashlog.c b/drivers/platform/x86/intel/pmt/crashlog.c
-index 6a9eb3c4b313..74ce199e59f0 100644
---- a/drivers/platform/x86/intel/pmt/crashlog.c
-+++ b/drivers/platform/x86/intel/pmt/crashlog.c
-@@ -252,6 +252,7 @@ static struct intel_pmt_namespace pmt_crashlog_ns = {
- 	.xa = &crashlog_array,
- 	.attr_grp = &pmt_crashlog_group,
- 	.pmt_header_decode = pmt_crashlog_header_decode,
-+	.pmt_add_endpoint = intel_pmt_add_endpoint,
- };
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index af29ba84052..a3c23a72316 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -548,11 +548,14 @@ static void lenovo_features_set_cptkbd(struct hid_device *hdev)
  
- /*
-@@ -262,8 +263,12 @@ static void pmt_crashlog_remove(struct auxiliary_device *auxdev)
- 	struct pmt_crashlog_priv *priv = auxiliary_get_drvdata(auxdev);
- 	int i;
- 
--	for (i = 0; i < priv->num_entries; i++)
--		intel_pmt_dev_destroy(&priv->entry[i].entry, &pmt_crashlog_ns);
-+	for (i = 0; i < priv->num_entries; i++) {
-+		struct intel_pmt_entry *entry = &priv->entry[i].entry;
-+
-+		intel_pmt_release_endpoint(entry->ep);
-+		intel_pmt_dev_destroy(entry, &pmt_crashlog_ns);
+ 	/*
+ 	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
+-	 * regular keys
++	 * regular keys (Compact only)
+ 	 */
+-	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
+-	if (ret)
+-		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
++	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
++	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
++		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
++		if (ret)
++			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
 +	}
- }
  
- static int pmt_crashlog_probe(struct auxiliary_device *auxdev,
+ 	/* Switch middle button to native mode */
+ 	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
 -- 
-2.49.0
+2.48.1
 
 
