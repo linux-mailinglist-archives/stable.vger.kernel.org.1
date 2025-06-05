@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-151488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DA6ACE966
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 07:49:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E65ACE983
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 07:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1B61897803
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 05:49:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D98867A447B
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 05:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684C31EF397;
-	Thu,  5 Jun 2025 05:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F15819CC11;
+	Thu,  5 Jun 2025 05:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="BDMRmr5e"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="UQY28apT"
 X-Original-To: stable@vger.kernel.org
 Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E254C1DDC22;
-	Thu,  5 Jun 2025 05:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116B1DB34B;
+	Thu,  5 Jun 2025 05:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749102535; cv=none; b=T6Cy/NQ7+52top0Za5E8wTmFbmxe8YAu0IC/AbBInpCFqyziFTqiDpHrpQFDodJEh/ali9o3zrtRWXl/Xlu2jBsTSzBTTuDtCiqHawUeuVekmmW/jg798ka7kzNjf2QGT75M4m7cuPDzyNr/cnzPaJr4YJWRcqOTfaCtQaVp+hM=
+	t=1749102965; cv=none; b=RyFw/4VkTFdX4gUA3SGT5AHfC9uvOdukMsbcJwqSlmL2ofKshD87sdF5qKjXCIz4GvRe9p2Jkwix/kpi0xf8ij8mmpw2qpdZnlUetfU/ZxITfkkUD5e4b5kfMfS7/4ogltjZ2Rb6ODPhpCsxZfjhuayXmmCo9CTRbf95VvQFg3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749102535; c=relaxed/simple;
-	bh=i7Lj9tfu5NAQfMbyaPdpkBbDZUvI5+SMvlElgB75CI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pmu19KBegPPT7FdAq7rqhlr9KKyJeQch0WKZorJNl/MMpJd0xqRKpqcOMHgYQXkPwBNaeY8FDEVBuURGc7zSPlExaiDKYcpOLONN3aH+Wr914XvOafVM++IJGbtmWdgq/YOExjG6ALqMirtSU3TzIgisKp5EJaHihMH1ThS8R8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=BDMRmr5e; arc=none smtp.client-ip=178.21.23.139
+	s=arc-20240116; t=1749102965; c=relaxed/simple;
+	bh=TiFQYvsKtNb3eu7X/TfGW0Zpc0IrlwKjViFKEuHchrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O0b641MkkTDgsxlZM3GP085ZPjp0QTXLc4zj7UXryuplPEqzDdbCbQrju8qbmMPmu3XTyst6IcLxLmeqf9HxF9dKPhGsVnK6/nfZaw0/DDnGxw2zHoflN6P3KVKIiLayZ8pqI5TXjAqiI65L0aW/56AK4k37IoOtkGz/3GeuIXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=UQY28apT; arc=none smtp.client-ip=178.21.23.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
 Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 71CED260B0;
-	Thu,  5 Jun 2025 07:48:51 +0200 (CEST)
+	by disroot.org (Postfix) with ESMTP id 821B6260BB;
+	Thu,  5 Jun 2025 07:56:02 +0200 (CEST)
 X-Virus-Scanned: SPAM Filter at disroot.org
 Received: from layka.disroot.org ([127.0.0.1])
  by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id 6IFpYv2bA_xj; Thu,  5 Jun 2025 07:48:50 +0200 (CEST)
+ id X7APAh8gTR1d; Thu,  5 Jun 2025 07:56:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1749102530; bh=i7Lj9tfu5NAQfMbyaPdpkBbDZUvI5+SMvlElgB75CI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BDMRmr5eXNBGMSorzdB5BFXakNR12aprNezRo8j7hFAeFrKI9c5LNNA0m8aUGiT9l
-	 dTMf3OKHkccJiuUPWnie7wNEZGvMJuqnN1uEEOUNReuNR60M2dDP7RdxDoSY1qUioF
-	 X4oL6lwllNVHjN9h7zDfqlc5o5pp4wOMTn2nM3ACMrC2Le2R6Cyf9lG3YwMykj9qHL
-	 /v4GIWEMuMei0Z1+BeJnp5EWCELLZtMmNbnONHpKEsxnoG8DYtn0/53oKHCat38vD8
-	 G1R2xC58bl29LcHugHeuWAtV6qHhichRvcHttrWYroWqm+ZzMk/FBNntem1sLYSB6s
-	 636z8lfl0HFGA==
+	t=1749102961; bh=TiFQYvsKtNb3eu7X/TfGW0Zpc0IrlwKjViFKEuHchrg=;
+	h=From:To:Cc:Subject:Date;
+	b=UQY28apTlO7/DGuRKxZZyDp7Tdr46hqi3MsMLre1YSLCS2ijeXvmOyB4uVQCwFVLa
+	 UzLBISG3a6vuhZJzyFD0jbUr0g+CKv8pLgWIw3wyPOloU+gufv/TorFZCgaDaxeGKn
+	 SVXjH9FHCDIzNIS9FFNtJSBj5iCxQdHVdoqsr1l/711WttyCAZhLE2fFH27qL7o35z
+	 sZNUCIuoBey/TlFV4Pwsv7LZgYFA9DV/bouR0jTK9MfzxU8dH6S/e7qEmP1/0Le23E
+	 qNALJzoGv4gXGMpaeFKbeCmg1WSONCGmYQkTvM/NcIpPFR9Bazal/i96XTrcsOeQEC
+	 v91JREsnE+FAA==
 From: Yao Zi <ziyao@disroot.org>
 To: Huacai Chen <chenhuacai@kernel.org>,
 	Jianmin Lv <lvjianmin@loongson.cn>,
@@ -57,11 +56,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Kexy Biscuit <kexybiscuit@aosc.io>,
 	Yao Zi <ziyao@disroot.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] platform/loongarch: laptop: Get brightness setting from EC on probe
-Date: Thu,  5 Jun 2025 05:48:27 +0000
-Message-ID: <20250605054828.15093-2-ziyao@disroot.org>
-In-Reply-To: <20250605054828.15093-1-ziyao@disroot.org>
-References: <20250605054828.15093-1-ziyao@disroot.org>
+Subject: [PATCH] platform/loongarch: laptop: Unregister generic_sub_drivers on exit
+Date: Thu,  5 Jun 2025 05:55:46 +0000
+Message-ID: <20250605055546.15264-1-ziyao@disroot.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,36 +67,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Previously during probe, 1 is unconditionally taken as current
-brightness value and set to props.brightness, which will be considered
-as the brightness before suspend and restored to EC on resume. Since a
-brightness value of 1 almost never matches EC's state on coldboot (my
-laptop's EC defaults to 80), this causes surprising changes of screen
-brightness on the first time of resume after coldboot.
-
-Let's get brightness from EC and take it as the current brightness on
-probe of the laptop driver to avoid the surprising behavior. Tested on
-TongFang L860-T2 3A5000 laptop.
+Without correct unregisteration, ACPI notify handlers and the platform
+driver installed by generic_subdriver_init will become dangling
+references after removing loongson_laptop module, triggering various
+kernel faults when a hotkey is sent or at kernel shutdown.
 
 Cc: stable@vger.kernel.org
 Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
 Signed-off-by: Yao Zi <ziyao@disroot.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/loongarch/loongson-laptop.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/platform/loongarch/loongson-laptop.c b/drivers/platform/loongarch/loongson-laptop.c
-index 99203584949d..828bd62e3596 100644
+index 99203584949d..cfe2cf79dbbe 100644
 --- a/drivers/platform/loongarch/loongson-laptop.c
 +++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -392,7 +392,7 @@ static int laptop_backlight_register(void)
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
+@@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_init(void)
  
--	props.brightness = 1;
-+	props.brightness = ec_get_brightness();
- 	props.max_brightness = status;
- 	props.type = BACKLIGHT_PLATFORM;
+ static void __exit generic_acpi_laptop_exit(void)
+ {
++	int i;
++
+ 	if (generic_inputdev) {
+-		if (input_device_registered)
++		if (input_device_registered) {
+ 			input_unregister_device(generic_inputdev);
+-		else
++
++			for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++)
++				generic_subdriver_exit(&generic_sub_drivers[i]);
++		} else {
+ 			input_free_device(generic_inputdev);
++		}
+ 	}
+ }
  
 -- 
 2.49.0
