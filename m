@@ -1,109 +1,75 @@
-Return-Path: <stable+bounces-151489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E65ACE983
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 07:56:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5712EACE993
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 08:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D98867A447B
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 05:54:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D284176EE1
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 06:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F15819CC11;
-	Thu,  5 Jun 2025 05:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CE61A5BB1;
+	Thu,  5 Jun 2025 06:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="UQY28apT"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="aq3IYb8G"
 X-Original-To: stable@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116B1DB34B;
-	Thu,  5 Jun 2025 05:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF342AF19
+	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 06:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749102965; cv=none; b=RyFw/4VkTFdX4gUA3SGT5AHfC9uvOdukMsbcJwqSlmL2ofKshD87sdF5qKjXCIz4GvRe9p2Jkwix/kpi0xf8ij8mmpw2qpdZnlUetfU/ZxITfkkUD5e4b5kfMfS7/4ogltjZ2Rb6ODPhpCsxZfjhuayXmmCo9CTRbf95VvQFg3Q=
+	t=1749103354; cv=none; b=Ug0yvsqlh6QuX7HSRCXbAAwklH0L9ySV2DDr9ezofdL0F5POOXCteCX2mMK8/WGcaP6+NEYGeVDEPCtWdUlApTNbSucnCOmeHhPJpWz/rN9VM7bhztm+ic+hxOV6eAT9T8MDi8NmaqBLC8xiZDHsEWgE+EbcWFWrhNIpfsBjXHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749102965; c=relaxed/simple;
-	bh=TiFQYvsKtNb3eu7X/TfGW0Zpc0IrlwKjViFKEuHchrg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O0b641MkkTDgsxlZM3GP085ZPjp0QTXLc4zj7UXryuplPEqzDdbCbQrju8qbmMPmu3XTyst6IcLxLmeqf9HxF9dKPhGsVnK6/nfZaw0/DDnGxw2zHoflN6P3KVKIiLayZ8pqI5TXjAqiI65L0aW/56AK4k37IoOtkGz/3GeuIXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=UQY28apT; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 821B6260BB;
-	Thu,  5 Jun 2025 07:56:02 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id X7APAh8gTR1d; Thu,  5 Jun 2025 07:56:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1749102961; bh=TiFQYvsKtNb3eu7X/TfGW0Zpc0IrlwKjViFKEuHchrg=;
-	h=From:To:Cc:Subject:Date;
-	b=UQY28apTlO7/DGuRKxZZyDp7Tdr46hqi3MsMLre1YSLCS2ijeXvmOyB4uVQCwFVLa
-	 UzLBISG3a6vuhZJzyFD0jbUr0g+CKv8pLgWIw3wyPOloU+gufv/TorFZCgaDaxeGKn
-	 SVXjH9FHCDIzNIS9FFNtJSBj5iCxQdHVdoqsr1l/711WttyCAZhLE2fFH27qL7o35z
-	 sZNUCIuoBey/TlFV4Pwsv7LZgYFA9DV/bouR0jTK9MfzxU8dH6S/e7qEmP1/0Le23E
-	 qNALJzoGv4gXGMpaeFKbeCmg1WSONCGmYQkTvM/NcIpPFR9Bazal/i96XTrcsOeQEC
-	 v91JREsnE+FAA==
-From: Yao Zi <ziyao@disroot.org>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	WANG Xuerui <kernel@xen0n.name>
-Cc: linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Kexy Biscuit <kexybiscuit@aosc.io>,
-	Yao Zi <ziyao@disroot.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/loongarch: laptop: Unregister generic_sub_drivers on exit
-Date: Thu,  5 Jun 2025 05:55:46 +0000
-Message-ID: <20250605055546.15264-1-ziyao@disroot.org>
+	s=arc-20240116; t=1749103354; c=relaxed/simple;
+	bh=vwScGiCiq/hz+xTj9GxdpLPgzVvhG9F4SmG8AEjmTLA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WMhcfPpWYjenv/KZ0GqhA2CJK37QQAz7HZg6VLfCnYKnTxEJKAqfB4SMB9mVfwg959TCgGkkbojt06Gm+oVhpLhxarkN3uIeEyISEwKkSLaDNv5DnP2WADkgdGZpJjr+1VSZqGObFGuqVX0eUUiPGgVGEYjso8JBFxWBIPV6scw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=aq3IYb8G; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Message-ID: <242541ee-4c8f-4d8f-973e-759a6027ce90@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1749103350;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5395yabzN7VY8gjj/cgXwc9iL5MpEkMFEg6t/d8BCyE=;
+	b=aq3IYb8GLUMEa/9bckrkTnX6sSzas9TjtE5/I4nlX4Z7Hv0gD49i9/zDLGtxbzFQBj0BgP
+	4Z9z2EoP3W22nraHCYSom3Hl9nEm5O8o8NXVkEKLTvJXUJ/q+lhqpRMzIi+BWNGrp2k6QB
+	0nCpXAzlKIcdA+8e1B/KdEtpfOctDmTHK+1N4dlMOmSjV96rMLiifq00Oxtx7TPDreo2m8
+	aDwNkDOYMZdCGUCvBfGr/LWcR4ltgXBYRqaYGYnyCe2dj0vikverbuL5hlGWuMJppQh9sN
+	C7SGp83RG4xuRar8ESdu0AAynw/9YeFLTP87TshI+3DR1jIUnoDXeQIJ45QdBw==
+Date: Thu, 5 Jun 2025 08:02:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [Compiler Error] 5.10.238 - Werror=incompatible-pointer-types
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <3af41509-a243-4b64-8c49-af7263be22ef@manjaro.org>
+ <19a68e9f-584c-4d9e-aace-c3764725aa0a@manjaro.org>
+Content-Language: en-US
+Organization: Manjaro Community
+Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
+ <philm@manjaro.org>
+In-Reply-To: <19a68e9f-584c-4d9e-aace-c3764725aa0a@manjaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
 
-Without correct unregisteration, ACPI notify handlers and the platform
-driver installed by generic_subdriver_init will become dangling
-references after removing loongson_laptop module, triggering various
-kernel faults when a hotkey is sent or at kernel shutdown.
+Sorry for the noise. Was a downstream issue. After removing some 
+outdated patches it worked on all affected series.
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
----
- drivers/platform/loongarch/loongson-laptop.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/platform/loongarch/loongson-laptop.c b/drivers/platform/loongarch/loongson-laptop.c
-index 99203584949d..cfe2cf79dbbe 100644
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_init(void)
- 
- static void __exit generic_acpi_laptop_exit(void)
- {
-+	int i;
-+
- 	if (generic_inputdev) {
--		if (input_device_registered)
-+		if (input_device_registered) {
- 			input_unregister_device(generic_inputdev);
--		else
-+
-+			for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++)
-+				generic_subdriver_exit(&generic_sub_drivers[i]);
-+		} else {
- 			input_free_device(generic_inputdev);
-+		}
- 	}
- }
- 
 -- 
-2.49.0
-
+Best, Philip
 
