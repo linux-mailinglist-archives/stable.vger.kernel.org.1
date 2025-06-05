@@ -1,244 +1,190 @@
-Return-Path: <stable+bounces-151497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DFDACEBD7
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 10:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B5DACEC1F
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 10:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 158B11890544
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 08:29:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E80EE1896B62
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 08:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C11204F93;
-	Thu,  5 Jun 2025 08:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B182B20469E;
+	Thu,  5 Jun 2025 08:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="feKD4qB2"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ms6LICTt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6902D2063FD
-	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 08:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749112146; cv=fail; b=fUgN4ByK+dcvD6UMytr75cVnN6eAzntw2qkdksAUBH/5JVyT2hspRz62V6a+LZLpK7NbQrOBdDQtFI2DyWuLRyVpfEvtGI1/GHDKHGGoCGtynwxIOUoPKTfoCNH8qZE2Mgnw1M3vjm+DuzBLTCYy1zEOVd8FiUGEsi9bzf1cn90=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749112146; c=relaxed/simple;
-	bh=dm3b6wVLmvF3QEWRzFb4yNTUY/UFI5v/PTQJ8vn1kuY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aP4s7RA7PNUJqpyZpooS5xvhkFN5h8J3fcSFBkgz7+4b4hUQzJnNpDkQqKq/xvAEdd+g6rJ69s0ZcFy3UfPkFZg4a+vnFBbymphJlJ+NDqA8qhKT6y7sMmzyzW2KqSFh2x6ps/I+3hURzVwdx/xyrEOK0Bd8QgqPy5EsfXrGGXU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=feKD4qB2; arc=fail smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749112144; x=1780648144;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=dm3b6wVLmvF3QEWRzFb4yNTUY/UFI5v/PTQJ8vn1kuY=;
-  b=feKD4qB28U2B7tb+/l3L2MZS8VvAJJ9/+7BaFNvaabcg1ISWKRyEf/oT
-   bIpuvtvU3HC5Sj4Ncy9AwSQouYIpuveciHj1FWGQeNzgrx54ggnM4l2iz
-   ubyi8NhlJ3yloaOoT2E4iFWwfI8MpyStK8uPgSiS08C2zVMWw3KozJEZQ
-   CstesScJCAAAPBJLA3CRe6gaTRFK9iaAt3g8nJgujqjMsgG9MFQGk11V6
-   ye7Tb+OP+eO1FRHHPg0yFXq433DhyeleypncFtHG8Cw9dARJ3LA2WP4Lv
-   0+gLzl/i80ALJ7jsqXHAjhBbUog/ihuqRI7+iqWKwim2XmZYwnl0Ory4p
-   A==;
-X-CSE-ConnectionGUID: LAw/nmbTQc+zyI+EcPms9g==
-X-CSE-MsgGUID: 4lTtaboDTL+92omE/tAdRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="68771599"
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; 
-   d="scan'208";a="68771599"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 01:29:04 -0700
-X-CSE-ConnectionGUID: ZK8cbcvoSd643R8MzcqGSw==
-X-CSE-MsgGUID: DwOg4z0xRuCRQuAMgovq6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,211,1744095600"; 
-   d="scan'208";a="149274060"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2025 01:29:04 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 5 Jun 2025 01:29:03 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 5 Jun 2025 01:29:03 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.53) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.55; Thu, 5 Jun 2025 01:29:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a5/ZdfxjkgzZaJRuYzKDo8UB15Uzx4V6/DSSVFLqQAgzCHKwMWRMsuHM/iSM/4CckGZx4fNze5EXmNwt+hF/sxlwsSJAW00fUxlvGtxEcGme97qrRZMORbMa9f6RLyK/hTm292xZ9JKLhIWr/2gBvZuJF3LHtgOM2uf+FOltutWSgfYl8OPRMWHXih+FT6MKJaGElOx0bqv7qgmYDiPeKqdajXUiNpZCZemJcVijNOl0w0Qz1BCpBiHgdN/BCVjnohTpdIXfH+d4dm4+F1+JEwJC//vM3hADMznsyEdsQZOrwlK0OltgstL/Qf6pQ6sEHZqYzoKjdgDvnitgihGmqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6CRGpi6NWFjBzdpZpTeI5QyE6/Pr4rCrZ7JNqy5c384=;
- b=rAAO34sil34thM7Q2ljExNsZ7UkDVYLe2MgISE0x/e5Hzn/lCIabUC4uCq2cX/CBdQt/0fVBs7ivm8ofu21ES5uaqHVMV23o4TXNiQ4wRus76FGErAuK08i+FewwE4T4dcIQt/88WxeyqOXj8i/Yplq/Qe08pqnRE2TlYZin8iEWWdqNeKtQFgsmj/0yadwB3UtVob0iwIAfOSHFa1b5i17i5veawsI9wS1V2RcG+XnEECttPF9TGgSZLKOkZh5yz9NW5fQB+Blc2H7vFxy7iQ+B3D9fTdtEmn+OR8hG8K1BGRJC3QtSzk/6LlU9Y3yFdzmWFjmlLz7yzZPqNWyP/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by CY5PR11MB6439.namprd11.prod.outlook.com (2603:10b6:930:34::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Thu, 5 Jun
- 2025 08:29:00 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%2]) with mapi id 15.20.8769.037; Thu, 5 Jun 2025
- 08:29:00 +0000
-From: Imre Deak <imre.deak@intel.com>
-To: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>, =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?=
-	<ville.syrjala@linux.intel.com>, Jani Nikula <jani.nikula@linux.intel.com>
-Subject: [PATCH v3 1/5] drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS
-Date: Thu, 5 Jun 2025 11:28:46 +0300
-Message-ID: <20250605082850.65136-2-imre.deak@intel.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20250605082850.65136-1-imre.deak@intel.com>
-References: <20250605082850.65136-1-imre.deak@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: WA0P291CA0011.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1::23) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C701DC07D;
+	Thu,  5 Jun 2025 08:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749112911; cv=none; b=hRb1uhxP5+qqFNe5xtVvS4SzrcjpQb194XC+LLb/CPZrXNy+fkpM/joufH6wR1mO5FOHpA0Inb13hsZoGlWg2ErBboA7O4BFR+2P6VPiRKADlD8Jn2aPOmEOVnGtkSSueuyqioz7Yx3kI9xtfUDCQ8GCdZHuCqQa2QZytIkbke4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749112911; c=relaxed/simple;
+	bh=IHkvBp5TpjBEe0WJ5sx/3VBj07I9aHjoioq4r+ln4h8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kpVoXVKcQzO6ibEmdrvtCgv2OSH5aHcOgSEX81INdd+HvQFA/v3LKSADQOLZrAzthwTSteWVWMjC5/Qnqk4MVtHM0Gg3FYKUO42i03EOeSagCHaBAsGAI2xXhHCGSXoMeoLH58OQurrCR69JxyhsXnTlSfCnYKwIEyuKtIbaVmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ms6LICTt; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554KSSR5012952;
+	Thu, 5 Jun 2025 08:41:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	JoSk7H1cYM9YWH7je4bRU4qSBBEMfNEP0Y5AnQ2gpMI=; b=ms6LICTtUaoLqmnG
+	qnj54zL7QFbXGhvhhL/uZ4iOf/89ddfuOxbXIWtl2Y0l+SGju5cIHKAldhQq3MD6
+	qWMCZtQAGUmGGNVMb7hwEw+Z1hUd8W5aFUToNVSW7/Q0dLquM10el2QGx2C6jmQ6
+	Zw2Kw0QbuFCJQkLexN3VPrfN7F/AIx4y9sbZjjIuZk6fXlUzs20P7FMXCjoKbmJ/
+	/Q11QfyDTEfFr7cqm1FgxgCGmdJQbN+lbNvDXLeiyOz3A8EMFnN2mOnrR/tkw2K1
+	S8a/Es70HJGjZS/fHELgboR8EVmZO6amBniVz5HY/CfcWLYq8wLIHArFBGrbwHQC
+	4zho1w==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 47202weag5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Jun 2025 08:41:38 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5558fbYp003312
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 5 Jun 2025 08:41:37 GMT
+Received: from [10.253.10.58] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Jun 2025
+ 01:41:35 -0700
+Message-ID: <6f3eb9fa-617e-4434-8fc4-33dd92c4bdd2@quicinc.com>
+Date: Thu, 5 Jun 2025 16:41:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|CY5PR11MB6439:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8192764-f453-42bc-b5cb-08dda40b05a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?aG4rR21IcDk3RkVqWExBZ04wK01GeEw2eHA2bDNucmtudWZZNnZOSE5sL2FY?=
- =?utf-8?B?MjVmWjBidWtZc0JkQ0JSSE9RQll4NS9jd0NOWDhNTC8zVzdNR29NOVRjMHYw?=
- =?utf-8?B?V21uOXJVUHJGaGY0ZmI4OEt3Umk3U1JXZXRrakRJajhhelYwUkpReE5CRm8y?=
- =?utf-8?B?REtqQ3FiVXpXSU84Wk5LU3ZoSUVpZi9VK2FiVjduN0FPS2NjWi9FU2JCeTJB?=
- =?utf-8?B?cmRLOFZWdVVoYk5KOXVNOHYrUnZUN2RIcUZPMGgvMHlFMlhEK3BuT3JhUnlZ?=
- =?utf-8?B?akYvVzRYcmNVRU9rTXh2V1V5aVFvNllKME10Z3ZuOUp1Wnh4VFJJUzh0OEpq?=
- =?utf-8?B?OUJDZm15aWhpQ2RHN3Q0eXkvaWJUc1RRUDlNNDIxM0NxMnJzem4vTFBjc2M1?=
- =?utf-8?B?L0p3d3BvLzhJN0tyYnF6NU1jbEJxQVkvMWhJMHYzMWROZ2RndGJNMHM1VXN0?=
- =?utf-8?B?NGhvek1aTit4dzA4dXJjcGFWcG1FTXpKMTR6c0tOekp5d3J2UHg3RWpkQWNB?=
- =?utf-8?B?MFhYN0dzZ29ONldUY241MlJDVEc4cEc5MlZXSEdZbkYrWGVtYXBiQ25EdktI?=
- =?utf-8?B?VFgvMkw5ejVxSUU3cWxaVENmS25WV0o1enhzQUQ4OWFkd0hvVzd2M0dLdXRB?=
- =?utf-8?B?WGlGT0VTWE5qL2xLVnNYODg4ZTk5U1k3VE9QaEZwVnRCa3krK0tGb2J0bXdC?=
- =?utf-8?B?MUg3eGNJNWVGdkVnN05Yc3V6NHdGTms2T0E2eWVhL1Z5NVkyNDFFNFVYb2lQ?=
- =?utf-8?B?aDRlM1hqWmpwY1d6ZmV6Z1Brd2habG5yRXErWjBOSFBwZjZCMHBzNFU5UFBJ?=
- =?utf-8?B?OHkvcFUzVGpzRmRDVEJBM1llZ3V2MFp5QmlBajRTSzRybmEwT2lTYjhNeVFv?=
- =?utf-8?B?TjBlWWFyTVE5OVpGZjBlUnFmUHhSWHBodEFkSUhMUmY3UDFlUDJLU2UxSXE4?=
- =?utf-8?B?SnZ5QS9ZNUVsU0Z3NVljR3kxUUdoSmsvMHVMUmdZNjYyaHljUWo2TDZYeUJY?=
- =?utf-8?B?NlN5dEFnT2dVMGVaMWZPdUJLTmd1bVhsZWZFMVZGNzNxRSt6RzQwUHZ2V3d3?=
- =?utf-8?B?TTc3MzVMVExqeFlNczE5U01kenkwOHFQZW5QQjc4c0dtYjZkZFpFNUFlckcx?=
- =?utf-8?B?Y2g0Q3hQcVpmN1BGR0l5YmR3Q3E1VG5DWEVtbS9kUnN6RnloL2xpQmJWYzEz?=
- =?utf-8?B?ZTFKUDczSTdoUUVEaDhxSzFiaUE3QTMyNE5GcU5vQlRkWUhXUmlSZDV0UW5a?=
- =?utf-8?B?VVZ6Z1VVN1Rsazh5Sy8wM2sxWWtvWVhZWkcxWmNWcEZJWkJyL01LUHB5cG93?=
- =?utf-8?B?MDFqV3N2YWdkajNxaXU0emZHdnNvRXgwNzNOZnlwOWxNb0U5OEcyaFhoMmJJ?=
- =?utf-8?B?UU43NXhMNDNpNXBrTVlqWktObFVodFY1cE40dC9VUk45TC96TENDMjNLVVZT?=
- =?utf-8?B?Mm5hSEw3MWJtaWlPODBHdWtBRGZGRTdseVp1Tkw5SmNmMnMyNjEweGRrU0Q0?=
- =?utf-8?B?MkVQeDI5ZnRJYXhXY1pud1QzcmVUVEtLcnJyMC9nSWVPM0tFVjlPYUQ4NXhB?=
- =?utf-8?B?MXczMFNiaS9mL1llUGkvVlU2Si8vc1BORTlBRDZET283SWZqL0FCaW9nUE1Q?=
- =?utf-8?B?REJ6NTFwOUVjSU1IM29rTDZiV1Vqeklqcy8vUzBibVh5b3IrcVFvQ3RpdHRX?=
- =?utf-8?B?Z3htemVUUFNNVFdzTXA2MEZjSmNSVkJ5TjN2bVRTZ05mM0tjU3NMdStvdm53?=
- =?utf-8?B?YW52QXR2a0dRN2tZZmVvOTYwZGg3QWNTNGpBYVlDUEFZNW14b0M4OGFzelBT?=
- =?utf-8?B?c0tVNlFWK2VKWjFIbHBmbFhHYjBpTzZVZjQ5SnV5UVN2QXRzQ1JpbVZpVTBs?=
- =?utf-8?B?VGYwYVh4TFFqZ1BJWFVNTXlVaUlUYW8rejJyUFB2K3dIYjJxK1E2TXZYblZ6?=
- =?utf-8?Q?zetE4xP+mE8=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dTRsM2I0OEgwU2wrMXRpYjhOSm1xODR0dGpoek9vc1F6RFpJRUFzVkdLVlM3?=
- =?utf-8?B?ZlU3NEhqNnV2VXA3Q1l1VExydXBaN29FT0loNGxzOWMxK3p3VDR6UnRUdXhI?=
- =?utf-8?B?Vm5nUUZMRWxiVklQV0g4RHBoa1IxRGgweFNna1oxTHpzODVNZlpQbEtoQXd4?=
- =?utf-8?B?UU56Ymk3ck1aWEs5akUxRk5HaStNaXVUZUVicG8vM0hPbGhFSERGUzlxR25i?=
- =?utf-8?B?SmFaWG1WOXlnMnBCaEtDZ0VXSzM0VjJDVmtlUTFob3RLTmNpSUFsMmsyOS9o?=
- =?utf-8?B?ZDVFelZ6U3gzU2pYNW5yZXdmSTlzWHczVVQ1N3gvV0txbmRlbmdRRTlKM1VR?=
- =?utf-8?B?QmJGaXZaNFU2a1B5ZDJZVmJkOFErQ1JxcUx0Q05tTDBFL1RZYVdQcG1HMlJB?=
- =?utf-8?B?RVFVNjBJQlpEcXgwMU41UmoxZnFCQTFXUzFEanFNd1NjbUhkRVMvS092b3JM?=
- =?utf-8?B?TEZkOVlQNDB5OFJyVC90VlJkQ1lUd0JwU3VkQVBvWlJhQ1RrNUxzUUljZlla?=
- =?utf-8?B?cUxVMzRaTTJOM0NRNEIzZ3hiMWdnUWhYNGVEWVRJbXpIdGs2MENtMEZHUTBq?=
- =?utf-8?B?dTQ2NUpaaThRQU5pbkFFekUrajJpWEN6NitzdFZhQ3NyeVlWUVR0alJKb3VC?=
- =?utf-8?B?WlhMZHFSUVZ2UldYbVZGME5KcThsTjc1M2IvdTR1MmlXQTJBNXZlMno1U0NF?=
- =?utf-8?B?TlhwYzVqYlhPZGhjRjY4aDhyREdqNmxrUVlwK2FQenpNQlBtWGEvREFUMTho?=
- =?utf-8?B?aEozRnpqaElTN0tyd3hiYXNSNWJrRUd4VHFrMitVZHVKRUlxNURLT2JOWGFv?=
- =?utf-8?B?NEEwK2JHSzdiZDBSMmNTdk5HWjdBNmZ1VlZ3SXZ0KzRwU3lNQjY1eFFSVFYz?=
- =?utf-8?B?QW5oQmlzSHh5dkZZNDgxVVNDUXJwRXJFOXlZdjlkeDczU3ZaUW5QbllTTmhP?=
- =?utf-8?B?OGh6YzBBbTJETW9JNzJVZkNWNTYxaVBJb2dRbWRSdjAvZ01GLzFXbFRIaU43?=
- =?utf-8?B?M0hKYStrbWxYb3dHYWVzd214bk5Gdmw1ZHd4cmFobElrM3A4dGhPZTByT3F3?=
- =?utf-8?B?U0U3cDRkSmJjMENSSjc3dmY0ZjF3MGFHMGtLeGs0UmFZQnlWWDA0N1Z4Y2x4?=
- =?utf-8?B?eU9ab1N2RWI4Q1kybGRJdjVVNVJDUHBtR3JnSTZjU01JVGZhMWNCdmE2Vi9q?=
- =?utf-8?B?em4rdkRHblpGZkMrS3RrTFNaaVVHaWFSeWVhY05NZmU3SXQzY0F6VHc2WCtn?=
- =?utf-8?B?ekF4WWwxcXRFSlpWU0Q3YzlCRjMzR3hOcnY5c0xFT2t6cHRaMkU4VnlaRTY3?=
- =?utf-8?B?RUYxRjlCNnEvbGlTSWd5aEVBWnNGK3RnTlpiVWpJZTF6azdDRUo1azR1bjdx?=
- =?utf-8?B?aFFKK0pKNm5HdjNZNklEQ0toYU5LNnFkYXVqV1lzT0dGTmtTcE5Mb2g2bTJk?=
- =?utf-8?B?dDRCaXNPTm1rcUJpTzhQTWdid2dIS0s5ZGlUaTVyTzN5OTRUQXM2SkVWMEpm?=
- =?utf-8?B?NXlsZXVxZzZsaFBOS1IrNENBUzJpdEhSU3RFWWFiUzRzY2tsNHNSNnhWenZE?=
- =?utf-8?B?SXpkelJhcjlSNW8yaUJENDdEckZMcFRUeWVqWEYyTmFSNEpzZ0lFQkZ5b28w?=
- =?utf-8?B?dXhCdTRENkw0N29IcWt0TVZoQmVyV1VqTU1Ta3EyWWZ4Kzh3UzJMZElXQm8v?=
- =?utf-8?B?VVBwMHJJSVd0WU8yRUlVbE5sSjljd1hoSkF4L2x5dU1Jb1Vwd29udVR4a090?=
- =?utf-8?B?alhqOXppS0hRVm5naDlFVTM2WURWSnluZ3M1bDROaWZFSVNRVWx3Uy9iY2Nu?=
- =?utf-8?B?M05UUDM3d0J1bXB1M0pSdmFwcjRNWXgzaFM2ZjdkV1B3ZVN0TlJ0TTRpUzJU?=
- =?utf-8?B?M2xwRDZ2SFRpenYxS2RibldobkZ5Mndxd2JrSXNHNWtJeVpRaEljNzNHcHRH?=
- =?utf-8?B?cVpMVkdjOGw3Y05kcWFuWjREdmxuZXRQMUg4b0J3Yjl0eE1FZElvMURiTDhI?=
- =?utf-8?B?UGV0YnBSN1hwV1hTRzZvcWxscUdOcktlRzlETFU3L21jeXBNcHNQYmhrcmYv?=
- =?utf-8?B?My9NT0JqNzNhVm1mV2N5OHFucWwrdStMUVNBZ21pckRXWFpXUUdWT0M3R0dE?=
- =?utf-8?Q?1phQSrSHMmi2dCZAEjuY9nJLT?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8192764-f453-42bc-b5cb-08dda40b05a9
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2025 08:29:00.7019
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /WdPkKzTzms0C0YkF1BGjA0tVCKq15pSgEl5KVDZnZ/Sj3cEpsUW+WK3jHQ33BzlVQpDQ/980If8It65Mm9bgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6439
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] wifi: ath12k: fix dest ring-buffer corruption
+To: Johan Hovold <johan+linaro@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+CC: Miaoqing Pan <quic_miaoqing@quicinc.com>,
+        Remi Pommarel
+	<repk@triplefau.lt>, <linux-wireless@vger.kernel.org>,
+        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250604144509.28374-1-johan+linaro@kernel.org>
+ <20250604144509.28374-2-johan+linaro@kernel.org>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20250604144509.28374-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: rjXw2fG-_L889ncZZDEnoFtMZr0JayqS
+X-Proofpoint-GUID: rjXw2fG-_L889ncZZDEnoFtMZr0JayqS
+X-Authority-Analysis: v=2.4 cv=Y/D4sgeN c=1 sm=1 tr=0 ts=68415842 cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
+ a=d3g4vuyf_DbxgchVgIQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDA3NSBTYWx0ZWRfXxetE9492yGB3
+ WfT6/R1QdQnRQ4IhE76FMU4l0y7IU6cH7A3Ac9uRav+u2uRd6ov18OrA7rByyxqx6oOEK/v7xXK
+ zl1JY5cgCeTR0qgz2+4moJ0dOrM378XMF2h5A7E/dwhU2woeqNjCKDA3cxrnengb4ZWFbokNjGV
+ T2V//HoiveyEw9Br06sx3TMMV/a9pBeDxZxr5SeFOIYA8CsjAH8wzipAyDd7jT3C5WKKobEZn3A
+ CzRclG4ToqulouckWTxKjiaaLHzKCfAxxMOQxKxUh9co5eV0XCXnw2pAWWnbhU9DkmeQumyHKiS
+ 10BDEySfQnu4NS6wMiifKdtfJtelrT1ZSDr8iHpETvMaLgBT0/1UP9PH3PwUPi1UyWyn7eiuLDt
+ X7mR8JP7cjOX3oi1Rr7lgdSHNsZ7/I+68yei2Qa2NrAnqH5xt00HTk6jxVXUh0vnIQb0p97c
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-05_02,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 mlxlogscore=985 malwarescore=0
+ bulkscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506050075
 
-Reading DPCD registers has side-effects in general. In particular
-accessing registers outside of the link training register range
-(0x102-0x106, 0x202-0x207, 0x200c-0x200f, 0x2216) is explicitly
-forbidden by the DP v2.1 Standard, see
 
-3.6.5.1 DPTX AUX Transaction Handling Mandates
-3.6.7.4 128b/132b DP Link Layer LTTPR Link Training Mandates
 
-Based on my tests, accessing the DPCD_REV register during the link
-training of an UHBR TBT DP tunnel sink leads to link training failures.
+On 6/4/2025 10:45 PM, Johan Hovold wrote:
+> Add the missing memory barrier to make sure that destination ring
+> descriptors are read after the head pointers to avoid using stale data
+> on weakly ordered architectures like aarch64.
+> 
+> The barrier is added to the ath12k_hal_srng_access_begin() helper for
+> symmetry with follow-on fixes for source ring buffer corruption which
+> will add barriers to ath12k_hal_srng_access_end().
+> 
+> Note that this may fix the empty descriptor issue recently worked around
+> by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
+> monitor ring").
 
-Solve the above by using the DP_LANE0_1_STATUS (0x202) register for the
-DPCD register access quirk.
+why? I would expect drunk cookies are valid in case of HAL_MON_DEST_INFO0_EMPTY_DESC,
+rather than anything caused by reordering.
 
-Cc: <stable@vger.kernel.org>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Acked-by: Jani Nikula <jani.nikula@linux.intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
----
- drivers/gpu/drm/display/drm_dp_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Cc: stable@vger.kernel.org	# 6.3
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/net/wireless/ath/ath12k/ce.c  |  3 ---
+>  drivers/net/wireless/ath/ath12k/hal.c | 17 ++++++++++++++---
+>  2 files changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+> index 740586fe49d1..b66d23d6b2bd 100644
+> --- a/drivers/net/wireless/ath/ath12k/ce.c
+> +++ b/drivers/net/wireless/ath/ath12k/ce.c
+> @@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe *pipe,
+>  		goto err;
+>  	}
+>  
+> -	/* Make sure descriptor is read after the head pointer. */
+> -	dma_rmb();
+> -
+>  	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+>  
+>  	*skb = pipe->dest_ring->skb[sw_index];
+> diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+> index 91d5126ca149..9eea13ed5565 100644
+> --- a/drivers/net/wireless/ath/ath12k/hal.c
+> +++ b/drivers/net/wireless/ath/ath12k/hal.c
+> @@ -2126,13 +2126,24 @@ void *ath12k_hal_srng_src_get_next_reaped(struct ath12k_base *ab,
+>  
+>  void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+>  {
+> +	u32 hp;
+> +
+>  	lockdep_assert_held(&srng->lock);
+>  
+> -	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
+> +	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+>  		srng->u.src_ring.cached_tp =
+>  			*(volatile u32 *)srng->u.src_ring.tp_addr;
+> -	else
+> -		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> +	} else {
+> +		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+> +
+> +		if (hp != srng->u.dst_ring.cached_hp) {
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index f2a6559a27100..dc622c78db9d4 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
-+		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
- 		if (ret < 0)
- 			return ret;
- 	}
--- 
-2.44.2
+This consumes additional CPU cycles in hot path, which is a concern to me.
+
+Based on that, I prefer the v1 implementation.
+
+> +			srng->u.dst_ring.cached_hp = hp;
+> +			/* Make sure descriptor is read after the head
+> +			 * pointer.
+> +			 */
+> +			dma_rmb();
+> +		}
+> +	}
+>  }
+>  
+>  /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
 
 
