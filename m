@@ -1,82 +1,84 @@
-Return-Path: <stable+bounces-151525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AABACEE9F
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 13:40:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED56BACEF03
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 14:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D58203AC650
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 11:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB0B61745E1
+	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 12:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A0B214818;
-	Thu,  5 Jun 2025 11:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F4421770D;
+	Thu,  5 Jun 2025 12:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="mOnxlL1K"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="w+GQi1BB"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F2C1C27;
-	Thu,  5 Jun 2025 11:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA3420C026;
+	Thu,  5 Jun 2025 12:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749123646; cv=none; b=q2JCUMmkj76v8IDVzlUzXV2RL0TU8lZd7X3EHNAqWBMdp39HjO017m6CqsyM94V48BKLGGxWhpugFqKveEG0O500LBBhEq8b2JkhbmwwMAAnrr7uInd68GuW2NDU/lZ7ZIg/Tw48JmQsEnKh5R//x04uAg24b9CwFRPiDJz+TBI=
+	t=1749125701; cv=none; b=jZi5HSpZhY/qzA0KL3cxAZuPI0X7iV3cNzjQ2T13M2YvMtNHQpE+VPNZsmfmyXWvUjPDP7pXmrM0okgsPA2yoX40hRr/EAycC7OWDIiQ49UVhd5LFMXx07odOD/A3GZQFvx66jUre7hEI31LPuxhDrnVoCORMQdkMM3oYuohfaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749123646; c=relaxed/simple;
-	bh=zF82Ri64VnD1/TFKi9NEOhW9+yaqnsiRdJ8v0TrNTtQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=d7oaYbznaDubifhAMx05WpeIVo0j2v1GbvYTkl90oTUo4HFyYI+TubqVIme4KI0gvLCn9q/2QojdwjGXbGsgeSrTlY3Wdj1RAWj6eUI1GFcdayzU/iNFi2DjhIZy8bC96WNTuk/WaTD20jbmkYnqUkmUz4ELl4bqiwpS+IvN9M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=mOnxlL1K; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zF82Ri64VnD1/TFKi9NEOhW9+yaqnsiRdJ8v0TrNTtQ=;
-	t=1749123645; x=1750333245; b=mOnxlL1KqShrQn4B+5y3O/jxu8aCHCSe9j55sl+DOIpVyL/
-	pFVfhIBrBubzXA/+Ei99nfTXU4nXVkvE0Edp5Jegp/exB7rbvukrNfmAd1+RtQJ03IFogTERa0Jwq
-	XeT236C4qN67nRY3QNeYxnlCk4sW9f0wKJl/QVOyg+i/cZMigD9eXPSRR2iBGGsBI4qkTzh7GZss9
-	75AYEaVNFnvGSI4PcQ4SWIRU1V0zjAUCoUBuNRL0g71oWlNwXQ8Uy3QuoFth20/U9ihYZqSNDIEiZ
-	x7CuRCwJjoDOUVWzkSzaYTskQ/a3UY9t6ndCTqTu+zyi+bqxnb57133JCEg+jj/A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uN8xd-00000002KlM-3mkK;
-	Thu, 05 Jun 2025 13:40:42 +0200
-Message-ID: <0706792a7d08d7bcfdf7fa929cd5f1afc80e3f19.camel@sipsolutions.net>
+	s=arc-20240116; t=1749125701; c=relaxed/simple;
+	bh=uXPuySW/2mRvaR0v35BShBQ43Iwx1yz1Vo1lzg4NP84=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=myyvqUZ9BlrlKzcWugeYyUE919EfCFCGbByfOe7GxPPzsKm5bJFN6LOyUHCj24l+CPWdRnTuNEXGi8IaLx8oRH3BZeXxxnp+1M1ICqFyXsHf1hw1HMh0LBcVS4TRX84iq5NZfbnTUi9w/AMn38D8Zs4Iyn+pbSf1Rmbkg4qu74g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=w+GQi1BB; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 5187A22475;
+	Thu,  5 Jun 2025 14:14:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1749125696;
+	bh=sAXF4RHm4VzO/0RxTV4aH2pTUaWhFW39ZUyi8/v0sHI=; h=From:To:Subject;
+	b=w+GQi1BBPUWOmXFPV0prb48zim6Mp7BVudEAFZN+QK6QIpXIlGkggqaXNvGPydqIh
+	 SsEZdoxL8b6IpYXTnReYxIjHeKsqPh374zKnfxg2yborgSG5UIsBHAuYmajM0BLl0W
+	 th+D5bumLID1jN5sp2bjBsRKs9Xqy2U/BWjd9yOY8mmxDD9To6/bKHeopaIVEBZCkY
+	 C7mPPDRY9eii+D20pn6aeW0dx4/NQfYPKIeSrQFu1/FAoNBzC2JNyZNOL5fPm1wW6/
+	 Ca6FcmwK49pOT5facDLiBnSZeWXo01Z/lU8lUMzLEY51sHO3TnMXzZw4eYi1zrwdGN
+	 UF4PZnkNcc17g==
+Date: Thu, 5 Jun 2025 14:14:52 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jeff Chen <jeff.chen_1@nxp.com>, stable@vger.kernel.org
 Subject: Re: [PATCH wireless v1] Revert "wifi: mwifiex: Fix HT40 bandwidth
  issue."
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Francesco Dolcini <francesco@dolcini.it>, Brian Norris
-	 <briannorris@chromium.org>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, Jeff Chen
-	 <jeff.chen_1@nxp.com>, stable@vger.kernel.org
-Date: Thu, 05 Jun 2025 13:40:41 +0200
-In-Reply-To: <20250605100313.34014-1-francesco@dolcini.it>
+Message-ID: <20250605121452.GA48603@francesco-nb>
 References: <20250605100313.34014-1-francesco@dolcini.it>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+ <0706792a7d08d7bcfdf7fa929cd5f1afc80e3f19.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0706792a7d08d7bcfdf7fa929cd5f1afc80e3f19.camel@sipsolutions.net>
 
-On Thu, 2025-06-05 at 12:03 +0200, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->=20
-> This reverts commit 34253084291cb210b251d64657958b8041ce4ab1.
+On Thu, Jun 05, 2025 at 01:40:41PM +0200, Johannes Berg wrote:
+> On Thu, 2025-06-05 at 12:03 +0200, Francesco Dolcini wrote:
+> > From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > 
+> > This reverts commit 34253084291cb210b251d64657958b8041ce4ab1.
+> 
+> I'm confused. If you want it reverted in wireless, this is the wrong
+> sha1? If you want bit only reverted in stable, why are you tagging it
+> for wireless?
 
-I'm confused. If you want it reverted in wireless, this is the wrong
-sha1? If you want bit only reverted in stable, why are you tagging it
-for wireless?
+Because I did a mistake :-( This is supposed to be reverted on Linus
+tree, not just in stable, I'll send a v2 with this fixed, sorry.
 
-johannes
+Francesco
+
 
