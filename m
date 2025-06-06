@@ -1,124 +1,128 @@
-Return-Path: <stable+bounces-151618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B308AD02DE
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:12:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0956DAD032E
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2107C3AED92
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 13:11:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82FD6189E8F7
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 13:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49606288C81;
-	Fri,  6 Jun 2025 13:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA9F288C9A;
+	Fri,  6 Jun 2025 13:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfhTfHcc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4YzpGvl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2EC20330;
-	Fri,  6 Jun 2025 13:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114D4433AC;
+	Fri,  6 Jun 2025 13:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749215528; cv=none; b=IrEtsJCvJsUCE+37AGmdYeByXHGLs3aF+PVi5JEwd1gs5YErcOcthuoe+rsGhFsS42JE8V+HDhy0TACkev47yU0PCVthngDUIbSuCrTmLvoyTzrzeBTyGOuKDN9vr5V0tcC+P1MHBbW7+LHkwtmt+072Ser60HdHXOwWDjWHan4=
+	t=1749216500; cv=none; b=b1rCbjb2U/3CORzmh/9flZcNCvlGE+IVInTjbAjM2J4xmS+bgMVuOgMzI0pMyjodWUoO0pJgB+CBf4iN/2wb5rm8tCuLkymTkLMyUiTzZqwMiCnY4WKhiWEAgX3dECuz/KptAF3+I2VmB8pT0BCTH8+Q9LwR8BZEzW5ylNGn71k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749215528; c=relaxed/simple;
-	bh=rGZRqJph/AYEM9AzQLAgB41QMOJBZx9aYxw1lu4xNAE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=elIe0JzzHeuz4cJLz0Xeh3IzcUtvt3NTr1HrWjcQ/WYrNqM1ttnz81Swhi1OOUm1epN5fwSoTX9A1w0Qb3UczXJKY8fnyuvBN2ngzq/QZj9uWGXRhAZaMvVp2G4PYxDLUT/S8b9GH8diBwTeUfcmpz66jWYQe4J9TNSLmlhSE+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfhTfHcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95875C4AF0C;
-	Fri,  6 Jun 2025 13:12:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749215527;
-	bh=rGZRqJph/AYEM9AzQLAgB41QMOJBZx9aYxw1lu4xNAE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cfhTfHcctqgAwVeOqIbGC/R/W/7BnjHIglya57cJl2vhkPKiPzj/EFm8DZt678gm8
-	 7TQhclnrpXmWkM9DR7ahAcoxB1TteyGiT3dObYylKMZsLpOd54fMFeiTEvPvcoFfCJ
-	 LleorvyPfpPt/wonuhD7+A2hz4+7qZzkc/p7Qe0Sp9FWLRDxtBk+ZlISxE2TrOHBQj
-	 HfYcdCXSJEjLHWOrvlJjZPm+pHN7RFb6o8onIcjckbpX4aTes012TmjKAJuUDYBvje
-	 51FQZz6Uax8RqzgGVLjQnUKHpwApXXrZEbvoKVwhzJgR1UgJaddxjvKMDNyXQfvBH6
-	 puwgeeBmQ4tvQ==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ade326e366dso38909466b.3;
-        Fri, 06 Jun 2025 06:12:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVFEcs3OekLEsXKqSTgS0NDtAsoWkQj232ZO6KQb5RMxtwihrz4bemB/MEaEJN8SX9kaFgX7hYWsZPXLZk=@vger.kernel.org, AJvYcCXUvow9hxW/QSdAWZvj55hLnQ1z4xrWdHVNf7PCL/hWyqISKS9qTZPXMvJJXdzMoCi3iaKfx6r1@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi17A0m6MHCN53rsMRs18e7fRU9/cokcAEEhkmrMzVrSYu7A3C
-	/pwii9R97OPNQcy26gaKPnaDg8zVaMrEA9SYffaen8njnqgkH5dDMJUR5qWxquOCfgpvZnjA3yg
-	r+LeFByE1mi0Hpde/Hh/0wLWbDyFXmUU=
-X-Google-Smtp-Source: AGHT+IE3pzzutoVEt+xG7WoH2SCggVL9nueRxZ/i2LyieJigkTr1b5rrWQyRf4BgAOIe/icLjS3SlRApkbSvZUQGZz0=
-X-Received: by 2002:a17:907:7f9f:b0:ad8:99cc:774c with SMTP id
- a640c23a62f3a-ade1aa4743fmr302174766b.58.1749215526167; Fri, 06 Jun 2025
- 06:12:06 -0700 (PDT)
+	s=arc-20240116; t=1749216500; c=relaxed/simple;
+	bh=lStWFN05KBUEosEhtBYZ9ONh/8t5JOiGDv2syrsmQe8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H4GmtXNeKCVcXJE1kWB+Aqf+PRCg16a0yyiFR26D6Jrg6/4oSEn9XI7LozlgWa4hf7yWp8JiSl9X1TfLD9Okqw2jDJhL4D6Fa07ZQour/6Y598NzGplXGYQTjMPUZqSL/NKkRBPbB64DA5shqGk1z5GflzQ/b4wsTpRRimJsbn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4YzpGvl; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-234d366e5f2so25580015ad.1;
+        Fri, 06 Jun 2025 06:28:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749216497; x=1749821297; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KTegNuqrzt3gKagTIOaKfGpBHiW0UAiaKMfj1a7uVEs=;
+        b=A4YzpGvlbKN2k7RnY7DikQVAae2JxfLdB8dMCVjTxeTAzqKzDybEq8s2LA7BtWJQYf
+         Bj1e2kP1I3tJcfPdMt1zvxqtRt8u4KpQ7y8cbBRlM1wA8kpIdjIyluW93WtISdJj801h
+         jiR5McvyylRAd6Fk46g6KJX8LZ2i1eaAFsfxs9XLCpuh72oLadJDbKWMZlab8goxW7Xd
+         7AEeewT3mZOZDfcp2dWQ+0EycPSVpMUvpM06IhbtxbhfkSY41WMM5rOrdUS4CPzCNT2o
+         mMZwnpX5mNXdq/dSellELlK44jqVKxckoOri+kcTTEYIj6Flq5FE9U3t6Su0S26C00BY
+         L8Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749216497; x=1749821297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KTegNuqrzt3gKagTIOaKfGpBHiW0UAiaKMfj1a7uVEs=;
+        b=PCPfh2JSbFTiAWuRVTNMNJbkCJS76uSRajYlbbr/hl13yAdYQVfFGabsUfxA2DuDXB
+         mxc3HCXHiT3v8DWeDiVJ53IK4ogRTzElNIfzFAI7UUTp3wSi3zs0Yg/gb5+6hvO+yct8
+         hZOXTvGnUFNcaFr0ez5FqpTb5B5dWEDpn17cATBYU129W+GSY9+aoL1U0Af+oZkwfOZb
+         /DRHFxeI3K0pvqE99o1HxOGmK3IKMVr8h6hYGgQ0vi88qkMi0/qRZQEWi/Nx4ggGDe69
+         PFC1LBa9OqWuq0BtewOx/ySVUo684nPi5kFtpZ4jZCcikfD4yNl8F7Tku/46yoExhO/2
+         hV7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWIBEMElSkysdbETNNwF1vfp1sza9f+O+ePRsAXiAluMHPuFjA8YbuVT2jcd761dCgfPSGrfGoL@vger.kernel.org, AJvYcCWgs2tS4DLivFxGkIDVTbq+mPs6m2Ah6uZslkSVCGiFbEXX4LAVFXvkAaGcJn6PDBiThUhib01K3ua1zA==@vger.kernel.org, AJvYcCXIgw5h5o0mVAsMh1hwVEnH/3prCeFn5rYzOayeWj1h8kOB5y9aVsRT/Pu9N2aHJxzEBeLpmi7O2iOqkE9m@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+IJu0HfBlclvlnLl04tJ/LnDnYPhzPdqMOBfkvLq95k+yVugx
+	1wHcI5Zng25ytuBYJqRnL9+F/oHDzHATnxJoytL0HMI6DHJYfFTX+vn2
+X-Gm-Gg: ASbGncvf5QagD+V/NwUN0XuUa2nn1KLSu51m/lQJcnz0/lYYoomtA2H6fI4jh1syqew
+	HazqYnDk/M/VAprHEt/SyQadv97xFJSJPXKGCp3wbhvRpDICCB7AF8yZASNdeKaIafricaNf2Nr
+	Y2mpENT5mrydR5vPmy+5dnnDZrDd/E8K7CvYI6oWezu+SuIWvC/BvLojqzmj8CI1I+gmGtZETrd
+	RtLjBPfELt6DSL1RZiz8bv9hom2hE//sqWCigcYmAVQAJ6K7TwB5+e0ET9PVO3Wkhzh6mNCtCtk
+	j9tbEag7WJdXQX8/qpoKjyc6vLuxjwTnW/Z1PXuePitS6XvwG8EN1BlX65xEbHHzDtg61aNVMWQ
+	=
+X-Google-Smtp-Source: AGHT+IHE8g080vlp+6jRvIwvEJW60lAMP7cUpeAu9+WDcZPbdxQ6k42dMYN4XsYp4WIx1kOYxtI9IA==
+X-Received: by 2002:a17:902:e80d:b0:235:e96b:191c with SMTP id d9443c01a7336-23601d25bcbmr50342415ad.29.1749216497128;
+        Fri, 06 Jun 2025 06:28:17 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236032fcf2esm12172135ad.123.2025.06.06.06.28.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jun 2025 06:28:16 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Fri, 6 Jun 2025 06:28:15 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Gui-Dong Han <hanguidong02@gmail.com>
+Cc: jdelvare@suse.com, linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (ftsteutates) Fix TOCTOU race in fts_read()
+Message-ID: <98f33209-be61-4a5f-8f0d-41f6570f79dc@roeck-us.net>
+References: <20250606071640.501262-1-hanguidong02@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250605055546.15264-1-ziyao@disroot.org>
-In-Reply-To: <20250605055546.15264-1-ziyao@disroot.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 6 Jun 2025 21:11:55 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5B22f3bJ38F16vs208pZA80oQBrqrhaGTQqeU7xkrXNA@mail.gmail.com>
-X-Gm-Features: AX0GCFuSfHSPLUWXT3X6Z-gVUN1k3vC627BbcSHCLmYtH_uyRJoe269rQgrWQqQ
-Message-ID: <CAAhV-H5B22f3bJ38F16vs208pZA80oQBrqrhaGTQqeU7xkrXNA@mail.gmail.com>
-Subject: Re: [PATCH] platform/loongarch: laptop: Unregister
- generic_sub_drivers on exit
-To: Yao Zi <ziyao@disroot.org>
-Cc: Jianmin Lv <lvjianmin@loongson.cn>, WANG Xuerui <kernel@xen0n.name>, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250606071640.501262-1-hanguidong02@gmail.com>
 
-Applied, thanks.
-
-Huacai
-
-On Thu, Jun 5, 2025 at 1:56=E2=80=AFPM Yao Zi <ziyao@disroot.org> wrote:
->
-> Without correct unregisteration, ACPI notify handlers and the platform
-> driver installed by generic_subdriver_init will become dangling
-> references after removing loongson_laptop module, triggering various
-> kernel faults when a hotkey is sent or at kernel shutdown.
->
+On Fri, Jun 06, 2025 at 07:16:40AM +0000, Gui-Dong Han wrote:
+> In the fts_read() function, when handling hwmon_pwm_auto_channels_temp,
+> the code accesses the shared variable data->fan_source[channel] twice
+> without holding any locks. It is first checked against
+> FTS_FAN_SOURCE_INVALID, and if the check passes, it is read again
+> when used as an argument to the BIT() macro.
+> 
+> This creates a Time-of-Check to Time-of-Use (TOCTOU) race condition.
+> Another thread executing fts_update_device() can modify the value of
+> data->fan_source[channel] between the check and its use. If the value
+> is changed to FTS_FAN_SOURCE_INVALID (0xff) during this window, the
+> BIT() macro will be called with a large shift value (BIT(255)).
+> A bit shift by a value greater than or equal to the type width is
+> undefined behavior and can lead to a crash or incorrect values being
+> returned to userspace.
+> 
+> Fix this by reading data->fan_source[channel] into a local variable
+> once, eliminating the race condition. Additionally, add a bounds check
+> to ensure the value is less than BITS_PER_LONG before passing it to
+> the BIT() macro, making the code more robust against undefined behavior.
+> 
+> This possible bug was found by an experimental static analysis tool
+> developed by our team.
+> 
+> Fixes: 1c5759d8ce05 ("hwmon: (ftsteutates) Replace fanX_source with pwmX_auto_channels_temp")
 > Cc: stable@vger.kernel.org
-> Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-> Signed-off-by: Yao Zi <ziyao@disroot.org>
-> ---
->  drivers/platform/loongarch/loongson-laptop.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/platform/loongarch/loongson-laptop.c b/drivers/platf=
-orm/loongarch/loongson-laptop.c
-> index 99203584949d..cfe2cf79dbbe 100644
-> --- a/drivers/platform/loongarch/loongson-laptop.c
-> +++ b/drivers/platform/loongarch/loongson-laptop.c
-> @@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_init(void)
->
->  static void __exit generic_acpi_laptop_exit(void)
->  {
-> +       int i;
-> +
->         if (generic_inputdev) {
-> -               if (input_device_registered)
-> +               if (input_device_registered) {
->                         input_unregister_device(generic_inputdev);
-> -               else
-> +
-> +                       for (i =3D 0; i < ARRAY_SIZE(generic_sub_drivers)=
-; i++)
-> +                               generic_subdriver_exit(&generic_sub_drive=
-rs[i]);
-> +               } else {
->                         input_free_device(generic_inputdev);
-> +               }
->         }
->  }
->
-> --
-> 2.49.0
->
+> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+
+Applied.
+
+Thanks,
+Guenter
 
