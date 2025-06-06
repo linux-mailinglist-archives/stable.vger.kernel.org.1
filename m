@@ -1,105 +1,195 @@
-Return-Path: <stable+bounces-151572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F50ACFBB4
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 05:47:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3FBACFC10
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 06:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1EAF3B0877
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 03:47:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E0337A93B4
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 04:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA82518C031;
-	Fri,  6 Jun 2025 03:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804011E1DF6;
+	Fri,  6 Jun 2025 04:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YqLE2VND"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ArCGLAe+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2202C324C;
-	Fri,  6 Jun 2025 03:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA771C27;
+	Fri,  6 Jun 2025 04:56:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749181662; cv=none; b=o6Ub6RHg54KKx7306/JMmC8Yi7tfGEsGC19A0Xrdgy7IpRiT1JUi7sBUOeKkiX/EBej8pAbmHWpJ99NaipWucBcGluFdWKBJUwAdTUQAlQqP7T4YiyaDsvOAxzchvEB92Y/sAVCGt8X3mu/qp7hVXLG6+tC3UNkKTb22wlWWz5k=
+	t=1749185772; cv=none; b=qxyDql6dH1D7cFA5KWXC5fKHgssLrZiQK8s+9MSmXf6g7e88a+kvnPVfHTp2n37CIcgjuDQtuOD6X7GbwKgJpVk39ST+AdKW+dWjyF3mX6XG85wovDlMSMesGGf/LNM06fnKmtdJZOZzLUfRqj8UKLO2UjvnRmLa0zd5Wo8U1PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749181662; c=relaxed/simple;
-	bh=2NMxuTL0gu7ifpRUazjZpgZ8fKXD2KWHPJLk3dFMSSE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=lZINauX/b6nxeBcTWqYTGyg1ua9DIMc79zNYdQj5w0GXAyC6WdGOKpGakq4J05w53DtP6Q+St9z+uTdVR7+97VnIbqkyLghAiFLPx4ilL/tR2XFZweQrRttSjWAVXXUu+lerXEF7O6RLDyYapj28Swyt8tbjOebBjLXpUyI2c2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YqLE2VND; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7406c6dd2b1so2511798b3a.0;
-        Thu, 05 Jun 2025 20:47:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749181660; x=1749786460; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lr2vvCKQAF0INUKCLuc8SKZUA7cjJKU+AV4AIvcmXhc=;
-        b=YqLE2VNDBN2rB762+sedi22OENh3Arpvs8TEhznklcewuk7R5zraU4AkASJrvYXtL5
-         ck1Ub92LRIa1sghAlJ4Ci1pRPhDN81i/v9Y2K9tov4AYFbjIv3X25muOqZ/sTVJLTNO0
-         n66EQtwjE7o44dyhGw66LO++koD+oynNDibFZ8yvHdok8V8iKJe2BU4pgvJka/tBtAum
-         2e9giwOcXIT5lwWjZTH797PnQ3A47ppDvOuF/GqdYOQRQxs6hgphXvTrSVrjCO5HSxcq
-         ncvqvYaMHLpgqMSxelrvNam2ymxFVSWS90FQihovmYv5gEGgqlfmjuIrXIv3WOxdI98L
-         LjNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749181660; x=1749786460;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lr2vvCKQAF0INUKCLuc8SKZUA7cjJKU+AV4AIvcmXhc=;
-        b=EIUnW3vw60XTwEKFcGmuRxATm0HZPJ5maKoOogfJXj+Fdq893ADPOUfli4nYG6SxZq
-         OSLmcLH/Ao7fqnypVCRXc71O6ckCmRZgrQdLNijTbmM7R1UgxOSwdvMaqEWR+cLFIQdc
-         lkl3Vmv+alBLGDLmaRQ8vl5/zhtUIDuGhICA5B01KT3j9n+OaBqcQfEd2BsI4YSK0ayZ
-         H/3Ki9DO5L2UDdLV2kERuR2ogX7uoaah/436YxvUUvo42ljvWlLCV1D6jx6XIYpJEjxF
-         3XgU5j4OUtKocNk/JANemAeGYstIzpOckA67smWHn14327eVVpjrt2RNs6K8XrTgUJ/L
-         8gQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwI3JoR3SmF4eC18DbrSwnquBJNwzqB9NS2/ljMUjsTDn5TY+88s5O+4eW46y6tVwghPPPPNTi@vger.kernel.org, AJvYcCW2wU/E7TgMQVgx4ldkerl3NL+AZiTDrFlwYUyq/p8i8pybbtMrJoPfujUR1s8rM84vlMnoIjjjkaCsFqvZc9+d2GmvFA==@vger.kernel.org, AJvYcCX8aW8VCEDWNrscegI8FqG9y5Q6cECa96H0Q5fT+vvuwGV0RfnDsoXQd+sgVuVKcMUf/yiqTSxrCD9yZyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy86f5CcEjJCckJ3am2cjc/GO0Y7SNEo52GhNEn18VotbcBt7LK
-	xndn+hu3Lqq8x3rI45Ovlovc7Oq2aKW+aW0LKm07UFBk7CRh+LBxZDRH
-X-Gm-Gg: ASbGnctSAl94vmaw/7P6AtiMq0+NyjkMLIrvmk2TsXD0S4hGLRN0hgp4QSIEFCptAOX
-	3SH/h+OFw8qMuyWCOfjEw4e9zWP9VJCqGhJ4vDDEpYnpudgU734czVBHuku6ra53R67Tfu/zl0I
-	fC7p8/IZ80UIPkaJDmqipfKcijnpz8AA7yjdWFmNU4qa+a9eYJsD7naT6NITW7EjFjMsajP1aMr
-	Kmie9aeei5e4dfzAXdG2PLbGMugQAsrkeHxu4BAY3A7UyOKxchZRkUGJUs4bXdbmbEVoxb1/+cX
-	k8TZDjlj/i5U3VBEnmS148d9ppJ2wxY6Z6ihkN0YJA0EZYW6AATDe5Qj6twUyPUeXA==
-X-Google-Smtp-Source: AGHT+IF2sQQ5dDUhEWpDErUQAEcTihmeES3m1x3jmzqV/MK0NFzGtiOQtqp43btFMj4+mW4UJ5XWbQ==
-X-Received: by 2002:a05:6a20:9392:b0:1ee:ab52:b8cc with SMTP id adf61e73a8af0-21f21772c3emr1513246637.21.1749181660509;
-        Thu, 05 Jun 2025 20:47:40 -0700 (PDT)
-Received: from [192.168.1.12] ([125.235.238.36])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2f5f895274sm386464a12.68.2025.06.05.20.47.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Jun 2025 20:47:40 -0700 (PDT)
-Message-ID: <bc6ea194-d86d-46d5-b62f-128af7016bae@gmail.com>
-Date: Fri, 6 Jun 2025 10:47:37 +0700
+	s=arc-20240116; t=1749185772; c=relaxed/simple;
+	bh=i3SIkCrWanC8LMSdAYfDWqW3FVKIi9IIfUm/rBNmtLU=;
+	h=Date:To:From:Subject:Message-Id; b=LrxKKFOs0ZjVATeLDDkD9cyvE1UXQHMEJHmp/gSo+5cya59X0HcSDHE00LuB8nolbLsgrhrUCJXMGBSGzGd0wkiwL63l5McqDfdJV3vHk05esVuWMa2jweAmJGPF6K0ZKaRbn5HOs5g/tuWHTzaWiveLOCqkwuxPPQ7Eh3MB634=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ArCGLAe+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FA4C4CEEB;
+	Fri,  6 Jun 2025 04:56:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1749185771;
+	bh=i3SIkCrWanC8LMSdAYfDWqW3FVKIi9IIfUm/rBNmtLU=;
+	h=Date:To:From:Subject:From;
+	b=ArCGLAe+h54X+JasqHjsRpc93bY15KdKUryfz8vc4owM9RvIaI4LwZU7rM92s8fAO
+	 zG59iXhRcz2vu99gnzPVN/4THIN5pN4oetaYZyJG+PJIf5vTYuDdDNDsw6UWlV8gfp
+	 69v9XA3iQBqWghM3s2BTG65/0JPyk+e6q9aV5zLA=
+Date: Thu, 05 Jun 2025 21:56:10 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,peterz@infradead.org,oleg@redhat.com,mhiramat@kernel.org,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,david@redhat.com,pulehui@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-fix-uprobe-pte-be-overwritten-when-expanding-vma.patch removed from -mm tree
+Message-Id: <20250606045611.52FA4C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: i@rong.moe
-Cc: hdegoede@redhat.com, i@hack3r.moe, ikepanhc@gmail.com,
- ilpo.jarvinen@linux.intel.com, linux-kernel@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
-References: <20250525201833.37939-1-i@rong.moe>
-Subject: Re: [PATCH] platform/x86: ideapad-laptop: use usleep_range() for EC
- polling
-Content-Language: en-US
-From: Minh <minhld139@gmail.com>
-In-Reply-To: <20250525201833.37939-1-i@rong.moe>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Tested to work as expected on my ThinkBook 16 G7+ ASP (Ryzen model) with
-the following:
 
-- Fn+F4/F5/F6 inputs, more responsive than before and no shutdown.
-- Previous issue with suspend including close lid, sleep button, 
-mouse/keyboard during suspend cause shutdown has been fixed now
+The quilt patch titled
+     Subject: mm: fix uprobe pte be overwritten when expanding vma
+has been removed from the -mm tree.  Its filename was
+     mm-fix-uprobe-pte-be-overwritten-when-expanding-vma.patch
 
-Tested-by: Minh Le <minhld139@gmail.com>
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Pu Lehui <pulehui@huawei.com>
+Subject: mm: fix uprobe pte be overwritten when expanding vma
+Date: Thu, 29 May 2025 15:56:47 +0000
+
+Patch series "Fix uprobe pte be overwritten when expanding vma".
+
+
+This patch (of 4):
+
+We encountered a BUG alert triggered by Syzkaller as follows:
+   BUG: Bad rss-counter state mm:00000000b4a60fca type:MM_ANONPAGES val:1
+
+And we can reproduce it with the following steps:
+1. register uprobe on file at zero offset
+2. mmap the file at zero offset:
+   addr1 = mmap(NULL, 2 * 4096, PROT_NONE, MAP_PRIVATE, fd, 0);
+3. mremap part of vma1 to new vma2:
+   addr2 = mremap(addr1, 4096, 2 * 4096, MREMAP_MAYMOVE);
+4. mremap back to orig addr1:
+   mremap(addr2, 4096, 4096, MREMAP_MAYMOVE | MREMAP_FIXED, addr1);
+
+In step 3, the vma1 range [addr1, addr1 + 4096] will be remap to new vma2
+with range [addr2, addr2 + 8192], and remap uprobe anon page from the vma1
+to vma2, then unmap the vma1 range [addr1, addr1 + 4096].
+
+In step 4, the vma2 range [addr2, addr2 + 4096] will be remap back to the
+addr range [addr1, addr1 + 4096].  Since the addr range [addr1 + 4096,
+addr1 + 8192] still maps the file, it will take vma_merge_new_range to
+expand the range, and then do uprobe_mmap in vma_complete.  Since the
+merged vma pgoff is also zero offset, it will install uprobe anon page to
+the merged vma.  However, the upcomming move_page_tables step, which use
+set_pte_at to remap the vma2 uprobe pte to the merged vma, will overwrite
+the newly uprobe pte in the merged vma, and lead that pte to be orphan.
+
+Since the uprobe pte will be remapped to the merged vma, we can remove the
+unnecessary uprobe_mmap upon merged vma.
+
+This problem was first found in linux-6.6.y and also exists in the
+community syzkaller:
+https://lore.kernel.org/all/000000000000ada39605a5e71711@google.com/T/
+
+Link: https://lkml.kernel.org/r/20250529155650.4017699-1-pulehui@huaweicloud.com
+Link: https://lkml.kernel.org/r/20250529155650.4017699-2-pulehui@huaweicloud.com
+Fixes: 2b1444983508 ("uprobes, mm, x86: Add the ability to install and remove uprobes breakpoints")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vma.c |   20 +++++++++++++++++---
+ mm/vma.h |    7 +++++++
+ 2 files changed, 24 insertions(+), 3 deletions(-)
+
+--- a/mm/vma.c~mm-fix-uprobe-pte-be-overwritten-when-expanding-vma
++++ a/mm/vma.c
+@@ -169,6 +169,9 @@ static void init_multi_vma_prep(struct v
+ 	vp->file = vma->vm_file;
+ 	if (vp->file)
+ 		vp->mapping = vma->vm_file->f_mapping;
++
++	if (vmg && vmg->skip_vma_uprobe)
++		vp->skip_vma_uprobe = true;
+ }
+ 
+ /*
+@@ -358,10 +361,13 @@ static void vma_complete(struct vma_prep
+ 
+ 	if (vp->file) {
+ 		i_mmap_unlock_write(vp->mapping);
+-		uprobe_mmap(vp->vma);
+ 
+-		if (vp->adj_next)
+-			uprobe_mmap(vp->adj_next);
++		if (!vp->skip_vma_uprobe) {
++			uprobe_mmap(vp->vma);
++
++			if (vp->adj_next)
++				uprobe_mmap(vp->adj_next);
++		}
+ 	}
+ 
+ 	if (vp->remove) {
+@@ -1823,6 +1829,14 @@ struct vm_area_struct *copy_vma(struct v
+ 		faulted_in_anon_vma = false;
+ 	}
+ 
++	/*
++	 * If the VMA we are copying might contain a uprobe PTE, ensure
++	 * that we do not establish one upon merge. Otherwise, when mremap()
++	 * moves page tables, it will orphan the newly created PTE.
++	 */
++	if (vma->vm_file)
++		vmg.skip_vma_uprobe = true;
++
+ 	new_vma = find_vma_prev(mm, addr, &vmg.prev);
+ 	if (new_vma && new_vma->vm_start < addr + len)
+ 		return NULL;	/* should never get here */
+--- a/mm/vma.h~mm-fix-uprobe-pte-be-overwritten-when-expanding-vma
++++ a/mm/vma.h
+@@ -19,6 +19,8 @@ struct vma_prepare {
+ 	struct vm_area_struct *insert;
+ 	struct vm_area_struct *remove;
+ 	struct vm_area_struct *remove2;
++
++	bool skip_vma_uprobe :1;
+ };
+ 
+ struct unlink_vma_file_batch {
+@@ -120,6 +122,11 @@ struct vma_merge_struct {
+ 	 */
+ 	bool give_up_on_oom :1;
+ 
++	/*
++	 * If set, skip uprobe_mmap upon merged vma.
++	 */
++	bool skip_vma_uprobe :1;
++
+ 	/* Internal flags set during merge process: */
+ 
+ 	/*
+_
+
+Patches currently in -mm which might be from pulehui@huawei.com are
+
+
 
