@@ -1,117 +1,159 @@
-Return-Path: <stable+bounces-151600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0DFACFED6
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 11:08:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115A1ACFEF5
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 11:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8493D16FA16
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 09:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BA7F189780E
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 09:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2EA286412;
-	Fri,  6 Jun 2025 09:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A1C286412;
+	Fri,  6 Jun 2025 09:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="1Mw/DqwW"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="N6bY10+K"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7D627A127
-	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 09:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E3D283FFB;
+	Fri,  6 Jun 2025 09:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749200875; cv=none; b=XYBJW9kOuV0yv/eBbnoc5ThOXO/CtfZ7pNdfVPul5D0GymT6NpSl97qdizJBNSQbXEzTZ7t9fPzoOnhufc1sR0iidH3kl+gFamc/NK1MMv1yuHXgH43RkTF+ZR5bzokmI2ptkQMMHgsQdd2g+l9yH/65Eu7ztzgqmnUgXvR93R0=
+	t=1749201240; cv=none; b=YmXO+74h4EK4/FwTGQpV63mQ/NRLqF8dz2pZF6PS/WlAae3iJJKgdwwSk43so2PNO1YqXxgJDvXA0UZ4hxYiAF0akQivRG8FQL9dS6k0mYTVRoEbzOdpQpCYLlkfVGOTSoPSMuFhMgrUHxMPbP4/NYX6+5UO/marujLBX0j4w08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749200875; c=relaxed/simple;
-	bh=PzbyzavS0vAnEI3N7Krprs1J/dlUJN7T07X0H6BB15Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FkMm1Mj70IHjuUQgyyVCroSdobsbruUsm5Tkzp1YmekxVEJM1oVtdR5ad4c7UYBQgaai2gUNq7c3pwJl3XM9WjT8gXu2doB1QPdhFodKmpCvtBWFDpz0kIJdmWQeUr4cQWQcVMeW3ATrP80c1YFxoziEvSoMgLZQN0u7fm3PfIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=1Mw/DqwW; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	s=arc-20240116; t=1749201240; c=relaxed/simple;
+	bh=8AzNZ4la2PoPmxTh0qvOadpjPianLkUkYxBsjSoIfoM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gGLJrZExG0Nm667rcKVwUfZjCbRlX4B/5kdf+qZ0g3Za3W2SXKW7WoSnyjLHDuX/y9alqX8zeIEzh7i2Voe22hhBdeEjyQH78xkduTQ2IQ+iuhaw3kIPXIJUbICKaIUN7yJBex+RJkLPAdJJJPjIHi3+rYIiHVPxR2OK5AJJg0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=N6bY10+K; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1749201229;
+	bh=HQ4lHEPmIHw9cneR2PlF0QPtXcQfPGIV8GSmE9YMTkU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=N6bY10+Kk0WxoqAfmlihmF2xdiA8O9584b5lKeU3vxuVh5CokRiOc+fFAC6Dzdp7U
+	 84izpGR5FOAvvpndZozSMK5woPm8xNFVJQBQ2kTr1h7kOl9jkYpMyRKBfFwlvuXzTt
+	 xwSWTgYrBRbErFjHPYLfcDTm+hjHKmNBAkkvdYok=
+Received: from [127.0.0.1] (unknown [IPv6:2001:470:683e::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4bDFp82kW2z9tDX;
-	Fri,  6 Jun 2025 11:07:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1749200864;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwZh4tgJeU7mDJUmLAaJCQX7F8qKWKkkGdb8BNXbqV4=;
-	b=1Mw/DqwWdWmKsdE0lds9tVR6sKsCB1/EXeclypXJmX60APe1L3wonhsoSKBi2T68oDQ2BA
-	hJN6/fwoEN2uQyFi/16i1NB7nm4PB+/BOOysYnyOCRwi0/mok0pVuc0R+wydmdCb+s4xFG
-	SHJi9HJ0pcNjLWNolU7DFUqFw2EMb5l06adchqQxkyW5l6PEgc3GpKIL5HGta4ZO/zcioP
-	wWALJw472eziQO64OYZaa1AiuXIe2KPpf4aXyLRsdg02lMjZUQdG1TyGs08yVBq6PBbOrK
-	vVyj/o7AcTXcTXD8fCpDC+gxWs3qN4GJmxVEJGh0bm4KnPGkQgshlHI3xUX7iw==
-Date: Fri, 6 Jun 2025 14:37:39 +0530
-From: Brahmajit Das <listout@listout.xyz>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@kernel.org, linux-kernel-mentees@lists.linux.dev, 
-	skhan@linuxfoundation.org, mpatocka@redhat.com, stable@vger.kernel.org, 
-	patches@lists.linux.dev
-Subject: Re: [PATCH 1/1] dm-verity: fix a memory leak if some arguments are
- specified multiple times
-Message-ID: <hjq5krfufwdsgenn4klusi72pour22llg2marqhdmv7wisa6de@23w4z5dp7fs4>
-References: <20250605201116.24492-1-listout@listout.xyz>
- <65ci7zvx3kr5qfq2ioadzzd4ghrtrtrc3pxefosexxpbup63kb@4jkc6e6usols>
- <2025060654-semisoft-prevent-351a@gregkh>
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id F10D865992;
+	Fri,  6 Jun 2025 05:13:46 -0400 (EDT)
+Message-ID: <06e4746ade602f42907aed82c16826230a8ff80e.camel@xry111.site>
+Subject: Re: [PATCH] LoongArch: vDSO: correctly use asm parameters in
+ syscall wrappers
+From: Xi Ruoyao <xry111@xry111.site>
+To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Theodore Ts'o	 <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Nathan Chancellor	 <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>,  Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, 	loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 	stable@vger.kernel.org
+Date: Fri, 06 Jun 2025 17:13:45 +0800
+In-Reply-To: <20250605092735-bd76e803-e896-4d4c-a1f1-c30f8d321a9a@linutronix.de>
+References: 
+	<20250603-loongarch-vdso-syscall-v1-1-6d12d6dfbdd0@linutronix.de>
+	 <CAAhV-H4Ba7DMV6AvGnvNBJ8FL_YcHjeeHYZWw2NG6JHL=X4PkQ@mail.gmail.com>
+	 <5a5329feaab84acb91bbb4f48ea548b3fb4eab0f.camel@xry111.site>
+	 <20250605092735-bd76e803-e896-4d4c-a1f1-c30f8d321a9a@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2025060654-semisoft-prevent-351a@gregkh>
-X-Rspamd-Queue-Id: 4bDFp82kW2z9tDX
 
-On 06.06.2025 08:04, Greg KH wrote:
-> A: http://en.wikipedia.org/wiki/Top_post
-> Q: Were do I find info about this thing called top-posting?
-> A: Because it messes up the order in which people normally read text.
-> Q: Why is top-posting such a bad thing?
-> A: Top-posting.
-> Q: What is the most annoying thing in e-mail?
-> 
-> A: No.
-> Q: Should I include quotations after my reply?
-> 
-> http://daringfireball.net/2007/07/on_top
-> 
+On Thu, 2025-06-05 at 09:37 +0200, Thomas Wei=C3=9Fschuh wrote:
+> On Wed, Jun 04, 2025 at 10:30:55PM +0800, Xi Ruoyao wrote:
+> > On Wed, 2025-06-04 at 22:05 +0800, Huacai Chen wrote:
+> > > On Tue, Jun 3, 2025 at 7:49=E2=80=AFPM Thomas Wei=C3=9Fschuh
+> > > <thomas.weissschuh@linutronix.de> wrote:
+> > > >=20
+> > > > The syscall wrappers use the "a0" register for two different regist=
+er
+> > > > variables, both the first argument and the return value. The "ret"
+> > > > variable is used as both input and output while the argument regist=
+er is
+> > > > only used as input. Clang treats the conflicting input parameters a=
+s
+> > > > undefined behaviour and optimizes away the argument assignment.
+> > > >=20
+> > > > The code seems to work by chance for the most part today but that m=
+ay
+> > > > change in the future. Specifically clock_gettime_fallback() fails w=
+ith
+> > > > clockids from 16 to 23, as implemented by the upcoming auxiliary cl=
+ocks.
+> > > >=20
+> > > > Switch the "ret" register variable to a pure output, similar to the=
+ other
+> > > > architectures' vDSO code. This works in both clang and GCC.
+> > > Hmmm, at first the constraint is "=3Dr", during the progress of
+> > > upstream, Xuerui suggested me to use "+r" instead [1].
+> > > [1]=C2=A0 https://lore.kernel.org/linux-arch/5b14144a-9725-41db-7179-=
+c059c41814cf@xen0n.name/
+> >=20
+> > Based on the example at
+> > https://gcc.gnu.org/onlinedocs/gcc/Local-Register-Variables.html:
+> >=20
+> > =C2=A0=C2=A0 To force an operand into a register, create a local variab=
+le and specify
+> > =C2=A0=C2=A0 the register name after the variable=E2=80=99s declaration=
+. Then use the local
+> > =C2=A0=C2=A0 variable for the asm operand and specify any constraint le=
+tter that
+> > =C2=A0=C2=A0 matches the register:
+> > =C2=A0=C2=A0=20
+> > =C2=A0=C2=A0 register int *p1 asm ("r0") =3D =E2=80=A6;
+> > =C2=A0=C2=A0 register int *p2 asm ("r1") =3D =E2=80=A6;
+> > =C2=A0=C2=A0 register int *result asm ("r0");
+> > =C2=A0=C2=A0 asm ("sysint" : "=3Dr" (result) : "0" (p1), "r" (p2));
+> > =C2=A0=C2=A0=20
+> > I think this should actually be written
+> >=20
+> > =C2=A0	asm volatile(
+> > =C2=A0	"=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 syscall 0\n"
+> > 	: "=3Dr" (ret)
+> > =C2=A0	: "r" (nr), "0" (buffer), "r" (len), "r" (flags)
+> > =C2=A0	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
+> > "$t8",
+> > =C2=A0	=C2=A0 "memory");
+> >=20
+> > i.e. "=3D" should be used for the output operand 0, and "0" should be u=
+sed
+> > for the input operand 2 (buffer) to emphasis the same register as
+> > operand 0 is used.
+>=20
+> I would have expected that matching constraints ("0") would only really m=
+ake
+> sense if the compiler selects the specific register to use. When the regi=
+ster is
+> already selected manually it seems redundant.
+> But my inline ASM knowledge is limited and this is a real example from th=
+e GCC
+> docs, so it is probably more correct.
+> On the other hand all the other vDSO implementations use "r" over "0" for=
+ the
+> input operand 2 and I'd like to keep them consistent.
 
-Thank you, I'll keep this in mind from next time.
-> On Fri, Jun 06, 2025 at 02:00:52AM +0530, Brahmajit Das wrote:
-> > Greg, Shuah, Mikulas,
-> > This is my first attempt at backporting an upstream patch (Part of Linux
-> > kernel Bug Fixing Summer 2025). Please feel free to correct me, I'm open
-> > to feedback.
-> > I see I've added two From section, if that requires me to
-> > resend a v2 of the patch, please let me know.
-> 
-> Yes it does.
-> 
-> But you provide no information as to why this needs to be merged _now_
-> and not through the normal stable backport process that happens.  What
-> is different here that required you to send it to us?
-> 
-> And you forgot to mention what kernel branch this is for.
-> 
-> There is a stable kernel rules file that explains most of this.
-> 
-I see, got it. Thanks a lot again. I'll also take a look at the stable
-rules.
-> thanks,
-> 
-> greg k-h
-> 
+Per https://gcc.gnu.org/pipermail/gcc-help/2025-June/144261.html and
+https://gcc.gnu.org/pipermail/gcc-help/2025-June/144266.html it should
+be fine to just use "r".
 
--- 
-Regards,
-listout
+Reviewed-by: Xi Ruoyao <xry111@xry111.site>
+
+--=20
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
 
