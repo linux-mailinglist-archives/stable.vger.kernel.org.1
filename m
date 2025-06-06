@@ -1,128 +1,141 @@
-Return-Path: <stable+bounces-151619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0956DAD032E
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:28:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657E9AD034C
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82FD6189E8F7
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 13:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E99ED18968A2
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 13:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA9F288C9A;
-	Fri,  6 Jun 2025 13:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000ED288CA8;
+	Fri,  6 Jun 2025 13:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4YzpGvl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GT5XxhiH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114D4433AC;
-	Fri,  6 Jun 2025 13:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0622874F9;
+	Fri,  6 Jun 2025 13:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749216500; cv=none; b=b1rCbjb2U/3CORzmh/9flZcNCvlGE+IVInTjbAjM2J4xmS+bgMVuOgMzI0pMyjodWUoO0pJgB+CBf4iN/2wb5rm8tCuLkymTkLMyUiTzZqwMiCnY4WKhiWEAgX3dECuz/KptAF3+I2VmB8pT0BCTH8+Q9LwR8BZEzW5ylNGn71k=
+	t=1749216947; cv=none; b=EqgSEP87M5Xb/18bUfcbmNfpU4bDG6TFSS3CXB0zky1CsJaFV2+2w4NRQAykZDFAiLF/S6LCROSLOoPvGTwMV3wV60YH4ujwney95RQFtQe2L2/xinuOR7YQRIB9BW/W/rs18dw2WEzWd80p/cciv7u8fyc+39qU0pwCZR2fqUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749216500; c=relaxed/simple;
-	bh=lStWFN05KBUEosEhtBYZ9ONh/8t5JOiGDv2syrsmQe8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H4GmtXNeKCVcXJE1kWB+Aqf+PRCg16a0yyiFR26D6Jrg6/4oSEn9XI7LozlgWa4hf7yWp8JiSl9X1TfLD9Okqw2jDJhL4D6Fa07ZQour/6Y598NzGplXGYQTjMPUZqSL/NKkRBPbB64DA5shqGk1z5GflzQ/b4wsTpRRimJsbn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4YzpGvl; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1749216947; c=relaxed/simple;
+	bh=0ml/MHinxxJm56VhkaRsfFKv/4fFXloCq1LTKaQ+fVo=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RAx1wTinZ5tvR/bt9WhgJh6N32uVJVD4e/60KzAWmrM+b7IP0uk83WGci+lfUpG+x5+9/l15cV+YG3HcDjE0jKPKz/a2wA/xuRaG/t7dcYmLt5Ohxis9+DSDtErKsJ/eqzU1C9x5oTGHjpu1MCZkseYYjeDEqChUoTkIUrFNUks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GT5XxhiH; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-234d366e5f2so25580015ad.1;
-        Fri, 06 Jun 2025 06:28:17 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-747fc7506d4so2183256b3a.0;
+        Fri, 06 Jun 2025 06:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749216497; x=1749821297; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KTegNuqrzt3gKagTIOaKfGpBHiW0UAiaKMfj1a7uVEs=;
-        b=A4YzpGvlbKN2k7RnY7DikQVAae2JxfLdB8dMCVjTxeTAzqKzDybEq8s2LA7BtWJQYf
-         Bj1e2kP1I3tJcfPdMt1zvxqtRt8u4KpQ7y8cbBRlM1wA8kpIdjIyluW93WtISdJj801h
-         jiR5McvyylRAd6Fk46g6KJX8LZ2i1eaAFsfxs9XLCpuh72oLadJDbKWMZlab8goxW7Xd
-         7AEeewT3mZOZDfcp2dWQ+0EycPSVpMUvpM06IhbtxbhfkSY41WMM5rOrdUS4CPzCNT2o
-         mMZwnpX5mNXdq/dSellELlK44jqVKxckoOri+kcTTEYIj6Flq5FE9U3t6Su0S26C00BY
-         L8Hw==
+        d=gmail.com; s=20230601; t=1749216945; x=1749821745; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J6k/v7MmiVZncaG0gAng2Qdjjf1NhngohmIKq82nZVQ=;
+        b=GT5XxhiHCoSUsdV7qar9bw1g7K85HwCbcaDD/kTLmmbup8cvpONPW69i9ml0Bxkktc
+         Ilu9u0OEkpvNT6PwA+8fRJif8c2HM+3+4yT37aidA816CdkO6R1PUJNsDsT2OE2QqaVo
+         yZRx/Q70AvvtGTjVv+2xg3B+48L64He5k4rpP+u4Xtmgvpx9mpeS2t9149T2kf0e55Ab
+         eSoh2qumwB40okN1X+zharKzakASXA4bjNM1CXkIfcrioVcFX4wgY8knmvQ9Rz6w6XsC
+         WK5kjHsNMz4bxWhbqoNZ2AY0b79EVK3wbpGWnq1rzomppMxLGS7RsN5bmaGgg173GeNJ
+         9zMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749216497; x=1749821297;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KTegNuqrzt3gKagTIOaKfGpBHiW0UAiaKMfj1a7uVEs=;
-        b=PCPfh2JSbFTiAWuRVTNMNJbkCJS76uSRajYlbbr/hl13yAdYQVfFGabsUfxA2DuDXB
-         mxc3HCXHiT3v8DWeDiVJ53IK4ogRTzElNIfzFAI7UUTp3wSi3zs0Yg/gb5+6hvO+yct8
-         hZOXTvGnUFNcaFr0ez5FqpTb5B5dWEDpn17cATBYU129W+GSY9+aoL1U0Af+oZkwfOZb
-         /DRHFxeI3K0pvqE99o1HxOGmK3IKMVr8h6hYGgQ0vi88qkMi0/qRZQEWi/Nx4ggGDe69
-         PFC1LBa9OqWuq0BtewOx/ySVUo684nPi5kFtpZ4jZCcikfD4yNl8F7Tku/46yoExhO/2
-         hV7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWIBEMElSkysdbETNNwF1vfp1sza9f+O+ePRsAXiAluMHPuFjA8YbuVT2jcd761dCgfPSGrfGoL@vger.kernel.org, AJvYcCWgs2tS4DLivFxGkIDVTbq+mPs6m2Ah6uZslkSVCGiFbEXX4LAVFXvkAaGcJn6PDBiThUhib01K3ua1zA==@vger.kernel.org, AJvYcCXIgw5h5o0mVAsMh1hwVEnH/3prCeFn5rYzOayeWj1h8kOB5y9aVsRT/Pu9N2aHJxzEBeLpmi7O2iOqkE9m@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+IJu0HfBlclvlnLl04tJ/LnDnYPhzPdqMOBfkvLq95k+yVugx
-	1wHcI5Zng25ytuBYJqRnL9+F/oHDzHATnxJoytL0HMI6DHJYfFTX+vn2
-X-Gm-Gg: ASbGncvf5QagD+V/NwUN0XuUa2nn1KLSu51m/lQJcnz0/lYYoomtA2H6fI4jh1syqew
-	HazqYnDk/M/VAprHEt/SyQadv97xFJSJPXKGCp3wbhvRpDICCB7AF8yZASNdeKaIafricaNf2Nr
-	Y2mpENT5mrydR5vPmy+5dnnDZrDd/E8K7CvYI6oWezu+SuIWvC/BvLojqzmj8CI1I+gmGtZETrd
-	RtLjBPfELt6DSL1RZiz8bv9hom2hE//sqWCigcYmAVQAJ6K7TwB5+e0ET9PVO3Wkhzh6mNCtCtk
-	j9tbEag7WJdXQX8/qpoKjyc6vLuxjwTnW/Z1PXuePitS6XvwG8EN1BlX65xEbHHzDtg61aNVMWQ
-	=
-X-Google-Smtp-Source: AGHT+IHE8g080vlp+6jRvIwvEJW60lAMP7cUpeAu9+WDcZPbdxQ6k42dMYN4XsYp4WIx1kOYxtI9IA==
-X-Received: by 2002:a17:902:e80d:b0:235:e96b:191c with SMTP id d9443c01a7336-23601d25bcbmr50342415ad.29.1749216497128;
-        Fri, 06 Jun 2025 06:28:17 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236032fcf2esm12172135ad.123.2025.06.06.06.28.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Jun 2025 06:28:16 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 6 Jun 2025 06:28:15 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Gui-Dong Han <hanguidong02@gmail.com>
-Cc: jdelvare@suse.com, linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (ftsteutates) Fix TOCTOU race in fts_read()
-Message-ID: <98f33209-be61-4a5f-8f0d-41f6570f79dc@roeck-us.net>
-References: <20250606071640.501262-1-hanguidong02@gmail.com>
+        d=1e100.net; s=20230601; t=1749216945; x=1749821745;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J6k/v7MmiVZncaG0gAng2Qdjjf1NhngohmIKq82nZVQ=;
+        b=pZ2OSTE4TUs0CvubQTP/y/ayogEF7WnlXV4TqsHl3jVdAnNbcZjDY4tPz6pNcoIgY+
+         k8xqtoD06yoURVgWYOODIym6u2RRzm0a80yYK2X/XxBOuAs+oPQN4NFYJCDjRCF7eLub
+         OO3LqG4dpRK5zq2MuM1+AjtmE+0AgfR/57l4hxUIy2QflLOLunxGZnSBRvOtpP9rI6PS
+         ExWWwv62ipLJHWgD7cTAbJV2cytIADhWu9N0sV0Njz2pDFiu3yxCxuRAmWzQlD06be9C
+         Bbig1vu0ccjyE/zo3+8roJzND2w1ZA/VHyGk0or8Ucs8SvPhgSBDE5xWKUqfIkYFtakl
+         j+hw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSfIU36+gAXxL1VPGbuZxmThF+OkRvS4bkp7non+NdohBOrYvnbHcLMihP/s30lA0RwIr1sPTpgJJuxJFrkA==@vger.kernel.org, AJvYcCW4g2YriXPn35ETz5zIl5HQV6WWZdpSQqBiACIEx6NZhJnnc4r+NgkjHhirUEO7JCEUFSflv3UEkLMvYnqz@vger.kernel.org, AJvYcCWD6NdZqHQIVkmFpPZm77mAWNJd19/xfjzl3u3eNmtPUdDFmLNsgF4PCDFnfsDe9Qqiu8HZXxDZ95U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq6zatOG9cxxA3xXeVOmHnDMHbHK4dS4QVV0S3Gws0MKovvqkc
+	vQ5uVjsl3xdpzoVCFr72g3ECnw2SCi6DXxnoO8gDbQii/xBoqeoffq3s
+X-Gm-Gg: ASbGnctI7PKCGMQ/G5PGYrD0WKyrQeCUmwZ+Z3AjecIdAqItAseLxAlrAGp5UN3c2Vk
+	QLHA5ZPkTXdhaUqnzvRwZnz/6lsEmF4SYgweX6kC6kMCvHP3LjQTQ+PN68KmcJyc4AKxuQjO11L
+	kqkt9uKrBmcvduVT8BqOBEJ39lLrDGlHWYBh+xue2Gn1OZixdBYkA3oRxxizhIP9bUKarKhnAwe
+	vue+zenkrlGMhas5Kc5mgNPAJYAX+cLeZnB0dR1xhzwudmRF8hFPwyvWRAtd0K/Dp7YqGSk3xiP
+	fLmJqp1rc6pVkqsvk/J9xpCEIfzMkBBUIcwREokrSgZit/OZB+gCPlQ=
+X-Google-Smtp-Source: AGHT+IGVAVfaCO3WJmW8EZtwdSKaSpA2gT2x6UkvCUzMZbUmgdcLsdnbM0vABNk8ZcknIZtO7DrmhA==
+X-Received: by 2002:a05:6a00:188e:b0:742:da7c:3f28 with SMTP id d2e1a72fcca58-74827f37c17mr4990489b3a.21.1749216945558;
+        Fri, 06 Jun 2025 06:35:45 -0700 (PDT)
+Received: from [10.0.2.172] ([70.37.26.38])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0842d3sm1299017b3a.98.2025.06.06.06.35.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Jun 2025 06:35:45 -0700 (PDT)
+Sender: Sinan Kaya <franksinankaya@gmail.com>
+From: Sinan Kaya <Okaya@kernel.org>
+X-Google-Original-From: Sinan Kaya <okaya@kernel.org>
+Message-ID: <7649f016-87f1-475d-8ff7-7608b14c5654@kernel.org>
+Date: Fri, 6 Jun 2025 09:35:44 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250606071640.501262-1-hanguidong02@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dmaengine: qcom_hidma: fix handoff FIFO memory leak
+ on driver removal
+To: Eugen Hristev <eugen.hristev@linaro.org>, Qasim Ijaz
+ <qasdev00@gmail.com>, Vinod Koul <vkoul@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250601224231.24317-1-qasdev00@gmail.com>
+ <20250601224231.24317-3-qasdev00@gmail.com>
+ <3c6513fe-83b3-4117-8df6-6f8c7eb07303@linaro.org>
+Content-Language: en-US
+In-Reply-To: <3c6513fe-83b3-4117-8df6-6f8c7eb07303@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 06, 2025 at 07:16:40AM +0000, Gui-Dong Han wrote:
-> In the fts_read() function, when handling hwmon_pwm_auto_channels_temp,
-> the code accesses the shared variable data->fan_source[channel] twice
-> without holding any locks. It is first checked against
-> FTS_FAN_SOURCE_INVALID, and if the check passes, it is read again
-> when used as an argument to the BIT() macro.
-> 
-> This creates a Time-of-Check to Time-of-Use (TOCTOU) race condition.
-> Another thread executing fts_update_device() can modify the value of
-> data->fan_source[channel] between the check and its use. If the value
-> is changed to FTS_FAN_SOURCE_INVALID (0xff) during this window, the
-> BIT() macro will be called with a large shift value (BIT(255)).
-> A bit shift by a value greater than or equal to the type width is
-> undefined behavior and can lead to a crash or incorrect values being
-> returned to userspace.
-> 
-> Fix this by reading data->fan_source[channel] into a local variable
-> once, eliminating the race condition. Additionally, add a bounds check
-> to ensure the value is less than BITS_PER_LONG before passing it to
-> the BIT() macro, making the code more robust against undefined behavior.
-> 
-> This possible bug was found by an experimental static analysis tool
-> developed by our team.
-> 
-> Fixes: 1c5759d8ce05 ("hwmon: (ftsteutates) Replace fanX_source with pwmX_auto_channels_temp")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
 
-Applied.
+On 6/5/2025 9:04 AM, Eugen Hristev wrote:
+>> diff --git a/drivers/dma/qcom/hidma_ll.c b/drivers/dma/qcom/hidma_ll.c
+>> index fee448499777..0c2bae46746c 100644
+>> --- a/drivers/dma/qcom/hidma_ll.c
+>> +++ b/drivers/dma/qcom/hidma_ll.c
+>> @@ -816,6 +816,7 @@ int hidma_ll_uninit(struct hidma_lldev *lldev)
+>>   
+>>   	required_bytes = sizeof(struct hidma_tre) * lldev->nr_tres;
+>>   	tasklet_kill(&lldev->task);
+>> +	kfifo_free(&lldev->handoff_fifo);
+>>   	memset(lldev->trepool, 0, required_bytes);
+>>   	lldev->trepool = NULL;
+>>   	atomic_set(&lldev->pending_tre_count, 0);
+> Is it possible that the handoff_fifo is freed, then we could observe
+> reset complete interrupts before they are being cleared in
+> hidma_ll_uninit later on, which would lead to the following call chain
+>
+>   hidma_ll_inthandler - hidma_ll_int_handler_internal -
+> hidma_handle_tre_completion - hidma_post_completed -
+> tasklet_schedule(&lldev->task); - hidma_ll_tre_complete - kfifo_out
 
-Thanks,
-Guenter
+According to the documentation, the way to guarantee this from not happening
+
+is to call tasklet_disable() to ensure that tasklet completes execution. 
+Only after that
+
+data structures used by the tasklet can be freed.
+
+I think proper order is:
+
+1. tasklet_disable
+
+2. tasklet_kill
+
+3. kfifo_free
+
+
+
 
