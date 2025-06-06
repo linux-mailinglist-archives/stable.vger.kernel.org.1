@@ -1,200 +1,282 @@
-Return-Path: <stable+bounces-151563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D65ACF8CD
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 22:31:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30A4ACFA5B
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 02:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18B13A8017
-	for <lists+stable@lfdr.de>; Thu,  5 Jun 2025 20:30:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC853189B0FA
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 00:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7123127C875;
-	Thu,  5 Jun 2025 20:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D66171C9;
+	Fri,  6 Jun 2025 00:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="t2u0+gy4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqrfNvKp"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FAB278E5A
-	for <stable@vger.kernel.org>; Thu,  5 Jun 2025 20:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630CB17C77
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 00:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749155464; cv=none; b=lG330WhqrwdQMLK5RL8eAUsjbUxbO08yqZI5fh12xicl3Sz9qsTnHGeu+RoE8/KfJAWsarTU25apqPAAZKMDw6VTjw3waMy5UfHxANEoqH1WLISfraKFYyvafC88UTEbivM/C7l8k5JNrPqcIEN3KDYJ+OVmh+ghXFSWGLezI6g=
+	t=1749168912; cv=none; b=NM5pMlEeuuymsO0GqYvFHJ/Z2I3QAzez8T/ifBmdUSS4bmD6GsNrtuD6dhjqp+dYiDMgvrEqCYXz6sDDgC5n5uIsUE6p74gpPqBtxvL4heRgcbmSO8PEmExD2GM+O3LJU0HAm6iJU3uHE0QfPxH4Y+NRqU+k4yvWTd7n7ka0ZRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749155464; c=relaxed/simple;
-	bh=gmlp2jwO30hBqhp/YJOURodm64jKP/qFtrzv2wdnmiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K9yRFWhjrQCB/m4gW47ni1nKA4YWJs6bUGLFTbtwFLA6JACEX9KUvdYib/26Aw3fUZQSBqMwhT/lPnWQD+jt3n0BIjFglKG56Gtq0wzcXKyonFXix3xDYMbelxVw46vE1dIUTmrwjM9YALAenXp2S+28sXOH5HLpTiJ7luvXQEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=t2u0+gy4; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bCx0w75fNz9tCl;
-	Thu,  5 Jun 2025 22:30:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1749155457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pqZ663Cp9gzndHJjTiWWCOUPFc901sb/+7c37wwcIXE=;
-	b=t2u0+gy4JG5d0W54nnpWwF8JuiS0daocYRAz2FS8pJ20+YebcrSZAoHisR9G7K1HoltrZR
-	fYVjp3t7CLd47YIEtfBi0PGcxqLQC6w8xchHUyiprU5Tzh4dRzQ/gt3/mUS8Yad1J2pBe4
-	XoS6NKxnWOob6rITShJ6pIaYKV/Fo/mbArAgR0DHIn2fFey07SZvVxjhYOenijN1xzSi0I
-	yLes3fFWbuCnZiWI2N2c9NOq787Juj3t33GkjsuypWStOEZdhe+0f8pVGQT0zDGenqdCny
-	obOHKWD2MCItedA8FyzBs+tzD6B8+0uTzghnuOaJ7ZJQgJk6fmsBR49+ToL6NA==
-Date: Fri, 6 Jun 2025 02:00:52 +0530
-From: Brahmajit Das <listout@listout.xyz>
-To: stable@kernel.org
-Cc: linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, 
-	gregkh@linuxfoundation.org, mpatocka@redhat.com, stable@vger.kernel.org, 
-	patches@lists.linux.dev
-Subject: Re: [PATCH 1/1] dm-verity: fix a memory leak if some arguments are
- specified multiple times
-Message-ID: <65ci7zvx3kr5qfq2ioadzzd4ghrtrtrc3pxefosexxpbup63kb@4jkc6e6usols>
-References: <20250605201116.24492-1-listout@listout.xyz>
+	s=arc-20240116; t=1749168912; c=relaxed/simple;
+	bh=V+Qlec6SXG5Mz7B+D4sbtYjym82uWnzpo1+wOeci9OY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U1sKxYpMjLiIOWH3hZmkjtcXy0FrnjPJdmCpO/+bDhhZKy9NLQTG8Jla3dgmdhSjlBPyK+i/vwoGHBywATQw3oUXzOVqWAonvO/7of5EmhR/T7FhNmm7t1RqdlP8D6y/VeJOJ3T9fxyRqLRT/E5O3KufWes19kqlkkOPnzzmEIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqrfNvKp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2EDC4AF09
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 00:15:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749168911;
+	bh=V+Qlec6SXG5Mz7B+D4sbtYjym82uWnzpo1+wOeci9OY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uqrfNvKpzh/WL+mkq2StHQ2JU6Q9KSchU6/7PMU8i7VmNSGwvvZ1m3Iy2zVPIQCIv
+	 xrcGJbb+ubvSsMeLC/R6l1+h8YrTbKRyEehi4fyLFnb92nP3nc2HYzrEHCxqZBpaBw
+	 Aflx6PLY5cMRXWDj1TKQQX2CpH9sy/8YyAKLAhVs4FI1p+t4OxJ11wxCQyysstSDWr
+	 mbwGSlOcr436I0JK7eShTBEr03JeseA05UHe52qhzkTid38eWpopkbmLChN1C7VmPn
+	 LDgJc/gQDz+TvSkVAYlKACeiYIv1EgAzqyg64GXzpIcxTrRm9bNzE8Dpp4/MNQaQkQ
+	 Hmvjuo5Fz4yYg==
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-450dab50afeso27045e9.0
+        for <stable@vger.kernel.org>; Thu, 05 Jun 2025 17:15:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXoCiqwUe9TFMDIsojBJsGLtEHteKQUW2zKjwrW6nlKZ5f0nc96qsn9tDygQLElnmNwL3xagTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+G9+s/mO5RPfBlrPLJk2Q2AQ9ROSu1DdSMTuvMk5FEDhCF7N/
+	VCO1Ha/VA7nffhFoy35ZjA5gSrEeEx3k8ENHkscOxYs9GofmKqlGp5JOL1hyXD90j76xbzas8jR
+	So3F9QhKqfe1CMThBUSK7OKGuSePMFCExZwAy8Mfa
+X-Google-Smtp-Source: AGHT+IGLbUuIjAfVPsirnUgTYnXMIcDKIEE/hWRHptE8PR6snMnIlRCkrJyI4OLFwaKdxDWggO5BwLYZFbBJ8mcmIO8=
+X-Received: by 2002:a05:600c:3543:b0:442:feea:622d with SMTP id
+ 5b1f17b1804b1-4527a28f0ddmr303065e9.1.1749168910422; Thu, 05 Jun 2025
+ 17:15:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250605201116.24492-1-listout@listout.xyz>
-X-Rspamd-Queue-Id: 4bCx0w75fNz9tCl
+References: <20250604151038.21968-1-ryncsn@gmail.com>
+In-Reply-To: <20250604151038.21968-1-ryncsn@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 5 Jun 2025 17:14:59 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuPoJrYu30YPqze7oSPBm0qJ1Qutpw3=cQMQeSmboGnQKg@mail.gmail.com>
+X-Gm-Features: AX0GCFvVDeJjp0rqUIAm0FMQrOXJdPhT8-6JSI_7eeM2z9k4rHA4l2shVraeDC0
+Message-ID: <CAF8kJuPoJrYu30YPqze7oSPBm0qJ1Qutpw3=cQMQeSmboGnQKg@mail.gmail.com>
+Subject: Re: [PATCH v4] mm: userfaultfd: fix race of userfaultfd_move and swap cache
+To: Kairui Song <kasong@tencent.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Barry Song <21cnbao@gmail.com>, Peter Xu <peterx@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Andrea Arcangeli <aarcange@redhat.com>, 
+	David Hildenbrand <david@redhat.com>, Lokesh Gidra <lokeshgidra@google.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Greg, Shuah, Mikulas,
-This is my first attempt at backporting an upstream patch (Part of Linux
-kernel Bug Fixing Summer 2025). Please feel free to correct me, I'm open
-to feedback.
-I see I've added two From section, if that requires me to
-resend a v2 of the patch, please let me know.
+On Wed, Jun 4, 2025 at 8:10=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrote=
+:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> On seeing a swap entry PTE, userfaultfd_move does a lockless swap
+> cache lookup, and tries to move the found folio to the faulting vma.
+> Currently, it relies on checking the PTE value to ensure that the moved
+> folio still belongs to the src swap entry and that no new folio has
+> been added to the swap cache, which turns out to be unreliable.
+>
+> While working and reviewing the swap table series with Barry, following
+> existing races are observed and reproduced [1]:
+>
+> In the example below, move_pages_pte is moving src_pte to dst_pte,
+> where src_pte is a swap entry PTE holding swap entry S1, and S1
+> is not in the swap cache:
+>
+> CPU1                               CPU2
+> userfaultfd_move
+>   move_pages_pte()
+>     entry =3D pte_to_swp_entry(orig_src_pte);
+>     // Here it got entry =3D S1
+>     ... < interrupted> ...
+>                                    <swapin src_pte, alloc and use folio A=
+>
+>                                    // folio A is a new allocated folio
+>                                    // and get installed into src_pte
+>                                    <frees swap entry S1>
+>                                    // src_pte now points to folio A, S1
+>                                    // has swap count =3D=3D 0, it can be =
+freed
+>                                    // by folio_swap_swap or swap
+>                                    // allocator's reclaim.
+>                                    <try to swap out another folio B>
+>                                    // folio B is a folio in another VMA.
+>                                    <put folio B to swap cache using S1 >
+>                                    // S1 is freed, folio B can use it
+>                                    // for swap out with no problem.
+>                                    ...
+>     folio =3D filemap_get_folio(S1)
+>     // Got folio B here !!!
+>     ... < interrupted again> ...
+>                                    <swapin folio B and free S1>
+>                                    // Now S1 is free to be used again.
+>                                    <swapout src_pte & folio A using S1>
+>                                    // Now src_pte is a swap entry PTE
+>                                    // holding S1 again.
+>     folio_trylock(folio)
+>     move_swap_pte
+>       double_pt_lock
+>       is_pte_pages_stable
+>       // Check passed because src_pte =3D=3D S1
+>       folio_move_anon_rmap(...)
+>       // Moved invalid folio B here !!!
+>
+> The race window is very short and requires multiple collisions of
+> multiple rare events, so it's very unlikely to happen, but with a
+> deliberately constructed reproducer and increased time window, it
+> can be reproduced easily.
 
-On 06.06.2025 01:41, Brahmajit Das wrote:
-> From: Mikulas Patocka <mpatocka@redhat.com>
-> 
-> From: Mikulas Patocka <mpatocka@redhat.com>
-> 
-> [ Upstream commit 66be40a14e496689e1f0add50118408e22c96169 ]
-> 
-> If some of the arguments "check_at_most_once", "ignore_zero_blocks",
-> "use_fec_from_device", "root_hash_sig_key_desc" were specified more than
-> once on the target line, a memory leak would happen.
-> 
-> This commit fixes the memory leak. It also fixes error handling in
-> verity_verify_sig_parse_opt_args.
-> 
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Thanks for the fix.
+
+Please spell out clearly what is the consequence of the race if
+triggered. I assume possible data lost? That should be mentioned in
+the first few sentences of the commit message as the user's visible
+impact.
+
+>
+> This can be fixed by checking if the folio returned by filemap is the
+> valid swap cache folio after acquiring the folio lock.
+>
+> Another similar race is possible: filemap_get_folio may return NULL, but
+> folio (A) could be swapped in and then swapped out again using the same
+> swap entry after the lookup. In such a case, folio (A) may remain in the
+> swap cache, so it must be moved too:
+>
+> CPU1                               CPU2
+> userfaultfd_move
+>   move_pages_pte()
+>     entry =3D pte_to_swp_entry(orig_src_pte);
+>     // Here it got entry =3D S1, and S1 is not in swap cache
+>     folio =3D filemap_get_folio(S1)
+>     // Got NULL
+>     ... < interrupted again> ...
+>                                    <swapin folio A and free S1>
+>                                    <swapout folio A re-using S1>
+>     move_swap_pte
+>       double_pt_lock
+>       is_pte_pages_stable
+>       // Check passed because src_pte =3D=3D S1
+>       folio_move_anon_rmap(...)
+>       // folio A is ignored !!!
+>
+> Fix this by checking the swap cache again after acquiring the src_pte
+> lock. And to avoid the filemap overhead, we check swap_map directly [2].
+>
+> The SWP_SYNCHRONOUS_IO path does make the problem more complex, but so
+> far we don't need to worry about that, since folios can only be exposed
+> to the swap cache in the swap out path, and this is covered in this
+> patch by checking the swap cache again after acquiring the src_pte lock.
+>
+> Testing with a simple C program that allocates and moves several GB of
+> memory did not show any observable performance change.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Closes: https://lore.kernel.org/linux-mm/CAMgjq7B1K=3D6OOrK2OUZ0-tqCzi+EJ=
+t+2_K97TPGoSt=3D9+JwP7Q@mail.gmail.com/ [1]
+> Link: https://lore.kernel.org/all/CAGsJ_4yJhJBo16XhiC-nUzSheyX-V3-nFE+tAi=
+=3D8Y560K8eT=3DA@mail.gmail.com/ [2]
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> Reviewed-by: Lokesh Gidra <lokeshgidra@google.com>
+>
 > ---
->  drivers/md/dm-verity-fec.c        |  4 ++++
->  drivers/md/dm-verity-target.c     |  8 +++++++-
->  drivers/md/dm-verity-verify-sig.c | 17 +++++++++++++----
->  3 files changed, 24 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-> index 0c41949db784..631a887b487c 100644
-> --- a/drivers/md/dm-verity-fec.c
-> +++ b/drivers/md/dm-verity-fec.c
-> @@ -593,6 +593,10 @@ int verity_fec_parse_opt_args(struct dm_arg_set *as, struct dm_verity *v,
->  	(*argc)--;
->  
->  	if (!strcasecmp(arg_name, DM_VERITY_OPT_FEC_DEV)) {
-> +		if (v->fec->dev) {
-> +			ti->error = "FEC device already specified";
-> +			return -EINVAL;
-> +		}
->  		r = dm_get_device(ti, arg_value, BLK_OPEN_READ, &v->fec->dev);
->  		if (r) {
->  			ti->error = "FEC device lookup failed";
-> diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-> index 3c427f18a04b..ed49bcbd224f 100644
-> --- a/drivers/md/dm-verity-target.c
-> +++ b/drivers/md/dm-verity-target.c
-> @@ -1120,6 +1120,9 @@ static int verity_alloc_most_once(struct dm_verity *v)
+>
+> V1: https://lore.kernel.org/linux-mm/20250530201710.81365-1-ryncsn@gmail.=
+com/
+> Changes:
+> - Check swap_map instead of doing a filemap lookup after acquiring the
+>   PTE lock to minimize critical section overhead [ Barry Song, Lokesh Gid=
+ra ]
+>
+> V2: https://lore.kernel.org/linux-mm/20250601200108.23186-1-ryncsn@gmail.=
+com/
+> Changes:
+> - Move the folio and swap check inside move_swap_pte to avoid skipping
+>   the check and potential overhead [ Lokesh Gidra ]
+> - Add a READ_ONCE for the swap_map read to ensure it reads a up to dated
+>   value.
+>
+> V3: https://lore.kernel.org/all/20250602181419.20478-1-ryncsn@gmail.com/
+> Changes:
+> - Add more comments and more context in commit message.
+>
+>  mm/userfaultfd.c | 33 +++++++++++++++++++++++++++++++--
+>  1 file changed, 31 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index bc473ad21202..8253978ee0fb 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1084,8 +1084,18 @@ static int move_swap_pte(struct mm_struct *mm, str=
+uct vm_area_struct *dst_vma,
+>                          pte_t orig_dst_pte, pte_t orig_src_pte,
+>                          pmd_t *dst_pmd, pmd_t dst_pmdval,
+>                          spinlock_t *dst_ptl, spinlock_t *src_ptl,
+> -                        struct folio *src_folio)
+> +                        struct folio *src_folio,
+> +                        struct swap_info_struct *si, swp_entry_t entry)
 >  {
->  	struct dm_target *ti = v->ti;
->  
-> +	if (v->validated_blocks)
-> +		return 0;
+> +       /*
+> +        * Check if the folio still belongs to the target swap entry afte=
+r
+> +        * acquiring the lock. Folio can be freed in the swap cache while
+> +        * not locked.
+> +        */
+> +       if (src_folio && unlikely(!folio_test_swapcache(src_folio) ||
+> +                                 entry.val !=3D src_folio->swap.val))
+> +               return -EAGAIN;
 > +
->  	/* the bitset can only handle INT_MAX blocks */
->  	if (v->data_blocks > INT_MAX) {
->  		ti->error = "device too large to use check_at_most_once";
-> @@ -1143,6 +1146,9 @@ static int verity_alloc_zero_digest(struct dm_verity *v)
->  	struct dm_verity_io *io;
->  	u8 *zero_data;
->  
-> +	if (v->zero_digest)
-> +		return 0;
-> +
->  	v->zero_digest = kmalloc(v->digest_size, GFP_KERNEL);
->  
->  	if (!v->zero_digest)
-> @@ -1577,7 +1583,7 @@ static int verity_ctr(struct dm_target *ti, unsigned int argc, char **argv)
->  			goto bad;
->  	}
->  
-> -	/* Root hash signature is  a optional parameter*/
-> +	/* Root hash signature is an optional parameter */
->  	r = verity_verify_root_hash(root_hash_digest_to_validate,
->  				    strlen(root_hash_digest_to_validate),
->  				    verify_args.sig,
-> diff --git a/drivers/md/dm-verity-verify-sig.c b/drivers/md/dm-verity-verify-sig.c
-> index a9e2c6c0a33c..d5261a0e4232 100644
-> --- a/drivers/md/dm-verity-verify-sig.c
-> +++ b/drivers/md/dm-verity-verify-sig.c
-> @@ -71,9 +71,14 @@ int verity_verify_sig_parse_opt_args(struct dm_arg_set *as,
->  				     const char *arg_name)
->  {
->  	struct dm_target *ti = v->ti;
-> -	int ret = 0;
-> +	int ret;
->  	const char *sig_key = NULL;
->  
-> +	if (v->signature_key_desc) {
-> +		ti->error = DM_VERITY_VERIFY_ERR("root_hash_sig_key_desc already specified");
-> +		return -EINVAL;
-> +	}
-> +
->  	if (!*argc) {
->  		ti->error = DM_VERITY_VERIFY_ERR("Signature key not specified");
->  		return -EINVAL;
-> @@ -83,14 +88,18 @@ int verity_verify_sig_parse_opt_args(struct dm_arg_set *as,
->  	(*argc)--;
->  
->  	ret = verity_verify_get_sig_from_key(sig_key, sig_opts);
-> -	if (ret < 0)
-> +	if (ret < 0) {
->  		ti->error = DM_VERITY_VERIFY_ERR("Invalid key specified");
-> +		return ret;
-> +	}
->  
->  	v->signature_key_desc = kstrdup(sig_key, GFP_KERNEL);
-> -	if (!v->signature_key_desc)
-> +	if (!v->signature_key_desc) {
-> +		ti->error = DM_VERITY_VERIFY_ERR("Could not allocate memory for signature key");
->  		return -ENOMEM;
-> +	}
->  
-> -	return ret;
-> +	return 0;
->  }
->  
->  /*
-> -- 
-> 2.49.0
-> 
-> 
+>         double_pt_lock(dst_ptl, src_ptl);
+>
+>         if (!is_pte_pages_stable(dst_pte, src_pte, orig_dst_pte, orig_src=
+_pte,
+> @@ -1102,6 +1112,25 @@ static int move_swap_pte(struct mm_struct *mm, str=
+uct vm_area_struct *dst_vma,
+>         if (src_folio) {
+>                 folio_move_anon_rmap(src_folio, dst_vma);
+>                 src_folio->index =3D linear_page_index(dst_vma, dst_addr)=
+;
+> +       } else {
+> +               /*
+> +                * Check if the swap entry is cached after acquiring the =
+src_pte
+> +                * lock. Otherwise, we might miss a newly loaded swap cac=
+he folio.
+> +                *
+> +                * Check swap_map directly to minimize overhead, READ_ONC=
+E is sufficient.
+> +                * We are trying to catch newly added swap cache, the onl=
+y possible case is
+> +                * when a folio is swapped in and out again staying in sw=
+ap cache, using the
+> +                * same entry before the PTE check above. The PTL is acqu=
+ired and released
+> +                * twice, each time after updating the swap_map's flag. S=
+o holding
+> +                * the PTL here ensures we see the updated value. False p=
+ositive is possible,
+> +                * e.g. SWP_SYNCHRONOUS_IO swapin may set the flag withou=
+t touching the
+> +                * cache, or during the tiny synchronization window betwe=
+en swap cache and
+> +                * swap_map, but it will be gone very quickly, worst resu=
+lt is retry jitters.
+> +                */
+> +               if (READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_HAS=
+_CACHE) {
 
--- 
-Regards,
-listout
+Nit: You can use "} else if {" to save one level of indentation.
+
+Reviewed-by: Chris Li <chrisl@kernel.org>
+
+Chris
 
