@@ -1,143 +1,150 @@
-Return-Path: <stable+bounces-151623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CF3AD050A
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:19:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98C4AD052C
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF3B1889D4C
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:19:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A8161898D8B
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D340D1991CD;
-	Fri,  6 Jun 2025 15:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF253288C3A;
+	Fri,  6 Jun 2025 15:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jPIza6dL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pbmecGN1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2291A38F9
-	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 15:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA203276048
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 15:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749223150; cv=none; b=OL0MA1H+OpNxE9JRSMshoHl6K+zsojACU4ORbLt6lYGSgNwDkqRV+pNTVNltyCyJsrXqRNcByYucasqMr0cFbzaQRuhL5mL6ndO7ovBbCTPEAoADOmv7Rc2HZEcii2Ogw10owAcfYjz+gMMGgDNZYocQW83k7+VwzOkzJmGV/EQ=
+	t=1749223795; cv=none; b=mG1Du0iedS3o+BwETgETnYH1KcTT/D3fc93GASPD5lUY/wUpJcYfvW5AI+TRmbOB3Ck1ZCREmsLyEm97QrTwDPkaFLfrsVH10NBufHKHC2JcL+D0CVoCTyL0hysaglTSPF6s4EAUiwq30djSHdFQdQgu8q45uuBR+vf34pMuAbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749223150; c=relaxed/simple;
-	bh=HGVGnAi0B7LJ0pZobzS+bnJFwUkPfXV+b8qyKxRXktA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=p1iotyl9jBRF2sg0/9/epmVcJUeYTzBUTC/+cElzV1IaEqAPuO6B7d/BcpokWaFbLJfXIy96pUDurMjRfoPYQ41t+0XTpyIkrENr0cnChpR8O2eLYRVd6aV1NUTptdM1QK6kYUs+txcgnR1sBav6v/nc6ybKpaZbXsIOaD1LOXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jPIza6dL; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749223149; x=1780759149;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=HGVGnAi0B7LJ0pZobzS+bnJFwUkPfXV+b8qyKxRXktA=;
-  b=jPIza6dLlLYB0zLtxAVjiFntpp4fpMEmfc3hfnjNu+boHhzW4pNkwv4t
-   dBOj+D8lfXyYDja1QTokrR/u9lChpnom45GGmXUvayPPEDmJt/Ve6edUg
-   Phh0yWwzljO441tDC45IPLJn0WnCiVzZfZzWyVgdVEyyTtsN1p9yqUzzq
-   zhC9y67KZyMydXVJY2iqJdtH+0EzXS1TaMSBWtz6NfYLNHZUeAKn4wzC1
-   Ll/abDi2bLDJh2gy1e0E7wZ5NuSzJpFOZ4Zab3R1HuRdFThbWJJea25SH
-   BULSUxj/v92E2dPDfsUJh6xNBE3eNUrVfRTaENr07Vdy51M9jgxhT3Ei2
-   w==;
-X-CSE-ConnectionGUID: YACcSwYySiOmnaga0IZabg==
-X-CSE-MsgGUID: U4C7YB6yRPqVno45mxa5+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11456"; a="50605809"
-X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; 
-   d="scan'208";a="50605809"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 08:19:08 -0700
-X-CSE-ConnectionGUID: 7KQDcNuXTHuqp8DsJZKenw==
-X-CSE-MsgGUID: NjME5DUTSW22oE1l4PzNgA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; 
-   d="scan'208";a="150862704"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.245.52]) ([10.245.245.52])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 08:19:07 -0700
-Message-ID: <097aa0d8-6bc1-4616-8f8f-805b7fc5e886@intel.com>
-Date: Fri, 6 Jun 2025 16:19:04 +0100
+	s=arc-20240116; t=1749223795; c=relaxed/simple;
+	bh=v7Au4C4CPsHEk+3y2XJCnvtIlU+mBidFXKTov4cpvRU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mSOEWWW4dGlDYI7RR88WekRijjPX6Nr/jk5F+DKLQ97Hs5j9MjAdjLLhTPDnHeVYQ51RzVpMqAUI8Mza8KOyYEUw1+GaJVyovcqO05Jiost37cTaw7e/J/pDk+a/JJ+5pgRoV0pqTAy01puaCN0VTcRZYgjxhRZITdLTEeJ/Hvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pbmecGN1; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ade30256175so86156666b.1
+        for <stable@vger.kernel.org>; Fri, 06 Jun 2025 08:29:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749223792; x=1749828592; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pHKg9aReCBIhycPzMljP890R0nKClsGn0j0TZZruLEs=;
+        b=pbmecGN1OqgEPpflLsZ6dogyEF3lkXEgtGQaxQLFjznGg7x3l/xQPaFD7/z6uaPZHa
+         RlVxeE0SbmVxT8ACQ+xtW3FvCZQE8+YntL3kCqoBmtGcqg5pb51BSS0RNpEsarjnAGVK
+         mLCDx3HjHR2QrM+NAKgq6JrGMWeJsylP13ZwGbpzWZow0/cP/9pVqZnyI07L/aPlU/Bx
+         IWXvTJDPKkLo+s4fXRqNIMyUTzyF7EwcyG7moiM4NrZy+BXcqJmKpX4z9qYgDHlsHcvo
+         /ik0BQ3ArHKyWkBqepM79Nv54AxgyZJbe4sa8ZXzrj4d0X8348ld/Ddn7v5ujqMO84Fg
+         RY2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749223792; x=1749828592;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pHKg9aReCBIhycPzMljP890R0nKClsGn0j0TZZruLEs=;
+        b=aIUsradhCsH0+NPkWRRy9IrqvzpaQdfhlIQY46sw6v0jqmKhRh+ZsM4mhh3zwsdxqE
+         Nez1IeobzoeI3PyBt93Oy+q70TkPpslqTPGmym5z5IRFSs5ndR8dhb8DMUTMzAyLDfJx
+         zDedf1NXzkAzEhdiwgu05PUXA5+blonDZERwcgL1pGjxLE6UK47QYWHKPTA/kIt0Uvug
+         /fhJ3F1gQlCZH0Lu/jkaPBF1SGggTiL04jC4ZSwqGhcq2jUpS0gP6mUKRimXxfMRxNAI
+         Rj/Kb0RSKpaiIbIsfQ1W7DjNvMqFtnvqs6umoaw221k3Vr+9AxOv7TiWCBwJk1on/BCK
+         c0Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/rFxe4wzD4HiouUN6M/jQ6UY4QxZ/Fyk5PuInoPfNJzYunEqJQvL2gY28d0tPT1RRN/QRoNo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVUv0Fp2tYL8AcAj9PLR18OUAb8kLW6/+hV5enq81UoyFZmcYe
+	2cu0FWwNZslRejGmfWC05XdjaR/Uzz9roeT6uBWLzJGb90ivIUT8LbkbsbFHLNG1les=
+X-Gm-Gg: ASbGncsHDgRPWR8aGwD8R9mZQinYaLaEumBDy2QwMIDZzMAVgXlX8wjIeY3iwAfeHpc
+	j/YXxJmtCiLeG0/Rizg1WhMByMje89nShmS8UyLbljtTJrufNwyDowXCGTwGR/UKHNjkskgeMZU
+	rKVfB7zzUrHEVDfme/Ez/H83q8M6JfS9j2IHF8RVX16aCIUwFF4k5qxE4NYN7UwaAWRS38K1YTL
+	Ww9VZdREfROj5VxgEzFORJA+JUpAMWhC7tgj0w6IxLxuH8EO3C7yWSnKSON6f3a7qUZjDvKLxrm
+	ksycGr/HvJO4siMDCle345g3Zu+i8Fi3+VAAi0lHcTKKWkYx1uQpWOxzDn6CYfKq2adWzqolWt2
+	wGFaXDboJJPnIEF83LM1zy0tc0gsd48xsX+OEqGAgtOiS/w==
+X-Google-Smtp-Source: AGHT+IFIbqOwQmbDQEe3E/wlxCxAjm4JmZX9I8K8ar5M7fYX/U4wmJP0R3iG9BUeJ0Tu3p9r9nBSjg==
+X-Received: by 2002:a17:906:9fc7:b0:ade:8df:5b4d with SMTP id a640c23a62f3a-ade1a9329dcmr347910366b.15.1749223792241;
+        Fri, 06 Jun 2025 08:29:52 -0700 (PDT)
+Received: from puffmais.c.googlers.com (140.20.91.34.bc.googleusercontent.com. [34.91.20.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1d754913sm130801166b.4.2025.06.06.08.29.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jun 2025 08:29:51 -0700 (PDT)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Date: Fri, 06 Jun 2025 16:29:43 +0100
+Subject: [PATCH] scsi: mpt3sas: drop unused variable in
+ mpt3sas_send_mctp_passthru_req()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/xe: Move DSB l2 flush to a more sensible place
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- stable@vger.kernel.org
-References: <20250606104546.1996818-3-matthew.auld@intel.com>
-Content-Language: en-GB
-In-Reply-To: <20250606104546.1996818-3-matthew.auld@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250606-mpt3sas-v1-1-906ffe49fb6b@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAGYJQ2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDMwMz3dyCEuPixGJdQ1NTM2MLA8s0cwNTJaDqgqLUtMwKsEnRsbW1AGY
+ q/l5ZAAAA
+X-Change-ID: 20250606-mpt3sas-15563809f705
+To: Sathya Prakash <sathya.prakash@broadcom.com>, 
+ Sreekanth Reddy <sreekanth.reddy@broadcom.com>, 
+ Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Shivasharan S <shivasharan.srikanteshwara@broadcom.com>
+Cc: Peter Griffin <peter.griffin@linaro.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, MPT-FusionLinux.pdl@broadcom.com, 
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+X-Mailer: b4 0.14.2
 
-On 06/06/2025 11:45, Matthew Auld wrote:
-> From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> 
-> Flushing l2 is only needed after all data has been written.
-> 
-> Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.12+
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+With W=1, gcc complains correctly:
 
-Tested this locally and noticed a pretty big improvement just playing 
-around in the desktop environment, where stuff feels way smoother.
+    mpt3sas_ctl.c: In function ‘mpt3sas_send_mctp_passthru_req’:
+    mpt3sas_ctl.c:2917:29: error: variable ‘mpi_reply’ set but not used [-Werror=unused-but-set-variable]
+     2917 |         MPI2DefaultReply_t *mpi_reply;
+          |                             ^~~~~~~~~
 
-> ---
->   drivers/gpu/drm/xe/display/xe_dsb_buffer.c | 11 ++++-------
->   1 file changed, 4 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-> index f95375451e2f..9f941fc2e36b 100644
-> --- a/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-> +++ b/drivers/gpu/drm/xe/display/xe_dsb_buffer.c
-> @@ -17,10 +17,7 @@ u32 intel_dsb_buffer_ggtt_offset(struct intel_dsb_buffer *dsb_buf)
->   
->   void intel_dsb_buffer_write(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val)
->   {
-> -	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
-> -
->   	iosys_map_wr(&dsb_buf->vma->bo->vmap, idx * 4, u32, val);
-> -	xe_device_l2_flush(xe);
->   }
->   
->   u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
-> @@ -30,12 +27,9 @@ u32 intel_dsb_buffer_read(struct intel_dsb_buffer *dsb_buf, u32 idx)
->   
->   void intel_dsb_buffer_memset(struct intel_dsb_buffer *dsb_buf, u32 idx, u32 val, size_t size)
->   {
-> -	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
-> -
->   	WARN_ON(idx > (dsb_buf->buf_size - size) / sizeof(*dsb_buf->cmd_buf));
->   
->   	iosys_map_memset(&dsb_buf->vma->bo->vmap, idx * 4, val, size);
-> -	xe_device_l2_flush(xe);
->   }
->   
->   bool intel_dsb_buffer_create(struct intel_crtc *crtc, struct intel_dsb_buffer *dsb_buf, size_t size)
-> @@ -74,9 +68,12 @@ void intel_dsb_buffer_cleanup(struct intel_dsb_buffer *dsb_buf)
->   
->   void intel_dsb_buffer_flush_map(struct intel_dsb_buffer *dsb_buf)
->   {
-> +	struct xe_device *xe = dsb_buf->vma->bo->tile->xe;
-> +
->   	/*
->   	 * The memory barrier here is to ensure coherency of DSB vs MMIO,
->   	 * both for weak ordering archs and discrete cards.
->   	 */
-> -	xe_device_wmb(dsb_buf->vma->bo->tile->xe);
-> +	xe_device_wmb(xe);
-> +	xe_device_l2_flush(xe);
->   }
+Drop the unused assignment and variable.
+
+Fixes: c72be4b5bb7c ("scsi: mpt3sas: Add support for MCTP Passthrough commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+---
+ drivers/scsi/mpt3sas/mpt3sas_ctl.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+index 02fc204b9bf7b276115bf6db52746155381799fd..3b951589feeb6c13094ea44b494ca3050a309b15 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+@@ -2914,7 +2914,6 @@ int mpt3sas_send_mctp_passthru_req(struct mpt3_passthru_command *command)
+ {
+ 	struct MPT3SAS_ADAPTER *ioc;
+ 	MPI2RequestHeader_t *mpi_request = NULL, *request;
+-	MPI2DefaultReply_t *mpi_reply;
+ 	Mpi26MctpPassthroughRequest_t *mctp_passthru_req;
+ 	u16 smid;
+ 	unsigned long timeout;
+@@ -3022,8 +3021,6 @@ int mpt3sas_send_mctp_passthru_req(struct mpt3_passthru_command *command)
+ 		goto issue_host_reset;
+ 	}
+ 
+-	mpi_reply = ioc->ctl_cmds.reply;
+-
+ 	/* copy out xdata to user */
+ 	if (data_in_sz)
+ 		memcpy(command->data_in_buf_ptr, data_in, data_in_sz);
+
+---
+base-commit: a0bea9e39035edc56a994630e6048c8a191a99d8
+change-id: 20250606-mpt3sas-15563809f705
+
+Best regards,
+-- 
+André Draszik <andre.draszik@linaro.org>
 
 
