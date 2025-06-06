@@ -1,116 +1,152 @@
-Return-Path: <stable+bounces-151610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3698DAD00B6
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 12:46:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD077AD0134
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 13:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776603B155C
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 10:46:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9644175187
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 11:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7318286D78;
-	Fri,  6 Jun 2025 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11052868B3;
+	Fri,  6 Jun 2025 11:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IvRtlJ2b"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lVTD/zRR"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967CC2798FF
-	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 10:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980508C11
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 11:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749206768; cv=none; b=IXnG9URfGYnQD8p+SEhislXzd782Z2XDpIyVFzU38ZMOyfiHZpfaqPbFzf7q2b3PmjHvqwI0gdABqnIh/XzM5xLl2MuJ+lAW2ACzEUhdF1DCMoOcrnJgXbXOevwjfhzx0yvKboDQvlru00FOQCYrah96o8S39aaweBxn2bgtNxI=
+	t=1749209315; cv=none; b=qxQugJ5/Iz4b1VTO2+9iz8W1w0XbqZq8OsTzy1gRHfBS2opokSvrUPtwjTj9RcBUBx9Lm5C6SRAEKVgu4VaQoHkjQ39N2JxMMSK8aMZGwE8sdrWG9GKHxdTuRxhpZl2vIuK6aYSHnxHw9p7yMs8ZHhvC3FmgMdo41mVJTUKyGHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749206768; c=relaxed/simple;
-	bh=qXK/Pec3ts9s2S4G47/MrdTjAEaxTbRhoLzSxXSrD+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+akv+5smbbsxOZQrWaGa376wL4yUmlxbh8LPSbcbtjl49NSOVOlWIO/FHDUTyHd4jHD0WGJ1D2ex93T1WTIJVBpDV4QoYknspjeHRPxkiigsVOiv+e+3O3KjvEFm3MSy6bXDZahy3TMPHxm80aVLA3CRvuWhp4Ki5m2cnPkkB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IvRtlJ2b; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1749209315; c=relaxed/simple;
+	bh=DtFK5ntKMEALrzQWYhRC0IWxybREtrqJzzoC0C7hIMY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s56vd8iJ8DDR71TtW04h6NnkeMOE+FwKEZDLrP93Rg8CbvQecJ7tMNR5kS3DfEKhtuq3l2CmLZy04NLTutnyyXiKNKMrgIKF/oF51W9s84AqOOzJEA6ALb+BGBl/FuCrxId0uc19+ly0VLBbysEzm6lj1vrWH7hwAcd3lXpSLBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lVTD/zRR; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749206765; x=1780742765;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qXK/Pec3ts9s2S4G47/MrdTjAEaxTbRhoLzSxXSrD+4=;
-  b=IvRtlJ2b/fLdTRlzAfFjVt4o0uEOOa00y6LKf5Zd2SiSwpMKAzxuOmj3
-   1M5JvpEaG/6y35QdM8rVHQT3EWoIJbTaxo2S7LltMyFLzhNh0B54zBLAQ
-   +RTOcUHWhAPfK5V/hr5N+QfuaAelmdTEQ8abweTU/mrbPCIDVeZo1ze1J
-   S4GM3NirGfRVyMA5H08v9tpRk5o0X2SEOGKlwhyAlPctvXpb/Tw5XyJfu
-   TOySSajjHjsp8P09lt/iu1uNuuoOY+d9CGutkp/ldUmQ4KKN4tZ0jfHFw
-   BvEPgevHY7ZJ7caa6mPOgYaOGOv5j9Ua24lmPJMHszKB+Pv3fUN9B3aAd
-   A==;
-X-CSE-ConnectionGUID: sFRfvPECSNq2LrdGN1c6WQ==
-X-CSE-MsgGUID: vmyGJ1NmQV+SLzu/RaOEFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11455"; a="50582342"
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; 
-   d="scan'208";a="50582342"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 03:46:04 -0700
-X-CSE-ConnectionGUID: hLL9ssjDTXSBAK1EpqAlxQ==
-X-CSE-MsgGUID: goRUD85cTqmc2z9B7yuzJw==
+  t=1749209313; x=1780745313;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DtFK5ntKMEALrzQWYhRC0IWxybREtrqJzzoC0C7hIMY=;
+  b=lVTD/zRRYq1MknI8ysz5E1ytjTAZk7ItHxl3Mz2g1fjgxGrPxzgYscVM
+   Zd9n/Zv2g/VRalXpByHDB1Gnz8LQPFPq/apM8g7wJvRjYLV5p1uGy/X8s
+   m8i6/ejtqor1uSboai2WQ+GafUBqeeYiRKuUpElwIb+lxjLcxG2+bToEX
+   mFxGIf9c5FBRLcZPhBiWw8L5MbomDpY5+k7j3W2PfsOT8kpA+pxV2qJoJ
+   bZ/ROgU7yFknjmD+BXDjlInhmmOft6kOe7HnOaJuTfJDMpCGNZMQVbNFo
+   i+2LoknLhcdJ5S7WtlBlLt+LkWehUIeJrhE+ybCN7UR4Xru/y15KKPIxS
+   g==;
+X-CSE-ConnectionGUID: IIl6dERsSB25RXFb2TKscg==
+X-CSE-MsgGUID: TWWYEFNaRMqVfJ2XHeArgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11456"; a="61623253"
+X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; 
+   d="scan'208";a="61623253"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 04:28:33 -0700
+X-CSE-ConnectionGUID: mK7iyTD3Rhqgc9ob27PU4w==
+X-CSE-MsgGUID: 2SCbEDX6TpeUqcEamVTvdQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,214,1744095600"; 
-   d="scan'208";a="146384867"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.245.52])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 03:46:03 -0700
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] drm/xe: move DPT l2 flush to a more sensible place
-Date: Fri,  6 Jun 2025 11:45:48 +0100
-Message-ID: <20250606104546.1996818-4-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250606104546.1996818-3-matthew.auld@intel.com>
-References: <20250606104546.1996818-3-matthew.auld@intel.com>
+X-IronPort-AV: E=Sophos;i="6.16,215,1744095600"; 
+   d="scan'208";a="176674094"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.245.52]) ([10.245.245.52])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 04:28:31 -0700
+Message-ID: <6fd6d5cc-9f89-4949-82d4-0f3a55f687af@intel.com>
+Date: Fri, 6 Jun 2025 12:28:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/xe/bmg: fix compressed VRAM handling
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
+Cc: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Jahagirdar, Akshata" <akshata.jahagirdar@intel.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250604181511.1629551-2-matthew.auld@intel.com>
+ <CH0PR11MB5444A5B91EBE395713970E41E56CA@CH0PR11MB5444.namprd11.prod.outlook.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <CH0PR11MB5444A5B91EBE395713970E41E56CA@CH0PR11MB5444.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Only need the flush for DPT host updates here. Normal GGTT updates don't
-need special flush.
+On 04/06/2025 19:21, Cavitt, Jonathan wrote:
+> -----Original Message-----
+> From: Intel-xe <intel-xe-bounces@lists.freedesktop.org> On Behalf Of Matthew Auld
+> Sent: Wednesday, June 4, 2025 11:15 AM
+> To: intel-xe@lists.freedesktop.org
+> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Thomas Hellström <thomas.hellstrom@linux.intel.com>; Jahagirdar, Akshata <akshata.jahagirdar@intel.com>; stable@vger.kernel.org
+> Subject: [PATCH] drm/xe/bmg: fix compressed VRAM handling
+>>
+>> There looks to be an issue in our compression handling when the BO pages
+>> are very fragmented, where we choose to skip the identity map and
+>> instead fall back to emitting the PTEs by hand when migrating memory,
+>> such that we can hopefully do more work per blit operation. However in
+>> such a case we need to ensure the src PTEs are correctly tagged with a
+>> compression enabled PAT index on dgpu xe2+, otherwise the copy will
+>> simply treat the src memory as uncompressed, leading to corruption if
+>> the memory was compressed by the user.
+>>
+>> To fix this it looks like we can pass use_comp_pat into emit_pte() on
+>> the src side.
+> 
+> It would be better if we had more confidence here beyond "it looks like"
+> (maybe just drop that part) and "There looks to be" (maybe "There is" instead),
+> but if we're not comfortable making definitive statements about our compression
+> handling, then I won't block this on some minor passive voice issues.
 
-Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.12+
----
- drivers/gpu/drm/xe/display/xe_fb_pin.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Yeah, this was only really based on code inspection, so unclear if this 
+was even a real issue, or whether this is even related to the user 
+report. But once more certain of either, will update the commit message.
 
-diff --git a/drivers/gpu/drm/xe/display/xe_fb_pin.c b/drivers/gpu/drm/xe/display/xe_fb_pin.c
-index 461ecdfdb742..b16a6e3ff4b4 100644
---- a/drivers/gpu/drm/xe/display/xe_fb_pin.c
-+++ b/drivers/gpu/drm/xe/display/xe_fb_pin.c
-@@ -165,6 +165,9 @@ static int __xe_pin_fb_vma_dpt(const struct intel_framebuffer *fb,
- 
- 	vma->dpt = dpt;
- 	vma->node = dpt->ggtt_node[tile0->id];
-+
-+	/* Ensure DPT writes are flushed */
-+	xe_device_l2_flush(xe);
- 	return 0;
- }
- 
-@@ -334,8 +337,6 @@ static struct i915_vma *__xe_pin_fb_vma(const struct intel_framebuffer *fb,
- 	if (ret)
- 		goto err_unpin;
- 
--	/* Ensure DPT writes are flushed */
--	xe_device_l2_flush(xe);
- 	return vma;
- 
- err_unpin:
--- 
-2.49.0
+> Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+
+Thanks.
+
+> -Jonathan Cavitt
+> 
+>>
+>> There are reports of VRAM corruption in some heavy user workloads, which
+>> might be related: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4495
+>>
+>> Fixes: 523f191cc0c7 ("drm/xe/xe_migrate: Handle migration logic for xe2+ dgfx")
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>> Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.12+
+>> ---
+>>   drivers/gpu/drm/xe/xe_migrate.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+>> index 8f8e9fdfb2a8..16788ecf924a 100644
+>> --- a/drivers/gpu/drm/xe/xe_migrate.c
+>> +++ b/drivers/gpu/drm/xe/xe_migrate.c
+>> @@ -863,7 +863,7 @@ struct dma_fence *xe_migrate_copy(struct xe_migrate *m,
+>>   		if (src_is_vram && xe_migrate_allow_identity(src_L0, &src_it))
+>>   			xe_res_next(&src_it, src_L0);
+>>   		else
+>> -			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs,
+>> +			emit_pte(m, bb, src_L0_pt, src_is_vram, copy_system_ccs || use_comp_pat,
+>>   				 &src_it, src_L0, src);
+>>   
+>>   		if (dst_is_vram && xe_migrate_allow_identity(src_L0, &dst_it))
+>> -- 
+>> 2.49.0
+>>
+>>
 
 
