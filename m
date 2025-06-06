@@ -1,80 +1,96 @@
-Return-Path: <stable+bounces-151722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED0BAD061E
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:51:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA2EAD0636
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F33D16C168
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:51:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118011BA17BC
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1137428A1C8;
-	Fri,  6 Jun 2025 15:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D6289820;
+	Fri,  6 Jun 2025 15:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NW9nvpxe"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GVOmtQja";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mJXMCgBF";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GVOmtQja";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mJXMCgBF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51865289801;
-	Fri,  6 Jun 2025 15:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF6728980A
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 15:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749224943; cv=none; b=SlwTT0kdBa83VR/RJjThsoyOIzXuJNe5L6VGpZoZKIj2r9FLsZPxoDmp+EPCXBOGZX30xdoFV5PKneGkrd/VyCiYfBkQFqJQsTMDGSVKgvlp47otz3lbFC2xwZ+P7Hyo0gr8BkIXDr1g/TpOxTjHWm1AVy4bLzYh75htl1nNZss=
+	t=1749224996; cv=none; b=sXHLNvj0ZMrc/CXw44Ir207zZg0HNDVsTpCXDEbungAABcSDIlN6E2NlfCZlVMXn7vVtTtcHEj8XdH1pXeeaV0DBLEY3yMc1NraUyCaNsL917QgrP+k4WN2ETZc0ZgddOLDPiXFXb8HRif1pl+jtZx9orOwJgqNnz8CqqmlDRKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749224943; c=relaxed/simple;
-	bh=qteTWSdXmGXbvSh/VWtVvDyFhQzDEAd2cyVRYJIO0yg=;
+	s=arc-20240116; t=1749224996; c=relaxed/simple;
+	bh=C1fPIfSvCf7biycHCXokhdlMw6EgSYTxT2r/WPM0lPU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Su3JyLeECc9POlaqsV9NX0mmffc6oUpvIirGytxKxBJdXwaDIi95Q0A2Hs79ilI6ebuxGfUXr1n1Xwe3wbtxYTucZHwzZYjE5eDMO2934KS23fp+hzgtKA597hKMjHNEllwl0P6hlKZO1kgBVQ/sjd8Do/0gQ403xKfGfMRXBI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NW9nvpxe; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3122368d7cfso1909446a91.1;
-        Fri, 06 Jun 2025 08:49:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749224941; x=1749829741; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SFAXCqQFrPjFZs7s5flyQDRDOg704B5o+gINoyafWfw=;
-        b=NW9nvpxeAQP5ozos0dNMFjHsOTDiHhdYnfFRH5y1LXmTH6P+GQBmavLMlYGU+UunS1
-         dx/9ZTX9qlvIen5rJDoEr2CXjZ4KGcZB/OJJL+XaTEf6PLxFZREjbCyi91q3CafQeXse
-         SLELgwWo9HWSH7hqRcNH11fuMGOUiRldPyHpgqHybibseAqzqk4e+VPLipDl/SbxVnyN
-         GQffJNiJnGmOgMGg1FYlWYN9auyOkf1V4wDZeNVTl2OvexSZxRuNv7OtrdcfPIqY0dPA
-         6AXACvLe5NZbMGw/d/CAWPQRRtHcoSuanMQmHpAFxULAFAIpOM+Cj2HedtotFwExwKse
-         KQbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749224941; x=1749829741;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SFAXCqQFrPjFZs7s5flyQDRDOg704B5o+gINoyafWfw=;
-        b=IK1f7+fkfSZf8+x0Od3jjyQhV2w/xAAUtfTZQu7NKxdRpT50iA+Wh5cgypyZV4oeiU
-         3HdZaT2Fj7infffm+6EOeuFaWmFJazcCKnjF/nra0M8NnIwMD1r/tjQPa+3xZyh4Bsrn
-         m/h3dv1bhN8RxLehpjiiL3NtdSGzwW6KqKd5NRryJ0cs3Q0Au9taYvyv0/zclHkUZx60
-         E/aqqSaifp8D87U2ltyFQRN5vgNik2cusRACSDKuRUEtlGOKIziQYF2na5gO29HtlJbq
-         FpLIC1s6axLnFWJEXwXq+krUncbfFRguF0/NppxmDUvtcQhrpval14725zVqzP0cGEKE
-         kR+w==
-X-Forwarded-Encrypted: i=1; AJvYcCV8inONVebNTMWFS1+jxo9bIYBi4c4AcKuCFhreyDSg2mWspDzJtI4U2YqwOsI7dTxTOoM=@vger.kernel.org, AJvYcCW/LL05J10mLnP/BYgqStfgz/INlTnZdDd53W8ShtzcbskgsLHbATBVYrcqSuhoMbYM9JF3NBxRgt+OqJnc@vger.kernel.org, AJvYcCWjCAG8g4RmS/wzUdPNQmpLTpS1wB3pCbLt5GibjD0wBroDlEJLHMSCFvxTAFs51Hz2NaLt0hRB@vger.kernel.org, AJvYcCWrdoseY7tsDAWVhKDXYAFMV7X6VffmJoufiusExI3nfMdqAorpfehwBX84aGTdYOVNV+nTrtYa@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ5jYDd+1BxHKRc3i5P1n1FMRbPKlLP4wF2vpw9ot5CAfIZXkc
-	2Ug/lJx9jMeWVxAzs2NOpnxt+eYk63VNg1QlLxWeZBzfcCczySLhWLA+
-X-Gm-Gg: ASbGncsU4LcebNuK3HsVUbOkQePPdccZiN4wjr0V7A/XEEJ5We9eOvckS9ip91mnZKl
-	AG2JAJb28czfo4d9Z7/4PtmaLarvZs03KgKcXoTdE9X/B7rd09j+JneAJatIvB4vrPHW4YH3Nbq
-	wmZFjIow6iBMxBqDtfqj1W+U+pjW8J5wZAm0nq6otio7I2bT+EOJCdY7GcCMtUEUyYk/Uvnq/0R
-	hwHegOb8DhgfZ+pAsAhCO5yrOQOjNw+G3MtZ3GpCA6kNGJeIUrYyfOmyuN/KOdsmbb2c6WmOmmf
-	kzx0KUUJaaEde+AN3qhFfmm2JkkFHLuNyxD7cslC0xrg23i0MGLOF/bE29NkGObfP232M0dNd7X
-	Wita23ATLZrhE3lFkRr7X33s7pqpndPFlEPcbDH8y
-X-Google-Smtp-Source: AGHT+IHG/4StZ2v8LodTRZ+tFEEY1GEgtwGds0NXN4+D7wj3obn0sPwJ9Edgk7OM0j71WGZIu3Rb6w==
-X-Received: by 2002:a17:90b:4b09:b0:313:2adc:b4c4 with SMTP id 98e67ed59e1d1-31347678bbcmr5917844a91.24.1749224941467;
-        Fri, 06 Jun 2025 08:49:01 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4f0e:fb30:e7b6:944a:261d:ef5a? ([2001:ee0:4f0e:fb30:e7b6:944a:261d:ef5a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236032fcf53sm13827705ad.129.2025.06.06.08.48.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jun 2025 08:49:00 -0700 (PDT)
-Message-ID: <f073b150-b2e9-43db-aa61-87eee4755a2f@gmail.com>
-Date: Fri, 6 Jun 2025 22:48:53 +0700
+	 In-Reply-To:Content-Type; b=XKOBNbxLKFzUm0ZvG1ck+JoyHB9xM8sryucv9V1QKnmBgcGl21DVPC5uyAYDeV/h7/9cMn7Ha4aC64OZBTlSFL8hO/eJz00C8bfsINTmB6JyaLDlGPLHy+5E0X46byqtr+hShEHh3d9JuP+cLDPnoMtlMbBQutecb75oeon9FZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GVOmtQja; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mJXMCgBF; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GVOmtQja; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mJXMCgBF; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 078C9227E3;
+	Fri,  6 Jun 2025 15:49:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1749224993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
+	b=GVOmtQjaTtivUrlAFBo5NzjvDTzOs402fkt5bF+F6cDGEuIpsM9GN6k3FY+1pj7wyJbhao
+	pv+PShCgSZsb2osi7oJ4GYiwROiysfcJiOwSPaMeSlftlZRa//QeaXiooM4TdbrMjIZzVx
+	MWASfEr8zJ8J9lpA1Pj0LtrmvK8NSMA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1749224993;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
+	b=mJXMCgBFZof5TuVLm5I33eW+BFqQUlRIegFxxa+MaR0mZIp0+YMd1SW+y/ioSAdIHXcmPM
+	LFB//K1oU7Vt3pCA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GVOmtQja;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mJXMCgBF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1749224993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
+	b=GVOmtQjaTtivUrlAFBo5NzjvDTzOs402fkt5bF+F6cDGEuIpsM9GN6k3FY+1pj7wyJbhao
+	pv+PShCgSZsb2osi7oJ4GYiwROiysfcJiOwSPaMeSlftlZRa//QeaXiooM4TdbrMjIZzVx
+	MWASfEr8zJ8J9lpA1Pj0LtrmvK8NSMA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1749224993;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
+	b=mJXMCgBFZof5TuVLm5I33eW+BFqQUlRIegFxxa+MaR0mZIp0+YMd1SW+y/ioSAdIHXcmPM
+	LFB//K1oU7Vt3pCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF2FE1336F;
+	Fri,  6 Jun 2025 15:49:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2WiuNSAOQ2gjMgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 06 Jun 2025 15:49:52 +0000
+Message-ID: <65773983-19b7-47bb-a1bf-d9fde3a9957c@suse.cz>
+Date: Fri, 6 Jun 2025 17:49:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,62 +98,138 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] virtio-net: drop the multi-buffer XDP packet in
- zerocopy
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-References: <20250603150613.83802-1-minhquangbui99@gmail.com>
- <dd087fdf-5d6c-4015-bed3-29760002f859@redhat.com>
- <f6d7610b-abfe-415d-adf8-08ce791e4e72@gmail.com>
- <20250605074810.2b3b2637@kernel.org>
+Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory
+ snapshot
 Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <20250605074810.2b3b2637@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
+Cc: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
+ <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
+ <CAG48ez0eGkBCNSy1Lp7Fz41uyQym0UMvik9vVVjD1GKGhvGpqQ@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <CAG48ez0eGkBCNSy1Lp7Fz41uyQym0UMvik9vVVjD1GKGhvGpqQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 078C9227E3
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Score: -4.51
+X-Spam-Level: 
 
-On 6/5/25 21:48, Jakub Kicinski wrote:
-> On Thu, 5 Jun 2025 21:33:26 +0700 Bui Quang Minh wrote:
->> On 6/5/25 18:03, Paolo Abeni wrote:
->>> On 6/3/25 5:06 PM, Bui Quang Minh wrote:
->>>> In virtio-net, we have not yet supported multi-buffer XDP packet in
->>>> zerocopy mode when there is a binding XDP program. However, in that
->>>> case, when receiving multi-buffer XDP packet, we skip the XDP program
->>>> and return XDP_PASS. As a result, the packet is passed to normal network
->>>> stack which is an incorrect behavior.
->>> Why? AFAICS the multi-buffer mode depends on features negotiation, which
->>> is not controlled by the VM user.
->>>
->>> Let's suppose the user wants to attach an XDP program to do some per
->>> packet stats accounting. That suddenly would cause drop packets
->>> depending on conditions not controlled by the (guest) user. It looks
->>> wrong to me.
->> But currently, if a multi-buffer packet arrives, it will not go through
->> XDP program so it doesn't increase the stats but still goes to network
->> stack. So I think it's not a correct behavior.
-> Sounds fair, but at a glance the normal XDP path seems to be trying to
-> linearize the frame. Can we not try to flatten the frame here?
-> If it's simply to long for the chunk size that's a frame length error,
-> right?
+On 6/6/25 14:49, Jann Horn wrote:
+> On Tue, Jun 3, 2025 at 8:21 PM Jann Horn <jannh@google.com> wrote:
+>> @@ -917,7 +917,25 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+>>         /*
+>>          * We have a prealloc page, all good!  Take it
+>>          * over and copy the page & arm it.
+>> +        *
+>> +        * One nasty aspect is that we could be in a multithreaded process or
+>> +        * such, where another thread is in the middle of writing to memory
+>> +        * while this thread is forking. As long as we're just marking PTEs as
+>> +        * read-only to make copy-on-write happen *later*, that's easy; we just
+>> +        * need to do a single TLB flush before dropping the mmap/VMA locks, and
+>> +        * that's enough to guarantee that the child gets a coherent snapshot of
+>> +        * memory.
+>> +        * But here, where we're doing an immediate copy, we must ensure that
+>> +        * threads in the parent process can no longer write into the page being
+>> +        * copied until we're done forking.
+>> +        * This means that we still need to mark the source PTE as read-only,
+>> +        * with an immediate TLB flush.
+>> +        * (To make the source PTE writable again after fork() is done, we can
+>> +        * rely on the page fault handler to do that lazily, thanks to
+>> +        * PageAnonExclusive().)
+>>          */
+>> +       ptep_set_wrprotect(src_vma->vm_mm, addr, src_pte);
+>> +       flush_tlb_page(src_vma, addr);
+> 
+> Hmm... this is actually wrong, because we did
+> arch_enter_lazy_mmu_mode() up in copy_pte_range(). So I guess I
+> actually have to do:
+> 
+> arch_leave_lazy_mmu_mode();
+> ptep_set_wrprotect(src_vma->vm_mm, addr, src_pte);
+> flush_tlb_page(src_vma, addr);
+> arch_enter_lazy_mmu_mode();
+> 
+> (arch_flush_lazy_mmu_mode() would look a bit nicer, but powerpc
+> doesn't implement that.)
 
-Here we are in the zerocopy path, so the buffers for the frame to fill 
-in are allocated from XDP socket's umem. And if the frame spans across 
-multiple buffers then the total frame size is larger than the chunk 
-size. Furthermore, we are in the zerocopy so we cannot linearize by 
-allocating a large enough buffer to cover the whole frame then copy the 
-frame data to it. That's not zerocopy anymore. Also, XDP socket zerocopy 
-receive has assumption that the packet it receives must from the umem 
-pool. AFAIK, the generic XDP path is for copy mode only.
-
-Thanks,
-Quang Minh.
+Hm isn't that kinda weird that an arch can
+#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE and then just not implement an
+important part of it?
+IIUC think it's the same with arch/sparc/include/asm/tlbflush_64.h ?
+Should be possible to implement reusing part of the code from the respective
+arch_leave_lazy_mmu_mode() right?
 
 
