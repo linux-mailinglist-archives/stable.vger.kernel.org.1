@@ -1,141 +1,116 @@
-Return-Path: <stable+bounces-151620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657E9AD034C
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:35:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDBAAD03EF
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 16:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E99ED18968A2
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 13:36:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 274823B31A1
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 14:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000ED288CA8;
-	Fri,  6 Jun 2025 13:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C4013D52F;
+	Fri,  6 Jun 2025 14:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GT5XxhiH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qr1QraNu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0622874F9;
-	Fri,  6 Jun 2025 13:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940B613A258;
+	Fri,  6 Jun 2025 14:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749216947; cv=none; b=EqgSEP87M5Xb/18bUfcbmNfpU4bDG6TFSS3CXB0zky1CsJaFV2+2w4NRQAykZDFAiLF/S6LCROSLOoPvGTwMV3wV60YH4ujwney95RQFtQe2L2/xinuOR7YQRIB9BW/W/rs18dw2WEzWd80p/cciv7u8fyc+39qU0pwCZR2fqUY=
+	t=1749219662; cv=none; b=szEwgja8x8i44iBqOB9icFSGxc1iYcqHSfl52KbETzTmIMzOKqCA+ZhwD7CtMXUZfYaakpx0Au+/3bqTAPk72A4PVDDF792ZbraJLVY9hGohRA+u0Qo6t8v4nIEbaMm486RPe1LZn3CRLb2159l15WBFuCBrXr1fI6MgO5SbWWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749216947; c=relaxed/simple;
-	bh=0ml/MHinxxJm56VhkaRsfFKv/4fFXloCq1LTKaQ+fVo=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RAx1wTinZ5tvR/bt9WhgJh6N32uVJVD4e/60KzAWmrM+b7IP0uk83WGci+lfUpG+x5+9/l15cV+YG3HcDjE0jKPKz/a2wA/xuRaG/t7dcYmLt5Ohxis9+DSDtErKsJ/eqzU1C9x5oTGHjpu1MCZkseYYjeDEqChUoTkIUrFNUks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GT5XxhiH; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+	s=arc-20240116; t=1749219662; c=relaxed/simple;
+	bh=rSP2F/Vp8pAf45QmfKMDtzuSXKBxupSWAhnZGVm31eo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q17u/+7kvhY7Vg6/O0PjJ3EIE9HCrDpuhM8Bi7BGvS2W9J1A+/DOdSLnSf0o+Qoo34ewUKm1HWWMKndajTnFxc0XoQWcZ75lmnzIaWTRc82wA4lhFrXW1AYIjWT52HsxSk1bMj8tKI1Mc6BjMtC0zVRkdUOKdIHerNbAf4t4Au0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qr1QraNu; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-747fc7506d4so2183256b3a.0;
-        Fri, 06 Jun 2025 06:35:46 -0700 (PDT)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-22c336fcdaaso18812955ad.3;
+        Fri, 06 Jun 2025 07:21:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749216945; x=1749821745; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J6k/v7MmiVZncaG0gAng2Qdjjf1NhngohmIKq82nZVQ=;
-        b=GT5XxhiHCoSUsdV7qar9bw1g7K85HwCbcaDD/kTLmmbup8cvpONPW69i9ml0Bxkktc
-         Ilu9u0OEkpvNT6PwA+8fRJif8c2HM+3+4yT37aidA816CdkO6R1PUJNsDsT2OE2QqaVo
-         yZRx/Q70AvvtGTjVv+2xg3B+48L64He5k4rpP+u4Xtmgvpx9mpeS2t9149T2kf0e55Ab
-         eSoh2qumwB40okN1X+zharKzakASXA4bjNM1CXkIfcrioVcFX4wgY8knmvQ9Rz6w6XsC
-         WK5kjHsNMz4bxWhbqoNZ2AY0b79EVK3wbpGWnq1rzomppMxLGS7RsN5bmaGgg173GeNJ
-         9zMQ==
+        d=gmail.com; s=20230601; t=1749219660; x=1749824460; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7oHF+BaYEidVFkRjLgW1RNqKQ9NAKcb2cnOs0pZlOZI=;
+        b=Qr1QraNuxpm5zmQDlO6oHizRqfeUPmlK+VVtXg8liFA5qQOSKtcKMDRiyVrMPXs4kW
+         F11znNhLYVM/kNh6daLVfgCaqyUFOzi8wfoN4SMubeAS0QGVzc01265hDpWVFW5+evNx
+         CEqkNV5UPxHtc7QJrvxZeeSLajze3EwICA2o7e74+q3nEu1KAvce4B1Ypm4y4U8Nb4yg
+         0fPU43faciW8s/MbMklXf7kZuRAf/DUYk5PqpY+uZaM/eJst87cqGLUy+ZMnVpZhplZl
+         zLJi/J0gF2RiFJcQC2TYbBmiHheoPK6BFrDiMPXUPO5g3ilK8pdH1eaCEZ8/RB1OWa3t
+         GLeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749216945; x=1749821745;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:sender
+        d=1e100.net; s=20230601; t=1749219660; x=1749824460;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J6k/v7MmiVZncaG0gAng2Qdjjf1NhngohmIKq82nZVQ=;
-        b=pZ2OSTE4TUs0CvubQTP/y/ayogEF7WnlXV4TqsHl3jVdAnNbcZjDY4tPz6pNcoIgY+
-         k8xqtoD06yoURVgWYOODIym6u2RRzm0a80yYK2X/XxBOuAs+oPQN4NFYJCDjRCF7eLub
-         OO3LqG4dpRK5zq2MuM1+AjtmE+0AgfR/57l4hxUIy2QflLOLunxGZnSBRvOtpP9rI6PS
-         ExWWwv62ipLJHWgD7cTAbJV2cytIADhWu9N0sV0Njz2pDFiu3yxCxuRAmWzQlD06be9C
-         Bbig1vu0ccjyE/zo3+8roJzND2w1ZA/VHyGk0or8Ucs8SvPhgSBDE5xWKUqfIkYFtakl
-         j+hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSfIU36+gAXxL1VPGbuZxmThF+OkRvS4bkp7non+NdohBOrYvnbHcLMihP/s30lA0RwIr1sPTpgJJuxJFrkA==@vger.kernel.org, AJvYcCW4g2YriXPn35ETz5zIl5HQV6WWZdpSQqBiACIEx6NZhJnnc4r+NgkjHhirUEO7JCEUFSflv3UEkLMvYnqz@vger.kernel.org, AJvYcCWD6NdZqHQIVkmFpPZm77mAWNJd19/xfjzl3u3eNmtPUdDFmLNsgF4PCDFnfsDe9Qqiu8HZXxDZ95U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq6zatOG9cxxA3xXeVOmHnDMHbHK4dS4QVV0S3Gws0MKovvqkc
-	vQ5uVjsl3xdpzoVCFr72g3ECnw2SCi6DXxnoO8gDbQii/xBoqeoffq3s
-X-Gm-Gg: ASbGnctI7PKCGMQ/G5PGYrD0WKyrQeCUmwZ+Z3AjecIdAqItAseLxAlrAGp5UN3c2Vk
-	QLHA5ZPkTXdhaUqnzvRwZnz/6lsEmF4SYgweX6kC6kMCvHP3LjQTQ+PN68KmcJyc4AKxuQjO11L
-	kqkt9uKrBmcvduVT8BqOBEJ39lLrDGlHWYBh+xue2Gn1OZixdBYkA3oRxxizhIP9bUKarKhnAwe
-	vue+zenkrlGMhas5Kc5mgNPAJYAX+cLeZnB0dR1xhzwudmRF8hFPwyvWRAtd0K/Dp7YqGSk3xiP
-	fLmJqp1rc6pVkqsvk/J9xpCEIfzMkBBUIcwREokrSgZit/OZB+gCPlQ=
-X-Google-Smtp-Source: AGHT+IGVAVfaCO3WJmW8EZtwdSKaSpA2gT2x6UkvCUzMZbUmgdcLsdnbM0vABNk8ZcknIZtO7DrmhA==
-X-Received: by 2002:a05:6a00:188e:b0:742:da7c:3f28 with SMTP id d2e1a72fcca58-74827f37c17mr4990489b3a.21.1749216945558;
-        Fri, 06 Jun 2025 06:35:45 -0700 (PDT)
-Received: from [10.0.2.172] ([70.37.26.38])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0842d3sm1299017b3a.98.2025.06.06.06.35.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jun 2025 06:35:45 -0700 (PDT)
-Sender: Sinan Kaya <franksinankaya@gmail.com>
-From: Sinan Kaya <Okaya@kernel.org>
-X-Google-Original-From: Sinan Kaya <okaya@kernel.org>
-Message-ID: <7649f016-87f1-475d-8ff7-7608b14c5654@kernel.org>
-Date: Fri, 6 Jun 2025 09:35:44 -0400
+        bh=7oHF+BaYEidVFkRjLgW1RNqKQ9NAKcb2cnOs0pZlOZI=;
+        b=jfCibSwIRO+/bS79ASDI8Xvd2DIMnTCVEGJ7CFTulxppqNmu0v2PNXPAeQTYDhxBDA
+         uuziAWsNUHXiztWj5EYMdUDnBHysybXpAk83KMUim9pt1IFp70ic37gZpVeJNhLIjfv1
+         kI7/Jhzc6EamkFAGkNdCAkZu53EEqgYCMSQlzxBOt9COvBwxrw6guGCcqzeSrHwythw0
+         jJqYXXtlGLlsgX27/HIagjpNPJtJr2TY4/+VzBbsfCHKb5KjWyUj9EhOwgESdiuyj1tz
+         4/YJ7nuvYWdPnSuaLX0kYPpmaEuVFnrhuof/G2sbTESBL3C+3ixfJBMcCwYBIgPLWOM6
+         KpPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVxwdMOJUg6lKYqPa4qRDpgHmg6RBcBmXpRIyX+VdLfeSH5nEiLpCPCZJy0RpphdCmeXacC/LPBuyE13Uk=@vger.kernel.org, AJvYcCWo+ABnrM3dsLtTTCWGubU3Y2S96xBReSwvAOlL5zN6Co/YthV0DlCDpDIzDxCLhsoUWTWLUBbM@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgiVXrNStN+68lr9hAdWLcy9y0QCxtycdjXphnC2ORRRujGO+i
+	z1bcX4KU5yQsflZEU3uptUm6/5Shu+s0FLCHnyroIHnWOFv3rtngaL1nLVFyDQ==
+X-Gm-Gg: ASbGncsyCG336FjHkPzcXQ5pb2TEHI0lGpDGWMr5KA5K/mjfPE0ekGs7Hhqj1KeQcuf
+	O+g9F32H0pHAisqpQ6FgHJi+JW6cf159aLxCvyzfWqUArpjOcGD4cVEwGnEPpO1J2yOxFFM0cdk
+	CnQ2mNYiNHSJJToMjW6xVEAWNKm1R3owNnSZrLUbbtAF2oPW4Oizbk0N1L+5bRB+ip/RaFSz81K
+	AnTBCUAj5anLCEiy5nHPpIcHhx4kIwSuRndvOnDT/92nTL6VK7Edqjy/sWC0MdLE9yGY/PGespw
+	VdnW5T35mGvUd3bNVul4jZ5nMLyzoVn9urjSDlXkEG29SPtK0eQ=
+X-Google-Smtp-Source: AGHT+IEV6Xg84XbMRZPliX18VduESPGpoHh056OZEWDuyhWAMYEW6h7oFD9MTeB4Fa5jUSxYd8HJdg==
+X-Received: by 2002:a17:902:d48f:b0:234:b41e:37a4 with SMTP id d9443c01a7336-23601cf5aadmr37529615ad.6.1749219659719;
+        Fri, 06 Jun 2025 07:20:59 -0700 (PDT)
+Received: from localhost ([216.228.127.129])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236032fccc4sm12934765ad.127.2025.06.06.07.20.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jun 2025 07:20:59 -0700 (PDT)
+Date: Fri, 6 Jun 2025 10:20:56 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: I Hsin Cheng <richard120310@gmail.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] uapi: bitops: use UAPI-safe variant of BITS_PER_LONG
+ again
+Message-ID: <aEL5SIIMxmnrzbDA@yury>
+References: <20250606-uapi-genmask-v1-1-e05cdc2e14c5@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dmaengine: qcom_hidma: fix handoff FIFO memory leak
- on driver removal
-To: Eugen Hristev <eugen.hristev@linaro.org>, Qasim Ijaz
- <qasdev00@gmail.com>, Vinod Koul <vkoul@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20250601224231.24317-1-qasdev00@gmail.com>
- <20250601224231.24317-3-qasdev00@gmail.com>
- <3c6513fe-83b3-4117-8df6-6f8c7eb07303@linaro.org>
-Content-Language: en-US
-In-Reply-To: <3c6513fe-83b3-4117-8df6-6f8c7eb07303@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250606-uapi-genmask-v1-1-e05cdc2e14c5@linutronix.de>
 
+On Fri, Jun 06, 2025 at 10:23:57AM +0200, Thomas Weiﬂschuh wrote:
+> Commit 1e7933a575ed ("uapi: Revert "bitops: avoid integer overflow in GENMASK(_ULL)"")
+> did not take in account that the usage of BITS_PER_LONG in __GENMASK() was
+> changed to __BITS_PER_LONG for UAPI-safety in
+> commit 3c7a8e190bc5 ("uapi: introduce uapi-friendly macros for GENMASK").
+> BITS_PER_LONG can not be used in UAPI headers as it derives from the kernel
+> configuration and not from the current compiler invocation.
+> When building compat userspace code or a compat vDSO its value will be
+> incorrect.
+> 
+> Switch back to __BITS_PER_LONG.
+> 
+> Fixes: 1e7933a575ed ("uapi: Revert "bitops: avoid integer overflow in GENMASK(_ULL)"")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
-On 6/5/2025 9:04 AM, Eugen Hristev wrote:
->> diff --git a/drivers/dma/qcom/hidma_ll.c b/drivers/dma/qcom/hidma_ll.c
->> index fee448499777..0c2bae46746c 100644
->> --- a/drivers/dma/qcom/hidma_ll.c
->> +++ b/drivers/dma/qcom/hidma_ll.c
->> @@ -816,6 +816,7 @@ int hidma_ll_uninit(struct hidma_lldev *lldev)
->>   
->>   	required_bytes = sizeof(struct hidma_tre) * lldev->nr_tres;
->>   	tasklet_kill(&lldev->task);
->> +	kfifo_free(&lldev->handoff_fifo);
->>   	memset(lldev->trepool, 0, required_bytes);
->>   	lldev->trepool = NULL;
->>   	atomic_set(&lldev->pending_tre_count, 0);
-> Is it possible that the handoff_fifo is freed, then we could observe
-> reset complete interrupts before they are being cleared in
-> hidma_ll_uninit later on, which would lead to the following call chain
->
->   hidma_ll_inthandler - hidma_ll_int_handler_internal -
-> hidma_handle_tre_completion - hidma_post_completed -
-> tasklet_schedule(&lldev->task); - hidma_ll_tre_complete - kfifo_out
+Thanks Thomas. I applied it in bitmap-for-next. Is that issue critical
+enough for you to send a pull request in -rc2?
 
-According to the documentation, the way to guarantee this from not happening
-
-is to call tasklet_disable() to ensure that tasklet completes execution. 
-Only after that
-
-data structures used by the tasklet can be freed.
-
-I think proper order is:
-
-1. tasklet_disable
-
-2. tasklet_kill
-
-3. kfifo_free
-
-
-
+Thanks,
+Yury
 
