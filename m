@@ -1,235 +1,443 @@
-Return-Path: <stable+bounces-151723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA2EAD0636
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48363AD06D5
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 18:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118011BA17BC
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:51:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6B0118949F7
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 16:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D6289820;
-	Fri,  6 Jun 2025 15:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GVOmtQja";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mJXMCgBF";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GVOmtQja";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mJXMCgBF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4960728A1C7;
+	Fri,  6 Jun 2025 16:42:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF6728980A
-	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 15:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5B1289E3A;
+	Fri,  6 Jun 2025 16:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749224996; cv=none; b=sXHLNvj0ZMrc/CXw44Ir207zZg0HNDVsTpCXDEbungAABcSDIlN6E2NlfCZlVMXn7vVtTtcHEj8XdH1pXeeaV0DBLEY3yMc1NraUyCaNsL917QgrP+k4WN2ETZc0ZgddOLDPiXFXb8HRif1pl+jtZx9orOwJgqNnz8CqqmlDRKQ=
+	t=1749228152; cv=none; b=YPb4VErHK13F6K+24wnhpct6exqNhxEfAejAzf68AVtmQZVV+hLaW5J+P+Evr+4VXxSLEvACLPRqEGTvzqiHStOq++X5JDP+v83084UeOw6OSpQ8CrUkBelMZ9/Y7FXohqS5rV4/EcJj0JmzAAINIAAAyPd45DTsS/23+t3lFjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749224996; c=relaxed/simple;
-	bh=C1fPIfSvCf7biycHCXokhdlMw6EgSYTxT2r/WPM0lPU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XKOBNbxLKFzUm0ZvG1ck+JoyHB9xM8sryucv9V1QKnmBgcGl21DVPC5uyAYDeV/h7/9cMn7Ha4aC64OZBTlSFL8hO/eJz00C8bfsINTmB6JyaLDlGPLHy+5E0X46byqtr+hShEHh3d9JuP+cLDPnoMtlMbBQutecb75oeon9FZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GVOmtQja; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mJXMCgBF; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GVOmtQja; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mJXMCgBF; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 078C9227E3;
-	Fri,  6 Jun 2025 15:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1749224993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
-	b=GVOmtQjaTtivUrlAFBo5NzjvDTzOs402fkt5bF+F6cDGEuIpsM9GN6k3FY+1pj7wyJbhao
-	pv+PShCgSZsb2osi7oJ4GYiwROiysfcJiOwSPaMeSlftlZRa//QeaXiooM4TdbrMjIZzVx
-	MWASfEr8zJ8J9lpA1Pj0LtrmvK8NSMA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1749224993;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
-	b=mJXMCgBFZof5TuVLm5I33eW+BFqQUlRIegFxxa+MaR0mZIp0+YMd1SW+y/ioSAdIHXcmPM
-	LFB//K1oU7Vt3pCA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GVOmtQja;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mJXMCgBF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1749224993; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
-	b=GVOmtQjaTtivUrlAFBo5NzjvDTzOs402fkt5bF+F6cDGEuIpsM9GN6k3FY+1pj7wyJbhao
-	pv+PShCgSZsb2osi7oJ4GYiwROiysfcJiOwSPaMeSlftlZRa//QeaXiooM4TdbrMjIZzVx
-	MWASfEr8zJ8J9lpA1Pj0LtrmvK8NSMA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1749224993;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZSWsxV1nkp/hvTP+MxBmCkCJfNEuWV54k5bdoI12Pbk=;
-	b=mJXMCgBFZof5TuVLm5I33eW+BFqQUlRIegFxxa+MaR0mZIp0+YMd1SW+y/ioSAdIHXcmPM
-	LFB//K1oU7Vt3pCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF2FE1336F;
-	Fri,  6 Jun 2025 15:49:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2WiuNSAOQ2gjMgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 06 Jun 2025 15:49:52 +0000
-Message-ID: <65773983-19b7-47bb-a1bf-d9fde3a9957c@suse.cz>
-Date: Fri, 6 Jun 2025 17:49:52 +0200
+	s=arc-20240116; t=1749228152; c=relaxed/simple;
+	bh=FSJ2NFCigh/zm/yHBe9thSEYQN2IqjgbWwmIYyf+kM8=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=k+dvSi/mCDzImfc9Cw53TK91/7lmlx6CI0TOLgusvFzSFX4zRdnCW2WkiTUivz32gYhrU4VWsA7LId7kxtT9cXt6wB946q8L1GYhEFiwNEDg042H+80W0i7QxixJTZ2WXxHd2Usc0SvPKeLhzkWD+DiIq5jZRvEdqFnGceK/2kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF1B2C4CEED;
+	Fri,  6 Jun 2025 16:42:31 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.98.2)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1uNaAb-0000000FxAQ-1sqW;
+	Fri, 06 Jun 2025 12:43:53 -0400
+Message-ID: <20250606164353.303660896@goodmis.org>
+User-Agent: quilt/0.68
+Date: Fri, 06 Jun 2025 12:42:30 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ "Kiszka, Jan" <jan.kiszka@siemens.com>,
+ "Ziegler, Andreas" <ziegler.andreas@siemens.com>,
+ "MOESSBAUER, Felix" <felix.moessbauer@siemens.com>,
+ "Flot, Julien" <julien.flot@siemens.com>
+Subject: [for-linus][PATCH 1/3] tracing: Fix regression of filter waiting a long time on RCU
+ synchronization
+References: <20250606164229.056794577@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory
- snapshot
-Content-Language: en-US
-To: Jann Horn <jannh@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
-Cc: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
- <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
- <CAG48ez0eGkBCNSy1Lp7Fz41uyQym0UMvik9vVVjD1GKGhvGpqQ@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAG48ez0eGkBCNSy1Lp7Fz41uyQym0UMvik9vVVjD1GKGhvGpqQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 078C9227E3
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Spam-Score: -4.51
-X-Spam-Level: 
 
-On 6/6/25 14:49, Jann Horn wrote:
-> On Tue, Jun 3, 2025 at 8:21 PM Jann Horn <jannh@google.com> wrote:
->> @@ -917,7 +917,25 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
->>         /*
->>          * We have a prealloc page, all good!  Take it
->>          * over and copy the page & arm it.
->> +        *
->> +        * One nasty aspect is that we could be in a multithreaded process or
->> +        * such, where another thread is in the middle of writing to memory
->> +        * while this thread is forking. As long as we're just marking PTEs as
->> +        * read-only to make copy-on-write happen *later*, that's easy; we just
->> +        * need to do a single TLB flush before dropping the mmap/VMA locks, and
->> +        * that's enough to guarantee that the child gets a coherent snapshot of
->> +        * memory.
->> +        * But here, where we're doing an immediate copy, we must ensure that
->> +        * threads in the parent process can no longer write into the page being
->> +        * copied until we're done forking.
->> +        * This means that we still need to mark the source PTE as read-only,
->> +        * with an immediate TLB flush.
->> +        * (To make the source PTE writable again after fork() is done, we can
->> +        * rely on the page fault handler to do that lazily, thanks to
->> +        * PageAnonExclusive().)
->>          */
->> +       ptep_set_wrprotect(src_vma->vm_mm, addr, src_pte);
->> +       flush_tlb_page(src_vma, addr);
-> 
-> Hmm... this is actually wrong, because we did
-> arch_enter_lazy_mmu_mode() up in copy_pte_range(). So I guess I
-> actually have to do:
-> 
-> arch_leave_lazy_mmu_mode();
-> ptep_set_wrprotect(src_vma->vm_mm, addr, src_pte);
-> flush_tlb_page(src_vma, addr);
-> arch_enter_lazy_mmu_mode();
-> 
-> (arch_flush_lazy_mmu_mode() would look a bit nicer, but powerpc
-> doesn't implement that.)
+From: Steven Rostedt <rostedt@goodmis.org>
 
-Hm isn't that kinda weird that an arch can
-#define __HAVE_ARCH_ENTER_LAZY_MMU_MODE and then just not implement an
-important part of it?
-IIUC think it's the same with arch/sparc/include/asm/tlbflush_64.h ?
-Should be possible to implement reusing part of the code from the respective
-arch_leave_lazy_mmu_mode() right?
+When faultable trace events were added, a trace event may no longer use
+normal RCU to synchronize but instead used synchronize_rcu_tasks_trace().
+This synchronization takes a much longer time to synchronize.
+
+The filter logic would free the filters by calling
+tracepoint_synchronize_unregister() after it unhooked the filter strings
+and before freeing them. With this function now calling
+synchronize_rcu_tasks_trace() this increased the time to free a filter
+tremendously. On a PREEMPT_RT system, it was even more noticeable.
+
+ # time trace-cmd record -p function sleep 1
+ [..]
+ real	2m29.052s
+ user	0m0.244s
+ sys	0m20.136s
+
+As trace-cmd would clear out all the filters before recording, it could
+take up to 2 minutes to do a recording of "sleep 1".
+
+To find out where the issues was:
+
+ ~# trace-cmd sqlhist -e -n sched_stack  select start.prev_state as state, end.next_comm as comm, TIMESTAMP_DELTA_USECS as delta,  start.STACKTRACE as stack from sched_switch as start join sched_switch as end on start.prev_pid = end.next_pid
+
+Which will produce the following commands (and -e will also execute them):
+
+ echo 's:sched_stack s64 state; char comm[16]; u64 delta; unsigned long stack[];' >> /sys/kernel/tracing/dynamic_events
+ echo 'hist:keys=prev_pid:__arg_18057_2=prev_state,__arg_18057_4=common_timestamp.usecs,__arg_18057_7=common_stacktrace' >> /sys/kernel/tracing/events/sched/sched_switch/trigger
+ echo 'hist:keys=next_pid:__state_18057_1=$__arg_18057_2,__comm_18057_3=next_comm,__delta_18057_5=common_timestamp.usecs-$__arg_18057_4,__stack_18057_6=$__arg_18057_7:onmatch(sched.sched_switch).trace(sched_stack,$__state_18057_1,$__comm_18057_3,$__delta_18057_5,$__stack_18057_6)' >> /sys/kernel/tracing/events/sched/sched_switch/trigger
+
+The above creates a synthetic event that creates a stack trace when a task
+schedules out and records it with the time it scheduled back in. Basically
+the time a task is off the CPU. It also records the state of the task when
+it left the CPU (running, blocked, sleeping, etc). It also saves the comm
+of the task as "comm" (needed for the next command).
+
+~# echo 'hist:keys=state,stack.stacktrace:vals=delta:sort=state,delta if comm == "trace-cmd" &&  state & 3' > /sys/kernel/tracing/events/synthetic/sched_stack/trigger
+
+The above creates a histogram with buckets per state, per stack, and the
+value of the total time it was off the CPU for that stack trace. It filters
+on tasks with "comm == trace-cmd" and only the sleeping and blocked states
+(1 - sleeping, 2 - blocked).
+
+~# trace-cmd record -p function sleep 1
+
+~# cat /sys/kernel/tracing/events/synthetic/sched_stack/hist | tail -18
+{ state:          2, stack.stacktrace         __schedule+0x1545/0x3700
+         schedule+0xe2/0x390
+         schedule_timeout+0x175/0x200
+         wait_for_completion_state+0x294/0x440
+         __wait_rcu_gp+0x247/0x4f0
+         synchronize_rcu_tasks_generic+0x151/0x230
+         apply_subsystem_event_filter+0xa2b/0x1300
+         subsystem_filter_write+0x67/0xc0
+         vfs_write+0x1e2/0xeb0
+         ksys_write+0xff/0x1d0
+         do_syscall_64+0x7b/0x420
+         entry_SYSCALL_64_after_hwframe+0x76/0x7e
+} hitcount:        237  delta:   99756288  <<--------------- Delta is 99 seconds!
+
+Totals:
+    Hits: 525
+    Entries: 21
+    Dropped: 0
+
+This shows that this particular trace waited for 99 seconds on
+synchronize_rcu_tasks() in apply_subsystem_event_filter().
+
+In fact, there's a lot of places in the filter code that spends a lot of
+time waiting for synchronize_rcu_tasks_trace() in order to free the
+filters.
+
+Add helper functions that will use call_rcu*() variants to asynchronously
+free the filters. This brings the timings back to normal:
+
+ # time trace-cmd record -p function sleep 1
+ [..]
+ real	0m14.681s
+ user	0m0.335s
+ sys	0m28.616s
+
+And the histogram also shows this:
+
+~# cat /sys/kernel/tracing/events/synthetic/sched_stack/hist | tail -21
+{ state:          2, stack.stacktrace         __schedule+0x1545/0x3700
+         schedule+0xe2/0x390
+         schedule_timeout+0x175/0x200
+         wait_for_completion_state+0x294/0x440
+         __wait_rcu_gp+0x247/0x4f0
+         synchronize_rcu_normal+0x3db/0x5c0
+         tracing_reset_online_cpus+0x8f/0x1e0
+         tracing_open+0x335/0x440
+         do_dentry_open+0x4c6/0x17a0
+         vfs_open+0x82/0x360
+         path_openat+0x1a36/0x2990
+         do_filp_open+0x1c5/0x420
+         do_sys_openat2+0xed/0x180
+         __x64_sys_openat+0x108/0x1d0
+         do_syscall_64+0x7b/0x420
+} hitcount:          2  delta:      77044
+
+Totals:
+    Hits: 55
+    Entries: 28
+    Dropped: 0
+
+Where the total waiting time of synchronize_rcu_tasks_trace() is 77
+milliseconds.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: "Kiszka, Jan" <jan.kiszka@siemens.com>
+Cc: "Ziegler, Andreas" <ziegler.andreas@siemens.com>
+Cc: "MOESSBAUER, Felix" <felix.moessbauer@siemens.com>
+Link: https://lore.kernel.org/20250605161701.35f7989a@gandalf.local.home
+Reported-by: "Flot, Julien" <julien.flot@siemens.com>
+Tested-by: Julien Flot <julien.flot@siemens.com>
+Fixes: a363d27cdbc2 ("tracing: Allow system call tracepoints to handle page faults")
+Closes: https://lore.kernel.org/all/240017f656631c7dd4017aa93d91f41f653788ea.camel@siemens.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace_events_filter.c | 164 ++++++++++++++++++++++-------
+ 1 file changed, 127 insertions(+), 37 deletions(-)
+
+diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
+index 2048560264bb..3ff782d6b522 100644
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -1335,6 +1335,74 @@ static void filter_free_subsystem_preds(struct trace_subsystem_dir *dir,
+ 	}
+ }
+ 
++struct filter_list {
++	struct list_head	list;
++	struct event_filter	*filter;
++};
++
++struct filter_head {
++	struct list_head	list;
++	struct rcu_head		rcu;
++};
++
++
++static void free_filter_list(struct rcu_head *rhp)
++{
++	struct filter_head *filter_list = container_of(rhp, struct filter_head, rcu);
++	struct filter_list *filter_item, *tmp;
++
++	list_for_each_entry_safe(filter_item, tmp, &filter_list->list, list) {
++		__free_filter(filter_item->filter);
++		list_del(&filter_item->list);
++		kfree(filter_item);
++	}
++	kfree(filter_list);
++}
++
++static void free_filter_list_tasks(struct rcu_head *rhp)
++{
++	call_rcu(rhp, free_filter_list);
++}
++
++/*
++ * The tracepoint_synchronize_unregister() is a double rcu call.
++ * It calls synchronize_rcu_tasks_trace() followed by synchronize_rcu().
++ * Instead of waiting for it, simply call these via the call_rcu*()
++ * variants.
++ */
++static void delay_free_filter(struct filter_head *head)
++{
++	call_rcu_tasks_trace(&head->rcu, free_filter_list_tasks);
++}
++
++static void try_delay_free_filter(struct event_filter *filter)
++{
++	struct filter_head *head;
++	struct filter_list *item;
++
++	head = kmalloc(sizeof(*head), GFP_KERNEL);
++	if (!head)
++		goto free_now;
++
++	INIT_LIST_HEAD(&head->list);
++
++	item = kmalloc(sizeof(*item), GFP_KERNEL);
++	if (!item) {
++		kfree(head);
++		goto free_now;
++	}
++
++	item->filter = filter;
++	list_add_tail(&item->list, &head->list);
++	delay_free_filter(head);
++	return;
++
++ free_now:
++	/* Make sure the filter is not being used */
++	tracepoint_synchronize_unregister();
++	__free_filter(filter);
++}
++
+ static inline void __free_subsystem_filter(struct trace_event_file *file)
+ {
+ 	__free_filter(file->filter);
+@@ -1342,15 +1410,53 @@ static inline void __free_subsystem_filter(struct trace_event_file *file)
+ }
+ 
+ static void filter_free_subsystem_filters(struct trace_subsystem_dir *dir,
+-					  struct trace_array *tr)
++					  struct trace_array *tr,
++					  struct event_filter *filter)
+ {
+ 	struct trace_event_file *file;
++	struct filter_head *head;
++	struct filter_list *item;
++
++	head = kmalloc(sizeof(*head), GFP_KERNEL);
++	if (!head)
++		goto free_now;
++
++	INIT_LIST_HEAD(&head->list);
++
++	item = kmalloc(sizeof(*item), GFP_KERNEL);
++	if (!item) {
++		kfree(head);
++		goto free_now;
++	}
++
++	item->filter = filter;
++	list_add_tail(&item->list, &head->list);
+ 
+ 	list_for_each_entry(file, &tr->events, list) {
+ 		if (file->system != dir)
+ 			continue;
+-		__free_subsystem_filter(file);
++		item = kmalloc(sizeof(*item), GFP_KERNEL);
++		if (!item)
++			goto free_now;
++		item->filter = file->filter;
++		list_add_tail(&item->list, &head->list);
++		file->filter = NULL;
++	}
++
++	delay_free_filter(head);
++	return;
++ free_now:
++	tracepoint_synchronize_unregister();
++
++	if (head)
++		free_filter_list(&head->rcu);
++
++	list_for_each_entry(file, &tr->events, list) {
++		if (file->system != dir || !file->filter)
++			continue;
++		__free_filter(file->filter);
+ 	}
++	__free_filter(filter);
+ }
+ 
+ int filter_assign_type(const char *type)
+@@ -2131,11 +2237,6 @@ static inline void event_clear_filter(struct trace_event_file *file)
+ 	RCU_INIT_POINTER(file->filter, NULL);
+ }
+ 
+-struct filter_list {
+-	struct list_head	list;
+-	struct event_filter	*filter;
+-};
+-
+ static int process_system_preds(struct trace_subsystem_dir *dir,
+ 				struct trace_array *tr,
+ 				struct filter_parse_error *pe,
+@@ -2144,11 +2245,16 @@ static int process_system_preds(struct trace_subsystem_dir *dir,
+ 	struct trace_event_file *file;
+ 	struct filter_list *filter_item;
+ 	struct event_filter *filter = NULL;
+-	struct filter_list *tmp;
+-	LIST_HEAD(filter_list);
++	struct filter_head *filter_list;
+ 	bool fail = true;
+ 	int err;
+ 
++	filter_list = kmalloc(sizeof(*filter_list), GFP_KERNEL);
++	if (!filter_list)
++		return -ENOMEM;
++
++	INIT_LIST_HEAD(&filter_list->list);
++
+ 	list_for_each_entry(file, &tr->events, list) {
+ 
+ 		if (file->system != dir)
+@@ -2175,7 +2281,7 @@ static int process_system_preds(struct trace_subsystem_dir *dir,
+ 		if (!filter_item)
+ 			goto fail_mem;
+ 
+-		list_add_tail(&filter_item->list, &filter_list);
++		list_add_tail(&filter_item->list, &filter_list->list);
+ 		/*
+ 		 * Regardless of if this returned an error, we still
+ 		 * replace the filter for the call.
+@@ -2195,31 +2301,22 @@ static int process_system_preds(struct trace_subsystem_dir *dir,
+ 	 * Do a synchronize_rcu() and to ensure all calls are
+ 	 * done with them before we free them.
+ 	 */
+-	tracepoint_synchronize_unregister();
+-	list_for_each_entry_safe(filter_item, tmp, &filter_list, list) {
+-		__free_filter(filter_item->filter);
+-		list_del(&filter_item->list);
+-		kfree(filter_item);
+-	}
++	delay_free_filter(filter_list);
+ 	return 0;
+  fail:
+ 	/* No call succeeded */
+-	list_for_each_entry_safe(filter_item, tmp, &filter_list, list) {
+-		list_del(&filter_item->list);
+-		kfree(filter_item);
+-	}
++	free_filter_list(&filter_list->rcu);
+ 	parse_error(pe, FILT_ERR_BAD_SUBSYS_FILTER, 0);
+ 	return -EINVAL;
+  fail_mem:
+ 	__free_filter(filter);
++
+ 	/* If any call succeeded, we still need to sync */
+ 	if (!fail)
+-		tracepoint_synchronize_unregister();
+-	list_for_each_entry_safe(filter_item, tmp, &filter_list, list) {
+-		__free_filter(filter_item->filter);
+-		list_del(&filter_item->list);
+-		kfree(filter_item);
+-	}
++		delay_free_filter(filter_list);
++	else
++		free_filter_list(&filter_list->rcu);
++
+ 	return -ENOMEM;
+ }
+ 
+@@ -2361,9 +2458,7 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
+ 
+ 		event_clear_filter(file);
+ 
+-		/* Make sure the filter is not being used */
+-		tracepoint_synchronize_unregister();
+-		__free_filter(filter);
++		try_delay_free_filter(filter);
+ 
+ 		return 0;
+ 	}
+@@ -2387,11 +2482,8 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
+ 
+ 		event_set_filter(file, filter);
+ 
+-		if (tmp) {
+-			/* Make sure the call is done with the filter */
+-			tracepoint_synchronize_unregister();
+-			__free_filter(tmp);
+-		}
++		if (tmp)
++			try_delay_free_filter(tmp);
+ 	}
+ 
+ 	return err;
+@@ -2417,9 +2509,7 @@ int apply_subsystem_event_filter(struct trace_subsystem_dir *dir,
+ 		filter = system->filter;
+ 		system->filter = NULL;
+ 		/* Ensure all filters are no longer used */
+-		tracepoint_synchronize_unregister();
+-		filter_free_subsystem_filters(dir, tr);
+-		__free_filter(filter);
++		filter_free_subsystem_filters(dir, tr, filter);
+ 		return 0;
+ 	}
+ 
+-- 
+2.47.2
+
 
 
