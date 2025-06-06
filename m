@@ -1,104 +1,124 @@
-Return-Path: <stable+bounces-151605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EA2ACFF69
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 11:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C24BCACFFEB
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 12:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43B503B1B6E
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 09:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F7FC3A929C
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 10:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415C32356B9;
-	Fri,  6 Jun 2025 09:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520792868B2;
+	Fri,  6 Jun 2025 10:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rebNEyMv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o/iDplID"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF21527468;
-	Fri,  6 Jun 2025 09:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5752727FB34
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 10:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749202641; cv=none; b=U+XHgXusNW3GqcvzC885ylMiMOg3R7gAK1gKVtIl96ifeREZBWFXqTYRFURzVJqSnj7xbWD/0ydmoexjEZy3rbr+UUobwuXN98jnat/gqCobLwq3Ii7LjR6nzta0/HQvbEfPWVkcbza9ENN+MPgqgG2WZoHcRjdiUIH0RB6aXeg=
+	t=1749204024; cv=none; b=ahbBvJaUL55Rt7Qpd56NydU76pV4Mf1P29e/tx15OCW50BGSXlBvRS5AbDM2EY4RFYlHxOBhC4mwbKQMxz8Km+YxLRpOqxvlpkZxft0TWHlqcvyXMzxMqXO2LCN9w6QcPokhbQlwEaAOO/1Fq/K2a7e1WLR5/HksZuoe620LLm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749202641; c=relaxed/simple;
-	bh=a9Zg/DhoRqaLyi2gmTsRz1QWED8HUHhMKVYw0b0MLaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mHsgwz1Ajv0f0weaBl/s6XRi2MeY+wf5ZiqKNPlsZrnJDA9ZEJo6XGZN+yLRRDWbZGFmQrmFKkc804vMBquacGrhUXNJp13Cud7GAbH6+VPgIMFA36DPDgOUY3XcbTOcWcATfihgRNdKzdtF2zx+8r2iZsHf8g+uWWjXO39FDwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rebNEyMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49711C4CEEB;
-	Fri,  6 Jun 2025 09:37:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749202640;
-	bh=a9Zg/DhoRqaLyi2gmTsRz1QWED8HUHhMKVYw0b0MLaI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rebNEyMvMYlywgjkjaA5J0/uuXWIXSLc6zgj/dGdlsiZosql0U8UEzlkhGdOrCVNX
-	 QCXkyKhmNvG2S2OOL06l1ptZqqFIXan8fEZRpHD0UUDEIo8GaWElcz1dbOSkCQvV9b
-	 Z0JnD890NNQllDqryXTiJTi+U2FJbDWB1aTIG/oNWpi2I7S5YkS/qxJDnlVS/CbUx8
-	 bVrW39gEB8/2iP+ubx8Z87KowkPOKTbscLbefMienA/R00FgW4FJK57I8QNsXlfKDc
-	 dIfs1B1R+N+4fSeymzZK+RCQQLjqZNhRA/LGfCoNIT9cUlIbSO1esjVy75z3tw5l5t
-	 HreKk1oTkY6WQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1uNTVj-0000000039m-1X7v;
-	Fri, 06 Jun 2025 11:37:16 +0200
-Date: Fri, 6 Jun 2025 11:37:15 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] wifi: ath12k: fix dest ring-buffer corruption
- when ring is full
-Message-ID: <aEK2y8mMSQtbsKq2@hovoldconsulting.com>
-References: <20250604144509.28374-1-johan+linaro@kernel.org>
- <20250604144509.28374-5-johan+linaro@kernel.org>
- <a8236639-2448-4552-ac21-db7e7370e23e@quicinc.com>
- <aEKylLhbfLusD3Kq@hovoldconsulting.com>
+	s=arc-20240116; t=1749204024; c=relaxed/simple;
+	bh=3a+WQLGp4elFYZvrRecz8JZgfyQKKlirEzi3m1GN03Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=taiQwoH5fvbUhJb0teC2TCHyc4mlVkK9zpxBQq8S2CF89Kn9o1ZRtpkR6zN8cPWwXDO9W996R4UPYssEXFJsxf8Onv3jwIzlVQ8ReWXdpR+4mMOZn9aTLg2KI8VxRTRFg7hobjTamG3GQDcBBwjmKPMjVT/5OJGEbb9wFdJRC78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o/iDplID; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a36e090102so1157398f8f.2
+        for <stable@vger.kernel.org>; Fri, 06 Jun 2025 03:00:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749204020; x=1749808820; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0Wm5Ysxp6GbjttnpPxWFZX/i14ZJHHqOtrosH3lsbGA=;
+        b=o/iDplIDx5jpp9nUY2jflHw+xk5xcd4ILsUh9OwOBhQIfOtjZsVTBUBYuJNnaNfcg2
+         06Asjz7Ndy39AphhmVt1np1DmZWrr2jXcgHeE7WTJgYuTl1bqdZAGqp4frdiG+DAP9YF
+         aKhckTHYjKjt6h+kX2xeHNIP6grjHdSj+APQMCikU7wOWHAoEWE7bWVHcD7KR+fm9Ox8
+         bSxsTXZrETAtNQGEE6gq+6YX4cmxNKMRwtG+NNsMMD9NVtclnswI+tnv2UnboQaZIplJ
+         iE3ag+NBvbrzR5vOOp0pVUJ0+ES6BigyPtNAM8dU3SrNhM28KzjyViIdT1IGYOipxVe+
+         5Eig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749204020; x=1749808820;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Wm5Ysxp6GbjttnpPxWFZX/i14ZJHHqOtrosH3lsbGA=;
+        b=h/retvyAUDynAQ8qjC7QmBaeO7zO5reCcR3eiT0zrQKpCmntdsPU8aiCBQI+GPHHQ2
+         oywXpsqVBR361EIje4pjjE++tgbQ8pE126sct7aet4AUOqKSDAs1iPsVY6ymWSsnle+w
+         jOt+zrrlq2RXIbOWAz+IwE5okroOW8Zvej70G9qFVj8GD/xaVrcN2BOmUZImTULKILCW
+         2WBLSIdMKmcTsDl+g9A+EhVHcTk/kAgKZ3vs4h25d7J7IDiX0aEbDTbrzbomIS/XwL3A
+         mIqqHVjP/Lwd++mQuKETX5DC573mIOj5VxhMQLDcvMfl6AYqrXgnhbYkv+SXQqNiS1RF
+         53Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVnmAHJsQFSfKg1Opk9i5u9I3KVvVNpJanJztB675ra7FJ/Y1GyA7hHwQoGktWviH4rKiHkZho=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ7vm5DF1qI8AnqLaTaPUDUUtA5uF9hWbytzNbW0B3ryTX8Txv
+	BEIFFXDPGtPj5eDQJERxlQqoe+beYoHDJ0T70ed5vrUvu3gE7Uk1WYUhDttKZVBrI84=
+X-Gm-Gg: ASbGncu1lqjnz+CmVn5WeGXn5BFEalFgewmlGWU5Hm7geHQHwtAl55YK7GFqP92/UPu
+	npuYY0qLY9uW5o+OcOcnTtmbDYPAbSHDje6Y0bGFYloYy1ewvKzQcqG2DV1PUivW9vxFMk4aD/P
+	KcsI2Igo0fl3lfgzov8ejNtJyVbYIAkm2u1WkUGKEtV8myY/B/oSL4EJ076RQJdn2cKQAGK/+Rv
+	jVLXjy0KtbTpaa6XOYLfAV+eYj7eCPPa0tCPz/o0+5SyzU4FS+A55kmb7FrFdsfc6h0u4K8HSR5
+	rpbV29ZVFI0SkEu94TUduk9GUUxlPaE0+Ww8YQeRxj0PowTjilfJYizSnDnbQ3LfHmj5lQ==
+X-Google-Smtp-Source: AGHT+IHtw37a7aLpgY1NgIlSmAhbyHbRMRvllHSnmnalrMLkUdNldLsfg2cqEgFo08aK/ax73zNvkw==
+X-Received: by 2002:a05:6000:25c5:b0:3a4:df80:7284 with SMTP id ffacd0b85a97d-3a53188a553mr2530102f8f.1.1749204020520;
+        Fri, 06 Jun 2025 03:00:20 -0700 (PDT)
+Received: from [192.168.1.221] ([5.30.189.74])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5324621a4sm1347436f8f.88.2025.06.06.03.00.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Jun 2025 03:00:18 -0700 (PDT)
+Message-ID: <ca3ce8df-aa4f-4422-8455-29db2440d8d5@linaro.org>
+Date: Fri, 6 Jun 2025 13:00:14 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEKylLhbfLusD3Kq@hovoldconsulting.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dmaengine: mediatek: Fix a flag reuse error in
+ mtk_cqdma_tx_status()
+To: Qiu-ji Chen <chenqiuji666@gmail.com>
+Cc: sean.wang@mediatek.com, vkoul@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, dmaengine@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+ stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+References: <20250606071709.4738-1-chenqiuji666@gmail.com>
+ <ff77f70e-344d-4b8a-a27f-c8287d49339c@linaro.org>
+ <CANgpojXWk1zvu32bMuGgkVGVNvPw+0NWmSUC62Sbc3WcUXAd3A@mail.gmail.com>
+Content-Language: en-US
+From: Eugen Hristev <eugen.hristev@linaro.org>
+In-Reply-To: <CANgpojXWk1zvu32bMuGgkVGVNvPw+0NWmSUC62Sbc3WcUXAd3A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 06, 2025 at 11:19:16AM +0200, Johan Hovold wrote:
-> On Fri, Jun 06, 2025 at 03:27:04PM +0800, Miaoqing Pan wrote:
-> > On 6/4/2025 10:45 PM, Johan Hovold wrote:
-> > > Add the missing memory barriers to make sure that destination ring
-> > > descriptors are read before updating the tail pointer (and passing
-> > > ownership to the device) to avoid memory corruption on weakly ordered
-> > > architectures like aarch64 when the ring is full.
-> 
-> > > @@ -2184,6 +2187,10 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
-> > >   					   srng->u.src_ring.hp);
-> > >   		} else {
-> > >   			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
-> > > +			/* Make sure descriptor is read before updating the
-> > > +			 * tail pointer.
-> > > +			 */
-> > > +			mb();
-> > 
-> > Is rmb() sufficient, since MMIO write already includes wmb()?
-> 
-> No, rmb() only orders reads against later reads.
-> 
-> [ The wmb() itself orders reads against later writes on aarch64, but
-> that's not generally guaranteed and hence should not be relied on in
-> driver code. ]
 
-Sorry, I meant to say: an rmb() would order reads against later writes
-on aarch64 (but that's not generally guaranteed and hence should not be
-relied on in driver code).
 
-Johan
+On 6/6/25 12:14, Qiu-ji Chen wrote:
+>> On 6/6/25 10:17, Qiu-ji Chen wrote:
+>>> Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
+>> If the first spin_lock_irqsave already saved the irq flags and disabled
+>> them, would it be meaningful to actually use a simple spin_lock for the
+>> second lock ? Or rather spin_lock_nested since there is a second nested
+>> lock taken ?
+>>
+>> Eugen
+>>
+> 
+> Hello Eugen,
+> 
+> Thanks for helpful suggestion. The modification has been submitted in
+> patch v2 as discussed.
+> 
+> Best regards,
+> Qiu-ji Chen
+
+You are welcome, but in fact I suggested two alternatives. Any reason
+you picked this one instead of the other ?
 
