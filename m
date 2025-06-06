@@ -1,128 +1,110 @@
-Return-Path: <stable+bounces-151737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDE5AD092E
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 22:53:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD86AD0A09
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 00:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD25189BC40
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 20:53:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDC873B1196
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 22:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C604D21773F;
-	Fri,  6 Jun 2025 20:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ED523A98D;
+	Fri,  6 Jun 2025 22:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="maNdaJrr"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="O9Lit9VT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16081DE887;
-	Fri,  6 Jun 2025 20:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639CC1EF091;
+	Fri,  6 Jun 2025 22:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749243200; cv=none; b=pUVU8bcGs5Ks93sT3zzRGtAY9MQwO0RHSmlr5hOgLAvUXpatkr33TCTeCnPs1LVtZo1yvSg7533KwhS/xkd4Qjh2qr9vTSxApEcP2ofT0Ss9FPvLbadRmbUBKHYw1pMtgVPJgheKbsikoKx1Nsfbmn9MhkxvHknCpqXTaMx+GJQ=
+	t=1749249828; cv=none; b=JmbI27qM+ADvOkrwkUkwwls3z5/jcRZ0ZZyAFOce4qLsVNx6+DvjQlBUnF2jiQBqu75PCDzwRP3zu+/dBc0jDVdh0nUFat+P+afePk19Mkzzpru13/bICYoX866zBP80oro3b+RwbyMv/0mJAcr35I4guy4GDHmcyIOhQouG1/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749243200; c=relaxed/simple;
-	bh=te0rz6iuH+tuOfeWxtRzrEQXLcAUOuPCArfYha2FS8Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dDpJ//KNrdOwU0zp1E2mDJs/rq+D9PNrbbck2yWB1kVnFBIFIvYeyALmf+0lp5Rcjmpqa0iIas0fFvnztdHytSvIXcealdgJoqKAwyQniPOhwGPK9u24x6cX5BtDXYDqwv8Ktz29ZdBsoR405B2hw+eAAYkybWa03CG6IkB5A3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=maNdaJrr; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749243198; x=1780779198;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=te0rz6iuH+tuOfeWxtRzrEQXLcAUOuPCArfYha2FS8Q=;
-  b=maNdaJrrFJmbF7qBzXgb7krjpgnt1c/6Jx6IvNg7lGUZXfd+v/On1p2M
-   Yk5QafNi1aQOxJAxUw/ZNXUr4dn5sDIFmGUcqxEUJmilpVCZ+cr3d+Wzw
-   4wZlTHZ00lSCd7xd69xDiWbQVinX6kI2DV8Kp/tmhx5Wa0MlIp4A/PeNn
-   lavAoIdOqpRJC3BGO+qjb18SkwVVyu+V3iEa44C+1DCejBNVihDfnKq+P
-   nMOOPZm55gVh/rw9yWfPT1QAkvnUqJWr7jqrnAJ+PRU4UYrD3XyY57bm4
-   j0K8lJ+oYzalIz9AIejRbgq6QS1cIaD6IxIaC5Wh4V2hgPBc2ZlayVWX8
-   g==;
-X-CSE-ConnectionGUID: G9mqQ4hOTBicBocx8FxEBg==
-X-CSE-MsgGUID: PnlqbgcFSpmTUfeiEfk+MQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11456"; a="73931460"
-X-IronPort-AV: E=Sophos;i="6.16,216,1744095600"; 
-   d="scan'208";a="73931460"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 13:53:17 -0700
-X-CSE-ConnectionGUID: ZUzEG+hISHSsKQ+aQroEfA==
-X-CSE-MsgGUID: sQ9MDDtzTx2DxZmGMHll6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,216,1744095600"; 
-   d="scan'208";a="176806018"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
-  by fmviesa001.fm.intel.com with ESMTP; 06 Jun 2025 13:53:16 -0700
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To: hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] platform/x86/intel-uncore-freq: Fail module load when plat_info is NULL
-Date: Fri,  6 Jun 2025 13:53:00 -0700
-Message-ID: <20250606205300.2384494-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1749249828; c=relaxed/simple;
+	bh=HN34rSnhpwUhiCxBdO8bEkaZpPDUMJPzG0R3Eks/3+I=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=AukZXjOefF8/E3jRQAXrGZv26cT/8GzrgVawxc5KRejT5AzDPXpH1mB6qFBXBRXZQOh/WSw3iVX5AB/QhbJ4zo8fG6+D0jtVFnAbFx2fIkRn1b0y9o0iqffgFt2KsQJJoVxDOJ4oQpJ2xzniG+LP9r0+28mMiG7KoJa4NlTv3W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=O9Lit9VT; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from [192.168.1.114] (unknown [185.145.125.130])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 853F8552F52E;
+	Fri,  6 Jun 2025 22:43:34 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 853F8552F52E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1749249815;
+	bh=4FNrxbrDLezJtGVSd30QPAcSgY0PsKN5mciA3269qaI=;
+	h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+	b=O9Lit9VTcu1dYostvlsJ0kivcghmnYDfLqv64c1yU59Zj++arBnRWKdAro3K9OrHk
+	 4h+GShxSQZsx3TXasDaXvcH7ijV82hFbdwyjB3uekD1DI7xVmLr/GLwKGJWJaff+bS
+	 TZ5kgEnAF0v5EK3d5qq1bzy3ymms3nSb4eFlsfcs=
+Subject: Re: [PATCH 5.10 114/270] netfilter: nf_tables: do not defer rule
+ destruction via call_rcu
+To: netfilter-devel@vger.kernel.org, Florian Westphal <fw@strlen.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ syzbot+b26935466701e56cfdc2@syzkaller.appspotmail.com,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+References: <20250602134307.195171844@linuxfoundation.org>
+ <20250602134311.887199759@linuxfoundation.org>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Message-ID: <99fd0bfd-7bab-d0dc-76b9-9aa7a61c1410@ispras.ru>
+Date: Sat, 7 Jun 2025 01:43:32 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250602134311.887199759@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: ru-RU
+Content-Transfer-Encoding: 7bit
 
-Address a Smatch static checker warning regarding an unchecked
-dereference in the function call:
-set_cdie_id(i, cluster_info, plat_info)
-when plat_info is NULL.
+On 02.06.2025 16:46, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Florian Westphal <fw@strlen.de>
+> 
+> commit b04df3da1b5c6f6dc7cdccc37941740c078c4043 upstream.
+> 
+..skip..
 
-Instead of addressing this one case, in general if plat_info is NULL
-then it can cause other issues. For example in a two package system it
-will give warning for duplicate sysfs entry as package ID will be always
-zero for both packages when creating string for attribute group name.
+> Also add a few lockdep asserts to make this more explicit.
+> 
+..skip..
 
-plat_info is derived from TPMI ID TPMI_BUS_INFO, which is integral to
-the core TPMI design. Therefore, it should not be NULL on a production
-platform. Consequently, the module should fail to load if plat_info is
-NULL.
+> +/* can only be used if rule is no longer visible to dumps */
+>  static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
+>  {
+> +	lockdep_commit_lock_is_held(ctx->net);
+> +
+>  	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
+>  }
+> @@ -4858,6 +4860,8 @@ void nf_tables_deactivate_set(const stru
+>  			      struct nft_set_binding *binding,
+>  			      enum nft_trans_phase phase)
+>  {
+> +	lockdep_commit_lock_is_held(ctx->net);
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/platform-driver-x86/aEKvGCLd1qmX04Tc@stanley.mountain/T/#u
-Fixes: 8a54e2253e4c ("platform/x86/intel-uncore-freq: Uncore frequency control via TPMI")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- .../x86/intel/uncore-frequency/uncore-frequency-tpmi.c   | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+I guess you meant WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
+here?
 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-index 1c7b2f2716ca..44d9948ed224 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
-@@ -511,10 +511,13 @@ static int uncore_probe(struct auxiliary_device *auxdev, const struct auxiliary_
- 
- 	/* Get the package ID from the TPMI core */
- 	plat_info = tpmi_get_platform_data(auxdev);
--	if (plat_info)
--		pkg = plat_info->package_id;
--	else
-+	if (unlikely(!plat_info)) {
- 		dev_info(&auxdev->dev, "Platform information is NULL\n");
-+		ret = -ENODEV;
-+		goto err_rem_common;
-+	}
-+
-+	pkg = plat_info->package_id;
- 
- 	for (i = 0; i < num_resources; ++i) {
- 		struct tpmi_uncore_power_domain_info *pd_info;
--- 
-2.49.0
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+--
+Alexey
+
+
 
 
