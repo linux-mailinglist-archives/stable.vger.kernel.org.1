@@ -1,140 +1,172 @@
-Return-Path: <stable+bounces-151616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCF3AD0284
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 14:49:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93783AD029E
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 14:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B28A318921BA
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 12:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4541F17471C
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 12:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD09C1ABEC5;
-	Fri,  6 Jun 2025 12:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D355288514;
+	Fri,  6 Jun 2025 12:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xEYH2/qf"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uBFbsyo4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BFEF9EC
-	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 12:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B3C283FE6
+	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 12:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749214183; cv=none; b=BFxwUSzpxzPelL6R1kQnYXHP+gb6worZk12T23ZLBwRQ+pGQeuP3uqIiB56nOQq2iiWE2i0YWc5RHi0nxWtDVmiLJ/ylHhsxvSReYJ4VAs9eXe12O7lU+Kif3DqEOA57JopKqiV3F04bNMPOa/7uqa4AR2Uw6cM6eDpN2ofSINM=
+	t=1749214564; cv=none; b=jVbO1qMMwqOY2itGNIXMdPmPD30tgRy+UHhGmCrCucQPIWD6bAKleEXuv4KET6jEefafcR57xfANHPSaoKy2HzNN5dyhMCwKrEhXnTFHQRq63iFuI3WW6XyDKJ9JNBHpM3SBni6jogga61NpUjVACpP4B7asPjL2QbfDlUe8usU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749214183; c=relaxed/simple;
-	bh=Kl162rCV+ypEM/wfn7pzFhevVmvQmQXR77cvA0nqf9I=;
+	s=arc-20240116; t=1749214564; c=relaxed/simple;
+	bh=pyP4voBTnGow5cseeEAeEmJxNYO/WBjrdKku1W4VhIE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MPG16bTRVBKmT1roGkolUjgPBa3I+QVrzIOMQXoWBM5m9XEzXfNDfHVEuQSIU4hUU7XBYXaD0U0pYvDpeMC5+ZCMqaQ/j4DZ81sAj/OQx3Hx+/lLa247Wf+yIha3wh93LbCaAL6bLigUvRxB4CS8bMnqayZwBBNT4f3lH5UrOGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xEYH2/qf; arc=none smtp.client-ip=209.85.208.51
+	 To:Cc:Content-Type; b=TjTMmi7O6qeg0XMYANrH0PMqccbIbqHMEZA0MvCPWv11DSYsT7P1/0tpM1uKFxh2tOenOXYnYgMf/kNfnzSunQdf7RRVCLXvmk6L11aLAjZK+8tKEmK0pciGxiGN8vLVRmsSRmjQpqSqgdqZTV56Lwua4iftfi1zR6nsgZceJTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uBFbsyo4; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6024087086dso9921a12.0
-        for <stable@vger.kernel.org>; Fri, 06 Jun 2025 05:49:41 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso8594a12.1
+        for <stable@vger.kernel.org>; Fri, 06 Jun 2025 05:56:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749214180; x=1749818980; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749214561; x=1749819361; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BT+AT6MqsJ3M+MYT3uZEthRD6VpQnEM0vp9KYd7MzOw=;
-        b=xEYH2/qf1sHLXnOM81CDAF563Fwd1m4Nikqw992j5v+bP4mDVuri3cRtaHhTnQhnlO
-         A4qUsVfNATAh3cxDfsIjD6KlnSlSEWRo0HcStf+4npQvreyRKUXjKYxsABx6zzWMw6Mz
-         oywWwF4Fei1EE5QIdj0NoVqDa8p+g3ngN0C0yw1Gv4+ea1XFgGxmp4J6HwfR+quax+RS
-         WHqEX3je4nSVb7+gXFcVMHX6rpszDKLPekJEMk95CxDHcPkJ/pI60b4yiXC73/dfatc/
-         cRKELom3GnuDSZdiWka9YNwtisu+ct2YGQl0aTDt5fgsqphzDj9lak0vLQTn1ubBvFdm
-         +hCg==
+        bh=lej/JzmO0Dw1V/XOb+M60AVoOmPPuLiZ67cVi04ciIo=;
+        b=uBFbsyo4SkLBrAKLUmvzR34JtdqTWUnPPAzOILSYG9PupdcRaLlRR1c20f/GeS3vtu
+         C9tQgaeTLgKSWtL/v/yTjo2P4Ll4p9cc2A8YCSkW4ZL67RntHfZlMp3P72vy0vo9DZad
+         JlNETEPiBUdgZ61Ip/DDT9cGMlNBraDcgHbb4mBhK/MGdCifR2Ow4PebsehI9l87XapG
+         JzWza0J/yxV33ob9S2cun7Ux407OSytqlFY1Tn80JhXTcEWPzdmXo63LA/yMgBwZu3+X
+         8v8t7gYstMSJpWb3VvHhmRMbjUJ33dMF1lICdlDADiADxMOGMcNqfWXTaPo+GVk73J7w
+         Z+Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749214180; x=1749818980;
+        d=1e100.net; s=20230601; t=1749214561; x=1749819361;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BT+AT6MqsJ3M+MYT3uZEthRD6VpQnEM0vp9KYd7MzOw=;
-        b=VAT2iJ2wtQduB41dmU7Xmdh15mTZIIfaPk6CLVIMHSWStpTT/p3M/DVLsRNLLr4nZi
-         RyCPTi+nbHtm9/5zaZEhFf9CAcLsUMmgr63LEM4Z/J/033+2t/Gw+ZpkorthFSWFaMrI
-         ezSFwnU9fyrB/zuVpygfJaddhYifUYXwOUsbHhuOuok81ZgWArEplqHj7WIV04KFFiI1
-         NcmV/yIformOH+wsjUKJQ72laTcD9C6ACT06LeaJloMeQ5q2NDihht67UoQ3VgPgT72o
-         xnnTQova30q9cab6oHXAVasbctRI+0LNV3h+bq+O6jZKHPkx39vuwyhi1dNCfWlhfCTb
-         emuA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyvyrRbOWXC7OUDBdzV+1kaL2zgy7qJqUCvP1+CVN/wpk3eYpE42A2OARCNbbiHrkdTiujEP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4ZrVz47/a84n6H11IBOmV4ROzRye9g0fTRqJABZOB3FRk5xI1
-	wx6oHNKfLqDWV4xZCetKuN/eYqq/82D7X1133pybF2QLEYl0/OG9OFhYHdiXNoRJGItFDKQGt76
-	9ElORXBPIOKfnesUKZM3Rz8H8gzzyUXiUwvqQ0KLw
-X-Gm-Gg: ASbGncu8diCU2KUNSfGG3ezrWR0luhY9PUGzxI6pe7pOP6q/1Of0u/rE8sERXZYYYmj
-	f1kfAw+CSjRZ5eMXK6MTOogOMkC76wZGZsYesRY4YO16AkYqTO4n9rr1fYrzRZFT9GeVITck+X5
-	cn/ZWWg8Ydo0uPDNR25fuoI7/5HEKB/HYfGsgnGwUoxretINd0kLJsFG8FBjNHyanryr8Elml7o
-	kpOqU9f
-X-Google-Smtp-Source: AGHT+IEj+Za0UCwvZRT2mQseG+6UqOCA9QEGxUq6fGXHr3bK5GUTUQ0XMmeQy0xVJPsfoDBqZGJWVfK2y2vy3sqMkxY=
-X-Received: by 2002:a05:6402:344:b0:606:9166:767 with SMTP id
- 4fb4d7f45d1cf-60773eca718mr76167a12.2.1749214179846; Fri, 06 Jun 2025
- 05:49:39 -0700 (PDT)
+        bh=lej/JzmO0Dw1V/XOb+M60AVoOmPPuLiZ67cVi04ciIo=;
+        b=FImR8G0+g1nXVLdqVqORBsny0Kq+51VxSZKwa5cXQic+9XJ/3wB2vmFiQxJEWUnm1y
+         tRAI/xE5oZ7YzAQjqJrt5Pq9iM8/Akl0dF3ttTQd1if+hc7GI8RjBBLmJUSNNIQHZDwu
+         8ClkaEoDFT0ECjqYBFlqzhmS7IG/LZgRLIWfLAN8VuQ66FWEKGf6x5MJ1wtTI8u0iziG
+         ecsJVL8WzmTmxbyK0Vlo0Fu9agZ0hS0ZjyLStEp1Cvnv2FUax9HdAPJ75LlNd+nxxDbP
+         VZ33M1fBRyDl216kNcW4ggUlq3dE4dGWj57cBCNpQ1m2/Hgn9yDC4LW2OyyoCV8+9XPJ
+         dE5A==
+X-Forwarded-Encrypted: i=1; AJvYcCXYluLWqSrkPsbhXNWwxhhX+dum40h/LPpVWScerqIWB6+YH211BbeHMhNjmkfilJM5OkYRd+E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+rfIGS7e9yKIbcetLlVWdT7CFP7xPKiea9VYcbDrq2I/j9f4A
+	e1QEdF9Fh9H+0XnAMgybGueNsV0s9GgzsomHAZndnEomGeExeKJe6b1MJxwus9+Ip5Ujt8lvP1W
+	X36+mO6nYfs3kAoQnadbpW9JzWVizkH/D3KfIizF+1rAKpFygdIFq97nM
+X-Gm-Gg: ASbGnctdXY8OICSdKl0c562pYA36BSAPYSOReD019zQe/UoHB6lxFrSD2JQklKs1oB+
+	gFy7KjbwDuUETmRykZqwBGVnoiAiM6fg8TtO1FJVRXrUFcD/m0i/7RGvRyt2g64VxUnq/Pk6ogm
+	IRAzPC9fnZ4HGPz7hgmRjhAj86q62mpm9druqslPb12nYFH4jP4VBqYawGQhpbrCYXnX4j9g==
+X-Google-Smtp-Source: AGHT+IHXwcAquv0lb5IUM1aVYSbEaPQ46aM0vazICMyj+IzmQp//DMyCXsrGOLh2XTNX6ibsNYUExUiUldgyqMaL0gE=
+X-Received: by 2002:aa7:c346:0:b0:607:1323:9c2c with SMTP id
+ 4fb4d7f45d1cf-607793de3b1mr62222a12.7.1749214561141; Fri, 06 Jun 2025
+ 05:56:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com> <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
-In-Reply-To: <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
+References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
+ <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com> <ba208d76-7992-4c70-be8f-49082001f194@suse.cz>
+In-Reply-To: <ba208d76-7992-4c70-be8f-49082001f194@suse.cz>
 From: Jann Horn <jannh@google.com>
-Date: Fri, 6 Jun 2025 14:49:03 +0200
-X-Gm-Features: AX0GCFt0UyWLtHOJ7Xl9oT_PxdylGZdccUKq5b21dR__hVZmMxZwE8eGyyenLKQ
-Message-ID: <CAG48ez0eGkBCNSy1Lp7Fz41uyQym0UMvik9vVVjD1GKGhvGpqQ@mail.gmail.com>
+Date: Fri, 6 Jun 2025 14:55:25 +0200
+X-Gm-Features: AX0GCFtRkqF2Lt6u6n6mq4FlDl2aj4mZ-IS4O5MGhg5wVl65bWzoxagLke2Bp80
+Message-ID: <CAG48ez1R7v-L-L33nJUXtj_Y=SKyyFcU8amLs0dQ6ecuC3xMWA@mail.gmail.com>
 Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory snapshot
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
-Cc: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 3, 2025 at 8:21=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
-> @@ -917,7 +917,25 @@ copy_present_page(struct vm_area_struct *dst_vma, st=
-ruct vm_area_struct *src_vma
->         /*
->          * We have a prealloc page, all good!  Take it
->          * over and copy the page & arm it.
-> +        *
-> +        * One nasty aspect is that we could be in a multithreaded proces=
-s or
-> +        * such, where another thread is in the middle of writing to memo=
-ry
-> +        * while this thread is forking. As long as we're just marking PT=
-Es as
-> +        * read-only to make copy-on-write happen *later*, that's easy; w=
-e just
-> +        * need to do a single TLB flush before dropping the mmap/VMA loc=
-ks, and
-> +        * that's enough to guarantee that the child gets a coherent snap=
-shot of
-> +        * memory.
-> +        * But here, where we're doing an immediate copy, we must ensure =
-that
-> +        * threads in the parent process can no longer write into the pag=
-e being
-> +        * copied until we're done forking.
-> +        * This means that we still need to mark the source PTE as read-o=
-nly,
-> +        * with an immediate TLB flush.
-> +        * (To make the source PTE writable again after fork() is done, w=
-e can
-> +        * rely on the page fault handler to do that lazily, thanks to
-> +        * PageAnonExclusive().)
->          */
-> +       ptep_set_wrprotect(src_vma->vm_mm, addr, src_pte);
-> +       flush_tlb_page(src_vma, addr);
+On Thu, Jun 5, 2025 at 9:33=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wro=
+te:
+> On 6/3/25 20:21, Jann Horn wrote:
+> > When fork() encounters possibly-pinned pages, those pages are immediate=
+ly
+> > copied instead of just marking PTEs to make CoW happen later. If the pa=
+rent
+> > is multithreaded, this can cause the child to see memory contents that =
+are
+> > inconsistent in multiple ways:
+> >
+> > 1. We are copying the contents of a page with a memcpy() while userspac=
+e
+> >    may be writing to it. This can cause the resulting data in the child=
+ to
+> >    be inconsistent.
+> > 2. After we've copied this page, future writes to other pages may
+> >    continue to be visible to the child while future writes to this page=
+ are
+> >    no longer visible to the child.
+> >
+> > This means the child could theoretically see incoherent states where
+> > allocator freelists point to objects that are actually in use or stuff =
+like
+> > that. A mitigating factor is that, unless userspace already has a deadl=
+ock
+> > bug, userspace can pretty much only observe such issues when fancy lock=
+less
+> > data structures are used (because if another thread was in the middle o=
+f
+> > mutating data during fork() and the post-fork child tried to take the m=
+utex
+> > protecting that data, it might wait forever).
+> >
+> > On top of that, this issue is only observable when pages are either
+> > DMA-pinned or appear false-positive-DMA-pinned due to a page having >=
+=3D1024
+> > references and the parent process having used DMA-pinning at least once
+> > before.
+>
+> Seems the changelog seems to be missing the part describing what it's doi=
+ng
+> to fix the issue? Some details are not immediately obvious (the writing
+> threads become blocked in page fault) as the conversation has shown.
 
-Hmm... this is actually wrong, because we did
-arch_enter_lazy_mmu_mode() up in copy_pte_range(). So I guess I
-actually have to do:
+I tried to document this in patch 2/2, where I wrote this (though I
+guess I should maybe make it more verbose and not just say "subsequent
+writes are delayed until mmap_write_unlock()"):
 
-arch_leave_lazy_mmu_mode();
-ptep_set_wrprotect(src_vma->vm_mm, addr, src_pte);
-flush_tlb_page(src_vma, addr);
-arch_enter_lazy_mmu_mode();
++ *  - Before mmap_write_unlock(), a TLB flush ensures that parent threads =
+can't
++ *    write to copy-on-write pages anymore.
++ *  - Before dup_mmap() copies page contents (which happens rarely), the
++ *    parent's PTE for the page is made read-only and a TLB flush is issue=
+d, so
++ *    subsequent writes are delayed until mmap_write_unlock().
 
-(arch_flush_lazy_mmu_mode() would look a bit nicer, but powerpc
-doesn't implement that.)
+But I guess this way makes it hard to review patch 1/2 individually.
+Should I just squash the two patches together, and then write in the
+commit message "see the comment blocks I'm adding for the fix
+approach"? Or is there value in repeating the explanation in the
+commit message?
+
+> > Fixes: 70e806e4e645 ("mm: Do early cow for pinned pages during fork() f=
+or ptes")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jann Horn <jannh@google.com>
+>
+> Given how the fix seems to be localized to the already rare slowpath and
+> doesn't require us to pessimize every trivial fork(), it seems reasonable=
+ to
+> me even if don't have a concrete example of a sane code in the wild that'=
+s
+> broken by the current behavior, so:
+>
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+Thanks!
 
