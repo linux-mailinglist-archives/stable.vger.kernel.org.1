@@ -1,147 +1,104 @@
-Return-Path: <stable+bounces-151604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D094ACFF47
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 11:28:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EA2ACFF69
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 11:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAEFD16EB9D
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 09:28:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43B503B1B6E
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 09:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33AE2857F9;
-	Fri,  6 Jun 2025 09:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415C32356B9;
+	Fri,  6 Jun 2025 09:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rebNEyMv"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C9027468;
-	Fri,  6 Jun 2025 09:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF21527468;
+	Fri,  6 Jun 2025 09:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749202104; cv=none; b=E5k16oC0W6wsxApSg3J830DG3QLRj81iOAMTII/6PO4qcWgLFFWO8rONLYJ7hDuJLzytFp/YM2nIxbJKYWpOON0Qts19G1Zo7yJaVzSv15G9xlpSx722b2XpFhuIrks5Jqm8JrbwexQ1q94412I38MwJSBCRWdvrrmmH1cGjrWw=
+	t=1749202641; cv=none; b=U+XHgXusNW3GqcvzC885ylMiMOg3R7gAK1gKVtIl96ifeREZBWFXqTYRFURzVJqSnj7xbWD/0ydmoexjEZy3rbr+UUobwuXN98jnat/gqCobLwq3Ii7LjR6nzta0/HQvbEfPWVkcbza9ENN+MPgqgG2WZoHcRjdiUIH0RB6aXeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749202104; c=relaxed/simple;
-	bh=XHWGZ7c7xcEbWzJJedFfGFBEzPbGnbtlcjdCVfCQva0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tYyze+nlvwYkAkXWyh6vAx7ZUc9dMbc06J3PvKcHtiT9dIR3ThrLmV3mTe5S1JUmR+avbp4ePw80/5Q6U11Sox4Mhz57rzEwrNQAr2j03o4JYSpp9EW21eexDJy4Fj6pt1XrKWex7vT3Sos7IPqFhMShgdwOE2C3hOd3mx4yMcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 525361655;
-	Fri,  6 Jun 2025 02:28:04 -0700 (PDT)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B4AEE3F59E;
-	Fri,  6 Jun 2025 02:28:20 -0700 (PDT)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jann Horn <jannh@google.com>,
-	Mel Gorman <mgorman@suse.de>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1] mm: Close theoretical race where stale TLB entries could linger
-Date: Fri,  6 Jun 2025 10:28:07 +0100
-Message-ID: <20250606092809.4194056-1-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1749202641; c=relaxed/simple;
+	bh=a9Zg/DhoRqaLyi2gmTsRz1QWED8HUHhMKVYw0b0MLaI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mHsgwz1Ajv0f0weaBl/s6XRi2MeY+wf5ZiqKNPlsZrnJDA9ZEJo6XGZN+yLRRDWbZGFmQrmFKkc804vMBquacGrhUXNJp13Cud7GAbH6+VPgIMFA36DPDgOUY3XcbTOcWcATfihgRNdKzdtF2zx+8r2iZsHf8g+uWWjXO39FDwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rebNEyMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49711C4CEEB;
+	Fri,  6 Jun 2025 09:37:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749202640;
+	bh=a9Zg/DhoRqaLyi2gmTsRz1QWED8HUHhMKVYw0b0MLaI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rebNEyMvMYlywgjkjaA5J0/uuXWIXSLc6zgj/dGdlsiZosql0U8UEzlkhGdOrCVNX
+	 QCXkyKhmNvG2S2OOL06l1ptZqqFIXan8fEZRpHD0UUDEIo8GaWElcz1dbOSkCQvV9b
+	 Z0JnD890NNQllDqryXTiJTi+U2FJbDWB1aTIG/oNWpi2I7S5YkS/qxJDnlVS/CbUx8
+	 bVrW39gEB8/2iP+ubx8Z87KowkPOKTbscLbefMienA/R00FgW4FJK57I8QNsXlfKDc
+	 dIfs1B1R+N+4fSeymzZK+RCQQLjqZNhRA/LGfCoNIT9cUlIbSO1esjVy75z3tw5l5t
+	 HreKk1oTkY6WQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uNTVj-0000000039m-1X7v;
+	Fri, 06 Jun 2025 11:37:16 +0200
+Date: Fri, 6 Jun 2025 11:37:15 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] wifi: ath12k: fix dest ring-buffer corruption
+ when ring is full
+Message-ID: <aEK2y8mMSQtbsKq2@hovoldconsulting.com>
+References: <20250604144509.28374-1-johan+linaro@kernel.org>
+ <20250604144509.28374-5-johan+linaro@kernel.org>
+ <a8236639-2448-4552-ac21-db7e7370e23e@quicinc.com>
+ <aEKylLhbfLusD3Kq@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aEKylLhbfLusD3Kq@hovoldconsulting.com>
 
-Commit 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with
-a parallel reclaim leaving stale TLB entries") described a theoretical
-race as such:
+On Fri, Jun 06, 2025 at 11:19:16AM +0200, Johan Hovold wrote:
+> On Fri, Jun 06, 2025 at 03:27:04PM +0800, Miaoqing Pan wrote:
+> > On 6/4/2025 10:45 PM, Johan Hovold wrote:
+> > > Add the missing memory barriers to make sure that destination ring
+> > > descriptors are read before updating the tail pointer (and passing
+> > > ownership to the device) to avoid memory corruption on weakly ordered
+> > > architectures like aarch64 when the ring is full.
+> 
+> > > @@ -2184,6 +2187,10 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
+> > >   					   srng->u.src_ring.hp);
+> > >   		} else {
+> > >   			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+> > > +			/* Make sure descriptor is read before updating the
+> > > +			 * tail pointer.
+> > > +			 */
+> > > +			mb();
+> > 
+> > Is rmb() sufficient, since MMIO write already includes wmb()?
+> 
+> No, rmb() only orders reads against later reads.
+> 
+> [ The wmb() itself orders reads against later writes on aarch64, but
+> that's not generally guaranteed and hence should not be relied on in
+> driver code. ]
 
-"""
-Nadav Amit identified a theoritical race between page reclaim and
-mprotect due to TLB flushes being batched outside of the PTL being held.
+Sorry, I meant to say: an rmb() would order reads against later writes
+on aarch64 (but that's not generally guaranteed and hence should not be
+relied on in driver code).
 
-He described the race as follows:
-
-	CPU0                            CPU1
-	----                            ----
-					user accesses memory using RW PTE
-					[PTE now cached in TLB]
-	try_to_unmap_one()
-	==> ptep_get_and_clear()
-	==> set_tlb_ubc_flush_pending()
-					mprotect(addr, PROT_READ)
-					==> change_pte_range()
-					==> [ PTE non-present - no flush ]
-
-					user writes using cached RW PTE
-	...
-
-	try_to_unmap_flush()
-
-The same type of race exists for reads when protecting for PROT_NONE and
-also exists for operations that can leave an old TLB entry behind such
-as munmap, mremap and madvise.
-"""
-
-The solution was to introduce flush_tlb_batched_pending() and call it
-under the PTL from mprotect/madvise/munmap/mremap to complete any
-pending tlb flushes.
-
-However, while madvise_free_pte_range() and
-madvise_cold_or_pageout_pte_range() were both retro-fitted to call
-flush_tlb_batched_pending() immediately after initially acquiring the
-PTL, they both temporarily release the PTL to split a large folio if
-they stumble upon one. In this case, where re-acquiring the PTL
-flush_tlb_batched_pending() must be called again, but it previously was
-not. Let's fix that.
-
-There are 2 Fixes: tags here: the first is the commit that fixed
-madvise_free_pte_range(). The second is the commit that added
-madvise_cold_or_pageout_pte_range(), which looks like it copy/pasted the
-faulty pattern from madvise_free_pte_range().
-
-This is a theoretical bug discovered during code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with a parallel reclaim leaving stale TLB entries")
-Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
-
-Applies on today's mm-unstable (3f676fe5c7a0). All mm selftests continue to
-pass.
-
-Thanks,
-Ryan
-
- mm/madvise.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 5f7a66a1617e..1d44a35ae85c 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -508,6 +508,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 					pte_offset_map_lock(mm, pmd, addr, &ptl);
- 				if (!start_pte)
- 					break;
-+				flush_tlb_batched_pending(mm);
- 				arch_enter_lazy_mmu_mode();
- 				if (!err)
- 					nr = 0;
-@@ -741,6 +742,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 				start_pte = pte;
- 				if (!start_pte)
- 					break;
-+				flush_tlb_batched_pending(mm);
- 				arch_enter_lazy_mmu_mode();
- 				if (!err)
- 					nr = 0;
---
-2.43.0
-
+Johan
 
