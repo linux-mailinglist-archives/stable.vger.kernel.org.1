@@ -1,219 +1,214 @@
-Return-Path: <stable+bounces-151625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C3AAD053C
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:34:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA769AD0561
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91793AB97E
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:33:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BAF1622C5
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EAD288C39;
-	Fri,  6 Jun 2025 15:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC0328934B;
+	Fri,  6 Jun 2025 15:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BlffJf/D";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hGHpgx7E";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BlffJf/D";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hGHpgx7E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9+PdJ6N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEFB14F104
-	for <stable@vger.kernel.org>; Fri,  6 Jun 2025 15:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBAB276048;
+	Fri,  6 Jun 2025 15:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749224045; cv=none; b=R5Pe43AiMCAuWMtxvZwms0PZuPk3u9jTn/ZvcE4iFjtB9RZdGCT8pgIEyZqTx83wOfihfjnX5FsW8V0DU+S4ScPMzzyJb0lvXUdksE7WMi3TsME39y0mKIFafk3vX/pQv5BQDrXnNz1jIjZt4gRu9djuJO+Xu/Dt7FDv4GPumjY=
+	t=1749224510; cv=none; b=p5hPGnM7JU5euJFwNTzfwGY54ImUzQf4yalqPasqTMh1pynD7os/WQzb5WZ9GAk8eAoD3X1Jzq2+IoOARvKQ3FfDQNs0UMvOyl0bkZ0e4iA994Zi7/DwLFzYnmmxkMdQFwkDYXoTXV4n8BA195gH8CqNMiXIB3SisZKpBpmY1zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749224045; c=relaxed/simple;
-	bh=6zGH2THaO++Hoe2Pq3QI6AhoAcscA0m3XSJOahn94Qw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mKjmlLx4NOpzcCKZClvcq+oYFhqWIYdHr27EOwhG5BgSWtMXFZR2M8uyWmLnkc+ys9Fuziun+Bm5I+IsDcnQuGXb/lHNmIOuSOYr3M//Ap+H+Cdhn3wcXs27PZMvqvk74UKERueZBwmoGqntCzSfwUrQ+nEwh1XUTF1bRDRp2xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BlffJf/D; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hGHpgx7E; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BlffJf/D; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hGHpgx7E; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 30C701F7AF;
-	Fri,  6 Jun 2025 15:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1749224041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SlwW0J0385Y0bArYP2SUZCYXr9QqXS7xayaGmcRxHrI=;
-	b=BlffJf/DBrN5guDiHTn0NQPpKU7mMuHbwBoSgvGqSJD+AhxjnE85osPIFTdzS2ph5vH8ny
-	wrILZp4VyPV0yO+osD9vJaNwOXVDnW5E+vSyuiZ9STCTuEYfrod06qX9sA3cz52fOh15tG
-	AxaWABKIcXvwfUMPEikLBL3weUsOXZk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1749224041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SlwW0J0385Y0bArYP2SUZCYXr9QqXS7xayaGmcRxHrI=;
-	b=hGHpgx7EGs+9pq7TLA28HHzDvffqXl+pWlyrywYRA25G2gCoCgYcAwBsyHtlrM0tYQA88w
-	wh3wuaYX5H13mKAw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1749224041; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SlwW0J0385Y0bArYP2SUZCYXr9QqXS7xayaGmcRxHrI=;
-	b=BlffJf/DBrN5guDiHTn0NQPpKU7mMuHbwBoSgvGqSJD+AhxjnE85osPIFTdzS2ph5vH8ny
-	wrILZp4VyPV0yO+osD9vJaNwOXVDnW5E+vSyuiZ9STCTuEYfrod06qX9sA3cz52fOh15tG
-	AxaWABKIcXvwfUMPEikLBL3weUsOXZk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1749224041;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SlwW0J0385Y0bArYP2SUZCYXr9QqXS7xayaGmcRxHrI=;
-	b=hGHpgx7EGs+9pq7TLA28HHzDvffqXl+pWlyrywYRA25G2gCoCgYcAwBsyHtlrM0tYQA88w
-	wh3wuaYX5H13mKAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F389C1336F;
-	Fri,  6 Jun 2025 15:34:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id f5UjO2gKQ2gaLQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 06 Jun 2025 15:34:00 +0000
-Message-ID: <2b6cce1b-5ca4-49d2-8a33-aeae1543ddc6@suse.cz>
-Date: Fri, 6 Jun 2025 17:34:00 +0200
+	s=arc-20240116; t=1749224510; c=relaxed/simple;
+	bh=Whr13KQDOYCBBsucOWmxsviXIY4riA4judVGQITFjX4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=YiqfGUcFE44WzBV8dJDFqcsm8ZUwYX09aM/JPoB6Oj37MRtmEKCsd/5W/orZ9bhxqUTJlmWFX+5ClKeyx6z2E+2qN+GN89pkYJfms0MzP4cUgDP46YggQ/n0C6ACHo24yl08CPRwtcU7RUR+UnI7tJUqlXEyL/sj1NP4XC6u7/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9+PdJ6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4567C4CEEB;
+	Fri,  6 Jun 2025 15:41:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749224509;
+	bh=Whr13KQDOYCBBsucOWmxsviXIY4riA4judVGQITFjX4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j9+PdJ6NUmwSVf8CoSMbtWZCz4LJh0npS2Bu9qc42zxtFzS9v2ppoK+8aAuKTTihd
+	 baKoNXJXyUuBf/RoHXXynw/mKsfqziytcR/PQdwaUE2k5M0y2EggessU3/OJS2z2oG
+	 CL62gqCCzkFrv9Gccded6ORkE6aiXSoxHj7ei3XGilzhtJNu3lGAVvmbnSZbzgrbgv
+	 clA1CDlKc7sxMvwv7Qkkc1m189jz3Qx0OnL/LH7wdnC3zEXcxMJew6+2UbSApx8qG/
+	 wGchnczNLp991qkVJ/TNZdgEqhsGMOXPTwK+V+SOjY5vrPvWZEEDGZOzMZ7YFB8Sc+
+	 tJfYGXV7mFShg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>,
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.15 01/21] cifs: Correctly set SMB1 SessionKey field in Session Setup Request
+Date: Fri,  6 Jun 2025 11:41:26 -0400
+Message-Id: <20250606154147.546388-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/memory: ensure fork child sees coherent memory
- snapshot
-Content-Language: en-US
-To: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250603-fork-tearing-v1-0-a7f64b7cfc96@google.com>
- <20250603-fork-tearing-v1-1-a7f64b7cfc96@google.com>
- <ba208d76-7992-4c70-be8f-49082001f194@suse.cz>
- <CAG48ez1R7v-L-L33nJUXtj_Y=SKyyFcU8amLs0dQ6ecuC3xMWA@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAG48ez1R7v-L-L33nJUXtj_Y=SKyyFcU8amLs0dQ6ecuC3xMWA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.1
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
 
-On 6/6/25 14:55, Jann Horn wrote:
-> On Thu, Jun 5, 2025 at 9:33 AM Vlastimil Babka <vbabka@suse.cz> wrote:
-> + *  - Before mmap_write_unlock(), a TLB flush ensures that parent threads can't
-> + *    write to copy-on-write pages anymore.
-> + *  - Before dup_mmap() copies page contents (which happens rarely), the
-> + *    parent's PTE for the page is made read-only and a TLB flush is issued, so
-> + *    subsequent writes are delayed until mmap_write_unlock().
-> 
-> But I guess this way makes it hard to review patch 1/2 individually.
-> Should I just squash the two patches together, and then write in the
-> commit message "see the comment blocks I'm adding for the fix
+From: Pali Rohár <pali@kernel.org>
 
-That would be good unless it makes it increases the conflicts in stable
-backports.
+[ Upstream commit 89381c72d52094988e11d23ef24a00066a0fa458 ]
 
-> approach"? Or is there value in repeating the explanation in the
-> commit message?
+[MS-CIFS] specification in section 2.2.4.53.1 where is described
+SMB_COM_SESSION_SETUP_ANDX Request, for SessionKey field says:
 
-Depending on the above, if the stable fix needs to stay minimal, it would be
-valuable to make it more self-contained by repeating that in the commit
-message. So that the LLM has an easier job marking it as a CVE. </sarcasm>
+    The client MUST set this field to be equal to the SessionKey field in
+    the SMB_COM_NEGOTIATE Response for this SMB connection.
 
-Vlastimil
+Linux SMB client currently set this field to zero. This is working fine
+against Windows NT SMB servers thanks to [MS-CIFS] product behavior <94>:
 
->> > Fixes: 70e806e4e645 ("mm: Do early cow for pinned pages during fork() for ptes")
->> > Cc: stable@vger.kernel.org
->> > Signed-off-by: Jann Horn <jannh@google.com>
->>
->> Given how the fix seems to be localized to the already rare slowpath and
->> doesn't require us to pessimize every trivial fork(), it seems reasonable to
->> me even if don't have a concrete example of a sane code in the wild that's
->> broken by the current behavior, so:
->>
->> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> 
-> Thanks!
+    Windows NT Server ignores the client's SessionKey.
+
+For compatibility with [MS-CIFS], set this SessionKey field in Session
+Setup Request to value retrieved from Negotiate response.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+Based on my comprehensive analysis of both the commit message and code
+changes, examining the current kernel tree context: **YES** ## Extensive
+Analysis ### **Nature of the Fix** This is a **specification compliance
+fix** for SMB1 protocol handling. The commit addresses a clear violation
+of the MS-CIFS specification section 2.2.4.53.1, which mandates that the
+SessionKey field in SMB_COM_SESSION_SETUP_ANDX Request must be set to
+the value from the SMB_COM_NEGOTIATE Response. ### **Code Changes
+Analysis** **1. Structural Changes (Low Risk)** - **cifsglob.h**: Adds
+`__le32 session_key_id` to `TCP_Server_Info` structure - minimal ABI
+impact as this is kernel-internal - **cifspdu.h**: Corrects endianness
+annotations from `__u32` to `__le32` - pure annotation fix, no
+behavioral change **2. Functional Changes (Contained and Safe)** -
+**cifssmb.c**: Captures SessionKey from negotiate response
+(`server->session_key_id = pSMBr->SessionKey`) - simple field assignment
+- **sess.c**: Sets SessionKey in session setup request
+(`pSMB->req.SessionKey = server->session_key_id`) - follows
+specification requirement ### **Risk Assessment** **Minimal Regression
+Risk:** - Changes are isolated to SMB1 legacy protocol code - Current
+behavior (setting SessionKey to zero) works with Windows NT due to MS-
+CIFS product behavior <94> - New behavior follows specification exactly,
+improving compatibility with non-Windows SMB1 servers - No security
+implications - purely a protocol compliance improvement **Code
+Maturity:** - SMB1 session setup code is very mature and stable -
+Limited recent changes in this area except compatibility fixes - Well-
+understood code path with clear specification backing ### **Backport
+Suitability Criteria Met** **1. Important Bug Fix:** ✅ Fixes protocol
+specification violation that could cause compatibility issues with
+strict SMB1 implementations **2. Small and Contained:** ✅ Four minimal
+changes across related files, all implementing the same specification
+requirement **3. Clear Side Effects:** ✅ No side effects beyond fixing
+the specification compliance issue **4. No Architectural Changes:** ✅
+Simple field additions and assignments, no structural changes **5. Non-
+Critical Subsystem:** ✅ Legacy SMB1 protocol code, deprecated since 2017
+**6. Minimal Risk:** ✅ Maintains backward compatibility while improving
+forward compatibility **7. Stable Tree Rules Compliance:** ✅ Important
+compatibility bugfix with minimal regression risk ### **Comparison to
+Similar Commits** This commit closely matches the pattern of **Similar
+Commit #3** and **Similar Commit #5** (both marked YES for backporting):
+- Protocol compliance improvements - Session setup related fixes - Clear
+specification backing - Minimal, contained changes - Authored by
+maintainers (Steve French involvement) ### **Conclusion** This commit
+represents an ideal stable backport candidate: a clear specification
+compliance fix with minimal code changes, no security implications, and
+improvement in interoperability. The fix ensures Linux kernel SMB client
+properly follows MS-CIFS specification, which is valuable for enterprise
+environments using diverse SMB1 server implementations.
+
+ fs/smb/client/cifsglob.h | 1 +
+ fs/smb/client/cifspdu.h  | 6 +++---
+ fs/smb/client/cifssmb.c  | 1 +
+ fs/smb/client/sess.c     | 1 +
+ 4 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 3b32116b0b496..4d097b074b5fd 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -773,6 +773,7 @@ struct TCP_Server_Info {
+ 	char workstation_RFC1001_name[RFC1001_NAME_LEN_WITH_NULL];
+ 	__u32 sequence_number; /* for signing, protected by srv_mutex */
+ 	__u32 reconnect_instance; /* incremented on each reconnect */
++	__le32 session_key_id; /* retrieved from negotiate response and send in session setup request */
+ 	struct session_key session_key;
+ 	unsigned long lstrp; /* when we got last response from this server */
+ 	struct cifs_secmech secmech; /* crypto sec mech functs, descriptors */
+diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
+index 1b79fe07476f6..d9cf7db0ac35e 100644
+--- a/fs/smb/client/cifspdu.h
++++ b/fs/smb/client/cifspdu.h
+@@ -597,7 +597,7 @@ typedef union smb_com_session_setup_andx {
+ 		__le16 MaxBufferSize;
+ 		__le16 MaxMpxCount;
+ 		__le16 VcNumber;
+-		__u32 SessionKey;
++		__le32 SessionKey;
+ 		__le16 SecurityBlobLength;
+ 		__u32 Reserved;
+ 		__le32 Capabilities;	/* see below */
+@@ -616,7 +616,7 @@ typedef union smb_com_session_setup_andx {
+ 		__le16 MaxBufferSize;
+ 		__le16 MaxMpxCount;
+ 		__le16 VcNumber;
+-		__u32 SessionKey;
++		__le32 SessionKey;
+ 		__le16 CaseInsensitivePasswordLength; /* ASCII password len */
+ 		__le16 CaseSensitivePasswordLength; /* Unicode password length*/
+ 		__u32 Reserved;	/* see below */
+@@ -654,7 +654,7 @@ typedef union smb_com_session_setup_andx {
+ 		__le16 MaxBufferSize;
+ 		__le16 MaxMpxCount;
+ 		__le16 VcNumber;
+-		__u32 SessionKey;
++		__le32 SessionKey;
+ 		__le16 PasswordLength;
+ 		__u32 Reserved; /* encrypt key len and offset */
+ 		__le16 ByteCount;
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index f55457b4b82e3..f6ec0045c5138 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -498,6 +498,7 @@ CIFSSMBNegotiate(const unsigned int xid,
+ 	server->max_rw = le32_to_cpu(pSMBr->MaxRawSize);
+ 	cifs_dbg(NOISY, "Max buf = %d\n", ses->server->maxBuf);
+ 	server->capabilities = le32_to_cpu(pSMBr->Capabilities);
++	server->session_key_id = pSMBr->SessionKey;
+ 	server->timeAdj = (int)(__s16)le16_to_cpu(pSMBr->ServerTimeZone);
+ 	server->timeAdj *= 60;
+ 
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index b3fa9ee269127..d53705595a512 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -628,6 +628,7 @@ static __u32 cifs_ssetup_hdr(struct cifs_ses *ses,
+ 					USHRT_MAX));
+ 	pSMB->req.MaxMpxCount = cpu_to_le16(server->maxReq);
+ 	pSMB->req.VcNumber = cpu_to_le16(1);
++	pSMB->req.SessionKey = server->session_key_id;
+ 
+ 	/* Now no need to set SMBFLG_CASELESS or obsolete CANONICAL PATH */
+ 
+-- 
+2.39.5
 
 
