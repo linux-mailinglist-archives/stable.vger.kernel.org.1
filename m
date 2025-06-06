@@ -1,175 +1,142 @@
-Return-Path: <stable+bounces-151569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349E3ACFB0E
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 04:03:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63AE6ACFB81
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 05:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B6DE18938BF
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 02:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2F46189278F
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 03:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15591D5165;
-	Fri,  6 Jun 2025 02:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3E01DBB0C;
+	Fri,  6 Jun 2025 03:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Zn+DS2mG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="knWAdjF7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225A91ADFE4;
-	Fri,  6 Jun 2025 02:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C78F14F98;
+	Fri,  6 Jun 2025 03:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749175386; cv=none; b=qMBfwVSQhpRuyuAXaRQP8D5GLv9Bov1G6Ip5hGjyFdbrwnDwofq48p1lPExw4vjlsC1+MXhxVS+21xuMgPQNQvPHN8TpyD/ipO6v8y+Xa+w7qdKaEIEi0Ucbdn6P6gBvzzBDAm+lanoRwQ8wLeBd55CiUEUK1LyoZ0bpRKJF4wE=
+	t=1749179120; cv=none; b=o5xVcPuy5+CCFeGCrYLFbiIWQ4dIeCR//acoBHZZqdoTAbnkSdnAU4fRpkcGJ7Zqzh9EzHfs/DHzu23yMmwgBF3yjppUxhXtPYRWOS9S5RHF/MHSo3HbIHsOCS4mcVaQA5Hpkkf6hVI3d5HigoWfM2qL3+puoyCyuCpj+OiLxqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749175386; c=relaxed/simple;
-	bh=wsB0/UnCVcv2fPYQQYlsF9Y97rjISgsD6ICGAr4ysvs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qeX1EOQKzn45WdTysuowGhdKbJLszzb7YdFad+HLtUKkjbcVg8l0B7iKc9UhercOkGmuio8vCUt23j09K1citv1hbg0VQBoZc5Vyx+tlRm7sBnc+a666JQFdSfDeOY+a6B5nnhQ51Cm2UQszjcp3UKASx1X3gNvTYRvN17QEbrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Zn+DS2mG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 555I83T1011829;
-	Fri, 6 Jun 2025 02:02:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6QCEgkhg1+LKwur0LlMAqZRH5jjjkJ7LHNToJmV8QwA=; b=Zn+DS2mGmwOm40bf
-	0CF0MYZaC11CHVQ8G6i1D92IzlEMHkwUh0k8NNntQdkZEOn9hWn85p+Abl+Hx5mr
-	rN1u4DLvre0W7bbcMr9FBRFLdYBZ+a2mDNrdIRnoCAy8hvDphkDmlcRYhukSgbji
-	pgb2IVp12N1/THgo2kq42Jeu5u4FykVo+5d8CPuP/xHwjxHMt6F6LT1sOXptjeho
-	xQ9SHWcztC/IFs0mmf51ZyiLjH+SY/VgW4OXueFoHn9d5AbaMwbFnJZ1vB+dkcv5
-	LQLMvOM0cHWG5ymNkK8z8YPxxJrRTCIlp/xjrlKv2y7IrrDWNIcjmOW+YxEh08jj
-	MVxQug==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 472mn05ddt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Jun 2025 02:02:58 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55622vWn026444
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 6 Jun 2025 02:02:57 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Jun 2025
- 19:02:55 -0700
-Message-ID: <06daee91-709e-4a98-b7ff-8233d33877b9@quicinc.com>
-Date: Fri, 6 Jun 2025 10:02:52 +0800
+	s=arc-20240116; t=1749179120; c=relaxed/simple;
+	bh=qvxfTohsQcakb1JOVyty8LHhkWl895U5JULIp9uIpAM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DHWzNwqHudowEcCkbLxzbu7Gj+ApHOPgFBbbuCMnjzDV4NaLJdEWEX9Umsh8yRjAC3Y2qVDyUHa9WwwmZ+kL8QOZYl7WJ26x1JhWkPtc5DOD4WybHoV7CLBvwuGZH7QVPMTuikuPSPZJlILJ8Gl6eC3VxrKnlndXM7Ph8L0nb2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=knWAdjF7; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-742c27df0daso1656784b3a.1;
+        Thu, 05 Jun 2025 20:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749179118; x=1749783918; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c/2WAUKpAG8ell30qVj88kLBNlacicp6gf1yYc6ekd0=;
+        b=knWAdjF7ib8GK9FEx691VBBn2pUMRwC/oZB+QIFTKhGzpNE7asvFnyugGl6uLqtORJ
+         ffmlqNKhyhQSpI1u17JanvnELaRgwIyH4/LD9VHFCXluqcOOfsgGmZRTaTNw368Rxu6I
+         16Y54YsXiMvHNdBz52wvE0JcSr5KBNY8AsmWfPwTy3IKR31uhyZSKWvmY4GaRfIs+7gd
+         2tasK9uMKLEwn7Slg24qzLyVD5k5Bc2H36Lh+J3Vjq0riIJYCKoPJVwMgtTN5foOppSs
+         KoACmMYk8cy3NtcMy6GmiQvh+SjC4ZqKCxHOfAXtGrk9NaQhcpqVwsF35vbvUOHHMSdl
+         9mPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749179118; x=1749783918;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c/2WAUKpAG8ell30qVj88kLBNlacicp6gf1yYc6ekd0=;
+        b=awu2c7m/UR8jaZd+8E2ajwO/i2l/3u1H3Q8daq+2lk6YV/lTmffDWNlL3slLrwYjPI
+         q9tpr5/Dig4CbphmBsjnW7ycYr78TCtIiDiIQglJF8U6l74EJzx4C+DZuzSBsrgki1ey
+         0qCPr0i56bBmgg+vvNeW7lBDBiGOkUzGAhSHOzGBvK2NdhiJt8ps8MfF/wFtYFsX0X5i
+         wjLDC5wiwlYUYa9c7LNBTyIwdsl/IGOwA6LiKflVUCzm6S86a/dKjrjzffJmUoy6hzPK
+         ZMPjhmDWyhzzT4UKvdu9971LeBWdZ3JY5Cp4hE2rD5eTXsf/u0ZBmGgbWds7qqzNVder
+         zLdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU086O/uuiZ9NHVH6T1tKmVXAy0DkQpleynBnGMP9XYPNapuCXYwzAdLBPOsXGuEZs4kkT8WIZC@vger.kernel.org, AJvYcCUWETFAD51BTAFpaMO52dTc64yEw1wZ9O+6uDkRNQtFYCZhVNQSoKOev+zQHDO5upWhPW+3k5BLGwJbiNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwargGceC2BQzxjzH94LmFhc+OwB3bUAcxsGM4vSs4xqZqKCfGq
+	1yxdb2wvehZpHD14zPYy8TcOIECW1NN6a6P69bZTaAEkuTFxg7r9HIpB
+X-Gm-Gg: ASbGncuwjM6J61E9KZyjKYN8XK8KXR79HtLBZnf7Y4O7tPXYqUePdoPxlJS3I6hyYrN
+	CsGfaJoZaVjIj6lNNqvj09kWiLxogBuwkPc/1ZtaPs7HChSNk6vXpA2/C5MXSU8l9oAhH56lBGH
+	rLJaYUjwZrEWq0HMUNfzg+BrpTT0NBkycSQMHSzSD3zPTsJAjfxlyWsCan3AiYc+nTa5VeectJm
+	ls8TGP1E/MfLuU/tffvqkXJDONeIgNsK5/QJ+hJH5CClnQdAuliKI1l0mc9XtTyx15o99SCJXcZ
+	hdkCXmMXcU9ufJUyJ03n/FCBJZhKSX2ZHRznK30nBfmc7HAviNz+GFsMQDoOVHqIjCwpvAFMomE
+	wBw==
+X-Google-Smtp-Source: AGHT+IEevhfR4kZLewqgPQkOOJ3rbgAG83iZSMjkBdMA2R41iU+N7gZPtZFk4A9IQWIJQrVxQTVJqg==
+X-Received: by 2002:a05:6a21:600b:b0:1f5:64a4:aeac with SMTP id adf61e73a8af0-21ee25e02fcmr2177323637.33.1749179117554;
+        Thu, 05 Jun 2025 20:05:17 -0700 (PDT)
+Received: from localhost.localdomain ([124.127.236.5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0e9d36sm350696b3a.157.2025.06.05.20.05.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Jun 2025 20:05:17 -0700 (PDT)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: hverkuil@xs4all.nl,
+	mchehab@kernel.org
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: rainshadow-cec: fix TOCTOU race condition in rain_interrupt()
+Date: Fri,  6 Jun 2025 03:04:59 +0000
+Message-Id: <20250606030459.487276-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: fix dest ring-buffer corruption
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>, Johan Hovold <johan@kernel.org>
-CC: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-        Johan Hovold
-	<johan+linaro@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250526114803.2122-1-johan+linaro@kernel.org>
- <20250526114803.2122-2-johan+linaro@kernel.org>
- <026b710f-b50f-4302-ad4f-36932c2558ff@quicinc.com>
- <aD1axxSAJsbUfnHH@hovoldconsulting.com>
- <5268c9ba-16cf-4d3a-87df-bbe0ddd3d584@quicinc.com>
- <aD7h0OOoGjVm8pDK@hovoldconsulting.com>
- <01634993-80b1-496e-8453-e94b2efe658c@quicinc.com>
- <50555c1a-c200-4ac0-8dfb-424ff121b41d@oss.qualcomm.com>
- <03354d56-ed21-47e0-a52e-14f559ff3bfb@quicinc.com>
- <aEFupJ_nd9ryaTVt@hovoldconsulting.com>
- <bc2afbd6-2876-4f36-81cf-ad8960588a02@quicinc.com>
- <d3ec49ab-964b-4c50-a6ea-534b6c6e336b@quicinc.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <d3ec49ab-964b-4c50-a6ea-534b6c6e336b@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: TheKKaAJNytXrshf7BLvc5A8V3afCvEE
-X-Proofpoint-GUID: TheKKaAJNytXrshf7BLvc5A8V3afCvEE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA2MDAxOCBTYWx0ZWRfX5b/ZSbQREFHi
- XZdmp8wAc8fMdifxKLXuh3IG9lfPzLKJIkcIa/SaRenibMznp2W7WePfxb+5u86EMyfbHUREjLE
- qImY+yvI/FwIct8WBy+wOgH7xLkoDr0bRlzYFWr824ykA7lNgM88OAQ8eXV7iCcWdX47XVSV7Ur
- WEL/mMmgwaKvuJ9maGLDMJW1dQHCe+euf0dW35FmLMJwXvrQdFCvkQav5wkln1xT+MX8vhf5tPV
- aEMlYwIdkadt7SE223RjgX8ysIKfoNdYSsd0Bb8vFTDQRZr5/OX6n/mVV44eq4D159ZpSr58VY2
- R6BCWoZVIqi+50J6kVJN+Ece9fpjHd+b47WUJvq4thmbZieG7Ehk3oMW/BecZFo+z7FNwmXrfWq
- lOkGhX0b/OLu+lEIwT7u+V5+yCSNBgGOldM0lWu9pyqMUANmwA4UJA2I4isSsdaq4BV5iuhr
-X-Authority-Analysis: v=2.4 cv=Y8/4sgeN c=1 sm=1 tr=0 ts=68424c52 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=3zI7SI0Xz8OAuioJ69MA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-05_08,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0 phishscore=0
- clxscore=1015 impostorscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506060018
+Content-Transfer-Encoding: 8bit
 
+In the interrupt handler rain_interrupt(), the buffer full check on
+rain->buf_len is performed before acquiring rain->buf_lock. This
+creates a Time-of-Check to Time-of-Use (TOCTOU) race condition, as
+rain->buf_len is concurrently accessed and modified in the work
+handler rain_irq_work_handler() under the same lock.
 
+Multiple interrupt invocations can race, with each reading buf_len
+before it becomes full and then proceeding. This can lead to both
+interrupts attempting to write to the buffer, incrementing buf_len
+beyond its capacity (DATA_SIZE) and causing a buffer overflow.
 
-On 6/6/2025 8:52 AM, Miaoqing Pan wrote:
-> 
-> 
-> On 6/5/2025 6:54 PM, Baochen Qiang wrote:
->>
->>
->> On 6/5/2025 6:17 PM, Johan Hovold wrote:
->>> On Thu, Jun 05, 2025 at 12:01:29PM +0800, Miaoqing Pan wrote:
->>>> On 6/5/2025 12:24 AM, Jeff Johnson wrote:
->>>>> On 6/3/2025 7:34 PM, Miaoqing Pan wrote:
->>>>>> We previously had extensive discussions on this topic in the
->>>>>> https://lore.kernel.org/linux-wireless/ecfe850c-b263-4bee-b888-
->>>>>> c34178e690fc@quicinc.com/
->>>>>> thread. On my platform, dma_rmb() did not work as expected. The issue
->>>>>> only disappeared after disabling PCIe endpoint relaxed ordering in
->>>>>> firmware side. So it seems that HP was updated (Memory write) before
->>>>>> descriptor (Memory write), which led to the problem.
->>>>>
->>>>> Have all ath11k and ath12k firmware been updated to prevent this problem from
->>>>> the firmware side?
->>>>>
->>>> No, as this is not a widespread issue, and addressing it would require
->>>> modifying the core underlying modules of the firmware. Therefore, we
->>>> chose not to proceed with that approach but instead used the workaround
->>>> patch I previously submitted.
->>
->> If firmware has a concern, how about doing it in host? As I know it is only a register in
->> PCI config space?
->>
-> 
-> No, host can only configure the RC, while the initialization of the EP can only be
-> configured on the firmware side.
+Fix this bug by moving the spin_lock() to before the buffer full
+check. This ensures that the check and the subsequent buffer modification
+are performed atomically, preventing the race condition. An corresponding
+spin_unlock() is added to the overflow path to correctly release the
+lock.
 
-Are you talking about this specific register or whole configuration space? If it is the
-latter case we already have something similar (such as disabling ASPM) done in host side.
-Just curious why not for your issue.
+This possible bug was found by an experimental static analysis tool
+developed by our team.
 
-> 
->>>
->>> I strongly suggest you fix this at the firmware level rather than try to
->>> work around it in the kernel to avoid playing whack-a-mole whenever a
->>> new (hard to track down) bug shows up.
->>>
->>> The barriers should be enough, but if they are not then the firmware
->>> must be fixed.
->>>
->>> Johan
->>
-> This is beyond our control. After nearly three months of effort, we have decided to
-> abandon it.
-> 
+Fixes: 0f314f6c2e77 ("[media] rainshadow-cec: new RainShadow Tech HDMI CEC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+---
+ drivers/media/cec/usb/rainshadow/rainshadow-cec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
+index ee870ea1a886..6f8d6797c614 100644
+--- a/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
++++ b/drivers/media/cec/usb/rainshadow/rainshadow-cec.c
+@@ -171,11 +171,12 @@ static irqreturn_t rain_interrupt(struct serio *serio, unsigned char data,
+ {
+ 	struct rain *rain = serio_get_drvdata(serio);
+ 
++	spin_lock(&rain->buf_lock);
+ 	if (rain->buf_len == DATA_SIZE) {
++		spin_unlock(&rain->buf_lock);
+ 		dev_warn_once(rain->dev, "buffer overflow\n");
+ 		return IRQ_HANDLED;
+ 	}
+-	spin_lock(&rain->buf_lock);
+ 	rain->buf_len++;
+ 	rain->buf[rain->buf_wr_idx] = data;
+ 	rain->buf_wr_idx = (rain->buf_wr_idx + 1) & 0xff;
+-- 
+2.25.1
 
 
