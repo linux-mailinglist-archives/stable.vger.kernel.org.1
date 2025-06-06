@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-151685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946AFAD05D9
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:47:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCE1AD05C7
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 17:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4146B189FD22
-	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:46:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 707A1173645
+	for <lists+stable@lfdr.de>; Fri,  6 Jun 2025 15:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C63289E1E;
-	Fri,  6 Jun 2025 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2A828BA8B;
+	Fri,  6 Jun 2025 15:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9ArHDEw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1ORjN2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837C8EEB5;
-	Fri,  6 Jun 2025 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B8F28BA84;
+	Fri,  6 Jun 2025 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749224616; cv=none; b=ZCV/z67PSDr66VEkOsc4CG39NgQTpFilnRLR9yX8otPYCmPjQNibjOR8hKFpTGIgn+K20yhUpLCYQPPlmVuzg4FjYWUVZO9jkBzb4YxU9XI7vW4d7A85Ki5XF1ZVqTXCA1q1YlEl9fPA8LhaQqo+5alLUW58nCq0k02KC1PjCw8=
+	t=1749224618; cv=none; b=DgJIUDpxW+cCB6k5zcLMXnUXuAB2QxKiCBUNwwfYFJG3iRQiRTd9kXxCsOQBMoIqNBSDb6oBasKBrSwVP4LvZmQNCEZY2SoCamNWe20Bb6uYQtBes3OC9MlDQQXMveaysk1mn4LQQdVSL4jmbaAY+4SfmbP5H8e4ybrvBd3v1iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749224616; c=relaxed/simple;
-	bh=yBasjdLbILx5emK1wfV/acnTnriWBCg/8x+dDas1FYw=;
+	s=arc-20240116; t=1749224618; c=relaxed/simple;
+	bh=Hi9Va3IbJdcHxxft8GD9HKET7LbgH6Wb2VdwhoAf29M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cEciJzlYLZT1XbW3QqqeKoqs8gwEcZxKxta+RA5KAkefrjNnsxgvVJbBe8+fVwJIf+ZQauD0WnlTD4hDp1LNFRH/S5SnfGqNKckhc4f3JYC7e+0w2fXfAJV9B6XEl5/a5A6IbSO5j67vh31DT7fgC2ktFiVy1Jmw2t4sB09g0V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9ArHDEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9972BC4CEF0;
-	Fri,  6 Jun 2025 15:43:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PPv58AFU0uU5iGM7CjI6HxXsg8j3old6jVcwzYi57hjNSOOte4sekCO3kCOy9/bBdFjsSao8229ZZy5jIjViVSAidHMbBWIFwU+m7dsds9T1JS5af2P0L1gCw0MyKtPCZt8Pr3UJQgeqnQk/TFiTB40+9GShrClRPRQ/XcFOypg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1ORjN2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFD4C4CEED;
+	Fri,  6 Jun 2025 15:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749224616;
-	bh=yBasjdLbILx5emK1wfV/acnTnriWBCg/8x+dDas1FYw=;
+	s=k20201202; t=1749224617;
+	bh=Hi9Va3IbJdcHxxft8GD9HKET7LbgH6Wb2VdwhoAf29M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9ArHDEw8DYp/6noE6EkwnwfieSENbDhkwoK8kqq5XZXfLG+bLO/oVcGrK0bspaKj
-	 2ZAwueh+htArG00qQ9Dzo9gfEBPDJtQvPqPosq8ebupztSd5gjjRxoV6ulgrZcRfpt
-	 YjboXbT4ODkuxa816952Lk32EuKL326j7ZaRXqk7Tte6dI14+ndZf7GE135Kp/fARz
-	 PTgvhiBbi3eDSA8Nxo70zaRH8zakkMOlIgIn/5FOPRXo7JbjIQ8ry5Cy1qTY0G8yYu
-	 1S+oR6DK2WE70I34C1GGreDkgKr25+pZ85VV/rMy9llbMAKIMu+6m3PxYsWirIm03v
-	 4mwUqc98PRFBA==
+	b=B1ORjN2dBazmv0Q+nBMbsYmGJ3Fav0l75aFeA5SzISmcjxSFpWhbVSu6oz3z6bNN5
+	 aJxx4gjIERXVvqbfhfrT38nvRrIIskrUaXykWOYF1kTIs2ej5AnPFZf+iwvC55wd29
+	 IwmUbA+67XqbtiMmD5H7hMtkL7COLP29v5Y12xtmct7k+Hy5258bDmJMhd62zVr/qX
+	 QQaFtsNcrAx5koQ1bR0RmWN+3S2nEylLFknCEJ22j5jYl8qzGbuznRVyQA8gt+e3Wk
+	 8WNB+hOJgWKa5nXhn2mOQLRHuKYcxckik8031SHNlSNbAcjYRndZkJk91HVeu/kmjr
+	 RXt2inRcxkRkA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	cw00.choi@samsung.com,
+	krzk@kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 06/13] mailbox: Not protect module_put with spin_lock_irqsave
-Date: Fri,  6 Jun 2025 11:43:19 -0400
-Message-Id: <20250606154327.547792-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 07/13] mfd: max14577: Fix wakeup source leaks on device unbind
+Date: Fri,  6 Jun 2025 11:43:20 -0400
+Message-Id: <20250606154327.547792-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250606154327.547792-1-sashal@kernel.org>
 References: <20250606154327.547792-1-sashal@kernel.org>
@@ -63,66 +65,115 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.93
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit dddbd233e67e792bb0a3f9694a4707e6be29b2c6 ]
+[ Upstream commit d905d06e64b0eb3da43af6186c132f5282197998 ]
 
-&chan->lock is not supposed to protect 'chan->mbox'.
-And in __mbox_bind_client, try_module_get is also not protected
-by &chan->lock. So move module_put out of the lock protected
-region.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406-mfd-device-wakekup-leak-v1-3-318e14bdba0a@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
-**YES** This commit should be backported to stable kernel trees.
-**Analysis:** 1. **Clear Bug Fix**: The commit fixes an improper use of
-`module_put()` under a spinlock in `mbox_free_channel()`. Looking at the
-current code in `/home/sasha/linux/drivers/mailbox/mailbox.c:489`,
-`module_put()` is called while holding `&chan->lock` with
-`spin_lock_irqsave()`. 2. **Locking Inconsistency**: The commit message
-correctly identifies that `&chan->lock` is not supposed to protect
-`chan->mbox`. In `__mbox_bind_client()` (line 324),
-`try_module_get(chan->mbox->dev->driver->owner)` is called **outside**
-the spinlock protection, making the current `module_put()` placement
-inconsistent. 3. **Minimal Risk Change**: The fix is extremely simple
-and low-risk - it just moves one line (`module_put()`) outside the
-spinlock region. This maintains the same operation order but fixes the
-locking issue. 4. **No Side Effects**: Moving `module_put()` outside the
-lock doesn't change the functionality or introduce new race conditions.
-The `module_put()` implementation uses `atomic_dec_if_positive()`, so
-it's safe to call without additional locking. 5. **Follows Stable
-Rules**: This commit: - Fixes a real locking issue that could
-potentially cause problems - Is small and contained (single line move) -
-Has minimal regression risk - Doesn't introduce new features or
-architectural changes 6. **Similar Pattern**: Looking at similar commits
-in the historical references, commits that fix locking issues (like
-Similar Commit #5 which fixed a locking bug in mailbox-test) were marked
-as YES for backporting. The commit addresses a legitimate kernel locking
-violation where `module_put()` should not be called under a spinlock,
-making it a suitable candidate for stable tree backporting.
+Now let me understand the difference between the fixes - the historical
+commits show two patterns:
+1. Using `devm_device_init_wakeup()` - automatically handles cleanup
+2. Manual cleanup by calling `device_init_wakeup(dev, false)` in remove
+   functions
 
- drivers/mailbox/mailbox.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Let me check if this specific commit has `Cc: stable@vger.kernel.org` in
+the message:
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index f13d705f7861a..cb59b4dbad626 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -500,8 +500,8 @@ void mbox_free_channel(struct mbox_chan *chan)
- 	if (chan->txdone_method == TXDONE_BY_ACK)
- 		chan->txdone_method = TXDONE_BY_POLL;
+Based on my analysis of this commit and comparison with the similar
+historical commits, here is my assessment:
+
+**YES**
+
+This commit should be backported to stable kernel trees for the
+following reasons:
+
+## Analysis
+
+### **Code Change Analysis**
+The commit adds a single line in the `max14577_i2c_remove()` function:
+```c
++       device_init_wakeup(max14577->dev, false);
+```
+
+This addition occurs at drivers/mfd/max14577.c:459, right before
+`mfd_remove_devices()` is called.
+
+### **Bug Fix Characteristics**
+1. **Memory Leak Fix**: The commit fixes a wakeup source memory leak
+   that occurs when the device is unbound. When `device_init_wakeup(dev,
+   true)` is called during probe (line 442), it allocates memory for
+   wakeup source structures. Without the corresponding cleanup call,
+   this memory is leaked on device removal.
+
+2. **Small and Contained**: The fix is minimal - a single line addition
+   that mirrors the cleanup pattern used throughout the kernel.
+
+3. **Low Risk**: The change has extremely low regression risk since it
+   only adds proper cleanup that should have been there originally.
+
+### **Comparison with Historical Similar Commits**
+Looking at the provided historical commits, there are two categories:
+
+**YES commits (backported)**:
+- `gpio: mpc8xxx: Fix wakeup source leaks on device unbind` - Same exact
+  pattern and includes `Cc: stable@vger.kernel.org`
+- `gpio: zynq: Fix wakeup source leaks on device unbind` - Same exact
+  pattern and includes `Cc: stable@vger.kernel.org`
+
+**NO commits (not backported)**:
+- IIO driver commits that use `devm_device_init_wakeup()` instead of
+  manual cleanup
+
+The key difference is that the YES commits use the same fix pattern as
+this MFD commit - manual cleanup in the remove function, while the NO
+commits use the `devm_` managed approach that automatically handles
+cleanup.
+
+### **Impact Assessment**
+- **User Impact**: Memory leaks on device unbind affect systems where
+  MFD devices are frequently bound/unbound
+- **Subsystem**: MFD (Multi-Function Device) is a core kernel subsystem
+  used by many embedded systems
+- **Regression Risk**: Minimal - adding proper cleanup cannot cause
+  functional regression
+
+### **Stable Tree Criteria Met**
+1. ✅ Fixes an important bug (memory leak)
+2. ✅ Small and contained change
+3. ✅ No architectural changes
+4. ✅ Minimal risk of regression
+5. ✅ Follows established patterns seen in other backported commits
+
+The commit follows the exact same pattern as the GPIO driver commits
+that were successfully backported to stable trees (commits #1 and #2 in
+the historical examples), making it a clear candidate for backporting.
+
+ drivers/mfd/max14577.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/mfd/max14577.c b/drivers/mfd/max14577.c
+index 1f4f5002595c0..17672eeb1732a 100644
+--- a/drivers/mfd/max14577.c
++++ b/drivers/mfd/max14577.c
+@@ -463,6 +463,7 @@ static void max14577_i2c_remove(struct i2c_client *i2c)
+ {
+ 	struct max14577 *max14577 = i2c_get_clientdata(i2c);
  
--	module_put(chan->mbox->dev->driver->owner);
- 	spin_unlock_irqrestore(&chan->lock, flags);
-+	module_put(chan->mbox->dev->driver->owner);
- }
- EXPORT_SYMBOL_GPL(mbox_free_channel);
- 
++	device_init_wakeup(max14577->dev, false);
+ 	mfd_remove_devices(max14577->dev);
+ 	regmap_del_irq_chip(max14577->irq, max14577->irq_data);
+ 	if (max14577->dev_type == MAXIM_DEVICE_TYPE_MAX77836)
 -- 
 2.39.5
 
