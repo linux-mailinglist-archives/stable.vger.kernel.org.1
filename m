@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-151826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B351FAD0CC5
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DEEAD0C99
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CD8B3A884A
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061863B294D
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D2521770D;
-	Sat,  7 Jun 2025 10:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCE221CA08;
+	Sat,  7 Jun 2025 10:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQuiPyKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGLYebiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA5315D1;
-	Sat,  7 Jun 2025 10:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589CD20A5F2;
+	Sat,  7 Jun 2025 10:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291100; cv=none; b=tI9iyYpS5DS6QoRDCS/YYGDbMfAglVohI9sD1pekU/gmBEjTTDYfRqp9AtkMUB89MdVVaZspGkbYwc64etI1lYl1eC242w270KBHjRb+lfXgZTC81nV1YrOFeKCrhoJSpWAyNh3gEWxQzI9poAxP/JNGZUyo0XnfEK4FJgGDneo=
+	t=1749291000; cv=none; b=VOJbbb3t1yGJSQx/o2ZboQxMwyRsMqKe03nuT1xscd9gmvjAup2ohD202Y4nx6nxx2O1jzC48zaNG0YDPNadwyzvRyax1MLAKj8Nr8m7Eo4ubdY4Wr+X8vnX511Jdq5JlT9YdZHT0tz1n669C05D2elK1lQZFlscFqTh+ciV3VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291100; c=relaxed/simple;
-	bh=ib+yxfMEioxsFMIigbcM5zQI0/r9GAasMuT8UYZzwb8=;
+	s=arc-20240116; t=1749291000; c=relaxed/simple;
+	bh=8MW75Q1i/lPUrzJ+liWfmtvU2ZaXk6PtHIa9xS53G5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5pSmKbA9oLxtzOt3Ibloa9rczSgN7N5nxa4CqWOyGo6/yilrSfuq3YjzuxGXMkz1rBTBwk37eL0Nn1rGeHw1jAzheCTDdGAe+R09+uWNAJW+2VCI3/NYS6Ir0Fzm7RN34h9tR4wUp/uMxerO9M/aT/c+GrKsrJ5JGVCDeGbp4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQuiPyKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF8EC4CEED;
-	Sat,  7 Jun 2025 10:11:40 +0000 (UTC)
+	 MIME-Version; b=cBaUWZ8RDi5Ge+Th6dIOqpAfzt0AKFGZQojJSgQOOmWyDeI106qXmGzCyx3eaCJ/LynPDLGP/2vCpF6hTVGu6VC2stSA4Zh2+J8z9SFBrLa8Vr3TTUKbdAFyzVE/paadFtp7AfjpSBdmtU2GOz1EQNjVSwzDWVp1n4L2x/Haxrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGLYebiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0CAC4CEE4;
+	Sat,  7 Jun 2025 10:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291100;
-	bh=ib+yxfMEioxsFMIigbcM5zQI0/r9GAasMuT8UYZzwb8=;
+	s=korg; t=1749291000;
+	bh=8MW75Q1i/lPUrzJ+liWfmtvU2ZaXk6PtHIa9xS53G5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQuiPyKbrpGKdixdGQshPblqX6xibG3hH+GbaoPgf1wXAVF86CcgGzTREsvmzV9HZ
-	 26yRjS3s5aWv5TgH99Vga8Cr1ZlZb7nnB50mZN3r9klSffyGA63hbyiRG9HVpq6fhi
-	 ktuZpLSGYSxaU5bdDOQVs+Gtio3qY2TpTTronX6Y=
+	b=uGLYebiKWq4e9uCIlyX2MDFqTYzY49mfvqtEzQnUzp5M2XC9Ke8rK76rLhGNOuoaV
+	 qZEDGXuk9QxNrsqHZmQKpmmRG2hJm2quSIOoJVnYdSRgOUFns5Z7SDL/x1zVFT4FR5
+	 /lIBO+kvtpz4Nknjnlq+iNIrCiJ9qLzhJ6edNuJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hsin-chen Chuang <chharry@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.15 23/34] Bluetooth: hci_qca: move the SoC type check to the right place
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 24/24] Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
 Date: Sat,  7 Jun 2025 12:08:04 +0200
-Message-ID: <20250607100720.624429665@linuxfoundation.org>
+Message-ID: <20250607100718.643894267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit 0fb410c914eb03c7e9d821e26d03bac0a239e5db upstream.
+commit 1b824eef269db44d068bbc0de74c94a8e8f9ce02 upstream.
 
-Commit 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL
-returned by gpiod_get_optional()") accidentally changed the prevous
-behavior where power control would be disabled without the BT_EN GPIO
-only on QCA_WCN6750 and QCA_WCN6855 while also getting the error check
-wrong. We should treat every IS_ERR() return value from
-devm_gpiod_get_optional() as a reason to bail-out while we should only
-set power_ctrl_enabled to false on the two models mentioned above. While
-at it: use dev_err_probe() to save a LOC.
+This reverts commit cfb2d41831ee5647a4ae0ea7c24971a92d5dfa0d since it
+causes regressions on certain configs. Revert until the issue can be
+isolated and debugged.
 
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4238
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL returned by gpiod_get_optional()")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Hsin-chen Chuang <chharry@chromium.org>
-Reviewed-by: Hsin-chen Chuang <chharry@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2415,14 +2415,14 @@ static int qca_serdev_probe(struct serde
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -670,21 +670,15 @@ static void dm_crtc_high_irq(void *inter
+ 	spin_lock_irqsave(&adev_to_drm(adev)->event_lock, flags);
  
- 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
- 					       GPIOD_OUT_LOW);
--		if (IS_ERR(qcadev->bt_en) &&
--		    (data->soc_type == QCA_WCN6750 ||
--		     data->soc_type == QCA_WCN6855)) {
--			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
--			return PTR_ERR(qcadev->bt_en);
+ 	if (acrtc->dm_irq_params.stream &&
+-		acrtc->dm_irq_params.vrr_params.supported) {
+-		bool replay_en = acrtc->dm_irq_params.stream->link->replay_settings.replay_feature_enabled;
+-		bool psr_en = acrtc->dm_irq_params.stream->link->psr_settings.psr_feature_enabled;
+-		bool fs_active_var_en = acrtc->dm_irq_params.freesync_config.state == VRR_STATE_ACTIVE_VARIABLE;
+-
++	    acrtc->dm_irq_params.vrr_params.supported &&
++	    acrtc->dm_irq_params.freesync_config.state ==
++		    VRR_STATE_ACTIVE_VARIABLE) {
+ 		mod_freesync_handle_v_update(adev->dm.freesync_module,
+ 					     acrtc->dm_irq_params.stream,
+ 					     &acrtc->dm_irq_params.vrr_params);
+ 
+-		/* update vmin_vmax only if freesync is enabled, or only if PSR and REPLAY are disabled */
+-		if (fs_active_var_en || (!fs_active_var_en && !replay_en && !psr_en)) {
+-			dc_stream_adjust_vmin_vmax(adev->dm.dc,
+-					acrtc->dm_irq_params.stream,
+-					&acrtc->dm_irq_params.vrr_params.adjust);
 -		}
-+		if (IS_ERR(qcadev->bt_en))
-+			return dev_err_probe(&serdev->dev,
-+					     PTR_ERR(qcadev->bt_en),
-+					     "failed to acquire BT_EN gpio\n");
++		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
++					   &acrtc->dm_irq_params.vrr_params.adjust);
+ 	}
  
--		if (!qcadev->bt_en)
-+		if (!qcadev->bt_en &&
-+		    (data->soc_type == QCA_WCN6750 ||
-+		     data->soc_type == QCA_WCN6855))
- 			power_ctrl_enabled = false;
- 
- 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
+ 	/*
 
 
 
