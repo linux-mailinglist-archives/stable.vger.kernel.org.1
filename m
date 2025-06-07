@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-151809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30E2AD0CAF
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9079AD0C70
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C5007AA88C
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A5D1893AC5
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B3220CCED;
-	Sat,  7 Jun 2025 10:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001A721A444;
+	Sat,  7 Jun 2025 10:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k18CwoMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nt3AAWKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B861115D1;
-	Sat,  7 Jun 2025 10:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC65217F29;
+	Sat,  7 Jun 2025 10:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291055; cv=none; b=N9J9GwlOSU/BfFI8CN9+eqRScixY0dtLc5xmcfVPP+0XplM5DSMn1hgz1Ks2iGGN4DCehyAsGz+h+OeHNXLlSb2qAUe8rUbvIT8V21L3RiAOjT6FeLCXrK8gCw6GaZdN9S/pKXcfvUCE+J7ZL3WBz+R+yqrghWZ+drbYdTIPDNQ=
+	t=1749290892; cv=none; b=R9TYgbaQlE8TWLyiH494Z3sS5hVBaZTN07furPviL721ga/N6s/E+hfkLdErMaPwa2Vq68mns6VfGJtmoBxFlRn1PW7KXTbje7VwmQJd5hl+BwZ5FNPst80OGeDnPsUIrrI0YhNohQ8E39+1TgRZU9KHQ278NylSdoMDv4goKvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291055; c=relaxed/simple;
-	bh=XfrJ4/XD85+8J2mqZbwEwJZiIYc4S8kR1v2OF2yRJrc=;
+	s=arc-20240116; t=1749290892; c=relaxed/simple;
+	bh=aTA1IEPPAHcQw8OZS7M4ZG1hf27tbJBpDIw92yB/u8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzxPlkmjeN6ZfphVRz8aO9c9sCkcUg3dgZdY0uJlBKhPnegauo7dbeO1fDAkVGrPsIaow7N7D1+RFW7Wzj8BJG6MLFhTn/kDmXruNRh3Hr2EWqqx0+FLf9MnruGv+zCoq2Ilbco8Wi9q8t6Hs1gWhlPo+RqI0qFJY2imAhPH1oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k18CwoMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4161DC4CEE4;
-	Sat,  7 Jun 2025 10:10:55 +0000 (UTC)
+	 MIME-Version; b=O1CYqZ+26DUIwxwroXJ87rmHpY8Et1p/Pv9XAY6svtxxSvbb1y9s+kZpuEmd0l/UYNQQXLlsiU8DcF4tH090oMC+2NFHxXCC6Iyb6qpIHgfVn/MS3SAH4VcPO5MQo3ms1qyziBsM8liEEVa9R4og5l1PfB8hm2eob53W/IHO530=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nt3AAWKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CA4C4CEE4;
+	Sat,  7 Jun 2025 10:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291055;
-	bh=XfrJ4/XD85+8J2mqZbwEwJZiIYc4S8kR1v2OF2yRJrc=;
+	s=korg; t=1749290892;
+	bh=aTA1IEPPAHcQw8OZS7M4ZG1hf27tbJBpDIw92yB/u8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k18CwoMM4kqw0taj0TiMKXMUu3VHzh7tAyrZdyPcm66RUwJJfnSAR/6QpGlcee58r
-	 JYQt4tu2rvcaK7GkzJC5aInx01IPSsk5iohTBxdTBHkQZNqFya4Vsdf0pLMiU8hpIn
-	 e/EOLCobAL5pDQPv+tTSQ38BiPnoW65SaoFCoTio=
+	b=nt3AAWKhseEd3huiGVxLAT9ok2Zin3eodQ2/T/iYmiUIEdJ09po/mTNeRJQTuVYzH
+	 A5ayY3dJeAB3u/le6rj+lER4/bmaPdEOzGgghABy6D9iVSiwJbGKmbShL5eCg5r/+j
+	 tqCtAhSLzWZCIIiVG78e5Z3CRFypgYenLgHnc7Mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.15 03/34] ACPICA: Introduce ACPI_NONSTRING
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.12 13/24] Revert "cpufreq: tegra186: Share policy per cluster"
 Date: Sat,  7 Jun 2025 12:07:44 +0200
-Message-ID: <20250607100719.848723752@linuxfoundation.org>
+Message-ID: <20250607100718.422429163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
+References: <20250607100717.910797456@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-commit 6da5e6f3028d46e4fee7849e85eda681939c630b upstream.
+This reverts commit d95fdee2253e612216e72f29c65b92ec42d254eb which is
+upstream commit be4ae8c19492cd6d5de61ccb34ffb3f5ede5eec8.
 
-ACPICA commit 878823ca20f1987cba0c9d4c1056be0d117ea4fe
+This commit is causing a suspend regression on Tegra186 Jetson TX2 with
+Linux v6.12.y kernels. This is not seen with Linux v6.15 that includes
+this change but indicates that there are there changes missing.
+Therefore, revert this change.
 
-In order to distinguish character arrays from C Strings (i.e. strings with
-a terminating NUL character), add support for the "nonstring" attribute
-provided by GCC. (A better name might be "ACPI_NONCSTRING", but that's
-the attribute name, so stick to the existing naming convention.)
-
-GCC 15's -Wunterminated-string-initialization will warn about truncation
-of the NUL byte for string initializers unless the destination is marked
-with "nonstring". Prepare for applying this attribute to the project.
-
-Link: https://github.com/acpica/acpica/commit/878823ca
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/1841930.VLH7GnMWUR@rjwysocki.net
-Signed-off-by: Kees Cook <kees@kernel.org>
-[ rjw: Pick up the tag from Kees ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Jiri Slaby <jirislaby@kernel.org>
+Fixes: d95fdee2253e ("cpufreq: tegra186: Share policy per cluster")
+Link: https://lore.kernel.org/linux-tegra/bf1dabf7-0337-40e9-8b8e-4e93a0ffd4cc@nvidia.com/
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/acpi/actypes.h        |    4 ++++
- include/acpi/platform/acgcc.h |    8 ++++++++
- 2 files changed, 12 insertions(+)
+ drivers/cpufreq/tegra186-cpufreq.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -1327,4 +1327,8 @@ typedef enum {
- #define ACPI_FLEX_ARRAY(TYPE, NAME)     TYPE NAME[0]
- #endif
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -73,18 +73,11 @@ static int tegra186_cpufreq_init(struct
+ {
+ 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+ 	unsigned int cluster = data->cpus[policy->cpu].bpmp_cluster_id;
+-	u32 cpu;
  
-+#ifndef ACPI_NONSTRING
-+#define ACPI_NONSTRING		/* No terminating NUL character */
-+#endif
-+
- #endif				/* __ACTYPES_H__ */
---- a/include/acpi/platform/acgcc.h
-+++ b/include/acpi/platform/acgcc.h
-@@ -72,4 +72,12 @@
-                 TYPE NAME[];                    \
-         }
+ 	policy->freq_table = data->clusters[cluster].table;
+ 	policy->cpuinfo.transition_latency = 300 * 1000;
+ 	policy->driver_data = NULL;
  
-+/*
-+ * Explicitly mark strings that lack a terminating NUL character so
-+ * that ACPICA can be built with -Wunterminated-string-initialization.
-+ */
-+#if __has_attribute(__nonstring__)
-+#define ACPI_NONSTRING __attribute__((__nonstring__))
-+#endif
-+
- #endif				/* __ACGCC_H__ */
+-	/* set same policy for all cpus in a cluster */
+-	for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
+-		if (data->cpus[cpu].bpmp_cluster_id == cluster)
+-			cpumask_set_cpu(cpu, policy->cpus);
+-	}
+-
+ 	return 0;
+ }
+ 
 
 
 
