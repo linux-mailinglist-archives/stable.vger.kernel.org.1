@@ -1,163 +1,153 @@
-Return-Path: <stable+bounces-151865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E355AD0FB9
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 22:20:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1919AD0FDD
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 23:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA9EF16CE2E
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 20:20:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0867B3AD324
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 21:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2531E1E766F;
-	Sat,  7 Jun 2025 20:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D87120E00A;
+	Sat,  7 Jun 2025 21:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GhMW1trr"
+	dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b="ITNH5pMI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800B61F0E25;
-	Sat,  7 Jun 2025 20:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AA91C5496
+	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 21:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749327607; cv=none; b=Qz90YkriOu7THCImv7McXUiLVPEjtkIs1PYygd4NssaQzpwdY2lGpFg4CNKkyDYyRGdwZC4+lNsXMSRnEHtIOCezIMBnHS6eI6UH1TI/mbStAgUEL5V/ia2Ex9qpnpVlnzPpCkuKkLF81xYLifhkgz8RLCuekl9sAzIV1YrCU00=
+	t=1749330817; cv=none; b=ixostZX10zV2xEFs3j/IVrHY1TzsL/7Qvuhx8oHhYXTw3SgMB+XIcsCKTSFmoJqdheTymNfu1pcjjG7bzpAGwEKdfB3w5Idi6t98JnNTJBQ3AVqfHxOcjM/ggGdBAPZ3yEUwcxX7DU7A6Cds1KLmtOehc6+Hr8qyUAUymXN6iHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749327607; c=relaxed/simple;
-	bh=j67PlnEfqbvwkbFIcNp7D2Hb21IvSpJVcC0OXzmk+lQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XoeQplqwQ4fCIcAIICZ2CtL91RZq7RjKn97H4n2hlYl0cHk0hOUbuSFI+lOabO/S7KEXXI3QFw6wxeLvxxabwzKw7VEJ6MNMpTEU4j1yr5TIV5fuHiRuAv4G26tMBMziPgajztfrIJNOtabqUbw8HLXogmvE8XmWSTaGIao7zYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GhMW1trr; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b2f603b0f0dso1328000a12.1;
-        Sat, 07 Jun 2025 13:20:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749327606; x=1749932406; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1JCuA/KJ1/RmFLQaJiC7CE/5YPs/dtb6ADPS+mr7YTo=;
-        b=GhMW1trrP/ExMFruZgyEh8NaNuRNt4SXGIT0/5VoYIFbeNY8gXCr4lBP06ZiXVshHc
-         XwoZdUR/vIXxKr2c6/YpcZU9BS7vGnGVOQ8F5aC36HJEyQ0qQhkHr7JYWxlnTaCiK6UU
-         J8FhOxyuDkDir+v11a7/313qSlECGPHjP9XYqu3vqr3U0kE1m2KIhVc9+3yHMFQeoVol
-         Lx2TPm2nUTDPYkHOE2Qg5U9projwbXyr35v+iYUefSvJtwQYECortW+u+NNKHIZg+hDG
-         EAB9h/9TDoeWP5wiL2VtoNiEasGZsUMhxXUH1Kcr44iDd0hsANjshiQ8aO7pb4Zy72az
-         SdMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749327606; x=1749932406;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1JCuA/KJ1/RmFLQaJiC7CE/5YPs/dtb6ADPS+mr7YTo=;
-        b=cjb/iBs7i53RsZZxbD1/csaQ/92/je5bAffKB1jSFPsW3mONpvmA8NhFBizr045DlN
-         K9s3/uWK8efoRgwltGLVNiKgv1DkESmtyBAT8XGuqZxUg6x6c8c2esDL7K2ql8Uju20L
-         RuHn+Qi3PjfcUjhegntMBOUlhPIKwJU6obAtmzlnIDnKjVTJN133K3tMMFAuxEqt0iwR
-         05aJpdBFbA5zlDeO1ZpLzyWZJ+WdheDaSRV0K/ZPVazmIEvYM5DSP2GgxkEHtKg9No9J
-         eb/TODgdI5M6DpJ+cgXVu5UYzBMXEOEfGhxK2sctmL2+K/32l709avbXnzi9W4jkQS7M
-         XlnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGNI6w+/OvTxXCU8yBsu2YYamftCDPF5tYeOqMg9jnK1Cj/Bwjm3CaCXmQ5tTdgJWkGSNvwN4H@vger.kernel.org, AJvYcCXKfKS8zJbvMuKQ2lafh2ZOqhJSpGJnxCBKUt4fLjpmOaK4Cfza3RvnOtuLh7DkbP3aq96nF5DrDZoWvo0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPhgMPgIJn0xGqDJDmNrWN8C1f2igAeNa+UfZ0RwJcXTEdq5nA
-	MKkg78UPx54Xuorm6u1k1lsMRpauMkH1N7Tl83qUQd4xMvH+XdAI4rWY
-X-Gm-Gg: ASbGnctk8+QGWLWFHWRXWE7UKWyVfApxAelWun8vFTsXnnUluUBF6ZRXOv1N+In7B8Y
-	Pc1QpAWh1QpDLIMenEjslkcUbc4lL8zZypJ3rI006F4iWqF5e54O3a9OzfIqj5xD5HB37KdpQZx
-	FZfYuR5R+/jZMPyLjHSuEzHk3gPwMFOElyxL0yrIHlw4ygjvSdtn4+BnhceiIvIF4MBvsRQpeAy
-	M9oOjjUc+WHwmZHVoQZ4/1CN5vMqU5nTn/5jYx6mBkwDTnRrZHR8ZBuC2hpgltOKGdEC2Kwu63C
-	DsQBre2cY4hCPX1GIgcNtICoNJWoO8r2JYgXTPPBwjXlHv5I+5QTJiGw6Cthhq3R77qqZhly+Wn
-	KL5J4EeprqqY/qRTajmUlmNnrdl9SxBEOIxcoo/Q=
-X-Google-Smtp-Source: AGHT+IGD4clp9fPtWjceXrKZpN/02Voy2xyMYrequhlApMSZn1dDDHAu/V8zk7Y5YGUSPCpSdUjScw==
-X-Received: by 2002:a17:902:f545:b0:235:129a:175f with SMTP id d9443c01a7336-23601dbfe92mr113590005ad.34.1749327605732;
-        Sat, 07 Jun 2025 13:20:05 -0700 (PDT)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23603078007sm30644365ad.44.2025.06.07.13.19.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Jun 2025 13:20:05 -0700 (PDT)
-Message-ID: <f0ef7d23-29e6-4478-a7e1-0421ef7456d2@gmail.com>
-Date: Sat, 7 Jun 2025 13:19:55 -0700
+	s=arc-20240116; t=1749330817; c=relaxed/simple;
+	bh=JhS/3J2SU7iIGZNswJTzWeXgREd1y0GyGvdgpN4wbjo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=igrjsg+OBse4YLlZbqQ3UbZ4n8DjMygjRfZLsgv+TNSSkv4FazmkbRu3uh4H1k4IvYM8T1eV2BuIZxJ+W81CbOw+TZguT4gLStYzXCnQINKSofugxHUoGmuXwd0dO8h+LJNH7gKW2Tfba+pt0XpTwAB/oZZdP0wvNUv8VKPdPv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b=ITNH5pMI; arc=none smtp.client-ip=193.222.135.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 48497 invoked from network); 7 Jun 2025 23:06:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=20241105;
+          t=1749330411; bh=J8z8CmQGGnB7Po1XsaFy2bygOPjhaFEoBcJC83rCADc=;
+          h=From:To:Cc:Subject;
+          b=ITNH5pMIvX/YMOIRljeHHOAw8BRIqAgscg2v5PSDuxzHuJ91hWlydSg7OfUQrcHIs
+           2dbP+ZGEU5kwiTydX676hoNqsorOCICxKkuCW0opqjl8dcrobtNXWyBKKMhe4qlYfn
+           j7YqaJFjZ8ez0GrRjpLAZRaeOoM/Oc0nI8wtXOoXt6WyUL2MKbHXO1ruWHnK80FO7h
+           PGxXSsf50vCLbVeMv2nyEU08in3oZFvAypQ8hD20J5ogjQ2yADLRfpul9LGys7dz+j
+           Jk6UH6TnCwcE93lZQKCDF48FJ3nj8rT15G5XZ7ngncMO3r5yW1jtAsWC0c/IN5q/uD
+           wiZ+3ptGwMGfg==
+Received: from unknown (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[37.109.146.87])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with SMTP
+          for <alexandre.belloni@bootlin.com>; 7 Jun 2025 23:06:51 +0200
+From: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	linux-rtc@vger.kernel.org,
+	lkml <linux-kernel@vger.kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	stable@vger.kernel.org
+Subject: [PATCH] rtc-cmos: use spin_lock_irqsave in cmos_interrupt
+Date: Sat,  7 Jun 2025 23:06:08 +0200
+Message-Id: <20250607210608.14835-1-mat.jonczyk@o2.pl>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250607100719.711372213@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: bd40430050a01a7b884864c3ef3e9e75
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [AZNk]                               
 
+cmos_interrupt() can be called in a non-interrupt context, such as in
+an ACPI event handler (which runs in an interrupt thread). Therefore,
+usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
+spin_unlock_irqrestore() instead.
 
+Before a misguided
+commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
+the cmos_interrupt() function used spin_lock_irqsave(). That commit
+changed it to spin_lock() and broke locking, which was partially fixed in
+commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
 
-On 6/7/2025 3:07 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.2 release.
-> There are 34 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+That second commit did not take account of the ACPI fixed event handler
+pathway, however. It introduced local_irq_disable() workarounds in
+cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
+and are now unnecessary.
 
+Add an explicit comment so that this change will not be reverted by
+mistake.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Cc: <stable@vger.kernel.org>
+Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
+Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
 
-Florian Fainelli <florian.fainelli@broadcom.com>
+---
+
+Changes after DRAFT version of the patch:
+- rewrite commit message,
+- test this locally (also on top of 5.10.238 for the stable backport),
+- fix a grammar mistake in the comment.
+---
+ drivers/rtc/rtc-cmos.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+index 8172869bd3d7..0743c6acd6e2 100644
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -692,8 +692,12 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
+ {
+ 	u8		irqstat;
+ 	u8		rtc_control;
++	unsigned long	flags;
+ 
+-	spin_lock(&rtc_lock);
++	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
++	 * in a non-irq context.
++	 */
++	spin_lock_irqsave(&rtc_lock, flags);
+ 
+ 	/* When the HPET interrupt handler calls us, the interrupt
+ 	 * status is passed as arg1 instead of the irq number.  But
+@@ -727,7 +731,7 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
+ 			hpet_mask_rtc_irq_bit(RTC_AIE);
+ 		CMOS_READ(RTC_INTR_FLAGS);
+ 	}
+-	spin_unlock(&rtc_lock);
++	spin_unlock_irqrestore(&rtc_lock, flags);
+ 
+ 	if (is_intr(irqstat)) {
+ 		rtc_update_irq(p, 1, irqstat);
+@@ -1295,9 +1299,7 @@ static void cmos_check_wkalrm(struct device *dev)
+ 	 * ACK the rtc irq here
+ 	 */
+ 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
+-		local_irq_disable();
+ 		cmos_interrupt(0, (void *)cmos->rtc);
+-		local_irq_enable();
+ 		return;
+ 	}
+ 
 -- 
-Florian
+2.25.1
 
 
