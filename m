@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-151756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5FEAD0C75
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC64AD0CB4
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BD3E1894492
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A18E11894E56
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E49421770D;
-	Sat,  7 Jun 2025 10:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E459217F29;
+	Sat,  7 Jun 2025 10:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FemquDjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRZFCepK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF063217F26;
-	Sat,  7 Jun 2025 10:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ABD15D1;
+	Sat,  7 Jun 2025 10:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290906; cv=none; b=Nk3KzApiGgkwuGPjUr9bQk41CkHasw0pweYJeSGcoxgi9FTvK7N4oEeUn3tzEV39SSMGArbKh9xRLvddEvtNryd2B6TpeEmZnqbi927iFG/8KkEwJHikSW6T32U1+N/99ss8Hq+nKP0drY3t2gjvlMRWrKhWpab3OmHxG4AAww4=
+	t=1749291068; cv=none; b=YoWdCgk7KBSspk0SvYO1uwqwTMVOBenc24u4l/h+pfe3AabUwCzadnyGaCAvP+5xK44uu96klfsN9KrhyGqkHB47XXlJL/j905k4c58GwPU6xsOPOkA9AHKtR0mKNt5uTKyl9gJ0cLP8uqg7lHKr+zxG2hO5flDfwVgSJh+3rso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290906; c=relaxed/simple;
-	bh=Lbv0L0DOQ2zVdN1a3yZmIG9+s5l2wqVjqd51hWw87gQ=;
+	s=arc-20240116; t=1749291068; c=relaxed/simple;
+	bh=X0lzFSbQNS3c0hWhoHmo9XwkxheGQg8HS1Mu/Qgsao8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWlaz4gIY7vD/DhekaLqpkn7eJs4wM69yMEfjM47z1MctIUTDEs/cQZ2NzteWclNheSkPndqRnFyV6sO8zT+qomJ6JsgVpUPeeZhLLpVfv+St4xDaltatQVkgNq2t3xUHwjFgCLOQe9+eU9OJNdO3hGPa9/NvZQRMeztgIIGf4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FemquDjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E56BC4CEE4;
-	Sat,  7 Jun 2025 10:08:25 +0000 (UTC)
+	 MIME-Version; b=h2S8s4d6qESC1e37HwJA+wdPRiH+AluvrFpmFzsYBua8eeL+FaWKIDsFn85ZTSXKDDE0ycrtC3vt/bZe5miSds8IojRhSy+B6OarEJRa8Sf5WqxBfJxOYLrcbUEEs24Pq/vilp97kONcHmr63DWdHHmoFhAx4GwgEyH0KdKkBKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRZFCepK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52020C4CEE4;
+	Sat,  7 Jun 2025 10:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290905;
-	bh=Lbv0L0DOQ2zVdN1a3yZmIG9+s5l2wqVjqd51hWw87gQ=;
+	s=korg; t=1749291068;
+	bh=X0lzFSbQNS3c0hWhoHmo9XwkxheGQg8HS1Mu/Qgsao8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FemquDjASyPWzr3sdqVTbkXerK85ut/9dfVguK+XoR6qEYAER6aRMgjQ7kq5gevdr
-	 ovmMM3SOLVdbAlFaTXtwZMyxLbdtVtFUZbuaD8xYB2x/jE9MjStwOZIBM/rR1Vulxg
-	 ZTvNzynR2nx1dMTscE3A0QpOJRL0AvsOzdA+bI8M=
+	b=HRZFCepKI+JQNRbpfr7C7csbPhuHFc/G7O3L8eaC8nleeP2gN+xuHt0702fL5b4pO
+	 VMUVnOTeOSRGKRtMAq323vmJHOZ7MqBy2k08Idm3F+Gw6TAEZICf4Iklq2EqsCeoWP
+	 kwRY/z3w0pDXGbmAgZAoWDxwkjtGAWpMYuIy/PEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hsin-chen Chuang <chharry@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 18/24] Bluetooth: hci_qca: move the SoC type check to the right place
+	stable@kernel.org,
+	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.15 08/34] clk: samsung: correct clock summary for hsi1 block
 Date: Sat,  7 Jun 2025 12:07:49 +0200
-Message-ID: <20250607100718.609142774@linuxfoundation.org>
+Message-ID: <20250607100720.052756424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Pritam Manohar Sutar <pritam.sutar@samsung.com>
 
-commit 0fb410c914eb03c7e9d821e26d03bac0a239e5db upstream.
+commit 81214185e7e1fc6dfc8661a574c457accaf9a5a4 upstream.
 
-Commit 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL
-returned by gpiod_get_optional()") accidentally changed the prevous
-behavior where power control would be disabled without the BT_EN GPIO
-only on QCA_WCN6750 and QCA_WCN6855 while also getting the error check
-wrong. We should treat every IS_ERR() return value from
-devm_gpiod_get_optional() as a reason to bail-out while we should only
-set power_ctrl_enabled to false on the two models mentioned above. While
-at it: use dev_err_probe() to save a LOC.
+clk_summary shows wrong value for "mout_hsi1_usbdrd_user".
+It shows 400Mhz instead of 40Mhz as below.
 
-Cc: stable@vger.kernel.org
-Fixes: 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL returned by gpiod_get_optional()")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Hsin-chen Chuang <chharry@chromium.org>
-Reviewed-by: Hsin-chen Chuang <chharry@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
+  mout_hsi1_usbdrd_user     0 0 0 400000000 0 0 50000 Y ...
+    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
+
+Correct the clk_tree by adding correct clock parent for
+"mout_hsi1_usbdrd_user".
+
+Post this change, clk_summary shows correct value.
+
+dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
+  mout_clkcmu_hsi1_usbdrd   0 0 0 400000000 0 0 50000 Y ...
+    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
+      mout_hsi1_usbdrd_user 0 0 0 40000000  0 0 50000 Y ...
+
+Fixes: 485e13fe2fb6 ("clk: samsung: add top clock support for ExynosAuto v920 SoC")
+Cc: <stable@kernel.org>
+Signed-off-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20250506080154.3995512-1-pritam.sutar@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/clk/samsung/clk-exynosautov920.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2385,14 +2385,14 @@ static int qca_serdev_probe(struct serde
+--- a/drivers/clk/samsung/clk-exynosautov920.c
++++ b/drivers/clk/samsung/clk-exynosautov920.c
+@@ -1393,7 +1393,7 @@ static const unsigned long hsi1_clk_regs
+ /* List of parent clocks for Muxes in CMU_HSI1 */
+ PNAME(mout_hsi1_mmc_card_user_p) = {"oscclk", "dout_clkcmu_hsi1_mmc_card"};
+ PNAME(mout_hsi1_noc_user_p) = { "oscclk", "dout_clkcmu_hsi1_noc" };
+-PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "mout_clkcmu_hsi1_usbdrd" };
++PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "dout_clkcmu_hsi1_usbdrd" };
+ PNAME(mout_hsi1_usbdrd_p) = { "dout_tcxo_div2", "mout_hsi1_usbdrd_user" };
  
- 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
- 					       GPIOD_OUT_LOW);
--		if (IS_ERR(qcadev->bt_en) &&
--		    (data->soc_type == QCA_WCN6750 ||
--		     data->soc_type == QCA_WCN6855)) {
--			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
--			return PTR_ERR(qcadev->bt_en);
--		}
-+		if (IS_ERR(qcadev->bt_en))
-+			return dev_err_probe(&serdev->dev,
-+					     PTR_ERR(qcadev->bt_en),
-+					     "failed to acquire BT_EN gpio\n");
- 
--		if (!qcadev->bt_en)
-+		if (!qcadev->bt_en &&
-+		    (data->soc_type == QCA_WCN6750 ||
-+		     data->soc_type == QCA_WCN6855))
- 			power_ctrl_enabled = false;
- 
- 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
+ static const struct samsung_mux_clock hsi1_mux_clks[] __initconst = {
 
 
 
