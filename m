@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-151794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A08AD0CA0
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC11AD0CAB
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A81E3B1D24
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0B197AA84B
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC3F21ABDB;
-	Sat,  7 Jun 2025 10:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DA320CCED;
+	Sat,  7 Jun 2025 10:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mU+wZx/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03eYll5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A626207A22;
-	Sat,  7 Jun 2025 10:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85CC15D1;
+	Sat,  7 Jun 2025 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291016; cv=none; b=XYbMyK1EmvBh+6cxh/qVHPxB+Qk09opeHaa0k/M/LdZdbzOIQG/lmkwwBjVgyf93wvfhjOvVuBb8v/c4hQbJv6oJNsAS+9LYzDhnwN8k2amNfxI8qWp0CxVzb4BFvKqoTZDnUnoe4iI+hLdQfkeC2HS90SouVlZFS/6bKdChUNw=
+	t=1749291047; cv=none; b=d2aen0ud7OrtQMXM7ocG7Swi9Hs4kwn4h3RfdnRqAfZsC7gM7pkV2+xjoF+g2UWk+0scz1tIBsKzpPPfpL6eBmOIhdSzsor0sd5T1iwF+8UNfyd+3ZoUfCHbjL6HOqZTkNo1ZAPuQqhNqJLqMrqI5OjedJ/QlznwJNXGCdM8Ovo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291016; c=relaxed/simple;
-	bh=vtnj4zLckGoaq/TU0pvFQVdgkwnwOiwQdyjHmQ1IlDg=;
+	s=arc-20240116; t=1749291047; c=relaxed/simple;
+	bh=UEIe5FhQKl57+MOXqaB2ZSHcg7d1EUHJSivOSe++zSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBtqh7WOt5VAjExyv1Pr1XMg9E4+zNGn+a1JR+QHETCFoZFTY+bwLyjYXNtoVAPCqM6y9UsQv9EmUUsJfgjNwMxAKQ105owHfTH3ni1l74sN1R1wsnTYtDI1rRIjWXTjZpypoBGbl0NNEPgY58ayL6h5G4cFWeyiakTgHrXTEok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mU+wZx/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1476C4CEE4;
-	Sat,  7 Jun 2025 10:10:15 +0000 (UTC)
+	 MIME-Version; b=bSZVAL9/Z/8oT7ErntuWJ3ZL+y0U2H57HjGF6kjAqtk0UV/ZQGD+ATHNGq6uDqZLOP+/RotxYDzR6Tkhz6ShV43oBZi7dvXCJ1QP7AdRleh4R2P7bXHLoWFa3qlDRXwPuXeZKsZkK0LpHRhx+JK5r6CRhIQb0Bc/L/Yc6DJGbSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03eYll5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FC7C4CEE4;
+	Sat,  7 Jun 2025 10:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291016;
-	bh=vtnj4zLckGoaq/TU0pvFQVdgkwnwOiwQdyjHmQ1IlDg=;
+	s=korg; t=1749291047;
+	bh=UEIe5FhQKl57+MOXqaB2ZSHcg7d1EUHJSivOSe++zSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mU+wZx/VevTZLhWQ7JDKlEWSwNfY1X8enKZwprADrgnpGm/YQ3wfY1MCrs2JEa3yp
-	 LFKiB/pnSHevPQX2M0n7NzpJsRqYTkYtMV13oX2g+cO38edVPOkT9gD4mJ2YUvoE9W
-	 kf4ei+k0t68PgoIQKwCCycOkbzpdWL7eF3c5WfOc=
+	b=03eYll5mvxEwfEqb98vzCgUaarAE4aoBzWNK0aZOgXpl3tU+/yYJs+6JhYj1BcfHv
+	 CHPj+Tkoqmixz3FuuxpStoUUi0F8hXfpjhqXglPlgZNiqhojrJAwumJjghyb6TOpLH
+	 qeWi/pyU8GS2hdQo6ssbu1T/wWsdNeEt0Fm/FoWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.14 18/24] binder: fix use-after-free in binderfs_evict_inode()
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.15 17/34] bcachefs: Run may_delete_deleted_inode() checks in bch2_inode_rm()
 Date: Sat,  7 Jun 2025 12:07:58 +0200
-Message-ID: <20250607100718.410705406@linuxfoundation.org>
+Message-ID: <20250607100720.394727213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,197 +60,236 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-commit 8c0a559825281764061a127632e5ad273f0466ad upstream.
+commit 09fb85ae565645b982e9030dbb2ff6707f2cdddc upstream.
 
-Running 'stress-ng --binderfs 16 --timeout 300' under KASAN-enabled
-kernel, I've noticed the following:
+We had a bug where bch2_evict_inode() incorrectly called bch2_inode_rm()
+- the journal clearly showed the inode was not unlinked.
 
-BUG: KASAN: slab-use-after-free in binderfs_evict_inode+0x1de/0x2d0
-Write of size 8 at addr ffff88807379bc08 by task stress-ng-binde/1699
+We've got checks that we use in recovery when cleaning up deleted
+inodes, lift them to bch2_inode_rm() as well.
 
-CPU: 0 UID: 0 PID: 1699 Comm: stress-ng-binde Not tainted 6.14.0-rc7-g586de92313fc-dirty #13
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1c2/0x2a0
- ? __pfx_dump_stack_lvl+0x10/0x10
- ? __pfx__printk+0x10/0x10
- ? __pfx_lock_release+0x10/0x10
- ? __virt_addr_valid+0x18c/0x540
- ? __virt_addr_valid+0x469/0x540
- print_report+0x155/0x840
- ? __virt_addr_valid+0x18c/0x540
- ? __virt_addr_valid+0x469/0x540
- ? __phys_addr+0xba/0x170
- ? binderfs_evict_inode+0x1de/0x2d0
- kasan_report+0x147/0x180
- ? binderfs_evict_inode+0x1de/0x2d0
- binderfs_evict_inode+0x1de/0x2d0
- ? __pfx_binderfs_evict_inode+0x10/0x10
- evict+0x524/0x9f0
- ? __pfx_lock_release+0x10/0x10
- ? __pfx_evict+0x10/0x10
- ? do_raw_spin_unlock+0x4d/0x210
- ? _raw_spin_unlock+0x28/0x50
- ? iput+0x697/0x9b0
- __dentry_kill+0x209/0x660
- ? shrink_kill+0x8d/0x2c0
- shrink_kill+0xa9/0x2c0
- shrink_dentry_list+0x2e0/0x5e0
- shrink_dcache_parent+0xa2/0x2c0
- ? __pfx_shrink_dcache_parent+0x10/0x10
- ? __pfx_lock_release+0x10/0x10
- ? __pfx_do_raw_spin_lock+0x10/0x10
- do_one_tree+0x23/0xe0
- shrink_dcache_for_umount+0xa0/0x170
- generic_shutdown_super+0x67/0x390
- kill_litter_super+0x76/0xb0
- binderfs_kill_super+0x44/0x90
- deactivate_locked_super+0xb9/0x130
- cleanup_mnt+0x422/0x4c0
- ? lockdep_hardirqs_on+0x9d/0x150
- task_work_run+0x1d2/0x260
- ? __pfx_task_work_run+0x10/0x10
- resume_user_mode_work+0x52/0x60
- syscall_exit_to_user_mode+0x9a/0x120
- do_syscall_64+0x103/0x210
- ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0xcac57b
-Code: c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8
-RSP: 002b:00007ffecf4226a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 00007ffecf422720 RCX: 0000000000cac57b
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007ffecf422850
-RBP: 00007ffecf422850 R08: 0000000028d06ab1 R09: 7fffffffffffffff
-R10: 3fffffffffffffff R11: 0000000000000246 R12: 00007ffecf422718
-R13: 00007ffecf422710 R14: 00007f478f87b658 R15: 00007ffecf422830
- </TASK>
-
-Allocated by task 1705:
- kasan_save_track+0x3e/0x80
- __kasan_kmalloc+0x8f/0xa0
- __kmalloc_cache_noprof+0x213/0x3e0
- binderfs_binder_device_create+0x183/0xa80
- binder_ctl_ioctl+0x138/0x190
- __x64_sys_ioctl+0x120/0x1b0
- do_syscall_64+0xf6/0x210
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 1705:
- kasan_save_track+0x3e/0x80
- kasan_save_free_info+0x46/0x50
- __kasan_slab_free+0x62/0x70
- kfree+0x194/0x440
- evict+0x524/0x9f0
- do_unlinkat+0x390/0x5b0
- __x64_sys_unlink+0x47/0x50
- do_syscall_64+0xf6/0x210
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-This 'stress-ng' workload causes the concurrent deletions from
-'binder_devices' and so requires full-featured synchronization
-to prevent list corruption.
-
-I've found this issue independently but pretty sure that syzbot did
-the same, so Reported-by: and Closes: should be applicable here as well.
-
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=353d7b75658a95aa955a
-Fixes: e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250517170957.1317876-1-cmllamas@google.com
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c          |   15 +++++++++++++--
- drivers/android/binder_internal.h |    8 ++++++--
- drivers/android/binderfs.c        |    2 +-
- 3 files changed, 20 insertions(+), 5 deletions(-)
+ fs/bcachefs/errcode.h          |    2 +
+ fs/bcachefs/fs.c               |    8 ++++
+ fs/bcachefs/inode.c            |   66 +++++++++++++++++++++++++++++++----------
+ fs/bcachefs/sb-errors_format.h |    3 +
+ 4 files changed, 61 insertions(+), 18 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -79,6 +79,8 @@ static HLIST_HEAD(binder_deferred_list);
- static DEFINE_MUTEX(binder_deferred_lock);
+--- a/fs/bcachefs/errcode.h
++++ b/fs/bcachefs/errcode.h
+@@ -209,6 +209,8 @@
+ 	x(EINVAL,			remove_would_lose_data)			\
+ 	x(EINVAL,			no_resize_with_buckets_nouse)		\
+ 	x(EINVAL,			inode_unpack_error)			\
++	x(EINVAL,			inode_not_unlinked)			\
++	x(EINVAL,			inode_has_child_snapshot)		\
+ 	x(EINVAL,			varint_decode_error)			\
+ 	x(EINVAL,			erasure_coding_found_btree_node)	\
+ 	x(EOPNOTSUPP,			may_not_use_incompat_feature)		\
+--- a/fs/bcachefs/fs.c
++++ b/fs/bcachefs/fs.c
+@@ -2181,7 +2181,13 @@ static void bch2_evict_inode(struct inod
+ 				KEY_TYPE_QUOTA_WARN);
+ 		bch2_quota_acct(c, inode->ei_qid, Q_INO, -1,
+ 				KEY_TYPE_QUOTA_WARN);
+-		bch2_inode_rm(c, inode_inum(inode));
++		int ret = bch2_inode_rm(c, inode_inum(inode));
++		if (ret && !bch2_err_matches(ret, EROFS)) {
++			bch_err_msg(c, ret, "VFS incorrectly tried to delete inode %llu:%llu",
++				    inode->ei_inum.subvol,
++				    inode->ei_inum.inum);
++			bch2_sb_error_count(c, BCH_FSCK_ERR_vfs_bad_inode_rm);
++		}
  
- static HLIST_HEAD(binder_devices);
-+static DEFINE_SPINLOCK(binder_devices_lock);
+ 		/*
+ 		 * If we are deleting, we need it present in the vfs hash table
+--- a/fs/bcachefs/inode.c
++++ b/fs/bcachefs/inode.c
+@@ -38,6 +38,7 @@ static const char * const bch2_inode_fla
+ #undef  x
+ 
+ static int delete_ancestor_snapshot_inodes(struct btree_trans *, struct bpos);
++static int may_delete_deleted_inum(struct btree_trans *, subvol_inum);
+ 
+ static const u8 byte_table[8] = { 1, 2, 3, 4, 6, 8, 10, 13 };
+ 
+@@ -1048,19 +1049,23 @@ int bch2_inode_rm(struct bch_fs *c, subv
+ 	u32 snapshot;
+ 	int ret;
+ 
++	ret = lockrestart_do(trans, may_delete_deleted_inum(trans, inum));
++	if (ret)
++		goto err2;
 +
- static HLIST_HEAD(binder_procs);
- static DEFINE_MUTEX(binder_procs_lock);
+ 	/*
+ 	 * If this was a directory, there shouldn't be any real dirents left -
+ 	 * but there could be whiteouts (from hash collisions) that we should
+ 	 * delete:
+ 	 *
+-	 * XXX: the dirent could ideally would delete whiteouts when they're no
++	 * XXX: the dirent code ideally would delete whiteouts when they're no
+ 	 * longer needed
+ 	 */
+ 	ret   = bch2_inode_delete_keys(trans, inum, BTREE_ID_extents) ?:
+ 		bch2_inode_delete_keys(trans, inum, BTREE_ID_xattrs) ?:
+ 		bch2_inode_delete_keys(trans, inum, BTREE_ID_dirents);
+ 	if (ret)
+-		goto err;
++		goto err2;
+ retry:
+ 	bch2_trans_begin(trans);
  
-@@ -6929,7 +6931,16 @@ const struct binder_debugfs_entry binder
+@@ -1342,7 +1347,8 @@ int bch2_inode_rm_snapshot(struct btree_
+ 		delete_ancestor_snapshot_inodes(trans, SPOS(0, inum, snapshot));
+ }
  
- void binder_add_device(struct binder_device *device)
+-static int may_delete_deleted_inode(struct btree_trans *trans, struct bpos pos)
++static int may_delete_deleted_inode(struct btree_trans *trans, struct bpos pos,
++				    bool from_deleted_inodes)
  {
-+	spin_lock(&binder_devices_lock);
- 	hlist_add_head(&device->hlist, &binder_devices);
-+	spin_unlock(&binder_devices_lock);
+ 	struct bch_fs *c = trans->c;
+ 	struct btree_iter inode_iter;
+@@ -1357,11 +1363,13 @@ static int may_delete_deleted_inode(stru
+ 		return ret;
+ 
+ 	ret = bkey_is_inode(k.k) ? 0 : -BCH_ERR_ENOENT_inode;
+-	if (fsck_err_on(!bkey_is_inode(k.k),
++	if (fsck_err_on(from_deleted_inodes && ret,
+ 			trans, deleted_inode_missing,
+ 			"nonexistent inode %llu:%u in deleted_inodes btree",
+ 			pos.offset, pos.snapshot))
+ 		goto delete;
++	if (ret)
++		goto out;
+ 
+ 	ret = bch2_inode_unpack(k, &inode);
+ 	if (ret)
+@@ -1369,7 +1377,8 @@ static int may_delete_deleted_inode(stru
+ 
+ 	if (S_ISDIR(inode.bi_mode)) {
+ 		ret = bch2_empty_dir_snapshot(trans, pos.offset, 0, pos.snapshot);
+-		if (fsck_err_on(bch2_err_matches(ret, ENOTEMPTY),
++		if (fsck_err_on(from_deleted_inodes &&
++				bch2_err_matches(ret, ENOTEMPTY),
+ 				trans, deleted_inode_is_dir,
+ 				"non empty directory %llu:%u in deleted_inodes btree",
+ 				pos.offset, pos.snapshot))
+@@ -1378,17 +1387,25 @@ static int may_delete_deleted_inode(stru
+ 			goto out;
+ 	}
+ 
+-	if (fsck_err_on(!(inode.bi_flags & BCH_INODE_unlinked),
++	ret = inode.bi_flags & BCH_INODE_unlinked ? 0 : -BCH_ERR_inode_not_unlinked;
++	if (fsck_err_on(from_deleted_inodes && ret,
+ 			trans, deleted_inode_not_unlinked,
+ 			"non-deleted inode %llu:%u in deleted_inodes btree",
+ 			pos.offset, pos.snapshot))
+ 		goto delete;
++	if (ret)
++		goto out;
++
++	ret = !(inode.bi_flags & BCH_INODE_has_child_snapshot)
++		? 0 : -BCH_ERR_inode_has_child_snapshot;
+ 
+-	if (fsck_err_on(inode.bi_flags & BCH_INODE_has_child_snapshot,
++	if (fsck_err_on(from_deleted_inodes && ret,
+ 			trans, deleted_inode_has_child_snapshots,
+ 			"inode with child snapshots %llu:%u in deleted_inodes btree",
+ 			pos.offset, pos.snapshot))
+ 		goto delete;
++	if (ret)
++		goto out;
+ 
+ 	ret = bch2_inode_has_child_snapshots(trans, k.k->p);
+ 	if (ret < 0)
+@@ -1405,19 +1422,28 @@ static int may_delete_deleted_inode(stru
+ 			if (ret)
+ 				goto out;
+ 		}
++
++		if (!from_deleted_inodes) {
++			ret =   bch2_trans_commit(trans, NULL, NULL, BCH_TRANS_COMMIT_no_enospc) ?:
++				-BCH_ERR_inode_has_child_snapshot;
++			goto out;
++		}
++
+ 		goto delete;
+ 
+ 	}
+ 
+-	if (test_bit(BCH_FS_clean_recovery, &c->flags) &&
+-	    !fsck_err(trans, deleted_inode_but_clean,
+-		      "filesystem marked as clean but have deleted inode %llu:%u",
+-		      pos.offset, pos.snapshot)) {
+-		ret = 0;
+-		goto out;
+-	}
++	if (from_deleted_inodes) {
++		if (test_bit(BCH_FS_clean_recovery, &c->flags) &&
++		    !fsck_err(trans, deleted_inode_but_clean,
++			      "filesystem marked as clean but have deleted inode %llu:%u",
++			      pos.offset, pos.snapshot)) {
++			ret = 0;
++			goto out;
++		}
+ 
+-	ret = 1;
++		ret = 1;
++	}
+ out:
+ fsck_err:
+ 	bch2_trans_iter_exit(trans, &inode_iter);
+@@ -1428,6 +1454,14 @@ delete:
+ 	goto out;
+ }
+ 
++static int may_delete_deleted_inum(struct btree_trans *trans, subvol_inum inum)
++{
++	u32 snapshot;
++
++	return bch2_subvolume_get_snapshot(trans, inum.subvol, &snapshot) ?:
++		may_delete_deleted_inode(trans, SPOS(0, inum.inum, snapshot), false);
 +}
 +
-+void binder_remove_device(struct binder_device *device)
-+{
-+	spin_lock(&binder_devices_lock);
-+	hlist_del_init(&device->hlist);
-+	spin_unlock(&binder_devices_lock);
- }
+ int bch2_delete_dead_inodes(struct bch_fs *c)
+ {
+ 	struct btree_trans *trans = bch2_trans_get(c);
+@@ -1451,7 +1485,7 @@ int bch2_delete_dead_inodes(struct bch_f
+ 	ret = for_each_btree_key_commit(trans, iter, BTREE_ID_deleted_inodes, POS_MIN,
+ 					BTREE_ITER_prefetch|BTREE_ITER_all_snapshots, k,
+ 					NULL, NULL, BCH_TRANS_COMMIT_no_enospc, ({
+-		ret = may_delete_deleted_inode(trans, k.k->p);
++		ret = may_delete_deleted_inode(trans, k.k->p, true);
+ 		if (ret > 0) {
+ 			bch_verbose_ratelimited(c, "deleting unlinked inode %llu:%u",
+ 						k.k->p.offset, k.k->p.snapshot);
+--- a/fs/bcachefs/sb-errors_format.h
++++ b/fs/bcachefs/sb-errors_format.h
+@@ -244,6 +244,7 @@ enum bch_fsck_flags {
+ 	x(inode_parent_has_case_insensitive_not_set,		317,	FSCK_AUTOFIX)	\
+ 	x(vfs_inode_i_blocks_underflow,				311,	FSCK_AUTOFIX)	\
+ 	x(vfs_inode_i_blocks_not_zero_at_truncate,		313,	FSCK_AUTOFIX)	\
++	x(vfs_bad_inode_rm,					320,	0)		\
+ 	x(deleted_inode_but_clean,				211,	FSCK_AUTOFIX)	\
+ 	x(deleted_inode_missing,				212,	FSCK_AUTOFIX)	\
+ 	x(deleted_inode_is_dir,					213,	FSCK_AUTOFIX)	\
+@@ -329,7 +330,7 @@ enum bch_fsck_flags {
+ 	x(dirent_stray_data_after_cf_name,			305,	0)		\
+ 	x(rebalance_work_incorrectly_set,			309,	FSCK_AUTOFIX)	\
+ 	x(rebalance_work_incorrectly_unset,			310,	FSCK_AUTOFIX)	\
+-	x(MAX,							320,	0)
++	x(MAX,							321,	0)
  
- static int __init init_binder_device(const char *name)
-@@ -6956,7 +6967,7 @@ static int __init init_binder_device(con
- 		return ret;
- 	}
- 
--	hlist_add_head(&binder_device->hlist, &binder_devices);
-+	binder_add_device(binder_device);
- 
- 	return ret;
- }
-@@ -7018,7 +7029,7 @@ static int __init binder_init(void)
- err_init_binder_device_failed:
- 	hlist_for_each_entry_safe(device, tmp, &binder_devices, hlist) {
- 		misc_deregister(&device->miscdev);
--		hlist_del(&device->hlist);
-+		binder_remove_device(device);
- 		kfree(device);
- 	}
- 
---- a/drivers/android/binder_internal.h
-+++ b/drivers/android/binder_internal.h
-@@ -584,9 +584,13 @@ struct binder_object {
- /**
-  * Add a binder device to binder_devices
-  * @device: the new binder device to add to the global list
-- *
-- * Not reentrant as the list is not protected by any locks
-  */
- void binder_add_device(struct binder_device *device);
- 
-+/**
-+ * Remove a binder device to binder_devices
-+ * @device: the binder device to remove from the global list
-+ */
-+void binder_remove_device(struct binder_device *device);
-+
- #endif /* _LINUX_BINDER_INTERNAL_H */
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -274,7 +274,7 @@ static void binderfs_evict_inode(struct
- 	mutex_unlock(&binderfs_minors_mutex);
- 
- 	if (refcount_dec_and_test(&device->ref)) {
--		hlist_del_init(&device->hlist);
-+		binder_remove_device(device);
- 		kfree(device->context.name);
- 		kfree(device);
- 	}
+ enum bch_sb_error_id {
+ #define x(t, n, ...) BCH_FSCK_ERR_##t = n,
 
 
 
