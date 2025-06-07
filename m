@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-151751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9079AD0C70
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB24AD0C8C
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04A5D1893AC5
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 412FC17144A
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001A721A444;
-	Sat,  7 Jun 2025 10:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE0020CCED;
+	Sat,  7 Jun 2025 10:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nt3AAWKh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVs/adxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC65217F29;
-	Sat,  7 Jun 2025 10:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7937315D1;
+	Sat,  7 Jun 2025 10:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290892; cv=none; b=R9TYgbaQlE8TWLyiH494Z3sS5hVBaZTN07furPviL721ga/N6s/E+hfkLdErMaPwa2Vq68mns6VfGJtmoBxFlRn1PW7KXTbje7VwmQJd5hl+BwZ5FNPst80OGeDnPsUIrrI0YhNohQ8E39+1TgRZU9KHQ278NylSdoMDv4goKvk=
+	t=1749290971; cv=none; b=DSDvgoxmHkgHlCNjy20Aw75/v2wg0AXDUDw3qUkVE2pXkrT7xN0m8Z2onD4hvRrJXkkV37ivYrwl/+mcpEreVC72PhGz6shlpEC1x6QqAZornd179vg9YpTioSwyvDufu/C5i2hdlEqadQ7hz6KThRv1cOH9uEiZ0YdBV59Le5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290892; c=relaxed/simple;
-	bh=aTA1IEPPAHcQw8OZS7M4ZG1hf27tbJBpDIw92yB/u8U=;
+	s=arc-20240116; t=1749290971; c=relaxed/simple;
+	bh=DGYNnGiyBbd2g8yqkEQr5WjTEvb6lUwjNlxTSp7tc00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1CYqZ+26DUIwxwroXJ87rmHpY8Et1p/Pv9XAY6svtxxSvbb1y9s+kZpuEmd0l/UYNQQXLlsiU8DcF4tH090oMC+2NFHxXCC6Iyb6qpIHgfVn/MS3SAH4VcPO5MQo3ms1qyziBsM8liEEVa9R4og5l1PfB8hm2eob53W/IHO530=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nt3AAWKh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CA4C4CEE4;
-	Sat,  7 Jun 2025 10:08:12 +0000 (UTC)
+	 MIME-Version; b=IG4p/yND2nxPOoR5mWX+wSvmWQ5cEFA1+z8kVRlvm/5Czn3hfqOFQcN3WjNG+eRvkIJarA4yif2bx6/MXtUCCymg2xo2qjdJwgWjCRmUg0x6LCH8xfPoFtjT05HLO8WMa3q33seGU38FUEywrJKSmB6TzewasxQuABXtDAEBwoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVs/adxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B11EC4CEE4;
+	Sat,  7 Jun 2025 10:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290892;
-	bh=aTA1IEPPAHcQw8OZS7M4ZG1hf27tbJBpDIw92yB/u8U=;
+	s=korg; t=1749290971;
+	bh=DGYNnGiyBbd2g8yqkEQr5WjTEvb6lUwjNlxTSp7tc00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nt3AAWKhseEd3huiGVxLAT9ok2Zin3eodQ2/T/iYmiUIEdJ09po/mTNeRJQTuVYzH
-	 A5ayY3dJeAB3u/le6rj+lER4/bmaPdEOzGgghABy6D9iVSiwJbGKmbShL5eCg5r/+j
-	 tqCtAhSLzWZCIIiVG78e5Z3CRFypgYenLgHnc7Mw=
+	b=lVs/adxNDdGZSZgNWosJr/DiKOKJbmx2XrSbEDvvTnmhCCrz3MxqAL8s+QY+DxPsl
+	 GSjr4A4JNAiykxzG0FJ6EOUJkW5HBr4xia5qnhv033TKuK7daIq6jK+ohTzFrocOHA
+	 HAmnExkSTmF6ptXL/Db7WG326ws79oRtaps/9ZRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 6.12 13/24] Revert "cpufreq: tegra186: Share policy per cluster"
+	stable@kernel.org,
+	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.14 04/24] clk: samsung: correct clock summary for hsi1 block
 Date: Sat,  7 Jun 2025 12:07:44 +0200
-Message-ID: <20250607100718.422429163@linuxfoundation.org>
+Message-ID: <20250607100717.878653338@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Pritam Manohar Sutar <pritam.sutar@samsung.com>
 
-This reverts commit d95fdee2253e612216e72f29c65b92ec42d254eb which is
-upstream commit be4ae8c19492cd6d5de61ccb34ffb3f5ede5eec8.
+commit 81214185e7e1fc6dfc8661a574c457accaf9a5a4 upstream.
 
-This commit is causing a suspend regression on Tegra186 Jetson TX2 with
-Linux v6.12.y kernels. This is not seen with Linux v6.15 that includes
-this change but indicates that there are there changes missing.
-Therefore, revert this change.
+clk_summary shows wrong value for "mout_hsi1_usbdrd_user".
+It shows 400Mhz instead of 40Mhz as below.
 
-Fixes: d95fdee2253e ("cpufreq: tegra186: Share policy per cluster")
-Link: https://lore.kernel.org/linux-tegra/bf1dabf7-0337-40e9-8b8e-4e93a0ffd4cc@nvidia.com/
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
+  mout_hsi1_usbdrd_user     0 0 0 400000000 0 0 50000 Y ...
+    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
+
+Correct the clk_tree by adding correct clock parent for
+"mout_hsi1_usbdrd_user".
+
+Post this change, clk_summary shows correct value.
+
+dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
+  mout_clkcmu_hsi1_usbdrd   0 0 0 400000000 0 0 50000 Y ...
+    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
+      mout_hsi1_usbdrd_user 0 0 0 40000000  0 0 50000 Y ...
+
+Fixes: 485e13fe2fb6 ("clk: samsung: add top clock support for ExynosAuto v920 SoC")
+Cc: <stable@kernel.org>
+Signed-off-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20250506080154.3995512-1-pritam.sutar@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c |    7 -------
- 1 file changed, 7 deletions(-)
+ drivers/clk/samsung/clk-exynosautov920.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -73,18 +73,11 @@ static int tegra186_cpufreq_init(struct
- {
- 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
- 	unsigned int cluster = data->cpus[policy->cpu].bpmp_cluster_id;
--	u32 cpu;
+--- a/drivers/clk/samsung/clk-exynosautov920.c
++++ b/drivers/clk/samsung/clk-exynosautov920.c
+@@ -1393,7 +1393,7 @@ static const unsigned long hsi1_clk_regs
+ /* List of parent clocks for Muxes in CMU_HSI1 */
+ PNAME(mout_hsi1_mmc_card_user_p) = {"oscclk", "dout_clkcmu_hsi1_mmc_card"};
+ PNAME(mout_hsi1_noc_user_p) = { "oscclk", "dout_clkcmu_hsi1_noc" };
+-PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "mout_clkcmu_hsi1_usbdrd" };
++PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "dout_clkcmu_hsi1_usbdrd" };
+ PNAME(mout_hsi1_usbdrd_p) = { "dout_tcxo_div2", "mout_hsi1_usbdrd_user" };
  
- 	policy->freq_table = data->clusters[cluster].table;
- 	policy->cpuinfo.transition_latency = 300 * 1000;
- 	policy->driver_data = NULL;
- 
--	/* set same policy for all cpus in a cluster */
--	for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
--		if (data->cpus[cpu].bpmp_cluster_id == cluster)
--			cpumask_set_cpu(cpu, policy->cpus);
--	}
--
- 	return 0;
- }
- 
+ static const struct samsung_mux_clock hsi1_mux_clks[] __initconst = {
 
 
 
