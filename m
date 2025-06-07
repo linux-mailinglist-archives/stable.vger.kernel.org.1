@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-151813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634E9AD0CB3
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3550DAD0C90
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F24F1189520D
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3BB61894B15
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7638C20CCED;
-	Sat,  7 Jun 2025 10:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41254219E8F;
+	Sat,  7 Jun 2025 10:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4fP+qWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHzYpNmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F3B15D1;
-	Sat,  7 Jun 2025 10:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F3115D1;
+	Sat,  7 Jun 2025 10:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291066; cv=none; b=iAjNZC7GNAAtFWm0VMrLKe3zK83QbGxwz3uYEd3LW8Rhx9hWvUzC8TxBXkVNaKDC8qmpb8R0v7d1cWrNLqKcYyqQNtVhZd9hVtQyEqhdWQRSIYElk0ClMkNeObjNsTVtSmojGBUq2XXU4B9vRP2aztRyuGNlA3F0ZjaF3KSTRsE=
+	t=1749290982; cv=none; b=WGoRojTivXZscxR19QMQKORM8u7A+53ozSzPThhGSva6w7BlGDfiqyfFWhUJneYlXvg7yjrF1/leREEomJxOa1/X8Q8oEjHVdjx12/ghS2Kzm542gEXwAvdLBTsVsKIhwqBMDcS0V7MC57yvLVhqjDwB7vwLDYTIcaXyLx+01u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291066; c=relaxed/simple;
-	bh=Xe9y6HjJHDuW2Kmk4BhPoVDMLjYY0cyHs9Lx2B9SmOQ=;
+	s=arc-20240116; t=1749290982; c=relaxed/simple;
+	bh=9Io1sqL1lG/PXyUipiyuCFkWKMVqSsHI1d5zOpf5ZCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQhLiNaDCCBjuKqiOT1U9mP8bTrNci0dUWRI3Ayu5F3ZSoyCbtAX298B3JgR0W0KqaMBklOHc8qM3Ikli9sVUGKA+o7bX9xfpPk07K4PuZe5Z/ffbAB7zgTUQ6vLkWVLki0GU32n1EjtePmybsh2t2xAUwioOjPBp9oIEcPHJu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4fP+qWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BCFC4CEE4;
-	Sat,  7 Jun 2025 10:11:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E9vfMVe8gfHrZu5NgZq/izFDhJFrSgmd0IZhg0pLxMemEkpIsZlcD6XPYTfK7hG9OFEryaZDaGx2CZjOOV8sVhSiCjpdgpADg7E+9EqNQw+cYw72gwcudYXeWKM8Vhrp1R/8zP8VQwCRG595vUtyeMtk2nKID4HCpLkpT4koJ5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHzYpNmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A70C4CEED;
+	Sat,  7 Jun 2025 10:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291066;
-	bh=Xe9y6HjJHDuW2Kmk4BhPoVDMLjYY0cyHs9Lx2B9SmOQ=;
+	s=korg; t=1749290981;
+	bh=9Io1sqL1lG/PXyUipiyuCFkWKMVqSsHI1d5zOpf5ZCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4fP+qWMxzme8n6YuQwdBtL/TuBY8NvNpIbxGhOJ14X7ewKnVshmouE/n1fJHRJK/
-	 PrdqM2bpw7PvUn9130e9I8CDxL1VfQ0zP3i5LP2ASk66dDCfJe4iI1eHZCd1IeiUWu
-	 V5AxTtPDLjBesNSbLZEZb7gs7E4OSX6awWPyaW+8=
+	b=xHzYpNmn8Kw9b3N+H87y/vzvMvh4cL0DEMT7zPGn28z1qLiAmQEYB9WGrXiB8bCk7
+	 O2rGZMc0NmExwIWCClcjKJ/BK75D6UnlwYmVMp3sYFoZuPzYZWLjeLw9m9Z0AXybrl
+	 KPtwk9G8AN7jgo0DekGxRVBC0IGUM6N+kFKoqFmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.15 07/34] pinctrl: armada-37xx: set GPIO output value before setting direction
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.14 08/24] rtc: Fix offset calculation for .start_secs < 0
 Date: Sat,  7 Jun 2025 12:07:48 +0200
-Message-ID: <20250607100720.013035713@linuxfoundation.org>
+Message-ID: <20250607100718.033008451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
+commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
 
-Changing the direction before updating the output value in the
-OUTPUT_VAL register may result in a glitch on the output line
-if the previous value in the OUTPUT_VAL register is different
-from the one we want to set.
+The comparison
 
-In order to avoid that, update the output value before changing
-the direction.
+        rtc->start_secs > rtc->range_max
 
-Cc: stable@vger.kernel.org
-Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/rtc/class.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -417,23 +417,22 @@ static int armada_37xx_gpio_direction_ou
- 					     unsigned int offset, int value)
- {
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
--	unsigned int val_offset = offset;
--	unsigned int reg = OUTPUT_EN;
-+	unsigned int en_offset = offset;
-+	unsigned int reg = OUTPUT_VAL;
- 	unsigned int mask, val, ret;
- 
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
-+	val = value ? mask : 0;
- 
--	ret = regmap_update_bits(info->regmap, reg, mask, mask);
--
-+	ret = regmap_update_bits(info->regmap, reg, mask, val);
- 	if (ret)
- 		return ret;
- 
--	reg = OUTPUT_VAL;
--	armada_37xx_update_reg(&reg, &val_offset);
-+	reg = OUTPUT_EN;
-+	armada_37xx_update_reg(&reg, &en_offset);
- 
--	val = value ? mask : 0;
--	regmap_update_bits(info->regmap, reg, mask, val);
-+	regmap_update_bits(info->regmap, reg, mask, mask);
- 
- 	return 0;
- }
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -327,7 +327,7 @@ static void rtc_device_get_offset(struct
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
 
 
 
