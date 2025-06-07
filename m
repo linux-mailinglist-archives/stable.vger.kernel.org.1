@@ -1,150 +1,212 @@
-Return-Path: <stable+bounces-151769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86EEAD0C83
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12CAAD0C94
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F950171336
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90D46171493
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C227B21B91D;
-	Sat,  7 Jun 2025 10:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC1D217679;
+	Sat,  7 Jun 2025 10:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k7h3aIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIYqksS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735D015D1;
-	Sat,  7 Jun 2025 10:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454C91F4CB8;
+	Sat,  7 Jun 2025 10:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290950; cv=none; b=hpPcw1+ftRq4g9EaF7rRPmO0TbN2fnvXV07ekiH2nCk/cWTGBEuUNrHl2O3dgMkTHboeELjo7LCpsVQQcjY5lKhgYn/w+kkyC/jcnP3xfmp1HMn6vPWlwVvf5WOOAkmaP2tQEOQ6GC7gGbwK8yPKNlzu4BCLGirx0zBIm6sS3/Y=
+	t=1749290987; cv=none; b=GRaYqj50T3AyCd9hlL7teFcMeZk5O9DaaVQvUACFr2rwuGGVrZIf+Q+zATXuMeEEi/0D4z/BNcG2NHqAq8735byIynZbrIEdUoCBHQzuAMcrVmWEspDC8X432EsxHCDPwu7SkSQ0DfiC+o2n0xy5KHNAf29jFO9FsSA3rHM6bCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290950; c=relaxed/simple;
-	bh=42utxIOhrAf9sVJ0GJMVOyfXo1ZJbwjsdvSLSAZxvPA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/2aTHeKPkHgOMzaHAQLYIiBoZvtIOc4eellT17UWX7k824g+VKh/hz7MZvZZp3+ryN0M1Rd7+ifqm+7mbp62Spv52e1oN1jdsxqScXrafJYL7bp5KAAQMEHLpgNgdPUBwDPxU01j13KH9QwYQvsTpwj+Lmkyag1bVKd/KUrmzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k7h3aIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00369C4CEE4;
-	Sat,  7 Jun 2025 10:09:09 +0000 (UTC)
+	s=arc-20240116; t=1749290987; c=relaxed/simple;
+	bh=5izhTrwbML5NmL7+4ouvty7q20xLmR4Ux50PCxytBrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CKDonroKTgQSOkQeF1UTPmbK+jE6Hy3aKbYDIhOO9B/clNooKs97RibfBCARsUUM398GqjUgjk9VyYVaEuPjnNINLvy6UaTGs5WEXsl+tMvqt8nG+RN3PNX3rwHfWfMlBxympa4qhH/7rdfcHB/GaJmBVP+6KaApgbp1BrF1bck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIYqksS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08B2C4CEE4;
+	Sat,  7 Jun 2025 10:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290950;
-	bh=42utxIOhrAf9sVJ0GJMVOyfXo1ZJbwjsdvSLSAZxvPA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2k7h3aIgFglOsKbcT2FDIfQ4cohc8UbUwACySUz+cusY8Ik1Sa8kvZ4DUULTai/vT
-	 q0kQCmydIPqL+Rto9AtnEytFAnwmKGuwStIqNi/HZAhYN9qs55AakFIOhxQ85R4T6W
-	 cUS0+V8cT4U0cwk25so7FhepbVTSqAJabyxFKcfE=
+	s=korg; t=1749290987;
+	bh=5izhTrwbML5NmL7+4ouvty7q20xLmR4Ux50PCxytBrg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FIYqksS1O4YfTrLXowxDhl48zxHKlmze2ey5vheezELYQ9NtY5CO+7UAjyS5b0dkU
+	 R3vVMq5eFsTpukTPFpNuBImP1b7jrzhYRA+Y6gjS35Kx7PDbgfF756zonbMuKWtLr3
+	 XJBHrBnVJoTARQMPsBms5EW5okOkSC7u/PIQe51s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 09/24] accel/ivpu: Add initial Panther Lake support
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.14 00/24] 6.14.11-rc1 review
 Date: Sat,  7 Jun 2025 12:07:40 +0200
-Message-ID: <20250607100718.275751852@linuxfoundation.org>
+Message-ID: <20250607100717.706871523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.11-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.14.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.14.11-rc1
+X-KernelTest-Deadline: 2025-06-09T10:07+00:00
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.14.11 release.
+There are 24 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
+Anything received after that time might be too late.
 
-From: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.11-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+and the diffstat can be found below.
 
-commit c140244f0cfb9601dbc35e7ab90914954a76b3d1 upstream.
+thanks,
 
-Add support for the 5th generation of Intel NPU that
-is going to be present in PTL_P (Panther Lake) CPUs.
-NPU5 code reuses almost all of previous driver code.
+greg k-h
 
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241004162505.1695605-2-maciej.falkowski@linux.intel.com
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/accel/ivpu/ivpu_drv.c |    1 +
- drivers/accel/ivpu/ivpu_drv.h |   10 +++++++---
- drivers/accel/ivpu/ivpu_fw.c  |    3 +++
- 3 files changed, 11 insertions(+), 3 deletions(-)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -709,6 +709,7 @@ static struct pci_device_id ivpu_pci_ids
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_MTL) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_ARL) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_LNL) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_PTL_P) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(pci, ivpu_pci_ids);
---- a/drivers/accel/ivpu/ivpu_drv.h
-+++ b/drivers/accel/ivpu/ivpu_drv.h
-@@ -23,9 +23,10 @@
- #define DRIVER_DESC "Driver for Intel NPU (Neural Processing Unit)"
- #define DRIVER_DATE "20230117"
- 
--#define PCI_DEVICE_ID_MTL   0x7d1d
--#define PCI_DEVICE_ID_ARL   0xad1d
--#define PCI_DEVICE_ID_LNL   0x643e
-+#define PCI_DEVICE_ID_MTL	0x7d1d
-+#define PCI_DEVICE_ID_ARL	0xad1d
-+#define PCI_DEVICE_ID_LNL	0x643e
-+#define PCI_DEVICE_ID_PTL_P	0xb03e
- 
- #define IVPU_HW_IP_37XX 37
- #define IVPU_HW_IP_40XX 40
-@@ -227,6 +228,8 @@ static inline int ivpu_hw_ip_gen(struct
- 		return IVPU_HW_IP_37XX;
- 	case PCI_DEVICE_ID_LNL:
- 		return IVPU_HW_IP_40XX;
-+	case PCI_DEVICE_ID_PTL_P:
-+		return IVPU_HW_IP_50XX;
- 	default:
- 		dump_stack();
- 		ivpu_err(vdev, "Unknown NPU IP generation\n");
-@@ -241,6 +244,7 @@ static inline int ivpu_hw_btrs_gen(struc
- 	case PCI_DEVICE_ID_ARL:
- 		return IVPU_HW_BTRS_MTL;
- 	case PCI_DEVICE_ID_LNL:
-+	case PCI_DEVICE_ID_PTL_P:
- 		return IVPU_HW_BTRS_LNL;
- 	default:
- 		dump_stack();
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -57,11 +57,14 @@ static struct {
- 	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v0.0.bin" },
- 	{ IVPU_HW_IP_40XX, "vpu_40xx.bin" },
- 	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
-+	{ IVPU_HW_IP_50XX, "vpu_50xx.bin" },
-+	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v0.0.bin" },
- };
- 
- /* Production fw_names from the table above */
- MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
- MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_50xx_v0.0.bin");
- 
- static int ivpu_fw_request(struct ivpu_device *vdev)
- {
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.14.11-rc1
+
+Aurabindo Pillai <aurabindo.pillai@amd.com>
+    Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
+
+Xu Yang <xu.yang_2@nxp.com>
+    dt-bindings: phy: imx8mq-usb: fix fsl,phy-tx-vboost-level-microvolt property
+
+Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+    dt-bindings: usb: cypress,hx3: Add support for all variants
+
+David Lechner <dlechner@baylibre.com>
+    dt-bindings: pwm: adi,axi-pwmgen: Fix clocks
+
+Sergey Senozhatsky <senozhatsky@chromium.org>
+    thunderbolt: Do not double dequeue a configuration request
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix yet another UAF in binder_devices
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    binder: fix use-after-free in binderfs_evict_inode()
+
+Dave Penkler <dpenkler@gmail.com>
+    usb: usbtmc: Fix timeout value in get_stb
+
+Arnd Bergmann <arnd@arndb.de>
+    nvmem: rmem: select CONFIG_CRC32
+
+Dustin Lundquist <dustin@null-ptr.net>
+    serial: jsm: fix NPE during jsm_uart_port_init
+
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+    Bluetooth: hci_qca: move the SoC type check to the right place
+
+Qasim Ijaz <qasdev00@gmail.com>
+    usb: typec: ucsi: fix Clang -Wsign-conversion warning
+
+Charles Yeh <charlesyeh522@gmail.com>
+    USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+
+Hongyu Xie <xiehongyu1@kylinos.cn>
+    usb: storage: Ignore UAS driver for SanDisk 3.2 Gen2 storage device
+
+Jiayi Li <lijiayi@kylinos.cn>
+    usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
+
+Mike Marshall <hubcap@omnibond.com>
+    orangefs: adjust counting code to recover from 665575cf
+
+Alexandre Mergnat <amergnat@baylibre.com>
+    rtc: Fix offset calculation for .start_secs < 0
+
+Alexandre Mergnat <amergnat@baylibre.com>
+    rtc: Make rtc_time64_to_tm() support dates before 1970
+
+Sakari Ailus <sakari.ailus@linux.intel.com>
+    Documentation: ACPI: Use all-string data node references
+
+Gautham R. Shenoy <gautham.shenoy@amd.com>
+    acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
+
+Pritam Manohar Sutar <pritam.sutar@samsung.com>
+    clk: samsung: correct clock summary for hsi1 block
+
+Gabor Juhos <j4g8y7@gmail.com>
+    pinctrl: armada-37xx: set GPIO output value before setting direction
+
+Gabor Juhos <j4g8y7@gmail.com>
+    pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
+
+Pan Taixi <pantaixi@huaweicloud.com>
+    tracing: Fix compilation warning on arm32
+
+
+-------------
+
+Diffstat:
+
+ .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  3 +--
+ .../devicetree/bindings/pwm/adi,axi-pwmgen.yaml    | 13 +++++++++--
+ .../devicetree/bindings/usb/cypress,hx3.yaml       | 19 +++++++++++++---
+ .../acpi/dsd/data-node-references.rst              | 26 ++++++++++------------
+ Documentation/firmware-guide/acpi/dsd/graph.rst    | 11 ++++-----
+ Documentation/firmware-guide/acpi/dsd/leds.rst     |  7 +-----
+ Makefile                                           |  4 ++--
+ drivers/android/binder.c                           | 16 +++++++++++--
+ drivers/android/binder_internal.h                  |  8 +++++--
+ drivers/android/binderfs.c                         |  2 +-
+ drivers/bluetooth/hci_qca.c                        | 14 ++++++------
+ drivers/clk/samsung/clk-exynosautov920.c           |  2 +-
+ drivers/cpufreq/acpi-cpufreq.c                     |  2 +-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 16 +++++--------
+ drivers/nvmem/Kconfig                              |  1 +
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c        | 14 +++++++-----
+ drivers/rtc/class.c                                |  2 +-
+ drivers/rtc/lib.c                                  | 24 +++++++++++++++-----
+ drivers/thunderbolt/ctl.c                          |  5 +++++
+ drivers/tty/serial/jsm/jsm_tty.c                   |  1 +
+ drivers/usb/class/usbtmc.c                         |  4 +++-
+ drivers/usb/core/quirks.c                          |  3 +++
+ drivers/usb/serial/pl2303.c                        |  2 ++
+ drivers/usb/storage/unusual_uas.h                  |  7 ++++++
+ drivers/usb/typec/ucsi/ucsi.h                      |  2 +-
+ fs/orangefs/inode.c                                |  9 ++++----
+ kernel/trace/trace.c                               |  2 +-
+ 27 files changed, 139 insertions(+), 80 deletions(-)
 
 
 
