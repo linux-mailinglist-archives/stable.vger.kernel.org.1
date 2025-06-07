@@ -1,153 +1,181 @@
-Return-Path: <stable+bounces-151866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1919AD0FDD
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 23:13:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E65AD1064
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 00:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0867B3AD324
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 21:13:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BEAE188EC81
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 22:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D87120E00A;
-	Sat,  7 Jun 2025 21:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3004217737;
+	Sat,  7 Jun 2025 22:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b="ITNH5pMI"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WFrJ82hD"
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.145])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AA91C5496
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 21:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD201AC88B;
+	Sat,  7 Jun 2025 22:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749330817; cv=none; b=ixostZX10zV2xEFs3j/IVrHY1TzsL/7Qvuhx8oHhYXTw3SgMB+XIcsCKTSFmoJqdheTymNfu1pcjjG7bzpAGwEKdfB3w5Idi6t98JnNTJBQ3AVqfHxOcjM/ggGdBAPZ3yEUwcxX7DU7A6Cds1KLmtOehc6+Hr8qyUAUymXN6iHU=
+	t=1749336939; cv=none; b=VAY5u5ewuqOO6iEmUFB+WtQnuK3s86Wf9ajMAGPAJRG54xYS4R8b/mX5UmBM9cckSWCTiXwKIAHI+1fGxFnIv1/Ddd7MT1hDQ+6NTbLyfhwBQBX3g32YHqPB3CuLGhgV+Oz4HG5WvoKZZAJ8PXQCVY3aoFFbZtljL0tx1mbNG90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749330817; c=relaxed/simple;
-	bh=JhS/3J2SU7iIGZNswJTzWeXgREd1y0GyGvdgpN4wbjo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=igrjsg+OBse4YLlZbqQ3UbZ4n8DjMygjRfZLsgv+TNSSkv4FazmkbRu3uh4H1k4IvYM8T1eV2BuIZxJ+W81CbOw+TZguT4gLStYzXCnQINKSofugxHUoGmuXwd0dO8h+LJNH7gKW2Tfba+pt0XpTwAB/oZZdP0wvNUv8VKPdPv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (2048-bit key) header.d=o2.pl header.i=@o2.pl header.b=ITNH5pMI; arc=none smtp.client-ip=193.222.135.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 48497 invoked from network); 7 Jun 2025 23:06:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=20241105;
-          t=1749330411; bh=J8z8CmQGGnB7Po1XsaFy2bygOPjhaFEoBcJC83rCADc=;
-          h=From:To:Cc:Subject;
-          b=ITNH5pMIvX/YMOIRljeHHOAw8BRIqAgscg2v5PSDuxzHuJ91hWlydSg7OfUQrcHIs
-           2dbP+ZGEU5kwiTydX676hoNqsorOCICxKkuCW0opqjl8dcrobtNXWyBKKMhe4qlYfn
-           j7YqaJFjZ8ez0GrRjpLAZRaeOoM/Oc0nI8wtXOoXt6WyUL2MKbHXO1ruWHnK80FO7h
-           PGxXSsf50vCLbVeMv2nyEU08in3oZFvAypQ8hD20J5ogjQ2yADLRfpul9LGys7dz+j
-           Jk6UH6TnCwcE93lZQKCDF48FJ3nj8rT15G5XZ7ngncMO3r5yW1jtAsWC0c/IN5q/uD
-           wiZ+3ptGwMGfg==
-Received: from unknown (HELO localhost.localdomain) (mat.jonczyk@o2.pl@[37.109.146.87])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with SMTP
-          for <alexandre.belloni@bootlin.com>; 7 Jun 2025 23:06:51 +0200
-From: =?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	linux-rtc@vger.kernel.org,
-	lkml <linux-kernel@vger.kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	stable@vger.kernel.org
-Subject: [PATCH] rtc-cmos: use spin_lock_irqsave in cmos_interrupt
-Date: Sat,  7 Jun 2025 23:06:08 +0200
-Message-Id: <20250607210608.14835-1-mat.jonczyk@o2.pl>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1749336939; c=relaxed/simple;
+	bh=gRmZaKAoYLs3c8hCQsjMkQe+eEMIUrDOBovFWB8mnMA=;
+	h=Date:To:From:Subject:Message-Id; b=EDDNvbYzdjBhx/jzM0XLdJDbsSrEaw10Fh9zkCyoph4mk3Y4jJjkgtCxh+cwkdeaoAb3gVzOPyMSOt5kPVGydk1f5mq98g9h/cVQDqpeh0VB/zTlsoCCDcofhNqT3t4RRWoRduH7b8rh9jN1AQVxfLD2ep8/pV1u5K/k60H2xFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WFrJ82hD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBB9C4CEE4;
+	Sat,  7 Jun 2025 22:55:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1749336938;
+	bh=gRmZaKAoYLs3c8hCQsjMkQe+eEMIUrDOBovFWB8mnMA=;
+	h=Date:To:From:Subject:From;
+	b=WFrJ82hDZb9cMdTqQGidrkqk5s6OkBCzwS4aHqhZGSQ2rJdhqzP1pTrXxTFLZWsAc
+	 a2BrtOTIlBl91kDD1DcMTa/H15qJdsSCUSlK65s3vOMcBzffqdPOUDBNxumR+oI/5X
+	 f4YBmUgACwSY6Id1ubQ5JHyG2amDcje2JH0fSYy0=
+Date: Sat, 07 Jun 2025 15:55:38 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,pfalcato@suse.de,liam.howlett@oracle.com,jannh@google.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vma-reset-vma-iterator-on-commit_merge-oom-failure.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250607225538.CEBB9C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: bd40430050a01a7b884864c3ef3e9e75
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [AZNk]                               
 
-cmos_interrupt() can be called in a non-interrupt context, such as in
-an ACPI event handler (which runs in an interrupt thread). Therefore,
-usage of spin_lock(&rtc_lock) is insecure. Use spin_lock_irqsave() /
-spin_unlock_irqrestore() instead.
 
-Before a misguided
-commit 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-the cmos_interrupt() function used spin_lock_irqsave(). That commit
-changed it to spin_lock() and broke locking, which was partially fixed in
-commit 13be2efc390a ("rtc: cmos: Disable irq around direct invocation of cmos_interrupt()")
+The patch titled
+     Subject: mm/vma: reset VMA iterator on commit_merge() OOM failure
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vma-reset-vma-iterator-on-commit_merge-oom-failure.patch
 
-That second commit did not take account of the ACPI fixed event handler
-pathway, however. It introduced local_irq_disable() workarounds in
-cmos_check_wkalrm(), which can cause problems on PREEMPT_RT kernels
-and are now unnecessary.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vma-reset-vma-iterator-on-commit_merge-oom-failure.patch
 
-Add an explicit comment so that this change will not be reverted by
-mistake.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/vma: reset VMA iterator on commit_merge() OOM failure
+Date: Fri, 6 Jun 2025 13:50:32 +0100
+
+While an OOM failure in commit_merge() isn't really feasible due to the
+allocation which might fail (a maple tree pre-allocation) being 'too small
+to fail', we do need to handle this case correctly regardless.
+
+In vma_merge_existing_range(), we can theoretically encounter failures
+which result in an OOM error in two ways - firstly dup_anon_vma() might
+fail with an OOM error, and secondly commit_merge() failing, ultimately,
+to pre-allocate a maple tree node.
+
+The abort logic for dup_anon_vma() resets the VMA iterator to the initial
+range, ensuring that any logic looping on this iterator will correctly
+proceed to the next VMA.
+
+However the commit_merge() abort logic does not do the same thing.  This
+resulted in a syzbot report occurring because mlockall() iterates through
+VMAs, is tolerant of errors, but ended up with an incorrect previous VMA
+being specified due to incorrect iterator state.
+
+While making this change, it became apparent we are duplicating logic -
+the logic introduced in commit 41e6ddcaa0f1 ("mm/vma: add give_up_on_oom
+option on modify/merge, use in uffd release") duplicates the
+vmg->give_up_on_oom check in both abort branches.
+
+Additionally, we observe that we can perform the anon_dup check safely on
+dup_anon_vma() failure, as this will not be modified should this call
+fail.
+
+Finally, we need to reset the iterator in both cases, so now we can simply
+use the exact same code to abort for both.
+
+We remove the VM_WARN_ON(err != -ENOMEM) as it would be silly for this to
+be otherwise and it allows us to implement the abort check more neatly.
+
+Link: https://lkml.kernel.org/r/20250606125032.164249-1-lorenzo.stoakes@oracle.com
+Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: syzbot+d16409ea9ecc16ed261a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/6842cc67.a00a0220.29ac89.003b.GAE@google.com/
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
 Cc: <stable@vger.kernel.org>
-Fixes: 6950d046eb6e ("rtc: cmos: Replace spin_lock_irqsave with spin_lock in hard IRQ")
-Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/all/aDtJ92foPUYmGheF@debian.local/
-
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Changes after DRAFT version of the patch:
-- rewrite commit message,
-- test this locally (also on top of 5.10.238 for the stable backport),
-- fix a grammar mistake in the comment.
----
- drivers/rtc/rtc-cmos.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ mm/vma.c |   22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 8172869bd3d7..0743c6acd6e2 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -692,8 +692,12 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
- {
- 	u8		irqstat;
- 	u8		rtc_control;
-+	unsigned long	flags;
- 
--	spin_lock(&rtc_lock);
-+	/* We cannot use spin_lock() here, as cmos_interrupt() is also called
-+	 * in a non-irq context.
-+	 */
-+	spin_lock_irqsave(&rtc_lock, flags);
- 
- 	/* When the HPET interrupt handler calls us, the interrupt
- 	 * status is passed as arg1 instead of the irq number.  But
-@@ -727,7 +731,7 @@ static irqreturn_t cmos_interrupt(int irq, void *p)
- 			hpet_mask_rtc_irq_bit(RTC_AIE);
- 		CMOS_READ(RTC_INTR_FLAGS);
- 	}
--	spin_unlock(&rtc_lock);
-+	spin_unlock_irqrestore(&rtc_lock, flags);
- 
- 	if (is_intr(irqstat)) {
- 		rtc_update_irq(p, 1, irqstat);
-@@ -1295,9 +1299,7 @@ static void cmos_check_wkalrm(struct device *dev)
- 	 * ACK the rtc irq here
- 	 */
- 	if (t_now >= cmos->alarm_expires && cmos_use_acpi_alarm()) {
--		local_irq_disable();
- 		cmos_interrupt(0, (void *)cmos->rtc);
--		local_irq_enable();
- 		return;
+--- a/mm/vma.c~mm-vma-reset-vma-iterator-on-commit_merge-oom-failure
++++ a/mm/vma.c
+@@ -961,26 +961,9 @@ static __must_check struct vm_area_struc
+ 		err = dup_anon_vma(next, middle, &anon_dup);
  	}
  
--- 
-2.25.1
+-	if (err)
++	if (err || commit_merge(vmg))
+ 		goto abort;
+ 
+-	err = commit_merge(vmg);
+-	if (err) {
+-		VM_WARN_ON(err != -ENOMEM);
+-
+-		if (anon_dup)
+-			unlink_anon_vmas(anon_dup);
+-
+-		/*
+-		 * We've cleaned up any cloned anon_vma's, no VMAs have been
+-		 * modified, no harm no foul if the user requests that we not
+-		 * report this and just give up, leaving the VMAs unmerged.
+-		 */
+-		if (!vmg->give_up_on_oom)
+-			vmg->state = VMA_MERGE_ERROR_NOMEM;
+-		return NULL;
+-	}
+-
+ 	khugepaged_enter_vma(vmg->target, vmg->flags);
+ 	vmg->state = VMA_MERGE_SUCCESS;
+ 	return vmg->target;
+@@ -989,6 +972,9 @@ abort:
+ 	vma_iter_set(vmg->vmi, start);
+ 	vma_iter_load(vmg->vmi);
+ 
++	if (anon_dup)
++		unlink_anon_vmas(anon_dup);
++
+ 	/*
+ 	 * This means we have failed to clone anon_vma's correctly, but no
+ 	 * actual changes to VMAs have occurred, so no harm no foul - if the
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+mm-vma-reset-vma-iterator-on-commit_merge-oom-failure.patch
+docs-mm-expand-vma-doc-to-highlight-pte-freeing-non-vma-traversal.patch
+mm-ksm-have-ksm-vma-checks-not-require-a-vma-pointer.patch
+mm-ksm-refer-to-special-vmas-via-vm_special-in-ksm_compatible.patch
+mm-prevent-ksm-from-breaking-vma-merging-for-new-vmas.patch
+tools-testing-selftests-add-vma-merge-tests-for-ksm-merge.patch
+mm-pagewalk-split-walk_page_range_novma-into-kernel-user-parts.patch
 
 
