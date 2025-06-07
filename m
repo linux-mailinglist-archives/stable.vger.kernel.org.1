@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-151811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750FDAD0CB1
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A865DAD0C8F
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE8A18951B7
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E273B27DB
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0F620CCED;
-	Sat,  7 Jun 2025 10:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2819217679;
+	Sat,  7 Jun 2025 10:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUJGOkfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gdk5JcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C66E15D1;
-	Sat,  7 Jun 2025 10:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE2715D1;
+	Sat,  7 Jun 2025 10:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291061; cv=none; b=J1arItfMVxzqJ4d0TKSRBMKi5N+Jsv66TfieCavzd13WexoyU+spv2VjKvfc72CGLMs3u1Cp66u8EVBxQK+ZaeS1tBPAl9U+VWbzbnUDeT5oFVFvLJSC8oDB6Vu3mmircqjkOkCDbdmUQC4DKlcM8XZ2Kc6m1MtICNHRzEXpRZA=
+	t=1749290979; cv=none; b=u2cpCMz7TqGNeTwbQwm21r5IOZ1AFzhBuvfcE0ORHo5R+o4EHF2FJ21BPaES5SB1qLeGXtAreuNgAvMgvQLQwoTkRTI4LKRtVt2A4ew+7YFKHnnH2WrPwaGLViJQZal+X6ehbhL6W0JEXQ0tQRFSG3/lD5sV8vmYiczwkweKa9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291061; c=relaxed/simple;
-	bh=Tj941XFhDqujdKHzHzwymLNSMmKOPKaHNTicg9MPF90=;
+	s=arc-20240116; t=1749290979; c=relaxed/simple;
+	bh=v8NbUdlx15h1ylXunzrA8WvoEYo3DxeAymITHVb4U1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfDAqEf+yGSYYgK26SUIPNBvaR7q3f3G5JnK3PDxFqvabdCVWRkv+VYWudTeQsZrAK5lniMlargFhPCHxjWrTjMteGAv23GKg2pehl/eExIGrMisfZz3Ih0dOla5rtTX/5bqtykq9ksQ10HSnB85eGo+pX3+AKrCEXKIWLHcK9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUJGOkfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0ECC4CEE4;
-	Sat,  7 Jun 2025 10:11:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cVsPmaxWflLO5DMUZJ7R4RZl02j6b7e5dZp20DERfnqUhXNg7NQugoeDOzzI0485NPOOpgv4S3gGd8uovIuTXNvgHEXSSaP+PbQFeN9LJuoAda3rErvpMn/8b3+fu2BGbMOi/OfU60Gip+BLHnGZCCcIskBTJFhiro3/BJ7iQ3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gdk5JcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54C0C4CEE4;
+	Sat,  7 Jun 2025 10:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291060;
-	bh=Tj941XFhDqujdKHzHzwymLNSMmKOPKaHNTicg9MPF90=;
+	s=korg; t=1749290979;
+	bh=v8NbUdlx15h1ylXunzrA8WvoEYo3DxeAymITHVb4U1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUJGOkfvZMOAR2BvtnQ/iTD+57WMdmVrphUWSRB7xzyR3YAboFgTWp3YFJ2VhRjKq
-	 HEbAcRefAL3GhQMnzyGS8yhXPtqfOwGkcmA0FAFs5erVEkq6CFJ1C6JcsE8+ISVdFq
-	 +YcTe018LUPpM9RYg9LeuLJuVV32GBamiZYcf2es=
+	b=0Gdk5JcRcmULJVIhnJYIj3gd/J+PXFo1SYX1J2mevN+Wz4uYrLtll6e1V02ThbVPa
+	 5cwYFB6zO8zxpOUVLr8t/tuJ49J9gpLytq4ccNHxe/XKmRbyt1fTToMmMZEBNylqM/
+	 BV511p0I624mP1ruA5xhGf4pg9jXVoMnyOFN5Fx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.15 05/34] ACPICA: Apply ACPI_NONSTRING in more places
-Date: Sat,  7 Jun 2025 12:07:46 +0200
-Message-ID: <20250607100719.931637473@linuxfoundation.org>
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.14 07/24] rtc: Make rtc_time64_to_tm() support dates before 1970
+Date: Sat,  7 Jun 2025 12:07:47 +0200
+Message-ID: <20250607100717.994215993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 70662db73d5455ebc8a1da29973fa70237b18cd2 upstream.
+commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
 
-ACPICA commit 1035a3d453f7dd49a235a59ee84ebda9d2d2f41b
+Conversion of dates before 1970 is still relevant today because these
+dates are reused on some hardwares to store dates bigger than the
+maximal date that is representable in the device's native format.
+This prominently and very soon affects the hardware covered by the
+rtc-mt6397 driver that can only natively store dates in the interval
+1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
+to such a device, rtc_time64_to_tm() must do the right thing for
+time=-2208988800.
 
-Add ACPI_NONSTRING for destination char arrays without a terminating NUL
-character. This is a follow-up to commit 35ad99236f3a ("ACPICA: Apply
-ACPI_NONSTRING") where not all instances received the same treatment, in
-preparation for replacing strncpy() calls with memcpy()
-
-Link: https://github.com/acpica/acpica/commit/1035a3d4
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/3833065.MHq7AAxBmi@rjwysocki.net
-Cc: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/acdebug.h                            |    2 +-
- include/acpi/actbl.h                                     |    6 +++---
- tools/power/acpi/os_specific/service_layers/oslinuxtbl.c |    2 +-
- tools/power/acpi/tools/acpidump/apfiles.c                |    2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/rtc/lib.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/drivers/acpi/acpica/acdebug.h
-+++ b/drivers/acpi/acpica/acdebug.h
-@@ -37,7 +37,7 @@ struct acpi_db_argument_info {
- struct acpi_db_execute_walk {
- 	u32 count;
- 	u32 max_count;
--	char name_seg[ACPI_NAMESEG_SIZE + 1];
-+	char name_seg[ACPI_NAMESEG_SIZE + 1] ACPI_NONSTRING;
- };
- 
- #define PARAM_LIST(pl)                  pl
---- a/include/acpi/actbl.h
-+++ b/include/acpi/actbl.h
-@@ -66,12 +66,12 @@
-  ******************************************************************************/
- 
- struct acpi_table_header {
--	char signature[ACPI_NAMESEG_SIZE] __nonstring;	/* ASCII table signature */
-+	char signature[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;	/* ASCII table signature */
- 	u32 length;		/* Length of table in bytes, including this header */
- 	u8 revision;		/* ACPI Specification minor version number */
- 	u8 checksum;		/* To make sum of entire table == 0 */
--	char oem_id[ACPI_OEM_ID_SIZE];	/* ASCII OEM identification */
--	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE];	/* ASCII OEM table identification */
-+	char oem_id[ACPI_OEM_ID_SIZE] ACPI_NONSTRING;	/* ASCII OEM identification */
-+	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE] ACPI_NONSTRING;	/* ASCII OEM table identification */
- 	u32 oem_revision;	/* OEM revision number */
- 	char asl_compiler_id[ACPI_NAMESEG_SIZE];	/* ASCII ASL compiler vendor ID */
- 	u32 asl_compiler_revision;	/* ASL compiler version */
---- a/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
-+++ b/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
-@@ -19,7 +19,7 @@ ACPI_MODULE_NAME("oslinuxtbl")
- typedef struct osl_table_info {
- 	struct osl_table_info *next;
- 	u32 instance;
--	char signature[ACPI_NAMESEG_SIZE];
-+	char signature[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
- 
- } osl_table_info;
- 
---- a/tools/power/acpi/tools/acpidump/apfiles.c
-+++ b/tools/power/acpi/tools/acpidump/apfiles.c
-@@ -103,7 +103,7 @@ int ap_open_output_file(char *pathname)
- 
- int ap_write_to_binary_file(struct acpi_table_header *table, u32 instance)
+--- a/drivers/rtc/lib.c
++++ b/drivers/rtc/lib.c
+@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
+  * rtc_time64_to_tm - converts time64_t to rtc_time.
+  *
+  * @time:	The number of seconds since 01-01-1970 00:00:00.
+- *		(Must be positive.)
++ *		Works for values since at least 1900
+  * @tm:		Pointer to the struct rtc_time.
+  */
+ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
  {
--	char filename[ACPI_NAMESEG_SIZE + 16];
-+	char filename[ACPI_NAMESEG_SIZE + 16] ACPI_NONSTRING;
- 	char instance_str[16];
- 	ACPI_FILE file;
- 	acpi_size actual;
+-	unsigned int secs;
+-	int days;
++	int days, secs;
+ 
+ 	u64 u64tmp;
+ 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
+ 		day_of_year, month, day;
+ 	bool is_Jan_or_Feb, is_leap_year;
+ 
+-	/* time must be positive */
++	/*
++	 * Get days and seconds while preserving the sign to
++	 * handle negative time values (dates before 1970-01-01)
++	 */
+ 	days = div_s64_rem(time, 86400, &secs);
+ 
++	/*
++	 * We need 0 <= secs < 86400 which isn't given for negative
++	 * values of time. Fixup accordingly.
++	 */
++	if (secs < 0) {
++		days -= 1;
++		secs += 86400;
++	}
++
+ 	/* day of the week, 1970-01-01 was a Thursday */
+ 	tm->tm_wday = (days + 4) % 7;
++	/* Ensure tm_wday is always positive */
++	if (tm->tm_wday < 0)
++		tm->tm_wday += 7;
+ 
+ 	/*
+ 	 * The following algorithm is, basically, Proposition 6.3 of Neri
+@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
+ 	 * thus, is slightly different from [1].
+ 	 */
+ 
+-	udays		= ((u32) days) + 719468;
++	udays		= days + 719468;
+ 
+ 	u32tmp		= 4 * udays + 3;
+ 	century		= u32tmp / 146097;
 
 
 
