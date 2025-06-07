@@ -1,58 +1,72 @@
-Return-Path: <stable+bounces-151823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5079FAD0CC1
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37BECAD0D01
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 13:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BF467A9DDA
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2137E18929A8
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DB31F4CB8;
-	Sat,  7 Jun 2025 10:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143352206B5;
+	Sat,  7 Jun 2025 11:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klupyk14"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="PTog1a1Y";
+	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="T4tHarSX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e3i282.smtp2go.com (e3i282.smtp2go.com [158.120.85.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66F121CA03;
-	Sat,  7 Jun 2025 10:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3264219319
+	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 11:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291092; cv=none; b=CZmJIjPRoTyGWC8wBJDPZ6lVjJ2Q9bHP81TOVJbJDjkO8y3kAzOGrY3PFqGohCCdmPbHCMsfe4AnW5NNINBsHn7Pl/j1wLgxShcgw1YNYvEyIor8BtCfar1p2KbMgRr0ZGdvf6dwf6AlaMjnvqVbEdaqGjfoURcJ1TmFTngDzOY=
+	t=1749294391; cv=none; b=nurDtnlwISXXZicDEE2rr9J9zZxjpL5Nmh4OXFMTg+aH7FRhlEjRbZtwRcfr92ejHylDwKvhKSDlPf0CaSgCRpawF/8sUdIV6BWEWNQWot++F3qe3FncVTzphAhKWsFEkQA2/ZAe3TUmM9oGqhUgWqhGRmZmyMUlnAQHP/VQsbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291092; c=relaxed/simple;
-	bh=pxN7evBAbLEH/0Z7T7GebuYa0q+w0KsoL+UNX95O1Zo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEExuGm3WcJaBj5mznHJiib2B663vA1RWoxlonpsOPU7tUuYyzFXWMEXQL/YwUWP8SmwnvXS93D4g3FoicKBQVtV81xmL+LBwcdjhLt9O8ARvt6e1Kdp/jR6LWUwpv9ocB4ck/1zalV0EPNcQukFqAHqZNC9DLS40Pog/Q2OuA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klupyk14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597F6C4CEE4;
-	Sat,  7 Jun 2025 10:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291092;
-	bh=pxN7evBAbLEH/0Z7T7GebuYa0q+w0KsoL+UNX95O1Zo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klupyk142Cwx13z9BuNIUgNbmR3rh7Y+Ctx+ZkuYTELW02YtErHJPdpfnSofu4kl0
-	 5aJhZlKxLp5SclixCUi5hsi1Tk1eNEmx74j3EyjAG4un9d9sRaoZGkgt2miOG0dzF1
-	 efDsQs6HsO0kLICy1MZurnFmv8fD1LCIRDxfJuUg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.15 34/34] Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
-Date: Sat,  7 Jun 2025 12:08:15 +0200
-Message-ID: <20250607100721.057977700@linuxfoundation.org>
+	s=arc-20240116; t=1749294391; c=relaxed/simple;
+	bh=nX74YXxYtHkzOexVkzDImxaKm+7hvrwPVrhY5bNpSrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j3So3x9hs72oHH7GyhBhKG31L4D4RojihlqoKJ2YZRDVQsbA7X1kPR/lrmuNnJdgx+/HDjzfOzSiCiZN6mXamp02OfiOJpD7g175ilfEYqFDQz2vLh186TnB0mGAUpzETYVnAYEg+/QLYV3kKLTyFURAtnGTCC3wVMnOC8SV+wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=PTog1a1Y; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=T4tHarSX; arc=none smtp.client-ip=158.120.85.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1749293476; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=hOyF5qcsGk+wcyGuqz+JA3xcq8KlJ65GJ3VjxNyRqCA=;
+ b=PTog1a1YYX59+s4SurKQrqlMuWeHG/nJWrFtJyx8HyQDI9N8RnSPu0NpQXnSW2AdsOy3a
+ vgCgplL5i1TY/8b8s7TaZjoT/UfESQUjhxuVXYznzks84lTxEA1ZElzXDdKBq3cNwPkQi/F
+ vMqAXEaW1gueIN+DBHG3ZmCgue/L73CrADcTFQIGYHsNMS156nFV2IJnQvG10hE9kRGHk5W
+ PFR69ps/3DkUKAvQDbi3onaFgWlFYX+sLkqENFViqbBAVQ8mvTw1tfVzGtU1th79FCcTdkv
+ vYRS371d2t1/10ua5UsXza9fxc8TQyakMzjM8KhEjMkAyOohZG12eaRoQZkg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
+ i=@medip.dev; q=dns/txt; s=s1255854; t=1749293476; h=from : subject :
+ to : message-id : date;
+ bh=hOyF5qcsGk+wcyGuqz+JA3xcq8KlJ65GJ3VjxNyRqCA=;
+ b=T4tHarSXTvoCi/LcnarHE0qSaVl9QQV4+9lYhijeTs5tpms+MwZ0YKykYz0REY4qYAB4N
+ yFHRDjy6tx+W7Uhog+lTBCusxJU8P5T+yJVy3aVsttGF7/hTvqyCfPLZMvDIiGFZKtuZnIv
+ K+KT0M2Y8fjzhZf0datOooye+5g42Llo8dB7POwz+rSKyVsWKzwvpfD67c22pv/+NkHy6Ux
+ M+n+TzKmnHOr8ctljUyY8BJQ5r5oN/BSfZ6ngyvrYWFOmroxWwX4T9sHj7vZe1iP+PbSv+F
+ /ktBEbBrtDJ8DrdSiUXtB0GPDeN0RlUBAvvYFSsF9iKxxx+hsCo0vbyh29+Q==
+Received: from [10.152.250.198] (helo=localhost.localdomain)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97.1-S2G)
+	(envelope-from <edip@medip.dev>)
+	id 1uNr8l-4o5NDgrtezB-jxvq;
+	Sat, 07 Jun 2025 10:51:08 +0000
+From: edip@medip.dev
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Edip Hazuri <edip@medip.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek - Add mute LED support for HP Victus 16-s1xxx and HP Victus 15-fa1xxx
+Date: Sat,  7 Jun 2025 13:50:51 +0300
+Message-ID: <20250607105051.41162-1-edip@medip.dev>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,58 +74,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 1255854m:1255854ay30w_v:1255854sdbwEFunTN
+X-smtpcorp-track: WLmjEf6Xfq5Z.lJrLy3cuhkLN.Tdmj6wx-LsL
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+From: Edip Hazuri <edip@medip.dev>
 
-------------------
+The mute led on those laptops is using ALC245 but requires a quirk to work
+This patch enables the existing quirk for the devices.
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested on my Victus 16-s1011nt Laptop and my friend's Victus 15-fa1xxx. The LED behaviour works as intended.
 
-commit 1b824eef269db44d068bbc0de74c94a8e8f9ce02 upstream.
-
-This reverts commit cfb2d41831ee5647a4ae0ea7c24971a92d5dfa0d since it
-causes regressions on certain configs. Revert until the issue can be
-isolated and debugged.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4238
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Edip Hazuri <edip@medip.dev>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -675,21 +675,15 @@ static void dm_crtc_high_irq(void *inter
- 	spin_lock_irqsave(&adev_to_drm(adev)->event_lock, flags);
- 
- 	if (acrtc->dm_irq_params.stream &&
--		acrtc->dm_irq_params.vrr_params.supported) {
--		bool replay_en = acrtc->dm_irq_params.stream->link->replay_settings.replay_feature_enabled;
--		bool psr_en = acrtc->dm_irq_params.stream->link->psr_settings.psr_feature_enabled;
--		bool fs_active_var_en = acrtc->dm_irq_params.freesync_config.state == VRR_STATE_ACTIVE_VARIABLE;
--
-+	    acrtc->dm_irq_params.vrr_params.supported &&
-+	    acrtc->dm_irq_params.freesync_config.state ==
-+		    VRR_STATE_ACTIVE_VARIABLE) {
- 		mod_freesync_handle_v_update(adev->dm.freesync_module,
- 					     acrtc->dm_irq_params.stream,
- 					     &acrtc->dm_irq_params.vrr_params);
- 
--		/* update vmin_vmax only if freesync is enabled, or only if PSR and REPLAY are disabled */
--		if (fs_active_var_en || (!fs_active_var_en && !replay_en && !psr_en)) {
--			dc_stream_adjust_vmin_vmax(adev->dm.dc,
--					acrtc->dm_irq_params.stream,
--					&acrtc->dm_irq_params.vrr_params.adjust);
--		}
-+		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
-+					   &acrtc->dm_irq_params.vrr_params.adjust);
- 	}
- 
- 	/*
-
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index cd0d7ba73..1e07da9c6 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10733,6 +10733,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
++	SND_PCI_QUIRK(0x103c, 0x8c9c, "HP Victus 16-s1xxx (MB 8C9C)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a28, "HP Envy 13", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a29, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a2a, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
+@@ -10805,6 +10806,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8c16, "HP Spectre x360 2-in-1 Laptop 16-aa0xxx", ALC245_FIXUP_HP_SPECTRE_X360_16_AA0XXX),
+ 	SND_PCI_QUIRK(0x103c, 0x8c17, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8c21, "HP Pavilion Plus Laptop 14-ey0XXX", ALC245_FIXUP_HP_X360_MUTE_LEDS),
++	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8c30, "HP Victus 15-fb1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+-- 
+2.49.0
 
 
