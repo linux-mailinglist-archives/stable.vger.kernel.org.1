@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-151758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B181AD0C78
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E94AAD0C96
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C00363B1E48
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467DA1715C8
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC51C21A444;
-	Sat,  7 Jun 2025 10:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9F421FF47;
+	Sat,  7 Jun 2025 10:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lt4lwEP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BI0lAJSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABD620D4E3;
-	Sat,  7 Jun 2025 10:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65921E0A8;
+	Sat,  7 Jun 2025 10:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290911; cv=none; b=WxPVkMg8+46kfzGYqYjI8g+Qi+aauIIJM2PctreT2wnQncwsqgd+SSZoHN8Y6hKdSSwycE6QmaZm+AnZfzx6Ra0Er2YdZBCvO9k4YEK7ih1MYuBgETA8vh+bTnsm9njXvoUj9I6dFVc0Qr2fwbzjksiNnscajn94xSbcrL44ytE=
+	t=1749290990; cv=none; b=R2fFej2KfBnNMm6SlkHjDF0/7I1szvw8zebMlfm2uH0wZXeFXmNjD8ThsljIjLGWrzfibvtBreWZgMlv2FLa69OoyogrmNezJe+yPOmrqEo60sVQQSUz4VEzql+r9kWmFFAwwjnNDXTHkWSTL9FHq60W6qD0x04xrXIVKF3jXEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290911; c=relaxed/simple;
-	bh=bApfRGq7prsWnhW+GW0PeSl3Atn6YZq+DNyTDMTlcoc=;
+	s=arc-20240116; t=1749290990; c=relaxed/simple;
+	bh=IUweU+hs+4jIFllb31fYArpsMLua+Q52ixTUJBQVYJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kE6G+FxOOF94vRnYrftYJ2f7ebuNRXNKA9HTqJ7mgLGXBugfTZLKY4Ykok0Orl/rDhowv3HrZ9oHULll7I9Zvr55qxbezMGyEtvtd8DLYX1NC+OX9N3C7mi/KfLzhAJCh4o68nHQY97E6TuLt46ZePMtfcYL+tG5tRpLKm7obNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lt4lwEP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E9AC4CEE4;
-	Sat,  7 Jun 2025 10:08:30 +0000 (UTC)
+	 MIME-Version; b=hImyQJsMRG7UUUn4CQ7YXegjDr0or3+p26xo/6EHUeHT1rst9OxGOdcfgZcG9VaehVGOxvnGNRD5/ya8766ZfqyuYmtRg1dIBBidkCuAZYdp3pHDHg8PoEvV6IDN/z1DL0LrVrrryO1wQqgaffCT5hWnwW0b9LR0DnvBYbFCKvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BI0lAJSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFB8C4CEED;
+	Sat,  7 Jun 2025 10:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290911;
-	bh=bApfRGq7prsWnhW+GW0PeSl3Atn6YZq+DNyTDMTlcoc=;
+	s=korg; t=1749290989;
+	bh=IUweU+hs+4jIFllb31fYArpsMLua+Q52ixTUJBQVYJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lt4lwEP9EoZ0DlnwbgaXN7L2WCwwCZItRE3fhH0A79TqG+6HAdxn9kLz/2nNcU9Ti
-	 Ik0lRwgaynz4vqp+36OPfI6zJLEWkwmeLvviNcRtC3xrdxDPUSde5n3X4PAxIzS2YI
-	 XMtxJgTuPOAC2szFEs2Za5UbILNaemCCI5P8sv54=
+	b=BI0lAJSXCHFfVPPaRf2kK2tOJv+YBL6S9sWBqkSDuXUOc8v3G7L1CmBdsFGwWeJPE
+	 obgexggEfgcOYGLW3DtRoNO+/5HL43qGNVVdBqgmsUdGhO/TJNhKxVFQ4jwbECocW8
+	 rRWHA/ECxdpx+cNuDWtjj5+WJlc1fmzb66ekfvYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 6.12 20/24] usb: usbtmc: Fix timeout value in get_stb
-Date: Sat,  7 Jun 2025 12:07:51 +0200
-Message-ID: <20250607100718.682657824@linuxfoundation.org>
+	Charles Yeh <charlesyeh522@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.14 12/24] USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+Date: Sat,  7 Jun 2025 12:07:52 +0200
+Message-ID: <20250607100718.187014956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Charles Yeh <charlesyeh522@gmail.com>
 
-commit 342e4955a1f1ce28c70a589999b76365082dbf10 upstream.
+commit d3a889482bd5abf2bbdc1ec3d2d49575aa160c9c upstream.
 
-wait_event_interruptible_timeout requires a timeout argument
-in units of jiffies. It was being called in usbtmc_get_stb
-with the usb timeout value which is in units of milliseconds.
+Add new bcd (0x905) to support PL2303GT-2AB (TYPE_HXN).
+Add new bcd (0x1005) to support PL2303GC-Q20 (TYPE_HXN).
 
-Pass the timeout argument converted to jiffies.
-
-Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+Signed-off-by: Charles Yeh <charlesyeh522@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-4-dpenkler@gmail.com
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/pl2303.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -483,6 +483,7 @@ static int usbtmc_get_stb(struct usbtmc_
- 	u8 tag;
- 	int rv;
- 	long wait_rv;
-+	unsigned long expire;
- 
- 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
- 		data->iin_ep_present);
-@@ -512,10 +513,11 @@ static int usbtmc_get_stb(struct usbtmc_
- 	}
- 
- 	if (data->iin_ep_present) {
-+		expire = msecs_to_jiffies(file_data->timeout);
- 		wait_rv = wait_event_interruptible_timeout(
- 			data->waitq,
- 			atomic_read(&data->iin_data_valid) != 0,
--			file_data->timeout);
-+			expire);
- 		if (wait_rv < 0) {
- 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
- 			rv = wait_rv;
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -458,6 +458,8 @@ static int pl2303_detect_type(struct usb
+ 		case 0x605:
+ 		case 0x700:	/* GR */
+ 		case 0x705:
++		case 0x905:	/* GT-2AB */
++		case 0x1005:	/* GC-Q20 */
+ 			return TYPE_HXN;
+ 		}
+ 		break;
 
 
 
