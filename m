@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-151790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51558AD0C9A
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 608D7AD0CA5
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F469171709
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7DCA17184D
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2E91F4CB8;
-	Sat,  7 Jun 2025 10:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902C520CCED;
+	Sat,  7 Jun 2025 10:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3hJVes3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYb/0m+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9393217679;
-	Sat,  7 Jun 2025 10:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0471F4CB8;
+	Sat,  7 Jun 2025 10:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291005; cv=none; b=hWMwmBgoWiTaIgj83TJZZ1Ot3FeObNXQonENpm4axzqHCKcqUvcG0XJgPaCX8+lnrqNLGuaE7KTz5LDk2rIos1DH6WS8Ep1QRXinX59FNVQ7eTXxD+fdcbyfNh/rcJGsa+LqX8SWS9eWbSmJDRY5F4/8Yxqb4+/ex3Z9zcqSr3Y=
+	t=1749291037; cv=none; b=JYEFnJOnhD15qv7Ha88dUc2vdulRUbV9ITKwjoTcjW/0ZmIr+nBck+cTyTwlOKtjDynnxqAQ6hBIU27ilLLPuQfJyoUgtWbVDFj1NXilFJpmuD1nMoHkBRe6nDeiF3mqpFNqc4ov6qsqUyQx8ehzGNA8Y39R8R2SSro5DdHKqXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291005; c=relaxed/simple;
-	bh=bfeHhsU2mj9PZq1hABPo+yRNx0lPN54oiuLgdRXHiVA=;
+	s=arc-20240116; t=1749291037; c=relaxed/simple;
+	bh=9ErGhhli9UzoIUoyBKf42/n+eEx1hOtK5K8gqSd0ZZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QD/ULcMBYUKOd/aDUVlLjg9pZajMuorvYU7bvNy/STTO8HGGR8kLHCjF4pRZ9Z2ArP95yk/MihUuxICCjjSDPV2FgPyN51Npwj/Ex+JZihtTGFPtEWsEuSjybp6uqUC8YKD6YH/XffmSYk2jiQojBHPt9irmp9xg035ZgD91c9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3hJVes3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2716FC4CEE4;
-	Sat,  7 Jun 2025 10:10:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CFfnPOku48RsJsTJz7t+VfNsHgJygO6WkfIpWaTzLbxyC1BnRJBZz/MWB9WGUNCPtsTCfkt3fV6yqmZdEYgzJ+7OFiiT016x3JehQ0J9VQX72+X+Ut6K6jlh3vFpOvTONVE3t6jCN/4eDV++Wduqw896rRYouIaE/JADC6aH+Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYb/0m+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2448C4CEE4;
+	Sat,  7 Jun 2025 10:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291005;
-	bh=bfeHhsU2mj9PZq1hABPo+yRNx0lPN54oiuLgdRXHiVA=;
+	s=korg; t=1749291037;
+	bh=9ErGhhli9UzoIUoyBKf42/n+eEx1hOtK5K8gqSd0ZZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3hJVes32hR9xLgp6QFBovMCgzwBEHygSLfIoM/IbI16f3asRDFrTV9GM5nl1OqDV
-	 aPQBr3zZiAsXJNcRXu7zLYeApel3tS+hazNFoJfIgu0Lyr0T4xwx87qMVlifQZhW7w
-	 +aDdy/+VCkW2jbzR5HPRGCZxj/kz5DMRrYvptCfs=
+	b=hYb/0m+e73VMmgeHbRuxxNMIyO+dBR8GKHZoe0zFFXu12kgp1DC/wU7lyXLTTV9Zz
+	 A2eKrhSASBRiPEe/mO9fM1txrEI2N20oSscpuAm1v596hN+g6y0IfNAKJIEJPRtSzh
+	 E6liE5xkVe1fyN8eHhYIfTG9TKK5cjOtZQGIKkhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hsin-chen Chuang <chharry@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.14 14/24] Bluetooth: hci_qca: move the SoC type check to the right place
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.15 13/34] rtc: Fix offset calculation for .start_secs < 0
 Date: Sat,  7 Jun 2025 12:07:54 +0200
-Message-ID: <20250607100718.261806939@linuxfoundation.org>
+Message-ID: <20250607100720.240415759@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 0fb410c914eb03c7e9d821e26d03bac0a239e5db upstream.
+commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
 
-Commit 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL
-returned by gpiod_get_optional()") accidentally changed the prevous
-behavior where power control would be disabled without the BT_EN GPIO
-only on QCA_WCN6750 and QCA_WCN6855 while also getting the error check
-wrong. We should treat every IS_ERR() return value from
-devm_gpiod_get_optional() as a reason to bail-out while we should only
-set power_ctrl_enabled to false on the two models mentioned above. While
-at it: use dev_err_probe() to save a LOC.
+The comparison
 
-Cc: stable@vger.kernel.org
-Fixes: 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL returned by gpiod_get_optional()")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Hsin-chen Chuang <chharry@chromium.org>
-Reviewed-by: Hsin-chen Chuang <chharry@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+        rtc->start_secs > rtc->range_max
+
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/rtc/class.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2415,14 +2415,14 @@ static int qca_serdev_probe(struct serde
- 
- 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
- 					       GPIOD_OUT_LOW);
--		if (IS_ERR(qcadev->bt_en) &&
--		    (data->soc_type == QCA_WCN6750 ||
--		     data->soc_type == QCA_WCN6855)) {
--			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
--			return PTR_ERR(qcadev->bt_en);
--		}
-+		if (IS_ERR(qcadev->bt_en))
-+			return dev_err_probe(&serdev->dev,
-+					     PTR_ERR(qcadev->bt_en),
-+					     "failed to acquire BT_EN gpio\n");
- 
--		if (!qcadev->bt_en)
-+		if (!qcadev->bt_en &&
-+		    (data->soc_type == QCA_WCN6750 ||
-+		     data->soc_type == QCA_WCN6855))
- 			power_ctrl_enabled = false;
- 
- 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -326,7 +326,7 @@ static void rtc_device_get_offset(struct
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
 
 
 
