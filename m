@@ -1,134 +1,81 @@
-Return-Path: <stable+bounces-151835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD409AD0D34
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 13:50:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7125AD0E06
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 17:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F95A1895740
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:50:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BEC16C968
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 15:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB4920A5F2;
-	Sat,  7 Jun 2025 11:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B211D7984;
+	Sat,  7 Jun 2025 15:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="ZfBdfdmJ"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="jtmJ8Zwj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FF21E2853;
-	Sat,  7 Jun 2025 11:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB1BBA3D;
+	Sat,  7 Jun 2025 15:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749297025; cv=none; b=hbh4RnFt9uWnaaLNcXbyzWdGkrR9XfNaXCIjzttk9S76UDthIK8WQJnaUOY0atg3Ae+5dCfNy22X9iqs23uAvDjPehVc6nTIT5C8MBxh27IOO1YkNER8bYkI5GmOcB8vrWAMEeE9fgoA6vahee3UVKl3OXqdOTsGuHSLYSvSjCU=
+	t=1749309325; cv=none; b=IDhdFv2Sokb9yVYknKWiPgRvAACOMXQaoJhwghIiyHkyJIur82d6pTztPXEEqJY2gNh2grbeHhempcLXUGyVkkYznUFXgx73v5nPanxMJoM7B8DcoYEut7735wgWTMLMztuN4Tl0t/ye7EAI4BK9H5UdRgJOqO3MlFnXsinJeIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749297025; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Znx8TEhvLHBanXkgsbn7xgSnXYaa9lx5JfbfOFIWYAzdXqtUlKJxEn639gJvdXLwq5qQF35Df5zP/6NP05gLNvLjODTJQWiW4y1CPqd3nIPbTD4X3Nt6UAR3S3GjhHa4AZokSjK/+Z5P1fmKmoIloboQH9aLC4iclBErYBJYSB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=ZfBdfdmJ; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1749297012; x=1749901812; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=ZfBdfdmJiaaSkvldJcyify+LUjRoKkZ7SLsy4nriapQ4osiyfSlnBsPZM/BJTHQ+
-	 VevNz2uFcTlTqa+gfTMY6lmK/CSTYSlxs6WE37VP53rdqnLomH3gCxvkbTPGtKbgz
-	 Dj0NqgdwEP6/chqR1NIQUVLvWJEcqPTmDTyo64Ju2Hk8SEBOim5WTeTxHAByouWjP
-	 AzF6QIfSx2A1hv2oO93oYH8n35ck0s2OlCnv00vhvQ6IMWDJ9lMIjfH0hQj4d45pv
-	 XdWMOz71Pj3xPPzTVvHEBNjfJNRSoL54FfcufTJSAwWMClg8ij+T5gHXyg42obxKQ
-	 K69QBXhAL7HWFDFFHw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.40]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6KUT-1uvLAr0DW5-00vTlc; Sat, 07
- Jun 2025 13:50:12 +0200
-Message-ID: <7fb63be6-8c3c-4f8a-8a34-9a6772c7ede5@gmx.de>
-Date: Sat, 7 Jun 2025 13:50:10 +0200
+	s=arc-20240116; t=1749309325; c=relaxed/simple;
+	bh=BfKfPjoc8094vK7L5LYRsIt3PAX9CUdvDIFNAXgkWYY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D5A5RhhrT2Qj9joPKbDu1qPgM9DjYfK29/3FDKHUDG8tubeAd3q9qS28iHazjJbg8RTAnNFeI2Kw1QY6HKxEQDC7bbFyzTLoExp5Rgf7Pv+5CKUPFo9vLc0quHaANujoJhKc3lPBotKIp6kY8w3HmT7enJzqUg+JRBMiuHDTvwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=jtmJ8Zwj; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Sat, 7 Jun 2025 17:07:19 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1749308840;
+	bh=BfKfPjoc8094vK7L5LYRsIt3PAX9CUdvDIFNAXgkWYY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 mime-version:references:reply-to:Sender:Subject:Subject:To:To;
+	b=jtmJ8ZwjZjKtqvBXm2MsgYiNx39N7A7XL+NputD6eCNsj6wJ2K4KwO1f2AhX1lvE2
+	 fuL7stb9GsBBjM6sb3a9neTpv1h7EnOhGCUmMST/NbLqZ5l52me75d7I8VZH8HrJbm
+	 6xqHQvJfVvZIZIfhNwN1HKAgE6aCaB0ikkjQbNuz7OGtWWJ5CelAl1lPH5yqH7ur3M
+	 zvu4g8EnhFOkbEGjqPt5C/v52LmbZUOZidQqztOikdRyKnJLih+J7evkhFKgLst48z
+	 esQyk6gzmiVGEA6V3NR6MYbgxO8X2T4boqXAr+svCY8YuhUBt4Y/C+9SKmfIA7v6Gf
+	 sRIZ2fo6w7Njw==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12 00/24] 6.12.33-rc1 review
+Message-ID: <20250607150719.GA8693@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250607100717.910797456@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250607100719.711372213@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:J773HgHQekuxhQxkPhTl0XHY3CbtlyMysiOHuVuGA1yqkk+yGkT
- BzD+WZ/m44LXXFyEEI4brXDBTNjav1hDCNri8yGMoPtQSm1hff+hDGe2p9L78FO1oq2fonZ
- ZCWxpmsxGfMyjl31xUAfjL8zCT4niZQvl2bakKLzUGfJryT7f1uTCuqS5Ks1i+R5ZVQoOgT
- MxcgM4mmu/BZDktA5BSBg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:yI0Wr2w2SXI=;humUEjXPbniw2DeaO59veWhA/ag
- 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
- UD1VLXOw/+7ys=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
+
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.12.33 release.
+> There are 24 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
+> Anything received after that time might be too late.
 
 Hi Greg
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+6.12.33-rc1 compiles on x86_64 (Xeon E5-1620 v2, Slackware64-15.0),
+and boots & runs on x86_64 (AMD Ryzen 5 7520U, Slackware64-current),
+no regressions observed.
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
-
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
