@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-151761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F51AD0C7B
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AFDAD0C9C
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA0E1711F0
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D18201894F9B
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6280E217679;
-	Sat,  7 Jun 2025 10:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3619F15D1;
+	Sat,  7 Jun 2025 10:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhpk8uil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZvCKplJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5FF1F8723;
-	Sat,  7 Jun 2025 10:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81F7219E8F;
+	Sat,  7 Jun 2025 10:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290919; cv=none; b=ObuwKaSvIEYPLh38+QXuUq6xN5/k/rLDmgh3hUfd5oQNMV5gz/6DJPRTmtgh2PdGfQNBzumbLFK4rAgPF6UW7hgaaEmyHfWCMcsjk5oYl7lcue/lF9O2UrvQQPSs+C2STEZ1L7yQ8qxNtbwZMrw2qz5+UgHAqt0810z5IBjG1pc=
+	t=1749291003; cv=none; b=pOcGvyIMK5gfnbbe8DphmcQAJXlhOcccFSHGrwtA9Nf6F9rNhUK6c4vXSWP9tfg7oscWPDFz1BXQNMgmPd5FYi9IDIjSxCbvCQ2Tmw7i5Hbj3vTJgCHBGxM4XHN3DfeG3AZfXpAA7IRSg26MPsggNKs5rC5aTev239gSxLvFfJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290919; c=relaxed/simple;
-	bh=sbItSKibkDTEXKtcUYcyDTlHuyn4WSdz+s/XVXp3sDE=;
+	s=arc-20240116; t=1749291003; c=relaxed/simple;
+	bh=IFS+gD0322gjjTbsyLJS9UkamranNl6DeUC+C0wTbRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4tB3BdIBjiNBWeqVo0I5OSgSMABpdFi8bWZAUD9oW6SwLoJYZkgJPjbM7y/tF/pTfE7xafja0q1cBKGiuUsprjXxPXq0h99tdoQcC/wTEAUKjoicuZEH3JPTi9TIeOGlhNkuadAAGJWLV8N8bE2zAnekaEFNsdafmBfeGDJnK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhpk8uil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AA9C4CEE4;
-	Sat,  7 Jun 2025 10:08:38 +0000 (UTC)
+	 MIME-Version; b=JLBSCjCezNGvd5iZpNUHtt2MLafh18HobYRKSAhcHJpgMdAKvFGInuP7yIuwfng/L4lMgMtq/Z77/cm3L9AQ2Vjq116DABD91dioEXkK9ADSD4KGGkxQDZdWsYhJVWLSHbJZWnak8EfPWDsP/t16B2172h7qSw3riRS1lL4KfTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZvCKplJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76924C4CEE4;
+	Sat,  7 Jun 2025 10:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290919;
-	bh=sbItSKibkDTEXKtcUYcyDTlHuyn4WSdz+s/XVXp3sDE=;
+	s=korg; t=1749291002;
+	bh=IFS+gD0322gjjTbsyLJS9UkamranNl6DeUC+C0wTbRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhpk8uil95bdAuzUwhTCoh9oqns5sYMRVLWsOjmg/ZMEsAuoFFL1Fal4KCJMzl34P
-	 PxyYQWlxcStKBWOeDdrmB9gynVH3KRt/LCbUNyoRgi4560z16cOS2rNbR+4uTUwQf1
-	 V4gZqt0d2D0EV+DqE4yToj2lPeRrrBkm0i6e1hNw=
+	b=pZvCKplJorU7aENrNW0BRmLwGMYQJVTsZPP196tdi3AXBW9rniTpkTTYyz1iAFO4S
+	 x1R0yHhKXmo+6Zb8Iobs0kQucJiEtyL+X+N8hvgYcbVrvtbERi6WqB2lGPKZ6wtTPJ
+	 6ZTUdxJTJvAPro/ysIgeDFzRO/w0bqK/rjBEgAsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 22/24] dt-bindings: usb: cypress,hx3: Add support for all variants
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.14 13/24] usb: typec: ucsi: fix Clang -Wsign-conversion warning
 Date: Sat,  7 Jun 2025 12:07:53 +0200
-Message-ID: <20250607100718.911865818@linuxfoundation.org>
+Message-ID: <20250607100718.224642661@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 1ad4b5a7de16806afc1aeaf012337e62af04e001 upstream.
+commit f4239ace2dd8606f6824757f192965a95746da05 upstream.
 
-The Cypress HX3 hubs use different default PID value depending
-on the variant. Update compatibles list.
-Becasuse all hub variants use the same driver data, allow the
-dt node to have two compatibles: leftmost which matches the HW
-exactly, and the second one as fallback.
+debugfs.c emits the following warnings when compiling with the -Wsign-conversion flag with clang 15:
 
-Fixes: 1eca51f58a10 ("dt-bindings: usb: Add binding for Cypress HX3 USB 3.0 family")
-Cc: stable@vger.kernel.org # 6.6
-Cc: stable@vger.kernel.org # Backport of the patch ("dt-bindings: usb: usb-device: relax compatible pattern to a contains") from list: https://lore.kernel.org/linux-usb/20250418-dt-binding-usb-device-compatibles-v2-1-b3029f14e800@cherry.de/
-Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table in drivers/usb/misc/onboard_usb_dev.c driver
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Reviewed-by: "Rob Herring (Arm)" <robh@kernel.org>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-2-4a76a474a010@thaumatec.com
-[taken with Greg's blessing]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+drivers/usb/typec/ucsi/debugfs.c:58:27: warning: implicit conversion changes signedness: 'int' to 'u32' (aka 'unsigned int') [-Wsign-conversion]
+                ucsi->debugfs->status = ret;
+                                      ~ ^~~
+drivers/usb/typec/ucsi/debugfs.c:71:25: warning: implicit conversion changes signedness: 'u32' (aka 'unsigned int') to 'int' [-Wsign-conversion]
+                return ucsi->debugfs->status;
+                ~~~~~~ ~~~~~~~~~~~~~~~^~~~~~
+
+During ucsi_cmd() we see:
+
+	if (ret < 0) {
+		ucsi->debugfs->status = ret;
+		return ret;
+	}
+
+But "status" is u32 meaning unsigned wrap-around occurs when assigning a value which is < 0 to it, this obscures the real status.
+
+To fix this make the "status" of type int since ret is also of type int.
+
+Fixes: df0383ffad64 ("usb: typec: ucsi: Add debugfs for ucsi commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250422134717.66218-1-qasdev00@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/usb/cypress,hx3.yaml |   19 ++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
-+++ b/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
-@@ -14,9 +14,22 @@ allOf:
- 
- properties:
-   compatible:
--    enum:
--      - usb4b4,6504
--      - usb4b4,6506
-+    oneOf:
-+      - enum:
-+          - usb4b4,6504
-+          - usb4b4,6506
-+      - items:
-+          - enum:
-+              - usb4b4,6500
-+              - usb4b4,6508
-+          - const: usb4b4,6504
-+      - items:
-+          - enum:
-+              - usb4b4,6502
-+              - usb4b4,6503
-+              - usb4b4,6507
-+              - usb4b4,650a
-+          - const: usb4b4,6506
- 
-   reg: true
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -432,7 +432,7 @@ struct ucsi_debugfs_entry {
+ 		u64 low;
+ 		u64 high;
+ 	} response;
+-	u32 status;
++	int status;
+ 	struct dentry *dentry;
+ };
  
 
 
