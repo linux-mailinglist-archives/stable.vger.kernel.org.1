@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-151780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A865DAD0C8F
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26CCAD0C74
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E273B27DB
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1566618942F4
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2819217679;
-	Sat,  7 Jun 2025 10:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D851F8723;
+	Sat,  7 Jun 2025 10:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gdk5JcR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjUAgiQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE2715D1;
-	Sat,  7 Jun 2025 10:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FB620CCED;
+	Sat,  7 Jun 2025 10:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290979; cv=none; b=u2cpCMz7TqGNeTwbQwm21r5IOZ1AFzhBuvfcE0ORHo5R+o4EHF2FJ21BPaES5SB1qLeGXtAreuNgAvMgvQLQwoTkRTI4LKRtVt2A4ew+7YFKHnnH2WrPwaGLViJQZal+X6ehbhL6W0JEXQ0tQRFSG3/lD5sV8vmYiczwkweKa9E=
+	t=1749290900; cv=none; b=SryCYL8q/Wqht9Fxsvul1ttVq5ylpOagUR8UDZdJ55GBDepKzWRv5ri3SSZaBDAB0yLfFjaDoEHt5VDL4rMe5QzF6NhxMB0dyRyoApYH7TIKyJ2Z6uhe5r0T5hfaRNJc2Pryuj5+olwSewdrOCkz7LV+aOnM3EvVL1GuUmGMsN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290979; c=relaxed/simple;
-	bh=v8NbUdlx15h1ylXunzrA8WvoEYo3DxeAymITHVb4U1k=;
+	s=arc-20240116; t=1749290900; c=relaxed/simple;
+	bh=DohA7DqO3q2kU/nLkE47HfxPMtKqm5hLQUvKr/7H6Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cVsPmaxWflLO5DMUZJ7R4RZl02j6b7e5dZp20DERfnqUhXNg7NQugoeDOzzI0485NPOOpgv4S3gGd8uovIuTXNvgHEXSSaP+PbQFeN9LJuoAda3rErvpMn/8b3+fu2BGbMOi/OfU60Gip+BLHnGZCCcIskBTJFhiro3/BJ7iQ3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gdk5JcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54C0C4CEE4;
-	Sat,  7 Jun 2025 10:09:38 +0000 (UTC)
+	 MIME-Version; b=lFBbroGR01FYyF1LzZkMIAlD9Dm7uFDnD8+jC1/T46dESsWTLXeMpuW5/t3DzqgbM7Juwd4cUGo2rjbWKpkhfuSc682eLPfE302CW3W6nArNa8ezS02dkrthommwVH8xULnmhda6IxGfYkgw8mwYI1RJnvrH0Pqom5Un4N0L6TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjUAgiQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D819C4CEF1;
+	Sat,  7 Jun 2025 10:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290979;
-	bh=v8NbUdlx15h1ylXunzrA8WvoEYo3DxeAymITHVb4U1k=;
+	s=korg; t=1749290900;
+	bh=DohA7DqO3q2kU/nLkE47HfxPMtKqm5hLQUvKr/7H6Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Gdk5JcRcmULJVIhnJYIj3gd/J+PXFo1SYX1J2mevN+Wz4uYrLtll6e1V02ThbVPa
-	 5cwYFB6zO8zxpOUVLr8t/tuJ49J9gpLytq4ccNHxe/XKmRbyt1fTToMmMZEBNylqM/
-	 BV511p0I624mP1ruA5xhGf4pg9jXVoMnyOFN5Fx8=
+	b=mjUAgiQw61yPGkc6GD3lgQTRzNg1K9CeBE7mpQm7AX7ieLeFOaj/kIRBWzZszl5L3
+	 dafchfIH4oGaqLWi4aOa0tP4vL+QID2343/IVRF/fDF5vwPapL+59NF70I0nO004NI
+	 Hou8tEa1bmCMXJqHx2/uCXlFb5BlvJdtgS8eG41k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.14 07/24] rtc: Make rtc_time64_to_tm() support dates before 1970
+	Charles Yeh <charlesyeh522@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 16/24] USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
 Date: Sat,  7 Jun 2025 12:07:47 +0200
-Message-ID: <20250607100717.994215993@linuxfoundation.org>
+Message-ID: <20250607100718.536367700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
+References: <20250607100717.910797456@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Mergnat <amergnat@baylibre.com>
+From: Charles Yeh <charlesyeh522@gmail.com>
 
-commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
+commit d3a889482bd5abf2bbdc1ec3d2d49575aa160c9c upstream.
 
-Conversion of dates before 1970 is still relevant today because these
-dates are reused on some hardwares to store dates bigger than the
-maximal date that is representable in the device's native format.
-This prominently and very soon affects the hardware covered by the
-rtc-mt6397 driver that can only natively store dates in the interval
-1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
-to such a device, rtc_time64_to_tm() must do the right thing for
-time=-2208988800.
+Add new bcd (0x905) to support PL2303GT-2AB (TYPE_HXN).
+Add new bcd (0x1005) to support PL2303GC-Q20 (TYPE_HXN).
 
-Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Charles Yeh <charlesyeh522@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/lib.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/usb/serial/pl2303.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/rtc/lib.c
-+++ b/drivers/rtc/lib.c
-@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
-  * rtc_time64_to_tm - converts time64_t to rtc_time.
-  *
-  * @time:	The number of seconds since 01-01-1970 00:00:00.
-- *		(Must be positive.)
-+ *		Works for values since at least 1900
-  * @tm:		Pointer to the struct rtc_time.
-  */
- void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
- {
--	unsigned int secs;
--	int days;
-+	int days, secs;
- 
- 	u64 u64tmp;
- 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
- 		day_of_year, month, day;
- 	bool is_Jan_or_Feb, is_leap_year;
- 
--	/* time must be positive */
-+	/*
-+	 * Get days and seconds while preserving the sign to
-+	 * handle negative time values (dates before 1970-01-01)
-+	 */
- 	days = div_s64_rem(time, 86400, &secs);
- 
-+	/*
-+	 * We need 0 <= secs < 86400 which isn't given for negative
-+	 * values of time. Fixup accordingly.
-+	 */
-+	if (secs < 0) {
-+		days -= 1;
-+		secs += 86400;
-+	}
-+
- 	/* day of the week, 1970-01-01 was a Thursday */
- 	tm->tm_wday = (days + 4) % 7;
-+	/* Ensure tm_wday is always positive */
-+	if (tm->tm_wday < 0)
-+		tm->tm_wday += 7;
- 
- 	/*
- 	 * The following algorithm is, basically, Proposition 6.3 of Neri
-@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
- 	 * thus, is slightly different from [1].
- 	 */
- 
--	udays		= ((u32) days) + 719468;
-+	udays		= days + 719468;
- 
- 	u32tmp		= 4 * udays + 3;
- 	century		= u32tmp / 146097;
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -457,6 +457,8 @@ static int pl2303_detect_type(struct usb
+ 		case 0x605:
+ 		case 0x700:	/* GR */
+ 		case 0x705:
++		case 0x905:	/* GT-2AB */
++		case 0x1005:	/* GC-Q20 */
+ 			return TYPE_HXN;
+ 		}
+ 		break;
 
 
 
