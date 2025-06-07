@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-151764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3931AD0C80
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72494AD0CAA
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92BE97A5254
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:07:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED3318951E8
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F9921D00D;
-	Sat,  7 Jun 2025 10:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B8B20CCED;
+	Sat,  7 Jun 2025 10:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSgusWbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZ3g0mwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851AC15D1;
-	Sat,  7 Jun 2025 10:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9159C1F4CB8;
+	Sat,  7 Jun 2025 10:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290937; cv=none; b=ptCCLsWlNwVEaFm2qC3cOsKKbvAyyiG7bQrGMrVaKMxlSXmpXiabRCHnmg1+jTZU6dGILh6tqjTuJMwTJagD3EQnq9fff5W+2J8FBWDBdNX2lxFUufA6iDPNVGwt3KCGD7z+Y0UMpSXUFVpbFeSsJwkYEsCPUZhfAc/2ULufJtI=
+	t=1749291042; cv=none; b=IK9h+S+DTmRWlvL7fzkujjIAZx2QOFgeoibXgel+dcySbvPy5DcOXOprObZpkP5RLdl+HvRO+Y1GXqiSwqI1cuRf+jTs/BaaxcEUeq5VQ/rSNn0TbWcv5vmNCYhj63JHkWaZ+Ojeu+FnSBuattL5Ss3KZmhR6BvpeLrNqFQBE0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290937; c=relaxed/simple;
-	bh=ixe0/CRUr+4THP0mcuo11sGBPH9IEtc8JSRxEGUoZb0=;
+	s=arc-20240116; t=1749291042; c=relaxed/simple;
+	bh=aNeJfn5mzfXpsSTTeC7/4VptP7dvFlDELZYzZ0E5K4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGEIkrhbIyCskeyj1rrz3xkvjIUxeyDH0oU6BDfGt36sdspnhmHsws9UyUOmPYPOeiIR3gKPq88iqB/XFqkq6NZtP93lVO2O/tCW8rTCIBEaPJq/tE+OW4+6USG5bGx7gnjodpyxS06wPbObuvHxmhq4ed2/ZnXRA38eLbOij1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSgusWbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D54C4CEE4;
-	Sat,  7 Jun 2025 10:08:56 +0000 (UTC)
+	 MIME-Version; b=CKBhAT5QSLutAqDAycmLApf40DHaU1ctzJDJ60gy8fHRcngELzgIULLLcl7zLBD+dyb1oGvay2E+Pfy4AdVhH2NYCfY3Zkt0r0mZigICAZtGgCB8clbaGYwhLxtgHPNAWS/IuhNwb/XPCqblRY53K8uUz8IcFzRM8HmRyJugYc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZ3g0mwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BFDC4CEE4;
+	Sat,  7 Jun 2025 10:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290937;
-	bh=ixe0/CRUr+4THP0mcuo11sGBPH9IEtc8JSRxEGUoZb0=;
+	s=korg; t=1749291042;
+	bh=aNeJfn5mzfXpsSTTeC7/4VptP7dvFlDELZYzZ0E5K4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSgusWbmW19XHYuXayxPgBmvENrH1f5lOgvciCSTqou+hMNqC9Zgl8nHP/9hoZUJ4
-	 Dg74NKQmD/WheE/Q1vYdofC4WptyoKswaxKfLL1q5nLYNNaGxYIxIs30H+A2ip2Sxz
-	 pCiEKDldcbmoIYO1ujymSasN/Nvs2n0PGnPlByiY=
+	b=qZ3g0mwJ5u3OJ9W/VIbix65n7dhDa5f+SEKQ+5kXJnrLohZG9pAOD10fkjP9GFkt4
+	 LGfCIC+jeBj/8HN8iT7CHCXFinXVReXmlMLtIkStByojafKoHkTJK1NQA5VlPEz297
+	 7MGwc/nEKBrMm/OL+8ffRTjaadwLTh+65RCq8AY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 24/24] Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
-Date: Sat,  7 Jun 2025 12:07:55 +0200
-Message-ID: <20250607100718.989939810@linuxfoundation.org>
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.15 15/34] bcachefs: Repair code for directory i_size
+Date: Sat,  7 Jun 2025 12:07:56 +0200
+Message-ID: <20250607100720.316849061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-commit 1b824eef269db44d068bbc0de74c94a8e8f9ce02 upstream.
+commit 36a2fdf7c5c1ccae6ca16cd14067567096cebe17 upstream.
 
-This reverts commit cfb2d41831ee5647a4ae0ea7c24971a92d5dfa0d since it
-causes regressions on certain configs. Revert until the issue can be
-isolated and debugged.
+We had a bug due due to an incomplete revert of the patch implementing
+directory i_size (summing up the size of the dirents), leading to
+completely screwy i_size values that underflow.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4238
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Most userspace programs don't seem to care (e.g. du ignores it), but it
+turns out this broke sshfs, so needs to be repaired.
+
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ fs/bcachefs/fsck.c             |    8 ++++++++
+ fs/bcachefs/sb-errors_format.h |    3 ++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -668,21 +668,15 @@ static void dm_crtc_high_irq(void *inter
- 	spin_lock_irqsave(&adev_to_drm(adev)->event_lock, flags);
- 
- 	if (acrtc->dm_irq_params.stream &&
--		acrtc->dm_irq_params.vrr_params.supported) {
--		bool replay_en = acrtc->dm_irq_params.stream->link->replay_settings.replay_feature_enabled;
--		bool psr_en = acrtc->dm_irq_params.stream->link->psr_settings.psr_feature_enabled;
--		bool fs_active_var_en = acrtc->dm_irq_params.freesync_config.state == VRR_STATE_ACTIVE_VARIABLE;
--
-+	    acrtc->dm_irq_params.vrr_params.supported &&
-+	    acrtc->dm_irq_params.freesync_config.state ==
-+		    VRR_STATE_ACTIVE_VARIABLE) {
- 		mod_freesync_handle_v_update(adev->dm.freesync_module,
- 					     acrtc->dm_irq_params.stream,
- 					     &acrtc->dm_irq_params.vrr_params);
- 
--		/* update vmin_vmax only if freesync is enabled, or only if PSR and REPLAY are disabled */
--		if (fs_active_var_en || (!fs_active_var_en && !replay_en && !psr_en)) {
--			dc_stream_adjust_vmin_vmax(adev->dm.dc,
--					acrtc->dm_irq_params.stream,
--					&acrtc->dm_irq_params.vrr_params.adjust);
--		}
-+		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
-+					   &acrtc->dm_irq_params.vrr_params.adjust);
+--- a/fs/bcachefs/fsck.c
++++ b/fs/bcachefs/fsck.c
+@@ -1183,6 +1183,14 @@ static int check_inode(struct btree_tran
+ 		ret = 0;
  	}
  
- 	/*
++	if (fsck_err_on(S_ISDIR(u.bi_mode) && u.bi_size,
++			trans, inode_dir_has_nonzero_i_size,
++			"directory %llu:%u with nonzero i_size %lli",
++			u.bi_inum, u.bi_snapshot, u.bi_size)) {
++		u.bi_size = 0;
++		do_update = true;
++	}
++
+ 	ret = bch2_inode_has_child_snapshots(trans, k.k->p);
+ 	if (ret < 0)
+ 		goto err;
+--- a/fs/bcachefs/sb-errors_format.h
++++ b/fs/bcachefs/sb-errors_format.h
+@@ -232,6 +232,7 @@ enum bch_fsck_flags {
+ 	x(inode_dir_multiple_links,				206,	FSCK_AUTOFIX)	\
+ 	x(inode_dir_missing_backpointer,			284,	FSCK_AUTOFIX)	\
+ 	x(inode_dir_unlinked_but_not_empty,			286,	FSCK_AUTOFIX)	\
++	x(inode_dir_has_nonzero_i_size,				319,	FSCK_AUTOFIX)	\
+ 	x(inode_multiple_links_but_nlink_0,			207,	FSCK_AUTOFIX)	\
+ 	x(inode_wrong_backpointer,				208,	FSCK_AUTOFIX)	\
+ 	x(inode_wrong_nlink,					209,	FSCK_AUTOFIX)	\
+@@ -328,7 +329,7 @@ enum bch_fsck_flags {
+ 	x(dirent_stray_data_after_cf_name,			305,	0)		\
+ 	x(rebalance_work_incorrectly_set,			309,	FSCK_AUTOFIX)	\
+ 	x(rebalance_work_incorrectly_unset,			310,	FSCK_AUTOFIX)	\
+-	x(MAX,							319,	0)
++	x(MAX,							320,	0)
+ 
+ enum bch_sb_error_id {
+ #define x(t, n, ...) BCH_FSCK_ERR_##t = n,
 
 
 
