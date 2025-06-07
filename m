@@ -1,136 +1,162 @@
-Return-Path: <stable+bounces-151857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD23AD0E28
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 17:33:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6432DAD0E3D
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 17:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71394189029C
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 15:33:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A54D87A54E0
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 15:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AD61E22E9;
-	Sat,  7 Jun 2025 15:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168341B4248;
+	Sat,  7 Jun 2025 15:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0iVhEwt"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2A21DC997
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 15:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702D8E55B;
+	Sat,  7 Jun 2025 15:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749310396; cv=none; b=jRlvfmAmptj8ovjP9iy+kRCrh1IvfW9PQCk3ZOSV2/QDPIUDPtnDVgfzwDFRlk8YY/vK5e5uz5mY0Ku+2a4I5TbLrhYM0MYPF0YrbmXbuxolKI1AXAH14S0/JmvIgO0KQlxEYKwfQ1gevOCheXijwKdDnLS4eeb3E8+kQlBvvSY=
+	t=1749311392; cv=none; b=Y6OQEraXTmp0zi6wO0C9rDboaT1GvWvHjF2fonudV33wB/0cE9H9pBM7QwUqKySTZ/gUIjQooFr/jRa9G6ZeGiyxTHc4HMi7wK32madoLV4C3UlyLMFatdmGhHsz1KLtIqPdaZ8Um5xhozjMDm8kIIOKW7DpFJkLyafflfA4J00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749310396; c=relaxed/simple;
-	bh=x+8D3JtS7fZmzdIkOpPQv4NhemAr2I3LRdSpp/3ihMQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YsA9O7Aj3UbAZG2NYVmrQEiHOLlshI8HiYmqrzf07Jv1pFk5Ove0cnwGBiaAazZqboNK+o3JBlXJf2m3ceXgTBMOD+EkchnvrzUVn9VWncKAyUQNYJA/Nl33mdBZkRl3C33sqLpB5pu/Mz/V93grYv+h5FhML6+9ON50QT0tlqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bF2JP3CySzKHMsJ
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 23:33:09 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id CB7171A0F3E
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 23:33:07 +0800 (CST)
-Received: from ultra.huawei.com (unknown [10.90.53.71])
-	by APP3 (Coremail) with SMTP id _Ch0CgBH5sCwW0Rod05JOg--.5386S11;
-	Sat, 07 Jun 2025 23:33:06 +0800 (CST)
-From: Pu Lehui <pulehui@huaweicloud.com>
-To: stable@vger.kernel.org
-Cc: james.morse@arm.com,
-	catalin.marinas@arm.com,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	andrii@kernel.org,
-	xukuohai@huawei.com,
-	pulehui@huawei.com
-Subject: [PATCH 5.15 9/9] arm64: proton-pack: Add new CPUs 'k' values for branch mitigation
-Date: Sat,  7 Jun 2025 15:35:35 +0000
-Message-Id: <20250607153535.3613861-10-pulehui@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250607153535.3613861-1-pulehui@huaweicloud.com>
-References: <20250607153535.3613861-1-pulehui@huaweicloud.com>
+	s=arc-20240116; t=1749311392; c=relaxed/simple;
+	bh=/BAYsyNfYpaVs6kmEGWuiXyXtOyeM7TVepBEsnBRSFo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N/1ofz9zZrz04fY3Tmy2gCuJxgNUomPUEGub6Xo6aA0gyWmaMVKqlDnUYm0bzTOZGv97bBXZA2n1AJz8WZtLoJ5jSZnx/0hci/tgfCk2tuohKkFjd+xfV49lTz4wpe9oHu4XglNFSevyVeY3RoiCCN8L6hpjpKwY76hJ70XTI6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0iVhEwt; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-235e1d4cba0so24421435ad.2;
+        Sat, 07 Jun 2025 08:49:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749311391; x=1749916191; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=USms30rF3GOiqBHIV22MOlGUoxYwttSRPtn3OPNJ7hI=;
+        b=e0iVhEwtGc0x6CGuvrVGDqhlgveFfSq3SlFx/1OxxmOx4vGU2JvMuEITnYyykTwDj+
+         X66FnDkuhxab9HFksvFFNVSzBi8Zj/evBw0t8Y01K6Q7iRGKyQ4AJQW4Kk+7l2WUZRJ8
+         0r6iiBG8oFt6/beTiH0oB13KHoOkzJeM1SIaR//xXHbVvX51MZ/EqWEqlCOa103F3i75
+         RywwKy42iNQ2uflhgjjDwlASjSRkknArFQg8xf7xsvDqcl/UBsd4A/sovv+5XTPQ2zPx
+         36Bj/okx1gtMchxIdEzAZGwCWVBQ2jy4cMsoijgBO/ozuDfq/4hMU1dmiHl/1l4joHDf
+         vxaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749311391; x=1749916191;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=USms30rF3GOiqBHIV22MOlGUoxYwttSRPtn3OPNJ7hI=;
+        b=TwWb9YtqzWR2yCDxF31IinQtX4LMEODgFvO3CSa9GTMQ2V2v20iqnWYGgkSlElxprc
+         oSVeI75DfBoDFLPBeSnfXYhA2EYXgVBbjO0daqTeQBkiwRGQSu0PEkoNjaKeXB/9ULT7
+         iP7xwG5SbEuwDH4WE5EgD1H0QRdjUxbfXJsqLdAcXZFgNopZoZf6OlvCg4IlDZvR1t3u
+         g5lmWYnaG1p0AExzPvBj8Aeed213XHGmsssjTUPf2P+ryP/BaMm6J4vl5+qshFT5g2iR
+         lOgC9DDfuZLO17dFdebFpbtwlsymg8zaMWPzAOVw81z07Tq4565c9RSd5EqrBg/Ffm/k
+         qNCg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9Vcb6fWO2t3MNqfbDw1/iSUwMzU76j+phuXizYKl2iRv+6riypzQyBKUJ9c29NdjVFqwpq7OKYLWDEF0=@vger.kernel.org, AJvYcCXEguUMsGn1Ane0niNsuLmYoPhcWEKBEMw1Zmyk4DWC2WzGXO1Lb5xGp5ipSa8YtsIAdg+cv/BF@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPDh159gM1i79hGr8RNNON4CldY63FLJcbceKgwncyBreVgpWj
+	qlIJceyA4HWb9YioiYFBjyPM9IWwk7ir19vE3F0yT0i6Fhn10C/cC/D1
+X-Gm-Gg: ASbGncvZIk+f8XRmbDLPh6e6z/0++EGK3jFxKmbIlU6T2vtmmqJqgb2qdRmuzRO3CZZ
+	mj3mVvKfFrZ6FlTJt6p2FRYCLfJDT8EAFRsygxNJHStPeAj0wUcCyB4bjqaI+wN7ZlRcBWDEHN3
+	Y4C4s5zYCDazW9OFqrp5BBD/mqJrQ5kC/o1Bm+nCr/Yi3LIneXEIKH6O/Yi9i9TbzKkcBiaLxM1
+	4WYjHAmr30e0Re4ly5taqjAOVUBzwHQYMxzbZ9KI386J+/+19DNUwa2B+mSXp3W5yispQ7Def4d
+	zs+wsVp7aNyIhmAhx80/ynwVHo2nqySoxPX8xn10D98MtPme6coBRzYKtPnQ5EEpNvjsgWoKwmc
+	Q4hLZQbFUrSwCiTQ6zfwHA00R7m2g
+X-Google-Smtp-Source: AGHT+IFgsRgJWLg6bLMWGKIaLx00ZFwsRcXx8E7LX0oVeDWIgI37fMddiuU2iF8kOF9Dzp10RomvnA==
+X-Received: by 2002:a17:902:ea04:b0:234:f4da:7eeb with SMTP id d9443c01a7336-23601cf42a7mr97218495ad.7.1749311390623;
+        Sat, 07 Jun 2025 08:49:50 -0700 (PDT)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23603078d7bsm28469115ad.2.2025.06.07.08.49.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 Jun 2025 08:49:49 -0700 (PDT)
+Message-ID: <88e961ef-7ebb-4f94-8eeb-2344c0b8601d@gmail.com>
+Date: Sat, 7 Jun 2025 08:49:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgBH5sCwW0Rod05JOg--.5386S11
-X-Coremail-Antispam: 1UD129KBjvJXoWxGryftw48tFW8Jr45XFy5Arb_yoW5Gr1kpr
-	Wjkr1DWr4FgF1S93yftFs5urWYvrs5Ars8Gr1Uur1aq3Wvqa43Jws8Ka1Dur4vqF48Wa95
-	u3ZFvr15Gr4xXrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7
-	xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Y
-	z7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUrfOzUUUUU
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/24] 6.12.33-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250607100717.910797456@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCZ7gLLgUJMbXO7gAKCRBhV5kVtWN2DlsbAJ9zUK0VNvlLPOclJV3YM5HQ
+ LkaemACgkF/tnkq2cL6CVpOk3NexhMLw2xzOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
+ WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
+ pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
+ hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
+ OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
+ Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
+ oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
+ 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
+ BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
+ +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
+ FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
+ 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
+ vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
+ WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
+ HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
+ HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
+ Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
+ kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
+ aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
+ y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJn
+ uAtCBQkxtc7uAAoJEGFXmRW1Y3YOJHUAoLuIJDcJtl7ZksBQa+n2T7T5zXoZAJ9EnFa2JZh7
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: James Morse <james.morse@arm.com>
 
-[ Upstream commit efe676a1a7554219eae0b0dcfe1e0cdcc9ef9aef ]
 
-Update the list of 'k' values for the branch mitigation from arm's
-website.
+On 6/7/2025 3:07 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.33 release.
+> There are 24 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.33-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Add the values for Cortex-X1C. The MIDR_EL1 value can be found here:
-https://developer.arm.com/documentation/101968/0002/Register-descriptions/AArch>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Link: https://developer.arm.com/documentation/110280/2-0/?lang=en
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
----
- arch/arm64/include/asm/cputype.h | 2 ++
- arch/arm64/kernel/proton-pack.c  | 1 +
- 2 files changed, 3 insertions(+)
-
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 8fe0c8d0057a..ca093982cbf7 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -81,6 +81,7 @@
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
- #define ARM_CPU_PART_CORTEX_X1		0xD44
- #define ARM_CPU_PART_CORTEX_A510	0xD46
-+#define ARM_CPU_PART_CORTEX_X1C		0xD4C
- #define ARM_CPU_PART_CORTEX_A520	0xD80
- #define ARM_CPU_PART_CORTEX_A710	0xD47
- #define ARM_CPU_PART_CORTEX_A715	0xD4D
-@@ -147,6 +148,7 @@
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
- #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
- #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
-+#define MIDR_CORTEX_X1C MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
- #define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
- #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
- #define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
-diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
-index 535fab25fde6..42359eaba2db 100644
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -891,6 +891,7 @@ static u8 spectre_bhb_loop_affected(void)
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.34.1
+Florian
 
 
