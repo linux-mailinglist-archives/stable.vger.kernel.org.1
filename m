@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-151776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D249AD0C8B
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B82AD0CAE
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A793B26DA
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE7D189520A
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27585217F26;
-	Sat,  7 Jun 2025 10:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A5D217679;
+	Sat,  7 Jun 2025 10:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfVhgH0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCJtsU2l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73481F4CB8;
-	Sat,  7 Jun 2025 10:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1313B15D1;
+	Sat,  7 Jun 2025 10:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290968; cv=none; b=nCPfHN+c1RC661/dNgR8SkraMMs+qKlWYi3kcVXOqq/jkyeeNxBfXKZ1ZUA6iZoRKPvUEZmTnWVgy4SYg6DhS9zjHqpnGvBTJqnCbV9v7A8jS757hLwCcwPVC3qhXDpMLchZV9z8j9DoKiEUOsWTgAPl476OappKp5koPVvbNII=
+	t=1749291053; cv=none; b=BIJNKDMwJHfvgf9BWBThZp8fZbeuoG+DkGGsiXqtx/tT60pjllqL56E0/MttFN8+VwhPPHEYR9MW+o2obBOIWSXtepeZLhDnkgBc3D4+2wp83HRIWS5suiMngX4DLlTWuGs1xsBaVLwn0L+aCXl9f5z4fmf11vKWdOaWRzo3VeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290968; c=relaxed/simple;
-	bh=icZRPus5g3PeifEPdx8kE+ynae1KiuBpAzVrm6YT68A=;
+	s=arc-20240116; t=1749291053; c=relaxed/simple;
+	bh=Ci1cUYyk38I4/KfLLR8wbJc6DfrpWi1KZsqLMJmv2AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9VpzGCXWlo/xWKXg0cyi1nxJ8NFKIyN+G4OnbuZ2r8Gm8XnQEjx//GXOkX5FGOMsHKypLqg9w3bwr/xwHI5UqDUEZ8MIl68WMK7C8bb4dCAJEJC3qa8d2M5uHVBVBlST1rWyQa1+9+8K5CxK1AXRUYZxEL+NxBI85nkdFK3Hlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfVhgH0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663FEC4CEE4;
-	Sat,  7 Jun 2025 10:09:28 +0000 (UTC)
+	 MIME-Version; b=DsUQZXDmJMMJSyunpMF8qR5N17OJfWnCCTL4Z0HITCoxTk5Tpq2QeFfRQwtn+iOV0z8fWrPmr7m5CbJQUC9hdJWdTs6eVE+5zZI6RxEoCSKXZvDMXti9C4qYWLH9jv2NWboJXP2RV7jwnsE4fjMZpdRMcWxp9jPTeRIo3gq5iKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCJtsU2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EFCC4CEE4;
+	Sat,  7 Jun 2025 10:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290968;
-	bh=icZRPus5g3PeifEPdx8kE+ynae1KiuBpAzVrm6YT68A=;
+	s=korg; t=1749291052;
+	bh=Ci1cUYyk38I4/KfLLR8wbJc6DfrpWi1KZsqLMJmv2AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfVhgH0qdu4W5M8C2HjFGs60RBqc9pyp9QVHQm1zaYKFiurkOoGJLqhKQZSsvkU0g
-	 STwJH+zW1D9WfPCQ1MfuYYxsq/LMAchiTxtkFiwuFaaph67Yw9TrRxnhNARFxqjxGQ
-	 hZQzjo2xrEZ8dudpZhJIDnSseZIW6dwQj92AV+3o=
+	b=ZCJtsU2l9/AOsm/bo0VIDtp64yZGN6GU+pwnr6IL58FTtqBCPlpGgHpSUmjGVjLHb
+	 PCvNjudkxN5gNeFOMLFWzCoseRkpUQJU+gJ+qkEbMgIrbpf+zEI5c4xct5gq8ASrzp
+	 4Clm9bfb1MOlKRcWnuHa34rFnjRUgrDyh726jPYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.14 03/24] pinctrl: armada-37xx: set GPIO output value before setting direction
+	Todd Brandt <todd.e.brandt@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.15 02/34] Revert "x86/smp: Eliminate mwait_play_dead_cpuid_hint()"
 Date: Sat,  7 Jun 2025 12:07:43 +0200
-Message-ID: <20250607100717.840762094@linuxfoundation.org>
+Message-ID: <20250607100719.810111964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
+commit 70523f335734b0b42f97647556d331edf684c7dc upstream.
 
-Changing the direction before updating the output value in the
-OUTPUT_VAL register may result in a glitch on the output line
-if the previous value in the OUTPUT_VAL register is different
-from the one we want to set.
+Revert commit 96040f7273e2 ("x86/smp: Eliminate mwait_play_dead_cpuid_hint()")
+because it introduced a significant power regression on systems that
+start with "nosmt" in the kernel command line.
 
-In order to avoid that, update the output value before changing
-the direction.
+Namely, on such systems, SMT siblings permanently go offline early,
+when cpuidle has not been initialized yet, so after the above commit,
+hlt_play_dead() is called for them.  Later on, when the processor
+attempts to enter a deep package C-state, including PC10 which is
+requisite for reaching minimum power in suspend-to-idle, it is not
+able to do that because of the SMT siblings staying in C1 (which
+they have been put into by HLT).
 
-Cc: stable@vger.kernel.org
-Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+As a result, the idle power (including power in suspend-to-idle)
+rises quite dramatically on those systems with all of the possible
+consequences, which (needless to say) may not be expected by their
+users.
+
+This issue is hard to debug and potentially dangerous, so it needs to
+be addressed as soon as possible in a way that will work for 6.15.y,
+hence the revert.
+
+Of course, after this revert, the issue that commit 96040f7273e2
+attempted to address will be back and it will need to be fixed again
+later.
+
+Fixes: 96040f7273e2 ("x86/smp: Eliminate mwait_play_dead_cpuid_hint()")
+Reported-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Tested-by: Todd Brandt <todd.e.brandt@linux.intel.com>
+Cc: 6.15+ <stable@vger.kernel.org> # 6.15+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://patch.msgid.link/12674167.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/x86/kernel/smpboot.c |   54 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 7 deletions(-)
 
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -417,23 +417,22 @@ static int armada_37xx_gpio_direction_ou
- 					     unsigned int offset, int value)
- {
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
--	unsigned int val_offset = offset;
--	unsigned int reg = OUTPUT_EN;
-+	unsigned int en_offset = offset;
-+	unsigned int reg = OUTPUT_VAL;
- 	unsigned int mask, val, ret;
- 
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
-+	val = value ? mask : 0;
- 
--	ret = regmap_update_bits(info->regmap, reg, mask, mask);
--
-+	ret = regmap_update_bits(info->regmap, reg, mask, val);
- 	if (ret)
- 		return ret;
- 
--	reg = OUTPUT_VAL;
--	armada_37xx_update_reg(&reg, &val_offset);
-+	reg = OUTPUT_EN;
-+	armada_37xx_update_reg(&reg, &en_offset);
- 
--	val = value ? mask : 0;
--	regmap_update_bits(info->regmap, reg, mask, val);
-+	regmap_update_bits(info->regmap, reg, mask, mask);
- 
- 	return 0;
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1238,10 +1238,6 @@ void play_dead_common(void)
+ 	local_irq_disable();
  }
+ 
+-/*
+- * We need to flush the caches before going to sleep, lest we have
+- * dirty data in our caches when we come back up.
+- */
+ void __noreturn mwait_play_dead(unsigned int eax_hint)
+ {
+ 	struct mwait_cpu_dead *md = this_cpu_ptr(&mwait_cpu_dead);
+@@ -1288,6 +1284,50 @@ void __noreturn mwait_play_dead(unsigned
+ }
+ 
+ /*
++ * We need to flush the caches before going to sleep, lest we have
++ * dirty data in our caches when we come back up.
++ */
++static inline void mwait_play_dead_cpuid_hint(void)
++{
++	unsigned int eax, ebx, ecx, edx;
++	unsigned int highest_cstate = 0;
++	unsigned int highest_subcstate = 0;
++	int i;
++
++	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
++	    boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
++		return;
++	if (!this_cpu_has(X86_FEATURE_MWAIT))
++		return;
++	if (!this_cpu_has(X86_FEATURE_CLFLUSH))
++		return;
++
++	eax = CPUID_LEAF_MWAIT;
++	ecx = 0;
++	native_cpuid(&eax, &ebx, &ecx, &edx);
++
++	/*
++	 * eax will be 0 if EDX enumeration is not valid.
++	 * Initialized below to cstate, sub_cstate value when EDX is valid.
++	 */
++	if (!(ecx & CPUID5_ECX_EXTENSIONS_SUPPORTED)) {
++		eax = 0;
++	} else {
++		edx >>= MWAIT_SUBSTATE_SIZE;
++		for (i = 0; i < 7 && edx; i++, edx >>= MWAIT_SUBSTATE_SIZE) {
++			if (edx & MWAIT_SUBSTATE_MASK) {
++				highest_cstate = i;
++				highest_subcstate = edx & MWAIT_SUBSTATE_MASK;
++			}
++		}
++		eax = (highest_cstate << MWAIT_SUBSTATE_SIZE) |
++			(highest_subcstate - 1);
++	}
++
++	mwait_play_dead(eax);
++}
++
++/*
+  * Kick all "offline" CPUs out of mwait on kexec(). See comment in
+  * mwait_play_dead().
+  */
+@@ -1337,9 +1377,9 @@ void native_play_dead(void)
+ 	play_dead_common();
+ 	tboot_shutdown(TB_SHUTDOWN_WFS);
+ 
+-	/* Below returns only on error. */
+-	cpuidle_play_dead();
+-	hlt_play_dead();
++	mwait_play_dead_cpuid_hint();
++	if (cpuidle_play_dead())
++		hlt_play_dead();
+ }
+ 
+ #else /* ... !CONFIG_HOTPLUG_CPU */
 
 
 
