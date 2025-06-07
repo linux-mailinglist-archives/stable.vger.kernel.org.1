@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-151798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE3BAD0CA2
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D249AD0C8B
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F260B17186A
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A793B26DA
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BAC217F29;
-	Sat,  7 Jun 2025 10:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27585217F26;
+	Sat,  7 Jun 2025 10:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zw/gAyoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfVhgH0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AD1207A22;
-	Sat,  7 Jun 2025 10:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73481F4CB8;
+	Sat,  7 Jun 2025 10:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291026; cv=none; b=I0bWkOWQzMtBk3JfUL2Egrt4owPGUs6UySCspDMeK1QRCYkJTN4FaPawYZt3GYdz6OSEtI30SashuuN8sKP4YJfQlJbi9DlQpnNaIYE0Ad9/YJHtq72TFT9u4rpokBFxxICjsUjMOj4wUayk4FtPA2KlZ4G5HRfygKJ+t1oCjFc=
+	t=1749290968; cv=none; b=nCPfHN+c1RC661/dNgR8SkraMMs+qKlWYi3kcVXOqq/jkyeeNxBfXKZ1ZUA6iZoRKPvUEZmTnWVgy4SYg6DhS9zjHqpnGvBTJqnCbV9v7A8jS757hLwCcwPVC3qhXDpMLchZV9z8j9DoKiEUOsWTgAPl476OappKp5koPVvbNII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291026; c=relaxed/simple;
-	bh=EwuXNULlRy02ABoJPrLkJEc3OQrdykttWg9vPFu4gTg=;
+	s=arc-20240116; t=1749290968; c=relaxed/simple;
+	bh=icZRPus5g3PeifEPdx8kE+ynae1KiuBpAzVrm6YT68A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lO8lmtA7v1JordeilqauwOWHB1cksWN4AC9TTFHaMeMFaeelcY+ppaXvn2TKublU0IqmXQkte9fRsc+u9SbFRyoakVkv3Y8Hehb7HzZzCV6H2i/fXO4Nr7bwT//gfptkkizxex8ZIQkGxvObqDG1UirdZ9vBrQKBlPyIL4MLkA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zw/gAyoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D72C4CEE4;
-	Sat,  7 Jun 2025 10:10:26 +0000 (UTC)
+	 MIME-Version; b=E9VpzGCXWlo/xWKXg0cyi1nxJ8NFKIyN+G4OnbuZ2r8Gm8XnQEjx//GXOkX5FGOMsHKypLqg9w3bwr/xwHI5UqDUEZ8MIl68WMK7C8bb4dCAJEJC3qa8d2M5uHVBVBlST1rWyQa1+9+8K5CxK1AXRUYZxEL+NxBI85nkdFK3Hlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfVhgH0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663FEC4CEE4;
+	Sat,  7 Jun 2025 10:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291026;
-	bh=EwuXNULlRy02ABoJPrLkJEc3OQrdykttWg9vPFu4gTg=;
+	s=korg; t=1749290968;
+	bh=icZRPus5g3PeifEPdx8kE+ynae1KiuBpAzVrm6YT68A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zw/gAyoDnCG6R3EgAzC5eyooUewrXXlBwn2hsrtKr+SMx0cmmb7n7XVxq4e3p5Yve
-	 plMCoVpUQbJSjGcujCd6kfnt9oazln0VIfnFoi7qKOJxjdWaeGPwNc4nlufF9ddpMM
-	 EGGJJn7SCU3MiDuU3jPGX8HGGzCOv0eqPVRiLnVw=
+	b=MfVhgH0qdu4W5M8C2HjFGs60RBqc9pyp9QVHQm1zaYKFiurkOoGJLqhKQZSsvkU0g
+	 STwJH+zW1D9WfPCQ1MfuYYxsq/LMAchiTxtkFiwuFaaph67Yw9TrRxnhNARFxqjxGQ
+	 hZQzjo2xrEZ8dudpZhJIDnSseZIW6dwQj92AV+3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Pan Taixi <pantaixi@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.15 01/34] tracing: Fix compilation warning on arm32
-Date: Sat,  7 Jun 2025 12:07:42 +0200
-Message-ID: <20250607100719.773717451@linuxfoundation.org>
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.14 03/24] pinctrl: armada-37xx: set GPIO output value before setting direction
+Date: Sat,  7 Jun 2025 12:07:43 +0200
+Message-ID: <20250607100717.840762094@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Taixi <pantaixi@huaweicloud.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
+commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
 
-On arm32, size_t is defined to be unsigned int, while PAGE_SIZE is
-unsigned long. This hence triggers a compilation warning as min()
-asserts the type of two operands to be equal. Casting PAGE_SIZE to size_t
-solves this issue and works on other target architectures as well.
+Changing the direction before updating the output value in the
+OUTPUT_VAL register may result in a glitch on the output line
+if the previous value in the OUTPUT_VAL register is different
+from the one we want to set.
 
-Compilation warning details:
-
-kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
-./include/linux/minmax.h:20:28: warning: comparison of distinct pointer types lacks a cast
-  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-                            ^
-./include/linux/minmax.h:26:4: note: in expansion of macro '__typecheck'
-   (__typecheck(x, y) && __no_side_effects(x, y))
-    ^~~~~~~~~~~
-
-...
-
-kernel/trace/trace.c:6771:8: note: in expansion of macro 'min'
-        min((size_t)trace_seq_used(&iter->seq),
-        ^~~
+In order to avoid that, update the output value before changing
+the direction.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
-Fixes: f5178c41bb43 ("tracing: Fix oob write in trace_seq_to_buffer()")
-Reviewed-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Pan Taixi <pantaixi@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6824,7 +6824,7 @@ static ssize_t tracing_splice_read_pipe(
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
- 					  min((size_t)trace_seq_used(&iter->seq),
--						  PAGE_SIZE));
-+						  (size_t)PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -417,23 +417,22 @@ static int armada_37xx_gpio_direction_ou
+ 					     unsigned int offset, int value)
+ {
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
+-	unsigned int val_offset = offset;
+-	unsigned int reg = OUTPUT_EN;
++	unsigned int en_offset = offset;
++	unsigned int reg = OUTPUT_VAL;
+ 	unsigned int mask, val, ret;
+ 
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
++	val = value ? mask : 0;
+ 
+-	ret = regmap_update_bits(info->regmap, reg, mask, mask);
+-
++	ret = regmap_update_bits(info->regmap, reg, mask, val);
+ 	if (ret)
+ 		return ret;
+ 
+-	reg = OUTPUT_VAL;
+-	armada_37xx_update_reg(&reg, &val_offset);
++	reg = OUTPUT_EN;
++	armada_37xx_update_reg(&reg, &en_offset);
+ 
+-	val = value ? mask : 0;
+-	regmap_update_bits(info->regmap, reg, mask, val);
++	regmap_update_bits(info->regmap, reg, mask, mask);
+ 
+ 	return 0;
+ }
 
 
 
