@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-151785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B168DAD0C98
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F8BAD0CC0
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A5F41894D2C
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA5801895714
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C239121B908;
-	Sat,  7 Jun 2025 10:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF8021ABDB;
+	Sat,  7 Jun 2025 10:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGcqhn+m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/XUuxqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8056A217F26;
-	Sat,  7 Jun 2025 10:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A177219E8F;
+	Sat,  7 Jun 2025 10:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290992; cv=none; b=uGuoxfOy5GWIw0wLwZcO0bCU4q/0tGKP30v0poyRphtNAA++1x+tBScIYaq6cbccsxR5KLTGdsojvADBVtuDgFawB152tlYY4ci7BYsoxiM3wfdQ6WpeBL7VTe+wtcJVj2L1i/wvGg4a2dJCBUQmfbQy+7wLpW8CBjrIshGavZY=
+	t=1749291095; cv=none; b=mNWML6ovuB0XDCOIsjn8s/MzaWszgGWqLpS9TdWryWHjLjl/UBVFu0Ys0kNK4nr4zpLk5oTEmqYNP5GchYPJtFqXVIpkFS6RXriCpIwbMikrAaZIiBqIO6HZZQV4SyYtdkwL8+ObWS4vffnoAiZh2KfXAHceDQEp1P7PR1RSv6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290992; c=relaxed/simple;
-	bh=3wM0lDryhYafOLyzMKZ3fOz3uie3YV5GoPDlzZdLuho=;
+	s=arc-20240116; t=1749291095; c=relaxed/simple;
+	bh=Gaj/2sq2C2qyKTfYlQsuBVEZ59lQwE/cUdz3ULkPd/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OFOFA1WIpMwjaTHG0COVMt+Lg4ftghEF27m9JmAlDdxTERktU7dDeCRh7dWQE4PJ+y4+ipx/GKyB5zi2SkC6sKNL7C/dITPTefc4fKJJxNg0uMJrx8ESoYl+BgUlDdUqP7augsGyCQUp7ytZr5SzbY4JxZjDoesOaPaOd7nHLOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGcqhn+m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076C4C4CEE4;
-	Sat,  7 Jun 2025 10:09:51 +0000 (UTC)
+	 MIME-Version; b=X5AZmuwBSXGVYzEp8JV3vldZmVpTcLTVauChu5JHTu2Sg48KqdymdxGuWQNzUWUG6au0YWBjqU95ahvhRe8VMWUXI+ItdTrWo7bFB/aGKKXE7qaSJnLoYRww1AHYwoUrV5GgbWSuDhHa3PdY4AxQWBt0BYgOm1VGi1suQsd4guo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/XUuxqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24AAC4CEE4;
+	Sat,  7 Jun 2025 10:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290992;
-	bh=3wM0lDryhYafOLyzMKZ3fOz3uie3YV5GoPDlzZdLuho=;
+	s=korg; t=1749291095;
+	bh=Gaj/2sq2C2qyKTfYlQsuBVEZ59lQwE/cUdz3ULkPd/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGcqhn+mZhLWLt8FCTS45rwLJLRUbZd2jbI+qRLBxGOtd6tvJT9if+TI2X+zkLnCJ
-	 LQ7lfy2+wl7ZrgjpdPvTKuFermZE6/6EhgraoW6GKhnMmmgm9F5dvXECmPEMLP76PV
-	 XdCiTMtI6tkp9YQjEiCDtebQgKaQCShzngHuhDAQ=
+	b=Y/XUuxqctxDdEcdqPYJOY4Hx7VxxLa8mEpG+Jtg3JF495Rh0Ob7sicMe4atoazfUZ
+	 fFgf1Wsjr7+L23saEJezGy9UeZZLkCNUTUKetxmeOE3CO/7Q03ztYCTU2UWIfO15PN
+	 1FuCQNwQUwr3nhpZmn5KqMSTKO62nZ6rVGo3Ce50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.14 21/24] dt-bindings: pwm: adi,axi-pwmgen: Fix clocks
-Date: Sat,  7 Jun 2025 12:08:01 +0200
-Message-ID: <20250607100718.526943618@linuxfoundation.org>
+	Charles Yeh <charlesyeh522@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.15 21/34] USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+Date: Sat,  7 Jun 2025 12:08:02 +0200
+Message-ID: <20250607100720.545345670@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Charles Yeh <charlesyeh522@gmail.com>
 
-commit e683131e64f71e957ca77743cb3d313646157329 upstream.
+commit d3a889482bd5abf2bbdc1ec3d2d49575aa160c9c upstream.
 
-Fix a shortcoming in the bindings that doesn't allow for a separate
-external clock.
+Add new bcd (0x905) to support PL2303GT-2AB (TYPE_HXN).
+Add new bcd (0x1005) to support PL2303GC-Q20 (TYPE_HXN).
 
-The AXI PWMGEN IP block has a compile option ASYNC_CLK_EN that allows
-the use of an external clock for the PWM output separate from the AXI
-clock that runs the peripheral.
-
-This was missed in the original bindings and so users were writing dts
-files where the one and only clock specified would be the external
-clock, if there was one, incorrectly missing the separate AXI clock.
-
-The correct bindings are that the AXI clock is always required and the
-external clock is optional (must be given only when HDL compile option
-ASYNC_CLK_EN=1).
-
-Fixes: 1edf2c2a2841 ("dt-bindings: pwm: Add AXI PWM generator")
+Signed-off-by: Charles Yeh <charlesyeh522@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250529-pwm-axi-pwmgen-add-external-clock-v3-2-5d8809a7da91@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/usb/serial/pl2303.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-+++ b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-@@ -30,11 +30,19 @@ properties:
-     const: 3
- 
-   clocks:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 2
-+
-+  clock-names:
-+    minItems: 1
-+    items:
-+      - const: axi
-+      - const: ext
- 
- required:
-   - reg
-   - clocks
-+  - clock-names
- 
- unevaluatedProperties: false
- 
-@@ -43,6 +51,7 @@ examples:
-     pwm@44b00000 {
-         compatible = "adi,axi-pwmgen-2.00.a";
-         reg = <0x44b00000 0x1000>;
--        clocks = <&spi_clk>;
-+        clocks = <&fpga_clk>, <&spi_clk>;
-+        clock-names = "axi", "ext";
-         #pwm-cells = <3>;
-     };
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -458,6 +458,8 @@ static int pl2303_detect_type(struct usb
+ 		case 0x605:
+ 		case 0x700:	/* GR */
+ 		case 0x705:
++		case 0x905:	/* GT-2AB */
++		case 0x1005:	/* GC-Q20 */
+ 			return TYPE_HXN;
+ 		}
+ 		break;
 
 
 
