@@ -1,145 +1,121 @@
-Return-Path: <stable+bounces-151745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD9AD0C41
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:38:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2173AAD0C50
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A23D3188EFCA
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 09:38:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B0B170719
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 09:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902702046B3;
-	Sat,  7 Jun 2025 09:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA3F217F23;
+	Sat,  7 Jun 2025 09:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd9e4N9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns5odZjJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17187184F
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 09:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E3D1C7009;
+	Sat,  7 Jun 2025 09:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749289117; cv=none; b=Jgb0FrX7YVBB1MbGds7kYRTYtVnMLYYdNbcFauLRvCu4qNnNfGNHUF4KVdsQleq+9DU4HnLIXubzuIjNBt94626OgUwfgvpTVCnk4feck71Z03KFarfDzV7J2DHmlvR0jm6tq6pBt9vD0hMZkfa/wRx3yCfSwyiJCNkog1KNnWk=
+	t=1749290253; cv=none; b=ZLA+Tie91C6ATo6vcVFsrJSoccIhH8E3Q7VZvyv7VySr5/3RsW1bhHL1a2mOuvbigBRYAeQo/Mhba4CshQwaSV3Tr1eK6F6MmV6ipbLrkUiTrFFGZK575Kgcu54YnZwQ5tbF6fQH2KbV86+0dFEs7iwcI1DSkt7PImn2pNbYZxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749289117; c=relaxed/simple;
-	bh=Klfc/06OVgMYY3i0sye3+4oNhQdnQBS1dNCX/PoUxps=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M13BXjrKwfG+rrNWD6ZsBlmJ1/yyno8YzXlkPyWVxtX2MKIYBmC1Cbjb01yp913OoJPOwUQTjfhoVX5EBt6NyB+QX26R6JxKyIuEbSfPSYWnG7ap29tJ0I69UAs8ITuEkAQ6R9jRRHVtEB914917iMZn5AFpEEFhURIvsUqLhwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd9e4N9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCDFC4CEE4;
-	Sat,  7 Jun 2025 09:38:36 +0000 (UTC)
+	s=arc-20240116; t=1749290253; c=relaxed/simple;
+	bh=VzdmqcMNvBqE3KC0zj0VVYLrni/GN1NT9ay8sXX/Oms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sj0oi/LbvHZI7r5eQGahBQII8Qvs+PndsW3ukFxpubAP/aSRXuoFng5K5ughyo07OlCg18i8OrVV66OQgG7SgQ5OBtJu/FbiLk6t3bR0sd6hlmaM7H+FnICNEuVoONWE15r2N6XcxpntJsFn6HadBh6tO01I55XIJeEKzsrvP64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns5odZjJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C51C4CEE4;
+	Sat,  7 Jun 2025 09:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749289116;
-	bh=Klfc/06OVgMYY3i0sye3+4oNhQdnQBS1dNCX/PoUxps=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yd9e4N9N/Q/Y6ZlPF7ve/qRrVplp5R87IGjt1xnnNW1UOrmGVRDVy8TJFXyQYE6Y7
-	 /14m8P/YxSCKRGl/MjQOOIXMlUNQhgEyeW3PwnuOx6dBYWKG+BGXkPEmOuYQ+3nsEH
-	 NgUzO9yB3GZ/3DbYxQ9i4rt0OMfgk3CuLbzVHJcA=
-Subject: FAILED: patch "[PATCH] dt-bindings: pwm: adi,axi-pwmgen: Fix clocks" failed to apply to 6.12-stable tree
-To: dlechner@baylibre.com,krzysztof.kozlowski@linaro.org,ukleinek@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 07 Jun 2025 11:38:34 +0200
-Message-ID: <2025060734-elated-juvenile-da5c@gregkh>
+	s=korg; t=1749290252;
+	bh=VzdmqcMNvBqE3KC0zj0VVYLrni/GN1NT9ay8sXX/Oms=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ns5odZjJt6lhUyX0pMfYyXcMLXpOPa+xQACBahwgKkqgsMf5wo087OjgjS6NihT75
+	 eshtaC6q6950Gjl+0Pt8Dzg1KrBozq2Dvkksjd+1Ucy9dxqUrawcZ1BwRuDZc8Acpt
+	 NXGi66sE4YW1tZhPCCsJ9IfxzvxTyt0sm30jVFrw=
+Date: Sat, 7 Jun 2025 11:57:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Macpaul Lin <macpaul.lin@mediatek.com>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Daniel Stodden <daniel.stodden@gmail.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Deren Wu <Deren.Wu@mediatek.com>, Ramax Lo <ramax.lo@mediatek.com>,
+	Macpaul Lin <macpaul@gmail.com>,
+	MediaTek Chromebook Upstream <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+	Johnny-CC Chang <Johnny-CC.Chang@mediatek.com>
+Subject: Re: [PATCH 6.11 1/1] PCI/ASPM: Disable L1 before disabling L1 PM
+ Substates
+Message-ID: <2025060702-deviate-faceted-bd57@gregkh>
+References: <20250606015738.2724220-1-macpaul.lin@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250606015738.2724220-1-macpaul.lin@mediatek.com>
 
+On Fri, Jun 06, 2025 at 09:57:38AM +0800, Macpaul Lin wrote:
+> From: Ajay Agarwal <ajayagarwal@google.com>
+> 
+> [ Upstream commit 7447990137bf06b2aeecad9c6081e01a9f47f2aa ]
+> 
+> PCIe r6.2, sec 5.5.4, requires that:
+> 
+>   If setting either or both of the enable bits for ASPM L1 PM Substates,
+>   both ports must be configured as described in this section while ASPM L1
+>   is disabled.
+> 
+> Previously, pcie_config_aspm_l1ss() assumed that "setting enable bits"
+> meant "setting them to 1", and it configured L1SS as follows:
+> 
+>   - Clear L1SS enable bits
+>   - Disable L1
+>   - Configure L1SS enable bits as required
+>   - Enable L1 if required
+> 
+> With this sequence, when disabling L1SS on an ARM A-core with a Synopsys
+> DesignWare PCIe core, the CPU occasionally hangs when reading
+> PCI_L1SS_CTL1, leading to a reboot when the CPU watchdog expires.
+> 
+> Move the L1 disable to the caller (pcie_config_aspm_link(), where L1 was
+> already enabled) so L1 is always disabled while updating the L1SS bits:
+> 
+>   - Disable L1
+>   - Clear L1SS enable bits
+>   - Configure L1SS enable bits as required
+>   - Enable L1 if required
+> 
+> Change pcie_aspm_cap_init() similarly.
+> 
+> Link: https://lore.kernel.org/r/20241007032917.872262-1-ajayagarwal@google.com
+> Signed-off-by: Ajay Agarwal <ajayagarwal@google.com>
+> [bhelgaas: comments, commit log, compute L1SS setting before config access]
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: Johnny-CC Chang <Johnny-CC.Chang@mediatek.com>
+> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+> ---
+>  drivers/pci/pcie/aspm.c | 92 ++++++++++++++++++++++-------------------
+>  1 file changed, 50 insertions(+), 42 deletions(-)
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x e683131e64f71e957ca77743cb3d313646157329
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025060734-elated-juvenile-da5c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
-
-
+6.11.y is long end-of-life, sorry.  See the front page of www.kernel.org
+for the list of currently supported kernels.
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e683131e64f71e957ca77743cb3d313646157329 Mon Sep 17 00:00:00 2001
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 29 May 2025 11:53:19 -0500
-Subject: [PATCH] dt-bindings: pwm: adi,axi-pwmgen: Fix clocks
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Fix a shortcoming in the bindings that doesn't allow for a separate
-external clock.
-
-The AXI PWMGEN IP block has a compile option ASYNC_CLK_EN that allows
-the use of an external clock for the PWM output separate from the AXI
-clock that runs the peripheral.
-
-This was missed in the original bindings and so users were writing dts
-files where the one and only clock specified would be the external
-clock, if there was one, incorrectly missing the separate AXI clock.
-
-The correct bindings are that the AXI clock is always required and the
-external clock is optional (must be given only when HDL compile option
-ASYNC_CLK_EN=1).
-
-Fixes: 1edf2c2a2841 ("dt-bindings: pwm: Add AXI PWM generator")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250529-pwm-axi-pwmgen-add-external-clock-v3-2-5d8809a7da91@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-
-diff --git a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-index 45e112d0efb4..5575c58357d6 100644
---- a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-+++ b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
-@@ -30,11 +30,19 @@ properties:
-     const: 3
- 
-   clocks:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 2
-+
-+  clock-names:
-+    minItems: 1
-+    items:
-+      - const: axi
-+      - const: ext
- 
- required:
-   - reg
-   - clocks
-+  - clock-names
- 
- unevaluatedProperties: false
- 
-@@ -43,6 +51,7 @@ examples:
-     pwm@44b00000 {
-         compatible = "adi,axi-pwmgen-2.00.a";
-         reg = <0x44b00000 0x1000>;
--        clocks = <&spi_clk>;
-+        clocks = <&fpga_clk>, <&spi_clk>;
-+        clock-names = "axi", "ext";
-         #pwm-cells = <3>;
-     };
-
 
