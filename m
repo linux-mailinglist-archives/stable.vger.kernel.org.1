@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-151832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2387AD0CCB
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:12:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE65AD0CA7
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A073117207B
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:12:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5656F1895371
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B1921D59F;
-	Sat,  7 Jun 2025 10:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB47B21B908;
+	Sat,  7 Jun 2025 10:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNcFihaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyJBe7FZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4DD219E8F;
-	Sat,  7 Jun 2025 10:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C3E15D1;
+	Sat,  7 Jun 2025 10:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291116; cv=none; b=EKqE6rxptsgqRiI3Mj0VzLuw1lfL1Ig5URVjr/Kf1knMd7tIG/es74yfF57pXvakIp7k2Kr0bdzrYVwvIBKPhTiua7RF7S+6/39lTRqquo2ADte//WUcD3SaVItqxEfLadSlC6tCXb/JJheiicJUP9sRF7aomLil3LV7AQWp/Sk=
+	t=1749291021; cv=none; b=U3UYXSqb9fqjbP0c6ZOGeBZ5UxajjwGoVEScKy8Cvp72PuSYkPT3NvQsQpTfXkixlxPrfVQz0S9igXZqKrWM7Fu4j23DRK0/wNitxWKnQfpEVXYPN+nlKUgmXB1Tghzp4ZAezctJVK9/iwYYRp7ZE773wheNIgN1feuBMLxk+XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291116; c=relaxed/simple;
-	bh=ltC+v5cW/y2/O9wr+iW0uZyfU3eV2w8voCI1R+iK9f0=;
+	s=arc-20240116; t=1749291021; c=relaxed/simple;
+	bh=yQKJ+yNG1IJKlLiAYVyvVv2CFJ+910B13pMKZmvZ/Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uo6cCRLZTeM71+MBkFeY20Lw3HezyCGhW9YmJlqxvn2ZScmYQxwtuvKlDP/XzmUevk3iiktUJll7sEXjazGRzxmyIYrec9r8CeeLxAm1+es28jmNsTOkT39ApeY64vqdsPI2ZoIprnhjRcpo34trYfgOGTicbKw+7wG2OdhHGyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNcFihaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECFFC4CEE4;
-	Sat,  7 Jun 2025 10:11:56 +0000 (UTC)
+	 MIME-Version; b=T/kabK6dy/a8jhIsTgEc19d8pygCttpdJFnZXmRBW/N7/fAwHKn4R2RFa+mAFHkt6nqkE4lWrGUX5WtX+CCZ4OkSf6EyzRzU3sOwNnaA2bVPnsSZAumLUgJY4H9oMDtOBS4d4dp/cAFfZco8nZq0HGHUfX2dwDT8vEIq+zGPDAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyJBe7FZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D96BC4CEE4;
+	Sat,  7 Jun 2025 10:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291116;
-	bh=ltC+v5cW/y2/O9wr+iW0uZyfU3eV2w8voCI1R+iK9f0=;
+	s=korg; t=1749291021;
+	bh=yQKJ+yNG1IJKlLiAYVyvVv2CFJ+910B13pMKZmvZ/Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNcFihaMTz54VY/eojgebsbjVGwnsZgY1gcCbBF9XEi8EVOi65ZqVmFbicplG3RI8
-	 Nq9BR1wvMYDfuEImPLnrulLBFrAwyXp2sTw7OMwqwZlgSpFEIfzHxqa11UZdn1Z5Ai
-	 Vn/FgVgJRLAJOQyEvkrBjWeJ0DX/sJi237tSC3nA=
+	b=lyJBe7FZ+eW9QImSfs41Aku6Hvok7DVDNZ7P4Js6uj+uSHhansXrj85toekziDRTK
+	 o55AWfUbIMca6JQd+2I597Ejy3xApxC7IpbhyP2DDILxCjuFV6l8Tw7fWFbaW6Mv4q
+	 qiXsfMgk7n8qFAoX9w8MPeURAJYDtJJHEwkwXCfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.15 19/34] usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.14 20/24] thunderbolt: Do not double dequeue a configuration request
 Date: Sat,  7 Jun 2025 12:08:00 +0200
-Message-ID: <20250607100720.470251260@linuxfoundation.org>
+Message-ID: <20250607100718.484754342@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit 19f795591947596b5b9efa86fd4b9058e45786e9 upstream.
+commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
 
-This device exhibits I/O errors during file transfers due to unstable
-link power management (LPM) behavior. The kernel logs show repeated
-warm resets and eventual disconnection when LPM is enabled:
+Some of our devices crash in tb_cfg_request_dequeue():
 
-[ 3467.810740] hub 2-0:1.0: state 7 ports 6 chg 0000 evt 0020
-[ 3467.810740] usb usb2-port5: do warm reset
-[ 3467.866444] usb usb2-port5: not warm reset yet, waiting 50ms
-[ 3467.907407] sd 0:0:0:0: [sda] tag#12 sense submit err -19
-[ 3467.994423] usb usb2-port5: status 02c0, change 0001, 10.0 Gb/s
-[ 3467.994453] usb 2-5: USB disconnect, device number 4
+ general protection fault, probably for non-canonical address 0xdead000000000122
 
-The error -19 (ENODEV) occurs when the device disappears during write
-operations. Adding USB_QUIRK_NO_LPM disables link power management
-for this specific device, resolving the stability issues.
+ CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+ RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+ Call Trace:
+ <TASK>
+ ? tb_cfg_request_dequeue+0x2d/0xa0
+ tb_cfg_request_work+0x33/0x80
+ worker_thread+0x386/0x8f0
+ kthread+0xed/0x110
+ ret_from_fork+0x38/0x50
+ ret_from_fork_asm+0x1b/0x30
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250508055947.764538-1-lijiayi@kylinos.cn
+The circumstances are unclear, however, the theory is that
+tb_cfg_request_work() can be scheduled twice for a request:
+first time via frame.callback from ring_work() and second
+time from tb_cfg_request().  Both times kworkers will execute
+tb_cfg_request_dequeue(), which results in double list_del()
+from the ctl->request_queue (the list poison deference hints
+at it: 0xdead000000000122).
+
+Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+bit set.
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/thunderbolt/ctl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -372,6 +372,9 @@ static const struct usb_device_id usb_qu
- 	/* SanDisk Corp. SanDisk 3.2Gen1 */
- 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -151,6 +151,11 @@ static void tb_cfg_request_dequeue(struc
+ 	struct tb_ctl *ctl = req->ctl;
  
-+	/* SanDisk Extreme 55AE */
-+	{ USB_DEVICE(0x0781, 0x55ae), .driver_info = USB_QUIRK_NO_LPM },
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
 +
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
- 
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
 
 
 
