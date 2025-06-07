@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-151759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C480AD0C7A
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D40BAD0CA6
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A167216AD19
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFF9B7AA74D
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A2F20D4E3;
-	Sat,  7 Jun 2025 10:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B54E207A22;
+	Sat,  7 Jun 2025 10:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCTevbK4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMQ2Enfb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121131F8723;
-	Sat,  7 Jun 2025 10:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0922C15D1;
+	Sat,  7 Jun 2025 10:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290914; cv=none; b=m8ZppDIhkfw1TpGxfF7BRBJ5iQaxZolOM6cOFzVn26hliygrv2uriEKgmP54MNDblJn8EersIputXSIkq4v99HwJ+uYzoiRlseoN3z658wf5G19TK6HNQthQWtIr2MkzjX1JEIGzXttqcVDEV0uR9NvnHaYr8e9a/fky1+rhyyA=
+	t=1749291032; cv=none; b=oEBlf/pAtbMbF1/SZ6xSqNugenzwh/voIyAu51q+hRwbRyPPevfFUCycYK/VSNKTVl4Xrvyx+QClW95mBAAT3R5LQxL6jlOk/EDJ+e2dgoioZpPuvhawm1Uf5wahpgnMPIp7Ic6FmhDkV7IYOow3zWsOp+KgZVpUyDfkKrYNTp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290914; c=relaxed/simple;
-	bh=p6xsRjCSWtVcZfbKRRxBMJOhDnkisbt/+z0jq+whFZI=;
+	s=arc-20240116; t=1749291032; c=relaxed/simple;
+	bh=XS8BoFch7nm5uUGQGX+nQibAZ+hu/UnpKqkTGNKBlww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzkszKus/qYPiPAMGq5kWwbUqBhaZQtS8gcdpkwKM7bc/o9nwMe58J4UYfgEl10IVcrdJ6KolDVO5kfcs6uJkO9riQ5OlqLXPomt4NH32V0rNZWCsYu+EDtZDTVYLmeazZx0g3rq50iCQKxtDDrCHHGQE8+JM34QczdYTUJPiDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCTevbK4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5116CC4CEE4;
-	Sat,  7 Jun 2025 10:08:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Iusc0D3qLou3jy/cUhNRTC+hl/RhLeV+lFfZiv919JmrE1BPoV/T0OMCbrMGFitJ/1/yqUXfAc9xVkW6eLn8X1z3vwDRGwB14Ql8udN2R5zUG/JPXBLnses4wp16AdqfGnnY677oUbw0VvFJB7rszaKAO5C2NR0QiplSiX4RuuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMQ2Enfb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF9AC4CEE4;
+	Sat,  7 Jun 2025 10:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290913;
-	bh=p6xsRjCSWtVcZfbKRRxBMJOhDnkisbt/+z0jq+whFZI=;
+	s=korg; t=1749291031;
+	bh=XS8BoFch7nm5uUGQGX+nQibAZ+hu/UnpKqkTGNKBlww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCTevbK4ohHaSut55n/jDfl1gGf+/Ve6o1BTpjqCpVyAgV6kuJYXOxlOW8zu3Lchv
-	 q+y3SmxJUZiHvF0GGyDIvAfIZVV6ySp7UKdPvg1w++/T9CETNXUK/sztcxzmOKRxgH
-	 ZlRS7/o5wFOWQ2A2L18OE1NtH+Ez1zFyUc6HixiU=
+	b=ZMQ2Enfbp9oppIsjWP7kNQb567nATNKhnPbZaegmqS5/YTNk6OqBj0lbTV1OcxLyn
+	 ZLSmGx/OY5WiwCa8au4vFgQzxivUwsv8l8zHio2mJcu4o916HgVMtF1c+n/kD10g1u
+	 sLAd+5N9xTqpVb8yCkVhEk9lXSOeRT5Dj2wnwt/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 21/24] thunderbolt: Do not double dequeue a configuration request
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Subject: [PATCH 6.15 11/34] pinctrl: mediatek: eint: Fix invalid pointer dereference for v1 platforms
 Date: Sat,  7 Jun 2025 12:07:52 +0200
-Message-ID: <20250607100718.872379256@linuxfoundation.org>
+Message-ID: <20250607100720.165134210@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +61,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
+commit 1c9977b263475373b31bbf86af94a5c9ae2be42c upstream.
 
-Some of our devices crash in tb_cfg_request_dequeue():
+Commit 3ef9f710efcb ("pinctrl: mediatek: Add EINT support for multiple
+addresses") introduced an access to the 'soc' field of struct
+mtk_pinctrl in mtk_eint_do_init() and for that an include of
+pinctrl-mtk-common-v2.h.
 
- general protection fault, probably for non-canonical address 0xdead000000000122
+However, pinctrl drivers relying on the v1 common driver include
+pinctrl-mtk-common.h instead, which provides another definition of
+struct mtk_pinctrl that does not contain an 'soc' field.
 
- CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
- RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
- Call Trace:
- <TASK>
- ? tb_cfg_request_dequeue+0x2d/0xa0
- tb_cfg_request_work+0x33/0x80
- worker_thread+0x386/0x8f0
- kthread+0xed/0x110
- ret_from_fork+0x38/0x50
- ret_from_fork_asm+0x1b/0x30
+Since mtk_eint_do_init() can be called both by v1 and v2 drivers, it
+will now try to dereference an invalid pointer when called on v1
+platforms. This has been observed on Genio 350 EVK (MT8365), which
+crashes very early in boot (the kernel trace can only be seen with
+earlycon).
 
-The circumstances are unclear, however, the theory is that
-tb_cfg_request_work() can be scheduled twice for a request:
-first time via frame.callback from ring_work() and second
-time from tb_cfg_request().  Both times kworkers will execute
-tb_cfg_request_dequeue(), which results in double list_del()
-from the ctl->request_queue (the list poison deference hints
-at it: 0xdead000000000122).
+In order to fix this, since 'struct mtk_pinctrl' was only needed to get
+a 'struct mtk_eint_pin', make 'struct mtk_eint_pin' a parameter
+of mtk_eint_do_init() so that callers need to supply it, removing
+mtk_eint_do_init()'s dependency on any particular 'struct mtk_pinctrl'.
 
-Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
-bit set.
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 3ef9f710efcb ("pinctrl: mediatek: Add EINT support for multiple addresses")
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/20250520-genio-350-eint-null-ptr-deref-fix-v2-1-6a3ca966a7ba@collabora.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+[ukleinek: backport to 6.15.y]
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/ctl.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/mediatek/mtk-eint.c              |   26 +++++++++--------------
+ drivers/pinctrl/mediatek/mtk-eint.h              |    5 ++--
+ drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c |    2 -
+ drivers/pinctrl/mediatek/pinctrl-mtk-common.c    |    2 -
+ 4 files changed, 16 insertions(+), 19 deletions(-)
 
---- a/drivers/thunderbolt/ctl.c
-+++ b/drivers/thunderbolt/ctl.c
-@@ -148,6 +148,11 @@ static void tb_cfg_request_dequeue(struc
- 	struct tb_ctl *ctl = req->ctl;
+--- a/drivers/pinctrl/mediatek/mtk-eint.c
++++ b/drivers/pinctrl/mediatek/mtk-eint.c
+@@ -22,7 +22,6 @@
+ #include <linux/platform_device.h>
  
- 	mutex_lock(&ctl->request_queue_lock);
-+	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
-+		mutex_unlock(&ctl->request_queue_lock);
-+		return;
-+	}
-+
- 	list_del(&req->list);
- 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
- 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
+ #include "mtk-eint.h"
+-#include "pinctrl-mtk-common-v2.h"
+ 
+ #define MTK_EINT_EDGE_SENSITIVE           0
+ #define MTK_EINT_LEVEL_SENSITIVE          1
+@@ -505,10 +504,9 @@ int mtk_eint_find_irq(struct mtk_eint *e
+ }
+ EXPORT_SYMBOL_GPL(mtk_eint_find_irq);
+ 
+-int mtk_eint_do_init(struct mtk_eint *eint)
++int mtk_eint_do_init(struct mtk_eint *eint, struct mtk_eint_pin *eint_pin)
+ {
+ 	unsigned int size, i, port, inst = 0;
+-	struct mtk_pinctrl *hw = (struct mtk_pinctrl *)eint->pctl;
+ 
+ 	/* If clients don't assign a specific regs, let's use generic one */
+ 	if (!eint->regs)
+@@ -519,7 +517,15 @@ int mtk_eint_do_init(struct mtk_eint *ei
+ 	if (!eint->base_pin_num)
+ 		return -ENOMEM;
+ 
+-	if (eint->nbase == 1) {
++	if (eint_pin) {
++		eint->pins = eint_pin;
++		for (i = 0; i < eint->hw->ap_num; i++) {
++			inst = eint->pins[i].instance;
++			if (inst >= eint->nbase)
++				continue;
++			eint->base_pin_num[inst]++;
++		}
++	} else {
+ 		size = eint->hw->ap_num * sizeof(struct mtk_eint_pin);
+ 		eint->pins = devm_kmalloc(eint->dev, size, GFP_KERNEL);
+ 		if (!eint->pins)
+@@ -533,16 +539,6 @@ int mtk_eint_do_init(struct mtk_eint *ei
+ 		}
+ 	}
+ 
+-	if (hw && hw->soc && hw->soc->eint_pin) {
+-		eint->pins = hw->soc->eint_pin;
+-		for (i = 0; i < eint->hw->ap_num; i++) {
+-			inst = eint->pins[i].instance;
+-			if (inst >= eint->nbase)
+-				continue;
+-			eint->base_pin_num[inst]++;
+-		}
+-	}
+-
+ 	eint->pin_list = devm_kmalloc(eint->dev, eint->nbase * sizeof(u16 *), GFP_KERNEL);
+ 	if (!eint->pin_list)
+ 		goto err_pin_list;
+@@ -610,7 +606,7 @@ err_cur_mask:
+ err_wake_mask:
+ 	devm_kfree(eint->dev, eint->pin_list);
+ err_pin_list:
+-	if (eint->nbase == 1)
++	if (!eint_pin)
+ 		devm_kfree(eint->dev, eint->pins);
+ err_pins:
+ 	devm_kfree(eint->dev, eint->base_pin_num);
+--- a/drivers/pinctrl/mediatek/mtk-eint.h
++++ b/drivers/pinctrl/mediatek/mtk-eint.h
+@@ -88,7 +88,7 @@ struct mtk_eint {
+ };
+ 
+ #if IS_ENABLED(CONFIG_EINT_MTK)
+-int mtk_eint_do_init(struct mtk_eint *eint);
++int mtk_eint_do_init(struct mtk_eint *eint, struct mtk_eint_pin *eint_pin);
+ int mtk_eint_do_suspend(struct mtk_eint *eint);
+ int mtk_eint_do_resume(struct mtk_eint *eint);
+ int mtk_eint_set_debounce(struct mtk_eint *eint, unsigned long eint_n,
+@@ -96,7 +96,8 @@ int mtk_eint_set_debounce(struct mtk_ein
+ int mtk_eint_find_irq(struct mtk_eint *eint, unsigned long eint_n);
+ 
+ #else
+-static inline int mtk_eint_do_init(struct mtk_eint *eint)
++static inline int mtk_eint_do_init(struct mtk_eint *eint,
++				   struct mtk_eint_pin *eint_pin)
+ {
+ 	return -EOPNOTSUPP;
+ }
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c
+@@ -416,7 +416,7 @@ int mtk_build_eint(struct mtk_pinctrl *h
+ 	hw->eint->pctl = hw;
+ 	hw->eint->gpio_xlate = &mtk_eint_xt;
+ 
+-	ret = mtk_eint_do_init(hw->eint);
++	ret = mtk_eint_do_init(hw->eint, hw->soc->eint_pin);
+ 	if (ret)
+ 		goto err_free_eint;
+ 
+--- a/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
++++ b/drivers/pinctrl/mediatek/pinctrl-mtk-common.c
+@@ -1039,7 +1039,7 @@ static int mtk_eint_init(struct mtk_pinc
+ 	pctl->eint->pctl = pctl;
+ 	pctl->eint->gpio_xlate = &mtk_eint_xt;
+ 
+-	return mtk_eint_do_init(pctl->eint);
++	return mtk_eint_do_init(pctl->eint, NULL);
+ }
+ 
+ /* This is used as a common probe function */
 
 
 
