@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-151859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4864AD0E33
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 17:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A488AD0E15
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 17:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A130216DF8A
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 15:41:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57CE916D1FC
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 15:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15A21DF97D;
-	Sat,  7 Jun 2025 15:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61421DF97D;
+	Sat,  7 Jun 2025 15:23:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4EE3594C
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 15:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552111DEFE8
+	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 15:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749310891; cv=none; b=Ok2OGv+NVTiheWzo5p+snaI2aYTiIyunbgD4MxqlbODp6FmvFoWsl5FFQp+zQqHJlGvyyn5+hdRV2xhuI6pJ9swB8BLllZZyd+psdOuiMizwmsiBFRruv+J01GzwqfZZ5t6j+or6okO5oPV5noiOt44SdRuMt3Joe1zqbhbe7co=
+	t=1749309790; cv=none; b=dN25l9MOOZ8jUC3G6Ckv5Ydj1tRRq2HJVRB5NbkvdI6PgEyDdGClpjio0L6dy0nkBTmEa0u6t7E8EILVKe4bm+GKNknIyg/Cattx9qLiMAuj87FUUf5ndrHSXiRu4Fw9Aq8+KkszjubPa3d3sKGcp8te7lPaHMp8TRyLxTyuqWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749310891; c=relaxed/simple;
-	bh=E7iGk9pR1Dy720iRQs7P5doZCUU6qTMz9fwIHiI9VA4=;
+	s=arc-20240116; t=1749309790; c=relaxed/simple;
+	bh=dd+TW2y11yIYBoSIIdVFO0Tb1UEAQ+dXJRa7Bbrj6QM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kKYPcWlosClFBcaTleGLa8mTwwCbbzysAbezCzg3lvVcL3DJulVwL4uDEqTN5z19kVWCUXlIYaP4878UfAaeW1Kir82oHI50SFHDV/tM+dQMd4sS2ivr8f3B3VIiFun3qer3e6f07HQsFMCfnoQ0ydutorDJZCs3ruNSYcZIRqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+	 MIME-Version; b=lZkWWG6NFsg7W/Cy/9yps5bLl5R5X/U8OSCvp2jSFp7sVr1TY7d5M6xo5254uzuBvI9UlcwkDWZMjJsMvBuEDQnvhZXm5pUGy7aJvA6vwOQ6KHfdVaFeEc8clu9q1VOsa927G8BvqU2BfmWbdejUP6H61rIGPKqCOo7iwRMje98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bF24g6519zKHNS0
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4bF24g1XTJzYQvhQ
 	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 23:22:59 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.252])
-	by mail.maildlp.com (Postfix) with ESMTP id 3A10B1A12A4
+	by mail.maildlp.com (Postfix) with ESMTP id 3EC901A1A40
 	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 23:22:58 +0800 (CST)
 Received: from ultra.huawei.com (unknown [10.90.53.71])
-	by APP3 (Coremail) with SMTP id _Ch0CgB3ycNKWURof5hIOg--.36463S15;
+	by APP3 (Coremail) with SMTP id _Ch0CgB3ycNKWURof5hIOg--.36463S16;
 	Sat, 07 Jun 2025 23:22:58 +0800 (CST)
 From: Pu Lehui <pulehui@huaweicloud.com>
 To: stable@vger.kernel.org
@@ -47,9 +47,9 @@ Cc: james.morse@arm.com,
 	andrii@kernel.org,
 	xukuohai@huawei.com,
 	pulehui@huawei.com
-Subject: [PATCH 5.10 13/14] arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
-Date: Sat,  7 Jun 2025 15:25:20 +0000
-Message-Id: <20250607152521.2828291-14-pulehui@huaweicloud.com>
+Subject: [PATCH 5.10 14/14] arm64: proton-pack: Add new CPUs 'k' values for branch mitigation
+Date: Sat,  7 Jun 2025 15:25:21 +0000
+Message-Id: <20250607152521.2828291-15-pulehui@huaweicloud.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250607152521.2828291-1-pulehui@huaweicloud.com>
 References: <20250607152521.2828291-1-pulehui@huaweicloud.com>
@@ -60,10 +60,10 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_Ch0CgB3ycNKWURof5hIOg--.36463S15
-X-Coremail-Antispam: 1UD129KBjvJXoW7Aw1fZw45Aw1rWr4fArW5Wrg_yoW8JF4kpw
-	1UCwnakrWDWF1kCF18XaySvr4Y9w4ktr47Cry093y0vFsIq3yS9ryfKw4Yk395ArWrXF1r
-	ZFZ0kr1S93WkX3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:_Ch0CgB3ycNKWURof5hIOg--.36463S16
+X-Coremail-Antispam: 1UD129KBjvJXoWxGryftw48tFWUKF1kKrWkXrb_yoW5Gr1kpr
+	Z0kr1DWr4Fg3WF93yftFs5CrWYvFs5Ars8GryUur1av3Wvqa43Jws8Ka1DCr4vqF48Ga95
+	u3ZFvr15Gr4xXrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
 	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
 	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
@@ -81,37 +81,55 @@ X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
 From: James Morse <james.morse@arm.com>
 
-[ Upstream commit f300769ead032513a68e4a02e806393402e626f8 ]
+[ Upstream commit efe676a1a7554219eae0b0dcfe1e0cdcc9ef9aef ]
 
-Support for eBPF programs loaded by unprivileged users is typically
-disabled. This means only cBPF programs need to be mitigated for BHB.
+Update the list of 'k' values for the branch mitigation from arm's
+website.
 
-In addition, only mitigate cBPF programs that were loaded by an
-unprivileged user. Privileged users can also load the same program
-via eBPF, making the mitigation pointless.
+Add the values for Cortex-X1C. The MIDR_EL1 value can be found here:
+https://developer.arm.com/documentation/101968/0002/Register-descriptions/AArch>
 
+Link: https://developer.arm.com/documentation/110280/2-0/?lang=en
 Signed-off-by: James Morse <james.morse@arm.com>
 Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Pu Lehui <pulehui@huawei.com>
 ---
- arch/arm64/net/bpf_jit_comp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ arch/arm64/kernel/proton-pack.c  | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 5c3f82c168a2..970d8f318177 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -342,6 +342,9 @@ static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
- 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
- 		return;
- 
-+	if (capable(CAP_SYS_ADMIN))
-+		return;
-+
- 	if (supports_clearbhb(SCOPE_SYSTEM)) {
- 		emit(aarch64_insn_gen_hint(AARCH64_INSN_HINT_CLEARBHB), ctx);
- 		return;
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 423bc03a21f2..dc88e9d2e5d2 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -80,6 +80,7 @@
+ #define ARM_CPU_PART_CORTEX_A78AE	0xD42
+ #define ARM_CPU_PART_CORTEX_X1		0xD44
+ #define ARM_CPU_PART_CORTEX_A510	0xD46
++#define ARM_CPU_PART_CORTEX_X1C		0xD4C
+ #define ARM_CPU_PART_CORTEX_A520	0xD80
+ #define ARM_CPU_PART_CORTEX_A710	0xD47
+ #define ARM_CPU_PART_CORTEX_A715	0xD4D
+@@ -144,6 +145,7 @@
+ #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+ #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
+ #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
++#define MIDR_CORTEX_X1C MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
+ #define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
+ #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
+ #define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index c218a9ef23d0..2773bf189a3f 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -899,6 +899,7 @@ static u8 spectre_bhb_loop_affected(void)
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
 -- 
 2.34.1
 
