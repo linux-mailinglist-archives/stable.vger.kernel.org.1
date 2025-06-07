@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-151777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB24AD0C8C
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D969EAD0CB0
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 412FC17144A
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67B5B1895164
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE0020CCED;
-	Sat,  7 Jun 2025 10:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E457521770D;
+	Sat,  7 Jun 2025 10:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVs/adxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynokt247"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7937315D1;
-	Sat,  7 Jun 2025 10:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37F015D1;
+	Sat,  7 Jun 2025 10:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290971; cv=none; b=DSDvgoxmHkgHlCNjy20Aw75/v2wg0AXDUDw3qUkVE2pXkrT7xN0m8Z2onD4hvRrJXkkV37ivYrwl/+mcpEreVC72PhGz6shlpEC1x6QqAZornd179vg9YpTioSwyvDufu/C5i2hdlEqadQ7hz6KThRv1cOH9uEiZ0YdBV59Le5c=
+	t=1749291058; cv=none; b=HQqXcG3SiqbjTW5aoSWtV1XvSeFXhVCvZ0wASjf5eF4LFS5K18B9TMlmQdN4CUxNfzcR3+zm5C5714PPTW0DahlM8921cOBGBIQGQMyEmKoxS7vQxDkLg7LI2faVS+y7GQcsVm15oXsT6EJV8QbuF8EgpepDBeu9fUFrQ+j7GF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290971; c=relaxed/simple;
-	bh=DGYNnGiyBbd2g8yqkEQr5WjTEvb6lUwjNlxTSp7tc00=;
+	s=arc-20240116; t=1749291058; c=relaxed/simple;
+	bh=oFsPZzRxBuIqj1B4fpT0TmJMx2JQsZLL+POQCHf9l80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IG4p/yND2nxPOoR5mWX+wSvmWQ5cEFA1+z8kVRlvm/5Czn3hfqOFQcN3WjNG+eRvkIJarA4yif2bx6/MXtUCCymg2xo2qjdJwgWjCRmUg0x6LCH8xfPoFtjT05HLO8WMa3q33seGU38FUEywrJKSmB6TzewasxQuABXtDAEBwoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVs/adxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B11EC4CEE4;
-	Sat,  7 Jun 2025 10:09:30 +0000 (UTC)
+	 MIME-Version; b=Kdki7838X5ufkBQfyWKZ+ugJfLUldkE/K3XhbM1HsNa8fB0fspvh/uXph17RpRb9FoPlG4jCQxnw6hTwmkOIxK6aVEalUnzOKSOWRX7wRZkdJ1cB9QHuOsJPaFHyiobH/8kbDBmNOB/220Vz95L/1cXKKNUmW/hQCivfMNGarME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynokt247; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF82C4CEE4;
+	Sat,  7 Jun 2025 10:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290971;
-	bh=DGYNnGiyBbd2g8yqkEQr5WjTEvb6lUwjNlxTSp7tc00=;
+	s=korg; t=1749291058;
+	bh=oFsPZzRxBuIqj1B4fpT0TmJMx2JQsZLL+POQCHf9l80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVs/adxNDdGZSZgNWosJr/DiKOKJbmx2XrSbEDvvTnmhCCrz3MxqAL8s+QY+DxPsl
-	 GSjr4A4JNAiykxzG0FJ6EOUJkW5HBr4xia5qnhv033TKuK7daIq6jK+ohTzFrocOHA
-	 HAmnExkSTmF6ptXL/Db7WG326ws79oRtaps/9ZRg=
+	b=ynokt247SKGThVIOfWPWl1QPFi6uRJ6RcdM8lNhdh6FkOeieP+cnS5i87oG1D8qv1
+	 x4ddi/TrYA6efs8Ety17JGAkvIOnWQuPsQEs0p8gqSPXBL2OjZVsGKzYIPdtqVQY4s
+	 CLm2vOg5Yi+ejRUtFLQXLqUSXwkTXOC5gYKSOIE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Pritam Manohar Sutar <pritam.sutar@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.14 04/24] clk: samsung: correct clock summary for hsi1 block
-Date: Sat,  7 Jun 2025 12:07:44 +0200
-Message-ID: <20250607100717.878653338@linuxfoundation.org>
+	Kees Cook <kees@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.15 04/34] ACPICA: Apply ACPI_NONSTRING
+Date: Sat,  7 Jun 2025 12:07:45 +0200
+Message-ID: <20250607100719.885500042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 81214185e7e1fc6dfc8661a574c457accaf9a5a4 upstream.
+commit 2b82118845e04c7adf4ece797150c19809bab29b upstream.
 
-clk_summary shows wrong value for "mout_hsi1_usbdrd_user".
-It shows 400Mhz instead of 40Mhz as below.
+ACPICA commit ed68cb8e082e3bfbba02814af4fd5a61247f491b
 
-dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
-  mout_hsi1_usbdrd_user     0 0 0 400000000 0 0 50000 Y ...
-    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
+Add ACPI_NONSTRING annotations for places found that are using char
+arrays without a terminating NUL character. These were found during
+Linux kernel builds and after looking for instances of arrays of size
+ACPI_NAMESEG_SIZE.
 
-Correct the clk_tree by adding correct clock parent for
-"mout_hsi1_usbdrd_user".
-
-Post this change, clk_summary shows correct value.
-
-dout_shared2_div4           1 1 0 400000000 0 0 50000 Y ...
-  mout_clkcmu_hsi1_usbdrd   0 0 0 400000000 0 0 50000 Y ...
-    dout_clkcmu_hsi1_usbdrd 0 0 0 40000000  0 0 50000 Y ...
-      mout_hsi1_usbdrd_user 0 0 0 40000000  0 0 50000 Y ...
-
-Fixes: 485e13fe2fb6 ("clk: samsung: add top clock support for ExynosAuto v920 SoC")
-Cc: <stable@kernel.org>
-Signed-off-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Link: https://lore.kernel.org/r/20250506080154.3995512-1-pritam.sutar@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://github.com/acpica/acpica/commit/ed68cb8e
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2039736.usQuhbGJ8B@rjwysocki.net
+Cc: Jiri Slaby <jirislaby@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-exynosautov920.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/aclocal.h   |    4 ++--
+ drivers/acpi/acpica/nsnames.c   |    2 +-
+ drivers/acpi/acpica/nsrepair2.c |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/clk/samsung/clk-exynosautov920.c
-+++ b/drivers/clk/samsung/clk-exynosautov920.c
-@@ -1393,7 +1393,7 @@ static const unsigned long hsi1_clk_regs
- /* List of parent clocks for Muxes in CMU_HSI1 */
- PNAME(mout_hsi1_mmc_card_user_p) = {"oscclk", "dout_clkcmu_hsi1_mmc_card"};
- PNAME(mout_hsi1_noc_user_p) = { "oscclk", "dout_clkcmu_hsi1_noc" };
--PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "mout_clkcmu_hsi1_usbdrd" };
-+PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "dout_clkcmu_hsi1_usbdrd" };
- PNAME(mout_hsi1_usbdrd_p) = { "dout_tcxo_div2", "mout_hsi1_usbdrd_user" };
+--- a/drivers/acpi/acpica/aclocal.h
++++ b/drivers/acpi/acpica/aclocal.h
+@@ -293,7 +293,7 @@ acpi_status (*acpi_internal_method) (str
+  * expected_return_btypes - Allowed type(s) for the return value
+  */
+ struct acpi_name_info {
+-	char name[ACPI_NAMESEG_SIZE] __nonstring;
++	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
+ 	u16 argument_list;
+ 	u8 expected_btypes;
+ };
+@@ -370,7 +370,7 @@ typedef acpi_status (*acpi_object_conver
+ 					      converted_object);
  
- static const struct samsung_mux_clock hsi1_mux_clks[] __initconst = {
+ struct acpi_simple_repair_info {
+-	char name[ACPI_NAMESEG_SIZE] __nonstring;
++	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
+ 	u32 unexpected_btypes;
+ 	u32 package_index;
+ 	acpi_object_converter object_converter;
+--- a/drivers/acpi/acpica/nsnames.c
++++ b/drivers/acpi/acpica/nsnames.c
+@@ -194,7 +194,7 @@ acpi_ns_build_normalized_path(struct acp
+ 			      char *full_path, u32 path_size, u8 no_trailing)
+ {
+ 	u32 length = 0, i;
+-	char name[ACPI_NAMESEG_SIZE];
++	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
+ 	u8 do_no_trailing;
+ 	char c, *left, *right;
+ 	struct acpi_namespace_node *next_node;
+--- a/drivers/acpi/acpica/nsrepair2.c
++++ b/drivers/acpi/acpica/nsrepair2.c
+@@ -25,7 +25,7 @@ acpi_status (*acpi_repair_function) (str
+ 				     return_object_ptr);
+ 
+ typedef struct acpi_repair_info {
+-	char name[ACPI_NAMESEG_SIZE] __nonstring;
++	char name[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
+ 	acpi_repair_function repair_function;
+ 
+ } acpi_repair_info;
 
 
 
