@@ -1,266 +1,118 @@
-Return-Path: <stable+bounces-151816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE50AD0CB6
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C7AAD0C88
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08001171B7D
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85DE5188FA39
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CD8217F29;
-	Sat,  7 Jun 2025 10:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A385120CCED;
+	Sat,  7 Jun 2025 10:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVnaDFht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZD4uC4jx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229AB15D1;
-	Sat,  7 Jun 2025 10:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FA615D1;
+	Sat,  7 Jun 2025 10:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291074; cv=none; b=HIPw+PmLiAymiekw4Bb2LGx317gq+0IkTrosBY7en86tJypnD5S8zYgnmPA6UknajzBu/qQDZV1bmA3TuLF5RClrAijytZyXV+RF99sDASKyOKQ5/arkdotA+9k4yq4kn2GyRXk/uzM59vF/YhwUHxmPbBymJt7+jVIfNLi78wg=
+	t=1749290961; cv=none; b=OgxviUMpIJtGNF33WV/wARaH3wASeAEea5XP54LeHsKP0LFXLmswKX0WZICLxbRp5HLkebuMfzKlWfL7miW7u/lYrl35DTEr8fhpjp3HtRG3HRTdPJli1+tA2+mx2woNz4vETrLCyr4A1sC0fp3qifWcGkUnwVPr2vfcRSp018k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291074; c=relaxed/simple;
-	bh=CFlhZNHjyPqlGOUHEMsbtBUtnLVMDYM9nigDlV7KrsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PFiL6RegxGEvbywVTYjSG7KKM+CbOV3NCCB7d1AfLpfwXBGXdPcqvbYSoeq9d7MsmF6F8GfkE2ETy6xfyD6EcL/2Ng8XOAi8/HHnz94S54FPRcGb80ja9rV1V2IKiF+eKZZ/jDyC4c0ofaX0TNtEeQIa54bqj8kX8uvT6Qs8fow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVnaDFht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73611C4CEE4;
-	Sat,  7 Jun 2025 10:11:13 +0000 (UTC)
+	s=arc-20240116; t=1749290961; c=relaxed/simple;
+	bh=xr0KBMw1ipd17qI/GJsZPa4WVHpPmUSM+5yCvWic6Sk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FI1vPUxWesOQhcjNZ7Ta3ftkIEfl09c+D9zDI+ZMVwKzZ0Yx/VSBouBHJYDOWG0LEX+kU4JmNnh/D8JGnvWtyqDlIO4AgBQFMfKkZJQ6CBoHzi7W5gNpOexmgaTX3nHjUsg65n7Mx/KTb9jqJMHJJlgvuGIrPGdIx2KkUZsBCBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZD4uC4jx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941A1C4CEE4;
+	Sat,  7 Jun 2025 10:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291074;
-	bh=CFlhZNHjyPqlGOUHEMsbtBUtnLVMDYM9nigDlV7KrsY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mVnaDFht0m/2wRkoD0b40p1cfl4EGbv2TXYXsoDiXkP+A6HA9JaJ+i36PJNZSbcPz
-	 wiTwP7mYm7awBtgvJR0CcmFNqkYUDc5Wj/pyrrS43aArlgWL7s7u4Jw9NIt8D4iV44
-	 XGXmHl4pCV8wCGaUnqYWrp7DlkGr38ksKWtHUABs=
+	s=korg; t=1749290960;
+	bh=xr0KBMw1ipd17qI/GJsZPa4WVHpPmUSM+5yCvWic6Sk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZD4uC4jxJQ0SeZb4PVQUqDlhnrEvnT6LoZ5Ao5JZXoAliPBAvDv/hca/6+VQvYsL7
+	 oWgMy7ADFEJLOymRCpj6uJkiT3oMQCt8hfZLmxsVPuzvmxWUNcDszmf3GDFnRD+OfH
+	 S9Nks+HvRnWEkawEjdAjMY+CB+ddhI4aZOV7LdeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.15 00/34] 6.15.2-rc1 review
+	Jeongjun Park <aha310510@gmail.com>,
+	Pan Taixi <pantaixi@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.14 01/24] tracing: Fix compilation warning on arm32
 Date: Sat,  7 Jun 2025 12:07:41 +0200
-Message-ID: <20250607100719.711372213@linuxfoundation.org>
+Message-ID: <20250607100717.765483257@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.2-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.15.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.15.2-rc1
-X-KernelTest-Deadline: 2025-06-09T10:07+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.15.2 release.
-There are 34 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.2-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
-and the diffstat can be found below.
+From: Pan Taixi <pantaixi@huaweicloud.com>
 
-thanks,
+commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
 
-greg k-h
+On arm32, size_t is defined to be unsigned int, while PAGE_SIZE is
+unsigned long. This hence triggers a compilation warning as min()
+asserts the type of two operands to be equal. Casting PAGE_SIZE to size_t
+solves this issue and works on other target architectures as well.
 
--------------
-Pseudo-Shortlog of commits:
+Compilation warning details:
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.15.2-rc1
+kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
+./include/linux/minmax.h:20:28: warning: comparison of distinct pointer types lacks a cast
+  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+                            ^
+./include/linux/minmax.h:26:4: note: in expansion of macro '__typecheck'
+   (__typecheck(x, y) && __no_side_effects(x, y))
+    ^~~~~~~~~~~
 
-Aurabindo Pillai <aurabindo.pillai@amd.com>
-    Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
+...
 
-Xu Yang <xu.yang_2@nxp.com>
-    dt-bindings: phy: imx8mq-usb: fix fsl,phy-tx-vboost-level-microvolt property
+kernel/trace/trace.c:6771:8: note: in expansion of macro 'min'
+        min((size_t)trace_seq_used(&iter->seq),
+        ^~~
 
-Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-    dt-bindings: usb: cypress,hx3: Add support for all variants
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
+Fixes: f5178c41bb43 ("tracing: Fix oob write in trace_seq_to_buffer()")
+Reviewed-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Pan Taixi <pantaixi@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/trace/trace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-    dt-bindings: remoteproc: qcom,sm8150-pas: Add missing SC8180X compatible
-
-David Lechner <dlechner@baylibre.com>
-    dt-bindings: pwm: adi,axi-pwmgen: Fix clocks
-
-Sergey Senozhatsky <senozhatsky@chromium.org>
-    thunderbolt: Do not double dequeue a configuration request
-
-Carlos Llamas <cmllamas@google.com>
-    binder: fix yet another UAF in binder_devices
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    binder: fix use-after-free in binderfs_evict_inode()
-
-Dave Penkler <dpenkler@gmail.com>
-    usb: usbtmc: Fix timeout value in get_stb
-
-Arnd Bergmann <arnd@arndb.de>
-    nvmem: rmem: select CONFIG_CRC32
-
-Dustin Lundquist <dustin@null-ptr.net>
-    serial: jsm: fix NPE during jsm_uart_port_init
-
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-    Bluetooth: hci_qca: move the SoC type check to the right place
-
-Qasim Ijaz <qasdev00@gmail.com>
-    usb: typec: ucsi: fix Clang -Wsign-conversion warning
-
-Charles Yeh <charlesyeh522@gmail.com>
-    USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
-
-Hongyu Xie <xiehongyu1@kylinos.cn>
-    usb: storage: Ignore UAS driver for SanDisk 3.2 Gen2 storage device
-
-Jiayi Li <lijiayi@kylinos.cn>
-    usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: Fix subvol to missing root repair
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: Run may_delete_deleted_inode() checks in bch2_inode_rm()
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: delete dead code from may_delete_deleted_inode()
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: Repair code for directory i_size
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: Kill un-reverted directory i_size code
-
-Alexandre Mergnat <amergnat@baylibre.com>
-    rtc: Fix offset calculation for .start_secs < 0
-
-Alexandre Mergnat <amergnat@baylibre.com>
-    rtc: Make rtc_time64_to_tm() support dates before 1970
-
-Nícolas F. R. A. Prado <nfraprado@collabora.com>
-    pinctrl: mediatek: eint: Fix invalid pointer dereference for v1 platforms
-
-Sakari Ailus <sakari.ailus@linux.intel.com>
-    Documentation: ACPI: Use all-string data node references
-
-Gautham R. Shenoy <gautham.shenoy@amd.com>
-    acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
-
-Pritam Manohar Sutar <pritam.sutar@samsung.com>
-    clk: samsung: correct clock summary for hsi1 block
-
-Gabor Juhos <j4g8y7@gmail.com>
-    pinctrl: armada-37xx: set GPIO output value before setting direction
-
-Gabor Juhos <j4g8y7@gmail.com>
-    pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
-
-Ahmed Salem <x0rw3ll@gmail.com>
-    ACPICA: Apply ACPI_NONSTRING in more places
-
-Kees Cook <kees@kernel.org>
-    ACPICA: Apply ACPI_NONSTRING
-
-Kees Cook <kees@kernel.org>
-    ACPICA: Introduce ACPI_NONSTRING
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    Revert "x86/smp: Eliminate mwait_play_dead_cpuid_hint()"
-
-Pan Taixi <pantaixi@huaweicloud.com>
-    tracing: Fix compilation warning on arm32
-
-
--------------
-
-Diffstat:
-
- .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  3 +-
- .../devicetree/bindings/pwm/adi,axi-pwmgen.yaml    | 13 +++-
- .../bindings/remoteproc/qcom,sm8150-pas.yaml       |  3 +
- .../devicetree/bindings/usb/cypress,hx3.yaml       | 19 +++++-
- .../acpi/dsd/data-node-references.rst              | 26 ++++----
- Documentation/firmware-guide/acpi/dsd/graph.rst    | 11 ++--
- Documentation/firmware-guide/acpi/dsd/leds.rst     |  7 +-
- Makefile                                           |  4 +-
- arch/x86/kernel/smpboot.c                          | 54 +++++++++++++--
- drivers/acpi/acpica/acdebug.h                      |  2 +-
- drivers/acpi/acpica/aclocal.h                      |  4 +-
- drivers/acpi/acpica/nsnames.c                      |  2 +-
- drivers/acpi/acpica/nsrepair2.c                    |  2 +-
- drivers/android/binder.c                           | 16 ++++-
- drivers/android/binder_internal.h                  |  8 ++-
- drivers/android/binderfs.c                         |  2 +-
- drivers/bluetooth/hci_qca.c                        | 14 ++--
- drivers/clk/samsung/clk-exynosautov920.c           |  2 +-
- drivers/cpufreq/acpi-cpufreq.c                     |  2 +-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 16 ++---
- drivers/nvmem/Kconfig                              |  1 +
- drivers/pinctrl/mediatek/mtk-eint.c                | 26 ++++----
- drivers/pinctrl/mediatek/mtk-eint.h                |  5 +-
- drivers/pinctrl/mediatek/pinctrl-mtk-common-v2.c   |  2 +-
- drivers/pinctrl/mediatek/pinctrl-mtk-common.c      |  2 +-
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c        | 14 ++--
- drivers/rtc/class.c                                |  2 +-
- drivers/rtc/lib.c                                  | 24 +++++--
- drivers/thunderbolt/ctl.c                          |  5 ++
- drivers/tty/serial/jsm/jsm_tty.c                   |  1 +
- drivers/usb/class/usbtmc.c                         |  4 +-
- drivers/usb/core/quirks.c                          |  3 +
- drivers/usb/serial/pl2303.c                        |  2 +
- drivers/usb/storage/unusual_uas.h                  |  7 ++
- drivers/usb/typec/ucsi/ucsi.h                      |  2 +-
- fs/bcachefs/dirent.c                               | 12 +---
- fs/bcachefs/dirent.h                               |  4 +-
- fs/bcachefs/errcode.h                              |  2 +
- fs/bcachefs/fs.c                                   |  8 ++-
- fs/bcachefs/fsck.c                                 |  8 +++
- fs/bcachefs/inode.c                                | 77 ++++++++++++++--------
- fs/bcachefs/namei.c                                |  4 +-
- fs/bcachefs/sb-errors_format.h                     |  4 +-
- fs/bcachefs/subvolume.c                            | 19 ++++--
- include/acpi/actbl.h                               |  6 +-
- include/acpi/actypes.h                             |  4 ++
- include/acpi/platform/acgcc.h                      |  8 +++
- kernel/trace/trace.c                               |  2 +-
- .../acpi/os_specific/service_layers/oslinuxtbl.c   |  2 +-
- tools/power/acpi/tools/acpidump/apfiles.c          |  2 +-
- 50 files changed, 314 insertions(+), 158 deletions(-)
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6679,7 +6679,7 @@ static ssize_t tracing_splice_read_pipe(
+ 		ret = trace_seq_to_buffer(&iter->seq,
+ 					  page_address(spd.pages[i]),
+ 					  min((size_t)trace_seq_used(&iter->seq),
+-						  PAGE_SIZE));
++						  (size_t)PAGE_SIZE));
+ 		if (ret < 0) {
+ 			__free_page(spd.pages[i]);
+ 			break;
 
 
 
