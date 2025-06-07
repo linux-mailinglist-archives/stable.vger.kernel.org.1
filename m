@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-151804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72494AD0CAA
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA794AD0C9D
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED3318951E8
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C67171849
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B8B20CCED;
-	Sat,  7 Jun 2025 10:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C11821B196;
+	Sat,  7 Jun 2025 10:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZ3g0mwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAU5gQe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9159C1F4CB8;
-	Sat,  7 Jun 2025 10:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCA821ABDB;
+	Sat,  7 Jun 2025 10:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291042; cv=none; b=IK9h+S+DTmRWlvL7fzkujjIAZx2QOFgeoibXgel+dcySbvPy5DcOXOprObZpkP5RLdl+HvRO+Y1GXqiSwqI1cuRf+jTs/BaaxcEUeq5VQ/rSNn0TbWcv5vmNCYhj63JHkWaZ+Ojeu+FnSBuattL5Ss3KZmhR6BvpeLrNqFQBE0U=
+	t=1749291011; cv=none; b=FBnXzQGzxQlla2gHeCKEoZRaT4OXt4D13oUjLZ2b7ZeAs+ElwfFYoa6T0rzXd0aCGp3CsuD7zEepKF0DCE4dTcJD1GnCNwO2vVtShww2cH0J9AFd4sB9w6QWKeTiBHw87/GvJgIne5zZ/R8nc5/6DHlRgGhoEEpMwE8NkzIsSdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291042; c=relaxed/simple;
-	bh=aNeJfn5mzfXpsSTTeC7/4VptP7dvFlDELZYzZ0E5K4E=;
+	s=arc-20240116; t=1749291011; c=relaxed/simple;
+	bh=oFDPgtoP2NFyJ+Xt1s1hXvhBXNibhwSjUoxzJqodYNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKBhAT5QSLutAqDAycmLApf40DHaU1ctzJDJ60gy8fHRcngELzgIULLLcl7zLBD+dyb1oGvay2E+Pfy4AdVhH2NYCfY3Zkt0r0mZigICAZtGgCB8clbaGYwhLxtgHPNAWS/IuhNwb/XPCqblRY53K8uUz8IcFzRM8HmRyJugYc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZ3g0mwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BFDC4CEE4;
-	Sat,  7 Jun 2025 10:10:41 +0000 (UTC)
+	 MIME-Version; b=FXVxQYXNInxhUKMcwjov7fCQ673VirQEYlllymBHC4FU62jiV9wqrUnG/jHrY6tqhZQa9AYcstzZs+Yx3tOid3biK/rPRZv835+a443SK4R75Ol3XS1xVp00PKNav0xD4x0CN/X5IYARUrMTYfJDXkzeHngND3utLDFwXVXrbj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAU5gQe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA44C4CEE4;
+	Sat,  7 Jun 2025 10:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291042;
-	bh=aNeJfn5mzfXpsSTTeC7/4VptP7dvFlDELZYzZ0E5K4E=;
+	s=korg; t=1749291010;
+	bh=oFDPgtoP2NFyJ+Xt1s1hXvhBXNibhwSjUoxzJqodYNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZ3g0mwJ5u3OJ9W/VIbix65n7dhDa5f+SEKQ+5kXJnrLohZG9pAOD10fkjP9GFkt4
-	 LGfCIC+jeBj/8HN8iT7CHCXFinXVReXmlMLtIkStByojafKoHkTJK1NQA5VlPEz297
-	 7MGwc/nEKBrMm/OL+8ffRTjaadwLTh+65RCq8AY8=
+	b=wAU5gQe1JSEQhbUz7patq48oWK8EyvPExn4P/NxpWQS4Zmw3FS4CQJ49ZRBvnDbuz
+	 vD7jq8V9MGMK9b/oV0hMl6lr1n+rPUJ6EYKZ6V6z90rx3Gjeg6icqcdPyWhNYE0Mr9
+	 QYd72EQ11232YkI9F1SAJI+nAgyXJcGm81p3USGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.15 15/34] bcachefs: Repair code for directory i_size
+	stable <stable@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.14 16/24] nvmem: rmem: select CONFIG_CRC32
 Date: Sat,  7 Jun 2025 12:07:56 +0200
-Message-ID: <20250607100720.316849061@linuxfoundation.org>
+Message-ID: <20250607100718.337428224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
+References: <20250607100717.706871523@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 36a2fdf7c5c1ccae6ca16cd14067567096cebe17 upstream.
+commit 7a93add1d31f14e0b7e937163904dee1e864a9a8 upstream.
 
-We had a bug due due to an incomplete revert of the patch implementing
-directory i_size (summing up the size of the dirents), leading to
-completely screwy i_size values that underflow.
+The newly added crc checking leads to a link failure if CRC32
+itself is disabled:
 
-Most userspace programs don't seem to care (e.g. du ignores it), but it
-turns out this broke sshfs, so needs to be repaired.
+x86_64-linux-ld: vmlinux.o: in function `rmem_eyeq5_checksum':
+rmem.c:(.text+0x52341b): undefined reference to `crc32_le_arch'
 
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Fixes: 7e606c311f70 ("nvmem: rmem: add CRC validation for Mobileye EyeQ5 NVMEM")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://lore.kernel.org/r/20250509122407.11763-2-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/bcachefs/fsck.c             |    8 ++++++++
- fs/bcachefs/sb-errors_format.h |    3 ++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/nvmem/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/bcachefs/fsck.c
-+++ b/fs/bcachefs/fsck.c
-@@ -1183,6 +1183,14 @@ static int check_inode(struct btree_tran
- 		ret = 0;
- 	}
- 
-+	if (fsck_err_on(S_ISDIR(u.bi_mode) && u.bi_size,
-+			trans, inode_dir_has_nonzero_i_size,
-+			"directory %llu:%u with nonzero i_size %lli",
-+			u.bi_inum, u.bi_snapshot, u.bi_size)) {
-+		u.bi_size = 0;
-+		do_update = true;
-+	}
-+
- 	ret = bch2_inode_has_child_snapshots(trans, k.k->p);
- 	if (ret < 0)
- 		goto err;
---- a/fs/bcachefs/sb-errors_format.h
-+++ b/fs/bcachefs/sb-errors_format.h
-@@ -232,6 +232,7 @@ enum bch_fsck_flags {
- 	x(inode_dir_multiple_links,				206,	FSCK_AUTOFIX)	\
- 	x(inode_dir_missing_backpointer,			284,	FSCK_AUTOFIX)	\
- 	x(inode_dir_unlinked_but_not_empty,			286,	FSCK_AUTOFIX)	\
-+	x(inode_dir_has_nonzero_i_size,				319,	FSCK_AUTOFIX)	\
- 	x(inode_multiple_links_but_nlink_0,			207,	FSCK_AUTOFIX)	\
- 	x(inode_wrong_backpointer,				208,	FSCK_AUTOFIX)	\
- 	x(inode_wrong_nlink,					209,	FSCK_AUTOFIX)	\
-@@ -328,7 +329,7 @@ enum bch_fsck_flags {
- 	x(dirent_stray_data_after_cf_name,			305,	0)		\
- 	x(rebalance_work_incorrectly_set,			309,	FSCK_AUTOFIX)	\
- 	x(rebalance_work_incorrectly_unset,			310,	FSCK_AUTOFIX)	\
--	x(MAX,							319,	0)
-+	x(MAX,							320,	0)
- 
- enum bch_sb_error_id {
- #define x(t, n, ...) BCH_FSCK_ERR_##t = n,
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 8671b7c974b9..eceb3cdb421f 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -260,6 +260,7 @@ config NVMEM_RCAR_EFUSE
+ config NVMEM_RMEM
+ 	tristate "Reserved Memory Based Driver Support"
+ 	depends on HAS_IOMEM
++	select CRC32
+ 	help
+ 	  This driver maps reserved memory into an nvmem device. It might be
+ 	  useful to expose information left by firmware in memory.
+-- 
+2.49.0
+
 
 
 
