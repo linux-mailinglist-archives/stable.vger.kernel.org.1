@@ -1,117 +1,143 @@
-Return-Path: <stable+bounces-151833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BECAD0D01
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 13:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C166AD0D26
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 13:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2137E18929A8
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:06:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA071895702
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143352206B5;
-	Sat,  7 Jun 2025 11:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD3E221F00;
+	Sat,  7 Jun 2025 11:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="PTog1a1Y";
-	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="T4tHarSX"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="AmN7JHt+"
 X-Original-To: stable@vger.kernel.org
-Received: from e3i282.smtp2go.com (e3i282.smtp2go.com [158.120.85.26])
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3264219319
-	for <stable@vger.kernel.org>; Sat,  7 Jun 2025 11:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C999D22127C;
+	Sat,  7 Jun 2025 11:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749294391; cv=none; b=nurDtnlwISXXZicDEE2rr9J9zZxjpL5Nmh4OXFMTg+aH7FRhlEjRbZtwRcfr92ejHylDwKvhKSDlPf0CaSgCRpawF/8sUdIV6BWEWNQWot++F3qe3FncVTzphAhKWsFEkQA2/ZAe3TUmM9oGqhUgWqhGRmZmyMUlnAQHP/VQsbY=
+	t=1749296569; cv=none; b=JgGye++lZ+s+Hss7aUGmM0c2BxpfLOOz+r//T84V6rhOH8hAaLwFWh6hScF+170TcYH4UsYbbEMPMO7/SIf0Aa7R5FinVRizemrQCHgDeKiEcwTobso1DznDSZ/JlENHz7+tZpwceyDitNziWSIvD7e8Z1rXR9E9gKQZEV5Hjjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749294391; c=relaxed/simple;
-	bh=nX74YXxYtHkzOexVkzDImxaKm+7hvrwPVrhY5bNpSrA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j3So3x9hs72oHH7GyhBhKG31L4D4RojihlqoKJ2YZRDVQsbA7X1kPR/lrmuNnJdgx+/HDjzfOzSiCiZN6mXamp02OfiOJpD7g175ilfEYqFDQz2vLh186TnB0mGAUpzETYVnAYEg+/QLYV3kKLTyFURAtnGTCC3wVMnOC8SV+wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=PTog1a1Y; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=T4tHarSX; arc=none smtp.client-ip=158.120.85.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1749293476; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe : list-unsubscribe-post;
- bh=hOyF5qcsGk+wcyGuqz+JA3xcq8KlJ65GJ3VjxNyRqCA=;
- b=PTog1a1YYX59+s4SurKQrqlMuWeHG/nJWrFtJyx8HyQDI9N8RnSPu0NpQXnSW2AdsOy3a
- vgCgplL5i1TY/8b8s7TaZjoT/UfESQUjhxuVXYznzks84lTxEA1ZElzXDdKBq3cNwPkQi/F
- vMqAXEaW1gueIN+DBHG3ZmCgue/L73CrADcTFQIGYHsNMS156nFV2IJnQvG10hE9kRGHk5W
- PFR69ps/3DkUKAvQDbi3onaFgWlFYX+sLkqENFViqbBAVQ8mvTw1tfVzGtU1th79FCcTdkv
- vYRS371d2t1/10ua5UsXza9fxc8TQyakMzjM8KhEjMkAyOohZG12eaRoQZkg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
- i=@medip.dev; q=dns/txt; s=s1255854; t=1749293476; h=from : subject :
- to : message-id : date;
- bh=hOyF5qcsGk+wcyGuqz+JA3xcq8KlJ65GJ3VjxNyRqCA=;
- b=T4tHarSXTvoCi/LcnarHE0qSaVl9QQV4+9lYhijeTs5tpms+MwZ0YKykYz0REY4qYAB4N
- yFHRDjy6tx+W7Uhog+lTBCusxJU8P5T+yJVy3aVsttGF7/hTvqyCfPLZMvDIiGFZKtuZnIv
- K+KT0M2Y8fjzhZf0datOooye+5g42Llo8dB7POwz+rSKyVsWKzwvpfD67c22pv/+NkHy6Ux
- M+n+TzKmnHOr8ctljUyY8BJQ5r5oN/BSfZ6ngyvrYWFOmroxWwX4T9sHj7vZe1iP+PbSv+F
- /ktBEbBrtDJ8DrdSiUXtB0GPDeN0RlUBAvvYFSsF9iKxxx+hsCo0vbyh29+Q==
-Received: from [10.152.250.198] (helo=localhost.localdomain)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97.1-S2G)
-	(envelope-from <edip@medip.dev>)
-	id 1uNr8l-4o5NDgrtezB-jxvq;
-	Sat, 07 Jun 2025 10:51:08 +0000
-From: edip@medip.dev
-To: perex@perex.cz,
-	tiwai@suse.com
-Cc: linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Edip Hazuri <edip@medip.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/realtek - Add mute LED support for HP Victus 16-s1xxx and HP Victus 15-fa1xxx
-Date: Sat,  7 Jun 2025 13:50:51 +0300
-Message-ID: <20250607105051.41162-1-edip@medip.dev>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749296569; c=relaxed/simple;
+	bh=A5VFj1e+xpbR6SHxeq2NDLvtJFEJtEFEkt742n8/blA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qqc6+Jao4gyEynBCl0jGsaxn/PfcwDQLD0hNeCRfnanNXPgXhMgV8BzVQmuUSTsm0IgmtfW8kgZ58O9lkpo9zU55LwWy/43RxKjCwVDwm0KG+V2Ei3fq6Cdxt8Ri+/1eXkOrbk1BSf7MKio9ot2aZ1x8+X+KZWUDlxHxTvd0Jzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=AmN7JHt+; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1749296556; x=1749901356; i=christian@heusel.eu;
+	bh=gIYlZ50mxQXGvz6F133XjL9sWrBBVbI6DqKQT9SVqnQ=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=AmN7JHt+lD9gR+HbnxcvzEEPnmvqzYThb64z7YFQ7dvCdQfv/yHK1qpyFBLFf3ee
+	 O5moNS22r1z6viKbzYvu1X9heiB6fCbQ/ILHoeigq7SYBd51ZQWJHrMLr5c1YRB77
+	 klj/cB0nOndqQXlQcqNsVqsCw70iK5pRlk+rIQXMxO2phMAzy7oK1AoO1OLveOF/t
+	 9jjrHnBDtfpAC0P5fENE2Xkmqxp8OCodYL5ojD5hbn5ltJ/s5kv52VWoaXm2DAoQF
+	 bxuSpCU0xRk9e55o4OaU1KFa/Vve0i8199HVZokUfQed6zcFShY0kCuBNYMFMPGQ3
+	 AWk7E5xWVh/SaAUnFA==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([89.244.90.37]) by mrelayeu.kundenserver.de
+ (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1McGxG-1uyJ9j41yW-00hj8d; Sat, 07 Jun 2025 13:42:36 +0200
+Date: Sat, 7 Jun 2025 13:42:32 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
+Message-ID: <d8e69fb7-fd1f-46b4-8031-13ab23ed8226@heusel.eu>
+References: <20250607100719.711372213@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 1255854m:1255854ay30w_v:1255854sdbwEFunTN
-X-smtpcorp-track: WLmjEf6Xfq5Z.lJrLy3cuhkLN.Tdmj6wx-LsL
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jj753swazz7l7vzc"
+Content-Disposition: inline
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+X-Provags-ID: V03:K1:yI7xnS0BEN970P6M2FWovJNt5Pig2NzeKXfDXnoS3GKC7ItLPaX
+ QJfvdk8lbsrZAJ0mb4ZKFT7G0F2fDkBuwSKl8aTO8pO3UIkC+X9PkKbTanHZT6QrEi0P+TM
+ u5e/ccnbxAjHRHP4IKXlc4ORbNQaq69yTDHvfZYZikwuvUH71r5eat5virwC2fzgFBOZY/X
+ ixH276Q4UfU6ROFWPW5Lg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:/R9EqnYZTZE=;iNdiJhF9PNlT/qwNpY2FcgxQbze
+ SHk9SaopC14c4gsChEJ4BrgUkx1eHaY9jho4k46GtUr7yF+zAauDwSIShYG9pyDZ9zxbgf9Mg
+ 2XWjeuiJfelpGIAAVIbEXRL/d1YGVJTFNISWi/sw7Ctl5dWd5RW45aLcxIEyU6kxqQ6GjRwsc
+ LNuqmkKYOf4qgp9gcW3FxIhbAErbMJE55FVgxefY9HwzKKuVOSdnEHSmEp5cgK5dllC5lrF+4
+ j5SlF3p5NFLwmPOvp2XeB8KmrVv3RoTaFdNKi2wCAzCcEPnRxE4lE/VAk4dodMknlCsJf0pzy
+ SSDYn7J/cqnhwOCgx4SS00o9DkFP1lROLBm0TVtj0ejzAhyvqj/UVvx8sF7FsEzl6hScP7cW/
+ fXX7ZDSPTRPapyPI1ZUl7KGJZezjSzSGGLgoFgqWzqqlh1FVKcvhiTxrgzr1zpyUe8ouRKrpM
+ lEyWctR6TzD0K1n2SoMpZaB25K6mT0paJ5GiicDnmDr7hT81Rtx3YTY1AlVRGlqdFMD+1f5H1
+ lmuYlPXKO0Tx1RxxPFHa8o9cfEY/hCLkb4qzBWiemlzASK7vkOdnv8BbYXTJ14LQDxayjyuHb
+ XNtfZuPbxJQaPhuFAZtiLhG2svqjNxq/ofURcUCyVkD2tJYC5l6UHvSQgXNas0/9sZnJrsX7C
+ oIdLOJNDubH4kMp7dnxcrd+v3yk8bShkZAM5XDuceYvd0nlqrx79I0rgnJhT+O/ScpoLHZQqx
+ gNh0sFHbg7QhTFsbnWQ5xl/+jS0TWy71UsqMa0PJrAn/MlrBrdgXjThpf73mh5vBn7skSt2pC
+ f1qnIMX5AB+SRmJA+b5aDj0LuWWlqHzT4Fa3Tn60dJpe/HtgdgYKuPy1VAd8uoiSjIE1lr7sC
+ nsfFBdcA5wSFe/Yo34GgESf4tVRANIBe6dFh/rLfmrbkMXMNggvSLvMWeGmXP3u6+GL+2rpDP
+ 55o262zb23kjPNBEZudHuFN/bSKvkQ2/t3olmAsm3TIBrvRZ7veqvCxeczHXhzDooQ0H5jZdz
+ QgiOR3nMF4Qz/FW+CI+Bk2b88X6yOwbwDgqVCZoX3haa4QScMKnYBe7dlphKNB49p4LWdnAlv
+ /1vWNGmDSe8qGefenkqg5GThN+7dsXtqt92S2PQBsQdGyn9rpfWoT9Y+6ZVmesJYpQbmcsY6j
+ O8T6af8FLgKRo7NyPNdWo2jZo5LdajBlXLC8dmK5kATCvVko+KZGf+drPqqvpbq00vYcABxKS
+ tR4adA1UVAws6XxgJu5rdbv1EN3SUjWJyifiIEOTMsxTkt/2As5MCdpF3uj5+xgouooiEboDt
+ UATcw8A3u150+iiTl3ReJzV6GTzrEJd9NvT3zqb9WHUOUQdB0GC5VdXDOLSeaj3MpVHyMHkmi
+ eOAp7PJhUyZg30/OxByzlgPYaAUdbRLmCW9+SR/JNF614v+GoZsO/zpLmv
 
-From: Edip Hazuri <edip@medip.dev>
 
-The mute led on those laptops is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the devices.
+--jj753swazz7l7vzc
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
+MIME-Version: 1.0
 
-Tested on my Victus 16-s1011nt Laptop and my friend's Victus 15-fa1xxx. The LED behaviour works as intended.
+On 25/06/07 12:07PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.15.2 release.
+> There are 34 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
+> Anything received after that time might be too late.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
----
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+Tested-by: Christian Heusel <christian@heusel.eu>
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index cd0d7ba73..1e07da9c6 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10733,6 +10733,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
-+	SND_PCI_QUIRK(0x103c, 0x8c9c, "HP Victus 16-s1xxx (MB 8C9C)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a28, "HP Envy 13", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a29, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a2a, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
-@@ -10805,6 +10806,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8c16, "HP Spectre x360 2-in-1 Laptop 16-aa0xxx", ALC245_FIXUP_HP_SPECTRE_X360_16_AA0XXX),
- 	SND_PCI_QUIRK(0x103c, 0x8c17, "HP Spectre 16", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8c21, "HP Pavilion Plus Laptop 14-ey0XXX", ALC245_FIXUP_HP_X360_MUTE_LEDS),
-+	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8c30, "HP Victus 15-fb1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8c46, "HP EliteBook 830 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c47, "HP EliteBook 840 G11", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
--- 
-2.49.0
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
+Steam Deck (LCD variant) aswell as a Framework Desktop.
 
+--jj753swazz7l7vzc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmhEJagACgkQwEfU8yi1
+JYVRIhAA0CHQq5ZUUCu6jIrBj6sVfnhYzkuiFjknop83PudJOunnfoxJOE2sw/Yj
+LbbFLGSaaKp1v2ZHLVL2pQ+rZgUeE4oUPmk4PUGuopir+PTpQkucmCuj/kvt4oiv
+JS0/wU5I20MAQ0/5BWto7MJPcaaLv+b8DJTyiQviGK6HGm9E+mEHaal/z9ID1ush
+ksFcjHzx52dbF/CZdM+tPy/9BAtNfxUWHb72KHbpnibJN+711thoLXWi6LMEQRyt
+QJB57RglQj4mTLouffN3TVS1DW9dNE8LHswpwv0RodBuAKv9vmA4TrK8zusw2fvg
+YDKvOPm9Lfwm6RaX8IzzxlLcbzmw87D1PepPFzPOI7Gta206KwU9Geak7Y3bm4RR
+UgTVPhkAX+ufeHPRyDrw+XwzG3SgxUnhg12G7BR+Q90ZWdM081/7jZvc8KJxXrAS
++vKto2PlUCUoDxtM8KhkD6fkEVwNaLWY2Y69G1MK6weDn/m1VXoJTIX2kgHxtE/K
+Prec1aIOqh1Cm7AGv4vdcyCvAJn3viHRmHCCskS5vSLDqdWZFnhTmFeqFMGKZcdQ
+rp154zC6sTu7hhnLzrIVUxmZrWw9tOtx1X+r9IIcxtkO4jbzjVIBiXBHKL0kMlgp
+IWWtC5lo4Jb3nqjSfzpSeH0Ulel3AUoYXnHz2jdtz1LYKH4D/OM=
+=ubGG
+-----END PGP SIGNATURE-----
+
+--jj753swazz7l7vzc--
 
