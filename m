@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-151779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A45AD0C8E
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750FDAD0CB1
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459BC1713D8
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE8A18951B7
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3A6217F26;
-	Sat,  7 Jun 2025 10:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0F620CCED;
+	Sat,  7 Jun 2025 10:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jlc06k1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUJGOkfv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C019F15D1;
-	Sat,  7 Jun 2025 10:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C66E15D1;
+	Sat,  7 Jun 2025 10:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290976; cv=none; b=Chk3A6O2wIWhWtpAhbT9Tehh0rdVm2Uz5mCTuFECZiU73rC/MZqRmg8LR/ooRqVK6y5gS1wd8jqtD3VOy4TBfdbOkeVAmxhsSZQy3xXVIaHQ8QymFi14jnSUlg7clYdomtynEWk1YRRCVWVIH85ERQRJTzN37SNWQAWmq1cupto=
+	t=1749291061; cv=none; b=J1arItfMVxzqJ4d0TKSRBMKi5N+Jsv66TfieCavzd13WexoyU+spv2VjKvfc72CGLMs3u1Cp66u8EVBxQK+ZaeS1tBPAl9U+VWbzbnUDeT5oFVFvLJSC8oDB6Vu3mmircqjkOkCDbdmUQC4DKlcM8XZ2Kc6m1MtICNHRzEXpRZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290976; c=relaxed/simple;
-	bh=vxF84C4c0ToElstIdA1JkOypWRBupx3QIo/CJGdEFQU=;
+	s=arc-20240116; t=1749291061; c=relaxed/simple;
+	bh=Tj941XFhDqujdKHzHzwymLNSMmKOPKaHNTicg9MPF90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ioNbrjG0CBp22jx+bYiJM36hSQaDx7U124T9NEO3SS/4mQg6A1yEATefnFpNI+g2mw6Ga5hX+G6KVvNkOwPCxu91+1MD9gZwHQ31rYVnMZVCRQNJ3RKni1KscDIFv5NyjQapJbb3ERLRNQ+zzyX+BL4F6jYqE4yjbLYTrxsy2fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jlc06k1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5053AC4CEE4;
-	Sat,  7 Jun 2025 10:09:36 +0000 (UTC)
+	 MIME-Version; b=cfDAqEf+yGSYYgK26SUIPNBvaR7q3f3G5JnK3PDxFqvabdCVWRkv+VYWudTeQsZrAK5lniMlargFhPCHxjWrTjMteGAv23GKg2pehl/eExIGrMisfZz3Ih0dOla5rtTX/5bqtykq9ksQ10HSnB85eGo+pX3+AKrCEXKIWLHcK9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUJGOkfv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0ECC4CEE4;
+	Sat,  7 Jun 2025 10:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290976;
-	bh=vxF84C4c0ToElstIdA1JkOypWRBupx3QIo/CJGdEFQU=;
+	s=korg; t=1749291060;
+	bh=Tj941XFhDqujdKHzHzwymLNSMmKOPKaHNTicg9MPF90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jlc06k1GYld15LasmniawUmmJSFVZsc4nOm7uQXOr3fLGkbMd1P2bRybc8WOnHw/q
-	 XAgk6rXMsKYSjbGQObdaMpkHmYCZE3PjEhsy0BnRT1IECcYBS4jSWHtopgbvoyqzdO
-	 nqO/zedPTQyn1xfxWmgndgX/R35ZIVzbcYdit4SU=
+	b=cUJGOkfvZMOAR2BvtnQ/iTD+57WMdmVrphUWSRB7xzyR3YAboFgTWp3YFJ2VhRjKq
+	 HEbAcRefAL3GhQMnzyGS8yhXPtqfOwGkcmA0FAFs5erVEkq6CFJ1C6JcsE8+ISVdFq
+	 +YcTe018LUPpM9RYg9LeuLJuVV32GBamiZYcf2es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.14 06/24] Documentation: ACPI: Use all-string data node references
+	Ahmed Salem <x0rw3ll@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.15 05/34] ACPICA: Apply ACPI_NONSTRING in more places
 Date: Sat,  7 Jun 2025 12:07:46 +0200
-Message-ID: <20250607100717.956201162@linuxfoundation.org>
+Message-ID: <20250607100719.931637473@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,138 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-commit 6db0261f3776bde01ae916ad8e1cb2ded3ba1a2b upstream.
+commit 70662db73d5455ebc8a1da29973fa70237b18cd2 upstream.
 
-Document that references to data nodes shall use string-only references
-instead of a device reference and a succession of the first package
-entries of hierarchical data node references.
+ACPICA commit 1035a3d453f7dd49a235a59ee84ebda9d2d2f41b
 
-Fixes: 9880702d123f ("ACPI: property: Support using strings in reference properties")
-Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://patch.msgid.link/20250409084738.3657079-1-sakari.ailus@linux.intel.com
-[ rjw: Clarifying edits ]
+Add ACPI_NONSTRING for destination char arrays without a terminating NUL
+character. This is a follow-up to commit 35ad99236f3a ("ACPICA: Apply
+ACPI_NONSTRING") where not all instances received the same treatment, in
+preparation for replacing strncpy() calls with memcpy()
+
+Link: https://github.com/acpica/acpica/commit/1035a3d4
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/3833065.MHq7AAxBmi@rjwysocki.net
+Cc: Jiri Slaby <jirislaby@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/firmware-guide/acpi/dsd/data-node-references.rst |   26 ++++------
- Documentation/firmware-guide/acpi/dsd/graph.rst                |   11 +---
- Documentation/firmware-guide/acpi/dsd/leds.rst                 |    7 --
- 3 files changed, 17 insertions(+), 27 deletions(-)
+ drivers/acpi/acpica/acdebug.h                            |    2 +-
+ include/acpi/actbl.h                                     |    6 +++---
+ tools/power/acpi/os_specific/service_layers/oslinuxtbl.c |    2 +-
+ tools/power/acpi/tools/acpidump/apfiles.c                |    2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
-+++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
-@@ -12,11 +12,14 @@ ACPI in general allows referring to devi
- Hierarchical data extension nodes may not be referred to directly, hence this
- document defines a scheme to implement such references.
+--- a/drivers/acpi/acpica/acdebug.h
++++ b/drivers/acpi/acpica/acdebug.h
+@@ -37,7 +37,7 @@ struct acpi_db_argument_info {
+ struct acpi_db_execute_walk {
+ 	u32 count;
+ 	u32 max_count;
+-	char name_seg[ACPI_NAMESEG_SIZE + 1];
++	char name_seg[ACPI_NAMESEG_SIZE + 1] ACPI_NONSTRING;
+ };
  
--A reference consist of the device object name followed by one or more
--hierarchical data extension [dsd-guide] keys. Specifically, the hierarchical
--data extension node which is referred to by the key shall lie directly under
--the parent object i.e. either the device object or another hierarchical data
--extension node.
-+A reference to a _DSD hierarchical data node is a string consisting of a
-+device object reference followed by a dot (".") and a relative path to a data
-+node object. Do not use non-string references as this will produce a copy of
-+the hierarchical data node, not a reference!
-+
-+The hierarchical data extension node which is referred to shall be located
-+directly under its parent object i.e. either the device object or another
-+hierarchical data extension node [dsd-guide].
+ #define PARAM_LIST(pl)                  pl
+--- a/include/acpi/actbl.h
++++ b/include/acpi/actbl.h
+@@ -66,12 +66,12 @@
+  ******************************************************************************/
  
- The keys in the hierarchical data nodes shall consist of the name of the node,
- "@" character and the number of the node in hexadecimal notation (without pre-
-@@ -33,11 +36,9 @@ extension key.
- Example
- =======
+ struct acpi_table_header {
+-	char signature[ACPI_NAMESEG_SIZE] __nonstring;	/* ASCII table signature */
++	char signature[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;	/* ASCII table signature */
+ 	u32 length;		/* Length of table in bytes, including this header */
+ 	u8 revision;		/* ACPI Specification minor version number */
+ 	u8 checksum;		/* To make sum of entire table == 0 */
+-	char oem_id[ACPI_OEM_ID_SIZE];	/* ASCII OEM identification */
+-	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE];	/* ASCII OEM table identification */
++	char oem_id[ACPI_OEM_ID_SIZE] ACPI_NONSTRING;	/* ASCII OEM identification */
++	char oem_table_id[ACPI_OEM_TABLE_ID_SIZE] ACPI_NONSTRING;	/* ASCII OEM table identification */
+ 	u32 oem_revision;	/* OEM revision number */
+ 	char asl_compiler_id[ACPI_NAMESEG_SIZE];	/* ASCII ASL compiler vendor ID */
+ 	u32 asl_compiler_revision;	/* ASL compiler version */
+--- a/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
++++ b/tools/power/acpi/os_specific/service_layers/oslinuxtbl.c
+@@ -19,7 +19,7 @@ ACPI_MODULE_NAME("oslinuxtbl")
+ typedef struct osl_table_info {
+ 	struct osl_table_info *next;
+ 	u32 instance;
+-	char signature[ACPI_NAMESEG_SIZE];
++	char signature[ACPI_NAMESEG_SIZE] ACPI_NONSTRING;
  
--In the ASL snippet below, the "reference" _DSD property contains a
--device object reference to DEV0 and under that device object, a
--hierarchical data extension key "node@1" referring to the NOD1 object
--and lastly, a hierarchical data extension key "anothernode" referring to
--the ANOD object which is also the final target node of the reference.
-+In the ASL snippet below, the "reference" _DSD property contains a string
-+reference to a hierarchical data extension node ANOD under DEV0 under the parent
-+of DEV1. ANOD is also the final target node of the reference.
- ::
+ } osl_table_info;
  
- 	Device (DEV0)
-@@ -76,10 +77,7 @@ the ANOD object which is also the final
- 	    Name (_DSD, Package () {
- 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
- 		Package () {
--		    Package () {
--			"reference", Package () {
--			    ^DEV0, "node@1", "anothernode"
--			}
-+		    Package () { "reference", "^DEV0.ANOD" }
- 		    },
- 		}
- 	    })
---- a/Documentation/firmware-guide/acpi/dsd/graph.rst
-+++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
-@@ -66,12 +66,9 @@ of that port shall be zero. Similarly, i
- endpoint, the number of that endpoint shall be zero.
+--- a/tools/power/acpi/tools/acpidump/apfiles.c
++++ b/tools/power/acpi/tools/acpidump/apfiles.c
+@@ -103,7 +103,7 @@ int ap_open_output_file(char *pathname)
  
- The endpoint reference uses property extension with "remote-endpoint" property
--name followed by a reference in the same package. Such references consist of
--the remote device reference, the first package entry of the port data extension
--reference under the device and finally the first package entry of the endpoint
--data extension reference under the port. Individual references thus appear as::
-+name followed by a string reference in the same package. [data-node-ref]::
- 
--    Package() { device, "port@X", "endpoint@Y" }
-+    "device.datanode"
- 
- In the above example, "X" is the number of the port and "Y" is the number of
- the endpoint.
-@@ -109,7 +106,7 @@ A simple example of this is show below::
- 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
- 		Package () {
- 		    Package () { "reg", 0 },
--		    Package () { "remote-endpoint", Package() { \_SB.PCI0.ISP, "port@4", "endpoint@0" } },
-+		    Package () { "remote-endpoint", "\\_SB.PCI0.ISP.EP40" },
- 		}
- 	    })
- 	}
-@@ -141,7 +138,7 @@ A simple example of this is show below::
- 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
- 		Package () {
- 		    Package () { "reg", 0 },
--		    Package () { "remote-endpoint", Package () { \_SB.PCI0.I2C2.CAM0, "port@0", "endpoint@0" } },
-+		    Package () { "remote-endpoint", "\\_SB.PCI0.I2C2.CAM0.EP00" },
- 		}
- 	    })
- 	}
---- a/Documentation/firmware-guide/acpi/dsd/leds.rst
-+++ b/Documentation/firmware-guide/acpi/dsd/leds.rst
-@@ -15,11 +15,6 @@ Referring to LEDs in Device tree is docu
- "flash-leds" property documentation. In short, LEDs are directly referred to by
- using phandles.
- 
--While Device tree allows referring to any node in the tree [devicetree], in
--ACPI references are limited to device nodes only [acpi]. For this reason using
--the same mechanism on ACPI is not possible. A mechanism to refer to non-device
--ACPI nodes is documented in [data-node-ref].
--
- ACPI allows (as does DT) using integer arguments after the reference. A
- combination of the LED driver device reference and an integer argument,
- referring to the "reg" property of the relevant LED, is used to identify
-@@ -74,7 +69,7 @@ omitted. ::
- 			Package () {
- 				Package () {
- 					"flash-leds",
--					Package () { ^LED, "led@0", ^LED, "led@1" },
-+					Package () { "^LED.LED0", "^LED.LED1" },
- 				}
- 			}
- 		})
+ int ap_write_to_binary_file(struct acpi_table_header *table, u32 instance)
+ {
+-	char filename[ACPI_NAMESEG_SIZE + 16];
++	char filename[ACPI_NAMESEG_SIZE + 16] ACPI_NONSTRING;
+ 	char instance_str[16];
+ 	ACPI_FILE file;
+ 	acpi_size actual;
 
 
 
