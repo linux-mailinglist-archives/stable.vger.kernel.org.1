@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-151757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA54AD0C77
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35943AD0CB5
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B0C3B1734
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1ED7171C0B
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25331218AD1;
-	Sat,  7 Jun 2025 10:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31E4217679;
+	Sat,  7 Jun 2025 10:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlB4d6lE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZEzLas0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CB91F8EEF;
-	Sat,  7 Jun 2025 10:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7135715D1;
+	Sat,  7 Jun 2025 10:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290908; cv=none; b=H/Djtyi1z99eRAEaCSiKds2ishmdCKCGDDepCpyRlU2WgfThLDk9GrLiMDswXzu8GKkB0aUJidVR0XTLCIh4ImUPGBT5ffz+ItaSkuPsg6o2SVQjv+WfeRy2hmQojS5KYu59gAZKMXHKLcTNkOLgj3bTC1D0M5byK6CdwA7qPjE=
+	t=1749291071; cv=none; b=tmv65guYKFAvO3yaEJouSfgE1LhOxp/NkIdllOfJVdWeohTMcsGcjB9j3I6CrQ6Axyc5IWDYDVadCRbvsE+7hYpOIt7+K9k7SbTT6lgv/XINXS2YqZLfwDz4IWLsNwnhTaJrsHUbKE9ZWoxw2Eh44HgoFP++nL40lGH9cwgApVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290908; c=relaxed/simple;
-	bh=JRKrvY1DsEwtVCwcmFR7iSEcY6YRWu1JtRzDv/sp/ZA=;
+	s=arc-20240116; t=1749291071; c=relaxed/simple;
+	bh=ccGnUiECjgvmvy0cUJn+rVtPo+n33cpCmdnKoCrw5gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osNA3FUVZ6Ln8A0GkB/gER3U+ce/5rrNpNt/YTB/lwgYY+J0np9m9CsZAPtx7R9Z+RgoDbi7B8z76O3wQjxpJ+lpyZqrQPUXEqbdvc80jwF+MaLByWCtpq400WpRSijk4MFmyrp2/IBu3LIZ0muWmOuz/AnUwD5MY5T1LRlzquU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlB4d6lE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D02C4CEE4;
-	Sat,  7 Jun 2025 10:08:27 +0000 (UTC)
+	 MIME-Version; b=gKct1OXPYrtRn0VOK8/AHLiryymvXBIaCfcofXdTBXr3GrMqwMWSIw+5DIDkOZeJKctpeMBT2q4uBbCA+FJkQyXaTyeOA+5lp/1f+EMBnpwOfnqL7h4+4n7KuDwuHBJxjoOINe12vp1Goraz6caN4Q7GPQQqhpEJtQUdwv+VZOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZEzLas0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC809C4CEE4;
+	Sat,  7 Jun 2025 10:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290908;
-	bh=JRKrvY1DsEwtVCwcmFR7iSEcY6YRWu1JtRzDv/sp/ZA=;
+	s=korg; t=1749291071;
+	bh=ccGnUiECjgvmvy0cUJn+rVtPo+n33cpCmdnKoCrw5gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlB4d6lEubvS2nvcgSqAKGt0BCossL3qI2+l6ImvYML+7kC4dyrCmazdCiO6Lt8PM
-	 bZcMGE5TV8fdROLU4g6uC5zunaEUtf0KtNXsPkMoHX5n1jM3Pl9YSGLy45vqIFcrAc
-	 Lp8VYCmXjQcGKE4eu5APB7URnkPElfimuB2pCSS4=
+	b=DZEzLas0ugH6RNWNmFAg8+LEFh2j+okPKMqOd8DL34nYgZ4f++aL1wex1wdRIgPlE
+	 GcbH1dO5Tw+7zOrcskguQNz+Jqgj+1XHe7s4vhk8aIqpGAlGyQJTxlSohPOzBLF48Z
+	 Vo8S0PZW5+PbhEtq86uNQAQAiR+ELg1Zg8W7+Pl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dustin Lundquist <dustin@null-ptr.net>
-Subject: [PATCH 6.12 19/24] serial: jsm: fix NPE during jsm_uart_port_init
+	Manu Bretelle <chantr4@gmail.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.15 09/34] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
 Date: Sat,  7 Jun 2025 12:07:50 +0200
-Message-ID: <20250607100718.646458340@linuxfoundation.org>
+Message-ID: <20250607100720.089471114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-References: <20250607100717.910797456@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dustin Lundquist <dustin@null-ptr.net>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-commit e3975aa899c0a3bbc10d035e699b142cd1373a71 upstream.
+commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
 
-No device was set which caused serial_base_ctrl_add to crash.
+commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+modified get_max_boost_ratio() to return the nominal_freq advertised
+in the _CPC object. This was for the purposes of computing the maximum
+frequency. The frequencies advertised in _CPC objects are in
+MHz. However, cpufreq expects the frequency to be in KHz. Since the
+nominal_freq returned by get_max_boost_ratio() was not in KHz but
+instead in MHz,the cpuinfo_max_frequency that was computed using this
+nominal_freq was incorrect and an invalid value which resulted in
+cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000050
- Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 16 UID: 0 PID: 368 Comm: (udev-worker) Not tainted 6.12.25-amd64 #1  Debian 6.12.25-1
- RIP: 0010:serial_base_ctrl_add+0x96/0x120
- Call Trace:
-  <TASK>
-  serial_core_register_port+0x1a0/0x580
-  ? __setup_irq+0x39c/0x660
-  ? __kmalloc_cache_noprof+0x111/0x310
-  jsm_uart_port_init+0xe8/0x180 [jsm]
-  jsm_probe_one+0x1f4/0x410 [jsm]
-  local_pci_probe+0x42/0x90
-  pci_device_probe+0x22f/0x270
-  really_probe+0xdb/0x340
-  ? pm_runtime_barrier+0x54/0x90
-  ? __pfx___driver_attach+0x10/0x10
-  __driver_probe_device+0x78/0x110
-  driver_probe_device+0x1f/0xa0
-  __driver_attach+0xba/0x1c0
-  bus_for_each_dev+0x8c/0xe0
-  bus_add_driver+0x112/0x1f0
-  driver_register+0x72/0xd0
-  jsm_init_module+0x36/0xff0 [jsm]
-  ? __pfx_jsm_init_module+0x10/0x10 [jsm]
-  do_one_initcall+0x58/0x310
-  do_init_module+0x60/0x230
+Fix this by converting the nominal_freq to KHz before returning the
+same from get_max_boost_ratio().
 
-Tested with Digi Neo PCIe 8 port card.
-
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dustin Lundquist <dustin@null-ptr.net>
-Link: https://lore.kernel.org/r/3f31d4f75863614655c4673027a208be78d022ec.camel@null-ptr.net
+Reported-by: Manu Bretelle <chantr4@gmail.com>
+Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
+Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
+Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/jsm/jsm_tty.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/acpi-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/jsm/jsm_tty.c
-+++ b/drivers/tty/serial/jsm/jsm_tty.c
-@@ -451,6 +451,7 @@ int jsm_uart_port_init(struct jsm_board
- 		if (!brd->channels[i])
- 			continue;
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -660,7 +660,7 @@ static u64 get_max_boost_ratio(unsigned
+ 	nominal_perf = perf_caps.nominal_perf;
  
-+		brd->channels[i]->uart_port.dev = &brd->pci_dev->dev;
- 		brd->channels[i]->uart_port.irq = brd->irq;
- 		brd->channels[i]->uart_port.uartclk = 14745600;
- 		brd->channels[i]->uart_port.type = PORT_JSM;
+ 	if (nominal_freq)
+-		*nominal_freq = perf_caps.nominal_freq;
++		*nominal_freq = perf_caps.nominal_freq * 1000;
+ 
+ 	if (!highest_perf || !nominal_perf) {
+ 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
 
 
 
