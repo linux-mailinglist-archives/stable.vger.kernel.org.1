@@ -1,121 +1,215 @@
-Return-Path: <stable+bounces-151746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2173AAD0C50
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:57:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800D6AD0C6D
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B0B170719
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 09:57:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED02F188E2B3
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA3F217F23;
-	Sat,  7 Jun 2025 09:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC541218AD1;
+	Sat,  7 Jun 2025 10:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns5odZjJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTaGcSNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E3D1C7009;
-	Sat,  7 Jun 2025 09:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BBD1F8EEF;
+	Sat,  7 Jun 2025 10:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290253; cv=none; b=ZLA+Tie91C6ATo6vcVFsrJSoccIhH8E3Q7VZvyv7VySr5/3RsW1bhHL1a2mOuvbigBRYAeQo/Mhba4CshQwaSV3Tr1eK6F6MmV6ipbLrkUiTrFFGZK575Kgcu54YnZwQ5tbF6fQH2KbV86+0dFEs7iwcI1DSkt7PImn2pNbYZxM=
+	t=1749290882; cv=none; b=WYYPVZeHfPbJ5IMcWloeTGRi3CKv2Ry16X/L0p6p1coHEiCkGdGF0r75ROtLhs5A8lJ+1blqstNrT7YiqIVyxYAqr0oxpkcbZ3sYfAkMU98qgMeEiaMZW6eyKg++7E4QAM5PDsY8srKzcMsKVge8o5klRZX3J558EVpWpqo1jhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290253; c=relaxed/simple;
-	bh=VzdmqcMNvBqE3KC0zj0VVYLrni/GN1NT9ay8sXX/Oms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sj0oi/LbvHZI7r5eQGahBQII8Qvs+PndsW3ukFxpubAP/aSRXuoFng5K5ughyo07OlCg18i8OrVV66OQgG7SgQ5OBtJu/FbiLk6t3bR0sd6hlmaM7H+FnICNEuVoONWE15r2N6XcxpntJsFn6HadBh6tO01I55XIJeEKzsrvP64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns5odZjJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C51C4CEE4;
-	Sat,  7 Jun 2025 09:57:32 +0000 (UTC)
+	s=arc-20240116; t=1749290882; c=relaxed/simple;
+	bh=gQ6iv10a9cPNS0DPkw3ffaAWdV4vG5Dqs5WyLu8qM/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HeybKE8kKMQPMF8HPusuqii5IAqBA9AaRHT4z8KWouG4YxSmTzY/a9uRgheeM0A8qhp8NvRg8EGJauplX13qM7pM9Nuyel25GBiowmjvOQZFCIF8IrMFcT8VsSlLvl4PN51jO27xqIuNPDMYzMf49xqCkq41u53JvabZbDJCdzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTaGcSNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751BCC4CEE4;
+	Sat,  7 Jun 2025 10:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290252;
-	bh=VzdmqcMNvBqE3KC0zj0VVYLrni/GN1NT9ay8sXX/Oms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ns5odZjJt6lhUyX0pMfYyXcMLXpOPa+xQACBahwgKkqgsMf5wo087OjgjS6NihT75
-	 eshtaC6q6950Gjl+0Pt8Dzg1KrBozq2Dvkksjd+1Ucy9dxqUrawcZ1BwRuDZc8Acpt
-	 NXGi66sE4YW1tZhPCCsJ9IfxzvxTyt0sm30jVFrw=
-Date: Sat, 7 Jun 2025 11:57:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Macpaul Lin <macpaul.lin@mediatek.com>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ajay Agarwal <ajayagarwal@google.com>,
-	Daniel Stodden <daniel.stodden@gmail.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Deren Wu <Deren.Wu@mediatek.com>, Ramax Lo <ramax.lo@mediatek.com>,
-	Macpaul Lin <macpaul@gmail.com>,
-	MediaTek Chromebook Upstream <Project_Global_Chrome_Upstream_Group@mediatek.com>,
-	Johnny-CC Chang <Johnny-CC.Chang@mediatek.com>
-Subject: Re: [PATCH 6.11 1/1] PCI/ASPM: Disable L1 before disabling L1 PM
- Substates
-Message-ID: <2025060702-deviate-faceted-bd57@gregkh>
-References: <20250606015738.2724220-1-macpaul.lin@mediatek.com>
+	s=korg; t=1749290882;
+	bh=gQ6iv10a9cPNS0DPkw3ffaAWdV4vG5Dqs5WyLu8qM/I=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VTaGcSNycN/XVa23jHO3GGfmByUEGY8KeUprqjyjEj9b3u21pbasbH2Z48Egl/gS2
+	 kbZZagfFvMtqxkiN8ln3SmrVP/RtYU6LHj43IDBOv9yxMA46T0Ti+0XAsVcNOcTuTx
+	 gO6UrIJd1fLtfwS+Ah/zUfsrwxNzxuC5vt71pPu4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.12 00/24] 6.12.33-rc1 review
+Date: Sat,  7 Jun 2025 12:07:31 +0200
+Message-ID: <20250607100717.910797456@linuxfoundation.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250606015738.2724220-1-macpaul.lin@mediatek.com>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.33-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.33-rc1
+X-KernelTest-Deadline: 2025-06-09T10:07+00:00
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 06, 2025 at 09:57:38AM +0800, Macpaul Lin wrote:
-> From: Ajay Agarwal <ajayagarwal@google.com>
-> 
-> [ Upstream commit 7447990137bf06b2aeecad9c6081e01a9f47f2aa ]
-> 
-> PCIe r6.2, sec 5.5.4, requires that:
-> 
->   If setting either or both of the enable bits for ASPM L1 PM Substates,
->   both ports must be configured as described in this section while ASPM L1
->   is disabled.
-> 
-> Previously, pcie_config_aspm_l1ss() assumed that "setting enable bits"
-> meant "setting them to 1", and it configured L1SS as follows:
-> 
->   - Clear L1SS enable bits
->   - Disable L1
->   - Configure L1SS enable bits as required
->   - Enable L1 if required
-> 
-> With this sequence, when disabling L1SS on an ARM A-core with a Synopsys
-> DesignWare PCIe core, the CPU occasionally hangs when reading
-> PCI_L1SS_CTL1, leading to a reboot when the CPU watchdog expires.
-> 
-> Move the L1 disable to the caller (pcie_config_aspm_link(), where L1 was
-> already enabled) so L1 is always disabled while updating the L1SS bits:
-> 
->   - Disable L1
->   - Clear L1SS enable bits
->   - Configure L1SS enable bits as required
->   - Enable L1 if required
-> 
-> Change pcie_aspm_cap_init() similarly.
-> 
-> Link: https://lore.kernel.org/r/20241007032917.872262-1-ajayagarwal@google.com
-> Signed-off-by: Ajay Agarwal <ajayagarwal@google.com>
-> [bhelgaas: comments, commit log, compute L1SS setting before config access]
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Tested-by: Johnny-CC Chang <Johnny-CC.Chang@mediatek.com>
-> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-> ---
->  drivers/pci/pcie/aspm.c | 92 ++++++++++++++++++++++-------------------
->  1 file changed, 50 insertions(+), 42 deletions(-)
+This is the start of the stable review cycle for the 6.12.33 release.
+There are 24 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-6.11.y is long end-of-life, sorry.  See the front page of www.kernel.org
-for the list of currently supported kernels.
+Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.33-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
 
 thanks,
 
 greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.33-rc1
+
+Aurabindo Pillai <aurabindo.pillai@amd.com>
+    Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
+
+Xu Yang <xu.yang_2@nxp.com>
+    dt-bindings: phy: imx8mq-usb: fix fsl,phy-tx-vboost-level-microvolt property
+
+Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+    dt-bindings: usb: cypress,hx3: Add support for all variants
+
+Sergey Senozhatsky <senozhatsky@chromium.org>
+    thunderbolt: Do not double dequeue a configuration request
+
+Dave Penkler <dpenkler@gmail.com>
+    usb: usbtmc: Fix timeout value in get_stb
+
+Dustin Lundquist <dustin@null-ptr.net>
+    serial: jsm: fix NPE during jsm_uart_port_init
+
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+    Bluetooth: hci_qca: move the SoC type check to the right place
+
+Qasim Ijaz <qasdev00@gmail.com>
+    usb: typec: ucsi: fix Clang -Wsign-conversion warning
+
+Charles Yeh <charlesyeh522@gmail.com>
+    USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+
+Hongyu Xie <xiehongyu1@kylinos.cn>
+    usb: storage: Ignore UAS driver for SanDisk 3.2 Gen2 storage device
+
+Jiayi Li <lijiayi@kylinos.cn>
+    usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
+
+Jon Hunter <jonathanh@nvidia.com>
+    Revert "cpufreq: tegra186: Share policy per cluster"
+
+Ming Lei <ming.lei@redhat.com>
+    block: fix adding folio to bio
+
+Ajay Agarwal <ajayagarwal@google.com>
+    PCI/ASPM: Disable L1 before disabling L1 PM Substates
+
+Karol Wachowski <karol.wachowski@intel.com>
+    accel/ivpu: Update power island delays
+
+Maciej Falkowski <maciej.falkowski@linux.intel.com>
+    accel/ivpu: Add initial Panther Lake support
+
+Alexandre Mergnat <amergnat@baylibre.com>
+    rtc: Fix offset calculation for .start_secs < 0
+
+Alexandre Mergnat <amergnat@baylibre.com>
+    rtc: Make rtc_time64_to_tm() support dates before 1970
+
+Sakari Ailus <sakari.ailus@linux.intel.com>
+    Documentation: ACPI: Use all-string data node references
+
+Gautham R. Shenoy <gautham.shenoy@amd.com>
+    acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
+
+Gabor Juhos <j4g8y7@gmail.com>
+    pinctrl: armada-37xx: set GPIO output value before setting direction
+
+Gabor Juhos <j4g8y7@gmail.com>
+    pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
+
+Chao Yu <chao@kernel.org>
+    f2fs: fix to avoid accessing uninitialized curseg
+
+Pan Taixi <pantaixi@huaweicloud.com>
+    tracing: Fix compilation warning on arm32
+
+
+-------------
+
+Diffstat:
+
+ .../bindings/phy/fsl,imx8mq-usb-phy.yaml           |  3 +-
+ .../devicetree/bindings/usb/cypress,hx3.yaml       | 19 ++++-
+ .../acpi/dsd/data-node-references.rst              | 26 +++---
+ Documentation/firmware-guide/acpi/dsd/graph.rst    | 11 +--
+ Documentation/firmware-guide/acpi/dsd/leds.rst     |  7 +-
+ Makefile                                           |  4 +-
+ block/bio.c                                        | 11 ++-
+ drivers/accel/ivpu/ivpu_drv.c                      |  1 +
+ drivers/accel/ivpu/ivpu_drv.h                      | 10 ++-
+ drivers/accel/ivpu/ivpu_fw.c                       |  3 +
+ drivers/accel/ivpu/ivpu_hw_40xx_reg.h              |  2 +
+ drivers/accel/ivpu/ivpu_hw_ip.c                    | 49 +++++++----
+ drivers/bluetooth/hci_qca.c                        | 14 ++--
+ drivers/cpufreq/acpi-cpufreq.c                     |  2 +-
+ drivers/cpufreq/tegra186-cpufreq.c                 |  7 --
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 16 ++--
+ drivers/pci/pcie/aspm.c                            | 94 ++++++++++++----------
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c        | 14 ++--
+ drivers/rtc/class.c                                |  2 +-
+ drivers/rtc/lib.c                                  | 24 ++++--
+ drivers/thunderbolt/ctl.c                          |  5 ++
+ drivers/tty/serial/jsm/jsm_tty.c                   |  1 +
+ drivers/usb/class/usbtmc.c                         |  4 +-
+ drivers/usb/core/quirks.c                          |  3 +
+ drivers/usb/serial/pl2303.c                        |  2 +
+ drivers/usb/storage/unusual_uas.h                  |  7 ++
+ drivers/usb/typec/ucsi/ucsi.h                      |  2 +-
+ fs/f2fs/inode.c                                    |  7 ++
+ fs/f2fs/segment.h                                  |  9 ++-
+ kernel/trace/trace.c                               |  2 +-
+ 30 files changed, 218 insertions(+), 143 deletions(-)
+
+
 
