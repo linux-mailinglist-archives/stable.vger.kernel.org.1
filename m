@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-151802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608D7AD0CA5
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A17AD0C7E
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7DCA17184D
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B7581710DF
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902C520CCED;
-	Sat,  7 Jun 2025 10:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E0221CC46;
+	Sat,  7 Jun 2025 10:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYb/0m+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V399PSCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0471F4CB8;
-	Sat,  7 Jun 2025 10:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1FB21C182;
+	Sat,  7 Jun 2025 10:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291037; cv=none; b=JYEFnJOnhD15qv7Ha88dUc2vdulRUbV9ITKwjoTcjW/0ZmIr+nBck+cTyTwlOKtjDynnxqAQ6hBIU27ilLLPuQfJyoUgtWbVDFj1NXilFJpmuD1nMoHkBRe6nDeiF3mqpFNqc4ov6qsqUyQx8ehzGNA8Y39R8R2SSro5DdHKqXM=
+	t=1749290934; cv=none; b=tQK5CDzjMqESA0h3Jy5z2Md3nwu6RBHpR1uhYiaY7deTtiRmxyGrpww1kEleMLpV16AXmV9D6HEc0xjIaph3QUllWNzqsy7lkZGJMt7FRfh0sG4iro/5Iovlx+neGAHRLVDFXT+sHmC8Gh5W2xaB6O7oSj1lnzXVKt0f27XfKtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291037; c=relaxed/simple;
-	bh=9ErGhhli9UzoIUoyBKf42/n+eEx1hOtK5K8gqSd0ZZU=;
+	s=arc-20240116; t=1749290934; c=relaxed/simple;
+	bh=si81Xuk42NFbnSVZ+91BAnUCeKCv/D0yyWb64C+BAhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CFfnPOku48RsJsTJz7t+VfNsHgJygO6WkfIpWaTzLbxyC1BnRJBZz/MWB9WGUNCPtsTCfkt3fV6yqmZdEYgzJ+7OFiiT016x3JehQ0J9VQX72+X+Ut6K6jlh3vFpOvTONVE3t6jCN/4eDV++Wduqw896rRYouIaE/JADC6aH+Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYb/0m+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2448C4CEE4;
-	Sat,  7 Jun 2025 10:10:36 +0000 (UTC)
+	 MIME-Version; b=ZAFMXTeeDepqF8nHIxRPsBhcAsZY0NEVae27+EpU5mhhyUQq5YP1rVtuZOsYx4CgNZZfiI5hkwLBY0LBqUPf4UGp9/UQFoAhKwXt2uK8PHEKKBnyOBetKD90FuORKvDjLYDEFuPD/1qh987fmhSVeRXGsqY/NCEJ4yY0x/eH9+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V399PSCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199EBC4CEED;
+	Sat,  7 Jun 2025 10:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291037;
-	bh=9ErGhhli9UzoIUoyBKf42/n+eEx1hOtK5K8gqSd0ZZU=;
+	s=korg; t=1749290934;
+	bh=si81Xuk42NFbnSVZ+91BAnUCeKCv/D0yyWb64C+BAhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYb/0m+e73VMmgeHbRuxxNMIyO+dBR8GKHZoe0zFFXu12kgp1DC/wU7lyXLTTV9Zz
-	 A2eKrhSASBRiPEe/mO9fM1txrEI2N20oSscpuAm1v596hN+g6y0IfNAKJIEJPRtSzh
-	 E6liE5xkVe1fyN8eHhYIfTG9TKK5cjOtZQGIKkhs=
+	b=V399PSCTTyZwl95yn6VQ/hlqEKdxyyQ/s6jFmYe/z7FzRynJFHCgcISEloVQ2MiVl
+	 x0DkjRNOovH9IYRPCWY8rTyA6bBS5PBX8jlW7rQzka+J62Ygvqvb+hSV6tw5nsKsHU
+	 O0WmyPosjpBJgwh1EXpOkRdX9ZVaiTp5p+rhA3hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.15 13/34] rtc: Fix offset calculation for .start_secs < 0
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 23/24] dt-bindings: phy: imx8mq-usb: fix fsl,phy-tx-vboost-level-microvolt property
 Date: Sat,  7 Jun 2025 12:07:54 +0200
-Message-ID: <20250607100720.240415759@linuxfoundation.org>
+Message-ID: <20250607100718.950411107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
+References: <20250607100717.910797456@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Mergnat <amergnat@baylibre.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
+commit 5b3a91b207c00a8d27f75ce8aaa9860844da72c8 upstream.
 
-The comparison
+The ticket TKT0676370 shows the description of TX_VBOOST_LVL is wrong in
+register PHY_CTRL3 bit[31:29].
 
-        rtc->start_secs > rtc->range_max
+  011: Corresponds to a launch amplitude of 1.12 V.
+  010: Corresponds to a launch amplitude of 1.04 V.
+  000: Corresponds to a launch amplitude of 0.88 V.
 
-has a signed left-hand side and an unsigned right-hand side.
-So the comparison might become true for negative start_secs which is
-interpreted as a (possibly very large) positive value.
+After updated:
 
-As a negative value can never be bigger than an unsigned value
-the correct representation of the (mathematical) comparison
+  011: Corresponds to a launch amplitude of 0.844 V.
+  100: Corresponds to a launch amplitude of 1.008 V.
+  101: Corresponds to a launch amplitude of 1.156 V.
 
-        rtc->start_secs > rtc->range_max
+This will correct it accordingly.
 
-in C is:
-
-        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
-
-Use that to fix the offset calculation currently used in the
-rtc-mt6397 driver.
-
-Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
-Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Fixes: b2e75563dc39 ("dt-bindings: phy: imx8mq-usb: add phy tuning properties")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250430094502.2723983-1-xu.yang_2@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/class.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/rtc/class.c
-+++ b/drivers/rtc/class.c
-@@ -326,7 +326,7 @@ static void rtc_device_get_offset(struct
- 	 *
- 	 * Otherwise the offset seconds should be 0.
- 	 */
--	if (rtc->start_secs > rtc->range_max ||
-+	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
- 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
- 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
- 	else if (rtc->start_secs > rtc->range_min)
+--- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+@@ -58,8 +58,7 @@ properties:
+   fsl,phy-tx-vboost-level-microvolt:
+     description:
+       Adjust the boosted transmit launch pk-pk differential amplitude
+-    minimum: 880
+-    maximum: 1120
++    enum: [844, 1008, 1156]
+ 
+   fsl,phy-comp-dis-tune-percent:
+     description:
 
 
 
