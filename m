@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-151815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35943AD0CB5
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:11:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4A9AD0CA3
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1ED7171C0B
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:11:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 523BB171583
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31E4217679;
-	Sat,  7 Jun 2025 10:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9C321ABDB;
+	Sat,  7 Jun 2025 10:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZEzLas0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3+NodLW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7135715D1;
-	Sat,  7 Jun 2025 10:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABF121A444;
+	Sat,  7 Jun 2025 10:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291071; cv=none; b=tmv65guYKFAvO3yaEJouSfgE1LhOxp/NkIdllOfJVdWeohTMcsGcjB9j3I6CrQ6Axyc5IWDYDVadCRbvsE+7hYpOIt7+K9k7SbTT6lgv/XINXS2YqZLfwDz4IWLsNwnhTaJrsHUbKE9ZWoxw2Eh44HgoFP++nL40lGH9cwgApVw=
+	t=1749291029; cv=none; b=AFxbu8TKNUGiE6q2L4MLXjaiczxNlG8mlDz7YDpPFI3VEDb/jAYDzgK+4ce8bv5M7Zwt3u19y4Q6ZtdhLDqVscc81/JITmkq37eCEigOFutiSxQcJodW86gP4CoVocUfmfFu1oPpKGoSv4WAgR+Z8SRpvnoeBj0mcKTcmpg0ipk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291071; c=relaxed/simple;
-	bh=ccGnUiECjgvmvy0cUJn+rVtPo+n33cpCmdnKoCrw5gI=;
+	s=arc-20240116; t=1749291029; c=relaxed/simple;
+	bh=EIAlyLstKak8Y/4nr0C7lbDkdyruL3/+HI63KhcGF2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKct1OXPYrtRn0VOK8/AHLiryymvXBIaCfcofXdTBXr3GrMqwMWSIw+5DIDkOZeJKctpeMBT2q4uBbCA+FJkQyXaTyeOA+5lp/1f+EMBnpwOfnqL7h4+4n7KuDwuHBJxjoOINe12vp1Goraz6caN4Q7GPQQqhpEJtQUdwv+VZOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZEzLas0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC809C4CEE4;
-	Sat,  7 Jun 2025 10:11:10 +0000 (UTC)
+	 MIME-Version; b=rrjVlAwk/Kpi7FcZPlh7hMGuxWng5LZnEhh/e+OfQOCUbWurFniQAGLesOEQ4yqlIGdK2lzwPE+TIne8CGXzXIDO9gS/jUMxwvQa+4PYxVVSM4brpl/+RwhtS1kWXix24kLJdzTLRiyAnpitHP5yGJECQ2Cm/NA8Hcw7JFrXf5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3+NodLW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F2DC4CEE4;
+	Sat,  7 Jun 2025 10:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291071;
-	bh=ccGnUiECjgvmvy0cUJn+rVtPo+n33cpCmdnKoCrw5gI=;
+	s=korg; t=1749291029;
+	bh=EIAlyLstKak8Y/4nr0C7lbDkdyruL3/+HI63KhcGF2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZEzLas0ugH6RNWNmFAg8+LEFh2j+okPKMqOd8DL34nYgZ4f++aL1wex1wdRIgPlE
-	 GcbH1dO5Tw+7zOrcskguQNz+Jqgj+1XHe7s4vhk8aIqpGAlGyQJTxlSohPOzBLF48Z
-	 Vo8S0PZW5+PbhEtq86uNQAQAiR+ELg1Zg8W7+Pl4=
+	b=m3+NodLWz1y1+Zu8GtBRoHzvHTPaSJ28MlEVqtsUhZ69hGIh7kl34LSSyTywAmbtx
+	 HbfEXhKsY8SkzVxIGAWkXRjGBpHl8rI+xODVg2pLeg7SJs1vU20NIuLBl4/rRsMZKr
+	 Z6LxkQ6lI0HSQQf7/4JrS49kjOSGN6ryXbAFqVz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manu Bretelle <chantr4@gmail.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.15 09/34] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
-Date: Sat,  7 Jun 2025 12:07:50 +0200
-Message-ID: <20250607100720.089471114@linuxfoundation.org>
+Subject: [PATCH 6.15 10/34] Documentation: ACPI: Use all-string data node references
+Date: Sat,  7 Jun 2025 12:07:51 +0200
+Message-ID: <20250607100720.127165969@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
 References: <20250607100719.711372213@linuxfoundation.org>
@@ -66,46 +65,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
+commit 6db0261f3776bde01ae916ad8e1cb2ded3ba1a2b upstream.
 
-commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-modified get_max_boost_ratio() to return the nominal_freq advertised
-in the _CPC object. This was for the purposes of computing the maximum
-frequency. The frequencies advertised in _CPC objects are in
-MHz. However, cpufreq expects the frequency to be in KHz. Since the
-nominal_freq returned by get_max_boost_ratio() was not in KHz but
-instead in MHz,the cpuinfo_max_frequency that was computed using this
-nominal_freq was incorrect and an invalid value which resulted in
-cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
+Document that references to data nodes shall use string-only references
+instead of a device reference and a succession of the first package
+entries of hierarchical data node references.
 
-Fix this by converting the nominal_freq to KHz before returning the
-same from get_max_boost_ratio().
-
-Reported-by: Manu Bretelle <chantr4@gmail.com>
-Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
-Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
-Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
+Fixes: 9880702d123f ("ACPI: property: Support using strings in reference properties")
+Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://patch.msgid.link/20250409084738.3657079-1-sakari.ailus@linux.intel.com
+[ rjw: Clarifying edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/acpi-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/firmware-guide/acpi/dsd/data-node-references.rst |   26 ++++------
+ Documentation/firmware-guide/acpi/dsd/graph.rst                |   11 +---
+ Documentation/firmware-guide/acpi/dsd/leds.rst                 |    7 --
+ 3 files changed, 17 insertions(+), 27 deletions(-)
 
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -660,7 +660,7 @@ static u64 get_max_boost_ratio(unsigned
- 	nominal_perf = perf_caps.nominal_perf;
+--- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
++++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+@@ -12,11 +12,14 @@ ACPI in general allows referring to devi
+ Hierarchical data extension nodes may not be referred to directly, hence this
+ document defines a scheme to implement such references.
  
- 	if (nominal_freq)
--		*nominal_freq = perf_caps.nominal_freq;
-+		*nominal_freq = perf_caps.nominal_freq * 1000;
+-A reference consist of the device object name followed by one or more
+-hierarchical data extension [dsd-guide] keys. Specifically, the hierarchical
+-data extension node which is referred to by the key shall lie directly under
+-the parent object i.e. either the device object or another hierarchical data
+-extension node.
++A reference to a _DSD hierarchical data node is a string consisting of a
++device object reference followed by a dot (".") and a relative path to a data
++node object. Do not use non-string references as this will produce a copy of
++the hierarchical data node, not a reference!
++
++The hierarchical data extension node which is referred to shall be located
++directly under its parent object i.e. either the device object or another
++hierarchical data extension node [dsd-guide].
  
- 	if (!highest_perf || !nominal_perf) {
- 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
+ The keys in the hierarchical data nodes shall consist of the name of the node,
+ "@" character and the number of the node in hexadecimal notation (without pre-
+@@ -33,11 +36,9 @@ extension key.
+ Example
+ =======
+ 
+-In the ASL snippet below, the "reference" _DSD property contains a
+-device object reference to DEV0 and under that device object, a
+-hierarchical data extension key "node@1" referring to the NOD1 object
+-and lastly, a hierarchical data extension key "anothernode" referring to
+-the ANOD object which is also the final target node of the reference.
++In the ASL snippet below, the "reference" _DSD property contains a string
++reference to a hierarchical data extension node ANOD under DEV0 under the parent
++of DEV1. ANOD is also the final target node of the reference.
+ ::
+ 
+ 	Device (DEV0)
+@@ -76,10 +77,7 @@ the ANOD object which is also the final
+ 	    Name (_DSD, Package () {
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+-		    Package () {
+-			"reference", Package () {
+-			    ^DEV0, "node@1", "anothernode"
+-			}
++		    Package () { "reference", "^DEV0.ANOD" }
+ 		    },
+ 		}
+ 	    })
+--- a/Documentation/firmware-guide/acpi/dsd/graph.rst
++++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+@@ -66,12 +66,9 @@ of that port shall be zero. Similarly, i
+ endpoint, the number of that endpoint shall be zero.
+ 
+ The endpoint reference uses property extension with "remote-endpoint" property
+-name followed by a reference in the same package. Such references consist of
+-the remote device reference, the first package entry of the port data extension
+-reference under the device and finally the first package entry of the endpoint
+-data extension reference under the port. Individual references thus appear as::
++name followed by a string reference in the same package. [data-node-ref]::
+ 
+-    Package() { device, "port@X", "endpoint@Y" }
++    "device.datanode"
+ 
+ In the above example, "X" is the number of the port and "Y" is the number of
+ the endpoint.
+@@ -109,7 +106,7 @@ A simple example of this is show below::
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+ 		    Package () { "reg", 0 },
+-		    Package () { "remote-endpoint", Package() { \_SB.PCI0.ISP, "port@4", "endpoint@0" } },
++		    Package () { "remote-endpoint", "\\_SB.PCI0.ISP.EP40" },
+ 		}
+ 	    })
+ 	}
+@@ -141,7 +138,7 @@ A simple example of this is show below::
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+ 		    Package () { "reg", 0 },
+-		    Package () { "remote-endpoint", Package () { \_SB.PCI0.I2C2.CAM0, "port@0", "endpoint@0" } },
++		    Package () { "remote-endpoint", "\\_SB.PCI0.I2C2.CAM0.EP00" },
+ 		}
+ 	    })
+ 	}
+--- a/Documentation/firmware-guide/acpi/dsd/leds.rst
++++ b/Documentation/firmware-guide/acpi/dsd/leds.rst
+@@ -15,11 +15,6 @@ Referring to LEDs in Device tree is docu
+ "flash-leds" property documentation. In short, LEDs are directly referred to by
+ using phandles.
+ 
+-While Device tree allows referring to any node in the tree [devicetree], in
+-ACPI references are limited to device nodes only [acpi]. For this reason using
+-the same mechanism on ACPI is not possible. A mechanism to refer to non-device
+-ACPI nodes is documented in [data-node-ref].
+-
+ ACPI allows (as does DT) using integer arguments after the reference. A
+ combination of the LED driver device reference and an integer argument,
+ referring to the "reg" property of the relevant LED, is used to identify
+@@ -74,7 +69,7 @@ omitted. ::
+ 			Package () {
+ 				Package () {
+ 					"flash-leds",
+-					Package () { ^LED, "led@0", ^LED, "led@1" },
++					Package () { "^LED.LED0", "^LED.LED1" },
+ 				}
+ 			}
+ 		})
 
 
 
