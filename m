@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-151792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA794AD0C9D
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A5FAD0CAD
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C67171849
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 817F5171A13
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C11821B196;
-	Sat,  7 Jun 2025 10:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C954B219E8F;
+	Sat,  7 Jun 2025 10:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAU5gQe1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLzdeBfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCA821ABDB;
-	Sat,  7 Jun 2025 10:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887641F4CB8;
+	Sat,  7 Jun 2025 10:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291011; cv=none; b=FBnXzQGzxQlla2gHeCKEoZRaT4OXt4D13oUjLZ2b7ZeAs+ElwfFYoa6T0rzXd0aCGp3CsuD7zEepKF0DCE4dTcJD1GnCNwO2vVtShww2cH0J9AFd4sB9w6QWKeTiBHw87/GvJgIne5zZ/R8nc5/6DHlRgGhoEEpMwE8NkzIsSdU=
+	t=1749291045; cv=none; b=uIjnC8u3TbfuAl3dsWWNY5s6ul2c5O379eEzCGoTSguhmWSt1scgoOmEF96MgDdeYaDLH0Utkncflc/IVFDXbvykGKMtYFm4b3KVJsosHljcTVcmi5+atsvZqbqc3HVNgLVxvXYNQ5WkJ2ZlcQVMUmxTQRvv2vnZ1uLtlAFWIcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291011; c=relaxed/simple;
-	bh=oFDPgtoP2NFyJ+Xt1s1hXvhBXNibhwSjUoxzJqodYNY=;
+	s=arc-20240116; t=1749291045; c=relaxed/simple;
+	bh=jAsRA6EjzmEHs/lgTajhGrn64ykA2x1hcUugwsyS24g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FXVxQYXNInxhUKMcwjov7fCQ673VirQEYlllymBHC4FU62jiV9wqrUnG/jHrY6tqhZQa9AYcstzZs+Yx3tOid3biK/rPRZv835+a443SK4R75Ol3XS1xVp00PKNav0xD4x0CN/X5IYARUrMTYfJDXkzeHngND3utLDFwXVXrbj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAU5gQe1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA44C4CEE4;
-	Sat,  7 Jun 2025 10:10:10 +0000 (UTC)
+	 MIME-Version; b=pPddC9TcIPTV05nh4YYfOBcA6nW+fNEvTdfq6ZmM/DAr8Itvq5LszJx4PTNgdLp2sd3/QWT8aiIPLZALUQSqcWCOvPhyqVnTECyOzw11Cdk8nBQlc6TAcxXdWXM5MKGHEGQg1ezY85hHWO8WmJa0vGUR1LeVM4oWkvT8NyoKmdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLzdeBfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92A4C4CEE4;
+	Sat,  7 Jun 2025 10:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749291010;
-	bh=oFDPgtoP2NFyJ+Xt1s1hXvhBXNibhwSjUoxzJqodYNY=;
+	s=korg; t=1749291045;
+	bh=jAsRA6EjzmEHs/lgTajhGrn64ykA2x1hcUugwsyS24g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAU5gQe1JSEQhbUz7patq48oWK8EyvPExn4P/NxpWQS4Zmw3FS4CQJ49ZRBvnDbuz
-	 vD7jq8V9MGMK9b/oV0hMl6lr1n+rPUJ6EYKZ6V6z90rx3Gjeg6icqcdPyWhNYE0Mr9
-	 QYd72EQ11232YkI9F1SAJI+nAgyXJcGm81p3USGs=
+	b=nLzdeBfxMQBe0S8Xylejiu1tmPpBco210+zPba/aApaYVYEp93DnPJoYyDyvwxUu1
+	 xUlwvGhaJQJyUdE/vcHrRsRpkYMGCWwWAuDJ6PGyfXFRgRVKF09PL5i8h6Ozjkj6Tm
+	 B89qfiKgsyDwkFHRZpDpywjZPRL5WUuX6nVjAzFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.14 16/24] nvmem: rmem: select CONFIG_CRC32
-Date: Sat,  7 Jun 2025 12:07:56 +0200
-Message-ID: <20250607100718.337428224@linuxfoundation.org>
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.15 16/34] bcachefs: delete dead code from may_delete_deleted_inode()
+Date: Sat,  7 Jun 2025 12:07:57 +0200
+Message-ID: <20250607100720.355780066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+References: <20250607100719.711372213@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-commit 7a93add1d31f14e0b7e937163904dee1e864a9a8 upstream.
+commit bb6689bbeebc6fb51f0f120b486bdcc9a38ffcf6 upstream.
 
-The newly added crc checking leads to a link failure if CRC32
-itself is disabled:
-
-x86_64-linux-ld: vmlinux.o: in function `rmem_eyeq5_checksum':
-rmem.c:(.text+0x52341b): undefined reference to `crc32_le_arch'
-
-Fixes: 7e606c311f70 ("nvmem: rmem: add CRC validation for Mobileye EyeQ5 NVMEM")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://lore.kernel.org/r/20250509122407.11763-2-srini@kernel.org
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ fs/bcachefs/inode.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
-index 8671b7c974b9..eceb3cdb421f 100644
---- a/drivers/nvmem/Kconfig
-+++ b/drivers/nvmem/Kconfig
-@@ -260,6 +260,7 @@ config NVMEM_RCAR_EFUSE
- config NVMEM_RMEM
- 	tristate "Reserved Memory Based Driver Support"
- 	depends on HAS_IOMEM
-+	select CRC32
- 	help
- 	  This driver maps reserved memory into an nvmem device. It might be
- 	  useful to expose information left by firmware in memory.
--- 
-2.49.0
-
+--- a/fs/bcachefs/inode.c
++++ b/fs/bcachefs/inode.c
+@@ -1342,10 +1342,7 @@ int bch2_inode_rm_snapshot(struct btree_
+ 		delete_ancestor_snapshot_inodes(trans, SPOS(0, inum, snapshot));
+ }
+ 
+-static int may_delete_deleted_inode(struct btree_trans *trans,
+-				    struct btree_iter *iter,
+-				    struct bpos pos,
+-				    bool *need_another_pass)
++static int may_delete_deleted_inode(struct btree_trans *trans, struct bpos pos)
+ {
+ 	struct bch_fs *c = trans->c;
+ 	struct btree_iter inode_iter;
+@@ -1434,9 +1431,8 @@ delete:
+ int bch2_delete_dead_inodes(struct bch_fs *c)
+ {
+ 	struct btree_trans *trans = bch2_trans_get(c);
+-	bool need_another_pass;
+ 	int ret;
+-again:
++
+ 	/*
+ 	 * if we ran check_inodes() unlinked inodes will have already been
+ 	 * cleaned up but the write buffer will be out of sync; therefore we
+@@ -1446,8 +1442,6 @@ again:
+ 	if (ret)
+ 		goto err;
+ 
+-	need_another_pass = false;
+-
+ 	/*
+ 	 * Weird transaction restart handling here because on successful delete,
+ 	 * bch2_inode_rm_snapshot() will return a nested transaction restart,
+@@ -1457,7 +1451,7 @@ again:
+ 	ret = for_each_btree_key_commit(trans, iter, BTREE_ID_deleted_inodes, POS_MIN,
+ 					BTREE_ITER_prefetch|BTREE_ITER_all_snapshots, k,
+ 					NULL, NULL, BCH_TRANS_COMMIT_no_enospc, ({
+-		ret = may_delete_deleted_inode(trans, &iter, k.k->p, &need_another_pass);
++		ret = may_delete_deleted_inode(trans, k.k->p);
+ 		if (ret > 0) {
+ 			bch_verbose_ratelimited(c, "deleting unlinked inode %llu:%u",
+ 						k.k->p.offset, k.k->p.snapshot);
+@@ -1478,9 +1472,6 @@ again:
+ 
+ 		ret;
+ 	}));
+-
+-	if (!ret && need_another_pass)
+-		goto again;
+ err:
+ 	bch2_trans_put(trans);
+ 	return ret;
 
 
 
