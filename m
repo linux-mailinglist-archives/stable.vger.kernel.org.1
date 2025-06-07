@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-151784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E94AAD0C96
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:10:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C480AD0C7A
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 12:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467DA1715C8
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A167216AD19
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 10:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9F421FF47;
-	Sat,  7 Jun 2025 10:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A2F20D4E3;
+	Sat,  7 Jun 2025 10:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BI0lAJSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCTevbK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65921E0A8;
-	Sat,  7 Jun 2025 10:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121131F8723;
+	Sat,  7 Jun 2025 10:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749290990; cv=none; b=R2fFej2KfBnNMm6SlkHjDF0/7I1szvw8zebMlfm2uH0wZXeFXmNjD8ThsljIjLGWrzfibvtBreWZgMlv2FLa69OoyogrmNezJe+yPOmrqEo60sVQQSUz4VEzql+r9kWmFFAwwjnNDXTHkWSTL9FHq60W6qD0x04xrXIVKF3jXEo=
+	t=1749290914; cv=none; b=m8ZppDIhkfw1TpGxfF7BRBJ5iQaxZolOM6cOFzVn26hliygrv2uriEKgmP54MNDblJn8EersIputXSIkq4v99HwJ+uYzoiRlseoN3z658wf5G19TK6HNQthQWtIr2MkzjX1JEIGzXttqcVDEV0uR9NvnHaYr8e9a/fky1+rhyyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749290990; c=relaxed/simple;
-	bh=IUweU+hs+4jIFllb31fYArpsMLua+Q52ixTUJBQVYJY=;
+	s=arc-20240116; t=1749290914; c=relaxed/simple;
+	bh=p6xsRjCSWtVcZfbKRRxBMJOhDnkisbt/+z0jq+whFZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hImyQJsMRG7UUUn4CQ7YXegjDr0or3+p26xo/6EHUeHT1rst9OxGOdcfgZcG9VaehVGOxvnGNRD5/ya8766ZfqyuYmtRg1dIBBidkCuAZYdp3pHDHg8PoEvV6IDN/z1DL0LrVrrryO1wQqgaffCT5hWnwW0b9LR0DnvBYbFCKvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BI0lAJSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFB8C4CEED;
-	Sat,  7 Jun 2025 10:09:49 +0000 (UTC)
+	 MIME-Version; b=dzkszKus/qYPiPAMGq5kWwbUqBhaZQtS8gcdpkwKM7bc/o9nwMe58J4UYfgEl10IVcrdJ6KolDVO5kfcs6uJkO9riQ5OlqLXPomt4NH32V0rNZWCsYu+EDtZDTVYLmeazZx0g3rq50iCQKxtDDrCHHGQE8+JM34QczdYTUJPiDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCTevbK4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5116CC4CEE4;
+	Sat,  7 Jun 2025 10:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749290989;
-	bh=IUweU+hs+4jIFllb31fYArpsMLua+Q52ixTUJBQVYJY=;
+	s=korg; t=1749290913;
+	bh=p6xsRjCSWtVcZfbKRRxBMJOhDnkisbt/+z0jq+whFZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BI0lAJSXCHFfVPPaRf2kK2tOJv+YBL6S9sWBqkSDuXUOc8v3G7L1CmBdsFGwWeJPE
-	 obgexggEfgcOYGLW3DtRoNO+/5HL43qGNVVdBqgmsUdGhO/TJNhKxVFQ4jwbECocW8
-	 rRWHA/ECxdpx+cNuDWtjj5+WJlc1fmzb66ekfvYg=
+	b=uCTevbK4ohHaSut55n/jDfl1gGf+/Ve6o1BTpjqCpVyAgV6kuJYXOxlOW8zu3Lchv
+	 q+y3SmxJUZiHvF0GGyDIvAfIZVV6ySp7UKdPvg1w++/T9CETNXUK/sztcxzmOKRxgH
+	 ZlRS7/o5wFOWQ2A2L18OE1NtH+Ez1zFyUc6HixiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Yeh <charlesyeh522@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.14 12/24] USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.12 21/24] thunderbolt: Do not double dequeue a configuration request
 Date: Sat,  7 Jun 2025 12:07:52 +0200
-Message-ID: <20250607100718.187014956@linuxfoundation.org>
+Message-ID: <20250607100718.872379256@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
+In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
+References: <20250607100717.910797456@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Yeh <charlesyeh522@gmail.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit d3a889482bd5abf2bbdc1ec3d2d49575aa160c9c upstream.
+commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
 
-Add new bcd (0x905) to support PL2303GT-2AB (TYPE_HXN).
-Add new bcd (0x1005) to support PL2303GC-Q20 (TYPE_HXN).
+Some of our devices crash in tb_cfg_request_dequeue():
 
-Signed-off-by: Charles Yeh <charlesyeh522@gmail.com>
+ general protection fault, probably for non-canonical address 0xdead000000000122
+
+ CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+ RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+ Call Trace:
+ <TASK>
+ ? tb_cfg_request_dequeue+0x2d/0xa0
+ tb_cfg_request_work+0x33/0x80
+ worker_thread+0x386/0x8f0
+ kthread+0xed/0x110
+ ret_from_fork+0x38/0x50
+ ret_from_fork_asm+0x1b/0x30
+
+The circumstances are unclear, however, the theory is that
+tb_cfg_request_work() can be scheduled twice for a request:
+first time via frame.callback from ring_work() and second
+time from tb_cfg_request().  Both times kworkers will execute
+tb_cfg_request_dequeue(), which results in double list_del()
+from the ctl->request_queue (the list poison deference hints
+at it: 0xdead000000000122).
+
+Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+bit set.
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/pl2303.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/thunderbolt/ctl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/serial/pl2303.c
-+++ b/drivers/usb/serial/pl2303.c
-@@ -458,6 +458,8 @@ static int pl2303_detect_type(struct usb
- 		case 0x605:
- 		case 0x700:	/* GR */
- 		case 0x705:
-+		case 0x905:	/* GT-2AB */
-+		case 0x1005:	/* GC-Q20 */
- 			return TYPE_HXN;
- 		}
- 		break;
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -148,6 +148,11 @@ static void tb_cfg_request_dequeue(struc
+ 	struct tb_ctl *ctl = req->ctl;
+ 
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
++
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
 
 
 
