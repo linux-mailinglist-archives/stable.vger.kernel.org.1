@@ -1,143 +1,134 @@
-Return-Path: <stable+bounces-151834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C166AD0D26
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 13:43:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD409AD0D34
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 13:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA071895702
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:43:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F95A1895740
+	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 11:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD3E221F00;
-	Sat,  7 Jun 2025 11:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB4920A5F2;
+	Sat,  7 Jun 2025 11:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="AmN7JHt+"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="ZfBdfdmJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C999D22127C;
-	Sat,  7 Jun 2025 11:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FF21E2853;
+	Sat,  7 Jun 2025 11:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749296569; cv=none; b=JgGye++lZ+s+Hss7aUGmM0c2BxpfLOOz+r//T84V6rhOH8hAaLwFWh6hScF+170TcYH4UsYbbEMPMO7/SIf0Aa7R5FinVRizemrQCHgDeKiEcwTobso1DznDSZ/JlENHz7+tZpwceyDitNziWSIvD7e8Z1rXR9E9gKQZEV5Hjjk=
+	t=1749297025; cv=none; b=hbh4RnFt9uWnaaLNcXbyzWdGkrR9XfNaXCIjzttk9S76UDthIK8WQJnaUOY0atg3Ae+5dCfNy22X9iqs23uAvDjPehVc6nTIT5C8MBxh27IOO1YkNER8bYkI5GmOcB8vrWAMEeE9fgoA6vahee3UVKl3OXqdOTsGuHSLYSvSjCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749296569; c=relaxed/simple;
-	bh=A5VFj1e+xpbR6SHxeq2NDLvtJFEJtEFEkt742n8/blA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qqc6+Jao4gyEynBCl0jGsaxn/PfcwDQLD0hNeCRfnanNXPgXhMgV8BzVQmuUSTsm0IgmtfW8kgZ58O9lkpo9zU55LwWy/43RxKjCwVDwm0KG+V2Ei3fq6Cdxt8Ri+/1eXkOrbk1BSf7MKio9ot2aZ1x8+X+KZWUDlxHxTvd0Jzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=AmN7JHt+; arc=none smtp.client-ip=217.72.192.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1749296556; x=1749901356; i=christian@heusel.eu;
-	bh=gIYlZ50mxQXGvz6F133XjL9sWrBBVbI6DqKQT9SVqnQ=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=AmN7JHt+lD9gR+HbnxcvzEEPnmvqzYThb64z7YFQ7dvCdQfv/yHK1qpyFBLFf3ee
-	 O5moNS22r1z6viKbzYvu1X9heiB6fCbQ/ILHoeigq7SYBd51ZQWJHrMLr5c1YRB77
-	 klj/cB0nOndqQXlQcqNsVqsCw70iK5pRlk+rIQXMxO2phMAzy7oK1AoO1OLveOF/t
-	 9jjrHnBDtfpAC0P5fENE2Xkmqxp8OCodYL5ojD5hbn5ltJ/s5kv52VWoaXm2DAoQF
-	 bxuSpCU0xRk9e55o4OaU1KFa/Vve0i8199HVZokUfQed6zcFShY0kCuBNYMFMPGQ3
-	 AWk7E5xWVh/SaAUnFA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([89.244.90.37]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1McGxG-1uyJ9j41yW-00hj8d; Sat, 07 Jun 2025 13:42:36 +0200
-Date: Sat, 7 Jun 2025 13:42:32 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
-Message-ID: <d8e69fb7-fd1f-46b4-8031-13ab23ed8226@heusel.eu>
-References: <20250607100719.711372213@linuxfoundation.org>
+	s=arc-20240116; t=1749297025; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Znx8TEhvLHBanXkgsbn7xgSnXYaa9lx5JfbfOFIWYAzdXqtUlKJxEn639gJvdXLwq5qQF35Df5zP/6NP05gLNvLjODTJQWiW4y1CPqd3nIPbTD4X3Nt6UAR3S3GjhHa4AZokSjK/+Z5P1fmKmoIloboQH9aLC4iclBErYBJYSB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=ZfBdfdmJ; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1749297012; x=1749901812; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=ZfBdfdmJiaaSkvldJcyify+LUjRoKkZ7SLsy4nriapQ4osiyfSlnBsPZM/BJTHQ+
+	 VevNz2uFcTlTqa+gfTMY6lmK/CSTYSlxs6WE37VP53rdqnLomH3gCxvkbTPGtKbgz
+	 Dj0NqgdwEP6/chqR1NIQUVLvWJEcqPTmDTyo64Ju2Hk8SEBOim5WTeTxHAByouWjP
+	 AzF6QIfSx2A1hv2oO93oYH8n35ck0s2OlCnv00vhvQ6IMWDJ9lMIjfH0hQj4d45pv
+	 XdWMOz71Pj3xPPzTVvHEBNjfJNRSoL54FfcufTJSAwWMClg8ij+T5gHXyg42obxKQ
+	 K69QBXhAL7HWFDFFHw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.40]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6KUT-1uvLAr0DW5-00vTlc; Sat, 07
+ Jun 2025 13:50:12 +0200
+Message-ID: <7fb63be6-8c3c-4f8a-8a34-9a6772c7ede5@gmx.de>
+Date: Sat, 7 Jun 2025 13:50:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jj753swazz7l7vzc"
-Content-Disposition: inline
-In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
-X-Provags-ID: V03:K1:yI7xnS0BEN970P6M2FWovJNt5Pig2NzeKXfDXnoS3GKC7ItLPaX
- QJfvdk8lbsrZAJ0mb4ZKFT7G0F2fDkBuwSKl8aTO8pO3UIkC+X9PkKbTanHZT6QrEi0P+TM
- u5e/ccnbxAjHRHP4IKXlc4ORbNQaq69yTDHvfZYZikwuvUH71r5eat5virwC2fzgFBOZY/X
- ixH276Q4UfU6ROFWPW5Lg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/R9EqnYZTZE=;iNdiJhF9PNlT/qwNpY2FcgxQbze
- SHk9SaopC14c4gsChEJ4BrgUkx1eHaY9jho4k46GtUr7yF+zAauDwSIShYG9pyDZ9zxbgf9Mg
- 2XWjeuiJfelpGIAAVIbEXRL/d1YGVJTFNISWi/sw7Ctl5dWd5RW45aLcxIEyU6kxqQ6GjRwsc
- LNuqmkKYOf4qgp9gcW3FxIhbAErbMJE55FVgxefY9HwzKKuVOSdnEHSmEp5cgK5dllC5lrF+4
- j5SlF3p5NFLwmPOvp2XeB8KmrVv3RoTaFdNKi2wCAzCcEPnRxE4lE/VAk4dodMknlCsJf0pzy
- SSDYn7J/cqnhwOCgx4SS00o9DkFP1lROLBm0TVtj0ejzAhyvqj/UVvx8sF7FsEzl6hScP7cW/
- fXX7ZDSPTRPapyPI1ZUl7KGJZezjSzSGGLgoFgqWzqqlh1FVKcvhiTxrgzr1zpyUe8ouRKrpM
- lEyWctR6TzD0K1n2SoMpZaB25K6mT0paJ5GiicDnmDr7hT81Rtx3YTY1AlVRGlqdFMD+1f5H1
- lmuYlPXKO0Tx1RxxPFHa8o9cfEY/hCLkb4qzBWiemlzASK7vkOdnv8BbYXTJ14LQDxayjyuHb
- XNtfZuPbxJQaPhuFAZtiLhG2svqjNxq/ofURcUCyVkD2tJYC5l6UHvSQgXNas0/9sZnJrsX7C
- oIdLOJNDubH4kMp7dnxcrd+v3yk8bShkZAM5XDuceYvd0nlqrx79I0rgnJhT+O/ScpoLHZQqx
- gNh0sFHbg7QhTFsbnWQ5xl/+jS0TWy71UsqMa0PJrAn/MlrBrdgXjThpf73mh5vBn7skSt2pC
- f1qnIMX5AB+SRmJA+b5aDj0LuWWlqHzT4Fa3Tn60dJpe/HtgdgYKuPy1VAd8uoiSjIE1lr7sC
- nsfFBdcA5wSFe/Yo34GgESf4tVRANIBe6dFh/rLfmrbkMXMNggvSLvMWeGmXP3u6+GL+2rpDP
- 55o262zb23kjPNBEZudHuFN/bSKvkQ2/t3olmAsm3TIBrvRZ7veqvCxeczHXhzDooQ0H5jZdz
- QgiOR3nMF4Qz/FW+CI+Bk2b88X6yOwbwDgqVCZoX3haa4QScMKnYBe7dlphKNB49p4LWdnAlv
- /1vWNGmDSe8qGefenkqg5GThN+7dsXtqt92S2PQBsQdGyn9rpfWoT9Y+6ZVmesJYpQbmcsY6j
- O8T6af8FLgKRo7NyPNdWo2jZo5LdajBlXLC8dmK5kATCvVko+KZGf+drPqqvpbq00vYcABxKS
- tR4adA1UVAws6XxgJu5rdbv1EN3SUjWJyifiIEOTMsxTkt/2As5MCdpF3uj5+xgouooiEboDt
- UATcw8A3u150+iiTl3ReJzV6GTzrEJd9NvT3zqb9WHUOUQdB0GC5VdXDOLSeaj3MpVHyMHkmi
- eOAp7PJhUyZg30/OxByzlgPYaAUdbRLmCW9+SR/JNF614v+GoZsO/zpLmv
-
-
---jj753swazz7l7vzc
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
-MIME-Version: 1.0
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250607100719.711372213@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:J773HgHQekuxhQxkPhTl0XHY3CbtlyMysiOHuVuGA1yqkk+yGkT
+ BzD+WZ/m44LXXFyEEI4brXDBTNjav1hDCNri8yGMoPtQSm1hff+hDGe2p9L78FO1oq2fonZ
+ ZCWxpmsxGfMyjl31xUAfjL8zCT4niZQvl2bakKLzUGfJryT7f1uTCuqS5Ks1i+R5ZVQoOgT
+ MxcgM4mmu/BZDktA5BSBg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:yI0Wr2w2SXI=;humUEjXPbniw2DeaO59veWhA/ag
+ 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
+ UD1VLXOw/+7ys=
 
-On 25/06/07 12:07PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.2 release.
-> There are 34 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
-> Anything received after that time might be too late.
+Hi Greg
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD variant) aswell as a Framework Desktop.
+Thanks
 
---jj753swazz7l7vzc
-Content-Type: application/pgp-signature; name="signature.asc"
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmhEJagACgkQwEfU8yi1
-JYVRIhAA0CHQq5ZUUCu6jIrBj6sVfnhYzkuiFjknop83PudJOunnfoxJOE2sw/Yj
-LbbFLGSaaKp1v2ZHLVL2pQ+rZgUeE4oUPmk4PUGuopir+PTpQkucmCuj/kvt4oiv
-JS0/wU5I20MAQ0/5BWto7MJPcaaLv+b8DJTyiQviGK6HGm9E+mEHaal/z9ID1ush
-ksFcjHzx52dbF/CZdM+tPy/9BAtNfxUWHb72KHbpnibJN+711thoLXWi6LMEQRyt
-QJB57RglQj4mTLouffN3TVS1DW9dNE8LHswpwv0RodBuAKv9vmA4TrK8zusw2fvg
-YDKvOPm9Lfwm6RaX8IzzxlLcbzmw87D1PepPFzPOI7Gta206KwU9Geak7Y3bm4RR
-UgTVPhkAX+ufeHPRyDrw+XwzG3SgxUnhg12G7BR+Q90ZWdM081/7jZvc8KJxXrAS
-+vKto2PlUCUoDxtM8KhkD6fkEVwNaLWY2Y69G1MK6weDn/m1VXoJTIX2kgHxtE/K
-Prec1aIOqh1Cm7AGv4vdcyCvAJn3viHRmHCCskS5vSLDqdWZFnhTmFeqFMGKZcdQ
-rp154zC6sTu7hhnLzrIVUxmZrWw9tOtx1X+r9IIcxtkO4jbzjVIBiXBHKL0kMlgp
-IWWtC5lo4Jb3nqjSfzpSeH0Ulel3AUoYXnHz2jdtz1LYKH4D/OM=
-=ubGG
------END PGP SIGNATURE-----
-
---jj753swazz7l7vzc--
 
