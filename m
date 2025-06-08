@@ -1,172 +1,136 @@
-Return-Path: <stable+bounces-151868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B32AD1066
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 01:06:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E30AD10FB
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 07:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A368C188C1A1
-	for <lists+stable@lfdr.de>; Sat,  7 Jun 2025 23:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE29318876AB
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 05:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E30D2165F3;
-	Sat,  7 Jun 2025 23:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C00517741;
+	Sun,  8 Jun 2025 05:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0Y8mh5rU"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="yMebrNsP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02658EEDE;
-	Sat,  7 Jun 2025 23:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A801AA782
+	for <stable@vger.kernel.org>; Sun,  8 Jun 2025 05:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749337610; cv=none; b=FZ9VOTLpHm7ey+s4nKNDJLj7SEHVdYrLilCZsFhQypT9maEiNN/x+oqFq/YuhPCc/z4pKhgWW9L0RrXd7S0olMeFJpL11iN2KtwV7oVNLk75dlsx/dreUzsFPjx9wcVpojooR+mRhWv9EDe3v5dtCJURWx8MNIi+umILi5Dc+nI=
+	t=1749359648; cv=none; b=sURDl8meaCk7Q/L+hZ9lChiNCMQASeIJjUQypUDckfN0q8nIaEQ5An9DbZsP173mLdAZad+N1lfShT9YYznCYMoxtrNEAWetLl5DjQy09jYiFfHc5NnUCinF0Jf3Kbm0LpbITQlCpxHnouk1Jz8j7sv7hON8//OX6JYTRpdfBZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749337610; c=relaxed/simple;
-	bh=Elhqgyv0nGJsyO5TEHZhORq0Ar7gBk6gYDIVUIQQCso=;
-	h=Date:To:From:Subject:Message-Id; b=SyN+kEvo/JgrSHMQpApfKFRFdz/n1m6JVrN3BqljdAOBUuswXqdUnlYAisvi0ylcWHZ5xCv6SsSk/tAWjWJOWeoStWbhaLMBAsm2vjyNLFBnHSOo8BwWlcX7jQDQAET6FQteotHNQCzr8oubWjj3Zbub4QXEuTDiS1Jxvc/Psv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0Y8mh5rU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F317AC4CEE4;
-	Sat,  7 Jun 2025 23:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1749337609;
-	bh=Elhqgyv0nGJsyO5TEHZhORq0Ar7gBk6gYDIVUIQQCso=;
-	h=Date:To:From:Subject:From;
-	b=0Y8mh5rUDNaZJCovly6krUCYqFzI1BBc8zK++A7+z21hFUBMidyal5Z6fvFRaQQ4I
-	 sgS6LjRL6rDCqKhUoVG3wLxDrk6h7iH3jtbavYVZKO8oxnW/FC3H8qkJweMb7n6Gnq
-	 3Yn3PZhFiT4lOCFFb5mMoc8gClRZdXtdAsbVaRVE=
-Date: Sat, 07 Jun 2025 16:06:48 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,mgorman@suse.de,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jannh@google.com,david@redhat.com,ryan.roberts@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-close-theoretical-race-where-stale-tlb-entries-could-linger.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250607230648.F317AC4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1749359648; c=relaxed/simple;
+	bh=R7yFIfJJ72yu/12lLfw+YdCnKdRGHYhVeS9kfsURIWQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QZVLUxqyOsBBHC5CgtP+LfT4WGvVlKTVCT70esgkaHt5rHoR1lU53yvgTcsQ3Vf2GsCMRAT/IeJOcb0sFAH27TGPon063cq2KZ1llr1z5tdaeMiAj5KxeOvj5jgnihDG3uzxe3uYwyJaMPWtdIUieJZw5hcETJ8DlVIqnQAMh6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=yMebrNsP; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-31332cff2d5so2457565a91.1
+        for <stable@vger.kernel.org>; Sat, 07 Jun 2025 22:14:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1749359646; x=1749964446; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bq24FXrS96fZ/hOloFhOjn4H+O+16opz4TqnnVXi5gI=;
+        b=yMebrNsP1oACfWNxO4xg1CXaswNMsX4L147PY7+uUlMY0Wxv16N2k2m9KIFboq3IZj
+         BOYC4FCQWg1BKOCYw0Ix2p/NJ6GN7Jsm6jNcEx/po/S4HG/uuoibiwewWdCPx9eAUOZi
+         3BJdagFSvrkFXByChe3G3jEVInXtwjEytiymg/TknhXP4shiv44BLLD+MLm1ygoeCBz4
+         Amu5jK72aYc3HGbxWnpNmJs9foWiJB1Qcx/hRoXDg8pwLZd860jiT+F74ZinyjLz8LJm
+         jhG6KwCA0cDD0MsNldLMLJJwEI5Gix5jgUTv+Wa1ipMebqA7h48/z8MeNntqJ8jIqSDU
+         Aqbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749359646; x=1749964446;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bq24FXrS96fZ/hOloFhOjn4H+O+16opz4TqnnVXi5gI=;
+        b=fD5IbL5q3bjjcp+8AFRw3AUJdE/zBSnbMM4PGUE5jH3eWjX8wIV5DJcEmKbRFfB9Vs
+         jE1YOWsa8C99YDM8+v0R8k3kPqsLeKRbDhKn3EecHFAAxchyA2nDjeX6OFKnpTSNwNh3
+         1YuE5uphp3htXjBnGHa/iZFZTK33fBIVq3rlw9e0GE4IjGjOfjNAgE1kcx7eMT/tCw/I
+         mV4cL/SAEp/UBd++/Ve0/r0ENUcF+CQXBcQ5787Qf9DDhVZFScbXN29NZlZsR6kGJd+u
+         8G4VrayuwafcsVHkLPqfF0oKTAzypmVh2QcTXevLVGvRcVihSCVnFzW+N1DWdBhV0xI8
+         LtvQ==
+X-Gm-Message-State: AOJu0YxjP8VbHRSoPSaccfdQ7nGSEk4+ScLOWs1wfQC63WFz1KXPUAOP
+	zOVnHLyHg7TELJ+A9LKAI7aohDrCpGNziv5C8tjOCqOE7JcPsodgztgm6Rrz3SQtuuUXXGJ3Kd3
+	AmX24H3n45ZNYc9bJhaNkkSWnzNbX3U7rsJshRCjvSw==
+X-Gm-Gg: ASbGncvPwocpT1F+1oLUrHyJ+iubgUPosm8b9/Mz9w7Zc53776psmvfCfc8SgWTZ0tm
+	CINp3mgQVpqonl5udDxYvVIBAik8J+QxB2Pq/G1V/Zrp2vL2gp6J/qpmLmmdjxteJCqGmP61BET
+	ceIM6bYEmxamTjwSe6csOKLxwW479qcUvX78yS5DWeclc=
+X-Google-Smtp-Source: AGHT+IENDAqgfEmWtDHYiRyVTLe/VG6n9eA8bBw+SHHFtxygDA218GlKFLInc20fHWa12oeOBRLbkK6qXbDoHPE0cPk=
+X-Received: by 2002:a17:90b:1847:b0:311:eb85:96df with SMTP id
+ 98e67ed59e1d1-31346b56aedmr16157454a91.17.1749359645765; Sat, 07 Jun 2025
+ 22:14:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250607100719.711372213@linuxfoundation.org>
+In-Reply-To: <20250607100719.711372213@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Sun, 8 Jun 2025 14:13:49 +0900
+X-Gm-Features: AX0GCFtkSD6iMqXwA4mvNAHmJR_H_fErF2XtQqI6x3N-rGaSjH3mHz7rlegcE3Q
+Message-ID: <CAKL4bV5xfxq+Hvnd3C6DdjTT-WO2dcjgK_yLGHSPu-vuq2iW4A@mail.gmail.com>
+Subject: Re: [PATCH 6.15 00/34] 6.15.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Greg
 
-The patch titled
-     Subject: mm: close theoretical race where stale TLB entries could linger
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-close-theoretical-race-where-stale-tlb-entries-could-linger.patch
+On Sat, Jun 7, 2025 at 7:11=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.15.2 release.
+> There are 34 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.15.2-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-close-theoretical-race-where-stale-tlb-entries-could-linger.patch
+6.15.2-rc1 tested.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+[    0.000000] Linux version 6.15.2-rc1rv-g04e133874a24
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.1.1 20250425, GNU ld (GNU
+Binutils) 2.44.0) #1 SMP PREEMPT_DYNAMIC Sun Jun  8 13:31:39 JST 2025
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Thanks
 
-------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: mm: close theoretical race where stale TLB entries could linger
-Date: Fri, 6 Jun 2025 10:28:07 +0100
-
-Commit 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with a
-parallel reclaim leaving stale TLB entries") described a theoretical race
-as such:
-
-
-"""
-Nadav Amit identified a theoretical race between page reclaim and mprotect
-due to TLB flushes being batched outside of the PTL being held.
-
-He described the race as follows:
-
-	CPU0                            CPU1
-	----                            ----
-					user accesses memory using RW PTE
-					[PTE now cached in TLB]
-	try_to_unmap_one()
-	==> ptep_get_and_clear()
-	==> set_tlb_ubc_flush_pending()
-					mprotect(addr, PROT_READ)
-					==> change_pte_range()
-					==> [ PTE non-present - no flush ]
-
-					user writes using cached RW PTE
-	...
-
-	try_to_unmap_flush()
-
-The same type of race exists for reads when protecting for PROT_NONE and
-also exists for operations that can leave an old TLB entry behind such as
-munmap, mremap and madvise.
-"""
-
-The solution was to introduce flush_tlb_batched_pending() and call it
-under the PTL from mprotect/madvise/munmap/mremap to complete any pending
-tlb flushes.
-
-However, while madvise_free_pte_range() and
-madvise_cold_or_pageout_pte_range() were both retro-fitted to call
-flush_tlb_batched_pending() immediately after initially acquiring the PTL,
-they both temporarily release the PTL to split a large folio if they
-stumble upon one.  In this case, where re-acquiring the PTL
-flush_tlb_batched_pending() must be called again, but it previously was
-not.  Let's fix that.
-
-There are 2 Fixes: tags here: the first is the commit that fixed
-madvise_free_pte_range().  The second is the commit that added
-madvise_cold_or_pageout_pte_range(), which looks like it copy/pasted the
-faulty pattern from madvise_free_pte_range().
-
-This is a theoretical bug discovered during code review.
-
-Link: https://lkml.kernel.org/r/20250606092809.4194056-1-ryan.roberts@arm.com
-Fixes: 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with a parallel reclaim leaving stale TLB entries")
-Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mel Gorman <mgorman <mgorman@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/madvise.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/mm/madvise.c~mm-close-theoretical-race-where-stale-tlb-entries-could-linger
-+++ a/mm/madvise.c
-@@ -508,6 +508,7 @@ restart:
- 					pte_offset_map_lock(mm, pmd, addr, &ptl);
- 				if (!start_pte)
- 					break;
-+				flush_tlb_batched_pending(mm);
- 				arch_enter_lazy_mmu_mode();
- 				if (!err)
- 					nr = 0;
-@@ -741,6 +742,7 @@ static int madvise_free_pte_range(pmd_t
- 				start_pte = pte;
- 				if (!start_pte)
- 					break;
-+				flush_tlb_batched_pending(mm);
- 				arch_enter_lazy_mmu_mode();
- 				if (!err)
- 					nr = 0;
-_
-
-Patches currently in -mm which might be from ryan.roberts@arm.com are
-
-mm-close-theoretical-race-where-stale-tlb-entries-could-linger.patch
-
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
