@@ -1,112 +1,103 @@
-Return-Path: <stable+bounces-151878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F56AD1193
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 10:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3840DAD120A
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 14:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC243ABE04
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 08:34:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 490FB3AAB1F
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 12:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABAC1FBE8A;
-	Sun,  8 Jun 2025 08:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0825204F8B;
+	Sun,  8 Jun 2025 12:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hannover.ccc.de header.i=@hannover.ccc.de header.b="Jc6pgfTq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hIs0dXmc"
 X-Original-To: stable@vger.kernel.org
-Received: from hannover.ccc.de (ep.leitstelle511.net [80.147.51.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEE21367
-	for <stable@vger.kernel.org>; Sun,  8 Jun 2025 08:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.147.51.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0301C6FFA
+	for <stable@vger.kernel.org>; Sun,  8 Jun 2025 12:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749371708; cv=none; b=gBHSStsz9tkT8ceZXVzHF1WYhg7SJSU3DcMnjN4qLiytjj3zvnEP42QE1F1+JLpRxffHiWSrpE72ZDSKx8Fum656aUs+ojg7l7vgARN4EoM+vq7vOz4m3hC5cNmTT5Jc+cEKL1FLSjN+PLEgAndwFnHgZzXBy+6vIk+xLZRmRlg=
+	t=1749386937; cv=none; b=MKOUQr0WYPvgsXHhHeqCZ9LfLRqYWHi3IjoWZ7+ZDmLQzekQHciMY2Ln07v8PZF4bgC8SBPzwc8M5LMPGtWm8dPHJJ78O9Vh7aa2990b00d8idao50J9QUN3kJDzvB3pLRATN+g8CMKf9ILAsc04+uUErGhbfTxa175b5PXmxoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749371708; c=relaxed/simple;
-	bh=rLRUKbIheIYC5N3ESF85L1H5yULmOan/iopEZGO1iPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tfsLEF31NZI0lsQ9786IStuyHi8n+68sG3ZHh9Ojt/SqjT1zWQBJ+S/AB8b46JLXhoFQBcXvp+ncdQogX57uM6iZt29VP7LYCWNjSnXkqyJHjzsnnPbmZnAiuq/aCdVn/SpgMji+0Ysp8SQcsYER0fG0C6MOAo/2JICab+v45zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hannover.ccc.de; spf=pass smtp.mailfrom=hannover.ccc.de; dkim=pass (1024-bit key) header.d=hannover.ccc.de header.i=@hannover.ccc.de header.b=Jc6pgfTq; arc=none smtp.client-ip=80.147.51.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hannover.ccc.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hannover.ccc.de
-Received: from spatz.zoo (unknown [94.31.115.35])
-	by hannover.ccc.de (Postfix) with ESMTPSA id 66CFF2090A;
-	Sun,  8 Jun 2025 08:25:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hannover.ccc.de;
-	s=ds; t=1749371151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FduPFD9NBAvZKbmCKKAr0654gj3xXHW9v/6qyi/zjv0=;
-	b=Jc6pgfTqyM6JH2RzFpem616AFA8bP1kItPE9ub0Z27vjPcfcO0FCpALt8Q7exfqIsuhU9h
-	DraGNVEh648YFbkSdc0sd+XxMyegAn/5ZUswyGSMBxO4q2ivDNUk6Tq3Z3nrru48GBpQly
-	XdHcXIuYyleZMs2TLcgEODyfsu8bLSk=
-Received: from ingo by spatz.zoo with local (Exim 4.98.2)
-	(envelope-from <ingo@spatz.zoo>)
-	id 1uOBLi-000000002A6-1oj1;
-	Sun, 08 Jun 2025 10:25:50 +0200
-Date: Sun, 8 Jun 2025 10:25:50 +0200
-From: Ingo Saitz <ingo@hannover.ccc.de>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Ingo Saitz <ingo@hannover.ccc.de>, 1104745@bugs.debian.org,
-	stable@vger.kernel.org
-Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
- CONFIG_RANDSTRUCT
-Message-ID: <aEVJDjS6_po-kMj-@spatz.zoo>
-References: <174645965734.16657.5032027654487191240.reportbug@spatz.zoo>
- <hix7rqnglwxgmhamcu5sjkbaeexsogb5it4dyuu7f5bzovygnj@3sn4an7qgd6g>
+	s=arc-20240116; t=1749386937; c=relaxed/simple;
+	bh=Hg1EJQbuSXuDj2iFP9JPnOTxwl3g7372ywJP1TIer9o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XuZf9euUKGq8O9WrYQntPObdpQ1dl2lKh4WZ2ysRRUEq+q3eXJecL2Ws6ZezJIol7MAlgQRaF2Guqcmmfp/1lqK9ySCKYmcAtvzlBdUvXhZdaCOCseTCueqH9ly9voP+s2DCkfpsMfonqXLQuLqh3w4N1fo/rYTa3JISIXKJZ1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hIs0dXmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BEDC4CEEE;
+	Sun,  8 Jun 2025 12:48:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749386937;
+	bh=Hg1EJQbuSXuDj2iFP9JPnOTxwl3g7372ywJP1TIer9o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hIs0dXmcwquCfLaTlLWoGw4V0Q8vE0Wjh/FWjmfX7WsSNpM1u/WzQOedW5UJonb79
+	 cReweu9/p2LvR+CQxvJOg98vIzMS9sekQulGHwOwxbC6zDe+8cgS2Rwts7LMyawWHU
+	 DTICVyyoo6CM/kU+r4bhEgePsGun5ltJv/iyMzedVmio4iOTo3NWRKEtjst+IeC7HC
+	 l/Y1tHWNzdcrvofUbDenzA5U7XMYDUhCx7OtonwnYgvE4vjoVCUZ/n9GPKoC3CV6X3
+	 Z8SV/hE/RC8gfqfUNOAMLMSEn/5ZqBXBohR+FnlgIC81HOeURhIXfnB79oU5mDysU5
+	 78q0C4f8pMj/w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.15.y 2/2] rtc: Fix offset calculation for .start_secs < 0
+Date: Sun,  8 Jun 2025 08:48:55 -0400
+Message-Id: <20250606231907-7a0bee837195d533@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:   <1243af4fd5d2974b4e77e85873b999fd877161e7.1749223334.git.u.kleine-koenig@baylibre.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <hix7rqnglwxgmhamcu5sjkbaeexsogb5it4dyuu7f5bzovygnj@3sn4an7qgd6g>
 
-On Wed, Jun 04, 2025 at 10:43:11PM +0200, Uwe Kleine-König wrote:
-> Control: tag -1 + fixed-upstream
-> Control: forwarded -1 https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-> 
-> Hello,
-> 
-> On Mon, May 05, 2025 at 05:40:57PM +0200, Ingo Saitz wrote:
-> > When compiling the linux kernel (tested on 6.15-rc5 and 6.14.5 from
-> > kernel.org) with CONFIG_RANDSTRUCT enabled, gcc-15 throws an ICE:
-> > 
-> > arch/x86/kernel/cpu/proc.c:174:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1516
-> >   174 | const struct seq_operations cpuinfo_op = {
-> >       |              ^~~~~~~~~~~~~~
-> 
-> This is claimed to be fixed in upstream by commit
-> https://git.kernel.org/linus/f39f18f3c3531aa802b58a20d39d96e82eb96c14
-> that is scheduled to be included in 6.16-rc1.
+[ Sasha's backport helper bot ]
 
-I can confirm applying the patches
+Hi,
 
-    e136a4062174a9a8d1c1447ca040ea81accfa6a8: randstruct: gcc-plugin: Remove bogus void member
-    f39f18f3c3531aa802b58a20d39d96e82eb96c14: randstruct: gcc-plugin: Fix attribute addition
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-fixes the compile issue (on vanilla 6.12, 6.14 and 6.15 kernel trees;
-the kernels seem to run fine, too, so far). The first patch was needed
-for the second to apply cleanly. But I can try to backport only
-f39f18f3c3531aa802b58a20d39d96e82eb96c14 and see if it still compiles.
+The upstream commit SHA1 provided is correct: fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d
 
-> 
-> This wasn't explicitly marked for stable, but I think a backport would
-> be good.
-> 
-> Best regards
-> Uwe
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <u.kleine-koenig@baylibre.com>
+Commit author: Alexandre Mergnat<amergnat@baylibre.com>
 
+Note: The patch differs from the upstream commit:
+---
+1:  fe9f5f96cfe8b ! 1:  6c5107e2d5c38 rtc: Fix offset calculation for .start_secs < 0
+    @@ Metadata
+      ## Commit message ##
+         rtc: Fix offset calculation for .start_secs < 0
+     
+    +    commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
+    +
+         The comparison
+     
+                 rtc->start_secs > rtc->range_max
+    @@ Commit message
+         Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+         Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
+         Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+    +    Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+     
+      ## drivers/rtc/class.c ##
+     @@ drivers/rtc/class.c: static void rtc_device_get_offset(struct rtc_device *rtc)
+---
 
+Results of testing on various branches:
 
-    Ingo
--- 
-const_cast<long double>(Λ)
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
 
