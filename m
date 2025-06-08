@@ -1,124 +1,217 @@
-Return-Path: <stable+bounces-151936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076C0AD130B
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 17:38:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2615AD1316
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 17:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1095B3AA989
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 15:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36BCB18890A3
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 15:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AC41547D2;
-	Sun,  8 Jun 2025 15:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1080018BBAE;
+	Sun,  8 Jun 2025 15:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="iV+Z9B5p"
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="qFBaxcwr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71B513CF9C;
-	Sun,  8 Jun 2025 15:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C5A186284
+	for <stable@vger.kernel.org>; Sun,  8 Jun 2025 15:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749397118; cv=none; b=MFpIy8XYAJtDCn4am/9wyX+tpie/DuMdlZMxL5h9Xu+sp4ZLRADvoOg0rSEpmRo+tntBp29HVXj7BJ1gCDSnh2nrKsw2HfMZ19xHQ2V8iPuQPC/QTYDx19VtMcICAUgtXV1QcV58GN1/n5aG/kQNzca4w7wtS7GRYT/W6fx0Fxc=
+	t=1749397791; cv=none; b=RTjarpBmfCm7jIEyH4dT5saryR5qZmd4EVRV4jRO5H5q7dSrbpLQVLsfbzdCwOPr1iLRaB3a9yckte++DhTgHNGICBotuvPA3sRiWzSPPa6aab1OUxLxbY3d8Nvu2LPZZNvIvceIMYnt5PcKNq9OruA0JIg4FkpKmube7RdGaqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749397118; c=relaxed/simple;
-	bh=m1oUG0x77rJWQXsqAeuZMVS9z9c19VzPu+Q1YtyLFzo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JMwzLCxDUaFtH5zyWYpFvMz2iiNNsS3M4okVDLYxuZAWRBgw1ozNsNWDjw7pWTsYSxbfPNzjkIUHyuiyTFixFb6NpEpJHpF71Xx7EruUsskfhpq6aVTMn4uR5yMlHnYXK9El4XnrKGzQJKhpTeMiBOBIgjeijwq3T9MWddrsGbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=iV+Z9B5p; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-450cb2ddd46so22989725e9.2;
-        Sun, 08 Jun 2025 08:38:35 -0700 (PDT)
+	s=arc-20240116; t=1749397791; c=relaxed/simple;
+	bh=MKsTM1+C9QeCGD0Pjs9eZErUYlC1Pyuc2805DCEa5Ew=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P3woXKY4Ymxrhq2C/s1PcC2RRjm9DteaSeoCvXiBDc0Dz1A51bifBLXadcuYBjRkhcGumG5cDW7u0XlGoIqX79ihvqSZa0Ok/zmbi3LJKZ6d5vFe8xWEiT2x6pKCdbjZ3Fyg2+W0sWW0w530p0qUNxV4woHdG6HZYlVpkFmeLIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=qFBaxcwr; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7d09b0a5050so208965585a.3
+        for <stable@vger.kernel.org>; Sun, 08 Jun 2025 08:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1749397114; x=1750001914; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mAPW9CEAQTkA9ZtJQM59eScIy81/xXlC54hdG5dtI+E=;
-        b=iV+Z9B5pt1/n7NTQ6pfeVcJC289CH9Q9hk5sdPQt0CS12GLFdNrF/cdFFqRVLjqniW
-         UF+cvjyrpMnaahM3vyG2e8o9VUpvHwdNQfm3s1/P/o91+NL1kTBPbhF7SnlUHyPycd2N
-         lHZe/33iJNT/qKfmWmOrw3Ow9FufB0CYODYdTP8APCwdLIFzDzruzoykRTlSW40vGISb
-         2xU9tPzjUsn+DDFBa4dqqTjlYceJ5wNg+F5+IqqDhEieUA51dvXUPAMzPPvkbB2HC15d
-         +34qj+n6WkiN9RlDFvtxOgHxxP0XNg4A+2vpt9aBWts2q7etiD0NqZOP0xI2cYotBCXR
-         GjVA==
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1749397789; x=1750002589; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=15SfyzB2KZkvwixg00o+49m0a1+RaFWhfwNSGqXDKgg=;
+        b=qFBaxcwrGwx3aC4keLcL1yxTx9LInLVOMMYK5CmMizK9qjXY9C3o221FK2DC9cBFJa
+         i0FJjBgYkCxNKBw4qQbWmAchJ61jl1pcxmPUUsX8+OTonLcqH7Ks1JbO1WhqS+rMjngn
+         1Qhk0GRZP7Q6iIuPhV5yJjrDsGr4YqymemcP3H4k29FfwbPeOBXb3yt/TODOB3AOg8yN
+         I8SROv+PIBKd1ereY3L7onL+lQTPsdITHJO1U83Xh03NzOm60f4o0wzJB48vj8QjCQee
+         9gUeBu3fZTO9qNY7T0nZVgpdu6LlRskPWtMDKEfRk4YhzG3rSgakJSMbRDf6BlG+UJlk
+         0S0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749397114; x=1750001914;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mAPW9CEAQTkA9ZtJQM59eScIy81/xXlC54hdG5dtI+E=;
-        b=b285yiiRyZ2CyQGTrtDRGYIZTB+68MxO5d7mod0bMdbJxfgOuyW+Lqj6wR1JO1kt66
-         okKYvIDPDTF0xK1KVq8i+2eM/rjI8sg5Ki8Eg1dF0vp12Oa6PNyS6KXpcxropeLmdvCw
-         QtTCp4ODEM1qb7WSj1Ek4JxMvO3wjBJyjFDzh+anGvkvtssmHxeA8T+fe9P9Nlw9Ycvv
-         ZY0tBnacXj0jnRKsLHdHiucvIop0fiP0s4Fo9aJLVsIsMDys5mXllzIb+b2FDPCMZzN+
-         H1tUq2C5niwI4vOjOhkqXZ6tsRqoesYEtQir8xXNVOPZA6r2M8N7BSewjJJmyWdQOKa7
-         zfRg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7C6HU/HYXD1iXrm+XbpTrPKHrIW/1HKSLdDNmfJumPqiRTb+TzaMTMWCBjaxopCcnBg2c+7fFusf0Nrs=@vger.kernel.org, AJvYcCXfZBOgBvmkyQ8+FNHUq/F8jmGE/c2cajz5O6uGq+jHyX2rHDukDOz/kk4y+t4DdszbL+pjgZEC@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4prV3NjILDEgxGMOk7o9qrlcjf/gsklx4xH+cbndtMH15rC89
-	EEGrMuNI9T/w21q4L3znR5kAG9Aey6vj1TRDJl0yoqkycCiL9lBIu5U=
-X-Gm-Gg: ASbGncsQ22/n7z17A5sLEhtZQpEE8IkFtuCDAMIr/b5coqe4urG5Pcyu7McCjmK6BPN
-	4GcyQbtiZBXoTTbUtj0KTLWendofP58sJZic/cZSM+fLQ7bMXI6bd32tMWnj6SNoHye/IZk+oUT
-	sb4Zsj7nTY48nPmR/NSf6JMw2ZwI+4C4JHbzPXvOboyF4bcviERVEEp2ikFeUjja7tJo24g3ZgG
-	WUbt8dwpOuRZioUhghJB9dXhrMOMSCc/RvZrHAaptamRpCdQQY1PE7QctwTYnC+YvgpwmJnnMD4
-	HHstt1wFRbhPQs6ujzMObvNxZz++795AGg3aI98LRTAQVl1W4apdr0OxGsfRPsbtoHzPWVd02hu
-	RF9ZQlYJhbEbr/0IV+pNw5zxC36iMcDLXL6/qBw==
-X-Google-Smtp-Source: AGHT+IE+yeRQhGLyvfPMEYFhMszTng6Bd900060XU6yLxwA8zMJMGepOitYZ4xu2+e6pOdpNKpKBag==
-X-Received: by 2002:a5d:58f9:0:b0:3a5:3b03:3bc6 with SMTP id ffacd0b85a97d-3a53b033bd0mr3601348f8f.28.1749397113741;
-        Sun, 08 Jun 2025 08:38:33 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ace02.dip0.t-ipconnect.de. [91.42.206.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532436650sm4642069f8f.65.2025.06.08.08.38.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Jun 2025 08:38:31 -0700 (PDT)
-Message-ID: <d8374546-e88b-412c-9e8f-4a6356430db9@googlemail.com>
-Date: Sun, 8 Jun 2025 17:38:30 +0200
+        d=1e100.net; s=20230601; t=1749397789; x=1750002589;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=15SfyzB2KZkvwixg00o+49m0a1+RaFWhfwNSGqXDKgg=;
+        b=Dl2CL0y2eL8nmMqGRRAQXqhJnmgS0DBo8UnNPgeV6W7T9RXPopQqky72ibSqlEyYld
+         upGnzob0H9U9VAYwH8hC8LYfbyGxfP9TiruGeUD0OJ6f/wDtBRTTqRAfjdhbQWtVyd5D
+         9GNAHkDrjXHSZ5dOYjr7JENT9e9zWsshqJlpFe6K8/nw4le+OwJoEnNUxGGSu280Dvn0
+         hGCMJC1/vfiymcn4hGpRvGQjxttzo7YoJIjybHxP/QlLwuv4DS+OpWXZGD7JB1/N9KAN
+         StQi23zGVJ30rG/B+xXxyI6agZ1CdlV90WOqxxg8jDsUtFPHzAsMtlRl+yrhSaT3pbxQ
+         Tg8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUnjf5129R285W6Y0ItR6UPRew8I01m77l+klddQO0tT/ViJIMMY41QhfmFer6N0FeLIpCJibE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4vjULnYLCKKv8X6WaovOeLgNW6bsSwJ+vP6fsSga1t768OUAt
+	mCl2VR3tejo4JaUvXjUqp5X3JqHzRAgdokyje36Ecz5zLtUqNyWJpWaW21Ltv99N6jM=
+X-Gm-Gg: ASbGncv4BBNix6DDy3wy3uKhK+7grkHf4qnax7JLM1wlGVBWCy4ZydIEtCR6JpsHPy1
+	L519k7zs7jNgPLZP3GnUF74JtiD9XJN3tH50Mbh2o3Z/1Pfr2TyqLbfst0VRHSal0bgi5qMZ70I
+	E4CFluQHAzKqvjhNkUOx6+wmU51mhdXDXAIAwg6fgszHP4fBZ3OV7oGWaNYr1xC1OfvyXiN5DVy
+	v+9lbBHpaJKjOl8GrQBUhBr04sGQvotmsA3Z+g+uj9N0ozGrQ3M/fPxhFaJlZT7LLgYLfRlr7It
+	UJ1eqTqL4xQT4Iq19UcM//UMfellW6J27C0IleAQc6Pz2L6TrqUUvwd42qBmIBPuRlMY69Uianq
+	F/q1W97q8e4tIZRBaVJo1CEM7Jn8hcQbR66fb2as=
+X-Google-Smtp-Source: AGHT+IFMItTRkpFBvAJi4PVEEUt3/gJfRAjUZYN3c1UYEfhEKFgqVle4xRdj02wbVxFz+gkYB1ZUlw==
+X-Received: by 2002:a05:620a:9163:b0:7d3:8df7:af6e with SMTP id af79cd13be357-7d38df7ba37mr494433985a.32.1749397788793;
+        Sun, 08 Jun 2025 08:49:48 -0700 (PDT)
+Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d25a61b5fesm425460185a.93.2025.06.08.08.49.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jun 2025 08:49:48 -0700 (PDT)
+Date: Sun, 8 Jun 2025 08:49:45 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: moyuanhao3676@163.com
+Cc: edumazet@google.com, kuniyu@amazon.com, pabeni@redhat.com,
+ willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] net: core: fix UNIX-STREAM alignment in
+ /proc/net/protocols
+Message-ID: <20250608084945.0342a4f1@hermes.local>
+In-Reply-To: <20250608144652.27079-1-moyuanhao3676@163.com>
+References: <20250608144652.27079-1-moyuanhao3676@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 00/24] 6.12.33-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250607100717.910797456@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250607100717.910797456@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Am 07.06.2025 um 12:07 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.33 release.
-> There are 24 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sun,  8 Jun 2025 22:46:52 +0800
+moyuanhao3676@163.com wrote:
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+> From: MoYuanhao <moyuanhao3676@163.com>
+>=20
+> Widen protocol name column from %-9s to %-11s to properly display
+> UNIX-STREAM and keep table alignment.
+>=20
+> before modification=EF=BC=9A
+> console:/ # cat /proc/net/protocols
+> protocol  size sockets  memory press maxhdr  slab module     cl co di ac =
+io in de sh ss gs se re sp bi br ha uh gp em
+> PPPOL2TP   920      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> HIDP       808      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> BNEP       808      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> RFCOMM     840      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> KEY        864      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> PACKET    1536      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> PINGv6    1184      0      -1   NI       0   yes  kernel      y  y  y  n =
+ n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+> RAWv6     1184      0      -1   NI       0   yes  kernel      y  y  y  n =
+ y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+> UDPLITEv6 1344      0       0   NI       0   yes  kernel      y  y  y  n =
+ y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+> UDPv6     1344      0       0   NI       0   yes  kernel      y  y  y  n =
+ y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+> TCPv6     2352      0       0   no     320   yes  kernel      y  y  y  y =
+ y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+> PPTP       920      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> PPPOE      920      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> UNIX-STREAM 1024     29      -1   NI       0   yes  kernel      y  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  y  n  n
+> UNIX      1024    193      -1   NI       0   yes  kernel      y  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> UDP-Lite  1152      0       0   NI       0   yes  kernel      y  y  y  n =
+ y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+> PING       976      0      -1   NI       0   yes  kernel      y  y  y  n =
+ n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+> RAW        984      0      -1   NI       0   yes  kernel      y  y  y  n =
+ y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+> UDP       1152      0       0   NI       0   yes  kernel      y  y  y  n =
+ y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+> TCP       2192      0       0   no     320   yes  kernel      y  y  y  y =
+ y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+> SCO        848      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> L2CAP      824      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> HCI        888      0      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> NETLINK   1104     18      -1   NI       0   no   kernel      n  n  n  n =
+ n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+>=20
+> after modification:
+> console:/ # cat /proc/net/protocols
+> protocol    size sockets  memory press maxhdr  slab module     cl co di a=
+c io in de sh ss gs se re sp bi br ha uh gp em
+> PPPOL2TP     920      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> HIDP         808      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> BNEP         808      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> RFCOMM       840      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> KEY          864      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> PACKET      1536      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> PINGv6      1184      0      -1   NI       0   yes  kernel      y  y  y  =
+n  n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+> RAWv6       1184      0      -1   NI       0   yes  kernel      y  y  y  =
+n  y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+> UDPLITEv6   1344      0       0   NI       0   yes  kernel      y  y  y  =
+n  y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+> UDPv6       1344      0       0   NI       0   yes  kernel      y  y  y  =
+n  y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+> TCPv6       2352      0       0   no     320   yes  kernel      y  y  y  =
+y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+> PPTP         920      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> PPPOE        920      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> UNIX-STREAM 1024     29      -1   NI       0   yes  kernel      y  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  y  n  n
+> UNIX        1024    193      -1   NI       0   yes  kernel      y  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> UDP-Lite    1152      0       0   NI       0   yes  kernel      y  y  y  =
+n  y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+> PING         976      0      -1   NI       0   yes  kernel      y  y  y  =
+n  n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+> RAW          984      0      -1   NI       0   yes  kernel      y  y  y  =
+n  y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+> UDP         1152      0       0   NI       0   yes  kernel      y  y  y  =
+n  y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+> TCP         2192      0       0   no     320   yes  kernel      y  y  y  =
+y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+> SCO          848      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> L2CAP        824      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> HCI          888      0      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+> NETLINK     1104     18      -1   NI       0   no   kernel      n  n  n  =
+n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+>=20
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: MoYuanhao <moyuanhao3676@163.com>
+> ---
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+This could break existing applications. Changing the format of /proc output
+is an ABI change.
 
