@@ -1,183 +1,163 @@
-Return-Path: <stable+bounces-151930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA25CAD1259
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 14:56:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB88AD12D2
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 17:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5561C188C54A
-	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 12:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 638091655FC
+	for <lists+stable@lfdr.de>; Sun,  8 Jun 2025 15:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4083820FAAB;
-	Sun,  8 Jun 2025 12:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C6E24DFF1;
+	Sun,  8 Jun 2025 15:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HACRBwf9"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XmoTs7uZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11881A5BA3;
-	Sun,  8 Jun 2025 12:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EA378C9C;
+	Sun,  8 Jun 2025 15:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749387374; cv=none; b=Dsmf6Gg55PWgGZQ/L5UlDbx3NXMsXcZdhuVR5dUKWVDt+DeMY07c+YDrwrQ2lq1ECYpl+qgcVB7hYzu3qzmI2UOJ4sBMgkPk6t0gdWJN8e3RbbvT2XeU1lBu9VG4RmHfM9IlxXzqdJoDIN5E3Tazpwmhc9/iocdsaPFi19O16o8=
+	t=1749394968; cv=none; b=BmO4TGWZUGce4RcPMWl1gNZ2NA9vTO5X5XmBC8cQHOp1RWBk6unsRIMmlWOWVUhpHBSfk8uZGupHSBN8+1/X4s9pgJzS5tfGbdL4tnPR77a3m+oWreSy0hOHkUtVHiYbbGMrvJcvr4kkqd/8Pc3fxLMfAwqonznB/eizjkTjrtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749387374; c=relaxed/simple;
-	bh=VT/kOv8K7zbcsUNcFKYtAQaOP+wsH2uz9EYAAEUzcFg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=euiuF5R8y6XTq5gX7nzTo9N/2IhXrfm7aHiP6oKZlGCIz2mFBqdwUh9gArOE3xcijKduEWriyxvQZzw4DF0BU0+0i3PQewRZWnWZsmE4XGgeP/EXQrTWJ3LaJDl9ogO8y/sLYZrPDZWVFK9BjDP6BNEc8xHIQjkVfco8nfn9Avc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HACRBwf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC1CC4CEEF;
-	Sun,  8 Jun 2025 12:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749387373;
-	bh=VT/kOv8K7zbcsUNcFKYtAQaOP+wsH2uz9EYAAEUzcFg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HACRBwf9yIGHgQPqPFx8SQJamc/xPCMZGlION8Mbecqo9fNnQTzUol13AZc5/abwU
-	 ndTTTk81WdR8Z6XdcpFL/CKubi9AvaYGUNHmAYHXJl6Jz4EGADZGkCKDHelPtccsiA
-	 tOHNHmTKh+yb6TrdjO67fX02+BkkeCQM4jxOCqh0WJYGyGSJcfx5CEeK0y1U9ZYQ4x
-	 WDaBr6DCaukB6IouqLSxgVM8PP2TgSHSKhvl3QuKYA3zXXHUoGpD7Fvr6BvnTFqe+c
-	 EWVQLk7YwGh2BfvdH8+xeLEDSQaRRKKgPZK98dTXAF7HUy4ujslxmYXtr9KSJxKKXP
-	 akUw+tV0ZdePw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>,
-	Suraj Gupta <suraj.gupta2@amd.com>,
-	Folker Schwesinger <dev@folker-schwesinger.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	michal.simek@amd.com,
-	marex@denx.de,
-	radhey.shyam.pandey@amd.com,
-	jernej.skrabec@gmail.com,
-	u.kleine-koenig@baylibre.com,
-	krzysztof.kozlowski@linaro.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 2/2] dmaengine: xilinx_dma: Set dma_device directions
-Date: Sun,  8 Jun 2025 08:56:08 -0400
-Message-Id: <20250608125608.934695-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250608125608.934695-1-sashal@kernel.org>
-References: <20250608125608.934695-1-sashal@kernel.org>
+	s=arc-20240116; t=1749394968; c=relaxed/simple;
+	bh=5ki4Suw7Y/kqfH3heJcBTTyb40st4/AvL2pWY4Fr3Vc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nkXRHR+sTVsizSEQO+RlinEmHb1pnkukft4oIBu0NwRYqubyEDWAI4Yz1P4Oxr1/yi9MHrgslm8t/uT76bgsftt8k6e1D2CCG0K2uQRY/z8stlyQbn1m+HoNCJPX+OMySpaylTyagO3+dEWa0i/yi87Mh7fsHiJPloFv2ehH3GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XmoTs7uZ; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=JBaLlBHHoYS3cZOCIh/U3xTKIcpHZAiK9qfb5paTjnQ=;
+	b=XmoTs7uZzgYhDbqCXy+Esuqp36lsk6HHRSXgNanybDJNeXJWhcJea6OU9Wz/a0
+	OV93wq+usCcITbm5PZRtgz+6iH716EDMHRbtWb3EY5DMXLjH5xU7NWVL7ItUpqa/
+	0/oUX8YViol7RuPHI+W3lO1s5lJLvCzo1JYB3GmdsifF0=
+Received: from gnu.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wC38+tiokVo5N0GHA--.23029S2;
+	Sun, 08 Jun 2025 22:46:59 +0800 (CST)
+From: moyuanhao3676@163.com
+To: edumazet@google.com,
+	kuniyu@amazon.com,
+	pabeni@redhat.com,
+	willemb@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	MoYuanhao <moyuanhao3676@163.com>
+Subject: [PATCH] net: core: fix UNIX-STREAM alignment in /proc/net/protocols
+Date: Sun,  8 Jun 2025 22:46:52 +0800
+Message-Id: <20250608144652.27079-1-moyuanhao3676@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.294
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wC38+tiokVo5N0GHA--.23029S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXr15AF45WrW8ArW3Kw17Wrg_yoWrWr4xpr
+	1UGr15Xw1UAr1UArnxJF1j9r15Jw1UJrW3Gwn5Cr1rJwn0qFyjyr17Xr1UXFy5ArnFgwn7
+	ur13Jryjyw47XrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRHv3UUUUUU=
+X-CM-SenderInfo: 5pr13t5qkd0jqwxwqiywtou0bp/1tbioBFmfmhFmFC1kwAAsq
 
-From: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
+From: MoYuanhao <moyuanhao3676@163.com>
 
-[ Upstream commit 7e01511443c30a55a5ae78d3debd46d4d872517e ]
+Widen protocol name column from %-9s to %-11s to properly display
+UNIX-STREAM and keep table alignment.
 
-Coalesce the direction bits from the enabled TX and/or RX channels into
-the directions bit mask of dma_device. Without this mask set,
-dma_get_slave_caps() in the DMAEngine fails, which prevents the driver
-from being used with an IIO DMAEngine buffer.
+before modification：
+console:/ # cat /proc/net/protocols
+protocol  size sockets  memory press maxhdr  slab module     cl co di ac io in de sh ss gs se re sp bi br ha uh gp em
+PPPOL2TP   920      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+HIDP       808      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+BNEP       808      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+RFCOMM     840      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+KEY        864      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PACKET    1536      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PINGv6    1184      0      -1   NI       0   yes  kernel      y  y  y  n  n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+RAWv6     1184      0      -1   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+UDPLITEv6 1344      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+UDPv6     1344      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+TCPv6     2352      0       0   no     320   yes  kernel      y  y  y  y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+PPTP       920      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PPPOE      920      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UNIX-STREAM 1024     29      -1   NI       0   yes  kernel      y  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  y  n  n
+UNIX      1024    193      -1   NI       0   yes  kernel      y  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UDP-Lite  1152      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+PING       976      0      -1   NI       0   yes  kernel      y  y  y  n  n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+RAW        984      0      -1   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+UDP       1152      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+TCP       2192      0       0   no     320   yes  kernel      y  y  y  y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+SCO        848      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+L2CAP      824      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+HCI        888      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+NETLINK   1104     18      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
 
-Signed-off-by: Thomas Gessler <thomas.gessler@brueckmann-gmbh.de>
-Reviewed-by: Suraj Gupta <suraj.gupta2@amd.com>
-Tested-by: Folker Schwesinger <dev@folker-schwesinger.de>
-Link: https://lore.kernel.org/r/20250507182101.909010-1-thomas.gessler@brueckmann-gmbh.de
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+after modification:
+console:/ # cat /proc/net/protocols
+protocol    size sockets  memory press maxhdr  slab module     cl co di ac io in de sh ss gs se re sp bi br ha uh gp em
+PPPOL2TP     920      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+HIDP         808      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+BNEP         808      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+RFCOMM       840      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+KEY          864      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PACKET      1536      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PINGv6      1184      0      -1   NI       0   yes  kernel      y  y  y  n  n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+RAWv6       1184      0      -1   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+UDPLITEv6   1344      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+UDPv6       1344      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  n  n  y  y  y  n
+TCPv6       2352      0       0   no     320   yes  kernel      y  y  y  y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+PPTP         920      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+PPPOE        920      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UNIX-STREAM 1024     29      -1   NI       0   yes  kernel      y  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  y  n  n
+UNIX        1024    193      -1   NI       0   yes  kernel      y  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+UDP-Lite    1152      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+PING         976      0      -1   NI       0   yes  kernel      y  y  y  n  n  y  n  n  y  y  y  y  n  y  y  y  y  y  n
+RAW          984      0      -1   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  n  y  y  y  y  n  n
+UDP         1152      0       0   NI       0   yes  kernel      y  y  y  n  y  y  y  n  y  y  y  y  y  n  n  y  y  y  n
+TCP         2192      0       0   no     320   yes  kernel      y  y  y  y  y  y  y  y  y  y  y  y  y  n  y  y  y  y  y
+SCO          848      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+L2CAP        824      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+HCI          888      0      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+NETLINK     1104     18      -1   NI       0   no   kernel      n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n  n
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: MoYuanhao <moyuanhao3676@163.com>
 ---
+ net/core/sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-**YES**
-
-## Analysis
-
-This commit should be backported to stable kernel trees because it fixes
-a critical functionality bug that prevents the Xilinx DMA driver from
-working with important subsystems.
-
-### The Problem
-The commit addresses a fundamental issue where `dma_get_slave_caps()`
-fails when called on Xilinx DMA channels. The code change shows that the
-driver was not setting the `directions` field in the `dma_device`
-structure:
-
-```c
-+       xdev->common.directions |= chan->direction;
-```
-
-This single line fix accumulates the direction capabilities from
-individual channels (either `DMA_MEM_TO_DEV` or `DMA_DEV_TO_MEM`) into
-the device-level `directions` bitmask.
-
-### Why This Qualifies for Backporting
-
-1. **Fixes Important User-Facing Bug**: The commit message explicitly
-   states this prevents the driver from being used with IIO DMAEngine
-   buffers, which is a significant functional regression affecting real
-   users.
-
-2. **Small and Contained Fix**: The change is minimal - just one line of
-   code that sets a required field during channel probe. This has
-   extremely low risk of introducing regressions.
-
-3. **Critical Subsystem Integration**: Without this fix,
-   `dma_get_slave_caps()` calls fail with `-ENXIO`, breaking integration
-   with any subsystem that queries DMA capabilities (like IIO).
-
-4. **Clear Root Cause**: The fix directly addresses the root cause - the
-   missing `directions` field that the DMAEngine core requires to be
-   set.
-
-5. **No Architectural Changes**: This doesn't introduce new features or
-   change driver architecture; it simply provides required capability
-   information that was missing.
-
-### Comparison to Reference Commits
-This closely matches **Similar Commit #1** (marked YES) which also fixed
-a missing capability flag (`DMA_CYCLIC cap_mask bit`) that prevented
-proper DMA channel allocation. Both commits:
-- Fix missing capability declarations
-- Are small, single-line changes
-- Address integration failures with other subsystems
-- Have minimal regression risk
-
-The commit also mirrors **Similar Commit #2** (marked YES) which fixed
-incorrect struct usage in the same driver - both address functional
-correctness issues in the Xilinx DMA driver.
-
-### Risk Assessment
-The risk is minimal because:
-- The change only affects the capability reporting mechanism
-- It doesn't modify any data paths or transfer logic
-- The direction values being OR'd together are already correctly set
-  per-channel
-- Failure mode is obvious (capability queries will work instead of
-  failing)
-
-This is a textbook example of a stable tree candidate: it fixes an
-important bug affecting real users with a minimal, low-risk change that
-doesn't introduce new functionality.
-
- drivers/dma/xilinx/xilinx_dma.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
-index be44c86a1e037..5b5cbea997ff7 100644
---- a/drivers/dma/xilinx/xilinx_dma.c
-+++ b/drivers/dma/xilinx/xilinx_dma.c
-@@ -2490,6 +2490,8 @@ static int xilinx_dma_chan_probe(struct xilinx_dma_device *xdev,
- 		return -EINVAL;
- 	}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 3b409bc8ef6d..d2de5459e94f 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -4284,7 +4284,7 @@ static const char *sock_prot_memory_pressure(struct proto *proto)
+ static void proto_seq_printf(struct seq_file *seq, struct proto *proto)
+ {
  
-+	xdev->common.directions |= chan->direction;
-+
- 	/* Request the interrupt */
- 	chan->irq = irq_of_parse_and_map(node, 0);
- 	err = request_irq(chan->irq, xilinx_dma_irq_handler, IRQF_SHARED,
+-	seq_printf(seq, "%-9s %4u %6d  %6ld   %-3s %6u   %-3s  %-10s "
++	seq_printf(seq, "%-11s %4u %6d  %6ld   %-3s %6u   %-3s  %-10s "
+ 			"%2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c %2c\n",
+ 		   proto->name,
+ 		   proto->obj_size,
+@@ -4317,7 +4317,7 @@ static void proto_seq_printf(struct seq_file *seq, struct proto *proto)
+ static int proto_seq_show(struct seq_file *seq, void *v)
+ {
+ 	if (v == &proto_list)
+-		seq_printf(seq, "%-9s %-4s %-8s %-6s %-5s %-7s %-4s %-10s %s",
++		seq_printf(seq, "%-11s %-4s %-8s %-6s %-5s %-7s %-4s %-10s %s",
+ 			   "protocol",
+ 			   "size",
+ 			   "sockets",
 -- 
-2.39.5
+2.34.1
 
 
