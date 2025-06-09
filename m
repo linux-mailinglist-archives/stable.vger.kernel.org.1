@@ -1,127 +1,111 @@
-Return-Path: <stable+bounces-152012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3075AD1C3B
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:10:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B35AD1C41
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D23F3A9E27
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 11:10:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF8BB188CEDA
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 11:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1775F254845;
-	Mon,  9 Jun 2025 11:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230CD2566FD;
+	Mon,  9 Jun 2025 11:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="lpyUj2t+"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E5F1FC7E7;
-	Mon,  9 Jun 2025 11:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6311B255F59;
+	Mon,  9 Jun 2025 11:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749467434; cv=none; b=n5s38ar5e08jexyFclHQqErc9XpWihilgcwb37d9u6xra3rYrr3VYNqjrDEulZM4CtJwkNrsoIirr+4QhYqSciZ1fKAvY+c6sBU0pBFLdm7mwAQIJqdm0Hbkw5vZLfEOLrZNVXDOoYaNQrncYe/JLLT8OP6Qo9NmAiLq3Abf62E=
+	t=1749467480; cv=none; b=uNtp5TyMuxR5TcQb1eJfz0pQTaXk1F9ppda4AqBWV0lYSLPT/LTA7buwYfKKbhfoJ2QKeELYe1QR3/IASmNdmDVPTolTCC6lbUZWHNCIDD/EohHt3BzFArEZqNu59zVC6o1rDoHW9QU3FzTqUzWvIBwU/H6bDau52v3PZRO9HZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749467434; c=relaxed/simple;
-	bh=OtuITT+i8YfVsB92HRFIK/5RvmgL0pQolfsZtD3LzPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cwSvEj0Og7eJUVT16kSmt/Fn0kgiOfMW6HrVhRkMnuobDPocQ6XQTDLchbg3/MkitcIl27Z4am7DJCUfELKMJAD8LTe2jOTbyh+jFSWYao47EoTkWYjLtCJVUhkd4mHxeMSoltzMyu78ySqYYdTi/pzNTzCj4p9hsC45k/hyzZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83909113E;
-	Mon,  9 Jun 2025 04:10:13 -0700 (PDT)
-Received: from [10.1.39.162] (XHFQ2J9959.cambridge.arm.com [10.1.39.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AB223F59E;
-	Mon,  9 Jun 2025 04:10:31 -0700 (PDT)
-Message-ID: <5f6085d9-0ceb-489c-89a6-3666be994549@arm.com>
-Date: Mon, 9 Jun 2025 12:10:29 +0100
+	s=arc-20240116; t=1749467480; c=relaxed/simple;
+	bh=KmuMug8eo+1xqQzVx3etjJKqVimLn63xMDr1MuVhHQU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Wcd3H80okEK6ELvPZXGenT84MT9HYcBqAN42rehWFsGpYkUc/mDEk7B/L3rTYFJ675XWWZOg2OzCjnJbJ9jM3M77h2tVp++bnImphPGjRgxT4ZyDnxU6dN9y580sTVmweEeOmlkM9ifJV9DDQ+szk1FW+8RFlezEjWdeepnRZic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=lpyUj2t+; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=BBAmbvG9DKJ5ZBtHCrdVkfgG0G+RQFv12c3uqAQzHz0=; b=lpyUj2t+obwq5CMWCTbvg57HuZ
+	dxrsN0ETGbkfP4ePm+9flK5EAPa+KIlaCmrXAwZ7Nvm5GWmkItNic0WUmhG0mtc8oINDLpBzoJTbG
+	1NkkXWTzvf0GAUNELM9Wk2hMt5q1Lv249lG8uldv5Mdf9IkkEQXBnRI9DFjGjt7roYW70SL9KlGLu
+	lS+KDeWHsNZ/kBWI9RB7D1lP3HSXtSnhp8p5BSjaL7Etc3PZbNkKLZedPbHqulac8WrMb2lnsUz1Q
+	ldC71dvXi9NNcSCndKHsnMfU4a4MEsGXS+nBwjo/w4sUSNdOcE2vd0N72Frn7IDJtruiZ5DW5m0F5
+	Ztlvlqmg==;
+Received: from i53875b1c.versanet.de ([83.135.91.28] helo=phil.fritz.box)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1uOaPC-0006VT-MY; Mon, 09 Jun 2025 13:11:06 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: Mark Brown <broonie@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sam Edwards <cfsworks@gmail.com>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Elaine Zhang <zhangqing@rock-chips.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Mart=C3=ADnez=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Peter Geis <pgwipeout@gmail.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Vignesh Raman <vignesh.raman@collabora.com>,
+	=?UTF-8?q?Daniel=20Kukie=C5=82a?= <daniel@kukiela.pl>,
+	Sven Rademakers <sven.rademakers@gmail.com>,
+	Joshua Riek <jjriek@verizon.net>,
+	Sam Edwards <CFSworks@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [RESEND PATCH] arm64: dts: rockchip: Remove workaround that prevented Turing RK1 GPU power regulator control
+Date: Mon,  9 Jun 2025 13:11:01 +0200
+Message-ID: <174946744885.771907.2986962634832337844.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250608184855.130206-1-CFSworks@gmail.com>
+References: <20250608184855.130206-1-CFSworks@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64/ptdump: Ensure memory hotplug is prevented during
- ptdump_check_wx()
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: stable@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- Dev Jain <dev.jain@arm.com>
-References: <20250609041214.285664-1-anshuman.khandual@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20250609041214.285664-1-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 09/06/2025 05:12, Anshuman Khandual wrote:
-> The arm64 page table dump code can race with concurrent modification of the
-> kernel page tables. When a leaf entries are modified concurrently, the dump
-> code may log stale or inconsistent information for a VA range, but this is
-> otherwise not harmful.
-> 
-> When intermediate levels of table are freed, the dump code will continue to
-> use memory which has been freed and potentially reallocated for another
-> purpose. In such cases, the dump code may dereference bogus addresses,
-> leading to a number of potential problems.
-> 
-> This problem was fixed for ptdump_show() earlier via commit 'bf2b59f60ee1
-> ("arm64/mm: Hold memory hotplug lock while walking for kernel page table
-> dump")' but a same was missed for ptdump_check_wx() which faced the race
-> condition as well. Let's just take the memory hotplug lock while executing
-> ptdump_check_wx().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Reported-by: Dev Jain <dev.jain@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+On Sun, 08 Jun 2025 11:48:55 -0700, Sam Edwards wrote:
+> The RK3588 GPU power domain cannot be activated unless the external
+> power regulator is already on. When GPU support was added to this DT,
+> we had no way to represent this requirement, so `regulator-always-on`
+> was added to the `vdd_gpu_s0` regulator in order to ensure stability.
+> A later patch series (see "Fixes:" commit) resolved this shortcoming,
+> but that commit left the workaround -- and rendered the comment above
+> it no longer correct.
+> 
+> [...]
 
-> ---
-> This patch applies on v6.16-rc1
-> 
-> Dev Jain found this via code inspection.
-> 
->  arch/arm64/mm/ptdump.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
-> index 421a5de806c62..551f80d41e8d2 100644
-> --- a/arch/arm64/mm/ptdump.c
-> +++ b/arch/arm64/mm/ptdump.c
-> @@ -328,7 +328,7 @@ static struct ptdump_info kernel_ptdump_info __ro_after_init = {
->  	.mm		= &init_mm,
->  };
->  
-> -bool ptdump_check_wx(void)
-> +static bool __ptdump_check_wx(void)
->  {
->  	struct ptdump_pg_state st = {
->  		.seq = NULL,
-> @@ -367,6 +367,16 @@ bool ptdump_check_wx(void)
->  	}
->  }
->  
-> +bool ptdump_check_wx(void)
-> +{
-> +	bool ret;
-> +
-> +	get_online_mems();
-> +	ret = __ptdump_check_wx();
-> +	put_online_mems();
-> +	return ret;
-> +}
-> +
->  static int __init ptdump_init(void)
->  {
->  	u64 page_offset = _PAGE_OFFSET(vabits_actual);
+Applied, thanks!
 
+[1/1] arm64: dts: rockchip: Remove workaround that prevented Turing RK1 GPU power regulator control
+      commit: 5952996d5303c96702ef30ad30ec0a01acda46d4
+
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
 
