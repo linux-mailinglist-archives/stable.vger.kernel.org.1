@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-152010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD66AAD1B3D
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 12:11:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF636AD1C02
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 12:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A8F416A654
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 10:11:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A353A8EB5
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C612512FA;
-	Mon,  9 Jun 2025 10:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E5C7E9;
+	Mon,  9 Jun 2025 10:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="p1SZvt52"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="E9NU+5LZ"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFB443ABC;
-	Mon,  9 Jun 2025 10:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C03F1F4191;
+	Mon,  9 Jun 2025 10:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749463863; cv=none; b=vAWYygdSWgbV/vIsvg7IdC1MM95hT3XBvx1GlwIonycer0Hz/ZrKC95rxTr/MHqyC2+pLjlcZAoo4tWsgdm6TS0CZXKw+ZU7ENdN5YqkeYObUuuD/3OSJficcyEa5KEVDfVfgxz2hxjJdLx7ZzxkK0/LwHLaI9Ms+slNQrfgBOM=
+	t=1749466518; cv=none; b=aSziqtir0Mb8bm2IN9RMG7RNH+ZQgd+jnSsz1g31Ys9PzP7tSlRkG8WnXJLR6TIkTFopACdOrxZjw6wkuQ+BoxqmZEoNjeIaQZHpggHi0scgZxBOW8SEULcbUiaP1qnEvwZ1WhzXql6M875KyyD43zpwwvs7IJL3ReFCDvGQYPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749463863; c=relaxed/simple;
-	bh=JzvgjZLv5cGW6fc6fGEDZj9SR+1de/3cdl56xIRTnG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H+A/ROiyQ08joF+9hd1xbzZ/eeEj6frVaPS9SMOMd4vM5fKeGO5AB68X5F7fpm8yIGXwa4BDB9F2zJAwaJMgh7kBtvpYcmKM35/pckemJfjgspA0dKBGOK+sLF8cqTnQ46FtRs7hTIM4FX3i6YEeVWnhOU+QY9N21GPinX2RbFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=p1SZvt52; arc=none smtp.client-ip=95.143.211.150
+	s=arc-20240116; t=1749466518; c=relaxed/simple;
+	bh=tnWO+lQ/sTdHYK94IxXlayYAXVY+emKXiNfprDofk2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rrWVcX133snwJtkHMf2Wf064C4Ni7kJm73Pd+qcUw0pVSRsPR5iaYLMxpBvrkQx4vbIWxuY5Vf8xH/Au83opVaLTldoETvuuQPQaKwZsIWp+n23AGZ9lu9GP5pY3oWjjECyqaSANOAGNZGLAXVJNJGN4BK105K778MkmtX0BrTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=E9NU+5LZ; arc=none smtp.client-ip=95.143.211.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 From: Denis Arefev <arefev@swemel.ru>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1749463856;
+	t=1749466513;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=jKiJ4waegiA05TQ0OciBg5LgGP0hIGFJmfYuEnY1Jr8=;
-	b=p1SZvt529KNd0gCyudk3Gboa3ubKpTi5yCZXMEsoun04RD1qMHtkXY37a/h63lWwMTgTHl
-	XH9cNyMkM1A9n/0m9XaBg1yQmqtF4qoNt8393WdumcTqAhCEPq1bLcC9a0LVJRuBMesR3P
-	OGkOAPx8GaoB2G5X+SbXlOEDJlAEc9s=
+	bh=Zonziy8bKKs9HmH5q002b/uuhFJHjUBmz9TKkYANDTw=;
+	b=E9NU+5LZrMe54Lz4cEg5CglbA8dU6J9V3aWIVVEgh8v2D3YGF7w92CeeN/ABweRo+Q0Bo9
+	kn/zoUKRKjLeZSMFHVaO62TK77nF9s3DNpRxYKjcdrqF4U5F6Khxjzxw+rINV3Un5hezrw
+	HHwec3Ig0heOjUr7evg/2umOe8trWAM=
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Dave Taht <dave.taht@bufferbloat.net>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org,
-	Paulo Alcantara <pc@cjr.nz>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.10] cifs: fix potential memory leaks in session setup
-Date: Mon,  9 Jun 2025 13:10:54 +0300
-Message-ID: <20250609101056.36485-1-arefev@swemel.ru>
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+Date: Mon,  9 Jun 2025 13:55:11 +0300
+Message-ID: <20250609105513.39042-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,70 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paulo Alcantara <pc@cjr.nz>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit 2fe58d977ee05da5bb89ef5dc4f5bf2dc15db46f upstream.
+commit 342debc12183b51773b3345ba267e9263bdfaaef upstream. 
 
-Make sure to free cifs_ses::auth_key.response before allocating it as
-we might end up leaking memory in reconnect or mounting.
+After making all ->qlen_notify() callbacks idempotent, now it is safe to
+remove the check of qlen!=0 from both fq_codel_dequeue() and
+codel_qdisc_dequeue().
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 [Denis: minor fix to resolve merge conflict.]                                           
 Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
 ---
-Backport fix for CVE-2023-53008
-Link: https://nvd.nist.gov/vuln/detail/CVE-2023-53008
+Backport fix for CVE-2025-37798
+Link: https://nvd.nist.gov/vuln/detail/CVE-2025-37798
 ---
- fs/cifs/cifsencrypt.c | 1 +
- fs/cifs/sess.c        | 2 ++
- fs/cifs/smb2pdu.c     | 1 +
- 3 files changed, 4 insertions(+)
+ net/sched/sch_codel.c    | 5 +----
+ net/sched/sch_fq_codel.c | 6 ++----
+ 2 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/fs/cifs/cifsencrypt.c b/fs/cifs/cifsencrypt.c
-index 9daa256f69d4..c75bcdc987e0 100644
---- a/fs/cifs/cifsencrypt.c
-+++ b/fs/cifs/cifsencrypt.c
-@@ -371,6 +371,7 @@ build_avpair_blob(struct cifs_ses *ses, const struct nls_table *nls_cp)
- 	 * ( for NTLMSSP_AV_NB_DOMAIN_NAME followed by NTLMSSP_AV_EOL ) +
- 	 * unicode length of a netbios domain name
- 	 */
-+	kfree_sensitive(ses->auth_key.response);
- 	ses->auth_key.len = size + 2 * dlen;
- 	ses->auth_key.response = kzalloc(ses->auth_key.len, GFP_KERNEL);
- 	if (!ses->auth_key.response) {
-diff --git a/fs/cifs/sess.c b/fs/cifs/sess.c
-index cf6fd138d8d5..d4e215674597 100644
---- a/fs/cifs/sess.c
-+++ b/fs/cifs/sess.c
-@@ -601,6 +601,7 @@ int decode_ntlmssp_challenge(char *bcc_ptr, int blob_len,
- 		return -EINVAL;
- 	}
- 	if (tilen) {
-+		kfree_sensitive(ses->auth_key.response);
- 		ses->auth_key.response = kmemdup(bcc_ptr + tioffset, tilen,
- 						 GFP_KERNEL);
- 		if (!ses->auth_key.response) {
-@@ -1335,6 +1336,7 @@ sess_auth_kerberos(struct sess_data *sess_data)
- 		goto out_put_spnego_key;
- 	}
+diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
+index d99c7386e24e..0d4228bfd1a0 100644
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_dequeue(struct Qdisc *sch)
+ 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
+ 			    drop_func, dequeue_func);
  
-+	kfree_sensitive(ses->auth_key.response);
- 	ses->auth_key.response = kmemdup(msg->data, msg->sesskey_len,
- 					 GFP_KERNEL);
- 	if (!ses->auth_key.response) {
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 4197096e7fdb..15f9faa1e20a 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -1360,6 +1360,7 @@ SMB2_auth_kerberos(struct SMB2_sess_data *sess_data)
- 
- 	/* keep session key if binding */
- 	if (!ses->binding) {
-+		kfree_sensitive(ses->auth_key.response);
- 		ses->auth_key.response = kmemdup(msg->data, msg->sesskey_len,
- 						 GFP_KERNEL);
- 		if (!ses->auth_key.response) {
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->stats.drop_count && sch->q.qlen) {
++	if (q->stats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
+ 		q->stats.drop_count = 0;
+ 		q->stats.drop_len = 0;
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index 60dbc549e991..3c1efe360def 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -314,10 +314,8 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+ 	flow->deficit -= qdisc_pkt_len(skb);
+-	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
+-	 * or HTB crashes. Defer it for next round.
+-	 */
+-	if (q->cstats.drop_count && sch->q.qlen) {
++
++	if (q->cstats.drop_count) {
+ 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
+ 					  q->cstats.drop_len);
+ 		q->cstats.drop_count = 0;
 -- 
 2.43.0
 
