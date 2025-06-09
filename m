@@ -1,148 +1,240 @@
-Return-Path: <stable+bounces-152175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0781AD20D5
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 16:26:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE23BAD2346
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 18:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B1D9188C120
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 14:26:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0C421611C3
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 16:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B5025D549;
-	Mon,  9 Jun 2025 14:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03F921883C;
+	Mon,  9 Jun 2025 16:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EnSvZPhF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LoDOPAmZ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AoXuzGaO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E1025CC54
-	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 14:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA36C21772D;
+	Mon,  9 Jun 2025 16:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749479145; cv=none; b=qYy9RAyyyWuVy9UGGbc6IC8NqYk0gL88gVe3bXbN/8AizS4V6VPyET422MK1P0yDQvbCkiv+umYsHzK3u9MH7meJuBGdZ+hz7Wmhc0ABZJujtD+Jo6nFdyWSrmvu8SNOF0PfoAcLwEpnuuegWIpZhEV794FMK3GWMK0s/kEXEz0=
+	t=1749485140; cv=none; b=N4LNQx1Rg355JfANKUBsM+BapNNC/7ldqjPupeGYNXGO0JOBBCqwv4usUepVKV0b6ATzgJ4XiGkr4AUWs1vFRYTRBsxu6Rn1rFy9IyUxoUR+9ZEcr5qWrEH8sh6gsxZnxsvsl70hkz7kgdlZwgLRiX2spozPdxwvn2wj8hGAHJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749479145; c=relaxed/simple;
-	bh=JembqEDnPfh2VIA0GR9xZmb2kn3DMblLdpcQQYVBcIw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t/V3PIEoSYtjQldpwmVd6s5DhJ2d8Rx1LODWwu5UzpdSEdCsYi8clxYA9iLjmhDn99R9qgLPK6466DkqxBJACuyDzLkhazYcV74pvDNzqFifVPVSXyAufmjuke6yP5K7mg/xOihFq9HWP6NmSLJEoP23SRCtDmm8FW5HTUZOu8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EnSvZPhF; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e733cd55f9eso3985259276.1
-        for <stable@vger.kernel.org>; Mon, 09 Jun 2025 07:25:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749479143; x=1750083943; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kzdfsvEKoVL0JlUZYzUNHs+G1k04M6kNna6qKIJw/N4=;
-        b=EnSvZPhFWf3yLKSOojCeqZrs2eU49KNiKtKahw7FbA4HP51vqJrojYKVAIexxPa+fF
-         BXCmcrlHq+QWlLCmc4YZ0NgDEKJFd+aYdhSziKjd9ZP5JBbNG6pWVIgl6nW2j/HnlYkN
-         q5odvyeGLxZ4r+CS0t8JQ2xX0mTH4Vk0SLBLLT3vN+bgvXeejQ3W6ER+TnBbKGqnv95o
-         fUnmyHPbyIklAwljECYvN3H6faTKT3w2hGvhoROqRR4uzGgscSszcdAUYEjoenLbrtTJ
-         4pMvSJlARbwQ272aPfJS95A9MMYz44ba4Sbap9v8UTuKlckJxRdGEG1IPmlsjQuIOVJM
-         2oVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749479143; x=1750083943;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kzdfsvEKoVL0JlUZYzUNHs+G1k04M6kNna6qKIJw/N4=;
-        b=PQ71i1X63EN+7bnD2FcVtTTT6IpI5wbkw/TC684rCLO3QLNKzZ71JFfkhA3LvGMfxT
-         qAsu20vtoueT5X5OAPnujGK+fOLKNKKxNztbeMuB8P5bQeiMMhenOnMwcU9ZTCaiTlJ1
-         rbHsShDFQQKL0zVNhdd+jp8yt5vkhNn21JWgQoqEdtK0Z+783ErhfqojjvwDglIoxkkC
-         v5yhIpKXis3AKOE1VkaHNpCtOpgUevbCRMaEGyUxXpXDNl9eJD0/nZ9VKgIgKCy/EQEN
-         845LzMjhMNx2+FB5FCz82/R/uLVMXPa8nzaaJj1Y+DR64FrrwTpEyHz2qFfsNf1mW7uK
-         TEhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaLtJpwFVUZoPKBNGqAF3oi+O5hw8vTFXkFJNFWCyL0+clEeYKa8V3vhZU5i57HoLItxrhIPQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxArRexRY2SJvUMGfobU01AzqS8GKE7PxABBLloQEVPAeHF010
-	Srm/t11TnbG+QLr5ZCIsdeFavSF+0VLrplZzDf687TMXzXXAZMLlE8fTEiFmoSIEBz6BlTYxwdV
-	x2jeqWep0BWQ1FkzVmjZBVAS5r4nemo4zsjUtpcpDA/lWh5Ixrg2i4bU=
-X-Gm-Gg: ASbGnctnxT8B3SSnmz07wZ6C54/p8hTkCVG7+LMwQVGU7Htz51ODiG3w1wNHOGLCvSE
-	NDGJR7RNkWLRZQjauRhBIEUfWZOuBH/Su0rVmzJy+hIprRDgLMs7E8RYQ4FTHezcUdmbqunv7JA
-	HWBP4ey+D9bC6gJAuxOBFRN7xUKA0O2t+BLQ==
-X-Google-Smtp-Source: AGHT+IG2HLdvbnxpZe5SlTc13La28qz/TTvT3V0gP1+rVEn7gv/MG3ut8oNriSko0ei9/cjAWdSH5AWw1B+pvvtkfTs=
-X-Received: by 2002:a05:6902:1884:b0:e81:891e:9628 with SMTP id
- 3f1490d57ef6-e81a227ca7amr17811028276.10.1749479142932; Mon, 09 Jun 2025
- 07:25:42 -0700 (PDT)
+	s=arc-20240116; t=1749485140; c=relaxed/simple;
+	bh=EbXs/sTXohTOmm5TviWh0AY2Db3a+7Ly6XibFjFL/uw=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=L5PD8mKNZSRrJOvhQLprqX42h6s0zd9dYHZPArzhUGpgwkLJTscNKdTnhIp85sAQ4Q4fBoK6r54FWEP8xsHvPHOj2BjuPISAVDmS9DyW9Nqmqpf4Q5SZGsa9dpIlqnEeaMs585nLKxrne7TGcK5lmzohGYOjm/lkPs/hnXkuE1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LoDOPAmZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AoXuzGaO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 09 Jun 2025 16:05:34 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1749485135;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=tEEOXCCi+Lv4AkHLOs5bdAb1O3Dv/w8kQoflgn+qaMg=;
+	b=LoDOPAmZYpW6VAuBKNNTWydycSdx1aD3hlyIm0LSfHVE1jOjNJ3LAOPquwXTbwQYDAinAB
+	nTnFBybszbs/9xdN7U00lq3Ey9qJLHOrox4fbujgj/Ofh9QEKgB2hcKwQdsHGpQVn2iGzs
+	5zL5tZ0zjoYMhJi+9QkhGydGVYrqLkmHbG8l/S4OgVcjIHHcj/2Fs2w/6IF9jtMgffcL5C
+	pzFUcp+UuKEPpLGz0xTg/nm6cwFEZHxUdLz4pUngterItu08Ncvakb0c5jvLjsWI/f7eaV
+	a+KB0fCQMqK8OqcOe1V+OChMhym2tHNa214vi8kMK/8Vb+56CG9DhU2YaiwEpg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1749485135;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=tEEOXCCi+Lv4AkHLOs5bdAb1O3Dv/w8kQoflgn+qaMg=;
+	b=AoXuzGaORYPmwMsKNIoUGGCH9o1yJhK51101CDZgFg8tWsEhqObNkW7PZn1CNhG9MEadcI
+	a2q5HKLls8Ze63BA==
+From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] selftests/x86: Add a test to detect infinite
+ SIGTRAP handler loop
+Cc: "Xin Li (Intel)" <xin@zytor.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250526114445.675548-1-avri.altman@sandisk.com>
-In-Reply-To: <20250526114445.675548-1-avri.altman@sandisk.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 9 Jun 2025 16:25:07 +0200
-X-Gm-Features: AX0GCFvgU7bcLOda429ePjzI3MwknDGYJdfbakJENxHfVdHS1d_GKrzXTjkaoks
-Message-ID: <CAPDyKFrDNqkFAOx8yF+jW3NOA+J5M7e77MT91aRxsG8Mozq7bg@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier
-To: Avri Altman <avri.altman@sandisk.com>
-Cc: linux-mmc@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <174948513461.406.11127170666315270934.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 26 May 2025 at 13:50, Avri Altman <avri.altman@sandisk.com> wrote:
->
-> Move the BROKEN_SD_DISCARD quirk for certain SanDisk SD cards from the
-> `mmc_blk_fixups[]` to `mmc_sd_fixups[]`. This ensures the quirk is
-> applied earlier in the device initialization process, aligning with the
-> reasoning in [1]. Applying the quirk sooner prevents the kernel from
-> incorrectly enabling discard support on affected cards during initial
-> setup.
->
-> [1] https://lore.kernel.org/all/20240820230631.GA436523@sony.com
->
-> Fixes: 07d2872bf4c8 ("mmc: core: Add SD card quirk for broken discard")
-> Signed-off-by: Avri Altman <avri.altman@sandisk.com>
-> Cc: stable@vger.kernel.org
+The following commit has been merged into the x86/urgent branch of tip:
 
-Applied for fixes, thanks!
+Commit-ID:     f287822688eeb44ae1cf6ac45701d965efc33218
+Gitweb:        https://git.kernel.org/tip/f287822688eeb44ae1cf6ac45701d965efc=
+33218
+Author:        Xin Li (Intel) <xin@zytor.com>
+AuthorDate:    Mon, 09 Jun 2025 01:40:54 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 09 Jun 2025 08:52:06 -07:00
 
-Kind regards
-Uffe
+selftests/x86: Add a test to detect infinite SIGTRAP handler loop
 
+When FRED is enabled, if the Trap Flag (TF) is set without an external
+debugger attached, it can lead to an infinite loop in the SIGTRAP
+handler.  To avoid this, the software event flag in the augmented SS
+must be cleared, ensuring that no single-step trap remains pending when
+ERETU completes.
 
-> ---
-> Changes in v2:
->  - rebase on latest next
-> ---
->  drivers/mmc/core/quirks.h | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-> index 7f893bafaa60..c417ed34c057 100644
-> --- a/drivers/mmc/core/quirks.h
-> +++ b/drivers/mmc/core/quirks.h
-> @@ -44,6 +44,12 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
->                    0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
->                    MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
->
-> +       /*
-> +        * Some SD cards reports discard support while they don't
-> +        */
-> +       MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
-> +                 MMC_QUIRK_BROKEN_SD_DISCARD),
-> +
->         END_FIXUP
->  };
->
-> @@ -147,12 +153,6 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
->         MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
->                   MMC_QUIRK_TRIM_BROKEN),
->
-> -       /*
-> -        * Some SD cards reports discard support while they don't
-> -        */
-> -       MMC_FIXUP(CID_NAME_ANY, CID_MANFID_SANDISK_SD, 0x5344, add_quirk_sd,
-> -                 MMC_QUIRK_BROKEN_SD_DISCARD),
-> -
->         END_FIXUP
->  };
->
-> --
-> 2.25.1
->
+This test checks for that specific scenario=E2=80=94verifying whether the ker=
+nel
+correctly prevents an infinite SIGTRAP loop in this edge case when FRED
+is enabled.
+
+The test should _always_ pass with IDT event delivery, thus no need to
+disable the test even when FRED is not enabled.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250609084054.2083189-3-xin%40zytor.com
+---
+ tools/testing/selftests/x86/Makefile       |   2 +-
+ tools/testing/selftests/x86/sigtrap_loop.c | 101 ++++++++++++++++++++-
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/x86/sigtrap_loop.c
+
+diff --git a/tools/testing/selftests/x86/Makefile b/tools/testing/selftests/x=
+86/Makefile
+index f703fcf..8314887 100644
+--- a/tools/testing/selftests/x86/Makefile
++++ b/tools/testing/selftests/x86/Makefile
+@@ -12,7 +12,7 @@ CAN_BUILD_WITH_NOPIE :=3D $(shell ./check_cc.sh "$(CC)" tri=
+vial_program.c -no-pie)
+=20
+ TARGETS_C_BOTHBITS :=3D single_step_syscall sysret_ss_attrs syscall_nt test_=
+mremap_vdso \
+ 			check_initial_reg_state sigreturn iopl ioperm \
+-			test_vsyscall mov_ss_trap \
++			test_vsyscall mov_ss_trap sigtrap_loop \
+ 			syscall_arg_fault fsgsbase_restore sigaltstack
+ TARGETS_C_BOTHBITS +=3D nx_stack
+ TARGETS_C_32BIT_ONLY :=3D entry_from_vm86 test_syscall_vdso unwind_vdso \
+diff --git a/tools/testing/selftests/x86/sigtrap_loop.c b/tools/testing/selft=
+ests/x86/sigtrap_loop.c
+new file mode 100644
+index 0000000..9d06547
+--- /dev/null
++++ b/tools/testing/selftests/x86/sigtrap_loop.c
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
++#define _GNU_SOURCE
++
++#include <err.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ucontext.h>
++
++#ifdef __x86_64__
++# define REG_IP REG_RIP
++#else
++# define REG_IP REG_EIP
++#endif
++
++static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *), i=
+nt flags)
++{
++	struct sigaction sa;
++
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_sigaction =3D handler;
++	sa.sa_flags =3D SA_SIGINFO | flags;
++	sigemptyset(&sa.sa_mask);
++
++	if (sigaction(sig, &sa, 0))
++		err(1, "sigaction");
++
++	return;
++}
++
++static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
++{
++	ucontext_t *ctx =3D (ucontext_t *)ctx_void;
++	static unsigned int loop_count_on_same_ip;
++	static unsigned long last_trap_ip;
++
++	if (last_trap_ip =3D=3D ctx->uc_mcontext.gregs[REG_IP]) {
++		printf("\tTrapped at %016lx\n", last_trap_ip);
++
++		/*
++		 * If the same IP is hit more than 10 times in a row, it is
++		 * _considered_ an infinite loop.
++		 */
++		if (++loop_count_on_same_ip > 10) {
++			printf("[FAIL]\tDetected SIGTRAP infinite loop\n");
++			exit(1);
++		}
++
++		return;
++	}
++
++	loop_count_on_same_ip =3D 0;
++	last_trap_ip =3D ctx->uc_mcontext.gregs[REG_IP];
++	printf("\tTrapped at %016lx\n", last_trap_ip);
++}
++
++int main(int argc, char *argv[])
++{
++	sethandler(SIGTRAP, sigtrap, 0);
++
++	/*
++	 * Set the Trap Flag (TF) to single-step the test code, therefore to
++	 * trigger a SIGTRAP signal after each instruction until the TF is
++	 * cleared.
++	 *
++	 * Because the arithmetic flags are not significant here, the TF is
++	 * set by pushing 0x302 onto the stack and then popping it into the
++	 * flags register.
++	 *
++	 * Four instructions in the following asm code are executed with the
++	 * TF set, thus the SIGTRAP handler is expected to run four times.
++	 */
++	printf("[RUN]\tSIGTRAP infinite loop detection\n");
++	asm volatile(
++#ifdef __x86_64__
++		/*
++		 * Avoid clobbering the redzone
++		 *
++		 * Equivalent to "sub $128, %rsp", however -128 can be encoded
++		 * in a single byte immediate while 128 uses 4 bytes.
++		 */
++		"add $-128, %rsp\n\t"
++#endif
++		"push $0x302\n\t"
++		"popf\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"push $0x202\n\t"
++		"popf\n\t"
++#ifdef __x86_64__
++		"sub $-128, %rsp\n\t"
++#endif
++	);
++
++	printf("[OK]\tNo SIGTRAP infinite loop detected\n");
++	return 0;
++}
 
