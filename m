@@ -1,163 +1,165 @@
-Return-Path: <stable+bounces-152002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453D1AD19A4
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 10:12:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E331AD19E9
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 10:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FA1D168F3E
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 08:12:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 376C03A5AC0
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 08:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2AE2820B8;
-	Mon,  9 Jun 2025 08:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE9F1E5701;
+	Mon,  9 Jun 2025 08:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0BGn7ZFT";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QF2DlXvY";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LqcjU+6W";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="p6+PURz+"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="OzSX9d57"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4067E28134A
-	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 08:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D21DF738;
+	Mon,  9 Jun 2025 08:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749456745; cv=none; b=QBEfaN0S57SgKE034w24YNCGti/N4u+C3W0HW14osY6h2+qQmbTKur9H+SxdZTRjb/UuT3IuB+aUKULb3qf+2kg0y3S+gAbX7Zum2cF3aMhMySY6cGCEPMX3iWc6NTrUZGJlXSqUJdFwMSgwfps7LoagLGiXUY3Uh8OyC1vwgl8=
+	t=1749458245; cv=none; b=sOTOgPp+Epg5qgNvdGH7e3N3J50l1OlE9rMQ8SUNgO8wDfj5e6YAa75ignPzWMw4VW235ELH7NdzWrUNqMxVzDdI/vvXbOR4qJcVqp5sI5cem2ksF1pTV2Sa0B9+dzdAeJIXC4RJ844rBlmDV6zTm+jjMj8IPlvNiH0MBZtIiDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749456745; c=relaxed/simple;
-	bh=L4rAP6SdBVbNSBl3MVYKzpNbkOmsL9wtDH3qpLbcozo=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U9XX3ULOgAC0IuVH1WUw4mCRLjTowXPUXTU9WO11bKvs5naPT6PTRUbw8fk5wVLFOaA8PKT2FuP/PS4wIESk+bdMqKTe/XxVXkmtwr6nXcE87hP0xRQFfGDVkRMh8bihFGTOYEMpYy0mbLZ3WV3WFQThuV/vNglFTwiZwv2r3ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0BGn7ZFT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QF2DlXvY; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LqcjU+6W; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=p6+PURz+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6D82E21190;
-	Mon,  9 Jun 2025 08:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749456740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SaHhrqhrGiZ5nN1aA61UZ7LzTdcCfkGG5DBpOnVpU+k=;
-	b=0BGn7ZFTmX9/afoUxuXgYj1U9MYYFmVV6qXbCreUuXC9zfTDIhT1e2svgyEw2ve7Tchjp9
-	hOOUYGnhomCO0ABOjEMFxGsMckwIgUhb0T3We033Ph0ZVIHWEFpnFDC835P8E6Rpk+Ye1+
-	nuWT7rMINws+3gfJAvFTbl7xP+pmOoQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749456740;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SaHhrqhrGiZ5nN1aA61UZ7LzTdcCfkGG5DBpOnVpU+k=;
-	b=QF2DlXvYuaKiVgdZbFpeJH1ofA2S8QRxoH8Wcm18NinWc9YLfgOTF6N7cXQbVJ1Cp2E+cb
-	nDo7/CfJgNU3GPCQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LqcjU+6W;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=p6+PURz+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749456739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SaHhrqhrGiZ5nN1aA61UZ7LzTdcCfkGG5DBpOnVpU+k=;
-	b=LqcjU+6WbIEMwPUO5qSRn46C7xDprgaZmIyMl6RVSeTcAIUa/rznNFcKQdAqq3HWblSTCD
-	0KAOiTUWHSXZNdq9lvn4ns3p5uu6t3EWrfZHyr2VfQd1X1A2kO7asL6T2Px1zxZKxY6TFM
-	HSn99q46FmGoQN1tFcs0KBS3f9VaCEE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749456739;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SaHhrqhrGiZ5nN1aA61UZ7LzTdcCfkGG5DBpOnVpU+k=;
-	b=p6+PURz+n39OA+fcq6ZKHYjmyTjuTNt0rjZ/IrRM7S8kvtevs8xSKEFlqeYJL0wQ+RLvEz
-	zNC57tVm7YVYSUCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3795613A1D;
-	Mon,  9 Jun 2025 08:12:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CtCfC2OXRmhNBQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 09 Jun 2025 08:12:19 +0000
-Date: Mon, 09 Jun 2025 10:12:18 +0200
-Message-ID: <87wm9l72ql.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: edip@medip.dev
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
+	s=arc-20240116; t=1749458245; c=relaxed/simple;
+	bh=4nUy8Rt09Uzs1jtdr7Sc9be/L8tNFIfvAZOgJJPMYQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0NxU4V+mKG8h7psJXUuw72pKzFEvcKdbMe+oEX4gTQDj28Owh5XSwc9gxajIqFZLYGl+KmT47O363mIuKBMkwe/EkZSOtM5dVnUBeluFcI3hY48CSGs+Xc9Obq+0cVyUKQMS+dVPmJYWgsGXtq4BtzXwrzYpNec6OukFIhOdQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=OzSX9d57; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1749458230;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M5JZlSM1LhLy0SQ19Tkx1NwHmMyReoGwUgGBqgLGVOM=;
+	b=OzSX9d57vkqshQh00a/8Hob5qFWfdi6VQB2wqkIT7hHS4dYf6JE0uQK/WzJ85fEpSAblKx
+	JfBD4cyxgaaUGy6woQHdT+hXlY1aZNScMR5tkZJqQ39RFKtmCVGM56zkvAGbjiyDhO/7Zw
+	RT3TVS1zwoKIXN+RgWPhnkTd/zp/o6k=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+	Qun-Wei Lin <qun-wei.lin@mediatek.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] ALSA: hda/realtek - Add mute LED support for HP Victus 16-s1xxx and HP Victus 15-fa1xxx
-In-Reply-To: <20250609075943.13934-2-edip@medip.dev>
-References: <20250609075943.13934-2-edip@medip.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	lvc-project@linuxtesting.org,
+	Andrew Yang <andrew.yang@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Casper Li <casper.li@mediatek.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chinwen Chang <chinwen.chang@mediatek.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: [PATCH 5.10] sched/task_stack: fix object_is_on_stack() for KASAN tagged pointers
+Date: Mon,  9 Jun 2025 11:37:08 +0300
+Message-ID: <20250609083709.27569-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[medip.dev:email,suse.de:dkim,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_NONE(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 6D82E21190
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -3.51
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 09 Jun 2025 09:59:44 +0200,
-edip@medip.dev wrote:
-> 
-> From: Edip Hazuri <edip@medip.dev>
-> 
-> The mute led on those laptops is using ALC245 but requires a quirk to work
-> This patch enables the existing quirk for the devices.
-> 
-> Tested on my Victus 16-s1011nt Laptop and my friend's Victus 15-fa1xxx. The LED behaviour works as intended.
-> 
-> v2:
-> - add new entries according to (PCI) SSID order
-> - link to v1: https://lore.kernel.org/linux-sound/20250607105051.41162-1-edip@medip.dev/#R
-> 
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Edip Hazuri <edip@medip.dev>
+From: Qun-Wei Lin <qun-wei.lin@mediatek.com>
 
-Applied now.  Thanks.
+commit fd7b4f9f46d46acbc7af3a439bb0d869efdc5c58 upstream.
 
+When CONFIG_KASAN_SW_TAGS and CONFIG_KASAN_STACK are enabled, the
+object_is_on_stack() function may produce incorrect results due to the
+presence of tags in the obj pointer, while the stack pointer does not have
+tags.  This discrepancy can lead to incorrect stack object detection and
+subsequently trigger warnings if CONFIG_DEBUG_OBJECTS is also enabled.
 
-Takashi
+Example of the warning:
+
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1 at lib/debugobjects.c:557 __debug_object_init+0x330/0x364
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc5 #4
+Hardware name: linux,dummy-virt (DT)
+pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __debug_object_init+0x330/0x364
+lr : __debug_object_init+0x330/0x364
+sp : ffff800082ea7b40
+x29: ffff800082ea7b40 x28: 98ff0000c0164518 x27: 98ff0000c0164534
+x26: ffff800082d93ec8 x25: 0000000000000001 x24: 1cff0000c00172a0
+x23: 0000000000000000 x22: ffff800082d93ed0 x21: ffff800081a24418
+x20: 3eff800082ea7bb0 x19: efff800000000000 x18: 0000000000000000
+x17: 00000000000000ff x16: 0000000000000047 x15: 206b63617473206e
+x14: 0000000000000018 x13: ffff800082ea7780 x12: 0ffff800082ea78e
+x11: 0ffff800082ea790 x10: 0ffff800082ea79d x9 : 34d77febe173e800
+x8 : 34d77febe173e800 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : feff800082ea74b8 x4 : ffff800082870a90 x3 : ffff80008018d3c4
+x2 : 0000000000000001 x1 : ffff800082858810 x0 : 0000000000000050
+Call trace:
+ __debug_object_init+0x330/0x364
+ debug_object_init_on_stack+0x30/0x3c
+ schedule_hrtimeout_range_clock+0xac/0x26c
+ schedule_hrtimeout+0x1c/0x30
+ wait_task_inactive+0x1d4/0x25c
+ kthread_bind_mask+0x28/0x98
+ init_rescuer+0x1e8/0x280
+ workqueue_init+0x1a0/0x3cc
+ kernel_init_freeable+0x118/0x200
+ kernel_init+0x28/0x1f0
+ ret_from_fork+0x10/0x20
+---[ end trace 0000000000000000 ]---
+ODEBUG: object 3eff800082ea7bb0 is NOT on stack ffff800082ea0000, but annotated.
+------------[ cut here ]------------
+
+Link: https://lkml.kernel.org/r/20241113042544.19095-1-qun-wei.lin@mediatek.com
+Signed-off-by: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Cc: Andrew Yang <andrew.yang@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Casper Li <casper.li@mediatek.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[Denis: minor fix to resolve merge conflict.]                                           
+Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
+---
+Backport fix for CVE-2024-53128
+Link: https://nvd.nist.gov/vuln/detail/CVE-2024-53128
+---
+ include/linux/sched/task_stack.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index 879a5c8f930b..7aa1235a5bbe 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -8,6 +8,8 @@
+ 
+ #include <linux/sched.h>
+ #include <linux/magic.h>
++#include <linux/refcount.h>
++#include <linux/kasan.h>
+ 
+ #ifdef CONFIG_THREAD_INFO_IN_TASK
+ 
+@@ -86,6 +88,7 @@ static inline int object_is_on_stack(const void *obj)
+ {
+ 	void *stack = task_stack_page(current);
+ 
++	obj = kasan_reset_tag(obj);
+ 	return (obj >= stack) && (obj < (stack + THREAD_SIZE));
+ }
+ 
+-- 
+2.43.0
+
 
