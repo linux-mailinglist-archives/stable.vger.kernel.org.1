@@ -1,131 +1,127 @@
-Return-Path: <stable+bounces-152011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF636AD1C02
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 12:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3075AD1C3B
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A353A8EB5
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 10:56:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D23F3A9E27
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 11:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E5C7E9;
-	Mon,  9 Jun 2025 10:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="E9NU+5LZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1775F254845;
+	Mon,  9 Jun 2025 11:10:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C03F1F4191;
-	Mon,  9 Jun 2025 10:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E5F1FC7E7;
+	Mon,  9 Jun 2025 11:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749466518; cv=none; b=aSziqtir0Mb8bm2IN9RMG7RNH+ZQgd+jnSsz1g31Ys9PzP7tSlRkG8WnXJLR6TIkTFopACdOrxZjw6wkuQ+BoxqmZEoNjeIaQZHpggHi0scgZxBOW8SEULcbUiaP1qnEvwZ1WhzXql6M875KyyD43zpwwvs7IJL3ReFCDvGQYPw=
+	t=1749467434; cv=none; b=n5s38ar5e08jexyFclHQqErc9XpWihilgcwb37d9u6xra3rYrr3VYNqjrDEulZM4CtJwkNrsoIirr+4QhYqSciZ1fKAvY+c6sBU0pBFLdm7mwAQIJqdm0Hbkw5vZLfEOLrZNVXDOoYaNQrncYe/JLLT8OP6Qo9NmAiLq3Abf62E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749466518; c=relaxed/simple;
-	bh=tnWO+lQ/sTdHYK94IxXlayYAXVY+emKXiNfprDofk2k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rrWVcX133snwJtkHMf2Wf064C4Ni7kJm73Pd+qcUw0pVSRsPR5iaYLMxpBvrkQx4vbIWxuY5Vf8xH/Au83opVaLTldoETvuuQPQaKwZsIWp+n23AGZ9lu9GP5pY3oWjjECyqaSANOAGNZGLAXVJNJGN4BK105K778MkmtX0BrTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=E9NU+5LZ; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1749466513;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Zonziy8bKKs9HmH5q002b/uuhFJHjUBmz9TKkYANDTw=;
-	b=E9NU+5LZrMe54Lz4cEg5CglbA8dU6J9V3aWIVVEgh8v2D3YGF7w92CeeN/ABweRo+Q0Bo9
-	kn/zoUKRKjLeZSMFHVaO62TK77nF9s3DNpRxYKjcdrqF4U5F6Khxjzxw+rINV3Un5hezrw
-	HHwec3Ig0heOjUr7evg/2umOe8trWAM=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Dave Taht <dave.taht@bufferbloat.net>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
-Date: Mon,  9 Jun 2025 13:55:11 +0300
-Message-ID: <20250609105513.39042-1-arefev@swemel.ru>
+	s=arc-20240116; t=1749467434; c=relaxed/simple;
+	bh=OtuITT+i8YfVsB92HRFIK/5RvmgL0pQolfsZtD3LzPY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cwSvEj0Og7eJUVT16kSmt/Fn0kgiOfMW6HrVhRkMnuobDPocQ6XQTDLchbg3/MkitcIl27Z4am7DJCUfELKMJAD8LTe2jOTbyh+jFSWYao47EoTkWYjLtCJVUhkd4mHxeMSoltzMyu78ySqYYdTi/pzNTzCj4p9hsC45k/hyzZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83909113E;
+	Mon,  9 Jun 2025 04:10:13 -0700 (PDT)
+Received: from [10.1.39.162] (XHFQ2J9959.cambridge.arm.com [10.1.39.162])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5AB223F59E;
+	Mon,  9 Jun 2025 04:10:31 -0700 (PDT)
+Message-ID: <5f6085d9-0ceb-489c-89a6-3666be994549@arm.com>
+Date: Mon, 9 Jun 2025 12:10:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64/ptdump: Ensure memory hotplug is prevented during
+ ptdump_check_wx()
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: stable@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+ Dev Jain <dev.jain@arm.com>
+References: <20250609041214.285664-1-anshuman.khandual@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20250609041214.285664-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+On 09/06/2025 05:12, Anshuman Khandual wrote:
+> The arm64 page table dump code can race with concurrent modification of the
+> kernel page tables. When a leaf entries are modified concurrently, the dump
+> code may log stale or inconsistent information for a VA range, but this is
+> otherwise not harmful.
+> 
+> When intermediate levels of table are freed, the dump code will continue to
+> use memory which has been freed and potentially reallocated for another
+> purpose. In such cases, the dump code may dereference bogus addresses,
+> leading to a number of potential problems.
+> 
+> This problem was fixed for ptdump_show() earlier via commit 'bf2b59f60ee1
+> ("arm64/mm: Hold memory hotplug lock while walking for kernel page table
+> dump")' but a same was missed for ptdump_check_wx() which faced the race
+> condition as well. Let's just take the memory hotplug lock while executing
+> ptdump_check_wx().
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Reported-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-commit 342debc12183b51773b3345ba267e9263bdfaaef upstream. 
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 
-After making all ->qlen_notify() callbacks idempotent, now it is safe to
-remove the check of qlen!=0 from both fq_codel_dequeue() and
-codel_qdisc_dequeue().
-
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Denis: minor fix to resolve merge conflict.]                                           
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
----
-Backport fix for CVE-2025-37798
-Link: https://nvd.nist.gov/vuln/detail/CVE-2025-37798
----
- net/sched/sch_codel.c    | 5 +----
- net/sched/sch_fq_codel.c | 6 ++----
- 2 files changed, 3 insertions(+), 8 deletions(-)
-
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index d99c7386e24e..0d4228bfd1a0 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -95,10 +95,7 @@ static struct sk_buff *codel_qdisc_dequeue(struct Qdisc *sch)
- 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
- 			    drop_func, dequeue_func);
- 
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->stats.drop_count && sch->q.qlen) {
-+	if (q->stats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
- 		q->stats.drop_count = 0;
- 		q->stats.drop_len = 0;
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 60dbc549e991..3c1efe360def 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -314,10 +314,8 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
- 	}
- 	qdisc_bstats_update(sch, skb);
- 	flow->deficit -= qdisc_pkt_len(skb);
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->cstats.drop_count && sch->q.qlen) {
-+
-+	if (q->cstats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
- 					  q->cstats.drop_len);
- 		q->cstats.drop_count = 0;
--- 
-2.43.0
+> ---
+> This patch applies on v6.16-rc1
+> 
+> Dev Jain found this via code inspection.
+> 
+>  arch/arm64/mm/ptdump.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
+> index 421a5de806c62..551f80d41e8d2 100644
+> --- a/arch/arm64/mm/ptdump.c
+> +++ b/arch/arm64/mm/ptdump.c
+> @@ -328,7 +328,7 @@ static struct ptdump_info kernel_ptdump_info __ro_after_init = {
+>  	.mm		= &init_mm,
+>  };
+>  
+> -bool ptdump_check_wx(void)
+> +static bool __ptdump_check_wx(void)
+>  {
+>  	struct ptdump_pg_state st = {
+>  		.seq = NULL,
+> @@ -367,6 +367,16 @@ bool ptdump_check_wx(void)
+>  	}
+>  }
+>  
+> +bool ptdump_check_wx(void)
+> +{
+> +	bool ret;
+> +
+> +	get_online_mems();
+> +	ret = __ptdump_check_wx();
+> +	put_online_mems();
+> +	return ret;
+> +}
+> +
+>  static int __init ptdump_init(void)
+>  {
+>  	u64 page_offset = _PAGE_OFFSET(vabits_actual);
 
 
