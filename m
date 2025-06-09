@@ -1,160 +1,197 @@
-Return-Path: <stable+bounces-151988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63BEAD1854
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 07:30:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0012FAD18CA
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 09:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4AF23A7EFF
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 05:29:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8C1188BA6B
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 07:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498CD27FB3A;
-	Mon,  9 Jun 2025 05:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3299B280CE6;
+	Mon,  9 Jun 2025 07:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PXXhEjKt"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="fbSfYtIB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D287D3FF1
-	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 05:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF83280A27
+	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 07:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749446998; cv=none; b=n8CzPCb0m9SmM+mAoMyL9YES9mduXM+K0N5r27RUWpmp5oylpIJEZ5QW1WEY2VVsYEjmRFUiDsTpxlfyfAeSotnxlNz/xFvlYiriZ8Er8HExHCHWLypU3tDKy9GUN27qX4drudbDn7rqTNIRcbyMdRGpEf2Lsg1MtgakW8dmOAQ=
+	t=1749452583; cv=none; b=doAQ8wbXd3oe1HQdsYZRqmY1rYGX4VrvfTIFmFprbglU2p3b2BMquwcaLBmBJA1FtRw9mPzveYKvY7y+KTXIXLwxHLcq9cR8E17Iy0mmaOKcwqsPSxL2VFshSYtMP1+2VCANeWQWrxbcTyhxxfzJGBrUk0P3khgLJFzWk6TBgpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749446998; c=relaxed/simple;
-	bh=93h8kn5xVls9Ngi8HZZ9l1is5mg9eAIy7FB0kJlHl4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IRROywybk4H+dzQF49Yr8EUZs+a9CX+NjkcIyNFInazLiETlpNlYG4RaTWiLLazaiqFiDeLDaT/0x35KCq+a3CntU58cVQHwq3wrgw/PbCU5mWUKYZz8qFiA+gF70EGbrJQ9T/U4fQsm75ovYxK5oPdXSjAukQKS2yg6/OCYntM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PXXhEjKt; arc=none smtp.client-ip=209.85.128.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-451d6ade159so32704465e9.1
-        for <stable@vger.kernel.org>; Sun, 08 Jun 2025 22:29:55 -0700 (PDT)
+	s=arc-20240116; t=1749452583; c=relaxed/simple;
+	bh=S8fMRb/pNZfo6KEjY8l9YetEwYEAJ2ej7DTgEr3gLDA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KdWyAzkAoygdVs7RAKbqUK6o6DaBMOvjd70HQLVBkW7LSrzN4xTRwtTvbHdqm5qU2MC+IkNef13CuyyvcrIOcuHreOATb30ss0hByOSVJYQ8oAEJZjonQGnN6qyi+PbvFaCRR2zecuMj9n/+dsXdNaTM03kpz/mcoBUegQ+9/Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=fbSfYtIB; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2ea0086338eso1562665fac.1
+        for <stable@vger.kernel.org>; Mon, 09 Jun 2025 00:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1749446994; x=1750051794; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mF2BTpLT1s+MLNXWca+LZBlRTo25iGM0dixwo5kQWLc=;
-        b=PXXhEjKtVvIj1JOIygBnyAgKDoN/wpJ4jh2+zzaUhWea+W/GveJ/vsJJMayQtxLiMv
-         pKRoSFIU608nGEhZwuU/FmivJWru+4cBre3phPd2VE7e3CoCsvI39nJyY++X5Dofnfyy
-         C6pdAbF2MtwY8tbCZssH9tpvMte4jgXWsOo4cD5dzIi1cyeG3CJz3qic8QDVx7OElypA
-         WQ7hhJVp0uygZpenL2Z0EC3GAaAD+nD6A8uNPRuC1O9jiD4xldULIvRDFjLLXHlx28Ha
-         2/cFsQaYnJhbKN9JB5e6IfvpnMSL8GlR1fCfhUd6AYu9Yr0ZqKBfx0A6dmyDT2vxybYm
-         9udw==
+        d=bytedance.com; s=google; t=1749452579; x=1750057379; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8223fsD/IEHnEpRfxR/6JS/tsDBYZuVwnOiA2sfiMIE=;
+        b=fbSfYtIBp9k+nJ/RJGFvSKhcLS1KyXRMWgMuY6J4A+N1Q4XpcoUlEkWK2xWBgJo31p
+         wPPNTCNq043bnhuY64GPhLjN9Hl/22O120bsGwKhlJQE7bb8d2Rbz8Ax6MEjD0P6MgmE
+         YsaNueOcMfww1vBivJWuycYGRAyczLnoVzUchzvei2gN3VUVmIG1CYmi6rZbzs0sHbx9
+         JDyeSzUiXKL09Q2hiqNsSxQlDpXQlxxBi9MST9WcNLxVVNc1LFzO1iYbZ+0nnhdiAqls
+         HBLvCCYRelvjEEh/k6y6SNrbmWK/qs0BrApFJyx9083w3BQO4BXEk7AihS4KXdJoPDwF
+         iLAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749446994; x=1750051794;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mF2BTpLT1s+MLNXWca+LZBlRTo25iGM0dixwo5kQWLc=;
-        b=vQrllDNvDX/LwoJMSIL8qX3F8Cpz1ddvbCY9aGl+URYufGOSnqXc5NlOoh5pJRQSaC
-         hlfjWDvOBeQjuXwpXTLkfsQ6f2TWweeRjB1ymQWG53ynD8qwpct6rL0b5UyoY+qAL6dG
-         B8Q8jZkB0Q79Ft6qQTEDJBIQ+xyZEquL65IWmvdCqN0SKrHXU+lyHojly1/EpLLhKUHs
-         mPxuene7B1rRWRhUK2W3t2i6dr0xeXkmZsII3ImUVFCKWXGNlbxnvCyXI4uqO8ToDyPK
-         M+Ur2EkkX3ylMkit6ty1Aw7BBdgBz/qq3p2B3Fv/aKRJQy4LPdg2AEKP/pAScXO7FpFf
-         a5sQ==
-X-Gm-Message-State: AOJu0YwnC8b1GlAm2uF+tAK4C/DkZ95Y6jQx/VfIhssjIGbWBvEUKSrM
-	6DlR9T7pcO+wianCDgf56WWPuNDUnxNLN0ucPeQZ8nMW0q4rQpbWDxZgA9qQrdh1DXW6g3BXq18
-	VYt03w810kA==
-X-Gm-Gg: ASbGncvRiiUGWbzVKtzkgUgBsGOrwMN8CSGkd0rY7q1Hzxttpd/wsJ/x4j5eoEXOWK+
-	kH1+fdpkqGUL9LRFa6XvetH3OvfiI4O43Z17hTnHgTzgIupMCYm/BdDt7fWQe8pJ8i/zJ9LW38p
-	bkFMIa0FqgfVBveDyXcPZNx/vas7tqlkKW69a6cZN1Et1ce7ije9n1k8bfBn2VdRUTCmH6WbF9f
-	SXothkA8ibiDAfmsxOYoOYGNEWrNWWLCZZl3/vw5zqvK3dQbiTDHSUMBQSywSzaXTzi4CPiAytE
-	ESfmSerE7PmD34TswTCfbWXfP2MlQQzM66RJrLVZ0gXLPxUeI4gzum5NyUDkQuhrsovM5wTQiGC
-	B2w==
-X-Google-Smtp-Source: AGHT+IFaCI+3HLmXEw5kZeudXmG3TLvqK9QADhTDpo98lz8+wq1ALBBocvHq6PqvkFEw5pqy//5rlA==
-X-Received: by 2002:a05:600c:8b14:b0:43c:f8fc:f697 with SMTP id 5b1f17b1804b1-4520139a3b3mr110072745e9.9.1749446993757;
-        Sun, 08 Jun 2025 22:29:53 -0700 (PDT)
-Received: from localhost (106-64-1-212.adsl.fetnet.net. [106.64.1.212])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45213709611sm102806725e9.24.2025.06.08.22.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Jun 2025 22:29:53 -0700 (PDT)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: Ihor Solodrai <ihor.solodrai@pm.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.6 6.12 1/1] selftests/bpf: Check for timeout in perf_link test
-Date: Mon,  9 Jun 2025 13:29:38 +0800
-Message-ID: <20250609052941.52073-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1749452579; x=1750057379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8223fsD/IEHnEpRfxR/6JS/tsDBYZuVwnOiA2sfiMIE=;
+        b=vAsUDBYrmKaYpQd1fIgrw7aYNPtkF+Fr5bgNqD8RT70e/xJTa39lC5IlKz8P1g97kR
+         Wzeu+5iDTN6Iwvu7e+QWDDME/IVRoeNXdtZJ8dt1atOzDq624M5kNA1tGwrsf+78EKcs
+         Uo+Dwh2m3rjX2Up+fK+QVWND2GPghmW8ksU4j+QTBBSkUAalBHkHcWXpAMYq9pSbRYnk
+         Eckj76DDxRCKbloQc+flWkifcf0g1v8VZ8VbL9CWs6zr94X1PLbYiMpF5LoVhtUJ1wQp
+         vagCg2Xi2Fux8HQzM2q6X6Rg/Rf/APoZa7uHQIHvfK8rwSF2M60WUfkRj75OLzHSEx6Y
+         EwZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWO8qik0jmZXwT8NQNDdVofrlVDr4LVMaPREAvHaN1eTNmwm3tgXSoBHD6vPJONzoPlJDBxoVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSgYOgpOyrMx2LwrhfecJ2W3DqJM6CKqn5nWKTH+pB69yfQNVX
+	slAYlbsPissgVgNwU8otibMDD8vdvUeqN9aoi7gIWyGAQcdNFmYdir3Uc0JRaOfHgIsQp3isF9L
+	d7E1QgqWUh8E+VNe5XDFbY79s13kDaDLUTlwl5RtfFQ==
+X-Gm-Gg: ASbGncslXllgYBNrQcN4JAujo58fqFOuzsrBl1ejfVYpBdJYWApjWwgIRULJVGr4Qr3
+	FLrWztPOvHMAS2pcBuIuc19XYQPJNQooK4iDh08d50RcXKticeQpJGrZ861BIveKNENIxV473Za
+	qn4fPlZmRl9zA++WWIWBK08yeaQWLwX7iYCUn0I/MGWA0IDg==
+X-Google-Smtp-Source: AGHT+IH1nxoI2XvMM7f85vg72xn7IbH1IhOyMv7tTDbpvh3JBSFHmswM2t153ADD6iCcfsT/oKucRb66bfSmRHyAaag=
+X-Received: by 2002:a05:6870:1994:b0:2d4:ef88:97bb with SMTP id
+ 586e51a60fabf-2ea00633f53mr7181695fac.1.1749452578810; Mon, 09 Jun 2025
+ 00:02:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250528062609.25104-1-cuiyunhui@bytedance.com> <2025060621-hankie-groovy-bad6@gregkh>
+In-Reply-To: <2025060621-hankie-groovy-bad6@gregkh>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Mon, 9 Jun 2025 15:02:47 +0800
+X-Gm-Features: AX0GCFt2g1WWTOdG3if77QeLjjHzxyv5anTnGECTOVqS1-c1TzNIWHg7hGyjWfI
+Message-ID: <CAEEQ3w=Xfn=o9idu0KZKEALYvogiJ2fSCjC9jAkKLkCZ5E4hKg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v7 1/4] serial: 8250: fix panic due to PSLVERR
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: arnd@arndb.de, andriy.shevchenko@linux.intel.com, 
+	benjamin.larsson@genexis.eu, heikki.krogerus@linux.intel.com, 
+	ilpo.jarvinen@linux.intel.com, jirislaby@kernel.org, 
+	jkeeping@inmusicbrands.com, john.ogness@linutronix.de, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	markus.mayer@linaro.org, matt.porter@linaro.org, namcao@linutronix.de, 
+	paulmck@kernel.org, pmladek@suse.com, schnelle@linux.ibm.com, 
+	sunilvl@ventanamicro.com, tim.kryger@linaro.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ihor Solodrai <ihor.solodrai@pm.me>
+Hi,
 
-Recently perf_link test started unreliably failing on libbpf CI:
-  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
-  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
-  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
+On Fri, Jun 6, 2025 at 6:40=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> On Wed, May 28, 2025 at 02:26:06PM +0800, Yunhui Cui wrote:
+> > When the PSLVERR_RESP_EN parameter is set to 1, the device generates
+> > an error response if an attempt is made to read an empty RBR (Receive
+> > Buffer Register) while the FIFO is enabled.
+> >
+> > In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
+> > UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
+> > dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
+> > function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
+> > Execution proceeds to the serial_port_in(port, UART_RX).
+> > This satisfies the PSLVERR trigger condition.
+> >
+> > When another CPU (e.g., using printk()) is accessing the UART (UART
+> > is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) =3D=
+=3D
+> > (lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
+> > dw8250_force_idle().
+> >
+> > Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->loc=
+k
+> > to fix this issue.
+> >
+> > Panic backtrace:
+> > [    0.442336] Oops - unknown exception [#1]
+> > [    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
+> > [    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
+> > ...
+> > [    0.442416] console_on_rootfs+0x26/0x70
+> >
+> > Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaroun=
+d")
+> > Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/=
+T/
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >  drivers/tty/serial/8250/8250_port.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8=
+250/8250_port.c
+> > index 6d7b8c4667c9c..07fe818dffa34 100644
+> > --- a/drivers/tty/serial/8250/8250_port.c
+> > +++ b/drivers/tty/serial/8250/8250_port.c
+> > @@ -2376,9 +2376,10 @@ int serial8250_do_startup(struct uart_port *port=
+)
+> >       /*
+> >        * Now, initialize the UART
+> >        */
+> > -     serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+> >
+> >       uart_port_lock_irqsave(port, &flags);
+> > +     serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+> > +
+> >       if (up->port.flags & UPF_FOURPORT) {
+> >               if (!up->port.irq)
+> >                       up->port.mctrl |=3D TIOCM_OUT1;
+> > --
+> > 2.39.5
+> >
+> >
+>
+> Hi,
+>
+> This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+> a patch that has triggered this response.  He used to manually respond
+> to these common problems, but in order to save his sanity (he kept
+> writing the same thing over and over, yet to different people), I was
+> created.  Hopefully you will not take offence and will fix the problem
+> in your patch and resubmit it so that it can be accepted into the Linux
+> kernel tree.
+>
+> You are receiving this message because of the following common error(s)
+> as indicated below:
+>
+> - You have marked a patch with a "Fixes:" tag for a commit that is in an
+>   older released kernel, yet you do not have a cc: stable line in the
+>   signed-off-by area at all, which means that the patch will not be
+>   applied to any older kernel releases.  To properly fix this, please
+>   follow the documented rules in the
+>   Documentation/process/stable-kernel-rules.rst file for how to resolve
+>   this.
 
-Part of the test is running a dummy loop for a while and then checking
-for a counter incremented by the test program.
+Okay, update under v8.
 
-Instead of waiting for an arbitrary number of loop iterations once,
-check for the test counter in a loop and use get_time_ns() helper to
-enforce a 100ms timeout.
+>
+> If you wish to discuss this problem further, or you have questions about
+> how to resolve this issue, please feel free to respond to this email and
+> Greg will reply once he has dug out from the pending patches received
+> from other developers.
+>
+> thanks,
+>
+> greg k-h's patch email bot
 
-v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
----
- .../testing/selftests/bpf/prog_tests/perf_link.c  | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_link.c b/tools/testing/selftests/bpf/prog_tests/perf_link.c
-index 3a25f1c743a1..d940ff87fa08 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
-@@ -4,8 +4,12 @@
- #include <pthread.h>
- #include <sched.h>
- #include <test_progs.h>
-+#include "testing_helpers.h"
- #include "test_perf_link.skel.h"
- 
-+#define BURN_TIMEOUT_MS 100
-+#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
-+
- static void burn_cpu(void)
- {
- 	volatile int j = 0;
-@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
- 	int run_cnt_before, run_cnt_after;
- 	struct bpf_link_info info;
- 	__u32 info_len = sizeof(info);
-+	__u64 timeout_time_ns;
- 
- 	/* create perf event */
- 	memset(&attr, 0, sizeof(attr));
-@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
- 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
- 
- 	/* ensure we get at least one perf_event prog execution */
--	burn_cpu();
--	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
-+	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
-+	while (true) {
-+		burn_cpu();
-+		if (skel->bss->run_cnt > 0)
-+			break;
-+	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
-+			break;
-+	}
- 
- 	/* perf_event is still active, but we close link and BPF program
- 	 * shouldn't be executed anymore
--- 
-2.49.0
-
+Thanks,
+Yunhui
 
