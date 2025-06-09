@@ -1,117 +1,191 @@
-Return-Path: <stable+bounces-152022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6177EAD1EE6
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 15:31:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B8BAD1F29
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 15:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C7671884A67
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:31:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E04188E0BF
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A60BEEAB;
-	Mon,  9 Jun 2025 13:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88952580CC;
+	Mon,  9 Jun 2025 13:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bix19D6u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQ1sKOO3"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F04D528
-	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 13:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741E78BFF;
+	Mon,  9 Jun 2025 13:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749475900; cv=none; b=RtffRvD70HmBhKXLcFq02Z9VoMAzNSWCeSdPLUW3shmibkcYSp0lvlRgDvW4CcsJfzv0VvcjeG/X4VHvjNxkKX8uTglLvJu6kX91akAyPFLeJkgRRyGLmIlrDHUkNK6Lq1RONkzH1gZp8Ne5K8dYyWe7tPBajR5Ddf3XTQnWvB0=
+	t=1749476638; cv=none; b=mtmJI/Ai8pStofVzgTF3ea2gDnZv0j2rofyBmbn59rBjkUE4GI7EJvlcdmQo42c4c2UAkuWkO6ixJ9JoY/Eky3Mh+iWpb9SbsOImDNWHe1yBZIrv90w3YT3q79fabaVklkxnYgYfZml/+aoLK5a/zvUs1qtL8VWDYJ7V52oGopo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749475900; c=relaxed/simple;
-	bh=CilfPUBuQdZJdhPOBJMjCYScKL2a/bvF0k7WK28n5fA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dE9jE1BjcycaghXTqEg0rGQcOVTtpys2j6BIY5QhOCI8lVFX2Rqnsnopt3Qp6SUGW4VQk+s+oA64ToRchGXgX3hkeGLV+Nmi169swIavZqm4ThZDg7U6B5pHey/MCxeeUUbdkb3r/56qZY9+wlZv4gFU+7dqPV4HRn1oKzFfJoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bix19D6u; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749475898; x=1781011898;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CilfPUBuQdZJdhPOBJMjCYScKL2a/bvF0k7WK28n5fA=;
-  b=Bix19D6uSoawIDSpSwCSloGaEbH8v4tnirQb8JVJnqMYzK86jgaVxW1J
-   OSu2H70jFQwhO6oEfUzwk/JvCCki+xu7l2pD3PIBdBGHbchsMhYJa4PDx
-   NqV+DO1HRgvAYDcTGrIrUCctxFn1dhv7UHtMnfC0ufDcVdwS9PCFEpGpl
-   /rxqO5SwJw8kYS/bn1EskdU6AtsnuGH7zt6OY/hHWZikBTpkV45Z/rgoE
-   k1E1Qna48Z8ppDiKc4h0aGa9OgxCPkNWfkpWUPUmFlYYijUfRKkatZQT8
-   TXc1MnQhdUbvOB5OyV/2b9EnC0wUUeAPOEWFjTvE7SAQo/68IzIPiA7H+
-   g==;
-X-CSE-ConnectionGUID: Aua1cEgVSEOdIhOoSM9MCg==
-X-CSE-MsgGUID: lE/FXhFISzKCbHeMmY08BQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="39174409"
-X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
-   d="scan'208";a="39174409"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 06:31:38 -0700
-X-CSE-ConnectionGUID: aQpBzy3VTu+T3nbxS5+0fQ==
-X-CSE-MsgGUID: jspV/qQNTRuO6L1R2bvLeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
-   d="scan'208";a="183695496"
-Received: from clustinx-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.43])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 06:31:37 -0700
-Date: Mon, 9 Jun 2025 06:31:30 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 5.15 v3 00/16] ITS mitigation
-Message-ID: <20250609133130.ieub7pgnestuosal@desk>
-References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
- <aEQHkmGXOel3BcOF@eldamar.lan>
+	s=arc-20240116; t=1749476638; c=relaxed/simple;
+	bh=lMug/La/kPra131R38jmRMyz3svWbYkjuGKqmZ/sL90=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OE+xH+zJtc2/qmE8hZ976kUKFHeDeEs4bjSObk0RqzC0WkVtjYyWxJD3Me+2diS0sye7rrrTfcv4Rw72m17g8BIoml8JDmN/hZUFMgrWkf08wHAXeYxgogLU9yrEobpW1v24/Y0j7S7H58pfLTdphZ8GutbiytMRvFJb3m3dRQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQ1sKOO3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF72C4CEEB;
+	Mon,  9 Jun 2025 13:43:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749476638;
+	bh=lMug/La/kPra131R38jmRMyz3svWbYkjuGKqmZ/sL90=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YQ1sKOO3S/Hw08plgRP5u+d8sSCSbk628m2oMmvi0bB8+1z3pcWzafWS+/1Tw0eDT
+	 t8vx8+n1uqSKRNKLHpWzj0zOIfClvyXxT99nc40DaHsH/2pfpDugkkEloKwt9f/7oD
+	 PzGNG98Abvw6MIvmT2JLoFWODCSINMR690bcLpvm6HyiI/K1WWtwx9AgzLchvZdXxu
+	 h7nRzTQIY0pHJw+Q4i1SRG/d5tU6PawS/M2V+Mnf85+fQntETZ+VHB3wn0o2eTGnK8
+	 Xu9/j+qJ8pRFgVyw7LE0w0XG/m7evvk0x+o5D68ZN+E3QUJxwPEIom9wKBryu+Gswd
+	 6czy7rfd3LrkA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	emmanuel.grumbach@intel.com,
+	daniel.gabay@intel.com,
+	shaul.triebitz@intel.com
+Subject: [PATCH AUTOSEL 6.15 01/35] wifi: iwlwifi: mld: Move regulatory domain initialization
+Date: Mon,  9 Jun 2025 09:43:17 -0400
+Message-Id: <20250609134355.1341953-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEQHkmGXOel3BcOF@eldamar.lan>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.1
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jun 07, 2025 at 11:34:10AM +0200, Salvatore Bonaccorso wrote:
-> Hi Pawan,
-> 
-> On Fri, May 16, 2025 at 04:59:28PM -0700, Pawan Gupta wrote:
-> > v3:
-> > - Added patches:
-> >   x86/its: Fix build errors when CONFIG_MODULES=n
-> >   x86/its: FineIBT-paranoid vs ITS
-> > 
-> > v2:
-> > - Added missing patch to 6.1 backport.
-> > 
-> > This is a backport of mitigation for Indirect Target Selection (ITS).
-> > 
-> > ITS is a bug in some Intel CPUs that affects indirect branches including
-> > RETs in the first half of a cacheline. Mitigation is to relocate the
-> > affected branches to an ITS-safe thunk.
-> > 
-> > Below additional upstream commits are required to cover some of the special
-> > cases like indirects in asm and returns in static calls:
-> > 
-> > cfceff8526a4 ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
-> > 052040e34c08 ("x86/speculation: Add a conditional CS prefix to CALL_NOSPEC")
-> > c8c81458863a ("x86/speculation: Remove the extra #ifdef around CALL_NOSPEC")
-> > d2408e043e72 ("x86/alternative: Optimize returns patching")
-> > 4ba89dd6ddec ("x86/alternatives: Remove faulty optimization")
-> > 
-> > [1] https://github.com/torvalds/linux/commit/6f5bf947bab06f37ff931c359fd5770c4d9cbf87
-> 
-> AFAICS there are no backports yet for as well older stable series than
-> 5.15, in particular 5.10.y (which is used in Debian bullseye yet). Are
-> you planning to make as well backports for the 5.10.y stable series?
+From: Ilan Peer <ilan.peer@intel.com>
 
-I wasn't planning it earlier, but now that there is a good reason, I will
-work on the backport for 5.10.
+[ Upstream commit f81aa834bfa91c827f290b62a245e23c5ad2813c ]
 
-Thanks,
-Pawan
+The regulatory domain information was initialized every time the
+FW was loaded and the device was restarted. This was unnecessary
+and useless as at this stage the wiphy channels information was
+not setup yet so while the regulatory domain was set to the wiphy,
+the channel information was not updated.
+
+In case that a specific MCC was configured during FW initialization
+then following updates with this MCC are ignored, and thus the
+wiphy channels information is left with information not matching
+the regulatory domain.
+
+This commit moves the regulatory domain initialization to after the
+operational firmware is started, i.e., after the wiphy channels were
+configured and the regulatory information is needed.
+
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250604061200.f138a7382093.I2fd8b3e99be13c2687da483e2cb1311ffb4fbfce@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+**YES**
+
+This commit should be backported to stable kernel trees. Here's my
+extensive analysis:
+
+## Bug Fix Nature
+
+The commit fixes a real bug where regulatory domain information and
+wiphy channel configurations become mismatched. Specifically, from the
+commit message:
+
+1. **Timing Issue**: The regulatory domain was being initialized in
+   `iwl_mld_load_fw()` before wiphy channels were properly configured
+2. **Update Failures**: When a specific MCC (Mobile Country Code) was
+   configured during FW initialization, subsequent updates with the same
+   MCC would be ignored, leaving channel information inconsistent with
+   the regulatory domain
+
+## Code Analysis
+
+The changes are minimal and low-risk:
+- **Removed from `iwl_mld_load_fw()`**: Lines removing the
+  `iwl_mld_init_mcc()` call and its error handling
+- **Added to `iwl_mld_start_fw()`**: The same call is added after
+  `iwl_mld_config_fw()`, ensuring proper initialization order
+
+## Comparison with Similar Commits
+
+Most relevant is Similar Commit #4 (marked YES for backporting), which
+addressed regulatory domain update issues when firmware starts. That
+commit fixed the handling of `MCC_RESP_ILLEGAL` responses to ensure
+channel lists were properly updated - a closely related regulatory
+compliance issue.
+
+## Stable Kernel Criteria
+
+This commit meets the stable kernel requirements:
+1. **Fixes a real bug**: Regulatory domain/channel mismatch is a serious
+   issue affecting wireless compliance
+2. **Small and contained**: Only moves a function call to the correct
+   initialization sequence
+3. **Low regression risk**: No new logic introduced, just reordering
+   existing initialization
+4. **Important functionality**: Regulatory compliance is critical for
+   legal wireless operation
+5. **Clear root cause**: The issue and fix are well-understood and
+   documented
+
+## Repository Context
+
+From examining the kernel repository, I found that regulatory domain
+initialization has been an ongoing concern in iwlwifi, with multiple
+fixes addressing timing and synchronization issues. The `lar_regdom_set`
+flag is critical for preventing operations (like scans) before
+regulatory setup is complete.
+
+The fix ensures that `iwl_mld_init_mcc()` is called after the firmware
+is fully configured (`iwl_mld_config_fw()`), which is the proper time
+when wiphy channels are set up and ready to receive regulatory updates.
+
+This is precisely the type of bug fix that stable kernels should receive
+- it corrects a specific functional issue without introducing
+architectural changes or new features.
+
+ drivers/net/wireless/intel/iwlwifi/mld/fw.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/fw.c b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+index 4b083d447ee2f..6be9366bd4b14 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/fw.c
+@@ -339,10 +339,6 @@ int iwl_mld_load_fw(struct iwl_mld *mld)
+ 	if (ret)
+ 		goto err;
+ 
+-	ret = iwl_mld_init_mcc(mld);
+-	if (ret)
+-		goto err;
+-
+ 	mld->fw_status.running = true;
+ 
+ 	return 0;
+@@ -535,6 +531,10 @@ int iwl_mld_start_fw(struct iwl_mld *mld)
+ 	if (ret)
+ 		goto error;
+ 
++	ret = iwl_mld_init_mcc(mld);
++	if (ret)
++		goto error;
++
+ 	return 0;
+ 
+ error:
+-- 
+2.39.5
+
 
