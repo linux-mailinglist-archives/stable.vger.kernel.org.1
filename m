@@ -1,264 +1,180 @@
-Return-Path: <stable+bounces-152186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A4FAD2979
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 00:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822D1AD29A6
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 00:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8E53AD201
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 22:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B613ACEEE
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 22:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E7B224AF6;
-	Mon,  9 Jun 2025 22:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RAVZpj7Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5467D225414;
+	Mon,  9 Jun 2025 22:49:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from constellation.wizardsworks.org (wizardsworks.org [24.234.38.212])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF59E8F40;
-	Mon,  9 Jun 2025 22:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DD1223DC4;
+	Mon,  9 Jun 2025 22:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.234.38.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749508967; cv=none; b=GYrcPfriX9LaCba+s9dhMJlOjGKAA3QSO9udU2FPAR9qylClovsthhKOQi8d0qbR23DBtOQJSVPLjYujVVNYvH+aJRtjJd11wZy13oe0FbV4Dv3F0SdPAMv/aGbJ/X75Jzu74by1u51U9LXgQbJ3d6LaJ8GZHDGQDPfRep/rVsE=
+	t=1749509381; cv=none; b=RQji8jsSw3KyV/6ygW8skW+PlsOInr3bCJcnK5ObYELvu1iNtB9puN/LBsE5sFKXFt6Oc3kzoddksJ1FDa3olK8dMNXN5fn6P+EXiCuq4TJYJ+xxeRp8vPLyT9846ROW27AlXSOWz5pPqdW+rxTv+WrMPp8l9XufJeXFAEPy1AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749508967; c=relaxed/simple;
-	bh=tG8S79O/d0MRs2wfzT76tAbN7FcvA409ZGFr3n7HuKU=;
-	h=Date:To:From:Subject:Message-Id; b=SG1Nkm5iaSt8q6TXjk4XkRNu/r/cUy7bNkbEUWXMttu2xtm5KNbuQQHphXfr8fj/fUDZ+XyH1AfMCgmOU4RE1V14WR4Sfqecpyh5fz8tuol51uuenyjgnrNw9A5r3GYJoDOV9zXvWdIZoCsNifoYCxuWRr55Ejlb+K5uVo/PPds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RAVZpj7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3889CC4CEEB;
-	Mon,  9 Jun 2025 22:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1749508966;
-	bh=tG8S79O/d0MRs2wfzT76tAbN7FcvA409ZGFr3n7HuKU=;
-	h=Date:To:From:Subject:From;
-	b=RAVZpj7ZNfEp2Vl0BcZxCm9JafKoUa5+qvbi3e838xuzpOYqCGbQYM/G6yJTxC11a
-	 BxTbKHDSjUg7fPoUCM/zpvkKpAWnvKmihpErG3fD8clYMzG5Y/t83O+KThi/XH3oaq
-	 xieMbKMY0LS1qow6qoiTyxKbFf4xswl/rdx8AZGY=
-Date: Mon, 09 Jun 2025 15:42:45 -0700
-To: mm-commits@vger.kernel.org,usamaarif642@gmail.com,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,hughd@google.com,chrisl@kernel.org,bhe@redhat.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-shmem-swap-fix-softlockup-with-mthp-swapin.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250609224246.3889CC4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1749509381; c=relaxed/simple;
+	bh=zcdeKXN994Bd8yruC0RcAhSYMctgBLtKrGhSPKsusLg=;
+	h=MIME-Version:Date:From:To:Cc:Subject:Message-ID:Content-Type; b=D46BfB/rWSbLiYKuFfXxmHYWZyiAxiW81dhD3fGW3QdAZRrxfuYgihC9FrWH+F2Y3a70FAFnSbBQB7Q4HB5ZyDyu8mFlFB8sRn941JN06ZNjhGA+YUvpJAD3qBAzLhO69fhrb3sIdMdpjEa8KQrp0SByuYVUerSUEObyGju0Wd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org; spf=pass smtp.mailfrom=wizardsworks.org; arc=none smtp.client-ip=24.234.38.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wizardsworks.org
+Received: from mail.wizardsworks.org (localhost [127.0.0.1])
+	by constellation.wizardsworks.org (8.18.1/8.18.1) with ESMTP id 559Mhfgg001683;
+	Mon, 9 Jun 2025 15:43:41 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Mon, 09 Jun 2025 15:43:41 -0700
+From: Greg Chandler <chandleg@wizardsworks.org>
+To: stable@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Subject: Tulip 21142 panic on physical link disconnect
+Message-ID: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
+X-Sender: chandleg@wizardsworks.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-The patch titled
-     Subject: mm/shmem, swap: fix softlockup with mTHP swapin
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-shmem-swap-fix-softlockup-with-mthp-swapin.patch
+This is a from-scratch build (non-vendor/non-distribution)
+Host/Target = alpha ev6
+Kernel source = 6.12.12
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-shmem-swap-fix-softlockup-with-mthp-swapin.patch
+My last working kernel on this was a 2.6.x, it's been a while since I've 
+had time to bring this system up to date, so I don't know when this may 
+have started.
+I had a 3.0.102 in there, but I didn't test the networking while using 
+it.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Please let me know what I can do to help out with figuring this one out.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+The kernel output:
+[    0.692382] net eth0: Digital DS21142/43 Tulip rev 65 at MMIO 
+0xa120000, 08:00:2b:86:ab:b1, IRQ 29
+[    0.710937] net eth1: Digital DS21142/43 Tulip rev 65 at MMIO 
+0xa121000, 08:00:2b:86:a8:5b, IRQ 30
+[    0.989257] e1000 0000:00:10.0 eth2: (PCI:33MHz:64-bit) 
+00:02:b3:f3:e6:3d
+[    0.990233] e1000 0000:00:10.0 eth2: Intel(R) PRO/1000 Network 
+Connection
+[    6.088864] tulip 0000:00:09.0 eth126: renamed from eth0
+[    6.103512] tulip 0000:00:09.0 rename_eth126: renamed from eth126
+[    6.164059] e1000 0000:00:10.0 eth124: renamed from eth2
+[    6.172848] e1000 0000:00:10.0 eth0: renamed from eth124
+[    6.207028] tulip 0000:00:09.0 eth2: renamed from rename_eth126
+[   18.957998] net eth2: Using user-specified media 10baseT-FDX
+[   19.082021] net eth2: 21143 10baseT link beat good
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
 
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: mm/shmem, swap: fix softlockup with mTHP swapin
-Date: Tue, 10 Jun 2025 01:17:51 +0800
+I attempted to set the interface to 100MB/FDX with mii-tool but didn't 
+seem to be having any luck, so I disconnected the cord, and it dropped 
+this immediately:
 
-Following softlockup can be easily reproduced on my test machine with:
+[  195.170798] ------------[ cut here ]------------
+[  195.170798] WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1657 
+__timer_delete_sync+0x104/0x120
+[  195.170798] Modules linked in: loop
+[  195.170798] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.12.12 #4
+[  195.170798]        fffffc0000c83ab0 fffffc0000388c94 fffffc0000326744 
+fffffc0000afbee8
+[  195.170798]        0000000000000000 fffffc0000388c94 fffffc00009e0d70 
+0000000000000000
+[  195.170798]        fffffc0000afbee8 0000000000000679 fffffc0000388c94 
+0000000000000009
+[  195.170798]        fffffc0000cf9100 0000000000000000 fffffc0000388c94 
+0000000000000000
+[  195.170798]        fffffc00020e6000 fffffc00020e73d0 fffffffff0669000 
+fffffd000a120000
+[  195.170798]        fffffc00007cff70 fffffc00024b5c00 0000000000000000 
+0000000000000122
+[  195.170798] Trace:
+[  195.170798] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
+[  195.170798] [<fffffc0000326744>] __warn+0x194/0x1a0
+[  195.170798] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
+[  195.170798] [<fffffc00009e0d70>] warn_slowpath_fmt+0x84/0xf0
+[  195.170798] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
+[  195.170798] [<fffffc0000388c94>] __timer_delete_sync+0x104/0x120
+[  195.170798] [<fffffc00007cff70>] usb_hcd_poll_rh_status+0x140/0x1a0
+[  195.170798] [<fffffc0000919a2c>] tcp_orphan_update+0x6c/0x90
+[  195.170798] [<fffffc000038be64>] timekeeping_update+0xd4/0x290
+[  195.170798] [<fffffc0000780fdc>] t21142_lnk_change+0x1bc/0x790
+[  195.170798] [<fffffc000077a890>] tulip_interrupt+0x280/0xac0
+[  195.170798] [<fffffc0000372b90>] __handle_irq_event_percpu+0x60/0x180
+[  195.170798] [<fffffc0000372d30>] handle_irq_event_percpu+0x80/0xa0
+[  195.170798] [<fffffc0000372d98>] handle_irq_event+0x48/0xe0
+[  195.170798] [<fffffc0000377af0>] handle_level_irq+0xc0/0x1f0
+[  195.170798] [<fffffc0000315300>] handle_irq+0x70/0xe0
+[  195.170798] [<fffffc000031d6c0>] dp264_srm_device_interrupt+0x30/0x50
+[  195.170798] [<fffffc00003153dc>] do_entInt+0x6c/0x1c0
+[  195.170798] [<fffffc0000310cc0>] ret_from_sys_call+0x0/0x10
+[  195.170798] [<fffffc000035c69c>] pick_task_fair+0x3c/0x100
+[  195.170798] [<fffffc000035d89c>] task_non_contending+0x6c/0x2a0
+[  195.170798] [<fffffc000035fc28>] do_idle+0x58/0x190
+[  195.170798] [<fffffc00009eda20>] cpu_idle_poll.isra.0+0x0/0x60
+[  195.170798] [<fffffc00009eda50>] cpu_idle_poll.isra.0+0x30/0x60
+[  195.170798] [<fffffc0000360058>] cpu_startup_entry+0x38/0x50
+[  195.170798] [<fffffc00009edbc8>] rest_init+0xe8/0xec
+[  195.170798] [<fffffc000031001c>] _stext+0x1c/0x20
+[  195.170798] [<fffffc0000312460>] common_shutdown_1+0x0/0x150
 
-echo always > /sys/kernel/mm/transparent_hugepage/hugepages-64kB/enabled
-swapon /dev/zram0 # zram0 is a 48G swap device
-mkdir -p /sys/fs/cgroup/memory/test
-echo 1G > /sys/fs/cgroup/test/memory.max
-echo $BASHPID > /sys/fs/cgroup/test/cgroup.procs
-while true; do
-    dd if=/dev/zero of=/tmp/test.img bs=1M count=5120
-    cat /tmp/test.img > /dev/null
-    rm /tmp/test.img
-done
+[  195.170798] ---[ end trace 0000000000000000 ]---
 
-Then after a while:
-watchdog: BUG: soft lockup - CPU#0 stuck for 763s! [cat:5787]
-Modules linked in: zram virtiofs
-CPU: 0 UID: 0 PID: 5787 Comm: cat Kdump: loaded Tainted: G             L      6.15.0.orig-gf3021d9246bc-dirty #118 PREEMPT(voluntary)·
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Red Hat KVM/RHEL-AV, BIOS 0.0.0 02/06/2015
-RIP: 0010:mpol_shared_policy_lookup+0xd/0x70
-Code: e9 b8 b4 ff ff 31 c0 c3 cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f 44 00 00 41 54 55 53 <48> 8b 1f 48 85 db 74 41 4c 8d 67 08 48 89 fb 48 89 f5 4c 89 e7 e8
-RSP: 0018:ffffc90002b1fc28 EFLAGS: 00000202
-RAX: 00000000001c20ca RBX: 0000000000724e1e RCX: 0000000000000001
-RDX: ffff888118e214c8 RSI: 0000000000057d42 RDI: ffff888118e21518
-RBP: 000000000002bec8 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000bf4 R11: 0000000000000000 R12: 0000000000000001
-R13: 00000000001c20ca R14: 00000000001c20ca R15: 0000000000000000
-FS:  00007f03f995c740(0000) GS:ffff88a07ad9a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f03f98f1000 CR3: 0000000144626004 CR4: 0000000000770eb0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- shmem_alloc_folio+0x31/0xc0
- shmem_swapin_folio+0x309/0xcf0
- ? filemap_get_entry+0x117/0x1e0
- ? xas_load+0xd/0xb0
- ? filemap_get_entry+0x101/0x1e0
- shmem_get_folio_gfp+0x2ed/0x5b0
- shmem_file_read_iter+0x7f/0x2e0
- vfs_read+0x252/0x330
- ksys_read+0x68/0xf0
- do_syscall_64+0x4c/0x1c0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f03f9a46991
-Code: 00 48 8b 15 81 14 10 00 f7 d8 64 89 02 b8 ff ff ff ff eb bd e8 20 ad 01 00 f3 0f 1e fa 80 3d 35 97 10 00 00 74 13 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 4f c3 66 0f 1f 44 00 00 55 48 89 e5 48 83 ec
-RSP: 002b:00007fff3c52bd28 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000040000 RCX: 00007f03f9a46991
-RDX: 0000000000040000 RSI: 00007f03f98ba000 RDI: 0000000000000003
-RBP: 00007fff3c52bd50 R08: 0000000000000000 R09: 00007f03f9b9a380
-R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000040000
-R13: 00007f03f98ba000 R14: 0000000000000003 R15: 0000000000000000
- </TASK>
 
-The reason is simple, readahead brought some order 0 folio in swap cache,
-and the swapin mTHP folio being allocated is in confict with it, so
-swapcache_prepare fails and causes shmem_swap_alloc_folio to return
--EEXIST, and shmem simply retries again and again causing this loop.
+Kernel options that may be relevant:
+CONFIG_ALPHA_DP264=y
+CONFIG_NET_TULIP=y
+CONFIG_TULIP=y
+CONFIG_TULIP_MWI=y
+CONFIG_TULIP_MMIO=y
+CONFIG_TULIP_NAPI=y
+CONFIG_TULIP_NAPI_HW_MITIGATION=y
 
-Fix it by applying a similar fix for anon mTHP swapin.
 
-The performance change is very slight, time of swapin 10g zero folios
-with shmem (test for 12 times):
-Before:  2.47s
-After:   2.48s
+Device info:
+root@bigbang:~# lspci -vvv |more
+00:09.0 Ethernet controller: Digital Equipment Corporation DECchip 
+21142/43 (rev 41)
+         Subsystem: Digital Equipment Corporation DE500B Fast Ethernet
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV+ VGASnoop- 
+ParErr- Stepping- SERR- FastB2B- DisINTx-
+         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- 
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+         Latency: 255 (5000ns min, 10000ns max), Cache Line Size: 64 
+bytes
+         Interrupt: pin A routed to IRQ 29
+         Region 0: I/O ports at 8400 [size=128]
+         Region 1: Memory at 0a120000 (32-bit, non-prefetchable) 
+[size=1K]
+         Expansion ROM at 0a000000 [disabled] [size=256K]
+         Kernel driver in use: tulip
 
-Link: https://lkml.kernel.org/r/20250609171751.36305-1-ryncsn@gmail.com
-Fixes: 1dd44c0af4fa1 ("mm: shmem: skip swapcache for swapin of synchronous swap device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory.c |   20 --------------------
- mm/shmem.c  |    4 +++-
- mm/swap.h   |   23 +++++++++++++++++++++++
- 3 files changed, 26 insertions(+), 21 deletions(-)
-
---- a/mm/memory.c~mm-shmem-swap-fix-softlockup-with-mthp-swapin
-+++ a/mm/memory.c
-@@ -4315,26 +4315,6 @@ static struct folio *__alloc_swap_folio(
- }
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
--{
--	struct swap_info_struct *si = swp_swap_info(entry);
--	pgoff_t offset = swp_offset(entry);
--	int i;
--
--	/*
--	 * While allocating a large folio and doing swap_read_folio, which is
--	 * the case the being faulted pte doesn't have swapcache. We need to
--	 * ensure all PTEs have no cache as well, otherwise, we might go to
--	 * swap devices while the content is in swapcache.
--	 */
--	for (i = 0; i < max_nr; i++) {
--		if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
--			return i;
--	}
--
--	return i;
--}
--
- /*
-  * Check if the PTEs within a range are contiguous swap entries
-  * and have consistent swapcache, zeromap.
---- a/mm/shmem.c~mm-shmem-swap-fix-softlockup-with-mthp-swapin
-+++ a/mm/shmem.c
-@@ -2259,6 +2259,7 @@ static int shmem_swapin_folio(struct ino
- 	folio = swap_cache_get_folio(swap, NULL, 0);
- 	order = xa_get_order(&mapping->i_pages, index);
- 	if (!folio) {
-+		int nr_pages = 1 << order;
- 		bool fallback_order0 = false;
- 
- 		/* Or update major stats only when swapin succeeds?? */
-@@ -2274,7 +2275,8 @@ static int shmem_swapin_folio(struct ino
- 		 * to swapin order-0 folio, as well as for zswap case.
- 		 */
- 		if (order > 0 && ((vma && unlikely(userfaultfd_armed(vma))) ||
--				  !zswap_never_enabled()))
-+				  !zswap_never_enabled() ||
-+				  non_swapcache_batch(swap, nr_pages) != nr_pages))
- 			fallback_order0 = true;
- 
- 		/* Skip swapcache for synchronous device. */
---- a/mm/swap.h~mm-shmem-swap-fix-softlockup-with-mthp-swapin
-+++ a/mm/swap.h
-@@ -106,6 +106,25 @@ static inline int swap_zeromap_batch(swp
- 		return find_next_bit(sis->zeromap, end, start) - start;
- }
- 
-+static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
-+{
-+	struct swap_info_struct *si = swp_swap_info(entry);
-+	pgoff_t offset = swp_offset(entry);
-+	int i;
-+
-+	/*
-+	 * While allocating a large folio and doing mTHP swapin, we need to
-+	 * ensure all entries are not cached, otherwise, the mTHP folio will
-+	 * be in conflict with the folio in swap cache.
-+	 */
-+	for (i = 0; i < max_nr; i++) {
-+		if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
-+			return i;
-+	}
-+
-+	return i;
-+}
-+
- #else /* CONFIG_SWAP */
- struct swap_iocb;
- static inline void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
-@@ -199,6 +218,10 @@ static inline int swap_zeromap_batch(swp
- 	return 0;
- }
- 
-+static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_SWAP */
- 
- /**
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-mm-userfaultfd-fix-race-of-userfaultfd_move-and-swap-cache.patch
-mm-shmem-swap-fix-softlockup-with-mthp-swapin.patch
-mm-list_lru-refactor-the-locking-code.patch
-
+00:0b.0 Ethernet controller: Digital Equipment Corporation DECchip 
+21142/43 (rev 41)
+         Subsystem: Digital Equipment Corporation DE500B Fast Ethernet
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV+ VGASnoop- 
+ParErr- Stepping- SERR- FastB2B- DisINTx-
+         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- 
+<TAbort- <MAbort- >SERR- <PERR- INTx-
+         Latency: 255 (5000ns min, 10000ns max), Cache Line Size: 64 
+bytes
+         Interrupt: pin A routed to IRQ 30
+         Region 0: I/O ports at 8480 [size=128]
+         Region 1: Memory at 0a121000 (32-bit, non-prefetchable) 
+[size=1K]
+         Expansion ROM at 0a040000 [disabled] [size=256K]
+         Kernel driver in use: tulip
 
