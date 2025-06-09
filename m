@@ -1,663 +1,306 @@
-Return-Path: <stable+bounces-152180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB1BAD249B
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 19:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 843D0AD24F0
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 19:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6132165FB2
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 17:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FEB416E188
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 17:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CCF21ADBA;
-	Mon,  9 Jun 2025 17:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71475215F4B;
+	Mon,  9 Jun 2025 17:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y7VGvOF6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W8i1ehvK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B5F217654;
-	Mon,  9 Jun 2025 17:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5884A3C;
+	Mon,  9 Jun 2025 17:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749488679; cv=none; b=Ifg8h4YjU4C5x/FKLECgtnawIGp3Za/cm9nh9ygBt4w2vZ0xm1h4ly/EnYFG0+GywBQ4+krZoO+qQF0+h3tM0DJtlFJ2MRYqMEs0TpAOwvxBQaN4uEZ8i1pf3F/7rE8EjWNdWNiREDdQMhKPX/Zz3YflZNBPKMlTDYreFHeLc7g=
+	t=1749489874; cv=none; b=fe7xWe1gfEuLn47arU5jtFcSpCfZlrTDOYu970l6miLv7xoNsf1qLYgnbxRemRDjyPeg+PuxI6D8YVQzpMhW8e0U15cQj8AiYcxncej1/7EUQ8CdDJ7v3vQ49EioYuqfOJ85cfxH8zw7a8XI/NxevhuaDy+hrzdDnfcxjvpomKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749488679; c=relaxed/simple;
-	bh=ckVkn/Yrc+uXGBRpLyshPDogbBrNhrcJL5YQP1M2j0I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Nn+vGbKAWsp+zMbAWsshgA6e88jQMFUHUUQtpHmUnMPs5ofcUYO5efS7V+Ng/TfMqhlFYJ9KcZ/EGZFZudd3xrRYLOWump5Ur9qsSdX753na98WcvVdACXccVFVjxvkWCNS5W0H96Nljzur8PokZVB+Hfcysw/VJnZeVy3Gc21A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y7VGvOF6; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749488677; x=1781024677;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=ckVkn/Yrc+uXGBRpLyshPDogbBrNhrcJL5YQP1M2j0I=;
-  b=Y7VGvOF6UGv2vNqemFRwknhnYTq9nb0A27LbKLLwYoysVSQRHczfLSkx
-   SeiOCHZjV7+UGf74gePiivHcsjwxTXOyoa68qXr2Usj6tff+/Uo9HweNh
-   ThNJk6EPoWez+n7kbY+q5VrAecJQIPJUMi+dULq6XrStRjGoxnXpX+gvx
-   gLTQIZGTJCVIwNIMPxWCfmKh3DI4y+MtDSZ1oTaVhMR0NyETGZppywi0y
-   UXaWddGd18nqOGCxzKnzklzTcm+epQXiSNgv019R8mkZycHcwEeyxYiwq
-   bacYnr5mYzOfOJTie6KsO1/2p6rv5QLbzS0CBfznA5MI4eszpXUzoRzfZ
-   w==;
-X-CSE-ConnectionGUID: iRBrMzgfTgOa7ymgv+f4WA==
-X-CSE-MsgGUID: k4BXJwqbT1GlWE0Ck8ppfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="62192204"
-X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
-   d="scan'208";a="62192204"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 10:04:36 -0700
-X-CSE-ConnectionGUID: u3gRKOn0QMmncX0Ikgr6HA==
-X-CSE-MsgGUID: 42NHCEatQ9eo1T3vKT2zZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
-   d="scan'208";a="151563820"
-Received: from msatwood-mobl.amr.corp.intel.com ([10.124.223.153])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 10:04:34 -0700
-Message-ID: <fca30e40636e83ef014026c233a71947fe8eecbd.camel@linux.intel.com>
-Subject: Re: [PATCH v3 01/11] platform/x86/intel: refactor endpoint usage
-From: "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>, 
- "platform-driver-x86@vger.kernel.org"
- <platform-driver-x86@vger.kernel.org>, "intel-xe@lists.freedesktop.org"
- <intel-xe@lists.freedesktop.org>, "hdegoede@redhat.com"
- <hdegoede@redhat.com>,  "ilpo.jarvinen@linux.intel.com"
- <ilpo.jarvinen@linux.intel.com>, "De Marchi, Lucas"
- <lucas.demarchi@intel.com>,  "Vivi, Rodrigo" <rodrigo.vivi@intel.com>,
- "thomas.hellstrom@linux.intel.com" <thomas.hellstrom@linux.intel.com>, 
- "airlied@gmail.com" <airlied@gmail.com>, "simona@ffwll.ch" <simona@ffwll.ch>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date: Mon, 09 Jun 2025 10:04:33 -0700
-In-Reply-To: <IA1PR11MB6418974C933BEDBF6EB62498C16EA@IA1PR11MB6418.namprd11.prod.outlook.com>
-References: <20250605184444.515556-1-michael.j.ruhl@intel.com>
-	 <20250605184444.515556-2-michael.j.ruhl@intel.com>
-	 <d5d9b7cc5768c7715e8ac020e4a098d51fce69da.camel@linux.intel.com>
-	 <IA1PR11MB6418974C933BEDBF6EB62498C16EA@IA1PR11MB6418.namprd11.prod.outlook.com>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1749489874; c=relaxed/simple;
+	bh=h6bj8cVdChPXIebQFRKMr2JXuU4E9lSx8FDSHkPf8wk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SCeMgzqcKciRVY1aU7JR1VszRaa33IMZMG5ozuoAgb4XvWsc8w9MjNDV3hgRj9NV5H4aLvddvHsgoTr5617YgNlxZ9LhXpfJUHjW4VeJ7/m3XpzrGuepvoD8f3VTxSKFn83T1RnATAVsmp0bHDnHQ7MImKJODbjEIHoMEhaB7iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W8i1ehvK; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32ade3723adso33756051fa.0;
+        Mon, 09 Jun 2025 10:24:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749489871; x=1750094671; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gS5h1Ie0tgERrl+nIzXO9eaCUYI3r/JKh27WNUnM0Dg=;
+        b=W8i1ehvKxHlvfrQQmBYjmLiPDLAwUtMItgtSUVyIkINxNKZvII8HN2Zh4iWdztFMR4
+         TAtj9d7+ymZTbBp9ENH0MB++kWTlqi4AEppXO2xMdMoaCmvoIB4hYrzrlrUX3Vms8lLk
+         FPiFyl0Yc5Qprm7W0aNRUIDaaC33vpfo2grJ+E99EBfmjq3QGvc62JsgBPtpsKBFvWGN
+         7+5u/qTYcd+OWvt2aKA7YKcoxhh+z5KLVUZ7b1Coww89N4iUgoNRGs4a7Jt0dFw/Vttz
+         J+mhhrgBvNt8ACwIVGv/NKY/3AB2Z/dMgrN3a3TYd5pR8X66kY6DCR0W5/8LuvdcJJHX
+         NKgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749489871; x=1750094671;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gS5h1Ie0tgERrl+nIzXO9eaCUYI3r/JKh27WNUnM0Dg=;
+        b=ofhCPL+pkcqHE5Gd8ir7M2jYop/3XdHmWXeW5nrVwXZPhfnn5XleJ96dd2JwlIv6Ji
+         WUIMRXCupu35YN/1bkNWA5cm/oxNQ/Bpdnae7tP5uKfEmsGs6MnEzq2qYt5H8mFWHgXw
+         psFfW55698GWXbThphqeJAzUa8XxTsM37tKSZN9VBCf3NJX2pVjHquSgGlTVfA7jjcOL
+         Rizj+b0GTbtQd4Z0TA60MNYYghN2VLDfvQhBhITus3r1TwjxbtT0rKOCiv1kgKG4MCzC
+         hH5oZ6hMEciV01UaT4PEozfRhr+K2GLifSlQWppnNv040x6a+n7TWrjG77SXXk6y0M1v
+         Y8Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCUa1xbW0snCdVMRfjrvVArm8uAcg9EOXDssHf7BvJBi7e79GiZKTqjQ1lJGDst9Z4cOSVmmSUR40lhY4I4=@vger.kernel.org, AJvYcCUcYkTfu3syAsC5TrHL01NJxM6Ajuslru4reGyURgR2HzwwMuCkzhiWm6N4fwod7+qKWts3sTz/@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtpbRplpHqbp8bs5utssLXsbKVJliOBrG/hYdSyrjtsZ49gjac
+	iRT8tF9xBS1/wmUUG83DzyUc4R0bxA7UY+tR25KoJSfaKQPKJsoF2PPOFk+d4ov9g94tHoEeJVl
+	gr2cqE62p30CPJc21WxN8e2PgFuoVuj0=
+X-Gm-Gg: ASbGncu/f6JYihgL8u5UsBECy7htU/z0zFaxL1bYkrGRNxS/9q3BRAhfl3tH79fDvH9
+	8pKa/P7iw4/XQtetVN8hT0xoyfIbqbezS8UBBnWDsuPhOxMFme9Op3r8QTL1v/APY2iPf22oTVv
+	a+i5p9QE24d/lTjsSRwLdrw0TwmSb/F0Rd
+X-Google-Smtp-Source: AGHT+IGh0KA+fGHr2H+2Jp/BnYa7lpx49d2kmZmN36sDroN9zo1IL+JjcscoHWhhH3gN1YBNeSmz+MKNR3CsoRj1tQI=
+X-Received: by 2002:a2e:a595:0:b0:32a:6e20:7cdb with SMTP id
+ 38308e7fff4ca-32adfcc5cd4mr29740751fa.17.1749489870182; Mon, 09 Jun 2025
+ 10:24:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20250609171751.36305-1-ryncsn@gmail.com>
+In-Reply-To: <20250609171751.36305-1-ryncsn@gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 10 Jun 2025 01:24:12 +0800
+X-Gm-Features: AX0GCFvXp8Z9b7xzJaO49rmXecnUchAIEdcdnv0ahpVgg0lak-hlmevqgvMLCEE
+Message-ID: <CAMgjq7C-71z3w1Tf2eMwLvpi2Nt5md8z43jtM4o_L35F82uCVA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/shmem, swap: fix softlockup with mTHP swapin
+To: linux-mm@kvack.org, stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Usama Arif <usamaarif642@gmail.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-06-06 at 19:20 +0000, Ruhl, Michael J wrote:
-> > -----Original Message-----
-> > From: David E. Box <david.e.box@linux.intel.com>
-> > Sent: Friday, June 6, 2025 1:55 PM
-> > To: Ruhl, Michael J <michael.j.ruhl@intel.com>; platform-driver-
-> > x86@vger.kernel.org; intel-xe@lists.freedesktop.org; hdegoede@redhat.co=
-m;
-> > ilpo.jarvinen@linux.intel.com; De Marchi, Lucas <lucas.demarchi@intel.c=
-om>;
-> > Vivi, Rodrigo <rodrigo.vivi@intel.com>; thomas.hellstrom@linux.intel.co=
-m;
-> > airlied@gmail.com; simona@ffwll.ch
-> > Cc: stable@vger.kernel.org
-> > Subject: Re: [PATCH v3 01/11] platform/x86/intel: refactor endpoint usa=
-ge
-> >=20
-> > Hi Mike,
-> >=20
-> > On Thu, 2025-06-05 at 14:44 -0400, Michael J. Ruhl wrote:
-> > > The use of an endpoint has introduced a dependency in all class/pmt
-> > > drivers to have an endpoint allocated.
-> > >=20
-> > > The telemetry driver has this allocation, the crashlog does not.
-> > >=20
-> > > The current usage is very telemetry focused, but should be common cod=
-e.
-> >=20
-> > The endpoint exists specifically to support the exported APIs in the
-> > telemetry
-> > driver. It's reference-counted via kref to ensure safe cleanup once all=
- API
-> > consumers are done. Unless the kernel needs to invoke a crashlog API th=
-rough
-> > this mechanism, I=E2=80=99m not sure this change is necessary. I=E2=80=
-=99ll go through the
-> > rest
-> > of the patches to understand how the endpoint is being used, but my ini=
-tial
-> > reaction is that is not be needed.
-> >=20
-> >=20
-> > >=20
-> > > With this in mind:
-> > > =C2=A0 rename the struct telemetry_endpoint to struct class_endpoint,
-> > > =C2=A0 refactor the common endpoint code to be in the class.c module
-> > >=20
-> > > Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API t=
-o
-> > > read
-> > > telemetry")
-> > > Cc: <stable@vger.kernel.org>
-> > > Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-> > > ---
-> > > =C2=A0drivers/platform/x86/intel/pmc/core.c=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 3 +-
-> > > =C2=A0drivers/platform/x86/intel/pmc/core.h=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 |=C2=A0 4 +-
-> > > =C2=A0drivers/platform/x86/intel/pmc/core_ssram.c |=C2=A0 2 +-
-> > > =C2=A0drivers/platform/x86/intel/pmt/class.c=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 45 ++++++++++++++++++
-> > > =C2=A0drivers/platform/x86/intel/pmt/class.h=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 21 +++++++--
-> > > =C2=A0drivers/platform/x86/intel/pmt/telemetry.c=C2=A0 | 51 ++++-----=
-------------
-> > > =C2=A0drivers/platform/x86/intel/pmt/telemetry.h=C2=A0 | 23 ++++-----=
--
-> > > =C2=A07 files changed, 84 insertions(+), 65 deletions(-)
-> > >=20
-> > > diff --git a/drivers/platform/x86/intel/pmc/core.c
-> > > b/drivers/platform/x86/intel/pmc/core.c
-> > > index 7a1d11f2914f..805f56665d1d 100644
-> > > --- a/drivers/platform/x86/intel/pmc/core.c
-> > > +++ b/drivers/platform/x86/intel/pmc/core.c
-> > > @@ -29,6 +29,7 @@
-> > > =C2=A0#include <asm/tsc.h>
-> > >=20
-> > > =C2=A0#include "core.h"
-> > > +#include "../pmt/class.h"
-> > > =C2=A0#include "../pmt/telemetry.h"
-> > >=20
-> > > =C2=A0/* Maximum number of modes supported by platfoms that has low p=
-ower
-> > mode
-> > > capability */
-> > > @@ -1198,7 +1199,7 @@ int get_primary_reg_base(struct pmc *pmc)
-> > >=20
-> > > =C2=A0void pmc_core_punit_pmt_init(struct pmc_dev *pmcdev, u32 guid)
-> > > =C2=A0{
-> > > -	struct telem_endpoint *ep;
-> > > +	struct class_endpoint *ep;
-> >=20
-> > I'd name it pmt_endpoint instead of class_endpoint.
->=20
-> Wil do.
->=20
-> > > =C2=A0	struct pci_dev *pcidev;
-> > >=20
-> > > =C2=A0	pcidev =3D pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(10, 0))=
-;
-> > > diff --git a/drivers/platform/x86/intel/pmc/core.h
-> > > b/drivers/platform/x86/intel/pmc/core.h
-> > > index 945a1c440cca..1c12ea7c3ce3 100644
-> > > --- a/drivers/platform/x86/intel/pmc/core.h
-> > > +++ b/drivers/platform/x86/intel/pmc/core.h
-> > > @@ -16,7 +16,7 @@
-> > > =C2=A0#include <linux/bits.h>
-> > > =C2=A0#include <linux/platform_device.h>
-> > >=20
-> > > -struct telem_endpoint;
-> > > +struct class_endpoint;
-> > >=20
-> > > =C2=A0#define SLP_S0_RES_COUNTER_MASK			GENMASK(31,
-> > 0)
-> > >=20
-> > > @@ -432,7 +432,7 @@ struct pmc_dev {
-> > >=20
-> > > =C2=A0	bool has_die_c6;
-> > > =C2=A0	u32 die_c6_offset;
-> > > -	struct telem_endpoint *punit_ep;
-> > > +	struct class_endpoint *punit_ep;
-> > > =C2=A0	struct pmc_info *regmap_list;
-> > > =C2=A0};
-> > >=20
-> > > diff --git a/drivers/platform/x86/intel/pmc/core_ssram.c
-> > > b/drivers/platform/x86/intel/pmc/core_ssram.c
-> > > index 739569803017..3e670fc380a5 100644
-> > > --- a/drivers/platform/x86/intel/pmc/core_ssram.c
-> > > +++ b/drivers/platform/x86/intel/pmc/core_ssram.c
-> > > @@ -42,7 +42,7 @@ static u32 pmc_core_find_guid(struct pmc_info *list=
-,
-> > const
-> > > struct pmc_reg_map *m
-> > >=20
-> > > =C2=A0static int pmc_core_get_lpm_req(struct pmc_dev *pmcdev, struct =
-pmc *pmc)
-> > > =C2=A0{
-> > > -	struct telem_endpoint *ep;
-> > > +	struct class_endpoint *ep;
-> > > =C2=A0	const u8 *lpm_indices;
-> > > =C2=A0	int num_maps, mode_offset =3D 0;
-> > > =C2=A0	int ret, mode;
-> > > diff --git a/drivers/platform/x86/intel/pmt/class.c
-> > > b/drivers/platform/x86/intel/pmt/class.c
-> > > index 7233b654bbad..bba552131bc2 100644
-> > > --- a/drivers/platform/x86/intel/pmt/class.c
-> > > +++ b/drivers/platform/x86/intel/pmt/class.c
-> > > @@ -76,6 +76,47 @@ int pmt_telem_read_mmio(struct pci_dev *pdev,
-> > struct
-> > > pmt_callbacks *cb, u32 guid
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_read_mmio, "INTEL_PMT");
-> > >=20
-> > > +/* Called when all users unregister and the device is removed */
-> > > +static void pmt_class_ep_release(struct kref *kref)
-> > > +{
-> > > +	struct class_endpoint *ep;
-> > > +
-> > > +	ep =3D container_of(kref, struct class_endpoint, kref);
-> > > +	kfree(ep);
-> > > +}
-> > > +
-> > > +void intel_pmt_release_endpoint(struct class_endpoint *ep)
-> > > +{
-> > > +	kref_put(&ep->kref, pmt_class_ep_release);
-> > > +}
-> > > +EXPORT_SYMBOL_NS_GPL(intel_pmt_release_endpoint, "INTEL_PMT");
-> > > +
-> > > +int intel_pmt_add_endpoint(struct intel_vsec_device *ivdev,
-> > > +			=C2=A0=C2=A0 struct intel_pmt_entry *entry)
-> > > +{
-> > > +	struct class_endpoint *ep;
-> > > +
-> > > +	ep =3D kzalloc(sizeof(*ep), GFP_KERNEL);
-> > > +	if (!ep)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	ep->pcidev =3D ivdev->pcidev;
-> > > +	ep->header.access_type =3D entry->header.access_type;
-> > > +	ep->header.guid =3D entry->header.guid;
-> > > +	ep->header.base_offset =3D entry->header.base_offset;
-> > > +	ep->header.size =3D entry->header.size;
-> > > +	ep->base =3D entry->base;
-> > > +	ep->present =3D true;
-> > > +	ep->cb =3D ivdev->priv_data;
-> > > +
-> > > +	/* Endpoint lifetimes are managed by kref, not devres */
-> > > +	kref_init(&ep->kref);
-> > > +
-> > > +	entry->ep =3D ep;
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +EXPORT_SYMBOL_NS_GPL(intel_pmt_add_endpoint, "INTEL_PMT");
-> > > =C2=A0/*
-> > > =C2=A0 * sysfs
-> > > =C2=A0 */
-> > > @@ -97,6 +138,10 @@ intel_pmt_read(struct file *filp, struct kobject
-> > > *kobj,
-> > > =C2=A0	if (count > entry->size - off)
-> > > =C2=A0		count =3D entry->size - off;
-> > >=20
-> > > +	/* verify endpoint is available */
-> > > +	if (!entry->ep)
-> > > +		return -ENODEV;
-> > > +
-> >=20
-> > Hmm ...
-> >=20
-> > > =C2=A0	count =3D pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, en=
-try-
-> > > > header.guid, buf,
-> > > =C2=A0				=C2=A0=C2=A0=C2=A0 entry->base, off, count);
-> >=20
-> > ... intel_pmt_read() is only intended to handle sysfs reads, not to acc=
-ess
-> > driver endpoints. But entry->ep is a handle registered by a driver via
-> > pmt_telem_find_and_register_endpoint() which won=E2=80=99t be called un=
-less another
-> > driver explicitly does so. If no driver registers the endpoint, entry->=
-ep
-> > will
-> > be NULL, and this read path will dereference it, leading to a NULL poin=
-ter
-> > bug.
-> >=20
-> > This call to entry->ep->pcidev shouldn't be here. It mistakenly mixes t=
-he
-> > sysfs
-> > path with the driver API path. Actual use of entry->ep belongs only in =
-the
-> > exported read calls in telemetry.c.
->=20
-> An additional issue here is that the callback interface requires the pcid=
-ev.
->=20
-> Is the pcidev available form a different location? (I am not seeing it...=
-)
->=20
-> Maybe the pcidev * should be moved to the intel_pmt_entry struct?
+On Tue, Jun 10, 2025 at 1:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Following softlockup can be easily reproduced on my test machine with:
+>
+> echo always > /sys/kernel/mm/transparent_hugepage/hugepages-64kB/enabled
+> swapon /dev/zram0 # zram0 is a 48G swap device
+> mkdir -p /sys/fs/cgroup/memory/test
+> echo 1G > /sys/fs/cgroup/test/memory.max
+> echo $BASHPID > /sys/fs/cgroup/test/cgroup.procs
+> while true; do
+>     dd if=3D/dev/zero of=3D/tmp/test.img bs=3D1M count=3D5120
+>     cat /tmp/test.img > /dev/null
+>     rm /tmp/test.img
+> done
+>
+> Then after a while:
+> watchdog: BUG: soft lockup - CPU#0 stuck for 763s! [cat:5787]
+> Modules linked in: zram virtiofs
+> CPU: 0 UID: 0 PID: 5787 Comm: cat Kdump: loaded Tainted: G             L =
+     6.15.0.orig-gf3021d9246bc-dirty #118 PREEMPT(voluntary)=C2=B7
+> Tainted: [L]=3DSOFTLOCKUP
+> Hardware name: Red Hat KVM/RHEL-AV, BIOS 0.0.0 02/06/2015
+> RIP: 0010:mpol_shared_policy_lookup+0xd/0x70
+> Code: e9 b8 b4 ff ff 31 c0 c3 cc cc cc cc 90 90 90 90 90 90 90 90 90 90 9=
+0 90 90 90 90 90 90 66 0f 1f 00 0f 1f 44 00 00 41 54 55 53 <48> 8b 1f 48 85=
+ db 74 41 4c 8d 67 08 48 89 fb 48 89 f5 4c 89 e7 e8
+> RSP: 0018:ffffc90002b1fc28 EFLAGS: 00000202
+> RAX: 00000000001c20ca RBX: 0000000000724e1e RCX: 0000000000000001
+> RDX: ffff888118e214c8 RSI: 0000000000057d42 RDI: ffff888118e21518
+> RBP: 000000000002bec8 R08: 0000000000000001 R09: 0000000000000000
+> R10: 0000000000000bf4 R11: 0000000000000000 R12: 0000000000000001
+> R13: 00000000001c20ca R14: 00000000001c20ca R15: 0000000000000000
+> FS:  00007f03f995c740(0000) GS:ffff88a07ad9a000(0000) knlGS:0000000000000=
+000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f03f98f1000 CR3: 0000000144626004 CR4: 0000000000770eb0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+>  shmem_alloc_folio+0x31/0xc0
+>  shmem_swapin_folio+0x309/0xcf0
+>  ? filemap_get_entry+0x117/0x1e0
+>  ? xas_load+0xd/0xb0
+>  ? filemap_get_entry+0x101/0x1e0
+>  shmem_get_folio_gfp+0x2ed/0x5b0
+>  shmem_file_read_iter+0x7f/0x2e0
+>  vfs_read+0x252/0x330
+>  ksys_read+0x68/0xf0
+>  do_syscall_64+0x4c/0x1c0
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7f03f9a46991
+> Code: 00 48 8b 15 81 14 10 00 f7 d8 64 89 02 b8 ff ff ff ff eb bd e8 20 a=
+d 01 00 f3 0f 1e fa 80 3d 35 97 10 00 00 74 13 31 c0 0f 05 <48> 3d 00 f0 ff=
+ ff 77 4f c3 66 0f 1f 44 00 00 55 48 89 e5 48 83 ec
+> RSP: 002b:00007fff3c52bd28 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+> RAX: ffffffffffffffda RBX: 0000000000040000 RCX: 00007f03f9a46991
+> RDX: 0000000000040000 RSI: 00007f03f98ba000 RDI: 0000000000000003
+> RBP: 00007fff3c52bd50 R08: 0000000000000000 R09: 00007f03f9b9a380
+> R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000040000
+> R13: 00007f03f98ba000 R14: 0000000000000003 R15: 0000000000000000
+>  </TASK>
+>
+> The reason is simple, readahead brought some order 0 folio in swap
+> cache, and the swapin mTHP folio being allocated is in confict with it,
+> so swapcache_prepare fails and causes shmem_swap_alloc_folio to return
+> -EEXIST, and shmem simply retries again and again causing this loop.
+>
+> Fix it by applying a similar fix for anon mTHP swapin.
+>
+> The performance change is very slight, time of swapin 10g zero folios
+> with shmem (test for 12 times):
+> Before:  2.47s
+> After:   2.48s
+>
+> Fixes: 1dd44c0af4fa1 ("mm: shmem: skip swapcache for swapin of synchronou=
+s swap device")
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+>
+> ---
+>
+> V1: https://lore.kernel.org/linux-mm/20250608192713.95875-1-ryncsn@gmail.=
+com/
+> Updates:
+> - Move non_swapcache_batch check before swapcache_prepare, I was
+>   expecting this could improve the performance, turns out it barely
+>   helps and may even cause more overhead in some cases. [ Barry Song ]
+> - Remove zero map check, no need to do that for shmem [ Barry Song,
+>   Baolin Wang ]
+> - Fix build bot error.
+>
+>  mm/memory.c | 20 --------------------
+>  mm/shmem.c  |  4 +++-
+>  mm/swap.h   | 23 +++++++++++++++++++++++
+>  3 files changed, 26 insertions(+), 21 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 9ead7ab07e8e..3845ed068d74 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4313,26 +4313,6 @@ static struct folio *__alloc_swap_folio(struct vm_=
+fault *vmf)
+>  }
+>
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> -static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
+> -{
+> -       struct swap_info_struct *si =3D swp_swap_info(entry);
+> -       pgoff_t offset =3D swp_offset(entry);
+> -       int i;
+> -
+> -       /*
+> -        * While allocating a large folio and doing swap_read_folio, whic=
+h is
+> -        * the case the being faulted pte doesn't have swapcache. We need=
+ to
+> -        * ensure all PTEs have no cache as well, otherwise, we might go =
+to
+> -        * swap devices while the content is in swapcache.
+> -        */
+> -       for (i =3D 0; i < max_nr; i++) {
+> -               if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
+> -                       return i;
+> -       }
+> -
+> -       return i;
+> -}
+> -
+>  /*
+>   * Check if the PTEs within a range are contiguous swap entries
+>   * and have consistent swapcache, zeromap.
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 73182e904f9c..a4fdfbd086f1 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -2256,6 +2256,7 @@ static int shmem_swapin_folio(struct inode *inode, =
+pgoff_t index,
+>         folio =3D swap_cache_get_folio(swap, NULL, 0);
+>         order =3D xa_get_order(&mapping->i_pages, index);
+>         if (!folio) {
+> +               int nr_pages =3D 1 << order;
+>                 bool fallback_order0 =3D false;
+>
+>                 /* Or update major stats only when swapin succeeds?? */
+> @@ -2271,7 +2272,8 @@ static int shmem_swapin_folio(struct inode *inode, =
+pgoff_t index,
+>                  * to swapin order-0 folio, as well as for zswap case.
+>                  */
+>                 if (order > 0 && ((vma && unlikely(userfaultfd_armed(vma)=
+)) ||
+> -                                 !zswap_never_enabled()))
+> +                                 !zswap_never_enabled() ||
+> +                                 non_swapcache_batch(swap, nr_pages) !=
+=3D nr_pages))
+>                         fallback_order0 =3D true;
+>
+>                 /* Skip swapcache for synchronous device. */
+> diff --git a/mm/swap.h b/mm/swap.h
+> index e87a0f19a0ee..911ad5ff0f89 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -108,6 +108,25 @@ static inline int swap_zeromap_batch(swp_entry_t ent=
+ry, int max_nr,
+>                 return find_next_bit(sis->zeromap, end, start) - start;
+>  }
+>
+> +static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
+> +{
+> +       struct swap_info_struct *si =3D swp_swap_info(entry);
+> +       pgoff_t offset =3D swp_offset(entry);
+> +       int i;
+> +
+> +       /*
+> +        * While allocating a large folio and doing mTHP swapin, we need =
+to
+> +        * ensure all entries are not cached, otherwise, the mTHP folio w=
+ill
+> +        * be in conflict with the folio in swap cache.
+> +        */
+> +       for (i =3D 0; i < max_nr; i++) {
+> +               if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
+> +                       return i;
+> +       }
+> +
+> +       return i;
+> +}
+> +
+>  #else /* CONFIG_SWAP */
+>  struct swap_iocb;
+>  static inline void swap_read_folio(struct folio *folio, struct swap_iocb=
+ **plug)
+> @@ -202,6 +221,10 @@ static inline int swap_zeromap_batch(swp_entry_t ent=
+ry, int max_nr,
+>         return 0;
+>  }
+>
+> +static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
+> +{
+> +       return 0;
+> +}
+>  #endif /* CONFIG_SWAP */
+>
+>  /**
+> --
+> 2.49.0
+>
 
-Yes. After looking through this series, I don't see a need for this patch t=
-o
-extend telem_enpoint for general use. Let's just place a copy of the pdev i=
-n
-entry. Then you can drop the first two patches.
+I really should Cc stable for this, sorry I forgot it.
 
-David
-
-
->=20
-> Thanks,
->=20
-> Mike
->=20
-> > David
-> >=20
-> > >=20
-> > > diff --git a/drivers/platform/x86/intel/pmt/class.h
-> > > b/drivers/platform/x86/intel/pmt/class.h
-> > > index b2006d57779d..d2d8f9e31c9d 100644
-> > > --- a/drivers/platform/x86/intel/pmt/class.h
-> > > +++ b/drivers/platform/x86/intel/pmt/class.h
-> > > @@ -9,8 +9,6 @@
-> > > =C2=A0#include <linux/err.h>
-> > > =C2=A0#include <linux/io.h>
-> > >=20
-> > > -#include "telemetry.h"
-> > > -
-> > > =C2=A0/* PMT access types */
-> > > =C2=A0#define ACCESS_BARID		2
-> > > =C2=A0#define ACCESS_LOCAL		3
-> > > @@ -19,11 +17,19 @@
-> > > =C2=A0#define GET_BIR(v)		((v) & GENMASK(2, 0))
-> > > =C2=A0#define GET_ADDRESS(v)		((v) & GENMASK(31, 3))
-> > >=20
-> > > +struct kref;
-> > > =C2=A0struct pci_dev;
-> > >=20
-> > > -struct telem_endpoint {
-> > > +struct class_header {
-> > > +	u8	access_type;
-> > > +	u16	size;
-> > > +	u32	guid;
-> > > +	u32	base_offset;
-> > > +};
-> > > +
-> > > +struct class_endpoint {
-> > > =C2=A0	struct pci_dev		*pcidev;
-> > > -	struct telem_header	header;
-> > > +	struct class_header	header;
-> > > =C2=A0	struct pmt_callbacks	*cb;
-> > > =C2=A0	void __iomem		*base;
-> > > =C2=A0	bool			present;
-> > > @@ -38,7 +44,7 @@ struct intel_pmt_header {
-> > > =C2=A0};
-> > >=20
-> > > =C2=A0struct intel_pmt_entry {
-> > > -	struct telem_endpoint	*ep;
-> > > +	struct class_endpoint	*ep;
-> > > =C2=A0	struct intel_pmt_header	header;
-> > > =C2=A0	struct bin_attribute	pmt_bin_attr;
-> > > =C2=A0	struct kobject		*kobj;
-> > > @@ -69,4 +75,9 @@ int intel_pmt_dev_create(struct intel_pmt_entry
-> > *entry,
-> > > =C2=A0			 struct intel_vsec_device *dev, int idx);
-> > > =C2=A0void intel_pmt_dev_destroy(struct intel_pmt_entry *entry,
-> > > =C2=A0			=C2=A0=C2=A0 struct intel_pmt_namespace *ns);
-> > > +
-> > > +int intel_pmt_add_endpoint(struct intel_vsec_device *ivdev,
-> > > +			=C2=A0=C2=A0 struct intel_pmt_entry *entry);
-> > > +void intel_pmt_release_endpoint(struct class_endpoint *ep);
-> > > +
-> > > =C2=A0#endif
-> > > diff --git a/drivers/platform/x86/intel/pmt/telemetry.c
-> > > b/drivers/platform/x86/intel/pmt/telemetry.c
-> > > index ac3a9bdf5601..27d09867e6a3 100644
-> > > --- a/drivers/platform/x86/intel/pmt/telemetry.c
-> > > +++ b/drivers/platform/x86/intel/pmt/telemetry.c
-> > > @@ -18,6 +18,7 @@
-> > > =C2=A0#include <linux/overflow.h>
-> > >=20
-> > > =C2=A0#include "class.h"
-> > > +#include "telemetry.h"
-> > >=20
-> > > =C2=A0#define TELEM_SIZE_OFFSET	0x0
-> > > =C2=A0#define TELEM_GUID_OFFSET	0x4
-> > > @@ -93,48 +94,14 @@ static int pmt_telem_header_decode(struct
-> > intel_pmt_entry
-> > > *entry,
-> > > =C2=A0	return 0;
-> > > =C2=A0}
-> > >=20
-> > > -static int pmt_telem_add_endpoint(struct intel_vsec_device *ivdev,
-> > > -				=C2=A0 struct intel_pmt_entry *entry)
-> > > -{
-> > > -	struct telem_endpoint *ep;
-> > > -
-> > > -	/* Endpoint lifetimes are managed by kref, not devres */
-> > > -	entry->ep =3D kzalloc(sizeof(*(entry->ep)), GFP_KERNEL);
-> > > -	if (!entry->ep)
-> > > -		return -ENOMEM;
-> > > -
-> > > -	ep =3D entry->ep;
-> > > -	ep->pcidev =3D ivdev->pcidev;
-> > > -	ep->header.access_type =3D entry->header.access_type;
-> > > -	ep->header.guid =3D entry->header.guid;
-> > > -	ep->header.base_offset =3D entry->header.base_offset;
-> > > -	ep->header.size =3D entry->header.size;
-> > > -	ep->base =3D entry->base;
-> > > -	ep->present =3D true;
-> > > -	ep->cb =3D ivdev->priv_data;
-> > > -
-> > > -	kref_init(&ep->kref);
-> > > -
-> > > -	return 0;
-> > > -}
-> > > -
-> > > =C2=A0static DEFINE_XARRAY_ALLOC(telem_array);
-> > > =C2=A0static struct intel_pmt_namespace pmt_telem_ns =3D {
-> > > =C2=A0	.name =3D "telem",
-> > > =C2=A0	.xa =3D &telem_array,
-> > > =C2=A0	.pmt_header_decode =3D pmt_telem_header_decode,
-> > > -	.pmt_add_endpoint =3D pmt_telem_add_endpoint,
-> > > +	.pmt_add_endpoint =3D intel_pmt_add_endpoint,
-> > > =C2=A0};
-> > >=20
-> > > -/* Called when all users unregister and the device is removed */
-> > > -static void pmt_telem_ep_release(struct kref *kref)
-> > > -{
-> > > -	struct telem_endpoint *ep;
-> > > -
-> > > -	ep =3D container_of(kref, struct telem_endpoint, kref);
-> > > -	kfree(ep);
-> > > -}
-> > > -
-> > > =C2=A0unsigned long pmt_telem_get_next_endpoint(unsigned long start)
-> > > =C2=A0{
-> > > =C2=A0	struct intel_pmt_entry *entry;
-> > > @@ -155,7 +122,7 @@ unsigned long
-> > pmt_telem_get_next_endpoint(unsigned long
-> > > start)
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_get_next_endpoint,
-> > "INTEL_PMT_TELEMETRY");
-> > >=20
-> > > -struct telem_endpoint *pmt_telem_register_endpoint(int devid)
-> > > +struct class_endpoint *pmt_telem_register_endpoint(int devid)
-> > > =C2=A0{
-> > > =C2=A0	struct intel_pmt_entry *entry;
-> > > =C2=A0	unsigned long index =3D devid;
-> > > @@ -174,9 +141,9 @@ struct telem_endpoint
-> > *pmt_telem_register_endpoint(int
-> > > devid)
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_register_endpoint,
-> > "INTEL_PMT_TELEMETRY");
-> > >=20
-> > > -void pmt_telem_unregister_endpoint(struct telem_endpoint *ep)
-> > > +void pmt_telem_unregister_endpoint(struct class_endpoint *ep)
-> > > =C2=A0{
-> > > -	kref_put(&ep->kref, pmt_telem_ep_release);
-> > > +	intel_pmt_release_endpoint(ep);
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_unregister_endpoint,
-> > "INTEL_PMT_TELEMETRY");
-> > >=20
-> > > @@ -206,7 +173,7 @@ int pmt_telem_get_endpoint_info(int devid, struct
-> > > telem_endpoint_info *info)
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_get_endpoint_info,
-> > "INTEL_PMT_TELEMETRY");
-> > >=20
-> > > -int pmt_telem_read(struct telem_endpoint *ep, u32 id, u64 *data, u32
-> > count)
-> > > +int pmt_telem_read(struct class_endpoint *ep, u32 id, u64 *data, u32
-> > count)
-> > > =C2=A0{
-> > > =C2=A0	u32 offset, size;
-> > >=20
-> > > @@ -226,7 +193,7 @@ int pmt_telem_read(struct telem_endpoint *ep, u32
-> > id, u64
-> > > *data, u32 count)
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_read, "INTEL_PMT_TELEMETRY");
-> > >=20
-> > > -int pmt_telem_read32(struct telem_endpoint *ep, u32 id, u32 *data, u=
-32
-> > count)
-> > > +int pmt_telem_read32(struct class_endpoint *ep, u32 id, u32 *data, u=
-32
-> > count)
-> > > =C2=A0{
-> > > =C2=A0	u32 offset, size;
-> > >=20
-> > > @@ -245,7 +212,7 @@ int pmt_telem_read32(struct telem_endpoint *ep,
-> > u32 id,
-> > > u32 *data, u32 count)
-> > > =C2=A0}
-> > > =C2=A0EXPORT_SYMBOL_NS_GPL(pmt_telem_read32, "INTEL_PMT_TELEMETRY");
-> > >=20
-> > > -struct telem_endpoint *
-> > > +struct class_endpoint *
-> > > =C2=A0pmt_telem_find_and_register_endpoint(struct pci_dev *pcidev, u3=
-2 guid,
-> > u16
-> > > pos)
-> > > =C2=A0{
-> > > =C2=A0	int devid =3D 0;
-> > > @@ -279,7 +246,7 @@ static void pmt_telem_remove(struct
-> > auxiliary_device
-> > > *auxdev)
-> > > =C2=A0	for (i =3D 0; i < priv->num_entries; i++) {
-> > > =C2=A0		struct intel_pmt_entry *entry =3D &priv->entry[i];
-> > >=20
-> > > -		kref_put(&entry->ep->kref, pmt_telem_ep_release);
-> > > +		pmt_telem_unregister_endpoint(entry->ep);
-> > > =C2=A0		intel_pmt_dev_destroy(entry, &pmt_telem_ns);
-> > > =C2=A0	}
-> > > =C2=A0	mutex_unlock(&ep_lock);
-> > > diff --git a/drivers/platform/x86/intel/pmt/telemetry.h
-> > > b/drivers/platform/x86/intel/pmt/telemetry.h
-> > > index d45af5512b4e..e987dd32a58a 100644
-> > > --- a/drivers/platform/x86/intel/pmt/telemetry.h
-> > > +++ b/drivers/platform/x86/intel/pmt/telemetry.h
-> > > @@ -2,6 +2,8 @@
-> > > =C2=A0#ifndef _TELEMETRY_H
-> > > =C2=A0#define _TELEMETRY_H
-> > >=20
-> > > +#include "class.h"
-> > > +
-> > > =C2=A0/* Telemetry types */
-> > > =C2=A0#define PMT_TELEM_TELEMETRY	0
-> > > =C2=A0#define PMT_TELEM_CRASHLOG	1
-> > > @@ -9,16 +11,9 @@
-> > > =C2=A0struct telem_endpoint;
-> > > =C2=A0struct pci_dev;
-> > >=20
-> > > -struct telem_header {
-> > > -	u8	access_type;
-> > > -	u16	size;
-> > > -	u32	guid;
-> > > -	u32	base_offset;
-> > > -};
-> > > -
-> > > =C2=A0struct telem_endpoint_info {
-> > > =C2=A0	struct pci_dev		*pdev;
-> > > -	struct telem_header	header;
-> > > +	struct class_header	header;
-> > > =C2=A0};
-> > >=20
-> > > =C2=A0/**
-> > > @@ -47,7 +42,7 @@ unsigned long
-> > pmt_telem_get_next_endpoint(unsigned long
-> > > start);
-> > > =C2=A0 * * endpoint=C2=A0=C2=A0=C2=A0 - On success returns pointer to=
- the telemetry endpoint
-> > > =C2=A0 * * -ENXIO=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - telemetry endpoint =
-not found
-> > > =C2=A0 */
-> > > -struct telem_endpoint *pmt_telem_register_endpoint(int devid);
-> > > +struct class_endpoint *pmt_telem_register_endpoint(int devid);
-> > >=20
-> > > =C2=A0/**
-> > > =C2=A0 * pmt_telem_unregister_endpoint() - Unregister a telemetry end=
-point
-> > > @@ -55,7 +50,7 @@ struct telem_endpoint
-> > *pmt_telem_register_endpoint(int
-> > > devid);
-> > > =C2=A0 *
-> > > =C2=A0 * Decrements the kref usage counter for the endpoint.
-> > > =C2=A0 */
-> > > -void pmt_telem_unregister_endpoint(struct telem_endpoint *ep);
-> > > +void pmt_telem_unregister_endpoint(struct class_endpoint *ep);
-> > >=20
-> > > =C2=A0/**
-> > > =C2=A0 * pmt_telem_get_endpoint_info() - Get info for an endpoint fro=
-m its
-> > > devid
-> > > @@ -80,8 +75,8 @@ int pmt_telem_get_endpoint_info(int devid, struct
-> > > telem_endpoint_info *info);
-> > > =C2=A0 * * endpoint=C2=A0=C2=A0=C2=A0 - On success returns pointer to=
- the telemetry endpoint
-> > > =C2=A0 * * -ENXIO=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - telemetry endpoint =
-not found
-> > > =C2=A0 */
-> > > -struct telem_endpoint *pmt_telem_find_and_register_endpoint(struct
-> > pci_dev
-> > > *pcidev,
-> > > -				u32 guid, u16 pos);
-> > > +struct class_endpoint *pmt_telem_find_and_register_endpoint(struct
-> > pci_dev
-> > > *pcidev,
-> > > +							=C2=A0=C2=A0=C2=A0 u32 guid, u16
-> > > pos);
-> > >=20
-> > > =C2=A0/**
-> > > =C2=A0 * pmt_telem_read() - Read qwords from counter sram using sampl=
-e id
-> > > @@ -101,7 +96,7 @@ struct telem_endpoint
-> > > *pmt_telem_find_and_register_endpoint(struct pci_dev *pcid
-> > > =C2=A0 * * -EPIPE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - The device was remo=
-ved during the read. Data written
-> > > =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 but should be considered invalid.
-> > > =C2=A0 */
-> > > -int pmt_telem_read(struct telem_endpoint *ep, u32 id, u64 *data, u32
-> > count);
-> > > +int pmt_telem_read(struct class_endpoint *ep, u32 id, u64 *data, u32
-> > count);
-> > >=20
-> > > =C2=A0/**
-> > > =C2=A0 * pmt_telem_read32() - Read qwords from counter sram using sam=
-ple id
-> > > @@ -121,6 +116,6 @@ int pmt_telem_read(struct telem_endpoint *ep, u32
-> > id, u64
-> > > *data, u32 count);
-> > > =C2=A0 * * -EPIPE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - The device was remo=
-ved during the read. Data written
-> > > =C2=A0 *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 but should be considered invalid.
-> > > =C2=A0 */
-> > > -int pmt_telem_read32(struct telem_endpoint *ep, u32 id, u32 *data, u=
-32
-> > > count);
-> > > +int pmt_telem_read32(struct class_endpoint *ep, u32 id, u32 *data, u=
-32
-> > > count);
-> > >=20
-> > > =C2=A0#endif
->=20
-
+Cc: stable@vger.kernel.org # 6.14
 
