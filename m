@@ -1,201 +1,249 @@
-Return-Path: <stable+bounces-152019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB30AD1E1A
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 14:50:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CECAD1E8F
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 15:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BC36188B7CA
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 12:50:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7D7E7A3B6A
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98250256C9C;
-	Mon,  9 Jun 2025 12:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F262580EC;
+	Mon,  9 Jun 2025 13:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZM4XT3d2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eN5LXHVH"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2055.outbound.protection.outlook.com [40.107.237.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EDC2512C8;
-	Mon,  9 Jun 2025 12:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749473426; cv=fail; b=T0tYo1COj4HpoGBhsrnu9vbakz2MR+7Zh13TIE7mfTNtom9Wbhe6vno6+LSNEuFKDRysf3OGtK0MRUMeNN755ZXcKe0yMJrYAL5OsuEATgwp17QIMogrxXkD2p+eHnuUq25uJk72RGQkJi4ZOHo8QxGGxX7GQRXtWE1vz3kUkyc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749473426; c=relaxed/simple;
-	bh=6XmSr7yWqDWQ4l8+PuCl0Xv5P8it8lb9nT4lKwjdc/M=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=fFb7sgoJSwCwNTwmC241DRxj/2dj7WaW213VOm6WW7yLGEzD8nMwir23uRikfwYOh7YAM7107xCi780aAo+3iIh0La4MnIM7NQZcx2jSKDOIIRYDquxClVG42X866iU5zYLHNW6Iqd70lhO09CgUVpibI5+M9LEHzD3kxvsEK+Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZM4XT3d2; arc=fail smtp.client-ip=40.107.237.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mYZpfgcV0qad3FKxR0qdS666Hw4ZQdGXNEaQ3hFeIjTdkexsyg4cvjiaS9nxkokwqIZei/Z5CYhpstUYlDXW20oPTpR24C4KobfySZzE6q+R/zYKrShA2bJdM21hduhzq6GasVUF9ZeqtWCxFaZ4I+cufWjCp+OV2SHOsIfBsk0nWfm2bb5K9lMonI7/Fc5KOQvGU5pw2qMGhUvMKyyqAQobgGW9CHZp0C1/QEBKiNeUvTglvJC/oun6BSn4KiWYnAmCvJhUUCZPVC1QXpFF5dMAMy/PB/SnORE+uLHY3D/LFodzf/jNP2c5HqvcNymOwvbqw54qkrPuyg6O0YKXzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CqGUXXrKHhfnpSx+ngoFzQsfC+4iao4nxChfNNkxlac=;
- b=gKcvlngZgGI1Ba72bu+K5Q4w6uU6bCl3JOW6vf+yldF2U/lzPK6rIb2v+OtONLFZzpHWK4pPzs+i/wzWsuJdm1DKEbuVx2ObrJIMdqFAmjMhjcxLEBc7OX0Vki6ciMcgV7ZkYQVbL9l+EG8QV7UeV00vPul8fW9LNg8RykSyDtmpoMzgmntAdcOTyK6mqzcwvuUhETu4G6gBv+vYqdd3HHqTqLFKbdB2EHV1d4hC2Dipma7LNrkLLAeKfMM1WAstPG+LCfuBs9ESw/0ATPPj7yFl+c6f5Di0DlN99TL+z41y/18DtBpiy9ZV58a81ViBa25qnBT9iwQ/zUfJeWES5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CqGUXXrKHhfnpSx+ngoFzQsfC+4iao4nxChfNNkxlac=;
- b=ZM4XT3d2IRLcLU6yNo1VyQtPk5mxWE8A9qyeUqG6KJFHoB4SnyHhcj2c1OODBE+04xfO5Omt5i3f1gtARzeFFO2x9uEANfJ5CjEQSoHiFwbo6wC65BtQDT4ZJoG9tIzgDqPm5uQsTFZNJxSWE3/yZBwGBch0s+H5QJMIj2OlfHSvOOX8K/qsT53wg7PX3hPZkbyAgXUeq0PBdS/+eqWKxeIE7+Hi5NzvT8yP0YuE5heJwqXWlK6nmn/K/UazbvS0rgQ7CKfOEy8iA2YKePldGvTFFwOKi722CKy2GCot+UZb9cj+gck3x+m8rCoABHMbR1nkf5yK6y/NHtIfYDMzYQ==
-Received: from CH0PR03CA0418.namprd03.prod.outlook.com (2603:10b6:610:11b::19)
- by MW4PR12MB7141.namprd12.prod.outlook.com (2603:10b6:303:213::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Mon, 9 Jun
- 2025 12:50:17 +0000
-Received: from CH2PEPF00000144.namprd02.prod.outlook.com
- (2603:10b6:610:11b:cafe::48) by CH0PR03CA0418.outlook.office365.com
- (2603:10b6:610:11b::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8769.18 via Frontend Transport; Mon,
- 9 Jun 2025 12:50:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH2PEPF00000144.mail.protection.outlook.com (10.167.244.101) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.15 via Frontend Transport; Mon, 9 Jun 2025 12:50:17 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 9 Jun 2025
- 05:50:05 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 9 Jun
- 2025 05:50:04 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Mon, 9 Jun 2025 05:50:04 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.14 00/24] 6.14.11-rc1 review
-In-Reply-To: <20250607100717.706871523@linuxfoundation.org>
-References: <20250607100717.706871523@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45D6257AF4;
+	Mon,  9 Jun 2025 13:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749474892; cv=none; b=Xv9Sox5v6ApY7e755VxsvcBevIVtMDShDkG6rFldvbuU/6qjWv5ZWjfvGW+7833A1YOBpW65gqRQcz7nK2lyC1Ko4Nt1shFlci4rSSt2HHe39OiDQdMT20ip1VCCbVnztjWCztnq0Qerjdy3IZhAuxXCZtR5/mRw7nbA9Ay5+hU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749474892; c=relaxed/simple;
+	bh=XYVils960f1E8mwod6msEyFbYvJt8XnpCDrKXIKzUvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fIibjaKYZDWTrYxXQOz9CV1aO0f87VSOmNtinD9qpMow9UADhLMEzXwlXQQr+RicdrHS/t6/Umh+5gS70Zw09pJxpdnnanxihnjn+Q91KQisCCLkygqfZgISPThwg4yveBwYP6W7/EwJREqs4MMk4yIQ2LR2HCtSbqYKv1nWu10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eN5LXHVH; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749474891; x=1781010891;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XYVils960f1E8mwod6msEyFbYvJt8XnpCDrKXIKzUvw=;
+  b=eN5LXHVHnTUJ+q4PJJW/9N4QgvYc4hIwWNmFwOjw0gTzdGndkOp9kbaK
+   65zgK5arKfHDFfXEd9Iu8XIEuZ1Z53QjxzdQYz2VgVyHVmPnWKJC54B4D
+   wIGhiN//aQEKLHqKBpq378W5Q5/9p9XRX3hqzT98V2iRIcKOZN3T+TTfJ
+   RdOkMJGbgbWEyp3qxa+xD3AJb2dP/+YQHNYXULt813TaRiooC0B/s+sFJ
+   RvZa/Eg/uhsLA3aOWzr3V8hE0gmoHL8o1V9dVgGNCYgKmRoCHwu+WiY3Q
+   fdUQR61zO3O5TfzndPxCcItuRUsrHWVmL48471K6/c8o3rOhgHfC9FHWn
+   A==;
+X-CSE-ConnectionGUID: BrbT2VVBSBWEHlJFoVTUvA==
+X-CSE-MsgGUID: LHUQt2tXTCKbRoNqUUAA4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51694301"
+X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
+   d="scan'208";a="51694301"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 06:14:46 -0700
+X-CSE-ConnectionGUID: 2I/Fmt4wTfunuifztq713g==
+X-CSE-MsgGUID: FjJp5EQwQeGq0jKHe6+zOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
+   d="scan'208";a="177451053"
+Received: from intelmailrelay-02.habana-labs.com ([10.111.11.21])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 06:14:41 -0700
+Received: internal info suppressed
+Received: from dhirschfeld-vm-u24.habana-labs.com (localhost [127.0.0.1])
+	by dhirschfeld-vm-u24.habana-labs.com (8.18.1/8.18.1/Debian-2) with SMTP id 559DERg31077121;
+	Mon, 9 Jun 2025 16:14:28 +0300
+Date: Mon, 9 Jun 2025 16:14:27 +0300
+From: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+To: Jan Hendrik Farr <kernel@jfarr.cc>
+Cc: kees@kernel.org, nathan@kernel.org, ojeda@kernel.org,
+        ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+        thorsten.blum@toblux.com, ardb@kernel.org, oliver.sang@intel.com,
+        gustavoars@kernel.org, kent.overstreet@linux.dev, arnd@arndb.de,
+        gregkh@linuxfoundation.org, akpm@linux-foundation.org,
+        tavianator@tavianator.com, linux-hardening@vger.kernel.org,
+        llvm@lists.linux.dev, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] Compiler Attributes: disable __counted_by for clang
+ < 19.1.3
+Message-ID: <paezt3cuux5kwv7dvyuo4rrff2felwzmjunkdpyxqjp3fbnyzn@rcdj4xq6djio>
+References: <20241029140036.577804-1-kernel@jfarr.cc>
+ <20241029140036.577804-2-kernel@jfarr.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <054bc082-8738-47e9-bf35-ed759010f361@rnnvmail201.nvidia.com>
-Date: Mon, 9 Jun 2025 05:50:04 -0700
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000144:EE_|MW4PR12MB7141:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8dee5b7e-631f-4bb1-b11e-08dda7542fd5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZW5mN1AxbFl3L0I3ckgwSDE5ZXc1aitBekpsUGZUTlVjeVlvUmNKOUNvQmha?=
- =?utf-8?B?ZklIOTg4R2hHQXJPbE5zaE1oVXdhQUp0TU5Rb3JzaVRJaFpkKzd0dDJ0a2VP?=
- =?utf-8?B?eE8ybnNxR0ZPZlBLVjN3Y2dqTlZCNC9FMHg4MjF6YWY1OUFndW4vaGRXY1JB?=
- =?utf-8?B?Vk9iczF6dGhsc0Y1UkkvZjIrT3VjRHh5UDVBOTNiQ2Q0UWFvdkl6QUYwcmtl?=
- =?utf-8?B?M2Z4TFozMHB4MEJHdGpZSjVheU8rVU9lRW1va1Bpdzk1UnNDRXJiQUZFOEdk?=
- =?utf-8?B?czNnWWxGLy9GU1c5WnlNTUUwK3ZnQ0ptMW5SSzZGTTZKZm9lK1NxZTRTOWcz?=
- =?utf-8?B?MnlaS0JOVEVwUEpHbkkwZksraUNmSUEyQ0IvaEJDcjRBYjVWWUV4eWx6Ym5j?=
- =?utf-8?B?U2tmWi9GeGZka0IzUm80VjNVZ2ZMTWxwcGF6VWVJUEdKMmxyWnRCRDBmQWpU?=
- =?utf-8?B?bS9Vc0NXNDNVcnZNT2NnZWpmc1NCdjZqUGJ5Y3VpQjM3Q1k1U0w3ekhmV2R4?=
- =?utf-8?B?YzNEcjRQUVVpN05VQnd3dlJUdFdkUFlIVmFmT0c4dzN5YzRhbGVOS2QvaVBC?=
- =?utf-8?B?RjBXdFF0NmpqamZXZDNkZitkTGtBMklZd291RU03aXFGU0IrZzVPOG5HdWZ1?=
- =?utf-8?B?Qk1ZMGE3VkZmcXN2ZGwzYm9hZC9mYjlYNjlMcXpDb2ZLVVI4VWRjeURhMVlt?=
- =?utf-8?B?ck9hdyszTkRZWUtocm1DWkNaa2I1S1ducVo4alVxNkxsRVBDc0hhVC9VVHdk?=
- =?utf-8?B?S3gyOHBnMi9RTkErSTVnQjRTd1MxNTlBMHRyTlJYR084VzVOWnFZVmpwSHVk?=
- =?utf-8?B?bXp0Z2ZsTVJHZElMWnZqOWpoUmkxbFc2akc3QmlHQ202clhvQS93UU5hcDVH?=
- =?utf-8?B?bWMrUkhZdEcvMzB5NjJ5bFZ4QUxFVC8rSk5mcXRLR3huNVVLYURsNWFQcm5G?=
- =?utf-8?B?Zm5mejMzOGMxWTFCSUpGamVVMzMwK3pWVlJDdWR1cFBNbHlac3FqK215b0Fy?=
- =?utf-8?B?bGZEdHpXV0NnNVVLdXd3Tk41OGlMODIwbHhpOWxWV1Bxc0JXM2hhZ2VIMkNU?=
- =?utf-8?B?Z0JZekJTR1FOS1l1Vjd2U3phQmZUNmNRcmpKbENxWDVYaWNuRm03TWlOSFgw?=
- =?utf-8?B?RGtBd2g0TGRWaTV5enBZSnczN3RDc01xWHlKck1kRWpuSHE5R0FITGV1RW5O?=
- =?utf-8?B?TWhXTnVFd3JPSFpFRXBON1FIeGNxTEwwUWJKNDZnTW1vVjVuZ0xIZDdXYjVZ?=
- =?utf-8?B?NTNOOVFBUjdCNkU0eGp5YmxWdXY3OVZtSldpYzNlVGZzM0U1VEwrYzVxZVIz?=
- =?utf-8?B?clJhcUxPd2NodkJMeUpSMUZLUnp2eVVIT2k2OWtnekI1d1IxNWFsUS80dFB3?=
- =?utf-8?B?NTZTYjAxNDdNS2lzWldidlN3V3NRYW5tOG5MTFVKYVNGcVdINkNILzRLek1p?=
- =?utf-8?B?OHZQdW53UGtCWHNBcUZoaDA4MVlhYzJRR3o5ZEU1ZWxqV3U1UVF0UkQ5dkhL?=
- =?utf-8?B?ZlhzVW9YSGhPeWF0TGhKSTNuaHl1a2hyNHRCampUcElDMk9SOGpVYXRRMVM4?=
- =?utf-8?B?bldsMVYyclduUUpzNWRDeEVqdkVpczVVUUorS3RMSzRDN21CZ09JSTVtWmw2?=
- =?utf-8?B?cUhRY2IyYVk5UlVsV241YnFKM1U3cHVmRW9qb3ZLRDVBalBaemV5amdIc00y?=
- =?utf-8?B?MWdBemJXWnhheENaYXh2YnlBRmljYjZMNWJPTXNZYWNEVXc3M1hCdEdoZXo5?=
- =?utf-8?B?NFA2eHc0OVBXREZSN2RYc013bUpXYUQrTlNwZHVvT1FnQVFUdDN1N0J0a2ZF?=
- =?utf-8?B?UHZ5V0YwMUtSWFhJUnBWTW9hTjlxMW9ZQ2VpTUZCZTc2Zksyam9GK00xelNw?=
- =?utf-8?B?eXJBZE5vUHMvQTRoay9GMkRvQlppalNDWk5YdHZ1WFFzTjZPcmFXanJjcFI1?=
- =?utf-8?B?Z1U3TDZDcUFkVU9TQ0RBRDVHbE14N1pkOEROU2YxYUZiTDZuWldISHVobURv?=
- =?utf-8?B?aTh0QUc4MVJrT0pSdktPN2FoOERXK3U0Q1paTFkxbGovSXcwSFl6SDRhd2F0?=
- =?utf-8?B?eG9BNVprRWR0RDBhVWhFK0d2MXAzMWhDUFl0QT09?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 12:50:17.6372
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8dee5b7e-631f-4bb1-b11e-08dda7542fd5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000144.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7141
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20241029140036.577804-2-kernel@jfarr.cc>
 
-On Sat, 07 Jun 2025 12:07:40 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.14.11 release.
-> There are 24 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon, 09 Jun 2025 10:07:05 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On 29.10.2024 15:00, Jan Hendrik Farr wrote:
+>This patch disables __counted_by for clang versions < 19.1.3 because
+>of the two issues listed below. It does this by introducing
+>CONFIG_CC_HAS_COUNTED_BY.
+>
+>1. clang < 19.1.2 has a bug that can lead to __bdos returning 0:
+>https://github.com/llvm/llvm-project/pull/110497
+>
+>2. clang < 19.1.3 has a bug that can lead to __bdos being off by 4:
+>https://github.com/llvm/llvm-project/pull/112636
+>
+>Fixes: c8248faf3ca2 ("Compiler Attributes: counted_by: Adjust name and identifier expansion")
+>Cc: stable@vger.kernel.org # 6.6.x: 16c31dd7fdf6: Compiler Attributes: counted_by: bump min gcc version
+>Cc: stable@vger.kernel.org # 6.6.x: 2993eb7a8d34: Compiler Attributes: counted_by: fixup clang URL
+>Cc: stable@vger.kernel.org # 6.6.x: 231dc3f0c936: lkdtm/bugs: Improve warning message for compilers without counted_by support
+>Cc: stable@vger.kernel.org # 6.6.x
+>Reported-by: Nathan Chancellor <nathan@kernel.org>
+>Closes: https://lore.kernel.org/all/20240913164630.GA4091534@thelio-3990X/
+>Reported-by: kernel test robot <oliver.sang@intel.com>
+>Closes: https://lore.kernel.org/oe-lkp/202409260949.a1254989-oliver.sang@intel.com
+>Link: https://lore.kernel.org/all/Zw8iawAF5W2uzGuh@archlinux/T/#m204c09f63c076586a02d194b87dffc7e81b8de7b
+>Suggested-by: Nathan Chancellor <nathan@kernel.org>
+>Signed-off-by: Jan Hendrik Farr <kernel@jfarr.cc>
+>Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+>Tested-by: Nathan Chancellor <nathan@kernel.org>
+>Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+>---
+> drivers/misc/lkdtm/bugs.c           |  2 +-
+> include/linux/compiler_attributes.h | 13 -------------
+> include/linux/compiler_types.h      | 19 +++++++++++++++++++
+> init/Kconfig                        |  9 +++++++++
+> lib/overflow_kunit.c                |  2 +-
+> 5 files changed, 30 insertions(+), 15 deletions(-)
+>
+>diff --git a/drivers/misc/lkdtm/bugs.c b/drivers/misc/lkdtm/bugs.c
+>index 62ba01525479..376047beea3d 100644
+>--- a/drivers/misc/lkdtm/bugs.c
+>+++ b/drivers/misc/lkdtm/bugs.c
+>@@ -445,7 +445,7 @@ static void lkdtm_FAM_BOUNDS(void)
+>
+> 	pr_err("FAIL: survived access of invalid flexible array member index!\n");
+>
+>-	if (!__has_attribute(__counted_by__))
+>+	if (!IS_ENABLED(CONFIG_CC_HAS_COUNTED_BY))
+> 		pr_warn("This is expected since this %s was built with a compiler that does not support __counted_by\n",
+> 			lkdtm_kernel_info);
+> 	else if (IS_ENABLED(CONFIG_UBSAN_BOUNDS))
+>diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
+>index 32284cd26d52..c16d4199bf92 100644
+>--- a/include/linux/compiler_attributes.h
+>+++ b/include/linux/compiler_attributes.h
+>@@ -94,19 +94,6 @@
+> # define __copy(symbol)
+> #endif
+>
+>-/*
+>- * Optional: only supported since gcc >= 15
+>- * Optional: only supported since clang >= 18
+>- *
+>- *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
+>- * clang: https://github.com/llvm/llvm-project/pull/76348
+>- */
+>-#if __has_attribute(__counted_by__)
+>-# define __counted_by(member)		__attribute__((__counted_by__(member)))
+>-#else
+>-# define __counted_by(member)
+>-#endif
+>-
 
-All tests passing for Tegra ...
+Why is the define of __counted_by moved from here (compiler_attributes.h)
+to a different location (compiler_types.h) ?
+I am asking this because I try to compile an out of tree kernel module with ofed headers.
+in the ofed header of compiler_types.h there is an added include of types.h:
 
-Test results for stable-v6.14:
-    10 builds:	10 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+#include_next <linux/compiler_attributes.h>
+#include <linux/types.h>
 
-Linux version:	6.14.11-rc1-g1927b72132da
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra30-cardhu-a04
+so what happen is that __counted_by is defined in types.h, and then I get a compilation error:
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+././include/linux/compiler_types.h:323: error: "__counted_by" redefined [-Werror]
 
-Jon
+I am not sure yet how this should be fixed.
+Thank you,
+Dafna
+
+
+
+
+
+> /*
+>  * Optional: not supported by gcc
+>  * Optional: only supported since clang >= 14.0
+>diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+>index 1a957ea2f4fe..639be0f30b45 100644
+>--- a/include/linux/compiler_types.h
+>+++ b/include/linux/compiler_types.h
+>@@ -323,6 +323,25 @@ struct ftrace_likely_data {
+> #define __no_sanitize_or_inline __always_inline
+> #endif
+>
+>+/*
+>+ * Optional: only supported since gcc >= 15
+>+ * Optional: only supported since clang >= 18
+>+ *
+>+ *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
+>+ * clang: https://github.com/llvm/llvm-project/pull/76348
+>+ *
+>+ * __bdos on clang < 19.1.2 can erroneously return 0:
+>+ * https://github.com/llvm/llvm-project/pull/110497
+>+ *
+>+ * __bdos on clang < 19.1.3 can be off by 4:
+>+ * https://github.com/llvm/llvm-project/pull/112636
+>+ */
+>+#ifdef CONFIG_CC_HAS_COUNTED_BY
+>+# define __counted_by(member)		__attribute__((__counted_by__(member)))
+>+#else
+>+# define __counted_by(member)
+>+#endif
+>+
+> /*
+>  * Apply __counted_by() when the Endianness matches to increase test coverage.
+>  */
+>diff --git a/init/Kconfig b/init/Kconfig
+>index 530a382ee0fe..92f106cf5572 100644
+>--- a/init/Kconfig
+>+++ b/init/Kconfig
+>@@ -116,6 +116,15 @@ config CC_HAS_ASM_INLINE
+> config CC_HAS_NO_PROFILE_FN_ATTR
+> 	def_bool $(success,echo '__attribute__((no_profile_instrument_function)) int x();' | $(CC) -x c - -c -o /dev/null -Werror)
+>
+>+config CC_HAS_COUNTED_BY
+>+	# TODO: when gcc 15 is released remove the build test and add
+>+	# a gcc version check
+>+	def_bool $(success,echo 'struct flex { int count; int array[] __attribute__((__counted_by__(count))); };' | $(CC) $(CLANG_FLAGS) -x c - -c -o /dev/null -Werror)
+>+	# clang needs to be at least 19.1.3 to avoid __bdos miscalculations
+>+	# https://github.com/llvm/llvm-project/pull/110497
+>+	# https://github.com/llvm/llvm-project/pull/112636
+>+	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
+>+
+> config PAHOLE_VERSION
+> 	int
+> 	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
+>diff --git a/lib/overflow_kunit.c b/lib/overflow_kunit.c
+>index 2abc78367dd1..5222c6393f11 100644
+>--- a/lib/overflow_kunit.c
+>+++ b/lib/overflow_kunit.c
+>@@ -1187,7 +1187,7 @@ static void DEFINE_FLEX_test(struct kunit *test)
+> {
+> 	/* Using _RAW_ on a __counted_by struct will initialize "counter" to zero */
+> 	DEFINE_RAW_FLEX(struct foo, two_but_zero, array, 2);
+>-#if __has_attribute(__counted_by__)
+>+#ifdef CONFIG_CC_HAS_COUNTED_BY
+> 	int expected_raw_size = sizeof(struct foo);
+> #else
+> 	int expected_raw_size = sizeof(struct foo) + 2 * sizeof(s16);
+>-- 
+>2.47.0
+>
 
