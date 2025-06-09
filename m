@@ -1,109 +1,122 @@
-Return-Path: <stable+bounces-151999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099B3AD1958
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 09:52:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 926DDAD1986
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 10:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5CC41888158
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 07:53:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADD507A4E7D
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 08:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E149528135B;
-	Mon,  9 Jun 2025 07:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0056827FB3D;
+	Mon,  9 Jun 2025 08:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZJvsuDv+"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="Y9ZR/iZx";
+	dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b="PgpLn95b"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from e3i282.smtp2go.com (e3i282.smtp2go.com [158.120.85.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AB1280CC8;
-	Mon,  9 Jun 2025 07:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF3A246768
+	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 08:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.85.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749455570; cv=none; b=IGcEHvFOpzAbnW0vJu2y3ZOdVTcL1adqT2zraTM6tytSFScAvfkoSQrUlDuBJqRDWBdY8SkCPDt25AW1ZDAzIgJxPvNCEju7tYl9tKsP9ZnlHj6mmv4fBsKx4gUvhomf93zqLa+c1Hty+vklaJvLR7YgkDnBskR6OZ51go5WL0M=
+	t=1749456248; cv=none; b=D2Q//54GmhuFub04lUhT8KrMRQNruaSj5oGuESk0yR9Xa6lBI1ivMTIPlqtY/DtsZEayfwVww9NMcd1iTYDdk/yC6+UXqnN4zv/7jyrSzfuV1+GAg5FgUFDidneT6sJs/p5IvgQ8Uo3UtGPxgFcv5Ia69QiFjH8nO/yRCnKL334=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749455570; c=relaxed/simple;
-	bh=yKCAkkocVMt/xboYQMnhpHPN9tMeGfAsSRDt/ILHQck=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jxWegE4GIod0EkoETUy8trTl2pDNSgRauXbVdL6oE0qZocHXh1kQ5CmEDKZe7OqR4IKNaf+tUFv961vbeVn/LxKjRU9K9SpGsojpi28CuKzC+a0jPpS34DzIkb7BzPBzfv9ohMohAbZ78h74GNLfgVM8jhsiTIN3kJf2UKvOekc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZJvsuDv+; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749455569; x=1780991569;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=yKCAkkocVMt/xboYQMnhpHPN9tMeGfAsSRDt/ILHQck=;
-  b=ZJvsuDv+n0iX/la1OgJJ9F07qS4rEbqSwIxS0QnzHgVYwmr2iMcNiC7V
-   OMMnB+x/tt/YgK5pgdRvGCwdoW6mjb13tfMHSdB9A8HVsYkOBM5S7GnoC
-   l2K2BtHxRShzZ7vShTUb4+vxbKl7GtHE3aqsGgqYzu9/NRgu32tF9+5hT
-   u/F4IqO5IR43ndZikhVn126/llbuyCQO2Lh/TjwLzqMo3OYzjWvIifBEY
-   D4zx2I1sNZlVo4LmxK9GCzGH70zGo5YaMdxXbm6k2qKtkjKMwBVlVUsV7
-   0RBz2nlW+53IDpYI8ikrNZ23wW4dbqv0/7/WSQiQvhShdysVlvuhvHmop
-   g==;
-X-CSE-ConnectionGUID: 7CzIDpUmS26y0feYIRvQWA==
-X-CSE-MsgGUID: X9UMpu7PQ7ureCT7oEAZkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11458"; a="51669318"
-X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
-   d="scan'208";a="51669318"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 00:52:48 -0700
-X-CSE-ConnectionGUID: 9UEr8cbtRgCpkXuidtIhDg==
-X-CSE-MsgGUID: /k59eJkjT0ikEAo76bjBGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,222,1744095600"; 
-   d="scan'208";a="147374787"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.22])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 00:52:45 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: hdegoede@redhat.com, 
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org
-In-Reply-To: <20250606205300.2384494-1-srinivas.pandruvada@linux.intel.com>
-References: <20250606205300.2384494-1-srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH] platform/x86/intel-uncore-freq: Fail module load when
- plat_info is NULL
-Message-Id: <174945556062.2685.13696640320236584390.b4-ty@linux.intel.com>
-Date: Mon, 09 Jun 2025 10:52:40 +0300
+	s=arc-20240116; t=1749456248; c=relaxed/simple;
+	bh=7VIXiVnLp6xUMZfeU9BYhxVdq25YMhx1Vl2EPXeFzSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KKE1JkdOm01xQKu7D6hSqZpXfvwgNGGnNoBY/CIZODfto7F09nH8gMwaZM2VCU7jDCoj7frgsbLJSWAlDY+Eqf6OVmIW8HrgjivNhjVsEc6K+S+7xdJmUThpAU30UgcepdO2uHZUXmjN0oCWXYFBLkBz02DrFcV/11C1rhqIzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev; spf=pass smtp.mailfrom=em1255854.medip.dev; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=Y9ZR/iZx; dkim=pass (2048-bit key) header.d=medip.dev header.i=@medip.dev header.b=PgpLn95b; arc=none smtp.client-ip=158.120.85.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=medip.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1255854.medip.dev
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1749456237; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=OAD1I4lKD9GurTiefje3GPSgP3drA15uqZbSTFtnYlY=;
+ b=Y9ZR/iZxs3PTdYmMzlQ7NC8rMrI9PUH+YMZIi/XySugGlpQlZzVxc1bdF9jseE3o/1XSE
+ TYoRlr9OQwSh/PoYap6wQznsw+3zGHTTSpREd0tLaUwYiK6jkhftKeojVNLNKAJLldeoN82
+ 2r4pRioY8s3b610O2oNHVCUsWoZmdHtK5AtYbGbLienedKl2uPXae0KI4x5wS9zrSdTZN/m
+ lLQNJkdMEScRDv5i5gIOd8oW8D87v6nQEehe5/t3qMqfrSljgoZ0XfakMkUs67itDac+bzQ
+ sPD9AxFOTsxkTXDaYFpmgMEuKIIofqvLP06QiY9vJijng2DypXSO2CKhd6MQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medip.dev;
+ i=@medip.dev; q=dns/txt; s=s1255854; t=1749456237; h=from : subject :
+ to : message-id : date;
+ bh=OAD1I4lKD9GurTiefje3GPSgP3drA15uqZbSTFtnYlY=;
+ b=PgpLn95bqK/GhxZviIO97og4ErULY+hr3MPaVdMB5NM8/AwMP1xiaatVX4xWWmseQBupR
+ 7jTosGoSegjEqoRRDe02YmhH0ppC/pimMdtIv0YZdAI5mYIyUQ/JrJAtryvHR467BSMOPYU
+ TfaJ43Yv7Mvi369gVWxl7L0XcfvMODiEDQ0wtFvmBjxBsT/11qWffq1TYfCfvME9w3ajBH+
+ ltHyJIZaNMDZoKZcoq4b5RSPQils27pg5jgCojSAPmXAVSDx3GmfUmu9loIlrpJD/0sM3R5
+ rqvK0vCKIiFee7LfymdR4ndFdLYO5+dPbSF1fq83yJYqeCRSexJC9aMJ9r0Q==
+Received: from [10.152.250.198] (helo=localhost.localdomain)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97.1-S2G)
+	(envelope-from <edip@medip.dev>)
+	id 1uOXU0-FnQW0hPmmyb-hAwU;
+	Mon, 09 Jun 2025 08:03:52 +0000
+From: edip@medip.dev
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Edip Hazuri <edip@medip.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] ALSA: hda/realtek - Add mute LED support for HP Victus 16-s1xxx and HP Victus 15-fa1xxx
+Date: Mon,  9 Jun 2025 10:59:44 +0300
+Message-ID: <20250609075943.13934-2-edip@medip.dev>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 1255854m:1255854ay30w_v:1255854sVoHSOn4rB
+X-smtpcorp-track: JoOBMPqWbl0I.dugwOn4Dn8o5.wJ0CzwbIxmz
 
-On Fri, 06 Jun 2025 13:53:00 -0700, Srinivas Pandruvada wrote:
+From: Edip Hazuri <edip@medip.dev>
 
-> Address a Smatch static checker warning regarding an unchecked
-> dereference in the function call:
-> set_cdie_id(i, cluster_info, plat_info)
-> when plat_info is NULL.
-> 
-> Instead of addressing this one case, in general if plat_info is NULL
-> then it can cause other issues. For example in a two package system it
-> will give warning for duplicate sysfs entry as package ID will be always
-> zero for both packages when creating string for attribute group name.
-> 
-> [...]
+The mute led on those laptops is using ALC245 but requires a quirk to work
+This patch enables the existing quirk for the devices.
+
+Tested on my Victus 16-s1011nt Laptop and my friend's Victus 15-fa1xxx. The LED behaviour works as intended.
+
+v2:
+- add new entries according to (PCI) SSID order
+- link to v1: https://lore.kernel.org/linux-sound/20250607105051.41162-1-edip@medip.dev/#R
 
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Edip Hazuri <edip@medip.dev>
+---
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The list of commits applied:
-[1/1] platform/x86/intel-uncore-freq: Fail module load when plat_info is NULL
-      commit: 685f88c72a0c4d12d3bd2ff50286938f14486f85
-
---
- i.
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index cd0d7ba73..c70bee626 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10787,6 +10787,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+@@ -10840,6 +10841,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c9c, "HP Victus 16-s1xxx (MB 8C9C)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+-- 
+2.49.0
 
 
