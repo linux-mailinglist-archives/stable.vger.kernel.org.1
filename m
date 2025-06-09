@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-151966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255CDAD16D8
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 04:34:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DEAAD16DF
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 04:34:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D775F168EF8
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 02:34:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EEE518897CF
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 02:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D572459F1;
-	Mon,  9 Jun 2025 02:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D8524503E;
+	Mon,  9 Jun 2025 02:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CkJH6IRS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQAxT95u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1123D2459C9
-	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 02:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308AD246332
+	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 02:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749436462; cv=none; b=BAqsaRI5YkQPRqD6FD/CI7Z6wRvYbDdUpCuzifWI8rG9j7/7oSIOV2me95DCaFmtg/c+6Ksq0OC6UuKWhyL2xtW3HQ07v/KK/r5Y6Yf5QK0yZpM9v8LpjPKFk2loVRoJxyKIMdFZap+FGbWdC86TLAeEQrDbVKlF7MuMN7CVkZI=
+	t=1749436464; cv=none; b=JqehlfFX6xLKz7CnyIKKzEwx1OhAmRl62hHNlBt6h8mvk5IhKCZg4pQqJw5M7M39z4rBJuwUI5WimSsjf71GXs+XQSnMORUOR4RC183vcpXzWehfMK8qF89CY4rn8w/VueRD9+9/gedaL3/RtqyL55WCD5P0gAY0PfVgqd40S24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749436462; c=relaxed/simple;
-	bh=S8UVx+rV6GbE2/xu9iQdfVh1NwSNU62Pdq2jUNThZb4=;
+	s=arc-20240116; t=1749436464; c=relaxed/simple;
+	bh=JU34Pys1bp1YSP4pw4i7cvUk11IjqeBB5DLdsnq0Mok=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i3Nsqv2iw25PjoPDq/Td3zM50U75S3uwwyQRJF+WcVs0R/YUVEl3xCJsQUNjyT3Jkzn8Pl0pnvKFGaHKdoZjO+q4uBpn2td8s97IpcQF+hJ1nVx5Sa6h7Fm2UQsT72wkOvD4Dh8yvBI4y+Ugne0kHGFudKQRNftt3sNAe3/eiBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CkJH6IRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA27C4CEEE;
-	Mon,  9 Jun 2025 02:34:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UIFulqmb7BkHB7CT048TFYAA4gTCKI2rr5nwn3BXhQ2axJFGS+9cHRfTJo2WDxPLbLFiJjihpTUH87J/rgl/idUuH1dF+0p+qqxykempNNzBaQF6nEMpvVC+P2QmlppLGOeYzU+3j7/jt0DfN8MO44Pze2M8wpQuGd+IokwDhFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQAxT95u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CBFC4CEEE;
+	Mon,  9 Jun 2025 02:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749436461;
-	bh=S8UVx+rV6GbE2/xu9iQdfVh1NwSNU62Pdq2jUNThZb4=;
+	s=k20201202; t=1749436464;
+	bh=JU34Pys1bp1YSP4pw4i7cvUk11IjqeBB5DLdsnq0Mok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkJH6IRSRsWEcTGci/aVS3cUZCwFLm6J0rtkcaTrc9iPvZ5daDloi2uv/EWev0ClI
-	 9xDU/26fh8LsN7+dDOOmaJypxz5QZghYjnXnYC8b4oqJJnSQG1/CwffiuG6bVq01+X
-	 8RFN1E51Va29UpMinw+MLEYtg2gaqBSm3R0Cz3k2xdMmBJB1UosHLlWFJsqdEe/ZlJ
-	 ldEaZ51dsOUR3sluw03s/kKOPnAu3CbMLzCesxLbUDM23FytrNkjKDqpBCPeFWgFnp
-	 56UQvx+KmWbM0ohGtladQpGz/LuO7RoneoFXwJQXTnsOkZkqOdbkPv9hQBC7a/g7vW
-	 IPHCM+EA/0RKQ==
+	b=iQAxT95uv+l8oZfuBnA/+fmyKFKfYVrDh7/lziOhAyNDEjXHl+8RfPME+b2RnswxI
+	 1EeDX4LmU4VlzfAyOlHwFZ3DgkBdLhUz2nm+hROoc5CrwPCCDXmOI+fG7y6PestGJN
+	 C0GAyxXa5szcuRJj5yEa4vpXe+9QNdVgkH015Ms3Vayt/4D7fSYcDSgkmWy/RzN4i3
+	 n7tec6LN1N/U01VKcebNT2+03XqMDZY3EWyycnCTPh/61xX5/ad9WCw5xguPJpjied
+	 IYp1nqrjThrGeK1HofDntK3u8wm47XqvTnN9G2Qusc77z0yXxK/Sc8KyvHfdmQLZua
+	 R8+pdvm0n5ABw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Pu Lehui <pulehui@huaweicloud.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 06/14] arm64: errata: Assume that unknown CPUs _are_ vulnerable to Spectre BHB
-Date: Sun,  8 Jun 2025 22:34:20 -0400
-Message-Id: <20250608191741-46a0167fe6ba9e1e@stable.kernel.org>
+Subject: Re: [PATCH 5.10 03/14] arm64: insn: add encoders for atomic operations
+Date: Sun,  8 Jun 2025 22:34:22 -0400
+Message-Id: <20250608182059-f3fcde8a9bd938ba@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250607152521.2828291-7-pulehui@huaweicloud.com>
+In-Reply-To:  <20250607152521.2828291-4-pulehui@huaweicloud.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,162 +67,98 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: e403e8538359d8580cbee1976ff71813e947101e
+The upstream commit SHA1 provided is correct: fa1114d9eba5087ba5e81aab4c56f546995e6cd3
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Pu Lehui<pulehui@huaweicloud.com>
-Commit author: Douglas Anderson<dianders@chromium.org>
+Commit author: Hou Tao<houtao1@huawei.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
-6.14.y | Present (different SHA1: 1847162b0f1d)
-6.12.y | Present (different SHA1: 3b0f2526c87e)
-6.6.y | Present (different SHA1: 3ca6b0c9171b)
-6.1.y | Present (different SHA1: f2e4ca0c40cd)
-5.15.y | Present (different SHA1: 8cb58a817a45)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e403e8538359d ! 1:  85de55abe5b05 arm64: errata: Assume that unknown CPUs _are_ vulnerable to Spectre BHB
+1:  fa1114d9eba50 ! 1:  5d6b22f0bb8f5 arm64: insn: add encoders for atomic operations
     @@ Metadata
       ## Commit message ##
-         arm64: errata: Assume that unknown CPUs _are_ vulnerable to Spectre BHB
+         arm64: insn: add encoders for atomic operations
      
-    +    [ Upstream commit e403e8538359d8580cbee1976ff71813e947101e ]
+    +    [ Upstream commit fa1114d9eba5087ba5e81aab4c56f546995e6cd3 ]
     +
-         The code for detecting CPUs that are vulnerable to Spectre BHB was
-         based on a hardcoded list of CPU IDs that were known to be affected.
-         Unfortunately, the list mostly only contained the IDs of standard ARM
+         It is a preparation patch for eBPF atomic supports under arm64. eBPF
+         needs support atomic[64]_fetch_add, atomic[64]_[fetch_]{and,or,xor} and
+         atomic[64]_{xchg|cmpxchg}. The ordering semantics of eBPF atomics are
     @@ Commit message
-         Signed-off-by: Douglas Anderson <dianders@chromium.org>
-         Link: https://lore.kernel.org/r/20250107120555.v4.2.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid
-         Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-    +    Conflicts:
-    +            arch/arm64/kernel/proton-pack.c
-    +    [The conflicts were mainly due to LTS commit e192c8baa69a
-    +    differ from mainline commit 558c303c9734]
+         Signed-off-by: Hou Tao <houtao1@huawei.com>
+         Link: https://lore.kernel.org/r/20220217072232.1186625-3-houtao1@huawei.com
+         Signed-off-by: Will Deacon <will@kernel.org>
     +    Signed-off-by: Pu Lehui <pulehui@huawei.com>
      
-      ## arch/arm64/include/asm/spectre.h ##
-    -@@ arch/arm64/include/asm/spectre.h: enum mitigation_state arm64_get_meltdown_state(void);
-    - 
-    +@@ arch/arm64/include/asm/spectre.h: void spectre_v4_enable_task_mitigation(struct task_struct *tsk);
-      enum mitigation_state arm64_get_spectre_bhb_state(void);
-      bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
-    + bool is_spectre_bhb_fw_mitigated(void);
-     -u8 spectre_bhb_loop_affected(int scope);
-      void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
-      bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
-    - 
-    + #endif	/* __ASM_SPECTRE_H */
+      ## arch/arm64/include/asm/insn.h ##
+     @@ arch/arm64/include/asm/insn.h: enum aarch64_insn_ldst_type {
+    @@ arch/arm64/include/asm/insn.h: enum aarch64_insn_adr_type {
+      #define	__AARCH64_INSN_FUNCS(abbr, mask, val)				\
+      static __always_inline bool aarch64_insn_is_##abbr(u32 code)		\
+      {									\
+    -@@ arch/arm64/include/asm/insn.h: __AARCH64_INSN_FUNCS(store_post,	0x3FE00C00, 0x38000400)
+    - __AARCH64_INSN_FUNCS(load_post,	0x3FE00C00, 0x38400400)
+    +@@ arch/arm64/include/asm/insn.h: __AARCH64_INSN_FUNCS(prfm,	0x3FC00000, 0x39800000)
+    + __AARCH64_INSN_FUNCS(prfm_lit,	0xFF000000, 0xD8000000)
+      __AARCH64_INSN_FUNCS(str_reg,	0x3FE0EC00, 0x38206800)
+      __AARCH64_INSN_FUNCS(ldadd,	0x3F20FC00, 0x38200000)
+     +__AARCH64_INSN_FUNCS(ldclr,	0x3F20FC00, 0x38201000)
+    @@ arch/arm64/include/asm/insn.h: u32 aarch64_insn_gen_prefetch(enum aarch64_insn_r
+      u32 aarch64_set_branch_offset(u32 insn, s32 offset);
+      
      
-      ## arch/arm64/kernel/proton-pack.c ##
-    -@@ arch/arm64/kernel/proton-pack.c: static unsigned long system_bhb_mitigations;
-    +@@ arch/arm64/kernel/proton-pack.c: enum mitigation_state arm64_get_spectre_bhb_state(void)
-       * This must be called with SCOPE_LOCAL_CPU for each type of CPU, before any
-       * SCOPE_SYSTEM call will give the right answer.
-       */
-    @@ arch/arm64/kernel/proton-pack.c: static enum mitigation_state spectre_bhb_get_cp
+    - ## arch/arm64/lib/insn.c ##
+    -@@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_load_store_ex(enum aarch64_insn_register reg,
+    + ## arch/arm64/kernel/insn.c ##
+    +@@ arch/arm64/kernel/insn.c: u32 aarch64_insn_gen_load_store_ex(enum aarch64_insn_register reg,
       
-      static bool supports_ecbhb(int scope)
-     @@ arch/arm64/kernel/proton-pack.c: static bool supports_ecbhb(int scope)
-    - 						    ID_AA64MMFR1_EL1_ECBHB_SHIFT);
-    + 						    ID_AA64MMFR1_ECBHB_SHIFT);
+      	switch (type) {
+      	case AARCH64_INSN_LDST_LOAD_EX:
+    @@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_load_store_ex(enum aarch64_insn_regi
+      		break;
+      	default:
+      		pr_err("%s: unknown load/store exclusive encoding %d\n", __func__, type);
+    -@@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_load_store_ex(enum aarch64_insn_register reg,
+    +@@ arch/arm64/kernel/insn.c: u32 aarch64_insn_gen_load_store_ex(enum aarch64_insn_register reg,
+      					    state);
       }
       
-     +static u8 max_bhb_k;
-    @@ arch/arm64/kernel/proton-pack.c: bool is_spectre_bhb_affected(const struct arm64
+    @@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_load_store_ex(enum aarch64_insn_regi
+      
+      	switch (size) {
+      	case AARCH64_INSN_SIZE_32:
+    -@@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register result,
+    +@@ arch/arm64/kernel/insn.c: u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register result,
+      
+      	insn = aarch64_insn_encode_ldst_size(size, insn);
+      
+    @@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register res
+      	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RT, insn,
+      					    result);
+      
+    -@@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register result,
+    +@@ arch/arm64/kernel/insn.c: u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register result,
+      					    value);
       }
       
-      static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
-    -@@ arch/arm64/kernel/proton-pack.c: early_param("nospectre_bhb", parse_spectre_bhb_param);
-    +@@ arch/arm64/kernel/proton-pack.c: static bool spectre_bhb_fw_mitigated;
-    + 
-      void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
-      {
-    - 	bp_hardening_cb_t cpu_cb;
-     -	enum mitigation_state fw_state, state = SPECTRE_VULNERABLE;
-     +	enum mitigation_state state = SPECTRE_VULNERABLE;
-    - 	struct bp_hardening_data *data = this_cpu_ptr(&bp_hardening_data);
+    @@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register res
       
-      	if (!is_spectre_bhb_affected(entry, SCOPE_LOCAL_CPU))
-    + 		return;
-     @@ arch/arm64/kernel/proton-pack.c: void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
-      		this_cpu_set_vectors(EL1_VECTOR_BHB_CLEAR_INSN);
-    + 
-      		state = SPECTRE_MITIGATED;
-    - 		set_bit(BHB_INSN, &system_bhb_mitigations);
-     -	} else if (spectre_bhb_loop_affected(SCOPE_LOCAL_CPU)) {
-    +-		switch (spectre_bhb_loop_affected(SCOPE_SYSTEM)) {
-     +	} else if (spectre_bhb_loop_affected()) {
-    - 		/*
-    - 		 * Ensure KVM uses the indirect vector which will have the
-    - 		 * branchy-loop added. A57/A72-r0 will already have selected
-    ++		switch (max_bhb_k) {
-    + 		case 8:
-    + 			kvm_setup_bhb_slot(__spectre_bhb_loop_k8);
-    + 			break;
-     @@ arch/arm64/kernel/proton-pack.c: void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
-      		this_cpu_set_vectors(EL1_VECTOR_BHB_LOOP);
-    + 
-      		state = SPECTRE_MITIGATED;
-    - 		set_bit(BHB_LOOP, &system_bhb_mitigations);
-     -	} else if (is_spectre_bhb_fw_affected(SCOPE_LOCAL_CPU)) {
-     -		fw_state = spectre_bhb_get_cpu_fw_mitigation_state();
-     -		if (fw_state == SPECTRE_MITIGATED) {
-    --			/*
-    --			 * Ensure KVM uses one of the spectre bp_hardening
-    --			 * vectors. The indirect vector doesn't include the EL3
-    --			 * call, so needs upgrading to
-    --			 * HYP_VECTOR_SPECTRE_INDIRECT.
-    --			 */
-    --			if (!data->slot || data->slot == HYP_VECTOR_INDIRECT)
-    --				data->slot += 1;
-    --
-    +-			kvm_setup_bhb_slot(__smccc_workaround_3_smc);
-     -			this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
-     -
-    --			/*
-    --			 * The WA3 call in the vectors supersedes the WA1 call
-    --			 * made during context-switch. Uninstall any firmware
-    --			 * bp_hardening callback.
-    --			 */
-    --			cpu_cb = spectre_v2_get_sw_mitigation_cb();
-    --			if (__this_cpu_read(bp_hardening_data.fn) != cpu_cb)
-    --				__this_cpu_write(bp_hardening_data.fn, NULL);
-    --
-     -			state = SPECTRE_MITIGATED;
-    --			set_bit(BHB_FW, &system_bhb_mitigations);
-    +-			spectre_bhb_fw_mitigated = true;
-     -		}
-     +	} else if (has_spectre_bhb_fw_mitigation()) {
-    -+		/*
-    -+		 * Ensure KVM uses one of the spectre bp_hardening
-    -+		 * vectors. The indirect vector doesn't include the EL3
-    -+		 * call, so needs upgrading to
-    -+		 * HYP_VECTOR_SPECTRE_INDIRECT.
-    -+		 */
-    -+		if (!data->slot || data->slot == HYP_VECTOR_INDIRECT)
-    -+			data->slot += 1;
-    -+
-    ++		kvm_setup_bhb_slot(__smccc_workaround_3_smc);
-     +		this_cpu_set_vectors(EL1_VECTOR_BHB_FW);
-     +
-    -+		/*
-    -+		 * The WA3 call in the vectors supersedes the WA1 call
-    -+		 * made during context-switch. Uninstall any firmware
-    -+		 * bp_hardening callback.
-    -+		 */
-    -+		cpu_cb = spectre_v2_get_sw_mitigation_cb();
-    -+		if (__this_cpu_read(bp_hardening_data.fn) != cpu_cb)
-    -+			__this_cpu_write(bp_hardening_data.fn, NULL);
-    -+
-     +		state = SPECTRE_MITIGATED;
-    -+		set_bit(BHB_FW, &system_bhb_mitigations);
-    ++		spectre_bhb_fw_mitigated = true;
-      	}
-      
-      	update_mitigation_state(&spectre_bhb_state, state);
+      static u32 aarch64_insn_encode_prfm_imm(enum aarch64_insn_prfm_type type,
+      					enum aarch64_insn_prfm_target target,
+    -@@ arch/arm64/lib/insn.c: u32 aarch64_insn_gen_extr(enum aarch64_insn_variant variant,
+    +@@ arch/arm64/kernel/insn.c: u32 aarch64_insn_gen_extr(enum aarch64_insn_variant variant,
+      	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RN, insn, Rn);
+      	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
+      }
 ---
 
 Results of testing on various branches:
