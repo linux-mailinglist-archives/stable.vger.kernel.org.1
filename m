@@ -1,197 +1,111 @@
-Return-Path: <stable+bounces-152172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86EBAD1FFA
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 15:51:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441DDAD2065
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 16:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F7B27A6C7D
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:50:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D0973B5821
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 13:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3025A25F963;
-	Mon,  9 Jun 2025 13:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2D52459F7;
+	Mon,  9 Jun 2025 13:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOyLvVXv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xgszirsx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF82A25A340;
-	Mon,  9 Jun 2025 13:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC44725D21A;
+	Mon,  9 Jun 2025 13:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749476935; cv=none; b=ptMkOo+vitLt1FUWrY0TfPJ4/KTp0x/6gmY3wLrDKARs37ttQhqYNy3cBqFEWL402e4i8F1Ge0uRvnFy5Gp6pTBAsTNbDqU8D14xtpnk8Rxex3lfgJ5UPPKbvL+EVdaawctOrSmSxP2YC+n+h5Oqa2TLTUK8tQuzYB9hqpEEQD0=
+	t=1749477086; cv=none; b=Tjk0A4coox6Q5kRxbjpypJdeGcNZzTVgVHQLSmhKP8bXu509KLsG68b+TDn/t4TZMX6qujEtgTOSBcB/bsQ4M+klDxzUP+vWxQ6AJchhFrxPj911+cWclhhbZd1U0bZs8HZtcFNV27nEvfIt16piNMlvuEKEnoWMu0ET+bHW7Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749476935; c=relaxed/simple;
-	bh=ltVugLOXnzCX/XRufboblP79Q6iX09azKTueA3ORxVc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMIGjkQsaDeQWPmL+weE5PcP37pceBbQIXhYlP/OGtmZO+yfIk0584BWwiEJxgcI+jq0kXp9K2JshFzWppdvwL78jScQ9TUQ+54NdClFerC1ihzYSHI7m07h31CoAn+DQsEBuOMGwURglk9xS8uR8sfiBGSMr9yvmru7hKDXjtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOyLvVXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32FDC4CEF0;
-	Mon,  9 Jun 2025 13:48:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749476934;
-	bh=ltVugLOXnzCX/XRufboblP79Q6iX09azKTueA3ORxVc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOyLvVXvvgxQ4NglKepPQP6nmySsicZtCn6BpvSvqhwFNlSzy1HSfVEPpWFe140Gw
-	 g0wM4XyLNJ5M2qu/Q5BZQjRhly1H/CYuU/pUGUkGE56bcAZFHbPwbBidz44RuVL6PO
-	 CbksApGfakTZmg+e0ldBRTHzLR7scfZPWxdT9UfA+OXusF5JpUo0+A19MozA45BHOr
-	 T7brvFMNCNRvm+5hINikvRPjmHwvVcHIyoZaIONkVhMFJgdc8vupZWufMn0n0iN7OB
-	 OXL9ls5okgCkEWYFlVPT1kF14GKuUBB8r9fXrraxxt2PwlfYBWZM/zkVsCAzD2yoUH
-	 730BagSUtM3RA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jos Wang <joswang@lenovo.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 7/7] usb: typec: displayport: Receive DP Status Update NAK request exit dp altmode
-Date: Mon,  9 Jun 2025 09:48:40 -0400
-Message-Id: <20250609134840.1345797-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250609134840.1345797-1-sashal@kernel.org>
-References: <20250609134840.1345797-1-sashal@kernel.org>
+	s=arc-20240116; t=1749477086; c=relaxed/simple;
+	bh=eACaxt02WUWamov4/PRFJ2M1YIB5DvQrMTadVks0Ha0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fnJk7ZkMVU1QAtMYbVQL836Y/qIRnGSq9XcpERiLmhCTl5mC0xZXGGoKnFnCH8hnWCY67ohiT0/jMDVoQX4pQ3u2+z8JDdnCTyYotqnMA0aI9ptsqgRIXYLh4ypBTonG0wiqiQL32tm+8W7MR14MiCw0mbdlRthdjDlL/cK2Trs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xgszirsx; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-313067339e9so680475a91.2;
+        Mon, 09 Jun 2025 06:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749477084; x=1750081884; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eACaxt02WUWamov4/PRFJ2M1YIB5DvQrMTadVks0Ha0=;
+        b=XgszirsxsnEa5PPQmZKlCbIjhOhIjqV+T8x8IF81InX18SdqzgygswOV8OUtRLh2Hz
+         702uSKFMuPxir2JVRMUBdR4pBWDnMoWsyUoccj2kBuwdxJXnciF1K28Q/xTEA1xnNYNE
+         XwVWSSsPFtJIA5az/9Mlfbu3eQmnGvaL0ObKam7j+RD8OvXUtbjE4oSRq2tRw3FSxyVE
+         jRdUhD5/f7aJteyCFyAr/YH9imE+dlJzjlB5bg7TkWAhNCGGF4rv6Ff1QRPccN297fQt
+         O8oWkFOrm45uDyuzNYEoJToSiId++wxN66zEH19qDt/Z4k07ubbtdfhqR7+TD89uNq0e
+         6s1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749477084; x=1750081884;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eACaxt02WUWamov4/PRFJ2M1YIB5DvQrMTadVks0Ha0=;
+        b=jDPWTnl2CooIOZDcVIGRGNJqZqAwLgbBOT5CmVTGd/O9fSKCgmUNyrk9pLyiS+p8g6
+         v1ejj0tTIEcAtYxS2+KPOiwgIVBV2rwlU0J7tDYxQYFeomaD7V1SHwJZ/CqC7XrcCAPa
+         lDe2TS1whaH8zyudxI92DRyu1awJZKVSfFAK8L0RmbK1KrvjuEaKAQq7uUBo6qg7QQiw
+         XzvZ3jgRgtiecxH0ILlW+WmDqdZbNLb0Gi4orp5Hj2N9xy69qSVLSf4YBUZnYX3Lix5q
+         /lUoFjO8djowF8JDA+yS/zYJT8GG3++RxS4rRmtzPYNI2XqeufJ+x5Nd49aKAliZm3aJ
+         n4Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCWX7Zh4MJpe9+/9HQJqgteXB5r4PfsqLWo9F0CA9nEYmxGI9rEX3q2yRZx2q3Ykkp7tj/+dybOhzB0+4U5J0Nc=@vger.kernel.org, AJvYcCWwy6lkttTxIUt6kYd9OwS9pbT2ZSIlAbIYdIKoehOZT/vnwan5XygVE7OqUzxlBcUusJ7+gdPI@vger.kernel.org, AJvYcCWz2tPG4GkaWyzD1KZhZftL88qYuaYKFISPsV608cJ7i54i+WtT7uil2l6A/Xd5OOeIDdZ3sxknLWpQ4cqp@vger.kernel.org
+X-Gm-Message-State: AOJu0YynbtKAfTlnT8EX9vKaXniX3Ad5cbMuc/JOXNcSdTsPDaGR3y08
+	eBSgX3E8LN3o3lmbHmtPivuOgAlJx9uvROz4akkMOzSaLmJaFYcME1CrhUMIrojQmf1JOuwA+uN
+	Nm1a7P/O6XGVeP9C+tfZxAywSbqL5fsg=
+X-Gm-Gg: ASbGncvQgfx0uLCcEsVBh6jLTQX/w2zNv+53ebOo4rl1JJ+JwpeN2YY6RE0SAU3ccvg
+	XwtEgD9LxvVJH4h2X45TwMX6PO569ExXHDdzNiy5Mq7o5KINT3/jbWlw/SmMfTf4f9AhrIBa2UD
+	4thsYBX+GP0nN2XWSlWJhXafx6sBHk7eh0zBPmxKdJjRo=
+X-Google-Smtp-Source: AGHT+IGkkCxVNET2hTnCQKkB5ht2XhMJXmVkVA6QMXG//p+Iy2xKOFDBp1eOArmCKNe88x3UOn8NtAfKsUQfancfTHU=
+X-Received: by 2002:a17:90b:1801:b0:313:2f9a:13c0 with SMTP id
+ 98e67ed59e1d1-3134e2b90f8mr6572065a91.1.1749477084002; Mon, 09 Jun 2025
+ 06:51:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.294
-Content-Transfer-Encoding: 8bit
+References: <20241029140036.577804-1-kernel@jfarr.cc> <20241029140036.577804-2-kernel@jfarr.cc>
+ <paezt3cuux5kwv7dvyuo4rrff2felwzmjunkdpyxqjp3fbnyzn@rcdj4xq6djio>
+In-Reply-To: <paezt3cuux5kwv7dvyuo4rrff2felwzmjunkdpyxqjp3fbnyzn@rcdj4xq6djio>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Jun 2025 15:51:12 +0200
+X-Gm-Features: AX0GCFs-AANvO4jrbUE-NjAZoTdqBDYVE5mIEuWtE19UmN1xM-LkNwTb5ope6jY
+Message-ID: <CANiq72=kjk5Kkebz2-QrOuwRKENAziTXhXrnKNL4eoOo4diO3A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Compiler Attributes: disable __counted_by for clang < 19.1.3
+To: Dafna Hirschfeld <dafna.hirschfeld@intel.com>
+Cc: Jan Hendrik Farr <kernel@jfarr.cc>, kees@kernel.org, nathan@kernel.org, ojeda@kernel.org, 
+	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com, 
+	thorsten.blum@toblux.com, ardb@kernel.org, oliver.sang@intel.com, 
+	gustavoars@kernel.org, kent.overstreet@linux.dev, arnd@arndb.de, 
+	gregkh@linuxfoundation.org, akpm@linux-foundation.org, 
+	tavianator@tavianator.com, linux-hardening@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jos Wang <joswang@lenovo.com>
+On Mon, Jun 9, 2025 at 3:14=E2=80=AFPM Dafna Hirschfeld
+<dafna.hirschfeld@intel.com> wrote:
+>
+> Why is the define of __counted_by moved from here (compiler_attributes.h)
+> to a different location (compiler_types.h) ?
 
-[ Upstream commit b4b38ffb38c91afd4dc387608db26f6fc34ed40b ]
+`compiler_attributes.h` is supposed to have only things that do not
+depend on the kernel configuration and so on.
 
-Although some Type-C DRD devices that do not support the DP Sink
-function (such as Huawei Mate 40Pro), the Source Port initiates
-Enter Mode CMD, but the device responds to Enter Mode ACK, the
-Source port then initiates DP Status Update CMD, and the device
-responds to DP Status Update NAK.
+It sounds like those out-of-tree headers should be fixed.
 
-As PD2.0 spec ("6.4.4.3.4 Enter Mode Command")，A DR_Swap Message
-Shall Not be sent during Modal Operation between the Port Partners.
-At this time, the source port initiates DR_Swap message through the
-"echo device > /sys/class/typec/port0/data_role" command to switch
-the data role from host to device. The device will initiate a Hard
-Reset for recovery, resulting in the failure of data role swap.
+I hope that helps.
 
-Therefore, when DP Status Update NAK is received, Exit Mode CMD is
-initiated to exit the currently entered DP altmode.
-
-Signed-off-by: Jos Wang <joswang@lenovo.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250209071926.69625-1-joswang1221@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-Based on my analysis of the commit and the code, here is my assessment:
-
-**YES**
-
-This commit should be backported to stable kernel trees. Here's my
-extensive analysis:
-
-## Code Analysis
-
-The commit adds a simple but important fix to handle a specific NAK
-response scenario in the DisplayPort alternate mode driver.
-Specifically, it adds this code block:
-
-```c
-case CMDT_RSP_NAK:
-    switch (cmd) {
-+   case DP_CMD_STATUS_UPDATE:
-+       if (typec_altmode_exit(alt))
-+           dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+       break;
-    case DP_CMD_CONFIGURE:
-        dp->data.conf = 0;
-        ret = dp_altmode_configured(dp);
-        break;
-```
-
-## Why This Should Be Backported
-
-**1. Fixes a Real Hardware Compatibility Issue**
-- The commit specifically addresses compatibility with devices like
-  "Huawei Mate 40Pro" that don't support DP Sink function
-- These devices respond with NAK to DP Status Update commands, creating
-  a problematic state
-
-**2. Prevents System Instability**
-- According to the commit message, without this fix, attempts to perform
-  DR_Swap operations result in Hard Reset from the device
-- This causes data role swap failures, which is a significant functional
-  regression
-
-**3. Follows USB PD Specification**
-- The fix aligns with PD2.0 spec section 6.4.4.3.4 which states "A
-  DR_Swap Message Shall Not be sent during Modal Operation"
-- By exiting DP altmode when NAK is received, it allows proper DR_Swap
-  operation
-
-**4. Small, Contained, Low-Risk Change**
-- The change is only 4 lines of code
-- It's confined to a specific error handling path (NAK response to
-  STATUS_UPDATE)
-- Uses existing, well-tested `typec_altmode_exit()` function
-- No new functionality or architectural changes
-
-**5. Clear Bug Fix Pattern**
-- Similar to commit #4 in the reference examples (which was marked YES
-  for backport)
-- Both involve adding proper exit handling in response to specific
-  conditions
-- Both are small, targeted fixes for real-world device compatibility
-
-**6. Stable Tree Criteria Met**
-- ✅ Fixes important bugs affecting real hardware
-- ✅ Minimal risk of regression
-- ✅ Doesn't introduce new features
-- ✅ No architectural changes
-- ✅ Confined to specific subsystem (USB Type-C DP altmode)
-
-**7. Reference Pattern Alignment**
-The commit pattern closely matches Similar Commit #4 which was marked
-for backport:
-- Both add exit mode handling for specific error conditions
-- Both are small, targeted fixes for real device compatibility
-- Both prevent system-level issues (Hard Reset in this case)
-
-The change correctly handles an edge case where devices NAK the Status
-Update command, ensuring clean exit from DP altmode to prevent
-subsequent operational issues. This is exactly the type of hardware
-compatibility fix that stable trees are designed to address.
-
- drivers/usb/typec/altmodes/displayport.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index a2a1baabca933..35d7a4d40d9a4 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -288,6 +288,10 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
- 		break;
- 	case CMDT_RSP_NAK:
- 		switch (cmd) {
-+		case DP_CMD_STATUS_UPDATE:
-+			if (typec_altmode_exit(alt))
-+				dev_err(&dp->alt->dev, "Exit Mode Failed!\n");
-+			break;
- 		case DP_CMD_CONFIGURE:
- 			dp->data.conf = 0;
- 			ret = dp_altmode_configured(dp);
--- 
-2.39.5
-
+Cheers,
+Miguel
 
