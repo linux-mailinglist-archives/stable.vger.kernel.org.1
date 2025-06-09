@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-151978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-151979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF58AD16E4
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 04:34:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5386AD16E3
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 04:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8C4F7A4387
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 02:33:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D48083AAA7B
+	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 02:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7A52459D6;
-	Mon,  9 Jun 2025 02:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47642459E0;
+	Mon,  9 Jun 2025 02:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qkKSZLg8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guVtyF7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EBC157A67
-	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 02:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646262459C5
+	for <stable@vger.kernel.org>; Mon,  9 Jun 2025 02:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749436487; cv=none; b=uQcWH4B8VONKGXZgHyqre4ECcNiRe3RmGEeTwTMDLX69PVRiIKZhvaoqYJ1cI8FY9SJM3lDQLrz8sLKlbH1cgfllJh41OEhMcWKn6JEpFeygpwdkUx/GBDqawwii+hNyzDog2dhbxziksgQxGv6QYh3KP2Q/0y4k079DWsigJyQ=
+	t=1749436489; cv=none; b=bEVIvATAGiadpKkPw5pTPxmxNl7Q5Jv0nB0HIjvI2rppRZTMsalyn8JyPQiZIcGGCuPPt2gaCOrd7Gm1nHuxNbh7/uPtn9eygUgf2nSeVH9IxbLcC7lMLW7YlAy014uDTbvKKDAFVXTX4ZtAfrnQiI4AOzJ9vDq49dzdYsRJQ6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749436487; c=relaxed/simple;
-	bh=VMPYx0nQxof3wXq9R3lPuA0Vqezskp3cm7GivnW4GME=;
+	s=arc-20240116; t=1749436489; c=relaxed/simple;
+	bh=9vWwZgiL9FQ/xMB0eCvKpzQY0qjZFeApkk9g1G0KG54=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M3psm7JC0AQwTdAxsqMNEPMZbZmS9nGTfmIChFdQR5jtgrdBzR670m5BlXgA8KZmW55WyNcXYEEOkVHaaTO2ZgRe3DwgnmhIG7R96/0gJU9w3HjvrhSnkWqo3gUX/dn6Avbd08kU1a+Xffr3VAEG5KXwA8dRKyXSKL5i/pzC/OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qkKSZLg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE8FC4CEEE;
-	Mon,  9 Jun 2025 02:34:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P0ctzlKKwWSm0UObDub63WGA0xVH11cFZlghOAbm7VyGJKViVkC3UQ96Xz6dGP3Y1TXUaPFCIonAop1Hk5sG3odxDnsfDnIT+RyuxO42btNPIqffP0BZrOsIlCfG9ZqjYYhWZWBCLSSru92MWQ4CTCGByNo8KQZ1wo4h1aedzgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guVtyF7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EC3C4CEEE;
+	Mon,  9 Jun 2025 02:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749436486;
-	bh=VMPYx0nQxof3wXq9R3lPuA0Vqezskp3cm7GivnW4GME=;
+	s=k20201202; t=1749436489;
+	bh=9vWwZgiL9FQ/xMB0eCvKpzQY0qjZFeApkk9g1G0KG54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkKSZLg8fR14BCCfnJ35NoaOTo1+e086QbHX3TEQc3V4qDPR4V2ZuXUIQJiuGLNCk
-	 hNTrsedxhFJqhLc3tf1tRQCj3sOTBMZ69YkTj1RKIR7OQ+chWU+XO7xTP/u7vnJr6A
-	 Sj45uz+MTABgYV6bHCuLTIh1j/1O0Rbz/WvtAcgp6bZRYkUfN1KB5pv0/wpTkdVSCt
-	 34NkJeI/wT63iLMGads6U7Q5akq0VoHeksbI4lmxOkGvYSa0gG453qoCLhXf4A1DX3
-	 Ysthq1h+veXlpjHUn01pA4BR3FLs4h+/xeU+HxDFngHzV95fBIwz7wSKYyCGGrxavU
-	 kFCaw90OL/qXA==
+	b=guVtyF7Sgtab6N6BtS5PKYrtvmeN3SJuHCVwND4vFT9jXMb4u8p0CqpfshUaDA2Cr
+	 BLau2J0ZD5AuqWVAf0Xiw8tKDvh8UGoTLAOI8reHCA2/Xgn+k323Q5RrDnRCAbK/vl
+	 +9iiA52TgWmPYBczqlbecPSL7/aipsQb0UJEYl4YXr7+Qj/2RiKvimtDUojSTLEURy
+	 DpEtkiFMxas6DtqIt7gY7BxgvnglPGOtl+m4JjmyPPH0VVW5WTH+TNeahDKGH1yp8h
+	 4/qQ+BNf74YahYiJNCeBQ6Gh94YvL4Dd+1ohah7Qhzuz1Bz66qxtRz3qMboJ+m3RgW
+	 TOi6E22zU/k+w==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pu Lehui <pulehui@huaweicloud.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 13/14] arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
-Date: Sun,  8 Jun 2025 22:34:45 -0400
-Message-Id: <20250608203333-45ba5c3a01522405@stable.kernel.org>
+To: stable@vger.kernel.org,
+	sergio.collado@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12.y 1/2] Kunit to check the longest symbol length
+Date: Sun,  8 Jun 2025 22:34:47 -0400
+Message-Id: <20250608131215-7093ad8121be4690@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250607152521.2828291-14-pulehui@huaweicloud.com>
+In-Reply-To:  <20250608145450.7024-2-sergio.collado@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,48 +64,55 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: f300769ead032513a68e4a02e806393402e626f8
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pu Lehui<pulehui@huaweicloud.com>
-Commit author: James Morse<james.morse@arm.com>
+Found matching upstream commit: c104c16073b7fdb3e4eae18f66f4009f6b073d6f
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
-6.14.y | Present (different SHA1: 477481c43482)
-6.12.y | Present (different SHA1: e5f5100f1c64)
-6.6.y | Present (different SHA1: 80251f62028f)
-6.1.y | Present (different SHA1: 6e52d043f7db)
-5.15.y | Not found
+6.14.y | Not found
+
+Found fixes commits:
+f710202b2a45 x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f300769ead032 ! 1:  25299eb59e44f arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
+1:  c104c16073b7f ! 1:  39ce5e9e3c965 Kunit to check the longest symbol length
     @@ Metadata
       ## Commit message ##
-         arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
+         Kunit to check the longest symbol length
      
-    +    [ Upstream commit f300769ead032513a68e4a02e806393402e626f8 ]
+    +    commit c104c16073b7 ("Kunit to check the longest symbol length") upstream
     +
-         Support for eBPF programs loaded by unprivileged users is typically
-         disabled. This means only cBPF programs need to be mitigated for BHB.
-     
+         The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+         in the reference [1]. This patch adds kunit test suite to check the longest
+         symbol length. These tests verify that the longest symbol length defined
     @@ Commit message
-         Signed-off-by: James Morse <james.morse@arm.com>
-         Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-         Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-    +    Signed-off-by: Pu Lehui <pulehui@huawei.com>
+         Reviewed-by: Rae Moar <rmoar@google.com>
+         Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+         Link: https://github.com/Rust-for-Linux/linux/issues/504
+    -    Reviewed-by: Rae Moar <rmoar@google.com>
+         Acked-by: David Gow <davidgow@google.com>
+         Signed-off-by: Shuah Khan <shuah@kernel.org>
      
-      ## arch/arm64/net/bpf_jit_comp.c ##
-     @@ arch/arm64/net/bpf_jit_comp.c: static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
+    @@ lib/Kconfig.debug: config FORTIFY_KUNIT_TEST
+      	depends on HAVE_HW_BREAKPOINT
+     
+      ## lib/Makefile ##
+    -@@ lib/Makefile: obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
+    - obj-$(CONFIG_CRC_KUNIT_TEST) += crc_kunit.o
+    +@@ lib/Makefile: CFLAGS_fortify_kunit.o += $(DISABLE_STRUCTLEAK_PLUGIN)
+    + obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
+      obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
+      obj-$(CONFIG_USERCOPY_KUNIT_TEST) += usercopy_kunit.o
+     +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
