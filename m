@@ -1,108 +1,98 @@
-Return-Path: <stable+bounces-152278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1246CAD350C
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:35:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953A7AD3511
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86763A927F
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:34:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37DAF3AAC93
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D9A28003E;
-	Tue, 10 Jun 2025 11:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441DA284B45;
+	Tue, 10 Jun 2025 11:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7p+nAJM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lPttBMOQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB25B228CBC;
-	Tue, 10 Jun 2025 11:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6757C2253F8;
+	Tue, 10 Jun 2025 11:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749555303; cv=none; b=TwDkRu3V2QtSa/Qjy4viBAQ3a7GifhF3wkN/naQlvYA5mdVriOw9BBvAl8plPhjr3fhbAw0mAHtW0vEcMX3ycv7q2Kla4JAdKl8O46OJWpKIzWfBn8R75lNMPoyH5Bb+/MBi1kVTcjLbYE02c8PJKUxf9+iMhRoU/EJinmYP0yE=
+	t=1749555365; cv=none; b=ARr4uKsVkMLQLtVMMrYGeXb6IAcuHAchE+MLMAb8SnW092QX4w6fDItyVkNWzNzFqvXrjSCdVUQqolrMK4Ci5CBNYn65V7BEZw3KicLCk+Cade/vyuiPc/NUwJOcf1QzcY7YAO4F/Om3qWSymXjPZeXmHNBnDA1NA9cDjTxtQFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749555303; c=relaxed/simple;
-	bh=OJQVmEGY1rUIwtRekYmXlQLuMdBPixlfvKReSm97tNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3A18RSzA4bMSfFay7ijsYkbVSDMpmin0UmCBw+iQl6EMzBS7dMuY4VHulOe+Nuk1MN/kpOCr8Gq4csSoWSS3mroRwWKdMWUBmlNYJRBboRaOp7CrV0/tNxJA03TZaXOHPoUJZRkxrbljcxxTuxH5MdIIpdNKY4PVNb++0vuUe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7p+nAJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9DEC4CEED;
-	Tue, 10 Jun 2025 11:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749555303;
-	bh=OJQVmEGY1rUIwtRekYmXlQLuMdBPixlfvKReSm97tNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B7p+nAJMuAyWQ+vgj+xFAOYXPkTgskrO8PJvZsUvwl3HbdCmvTW/y0KUXY5NaY+3A
-	 jSzseug+9TgQQKTIOP6BFkJjGzVaavPeCqSZLAUYvIT2m8ujtQTVOK/47vQiHcxYTM
-	 cHMGfF6bhh2JT2PKFn2nCarLnW8xf7y4iSHIPbhE3T2y+HNULKYTD4fhGo9Zum5tLI
-	 CLn5cy56SNJZkF/5574edaVgvFlHjKGgf8uUbF9gU76BPOoxkCOzNKhZF4EUhmSJgx
-	 MSveZZJ0Soo2NHuG5CPGDuFe3pS+q5j02S1dPAoU8kJuSbV+va/KQDFiUbjG5Ou1SC
-	 FZKnA9RTIFxvA==
-Date: Tue, 10 Jun 2025 12:34:57 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Aishwarya <aishwarya.tcv@arm.com>, pulehui@huaweicloud.com,
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-	jannh@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com, mhiramat@kernel.org, oleg@redhat.com,
-	peterz@infradead.org, pulehui@huawei.com, stable@vger.kernel.org,
-	vbabka@suse.cz, Ryan.Roberts@arm.com, Dev.Jain@arm.com
-Subject: Re: [PATCH v1 4/4] selftests/mm: Add test about uprobe pte be orphan
- during vma merge
-Message-ID: <97432af8-da8f-4cc6-96f0-ccc8297b7029@sirena.org.uk>
-References: <20250529155650.4017699-5-pulehui@huaweicloud.com>
- <20250610103729.72440-1-aishwarya.tcv@arm.com>
- <f5tx6ko7xu2ulvfwu6srlaly6omqcciez2qh6jmcd6fob3szgm@cedwkuqgw34b>
+	s=arc-20240116; t=1749555365; c=relaxed/simple;
+	bh=wSo4fbCYtc2b8U3BtZtgyroxgV8tXbcvtEFPrGZnt/0=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=D/XQk4YGj1utJ5ykWSXomWw7S3BOxwoT34aBoi6zxVqp9m5CN5p4fGOcyqmjDQDNLieaU8bjboeUQbNMVdctds15k+MiXp6Bwcn9VqLn5xhGQcHW+0ulJ3JdLH14EfpzXYjQo+lOi3mGkFbSYm+7XRtSxgDnPPSioad9AOoRqq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lPttBMOQ; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749555364; x=1781091364;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=wSo4fbCYtc2b8U3BtZtgyroxgV8tXbcvtEFPrGZnt/0=;
+  b=lPttBMOQVObk8AwnidwGxrEnGhh7pNas1mX30+E1xfDu620ehrfxFuiQ
+   /qoRmO7mvyl8ZiW4Tvu4Edsfvkv3AAuYvO6plLJAULIimMKZvskuwDizc
+   cmOaHMOBE/OJ/WjP+eqY/2alV3dJ3IlahFtBoErAokowW8n2qywdk38Z+
+   eWOxY/k+8upF0uzdpphH+tcx79cResrsfOpLkImQdoAHU9o+hQ1ObZjDv
+   kJmfceVxS0al6I9E+ZAz6At2abWpkU6QCpZmfwmMocKVzZQjj3i67qq7k
+   GVUOeJi4B7ZxRS290qE2gYd8kDdWbRd+sBRS3HuWqSRWifywlRC1Fxk9M
+   g==;
+X-CSE-ConnectionGUID: WN1rZlmUTh638B6SBgh4ww==
+X-CSE-MsgGUID: 2l+A0M++Qe28NWLYvaZN3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51801180"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="51801180"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 04:36:03 -0700
+X-CSE-ConnectionGUID: 7Km5ImlnTRuktlHDJ/cZOw==
+X-CSE-MsgGUID: zxfwpSx6SPSuTj/nMq6ZQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="177730322"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.196])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 04:36:01 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 10 Jun 2025 14:35:56 +0300 (EEST)
+To: Rio Liu <rio@r26.me>
+cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
+    Tudor Ambarus <tudor.ambarus@linaro.org>, 
+    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: Relaxed tail alignment should never increase
+ min_align
+In-Reply-To: <7bbcee36-4891-4b8e-8485-54f960f73580@r26.me>
+Message-ID: <4a30d092-9ab6-3d61-8f3d-fab2965111e0@linux.intel.com>
+References: <20250610102101.6496-1-ilpo.jarvinen@linux.intel.com> <20250610102101.6496-2-ilpo.jarvinen@linux.intel.com> <7bbcee36-4891-4b8e-8485-54f960f73580@r26.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MlSDyrIEmwV2AHR7"
-Content-Disposition: inline
-In-Reply-To: <f5tx6ko7xu2ulvfwu6srlaly6omqcciez2qh6jmcd6fob3szgm@cedwkuqgw34b>
-X-Cookie: When in doubt, follow your heart.
+Content-Type: text/plain; charset=US-ASCII
 
+On Tue, 10 Jun 2025, Rio Liu wrote:
 
---MlSDyrIEmwV2AHR7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Thanks for fixing the problem so quick!
+>
+> > Reported-by: Rio <rio@r26.me>
+> > Tested-by: Rio <rio@r26.me>
+> 
+> 
+> My full name is Rio Liu if you want to include it, sorry for not 
+> mentioning it earlier. 
 
-On Tue, Jun 10, 2025 at 12:27:28PM +0100, Pedro Falcato wrote:
-> On Tue, Jun 10, 2025 at 11:37:29AM +0100, Aishwarya wrote:
+Ah, sorry. I missed it was fully shown by the later emails on the From 
+line.
 
-> >   7155 12:46:54.650730  # # # handle_uprobe_upon_merged_vma: Test terminated by assertion
-> >   7156 12:46:54.661750  # # #          FAIL  merge.handle_uprobe_upon_merged_vma
-> >   7157 12:46:54.662030  # # not ok 8 merge.handle_uprobe_upon_merged_vma
+-- 
+ i.
 
-> So, basically we're not finding the uprobe (I guess CONFIG_UPROBES isn't set in
-> defconfig, and it's not in the mm/config either), and the test just fails instead
-> of skipping.
-
-Indeed:
-
-$ grep UPROBES arch/arm64/configs/defconfig tools/testing/selftests/mm/config
-$
-
---MlSDyrIEmwV2AHR7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmhIGGAACgkQJNaLcl1U
-h9DaWQf/cadm9TfJCaMBT7EYyvuri1Y7Cy2mQyfq3YY+k94ln1LlNvpGOae6rCqS
-3P8O/v4hvf0JiEMFvOGDGDMWN0NGxlkh179vIGKmIFZ4lstx3pcwYC+w+yBCTxMM
-cRojo86TKk1c3aWJjjP2YEjluxxODJjHcMrindp17cNGE0kN+yE4ToHYSObn1Bif
-ZHVmvdQMw6t1vcn1H+BWFqAZERaUwvHbWEHy4AK2wy/jaE87AfLelWEgUH3T4Xev
-Wy3HjrRrXkovehuRgtwNUfbXzcHsuiYyU82M3Xz9vhvtUdmPGuD1S8ucNVsXL5Pb
-GYUS2FxpTZDnr953FYOUnLV0EwQ3Iw==
-=7Aco
------END PGP SIGNATURE-----
-
---MlSDyrIEmwV2AHR7--
 
