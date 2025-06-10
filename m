@@ -1,158 +1,265 @@
-Return-Path: <stable+bounces-152312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C981AD3CED
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 17:26:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6553BAD3DE4
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 17:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3001177DBC
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 15:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EC2D18827D3
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 15:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3176F248F5D;
-	Tue, 10 Jun 2025 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25FF235BE5;
+	Tue, 10 Jun 2025 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GRlSM1rU"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="aglApJOm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12olkn2091.outbound.protection.outlook.com [40.92.22.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C84324887A;
-	Tue, 10 Jun 2025 15:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749568723; cv=none; b=FaP0ux71tEjCP698tfR9fslxWseZCFMLsX6rM7b+g1Ft8zDy0HlwZ3FXtG2FH9DUNQgE8hhEdVWrJvz1GaQjCV/UeBcXG6sBIyRmrKh7Y3jEqKhmYutgp9l6CStIjKHLxuX6cpwYS9TjYE1GqNnD//sklcSaIJjjPwMfsggTYXg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749568723; c=relaxed/simple;
-	bh=gOnIpi7jKT6E0yFvnngAH2TDUzwDY8Q0gWw1+BeaW+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C3JNBkcZSMacdusBHamfZjGyRvQDFUF8Rgt1z3Bbxdi8rvIpLZ2OpH52hcOeS2h+qI49B/6mLgCHuuMV9WyKvZSpSbaomYKZdlUMHjo33NJJZbhZt4WogQKva4DhnMb/XecFFW9LPc+wCl02T1oObqhzKTsZZDlZ//C6nAVLK4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GRlSM1rU; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-313a188174fso677605a91.1;
-        Tue, 10 Jun 2025 08:18:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749568720; x=1750173520; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Hbx+bHktyO4/4VPvenmlBdgvye7zZKBy6tNsedw1riY=;
-        b=GRlSM1rU3T53yAj33gXUbvE+HTYNND41ip1lf5mieUylJLXzuAnMcfDErS4szgS4gf
-         QxRKt/av8bGxn0Qv14Mq2bQwB2OQ6aPWswa2dgsTQ+cnPGhGS8mPB0SSWV/yQHC/ibnR
-         n+UJMSN9TV5tqoJPCiNgi5tzm9S254lJwMhP8Ub/CBxu2zY4uYewlZ267JDqoP4xL673
-         1GQw2ACxXlxUhyQrL5OdVyt5fE+1cd137KgREZX3PeMpFOLfhOYjvLxceRBS+Y80UdyC
-         xg3iyqjMDsT8eze/vsxJ6kML9ZjWpt7F8p8sb80xEujVnx2KMJL2inodANT4BBvZSA4e
-         XzfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749568720; x=1750173520;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hbx+bHktyO4/4VPvenmlBdgvye7zZKBy6tNsedw1riY=;
-        b=pIx7BCtnG8WGtJ5jUo84qWj/uCdGE3r6KmKcqt7AGxaaKgMx+Yp4cqhWlQu09rlZBs
-         6TvtU1nYrjH+XqOxOSFQpWwAMjCCKJlGvzBbYxeYx6D/cGRye/HODpBA9Qat5aw2BBc0
-         Ael2jsK7q2r4ujN9MGs5c5+aD8MMmDEHREFW6EGkFsha/L9HB24Szt5mR8jHzvUbDUyf
-         8pO4DdHqUzaHppg8xxgbar7qu8Exwk9ryU5rA20S757ZufOx4vyiiXmNvNF+tRq3mSdr
-         zKM59LTBM8CD6kkU/eqhgBYrb3hz7RUH4s5UZsyE5m0Q4bnch4ZCtJW9L1qgzl9ViRck
-         ju1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUrc7qQiQbnTplaGwXj+qClCX/TKSAPgeVavoRInAlM7LVkmmTF3hFhPRAzYYOPksjFgSY=@vger.kernel.org, AJvYcCVgagnqlbefL1di3C5AXsvYw/XiL6RE5ytKP1HSXmBk1wIKAcIeQVxt18/xqGpCdYjcRkcIOYGC@vger.kernel.org, AJvYcCXWK/uNDQFF1mwPLVjzk9IZ/C9ByE1mgCGyDwDSbDdw8ce1eonxEP2SRIYhqgFkrRZPfy+b20Vx0f+jtnwV@vger.kernel.org, AJvYcCXX3BnByirBk65o1uNxQMQASCGiQiPmJ68Oqh8ZstSK0Giz1jjIKqvesqJWP55utIPkuwclAsc/@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf1v42WAYGtUJ7wKLGdEw1rOtgONGgrkQMOvOUN7GGXBfmrwZk
-	utXx48lRi6jdPjyvhdpbagzcz4US9At8JeK9QeOMb8bo63tFR5VR1rQE
-X-Gm-Gg: ASbGncsCREQzADC60kIiCWmqPBdHecW2iqeLG5PD37hNwzuhHpT8iLYkCYd/kwg0i1K
-	q2/mfN8/40iEc4fxNRUWtznGV4XRf6w0EJH4HWA3QY4CUXuXE99Zc725TR96Oo45MN6ReUqKFHA
-	nJOaJmkMZnnICP0gdo6vsaJaSVCZ5erc54oIXx5c8z3GJ7/5fQI9Quqs1uy/j307pUAJHPW6jWR
-	c9zeKT5RMugEM/rd+rvyYqQPa2I+F32UX11ZJcaSDMbIObvd+VDaVXzezFdtFhmt2s9Q8UbWT+p
-	4T1oU4ev6CoggXIMJ7aQi4SY79PF/k73qNWIE9o7wOPiVA9xp+CW1ZuYa7RKkh/BLH9AXW9NKwf
-	a+36c1c9LeeffMlUy75XuO5prcPEkylr4wRdh6HXF
-X-Google-Smtp-Source: AGHT+IFaLkJBXLMB5kRAXzQ6BTbGig21zU55qmOvpJ9RWPtjwP3TLdPuITWrEAgEHQ56jpCpm82CNQ==
-X-Received: by 2002:a17:90a:dfd0:b0:30e:9b31:9495 with SMTP id 98e67ed59e1d1-3139e039a1dmr4917189a91.9.1749568720457;
-        Tue, 10 Jun 2025 08:18:40 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4f0e:fb30:6df1:5935:37b2:fe6a? ([2001:ee0:4f0e:fb30:6df1:5935:37b2:fe6a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31349f17bd2sm7467484a91.5.2025.06.10.08.18.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jun 2025 08:18:40 -0700 (PDT)
-Message-ID: <e2de0cd8-6ee2-4dab-9d41-cfe5e85d796d@gmail.com>
-Date: Tue, 10 Jun 2025 22:18:32 +0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DE52327A7;
+	Tue, 10 Jun 2025 15:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.22.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749570639; cv=fail; b=UbC6u20981xS7PgvY7pi/Y3KIy7uNWPt31ugaD0ldWlIHj9/K/1W0XAfBSxvRrHxGBvy6cKHc9SWLxwXqq2iXJ+yLXMAwSyO27P3dIO1++rb+HhYk7Qij1h8FbcwOlJpeuLwqJx9jArGoV8zs58GneCNdpBu/P+xW5TkGlQV+Q0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749570639; c=relaxed/simple;
+	bh=7DFEAFyxNgdFm6dgtQW9h4e3rpI7LuG5oPrzoTOFajA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AROlWFPpGIIsut9/8+NwNZlaxggWbF4Psk6w13xoNC9XPSaW9kgJpAyfRTh5+zDXNZvSS+vBsECsoJVM4TfXiWCHioYur75LC8C5BGJoYfVVVJNEmfJBuJ9i+F5xIGfjLzfOMF3QZCtL3myg2HW4Cq14RrqpDXKKjD3CwIU82a8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=aglApJOm; arc=fail smtp.client-ip=40.92.22.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Hfv7Wvp4g3lyt/EITwb0/GMBiFQMWgUCep8iOvstiftRu5QToEuL9Ncw/zuDKQiphEmAuUvKb4rIjBpLv7xc9nQojfHBIcnKDBhGptEC1arfv8kFLWgIXezOdjk1g+TDdFDQuAD9cqDGGeUM55Fu+m3MRdlwEnKSF+zorqeCgQ/sCiAt3meBXNHaYU6d/8p4c8fz+rVas/yXojDl+FpE4ZQNzvTXUMVTo2fgKJM/6oTkYB6sKQL+XameZe29zjFchrTSsThBccSFanj/2FgynJZ5NchiNkYaKTisudfLZvQxqTErsz/rwSpNh4xup1ZDrJEHshucvqgDxknB0/Cd9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kf6J9tB/VDPfZ/DEq87owthBZ3Atp6vpFNGnC23eYP0=;
+ b=WAvjzZlZwJRzInE7csFg64wf9fn2POrk3V1Q3XYznkT3laQ02zfF5QAbM1QS8JnIOWS8JaX1Xzy37fs/5PYaEmsjzIDlBg8sKfaRR/n+iTpi0y+3six/CzmbooWNPXHfxpcmeF9gkQ1i4S9yU6IcntopsTfPn2I698Hc6Xuwxw2Z0m+uUTkWYASVL64RiI5K07my0AkVegD6PhPYs12qrJNGnrGrudKG/22jFdA0QeRFRt4uQtunzqjqL6SRPp4ZvoXq5hAD+K28z7P2vXFJwGUEHuQjbQEbzYtLtz+PHFUJ+Pk+RPGK3ieKemSPheSssuKJ/GK8OCqoB0+sU9fVbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kf6J9tB/VDPfZ/DEq87owthBZ3Atp6vpFNGnC23eYP0=;
+ b=aglApJOm7vSSFKGVUjlHgHrSN016AlOPanBfCCvzewNSpd6aKBDJ0kCqPAMqM+09l+Sw+pXMivD/5AUbYX7cAGyewMtg0t21mf3011E09rcef+VQjOmF/Q/fYZglJe1pmkMEiSNEVM2iX3L/tsfGH3TGW9Hp3xKi/z8Ii+S+a/5/XfNbgPQ7dwA0tE3nZcA+lzlAp3md9ABFYHfP5VhGIZbE5JxtEBaTH+m/Brfy82nNluWxiffyjDVbq/A6FlMtrjmoplM5yN4C3L+2YgObK5R7EVtfhyxL9uygFzMt1urlMwgx2eYBUgVamFuqovg4xpT4yvPCke6wZIImGM9/aA==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by CH3PR02MB9986.namprd02.prod.outlook.com (2603:10b6:610:19e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.18; Tue, 10 Jun
+ 2025 15:50:34 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%4]) with mapi id 15.20.8813.016; Tue, 10 Jun 2025
+ 15:50:34 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>
+CC: "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>
+Subject: RE: Patch "Drivers: hv: Always select CONFIG_SYSFB for Hyper-V
+ guests" has been added to the 6.15-stable tree
+Thread-Topic: Patch "Drivers: hv: Always select CONFIG_SYSFB for Hyper-V
+ guests" has been added to the 6.15-stable tree
+Thread-Index: AQHb2gFAsj6wbjNrgkW7em1Xqz5dpbP8iiXg
+Date: Tue, 10 Jun 2025 15:50:33 +0000
+Message-ID:
+ <SN6PR02MB4157B1CBF121FF4BB19631AAD46AA@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20250610121439.1555063-1-sashal@kernel.org>
+In-Reply-To: <20250610121439.1555063-1-sashal@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|CH3PR02MB9986:EE_
+x-ms-office365-filtering-correlation-id: 5affa826-8ed5-4cdd-a915-08dda836892f
+x-ms-exchange-slblob-mailprops:
+ yzXCV5TiOCoGdMF1Xm10jHLF8khqh2nhRXZUPXq3EK6yRc9K2M7ybM2CUtESYtUf8WjMxc3wEZRMiCtiNFsiSqDhewIp3lVWyKI4lB2CgFhEwZl/FquSg0LVROBucpHlew4JyS0Az7kHkPKoJfTeMYk0rvczlHp6nKBPsGB36aMaHRHtzdU/c+pEVsuKsFdlKNe7yeJJgwPtJEkXcPG7RDa5pjJ34Rt0lECqUUSMRdmwdmDxxn9jgdTrMmsELToWfRIKTykV33dWdHU1JS4dtHBSQr993CwCK3h89mb+nhc7SzZ5NZv63AtsHAwc3jPkOtTr2Wciox/ExTbWqp2WXDpGK/igYc/OZSOJfTIE42Ep154th9Ufw9Glym9JKGFUTsiErriBP/gLr5HrkY78nCaGvLymDCbYwWv3qr+NQ/zyF29NB3KuSrTxxrr2mQfpHa9+xEB+K/BRNX7DwLpMg0fjNYNfGcckZ49M6Bq/Md0dpMPWQflG4n5Do7o+As/MAs0NR4UMStNJ9WIl+L6MYb1G22zXPqAv7jnD3KzNQr6csN0NEBUeYq8IEs7kiUmYlqwJptlOToObzz5DijFtUXWwLg9A2Un26MmW9geq2V0eaYyOLL52IKMf5FxtAsisYRSftGe/AWvPXtMlj2e9RtZqoc9U8XlBziqud9j++Uiyyvq2Mfu16RFjY4f+v99/WM1yUf9c/yHWTaKyij1hEfYE9v6OdgPDxyBkQ8fOf6781+H8Oq/yBYLpKJbY/WKV6NEBAJptKwpCRZjulysaYsr+OCe4Lcc2BPM408vJRvnELfk8jTzrC00SPHuBiEz3DgPFbuv87HIWMszbvz1sH5snDqsd3/drN7VqN/RC9eqyLhOJrgExBHWfTts8WyJHnM+V5ieJXqc=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199028|15080799009|19110799006|8060799009|8062599006|4302099013|3412199025|440099028|10035399007|102099032|1602099012;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?NpfFIX9mlC04YwbhIWNknZucOUSntq3RWW7GvdeidY+E3h9lElyEWjB1RXpV?=
+ =?us-ascii?Q?/d+b0mGrZijMPLh5cDA5boYWbYWiVdwkOdAkGIDwr0NIIyJTtf/NbBLrugOt?=
+ =?us-ascii?Q?qDdi/xC/qyVuhONcRvZ5q5VDrV39GrPyIteIVFxRvK1VvxbjgTT6qsudmCQn?=
+ =?us-ascii?Q?bks7Azs17WWR8H8KQfD/TwdO0zgSI2HYEbrojX6DowqFOBYgdvny7VItUcYx?=
+ =?us-ascii?Q?Qjv2m/vR2zbWtDNgnXwMcPSB1OE1EQrTbI7LMyNdcGPk67rqHEy3ohAOr9i/?=
+ =?us-ascii?Q?AAZKOhszWP+VCDAKtpF9wbN/4W/zs6xt+kqpGyPhdXZyEoySB5g1yzuVLO94?=
+ =?us-ascii?Q?juMiZhIXkCdpsaRVv7hhFTinkGfoOwMc2SqFYWZw7EOGTEkvaVTMbiSvk8MK?=
+ =?us-ascii?Q?LpXOmb7ph1UlmzTTIjf44JjAZAQK6fiVZaXafotHJxtllXqbDrAHhGliNWh/?=
+ =?us-ascii?Q?QfRAuzV8qqEuGwlL6NL19tZpZJeB9wTvaN/8uG5FFPbs1iaXiUwpLo+x+b3i?=
+ =?us-ascii?Q?9GagFFCu9QSrU1HH1RXbxQYXFkTChphONvd/sWvJLPcJP6dGyvfmgIdPsiad?=
+ =?us-ascii?Q?iTZjM4ie7zxnmAMQoVTRYQCGXTDqzoVakDCG7cGNHle7yqTtUAtUflnOSUd9?=
+ =?us-ascii?Q?FdUExFdlF9FEw2rf6JPFbPqtXC0PtdA8GS4qE+LpYrJA5wkn14xq8fua1JN+?=
+ =?us-ascii?Q?MSo4CSTmPH8cazF4E/BtIF0WJ2RTrD1g28XmUMwivsiXcxPCVW0VoPYe2gEI?=
+ =?us-ascii?Q?mb1/OmTHjzDUAe6R0RWCcJPaQE/RPy34KR9rxO6EekUJP9O8K+0a8Hhsok8v?=
+ =?us-ascii?Q?F055wXEsxJT74Og+tKcSa0AALbbmZReFkReyMkbdy2K+i8zj46FAYGq1XNap?=
+ =?us-ascii?Q?7Ygk+9WX4GOTAX58EgzJ+WoJzFbaykd2eMdEBQMrghI+YZYFolqtmMjrVpcE?=
+ =?us-ascii?Q?MdjyJvqKBEvYapuOV1rgP+e6ChQqRBr5c4/sc+19YD69aDLPzq9y7/Slheh0?=
+ =?us-ascii?Q?/ehaEWnVmUgSfgd9OmRgQq2BxJcpr90st0KH+gvMTjRpRaDgKj7QotWVewFf?=
+ =?us-ascii?Q?KxLfqmyXRuCg/QJXrcxSA1zOVH+HC7zLKTkTBgrL6GlYjLjZmBbY6IOtkcGK?=
+ =?us-ascii?Q?t3WdA1P00MLYwTsZUvd9VmmTd/iPeBZ9Vny0IW+uxX0nuBkhDN9bTPOwKnTE?=
+ =?us-ascii?Q?8+iQ7ZetOJBvsp76U3kaw0nKBg+dyvP38tVM9w=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?sKXkYvUv7x0Nz5g6m0zJFWx/4mtm9gmWUwE8AP3crWPE/caYp1yzdEmZ8ivW?=
+ =?us-ascii?Q?CY2KhBgNK5QDqIbknacFmzI7C8Mr475kY5ERwxCcGW6uB2i2N+oSLx6fybMs?=
+ =?us-ascii?Q?zS1i6bSqozHC6CJOxjCYWe8Yqkim6gxMz04Qc0Spbv4fy2ANyc2LnftoFxls?=
+ =?us-ascii?Q?bRkTtwyIjKLAM81Mkpni22djO009nzI00uQr7z8L+eRTWOT7GTgrQv2GhJip?=
+ =?us-ascii?Q?oM/TjzZ9p9cwmYIL+ouTRKS6PFneVZ78isYBKIumcLElNkwPdhQJVyP4/Rbq?=
+ =?us-ascii?Q?r3GR60z6/NIYJcBrtlWthXJAZvjyyQnkYEa1hn3ZXyQdKBUCvTSr8Pi2/cJL?=
+ =?us-ascii?Q?Vk8NTy6twmKMUjzVcv+JndflHc0OLnJzkUkhpd+Px2Dg37KBRoJpIHGH9Fwp?=
+ =?us-ascii?Q?12GaVevktCyaoB/2MknGMQhg9vyE3gKt1/w9RYAUFI5bxGwX3AxbR+J43VWz?=
+ =?us-ascii?Q?8m1Ajuhz97xoiqK6ob6r6tatAVjki2F+cy2GbKtjaCkGS6k++k+bls6b9xQQ?=
+ =?us-ascii?Q?GyaboXZ0+D68TTLmMCmGeugL6PmOENZ/i7tY2uvd5+h6pIbTrTE54YRGngb7?=
+ =?us-ascii?Q?OCkxGBjkJYXRem+nu6rF5A6rc1FwC1Xep0JEpegBLM8otomoeT1gLzMWqegM?=
+ =?us-ascii?Q?C6n6aIZR7oVuZ66OngfbSdmprczE3+xTRBvsmykLo5/u+R7lDSoRdV2uJ9i/?=
+ =?us-ascii?Q?T24Q61SN3/Ti9LPNHNvPhJGqtaGg8dLY++jtqhkHWBdYUWorjWNPlwQTV6BX?=
+ =?us-ascii?Q?KtyBqaVFhxNE7ArLS3midnN2qH/O9PAA5Kbyygvk4bhIFZt4td7iAx0GuGi8?=
+ =?us-ascii?Q?yWd2CJKF2S6HnPYmy1z0GClUxUJflan2iW3PWt+wR46WUVgoQV4IyuB1zfhK?=
+ =?us-ascii?Q?3Yb8u8FLOmv3XIXJJGXZaxQUJw7LLOZGx0/qzReppJ9gMVpULoa0bx96N+DS?=
+ =?us-ascii?Q?CsZDaRswGyU2CErNwDiqXNEHP7JirOMqWXKH5P2aVC9mN8UWuRy/dBYIQ0SE?=
+ =?us-ascii?Q?8g4pSR7CZHYaTdFDhrdgSx3d7dSXQZ6uEh4y43CDCNUPoAgxk+KCYUT98+Vk?=
+ =?us-ascii?Q?DWONDxNb1ls4sii71xOxRghYelg7dWCos06FFNkJ3O+PN4a/+k9kh+zgM8xO?=
+ =?us-ascii?Q?lX4yLd/FG0PMbKbsQkm7KdbHc2I2/Wu+7pysB3HDQs/1zfR0MSWvQTcy3hzS?=
+ =?us-ascii?Q?pR8s17uKr3H+fUPErKhL6Fe1pffA/dgrg71k2w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] virtio-net: drop the multi-buffer XDP packet in
- zerocopy
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-References: <20250603150613.83802-1-minhquangbui99@gmail.com>
- <dd087fdf-5d6c-4015-bed3-29760002f859@redhat.com>
- <f6d7610b-abfe-415d-adf8-08ce791e4e72@gmail.com>
- <20250605074810.2b3b2637@kernel.org>
- <f073b150-b2e9-43db-aa61-87eee4755a2f@gmail.com>
- <20250609095824.414cffa1@kernel.org>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <20250609095824.414cffa1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5affa826-8ed5-4cdd-a915-08dda836892f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2025 15:50:33.9632
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR02MB9986
 
-On 6/9/25 23:58, Jakub Kicinski wrote:
-> On Fri, 6 Jun 2025 22:48:53 +0700 Bui Quang Minh wrote:
->>>> But currently, if a multi-buffer packet arrives, it will not go through
->>>> XDP program so it doesn't increase the stats but still goes to network
->>>> stack. So I think it's not a correct behavior.
->>> Sounds fair, but at a glance the normal XDP path seems to be trying to
->>> linearize the frame. Can we not try to flatten the frame here?
->>> If it's simply to long for the chunk size that's a frame length error,
->>> right?
->> Here we are in the zerocopy path, so the buffers for the frame to fill
->> in are allocated from XDP socket's umem. And if the frame spans across
->> multiple buffers then the total frame size is larger than the chunk
->> size.
-> Is that always the case? Can the multi-buf not be due to header-data
-> split of the incoming frame? (I'm not familiar with the virtio spec)
-
-Ah, maybe I cause some confusion :) zerocopy here means zerocopy if the 
-frame is redirected to XDP socket. In this zerocopy mode, XDP socket 
-will provide buffers to virtio-net, the frame from vhost will be placed 
-in those buffers. If the bind XDP program in virtio-net returns 
-XDP_REDIRECT to that XDP socket, then the frame is zerocopy. In case 
-XDP_PASS is returned, the frame's data is copied to newly created skb 
-and the frame's buffer is returned to XDP socket. AFAIK, virtio-net has 
-not supported header-data split yet.
-
->> Furthermore, we are in the zerocopy so we cannot linearize by
->> allocating a large enough buffer to cover the whole frame then copy the
->> frame data to it. That's not zerocopy anymore. Also, XDP socket zerocopy
->> receive has assumption that the packet it receives must from the umem
->> pool. AFAIK, the generic XDP path is for copy mode only.
-> Generic XDP == do_xdp_generic(), here I think you mean the normal XDP
-> patch in the virtio driver? If so then no, XDP is very much not
-> expected to copy each frame before processing.
-
-Yes, I mean generic XDP = do_xdp_generic(). I mean that we can linearize 
-the frame if needed (like in netif_skb_check_for_xdp()) in copy mode for 
-XDP socket but not in zerocopy mode.
-
+From: Sasha Levin <sashal@kernel.org>
 >
-> This is only slightly related to you patch but while we talk about
-> multi-buf - in the netdev CI the test which sends ping while XDP
-> multi-buf program is attached is really flaky :(
-> https://netdev.bots.linux.dev/contest.html?executor=vmksft-drv-hw&test=ping-py.ping-test-xdp-native-mb&ld-cases=1
+> This is a note to let you know that I've just added the patch titled
+>
+>     Drivers: hv: Always select CONFIG_SYSFB for Hyper-V guests
+>
+> to the 6.15-stable tree which can be found at:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+>
+> The filename of the patch is:
+>      drivers-hv-always-select-config_sysfb-for-hyper-v-gu.patch
+> and it can be found in the queue-6.15 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-metal-drv-hw means the NETIF is the real NIC, right?
+Please DO NOT backport this patch to ANY stable trees, at least
+not at the moment. It is causing a config problem that we're trying
+to work out. Once the resolution is decided upon, we can figure out
+what to backport.
 
 Thanks,
-Quang Minh.
 
+Michael Kelley
+
+>
+>
+>
+> commit 9766859ee9884c35dde0411df167a06452fee3ce
+> Author: Michael Kelley <mhklinux@outlook.com>
+> Date:   Mon May 19 21:01:43 2025 -0700
+>
+>     Drivers: hv: Always select CONFIG_SYSFB for Hyper-V guests
+>
+>     [ Upstream commit 96959283a58d91ae20d025546f00e16f0a555208 ]
+>
+>     The Hyper-V host provides guest VMs with a range of MMIO addresses
+>     that guest VMBus drivers can use. The VMBus driver in Linux manages
+>     that MMIO space, and allocates portions to drivers upon request. As
+>     part of managing that MMIO space in a Generation 2 VM, the VMBus
+>     driver must reserve the portion of the MMIO space that Hyper-V has
+>     designated for the synthetic frame buffer, and not allocate this
+>     space to VMBus drivers other than graphics framebuffer drivers. The
+>     synthetic frame buffer MMIO area is described by the screen_info data
+>     structure that is passed to the Linux kernel at boot time, so the
+>     VMBus driver must access screen_info for Generation 2 VMs. (In
+>     Generation 1 VMs, the framebuffer MMIO space is communicated to
+>     the guest via a PCI pseudo-device, and access to screen_info is
+>     not needed.)
+>
+>     In commit a07b50d80ab6 ("hyperv: avoid dependency on screen_info")
+>     the VMBus driver's access to screen_info is restricted to when
+>     CONFIG_SYSFB is enabled. CONFIG_SYSFB is typically enabled in kernels
+>     built for Hyper-V by virtue of having at least one of CONFIG_FB_EFI,
+>     CONFIG_FB_VESA, or CONFIG_SYSFB_SIMPLEFB enabled, so the restriction
+>     doesn't usually affect anything. But it's valid to have none of these
+>     enabled, in which case CONFIG_SYSFB is not enabled, and the VMBus dri=
+ver
+>     is unable to properly reserve the framebuffer MMIO space for graphics
+>     framebuffer drivers. The framebuffer MMIO space may be assigned to
+>     some other VMBus driver, with undefined results. As an example, if
+>     a VM is using a PCI pass-thru NVMe controller to host the OS disk,
+>     the PCI NVMe controller is probed before any graphics devices, and th=
+e
+>     NVMe controller is assigned a portion of the framebuffer MMIO space.
+>     Hyper-V reports an error to Linux during the probe, and the OS disk
+>     fails to get setup. Then Linux fails to boot in the VM.
+>
+>     Fix this by having CONFIG_HYPERV always select SYSFB. Then the
+>     VMBus driver in a Gen 2 VM can always reserve the MMIO space for the
+>     graphics framebuffer driver, and prevent the undefined behavior. But
+>     don't select SYSFB when building for HYPERV_VTL_MODE as VTLs other
+>     than VTL 0 don't have a framebuffer and aren't subject to the issue.
+>     Adding SYSFB in such cases is harmless, but would increase the image
+>     size for no purpose.
+>
+>     Fixes: a07b50d80ab6 ("hyperv: avoid dependency on screen_info")
+>     Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+>     Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+>     Link:
+> https://lore.kernel.org/st
+> able%2F20250520040143.6964-1-
+> mhklinux%2540outlook.com&data=3D05%7C02%7C%7C516ef64661c145eb315d08dda818=
+61
+> 51%7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C638851544842065319%7CUn
+> known%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXa
+> W4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DFZnrM9REMICW=
+p
+> JqW88gD7CxeTwcztS2y8%2B8GqHNtF3E%3D&reserved=3D0
+>     Link:
+> https://lore.kernel.org/r%25
+> 2F20250520040143.6964-1-
+> mhklinux%40outlook.com&data=3D05%7C02%7C%7C516ef64661c145eb315d08dda81861=
+51
+> %7C84df9e7fe9f640afb435aaaaaaaaaaaa%7C1%7C0%7C638851544842081386%7CUnkn
+> own%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4
+> zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3Dj%2F5AvOlxwTKf=
+VUL
+> vmNr%2FZliwRVrd9rSlVECyFGqFErE%3D&reserved=3D0
+>     Signed-off-by: Wei Liu <wei.liu@kernel.org>
+>     Message-ID: <20250520040143.6964-1-mhklinux@outlook.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
+> index 6c1416167bd2e..724fc08a73e70 100644
+> --- a/drivers/hv/Kconfig
+> +++ b/drivers/hv/Kconfig
+> @@ -9,6 +9,7 @@ config HYPERV
+>       select PARAVIRT
+>       select X86_HV_CALLBACK_VECTOR if X86
+>       select OF_EARLY_FLATTREE if OF
+> +     select SYSFB if !HYPERV_VTL_MODE
+>       help
+>         Select this option to run Linux as a Hyper-V client operating
+>         system.
 
