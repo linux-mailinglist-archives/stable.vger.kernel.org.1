@@ -1,82 +1,92 @@
-Return-Path: <stable+bounces-152345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21861AD4483
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 23:12:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62851AD451A
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 23:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6BA178374
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A07188A527
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CC0274653;
-	Tue, 10 Jun 2025 21:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60BC283FE8;
+	Tue, 10 Jun 2025 21:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RLaDSr+5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJLuQHBd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED383269830;
-	Tue, 10 Jun 2025 21:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173871401C;
+	Tue, 10 Jun 2025 21:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749589961; cv=none; b=BwE3MxXzgXVim9b72oecEOvDZnv7QgzeOxWhy9mvC7HMlxOtg60GNr0EwYBQJ5N7hDSXYRWGL4okZI4WifXvyjS/3g7gFyZtPq3ZoKch5f87UXWkaGGSHfEK9lwUu23+TPoNfoLbJtP6/1JeLiUH4ulUUBqFDi5PYTWLr/ak/3c=
+	t=1749592543; cv=none; b=a5/+BcdJo4Zw8dc80sHZpQDDHyWbMRwA46UugD1KNm0VcmyM0iGXt6Q/B/rgZZPX3/j0nfttxc0gUJIvoxGhclccc2881aidcT/Tk0zBsb/ce1ULvHR2tcV+c/qqAA5w1l/aDx531xxTOLi9WFUi1KgQBj3b/8p+yWfmkuFxX60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749589961; c=relaxed/simple;
-	bh=kwEHHm7zFRCrwj7rWWQ34/8yUWTPvbFGYiZ3ig5tFMk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0Ns6g2BJl4MkNAQQyqMtUpL26l5+bqZzenAi2I5uczxN4eMPCIgZ+4kgbTIPXrHk0tOEulITJmHmU/qJKybNQ+qXwqFL/vZRZk+HyuarW8UFZhypuysTijQhkg1kadUsp2hYNAaJ6n7D6lDqLmlyJ55d7czLyqPNUpURafl4Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RLaDSr+5; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749589960; x=1781125960;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kwEHHm7zFRCrwj7rWWQ34/8yUWTPvbFGYiZ3ig5tFMk=;
-  b=RLaDSr+51T+i/DDeSq+Ume3DZGFVgfymhf66JNydGHE/Lbe7EaiwKauP
-   jFS+Vw/N+VTBsnPgw0Y/QqFuHArETyNWfqhg/wyA63Ngo5Ac6eO1aCaBM
-   DQ4uCZAJx6fY6BBEKacvjdbz3Gdl+AGj811jFH3VcRDda58ForZv8LF4f
-   EPpsU5MXApUMxCVGB1l3v/ML/yFHnXqVVcBbRfgexu2VcVVfI6gfwbthd
-   8FYltXqab0N5mIQMbiyg2ADWRWbCoTIsiTaDuYMZyOrqhlGeFs07xZe2S
-   b1N9Hd+meaeFTW3ezeI0J3237sng4qEJ7GqEI61FxJ6HLCpo2OvPf0XWr
-   A==;
-X-CSE-ConnectionGUID: m0TH/AUYQ1uxNjKukRgrWQ==
-X-CSE-MsgGUID: ghXNZncgQKqyZIvbrc0biw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51816880"
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="51816880"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 14:12:40 -0700
-X-CSE-ConnectionGUID: c1M1rLqrQ2KxrfjeXOOmeg==
-X-CSE-MsgGUID: 9DiTFwpCSCiMazVfq2TDug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="146939674"
-Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.88])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 14:12:37 -0700
-From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-To: platform-driver-x86@vger.kernel.org,
-	intel-xe@lists.freedesktop.org,
-	hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com,
-	lucas.demarchi@intel.com,
-	rodrigo.vivi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	david.e.box@linux.intel.com
-Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	s=arc-20240116; t=1749592543; c=relaxed/simple;
+	bh=7Kw7leYwnoZRD3Gzqb3C7xpXxDTPa1VJVS79XfwnghE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fngjOYrUhxqPYcMr2N+Myp4DbgJV/oFA1d0jo9RscyZsvpgfZbRgAhaoSC0jFQbrXmL/w/kg9imIuuhjwYV7ry52ahMB1ERXascPYILv5em8qQ5zNNje2wdcuHMQNxnfsornK10rCTHlhHBhPM8K+pB3SFnR2zznOUqckfTf53Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJLuQHBd; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7485bcb8b7cso1595119b3a.1;
+        Tue, 10 Jun 2025 14:55:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749592541; x=1750197341; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xzzLX0zigjvsXV7HMCJnSlWCkuAr80/vdNSBICliE+E=;
+        b=KJLuQHBdv/SpBc5OLkf4ayJcyCdiH32l31DZp3ouTwgcgvQ8Q4bjUpRVf5bOrJIqbj
+         q5vY7OVU36v6z5ymXS6+If0toqaRihCRWkHyaZmzSBe911H8Rr8gHgOphWXeB2UReDw7
+         YMrsy4T03vWgEINnEPHMJQpUD7skz5+DmiX1xUZoFZfXP0TDNJK01tqlQyMSPxMtfl3a
+         +pbm05ZYpnJIj1W71TFCmB3rmiH3D3JVqTtGJVv7IAvmVFJ6md69qZeVI3fAoTbU1o3H
+         0J2E/d9cv4dyuBrDrfslP6d68+CpaWZvfcvxSZP/UxLBpHx+5nvgYfRcZBO8h1lCi7mJ
+         hrAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749592541; x=1750197341;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xzzLX0zigjvsXV7HMCJnSlWCkuAr80/vdNSBICliE+E=;
+        b=TRunw+TaGERP3ZCXawe8c4iZhy7ci7/Xa62flxIbXMPFeiKVdzYxvru9+kFu5Ep/vP
+         2X+H/h6nmjrAhuoO3WJyE9qmuhhXQIusr4x1Y/FO3cn40oR4Yr7DOFAdhTYECzQkFGpN
+         sFxWN/orMF3Z8RJFhYc7RmtNQFm5at1ml0hXduziq5sVHtTIyj7PTBIiZPViBJnAuxcy
+         yYw2AAhCvhobXpgr3oEJXfqxgAOAP5kb4cwEKTFaivfGeWkDRS0BQ3YxKBhRyiV1cUUx
+         RLbcq1l1UyZYSP91BiE5lnK36YrgNbV7JZ+npxxPymyvz+vRErgxPCWJZ6AmucYso4Qt
+         vPbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmPvuNFjwo4MW2nONTHFylFwRLrgKrGo7npBv3r4ib154v0EeIpqXIqXtKExDv/HarYH0M5BWI@vger.kernel.org, AJvYcCXbXaNzBGh2UBAV/Q15aiEdPMgXrKoUPUMLgrRNOZ9BYk3jHN6K0xjWv8oSRFQ7TeG9iTzvLiokksxAiHs=@vger.kernel.org, AJvYcCXpvfpUoCNiAusxKSmPj7vACyYS/Yy8mTMLp24YXsqdXOO6tStU8sKghtv02/BLRUldOS+A0iv1PBiD@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVVmuXgn1vWRgQnO/F+/vk7rQtWseVDQYDczFDUNzhiyRiyYTW
+	d6RWzhImPviYWg9NBDs3v3Ov3PaGUX/5Okj4S9ubSj9swZ91IEwE3g9I
+X-Gm-Gg: ASbGncs+8KxcroLpbldCCPppbL+7gQvpZZ5y4/AGYjI6TJdDiAe2XYrNn5MK3/6M5ne
+	emX/Lb54mLou+9oi0+SJPemEI2PQibLC4nKfYmF0LdiMK+zmL9tFg8ye7ciVYp+GqE6d+kWQ/KA
+	LsMjM5C+HmvziBSSBdjZuNGyRV4s74JVEcnuiQCKu3CcTLRpCdn1/mOTPHjzdLTe1O2NrKqUoRp
+	fVCUHUk3XPqinmsRMN3FCngC3ySBC406dpOWQB1Nz/wpxlXQKe0iq7ATftzYB4raevC+gwyLok+
+	zKW92ReGqh3FgVOKfHCN2PkVAhu42+qo7wt/n4vUBU9ZxQ1gg6VyX1IJJNH0w8oMvpYQdzdfGCU
+	kRYMDwx6DartYECZO
+X-Google-Smtp-Source: AGHT+IHuaOXKKB2sK17JiPq7MI/MRGPzkTbmX/Mg57tFKCaQI1mtQ9m3NGGKdrDgKrP2VcZJMKOXkQ==
+X-Received: by 2002:a05:6a00:1951:b0:746:227c:a808 with SMTP id d2e1a72fcca58-7486ce3ba0bmr1660168b3a.24.1749592541250;
+        Tue, 10 Jun 2025 14:55:41 -0700 (PDT)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482af3a165sm8173936b3a.11.2025.06.10.14.55.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 14:55:40 -0700 (PDT)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: corbet@lwn.net,
+	colyli@kernel.org,
+	kent.overstreet@linux.dev,
+	akpm@linux-foundation.org,
+	robertpang@google.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-bcache@vger.kernel.org,
+	jserv@ccns.ncku.edu.tw,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NULL pointer access
-Date: Tue, 10 Jun 2025 17:12:16 -0400
-Message-ID: <20250610211225.1085901-2-michael.j.ruhl@intel.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250610211225.1085901-1-michael.j.ruhl@intel.com>
-References: <20250610211225.1085901-1-michael.j.ruhl@intel.com>
+Subject: [PATCH 0/8] Fix bcache regression with equality-aware heap APIs
+Date: Wed, 11 Jun 2025 05:55:08 +0800
+Message-Id: <20250610215516.1513296-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,72 +95,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Usage of the intel_pmt_read() for binary sysfs, requires a pcidev.  The
-current use of the endpoint value is only valid for telemetry endpoint
-usage.
+This patch series introduces equality-aware variants of the min heap
+API that use a top-down heapify strategy to improve performance when
+many elements are equal under the comparison function. It also updates
+the documentation accordingly and modifies bcache to use the new APIs
+to fix a performance regression caused by the switch to the generic min
+heap library.
 
-Without the ep, the crashlog usage causes the following NULL pointer
-exception:
+In particular, invalidate_buckets_lru() in bcache suffered from
+increased comparison overhead due to the bottom-up strategy introduced
+in commit 866898efbb25 ("bcache: remove heap-related macros and switch
+to generic min_heap"). The regression is addressed by switching to the
+equality-aware variants and using the inline versions to avoid function
+call overhead in this hot path.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Oops: Oops: 0000 [#1] SMP NOPTI
-RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-Code:
-Call Trace:
- <TASK>
- ? sysfs_kf_bin_read+0xc0/0xe0
- kernfs_fop_read_iter+0xac/0x1a0
- vfs_read+0x26d/0x350
- ksys_read+0x6b/0xe0
- __x64_sys_read+0x1d/0x30
- x64_sys_call+0x1bc8/0x1d70
- do_syscall_64+0x6d/0x110
-
-Augment the inte_pmt_entry to include the pcidev to allow for access to
-the pcidev and avoid the NULL pointer exception.
-
-Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to read telemetry")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/platform/x86/intel/pmt/class.c | 3 ++-
- drivers/platform/x86/intel/pmt/class.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
-index 7233b654bbad..d046e8752173 100644
---- a/drivers/platform/x86/intel/pmt/class.c
-+++ b/drivers/platform/x86/intel/pmt/class.c
-@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
- 	if (count > entry->size - off)
- 		count = entry->size - off;
- 
--	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
-+	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
- 				    entry->base, off, count);
- 
- 	return count;
-@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
- 		return -EINVAL;
- 	}
- 
-+	entry->pcidev = pci_dev;
- 	entry->guid = header->guid;
- 	entry->size = header->size;
- 	entry->cb = ivdev->priv_data;
-diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
-index b2006d57779d..f6ce80c4e051 100644
---- a/drivers/platform/x86/intel/pmt/class.h
-+++ b/drivers/platform/x86/intel/pmt/class.h
-@@ -39,6 +39,7 @@ struct intel_pmt_header {
- 
- struct intel_pmt_entry {
- 	struct telem_endpoint	*ep;
-+	struct pci_dev		*pcidev;
- 	struct intel_pmt_header	header;
- 	struct bin_attribute	pmt_bin_attr;
- 	struct kobject		*kobj;
+To avoid duplicated effort and expedite resolution, Robert kindly
+agreed that I should submit my already-completed series instead. Many
+thanks to him for his cooperation and support.
+
+Kuan-Wei Chiu (8):
+  lib min_heap: Add equal-elements-aware sift_down variant
+  lib min_heap: Add typedef for sift_down function pointer
+  lib min_heap: add eqaware variant of min_heapify_all()
+  lib min_heap: add eqaware variant of min_heap_pop()
+  lib min_heap: add eqaware variant of min_heap_pop_push()
+  lib min_heap: add eqaware variant of min_heap_del()
+  Documentation/core-api: min_heap: Document _eqaware variants of
+    min-heap APIs
+  bcache: Fix the tail IO latency regression by using equality-aware min
+    heap API
+
+ Documentation/core-api/min_heap.rst |  20 +++++
+ drivers/md/bcache/alloc.c           |  15 ++--
+ include/linux/min_heap.h            | 131 +++++++++++++++++++++++-----
+ lib/min_heap.c                      |  23 +++--
+ 4 files changed, 154 insertions(+), 35 deletions(-)
+
 -- 
-2.49.0
+2.34.1
 
 
