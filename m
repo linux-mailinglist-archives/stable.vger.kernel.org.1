@@ -1,89 +1,88 @@
-Return-Path: <stable+bounces-152257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84353AD2ECC
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 09:35:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41249AD2ECD
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 09:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E92917163D
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 07:35:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0C153A9796
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 07:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2BC27FD49;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE6027F16A;
 	Tue, 10 Jun 2025 07:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="l+AR8mZ7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Gsnvm7Qw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E6825F96D
-	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 07:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C408C27EC80
+	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 07:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749540929; cv=none; b=oHn5o5Q2qTvhYyXunkxVLeL5CPKfAE4gYauH+aVm1XX1VmDyBEF1jj1KdQZZttQGEnXB17Bx5L+kPJ9+PEPgVEKbO2F2LeCDwhyXVEK9ra4BPrJWcxY29vEXHEaULrGj22ANCVsx2LKDDOEozGzGKjwFglfO9J0dZARYUWsvBcc=
+	t=1749540929; cv=none; b=eSfUp+kk82o0QYtS6O1W8W4K8yh7xZjXkxz7jwOx/CWcFMoSsLJMyrrln4LqtAdWdvPAdr9NICZHe9Ua5lChIKPyQQyaa3jXhzys+ArbhO3kOdA54JTqy/NEU1c68m/qJW1GJzbeeih5+QFDk/f6fEJ8JiYtsIPzeaLWdrCVofg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749540929; c=relaxed/simple;
-	bh=BLaO1/Df8/QS3t0E4l0Bjo4AEIjv+rDoiQiqU9bUDts=;
+	bh=HWWnALkCBoic0+IbEVAHz7cqr0kTZpuHvWyHIiqQ+EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N01aZgUunGvFSGLsF+firJw5cQRwR3aDy8qINuyfAAz9CBHkk6/laxe3BhJ0vYtluTNkvAAq6l/XuRRZK81eLnPjKbySWBVb52MxkIYgjsGfVpEUScbm7B3qERTDseLMdNB0vFSpav0GrK88c4FfJqsNkv/uZP5SNhy1E7wfKAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=l+AR8mZ7; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version:Content-Type; b=dajPjzuTbNx7xGULqMNHL9KpIVHpdp+AeBnxx2M8dSlVAmpyOwzk+PeUaCLyPo22kFPzU5L7HOCCaNp2Iz7whirqacuEoD78xm3Xpl5xBbVCZkk882KOLyC2J/RH76SDw7Rl1W5zm35S3c0iYdIdbpy9z0bPA+3Nr1V8Y4f6ygE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Gsnvm7Qw; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-450cf0120cdso44559885e9.2
-        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 00:35:26 -0700 (PDT)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so1932473f8f.3
+        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 00:35:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749540925; x=1750145725; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749540926; x=1750145726; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WGPDczQfZJe103MK4Dc50M1y0Wa2Ca3Jh9lfYOpDGpE=;
-        b=l+AR8mZ7YGzqUtKPg4l5wIDvKHiMEhxJkuubtgzjARy6PG75hQwnSEeZDLsr5HG/+M
-         SwgklVHIsYIr0LKKZcsMSVGi2Yq1m0NhwrrqAVGrDOgi8BDBGql2qWiQwqoqKfe3G8CS
-         o2hheiO0/rhPL0NALCXBdkQMG8WObtsrpxrBaBz2WpqVqZL9wjjX2i8tobZXjdq+ywn+
-         CWWor+CN9H9L58ULebTbootQ6bEV7CvYroeTSh6eTIvJdcwM8TuvFyxaY5mI8v3ZAYf4
-         zqCaaTE6c2nFgxRBeJehaalfqA1Bfoygabxomkf9lqGjYODcItwq040agAmc1tOubz3X
-         Ai3A==
+        bh=sG1oR4vFwIzp67GPDuQXvXAdqEu0nlcOGBX3xZd8/Bw=;
+        b=Gsnvm7Qw2OSw8SjpBVBiifDIW5BreydwCW1L4Tso2fnMrY/2I1CKro8EqNWyErppNE
+         45KhYF2br7qNXsnVdHPqNkopgPhypZqUAIVquPMQgk+zthKzRcRQpLoAdu0/7JGoS2IG
+         XcviGftVpSqWDCdv03Ea4ddIL6Uto/NtmMJ3MEX97ysRSRJkS0tLcguhmIeeiJ+OhsQE
+         EXf6WwedHamP2UK1E2TBZjnBIojEhYu4L5VtdG3vrp5a13uPJLn+G7ya9f23KBM2Ow4L
+         FhLFMdkQy7zO5qi3unTC6RCxYAkp7ea7kbaZN8q6LxoBVQ28wahwMEKWyIXRHY2jJGSo
+         4ZQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749540925; x=1750145725;
+        d=1e100.net; s=20230601; t=1749540926; x=1750145726;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WGPDczQfZJe103MK4Dc50M1y0Wa2Ca3Jh9lfYOpDGpE=;
-        b=vvAuACB+WkZYMH8XwjD1H23TtvOv5kEqigXImAXKtG4X75TAbsfBBV7kEUQYegOCsw
-         36uFyzQoKcBZ0b5xVuwCllp5iB4qRRDQ5VAv3GJOGwesF861TJzcD0u31RbguVddzZ4Q
-         zMtcxXK65TpTGIJDfEMxBNfwgpiL6g58apQ5dQ+4SmixomPaJ9JsUcPd6U7CUZ3YEzBI
-         /MTK/HGvRzkpjbe2axDtMLSJ4FdwWnpN5njxX4jl3mG/ZAA/7ExNEtAFVf9yxTGer3TJ
-         y70RSmvNVp4h3DCc+mjQeB4Nrfw3zzRNq/S//YOuTy2KNA7Jsx6RXB4JCr0ZaP3XflCq
-         z1/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXeye3MZ88gs507E739HbrGIkGYjbakcmxcu/+G3zx31BDZ8hQIsXJgsrweOEgtR6t3pTT58jQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCQhWJMfTiWnZJwleu5snpNgQCO4Sp1qez4miFgK9DfDt9F5BE
-	mklQsgHl92vbY2GT52jWkpDnWOiSaMp+5boLPpQBSBNSHw/b389MRJhlN4GAQlu6qlY=
-X-Gm-Gg: ASbGncv2O7MofNN09jrplwt24WyJ/9Yj3vIJeGww4CSVdSuZ+rJQXpZB87W+rNJARI2
-	E7M3Lv0JpWU0EzMtiAnH3hMug+3r/WuABaG6+mbUlPbK1NkDOwUplvvjwiE7hqqPQZ6jubIf5WY
-	BQxHGDspkP95InsaMeNZPgtE4wUtRVtMUiPFFrWqj4XGpD4gKc4Dc1DwJ6RzlFD579FCmhv3lC5
-	yKbJ4XF9trQer0UXhx1VOZxzDuUQ1qHZlpm7foUH9lxWSF+q7i1jGvTfphS/hqIrakdeFx1ZFpw
-	kQ+E1QsqSCVQ4HQGaKhf8rjN03rHT3upjvQOIGMN1FJUpPVwoXjPKXhku7iFygBM/vsP3n0jJpP
-	84B1BXZonYUbCqp2XaGMwv0kOz09dqIkOP7kgTXg=
-X-Google-Smtp-Source: AGHT+IFrJq5ag85iAzoRrcbzHc482N+iiggTmC7haWEU4NbkBJzkxtDv/oyWuhmhRu+6gw4cWEN6KQ==
-X-Received: by 2002:a05:600c:1c8b:b0:43d:2230:300f with SMTP id 5b1f17b1804b1-45201294a71mr150722465e9.0.1749540924794;
-        Tue, 10 Jun 2025 00:35:24 -0700 (PDT)
+        bh=sG1oR4vFwIzp67GPDuQXvXAdqEu0nlcOGBX3xZd8/Bw=;
+        b=aFHJgU81P1lmwkv+GxXq3Svy84lFH44d62VYCvDys54F739jA9GQXs3F392xO7pORv
+         oHBhcTg39dy57vv0lKRl3s1CxKOLFWMOLhUZwD2CbY0PmtYaL2G5Ru1b+b/bMNyyqH7w
+         w5YWwZ6QdrEA/bFwzq2uk2mNSoGvAhpyjBEhLko+jVxRB7aQDgKr/fsFDCEuaH08oy/8
+         hoBGzfN7cZ5909HIQQzcearmjKTdybzo2FvQu2lkoO8ZCRbGx/NC7vypF4aAT9Id+z9F
+         GGXYk9M+uSqNqAfK1pSk1CsAYhfvGA0zizCBqJsy9podJdFneoUvAzBet0sktpjfbaHY
+         7zvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIXEh30luun6JyYllzZfPqBVSDPryrpQYshvQ64Oaa/rPaCyjAwutx9/YxAucv8PXCcT5bik4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv8TWoE9tiulksSIUDnxgXDhZ/GDfZjAtVsrfs2y8a6SIEfi6m
+	ZgMBOOZAnY7Qq5tPHj9INnfbNAnjGe3SOfZcoZ2wFyrftA0JnGb2WVdPFF16XWU3bKg=
+X-Gm-Gg: ASbGncuHuCS7ozDIpnhurvBkJDNtKjyZEpdES4/4poPZPMtCK+eglRr94aeeDBj1Qcz
+	1zTz1vRAHKGYGvq9VKdhTwcSbGPaN7/vHhoTA99FSc0EJZbv4P0NiHIHTZUfudUUWoeKrDEk2pZ
+	GfW/hM3Vpo+tR+KRC9wrwii3eozi97xI+OuxCLJ1xuW/ctK42rstnMJC87EnRspPcz4/QbpIq38
+	Zc+p8/3PFTQ8+ffL/rISJDbYNIy3N8LIoLeIUgqAWrlal72xHTUQ88jgM3CF8yaVX7Yn6d93hxn
+	zrjKcP2xR0pmbcGYXgX05aG5ak/l/boHD1oxvWWUZzPSngU7Ed2tpkM4JAdix9apZDdG+lAln3H
+	PWcrsY4SfN/QelBJw0kFOnzkAUpr2jE3UscWLjig=
+X-Google-Smtp-Source: AGHT+IGlgCtrnYa6jkFl9tdzygnfM4ZBerKUF8tKceCLQnA3qYj+UbnvmZbB5i8R3IdNwpZObZpI8A==
+X-Received: by 2002:a05:6000:40c7:b0:3a5:2653:734d with SMTP id ffacd0b85a97d-3a531cb8333mr13068402f8f.28.1749540926119;
+        Tue, 10 Jun 2025 00:35:26 -0700 (PDT)
 Received: from localhost (p200300f65f13c80400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f13:c804::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-452730c73d2sm130202595e9.30.2025.06.10.00.35.24
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a53244ed76sm11533575f8f.78.2025.06.10.00.35.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 00:35:24 -0700 (PDT)
+        Tue, 10 Jun 2025 00:35:25 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Alessandro Zummo <a.zummo@towertech.it>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Cassio Neri <cassio.neri@gmail.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
+Cc: Alexandre Mergnat <amergnat@baylibre.com>,
+	Cassio Neri <cassio.neri@gmail.com>,
 	stable@vger.kernel.org,
-	linux-rtc@vger.kernel.org,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH 5.10.y 1/3] rtc: Improve performance of rtc_time64_to_tm(). Add tests.
-Date: Tue, 10 Jun 2025 09:34:58 +0200
-Message-ID:  <b301ceb67e1ab9fd522e17433540de464aec2c0b.1749539184.git.u.kleine-koenig@baylibre.com>
+	linux-rtc@vger.kernel.org
+Subject: [PATCH 5.10.y 2/3] rtc: Make rtc_time64_to_tm() support dates before 1970
+Date: Tue, 10 Jun 2025 09:34:59 +0200
+Message-ID:  <955e2c8f70e95f401530404a72d5bec1dc3dd2aa.1749539184.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1749539184.git.u.kleine-koenig@baylibre.com>
 References: <cover.1749539184.git.u.kleine-koenig@baylibre.com>
@@ -94,299 +93,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8857; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=lWtG+tF1mF7LAmsu3cpOz4FuMN7ZBert8lb4Qg1XoA4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBoR+AluVI5hlXmgren82+TunZ0eQHEgPaYuRhWG uWb9CkhrRSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaEfgJQAKCRCPgPtYfRL+ TqNjB/oD2Je/otNMjJ9pvyzXDv0kKWF2Tr1XU2AqJ8lyZ0nNb9js9f+836AwP4FOxYAoHzhZswT PhhUWp0bwlKQuQ3U1GtTfPkOmHq8aPhT0uqnYFhKGwNaMyh7zCUAO4XwwbeWej5qKjBgNsquXqL tdGv6t8Shj0lu/CZa8dCNrXhcffAyqqjuJsRhsRsoUQfDqvFw1ya5lNhK87sQkVPjsm4SvFAYaT FgTIjH2Q1ZdTFNFlkz25bkfUbbhpjLVjRf6Re7DthUaJ9KLcI4kKUz0vpCwB6DJSoS6SuxNtf3i kzUNhxiQJaFpCznL5RUtnO5eAwWg4nxROI0ARYxhr9RIjYDL
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2619; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=qewZU0UD4hWB4Ge19/NgNWUNePaxVKR57Pxicx/COpU=; b=kA0DAAoBj4D7WH0S/k4ByyZiAGhH4Cihwn8zYmrXREvI728wtkWbdcp2cwNWhv8nTz4zI7jOX 4kBMwQAAQoAHRYhBD+BrGk6eh5Zia3+04+A+1h9Ev5OBQJoR+AoAAoJEI+A+1h9Ev5OFC8H+gL4 L9YzU7SvM7vkRFbDGAUdEHA6pYO7SEG0GGOGrfSnoJmeOBwtgTDBgdOliP5hxQGvrWPAUdjkZmq Z9Wr1P8oOFld434ur4QKGwvbCnK7INVEPZzvBC0XlWIZQR/HKYkN/AhUxVVbKe0Y+8yOwc2aOEW uti/t6ZVy67Q41+13/iM6k7ENViRFKTgfMLjsTIsLQsNL4bTB64K3ZewRjUb33KaPHF05Bk6d8a Cx/kFrzegfi2/1Yu18VGgEG/HbfV8xNB2Vl6pNMnRPW/YtIKzKPte14I0Wssh3VOfAcKB9hNluU JXJJ5lAKaoJSRjsDNInV0kkKZXiF+WVd3dZfYGo=
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-From: Cassio Neri <cassio.neri@gmail.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 1d1bb12a8b1805ddeef9793ebeb920179fb0fa38 upstream.
+commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
 
-The current implementation of rtc_time64_to_tm() contains unnecessary
-loops, branches and look-up tables. The new one uses an arithmetic-based
-algorithm appeared in [1] and is approximately 4.3 times faster (YMMV).
+Conversion of dates before 1970 is still relevant today because these
+dates are reused on some hardwares to store dates bigger than the
+maximal date that is representable in the device's native format.
+This prominently and very soon affects the hardware covered by the
+rtc-mt6397 driver that can only natively store dates in the interval
+1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
+to such a device, rtc_time64_to_tm() must do the right thing for
+time=-2208988800.
 
-The drawback is that the new code isn't intuitive and contains many 'magic
-numbers' (not unusual for this type of algorithm). However, [1] justifies
-all those numbers and, given this function's history, the code is unlikely
-to need much maintenance, if any at all.
-
-Add a KUnit test case that checks every day in a 160,000 years interval
-starting on 1970-01-01 against the expected result. Add a new config
-RTC_LIB_KUNIT_TEST symbol to give the option to run this test suite.
-
-[1] Neri, Schneider, "Euclidean Affine Functions and Applications to
-Calendar Algorithms". https://arxiv.org/abs/2102.06959
-
-Signed-off-by: Cassio Neri <cassio.neri@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20210624201343.85441-1-cassio.neri@gmail.com
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/rtc/Kconfig    |  10 ++++
- drivers/rtc/Makefile   |   1 +
- drivers/rtc/lib.c      | 103 +++++++++++++++++++++++++++++++----------
- drivers/rtc/lib_test.c |  79 +++++++++++++++++++++++++++++++
- 4 files changed, 168 insertions(+), 25 deletions(-)
- create mode 100644 drivers/rtc/lib_test.c
+ drivers/rtc/lib.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-index 8ddd334e049e..6a4aa5abe366 100644
---- a/drivers/rtc/Kconfig
-+++ b/drivers/rtc/Kconfig
-@@ -10,6 +10,16 @@ config RTC_MC146818_LIB
- 	bool
- 	select RTC_LIB
- 
-+config RTC_LIB_KUNIT_TEST
-+	tristate "KUnit test for RTC lib functions" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	select RTC_LIB
-+	help
-+	  Enable this option to test RTC library functions.
-+
-+	  If unsure, say N.
-+
- menuconfig RTC_CLASS
- 	bool "Real Time Clock"
- 	default n
-diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-index bfb57464118d..03ab2329a0e2 100644
---- a/drivers/rtc/Makefile
-+++ b/drivers/rtc/Makefile
-@@ -183,3 +183,4 @@ obj-$(CONFIG_RTC_DRV_WM8350)	+= rtc-wm8350.o
- obj-$(CONFIG_RTC_DRV_X1205)	+= rtc-x1205.o
- obj-$(CONFIG_RTC_DRV_XGENE)	+= rtc-xgene.o
- obj-$(CONFIG_RTC_DRV_ZYNQMP)	+= rtc-zynqmp.o
-+obj-$(CONFIG_RTC_LIB_KUNIT_TEST)	+= lib_test.o
 diff --git a/drivers/rtc/lib.c b/drivers/rtc/lib.c
-index 23284580df97..fe361652727a 100644
+index fe361652727a..13b5b1f20465 100644
 --- a/drivers/rtc/lib.c
 +++ b/drivers/rtc/lib.c
-@@ -6,6 +6,8 @@
-  * Author: Alessandro Zummo <a.zummo@towertech.it>
+@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
+  * rtc_time64_to_tm - converts time64_t to rtc_time.
   *
-  * based on arch/arm/common/rtctime.c and other bits
-+ *
-+ * Author: Cassio Neri <cassio.neri@gmail.com> (rtc_time64_to_tm)
-  */
- 
- #include <linux/export.h>
-@@ -22,8 +24,6 @@ static const unsigned short rtc_ydays[2][13] = {
- 	{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
- };
- 
--#define LEAPS_THRU_END_OF(y) ((y) / 4 - (y) / 100 + (y) / 400)
--
- /*
-  * The number of days in the month.
-  */
-@@ -42,42 +42,95 @@ int rtc_year_days(unsigned int day, unsigned int month, unsigned int year)
- }
- EXPORT_SYMBOL(rtc_year_days);
- 
--/*
-- * rtc_time64_to_tm - Converts time64_t to rtc_time.
-- * Convert seconds since 01-01-1970 00:00:00 to Gregorian date.
-+/**
-+ * rtc_time64_to_tm - converts time64_t to rtc_time.
-+ *
-+ * @time:	The number of seconds since 01-01-1970 00:00:00.
-+ *		(Must be positive.)
-+ * @tm:		Pointer to the struct rtc_time.
+  * @time:	The number of seconds since 01-01-1970 00:00:00.
+- *		(Must be positive.)
++ *		Works for values since at least 1900
+  * @tm:		Pointer to the struct rtc_time.
   */
  void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
  {
--	unsigned int month, year, secs;
-+	unsigned int secs;
- 	int days;
+-	unsigned int secs;
+-	int days;
++	int days, secs;
  
-+	u64 u64tmp;
-+	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
-+		day_of_year, month, day;
-+	bool is_Jan_or_Feb, is_leap_year;
-+
- 	/* time must be positive */
+ 	u64 u64tmp;
+ 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
+ 		day_of_year, month, day;
+ 	bool is_Jan_or_Feb, is_leap_year;
+ 
+-	/* time must be positive */
++	/*
++	 * Get days and seconds while preserving the sign to
++	 * handle negative time values (dates before 1970-01-01)
++	 */
  	days = div_s64_rem(time, 86400, &secs);
  
++	/*
++	 * We need 0 <= secs < 86400 which isn't given for negative
++	 * values of time. Fixup accordingly.
++	 */
++	if (secs < 0) {
++		days -= 1;
++		secs += 86400;
++	}
++
  	/* day of the week, 1970-01-01 was a Thursday */
  	tm->tm_wday = (days + 4) % 7;
++	/* Ensure tm_wday is always positive */
++	if (tm->tm_wday < 0)
++		tm->tm_wday += 7;
  
--	year = 1970 + days / 365;
--	days -= (year - 1970) * 365
--		+ LEAPS_THRU_END_OF(year - 1)
--		- LEAPS_THRU_END_OF(1970 - 1);
--	while (days < 0) {
--		year -= 1;
--		days += 365 + is_leap_year(year);
--	}
--	tm->tm_year = year - 1900;
--	tm->tm_yday = days + 1;
-+	/*
-+	 * The following algorithm is, basically, Proposition 6.3 of Neri
-+	 * and Schneider [1]. In a few words: it works on the computational
-+	 * (fictitious) calendar where the year starts in March, month = 2
-+	 * (*), and finishes in February, month = 13. This calendar is
-+	 * mathematically convenient because the day of the year does not
-+	 * depend on whether the year is leap or not. For instance:
-+	 *
-+	 * March 1st		0-th day of the year;
-+	 * ...
-+	 * April 1st		31-st day of the year;
-+	 * ...
-+	 * January 1st		306-th day of the year; (Important!)
-+	 * ...
-+	 * February 28th	364-th day of the year;
-+	 * February 29th	365-th day of the year (if it exists).
-+	 *
-+	 * After having worked out the date in the computational calendar
-+	 * (using just arithmetics) it's easy to convert it to the
-+	 * corresponding date in the Gregorian calendar.
-+	 *
-+	 * [1] "Euclidean Affine Functions and Applications to Calendar
-+	 * Algorithms". https://arxiv.org/abs/2102.06959
-+	 *
-+	 * (*) The numbering of months follows rtc_time more closely and
-+	 * thus, is slightly different from [1].
-+	 */
+ 	/*
+ 	 * The following algorithm is, basically, Proposition 6.3 of Neri
+@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
+ 	 * thus, is slightly different from [1].
+ 	 */
  
--	for (month = 0; month < 11; month++) {
--		int newdays;
-+	udays		= ((u32) days) + 719468;
+-	udays		= ((u32) days) + 719468;
++	udays		= days + 719468;
  
--		newdays = days - rtc_month_days(month, year);
--		if (newdays < 0)
--			break;
--		days = newdays;
--	}
--	tm->tm_mon = month;
--	tm->tm_mday = days + 1;
-+	u32tmp		= 4 * udays + 3;
-+	century		= u32tmp / 146097;
-+	day_of_century	= u32tmp % 146097 / 4;
-+
-+	u32tmp		= 4 * day_of_century + 3;
-+	u64tmp		= 2939745ULL * u32tmp;
-+	year_of_century	= upper_32_bits(u64tmp);
-+	day_of_year	= lower_32_bits(u64tmp) / 2939745 / 4;
-+
-+	year		= 100 * century + year_of_century;
-+	is_leap_year	= year_of_century != 0 ?
-+		year_of_century % 4 == 0 : century % 4 == 0;
-+
-+	u32tmp		= 2141 * day_of_year + 132377;
-+	month		= u32tmp >> 16;
-+	day		= ((u16) u32tmp) / 2141;
-+
-+	/*
-+	 * Recall that January 01 is the 306-th day of the year in the
-+	 * computational (not Gregorian) calendar.
-+	 */
-+	is_Jan_or_Feb	= day_of_year >= 306;
-+
-+	/* Converts to the Gregorian calendar. */
-+	year		= year + is_Jan_or_Feb;
-+	month		= is_Jan_or_Feb ? month - 12 : month;
-+	day		= day + 1;
-+
-+	day_of_year	= is_Jan_or_Feb ?
-+		day_of_year - 306 : day_of_year + 31 + 28 + is_leap_year;
-+
-+	/* Converts to rtc_time's format. */
-+	tm->tm_year	= (int) (year - 1900);
-+	tm->tm_mon	= (int) month;
-+	tm->tm_mday	= (int) day;
-+	tm->tm_yday	= (int) day_of_year + 1;
- 
- 	tm->tm_hour = secs / 3600;
- 	secs -= tm->tm_hour * 3600;
-diff --git a/drivers/rtc/lib_test.c b/drivers/rtc/lib_test.c
-new file mode 100644
-index 000000000000..2124b67a2f43
---- /dev/null
-+++ b/drivers/rtc/lib_test.c
-@@ -0,0 +1,79 @@
-+// SPDX-License-Identifier: LGPL-2.1+
-+
-+#include <kunit/test.h>
-+#include <linux/rtc.h>
-+
-+/*
-+ * Advance a date by one day.
-+ */
-+static void advance_date(int *year, int *month, int *mday, int *yday)
-+{
-+	if (*mday != rtc_month_days(*month - 1, *year)) {
-+		++*mday;
-+		++*yday;
-+		return;
-+	}
-+
-+	*mday = 1;
-+	if (*month != 12) {
-+		++*month;
-+		++*yday;
-+		return;
-+	}
-+
-+	*month = 1;
-+	*yday  = 1;
-+	++*year;
-+}
-+
-+/*
-+ * Checks every day in a 160000 years interval starting on 1970-01-01
-+ * against the expected result.
-+ */
-+static void rtc_time64_to_tm_test_date_range(struct kunit *test)
-+{
-+	/*
-+	 * 160000 years	= (160000 / 400) * 400 years
-+	 *		= (160000 / 400) * 146097 days
-+	 *		= (160000 / 400) * 146097 * 86400 seconds
-+	 */
-+	time64_t total_secs = ((time64_t) 160000) / 400 * 146097 * 86400;
-+
-+	int year	= 1970;
-+	int month	= 1;
-+	int mday	= 1;
-+	int yday	= 1;
-+
-+	struct rtc_time result;
-+	time64_t secs;
-+	s64 days;
-+
-+	for (secs = 0; secs <= total_secs; secs += 86400) {
-+
-+		rtc_time64_to_tm(secs, &result);
-+
-+		days = div_s64(secs, 86400);
-+
-+		#define FAIL_MSG "%d/%02d/%02d (%2d) : %ld", \
-+			year, month, mday, yday, days
-+
-+		KUNIT_ASSERT_EQ_MSG(test, year - 1900, result.tm_year, FAIL_MSG);
-+		KUNIT_ASSERT_EQ_MSG(test, month - 1, result.tm_mon, FAIL_MSG);
-+		KUNIT_ASSERT_EQ_MSG(test, mday, result.tm_mday, FAIL_MSG);
-+		KUNIT_ASSERT_EQ_MSG(test, yday, result.tm_yday, FAIL_MSG);
-+
-+		advance_date(&year, &month, &mday, &yday);
-+	}
-+}
-+
-+static struct kunit_case rtc_lib_test_cases[] = {
-+	KUNIT_CASE(rtc_time64_to_tm_test_date_range),
-+	{}
-+};
-+
-+static struct kunit_suite rtc_lib_test_suite = {
-+	.name = "rtc_lib_test_cases",
-+	.test_cases = rtc_lib_test_cases,
-+};
-+
-+kunit_test_suite(rtc_lib_test_suite);
+ 	u32tmp		= 4 * udays + 3;
+ 	century		= u32tmp / 146097;
 -- 
 2.49.0
 
