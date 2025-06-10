@@ -1,205 +1,86 @@
-Return-Path: <stable+bounces-152340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E47AD4320
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C0E3AD4345
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:52:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97126174249
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 19:46:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4B7317CAAD
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 19:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED146264630;
-	Tue, 10 Jun 2025 19:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A072263F41;
+	Tue, 10 Jun 2025 19:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aeujFT0C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RY9wsftq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1B7263F43
-	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 19:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35951EE7D5;
+	Tue, 10 Jun 2025 19:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749584785; cv=none; b=sAJN/nimpFjWUrCto5Jo7ZvxrTXoh6zN5TaKYTY16gvJ8bZiQF0cfTqcManiilEY0VuOAwRNjTTcIN4hx2DehvMuUEZNexY/iDsFJirhpTSUIcRXfbvI3vLRbxiIezan9xcBW2QAVdO2KeSn+ZHyh1NR14dWh73lIcixJ1UqoHk=
+	t=1749585120; cv=none; b=m+u8tCStnvNhs8DeM1DXmrhBU48d7PNnk3J2+78/MXD2UoiEENn1Axg29cn1RGlqoMMGNV1m3jthiZt3Q7uOxQHXdrlI8SLhHNbLWoTkQo9f/l2BmJfgJlQUuPfvL6iI9U9A0qVBdyc8RnIYUtG3DohcfSvs999iiRpWSTms/Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749584785; c=relaxed/simple;
-	bh=zZQ9lCgndX9FcJfcAfHDrvcSYDNofhSxG+qod3RMCBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fBIQv138iZe70yNg24Yfmi+fkAH0Shw/BLDcgscmpWfjTOv/sC2bbhjUrdNcx7gZkx9LvnRfutGxCNQRuokt0S0mprYOWeABOKwkiN1tHKnDJr7MESq0598F38TbHqzuGBWWOyZqbPyGAIRoWzRQK+INHh/xPaaTK4F8+ClwiCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aeujFT0C; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749584784; x=1781120784;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=zZQ9lCgndX9FcJfcAfHDrvcSYDNofhSxG+qod3RMCBQ=;
-  b=aeujFT0C/7TReamFfJ4SW2+3Kn40iygKeGASqosrm273e6sB9lpp9v7N
-   N6OXif0I8sQEPqY5Zi5oMpCf8f8cTal1uWcS4JzHiTy9yz1asBEiDbBdx
-   RsNiHHbGMtuEMVbjHyeghaCxbXIPPBR8PFhofU8Zley97IA+WKYp97hnZ
-   okr6TK3SUSzjYgmfykS9afpuNthRjELicE4c8byn3VWHDlK0S7Yl8V35v
-   IF9eqHZnhUWt3u59PsqPdcnS2L37b4esS1YWN4bcXiE9woSWTAVS+JB4Z
-   eAyA5LUIwUN+3F7xpWa1StEkzkW4vtIWWFQCzzv2GUrJEi/7qqyKfa1+C
-   g==;
-X-CSE-ConnectionGUID: FpkBZf1lSsq6pj4qqH7cag==
-X-CSE-MsgGUID: 2LFgg1E5QGauoYwoPVUCWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51799525"
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
-   d="scan'208";a="51799525"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:46:23 -0700
-X-CSE-ConnectionGUID: +XQHJs7xQe27WFJ/Toq1bQ==
-X-CSE-MsgGUID: OiUjSIcKQmmJuFa4x3sMSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
-   d="scan'208";a="147451393"
-Received: from bdahal-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.44])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:46:23 -0700
-Date: Tue, 10 Jun 2025 12:46:10 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	holger@applied-asynchrony.com
-Subject: [RFC PATCH 5.10 16/16] x86/its: FineIBT-paranoid vs ITS
-Message-ID: <20250610-its-5-10-v1-16-64f0ae98c98d@linux.intel.com>
-X-Mailer: b4 0.14.2
-References: <20250610-its-5-10-v1-0-64f0ae98c98d@linux.intel.com>
+	s=arc-20240116; t=1749585120; c=relaxed/simple;
+	bh=BKbIS+rwj8I4WhYx9GtGwFnaZgygi8UgwF8UhCFtPBQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=rbOu5SsTxxl7Gfyc67ws3gGnLufOa+MJ7XVeZMaXSIKAX1+9Mwr13dujDZEbPYug9ZXyaBlqwjn6ww1u9R4jgxwHqZ2stK+JfK3FShP76M9uH91WO7uG440vTP5rIcfd2TGBW1W/wfYlNIknu3iyUNhPs2mtRdsr4tL5fddCEFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RY9wsftq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07087C4CEF6;
+	Tue, 10 Jun 2025 19:51:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749585120;
+	bh=BKbIS+rwj8I4WhYx9GtGwFnaZgygi8UgwF8UhCFtPBQ=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=RY9wsftqyhtp+mDLAG2kSwho1gXQFSFvAedtwbmajJo7BfH0SyBS89m/saO9+M9Ir
+	 F2yTuDMO4e3ncAMLeVlNjDajMBzQ5zLYsn+sHlKR3yrgCW2T5HNYb5M39PrSBZz9/T
+	 OuJrLk6Q2PTBFWGVO2xVYE25wdwz/QOiIRGkRemkaVJ5cu4te2/jQDMAUIu7ZiV0s+
+	 3gKmAtfPF8l8mqiS2p/XRzJSY8DdQnjeofVH8yHTgdxd8bDwhMeIWmvRaN0rGGUGue
+	 BBPLOrOReNr1byb3bcmMpRNexLhQtHNtL+jMQplnQX41EognLnbIzdlGDCRrx48+gU
+	 Vdp5Y57dHXDYQ==
+Date: Tue, 10 Jun 2025 21:51:57 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Iusico Maxim <iusico.maxim@libero.it>
+cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    bentiss@kernel.org, stable@vger.kernel.org, Jamie Lentin <jm@lentin.co.uk>
+Subject: Re: [PATCH] HID: lenovo: Restrict F7/9/11 mode to compact keyboards
+ only
+In-Reply-To: <20250605175550.641392-1-iusico.maxim@libero.it>
+Message-ID: <s75n1nrp-n149-p177-1211-730r21s01r88@xreary.bet>
+References: <20250605175550.641392-1-iusico.maxim@libero.it>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250610-its-5-10-v1-0-64f0ae98c98d@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
 
-From: Peter Zijlstra <peterz@infradead.org>
+On Thu, 5 Jun 2025, Iusico Maxim wrote:
 
-commit e52c1dc7455d32c8a55f9949d300e5e87d011fa6 upstream.
+> Commit 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume
+> for compact keyboards") introduced a regression for ThinkPad TrackPoint
+> Keyboard II by removing the conditional check for enabling F7/9/11 mode
+> needed for compact keyboards only. As a result, the non-compact
+> keyboards can no longer toggle Fn-lock via Fn+Esc, although it can be
+> controlled via sysfs knob that directly sends raw commands.
+> 
+> This patch restores the previous conditional check without any
+> additions.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2f2bd7cbd1d1 ("hid: lenovo: Resend all settings on reset_resume for compact keyboards")
+> Signed-off-by: Iusico Maxim <iusico.maxim@libero.it>
 
-FineIBT-paranoid was using the retpoline bytes for the paranoid check,
-disabling retpolines, because all parts that have IBT also have eIBRS
-and thus don't need no stinking retpolines.
+CCing Jamie Lentin, the author of the original commit, for awareness.
 
-Except... ITS needs the retpolines for indirect calls must not be in
-the first half of a cacheline :-/
-
-So what was the paranoid call sequence:
-
-  <fineibt_paranoid_start>:
-   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
-   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
-   a:   4d 8d 5b <f0>           lea    -0x10(%r11), %r11
-   e:   75 fd                   jne    d <fineibt_paranoid_start+0xd>
-  10:   41 ff d3                call   *%r11
-  13:   90                      nop
-
-Now becomes:
-
-  <fineibt_paranoid_start>:
-   0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
-   6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
-   a:   4d 8d 5b f0             lea    -0x10(%r11), %r11
-   e:   2e e8 XX XX XX XX	cs call __x86_indirect_paranoid_thunk_r11
-
-  Where the paranoid_thunk looks like:
-
-   1d:  <ea>                    (bad)
-   __x86_indirect_paranoid_thunk_r11:
-   1e:  75 fd                   jne 1d
-   __x86_indirect_its_thunk_r11:
-   20:  41 ff eb                jmp *%r11
-   23:  cc                      int3
-
-[ dhansen: remove initialization to false ]
-
-[ pawan: move the its_static_thunk() definition to alternative.c. This is
-	 done to avoid a build failure due to circular dependency between
-	 kernel.h(asm-generic/bug.h) and asm/alternative.h which is neeed
-	 for WARN_ONCE(). ]
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-[ Just a portion of the original commit, in order to fix a build issue
-  in stable kernels due to backports ]
-Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Link: https://lore.kernel.org/r/20250514113952.GB16434@noisy.programming.kicks-ass.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- arch/x86/include/asm/alternative.h |  2 ++
- arch/x86/kernel/alternative.c      | 19 ++++++++++++++++++-
- arch/x86/net/bpf_jit_comp.c        |  2 +-
- 3 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index 4ab021fd3887211723e0bf0f68683e713f260f07..f2cce0cd87a65c4a9ad2d934cc8c8bb651971576 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -80,6 +80,8 @@ extern void apply_returns(s32 *start, s32 *end);
- 
- struct module;
- 
-+extern u8 *its_static_thunk(int reg);
-+
- #ifdef CONFIG_MITIGATION_ITS
- extern void its_init_mod(struct module *mod);
- extern void its_fini_mod(struct module *mod);
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 923b4d1e98dbc378270e254960fcb7ce1bc3e665..30dc73210c2ea4c14de38810f47db1d5381ce378 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -752,7 +752,24 @@ static bool cpu_wants_indirect_its_thunk_at(unsigned long addr, int reg)
- 	/* Lower-half of the cacheline? */
- 	return !(addr & 0x20);
- }
--#endif
-+
-+u8 *its_static_thunk(int reg)
-+{
-+	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-+
-+	return thunk;
-+}
-+
-+#else /* CONFIG_MITIGATION_ITS */
-+
-+u8 *its_static_thunk(int reg)
-+{
-+	WARN_ONCE(1, "ITS not compiled in");
-+
-+	return NULL;
-+}
-+
-+#endif /* CONFIG_MITIGATION_ITS */
- 
- /*
-  * Rewrite the compiler generated retpoline thunk calls.
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index c322702126407e4102cbd0a874264dd69b17b9fd..d3450088569ff3364f456dfa5f2e06ca90b80fe7 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -390,7 +390,7 @@ static void emit_indirect_jump(u8 **pprog, int reg, u8 *ip)
- 	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
- 	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
- 		OPTIMIZER_HIDE_VAR(reg);
--		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
-+		emit_jump(&prog, its_static_thunk(reg), ip);
- 	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
- 		EMIT_LFENCE();
- 		EMIT2(0xFF, 0xE0 + reg);
+I've now applied your patch to hid.git#for-6.16/upstream-fixes, thanks.
 
 -- 
-2.34.1
+Jiri Kosina
+SUSE Labs
 
 
