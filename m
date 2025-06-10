@@ -1,97 +1,130 @@
-Return-Path: <stable+bounces-152320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD75AD4012
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 19:10:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31959AD41F0
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 20:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 995003A1C5B
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 17:09:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6119179EA0
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 18:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB7B243379;
-	Tue, 10 Jun 2025 17:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BVhf44G4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58C7243379;
+	Tue, 10 Jun 2025 18:31:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from constellation.wizardsworks.org (wizardsworks.org [24.234.38.212])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3E1FAC34;
-	Tue, 10 Jun 2025 17:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4919238C1B;
+	Tue, 10 Jun 2025 18:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.234.38.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749575399; cv=none; b=EQDT6mXzhGrRmzb2YHGKCcWK20RN1Q99eEc+TDhX6+TaoQ+BNFSMOcaL5lYcK9cDYlC260ylmiS+SFfjcsI9peu3qTwZraD8qUw3mKnv8XKHZDc1DFZ5I1TeKXS/NzeQAxVt+R7s9LCa9iFFaEjfMFcupMDTojBbDN2hxXJX+Io=
+	t=1749580304; cv=none; b=La2ASn5eoeOn3wLNbseUFEjaxNjMPUatXM/6ST4LAtJ0usdNUV/O03ijVpDHPFgF/kpaGiXNV5XLAGuikH7AZVzyHQK2mXk5iZ6AJIQhQgi+kUofLjfSI7qQG9oOK0jaE6K5htbDrIBFZrJygtKjHNDVzoTYSuW2VTgl1RS/yMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749575399; c=relaxed/simple;
-	bh=92Pz6pj4TO5Cq4bz9dNFnrb+WOjBbXMZF/wKtdVuqQk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=O2DA6fBrUWFqcfzUHyh7DC4Gm3mxXNVBexL9mrMo4jgZoMZkQlS2qpD2RTcN64pQhHiWUGQCY6S+eb2H/FSVn84YnoOt59VcdZreMFwH53T8cX0POnyxb4LNeg4RTL4IP5hE68isRZJ/GsTK348wpxFk9KMjC2L9SRKGLkRTRTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BVhf44G4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED4CC4CEED;
-	Tue, 10 Jun 2025 17:09:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749575398;
-	bh=92Pz6pj4TO5Cq4bz9dNFnrb+WOjBbXMZF/wKtdVuqQk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BVhf44G47lIsVjLvYmZ61KEvvflS7qCVvIRoJYpxmCjwQUqo13vaKXl0N8Y7X1CgW
-	 BTrW2Y35i8D9UmC26pw/kFAbMNf46fG/5CIL1MX+PKyH9teYOh3n7JkJzDpJg4RvMt
-	 /HmaIHKpR4A74Kvbc8afLr74AH9e4UTcZS0Lbs2nLooQObwHdYxhUurS2MrPJOWMOq
-	 yT7LtQeEci1Je+MjVImCZRQMqr+tltQsPCcgfOQRrgTsnOhx8SWf3oumvuHZ3MTkO5
-	 D/Rqau3np3piUyDLv8vrgcYpkOkHVO1JVoipQjF8uYEPl04m0Q4wExyTTsGFfo4OpN
-	 T0WXFSwX4UutA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C1839D6540;
-	Tue, 10 Jun 2025 17:10:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1749580304; c=relaxed/simple;
+	bh=QUg0jZlbuzFB5jP9wY8764cHVeJKKVjbPNKXc2oti5c=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=O8LDDphFNceRgB+wGD0Z/tE3QZaFZ+4hGx4l6de+nlYcPWVEX9QbeAInp+HwEkjim5xGh4jXzr5oR/NVTBq6Uw+AQy1BwQySQqZR7QG/U6YyZ27y4obaKnf6+zk/sHb8THtQLbSVHIt8NkcqLzaIJ+qJNMToTQ2mh4BeFlu2Lo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org; spf=pass smtp.mailfrom=wizardsworks.org; arc=none smtp.client-ip=24.234.38.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizardsworks.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wizardsworks.org
+Received: from mail.wizardsworks.org (localhost [127.0.0.1])
+	by constellation.wizardsworks.org (8.18.1/8.18.1) with ESMTP id 55AIXZf6000833;
+	Tue, 10 Jun 2025 11:33:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] tools/resolve_btfids: Fix build when cross compiling
- kernel with clang.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174957542901.2523637.9194820826653322315.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Jun 2025 17:10:29 +0000
-References: <20250606074538.1608546-1-suleiman@google.com>
-In-Reply-To: <20250606074538.1608546-1-suleiman@google.com>
-To: Suleiman Souhlal <suleiman@google.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, masahiroy@kernel.org,
- irogers@google.com, ssouhlal@freebsd.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
+Date: Tue, 10 Jun 2025 11:33:35 -0700
+From: Greg Chandler <chandleg@wizardsworks.org>
+To: Florian Fainelli <f.fainelli@gmail.com>
+Cc: stable@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: Tulip 21142 panic on physical link disconnect
+In-Reply-To: <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
+References: <53bb866f5bb12cc1b6c33b3866007f2b@wizardsworks.org>
+ <02e3f9b8-9e60-4574-88e2-906ccd727829@gmail.com>
+Message-ID: <70660feba172c7933cd5521527df523c@wizardsworks.org>
+X-Sender: chandleg@wizardsworks.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
 
-This patch was applied to bpf/bpf.git (master)
-by Andrii Nakryiko <andrii@kernel.org>:
+Thanks!  I appreciate you getting back to me.  I've got about 30 huge 
+bugs I am shaking down, and this one just cropped up, so I haven't been 
+able to put a lot of time into it yet.
+I rolled a full debug kernel last night to troubleshoot what appears to 
+be a spinlock/mutex issue with something else, but I'm sure it'll help 
+with this too.
 
-On Fri,  6 Jun 2025 16:45:38 +0900 you wrote:
-> When cross compiling the kernel with clang, we need to override
-> CLANG_CROSS_FLAGS when preparing the step libraries.
+If I find anything out I will also reply with the details....
+
+
+
+On 2025/06/10 09:27, Florian Fainelli wrote:
+> Howdy!
 > 
-> Prior to commit d1d096312176 ("tools: fix annoying "mkdir -p ..." logs
-> when building tools in parallel"), MAKEFLAGS would have been set to a
-> value that wouldn't set a value for CLANG_CROSS_FLAGS, hiding the
-> fact that we weren't properly overriding it.
+> On 6/9/25 15:43, Greg Chandler wrote:
+>> 
+>> This is a from-scratch build (non-vendor/non-distribution)
+>> Host/Target = alpha ev6
+>> Kernel source = 6.12.12
+>> 
+>> My last working kernel on this was a 2.6.x, it's been a while since 
+>> I've had time to bring this system up to date, so I don't know when 
+>> this may have started.
+>> I had a 3.0.102 in there, but I didn't test the networking while using 
+>> it.
+>> 
+>> Please let me know what I can do to help out with figuring this one 
+>> out.
 > 
-> [...]
-
-Here is the summary with links:
-  - [v2] tools/resolve_btfids: Fix build when cross compiling kernel with clang.
-    https://git.kernel.org/bpf/bpf/c/a298bbab903e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+> I don't have an Alpha machine to try this on, but I do have a 
+> functional Cobalt Qube2 (MIPS 32/64) with these adapters connected 
+> directly over PCI:
+> 
+> 00:07.0 Ethernet controller: Digital Equipment Corporation DECchip 
+> 21142/43 (rev 41)
+>         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
+> ParErr+ Stepping- SERR- FastB2B- DisINTx-
+>         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
+> >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+>         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 
+> bytes
+>         Interrupt: pin A routed to IRQ 19
+>         Region 0: I/O ports at 1000 [size=128]
+>         Region 1: Memory at 12082000 (32-bit, non-prefetchable) 
+> [size=1K]
+>         Expansion ROM at 12000000 [disabled] [size=256K]
+>         Kernel driver in use: tulip
+> 
+> 
+> 00:0c.0 Ethernet controller: Digital Equipment Corporation DECchip 
+> 21142/43 (rev 41)
+>         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- 
+> ParErr- Stepping- SERR- FastB2B- DisINTx-
+>         Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium 
+> >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+>         Latency: 64 (5000ns min, 10000ns max), Cache Line Size: 32 
+> bytes
+>         Interrupt: pin A routed to IRQ 20
+>         Region 0: I/O ports at 1080 [size=128]
+>         Region 1: Memory at 12082400 (32-bit, non-prefetchable) 
+> [size=1K]
+>         Expansion ROM at 12040000 [disabled] [size=256K]
+>         Kernel driver in use: tulip
+> 
+> the machine is not currently on a switch that I can control, but I can 
+> certainly try to plug in the cable and see what happens, give me a 
+> couple of days to get back to you, and if you don't hear back,  please 
+> holler. Here are the bits of kernel configuration:
+> 
+> CONFIG_NET_TULIP=y
+> CONFIG_TULIP=y
+> # CONFIG_TULIP_MWI is not set
+> # CONFIG_TULIP_MMIO is not set
+> # CONFIG_TULIP_NAPI is not set
 
