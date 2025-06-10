@@ -1,73 +1,74 @@
-Return-Path: <stable+bounces-152326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B5EAD4280
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:07:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CA5AD4281
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670B717B8F5
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 19:07:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD60717B9D2
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 19:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C3725F993;
-	Tue, 10 Jun 2025 19:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F1A242D71;
+	Tue, 10 Jun 2025 19:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DSojEKqL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E3woD3Ms"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9C42494C2
-	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 19:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264AC2F85B
+	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 19:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749582423; cv=none; b=jsk2/bwhKkUMA/BZKjvGDq4Sux4K2SUyU04c6MBt78aUvzMvIkCkzc0YBIAXBWklcMY4HBl02/op1cDHVaqWuDJJFcQ7SCXCczJUjo0lYjZtEK/HxsemmO3QIIQN0VaFj77xca5Ji1DdjV2GG3nMKJgrer0G8bX79XuaZH0TAR8=
+	t=1749582438; cv=none; b=MLEC/5+zKGWCKpT6/v8XNsWLMgKqzmnNf+bTEoVvAS5OSP/Svn2BnOWSSEFqW50KhO3C7Fs39jsZ2GwHdk1GDS9qsd3tKIWaGB71d8MsMVO7DWG8IJGOWv/wtg5oa0ybVRLISIq5cx/CK/J7tJFG8ZeCvRzD3emF+g6XWRGhAvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749582423; c=relaxed/simple;
-	bh=zFy9Kuu17ZY+HR9BTjQE27jyGgWPD4qhuULCRNj/naQ=;
+	s=arc-20240116; t=1749582438; c=relaxed/simple;
+	bh=93cgyLgZcT84mQGdCuS29C6imfv3GeXWxgbNy2FgLJw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rvkc7u+VzTvfhTZNcd77Qo43vlRDEvF3kZgk3WQiIzyEqhnH1yECKbacRzva/mLvONLtIii7o/H9Wfzm4GWjoDduki+e45OsNbunbMMTot2oqu1y585STam3ILYm6xfNxKwvtUY24P83R82fMhZEq2Oh+WSeDvGC/HNS26qsaSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DSojEKqL; arc=none smtp.client-ip=198.175.65.21
+	 Content-Type:Content-Disposition:In-Reply-To; b=sozuvmAqDx2ASP5DiJMnxe/0r7bDbKVzS43ydE/lmVJxI7PaVuVd9si0VDXTnXO+cXaiwCyHBTNASP19gcFbdHCLL+MuQn6d2kz1mC54ADdE4R16c7MOHnAI8QV49kWSWnPFtHwaocCh2gDVR5WYqHfeszU+k0Iwou6eQXmXJbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E3woD3Ms; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749582421; x=1781118421;
+  t=1749582437; x=1781118437;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=zFy9Kuu17ZY+HR9BTjQE27jyGgWPD4qhuULCRNj/naQ=;
-  b=DSojEKqLmPJOehQE2Rp5p9OjM+T2zGIbaFhMwm3W/M+kGfeiKS+DTS2C
-   KK8YiU3XYHPjGHzEF+fWwoWqc8N6dB6SNXNbLVvfnJ+6QB4OKGlZMfvwp
-   fkmSwUva+5//1CRmukP5tlB0Jq7jHrxZZTOMgVYNEvrnTVOzT68sCQimn
-   sIvzBB5qUf4vgUs29f0IRw6JiDGYWkYtgXFMCTzYb0qqM0J5475euMpdO
-   gdljFe4xEV1Yi3kFT/ru06nnnNJOVhKHVzmiky6s8TCktBMUyigjdG6vD
-   M8aFRBHhZBH6782bNMpjHLx/cNuh8mbDLPardv2gMf+vSXeCsyz7/8KD8
+  bh=93cgyLgZcT84mQGdCuS29C6imfv3GeXWxgbNy2FgLJw=;
+  b=E3woD3MsSEk4wIhoDHhpgRYKiUILoqIQRRXBMMMMEiNZEAUXP/ZShmCd
+   nJE3m5+kH3DCwmGk42R4GEbh+H+doqrK8Cg+AEWJD1Qso3+I9EqVSc8/x
+   0OmjeZR7ggGJEhTu/whm1CMpGLku4dEqBDrdV9Ym070GAwvO2a6DNSWJa
+   hXdsIhOn7kaEfyH0XvRxdaPN83FhbmCwxCDNhVF6Cme7KVlYBZ/sPzdkL
+   Rif9hwgN816TWUSjv+Jz3CYhucPUH/wn2VKG6Pk3bFkeLJEcj1e08kKnk
+   Zhr+vhE0uCUoz153+T+rTMizXP85ZG1VXRY5FuwaU7lTJ0Qvqel2Z1hRh
    w==;
-X-CSE-ConnectionGUID: BftTg19eQO2JeuSK2n60jQ==
-X-CSE-MsgGUID: yJ7bzxbwTACRqReuT9FCSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51566818"
+X-CSE-ConnectionGUID: 8+eyyferSNWy1iYtj5inmA==
+X-CSE-MsgGUID: wQbvphEDTUS+Xk+oaSrlGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51806449"
 X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
-   d="scan'208";a="51566818"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:07:01 -0700
-X-CSE-ConnectionGUID: cAe4QttaQsi6YE2LxTk/Ag==
-X-CSE-MsgGUID: GWEXJt/rRtei61B7Q7TB5g==
+   d="scan'208";a="51806449"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:07:16 -0700
+X-CSE-ConnectionGUID: tM01dG9DTEiMHqbIjuB2yw==
+X-CSE-MsgGUID: VDqN32C9QXWDYYPw7JrobA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
-   d="scan'208";a="151815088"
+   d="scan'208";a="151918356"
 Received: from bdahal-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.44])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:07:00 -0700
-Date: Tue, 10 Jun 2025 12:06:59 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:07:16 -0700
+Date: Tue, 10 Jun 2025 12:07:15 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Salvatore Bonaccorso <carnil@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [RFC PATCH 5.10 02/16] x86/bhi: Define SPEC_CTRL_BHI_DIS_S
-Message-ID: <20250610-its-5-10-v1-2-64f0ae98c98d@linux.intel.com>
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [RFC PATCH 5.10 03/16] x86/its: Enumerate Indirect Target Selection
+ (ITS) bug
+Message-ID: <20250610-its-5-10-v1-3-64f0ae98c98d@linux.intel.com>
 X-Mailer: b4 0.14.2
 References: <20250610-its-5-10-v1-0-64f0ae98c98d@linux.intel.com>
 Precedence: bulk
@@ -80,76 +81,171 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250610-its-5-10-v1-0-64f0ae98c98d@linux.intel.com>
 
-From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+commit 159013a7ca18c271ff64192deb62a689b622d860 upstream.
 
-commit 0f4a837615ff925ba62648d280a861adf1582df7 upstream.
+ITS bug in some pre-Alderlake Intel CPUs may allow indirect branches in the
+first half of a cache line get predicted to a target of a branch located in
+the second half of the cache line.
 
-Newer processors supports a hardware control BHI_DIS_S to mitigate
-Branch History Injection (BHI). Setting BHI_DIS_S protects the kernel
-from userspace BHI attacks without having to manually overwrite the
-branch history.
+Set X86_BUG_ITS on affected CPUs. Mitigation to follow in later commits.
 
-Define MSR_SPEC_CTRL bit BHI_DIS_S and its enumeration CPUID.BHI_CTRL.
-Mitigation is enabled later.
-
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/cpufeatures.h | 2 +-
- arch/x86/include/asm/msr-index.h   | 5 ++++-
- arch/x86/kernel/cpu/scattered.c    | 1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/cpufeatures.h |  1 +
+ arch/x86/include/asm/msr-index.h   |  8 ++++++
+ arch/x86/kernel/cpu/common.c       | 58 ++++++++++++++++++++++++++++++--------
+ arch/x86/kvm/x86.c                 |  4 ++-
+ 4 files changed, 58 insertions(+), 13 deletions(-)
 
 diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index f3365ec973763bbfe94c335ee9811f93272b0c80..52810a7f6b115c6d702976ee0fe38cab5c49ae4a 100644
+index 52810a7f6b115c6d702976ee0fe38cab5c49ae4a..b9aefb75eafff39ae0eaf2fca5de07e96e864234 100644
 --- a/arch/x86/include/asm/cpufeatures.h
 +++ b/arch/x86/include/asm/cpufeatures.h
-@@ -289,7 +289,7 @@
- #define X86_FEATURE_FENCE_SWAPGS_KERNEL	(11*32+ 5) /* "" LFENCE in kernel entry SWAPGS path */
- #define X86_FEATURE_SPLIT_LOCK_DETECT	(11*32+ 6) /* #AC for split lock */
- #define X86_FEATURE_PER_THREAD_MBA	(11*32+ 7) /* "" Per-thread Memory Bandwidth Allocation */
--/* FREE!				(11*32+ 8) */
-+#define X86_FEATURE_BHI_CTRL		(11*32+ 8) /* "" BHI_DIS_S HW control available */
- /* FREE!				(11*32+ 9) */
- #define X86_FEATURE_ENTRY_IBPB		(11*32+10) /* "" Issue an IBPB on kernel entry */
- #define X86_FEATURE_RRSBA_CTRL		(11*32+11) /* "" RET prediction control */
+@@ -459,4 +459,5 @@
+ #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* CPU is vulnerable to Register File Data Sampling */
+ #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
+ #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
++#define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
+ #endif /* _ASM_X86_CPUFEATURES_H */
 diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 7fd03f4ff9ed29d6e8deee29931ff0453142b902..d6a1ad1ee86e7c871a5c1959b4faaf2fd398034f 100644
+index d6a1ad1ee86e7c871a5c1959b4faaf2fd398034f..a479530e59abe0e37634b8f81eec2fe70f60d902 100644
 --- a/arch/x86/include/asm/msr-index.h
 +++ b/arch/x86/include/asm/msr-index.h
-@@ -55,10 +55,13 @@
- #define SPEC_CTRL_SSBD			BIT(SPEC_CTRL_SSBD_SHIFT)	/* Speculative Store Bypass Disable */
- #define SPEC_CTRL_RRSBA_DIS_S_SHIFT	6	   /* Disable RRSBA behavior */
- #define SPEC_CTRL_RRSBA_DIS_S		BIT(SPEC_CTRL_RRSBA_DIS_S_SHIFT)
-+#define SPEC_CTRL_BHI_DIS_S_SHIFT	10	   /* Disable Branch History Injection behavior */
-+#define SPEC_CTRL_BHI_DIS_S		BIT(SPEC_CTRL_BHI_DIS_S_SHIFT)
+@@ -179,6 +179,14 @@
+ 						 * VERW clears CPU Register
+ 						 * File.
+ 						 */
++#define ARCH_CAP_ITS_NO			BIT_ULL(62) /*
++						     * Not susceptible to
++						     * Indirect Target Selection.
++						     * This bit is not set by
++						     * HW, but is synthesized by
++						     * VMMs for guests to know
++						     * their affected status.
++						     */
  
- /* A mask for bits which the kernel toggles when controlling mitigations */
- #define SPEC_CTRL_MITIGATIONS_MASK	(SPEC_CTRL_IBRS | SPEC_CTRL_STIBP | SPEC_CTRL_SSBD \
--							| SPEC_CTRL_RRSBA_DIS_S)
-+							| SPEC_CTRL_RRSBA_DIS_S \
-+							| SPEC_CTRL_BHI_DIS_S)
+ #define MSR_IA32_FLUSH_CMD		0x0000010b
+ #define L1D_FLUSH			BIT(0)	/*
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 840fdffec850b5f3c67e6e5b69a0eb0e1169f2c7..a5f4f8e637713569f2671dbddaf8203415560256 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1134,6 +1134,8 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
+ #define GDS		BIT(6)
+ /* CPU is affected by Register File Data Sampling */
+ #define RFDS		BIT(7)
++/* CPU is affected by Indirect Target Selection */
++#define ITS		BIT(8)
  
- #define MSR_IA32_PRED_CMD		0x00000049 /* Prediction Command */
- #define PRED_CMD_IBPB			BIT(0)	   /* Indirect Branch Prediction Barrier */
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index f1cd1b6fb99ef5696c71a47304eff45c34597f91..53a9a55dc0866ba10f5a97f5b7fcc9a728be83e2 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -27,6 +27,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_APERFMPERF,       CPUID_ECX,  0, 0x00000006, 0 },
- 	{ X86_FEATURE_EPB,		CPUID_ECX,  3, 0x00000006, 0 },
- 	{ X86_FEATURE_RRSBA_CTRL,	CPUID_EDX,  2, 0x00000007, 2 },
-+	{ X86_FEATURE_BHI_CTRL,		CPUID_EDX,  4, 0x00000007, 2 },
- 	{ X86_FEATURE_CQM_LLC,		CPUID_EDX,  1, 0x0000000f, 0 },
- 	{ X86_FEATURE_CQM_OCCUP_LLC,	CPUID_EDX,  0, 0x0000000f, 1 },
- 	{ X86_FEATURE_CQM_MBM_TOTAL,	CPUID_EDX,  1, 0x0000000f, 1 },
+ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
+@@ -1145,22 +1147,25 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS),
+-	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
++	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
++	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
+ 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
+@@ -1224,6 +1229,32 @@ static bool __init vulnerable_to_rfds(u64 ia32_cap)
+ 	return cpu_matches(cpu_vuln_blacklist, RFDS);
+ }
+ 
++static bool __init vulnerable_to_its(u64 x86_arch_cap_msr)
++{
++	/* The "immunity" bit trumps everything else: */
++	if (x86_arch_cap_msr & ARCH_CAP_ITS_NO)
++		return false;
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
++		return false;
++
++	/* None of the affected CPUs have BHI_CTRL */
++	if (boot_cpu_has(X86_FEATURE_BHI_CTRL))
++		return false;
++
++	/*
++	 * If a VMM did not expose ITS_NO, assume that a guest could
++	 * be running on a vulnerable hardware or may migrate to such
++	 * hardware.
++	 */
++	if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
++		return true;
++
++	if (cpu_matches(cpu_vuln_blacklist, ITS))
++		return true;
++
++	return false;
++}
++
+ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
+ {
+ 	u64 ia32_cap = x86_read_arch_cap_msr();
+@@ -1338,6 +1369,9 @@ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
+ 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
+ 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
+ 
++	if (vulnerable_to_its(ia32_cap))
++		setup_force_cpu_bug(X86_BUG_ITS);
++
+ 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
+ 		return;
+ 
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index bc295439360e5a844bed2d0f6345763455180b1d..b61f697479a37f78d854cf51b354cece8f313671 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1390,7 +1390,7 @@ static unsigned int num_msr_based_features;
+ 	 ARCH_CAP_PSCHANGE_MC_NO | ARCH_CAP_TSX_CTRL_MSR | ARCH_CAP_TAA_NO | \
+ 	 ARCH_CAP_SBDR_SSDP_NO | ARCH_CAP_FBSDP_NO | ARCH_CAP_PSDP_NO | \
+ 	 ARCH_CAP_FB_CLEAR | ARCH_CAP_RRSBA | ARCH_CAP_PBRSB_NO | ARCH_CAP_GDS_NO | \
+-	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR)
++	 ARCH_CAP_RFDS_NO | ARCH_CAP_RFDS_CLEAR | ARCH_CAP_ITS_NO)
+ 
+ static u64 kvm_get_arch_capabilities(void)
+ {
+@@ -1429,6 +1429,8 @@ static u64 kvm_get_arch_capabilities(void)
+ 		data |= ARCH_CAP_MDS_NO;
+ 	if (!boot_cpu_has_bug(X86_BUG_RFDS))
+ 		data |= ARCH_CAP_RFDS_NO;
++	if (!boot_cpu_has_bug(X86_BUG_ITS))
++		data |= ARCH_CAP_ITS_NO;
+ 
+ 	if (!boot_cpu_has(X86_FEATURE_RTM)) {
+ 		/*
 
 -- 
 2.34.1
