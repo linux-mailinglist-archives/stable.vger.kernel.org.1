@@ -1,124 +1,105 @@
-Return-Path: <stable+bounces-152251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DFA8AD2C0A
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 04:54:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312DAAD2C43
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 05:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0CF3AD47D
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 02:53:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B90C16FBCC
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 03:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FEC25E813;
-	Tue, 10 Jun 2025 02:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3C4188580;
+	Tue, 10 Jun 2025 03:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lLhST/DP"
-X-Original-To: Stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="MNBq6k6T"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B391DDC1D
-	for <Stable@vger.kernel.org>; Tue, 10 Jun 2025 02:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B5525D204
+	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 03:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749524055; cv=none; b=TUPjCK7kijpjfpbNZczosbrZWyAE9KlTTrOH4Nto0xF85QHeXNOMBB0ydgoqLEu9hT06XdN0yhWC9C1Tl3cd5/XqOoIVgEJrCUQCuzSbhXUpEXjaFUlpMPP0NBFKzHN7BshLt5F1SfgjGIyzgmWYd6zhNS4IdWrRs88gXkidt4c=
+	t=1749527336; cv=none; b=ATG4c38rwPcxEA/BP+r9lrywG2VgnFAIs+Eg1K7+xBccyBu1+d4q7c3rpnxM2eMtA9z3L2zpdlDuiYBaXHCvEdiP5Sn5f7AMYMAMZtwf/+1ocPWDbpKTpfq/y9i8OKuPxWwplwlltVHg1qJkMr2TJoQQt5di3zHGOqwYuFSKemI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749524055; c=relaxed/simple;
-	bh=3bplJj8/piFMvW2ze+ufLvTlVj4AiO9tp/fvw+24Rpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h45EgXHSJgy9qKGqD8a8zmzJKFXgiZtWO90KTc49hufYhTbQshKXi9q+kYazmVnRgMgZMbJ5KMt3B3ctlCc7hZucJ8VCjZuCRSB/xrcJhsljRiLMbMDk+Jxwdojqho5lT+4Cy6JeIGlfJVhsf/agGmDbjyuM/ctVh1KYVDriUvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lLhST/DP; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749524054; x=1781060054;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3bplJj8/piFMvW2ze+ufLvTlVj4AiO9tp/fvw+24Rpk=;
-  b=lLhST/DPXmKzVOE193qqTiUlHwN679c/+yKTWKOh7D1TlDmF7XnHT1L2
-   gdvafBT/vh6zGU+nuVkFILevSF4kMmxHnWzBg8NX0EbV94OAnNCEJWWCn
-   033xq0g/DpoGXjNLCtBX9vShhTH4VejU5mxG71oYYs6Dkj2eothoEfjNU
-   uRIsilQbcc46HAPBeAJevcsaGy+W/gLujctnr9s+j10IYZToUYd4UZl68
-   5XKU5jFF9VeRgS+rrW0AW+FlYt8aB7eWa46fb/Ay4yc7vbB5uCy+ZGrDN
-   NGfZbno+f9q5n7pa852aCb7t3G6s1PLkpZnqn8xo9XNYK2PvXjdE0IZ3S
-   Q==;
-X-CSE-ConnectionGUID: 0WelCWp6TY6iIc+4bVcshw==
-X-CSE-MsgGUID: ZmkzV9F1ReOmI2Z+i3ws2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="54248025"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="54248025"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 19:54:13 -0700
-X-CSE-ConnectionGUID: +6OGlKwkQAqlqBIhOfz64w==
-X-CSE-MsgGUID: IPkK9aalT4C1iIyA6Nyqag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="147259198"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 19:54:11 -0700
-Message-ID: <67501586-8f7a-4faf-80f6-94a125dd9c52@linux.intel.com>
-Date: Tue, 10 Jun 2025 10:53:09 +0800
+	s=arc-20240116; t=1749527336; c=relaxed/simple;
+	bh=LfDKku90Dd3qk/Tpjpfg+vTZqQ5m61fR/4fkUTRneyg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EL6A2VxUgTM0OrJl+WZ9MUXZdE2SJfVTpyRGxyWnAiROp6HO0/ZvPnFo20m3B1WlS8E85554djKQONb9SdNsUu1MgUB8dBhu12Lo/RzFON37IpUzZjdTlJ1m2V8a8wz0/4ASf+zIuaTX5puwZxMcAMWTCY0Cx1VoJPOWiBTjjBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=MNBq6k6T; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-742c46611b6so6273657b3a.1
+        for <stable@vger.kernel.org>; Mon, 09 Jun 2025 20:48:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1749527333; x=1750132133; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LfDKku90Dd3qk/Tpjpfg+vTZqQ5m61fR/4fkUTRneyg=;
+        b=MNBq6k6TwDVb4eytjTBYfIBTtKcrmhehoA3eHH9jWz0kbDrJJLJCS/3c/YH09GK3bH
+         A6u8Gnc+/m2x5GZtiN1z1DSuhLEU7Da8EvLuWBLdzCLEyY9Dq6dRWYkP6hhtTqgrgDV7
+         HpO9Zey9CuNy1HaJGoPJ2zHIAQijYYwPzN1ppITeCA3ZmEbllYDzNXAUa7lAy/H2aCal
+         oU9dQF8cS1BdaOjtidwWwEkytpK0M1atuxaHOu/GXp30R8E7rgVf7pU9RC2VE0bJI2g3
+         TtMsJmeZ5v8kD4hOyH1OjKxtctmra3hvibFmeOMk8zTlow5DZaAIBvF49mZt4FObU379
+         QquA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749527333; x=1750132133;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LfDKku90Dd3qk/Tpjpfg+vTZqQ5m61fR/4fkUTRneyg=;
+        b=CyxhTgUldXLVf7XxhqaapSN6Pj7VGUsVyRDxR4+NEPNjonjei5ydw60CIeCdGfnFdu
+         9NeOOd8lQwSA+eqK6GcyRjYmbQCQwkeqpRi+VbPfW0s+aYMXOH9FIreDcjfSOP+TBeyb
+         8GDBzRuUvA7BuuUbrnc7lvgd5mbIt5QGXnsbWILpK4aAL+HMvFsRba/8WSmiZDvOp27J
+         LOO+eAmG+6Zo4blnsPFzZ4R3gC8n8rxXX6ghH5vxcKaVE0WwKD0xj6NtayLYIN3Se01R
+         g/s3KD5uee3R0nDwp8BRDfs3TEyTlZlt/Z5yRQYNNTU9rbtrdo++FqP6+UV0EXPc4NLK
+         g1pw==
+X-Forwarded-Encrypted: i=1; AJvYcCWDXBgf3QWgcoRsUJJz1sKXMDLfekVPLp8JZktH3CMdZ5yt+7cx4SV1z88XYN1YqePM/T2z8co=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0CeoiCiTwZWJ5JCDf0R+aQFP6lTdNIIz/3Ueo5KzrctKHKTjX
+	vsEzxGlC28ZZ2tbaEX/4+mJjpaExt8kMqz+ScWm1GqV/8allw1Ku5TayjLHUpLNmOnU=
+X-Gm-Gg: ASbGnctvlOPLzlxzxDE9vI4K5OYopCMifOki2wyneCEWoS1eqaBfZB7VdB/g86Zpjpk
+	xU+a3jMK/SntnFHJK6jESVhCalvr6jA0+5QUjutKrsU86dciJ789K737xhZBOaAEZb9FcJ1ymiJ
+	cbXgU3v5YruG/Ad6ejGkd1AF1XIQYFmvRKKnZlOyANODtx8A7dkeAFhLMxKurKioY9Vq1pswvip
+	DVnF8yhwNKifvuhCawhnVAlEiF0n5U0eyOVGAMbP9mnC3bmWrzwoXXYuoxOYrCloiReUAw9uBjm
+	NJx0AziTf/ZVC2PrnR6z4Gp8iKyv0g2sdWG7Gn0H2bYyvt5lSxpdKDDJI/utH8ESnmaCx+WgmYV
+	xb6NHTHPSdVS+zO0XqiU=
+X-Google-Smtp-Source: AGHT+IG1ix41IRlPEDG1HenvHY+yF8PR1xemRzGkkLgVLLnz1RDwPTZbUhRrHTkZMMX4Gu1C+XxPvg==
+X-Received: by 2002:a05:6a00:2343:b0:736:5664:53f3 with SMTP id d2e1a72fcca58-74827f159afmr18347886b3a.15.1749527332612;
+        Mon, 09 Jun 2025 20:48:52 -0700 (PDT)
+Received: from localhost.localdomain ([63.216.146.178])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b083b03sm6488081b3a.83.2025.06.09.20.48.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 20:48:51 -0700 (PDT)
+From: Han Young <hanyang.tony@bytedance.com>
+To: lionelcons1972@gmail.com
+Cc: patches@lists.linux.dev,
+	stable@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	Han Young <hanyang.tony@bytedance.com>
+Subject: Re: [PATCH AUTOSEL 6.1 3/9] NFSv4: Always set NLINK even if the server doesn't support it
+Date: Tue, 10 Jun 2025 11:48:40 +0800
+Message-ID: <20250610034840.36099-1-hanyang.tony@bytedance.com>
+X-Mailer: git-send-email 2.49.0.654.g845c48a16a.dirty
+In-Reply-To: <CAPJSo4XSoTNVvH8MpZWD4W50u=U4bw6YBCnNeiJZpe2LT-YNYg@mail.gmail.com>
+References: <CAPJSo4XSoTNVvH8MpZWD4W50u=U4bw6YBCnNeiJZpe2LT-YNYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iommu/amd: Fix geometry.aperture_end for V2 tables
-To: Jason Gunthorpe <jgg@nvidia.com>, iommu@lists.linux.dev,
- Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Will Deacon <will@kernel.org>
-Cc: Joerg Roedel <jroedel@suse.de>, Jerry Snitselaar <jsnitsel@redhat.com>,
- patches@lists.linux.dev, Stable@vger.kernel.org,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Vasant Hegde <vasant.hegde@amd.com>
-References: <0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/10/25 07:58, Jason Gunthorpe wrote:
-> The AMD IOMMU documentation seems pretty clear that the V2 table follows
-> the normal CPU expectation of sign extension. This is shown in
-> 
->    Figure 25: AMD64 Long Mode 4-Kbyte Page Address Translation
-> 
-> Where bits Sign-Extend [63:57] == [56]. This is typical for x86 which
-> would have three regions in the page table: lower, non-canonical, upper.
-> 
-> The manual describes that the V1 table does not sign extend in section
-> 2.2.4 Sharing AMD64 Processor and IOMMU Page Tables GPA-to-SPA
-> 
-> Further, Vasant has checked this and indicates the HW has an addtional
-> behavior that the manual does not yet describe. The AMDv2 table does not
-> have the sign extended behavior when attached to PASID 0, which may
-> explain why this has gone unnoticed.
-> 
-> The iommu domain geometry does not directly support sign extended page
-> tables. The driver should report only one of the lower/upper spaces. Solve
-> this by removing the top VA bit from the geometry to use only the lower
-> space.
-> 
-> This will also make the iommu_domain work consistently on all PASID 0 and
-> PASID != 1.
-> 
-> Adjust dma_max_address() to remove the top VA bit. It now returns:
-> 
-> 5 Level:
->    Before 0x1ffffffffffffff
->    After  0x0ffffffffffffff
-> 4 Level:
->    Before 0xffffffffffff
->    After  0x7fffffffffff
-> 
-> Fixes: 11c439a19466 ("iommu/amd/pgtbl_v2: Fix domain max address")
-> Link:https://lore.kernel.org/all/8858d4d6-d360-4ef0-935c-bfd13ea54f42@amd.com/
-> Signed-off-by: Jason Gunthorpe<jgg@nvidia.com>
+On Mon, 9 Jun 2025 at 09:12, Lionel Cons <lionelcons1972@gmail.com> wrote:
+> How can an application then test whether a filesystem supports hard
+> links, or not?
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+I think link will fail with EPERM on those systems. However, this patch
+doesn't break existing things though, since filesystems don't support
+hard links cannot be mounted by NFS (before).
+
+Thanks.
 
