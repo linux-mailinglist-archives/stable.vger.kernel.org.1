@@ -1,59 +1,72 @@
-Return-Path: <stable+bounces-152309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9B7AD3B99
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 16:46:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A56AD3B9B
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 16:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A85113AA076
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:45:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 153BF18876DF
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A12B20766C;
-	Tue, 10 Jun 2025 14:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EAD1E379B;
+	Tue, 10 Jun 2025 14:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fa1zbdeh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GVO6Figh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCC91E5205
-	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 14:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A38A186A
+	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 14:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749566760; cv=none; b=nhWitBQSkHBMqYZ6M2RIz6+GjRwGLfXbLDTgAOb0efP55/qeMxLDjhwMDV0M3Nrn8V5C5ZZpS43XeKtFSoZ+x1itM6lZzihashTNOObcvGnPFQr3BVzjiS39ZKpJFwvstcPn7nkYs2p3TevYgZkzrg1vB/M57G5TeurKzUyz7Ck=
+	t=1749566791; cv=none; b=ZGbSoYHHxN9mvpVzaPB/Nbo1NVkYm2idmiV4CLTMnYLYcgMEY+JxYW76qwVkIFQn4e6plHmugdH4LXcVxsJK5m8in4PddERsFqLyEGw9fR4eaGKs1aHu/cYz92TzKPaHf39Hvn4GARimwubAgzRi7gu8Pw0a4fTzaNXgJaZaiqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749566760; c=relaxed/simple;
-	bh=Jbd+EOwYOZnEjRavkoiI0Tj+Sq8vW86nyg5BQCGaF5Q=;
+	s=arc-20240116; t=1749566791; c=relaxed/simple;
+	bh=kwEHHm7zFRCrwj7rWWQ34/8yUWTPvbFGYiZ3ig5tFMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlwDgsMv38xPnFhIJXRNmowfANn+r+v2j+ByeIIHmbqIuiGLqOTcg/++kJl4T5BNbg8fg+COQIoSy0dx2mbWBlfrhiHm1QdG8FKh2WJD83bLEVaxRe2dx1Ojq4hG5LqAWUkRXmBNSvmePS+dDiiZvpoyBiD/uUtux9FEgtLX1QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fa1zbdeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC3BC4CEED;
-	Tue, 10 Jun 2025 14:45:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749566760;
-	bh=Jbd+EOwYOZnEjRavkoiI0Tj+Sq8vW86nyg5BQCGaF5Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fa1zbdeh1SQ8WPSxqwVlKv3G8ALnyymMN/Bb45CauttBqvHjEnc44BMdxSZsdRcPt
-	 ZHirjth3tM7eWs57wKGIhnw+U+0R77Zo//sbDy68ECz0yvsn4qm7EzlYD4gNj3dM48
-	 +dsnIPkh10vjrjb62VO4pVcwkC0VmzVSZHFXmKaQela53dZeYlAYuMsEcFAbzFWLyu
-	 FdHeg3NGNb9E/063o4Cx9IsCN+RaP+lswHwR7ZEstqRhHu9GqFIBVO551nCKeY0D7o
-	 SuRb69Uq6WwS/KxV7YKAvlSVihnBC95PeH0eujUSBhqvRruudG4IqWPa6kWsa1iEXP
-	 vGgbgVOQwj0qA==
-From: Puranjay Mohan <puranjay@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Hao Luo <haoluo@google.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH stable linux-5.10.y v1 8/8] bpf/selftests: Test PTR_TO_RDONLY_MEM
-Date: Tue, 10 Jun 2025 14:44:03 +0000
-Message-ID: <20250610144407.95865-9-puranjay@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250610144407.95865-1-puranjay@kernel.org>
-References: <20250610144407.95865-1-puranjay@kernel.org>
+	 MIME-Version; b=F+UcR0FWyi1PDFNbkhD0hhoOmIFCz0tb0kznmtMSat2Rsv5p+t2SyqkBWsVcTAejkHGmum1DiUdCd5511rtbfSAnDDhd386h7DilOTsHJJsfRKmXYJvSL5L1nM1h6dDJGmG9kCfN8lYuDtiYWjgm5TK9tBfqvxmTuogDNEgRK0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GVO6Figh; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749566790; x=1781102790;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=kwEHHm7zFRCrwj7rWWQ34/8yUWTPvbFGYiZ3ig5tFMk=;
+  b=GVO6FighyB1Wo+zFlQFmw60q8Pe98SmFmdF3z35cYUuD2FJxKbo+xbN0
+   zNbMXl2QIw2TVYPU/X/78/qK3bnzjZhp/iHDtPCgvKkrjmSl/0XHfCeRN
+   aR8rXM7sAbFkQFb35B74kUVWmkSYKcYc4+FQRie8WwlbMP5OfXbFMDp55
+   RjJVSyDBcZq0gIJ1pbx//KNPr07GkGylec4xgsnS1rePoqGhtp6I+fQSo
+   6+kq+MTPJpetaLv/USjSVOYjXUTm+PIniRaSjNir484SmLgzAbl4aI4fF
+   dM53jvhCfjanCTmYCl8ZFNl1oNjcGQKw5xmURz/aWCpGXdrQh4RwftFPj
+   A==;
+X-CSE-ConnectionGUID: AHVby9tZRHeQlymflh193w==
+X-CSE-MsgGUID: 2OuTJf7LRLyyPstrJ9DMxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51822300"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="51822300"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 07:46:29 -0700
+X-CSE-ConnectionGUID: YJxLzApUR2OtC6C46i9fPA==
+X-CSE-MsgGUID: xs9ohlj/QNu+Y1mCakJ5iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="151740023"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.88])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 07:46:28 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: michael.j.ruhl@intel.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+Date: Tue, 10 Jun 2025 10:46:10 -0400
+Message-ID: <20250610144619.1079056-2-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250610144619.1079056-1-michael.j.ruhl@intel.com>
+References: <20250610144619.1079056-1-michael.j.ruhl@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,99 +75,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Hao Luo <haoluo@google.com>
+Usage of the intel_pmt_read() for binary sysfs, requires a pcidev.  The
+current use of the endpoint value is only valid for telemetry endpoint
+usage.
 
-commit 9497c458c10b049438ef6e6ddda898edbc3ec6a8 upstream.
+Without the ep, the crashlog usage causes the following NULL pointer
+exception:
 
-This test verifies that a ksym of non-struct can not be directly
-updated.
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+Code:
+Call Trace:
+ <TASK>
+ ? sysfs_kf_bin_read+0xc0/0xe0
+ kernfs_fop_read_iter+0xac/0x1a0
+ vfs_read+0x26d/0x350
+ ksys_read+0x6b/0xe0
+ __x64_sys_read+0x1d/0x30
+ x64_sys_call+0x1bc8/0x1d70
+ do_syscall_64+0x6d/0x110
 
-Signed-off-by: Hao Luo <haoluo@google.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-[Changed ASSERT_ERR_PTR() to CHECK()]
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/bpf/20211217003152.48334-10-haoluo@google.com
-Cc: stable@vger.kernel.org # 5.10.x
+Augment the inte_pmt_entry to include the pcidev to allow for access to
+the pcidev and avoid the NULL pointer exception.
+
+Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to read telemetry")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
 ---
- .../selftests/bpf/prog_tests/ksyms_btf.c      | 14 +++++++++
- .../bpf/progs/test_ksyms_btf_write_check.c    | 29 +++++++++++++++++++
- 2 files changed, 43 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/progs/test_ksyms_btf_write_check.c
+ drivers/platform/x86/intel/pmt/class.c | 3 ++-
+ drivers/platform/x86/intel/pmt/class.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/ksyms_btf.c b/tools/testing/selftests/bpf/prog_tests/ksyms_btf.c
-index b58b775d19f3..97f38d4f6a26 100644
---- a/tools/testing/selftests/bpf/prog_tests/ksyms_btf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ksyms_btf.c
-@@ -6,6 +6,7 @@
- #include <bpf/btf.h>
- #include "test_ksyms_btf.skel.h"
- #include "test_ksyms_btf_null_check.skel.h"
-+#include "test_ksyms_btf_write_check.skel.h"
+diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+index 7233b654bbad..d046e8752173 100644
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+ 	if (count > entry->size - off)
+ 		count = entry->size - off;
  
- static int duration;
+-	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
++	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+ 				    entry->base, off, count);
  
-@@ -81,6 +82,16 @@ static void test_null_check(void)
- 	test_ksyms_btf_null_check__destroy(skel);
- }
+ 	return count;
+@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
+ 		return -EINVAL;
+ 	}
  
-+static void test_write_check(void)
-+{
-+	struct test_ksyms_btf_write_check *skel;
-+
-+	skel = test_ksyms_btf_write_check__open_and_load();
-+	CHECK(skel, "skel_open", "unexpected load of a prog writing to ksym memory\n");
-+
-+	test_ksyms_btf_write_check__destroy(skel);
-+}
-+
- void test_ksyms_btf(void)
- {
- 	int percpu_datasec;
-@@ -106,4 +117,7 @@ void test_ksyms_btf(void)
++	entry->pcidev = pci_dev;
+ 	entry->guid = header->guid;
+ 	entry->size = header->size;
+ 	entry->cb = ivdev->priv_data;
+diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+index b2006d57779d..f6ce80c4e051 100644
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -39,6 +39,7 @@ struct intel_pmt_header {
  
- 	if (test__start_subtest("null_check"))
- 		test_null_check();
-+
-+	if (test__start_subtest("write_check"))
-+		test_write_check();
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_ksyms_btf_write_check.c b/tools/testing/selftests/bpf/progs/test_ksyms_btf_write_check.c
-new file mode 100644
-index 000000000000..2180c41cd890
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_ksyms_btf_write_check.c
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2021 Google */
-+
-+#include "vmlinux.h"
-+
-+#include <bpf/bpf_helpers.h>
-+
-+extern const int bpf_prog_active __ksym; /* int type global var. */
-+
-+SEC("raw_tp/sys_enter")
-+int handler(const void *ctx)
-+{
-+	int *active;
-+	__u32 cpu;
-+
-+	cpu = bpf_get_smp_processor_id();
-+	active = (int *)bpf_per_cpu_ptr(&bpf_prog_active, cpu);
-+	if (active) {
-+		/* Kernel memory obtained from bpf_{per,this}_cpu_ptr
-+		 * is read-only, should _not_ pass verification.
-+		 */
-+		/* WRITE_ONCE */
-+		*(volatile int *)active = -1;
-+	}
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
+ struct intel_pmt_entry {
+ 	struct telem_endpoint	*ep;
++	struct pci_dev		*pcidev;
+ 	struct intel_pmt_header	header;
+ 	struct bin_attribute	pmt_bin_attr;
+ 	struct kobject		*kobj;
 -- 
-2.47.1
+2.49.0
 
 
