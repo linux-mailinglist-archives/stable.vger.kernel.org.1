@@ -1,160 +1,113 @@
-Return-Path: <stable+bounces-152272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4F8AD3442
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C05AD34A1
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC56D18827AB
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A27A3AADBA
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB9928DB68;
-	Tue, 10 Jun 2025 11:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1594028DF37;
+	Tue, 10 Jun 2025 11:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="rD05dWhA"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bZf5KJZL"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189E128DEFD;
-	Tue, 10 Jun 2025 11:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA45223DC6
+	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 11:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749553266; cv=none; b=amBFB8tldpJogZpW6CgJu/YyiXLl2LPVZvJ4DMOOqX/SD1MbFTMozo9bHHCGzxHqZU0VClGYoGp48v98al/9CMrW0cNL+gLRzEDxL/lFCyPd5/mTGO56z8Z4QwHCjLx4sM0Vo+QuVGu0QCxx0aqFUZf5cAtnArEt/YqFHrA+rH0=
+	t=1749553859; cv=none; b=aUnvdXuXesmJ3eaFj8CaEUR6wxn0Am1PJGjoRy0WoOE+i4195kn1p4rkGgybygKybpIsDelxFIy7ErjdwbA4e5iu0ftRgITz3TNV95AgzQjxRYl/CcTFJDUETPczJOw6k7zhsfoEjRt30HaQqMWX7nDKijNiOdH2nLJd63T2bms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749553266; c=relaxed/simple;
-	bh=bj9uORPBFKQmCBXHlGeWes/1XCM6rht+aJmn71UB9oY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oxFoupkZRl8NzkdazrefvrvSQiw9Sm9quyQOU9f4L5FhS9Ek8EqvGHULDT7JdIv8x62nNzkSNozcOQwveT+EQHn2iU/Ww/rdd4i6kjuuv7qxfqW0uooPx/C80bwDvWY2E54i48Ii+4mvtdN9VsSAIz6EtmLfSlmwtVzIrXUZZ0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=rD05dWhA; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1749553261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Vo2Zyt9N71XXrlfkHINXeqxc3IbbEl+K1MiiDygVfoA=;
-	b=rD05dWhANm9OTqpuJH3lQwF+whvZek3EPSJRgYLqb3tHk/P62dAXAwVqk7+2J2HKL0p0aB
-	UcazLSGFlZVFC5QopSN6WOk/SKa3kndL0apJSx9GcBelM58b0LBU/Mkd9AG6WpIqAQMlyR
-	c8g/18EW1L77VPYSGmQ1ZpBYQlSPp1Q=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Hannes Reinecke <hare@suse.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Yuan Can <yuancan@huawei.com>,
-	Chen Jun <chenjun102@huawei.com>
-Subject: [PATCH 5.10] blk-mq: Fix kmemleak in blk_mq_init_allocated_queue
-Date: Tue, 10 Jun 2025 14:00:59 +0300
-Message-ID: <20250610110100.19025-1-arefev@swemel.ru>
+	s=arc-20240116; t=1749553859; c=relaxed/simple;
+	bh=moz2wim/rfV0N0Eam+BybWtmQPf4KPqMQ/vPGwKbkWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tRD4N1n28oPnKtEALRc728sQLihtVmZEPl7SHPjwm4Yd2SIvE1zKn1cHR0ozsjg2uysdFxZSg27ogWcYNdApmHRYjvLLg5TTQIrGd6tRlDvTQXZCmgCD2Dl1bd6tFB716eMmwP9IKRTWWcTzkzGlEqG3Hau+/ymKsAWEoWdL2Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bZf5KJZL; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45300c82c1cso9384245e9.3
+        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 04:10:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749553857; x=1750158657; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/q/ZgTSjkrs+z+mH2vucvlcudnmZL89/lUFX5jLOims=;
+        b=bZf5KJZLAlvtQ6h3Hx+hicQ12578idIoM4pQTxaGuMofgNp+6qd4JgVgp1W41wVFnM
+         gmC+yVoo/u+tlh0lWhPjfyu5YdzRcHG0ePQiCDZUeolMoUEMY1fC7C/HZ1PhvKoas+qI
+         gC4CLreXQgGl7hn4jSHWBh25786usgQHdXq3ZlhXtL3DsTXDCtnkMav+xrB4DJ6erWP9
+         m6bI4LZE8YOXKy8wkDDQk7IVSQgEIUwNWdjevSkkdEsJqj4xq/dh9x35LeE9P3haEyFQ
+         D5Mm6rMkpcab0DURPUbFrkk5IxxqdTiROmcvqzm8j1LaZCbNgj07hQXBa2v42wRw3oYu
+         K2/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749553857; x=1750158657;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/q/ZgTSjkrs+z+mH2vucvlcudnmZL89/lUFX5jLOims=;
+        b=YMU5NXKU7BOdZb5LvWZcHhJtGafk3CyaVQVlwV8CFDHBnDOFsd+Fcg0lFcP1n6u71N
+         2NwcbtTT/zIZ0WxfV7wwce6WPHPFS9lEoc3yGuyBPJJlksXBUIcoh6rPchebcNjBnPPz
+         38BKC+sTFTOVNsyG3GrVuaBMZ2IrYyVAJN9L4DLzY4lnOGCHabpT4dBriiK22dV05CcN
+         lr1g9RMJhhpCGMo5fFwgoznJo6T5q7RXjBQq0vt0qOj7cw8iSiuKQ2LB4iMzNAWNQr6h
+         vf43C2Dp7t0p1yudcq/Rg9k+kFiZtJTDlkx3acHuqSIylkUAh96ZF/u8Fc84OOFIPpTJ
+         U4Uw==
+X-Gm-Message-State: AOJu0Yw/yY427oVrumnwQxdNzvN7hIjhq0sLMs4DzAdYuzqkMVv2rI9p
+	2VBwKHmfllseGlL+xwhU6jvn9uFGwRIeFtc9zp0pmX1+fGljwN2Zny62mkON/2gEgkA=
+X-Gm-Gg: ASbGncvx1fC+mIKXys6vLmISzg9+nEzj3qF+Ptuy6xS+KpWyVWxTwhCL89xzVBdh74C
+	xUFOXp6WVswRYAbwv1XjT1wV5cVwZSKmALPsZkkp9OrM1DZsTRklMzjoDWgaqcReNKdQqejIjcA
+	IkHoso6ci8HWzqgzSJLSUwFp5O4WzoANGWNf/RChsfvsaLTT+y8yYyWiUhnueSR9DYT7dpbFgAv
+	3ZOGbsE/ZA1isvy98hvgHRJ+q19n7y4D2BlwXFrKEe6G6hDBWK3w67ilUoileW0+wtFMQu4dYDA
+	Pw22RSGXAHhAP76onsbqj+yrE66mv2+yCD7vJQkUZ21DebDUTexjmZ1wqWj6JItFp+sMpw52
+X-Google-Smtp-Source: AGHT+IH5Y3x1Ki501vRLyJm67k0wpvTB1sBYw1TI/SnhFi6z5THD53vwm2fVgUQX/KBtW47aDeeIdQ==
+X-Received: by 2002:a05:600c:5396:b0:441:b3eb:570a with SMTP id 5b1f17b1804b1-452013681efmr181694725e9.2.1749553856655;
+        Tue, 10 Jun 2025 04:10:56 -0700 (PDT)
+Received: from [192.168.0.251] ([79.115.63.158])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-452f8f011c8sm134431845e9.3.2025.06.10.04.10.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jun 2025 04:10:56 -0700 (PDT)
+Message-ID: <2a6336cc-b5cc-4f8f-94a5-d0872a3c95fd@linaro.org>
+Date: Tue, 10 Jun 2025 12:10:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] PCI: Fix pdev_resources_assignable() disparity
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+ Rio <rio@r26.me>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250610102101.6496-1-ilpo.jarvinen@linux.intel.com>
+ <20250610102101.6496-3-ilpo.jarvinen@linux.intel.com>
+Content-Language: en-US
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20250610102101.6496-3-ilpo.jarvinen@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Chen Jun <chenjun102@huawei.com>
 
-commit 943f45b9399ed8b2b5190cbc797995edaa97f58f upstream.
 
-There is a kmemleak caused by modprobe null_blk.ko
+On 6/10/25 11:21 AM, Ilpo Järvinen wrote:
+> The reporter was perhaps not happy 
 
-unreferenced object 0xffff8881acb1f000 (size 1024):
-  comm "modprobe", pid 836, jiffies 4294971190 (age 27.068s)
-  hex dump (first 32 bytes):
-    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
-    ff ff ff ff ff ff ff ff 00 53 99 9e ff ff ff ff  .........S......
-  backtrace:
-    [<000000004a10c249>] kmalloc_node_trace+0x22/0x60
-    [<00000000648f7950>] blk_mq_alloc_and_init_hctx+0x289/0x350
-    [<00000000af06de0e>] blk_mq_realloc_hw_ctxs+0x2fe/0x3d0
-    [<00000000e00c1872>] blk_mq_init_allocated_queue+0x48c/0x1440
-    [<00000000d16b4e68>] __blk_mq_alloc_disk+0xc8/0x1c0
-    [<00000000d10c98c3>] 0xffffffffc450d69d
-    [<00000000b9299f48>] 0xffffffffc4538392
-    [<0000000061c39ed6>] do_one_initcall+0xd0/0x4f0
-    [<00000000b389383b>] do_init_module+0x1a4/0x680
-    [<0000000087cf3542>] load_module+0x6249/0x7110
-    [<00000000beba61b8>] __do_sys_finit_module+0x140/0x200
-    [<00000000fdcfff51>] do_syscall_64+0x35/0x80
-    [<000000003c0f1f71>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
+No, no, very happy in fact. Thanks for all the help!
+I figured out that I need to get familiar with the resource fitting and
+assignment code, and PCI in general, before trying to fix the problem
+with the downstream drivers. Which is something that I can't allocate
+time for right now.
 
-That is because q->ma_ops is set to NULL before blk_release_queue is
-called.
+So even if I couldn't fix what's going on downstream, I'd like to thank
+you for all the help and time!
 
-blk_mq_init_queue_data
-  blk_mq_init_allocated_queue
-    blk_mq_realloc_hw_ctxs
-      for (i = 0; i < set->nr_hw_queues; i++) {
-        old_hctx = xa_load(&q->hctx_table, i);
-        if (!blk_mq_alloc_and_init_hctx(.., i, ..))		[1]
-          if (!old_hctx)
-	    break;
-
-      xa_for_each_start(&q->hctx_table, j, hctx, j)
-        blk_mq_exit_hctx(q, set, hctx, j); 			[2]
-
-    if (!q->nr_hw_queues)					[3]
-      goto err_hctxs;
-
-  err_exit:
-      q->mq_ops = NULL;			  			[4]
-
-  blk_put_queue
-    blk_release_queue
-      if (queue_is_mq(q))					[5]
-        blk_mq_release(q);
-
-[1]: blk_mq_alloc_and_init_hctx failed at i != 0.
-[2]: The hctxs allocated by [1] are moved to q->unused_hctx_list and
-will be cleaned up in blk_mq_release.
-[3]: q->nr_hw_queues is 0.
-[4]: Set q->mq_ops to NULL.
-[5]: queue_is_mq returns false due to [4]. And blk_mq_release
-will not be called. The hctxs in q->unused_hctx_list are leaked.
-
-To fix it, call blk_release_queue in exception path.
-
-Fixes: 2f8f1336a48b ("blk-mq: always free hctx after request queue is freed")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Signed-off-by: Chen Jun <chenjun102@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20221031031242.94107-1-chenjun102@huawei.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[Denis: minor fix to resolve merge conflict.]                                           
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
----
-Backport fix for CVE-2022-49901
-Link: https://nvd.nist.gov/vuln/detail/CVE-2022-49901
----
- block/blk-mq.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 21531aa163cb..6dd1398d0301 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3335,9 +3335,8 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
- 	return q;
- 
- err_hctxs:
--	kfree(q->queue_hw_ctx);
--	q->nr_hw_queues = 0;
--	blk_mq_sysfs_deinit(q);
-+	blk_mq_release(q);
-+
- err_poll:
- 	blk_stat_free_callback(q->poll_cb);
- 	q->poll_cb = NULL;
--- 
-2.43.0
-
+Cheers,
+ta
 
