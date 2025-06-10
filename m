@@ -1,237 +1,221 @@
-Return-Path: <stable+bounces-152246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494D2AD2ABF
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 01:58:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C427AD2AD2
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 02:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F211890DAF
-	for <lists+stable@lfdr.de>; Mon,  9 Jun 2025 23:58:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEEF51891DA1
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 00:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4C023026B;
-	Mon,  9 Jun 2025 23:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191304C80;
+	Tue, 10 Jun 2025 00:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lDTIIxOH"
-X-Original-To: Stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2045.outbound.protection.outlook.com [40.107.236.45])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9N28LeP"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B8722FACE
-	for <Stable@vger.kernel.org>; Mon,  9 Jun 2025 23:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749513493; cv=fail; b=ULLH5MeB9cUhekSTAGbvjL4pjfya7rnlQjAEuOZ3t8d3JvyYPAqNvF69jA6QTHNRMWSQOJnJLKEUcb0Pf0fypDQag9VRFliLGh58i5HPPBfd2h4BZp0pwTzR/+dE5YPAlf0ukl3j0+ZhB7SqwX4UYXH1ARdFTN7ljuzvVXNbWlI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749513493; c=relaxed/simple;
-	bh=mwaJVb2AXrAOwIl9RiXudysRpVfuBZ5WSS1l+NsIOpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=IAkTwfEnunZWROXQOJqgkqaAK2HQ5SdSEM9qjULpTgDYmk++sDPnkOPghuYdgd1yoybj5H8bm2msZGxVk2DwLA5gB2cSip40gInoEl7F980i5LSHLV833OGpHyvW2FaiS86zSFY/rZuJSJUJJObl+jJqyWmuSdvNSriq+NNe47c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lDTIIxOH; arc=fail smtp.client-ip=40.107.236.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yGcCjsC/sR7B5D6MKGu0GsEnL6doXpCLTag0hKohIYxOgv7dLiufqerHblQe94TCdlPrXYtSVACEAlH/w18NAmtvH2p3SuaLx1y4YcJVVLDZ9sGvTASYFsNDBPbChbbhIF2q8NvM+mpstrgakNhj2JtI25kjVnbrZkJLKkaAhcGjCSsP7ErKm1fC9/V26fJ7CE46KJ1YvrvR+d7NxIGQ3IeJ97296WtxX7Nl0vMVYvRZmOFJz6RVLhvY1l5ucJF8Ac3jLPZfyabGofcoNfuEcnPHWT4ZbbzWSd+hDAP44TiQb+Lj/k05jX6Z7eyS41s9DxUs9NcjWY6lYJ3PbTrgDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uWxkWE3zIJUiSRpDMp8BHH3pHIoHnsO+76iMBocOK4M=;
- b=BxBdhOVvLvtQe9bAuEw2GfKaXF9Wwt2/Vrz/maMnXiBHOrOHOI7156AqZvm4oVt0l8GBh7wwkUSVNjOxdXRWvS8UjZWWd+1ZXG0acpEM+ByCOJnfY1AtX3CadqAGhr/C9juBoH9k5SYMkFl3h3Z4Oj7OiMxFuxuDULV+mOfrGU1BXbgEr9g0Q6LMx3Lwa0YpnfPbL55HCIOleFMCWmrwDbFFtDboQxxMM9OjE7Z0foHUB4Xex8Ioo964V808LwMb/q2UtGGTPt7hhUUmd5F9Gbkc2wNsCqeUZmvS/dddlZgP6wMqODFi6H9RkkcEuskBNth4EGpnF0uRNovvkAg4pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uWxkWE3zIJUiSRpDMp8BHH3pHIoHnsO+76iMBocOK4M=;
- b=lDTIIxOHQrnb40HfXHLEtM7lRC+tJhK/s+B7k9/tDzYb5ruBdY8F5PZko7weYMfOD/NvufM1lGrFkFp00t1Q2ixoQgbLBoj8nV/fLy7APHqyk8vgJEhGe9y7eVmTfW2ZrPT4hdJNx02kfrF6BpzhiXEbp0cJfpflBXrrJDTqw2717sr9ypY2WC8jHOz+OPHgBEE4vzhYYUU/Ix+rJdtcpr2fhduQsr1Kk4nprGlNZMU1c2tbSoYpLExBB60x3JWoNL0MMPOiHJ/viEe2jsro+43Tt9719eYMzSVc+G9+m2gxH0VQt5q6xz25PuT5oUYF1Rieg3vqEmQpSKdYnwqxkA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SA1PR12MB8948.namprd12.prod.outlook.com (2603:10b6:806:38e::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.35; Mon, 9 Jun
- 2025 23:58:07 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8792.038; Mon, 9 Jun 2025
- 23:58:06 +0000
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: iommu@lists.linux.dev,
-	Joerg Roedel <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Cc: Joerg Roedel <jroedel@suse.de>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>
-Subject: [PATCH v2] iommu/amd: Fix geometry.aperture_end for V2 tables
-Date: Mon,  9 Jun 2025 20:58:05 -0300
-Message-ID: <0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: YT4P288CA0016.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d4::29) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA18A645;
+	Tue, 10 Jun 2025 00:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749514383; cv=none; b=ddRETkGKVgaf5xlg/MDSURj7wam2vWVFBUlFNpFTO48z9KmFi905lL2jbdrC+mgZbo7PRm7PUt3FEtaVw50ce7CNUiYPhgZ0rNbT15FMSGzZDW2KoDiLbFUsHU7Drz4/z9Gp7iIFcMJFPEd0ZLNh5xC422fUS9uF55hpHgpkRLo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749514383; c=relaxed/simple;
+	bh=EB5B/sD194nGvooI5Aa9H25sIT/lJMIiyYJPqiS3Kcs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SLN8X6QUrmqwfdU54UkibhwrrC8Sj4RkbeNKkpCskUYDh/NRP4gGE8JdY1+fY+o2wt+PKibi52tXy6W5CZAo8brK53ADHSBiFPFZQMyDsxt/02TogJpW3Oy8vw2EuAtPvVh3BQIMQUxro95EdxDvMCidnHH//uqpaRDdvlDyY8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9N28LeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10D3C4CEEB;
+	Tue, 10 Jun 2025 00:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749514383;
+	bh=EB5B/sD194nGvooI5Aa9H25sIT/lJMIiyYJPqiS3Kcs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=M9N28LePt8TMwfwr4f2GpM5qPRZZI1o8C4x3/5/2So2Yd+IPVI3g7XPN0nksNHRfr
+	 3n50MaHMUIxKI8Gd1I+/CuC/I5PNRKH5rgNHU/z4ae0C5Evk85XD4SUKVpv7H6gcL6
+	 tYzg6k5rmTR+JwonU7AR7OH1lCbMYWKU7cjxSomMtt5mUSDgPvJsNXGZV/doqdUbsF
+	 ReFAT5QDY/g9sRAfA+mnOQyJ5FrnG8FmkNilhlG1UlZ/kkIgXomBnuyItsnSd94a80
+	 G8PtkUAo7Fm+Hx3sLsoiV6teZO7F2bi51vFZAwetn80yHdEhWKgbBlAgfRjdx7v0A6
+	 jdd8NbGkU4kEg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	willemdebruijn.kernel@gmail.com,
+	maze@google.com,
+	daniel@iogearbox.net,
+	Jakub Kicinski <kuba@kernel.org>,
+	stable@vger.kernel.org,
+	martin.lau@linux.dev,
+	john.fastabend@gmail.com,
+	eddyz87@gmail.com,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	willemb@google.com,
+	william.xuanziyang@huawei.com,
+	alan.maguire@oracle.com,
+	bpf@vger.kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	yonghong.song@linux.dev
+Subject: [PATCH net v3 1/2] net: clear the dst when changing skb protocol
+Date: Mon,  9 Jun 2025 17:12:44 -0700
+Message-ID: <20250610001245.1981782-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA1PR12MB8948:EE_
-X-MS-Office365-Filtering-Correlation-Id: e25635d5-5dab-426c-1523-08dda7b17ab5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?19oU1qASdm3RKd4oX20dhqwuWMpTi+kpM1tbfTKyi420BQygMQVgZwRfDMWk?=
- =?us-ascii?Q?GaCeg8dOwd4uBprbangJ5ZhMFOKbHk5gtKuiCf8sBwS4X4pGuHkcPJRweo9f?=
- =?us-ascii?Q?xKPi7zU0CR3LEOwUB2s/IN6BxJI6nAtf7J46irNa5qno25ml9SMDHE4wt2Ap?=
- =?us-ascii?Q?YMpU1nyndHgQ3/vlyr13sBUe7QlA6ge+p6C+lDz1P2CwcR2I79Slo9DMv5v4?=
- =?us-ascii?Q?hgPwcOgb4sOLpN11ps7Zh55y6xbgo4fgNQ4vO8g/489AiofAfHVmbhNj0Wju?=
- =?us-ascii?Q?yq/0ZJy9YFi/mx1izsf5y5o3w2KTzKHIJcvxA4n3jakZTrq39/s0UEpUv2IX?=
- =?us-ascii?Q?twTJBEW+avIfUtSd9HHZ9U5OrF9mN3igBMacarI1LsgQZaP75ArX86Gi4m1j?=
- =?us-ascii?Q?ANhzQc6CaTBbBJNAXu02bwbf56jOVMfrzX04pnY/f+UwTWk493FYMMRzbvXX?=
- =?us-ascii?Q?BgXCvXkqfi4vVa35PYsE0uDjMiNzEOwQLLydJ00bU0JrbM7RF3tZUFaxOeVy?=
- =?us-ascii?Q?uhTl+HjTqaPXe9GxjB42HzHnYh12OPUUPfWVqLiQq6Q/kzaPiLcFQByKGraJ?=
- =?us-ascii?Q?DgDRxFgp7xENvrdpsGaOC+Ri8+hmCPMYDHi0qBXiqkQcr4tzmlpVmnY0TCac?=
- =?us-ascii?Q?ZsJWwQKNRrS55KPAeBEAI4RDj1Or9ciuookugZVdzDcvZ95nZvFYplgXVYke?=
- =?us-ascii?Q?BPl6eHijSvJCDsMzOYsG8O7+EOtqXxoyRFVJQ965qxv+IJpnhJepL7Q/d6aa?=
- =?us-ascii?Q?5Y7wmKtiqMhESTYDORVou5obQQnrS6TD6j17utPo8UjxNys5WGsLBxk2PyZq?=
- =?us-ascii?Q?rjHjnkKb5sib8Jvu2KUXkul5nR4Z4Ze864YmsDxDeeoPDPcKXHLzFH9Mf/DN?=
- =?us-ascii?Q?7Dni8hmV1pVwo0UrW6N7k2znUyBVV+SDOs1NcJmlCEL6gtpSZG9Cgbi29ORr?=
- =?us-ascii?Q?OJ8nJ1D0VI1O3dz8gRDA2KsZAAlpj7Z+tf68rs6iVoLNAPR4HCtveC8gsAre?=
- =?us-ascii?Q?jd1scXcZLAHsxuIX4rZrM1unrqfwBSyHIwqJd17ZhP5hbw3uRzTZ60pYZ1iD?=
- =?us-ascii?Q?c4MX/3N/kGiDqNFB7oZKehl4+wPQDw8wB1UZoI4WgIwg2AxxE0LJ6qlqfTam?=
- =?us-ascii?Q?1Psg/GvxV8WOrVno2ItQZ1zdX8YvYDbJfLZ69UU6N89tPp+sL7TCxIKItPEZ?=
- =?us-ascii?Q?5sHm1s9hSEAgPhkpFTSPAJc7WqYexrFC1p0yhbakoismoV/pQ/Gco/KzZeH5?=
- =?us-ascii?Q?6vjcZK00JRXeSrT6iBPOax9GniCi+nUpevK4qZ3/CovvuGEo3vsAIO56YHZC?=
- =?us-ascii?Q?QgnKZlZ36xC476v/2drDm8BPQvk5ps+UcPPs8CtEKKHYL8YZbCEy2NbTLpe4?=
- =?us-ascii?Q?y+eQ9EYxG+XmFcprErPT9DnFpcgC3WTHuPBpq/1roQbFPRO3ZEafj9bvzHy7?=
- =?us-ascii?Q?ASyNq0EqHpQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CC73igLczm+mBrFXEizm2dA1Bnwl80LB2SUf4w4/ezmWVsontajuONtFT/sJ?=
- =?us-ascii?Q?ry+rv2hkNKedDhA+Se7AKM1rChHtHT6ks1iYvEwBX3EnEP6D2yEpcY2fNyXx?=
- =?us-ascii?Q?5h9Rm35et7NRa9RFyfVXCfnnKO+UzpqB4rpcRMBQPGUogD2VVaII2IxZYp1w?=
- =?us-ascii?Q?QPwdSB3TORdbcPOspygs6R98MjfXlogPPiq6SovxhiNNSkWhyKBLHGLxIbF3?=
- =?us-ascii?Q?PvRpG+gA9YxxyYA2pM/wWX3wKN9vSC+o9lNu8QsPBTpkLOqxUJV+ya0/Ctr7?=
- =?us-ascii?Q?IFF5QNw7HzYiEr0gZYEDBymK/Yk8us/bioxuKRTh5iLVjU1FuRfUPUNQvb5m?=
- =?us-ascii?Q?dvS3DBJNo5CHdKhZjCkKZ2DvPk4OAY6DTVsVnr/Zp3PWVGzB5WgR/KFF6s54?=
- =?us-ascii?Q?FaofD/Ar7OS9ie0fBM/0/dKet6VNNzO6S1LCZgphgg5sL029tfUFohpPGvil?=
- =?us-ascii?Q?TyZM1BucGsnPIx3DYfQ+bZ26CU0BQfFB9SA477jhm69GXHlBqe/y+uQBqulS?=
- =?us-ascii?Q?1szsKuFO/POe7hOzQzMxeoMg8PfC+EIvjE3tAmucxIThTZrOe0Ld8QzyY03M?=
- =?us-ascii?Q?CUJ+Fz/dXLFizKFlo64kBLubTbDRK8O0HDz54/4UzdCOF/u2K9oQYSrnIOty?=
- =?us-ascii?Q?k2PF2an8xMOEKcWVsLXjwD8FojCXAciZLhcfqi6uQQ0k+aj5+fWDB4d5rECS?=
- =?us-ascii?Q?do/LL0CkGvru7Ord9pK8F/HEMtDsQ1PKXQ+6/XzYwM2VxlIsR0vgEikUXrVu?=
- =?us-ascii?Q?h9WpTf5Om5AHlftWVtxhfkQqxypPjCNoOFZkAIMVrbHJ08O6fSIzxe+HsJh+?=
- =?us-ascii?Q?+Eg6OsdDdqb/izV5oRLF1eNP4SZFcy0VSNNiSQtGKZvtk8H3IqU8f9hRDEnt?=
- =?us-ascii?Q?oPq4QiMeIiTvQi+TdrdvFsPCiWAI/JJsqeMLZk4/YcgB/8ZLWpEWAWs6QjX+?=
- =?us-ascii?Q?ItO90QeiJQShghztB6JEu+aMq2I1Se52xd1iAIYt0PGUfXhoS9+NCzSZKvOE?=
- =?us-ascii?Q?m4+7uXaU+OCmSDyQdQWZrZrzrexrHNuccwmEbkHQwS9DCopgEfIRyeO9kpYo?=
- =?us-ascii?Q?cSH75NGm5NaSHqKxUJZJeV7heUoMfTiicNZzdboteSUTwCrDcObD8nnB6XFQ?=
- =?us-ascii?Q?5fjlbFY/dCDl9CtOrBzVI1EUkJ35bHdWnFIQTN8v6oGZs0kmqyRs45hjNDvo?=
- =?us-ascii?Q?4idr9nWw6bOfzHV26DwLolm9RS0AQMBgVEPE2eZCmfB32ug3P9O8ClgcD0kr?=
- =?us-ascii?Q?99K7+bG4MaAUx+zEWUpDGwckhnY8my0xhDUggMGMGyRDKLDhYJIXxEaRpteI?=
- =?us-ascii?Q?9TJChygAWc459Tbse6LI9OnBYcfH8KBAOKx3exd0vRnlXrWqC4jF5tKLFIy2?=
- =?us-ascii?Q?NKvbscx0c7A3s/fIUyWAScKV7JQ/hSEaDvJZvV23+1Ug9SJiQFB5ElgeSf4S?=
- =?us-ascii?Q?Fi4wfRhx8kNiNaVcwp58hoW1ivwEFh0t6VmYTvk3u1J4XGR/RPisSXP30O8B?=
- =?us-ascii?Q?2F3JdUAYvGC/PrZalusFxOKn4QraipbLB3vhlcxVIDrLOIFJPao8LDlrZaxY?=
- =?us-ascii?Q?gFejW1xcVRU/W5IzEcaWw8ker86naA5S7j+MgJXi?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e25635d5-5dab-426c-1523-08dda7b17ab5
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 23:58:06.8579
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VQWWcA3E2KarVkrJ/fL4DYDk6qYg/taYKA5JM6Xzna0aWU33JwXzFgb4QtxvAf9J
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8948
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The AMD IOMMU documentation seems pretty clear that the V2 table follows
-the normal CPU expectation of sign extension. This is shown in
+A not-so-careful NAT46 BPF program can crash the kernel
+if it indiscriminately flips ingress packets from v4 to v6:
 
-  Figure 25: AMD64 Long Mode 4-Kbyte Page Address Translation
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+    process_backlog (net/core/dev.c:6186:4)
+    napi_poll (net/core/dev.c:6906:9)
+    net_rx_action (net/core/dev.c:7028:13)
+    do_softirq (kernel/softirq.c:462:3)
+    netif_rx (net/core/dev.c:5326:3)
+    dev_loopback_xmit (net/core/dev.c:4015:2)
+    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+    NF_HOOK (./include/linux/netfilter.h:314:9)
+    ip_mc_output (net/ipv4/ip_output.c:400:5)
+    dst_output (./include/net/dst.h:459:9)
+    ip_local_out (net/ipv4/ip_output.c:130:9)
+    ip_send_skb (net/ipv4/ip_output.c:1496:8)
+    udp_send_skb (net/ipv4/udp.c:1040:8)
+    udp_sendmsg (net/ipv4/udp.c:1328:10)
 
-Where bits Sign-Extend [63:57] == [56]. This is typical for x86 which
-would have three regions in the page table: lower, non-canonical, upper.
+The output interface has a 4->6 program attached at ingress.
+We try to loop the multicast skb back to the sending socket.
+Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
+and changes skb->protocol to v6. We enter ip6_rcv_core which
+tries to use skb_dst(). But the dst is still an IPv4 one left
+after IPv4 mcast output.
 
-The manual describes that the V1 table does not sign extend in section
-2.2.4 Sharing AMD64 Processor and IOMMU Page Tables GPA-to-SPA
+Clear the dst in all BPF helpers which change the protocol.
+Try to preserve metadata dsts, those may carry non-routing
+metadata.
 
-Further, Vasant has checked this and indicates the HW has an addtional
-behavior that the manual does not yet describe. The AMDv2 table does not
-have the sign extended behavior when attached to PASID 0, which may
-explain why this has gone unnoticed.
-
-The iommu domain geometry does not directly support sign extended page
-tables. The driver should report only one of the lower/upper spaces. Solve
-this by removing the top VA bit from the geometry to use only the lower
-space.
-
-This will also make the iommu_domain work consistently on all PASID 0 and
-PASID != 1.
-
-Adjust dma_max_address() to remove the top VA bit. It now returns:
-
-5 Level:
-  Before 0x1ffffffffffffff
-  After  0x0ffffffffffffff
-4 Level:
-  Before 0xffffffffffff
-  After  0x7fffffffffff
-
-Fixes: 11c439a19466 ("iommu/amd/pgtbl_v2: Fix domain max address")
-Link: https://lore.kernel.org/all/8858d4d6-d360-4ef0-935c-bfd13ea54f42@amd.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
+Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+v3:
+ - go back to v1, the encap / decap which don't change proto
+   will be added in -next
+ - split out the test
+v2: https://lore.kernel.org/20250607204734.1588964-1-kuba@kernel.org
+ - drop on encap/decap
+ - fix typo (protcol)
+ - add the test to the Makefile
+v1: https://lore.kernel.org/20250604210604.257036-1-kuba@kernel.org
 
-v2:
- - Revise the commit message and comment with the new information
-   from Vasant.
-v1: https://patch.msgid.link/r/0-v1-6925ece6b623+296-amdv2_geo_jgg@nvidia.com
+I wonder if we should not skip ingress (tc_skip_classify?)
+for looped back packets in the first place. But that doesn't
+seem robust enough vs multiple redirections to solve the crash.
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 3117d99cf83d0d..1baa9d3583f369 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2526,8 +2526,21 @@ static inline u64 dma_max_address(enum protection_domain_mode pgtable)
- 	if (pgtable == PD_MODE_V1)
- 		return ~0ULL;
+Ignoring LOOPBACK packets (like the NAT46 prog should) doesn't
+work either, since BPF can change pkt_type arbitrarily.
+
+CC: martin.lau@linux.dev
+CC: daniel@iogearbox.net
+CC: john.fastabend@gmail.com
+CC: eddyz87@gmail.com
+CC: sdf@fomichev.me
+CC: haoluo@google.com
+CC: willemb@google.com
+CC: william.xuanziyang@huawei.com
+CC: alan.maguire@oracle.com
+CC: bpf@vger.kernel.org
+CC: edumazet@google.com
+CC: maze@google.com
+CC: shuah@kernel.org
+CC: linux-kselftest@vger.kernel.org
+CC: yonghong.song@linux.dev
+---
+ net/core/filter.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 327ca73f9cd7..7a72f766aacf 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3233,6 +3233,13 @@ static const struct bpf_func_proto bpf_skb_vlan_pop_proto = {
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ };
  
--	/* V2 with 4/5 level page table */
--	return ((1ULL << PM_LEVEL_SHIFT(amd_iommu_gpt_level)) - 1);
-+	/*
-+	 * V2 with 4/5 level page table. Note that "2.2.6.5 AMD64 4-Kbyte Page
-+	 * Translation" shows that the V2 table sign extends the top of the
-+	 * address space creating a reserved region in the middle of the
-+	 * translation, just like the CPU does. Further Vasant says the docs are
-+	 * incomplete and this only applies to non-zero PASIDs. If the AMDv2
-+	 * page table is assigned to the 0 PASID then there is no sign extension
-+	 * check.
-+	 *
-+	 * Since the IOMMU must have a fixed geometry, and the core code does
-+	 * not understand sign extended addressing, we have to chop off the high
-+	 * bit to get consistent behavior with attachments of the domain to any
-+	 * PASID.
-+	 */
-+	return ((1ULL << (PM_LEVEL_SHIFT(amd_iommu_gpt_level) - 1)) - 1);
- }
++static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
++{
++	skb->protocol = htons(proto);
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++}
++
+ static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+ {
+ 	/* Caller already did skb_cow() with len as headroom,
+@@ -3329,7 +3336,7 @@ static int bpf_skb_proto_4_to_6(struct sk_buff *skb)
+ 		}
+ 	}
  
- static bool amd_iommu_hd_support(struct amd_iommu *iommu)
-
-base-commit: eb328711b15b17987021dbb674f446b7b008dca5
+-	skb->protocol = htons(ETH_P_IPV6);
++	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3359,7 +3366,7 @@ static int bpf_skb_proto_6_to_4(struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IP);
++	bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3550,10 +3557,10 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
+ 		/* Match skb->protocol to new outer l3 protocol */
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+-			skb->protocol = htons(ETH_P_IPV6);
++			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 		else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+-			skb->protocol = htons(ETH_P_IP);
++			bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	}
+ 
+ 	if (skb_is_gso(skb)) {
+@@ -3606,10 +3613,10 @@ static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
+ 	/* Match skb->protocol to new outer l3 protocol */
+ 	if (skb->protocol == htons(ETH_P_IP) &&
+ 	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
+-		skb->protocol = htons(ETH_P_IPV6);
++		bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
+-		skb->protocol = htons(ETH_P_IP);
++		bpf_skb_change_protocol(skb, ETH_P_IP);
+ 
+ 	if (skb_is_gso(skb)) {
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
 -- 
-2.43.0
+2.49.0
 
 
