@@ -1,127 +1,121 @@
-Return-Path: <stable+bounces-152261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A123AD301A
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 10:25:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898ACAD3134
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7094D7A3431
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 08:24:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57EB018940D0
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 09:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117BA284663;
-	Tue, 10 Jun 2025 08:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3F328A3E1;
+	Tue, 10 Jun 2025 09:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hEZC9Q1T"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="XSPSFszC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DCA283FD2
-	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 08:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584B280A5A
+	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 09:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749543838; cv=none; b=kHMkXIrqL/nPSEUWJCSmCqvdEcgH8LriwWq+puuTQf/hX2zo3Fd7Kw/+jYVqcWKlbrhTxJHA653XbdVnZKGfkjwthAG/ylV0YBV39u0PM4eujx6OVJEv72/9cmH8JOmwLYirZEM+QRLXqiSm337fcdMk9y9Omic+TMeq3LUbFts=
+	t=1749546487; cv=none; b=DzgGJ9v9ztZ3ly2B1JSE/oeZ9K20EqAnalz8PLw4WGQuIdIMNKFC//RURVM5J/ngR4dzkXsFUlHlrT3j37XCP0LZaIzz87KvbRy60VDylUDN9pH8K556/u4It21gTxD1vapzoNHD9AEq3TkblS/vaDkx0xLqeLceTAOb4RnrFck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749543838; c=relaxed/simple;
-	bh=yyhzPDdF8NeOOeZr2SZOX9HHHQ5D7bOqPKd37iQiSFs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GzhFlrsDHaQ8p3hVRYHcSTj6RnVimK+pq+CaaB8Lsw3lbB02clhYuhwPBrZyeisLN2x/pRGGaIbFwtioNw/L8wkefKdZ5/VHLhsftTKE7i9znfXxLH4C1KZ3egWrh/SXFuVvJtPAm7PpntSn94Tb020jW60cWls0blPUUhJ6Uqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hEZC9Q1T; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a4eb4acf29so648480f8f.0
-        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 01:23:56 -0700 (PDT)
+	s=arc-20240116; t=1749546487; c=relaxed/simple;
+	bh=vX7dGgNAk4b5/FGNFMh1N632X7tTQ7n9HQAfh2++OA8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gmMlUtzWdZjGG28eW08MZf1wa1tX8UO33ZPaiNr0oRvTKUKGULQ9MxOBH3+qiPeQiLCoqYx1R/z194zpqjsgz4b0xHvVCiXW5fG5gKIMwil1qtk7RpxVQOuqCXtQ9z4eaiCZljqjYO9SKC7IVfFCKNJCWjNxOVcWFCxaeeG8C0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=XSPSFszC; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2d4e91512b4so3235784fac.1
+        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 02:08:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749543835; x=1750148635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1749546484; x=1750151284; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q9WGI4IbP//61XrnIlM+natAC7ecS9zG4vex6G78gZY=;
-        b=hEZC9Q1TgiXTu95oc+6NtCo1BRbnOHrDqPXM+MQe97jPplFgtUdf13p/+l/jivtpqn
-         AVEQjBzDe0FJXPE6Qt6a8uqrNr2fPd42ABmxo+Ea3b2F/O2bpgYVKdN+pbeS5ePPw1cm
-         akKeS/vsivEpT4A4OhOoE989960LD37RLNNrych+3AkFBsAUaYDYEI8fWIB+kyRCdOYs
-         LHNItha/qRFBQeNZEdhYjhtgiFYAGupfM9a1F8cMJL3gN3y8zWcjShQ6qS+/8UxWnLa0
-         WdUy5IvMd8OPHPs55WlLsoulOhhLt1FIAQwpR257JdBImWFyg/7ZWBilWCccOvj0herZ
-         M3CQ==
+        bh=vX7dGgNAk4b5/FGNFMh1N632X7tTQ7n9HQAfh2++OA8=;
+        b=XSPSFszCN6ZHbBFU2pkt5munsNpLvXnKIpw4/gS7wS6bqpjRFpheYKRSK+RmmDVF59
+         hu8R+VvhXi226SqHIhn7vNdmHj+zoQ0mJ/m9073AC59SJ5c5hZRbVMXoPtTWM+yINCKq
+         obHV6h5/7Dphzw8S7XAmaXyUiZhtiUxMKZAbhIk+Hhd6GvtGA6dOEdPab/HsEr4HQC4M
+         Sqfx3xLT+wFE2OGP6ZIf6f0R9pgbenPig9vCzBdyYDx607XbBCcqtPcAXALKGQNs+elh
+         jD4xtt4RkKzwtyrB4ThgWMz9B+lp01wwae0SozOtgxcNBFhZ3E5224N5vlYatAgtCNuq
+         5RBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749543835; x=1750148635;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1749546484; x=1750151284;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q9WGI4IbP//61XrnIlM+natAC7ecS9zG4vex6G78gZY=;
-        b=JDsTGH0IjqFyTmMSq+8QR2D66HXOBy3I1E4B0txNeEQ/WGyynm6TIvFg60Xp+9Xavc
-         6RyxS5gqjoabgCTGpq4sAxG9YXy3lCewS8Ah3s9AFHNxOR+iwPW81d6UMiMp2MA4N4gz
-         vcCvqmqIGffIjyC6X+ZDuaTBjd2IA44aPeioVVP10hzpQrxtBqftmFhxlc8CFmOIZdq4
-         WgaKpSsW2y+ZRlrY2eENu3RQdA/6r9tdUmKyPLihk53B/1kFkgSf5X5SHbD+FFy5PV56
-         /0kWiNaNQVSguA1y/qBBSGjJrNM1yIaoBm4mDOnc8+vPO56TFrZbgww9cjtss+ZFUswi
-         xXIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVB3Rkq6/eYTC0L92XjN9NdhTRrNMZ7+SCpGodZIibxPuRBuv+QvEWS8Ee2/NKxNtiI/Bzg7j0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTVVtxo94WfT4sBjsXYxO1G1A1cuQrqSUq9PAqtSZYmakdLcJC
-	qOvDw3IWyCzRsfYa8CbYvN4vrloQw2anDbire4Nkilfr+8bOWMaWF62gcof1sgNI5I0=
-X-Gm-Gg: ASbGncstYmkYPyYvKYjYJaCJdRdWdwgZiOsKWh6W4XCyRwN1Ez0GMUbxe7US85VapyT
-	KpTbxKcD4YBnVT6eZxEb/grLixzFEvTRaeIuOcSNK9tm4+TCgsX7NboZxeRRVgV0jNy5JbbeAfu
-	lBemx+h9dWJtwMUghg251sQ7U+WZG9r7UUm747U/Q/dlE+hNS6ZGQ2c/Nrze4yJHjmCzKn0mg0S
-	n1hv6ZeG1y3nuX7td1YVJkOREK//1wAsGjdlmz2WVzExjXMAppiouaPfgUQ9yVK6KcjCw/eo5V/
-	/0nIqwm3EktS5O1qkzUKjhRCz3wXLR1rApLAT1vWUuM2oF29g0L+Nf86qXAWse8mEP49LR2gZ/3
-	l2P6wXg==
-X-Google-Smtp-Source: AGHT+IF3umgoC1MXVewYqSd6NXb0BxRbXdgsSHg+n+0cmqeui+0FYUC+7otmqctsYZrl7Ig6A8Aq0g==
-X-Received: by 2002:a05:6000:2409:b0:3a0:782e:9185 with SMTP id ffacd0b85a97d-3a53313fa5emr4137414f8f.2.1749543835438;
-        Tue, 10 Jun 2025 01:23:55 -0700 (PDT)
-Received: from [192.168.1.28] ([178.197.223.125])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532450b08sm11378980f8f.80.2025.06.10.01.23.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 01:23:54 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Peter Griffin <peter.griffin@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Sam Protsenko <semen.protsenko@linaro.org>, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20250603-samsung-clk-fixes-v1-0-49daf1ff4592@linaro.org>
-References: <20250603-samsung-clk-fixes-v1-0-49daf1ff4592@linaro.org>
-Subject: Re: [PATCH 0/3] clk: samsung: gs101 & exynos850 fixes
-Message-Id: <174954383375.117835.6950854237763688291.b4-ty@linaro.org>
-Date: Tue, 10 Jun 2025 10:23:53 +0200
+        bh=vX7dGgNAk4b5/FGNFMh1N632X7tTQ7n9HQAfh2++OA8=;
+        b=OpGtSowq+2yidE7Iq+eB7Eqq1tf1lX/z28ZEIW4QEROH4NVFYMNmtvBmffpVGFVxul
+         KGI2oeNz00BU10/kgEeNWAX5sAlVZrNeU8IuguU2u65X1/U1nBGBRmxxJmC9SrPZo0At
+         jBXrXsvKCHzbjgjPfHKkH6X3hZyAcjTIz8YFPcbTWpuAxuqYesG2pnvih9qTMjslJm04
+         lpLSZ2MT2Sv6qBrY91twJKxVRQqcqdqgRFTfc2PvDocgsui1BBV9kLEjaw1OMcSU60rK
+         cq6LDM+0t+YDFO9SPAboqtukEFjcTtpAYmkcZlAFaw7Ui4hRFBv5ihinWmQzHIm5DQ8q
+         TPbg==
+X-Gm-Message-State: AOJu0YxhsuLuS9Ha2Bo8cBaeKlejEYC2IEoq+N4xc5qs1s5iRyqBApZ8
+	DGusQZCON/77EgP1zz0Yl38XGbx5kPvj184Y0tM9/OTNejUmOUZtT28ERYTRmpiZkBD3yY8g6KF
+	AnLCRy2leQMeo8sNF5cZDRmylwQXSGcpG1u6WAqNeSw==
+X-Gm-Gg: ASbGncvNa4ntSW+WlzoCKdZIiamzZjuBGAR93h3i5RMi3yfnS9kYdZZw2R+S8B47v0a
+	4pa1YSNdOZm6//rnX3/WJFMgmd2ARsl6IFVrUf3geyxcv1QSYHXJ08Q83Y+xWVhTsyxNTLBwUAl
+	DJ1vWTjlMr4DjGF2xYdEDxEVVp23oKTOB5RRPMCPPoev07IEFvMb6gCu7R
+X-Google-Smtp-Source: AGHT+IHMfNZCwnd6vXybcVIniDLYPuMDu8WKsskKBcpBcqOLGXZlR8IcyYwO+ilM/gtPqgyQLnbexS0m57shr3ilsSE=
+X-Received: by 2002:a05:6871:4315:b0:2d6:2a40:fb9d with SMTP id
+ 586e51a60fabf-2ea011ab501mr10787266fac.28.1749546483893; Tue, 10 Jun 2025
+ 02:08:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.2
+References: <20250609074348.54899-2-cuiyunhui@bytedance.com> <aEaQ__Dc5PSA5dQ9@902657ab729a>
+In-Reply-To: <aEaQ__Dc5PSA5dQ9@902657ab729a>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Tue, 10 Jun 2025 17:07:52 +0800
+X-Gm-Features: AX0GCFvRgChwovQIjyF1Kg5WgdIKVbyyt9_B3y_fvjO10aGZy-f19ZAp4iufqE8
+Message-ID: <CAEEQ3wmK4LcRBuTPY0_h=tSN3kPOrbCE+w1_AbFD-mtfVNVmBg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v8 2/4] serial: 8250: avoid potential
+ PSLVERR issue
+To: kernel test robot <lkp@intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
-On Tue, 03 Jun 2025 16:43:18 +0100, André Draszik wrote:
-> The patches fix some errors in the gs101 clock driver as well as a
-> trivial comment typo in the Exynos E850 clock driver.
-> 
-> Cheers,
-> Andre
-> 
-> 
-> [...]
+On Mon, Jun 9, 2025 at 3:45=E2=80=AFPM kernel test robot <lkp@intel.com> wr=
+ote:
+>
+> Hi,
+>
+> Thanks for your patch.
+>
+> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+>
+> The check is based on https://www.kernel.org/doc/html/latest/process/stab=
+le-kernel-rules.html#option-1
+>
+> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to ha=
+ve the patch automatically included in the stable tree.
 
-Applied, thanks!
+This is an improvement and does not require adding Cc: stable@vger.kernel.o=
+rg.
 
-[1/3] clk: samsung: gs101: fix CLK_DOUT_CMU_G3D_BUSD
-      https://git.kernel.org/krzk/linux/c/29a9361f0b50be2b16d308695e30ee030fedea2c
-[2/3] clk: samsung: gs101: fix alternate mout_hsi0_usb20_ref parent clock
-      https://git.kernel.org/krzk/linux/c/ca243e653f71d8c4724a68c9033923f945b1084d
-[3/3] clk: samsung: exynos850: fix a comment
-      https://git.kernel.org/krzk/linux/c/320e7efce30e2613c2c7877acc46a8e71192cdcd
-
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+> Subject: [PATCH v8 2/4] serial: 8250: avoid potential PSLVERR issue
+> Link: https://lore.kernel.org/stable/20250609074348.54899-2-cuiyunhui%40b=
+ytedance.com
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+>
+>
+>
+Thanks,
+Yunhui
 
