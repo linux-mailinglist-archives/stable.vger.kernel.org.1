@@ -1,42 +1,43 @@
-Return-Path: <stable+bounces-152284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DA1AD354F
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:48:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BDBAAD3551
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7F401751D4
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:48:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C47B3B1E50
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7C4220F47;
-	Tue, 10 Jun 2025 11:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C4D223329;
+	Tue, 10 Jun 2025 11:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExYFjnIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blhdVLRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C99155322;
-	Tue, 10 Jun 2025 11:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EFC21D3DF;
+	Tue, 10 Jun 2025 11:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749556122; cv=none; b=pni46a4428AZNbHSm+d1KqscBBR2mN8BpMD+UamWidBYplWGN0+BUrVxAjoIbEmqMvcRdYVu1NCfsUaO2KHSLeeyEcgXPBGhj5x/Y11yV3yPpmhpnS7us88/mLG4N7vNmdtG07cxn8P3ZzWATBcWkn2KLbhWDe2sxpmt4fQiygU=
+	t=1749556130; cv=none; b=ertxM8T9/rknwJNmFlnv7/Evl68a0HQ2wj+cLz6bB/yRwqT9fNV9cDmn6i3f3dPpGT2pGodQcxzqsgek1EKtIJGLQoO6We+mwLLkeQ6WcZ1jgYuEJFwclu4LRbsx9vyD0l6JVomTXTjL2nRLmEHkwZch1QhZeS9936sfeXFGM50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749556122; c=relaxed/simple;
-	bh=vAOn62Uj+SuAl4mo52JouJUDEOXtidvVRmfjR+ysBZg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=udhtgYnitRKilhtuoHpWzluHn+PnDCtCevzEZQXIh8Q7foaUALyz0fG0EAIVgd+HgTSaImCFYqu0L6AIfYyZnorMLjf93h46VYb+/0HOzo3Wcx73IDfD7urtaL6kbzO+W3zoNdKtqug2mOnu5BV8fyxdES4OLudFOtOaNvRYV6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExYFjnIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605C1C4CEF1;
-	Tue, 10 Jun 2025 11:48:41 +0000 (UTC)
+	s=arc-20240116; t=1749556130; c=relaxed/simple;
+	bh=trNFHza2i0l9PEAJvYimMWP25BqqI8TzLGJc5jTQfQQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AvnTPoSKTq6kZjobA7A1HQs09MTBfhFg5rtCpS5MQ+LIsFo8ddVbqrr0dwwFjDkXUyvO11R2r9gLOqMYqvDEZ1C3pdDeS+hYlCTMg2fldWONk1nr/VtligoEOe3GVkzCaonYN9uxwFTiO+svVrNnIaBLUujQ4e2F6s1BxikRHfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blhdVLRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BABC4CEED;
+	Tue, 10 Jun 2025 11:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1749556121;
-	bh=vAOn62Uj+SuAl4mo52JouJUDEOXtidvVRmfjR+ysBZg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ExYFjnITb9Cnm9ZSglb9hwz/fVxOuyWzhHAtf4ZBOi/ftc6antWkWl2Q0Ao9zEkSl
-	 rNszlX0UPQXXZ2OOjeUqCkHyhZ7KdmgVl3cvciYjQkU3hICGqjKfqcWYnrOsbmPMxL
-	 W++d3a2wKh9uQLLH/nYM4sNOJ6ou9MDMnDaY6vNk=
+	s=korg; t=1749556129;
+	bh=trNFHza2i0l9PEAJvYimMWP25BqqI8TzLGJc5jTQfQQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=blhdVLRcMkVjaWLy/cKApzfFN9x9icc66gwXPcv5RiJTENNlg9Mv7giqu9mLFjPPn
+	 HsQaAjbWXakktJ2yJSzQk+x8EnjVr3knBF8tgh2ugMli80mrsJFPsF10d3JmddFz9J
+	 QLHfCU8Ht+Fu5qIAGhxi+H4WtWyivSdcP3ymKeso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -45,10 +46,12 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Linux 6.14.11
-Date: Tue, 10 Jun 2025 07:48:38 -0400
-Message-ID: <2025061030-latticed-capacity-dc94@gregkh>
+Subject: Re: Linux 6.14.11
+Date: Tue, 10 Jun 2025 07:48:39 -0400
+Message-ID: <2025061030-justify-gigantic-1478@gregkh>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2025061030-latticed-capacity-dc94@gregkh>
+References: <2025061030-latticed-capacity-dc94@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,136 +60,656 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
------------------
-Note this is the LAST 6.14.y release.  This kernel branch is now end-of-life.
-Please move to the 6.15.y kernel branch at this time.
-
-If you notice, this has happened a bit more "early" than previous
-end-of-life announcements.  Normally, after -rc1 is out there is a TON
-of stable patches happening due to the changes that come into the
-merge-window that were marked for stable backports but didn't get into
-Linus's release before -final.  As some people have objected to this
-large influx being added to a stable kernel that is just about to go
-end-of-life, let's try marking this end-of-life a bit earlier to see how
-it goes.
-
-It might also spur maintainers/developers to get fixes into -final a bit
-more as well :)
------------------
-
-I'm announcing the release of the 6.14.11 kernel.
-
-All users of the 6.14 kernel series must upgrade.
-
-The updated 6.14.y git tree can be found at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.14.y
-and can be browsed at the normal kernel.org git web browser:
-	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-
-thanks,
-
-greg k-h
-
-------------
-
- Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml  |    3 -
- Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml      |   13 ++++-
- Documentation/devicetree/bindings/usb/cypress,hx3.yaml         |   19 ++++++-
- Documentation/firmware-guide/acpi/dsd/data-node-references.rst |   26 ++++------
- Documentation/firmware-guide/acpi/dsd/graph.rst                |   11 +---
- Documentation/firmware-guide/acpi/dsd/leds.rst                 |    7 --
- Makefile                                                       |    2 
- drivers/android/binder.c                                       |   16 +++++-
- drivers/android/binder_internal.h                              |    8 ++-
- drivers/android/binderfs.c                                     |    2 
- drivers/bluetooth/hci_qca.c                                    |   14 ++---
- drivers/clk/samsung/clk-exynosautov920.c                       |    2 
- drivers/cpufreq/acpi-cpufreq.c                                 |    2 
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c              |   16 +-----
- drivers/nvmem/Kconfig                                          |    1 
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c                    |   14 +++--
- drivers/rtc/class.c                                            |    2 
- drivers/rtc/lib.c                                              |   24 +++++++--
- drivers/thunderbolt/ctl.c                                      |    5 +
- drivers/tty/serial/jsm/jsm_tty.c                               |    1 
- drivers/usb/class/usbtmc.c                                     |    4 +
- drivers/usb/core/quirks.c                                      |    3 +
- drivers/usb/serial/pl2303.c                                    |    2 
- drivers/usb/storage/unusual_uas.h                              |    7 ++
- drivers/usb/typec/ucsi/ucsi.h                                  |    2 
- fs/orangefs/inode.c                                            |    9 +--
- kernel/trace/trace.c                                           |    2 
- 27 files changed, 138 insertions(+), 79 deletions(-)
-
-Alexandre Mergnat (2):
-      rtc: Make rtc_time64_to_tm() support dates before 1970
-      rtc: Fix offset calculation for .start_secs < 0
-
-Arnd Bergmann (1):
-      nvmem: rmem: select CONFIG_CRC32
-
-Aurabindo Pillai (1):
-      Revert "drm/amd/display: more liberal vmin/vmax update for freesync"
-
-Bartosz Golaszewski (1):
-      Bluetooth: hci_qca: move the SoC type check to the right place
-
-Carlos Llamas (1):
-      binder: fix yet another UAF in binder_devices
-
-Charles Yeh (1):
-      USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
-
-Dave Penkler (1):
-      usb: usbtmc: Fix timeout value in get_stb
-
-David Lechner (1):
-      dt-bindings: pwm: adi,axi-pwmgen: Fix clocks
-
-Dmitry Antipov (1):
-      binder: fix use-after-free in binderfs_evict_inode()
-
-Dustin Lundquist (1):
-      serial: jsm: fix NPE during jsm_uart_port_init
-
-Gabor Juhos (2):
-      pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
-      pinctrl: armada-37xx: set GPIO output value before setting direction
-
-Gautham R. Shenoy (1):
-      acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
-
-Greg Kroah-Hartman (1):
-      Linux 6.14.11
-
-Hongyu Xie (1):
-      usb: storage: Ignore UAS driver for SanDisk 3.2 Gen2 storage device
-
-Jiayi Li (1):
-      usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
-
-Lukasz Czechowski (1):
-      dt-bindings: usb: cypress,hx3: Add support for all variants
-
-Mike Marshall (1):
-      orangefs: adjust counting code to recover from 665575cf
-
-Pan Taixi (1):
-      tracing: Fix compilation warning on arm32
-
-Pritam Manohar Sutar (1):
-      clk: samsung: correct clock summary for hsi1 block
-
-Qasim Ijaz (1):
-      usb: typec: ucsi: fix Clang -Wsign-conversion warning
-
-Sakari Ailus (1):
-      Documentation: ACPI: Use all-string data node references
-
-Sergey Senozhatsky (1):
-      thunderbolt: Do not double dequeue a configuration request
-
-Xu Yang (1):
-      dt-bindings: phy: imx8mq-usb: fix fsl,phy-tx-vboost-level-microvolt property
-
+diff --git a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+index daee0c0fc915..c468207eb951 100644
+--- a/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/fsl,imx8mq-usb-phy.yaml
+@@ -63,8 +63,7 @@ properties:
+   fsl,phy-tx-vboost-level-microvolt:
+     description:
+       Adjust the boosted transmit launch pk-pk differential amplitude
+-    minimum: 880
+-    maximum: 1120
++    enum: [844, 1008, 1156]
+ 
+   fsl,phy-comp-dis-tune-percent:
+     description:
+diff --git a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
+index 45e112d0efb4..5575c58357d6 100644
+--- a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
++++ b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
+@@ -30,11 +30,19 @@ properties:
+     const: 3
+ 
+   clocks:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 2
++
++  clock-names:
++    minItems: 1
++    items:
++      - const: axi
++      - const: ext
+ 
+ required:
+   - reg
+   - clocks
++  - clock-names
+ 
+ unevaluatedProperties: false
+ 
+@@ -43,6 +51,7 @@ examples:
+     pwm@44b00000 {
+         compatible = "adi,axi-pwmgen-2.00.a";
+         reg = <0x44b00000 0x1000>;
+-        clocks = <&spi_clk>;
++        clocks = <&fpga_clk>, <&spi_clk>;
++        clock-names = "axi", "ext";
+         #pwm-cells = <3>;
+     };
+diff --git a/Documentation/devicetree/bindings/usb/cypress,hx3.yaml b/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
+index 1033b7a4b8f9..d6eac1213228 100644
+--- a/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
++++ b/Documentation/devicetree/bindings/usb/cypress,hx3.yaml
+@@ -14,9 +14,22 @@ allOf:
+ 
+ properties:
+   compatible:
+-    enum:
+-      - usb4b4,6504
+-      - usb4b4,6506
++    oneOf:
++      - enum:
++          - usb4b4,6504
++          - usb4b4,6506
++      - items:
++          - enum:
++              - usb4b4,6500
++              - usb4b4,6508
++          - const: usb4b4,6504
++      - items:
++          - enum:
++              - usb4b4,6502
++              - usb4b4,6503
++              - usb4b4,6507
++              - usb4b4,650a
++          - const: usb4b4,6506
+ 
+   reg: true
+ 
+diff --git a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+index 8d8b53e96bcf..ccb4b153e6f2 100644
+--- a/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
++++ b/Documentation/firmware-guide/acpi/dsd/data-node-references.rst
+@@ -12,11 +12,14 @@ ACPI in general allows referring to device objects in the tree only.
+ Hierarchical data extension nodes may not be referred to directly, hence this
+ document defines a scheme to implement such references.
+ 
+-A reference consist of the device object name followed by one or more
+-hierarchical data extension [dsd-guide] keys. Specifically, the hierarchical
+-data extension node which is referred to by the key shall lie directly under
+-the parent object i.e. either the device object or another hierarchical data
+-extension node.
++A reference to a _DSD hierarchical data node is a string consisting of a
++device object reference followed by a dot (".") and a relative path to a data
++node object. Do not use non-string references as this will produce a copy of
++the hierarchical data node, not a reference!
++
++The hierarchical data extension node which is referred to shall be located
++directly under its parent object i.e. either the device object or another
++hierarchical data extension node [dsd-guide].
+ 
+ The keys in the hierarchical data nodes shall consist of the name of the node,
+ "@" character and the number of the node in hexadecimal notation (without pre-
+@@ -33,11 +36,9 @@ extension key.
+ Example
+ =======
+ 
+-In the ASL snippet below, the "reference" _DSD property contains a
+-device object reference to DEV0 and under that device object, a
+-hierarchical data extension key "node@1" referring to the NOD1 object
+-and lastly, a hierarchical data extension key "anothernode" referring to
+-the ANOD object which is also the final target node of the reference.
++In the ASL snippet below, the "reference" _DSD property contains a string
++reference to a hierarchical data extension node ANOD under DEV0 under the parent
++of DEV1. ANOD is also the final target node of the reference.
+ ::
+ 
+ 	Device (DEV0)
+@@ -76,10 +77,7 @@ the ANOD object which is also the final target node of the reference.
+ 	    Name (_DSD, Package () {
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+-		    Package () {
+-			"reference", Package () {
+-			    ^DEV0, "node@1", "anothernode"
+-			}
++		    Package () { "reference", "^DEV0.ANOD" }
+ 		    },
+ 		}
+ 	    })
+diff --git a/Documentation/firmware-guide/acpi/dsd/graph.rst b/Documentation/firmware-guide/acpi/dsd/graph.rst
+index b9dbfc73ed25..d6ae5ffa748c 100644
+--- a/Documentation/firmware-guide/acpi/dsd/graph.rst
++++ b/Documentation/firmware-guide/acpi/dsd/graph.rst
+@@ -66,12 +66,9 @@ of that port shall be zero. Similarly, if a port may only have a single
+ endpoint, the number of that endpoint shall be zero.
+ 
+ The endpoint reference uses property extension with "remote-endpoint" property
+-name followed by a reference in the same package. Such references consist of
+-the remote device reference, the first package entry of the port data extension
+-reference under the device and finally the first package entry of the endpoint
+-data extension reference under the port. Individual references thus appear as::
++name followed by a string reference in the same package. [data-node-ref]::
+ 
+-    Package() { device, "port@X", "endpoint@Y" }
++    "device.datanode"
+ 
+ In the above example, "X" is the number of the port and "Y" is the number of
+ the endpoint.
+@@ -109,7 +106,7 @@ A simple example of this is show below::
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+ 		    Package () { "reg", 0 },
+-		    Package () { "remote-endpoint", Package() { \_SB.PCI0.ISP, "port@4", "endpoint@0" } },
++		    Package () { "remote-endpoint", "\\_SB.PCI0.ISP.EP40" },
+ 		}
+ 	    })
+ 	}
+@@ -141,7 +138,7 @@ A simple example of this is show below::
+ 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+ 		Package () {
+ 		    Package () { "reg", 0 },
+-		    Package () { "remote-endpoint", Package () { \_SB.PCI0.I2C2.CAM0, "port@0", "endpoint@0" } },
++		    Package () { "remote-endpoint", "\\_SB.PCI0.I2C2.CAM0.EP00" },
+ 		}
+ 	    })
+ 	}
+diff --git a/Documentation/firmware-guide/acpi/dsd/leds.rst b/Documentation/firmware-guide/acpi/dsd/leds.rst
+index 93db592c93c7..a97cd07d49be 100644
+--- a/Documentation/firmware-guide/acpi/dsd/leds.rst
++++ b/Documentation/firmware-guide/acpi/dsd/leds.rst
+@@ -15,11 +15,6 @@ Referring to LEDs in Device tree is documented in [video-interfaces], in
+ "flash-leds" property documentation. In short, LEDs are directly referred to by
+ using phandles.
+ 
+-While Device tree allows referring to any node in the tree [devicetree], in
+-ACPI references are limited to device nodes only [acpi]. For this reason using
+-the same mechanism on ACPI is not possible. A mechanism to refer to non-device
+-ACPI nodes is documented in [data-node-ref].
+-
+ ACPI allows (as does DT) using integer arguments after the reference. A
+ combination of the LED driver device reference and an integer argument,
+ referring to the "reg" property of the relevant LED, is used to identify
+@@ -74,7 +69,7 @@ omitted. ::
+ 			Package () {
+ 				Package () {
+ 					"flash-leds",
+-					Package () { ^LED, "led@0", ^LED, "led@1" },
++					Package () { "^LED.LED0", "^LED.LED1" },
+ 				}
+ 			}
+ 		})
+diff --git a/Makefile b/Makefile
+index 0f3aad52b3de..48d2ce96398b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ VERSION = 6
+ PATCHLEVEL = 14
+-SUBLEVEL = 10
++SUBLEVEL = 11
+ EXTRAVERSION =
+ NAME = Baby Opossum Posse
+ 
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 5fc2c8ee61b1..6be0f7ac7213 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -79,6 +79,8 @@ static HLIST_HEAD(binder_deferred_list);
+ static DEFINE_MUTEX(binder_deferred_lock);
+ 
+ static HLIST_HEAD(binder_devices);
++static DEFINE_SPINLOCK(binder_devices_lock);
++
+ static HLIST_HEAD(binder_procs);
+ static DEFINE_MUTEX(binder_procs_lock);
+ 
+@@ -5244,6 +5246,7 @@ static void binder_free_proc(struct binder_proc *proc)
+ 			__func__, proc->outstanding_txns);
+ 	device = container_of(proc->context, struct binder_device, context);
+ 	if (refcount_dec_and_test(&device->ref)) {
++		binder_remove_device(device);
+ 		kfree(proc->context->name);
+ 		kfree(device);
+ 	}
+@@ -6929,7 +6932,16 @@ const struct binder_debugfs_entry binder_debugfs_entries[] = {
+ 
+ void binder_add_device(struct binder_device *device)
+ {
++	spin_lock(&binder_devices_lock);
+ 	hlist_add_head(&device->hlist, &binder_devices);
++	spin_unlock(&binder_devices_lock);
++}
++
++void binder_remove_device(struct binder_device *device)
++{
++	spin_lock(&binder_devices_lock);
++	hlist_del_init(&device->hlist);
++	spin_unlock(&binder_devices_lock);
+ }
+ 
+ static int __init init_binder_device(const char *name)
+@@ -6956,7 +6968,7 @@ static int __init init_binder_device(const char *name)
+ 		return ret;
+ 	}
+ 
+-	hlist_add_head(&binder_device->hlist, &binder_devices);
++	binder_add_device(binder_device);
+ 
+ 	return ret;
+ }
+@@ -7018,7 +7030,7 @@ static int __init binder_init(void)
+ err_init_binder_device_failed:
+ 	hlist_for_each_entry_safe(device, tmp, &binder_devices, hlist) {
+ 		misc_deregister(&device->miscdev);
+-		hlist_del(&device->hlist);
++		binder_remove_device(device);
+ 		kfree(device);
+ 	}
+ 
+diff --git a/drivers/android/binder_internal.h b/drivers/android/binder_internal.h
+index e4eb8357989c..c5d68c1d3780 100644
+--- a/drivers/android/binder_internal.h
++++ b/drivers/android/binder_internal.h
+@@ -584,9 +584,13 @@ struct binder_object {
+ /**
+  * Add a binder device to binder_devices
+  * @device: the new binder device to add to the global list
+- *
+- * Not reentrant as the list is not protected by any locks
+  */
+ void binder_add_device(struct binder_device *device);
+ 
++/**
++ * Remove a binder device to binder_devices
++ * @device: the binder device to remove from the global list
++ */
++void binder_remove_device(struct binder_device *device);
++
+ #endif /* _LINUX_BINDER_INTERNAL_H */
+diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
+index 94c6446604fc..44d430c4ebef 100644
+--- a/drivers/android/binderfs.c
++++ b/drivers/android/binderfs.c
+@@ -274,7 +274,7 @@ static void binderfs_evict_inode(struct inode *inode)
+ 	mutex_unlock(&binderfs_minors_mutex);
+ 
+ 	if (refcount_dec_and_test(&device->ref)) {
+-		hlist_del_init(&device->hlist);
++		binder_remove_device(device);
+ 		kfree(device->context.name);
+ 		kfree(device);
+ 	}
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index f2558506a02c..044433567959 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2415,14 +2415,14 @@ static int qca_serdev_probe(struct serdev_device *serdev)
+ 
+ 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
+ 					       GPIOD_OUT_LOW);
+-		if (IS_ERR(qcadev->bt_en) &&
+-		    (data->soc_type == QCA_WCN6750 ||
+-		     data->soc_type == QCA_WCN6855)) {
+-			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
+-			return PTR_ERR(qcadev->bt_en);
+-		}
++		if (IS_ERR(qcadev->bt_en))
++			return dev_err_probe(&serdev->dev,
++					     PTR_ERR(qcadev->bt_en),
++					     "failed to acquire BT_EN gpio\n");
+ 
+-		if (!qcadev->bt_en)
++		if (!qcadev->bt_en &&
++		    (data->soc_type == QCA_WCN6750 ||
++		     data->soc_type == QCA_WCN6855))
+ 			power_ctrl_enabled = false;
+ 
+ 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
+diff --git a/drivers/clk/samsung/clk-exynosautov920.c b/drivers/clk/samsung/clk-exynosautov920.c
+index 2a8bfd5d9abc..24f26e254c29 100644
+--- a/drivers/clk/samsung/clk-exynosautov920.c
++++ b/drivers/clk/samsung/clk-exynosautov920.c
+@@ -1393,7 +1393,7 @@ static const unsigned long hsi1_clk_regs[] __initconst = {
+ /* List of parent clocks for Muxes in CMU_HSI1 */
+ PNAME(mout_hsi1_mmc_card_user_p) = {"oscclk", "dout_clkcmu_hsi1_mmc_card"};
+ PNAME(mout_hsi1_noc_user_p) = { "oscclk", "dout_clkcmu_hsi1_noc" };
+-PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "mout_clkcmu_hsi1_usbdrd" };
++PNAME(mout_hsi1_usbdrd_user_p) = { "oscclk", "dout_clkcmu_hsi1_usbdrd" };
+ PNAME(mout_hsi1_usbdrd_p) = { "dout_tcxo_div2", "mout_hsi1_usbdrd_user" };
+ 
+ static const struct samsung_mux_clock hsi1_mux_clks[] __initconst = {
+diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+index 453b629d3de6..5f5586a579d5 100644
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -660,7 +660,7 @@ static u64 get_max_boost_ratio(unsigned int cpu, u64 *nominal_freq)
+ 	nominal_perf = perf_caps.nominal_perf;
+ 
+ 	if (nominal_freq)
+-		*nominal_freq = perf_caps.nominal_freq;
++		*nominal_freq = perf_caps.nominal_freq * 1000;
+ 
+ 	if (!highest_perf || !nominal_perf) {
+ 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 1a7bfc548d70..4801dcde2cb3 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -670,21 +670,15 @@ static void dm_crtc_high_irq(void *interrupt_params)
+ 	spin_lock_irqsave(&adev_to_drm(adev)->event_lock, flags);
+ 
+ 	if (acrtc->dm_irq_params.stream &&
+-		acrtc->dm_irq_params.vrr_params.supported) {
+-		bool replay_en = acrtc->dm_irq_params.stream->link->replay_settings.replay_feature_enabled;
+-		bool psr_en = acrtc->dm_irq_params.stream->link->psr_settings.psr_feature_enabled;
+-		bool fs_active_var_en = acrtc->dm_irq_params.freesync_config.state == VRR_STATE_ACTIVE_VARIABLE;
+-
++	    acrtc->dm_irq_params.vrr_params.supported &&
++	    acrtc->dm_irq_params.freesync_config.state ==
++		    VRR_STATE_ACTIVE_VARIABLE) {
+ 		mod_freesync_handle_v_update(adev->dm.freesync_module,
+ 					     acrtc->dm_irq_params.stream,
+ 					     &acrtc->dm_irq_params.vrr_params);
+ 
+-		/* update vmin_vmax only if freesync is enabled, or only if PSR and REPLAY are disabled */
+-		if (fs_active_var_en || (!fs_active_var_en && !replay_en && !psr_en)) {
+-			dc_stream_adjust_vmin_vmax(adev->dm.dc,
+-					acrtc->dm_irq_params.stream,
+-					&acrtc->dm_irq_params.vrr_params.adjust);
+-		}
++		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
++					   &acrtc->dm_irq_params.vrr_params.adjust);
+ 	}
+ 
+ 	/*
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index 8671b7c974b9..eceb3cdb421f 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -260,6 +260,7 @@ config NVMEM_RCAR_EFUSE
+ config NVMEM_RMEM
+ 	tristate "Reserved Memory Based Driver Support"
+ 	depends on HAS_IOMEM
++	select CRC32
+ 	help
+ 	  This driver maps reserved memory into an nvmem device. It might be
+ 	  useful to expose information left by firmware in memory.
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index 335744ac8310..79f9c08e5039 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -417,20 +417,22 @@ static int armada_37xx_gpio_direction_output(struct gpio_chip *chip,
+ 					     unsigned int offset, int value)
+ {
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
+-	unsigned int reg = OUTPUT_EN;
++	unsigned int en_offset = offset;
++	unsigned int reg = OUTPUT_VAL;
+ 	unsigned int mask, val, ret;
+ 
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
++	val = value ? mask : 0;
+ 
+-	ret = regmap_update_bits(info->regmap, reg, mask, mask);
+-
++	ret = regmap_update_bits(info->regmap, reg, mask, val);
+ 	if (ret)
+ 		return ret;
+ 
+-	reg = OUTPUT_VAL;
+-	val = value ? mask : 0;
+-	regmap_update_bits(info->regmap, reg, mask, val);
++	reg = OUTPUT_EN;
++	armada_37xx_update_reg(&reg, &en_offset);
++
++	regmap_update_bits(info->regmap, reg, mask, mask);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
+index e31fa0ad127e..a0afdeaac270 100644
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -327,7 +327,7 @@ static void rtc_device_get_offset(struct rtc_device *rtc)
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
+diff --git a/drivers/rtc/lib.c b/drivers/rtc/lib.c
+index fe361652727a..13b5b1f20465 100644
+--- a/drivers/rtc/lib.c
++++ b/drivers/rtc/lib.c
+@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
+  * rtc_time64_to_tm - converts time64_t to rtc_time.
+  *
+  * @time:	The number of seconds since 01-01-1970 00:00:00.
+- *		(Must be positive.)
++ *		Works for values since at least 1900
+  * @tm:		Pointer to the struct rtc_time.
+  */
+ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
+ {
+-	unsigned int secs;
+-	int days;
++	int days, secs;
+ 
+ 	u64 u64tmp;
+ 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
+ 		day_of_year, month, day;
+ 	bool is_Jan_or_Feb, is_leap_year;
+ 
+-	/* time must be positive */
++	/*
++	 * Get days and seconds while preserving the sign to
++	 * handle negative time values (dates before 1970-01-01)
++	 */
+ 	days = div_s64_rem(time, 86400, &secs);
+ 
++	/*
++	 * We need 0 <= secs < 86400 which isn't given for negative
++	 * values of time. Fixup accordingly.
++	 */
++	if (secs < 0) {
++		days -= 1;
++		secs += 86400;
++	}
++
+ 	/* day of the week, 1970-01-01 was a Thursday */
+ 	tm->tm_wday = (days + 4) % 7;
++	/* Ensure tm_wday is always positive */
++	if (tm->tm_wday < 0)
++		tm->tm_wday += 7;
+ 
+ 	/*
+ 	 * The following algorithm is, basically, Proposition 6.3 of Neri
+@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
+ 	 * thus, is slightly different from [1].
+ 	 */
+ 
+-	udays		= ((u32) days) + 719468;
++	udays		= days + 719468;
+ 
+ 	u32tmp		= 4 * udays + 3;
+ 	century		= u32tmp / 146097;
+diff --git a/drivers/thunderbolt/ctl.c b/drivers/thunderbolt/ctl.c
+index dc1f456736dc..2ec6c9e477d0 100644
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -151,6 +151,11 @@ static void tb_cfg_request_dequeue(struct tb_cfg_request *req)
+ 	struct tb_ctl *ctl = req->ctl;
+ 
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
++
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
+diff --git a/drivers/tty/serial/jsm/jsm_tty.c b/drivers/tty/serial/jsm/jsm_tty.c
+index ce0fef7e2c66..be2f130696b3 100644
+--- a/drivers/tty/serial/jsm/jsm_tty.c
++++ b/drivers/tty/serial/jsm/jsm_tty.c
+@@ -451,6 +451,7 @@ int jsm_uart_port_init(struct jsm_board *brd)
+ 		if (!brd->channels[i])
+ 			continue;
+ 
++		brd->channels[i]->uart_port.dev = &brd->pci_dev->dev;
+ 		brd->channels[i]->uart_port.irq = brd->irq;
+ 		brd->channels[i]->uart_port.uartclk = 14745600;
+ 		brd->channels[i]->uart_port.type = PORT_JSM;
+diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
+index 740d2d2b19fb..66f3d9324ba2 100644
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -483,6 +483,7 @@ static int usbtmc_get_stb(struct usbtmc_file_data *file_data, __u8 *stb)
+ 	u8 tag;
+ 	int rv;
+ 	long wait_rv;
++	unsigned long expire;
+ 
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+@@ -512,10 +513,11 @@ static int usbtmc_get_stb(struct usbtmc_file_data *file_data, __u8 *stb)
+ 	}
+ 
+ 	if (data->iin_ep_present) {
++		expire = msecs_to_jiffies(file_data->timeout);
+ 		wait_rv = wait_event_interruptible_timeout(
+ 			data->waitq,
+ 			atomic_read(&data->iin_data_valid) != 0,
+-			file_data->timeout);
++			expire);
+ 		if (wait_rv < 0) {
+ 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
+ 			rv = wait_rv;
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index 36d3df7d040c..53d68d20fb62 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -372,6 +372,9 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	/* SanDisk Corp. SanDisk 3.2Gen1 */
+ 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
+ 
++	/* SanDisk Extreme 55AE */
++	{ USB_DEVICE(0x0781, 0x55ae), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
+ 
+diff --git a/drivers/usb/serial/pl2303.c b/drivers/usb/serial/pl2303.c
+index 010688dd9e49..22579d0d8ab8 100644
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -458,6 +458,8 @@ static int pl2303_detect_type(struct usb_serial *serial)
+ 		case 0x605:
+ 		case 0x700:	/* GR */
+ 		case 0x705:
++		case 0x905:	/* GT-2AB */
++		case 0x1005:	/* GC-Q20 */
+ 			return TYPE_HXN;
+ 		}
+ 		break;
+diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
+index d460d71b4257..1477e31d7763 100644
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -52,6 +52,13 @@ UNUSUAL_DEV(0x059f, 0x1061, 0x0000, 0x9999,
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_OPCODES | US_FL_NO_SAME),
+ 
++/* Reported-by: Zhihong Zhou <zhouzhihong@greatwall.com.cn> */
++UNUSUAL_DEV(0x0781, 0x55e8, 0x0000, 0x9999,
++		"SanDisk",
++		"",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_IGNORE_UAS),
++
+ /* Reported-by: Hongling Zeng <zenghongling@kylinos.cn> */
+ UNUSUAL_DEV(0x090c, 0x2000, 0x0000, 0x9999,
+ 		"Hiksemi",
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 99d0d76f738e..753888cf9f89 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -432,7 +432,7 @@ struct ucsi_debugfs_entry {
+ 		u64 low;
+ 		u64 high;
+ 	} response;
+-	u32 status;
++	int status;
+ 	struct dentry *dentry;
+ };
+ 
+diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
+index 63d7c1ca0dfd..a244f397a68c 100644
+--- a/fs/orangefs/inode.c
++++ b/fs/orangefs/inode.c
+@@ -32,12 +32,13 @@ static int orangefs_writepage_locked(struct page *page,
+ 	len = i_size_read(inode);
+ 	if (PagePrivate(page)) {
+ 		wr = (struct orangefs_write_range *)page_private(page);
+-		WARN_ON(wr->pos >= len);
+ 		off = wr->pos;
+-		if (off + wr->len > len)
++		if ((off + wr->len > len) && (off <= len))
+ 			wlen = len - off;
+ 		else
+ 			wlen = wr->len;
++		if (wlen == 0)
++			wlen = wr->len;
+ 	} else {
+ 		WARN_ON(1);
+ 		off = page_offset(page);
+@@ -46,8 +47,6 @@ static int orangefs_writepage_locked(struct page *page,
+ 		else
+ 			wlen = PAGE_SIZE;
+ 	}
+-	/* Should've been handled in orangefs_invalidate_folio. */
+-	WARN_ON(off == len || off + wlen > len);
+ 
+ 	WARN_ON(wlen == 0);
+ 	bvec_set_page(&bv, page, wlen, off % PAGE_SIZE);
+@@ -340,6 +339,8 @@ static int orangefs_write_begin(struct file *file,
+ 			wr->len += len;
+ 			goto okay;
+ 		} else {
++			wr->pos = pos;
++			wr->len = len;
+ 			ret = orangefs_launder_folio(folio);
+ 			if (ret)
+ 				return ret;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index b1738563bdc3..00592fc88e61 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6679,7 +6679,7 @@ static ssize_t tracing_splice_read_pipe(struct file *filp,
+ 		ret = trace_seq_to_buffer(&iter->seq,
+ 					  page_address(spd.pages[i]),
+ 					  min((size_t)trace_seq_used(&iter->seq),
+-						  PAGE_SIZE));
++						  (size_t)PAGE_SIZE));
+ 		if (ret < 0) {
+ 			__free_page(spd.pages[i]);
+ 			break;
 
