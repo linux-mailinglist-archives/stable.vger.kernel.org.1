@@ -1,184 +1,109 @@
-Return-Path: <stable+bounces-152290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6457AD3618
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:24:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB160AD361C
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A57816DA82
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:24:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B2C73ABCF5
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51DB29116A;
-	Tue, 10 Jun 2025 12:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F28291877;
+	Tue, 10 Jun 2025 12:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4RfRdZd"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3092122DA05;
-	Tue, 10 Jun 2025 12:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB5291870;
+	Tue, 10 Jun 2025 12:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749558280; cv=none; b=iq+OYJKNUB51iaqzWA4a+wYrq9j3j6v5ERcz/iC27zundn7M/XxGrT0qV0ZEjyuLr1tXjzqgyJ9NwHBFY+UFpETs5DgMncXyft7YTO8FeQrOFrnZ+QFbx3wTWhiswXTiZP5tjYBtuhJF1kaGHLEUjX5K+amGwJBsxCXWWV3gP4s=
+	t=1749558367; cv=none; b=DenTMyKmo+QVDl4NShpHxHwOWqS5kDip0ODsnff/b1b2Kwhj03EcDGxQgWokxxXZd0WuBBqf1uka75NSOOBLafBtsjCtfsspqGjPorbnxoafAOxAi8fLAeFtxqK+XnrgMJZK1V/XM9FTrf2Sd3YCeIjUBgwfkhLijZcNrau2aO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749558280; c=relaxed/simple;
-	bh=HP0ZM6ER8CFrE75ylSyz9paF9gHU76JoXOZUEHKlVyg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NUn4crOUjI0JMq+C7DU/aGsfm5LujQSXkeyU407OkhSPOXmrQT8P5A0+mn9ViVVQzXEyBxW3t2p7+DtGi81TYviQlWDiF46Ozj43Jjhc/OBueAf1c7IG/dUSnY3ZzmS3U53UoEc/11mJJSGhUpgUAMKlhvktWkZqhwpf5RMvDO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4bGntB6ydsz10WmL;
-	Tue, 10 Jun 2025 20:20:02 +0800 (CST)
-Received: from kwepemk200016.china.huawei.com (unknown [7.202.194.82])
-	by mail.maildlp.com (Postfix) with ESMTPS id 97C5C180482;
-	Tue, 10 Jun 2025 20:24:33 +0800 (CST)
-Received: from huawei.com (10.67.174.78) by kwepemk200016.china.huawei.com
- (7.202.194.82) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 10 Jun
- 2025 20:24:33 +0800
-From: Yi Yang <yiyang13@huawei.com>
-To: <corey@minyard.net>
-CC: <openipmi-developer@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lujialin4@huawei.com>
-Subject: [PATCH] ipmi: fix underflow in ipmi_create_user()
-Date: Tue, 10 Jun 2025 12:15:23 +0000
-Message-ID: <20250610121523.252149-1-yiyang13@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1749558367; c=relaxed/simple;
+	bh=QB4/CDRyNJLJV/BoZ0SgfWs+wIHNtm+r1nCerSN5cXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eHWkqB0LDVzaLircop1UVDKoOxHm9XTvLVNEcTqenKvOY6arSt03Q00DgwXotknnuQZ1GK2gvPeyr+s9zj4soQZLI8MJlrbOhqyOAN1wcDczLcs3TLWwqYrm8OPIVJIEykL4ZIdULNzJ4OmHVhePeWeAAotoGGnx2kH/OL7NlPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4RfRdZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90C9C4CEED;
+	Tue, 10 Jun 2025 12:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749558367;
+	bh=QB4/CDRyNJLJV/BoZ0SgfWs+wIHNtm+r1nCerSN5cXs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t4RfRdZdNSkEFTHsVnYntpuTd8pJpFF8rDcjgnnEal0FKOtJ2sQQ68UGWxmScYqsM
+	 xXYEUhbgmWfVweQFoW2HDXFThInOAC5o+gKm1dQIXeYoGQTODq7t0+l+quG3KAsP2g
+	 P74IzC2lMdWNVpzGvWSL/gmhgjoToh/K8exnM09K/zXuH9RRVMltbxYh5MpawT5d6l
+	 1hGCx+ptmxnc1OY4ru7zXuQoV8VOXH/ufaHT2KTxR9kA/K2Aq803ZHVd0RH4f62e50
+	 D5iaMYdBaxjtU6ciRvFvrZTO2noXpzuH4xrB4VGB2PaIBTwDhwzz9Ex0Sw1cAiEl/O
+	 SGvmWdeMY1Z1w==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uOy3I-000000005Dg-401k;
+	Tue, 10 Jun 2025 14:26:05 +0200
+Date: Tue, 10 Jun 2025 14:26:04 +0200
+From: Johan Hovold <johan@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: Re: Patch "USB: serial: bus: fix const issue in
+ usb_serial_device_match()" has been added to the 6.15-stable tree
+Message-ID: <aEgkXORtnPqvSEf2@hovoldconsulting.com>
+References: <20250610121813.1558278-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemk200016.china.huawei.com (7.202.194.82)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250610121813.1558278-1-sashal@kernel.org>
 
-Syzkaller reported this bug:
-==================================================================
-BUG: KASAN: global-out-of-bounds in instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
-BUG: KASAN: global-out-of-bounds in atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
-BUG: KASAN: global-out-of-bounds in ipmi_create_user.part.0+0x5e5/0x790 drivers/char/ipmi/ipmi_msghandler.c:1291
-Write of size 4 at addr ffffffff8fc6a438 by task syz.5.1074/5888
+Hi Sasha,
 
-CPU: 0 PID: 5888 Comm: syz.5.1074 Not tainted 6.6.0+ #60
-......
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x72/0xa0 lib/dump_stack.c:106
- print_address_description.constprop.0+0x6b/0x3d0 mm/kasan/report.c:364
- print_report+0xba/0x280 mm/kasan/report.c:475
- kasan_report+0xa9/0xe0 mm/kasan/report.c:588
- check_region_inline mm/kasan/generic.c:181 [inline]
- kasan_check_range+0x100/0x1c0 mm/kasan/generic.c:187
- instrument_atomic_read_write include/linux/instrumented.h:96 [inline]
- atomic_dec include/linux/atomic/atomic-instrumented.h:592 [inline]
- ipmi_create_user.part.0+0x5e5/0x790 drivers/char/ipmi/ipmi_msghandler.c:1291
- ipmi_create_user+0x56/0x80 drivers/char/ipmi/ipmi_msghandler.c:1236
- ipmi_open+0xac/0x2b0 drivers/char/ipmi/ipmi_devintf.c:97
- chrdev_open+0x276/0x700 fs/char_dev.c:414
- do_dentry_open+0x6a7/0x1410 fs/open.c:929
- vfs_open+0xd1/0x440 fs/open.c:1060
- do_open+0x957/0x10d0 fs/namei.c:3671
- path_openat+0x258/0x770 fs/namei.c:3830
- do_filp_open+0x1c7/0x410 fs/namei.c:3857
- do_sys_openat2+0x5bd/0x6a0 fs/open.c:1428
- do_sys_open fs/open.c:1443 [inline]
- __do_sys_openat fs/open.c:1459 [inline]
- __se_sys_openat fs/open.c:1454 [inline]
- __x64_sys_openat+0x17a/0x210 fs/open.c:1454
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
-RIP: 0033:0x54d2cd
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f4751920048 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
-RAX: ffffffffffffffda RBX: 0000000000796080 RCX: 000000000054d2cd
-RDX: 0000000000000000 RSI: 0000000020004280 RDI: ffffffffffffff9c
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000001e R11: 0000000000000246 R12: 000000000079608c
-R13: 0000000000000000 R14: 0000000000796080 R15: 00007f4751900000
- </TASK>
+On Tue, Jun 10, 2025 at 08:18:13AM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     USB: serial: bus: fix const issue in usb_serial_device_match()
+> 
+> to the 6.15-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      usb-serial-bus-fix-const-issue-in-usb_serial_device_.patch
+> and it can be found in the queue-6.15 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 0e91be50efc1a26ec9047dadc980631d31ef8578
+> Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Date:   Wed May 21 15:41:34 2025 +0200
+> 
+>     USB: serial: bus: fix const issue in usb_serial_device_match()
+>     
+>     [ Upstream commit 92cd405b648605db4da866f3b9818b271ae84ef0 ]
+>     
+>     usb_serial_device_match() takes a const pointer, and then decides to
+>     cast it away into a non-const one, which is not a good thing to do
+>     overall.  Fix this up by properly setting the pointers to be const to
+>     preserve that attribute.
+>     
+>     Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+>     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Signed-off-by: Johan Hovold <johan@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-The buggy address belongs to the variable:
- ipmi_interfaces+0x38/0x40
+This patch does not need to be backported and I left out the stable
+patch on purpose as usual.
 
-The buggy address belongs to the physical page:
-page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x45a6a
-flags: 0x3fffff00004000(reserved|node=0|zone=1|lastcpupid=0x1fffff)
-raw: 003fffff00004000 ffffea0001169a88 ffffea0001169a88 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
+Please drop.
 
-Memory state around the buggy address:
- ffffffff8fc6a300: 00 00 00 00 f9 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
- ffffffff8fc6a380: 00 00 f9 f9 f9 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
->ffffffff8fc6a400: 00 00 f9 f9 f9 f9 f9 f9 00 00 00 00 f9 f9 f9 f9
-                                        ^
- ffffffff8fc6a480: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffffff8fc6a500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f9 f9
-==================================================================
-
-In the ipmi_create_user() function, the intf->nr_users variable has an
-underflow issue. Specifically, on the exception path (goto out_kfree;)
-before atomic_add_return(), calling atomic_dec() when intf->nr_users has
-not been incremented will result in an underflow.
-
-The relevant code has been completely rewritten in the next tree and has
-been fixed with commit 9e91f8a6c868 ("ipmi:msghandler: Remove srcu for the
-ipmi_interfaces list"). However, the issue still exists in the 5.19+
-stable branches and needs to be fixed on those branches.
-
-Cc: stable@vger.kernel.org # 5.19+
-Fixes: 8e76741c3d8b ("ipmi: Add a limit on the number of users that may use IPMI")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
----
- drivers/char/ipmi/ipmi_msghandler.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 186f1fee7534..0293fad2f4f2 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -1246,18 +1246,18 @@ int ipmi_create_user(unsigned int          if_num,
-  found:
- 	if (atomic_add_return(1, &intf->nr_users) > max_users) {
- 		rv = -EBUSY;
--		goto out_kfree;
-+		goto out_dec;
- 	}
- 
- 	INIT_WORK(&new_user->remove_work, free_user_work);
- 
- 	rv = init_srcu_struct(&new_user->release_barrier);
- 	if (rv)
--		goto out_kfree;
-+		goto out_dec;
- 
- 	if (!try_module_get(intf->owner)) {
- 		rv = -ENODEV;
--		goto out_kfree;
-+		goto out_dec;
- 	}
- 
- 	/* Note that each existing user holds a refcount to the interface. */
-@@ -1281,8 +1281,9 @@ int ipmi_create_user(unsigned int          if_num,
- 	*user = new_user;
- 	return 0;
- 
--out_kfree:
-+out_dec:
- 	atomic_dec(&intf->nr_users);
-+out_kfree:
- 	srcu_read_unlock(&ipmi_interfaces_srcu, index);
- 	vfree(new_user);
- 	return rv;
--- 
-2.25.1
-
+Johan
 
