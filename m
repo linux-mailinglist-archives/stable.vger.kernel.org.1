@@ -1,115 +1,323 @@
-Return-Path: <stable+bounces-152288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE648AD3582
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:03:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F78AD35A7
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D39061754D8
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:03:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297BE1898251
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40C522DA1E;
-	Tue, 10 Jun 2025 12:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA3328E586;
+	Tue, 10 Jun 2025 12:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4840hl8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nCBo8D8t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC7722DA14;
-	Tue, 10 Jun 2025 12:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2125228E582;
+	Tue, 10 Jun 2025 12:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749556990; cv=none; b=accdPfhBfNe8YBEHBoYkukBtHuJ7GFg+sLQLrQ3nNX2wmdBzVvJOxGxscMybUMn7Rr/31MkXPex4V0idqjxOnV2D9hq+yF9tMxl/fucIfL8bRZUBTvLccFdsNESvmKt+8mseQ+9r4Mu9TNA2bacUyOTOrNgkBSHQmg9QJ29SkS4=
+	t=1749557404; cv=none; b=bfE9EoDOHmTn67RjftxxFbsluFsyPuc6SC0OfXdRR1ja8srwObXoo+6oCuNhq0fgy72rP6xS33E+YfaALgLz7hm0QEZnnRKyh1gykM9qHLt+UHox0nKD3beNmTA9d9wM9+IiybsbjtKlapa23Z1bCpZyq9po4tKDS9f9AJnoCl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749556990; c=relaxed/simple;
-	bh=QmWiAygvj8edZR+MhBol5WXAZW9ghl6ZqYJhUHNoB1Q=;
+	s=arc-20240116; t=1749557404; c=relaxed/simple;
+	bh=ItTGZ6rvcQflVD2CtmqZ+/ejp5BhpdVQRL4hHN9ruUg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a3ofoEFRF+Ny2lfCV6X/0qD1oryUBo+aqCQpNffr9eqzACS1HRwOSfhW/SUXgk46b5y0l75pGbk0tL5dBiA0rm7S+1cWgUK2oCDqUSoUMODCwxWZrR+xrsZkdWY8wMOn9pQHma4paI2nFBOq95mRnLmtShmwAaBkh6+0+fmJrrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4840hl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A19BC4CEF5;
-	Tue, 10 Jun 2025 12:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749556990;
-	bh=QmWiAygvj8edZR+MhBol5WXAZW9ghl6ZqYJhUHNoB1Q=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=L4840hl8uQKdsxX9qnd5byyA7sAgQEdNhdt48OJX0fbDN6H/CUWUvrxJxcugSfCUv
-	 jFqBuPPvIxOb4HB+lFlUHsC7VxQxMIXTjBRyuK7zoTd8ufpiV5w/sa2JmkcWv+/KCU
-	 tyW//EV0/BVGetwgPPqqfm+qZTPAnALSnHoX0L6KPieWGY2Twn2usB/MQqn8onOk5p
-	 OiXXUa4H9D2PDTmtLHs3xh+Lmj2g7uscnSJaB5qSCVILYz7HTzoY76DwAgzNnGMGP8
-	 S4Mp1HVO7U5hinauqkAnNW/cZOeZTHcsmYYBJ00ncIQichhHyd6K1YNyCkB8YeEysT
-	 KLT+UFhQ1fQuw==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-607873cc6c4so7625217a12.1;
-        Tue, 10 Jun 2025 05:03:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUtanjRiQkoAf+m61bJCx9Vr9zAHuAYmtLTl6UOSnnPPkj7zz91k+e1YncZuZOl11QKuA/Qkb/5@vger.kernel.org, AJvYcCVktvJt5+yc4E+Tef8evfPkc0hgppMRj79VJ+gzxHBlvz1cKAcxBH+LFAFvYlMGENN4IwWhrlFILfke@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhTo0bNc9PA8CXpyIaDQh74U8ERF85OMrduq3NjJn6Bhfjf1Iv
-	DAslwS6moAbXKPBAQ1RCK4nS/XyJ4/0oD8eMGfjB1FEkVwYk9P03rsXUOXj7YI1TcwISdSqwewD
-	1o3rNXbMK//fgzGCAjwx3/jAQA0PTfOI=
-X-Google-Smtp-Source: AGHT+IFHCHL/ee2hFn9QEyn33ksXkw1BklvfIvjLzbDrvdjzzKtCaI+6os+z1UUnWFSFYHKinnnCWpQbo2OQNAi04jo=
-X-Received: by 2002:a05:6402:40c6:b0:602:a0:1f2c with SMTP id
- 4fb4d7f45d1cf-60818622f77mr2923922a12.9.1749556988625; Tue, 10 Jun 2025
- 05:03:08 -0700 (PDT)
+	 To:Cc:Content-Type; b=EHl5HKe8D5FXzA/xrHQ4gtXh5k0GYV9hsqNDU5i35r/7/oOwdEUP2FrfUREoql8lMyVs3PPXF03eo9H9OxA08XhaWIty7vSQ5Sb8HdJggkjmlEHxpOkzaCRbBWK6PkTRNidY3XjoZ8RKdb1DDEPEWwcLXFzv10kV0oV4yZUvN2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nCBo8D8t; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-310447fe59aso51879271fa.0;
+        Tue, 10 Jun 2025 05:10:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749557400; x=1750162200; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+YL0ojihKPdNLv/xHN6QLm3jZrEwLGeSVmJyK9Ndi3o=;
+        b=nCBo8D8tXdtshNkWEtS594wzYTrrXPauCqvN2pZq9QCIiiXYiiDOMPGzV95Hc8FE5n
+         IGYKTd8YYrjqM/xGB7he41uRq/W2qXwJ3qjs2o2btCg4VJ4qX9/ysTZbglL9Tz0gYKet
+         hQJA85BYT2P5z80voQ8l0yj2Oh6acOxhQJvXgdzrGuL1tiSDCB8cviDUBCh++YiL4wp0
+         3M5T7iND8zMsyjbSHhOEY6TLSC87Qy4QX4UEzJcN0LfRbAoSRKT3RknEXjxoS4i8CV5D
+         ljsxQeRlHLKMrOrZ8EYe3ZZScQyyGZSLCKIhT86LBVSqdgosdo2T/Fm+WLEkVNCBHhLp
+         NhHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749557400; x=1750162200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+YL0ojihKPdNLv/xHN6QLm3jZrEwLGeSVmJyK9Ndi3o=;
+        b=Zw65FPxy7bzcDe3NuR0a6cCKNBX/+GOYjwEp1umVpTDUJKii29NnvrLolRhCp9Tj0G
+         zKc4y0x03NXRey2dpC9Cu3E9lm3nYO6ydKGK7Ft7EC0v0ph5s+92kbvbswFk1ma7waNC
+         acx9Tkf9ubOBo5l44zgnyDbKdcaBdquIc0KJwM8KnaJAj/jwSNH38RhyXgyT4ZFiEAzt
+         xkonJlRMgaxfqjz6ApHDp2a/sKqC6cX6eraJclcdDUplCXLgtenKPv0DxLpPUH1xUvmv
+         uayfpmbnBElIV8LyZ5CgOOIVnImvNLnpU6LNgLAbQk6BtpXnV3cRQGYiVd7kUloKYJWd
+         agDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+cDPhRfc7WwTMuEqOSorBWuH5wK0bcXs3m1hd1ZKiEO/KgTtd8WVtlN5NeUtJQoxzQHLPmjtS/1nl/Oc=@vger.kernel.org, AJvYcCWjQmkHAUziLb2iyIn6zuqlVxSCavDpOaQgbVk53CeMku2SuUYY1Y5t9qZvkPlfj8ZtPjfhgIAu@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzuy/ioRJE2oxmLKDCFuIqqZwQho5oM8JKxOGKupqV4goq+BMdo
+	7Q7ZUXDjIpbNmDgURLR3FAO+w90dXlkjWO2lerRm8Sx5TR6Bomt5qLAfRPvvydrMCsmvbsFRwop
+	8/YtlyEKgwWap2oUdSy3QxpV8KB5lJNntgR5Fy84=
+X-Gm-Gg: ASbGncvRMxuOclR4izrz5ja1ES1OLE0IMAq7jvomNLN2KOlkkIs/hi7dKrhoxxF0z9c
+	Ah20GqtoZL+XhHWxIStbPvx7DZsHCy+imiRFS7g2SJfkhqrNozPlCF7AKXVrnEHi3ps4fNINfrH
+	xxC+zAv7s2r4RWX/m0BpbNMoc9O5p90NJhEQwEanD8Fjc=
+X-Google-Smtp-Source: AGHT+IEvdplytAWoEI0b8tB2VLoXPuB8Mj5MTg4zuYfiVUniSBpWeQl1NNfE+gjuO8yoACZHcvqvzk8X/2/Wce2M5F0=
+X-Received: by 2002:a05:651c:154b:b0:32a:864a:46eb with SMTP id
+ 38308e7fff4ca-32adf98d1a9mr43570701fa.0.1749557399906; Tue, 10 Jun 2025
+ 05:09:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610115926.347845-1-zhoubinbin@loongson.cn>
-In-Reply-To: <20250610115926.347845-1-zhoubinbin@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 10 Jun 2025 20:02:56 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5Aq=GoJpY6KH9FQX_RcPfx0D9XUtjjVf=ZfxEdhj93mQ@mail.gmail.com>
-X-Gm-Features: AX0GCFuMIhw27w0kkeHJL2qow9985_yOnSIrlzLWYAsJ60bLBiVLgnww5FP0JEM
-Message-ID: <CAAhV-H5Aq=GoJpY6KH9FQX_RcPfx0D9XUtjjVf=ZfxEdhj93mQ@mail.gmail.com>
-Subject: Re: [PATCH] gpio: loongson-64bit: Correct Loongson-7A2000 ACPI GPIO
- access mode
-To: Binbin Zhou <zhoubinbin@loongson.cn>
-Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Yinbo Zhu <zhuyinbo@loongson.cn>, Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, 
-	linux-gpio@vger.kernel.org, stable@vger.kernel.org
+References: <20250609171751.36305-1-ryncsn@gmail.com> <CAMgjq7C-71z3w1Tf2eMwLvpi2Nt5md8z43jtM4o_L35F82uCVA@mail.gmail.com>
+ <CAGsJ_4xrk3qbZ2ZLfNsa_rFUk4QDoBa7DREFgJKEkV8L1cxoGQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xrk3qbZ2ZLfNsa_rFUk4QDoBa7DREFgJKEkV8L1cxoGQ@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 10 Jun 2025 20:09:42 +0800
+X-Gm-Features: AX0GCFvuHVV1WPPOy4MqkxoQsCRCqE4wKBt-y4BISmcrDOkwa27_2WBQbF-P6zA
+Message-ID: <CAMgjq7AsKFz7UN+seR5atznE_RBTDC9qjDmwN5saMe+KL3b1mQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/shmem, swap: fix softlockup with mTHP swapin
+To: Barry Song <21cnbao@gmail.com>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Usama Arif <usamaarif642@gmail.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+On Tue, Jun 10, 2025 at 5:17=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Tue, Jun 10, 2025 at 5:24=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wr=
+ote:
+> >
+> > On Tue, Jun 10, 2025 at 1:18=E2=80=AFAM Kairui Song <ryncsn@gmail.com> =
+wrote:
+> > >
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Following softlockup can be easily reproduced on my test machine with=
+:
+> > >
+> > > echo always > /sys/kernel/mm/transparent_hugepage/hugepages-64kB/enab=
+led
+> > > swapon /dev/zram0 # zram0 is a 48G swap device
+> > > mkdir -p /sys/fs/cgroup/memory/test
+> > > echo 1G > /sys/fs/cgroup/test/memory.max
+> > > echo $BASHPID > /sys/fs/cgroup/test/cgroup.procs
+> > > while true; do
+> > >     dd if=3D/dev/zero of=3D/tmp/test.img bs=3D1M count=3D5120
+> > >     cat /tmp/test.img > /dev/null
+> > >     rm /tmp/test.img
+> > > done
+> > >
+> > > Then after a while:
+> > > watchdog: BUG: soft lockup - CPU#0 stuck for 763s! [cat:5787]
+> > > Modules linked in: zram virtiofs
+> > > CPU: 0 UID: 0 PID: 5787 Comm: cat Kdump: loaded Tainted: G           =
+  L      6.15.0.orig-gf3021d9246bc-dirty #118 PREEMPT(voluntary)=C2=B7
+> > > Tainted: [L]=3DSOFTLOCKUP
+> > > Hardware name: Red Hat KVM/RHEL-AV, BIOS 0.0.0 02/06/2015
+> > > RIP: 0010:mpol_shared_policy_lookup+0xd/0x70
+> > > Code: e9 b8 b4 ff ff 31 c0 c3 cc cc cc cc 90 90 90 90 90 90 90 90 90 =
+90 90 90 90 90 90 90 90 66 0f 1f 00 0f 1f 44 00 00 41 54 55 53 <48> 8b 1f 4=
+8 85 db 74 41 4c 8d 67 08 48 89 fb 48 89 f5 4c 89 e7 e8
+> > > RSP: 0018:ffffc90002b1fc28 EFLAGS: 00000202
+> > > RAX: 00000000001c20ca RBX: 0000000000724e1e RCX: 0000000000000001
+> > > RDX: ffff888118e214c8 RSI: 0000000000057d42 RDI: ffff888118e21518
+> > > RBP: 000000000002bec8 R08: 0000000000000001 R09: 0000000000000000
+> > > R10: 0000000000000bf4 R11: 0000000000000000 R12: 0000000000000001
+> > > R13: 00000000001c20ca R14: 00000000001c20ca R15: 0000000000000000
+> > > FS:  00007f03f995c740(0000) GS:ffff88a07ad9a000(0000) knlGS:000000000=
+0000000
+> > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > CR2: 00007f03f98f1000 CR3: 0000000144626004 CR4: 0000000000770eb0
+> > > DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> > > DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> > > PKRU: 55555554
+> > > Call Trace:
+> > >  <TASK>
+> > >  shmem_alloc_folio+0x31/0xc0
+> > >  shmem_swapin_folio+0x309/0xcf0
+> > >  ? filemap_get_entry+0x117/0x1e0
+> > >  ? xas_load+0xd/0xb0
+> > >  ? filemap_get_entry+0x101/0x1e0
+> > >  shmem_get_folio_gfp+0x2ed/0x5b0
+> > >  shmem_file_read_iter+0x7f/0x2e0
+> > >  vfs_read+0x252/0x330
+> > >  ksys_read+0x68/0xf0
+> > >  do_syscall_64+0x4c/0x1c0
+> > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > RIP: 0033:0x7f03f9a46991
+> > > Code: 00 48 8b 15 81 14 10 00 f7 d8 64 89 02 b8 ff ff ff ff eb bd e8 =
+20 ad 01 00 f3 0f 1e fa 80 3d 35 97 10 00 00 74 13 31 c0 0f 05 <48> 3d 00 f=
+0 ff ff 77 4f c3 66 0f 1f 44 00 00 55 48 89 e5 48 83 ec
+> > > RSP: 002b:00007fff3c52bd28 EFLAGS: 00000246 ORIG_RAX: 000000000000000=
+0
+> > > RAX: ffffffffffffffda RBX: 0000000000040000 RCX: 00007f03f9a46991
+> > > RDX: 0000000000040000 RSI: 00007f03f98ba000 RDI: 0000000000000003
+> > > RBP: 00007fff3c52bd50 R08: 0000000000000000 R09: 00007f03f9b9a380
+> > > R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000040000
+> > > R13: 00007f03f98ba000 R14: 0000000000000003 R15: 0000000000000000
+> > >  </TASK>
+> > >
+> > > The reason is simple, readahead brought some order 0 folio in swap
+> > > cache, and the swapin mTHP folio being allocated is in confict with i=
+t,
+> > > so swapcache_prepare fails and causes shmem_swap_alloc_folio to retur=
+n
+> > > -EEXIST, and shmem simply retries again and again causing this loop.
+> > >
+> > > Fix it by applying a similar fix for anon mTHP swapin.
+> > >
+> > > The performance change is very slight, time of swapin 10g zero folios
+> > > with shmem (test for 12 times):
+> > > Before:  2.47s
+> > > After:   2.48s
+> > >
+> > > Fixes: 1dd44c0af4fa1 ("mm: shmem: skip swapcache for swapin of synchr=
+onous swap device")
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+>
+> > >
+> > > ---
+> > >
+> > > V1: https://lore.kernel.org/linux-mm/20250608192713.95875-1-ryncsn@gm=
+ail.com/
+> > > Updates:
+> > > - Move non_swapcache_batch check before swapcache_prepare, I was
+> > >   expecting this could improve the performance, turns out it barely
+> > >   helps and may even cause more overhead in some cases. [ Barry Song =
+]
+> > > - Remove zero map check, no need to do that for shmem [ Barry Song,
+> > >   Baolin Wang ]
+> > > - Fix build bot error.
+> > >
+> > >  mm/memory.c | 20 --------------------
+> > >  mm/shmem.c  |  4 +++-
+> > >  mm/swap.h   | 23 +++++++++++++++++++++++
+> > >  3 files changed, 26 insertions(+), 21 deletions(-)
+> > >
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 9ead7ab07e8e..3845ed068d74 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -4313,26 +4313,6 @@ static struct folio *__alloc_swap_folio(struct=
+ vm_fault *vmf)
+> > >  }
+> > >
+> > >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> > > -static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
+> > > -{
+> > > -       struct swap_info_struct *si =3D swp_swap_info(entry);
+> > > -       pgoff_t offset =3D swp_offset(entry);
+> > > -       int i;
+> > > -
+> > > -       /*
+> > > -        * While allocating a large folio and doing swap_read_folio, =
+which is
+> > > -        * the case the being faulted pte doesn't have swapcache. We =
+need to
+> > > -        * ensure all PTEs have no cache as well, otherwise, we might=
+ go to
+> > > -        * swap devices while the content is in swapcache.
+> > > -        */
+> > > -       for (i =3D 0; i < max_nr; i++) {
+> > > -               if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
+> > > -                       return i;
+> > > -       }
+> > > -
+> > > -       return i;
+> > > -}
+> > > -
+> > >  /*
+> > >   * Check if the PTEs within a range are contiguous swap entries
+> > >   * and have consistent swapcache, zeromap.
+> > > diff --git a/mm/shmem.c b/mm/shmem.c
+> > > index 73182e904f9c..a4fdfbd086f1 100644
+> > > --- a/mm/shmem.c
+> > > +++ b/mm/shmem.c
+> > > @@ -2256,6 +2256,7 @@ static int shmem_swapin_folio(struct inode *ino=
+de, pgoff_t index,
+> > >         folio =3D swap_cache_get_folio(swap, NULL, 0);
+> > >         order =3D xa_get_order(&mapping->i_pages, index);
+> > >         if (!folio) {
+> > > +               int nr_pages =3D 1 << order;
+> > >                 bool fallback_order0 =3D false;
+> > >
+> > >                 /* Or update major stats only when swapin succeeds?? =
+*/
+> > > @@ -2271,7 +2272,8 @@ static int shmem_swapin_folio(struct inode *ino=
+de, pgoff_t index,
+> > >                  * to swapin order-0 folio, as well as for zswap case=
+.
+> > >                  */
+> > >                 if (order > 0 && ((vma && unlikely(userfaultfd_armed(=
+vma))) ||
+> > > -                                 !zswap_never_enabled()))
+> > > +                                 !zswap_never_enabled() ||
+> > > +                                 non_swapcache_batch(swap, nr_pages)=
+ !=3D nr_pages))
+> > >                         fallback_order0 =3D true;
+> > >
+> > >                 /* Skip swapcache for synchronous device. */
+> > > diff --git a/mm/swap.h b/mm/swap.h
+> > > index e87a0f19a0ee..911ad5ff0f89 100644
+> > > --- a/mm/swap.h
+> > > +++ b/mm/swap.h
+> > > @@ -108,6 +108,25 @@ static inline int swap_zeromap_batch(swp_entry_t=
+ entry, int max_nr,
+> > >                 return find_next_bit(sis->zeromap, end, start) - star=
+t;
+> > >  }
+> > >
+> > > +static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
+> > > +{
+> > > +       struct swap_info_struct *si =3D swp_swap_info(entry);
+> > > +       pgoff_t offset =3D swp_offset(entry);
+> > > +       int i;
+> > > +
+> > > +       /*
+> > > +        * While allocating a large folio and doing mTHP swapin, we n=
+eed to
+> > > +        * ensure all entries are not cached, otherwise, the mTHP fol=
+io will
+> > > +        * be in conflict with the folio in swap cache.
+> > > +        */
+> > > +       for (i =3D 0; i < max_nr; i++) {
+> > > +               if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
+> > > +                       return i;
+> > > +       }
+> > > +
+> > > +       return i;
+> > > +}
+>
+> Nit:
+> This was previously under CONFIG_TRANSPARENT_HUGEPAGE, but is now
+> guarded by CONFIG_SWAP. I assume there's no performance impact, since
+> if (order > 0) would never be true on platforms where THP is
+> disabled, meaning non_swapcache_batch() would never be called?
 
-On Tue, Jun 10, 2025 at 7:59=E2=80=AFPM Binbin Zhou <zhoubinbin@loongson.cn=
-> wrote:
->
-> According to the description of the Loongson-7A2000 ACPI GPIO register in
-> the manual, its access mode should be BIT_CTRL_MODE, otherwise there mayb=
-e
-> some unpredictable behavior.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 44fe79020b91 ("gpio: loongson-64bit: Add more gpio chip support")
-> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-> ---
->  drivers/gpio/gpio-loongson-64bit.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loong=
-son-64bit.c
-> index 26227669f026..70a01c5b8ad1 100644
-> --- a/drivers/gpio/gpio-loongson-64bit.c
-> +++ b/drivers/gpio/gpio-loongson-64bit.c
-> @@ -268,7 +268,7 @@ static const struct loongson_gpio_chip_data loongson_=
-gpio_ls7a2000_data0 =3D {
->  /* LS7A2000 ACPI GPIO */
->  static const struct loongson_gpio_chip_data loongson_gpio_ls7a2000_data1=
- =3D {
->         .label =3D "ls7a2000_gpio",
-> -       .mode =3D BYTE_CTRL_MODE,
-> +       .mode =3D BIT_CTRL_MODE,
->         .conf_offset =3D 0x4,
->         .in_offset =3D 0x8,
->         .out_offset =3D 0x0,
->
-> base-commit: e0d4a0f1d066f14522049e827107a577444d9183
-> --
-> 2.47.1
->
+Yes, there is no performance overhead, order is always 0. But some
+clean up can be done later.
+
+The whole `order =3D xa_get_order` and related checks are not needed at
+all for !CONFIG_TRANSPARENT_HUGEPAGE. It's hard to optimize it out
+without shuffle too many code here, simply wrap non_swapcache_batch
+with CONFIG_TRANSPARENT_HUGEPAGE may cause more trouble for
+understanding the code and doesn't help much here, it's really the
+caller that should avoid the whole thing. That's not in the scope of a
+bugfix.
+
+I have a shmem xarray lookup optimization patch in the swap table
+series, now looking at it I found it might be useful for the clean up
+here. I'll check if I can send a clean up & optimize series first.
 
