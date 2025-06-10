@@ -1,172 +1,149 @@
-Return-Path: <stable+bounces-152354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402F6AD4538
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 23:57:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D78DAD4587
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 00:03:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A5D17D15A
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:57:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED8933A4A9B
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 22:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8D628BA88;
-	Tue, 10 Jun 2025 21:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07357288C1C;
+	Tue, 10 Jun 2025 22:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GtwohTrZ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BV2IIeDg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BTcVTgil"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695962874EA;
-	Tue, 10 Jun 2025 21:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A41A288C00;
+	Tue, 10 Jun 2025 22:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749592567; cv=none; b=r6nNy0PzlJ0x8PURTbHblr4qBJ1VtVCiK1rKW8HNQLrsh+gH9cqVTfxZn8sMPh+bsW0cMy+T/dw9Wv/4ibmIJWQa4y2Llaj9rSpGqzm9tydx4M6vy5ENN56KR8fXAYuCuD0CuTodEXcZ5sLbuSVFdNFZAizF/AStsAKWcCaKDN0=
+	t=1749592840; cv=none; b=AL9+pcRCHsZoqFpXeiklo+sKre8SVFPdCSw4DvTf1bqQyU0f9fn2MCa1PKccGTRa/onjd3WlEMiQDWXnZffQ/4SdXadGVZszdXV2NcRlAkeMcognjKmiVQY3DbqAGk3dpLvbQWVxQVH42JCr93uq47QZ97ZZvH59jJub8sftAZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749592567; c=relaxed/simple;
-	bh=BcO/N3oLniwVCzGot81EJud0xDOAiwYCU0xsTlvrqoI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Roev8hdIxnhG8Eoj0YAU0ZxLWlO4iT9CT+hv6cHjsczwmDcRtNEELjdWvElpy8MYlz2M5CtyrwDOtzFQQ/c4/oX4U3C1mYqkkwUC6K8v7kJfvJ9/qKALuM+zLDa2RQa/9DXj1ZV8vEKWSJO6IPhkz3LscMFfqtIi2UnAzVjAY6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GtwohTrZ; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso4910010b3a.2;
-        Tue, 10 Jun 2025 14:56:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749592566; x=1750197366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mh8dL2G7ps6auhPCbV2SxnoFMaxmQBWO6t4lRq5+ZGg=;
-        b=GtwohTrZJEWHeNo8T4XyRbfdMjetNE+2tvnQIHG3Bn6WxGBKIL8+efmZM6R1jeIK5o
-         oHOfp+gd0xMVbJsolR71hAizt8JyhL6NC4Kwq4oKVl2L/EMd7SKV3y9xvhJiHIvPHqUa
-         HAGOegSq8BPFuuQy9rpyzSFdzkeKV/42Ho+a2RgVff2yr31Yk1Rs1KYu99fLrIij0wUX
-         UNqoshrRGVXQ07YtL6SbIArDCe6Fp4ft4BMWbbMRvAkN2mZMvIQFX4H31UK1UAwpg+Vs
-         M/Z2u8YdbZqhIfmYc4zYtuncD7cREb+ChCOhwaGhHqFc+AIKAHTkkl7rsbPVsQrNFFOu
-         L07A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749592566; x=1750197366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mh8dL2G7ps6auhPCbV2SxnoFMaxmQBWO6t4lRq5+ZGg=;
-        b=DVyYe8vxro0zaGQZazQBX1bf48YaqSjQZCJtm0y4Uzw2o4QdLES9vCCyXcYyPMsAFT
-         msRPHc1dcyHuDYOjNAdmqPtfPhGsOBAiY8cKC4574nsAY+KrDCpdRsI13+NDaes0XZAS
-         T0tRIv2FuayORe1CxHBacKhPWlaE6x3GsqFMqyMp3KDoAzFb4CcX5Kzi+XbYIs+3gPxE
-         F7kVMVb/AEvO5UMinEEPEQl2i18ZZ5DME16hc+oniYNrhiEOtMSjt5+lt1/DYtxoSEmZ
-         MqV2P4fcYpL5eMhprBAmubq4QGkp/1xHS96m+X2o2qE9haQAOIMcnSCGhoNFVI9TI+II
-         72nA==
-X-Forwarded-Encrypted: i=1; AJvYcCVB36YQy0O/KpdPVLX/jOPTcIJ0SsBvtgnAXg92GIw/VUxC9CYEAAN4Hw8R9C5VhPlV9x4TI2W3@vger.kernel.org, AJvYcCVEHeQM41tN+ynmdPypglkL+Jgu+rY2LC//Dk9OzirpdiSuYCVU5XUHv/VlCeayE/kQ0LLdcnVoQe0X@vger.kernel.org, AJvYcCVL2CZ44aOeFgHSPXB8GKuWu2gmHoVWXJnwQ/rW0WxAW6Rwhh060RSpa0XXbnHgIUR8ZQDc6dGg6v9jntw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhdsdo+aKKTxPZoO85lreUpBFsoyzb3RAHvHUiL3WggNCKvOXN
-	KKBoxFTN01BK1DXNjE8sojy9zq1YeYtbNgkrW7PSoj/i0LmksgUu54VX
-X-Gm-Gg: ASbGncvHtktUnI5YZD4BibN4psP175zRKY8kBnxLZJTjJsK+uKKX8Krv7r8ikj03mXW
-	kzR3xo8PkRufNFQLfUjAxvsa1KT1VgATn7TCGmfqTf9GhnstoXTajyDNMZ6e+4pcjuwZppBUetJ
-	jYrRCQTDM9QbTOL+j+DImlWZ/XzJuw5bppYeSDl0Al8Jr3Cu5PqEfVwPTx0uwzKOjnt2KPo3bBc
-	Gf88FvdQJhPwNf1A/PQHYiy935pqIrIkirrUL5skQO8ZKD68VqZR6MOiq06GN5MWHCrJXmp46HY
-	BVYqWt/j8MXNzblMeaZ2V3H+GJCT3Jj7HG0sLVQpNtVSP0pw/Kl08C6B8qZA0Hmx7BjTbqGnURW
-	dmFMIy59akN5LHVeNzMhJIwASJzs=
-X-Google-Smtp-Source: AGHT+IF50qUKlnQbr9poW8unnzpE8c0mhNlT5avVy2a6dY7Fsb+ssIhW5QF+vzmXtbCwaGQl4JUDKw==
-X-Received: by 2002:a05:6a00:17a4:b0:736:b101:aed3 with SMTP id d2e1a72fcca58-7486cb44948mr1406040b3a.1.1749592565674;
-        Tue, 10 Jun 2025 14:56:05 -0700 (PDT)
-Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482af3a165sm8173936b3a.11.2025.06.10.14.56.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 14:56:05 -0700 (PDT)
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: corbet@lwn.net,
-	colyli@kernel.org,
-	kent.overstreet@linux.dev,
-	akpm@linux-foundation.org,
-	robertpang@google.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-bcache@vger.kernel.org,
-	jserv@ccns.ncku.edu.tw,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 8/8] bcache: Fix the tail IO latency regression by using equality-aware min heap API
-Date: Wed, 11 Jun 2025 05:55:16 +0800
-Message-Id: <20250610215516.1513296-9-visitorckw@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250610215516.1513296-1-visitorckw@gmail.com>
-References: <20250610215516.1513296-1-visitorckw@gmail.com>
+	s=arc-20240116; t=1749592840; c=relaxed/simple;
+	bh=FnrGA5lxkPuqlYIs8QGMviRg4MaEfAXrtzR7YXE3u4g=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=E6cZvps4skWmUXUbr6DoSnCUXWFflsxF3zRW3roOJ8hxgC6He/0lRK5FCD2hlifGDZzZMPJfOqNuAMOYjOHS2NxK0sfJkxTHkKfrSvS7U3mmONgKIITdZIey1TdR4D/pEIu+0QjixcZhl3XO7W9Vl6COUfIy2DnEtY615xX2NtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BV2IIeDg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BTcVTgil; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 10 Jun 2025 22:00:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1749592836;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZdS3BZQLcu/5nmH72ukL8l+dA44/cwpXTCneWcSu5Lw=;
+	b=BV2IIeDgKiy5hB7RWkWwdotjjQ6ZIYryNRhl8KjB8oviNZNtwoDdZ0ETpY8DFQK+4jMVQz
+	AZl2SDeiAVkYMT2Q5gwaGkIc0xL/qBm8kM0Mnz+ndl5Vh22wc8p27v0SzU3oFchvrtoqxo
+	fqoNO0C3casIu9k8JA1+08yj5g7pG4k9kptr0MWzDjNKbqqrfznyTegxSHpyMtoBAhd93U
+	oTdvl48vQ5lro9JrF6Toyi/1tQraJ/F5M7V3Ya5S1x7Gz6oA53ftEc3wJv/59QBmWwihFv
+	B3J9CdPHfr7DDvh12lwdcPpx7BWdvb6qLy7auGn4jmlzPBCrTolGpH3xOY8xig==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1749592836;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ZdS3BZQLcu/5nmH72ukL8l+dA44/cwpXTCneWcSu5Lw=;
+	b=BTcVTgilFHi4/oVwQrfbn3FqA6Xy3KJIidHlUe7la7aOdxy43clEGao3TzlwEYWxA12MZ2
+	QwA4YARhSFuoEnCA==
+From: "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/virt/tdx: Avoid indirect calls to TDX assembly
+ functions
+Cc: Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <174959283534.406.15846779981936679822.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Commit 866898efbb25 ("bcache: remove heap-related macros and switch to
-generic min_heap") replaced the original top-down heap macros in bcache
-with the generic min heap library, which uses a bottom-up heapify
-strategy. However, in scenarios like invalidate_buckets_lru() -
-especially before the cache is fully populated - many buckets remain
-unfilled. This causes new_bucket_prio() to frequently return zero,
-leading to a high rate of equal comparisons.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Bottom-up sift_down performs up to 2 * log2(n) comparisons in such
-cases, resulting in a performance regression.
+Commit-ID:     0b3bc018e86afdc0cbfef61328c63d5c08f8b370
+Gitweb:        https://git.kernel.org/tip/0b3bc018e86afdc0cbfef61328c63d5c08f8b370
+Author:        Kai Huang <kai.huang@intel.com>
+AuthorDate:    Sat, 07 Jun 2025 01:07:37 +12:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 10 Jun 2025 12:32:52 -07:00
 
-Switch to the _eqaware variants of the min heap API to restore the
-original top-down sift_down behavior, which requires only O(1)
-comparisons when many elements are equal.
+x86/virt/tdx: Avoid indirect calls to TDX assembly functions
 
-Also use the inline versions of the heap functions to avoid performance
-degradation introduced by commit 92a8b224b833 ("lib/min_heap: introduce
-non-inline versions of min heap API functions"), as
-invalidate_buckets_lru() is on a performance-critical hot path.
+Two 'static inline' TDX helper functions (sc_retry() and
+sc_retry_prerr()) take function pointer arguments which refer to
+assembly functions.  Normally, the compiler inlines the TDX helper,
+realizes that the function pointer targets are completely static --
+thus can be resolved at compile time -- and generates direct call
+instructions.
 
-Fixes: 866898efbb25 ("bcache: remove heap-related macros and switch to generic min_heap")
-Fixes: 92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API functions")
-Reported-by: Robert Pang <robertpang@google.com>
-Closes: https://lore.kernel.org/linux-bcache/CAJhEC06F_AtrPgw2-7CvCqZgeStgCtitbD-ryuPpXQA-JG5XXw@mail.gmail.com
-Cc: stable@vger.kernel.org # 6.11+
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+But, other times (like when CONFIG_CC_OPTIMIZE_FOR_SIZE=y), the
+compiler declines to inline the helpers and will instead generate
+indirect call instructions.
+
+Indirect calls to assembly functions require special annotation (for
+various Control Flow Integrity mechanisms).  But TDX assembly
+functions lack the special annotations and can only be called
+directly.
+
+Annotate both the helpers as '__always_inline' to prod the compiler
+into maintaining the direct calls. There is no guarantee here, but
+Peter has volunteered to report the compiler bug if this assumption
+ever breaks[1].
+
+Fixes: 1e66a7e27539 ("x86/virt/tdx: Handle SEAMCALL no entropy error in common code")
+Fixes: df01f5ae07dd ("x86/virt/tdx: Add SEAMCALL error printing for module initialization")
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/20250605145914.GW39944@noisy.programming.kicks-ass.net/ [1]
+Link: https://lore.kernel.org/all/20250606130737.30713-1-kai.huang%40intel.com
 ---
- drivers/md/bcache/alloc.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/tdx.h  | 2 +-
+ arch/x86/virt/vmx/tdx/tdx.c | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/bcache/alloc.c b/drivers/md/bcache/alloc.c
-index 8998e61efa40..625c5c4eb962 100644
---- a/drivers/md/bcache/alloc.c
-+++ b/drivers/md/bcache/alloc.c
-@@ -207,15 +207,16 @@ static void invalidate_buckets_lru(struct cache *ca)
- 		if (!bch_can_invalidate_bucket(ca, b))
- 			continue;
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 8b19294..7ddef3a 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -106,7 +106,7 @@ void tdx_init(void);
  
--		if (!min_heap_full(&ca->heap))
--			min_heap_push(&ca->heap, &b, &bucket_max_cmp_callback, ca);
--		else if (!new_bucket_max_cmp(&b, min_heap_peek(&ca->heap), ca)) {
-+		if (!min_heap_full_inline(&ca->heap))
-+			min_heap_push_inline(&ca->heap, &b, &bucket_max_cmp_callback, ca);
-+		else if (!new_bucket_max_cmp(&b, min_heap_peek_inline(&ca->heap), ca)) {
- 			ca->heap.data[0] = b;
--			min_heap_sift_down(&ca->heap, 0, &bucket_max_cmp_callback, ca);
-+			min_heap_sift_down_eqaware_inline(&ca->heap, 0, &bucket_max_cmp_callback,
-+							  ca);
- 		}
- 	}
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
  
--	min_heapify_all(&ca->heap, &bucket_min_cmp_callback, ca);
-+	min_heapify_all_eqaware_inline(&ca->heap, &bucket_min_cmp_callback, ca);
+-static inline u64 sc_retry(sc_func_t func, u64 fn,
++static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+ 			   struct tdx_module_args *args)
+ {
+ 	int retry = RDRAND_RETRY_LOOPS;
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 2457d13..c7a9a08 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -75,8 +75,9 @@ static inline void seamcall_err_ret(u64 fn, u64 err,
+ 			args->r9, args->r10, args->r11);
+ }
  
- 	while (!fifo_full(&ca->free_inc)) {
- 		if (!ca->heap.nr) {
-@@ -227,8 +228,8 @@ static void invalidate_buckets_lru(struct cache *ca)
- 			wake_up_gc(ca->set);
- 			return;
- 		}
--		b = min_heap_peek(&ca->heap)[0];
--		min_heap_pop(&ca->heap, &bucket_min_cmp_callback, ca);
-+		b = min_heap_peek_inline(&ca->heap)[0];
-+		min_heap_pop_eqaware_inline(&ca->heap, &bucket_min_cmp_callback, ca);
+-static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
+-				 u64 fn, struct tdx_module_args *args)
++static __always_inline int sc_retry_prerr(sc_func_t func,
++					  sc_err_func_t err_func,
++					  u64 fn, struct tdx_module_args *args)
+ {
+ 	u64 sret = sc_retry(func, fn, args);
  
- 		bch_invalidate_one_bucket(ca, b);
- 	}
--- 
-2.34.1
-
 
