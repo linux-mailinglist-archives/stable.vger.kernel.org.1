@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-152269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8DBAD33A4
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:33:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D3DAD33CA
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C842E1610A4
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 10:33:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D321A189788F
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 10:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5659E21D59F;
-	Tue, 10 Jun 2025 10:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iI7TSjo9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E59128C2C9;
+	Tue, 10 Jun 2025 10:37:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BFB27F72C
-	for <stable@vger.kernel.org>; Tue, 10 Jun 2025 10:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E52221D59F;
+	Tue, 10 Jun 2025 10:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749551597; cv=none; b=nCs2EAn7E2ZxatNZrCWwJRl65zJjFGvyTRkY680/KmUAPxG5dUO0Sc/orgfQzm+N0fY/I3nuy/sqUwoVX39d1KCSkp+BqJpNMav8nrf3I64b3SA0mET73SolBr0hHFRauW8FABe06chZ2AXwZ7up1+9l7GRsUgA7xw5jncZfGos=
+	t=1749551855; cv=none; b=Xw9H4sQwPCOAi4bOTgghXjUAmJLSTuVJeXjwpeGVLgTNWPEZhu4HR/Yi0/kzonljQYGD+8yEHgXz+s7E5rXtK1lYIO0x0+OV0RkiUdj7Gu1tj7sRKnFrkvVhTZ+clYTff5iudCmJx+hpkFAmI5W6fWWYugcYHveE0xiOGj4J7LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749551597; c=relaxed/simple;
-	bh=fjW0jXCfd6en/Aoe0j4hbOJItolJuWR1YjTBIvpS+Gg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZDe94vpRKYnrWP9juLufzk6q2JB090E5BLM8cFcQjMkXgmSPLeXX8qbAUkiPeF9FZUPw0Q0J6k+Gd83/9UVuFt78DLsLh4lvT2RFzVsStIMh9Gu7QeVzB/VLr6je/S+NTyK/v8XDo9+ibjmAFMItq0zAp81yzNqEvPgExE+7VZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iI7TSjo9; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1749551591;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k4cpsN1ugtg9kXyYb6LbiRd5jMU/jLsFcbsMgFqpRDY=;
-	b=iI7TSjo9Aaiz/4ey6yBuIy8S1hCJOBJwcUbQj4DdiCg0TA4qLy8ET7bm78qHlm6jAWyv6v
-	G8y2UM34I9+5eYXFGMfrRjrIJevSrCI13tO+oaw1ASr3C7vvChkVVkC5uTcEBoEiVX9lcd
-	kf306k8/ss+uXwcnEUsa6HyIYLQVQ48=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	s=arc-20240116; t=1749551855; c=relaxed/simple;
+	bh=L2xbVLQlsBf/xieCX2SEZx2rt1ajw+J8rd/rO3kjmwY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jS8DCCkxfT15D0pCMRk6FlBK7Nie64fQBsqFrGozJACeE5gFH1/k3/QN6d6d0kX4DZy3E32yQGt+QmI2qKWTqoRD2z2q6tpunZD8IYCChNwh2XO37xbYDFeLqwm2OyB6fch+C/ycocbXB1DKyNq13z8waJm6qh/ysP9Z1BbDSuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6486C14BF;
+	Tue, 10 Jun 2025 03:37:13 -0700 (PDT)
+Received: from usa.arm.com (unknown [10.57.49.127])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 031EB3F673;
+	Tue, 10 Jun 2025 03:37:29 -0700 (PDT)
+From: Aishwarya <aishwarya.tcv@arm.com>
+To: pulehui@huaweicloud.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	jannh@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhiramat@kernel.org,
+	oleg@redhat.com,
+	peterz@infradead.org,
+	pfalcato@suse.de,
+	pulehui@huawei.com,
 	stable@vger.kernel.org,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: sdw_utils: Fix potential NULL pointer deref in is_sdca_endpoint_present()
-Date: Tue, 10 Jun 2025 12:32:16 +0200
-Message-ID: <20250610103225.1475-2-thorsten.blum@linux.dev>
+	vbabka@suse.cz,
+	broonie@kernel.org,
+	Ryan.Roberts@arm.com,
+	Dev.Jain@arm.com
+Subject: Re: [PATCH v1 4/4] selftests/mm: Add test about uprobe pte be orphan during vma merge
+Date: Tue, 10 Jun 2025 11:37:29 +0100
+Message-Id: <20250610103729.72440-1-aishwarya.tcv@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250529155650.4017699-5-pulehui@huaweicloud.com>
+References: <20250529155650.4017699-5-pulehui@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,32 +64,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Check the return value of kzalloc() and exit early to avoid a potential
-NULL pointer dereference.
+Hi,
 
-Cc: stable@vger.kernel.org
-Fixes: 4f8ef33dd44a ("ASoC: soc_sdw_utils: skip the endpoint that doesn't present")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- sound/soc/sdw_utils/soc_sdw_utils.c | 2 ++
- 1 file changed, 2 insertions(+)
+kselftest-mm test 'merge.handle_uprobe_upon_merged_vma' is failing
+against mainline master v6.16-rc1 with Arm64 on Ampere Altra/TX2 in our
+CI. The kernel was built using defconfig along with the additional
+config fragment from:
 
-diff --git a/sound/soc/sdw_utils/soc_sdw_utils.c b/sound/soc/sdw_utils/soc_sdw_utils.c
-index 30f84f4e7637..b70cb3793d8f 100644
---- a/sound/soc/sdw_utils/soc_sdw_utils.c
-+++ b/sound/soc/sdw_utils/soc_sdw_utils.c
-@@ -1180,6 +1180,8 @@ static int is_sdca_endpoint_present(struct device *dev,
- 	int i;
- 
- 	dlc = kzalloc(sizeof(*dlc), GFP_KERNEL);
-+	if (!dlc)
-+		return -ENOMEM;
- 
- 	adr_end = &adr_dev->endpoints[end_index];
- 	dai_info = &codec_info->dais[adr_end->num];
--- 
-2.49.0
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/mm/config
 
+I understand the failure is already being discussed and is expected to be
+addressed by including sys/syscall.h.Sharing this observation here 
+for reference.
+
+A bisect identified commit efe99fabeb11b030c89a7dc5a5e7a7558d0dc7ec as the
+first bad commit. This was bisected against tag v6.16-rc1 from:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+
+This test passes on Linux version v6.15-13627-g119b1e61a769.
+
+Failure log:
+
+  7151 12:46:54.627936  # # #  RUN           merge.handle_uprobe_upon_merged_vma ...
+  7152 12:46:54.639014  # # f /sys/bus/event_source/devices/uprobe/type
+  7153 12:46:54.639306  # # fopen: No such file or directory
+  7154 12:46:54.650451  # # # merge.c:473:handle_uprobe_upon_merged_vma:Expected read_sysfs("/sys/bus/event_source/devices/uprobe/type", &type) (1) == 0 (0)
+  7155 12:46:54.650730  # # # handle_uprobe_upon_merged_vma: Test terminated by assertion
+  7156 12:46:54.661750  # # #          FAIL  merge.handle_uprobe_upon_merged_vma
+  7157 12:46:54.662030  # # not ok 8 merge.handle_uprobe_upon_merged_vma
+
+Git bisection log:
+
+git bisect start
+# status: waiting for both good and bad commits
+# good: [119b1e61a769aa98e68599f44721661a4d8c55f3] Merge tag 'riscv-for-linus-6.16-mw1' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
+git bisect good 119b1e61a769aa98e68599f44721661a4d8c55f3
+# status: waiting for bad commit, 1 good commit known
+# bad: [19272b37aa4f83ca52bdf9c16d5d81bdd1354494] Linux 6.16-rc1
+git bisect bad 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+# bad: [b3154a6ff1f53b794c01096577700f35b1be9cc2] Merge tag 'sh-for-v6.16-tag1' of git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux
+git bisect bad b3154a6ff1f53b794c01096577700f35b1be9cc2
+# bad: [5b032cac622533631b8f9b7826498b7ce75001c6] Merge tag 'ubifs-for-linus-6.16-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rw/ubifs
+git bisect bad 5b032cac622533631b8f9b7826498b7ce75001c6
+# good: [2da20fd904f87f7bb31b79719bc3dda4093f8cdb] kernel/rcu/tree_stall: add /sys/kernel/rcu_stall_count
+git bisect good 2da20fd904f87f7bb31b79719bc3dda4093f8cdb
+# good: [d3c82f618a9c2b764b7651afe16594ffeb50ade9] Merge tag 'mm-hotfixes-stable-2025-06-06-16-02' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+git bisect good d3c82f618a9c2b764b7651afe16594ffeb50ade9
+# bad: [efe99fabeb11b030c89a7dc5a5e7a7558d0dc7ec] selftests/mm: add test about uprobe pte be orphan during vma merge
+git bisect bad efe99fabeb11b030c89a7dc5a5e7a7558d0dc7ec
+# good: [2b12d06c37fd3a394376f42f026a7478d826ed63] mm: fix uprobe pte be overwritten when expanding vma
+git bisect good 2b12d06c37fd3a394376f42f026a7478d826ed63
+# good: [6fb6223347d5d9512875120267c117e7437f0db6] selftests/mm: extract read_sysfs and write_sysfs into vm_util
+git bisect good 6fb6223347d5d9512875120267c117e7437f0db6
+# first bad commit: [efe99fabeb11b030c89a7dc5a5e7a7558d0dc7ec] selftests/mm: add test about uprobe pte be orphan during vma merge
+
+Thanks,
+Aishwarya
 
