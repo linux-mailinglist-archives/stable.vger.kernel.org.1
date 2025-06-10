@@ -1,165 +1,146 @@
-Return-Path: <stable+bounces-152267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282D0AD3383
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:23:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D12AD3392
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C983B54A2
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 10:22:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D17170E59
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 10:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D653128CF51;
-	Tue, 10 Jun 2025 10:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0069A28C2AF;
+	Tue, 10 Jun 2025 10:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GGIES0IX"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="QvgBPDx5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F728C5AB;
-	Tue, 10 Jun 2025 10:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78915284680;
+	Tue, 10 Jun 2025 10:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749550893; cv=none; b=eWrq5lWVCORrL9C2SvjVrIDQYdYHU4seNgXpaLDAcUwbuQNx34rRzRABmdU4IxNxbpr1UTi26o9EVoKyuEDOf+6jhSK7K8Gr/yoFZeMPk335jZBzlOjtqllG4pyh8bsnatVmkjAR1bcQWkf2dOhayfg1U8wxruuPldICtVNtbqs=
+	t=1749551334; cv=none; b=pnNNhqp2f2aWApw6GitlDaQAFwdNPAC8C5E0hmjqITkxyLbiRUop3tuVl3pm8JbNvhF9gb+oTC6zOU5zIuMuRKywCI2GuoSlDB03KFJZ8iAt3SP2MdlsUhIxmZjMlxTzhdnIpNr0Y21l+N/f5KZzy6EN/uGoNVxslEnj4DIU458=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749550893; c=relaxed/simple;
-	bh=+j8zMJW2Wcl191iL6HqEJHAtauDOyM2xYMzu/jk0I2g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Elg2VP880OH7nt3I/dghybeyVcNMRbRIHxEMiIhdruOmVXQGN3koyeK8USRowTmMXjXFn2YBe/r6TnrlLCaPSdBiyLqCN0WVlaqxuqBlzPYuusnrCZKLofW96Gj9ODBioB1TiYYmhz/A3/6WQFUOBWzhinCqrX6sZ1B5VAm7fLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GGIES0IX; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749550892; x=1781086892;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=+j8zMJW2Wcl191iL6HqEJHAtauDOyM2xYMzu/jk0I2g=;
-  b=GGIES0IXyyhoQqYeSbE/3AZyjdK+8RaSPAhq2IPISwNXZyTX6k7cEJMw
-   skcwIcDCn13OCnl9SAhc9i0fLcjXWQ/xiPlRApBTrIw/kMlfdTRjUNDF6
-   0Ooc7U/Jb7FEqnm/T/DU0wPnkQg83Ip/hHF7D8L4W0aqBWodt48B2lJN6
-   BGESh6j0JgXS2uiZUiMQEm0CW8tuQFqZ6h9GUN/n7gb4TcdwrBxjdw2C8
-   AYq8UFjl5OfWxy6aG54p6qHDWjZc5UvSUKAF6OQXvoiigTVAGMNADph2B
-   f8omGFJMVoCF4KJ7kkXm9Bhi0Mg9+YxpVuyXLcyVL07rP28sw7tbN3Ygs
-   Q==;
-X-CSE-ConnectionGUID: Ho7Z4CxaReuR4N0IFYS8qQ==
-X-CSE-MsgGUID: M915R6yIQuaZvm3/Uz20oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51739106"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="51739106"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 03:21:32 -0700
-X-CSE-ConnectionGUID: 5HoJXnS4SZGzW5uZ3skH8g==
-X-CSE-MsgGUID: 1mkblKhkQTugaNQT0+OXJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="147370287"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.196])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 03:21:29 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Rio <rio@r26.me>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/2] PCI: Fix pdev_resources_assignable() disparity
-Date: Tue, 10 Jun 2025 13:21:01 +0300
-Message-Id: <20250610102101.6496-3-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250610102101.6496-1-ilpo.jarvinen@linux.intel.com>
-References: <20250610102101.6496-1-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1749551334; c=relaxed/simple;
+	bh=87Sa9prsqBujVHU75yypG7WaYPYPhnkJiAVyIBtkY/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KjGyqZBgvjWxPkBNWZ/Z1BEbAQ5Un2DO1lUhUCLqwuZp5E+PyN5dt1uqW5GIBkATKdG2EXqKFZt2TSDq5KOvHFVFyBjC8+DJDp9QClWdr4haxgGW7G956OGld4YR/fHVnQep7YIyCL/oMRXj0NTCqoTbtaUgD6y/J8nNhUvZUsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=QvgBPDx5; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1749551321;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qwQf2HtjJGXqLDF6pu9d9rM8pZBwE9ppbLVIKcMXujs=;
+	b=QvgBPDx55WS4tlLWumz95aTE0ZvL0wGpgD4TCsjIGZ64GqS1qP4qMZotYCg5j+ZlXAgxfv
+	HXCHNjAokdI5+qOFP67VDrlSB080xxvkLXdVhuXyWK+ZXWMpqwoZ2NZXtcS4/x1B6iXv5Y
+	EHsLwQklLlx/1IffMIeBVYGcZDySMoU=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Kent Overstreet <kent.overstreet@gmail.com>
+Subject: [PATCH 5.10] lib/generic-radix-tree.c: Don't overflow in peek()
+Date: Tue, 10 Jun 2025 13:28:39 +0300
+Message-ID: <20250610102841.18225-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-pdev_sort_resources() uses pdev_resources_assignable() helper to decide
-if device's resources cannot be assigned. pbus_size_mem(), on the other
-hand, does not do the same check. This could lead into a situation
-where a resource ends up on realloc_head list but is not on the head
-list, which is turn prevents emptying the resource from the
-realloc_head list in __assign_resources_sorted().
+From: Kent Overstreet <kent.overstreet@gmail.com>
 
-A non-empty realloc_head is unacceptable because it triggers an
-internal sanity check as show in this log with a device that has class
-0 (PCI_CLASS_NOT_DEFINED):
+commit 9492261ff2460252cf2d8de89cdf854c7e2b28a0 upstream. 
 
-pci 0001:01:00.0: [144d:a5a5] type 00 class 0x000000 PCIe Endpoint
-pci 0001:01:00.0: BAR 0 [mem 0x00000000-0x000fffff 64bit]
-pci 0001:01:00.0: ROM [mem 0x00000000-0x0000ffff pref]
-pci 0001:01:00.0: enabling Extended Tags
-pci 0001:01:00.0: PME# supported from D0 D3hot D3cold
-pci 0001:01:00.0: 15.752 Gb/s available PCIe bandwidth, limited by 8.0 GT/s PCIe x2 link at 0001:00:00.0 (capable of 31.506 Gb/s with 16.0 GT/s PCIe x2 link)
-pcieport 0001:00:00.0: bridge window [mem 0x00100000-0x001fffff] to [bus 01-ff] add_size 100000 add_align 100000
-pcieport 0001:00:00.0: bridge window [mem 0x40000000-0x401fffff]: assigned
-------------[ cut here ]------------
-kernel BUG at drivers/pci/setup-bus.c:2532!
-Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-...
-Call trace:
- pci_assign_unassigned_bus_resources+0x110/0x114 (P)
- pci_rescan_bus+0x28/0x48
+When we started spreading new inode numbers throughout most of the 64
+bit inode space, that triggered some corner case bugs, in particular
+some integer overflows related to the radix tree code. Oops.
 
-Use pdev_resources_assignable() also within pbus_size_mem() to skip
-processing of non-assignable resources which removes the disparity in
-between what resources pdev_sort_resources() and pbus_size_mem()
-consider. As non-assignable resources are no longer processed, they are
-not added to the realloc_head list, thus the sanity check no longer
-triggers.
-
-This disparity problem is very old but only now became apparent after
-the commit 2499f5348431 ("PCI: Rework optional resource handling") that
-made the ROM resources optional when calculating bridge window sizes
-which required adding the resource to the realloc_head list.
-Previously, bridge windows were just sized larger than necessary.
-
-Fixes: 2499f5348431 ("PCI: Rework optional resource handling")
-Reported-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: <stable@vger.kernel.org>
+Fixes: ba20ba2e3743 ("generic radix trees")
+Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
+[Denis: minor fix to resolve merge conflict and add tag Fixes]                                           
+Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
 ---
+Backport fix for CVE-2021-47432
+Link: https://nvd.nist.gov/vuln/detail/cve-2021-47432
+---
+ include/linux/generic-radix-tree.h |  7 +++++++
+ lib/generic-radix-tree.c           | 17 ++++++++++++++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-The reporter was perhaps not happy with this fix as behavior of PCI core
-isn't identical after this fix even if this patch fixes the problem on
-the PCI core side which causes the internal sanity check to fire.
-
-It seems that in the reporter's case, an out-of-tree driver was involved
-that performed things and made assumptions a driver should not do in its
-probe function such as assuming a bridge window is assigned even if there
-are not child resources to be put into it (the child device in reporter's
-case doesn't have a valid class and gets therefore skipped by the resource
-fitting/assignment):
-
-https://lore.kernel.org/all/bd579412-d07c-476d-8932-55c1f69adc9f@linaro.org/
-
-In other words, the out-of-tree driver relies on the disparity in the
-PCI core's resource fitting code which is now eliminated by this fix.
-
- drivers/pci/setup-bus.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index f90d49cd07da..24863d8d0053 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -1191,6 +1191,7 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
- 			resource_size_t r_size;
+diff --git a/include/linux/generic-radix-tree.h b/include/linux/generic-radix-tree.h
+index bfd00320c7f3..0e7abc635e5f 100644
+--- a/include/linux/generic-radix-tree.h
++++ b/include/linux/generic-radix-tree.h
+@@ -39,6 +39,7 @@
+ #include <asm/page.h>
+ #include <linux/bug.h>
+ #include <linux/kernel.h>
++#include <linux/limits.h>
+ #include <linux/log2.h>
  
- 			if (r->parent || (r->flags & IORESOURCE_PCI_FIXED) ||
-+			    !pdev_resources_assignable(dev) ||
- 			    ((r->flags & mask) != type &&
- 			     (r->flags & mask) != type2 &&
- 			     (r->flags & mask) != type3))
+ struct genradix_root;
+@@ -183,6 +184,12 @@ void *__genradix_iter_peek(struct genradix_iter *, struct __genradix *, size_t);
+ static inline void __genradix_iter_advance(struct genradix_iter *iter,
+ 					   size_t obj_size)
+ {
++	if (iter->offset + obj_size < iter->offset) {
++		iter->offset	= SIZE_MAX;
++		iter->pos	= SIZE_MAX;
++		return;
++	}
++
+ 	iter->offset += obj_size;
+ 
+ 	if (!is_power_of_2(obj_size) &&
+diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
+index 34d3ac52de89..78f081d695d0 100644
+--- a/lib/generic-radix-tree.c
++++ b/lib/generic-radix-tree.c
+@@ -168,6 +168,10 @@ void *__genradix_iter_peek(struct genradix_iter *iter,
+ 	struct genradix_root *r;
+ 	struct genradix_node *n;
+ 	unsigned level, i;
++
++	if (iter->offset == SIZE_MAX)
++		return NULL;
++
+ restart:
+ 	r = READ_ONCE(radix->root);
+ 	if (!r)
+@@ -186,10 +190,17 @@ void *__genradix_iter_peek(struct genradix_iter *iter,
+ 			(GENRADIX_ARY - 1);
+ 
+ 		while (!n->children[i]) {
++			size_t objs_per_ptr = genradix_depth_size(level);
++
++			if (iter->offset + objs_per_ptr < iter->offset) {
++				iter->offset	= SIZE_MAX;
++				iter->pos	= SIZE_MAX;
++				return NULL;
++			}
++
+ 			i++;
+-			iter->offset = round_down(iter->offset +
+-					   genradix_depth_size(level),
+-					   genradix_depth_size(level));
++			iter->offset = round_down(iter->offset + objs_per_ptr,
++						  objs_per_ptr);
+ 			iter->pos = (iter->offset >> PAGE_SHIFT) *
+ 				objs_per_page;
+ 			if (i == GENRADIX_ARY)
 -- 
-2.39.5
+2.43.0
 
 
