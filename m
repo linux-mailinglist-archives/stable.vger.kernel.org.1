@@ -1,109 +1,121 @@
-Return-Path: <stable+bounces-152291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB160AD361C
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:26:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4999AAD3628
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 14:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B2C73ABCF5
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:25:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAC8B176E62
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F28291877;
-	Tue, 10 Jun 2025 12:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01B12918F9;
+	Tue, 10 Jun 2025 12:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4RfRdZd"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="A1U0ge5c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FB5291870;
-	Tue, 10 Jun 2025 12:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396692918C1;
+	Tue, 10 Jun 2025 12:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749558367; cv=none; b=DenTMyKmo+QVDl4NShpHxHwOWqS5kDip0ODsnff/b1b2Kwhj03EcDGxQgWokxxXZd0WuBBqf1uka75NSOOBLafBtsjCtfsspqGjPorbnxoafAOxAi8fLAeFtxqK+XnrgMJZK1V/XM9FTrf2Sd3YCeIjUBgwfkhLijZcNrau2aO4=
+	t=1749558475; cv=none; b=bHIzeC2qw79UpP23HSYh0Iw0bSCTRsPEP7iVIzBc/11d3luEmv97rtmVi0uWbmnrfqhTnVPZeDjQRsRXI1GQMf+3t5TgUyrN8GeQCkGBiAoBB1uMoQgXcq53+06nronh/JSuibUMvr0j5XHIdpVCsky1c6nDIQ+GqnhldMqeIuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749558367; c=relaxed/simple;
-	bh=QB4/CDRyNJLJV/BoZ0SgfWs+wIHNtm+r1nCerSN5cXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eHWkqB0LDVzaLircop1UVDKoOxHm9XTvLVNEcTqenKvOY6arSt03Q00DgwXotknnuQZ1GK2gvPeyr+s9zj4soQZLI8MJlrbOhqyOAN1wcDczLcs3TLWwqYrm8OPIVJIEykL4ZIdULNzJ4OmHVhePeWeAAotoGGnx2kH/OL7NlPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4RfRdZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90C9C4CEED;
-	Tue, 10 Jun 2025 12:26:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749558367;
-	bh=QB4/CDRyNJLJV/BoZ0SgfWs+wIHNtm+r1nCerSN5cXs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t4RfRdZdNSkEFTHsVnYntpuTd8pJpFF8rDcjgnnEal0FKOtJ2sQQ68UGWxmScYqsM
-	 xXYEUhbgmWfVweQFoW2HDXFThInOAC5o+gKm1dQIXeYoGQTODq7t0+l+quG3KAsP2g
-	 P74IzC2lMdWNVpzGvWSL/gmhgjoToh/K8exnM09K/zXuH9RRVMltbxYh5MpawT5d6l
-	 1hGCx+ptmxnc1OY4ru7zXuQoV8VOXH/ufaHT2KTxR9kA/K2Aq803ZHVd0RH4f62e50
-	 D5iaMYdBaxjtU6ciRvFvrZTO2noXpzuH4xrB4VGB2PaIBTwDhwzz9Ex0Sw1cAiEl/O
-	 SGvmWdeMY1Z1w==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1uOy3I-000000005Dg-401k;
-	Tue, 10 Jun 2025 14:26:05 +0200
-Date: Tue, 10 Jun 2025 14:26:04 +0200
-From: Johan Hovold <johan@kernel.org>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, gregkh@linuxfoundation.org
-Subject: Re: Patch "USB: serial: bus: fix const issue in
- usb_serial_device_match()" has been added to the 6.15-stable tree
-Message-ID: <aEgkXORtnPqvSEf2@hovoldconsulting.com>
-References: <20250610121813.1558278-1-sashal@kernel.org>
+	s=arc-20240116; t=1749558475; c=relaxed/simple;
+	bh=Fgl8Km4RcqFqfY5t3kYoDxE8TNS0WlKWi77RytkhSfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CnuRRIgnzurCyr/Os8mo9wT6W7EZd75jkhcJxHUy/apuxvUm2oxCAD2zsjWZQrrL52xim4evpIcdk3grwi+wWjaTb2VVrM6T5F+EKh12Mt0cw3kCoCJ2FqqyZvHfQxHO016hKGZvO8SaWByQ2YYyR4S9lQpzDe2TxVDPiB3AiS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=A1U0ge5c; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1749558468;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+Bbt95GEmQZjMfBLT8mqmVirRMgBRSh8XbLFCIcVluk=;
+	b=A1U0ge5cGHWCXef1/O7X6PRMh1IycsE0FrYls3CumAZvkv6CE6op5zROUo50PfT/Sjf3iC
+	EY2cFaSkyb3p4cxNoaS9gGaBYVWqoRcE26N+Zd2GK2jXneEBuVZ5AkEsK/E+h8XO0qeFzz
+	27yONfEjeP5PYKNbxNkp6G8YJGubTOM=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Felipe Balbi <balbi@kernel.org>,
+	Lee Jones <lee.jones@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Miaoqian Lin <linmq006@gmail.com>
+Subject: [PATCH 5.10] usb: dwc3: dwc3-qcom: Add missing platform_device_put() in dwc3_qcom_acpi_register_core
+Date: Tue, 10 Jun 2025 15:27:46 +0300
+Message-ID: <20250610122748.22575-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250610121813.1558278-1-sashal@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+From: Miaoqian Lin <linmq006@gmail.com>
 
-On Tue, Jun 10, 2025 at 08:18:13AM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     USB: serial: bus: fix const issue in usb_serial_device_match()
-> 
-> to the 6.15-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      usb-serial-bus-fix-const-issue-in-usb_serial_device_.patch
-> and it can be found in the queue-6.15 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 0e91be50efc1a26ec9047dadc980631d31ef8578
-> Author: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Date:   Wed May 21 15:41:34 2025 +0200
-> 
->     USB: serial: bus: fix const issue in usb_serial_device_match()
->     
->     [ Upstream commit 92cd405b648605db4da866f3b9818b271ae84ef0 ]
->     
->     usb_serial_device_match() takes a const pointer, and then decides to
->     cast it away into a non-const one, which is not a good thing to do
->     overall.  Fix this up by properly setting the pointers to be const to
->     preserve that attribute.
->     
->     Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Signed-off-by: Johan Hovold <johan@kernel.org>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit fa0ef93868a6062babe1144df2807a8b1d4924d2 upstream.
 
-This patch does not need to be backported and I left out the stable
-patch on purpose as usual.
+Add the missing platform_device_put() before return from
+dwc3_qcom_acpi_register_core in the error handling case.
 
-Please drop.
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20211231113641.31474-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Denis: minor fix to resolve merge conflict and add tag Fixes.]
+Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
+---
+Backport fix for CVE-2023-22995
+Link: https://nvd.nist.gov/vuln/detail/cve-2023-22995
+---
+ drivers/usb/dwc3/dwc3-qcom.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Johan
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index db3559a10207..568973582b75 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -622,8 +622,10 @@ static int dwc3_qcom_acpi_register_core(struct platform_device *pdev)
+ 	qcom->dwc3->dev.coherent_dma_mask = dev->coherent_dma_mask;
+ 
+ 	child_res = kcalloc(2, sizeof(*child_res), GFP_KERNEL);
+-	if (!child_res)
++	if (!child_res) {
++		platform_device_put(qcom->dwc3);
+ 		return -ENOMEM;
++	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!res) {
+@@ -659,10 +661,15 @@ static int dwc3_qcom_acpi_register_core(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = platform_device_add(qcom->dwc3);
+-	if (ret)
++	if (ret) {
+ 		dev_err(&pdev->dev, "failed to add device\n");
++		goto out;
++	}
++	kfree(child_res);
++	return 0;
+ 
+ out:
++	platform_device_put(qcom->dwc3);
+ 	kfree(child_res);
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
