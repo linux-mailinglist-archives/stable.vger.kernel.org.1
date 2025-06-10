@@ -1,108 +1,160 @@
-Return-Path: <stable+bounces-152271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D49AD33DD
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 12:43:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4F8AD3442
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 769AD7A5ADA
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 10:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC56D18827AB
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 11:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F22528CF43;
-	Tue, 10 Jun 2025 10:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB9928DB68;
+	Tue, 10 Jun 2025 11:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IV0umCMb"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="rD05dWhA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD24280021;
-	Tue, 10 Jun 2025 10:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189E128DEFD;
+	Tue, 10 Jun 2025 11:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749552226; cv=none; b=jRngHN9ch7mTnGVZMNxOsVyoYovG1G8ugWnixR7wC98se+YJWPzIAsQFdZra75YIrW9M7ov842812Jy9oga9hmJuNhuZc0M5+rlo6fxN1dQT8RVyPa0lSYwEdJqhnGUeTxtq8FyNvQczstsZgTgKj9PMNsfW7gBsa58vTW2VubI=
+	t=1749553266; cv=none; b=amBFB8tldpJogZpW6CgJu/YyiXLl2LPVZvJ4DMOOqX/SD1MbFTMozo9bHHCGzxHqZU0VClGYoGp48v98al/9CMrW0cNL+gLRzEDxL/lFCyPd5/mTGO56z8Z4QwHCjLx4sM0Vo+QuVGu0QCxx0aqFUZf5cAtnArEt/YqFHrA+rH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749552226; c=relaxed/simple;
-	bh=A7R2GZyqD4651NDlEsKavR7BsMMFDmWIlAxeRoLf964=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KhHUwsBy2jguIHiJmeYKQ7Crk53o8X9sTYJEaHZaGL2CxTZacZorfMwCEgCF7scqhV/g5tCiJW3Wz+YldV6scMdybt/Ibfr2nQA5AdJ+uMjiGrnU6G8tEH266TKrbLdzb799OLH7xXjhu/lUm14p9naOpJ9R1madlYBTSu1XtM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IV0umCMb; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749552225; x=1781088225;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=A7R2GZyqD4651NDlEsKavR7BsMMFDmWIlAxeRoLf964=;
-  b=IV0umCMbWbS8Is7D4XjkpmwhN6XqDos9H+7NNlCUnRRkGdclXmWR2SCr
-   zSSlA1bdfsjXjeaYPN11N0b3pYazrO9eQ9vnr5kqWiAX1apcL8dRSbF/9
-   FDz7qIJtzjDPg5hK77NkUiGFppQr52EAi7jTYfr2b+OUDvVtJ+mhmaBig
-   /Q6gtZebb7hLMIYs0ih4Rrc5tToeGaqJbwQWU/hbClLlZIdpgM8eAWw0m
-   mLgYjbxydaUpbXNdKlhEnG/0Lzdq8hg7Oruvtqcm4naylqyvb2/aa+d1b
-   uP/LQVjlf+d02c6VdGR/GcxmlL8kthq1X1liT0Mmk0ZsbLu1iWR3ZD2Tg
-   A==;
-X-CSE-ConnectionGUID: c6EhfwkMQn+P3V8IQaa1tw==
-X-CSE-MsgGUID: VY00Mt3nToSj2j8fBWD2wQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51534181"
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="51534181"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 03:43:45 -0700
-X-CSE-ConnectionGUID: PIJVXdHNR7uwrC+aJeXHYA==
-X-CSE-MsgGUID: 0XYP3sdBT8WOCNQYhg6Cnw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,224,1744095600"; 
-   d="scan'208";a="147303800"
-Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmviesa010.fm.intel.com with ESMTP; 10 Jun 2025 03:43:42 -0700
-Message-ID: <f77df7da-c068-499f-8f55-bcb095b8fc4a@linux.intel.com>
-Date: Tue, 10 Jun 2025 13:43:41 +0300
+	s=arc-20240116; t=1749553266; c=relaxed/simple;
+	bh=bj9uORPBFKQmCBXHlGeWes/1XCM6rht+aJmn71UB9oY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oxFoupkZRl8NzkdazrefvrvSQiw9Sm9quyQOU9f4L5FhS9Ek8EqvGHULDT7JdIv8x62nNzkSNozcOQwveT+EQHn2iU/Ww/rdd4i6kjuuv7qxfqW0uooPx/C80bwDvWY2E54i48Ii+4mvtdN9VsSAIz6EtmLfSlmwtVzIrXUZZ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=rD05dWhA; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1749553261;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Vo2Zyt9N71XXrlfkHINXeqxc3IbbEl+K1MiiDygVfoA=;
+	b=rD05dWhANm9OTqpuJH3lQwF+whvZek3EPSJRgYLqb3tHk/P62dAXAwVqk7+2J2HKL0p0aB
+	UcazLSGFlZVFC5QopSN6WOk/SKa3kndL0apJSx9GcBelM58b0LBU/Mkd9AG6WpIqAQMlyR
+	c8g/18EW1L77VPYSGmQ1ZpBYQlSPp1Q=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Hannes Reinecke <hare@suse.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Yuan Can <yuancan@huawei.com>,
+	Chen Jun <chenjun102@huawei.com>
+Subject: [PATCH 5.10] blk-mq: Fix kmemleak in blk_mq_init_allocated_queue
+Date: Tue, 10 Jun 2025 14:00:59 +0300
+Message-ID: <20250610110100.19025-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: hub: fix detection of high tier USB3 devices behind
- suspended hubs
-To: Oliver Neukum <oneukum@suse.com>, gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
- stable@vger.kernel.org
-References: <20250609122047.1945539-1-mathias.nyman@linux.intel.com>
- <66b3847a-a3b8-43fa-b448-570f60b775be@suse.com>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <66b3847a-a3b8-43fa-b448-570f60b775be@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10.6.2025 12.34, Oliver Neukum wrote:
-> On 09.06.25 14:20, Mathias Nyman wrote:
-> 
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 596d789a211d ("USB: set hub's default autosuspend delay as 0")
-> 
-> Is that the correct breaker commit? It seems to me that it marks
-> only the commit which turned the problem into the default. It
-> was always possible.
+From: Chen Jun <chenjun102@huawei.com>
 
-True, user could trigger the issue by manually setting autosuspend delay to 0
-before that patch,
+commit 943f45b9399ed8b2b5190cbc797995edaa97f58f upstream.
 
-Maybe a better Fixes commit would be:
-2839f5bcfcfc ("USB: Turn on auto-suspend for USB 3.0 hubs.")
+There is a kmemleak caused by modprobe null_blk.ko
 
-Both are from 2012 so not sure it really matters anymore
-  
-("USB: Turn on auto-suspend for USB 3.0 hubs.") was added to v3.4 kernel
-("USB: set hub's default autosuspend delay as 0") was added to v3.8 kernel
+unreferenced object 0xffff8881acb1f000 (size 1024):
+  comm "modprobe", pid 836, jiffies 4294971190 (age 27.068s)
+  hex dump (first 32 bytes):
+    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
+    ff ff ff ff ff ff ff ff 00 53 99 9e ff ff ff ff  .........S......
+  backtrace:
+    [<000000004a10c249>] kmalloc_node_trace+0x22/0x60
+    [<00000000648f7950>] blk_mq_alloc_and_init_hctx+0x289/0x350
+    [<00000000af06de0e>] blk_mq_realloc_hw_ctxs+0x2fe/0x3d0
+    [<00000000e00c1872>] blk_mq_init_allocated_queue+0x48c/0x1440
+    [<00000000d16b4e68>] __blk_mq_alloc_disk+0xc8/0x1c0
+    [<00000000d10c98c3>] 0xffffffffc450d69d
+    [<00000000b9299f48>] 0xffffffffc4538392
+    [<0000000061c39ed6>] do_one_initcall+0xd0/0x4f0
+    [<00000000b389383b>] do_init_module+0x1a4/0x680
+    [<0000000087cf3542>] load_module+0x6249/0x7110
+    [<00000000beba61b8>] __do_sys_finit_module+0x140/0x200
+    [<00000000fdcfff51>] do_syscall_64+0x35/0x80
+    [<000000003c0f1f71>] entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-Thanks
--Mathias
+That is because q->ma_ops is set to NULL before blk_release_queue is
+called.
+
+blk_mq_init_queue_data
+  blk_mq_init_allocated_queue
+    blk_mq_realloc_hw_ctxs
+      for (i = 0; i < set->nr_hw_queues; i++) {
+        old_hctx = xa_load(&q->hctx_table, i);
+        if (!blk_mq_alloc_and_init_hctx(.., i, ..))		[1]
+          if (!old_hctx)
+	    break;
+
+      xa_for_each_start(&q->hctx_table, j, hctx, j)
+        blk_mq_exit_hctx(q, set, hctx, j); 			[2]
+
+    if (!q->nr_hw_queues)					[3]
+      goto err_hctxs;
+
+  err_exit:
+      q->mq_ops = NULL;			  			[4]
+
+  blk_put_queue
+    blk_release_queue
+      if (queue_is_mq(q))					[5]
+        blk_mq_release(q);
+
+[1]: blk_mq_alloc_and_init_hctx failed at i != 0.
+[2]: The hctxs allocated by [1] are moved to q->unused_hctx_list and
+will be cleaned up in blk_mq_release.
+[3]: q->nr_hw_queues is 0.
+[4]: Set q->mq_ops to NULL.
+[5]: queue_is_mq returns false due to [4]. And blk_mq_release
+will not be called. The hctxs in q->unused_hctx_list are leaked.
+
+To fix it, call blk_release_queue in exception path.
+
+Fixes: 2f8f1336a48b ("blk-mq: always free hctx after request queue is freed")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Chen Jun <chenjun102@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20221031031242.94107-1-chenjun102@huawei.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[Denis: minor fix to resolve merge conflict.]                                           
+Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
+---
+Backport fix for CVE-2022-49901
+Link: https://nvd.nist.gov/vuln/detail/CVE-2022-49901
+---
+ block/blk-mq.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 21531aa163cb..6dd1398d0301 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3335,9 +3335,8 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
+ 	return q;
+ 
+ err_hctxs:
+-	kfree(q->queue_hw_ctx);
+-	q->nr_hw_queues = 0;
+-	blk_mq_sysfs_deinit(q);
++	blk_mq_release(q);
++
+ err_poll:
+ 	blk_stat_free_callback(q->poll_cb);
+ 	q->poll_cb = NULL;
+-- 
+2.43.0
 
 
