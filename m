@@ -1,103 +1,156 @@
-Return-Path: <stable+bounces-152344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925F1AD4401
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 22:38:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21861AD4483
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 23:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70EFB1898053
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 20:38:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6BA178374
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 21:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E472266588;
-	Tue, 10 Jun 2025 20:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CC0274653;
+	Tue, 10 Jun 2025 21:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nx7c4Q70"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RLaDSr+5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD144685;
-	Tue, 10 Jun 2025 20:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED383269830;
+	Tue, 10 Jun 2025 21:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749587872; cv=none; b=WZx6oKesp8klDcTV34AcsjVQCWea3rdzSAsGGrj+uK/MLJgMMs+taXTN9CcFk9FpPOotZpsRZTvPV7cpxHL8nmbjDPWjtNthTb1ArDS56gWeHv2N8LPxGmhrVKYKRhDtmgGUNYaxlVCwnYMtFILuRl1JjiLCH2OOA7GLpJ9XTiU=
+	t=1749589961; cv=none; b=BwE3MxXzgXVim9b72oecEOvDZnv7QgzeOxWhy9mvC7HMlxOtg60GNr0EwYBQJ5N7hDSXYRWGL4okZI4WifXvyjS/3g7gFyZtPq3ZoKch5f87UXWkaGGSHfEK9lwUu23+TPoNfoLbJtP6/1JeLiUH4ulUUBqFDi5PYTWLr/ak/3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749587872; c=relaxed/simple;
-	bh=lqS9H5+bZRu73v+RaI1FVxS30dUDinfTEKGWKKl2qec=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iJFdwuMOy6LPZCuowOL8BPT9lSCxnnHS/iyPnWXm3SH4515VTLqJRiSgulUwFxAC7VDE0Y75fHUXepmp5vLXxnq/T+l0Jw9vY7I1UwAJkZbC6rNnIRZiowE6dtDW2Da36oYJ9wRcBXMSbp2YZmJ0BlJyJ06RKpMnLyWTi9boarM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nx7c4Q70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70215C4CEED;
-	Tue, 10 Jun 2025 20:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749587872;
-	bh=lqS9H5+bZRu73v+RaI1FVxS30dUDinfTEKGWKKl2qec=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Nx7c4Q70Nygv3x0k02CwqcdeYFxM6/hCVRrUFZJ2u58bCnj2OX2V9KoWx/XdY/gVd
-	 /rrk4iMjGG2qO8rCsUtOFdiJa7KvnvLz+LMGMw/vvDhXwKZY+b2ERGIdcqdB1Jt1YI
-	 rd8vbj0I2WICZicYGk4vfYxy2QW/7QrkfcYcUV6u0SSqBrtGnBpLy+7nOd3j4riffK
-	 mzXqyXFyr1y7wHLpvN0LDhKLyaX7W9KFB5O9l/thEmfWQIZf4A13dx5Pg8dD+BTNGR
-	 XP/Jen/MqUIRr7FdLznr4RXMFIHb096WTKmJMTmwvIHXiSlhCmz0OAqrB7VOC2l/JR
-	 dl64y7pQUQJtg==
-Date: Tue, 10 Jun 2025 13:37:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, "Michael S.
- Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
- <eperezma@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] virtio-net: drop the multi-buffer XDP packet in
- zerocopy
-Message-ID: <20250610133750.7c43e634@kernel.org>
-In-Reply-To: <e2de0cd8-6ee2-4dab-9d41-cfe5e85d796d@gmail.com>
-References: <20250603150613.83802-1-minhquangbui99@gmail.com>
-	<dd087fdf-5d6c-4015-bed3-29760002f859@redhat.com>
-	<f6d7610b-abfe-415d-adf8-08ce791e4e72@gmail.com>
-	<20250605074810.2b3b2637@kernel.org>
-	<f073b150-b2e9-43db-aa61-87eee4755a2f@gmail.com>
-	<20250609095824.414cffa1@kernel.org>
-	<e2de0cd8-6ee2-4dab-9d41-cfe5e85d796d@gmail.com>
+	s=arc-20240116; t=1749589961; c=relaxed/simple;
+	bh=kwEHHm7zFRCrwj7rWWQ34/8yUWTPvbFGYiZ3ig5tFMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n0Ns6g2BJl4MkNAQQyqMtUpL26l5+bqZzenAi2I5uczxN4eMPCIgZ+4kgbTIPXrHk0tOEulITJmHmU/qJKybNQ+qXwqFL/vZRZk+HyuarW8UFZhypuysTijQhkg1kadUsp2hYNAaJ6n7D6lDqLmlyJ55d7czLyqPNUpURafl4Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RLaDSr+5; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749589960; x=1781125960;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=kwEHHm7zFRCrwj7rWWQ34/8yUWTPvbFGYiZ3ig5tFMk=;
+  b=RLaDSr+51T+i/DDeSq+Ume3DZGFVgfymhf66JNydGHE/Lbe7EaiwKauP
+   jFS+Vw/N+VTBsnPgw0Y/QqFuHArETyNWfqhg/wyA63Ngo5Ac6eO1aCaBM
+   DQ4uCZAJx6fY6BBEKacvjdbz3Gdl+AGj811jFH3VcRDda58ForZv8LF4f
+   EPpsU5MXApUMxCVGB1l3v/ML/yFHnXqVVcBbRfgexu2VcVVfI6gfwbthd
+   8FYltXqab0N5mIQMbiyg2ADWRWbCoTIsiTaDuYMZyOrqhlGeFs07xZe2S
+   b1N9Hd+meaeFTW3ezeI0J3237sng4qEJ7GqEI61FxJ6HLCpo2OvPf0XWr
+   A==;
+X-CSE-ConnectionGUID: m0TH/AUYQ1uxNjKukRgrWQ==
+X-CSE-MsgGUID: ghXNZncgQKqyZIvbrc0biw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51816880"
+X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
+   d="scan'208";a="51816880"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 14:12:40 -0700
+X-CSE-ConnectionGUID: c1M1rLqrQ2KxrfjeXOOmeg==
+X-CSE-MsgGUID: 9DiTFwpCSCiMazVfq2TDug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
+   d="scan'208";a="146939674"
+Received: from mjruhl-desk.amr.corp.intel.com (HELO mjruhl-desk.intel.com) ([10.124.220.88])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 14:12:37 -0700
+From: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+To: platform-driver-x86@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com,
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	david.e.box@linux.intel.com
+Cc: "Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+Date: Tue, 10 Jun 2025 17:12:16 -0400
+Message-ID: <20250610211225.1085901-2-michael.j.ruhl@intel.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250610211225.1085901-1-michael.j.ruhl@intel.com>
+References: <20250610211225.1085901-1-michael.j.ruhl@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 10 Jun 2025 22:18:32 +0700 Bui Quang Minh wrote:
-> >> Furthermore, we are in the zerocopy so we cannot linearize by
-> >> allocating a large enough buffer to cover the whole frame then copy the
-> >> frame data to it. That's not zerocopy anymore. Also, XDP socket zerocopy
-> >> receive has assumption that the packet it receives must from the umem
-> >> pool. AFAIK, the generic XDP path is for copy mode only.  
-> > Generic XDP == do_xdp_generic(), here I think you mean the normal XDP
-> > patch in the virtio driver? If so then no, XDP is very much not
-> > expected to copy each frame before processing.  
-> 
-> Yes, I mean generic XDP = do_xdp_generic(). I mean that we can linearize 
-> the frame if needed (like in netif_skb_check_for_xdp()) in copy mode for 
-> XDP socket but not in zerocopy mode.
+Usage of the intel_pmt_read() for binary sysfs, requires a pcidev.  The
+current use of the endpoint value is only valid for telemetry endpoint
+usage.
 
-Okay, I meant the copies in the driver - virtio calls
-xdp_linearize_page() in a few places, for normal XDP.
+Without the ep, the crashlog usage causes the following NULL pointer
+exception:
 
-> > This is only slightly related to you patch but while we talk about
-> > multi-buf - in the netdev CI the test which sends ping while XDP
-> > multi-buf program is attached is really flaky :(
-> > https://netdev.bots.linux.dev/contest.html?executor=vmksft-drv-hw&test=ping-py.ping-test-xdp-native-mb&ld-cases=1  
-> 
-> metal-drv-hw means the NETIF is the real NIC, right?
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+Code:
+Call Trace:
+ <TASK>
+ ? sysfs_kf_bin_read+0xc0/0xe0
+ kernfs_fop_read_iter+0xac/0x1a0
+ vfs_read+0x26d/0x350
+ ksys_read+0x6b/0xe0
+ __x64_sys_read+0x1d/0x30
+ x64_sys_call+0x1bc8/0x1d70
+ do_syscall_64+0x6d/0x110
 
-The "metal" in the name refers to the AWS instance type that hosts 
-the runner. The test runs in a VM over virtio, more details:
-https://github.com/linux-netdev/nipa/wiki/Running-driver-tests-on-virtio
+Augment the inte_pmt_entry to include the pcidev to allow for access to
+the pcidev and avoid the NULL pointer exception.
+
+Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to read telemetry")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+---
+ drivers/platform/x86/intel/pmt/class.c | 3 ++-
+ drivers/platform/x86/intel/pmt/class.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+index 7233b654bbad..d046e8752173 100644
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+ 	if (count > entry->size - off)
+ 		count = entry->size - off;
+ 
+-	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
++	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+ 				    entry->base, off, count);
+ 
+ 	return count;
+@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
+ 		return -EINVAL;
+ 	}
+ 
++	entry->pcidev = pci_dev;
+ 	entry->guid = header->guid;
+ 	entry->size = header->size;
+ 	entry->cb = ivdev->priv_data;
+diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+index b2006d57779d..f6ce80c4e051 100644
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -39,6 +39,7 @@ struct intel_pmt_header {
+ 
+ struct intel_pmt_entry {
+ 	struct telem_endpoint	*ep;
++	struct pci_dev		*pcidev;
+ 	struct intel_pmt_header	header;
+ 	struct bin_attribute	pmt_bin_attr;
+ 	struct kobject		*kobj;
+-- 
+2.49.0
+
 
