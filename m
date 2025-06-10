@@ -1,163 +1,125 @@
-Return-Path: <stable+bounces-152294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E52AD391C
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 15:27:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86E4AD3998
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 15:41:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 011187A2C5D
-	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:22:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E783ACD30
+	for <lists+stable@lfdr.de>; Tue, 10 Jun 2025 13:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767502BCF65;
-	Tue, 10 Jun 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A1A2980A2;
+	Tue, 10 Jun 2025 13:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EXXT663/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gg7gc6O6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BDC29553C;
-	Tue, 10 Jun 2025 13:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78F5246BC0;
+	Tue, 10 Jun 2025 13:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749561673; cv=none; b=naT2j3lJQLFjiYrKlDPti1aP/R2cB0Awu9lJyjuW04r9Jpd2Hsw3wwOJLDYdmkFXdeb4gU1/N1kg1X0HncWDunFPoFOt2CdzmA3NR/nXPlxl4jhBkNodGhTyVxgFYNRD3KBOddUWlOILtWbToYoiNWBiCaEABqQ+1RHQd5sBHM0=
+	t=1749562643; cv=none; b=j6VL+PunNSBBy7jjDoNtNKjmJ7FLMXBlLvlHo8ZU4zJz6dqHV6a9hTMk0Sc4lHFZ/R6Rjjy+VWaY8XG1PjC16kB5hyzIu/dG6FMUPUfdCCa2YVcOH9F9+guWqGIQew3BXzKxgDxeSTnbKR4AxTFtV2ijleIosBGBzOy8BSqxhBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749561673; c=relaxed/simple;
-	bh=PHXnIq9DvbYMMAiqfb9kdye4N3LNNMsDCltUJ6z2pmc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=M00e5OWv+xTeG+sD+8t8EglUzzs6qPkAZwU6N9C63YqLYsg6T7k5laF8owT7/7nhhIrAkFdUS4AMMQoP64SyX8wnKtje0em2lMLUdHJBqbx749P6qxIGMNbFI4SGEhXuIR/wyOL5jIhRfNjSp/xyqCgFoAL15rHNjUOw4GBtHzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EXXT663/; arc=none smtp.client-ip=209.85.128.182
+	s=arc-20240116; t=1749562643; c=relaxed/simple;
+	bh=oOWVuLO2T4RnSw7Vz1x2rYEpuImpONyqClwgxnMeXIY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qwtTcSszJhFfyFbtnc/88btBZ+CU7/SsULPyLw+e7F19McTPIG7in0pHdRDNqErLCHkpmQbURsQrHrtjOVMGK5l2HdCvi2k4zZBlvqhKBVUxM4An9JCebicntCp5FHofhqpCfY1j9aj05YUUzVKy21SYH+dtgjIRYjoIp0TWazc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gg7gc6O6; arc=none smtp.client-ip=209.85.128.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-70e77831d68so51621317b3.2;
-        Tue, 10 Jun 2025 06:21:11 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-70e6bddc30aso44381097b3.0;
+        Tue, 10 Jun 2025 06:37:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749561671; x=1750166471; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1749562641; x=1750167441; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nqK/Pdx79AulxZE87TK3GYJJhMmOA+0kbCJDeCtjwXQ=;
-        b=EXXT663/T8yg6QwubhaXBIFKO+aewtvBW7FE8UnEXL7ajtazYP4fxZyNWB4Qc1MFkn
-         c2oKJHaKuh1/1qRZljEz9rRsS6uQawRX4ly/vrspz8AnI8GYBksC71fgoD2qvV2XBkZM
-         fdxBNH8u1eppJj2kZtZJnQiRuSArErJq7Bb7zEBPFu0DnH3XbO0uRFu93rK94nSJlgFl
-         Y2kc0IeNOeRDqZLwnDDyT4xXRT9jT/hgCLZX/DH8KQ+AL2nWVAJxmDfb4wZs8do4mRd/
-         rkM8mDYaQrO+pjc4z6SB/pMwtBWbpIJlraJ+Xdk+LqIsAE6WIeM+Jj4QX+D4qKlNGO6P
-         pP1w==
+        bh=xxIrKS/FqjNsM2xFokaxGJ/xqDLh5zv82FrSmAhAsqA=;
+        b=gg7gc6O60ehL72MlXfAL1e+OE34CgQicKulsxHm0M7cftC9h1g89OU1A9lRluBbgzZ
+         Xt+6HH6u2J/pmYxYqFuDXHQHYUuQvP7pG15Nd2qGE9Yt5G2rHjjigpxweKLDAVjKcu4D
+         0dB0apRP7rKQvxOwI/6bzDD1oz4FHtNBMW0iJEFche/uz+Wq4le9bjikDQHsQsw0dysE
+         uIztNU9y4AdSSxDSHbbYVI5D0u4DNm0DaJZoGeTsmv/W+ddbgeoLrWEddiVLJI3worbN
+         UBrkYaZ2wrC1+Tahtcfx5xLxC81LvG/h+UchqQmCjVLUYZM0oUvD0mjVYak+gQ5Sk4dD
+         zkCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749561671; x=1750166471;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nqK/Pdx79AulxZE87TK3GYJJhMmOA+0kbCJDeCtjwXQ=;
-        b=w4jJolvocrnaan/fo4BaqUq7o7gqYFsMzfCmZgzMR8jn1leFpKFF/9QqdusOoAt5gY
-         JJBKte0H5gbaBMoPEdq0nicIpTwxrxvGxlH3Q+/a5cC0D9S9pKMr357wVrXfeZxwWGaH
-         7cf73i4gwH38Tr856An9ojVlqabENNzHb2QB1RYwWesgj0j37Qum7NskkPYSLfiO9CSU
-         rIiiH+00DhX4lfI2D4JtGWtgOhmoAWipuLLG5+FOvwI1UBtQxv3RAdUly1REO1qxcJK/
-         vOfKopmeJ6pFokDeLKKqNCn3vCr6fL3TYbzBtTzabuAcZz0l+OAZrMggskV7q1mturQl
-         1vGA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/OKRLHJlJagAKHjyZ2rl7dUu6b9kuEWSOEratpuIEa/7hM9bc1W52ISfM3PUYJE0Di+3TzY0y@vger.kernel.org, AJvYcCWLhPDtIzMCPVv++CZxGXFEf7wEQTJZkPqv3KBVqch1xqSySx/mSvKt6QgGK8/F89TNYNE=@vger.kernel.org, AJvYcCWP0Rc2l8cFrjc0edVxJG/wQhYYydx+g5Pt2c1T4WUytBMBr9jjRkR//Y1IGCpKuukenmJj/u/x2H5b7S21/kGY@vger.kernel.org
-X-Gm-Message-State: AOJu0YxaZM0wunA37rWHHzzyRZFaR15SA1VDmp0lS+akJThxZqe83El3
-	ZUghyF9BgCHW7KJAmX7/CV/zdblocnrL4IRMzRUW+0EIlNjIHxV8nrOY
-X-Gm-Gg: ASbGncuFb118css+7WavVjMBCpQho6r1csoViMffcvv2J9ULjdKvPgjClIc0/Hcd4v5
-	zCXnV3xnNL7xOqiAPeerqBnTMLJthMxkVF/F6EQYYY5UZ+wnV/mqp6UanGKQhAF8+YExyAQJhaN
-	wpI5/BTKEEFVR/z8laCSEvrzA4QXhufhjeRpb+tdYpz8UNys/HAiYUv0cgu+aV82BxVJByuWpJd
-	0EfS/Etbd26VWpPZj87diCPoKA0+9C7Gvngy+OjvZJRP8Fuk9Jz3Ik3tlYlqLV0f6RoYk1tXKDw
-	OtOXn3nN/v9ldIL0c3Dm9ZPXURgE6GadhK4uyFBwwdHj4VmtlKzQ0LoMiIjvOEhzUFnqcFycfAw
-	Y9a0kyx4zrUb5/JWdcflnT9E1/QJturjZesQHj9RlrA==
-X-Google-Smtp-Source: AGHT+IGz0NOsByVzKDDWHAu+pNwYUyitsWzgIpouRvSRsvxeGdftrTwG2Yu8Iv8RPDuXDpr/1jA0gw==
-X-Received: by 2002:a05:690c:6d12:b0:70e:2d1a:82b8 with SMTP id 00721157ae682-710f772b158mr246129037b3.34.1749561670642;
-        Tue, 10 Jun 2025 06:21:10 -0700 (PDT)
-Received: from localhost (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-710f98afb0esm16081257b3.3.2025.06.10.06.21.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 06:21:09 -0700 (PDT)
-Date: Tue, 10 Jun 2025 09:21:09 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- davem@davemloft.net
-Cc: netdev@vger.kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- andrew+netdev@lunn.ch, 
- horms@kernel.org, 
- willemdebruijn.kernel@gmail.com, 
- maze@google.com, 
- daniel@iogearbox.net, 
- Jakub Kicinski <kuba@kernel.org>, 
- stable@vger.kernel.org, 
- martin.lau@linux.dev, 
- john.fastabend@gmail.com, 
- eddyz87@gmail.com, 
- sdf@fomichev.me, 
- haoluo@google.com, 
- willemb@google.com, 
- william.xuanziyang@huawei.com, 
- alan.maguire@oracle.com, 
- bpf@vger.kernel.org, 
- shuah@kernel.org, 
- linux-kselftest@vger.kernel.org, 
- yonghong.song@linux.dev
-Message-ID: <68483145957ee_3cd66f29430@willemb.c.googlers.com.notmuch>
-In-Reply-To: <20250610001245.1981782-1-kuba@kernel.org>
-References: <20250610001245.1981782-1-kuba@kernel.org>
-Subject: Re: [PATCH net v3 1/2] net: clear the dst when changing skb protocol
+        d=1e100.net; s=20230601; t=1749562641; x=1750167441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xxIrKS/FqjNsM2xFokaxGJ/xqDLh5zv82FrSmAhAsqA=;
+        b=wLIuUR1XVdG94ZibIY7mkEi9BwdGyPFK4A80l5v5xDYKZ03v4MxBEWG2rQ0ulZqqsT
+         Vv42tyyA5dGGDpRZDyjHhoKW4Z50T4TEK9igpJtTDTP7dLi50YWvPsWBrhe56hmAsUwT
+         Xkj/S2nCAgpW2arTwUx+iBzf3lwViDYvhgW1Q7WFjE4SKpfXsSl5+x14TLwACWJs5BNc
+         2bU/786YVEuVdak2QyzFpTtBRkHvuTppe77cWpbWgV80/YGaLx7jRDiAy0aMu2MYsU8h
+         ZX6CDnvUZEp3YWhMj8GbmbW+u6L3Ivc2UvMJ61OwVdp47n5bCtBDfNrXnmPVAt3ebfev
+         iLFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUE9kkKii/bSLqeZ6/uun3Cx1yJQgq8dg+nayqnfF21CJZby8+KcJM0YuCPru0CVjPQmYRCfv0t2BcwCtIO@vger.kernel.org, AJvYcCV1QA19AQOC2v7gUIGR+D8OhbPOGkr53I3f1vFNmjPDpU7EBzkKAeDz51OzBSvbg522ELVGm36ApgYW@vger.kernel.org, AJvYcCVvAKK9ga+KzR7fwZDAdrvB7srlAhpjJ31EU+f01aDMarinvEr3hWTv6X/bTP7iBmgiOtF9274C@vger.kernel.org, AJvYcCWHaaDLCUk8LRxgIbt6+3P2dTQbYSJN0I4UF6H9uV7mKSukpGWffZU8l+SP/0Lu6LFbTdQ7PpOT@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWV4d8PKZq1QtX3DsET+AEgqc0LXKSGIZVXTA8DEbb51gICmOv
+	SrZ4M7z20QBzJ1m3tjTJGOcko7jFrn6k9B8WaaPAci3nebXBhOtUu/hiLZG+qBx5/86YtMyMu73
+	sAfKftum2u6DGoEqxcc8nCBlVfdA99mo=
+X-Gm-Gg: ASbGncuzCfsy6C9qkbznRB1hUgypDOfEoO1XMsvWUy/ooeekPT9Eac9wXPLh9pidaB3
+	OeL3QmXA+BJsPv3fKJjzSkJn1dxaa6JXC9sxre2AsY8IMnB3jvS6pLHp72CyCg5CtoPaYCHOGBq
+	X/8LxqJbWbH7xMxEaAo7rex6OSugS7D2jO5QirgQgi3tJgydlbk0HWn0wHlgrDLIlTIf3iIKHdv
+	WE6Xz7oH1LALJE=
+X-Google-Smtp-Source: AGHT+IFM1XwmtOLu46/6hnB8HE+OYFSHJX6Sjmr/fbwlTVJpbAdiZS0DZi1jGEnlfK67xiMSjcPRgzR6HPYhzLNQ7ZQ=
+X-Received: by 2002:a05:6902:98f:b0:e81:86ae:2c40 with SMTP id
+ 3f1490d57ef6-e81a213224cmr24404325276.19.1749562640474; Tue, 10 Jun 2025
+ 06:37:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+References: <20250605105449.12803-1-arefev@swemel.ru> <20250609155729.7922836d@kernel.org>
+ <5f821879-6774-3dc2-e97d-e33b76513088@trinnet.net> <20250609162642.7cb49915@kernel.org>
+ <4cfc85af-c13a-aa9c-a57c-bf4b6e0f2186@trinnet.net>
+In-Reply-To: <4cfc85af-c13a-aa9c-a57c-bf4b6e0f2186@trinnet.net>
+From: Dan Cross <crossd@gmail.com>
+Date: Tue, 10 Jun 2025 09:36:44 -0400
+X-Gm-Features: AX0GCFvn-7qD2cihhzkYj_5iK1X4T6iJ_-iI3ppeXU5PRwGVUbNgolRtiKDGC9E
+Message-ID: <CAEoi9W57D-BfpYUAe5M3zjJvTUQUL4UUB+iWkpRO_o8JWfS7FQ@mail.gmail.com>
+Subject: Re: [PATCH net] netrom: fix possible deadlock in nr_rt_device_down
+To: David Ranch <linux-hams@trinnet.net>
+Cc: Jakub Kicinski <kuba@kernel.org>, Denis Arefev <arefev@swemel.ru>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Nikita Marushkin <hfggklm@gmail.com>, Ilya Shchipletsov <rabbelkin@mail.ru>, Hongbo Li <lihongbo22@huawei.com>, 
+	linux-hams@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
+	stable@vger.kernel.org, syzbot+ccdfb85a561b973219c7@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski wrote:
-> A not-so-careful NAT46 BPF program can crash the kernel
-> if it indiscriminately flips ingress packets from v4 to v6:
-> =
+On Mon, Jun 9, 2025 at 7:31=E2=80=AFPM David Ranch <linux-hams@trinnet.net>=
+ wrote:
+> That's unclear to me but maybe someone else knowing the code better than
+> myself can chime in.  I have to assume having these locks present
+> are for a reason.
 
->   BUG: kernel NULL pointer dereference, address: 0000000000000000
->     ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
->     ipv6_rcv (net/ipv6/ip6_input.c:306:8)
->     process_backlog (net/core/dev.c:6186:4)
->     napi_poll (net/core/dev.c:6906:9)
->     net_rx_action (net/core/dev.c:7028:13)
->     do_softirq (kernel/softirq.c:462:3)
->     netif_rx (net/core/dev.c:5326:3)
->     dev_loopback_xmit (net/core/dev.c:4015:2)
->     ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
->     NF_HOOK (./include/linux/netfilter.h:314:9)
->     ip_mc_output (net/ipv4/ip_output.c:400:5)
->     dst_output (./include/net/dst.h:459:9)
->     ip_local_out (net/ipv4/ip_output.c:130:9)
->     ip_send_skb (net/ipv4/ip_output.c:1496:8)
->     udp_send_skb (net/ipv4/udp.c:1040:8)
->     udp_sendmsg (net/ipv4/udp.c:1328:10)
-> =
+The suggestion was not to remove locking, but rather, to fold multiple
+separate locks into one. That is, have a single lock that covers both
+the neighbor list and the node list. Naturally, there would be more
+contention around a single lock in contrast to multiple, more granular
+locks. But given that NETROM has very low performance requirements,
+and that the data that these locks protect doesn't change that often,
+that's probably fine and would eliminate the possibility of deadlock
+due to lock ordering issues.
 
-> The output interface has a 4->6 program attached at ingress.
-> We try to loop the multicast skb back to the sending socket.
-> Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
-> and changes skb->protocol to v6. We enter ip6_rcv_core which
-> tries to use skb_dst(). But the dst is still an IPv4 one left
-> after IPv4 mcast output.
-> =
+        - Dan C.
 
-> Clear the dst in all BPF helpers which change the protocol.
-> Try to preserve metadata dsts, those may carry non-routing
-> metadata.
-> =
-
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Maciej =C5=BBenczykowski <maze@google.com>
-> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-> Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_sk=
-b_adjust_room()")
-> Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
-> Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+> On 06/09/2025 04:26 PM, Jakub Kicinski wrote:
+> > On Mon, 9 Jun 2025 16:16:32 -0700 David Ranch wrote:
+> >> I'm not sure what you mean by "the only user of this code".  There are
+> >> many people using the Linux AX.25 + NETROM stack but we unfortunately
+> >> don't have a active kernel maintainer for this code today.
+> >
+> > Alright, sorry. Either way - these locks are not performance critical
+> > for you, right?
+> >
+>
 
