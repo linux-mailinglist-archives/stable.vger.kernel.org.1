@@ -1,199 +1,174 @@
-Return-Path: <stable+bounces-152477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8060FAD609E
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:02:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30848AD6152
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 961C217BFCD
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:02:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DAE3AB3C1
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ABD19A;
-	Wed, 11 Jun 2025 21:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA5324678B;
+	Wed, 11 Jun 2025 21:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AJL+6UPZ"
+	dkim=pass (2048-bit key) header.d=netscape.net header.i=@netscape.net header.b="AaberSS/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from sonic317-21.consmr.mail.gq1.yahoo.com (sonic317-21.consmr.mail.gq1.yahoo.com [98.137.66.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC311DFF7
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A322F24467B
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.66.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675719; cv=none; b=D8JYvqXO8i1PPILsiOeEdpQAg4T3Ie8YJNA93JnVEjTzsNPc5F5ZwVFoACyaszYQqrzKDDv+Fum83aeKXTiPLNDi8zrtaBK9m8bTUmEg/5Jrf57g+rc/f4slt8g6AhYzx9uBQBoGj9Oi2d/9BUbZyin2Rp3YuOqQ5ch+oK77L5Y=
+	t=1749677405; cv=none; b=uKJQoMCl53WgHXIx65wCqU/Ia2H9+yMKyMgm89/G+JFdEySVJoFsqPO/NPKKrka9G5eMjcWeYjljtsim98u4wwFkY34sroRhYbgxenrKtM4aTjA7acVF+CztNQoCN9h6q8766ud/AvnnRbjSPnolbHHaCOv0C7jrEDCb5IRao4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749675719; c=relaxed/simple;
-	bh=4cK6Ba6ZQhHcZfiKHkqwBc8TB54HRic1mF7Hq5fYX18=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFOmwoa/uy8NqiUzSeht5aZyYqXeWut4Giaupsa1rPPW0Y7GqfNpwoGtB3qC2Fkvqv/CxKbJtQkJlgxaoMKuMg9rPXdyXf42NV7vcpA/G/DTmy8iIpcHlZGCaELEudGnJcHiiiDHbpgACRqhpFDbnae14Ed7wtWDZc/N0xECP00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AJL+6UPZ; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-23526264386so2662705ad.2
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749675717; x=1750280517; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pIMck/J7HmGb3HCvlJ+XEKrpOfsyTEh/GTB7pCjuu+s=;
-        b=AJL+6UPZTcc5Qs7wv7ptH1fw5WSLSVcqoa8Ruq7d3QoWtVw77vvQ8dLcRcZG6WEUqW
-         xTsnXEm843nH+JF0RlS1qWYDsw73uAjuR5kbi8GiFMndGM9MixTcOsnnrRnrkaMFPvgr
-         sYYUubYQj7TSl0QdDfAckQ6z6Mcx9R26n6DXIzdbqv8KLpLY9g9ix34aG7DXnHZywXfd
-         JYLbKTcPDEIsJWnkquRa/fMgPEFW+jPwItsNLuyjMYM8k2CRNfSHZ7KbSUcBJK0wh2Af
-         zRfVd+vWa3Otl0vDbNl9fpszCQMcMgnbUvowWVSfM4FQUUOm/XYqsWZvxvdrpFw8DEqg
-         MK0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675717; x=1750280517;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pIMck/J7HmGb3HCvlJ+XEKrpOfsyTEh/GTB7pCjuu+s=;
-        b=aXjn4yk9ad6uL9ncVVaAaybiXpgVTUKhuEoftsjip8sWfcfseJro/Of4up4cg8kcfL
-         wQMvEm5G3BWhjbcCaCMSJGbHBi6W1RfodnetCMz+0m4ZyHwdPbpi9hfgmWKbla6zoP9x
-         Bu4K/KD3bde+gJ0+EIDiRCh+tSKhPWAquV76Th5FWSf/8xzherLj285ZgFFIKlpjU3O8
-         kPFF94Daw9Y51eLm1/UlrV2SoN7ZVHLJNz52noXxv05xXA4wo5Y5I1Ecog4CH9OkqMVq
-         9uDfHpGRczPZDpYYwJkmHdOSpmX2+w61iefFhy/zQiusGYhq8dGgmv4+vQpPrLWt3Z48
-         qd4w==
-X-Gm-Message-State: AOJu0Yy46Sfn/w+GCoqCA00Ny4XQXZuQ7p17WAuPAbWHVEFQ2JF+CQ2B
-	aetymGvTWEEy+gRYwvZCTtwoq03b+hpk6SWi0lDj+sUOpMpVeso8aApVEjxvL9i7
-X-Gm-Gg: ASbGncsvJm8h4RIhqhMUM8pc9D1uXh9RWHdpcpOoJrfdmxfDtY+EUivtE4x5D5MOv7Z
-	HRro28HEqPbHZVPaUjF0/sx8Dy68b9TGtkydccUd17DHxWFWx7tBVSZGPf4mQ/Aj8rcFy2X3ukk
-	ZRg3AoREAae0/GhEJTsTJ8Wd2ax33iAIJTqLzc+WR2ygbYKKCPF3tTGTMAvyuV6qLIT3AzAlGcD
-	xFBwL0klsAClNNFl3RnMK7n9nY9tz6N+82bG6mCtJERs4WrQcCeUSHZ4GDkdJJ9FroIRoXhOZaB
-	NCFyHDJjjndGByR6pUHN2Jsbc+JoQgMSrcBqKNKgP2bymssJFiNPhvu/3Qrdx2mHB0jyW0lrQI6
-	1HoHx+O9MmOY=
-X-Google-Smtp-Source: AGHT+IEi3V5OdJZq9FG/s/Adr2qgPeDe4btzNVlAo5V9W3ZZ3KBbPTXJjMboo2M/E0I7DDDLOxbttA==
-X-Received: by 2002:a17:903:22cd:b0:235:1706:1ff6 with SMTP id d9443c01a7336-2364d54486cmr10046975ad.0.1749675717307;
-        Wed, 11 Jun 2025 14:01:57 -0700 (PDT)
-Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:391:76ae:2143:7d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:01:56 -0700 (PDT)
-From: Leah Rumancik <leah.rumancik@gmail.com>
-To: stable@vger.kernel.org
-Cc: xfs-stable@lists.linux.dev,
-	chandan.babu@oracle.com,
-	catherine.hoang@oracle.com,
-	djwong@kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 23/23] xfs: reset rootdir extent size hint after growfsrt
-Date: Wed, 11 Jun 2025 14:01:27 -0700
-Message-ID: <20250611210128.67687-24-leah.rumancik@gmail.com>
-X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
-In-Reply-To: <20250611210128.67687-1-leah.rumancik@gmail.com>
-References: <20250611210128.67687-1-leah.rumancik@gmail.com>
+	s=arc-20240116; t=1749677405; c=relaxed/simple;
+	bh=RgiEN215K9HvHdG5bCdRGDth2UiwDiTfQCW5BOvoxOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uhGT16E77Yx2anEv3+I3FoMuEiz6PcxFlTmjNahWSjVWQgDThCQtlkgK1dlNa9M8Sqdg4P0NTGMQGBJeKdUi2ajCdU+yr+PZ37zrYyOB5cY8DuKM6jhtSz1Qc28iFcJ93asaUE5A1yzEDg1kRNxDXDuePQ9iZPY33HTKbjRfmNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=netscape.net; spf=pass smtp.mailfrom=netscape.net; dkim=pass (2048-bit key) header.d=netscape.net header.i=@netscape.net header.b=AaberSS/; arc=none smtp.client-ip=98.137.66.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=netscape.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netscape.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netscape.net; s=a2048; t=1749677397; bh=WMY3NvcWXS0B0R2y6CGAr0cpFfD3M63L1PMUB/jUFTc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=AaberSS/AHV3Cff69P2nGpStPhg3/yl2xCDLVY42MRbeDZRKUBckFsjnkJz1GM+W73Yg+C+iQAb7xie4JTv3fM6R91hC177nJyoZB/pIGGkwab4EqU+olA3UFFTqmHdKDeqep3PtXEQrMcPsCBme8r4WmtrM/KulcB7CSNwflwcOZAVtdg0xJdTmKBFHM7u3sBWISCTvLyu1VClzNKlgGie6+0erJ0GbHTLZEd7IXNfpfWLXYRGHnWvDmWSBlqbKjV6n8U/MGiytOK/z/bmxsKHmNLHPctU/1cucXP1/kP2evgt4c9mZQca2g1C2yv/NqxHlKT92JDCR8tlnHaOTPw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1749677397; bh=MXsq7Cdnrdy0l89HKbpw9u+TRrikME7H8KgX9zmfYZH=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=EfP3K9M/oTmjUwJpVRrw7+EL4MdSIGGt8x7Non7m/71cZQLUCgdXgpa7O/XXf9jTo+8FcgkZVcqurbcrLpyrdMUUHH8wazDfLMACn3dS/OL84TP4OftSfDphfr5bp+3O+ZWfqG+gMFUmSuVWYNCvDpJNPYMdYUrwOlJYlZEifbat9+itl4f/7+D9y2yLRprizGuHkNmVkHUbR5j0VAxIaKkJ60Qup0JAaZNBgnv1drUmibcW7nMJc4aH8Qp365MRtYHrqzfix7PWV/pPtLCXkrdO5OxjLjrmoeVPJ/Zd7yDqYTj7cG7EHbXELyzTbgeOKZLIgPab4JGBHKhpdoskSg==
+X-YMail-OSG: 7xnI42kVM1k9wbONvAkH9k_5qKUHXbdQjq0_Rl3vnvRIBXviDzL2iNtMadjO_V4
+ CidATuiL2Z2OUR4RAlu1fysrXV.n.ZAtzIiyvvzRgpbOFNxl.NeqE5BvVxSsh_RDrQ5Vd1ltZsCk
+ C18ul21KmkFq2PNi1rK1VUvfIStD50UxNR2Nm4UZ9VwGAplY.heTxMaEIpgcZqogTduxKiAkk4dq
+ RKH9mkjuoVbKkKtJvatIg6t8DdbsmGXUlkKzIYjKC4.ojp8UepEtGoK1pDGVp9UW0wz5Q596L3aC
+ jt_MZEgQYbUzIdRfA2LASvUAAOqzjaDJQQ8ghG_6XXjXMUp9bQEaPkGfPj7hE_zrLLvK9qVUGLdL
+ Acqd4F_zn.zh146MWsIVYSccMZN.FBksqVnRdkEvbYioeVbzAuKYHn61oOYeIrb2hnldDtxFQpRi
+ vhnsCVEKbDdv5FnAHlojaDbInLNw3VuD9cN2YdSy5GzWvj48XmWY3eSAMgsuaF6kTUir27ILDeCM
+ eDIN.KFyZaenUVpNSfwPoJzu4BquxPjRMCHVwx_tEUqKTvAH8Tgm.D6upgJBasSeR5r_upaivoqS
+ NDqrW5Tqv0S_OPi9Vg3E3QE2JORWiiajlYY0TVTZfTPCVLlFS5ePvHvOeF95NgfjeVtR.Ins5Geo
+ PgzfKaiBsWMRe8HoZO8bH1eX3iXyj9OLlHVocZUBu9GrJri1Fi6gmperDOPcG8DbyPhmAhbwkzDn
+ FF5oqwD0ETQItAFrYY3zZ40ZwgT8a2OZftAkgUkh7oQvdLBtXaIAOYr3SAleJHJ9cfsju9InYwk8
+ 86lj_9ciU0qpWYiaR49t951VWqExktnQsQm96PREuoPkawd1uPZD3vlyNHoIWTUv9dMWWi8u1yjK
+ xHmuSG8W7oqYe.CWcq2tk02GuCdqIKDsTBUcxr8ERX1cPq1Tx67y1A_ilefQKzgSgWkkU5b3xIRN
+ 9MCPCFIozaUx1BneTRr6CRnDoA2E.o5yo3bo_siw7PFOjr_pvJq5Qv0XEHIQXVidAQgvyWe_04Xx
+ Vm11IbMLzBzJYPwr6oRTfJS2WdsgDyOkbDuhFtz1zcuqUIJbTsG4gBp2xd9747P10JxFI2HcAtP5
+ 2uHWMwVsFkwrLxx2bo5dFlRU4KEVWQp8UY45ikp2E8V7DacuEAXxMuCD9W.CVtW6FUFivUCpRJKM
+ Rgih9QPzblylKDb2GorM_lB4R.j0Mx4HUrDcb2lL_LM5vi.STlU.YdoP8DC6N.3txVuKzAXhqx2_
+ MztGyNsXnNwRolYSjFpwuQ9xnl.kNmijG5Nb6togk9CLdsgb5kF3W0o1HIwq8Yd4YE4eG_nQL2sb
+ 7Q_BO4yH_Y0BypBfqB6DWpjlB17nyD8fD4ROabpluhkFyY4XxmTky3ToZ7Qv8SELISFdOtpTDius
+ zVaOi5HXbB6XejZd2kEn8TcVwtlmSKx.JdP8KZsDhpxAA7GR2ODmYBnzCE91a.Y5WMidU1AN8ndt
+ ur5N9YPJJp6GdOG1Yq4INLTfRre6dipJA9bG.0kkICO8ihpDzAvjyG12VDz2.Gsf0ogqGzU2Gryt
+ TbeDaE.gH1lBILk3rAV6bheAMEpus0udytxGu7MSoF2cM9_Fj0ONtArvk7zuvNXUQ83XHcLkb_.N
+ 6_VazYnrEsYs2vBVohVVCVr7VYZfc4cEwDo8Cp8xOiym8h6zF7EHso6QQxygkCjaFjA1QvTT1YFT
+ 05_fHXpI815nVxIPdMWXzlvyG0z9.rRYuk_d7xIBzrF494yKzx2AwEGoL6l1AR64xcDJd6UEwnVr
+ fqdzZDfcxfEzHHehvbokQBNC8weiBrbvPWEu1ePhLaeT4vtaUl9GaUdRwX2KSe5YW2m_DsAEkISl
+ 6CXLDmHr.5v7A51FQfqmg_mgboaYH4YaJop_JGVXTPQ76mgfukSyyE50R7omdT1aU2o3q0R6OOH9
+ BakSUPz4vbicMi7Z8xCUdlo8tv2PgflVUY7gAydkBMTnsJaVexFEuX8OYvkmCZSlugsvzg76M8NG
+ Yy5V_xiqsBJ8tmNrMdN0vuDWlZQ154snwtjVA5yobIbxYhaYuEKxpMqFCiZ.LeHlDN4h7VtAawpe
+ C_FQqZQUO.UPdkjFkQ7WSL0Qal4vXeVE7fHwfak.igpckxZrOQKXrs3q2oYQjjvIlgcI6j7jpOt3
+ zZ8j11OsdN4tsZ7i1vxVWEROsJUw2bKISZk0LDg7ViFjHgm5GYubGe3E1YKmkB4CC2OJmEXVJMvs
+ nJduIiVdDcrZZBsh00Kp8Iep6WQ--
+X-Sonic-MF: <brchuckz@netscape.net>
+X-Sonic-ID: 99dfe5fe-d7dd-4022-a633-711a9deceddd
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.gq1.yahoo.com with HTTP; Wed, 11 Jun 2025 21:29:57 +0000
+Received: by hermes--production-bf1-689c4795f-x8q2d (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 64c1e2fe68fd12a6b1755d3c37cec48f;
+          Wed, 11 Jun 2025 21:09:41 +0000 (UTC)
+Message-ID: <10895316-e3fd-4483-9986-a6bcb217b20a@netscape.net>
+Date: Wed, 11 Jun 2025 17:09:39 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] x86/its: explicitly manage permissions for ITS pages
+To: Mike Rapoport <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ =?UTF-8?B?Su+/vXJnZW4gR3Jv?= <jgross@suse.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Xin Li <xin@zytor.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, x86@kernel.org
+References: <20250603111446.2609381-1-rppt@kernel.org>
+ <20250603111446.2609381-5-rppt@kernel.org>
+ <20250603135845.GA38114@noisy.programming.kicks-ass.net>
+ <aD8IeQLZUDvgoQZm@kernel.org>
+Content-Language: en-US
+From: Chuck Zmudzinski <brchuckz@netscape.net>
+In-Reply-To: <aD8IeQLZUDvgoQZm@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.23956 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+On 6/3/25 10:36 AM, Mike Rapoport wrote:
+> On Tue, Jun 03, 2025 at 03:58:45PM +0200, Peter Zijlstra wrote:
+> > On Tue, Jun 03, 2025 at 02:14:44PM +0300, Mike Rapoport wrote:
+> > > From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+> > > 
+> > > execmem_alloc() sets permissions differently depending on the kernel
+> > > configuration, CPU support for PSE and whether a page is allocated
+> > > before or after mark_rodata_ro().
+> > > 
+> > > Add tracking for pages allocated for ITS when patching the core kernel
+> > > and make sure the permissions for ITS pages are explicitly managed for
+> > > both kernel and module allocations.
+> > > 
+> > > Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > ---
+> > 
+> > How about something like this on top?
+>
+> Works for me :)
+>
+> > --- a/arch/x86/kernel/alternative.c
+> > +++ b/arch/x86/kernel/alternative.c
+> > @@ -121,7 +121,6 @@ struct its_array its_pages;
+> >  static void *__its_alloc(struct its_array *pages)
+> >  {
+> >  	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
+> > -
+> >  	if (!page)
+> >  		return NULL;
+> >  
+> > @@ -172,6 +171,9 @@ static void *its_init_thunk(void *thunk,
+> >  
+> >  static void its_pages_protect(struct its_array *pages)
+> >  {
+> > +	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+> > +		return;
+> > +
+>
+> But modules generally use STRICT_MODULE_RWX.
+> Do you want to make the its pages stricter than normal module text?
+>
+> >  	for (int i = 0; i < pages->num; i++) {
+> >  		void *page = pages->pages[i];
+> >  		execmem_restore_rox(page, PAGE_SIZE);
+> > @@ -180,8 +182,7 @@ static void its_pages_protect(struct its
+> >  
+> >  static void its_fini_core(void)
+> >  {
+> > -	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
+> > -		its_pages_protect(&its_pages);
+> > +	its_pages_protect(&its_pages);
+> >  	kfree(its_pages.pages);
+> >  }
+> >  
+> > @@ -207,8 +208,7 @@ void its_fini_mod(struct module *mod)
+> >  	its_page = NULL;
+> >  	mutex_unlock(&text_mutex);
+> >  
+> > -	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+> > -		its_pages_protect(&mod->arch.its_pages);
+> > +	its_pages_protect(&mod->arch.its_pages);
+> >  }
+>
 
-[ Upstream commit a24cae8fc1f13f6f6929351309f248fd2e9351ce ]
+I tested the 5-patch series without this 6th patch on top of 6.15.2 released yesterday
+and it fixes a crash I get in 6.15.2 in my Xen PV dom0 without this patch set.
 
-If growfsrt is run on a filesystem that doesn't have a rt volume, it's
-possible to change the rt extent size.  If the root directory was
-previously set up with an inherited extent size hint and rtinherit, it's
-possible that the hint is no longer a multiple of the rt extent size.
-Although the verifiers don't complain about this, xfs_repair will, so if
-we detect this situation, log the root directory to clean it up.  This
-is still racy, but it's better than nothing.
+I also  tried this 6th patch (including Mike's suggested removal of the three lines from
+Peter's add-on 6th patch ) but I got a kernel panic in Xen PV dom0 with this extra patch.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
----
- fs/xfs/xfs_rtalloc.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
-
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 149fcfc485d8..fc21b4e81ade 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -913,10 +913,43 @@ xfs_alloc_rsum_cache(
- 	mp->m_rsum_cache = kvzalloc(rbmblocks, GFP_KERNEL);
- 	if (!mp->m_rsum_cache)
- 		xfs_warn(mp, "could not allocate realtime summary cache");
- }
- 
-+/*
-+ * If we changed the rt extent size (meaning there was no rt volume previously)
-+ * and the root directory had EXTSZINHERIT and RTINHERIT set, it's possible
-+ * that the extent size hint on the root directory is no longer congruent with
-+ * the new rt extent size.  Log the rootdir inode to fix this.
-+ */
-+static int
-+xfs_growfs_rt_fixup_extsize(
-+	struct xfs_mount	*mp)
-+{
-+	struct xfs_inode	*ip = mp->m_rootip;
-+	struct xfs_trans	*tp;
-+	int			error = 0;
-+
-+	xfs_ilock(ip, XFS_IOLOCK_EXCL);
-+	if (!(ip->i_diflags & XFS_DIFLAG_RTINHERIT) ||
-+	    !(ip->i_diflags & XFS_DIFLAG_EXTSZINHERIT))
-+		goto out_iolock;
-+
-+	error = xfs_trans_alloc_inode(ip, &M_RES(mp)->tr_ichange, 0, 0, false,
-+			&tp);
-+	if (error)
-+		goto out_iolock;
-+
-+	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
-+	error = xfs_trans_commit(tp);
-+	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+
-+out_iolock:
-+	xfs_iunlock(ip, XFS_IOLOCK_EXCL);
-+	return error;
-+}
-+
- /*
-  * Visible (exported) functions.
-  */
- 
- /*
-@@ -942,10 +975,11 @@ xfs_growfs_rt(
- 	xfs_extlen_t	rbmblocks;	/* current number of rt bitmap blocks */
- 	xfs_extlen_t	rsumblocks;	/* current number of rt summary blks */
- 	xfs_sb_t	*sbp;		/* old superblock */
- 	xfs_fsblock_t	sumbno;		/* summary block number */
- 	uint8_t		*rsum_cache;	/* old summary cache */
-+	xfs_agblock_t	old_rextsize = mp->m_sb.sb_rextsize;
- 
- 	sbp = &mp->m_sb;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -1175,10 +1209,16 @@ xfs_growfs_rt(
- 		mp->m_features |= XFS_FEAT_REALTIME;
- 	}
- 	if (error)
- 		goto out_free;
- 
-+	if (old_rextsize != in->extsize) {
-+		error = xfs_growfs_rt_fixup_extsize(mp);
-+		if (error)
-+			goto out_free;
-+	}
-+
- 	/* Update secondary superblocks now the physical grow has completed */
- 	error = xfs_update_secondary_sbs(mp);
- 
- out_free:
- 	/*
--- 
-2.50.0.rc1.591.g9c95f17f64-goog
-
+Chuck Zmudzinski
 
