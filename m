@@ -1,200 +1,215 @@
-Return-Path: <stable+bounces-152433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F2AAD56E1
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:24:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C96AD56FB
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B05B188F524
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:24:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18F3917D3EB
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AAA2882A5;
-	Wed, 11 Jun 2025 13:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B46528851A;
+	Wed, 11 Jun 2025 13:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiO4f80x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MUff7qQY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5013D24502D
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D8C288CBA;
+	Wed, 11 Jun 2025 13:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749648280; cv=none; b=qsdmoG8kO6ZbZ7/agQkg4jt/dw9jfFpdc33hq3MKB3dHAKmYDss/hpqtjrj8yfBGfFv3bbvYT47JFseU2JSFj+1uKAk+h+c1QBmpM0wPfbIb32i3Seq97+7yr/6+70OeyZuEeMMfxZrDRNjAgEG9inZ/JX7BpOLQWDlP6GukMIE=
+	t=1749648571; cv=none; b=PbLDCXBIcISo8n7p3Yk8Cs4VgfqSvxuYvNENsHfTWlbcI4bFzhkw9EodaBAG5DxqgqHfzR4YAUplvDW/oNg5WBEWxSV0blb1saE3Sv8m7NBQLy6PGf0Rx73GsxnmJxWAncgS8S1yQXlAE6U4XIRDG5TIglqpeEwoJgIY4jYzwrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749648280; c=relaxed/simple;
-	bh=0gApabvuB4YangGILtAL2y4A4cYtnhfvtNf7hUDgh9o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJA8NCgn+YyaukLatHQWvc3JwCqTbPhumF99Z+wSkzv4palqTKfFtOZfdxRN3QlwDcrXokBCu6Oeg37Mw4B/Ut1t2HgJUIgcoOZkZyHX+/suJz4gJeazvcLPXjKqknMZaxpVJh7mQ2GvbLuwvEXp2poYQu6bcnJ8NJAZ2UnJt5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiO4f80x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5676FC4CEEE;
-	Wed, 11 Jun 2025 13:24:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749648279;
-	bh=0gApabvuB4YangGILtAL2y4A4cYtnhfvtNf7hUDgh9o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiO4f80xC4QH3yU4BM5uTIzj1l5RVTX96/D75vs3JixFaHB+OrFGa2vz8suY/rySo
-	 Vrz/IfV/UqS4Qsw34LlwwLSBf8iRHNZY4vCIIC4ed1Bi1rL6Ee3TvkfbPv5yh/2Bxb
-	 k2k1yuKAhjAMN9tydBCCUFw7yswn2creoPP1IldGeWXh7SUsN3TfIWr4nb07i2mBJG
-	 hqus0Xuw8WectdmSaRsBJ/7bVCfRlL9yopBxR8AyyM7c63i/TjWvoHAm1X7L06nbU5
-	 tU97tBdDt2fbSHm3q+h0wRWtrdzWwQGWcvXzLfwu+GyYQ8uUs7HZUESGuiuH+qSDTp
-	 10W4/LoFJ6soQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Puranjay Mohan <puranjay@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable linux-5.10.y v1 3/8] bpf: Replace RET_XXX_OR_NULL with RET_XXX | PTR_MAYBE_NULL
-Date: Wed, 11 Jun 2025 09:24:38 -0400
-Message-Id: <20250610173125-f759484d94e1658b@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250610144407.95865-4-puranjay@kernel.org>
-References: 
+	s=arc-20240116; t=1749648571; c=relaxed/simple;
+	bh=d2mcdUmO+BYF/qbSZuCE4ru87gtgJ35/TnOg6YcwVQY=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=okNu9tkTcOS2JSWqMDwl+qGKJWFCjssWe32uSFea3e7ICKwaYRULyMzAOG7wtb9Aw5zmGsfLOmXgvELphmoSMdgqPMQaVCZAOtr1pSEcVzX79HdhrbLOo5x/Ju17q1FZdpLjHCU2nqhqhHNQHyQbMXVUFWlcgBGnL+XwIkaUd5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MUff7qQY; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749648570; x=1781184570;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=d2mcdUmO+BYF/qbSZuCE4ru87gtgJ35/TnOg6YcwVQY=;
+  b=MUff7qQYh2kYXzFlHtDzhnt7jmf9dYNppkAApeukzCt0KNQX5/KoVVgW
+   l19lEheBab7zemrM/Ei6nPFEEyphFAx58ESmZ6cn56kDzhKPJR2di8zt8
+   nueH+TtEDqlN4qZ6UhVcLuOLJF6NERyVvFGNM3riPTVxe2nycU76me+xF
+   3UE1bYL2RAp329weSkarx/5J3dLDilAIAqENjpgjBIYylnRxL93YBA1Ax
+   /UofL/8kd1FKgmxwpbpgnuML+RdT/g8HevSMrMbBBp+F7FuA4Mxam/DVh
+   o3eVnUp223um+DjHgYI6yN6zBCaR8JgkRdGWw8c5XEliXQqyMKPkHgm3C
+   A==;
+X-CSE-ConnectionGUID: iqOei3iRRP2AR8t93woZ6w==
+X-CSE-MsgGUID: ObQ/5tDlSbaqF2NtxSiK6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51783995"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="51783995"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 06:29:29 -0700
+X-CSE-ConnectionGUID: V0dsG4E1QFq903s7ubTtcA==
+X-CSE-MsgGUID: NL47asc7TUKj245eMOh51Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="150995910"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.183])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 06:29:24 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 11 Jun 2025 16:29:21 +0300 (EEST)
+To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+cc: "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, 
+    "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, 
+    Hans de Goede <hdegoede@redhat.com>, 
+    "De Marchi, Lucas" <lucas.demarchi@intel.com>, 
+    "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, 
+    "thomas.hellstrom@linux.intel.com" <thomas.hellstrom@linux.intel.com>, 
+    "airlied@gmail.com" <airlied@gmail.com>, 
+    "simona@ffwll.ch" <simona@ffwll.ch>, 
+    "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>, 
+    "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NULL
+ pointer access
+In-Reply-To: <IA1PR11MB6418026EFDD6B6EAD882CA95C175A@IA1PR11MB6418.namprd11.prod.outlook.com>
+Message-ID: <1530a75b-fe92-b6de-6c97-bf8de20241be@linux.intel.com>
+References: <20250610211225.1085901-1-michael.j.ruhl@intel.com> <20250610211225.1085901-2-michael.j.ruhl@intel.com> <e4f3a1e0-5332-212d-6ad0-8a72dcaf554a@linux.intel.com> <IA1PR11MB6418026EFDD6B6EAD882CA95C175A@IA1PR11MB6418.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323328-1373891594-1749648561=:957"
 
-[ Sasha's backport helper bot ]
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Hi,
+--8323328-1373891594-1749648561=:957
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+On Wed, 11 Jun 2025, Ruhl, Michael J wrote:
 
-The upstream commit SHA1 provided is correct: 3c4807322660d4290ac9062c034aed6b87243861
+> >-----Original Message-----
+> >From: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+> >Sent: Wednesday, June 11, 2025 6:42 AM
+> >To: Ruhl, Michael J <michael.j.ruhl@intel.com>
+> >Cc: platform-driver-x86@vger.kernel.org; intel-xe@lists.freedesktop.org;=
+ Hans
+> >de Goede <hdegoede@redhat.com>; De Marchi, Lucas
+> ><lucas.demarchi@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>;
+> >thomas.hellstrom@linux.intel.com; airlied@gmail.com; simona@ffwll.ch;
+> >david.e.box@linux.intel.com; stable@vger.kernel.org
+> >Subject: Re: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NUL=
+L
+> >pointer access
+> >
+> >On Tue, 10 Jun 2025, Michael J. Ruhl wrote:
+> >
+> >> Usage of the intel_pmt_read() for binary sysfs, requires a pcidev.  Th=
+e
+> >> current use of the endpoint value is only valid for telemetry endpoint
+> >> usage.
+> >>
+> >> Without the ep, the crashlog usage causes the following NULL pointer
+> >> exception:
+> >>
+> >> BUG: kernel NULL pointer dereference, address: 0000000000000000
+> >> Oops: Oops: 0000 [#1] SMP NOPTI
+> >> RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+> >> Code:
+> >> Call Trace:
+> >>  <TASK>
+> >>  ? sysfs_kf_bin_read+0xc0/0xe0
+> >>  kernfs_fop_read_iter+0xac/0x1a0
+> >>  vfs_read+0x26d/0x350
+> >>  ksys_read+0x6b/0xe0
+> >>  __x64_sys_read+0x1d/0x30
+> >>  x64_sys_call+0x1bc8/0x1d70
+> >>  do_syscall_64+0x6d/0x110
+> >>
+> >> Augment the inte_pmt_entry to include the pcidev to allow for access t=
+o
+> >
+> >intel_pmt_entry
+>=20
+> I have also been told that should be "intel_pmt_entry()"....  when I redo=
+, is that
+> more correct?
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Puranjay Mohan<puranjay@kernel.org>
-Commit author: Hao Luo<haoluo@google.com>
+?? For structs, don't use (). Use () after any name that refers to a=20
+C function or a function like macro.
 
-Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (different SHA1: 3c141c82b958)
+You could also say the struct intel_pmt_entry to indicate unambiguously to=
+=20
+the reader what kind of object sits behind the name.
 
-Note: The patch differs from the upstream commit:
----
-1:  3c4807322660d ! 1:  687af1d867c44 bpf: Replace RET_XXX_OR_NULL with RET_XXX | PTR_MAYBE_NULL
-    @@ Metadata
-      ## Commit message ##
-         bpf: Replace RET_XXX_OR_NULL with RET_XXX | PTR_MAYBE_NULL
-     
-    +    commit 3c4807322660d4290ac9062c034aed6b87243861 upstream.
-    +
-         We have introduced a new type to make bpf_ret composable, by
-         reserving high bits to represent flags.
-     
-    @@ Commit message
-     
-         Signed-off-by: Hao Luo <haoluo@google.com>
-         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-    +    Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-         Link: https://lore.kernel.org/bpf/20211217003152.48334-4-haoluo@google.com
-    +    Cc: stable@vger.kernel.org # 5.10.x
-     
-      ## include/linux/bpf.h ##
-     @@ include/linux/bpf.h: enum bpf_return_type {
-    @@ include/linux/bpf.h: enum bpf_return_type {
-     +	RET_PTR_TO_SOCK_COMMON,		/* returns a pointer to a sock_common */
-     +	RET_PTR_TO_ALLOC_MEM,		/* returns a pointer to dynamically allocated memory */
-      	RET_PTR_TO_MEM_OR_BTF_ID,	/* returns a pointer to a valid memory or a btf_id */
-    - 	RET_PTR_TO_BTF_ID,		/* returns a pointer to a btf_id */
-    ++	RET_PTR_TO_BTF_ID,		/* returns a pointer to a btf_id */
-      	__BPF_RET_TYPE_MAX,
-      
-     +	/* Extended ret_types. */
-    @@ kernel/bpf/helpers.c: BPF_CALL_2(bpf_per_cpu_ptr, const void *, ptr, u32, cpu)
-      };
-     
-      ## kernel/bpf/verifier.c ##
-    -@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
-    - 			     int *insn_idx_p)
-    +@@ kernel/bpf/verifier.c: static int check_reference_leak(struct bpf_verifier_env *env)
-    + static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn_idx)
-      {
-      	const struct bpf_func_proto *fn = NULL;
-     +	enum bpf_return_type ret_type;
-      	struct bpf_reg_state *regs;
-      	struct bpf_call_arg_meta meta;
-    - 	int insn_idx = *insn_idx_p;
-    -@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
-    + 	bool changes_data;
-    +@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn
-      	regs[BPF_REG_0].subreg_def = DEF_NOT_SUBREG;
-      
-      	/* update return register (already marked as written above) */
-    @@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env
-      		/* There is no offset yet applied, variable or fixed */
-      		mark_reg_known_zero(env, regs, BPF_REG_0);
-      		/* remember map_ptr, so that check_map_access()
-    -@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
-    +@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn
-    + 			return -EINVAL;
-      		}
-      		regs[BPF_REG_0].map_ptr = meta.map_ptr;
-    - 		regs[BPF_REG_0].map_uid = meta.map_uid;
-     -		if (fn->ret_type == RET_PTR_TO_MAP_VALUE) {
-     +		if (type_may_be_null(ret_type)) {
-     +			regs[BPF_REG_0].type = PTR_TO_MAP_VALUE_OR_NULL;
-    @@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env
-      		const struct btf_type *t;
-      
-      		mark_reg_known_zero(env, regs, BPF_REG_0);
-    -@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
-    +@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, int func_id, int insn
-      				return -EINVAL;
-      			}
-      			regs[BPF_REG_0].type =
-    @@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env
-     -				PTR_TO_BTF_ID : PTR_TO_BTF_ID_OR_NULL;
-     +				(ret_type & PTR_MAYBE_NULL) ?
-     +				PTR_TO_BTF_ID_OR_NULL : PTR_TO_BTF_ID;
-    - 			regs[BPF_REG_0].btf = meta.ret_btf;
-      			regs[BPF_REG_0].btf_id = meta.ret_btf_id;
-      		}
-    --	} else if (fn->ret_type == RET_PTR_TO_BTF_ID_OR_NULL ||
-    --		   fn->ret_type == RET_PTR_TO_BTF_ID) {
-    +-	} else if (fn->ret_type == RET_PTR_TO_BTF_ID_OR_NULL) {
-     +	} else if (base_type(ret_type) == RET_PTR_TO_BTF_ID) {
-      		int ret_btf_id;
-      
-      		mark_reg_known_zero(env, regs, BPF_REG_0);
-    --		regs[BPF_REG_0].type = fn->ret_type == RET_PTR_TO_BTF_ID ?
-    --						     PTR_TO_BTF_ID :
-    --						     PTR_TO_BTF_ID_OR_NULL;
-    +-		regs[BPF_REG_0].type = PTR_TO_BTF_ID_OR_NULL;
-     +		regs[BPF_REG_0].type = (ret_type & PTR_MAYBE_NULL) ?
-    -+						     PTR_TO_BTF_ID_OR_NULL :
-    -+						     PTR_TO_BTF_ID;
-    ++					PTR_TO_BTF_ID_OR_NULL :
-    ++					PTR_TO_BTF_ID;
-      		ret_btf_id = *fn->ret_btf_id;
-      		if (ret_btf_id == 0) {
-     -			verbose(env, "invalid return type %d of func %s#%d\n",
-    @@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env
-     +				func_id);
-      			return -EINVAL;
-      		}
-    - 		/* current BPF helper definitions are only coming from
-    -@@ kernel/bpf/verifier.c: static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
-    - 		regs[BPF_REG_0].btf = btf_vmlinux;
-      		regs[BPF_REG_0].btf_id = ret_btf_id;
-      	} else {
-     -		verbose(env, "unknown return type %d of func %s#%d\n",
----
+> Thanks,
+>=20
+> M
+>=20
+> >> the pcidev and avoid the NULL pointer exception.
+> >>
+> >> Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to=
+ read
+> >telemetry")
+> >> Cc: <stable@vger.kernel.org>
+> >> Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+> >> ---
+> >>  drivers/platform/x86/intel/pmt/class.c | 3 ++-
+> >>  drivers/platform/x86/intel/pmt/class.h | 1 +
+> >>  2 files changed, 3 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/platform/x86/intel/pmt/class.c
+> >b/drivers/platform/x86/intel/pmt/class.c
+> >> index 7233b654bbad..d046e8752173 100644
+> >> --- a/drivers/platform/x86/intel/pmt/class.c
+> >> +++ b/drivers/platform/x86/intel/pmt/class.c
+> >> @@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *ko=
+bj,
+> >>  =09if (count > entry->size - off)
+> >>  =09=09count =3D entry->size - off;
+> >>
+> >> -=09count =3D pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry-
+> >>header.guid, buf,
+> >> +=09count =3D pmt_telem_read_mmio(entry->pcidev, entry->cb, entry-
+> >>header.guid, buf,
+> >>  =09=09=09=09    entry->base, off, count);
+> >>
+> >>  =09return count;
+> >> @@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct
+> >intel_pmt_entry *entry,
+> >>  =09=09return -EINVAL;
+> >>  =09}
+> >>
+> >> +=09entry->pcidev =3D pci_dev;
+> >>  =09entry->guid =3D header->guid;
+> >>  =09entry->size =3D header->size;
+> >>  =09entry->cb =3D ivdev->priv_data;
+> >> diff --git a/drivers/platform/x86/intel/pmt/class.h
+> >b/drivers/platform/x86/intel/pmt/class.h
+> >> index b2006d57779d..f6ce80c4e051 100644
+> >> --- a/drivers/platform/x86/intel/pmt/class.h
+> >> +++ b/drivers/platform/x86/intel/pmt/class.h
+> >> @@ -39,6 +39,7 @@ struct intel_pmt_header {
+> >>
+> >>  struct intel_pmt_entry {
+> >>  =09struct telem_endpoint=09*ep;
+> >> +=09struct pci_dev=09=09*pcidev;
+> >>  =09struct intel_pmt_header=09header;
+> >>  =09struct bin_attribute=09pmt_bin_attr;
+> >>  =09struct kobject=09=09*kobj;
+> >>
+> >
+> >--
+> > i.
+>=20
 
-Results of testing on various branches:
+--=20
+ i.
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+--8323328-1373891594-1749648561=:957--
 
