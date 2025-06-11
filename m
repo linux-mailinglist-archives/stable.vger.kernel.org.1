@@ -1,204 +1,162 @@
-Return-Path: <stable+bounces-152421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCD0AD56A4
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E1DAD56CB
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B04EC170BD3
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:13:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C69D1188EE44
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85702267B61;
-	Wed, 11 Jun 2025 13:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAC32882B8;
+	Wed, 11 Jun 2025 13:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H1HBSnr+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tVOPAUUw"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7393A2777F2
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AE1284B4A
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749647603; cv=none; b=cLXo4OBGPaCKw9RWZShaL3HnIm6m3KentNzGExopYDVUO790K3cPSUKykv3V2RxR8IVdNYUsLZQyjBo2RmzF8tW8TqWC6okt2TfPzGB+tI+hlCziDk28Kyw/rMq+1A3sHNpQ2XAh3opyQq5ynrwSHtbieKFgjTwiAwUJdf/lxaY=
+	t=1749647761; cv=none; b=qUmjZFQNaD3FZVR8F9RJwCmYWTgvlpy30frGfg2+AvHdgBbH1taRgxbjrdv0VX5pkibV8MTqY7nN+vEQiCCtb3tIJhY/93L/gZpNcTAHIhzJgvPF4A7P6u1kot5XBkmoAEP9rFj/Wc8KXR7L8GkJdOrVFZ3vYgfqHyQ1BUI+wBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749647603; c=relaxed/simple;
-	bh=tVjWZZq7aC71e6oZeyUhcEByjY5cRYLLNLRos59IMKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbI6kEaeZ1nHRt2GEU5v1j0DtEFXKolDG0Kp5cY0bAAx8DTLapYUxrf3u+4aViu+9CMjPDZyLuYNsPRAw+WQlaRu+5doLvg6t4rJQup6oYEIyJyCHethuwcFDVb8SNkjoO//xDs0imINLv1FoUrVodkSZrlJoSmSumcdRZoCINA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H1HBSnr+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749647600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7/yCkHIcpMtAc9OSRfJ62TeWdUDAL1/W3fcogu/NpP0=;
-	b=H1HBSnr+G3RKDAJld8h6lp0kzhGNBja5vbXfawP46JcBn+Yo7Ysb6GuQ0cMO205cT3o78x
-	pLB/oh9B+3YMsUyuLNXa9o2K46HKvsn3CfC+Q+8j7ntSxL19MViUo2uholNFsGe1O/3ZNK
-	tKsyPufKePdshhe0k8KMg2RqhvGMjxU=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-uISbxn3aMiChSBaQpHirrw-1; Wed, 11 Jun 2025 09:13:18 -0400
-X-MC-Unique: uISbxn3aMiChSBaQpHirrw-1
-X-Mimecast-MFC-AGG-ID: uISbxn3aMiChSBaQpHirrw_1749647598
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7cd06c31ad6so131804685a.0
-        for <Stable@vger.kernel.org>; Wed, 11 Jun 2025 06:13:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749647598; x=1750252398;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7/yCkHIcpMtAc9OSRfJ62TeWdUDAL1/W3fcogu/NpP0=;
-        b=dJp04/FFZVsTOuWpqWeCOu+oG0tBIFGYh/mSk5lOItq+zNHjMCbSqoWO5Qx/JrfeM1
-         QZuioijgKrHUgSNxKSRpBIpwxN8n1R9Qt5DHe+4eehOLBmTFUCQDJZOdp/zNeJQntNBB
-         hJ2eM+9Za0KTnD9zIlDMGFw5w5eIaTUfYOy/EA4HakdXRwzTfzas/Zhj8wW3PN2VqSH+
-         Yt4lZakd4YpEh+zwZH1s97zb238hH1tBcbr9le9BwoGbogaG6c7pZaP+H5w40RrHnPoc
-         cBS/n38YT3tNKxcrLF8PWJSLp2c17T0a2OKOWaY3pnwe4PqeBnHNNZ/rICgLbuf7+2Je
-         D6Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIG04xXCMTXghE+6SD4X5afdxZ3KFQOVfOpk55Rn86gxxEX5KpTIJ2WrYu0PKwyuffWe4Vyig=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/wp7Y0e6IIoHdjl2jeKZED4SeIsgIO2VUh4IZoM/JtKeNJGkv
-	vlM0CeHZ3YH3B7k8yMeX0U3FpnZPVLyo8RwhsnGmhOHKXzQ1zAkVIEExvKSnd6gewcKxoRpJkZ3
-	os+aQ6xOQkqC8MEYjajOaFfUpQP99hSwIbgwKoSb/pKok52iHuH7yxzbxiEZXmSY1N8eT
-X-Gm-Gg: ASbGncsgcksRCBcL11Un/mLSN4Fg2U0bHBlqkgLCKnF510B+0LvHwiM9YlLsup27zcS
-	Re0KY/lAsSgMnDNm29dQo7g2K/YrMBJ39hqfiTiBAPGS7/K4IXkVGozpa69tdFZJD/nFq0/lmE8
-	4bixR8ZNciZUjLkUaDSkeJiYH2+zgm3cixAZWGB1BItEB/Y6XD5l4ux29Iw3VSFcTEcz9K1qB4y
-	j9+carKl3Pwsc+wbypF200InId1xqMjIb9ve7R6YOdK1zmwBiru+nlFri3DaY1IkuWj0v5gsUHa
-	zYrjb9ksRdMvmH+K1oNOOjV/r8XstdbN0DIZk40omQ==
-X-Received: by 2002:a05:620a:170f:b0:7d2:26b4:9a91 with SMTP id af79cd13be357-7d3a87f886amr476941285a.2.1749647598025;
-        Wed, 11 Jun 2025 06:13:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHc2fImNRriWGsaw3Op67ph4lhGxj0zvCwpB17iJ/FdZgoWW5fEkHRMUQVllDHDRlj1xdpoSA==
-X-Received: by 2002:a05:620a:170f:b0:7d2:26b4:9a91 with SMTP id af79cd13be357-7d3a87f886amr476933885a.2.1749647597463;
-        Wed, 11 Jun 2025 06:13:17 -0700 (PDT)
-Received: from localhost (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7d3901b12easm539789085a.67.2025.06.11.06.13.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 06:13:17 -0700 (PDT)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	Hyesoo Yu <hyesoo.yu@samsung.com>,
-	Stable@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Peter Xu <peterx@redhat.com>,
-	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-	Aijun Sun <aijun.sun@unisoc.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v1] mm/gup: Revert "mm: gup: fix infinite loop within __get_longterm_locked"
-Date: Wed, 11 Jun 2025 15:13:14 +0200
-Message-ID: <20250611131314.594529-1-david@redhat.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749647761; c=relaxed/simple;
+	bh=HtqP+OqAoacyG08nu1+Wh3O++UtfM7uISUtEuNMqG8E=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NuljI2QZNXdsb6EH/RMRp8iBrmM25SO0W2Ne2t8lLmSHPTYiKVs3SYR5uZo/qPxGxNRTkNv00/e8Fz3Gy9jgDvCWl7VW5RCtuxu+Dk2QXE8ElymAkc9hk7a/UQdYSDYFRZOX5zeNCs2al9uQSxHI6N9IZjZCNAIV87x0te4VpJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tVOPAUUw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7738EC4CEEE;
+	Wed, 11 Jun 2025 13:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749647760;
+	bh=HtqP+OqAoacyG08nu1+Wh3O++UtfM7uISUtEuNMqG8E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tVOPAUUweyHlBHgGNL/hW1miVSbpu+lf5tzUB2u05PNsFH8Uz4geaEUTyoEve0Uq8
+	 P8HdmarIM1qedDUZZht3fF8r3VAE6zVnjZBSe9xF/432WKQujPrMDVs9W7Ws9q3umA
+	 +wRcqI+/MaVJNEQl+Do+QbWe6qtzCgZWV31a5jOj9Qz14m9DSeWzvryN/IeXBbEP/O
+	 lF76fsvCQ7f7Nvo+Nb2+fVqB3U7spN3UR58BlclZGSWZsU5MGZ8HDnQS+bw1wzDuvT
+	 vF2R0Z4b4wPd+KGcXE6FMPIhz5yIxNXuvtaD2juN1zeDP1dRy2taDcqXfR+Vn2OjOY
+	 U2i1Kw/WoAMYw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Puranjay Mohan <puranjay@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable linux-5.10.y v1 2/8] bpf: Replace ARG_XXX_OR_NULL with ARG_XXX | PTR_MAYBE_NULL
+Date: Wed, 11 Jun 2025 09:15:59 -0400
+Message-Id: <20250610171347-e4a5675789d3a672@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250610144407.95865-3-puranjay@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-After commit 1aaf8c122918 ("mm: gup: fix infinite loop within
-__get_longterm_locked") we are able to longterm pin folios that are not
-supposed to get longterm pinned, simply because they temporarily have
-the LRU flag cleared (esp. temporarily isolated).
+[ Sasha's backport helper bot ]
 
-For example, two __get_longterm_locked() callers can race, or
-__get_longterm_locked() can race with anything else that temporarily
-isolates folios.
+Hi,
 
-The introducing commit mentions the use case of a driver that uses
-vm_ops->fault to insert pages allocated through cma_alloc() into the
-page tables, assuming they can later get longterm pinned. These pages/
-folios would never have the LRU flag set and consequently cannot get
-isolated. There is no known in-tree user making use of that so far,
-fortunately.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-To handle that in the future -- and avoid retrying forever to
-isolate/migrate them -- we will need a different mechanism for the CMA
-area *owner* to indicate that it actually already allocated the page and
-is fine with longterm pinning it. The LRU flag is not suitable for that.
+The upstream commit SHA1 provided is correct: 48946bd6a5d695c50b34546864b79c1f910a33c1
 
-Probably we can lookup the relevant CMA area and query the bitmap; we
-only have have to care about some races, probably. If already allocated,
-we could just allow longterm pinning)
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Puranjay Mohan<puranjay@kernel.org>
+Commit author: Hao Luo<haoluo@google.com>
 
-Anyhow, let's fix the "must not be longterm pinned" problem first by
-reverting the original commit.
+Status in newer kernel trees:
+6.15.y | Present (exact SHA1)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (different SHA1: d58a396fa6c9)
 
-Fixes: 1aaf8c122918 ("mm: gup: fix infinite loop within __get_longterm_locked")
-Closes: https://lore.kernel.org/all/20250522092755.GA3277597@tiffany/
-Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
-Cc: <Stable@vger.kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Cc: Aijun Sun <aijun.sun@unisoc.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+Note: The patch differs from the upstream commit:
 ---
- mm/gup.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+1:  48946bd6a5d69 ! 1:  4b4f340273f41 bpf: Replace ARG_XXX_OR_NULL with ARG_XXX | PTR_MAYBE_NULL
+    @@ Metadata
+      ## Commit message ##
+         bpf: Replace ARG_XXX_OR_NULL with ARG_XXX | PTR_MAYBE_NULL
+     
+    +    commit 48946bd6a5d695c50b34546864b79c1f910a33c1 upstream.
+    +
+         We have introduced a new type to make bpf_arg composable, by
+         reserving high bits of bpf_arg to represent flags of a type.
+     
+    @@ Commit message
+     
+         Signed-off-by: Hao Luo <haoluo@google.com>
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    +    Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+         Link: https://lore.kernel.org/bpf/20211217003152.48334-3-haoluo@google.com
+    +    Cc: stable@vger.kernel.org # 5.10.x
+     
+      ## include/linux/bpf.h ##
+     @@ include/linux/bpf.h: enum bpf_arg_type {
+    @@ include/linux/bpf.h: enum bpf_arg_type {
+      	ARG_CONST_ALLOC_SIZE_OR_ZERO,	/* number of allocated bytes requested */
+      	ARG_PTR_TO_BTF_ID_SOCK_COMMON,	/* pointer to in-kernel sock_common or bpf-mirrored bpf_sock */
+      	ARG_PTR_TO_PERCPU_BTF_ID,	/* pointer to in-kernel percpu type */
+    - 	ARG_PTR_TO_FUNC,	/* pointer to a bpf program function */
+    --	ARG_PTR_TO_STACK_OR_NULL,	/* pointer to stack or NULL */
+    -+	ARG_PTR_TO_STACK,	/* pointer to stack */
+    - 	ARG_PTR_TO_CONST_STR,	/* pointer to a null terminated read-only string */
+    - 	ARG_PTR_TO_TIMER,	/* pointer to bpf_timer */
+      	__BPF_ARG_TYPE_MAX,
+      
+     +	/* Extended arg_types. */
+    @@ include/linux/bpf.h: enum bpf_arg_type {
+     +	ARG_PTR_TO_CTX_OR_NULL		= PTR_MAYBE_NULL | ARG_PTR_TO_CTX,
+     +	ARG_PTR_TO_SOCKET_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_SOCKET,
+     +	ARG_PTR_TO_ALLOC_MEM_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_ALLOC_MEM,
+    -+	ARG_PTR_TO_STACK_OR_NULL	= PTR_MAYBE_NULL | ARG_PTR_TO_STACK,
+     +
+      	/* This must be the last entry. Its purpose is to ensure the enum is
+      	 * wide enough to hold the higher bits reserved for bpf_type_flag.
+    @@ kernel/bpf/verifier.c: static bool arg_type_may_be_refcounted(enum bpf_arg_type
+     -	       type == ARG_PTR_TO_MEM_OR_NULL ||
+     -	       type == ARG_PTR_TO_CTX_OR_NULL ||
+     -	       type == ARG_PTR_TO_SOCKET_OR_NULL ||
+    --	       type == ARG_PTR_TO_ALLOC_MEM_OR_NULL ||
+    --	       type == ARG_PTR_TO_STACK_OR_NULL;
+    +-	       type == ARG_PTR_TO_ALLOC_MEM_OR_NULL;
+     +	return type & PTR_MAYBE_NULL;
+      }
+      
+      /* Determine whether the function releases some resources allocated by another
+    -@@ kernel/bpf/verifier.c: static int process_timer_func(struct bpf_verifier_env *env, int regno,
+    +@@ kernel/bpf/verifier.c: static int process_spin_lock(struct bpf_verifier_env *env, int regno,
+      
+      static bool arg_type_is_mem_ptr(enum bpf_arg_type type)
+      {
+    @@ kernel/bpf/verifier.c: static const struct bpf_reg_types *compatible_reg_types[_
+      	[ARG_PTR_TO_INT]		= &int_ptr_types,
+      	[ARG_PTR_TO_LONG]		= &int_ptr_types,
+      	[ARG_PTR_TO_PERCPU_BTF_ID]	= &percpu_btf_ptr_types,
+    - 	[ARG_PTR_TO_FUNC]		= &func_ptr_types,
+    --	[ARG_PTR_TO_STACK_OR_NULL]	= &stack_ptr_types,
+    -+	[ARG_PTR_TO_STACK]		= &stack_ptr_types,
+    - 	[ARG_PTR_TO_CONST_STR]		= &const_str_ptr_types,
+    - 	[ARG_PTR_TO_TIMER]		= &timer_types,
+    - };
+     @@ kernel/bpf/verifier.c: static int check_reg_type(struct bpf_verifier_env *env, u32 regno,
+      	const struct bpf_reg_types *compatible;
+      	int i, j;
+---
 
-diff --git a/mm/gup.c b/mm/gup.c
-index e065a49842a87..3c39cbbeebef1 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2303,13 +2303,13 @@ static void pofs_unpin(struct pages_or_folios *pofs)
- /*
-  * Returns the number of collected folios. Return value is always >= 0.
-  */
--static void collect_longterm_unpinnable_folios(
-+static unsigned long collect_longterm_unpinnable_folios(
- 		struct list_head *movable_folio_list,
- 		struct pages_or_folios *pofs)
- {
-+	unsigned long i, collected = 0;
- 	struct folio *prev_folio = NULL;
- 	bool drain_allow = true;
--	unsigned long i;
- 
- 	for (i = 0; i < pofs->nr_entries; i++) {
- 		struct folio *folio = pofs_get_folio(pofs, i);
-@@ -2321,6 +2321,8 @@ static void collect_longterm_unpinnable_folios(
- 		if (folio_is_longterm_pinnable(folio))
- 			continue;
- 
-+		collected++;
-+
- 		if (folio_is_device_coherent(folio))
- 			continue;
- 
-@@ -2342,6 +2344,8 @@ static void collect_longterm_unpinnable_folios(
- 				    NR_ISOLATED_ANON + folio_is_file_lru(folio),
- 				    folio_nr_pages(folio));
- 	}
-+
-+	return collected;
- }
- 
- /*
-@@ -2418,9 +2422,11 @@ static long
- check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
- {
- 	LIST_HEAD(movable_folio_list);
-+	unsigned long collected;
- 
--	collect_longterm_unpinnable_folios(&movable_folio_list, pofs);
--	if (list_empty(&movable_folio_list))
-+	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
-+						       pofs);
-+	if (!collected)
- 		return 0;
- 
- 	return migrate_longterm_unpinnable_folios(&movable_folio_list, pofs);
--- 
-2.49.0
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
 
