@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-152460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8496EAD608D
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:01:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36481AD608F
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3353AAAFF
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:01:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E5843A9F90
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F062BD5B0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1252BDC28;
 	Wed, 11 Jun 2025 21:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bxyGgj7C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbpDTbtE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776622BDC2C
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3553A2BD586
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675702; cv=none; b=nLdlYQD9070Wr2o6l67Zv7VOyn1K1tXqG7Fk6YGIUtK/6bFY07OiixkTL8LRyBebHDUIxEwmJMhctPupA0rz+xVGuLeVVZDkp7XmSjS857cxjo6PnuARvjsyTL03xogxb+34k9ZJuf08oDgNTHeC9eocgEYFi/ViQTRB6g7v4sE=
+	t=1749675702; cv=none; b=ArgJqpCwV6BsTGVyweYFj1hFEqy6x0dM+qr4fnDZipNo4VVgQ9u5lwI9VcqhgPThzJq+Z2sMUqfUwb3VGJz5qm+5HWRyQwui0nEMNccm/6IoG9WsXgfBJczr5eloimH7pO3k0eGTfHPkg2u8DythU/myDSQcTiaWI9t2NvNvE20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1749675702; c=relaxed/simple;
-	bh=adgWZRszik8iB0P3tjWcTMeG13rS5Z3kyLJi5NZaIDQ=;
+	bh=SnbSz1PFXeGQcR6SbyF5h2tun7RW4MEGOqaPeAnZCCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM0VMUEMrG9cvjTw6/qo8TdXtdtz3y0S07R9kRrz54DgAbj39+H30gX3gB5jM9iPfoqYtIQ2bIBNV1SwwrKGg7yStBckQMilEfWVrZdP5Bas8RKEGYYzwS34QvPTa9J4Xs7A/DdYuz5M/Ex/qX8JU2YCb5j3SSlawd3/OhgAqAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bxyGgj7C; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=uBhDj3a9qqJuSsbNVlMcmdVZwwo6IlofNRXZk3o+ti22sKLtktBOQOTJEtgcoA5EhfTJyE0gIykkAhvTbpYpxuEJ+l72WN8oSLafwyh+yhRTH4WISETqXIXg9ZagmUJY0p2hgy2sZuormpRVkg3G28vLAw6iz49zxey/kwosCYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbpDTbtE; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23508d30142so3634455ad.0
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:40 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-235ef62066eso3136535ad.3
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749675699; x=1750280499; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749675700; x=1750280500; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eRw3S/Zgssjc97Ua04jEevgFpNMhNf2M/EAnbZb0l+k=;
-        b=bxyGgj7C4xdxfA4LD8CI22dXluaGMrS72yeQm1m8GVJLpGjRdf3tfTJ0tc5nOR5F7e
-         VbBBMhA165rL7c+GZP+1/rT/5ODp6J+pfKhAyw2A4pKNmoAMn8N9XhxsFciVRP5sd0Q6
-         ZHHJ4hNyYR4nZ2JGBl3mUS3/8VO1KE80oxIhK6o9eHefca09e7h0QzhA2qC5GgNdd1Q7
-         TaoS79FS4HN0yG/kt9C3j/F50l8XmcPTJLhficc5QJ5CROTOAO+h9kc4XJ6gA2ezSuLI
-         +Mj0CUjgBuvwT2pRtE1T/1zV1u4DXkYQq7v5zUjivQq/Q9gv6CT7uOBLhHsGa3IjJkMJ
-         KnGw==
+        bh=A55kwomAR0Cx6KCYYxRQ9CmZaSeG18xPNWaIusqMLBI=;
+        b=nbpDTbtEexuTRp/Osh67/KGYA2IQKhYC43lC89WvUwTcoOFpk73V8RmowjE4W4FHw6
+         +XMQW2fLejJ7PHkwhTiNvIK3D0Fc9BepmijIlRWUd4kz6ZLZ/AUyCplWWfBaDtuGOkbU
+         xpZ4EHonf+r4Tv1/n/5DSq9NS9zEKoD4ojLV9Kth+Zvrq1PVcbJaIWRwZBJUvXQnPnJw
+         BZRN4M64G4jnE0Gg0VmIw0toN916FZOddOCE4zkmm/18q3RYjioLDRImPtj0jfP5ZMW7
+         IHoSh+Ad1M6BP64UIaa7Z1jW3ZX0E+f5S1Y9aEhgryK9Sv8htddMfMnU0kkmx7YogI1C
+         W6kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675699; x=1750280499;
+        d=1e100.net; s=20230601; t=1749675700; x=1750280500;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eRw3S/Zgssjc97Ua04jEevgFpNMhNf2M/EAnbZb0l+k=;
-        b=PI/PEs3ox3mnNxhctexh5dDDiAZrVzfSQzRnZptZ1cr14J/dzuC2zF0ekqjf5T1acC
-         YSHBqOvASLWvZrEoxhBhm3tGVwWGgHdlkhdU+fr1lIYjDgFDXOLui8A0RRX5hzaPwwHM
-         jV/2HRnQrOaA62R7cnM/noSY39SYwuvdUWLNjP1Oh/ICTD7+jQMzdSboypuCNLW4feiP
-         CjLhp0bMPWhD6+qzqdYDcmCNDZDVvfZ4Yz3Lpr1SdVPwwiw0Ma7+mSMc0BBiID/HKfe5
-         LW1oGyD6VsppY/Jv4DtrMhS6hvTtfYL2G6rXy6g5f4LFXsSJzKRwjPxvmn6Ka5Y1C2vj
-         WmZA==
-X-Gm-Message-State: AOJu0YzsN8py7jcLnbjVKk//VmHpCghhs216gpr7PtgfxRn7V4ci9ZhF
-	9MmeXRki3tTLdhExVv7jsShMDU4H/6heSkXsmcGhxpwboZS7uKBCB8JOtPwlAFSN
-X-Gm-Gg: ASbGncsNDnGRclv1T5ZHvIdFz5KNpc09CfVgNBe96fd3zDpXnAZXKvqPEyxiva4MDFf
-	caHjNRRcyDg34SoaPdOU8v1eWMARocv99TV7tq3ez9/x3FE5cU/ZSynVkbObh0KUWvnsLsMHOxG
-	+8zYLn19iUYLkppfOPEKjyI7HORP7q0dpUdOXxdAL5Fhh+YOIsMQu1MtxwaNBUZBdCz1v46yiRg
-	A85ouruCGoUN80zvVqnnP9L1ArofUn+eO8K6q0QFRpIfJWOzQ8ZZkunWG5BK+U+0QvQZPS7W/CN
-	DPA+bII1FML0VnfJs1QQjDarQaQSl9BU09Wr/MBn8aSY3/2V4mu4SZnAvp6o58Hd2x6XQfcC7S3
-	mi90z/XgFvXM=
-X-Google-Smtp-Source: AGHT+IELhMxL+ujD8gW+pINRJGhoNrUmuRh4sHphV1r5nzCqblWECK7CsBHn6G55e/mZh/MCaIGoXw==
-X-Received: by 2002:a17:902:d58f:b0:235:a9b:21e0 with SMTP id d9443c01a7336-2364c67d44bmr16291885ad.0.1749675699223;
-        Wed, 11 Jun 2025 14:01:39 -0700 (PDT)
+        bh=A55kwomAR0Cx6KCYYxRQ9CmZaSeG18xPNWaIusqMLBI=;
+        b=KoCl2lhlvIh51vx77otows2i12pmH4js6bDDXYZDcpS+s89Az/8W2ReDavDQzMofGc
+         1Eg0cZdQRTnW0JyKJpsQ1ib6yckVpVjV7pnnv1a+setkD3u3NrHV+ebmUOctVyNfOVck
+         O65N9Q2OE5vGYYUNNFn2C0MxxremG63YWDRWfa2wvAg79+0ofAEDjxMBKVLDOBSQDbW9
+         HL0BLCVeEeEL9gO0VgjHTSbit3yqpsg2pjB6mW1se0s3EN3i9zYeJcCHutcKsr/7gvKb
+         Z4/fCj1vRlyIGsCYGBciP1L+oYaGpUlqpZdmiAfymMtn0aTn/tjWI21cGcettcR/oTqw
+         g0XQ==
+X-Gm-Message-State: AOJu0YyzPlPsMzC2bUAFxO2cPC0YNfb+jMoKPEVlAnpsCSoAZmTlM1CO
+	czdWDd/ZyVRb9g0F8mDU+xjGUWBNlFQm2Hcfgkqup5Tq35BIuPjojoQQJQteiyKw
+X-Gm-Gg: ASbGncswZR52p5DhNrkQMZ5XWwW0ueacroLUQT3t5NVEgs5V4p5T793eZ63/W00O/wJ
+	QXscqNzUZmAeN0m2JBjRDAMM9AXtP7C8dJ9FAuiQMSUm/QZeiu43qGub59ujct8M2LLU5mYM9bF
+	vDG+McCTT84kqM2Lgp9cGNAJqjT9I0msBICNAcMIwwzRPGKwRvQd3v+G2ZF6eiSjvADjtPCRmCw
+	PsHlV9PCHuA2F9CYh7VLBfQ8V3o54ZczZJnVu1PxjQpFGCHm7Svw36kHM1MFkv7ho4Cdf35etDF
+	ZAH62zfsJg1wUEItT75OfwETM00rB3dKp091sSk0oebdUwvxUZyIleBeSfAE629pLzAkM3KmL35
+	UJX1SjAscFbo=
+X-Google-Smtp-Source: AGHT+IEJwcnJ7j3yy1hiX2JYtNIMV/SXCQ9HVeWwfXirRcHzIo6gvjX1l21/RkphWgiILJkxqSpeTg==
+X-Received: by 2002:a17:903:2283:b0:235:caf9:8b08 with SMTP id d9443c01a7336-23641ac7e8amr67477245ad.23.1749675700304;
+        Wed, 11 Jun 2025 14:01:40 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:391:76ae:2143:7d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.38
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:01:38 -0700 (PDT)
+        Wed, 11 Jun 2025 14:01:39 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
@@ -80,9 +80,9 @@ Cc: xfs-stable@lists.linux.dev,
 	djwong@kernel.org,
 	Dave Chinner <dchinner@redhat.com>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 06/23] xfs: validate fsmap offsets specified in the query keys
-Date: Wed, 11 Jun 2025 14:01:10 -0700
-Message-ID: <20250611210128.67687-7-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 07/23] xfs: fix xfs_btree_query_range callers to initialize btree rec fully
+Date: Wed, 11 Jun 2025 14:01:11 -0700
+Message-ID: <20250611210128.67687-8-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
 In-Reply-To: <20250611210128.67687-1-leah.rumancik@gmail.com>
 References: <20250611210128.67687-1-leah.rumancik@gmail.com>
@@ -96,116 +96,114 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 3ee9351e74907fe3acb0721c315af25b05dc87da ]
+[ Upstream commit 75dc0345312221971903b2e28279b7e24b7dbb1b ]
 
-Improve the validation of the fsmap offset fields in the query keys and
-move the validation to the top of the function now that we have pushed
-the low key adjustment code downwards.
-
-Also fix some indenting issues that aren't worth a separate patch.
+Use struct initializers to ensure that the xfs_btree_irecs passed into
+the query_range function are completely initialized.  No functional
+changes, just closing some sloppy hygiene.
 
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Reviewed-by: Dave Chinner <dchinner@redhat.com>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_fsmap.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ fs/xfs/libxfs/xfs_alloc.c    | 10 +++-------
+ fs/xfs/libxfs/xfs_refcount.c | 13 +++++++------
+ fs/xfs/libxfs/xfs_rmap.c     | 10 +++-------
+ 3 files changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index cdd806d80b7c..d10f2c719220 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -800,10 +800,23 @@ xfs_getfsmap_is_valid_device(
- STATIC bool
- xfs_getfsmap_check_keys(
- 	struct xfs_fsmap		*low_key,
- 	struct xfs_fsmap		*high_key)
+diff --git a/fs/xfs/libxfs/xfs_alloc.c b/fs/xfs/libxfs/xfs_alloc.c
+index c08265f19136..cd5b197d7046 100644
+--- a/fs/xfs/libxfs/xfs_alloc.c
++++ b/fs/xfs/libxfs/xfs_alloc.c
+@@ -3543,19 +3543,15 @@ xfs_alloc_query_range(
+ 	const struct xfs_alloc_rec_incore	*low_rec,
+ 	const struct xfs_alloc_rec_incore	*high_rec,
+ 	xfs_alloc_query_range_fn		fn,
+ 	void					*priv)
  {
-+	if (low_key->fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
-+		if (low_key->fmr_offset)
-+			return false;
-+	}
-+	if (high_key->fmr_flags != -1U &&
-+	    (high_key->fmr_flags & (FMR_OF_SPECIAL_OWNER |
-+				    FMR_OF_EXTENT_MAP))) {
-+		if (high_key->fmr_offset && high_key->fmr_offset != -1ULL)
-+			return false;
-+	}
-+	if (high_key->fmr_length && high_key->fmr_length != -1ULL)
-+		return false;
-+
- 	if (low_key->fmr_device > high_key->fmr_device)
- 		return false;
- 	if (low_key->fmr_device < high_key->fmr_device)
- 		return true;
+-	union xfs_btree_irec			low_brec;
+-	union xfs_btree_irec			high_brec;
+-	struct xfs_alloc_query_range_info	query;
++	union xfs_btree_irec			low_brec = { .a = *low_rec };
++	union xfs_btree_irec			high_brec = { .a = *high_rec };
++	struct xfs_alloc_query_range_info	query = { .priv = priv, .fn = fn };
  
-@@ -843,39 +856,41 @@ xfs_getfsmap_check_keys(
-  *
-  * Key to Confusion
-  * ----------------
-  * There are multiple levels of keys and counters at work here:
-  * xfs_fsmap_head.fmh_keys	-- low and high fsmap keys passed in;
-- * 				   these reflect fs-wide sector addrs.
-+ *				   these reflect fs-wide sector addrs.
-  * dkeys			-- fmh_keys used to query each device;
-- * 				   these are fmh_keys but w/ the low key
-- * 				   bumped up by fmr_length.
-+ *				   these are fmh_keys but w/ the low key
-+ *				   bumped up by fmr_length.
-  * xfs_getfsmap_info.next_daddr	-- next disk addr we expect to see; this
-  *				   is how we detect gaps in the fsmap
- 				   records and report them.
-  * xfs_getfsmap_info.low/high	-- per-AG low/high keys computed from
-- * 				   dkeys; used to query the metadata.
-+ *				   dkeys; used to query the metadata.
-  */
- int
- xfs_getfsmap(
- 	struct xfs_mount		*mp,
- 	struct xfs_fsmap_head		*head,
- 	struct fsmap			*fsmap_recs)
+ 	ASSERT(cur->bc_btnum == XFS_BTNUM_BNO);
+-	low_brec.a = *low_rec;
+-	high_brec.a = *high_rec;
+-	query.priv = priv;
+-	query.fn = fn;
+ 	return xfs_btree_query_range(cur, &low_brec, &high_brec,
+ 			xfs_alloc_query_range_helper, &query);
+ }
+ 
+ /* Find all free space records. */
+diff --git a/fs/xfs/libxfs/xfs_refcount.c b/fs/xfs/libxfs/xfs_refcount.c
+index 4ec7a81dd3ef..7e16e76fd2e1 100644
+--- a/fs/xfs/libxfs/xfs_refcount.c
++++ b/fs/xfs/libxfs/xfs_refcount.c
+@@ -1901,12 +1901,17 @@ xfs_refcount_recover_cow_leftovers(
+ 	struct xfs_trans		*tp;
+ 	struct xfs_btree_cur		*cur;
+ 	struct xfs_buf			*agbp;
+ 	struct xfs_refcount_recovery	*rr, *n;
+ 	struct list_head		debris;
+-	union xfs_btree_irec		low;
+-	union xfs_btree_irec		high;
++	union xfs_btree_irec		low = {
++		.rc.rc_domain		= XFS_REFC_DOMAIN_COW,
++	};
++	union xfs_btree_irec		high = {
++		.rc.rc_domain		= XFS_REFC_DOMAIN_COW,
++		.rc.rc_startblock	= -1U,
++	};
+ 	xfs_fsblock_t			fsb;
+ 	int				error;
+ 
+ 	/* reflink filesystems mustn't have AGs larger than 2^31-1 blocks */
+ 	BUILD_BUG_ON(XFS_MAX_CRC_AG_BLOCKS >= XFS_REFC_COWFLAG);
+@@ -1933,14 +1938,10 @@ xfs_refcount_recover_cow_leftovers(
+ 	if (error)
+ 		goto out_trans;
+ 	cur = xfs_refcountbt_init_cursor(mp, tp, agbp, pag);
+ 
+ 	/* Find all the leftover CoW staging extents. */
+-	memset(&low, 0, sizeof(low));
+-	memset(&high, 0, sizeof(high));
+-	low.rc.rc_domain = high.rc.rc_domain = XFS_REFC_DOMAIN_COW;
+-	high.rc.rc_startblock = -1U;
+ 	error = xfs_btree_query_range(cur, &low, &high,
+ 			xfs_refcount_recover_extent, &debris);
+ 	xfs_btree_del_cursor(cur, error);
+ 	xfs_trans_brelse(tp, agbp);
+ 	xfs_trans_cancel(tp);
+diff --git a/fs/xfs/libxfs/xfs_rmap.c b/fs/xfs/libxfs/xfs_rmap.c
+index b56aca1e7c66..95d3599561ce 100644
+--- a/fs/xfs/libxfs/xfs_rmap.c
++++ b/fs/xfs/libxfs/xfs_rmap.c
+@@ -2335,18 +2335,14 @@ xfs_rmap_query_range(
+ 	const struct xfs_rmap_irec		*low_rec,
+ 	const struct xfs_rmap_irec		*high_rec,
+ 	xfs_rmap_query_range_fn			fn,
+ 	void					*priv)
  {
- 	struct xfs_trans		*tp = NULL;
- 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
- 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
- 	struct xfs_getfsmap_info	info = { NULL };
- 	bool				use_rmap;
- 	int				i;
- 	int				error = 0;
+-	union xfs_btree_irec			low_brec;
+-	union xfs_btree_irec			high_brec;
+-	struct xfs_rmap_query_range_info	query;
++	union xfs_btree_irec			low_brec = { .r = *low_rec };
++	union xfs_btree_irec			high_brec = { .r = *high_rec };
++	struct xfs_rmap_query_range_info	query = { .priv = priv, .fn = fn };
  
- 	if (head->fmh_iflags & ~FMH_IF_VALID)
- 		return -EINVAL;
- 	if (!xfs_getfsmap_is_valid_device(mp, &head->fmh_keys[0]) ||
- 	    !xfs_getfsmap_is_valid_device(mp, &head->fmh_keys[1]))
- 		return -EINVAL;
-+	if (!xfs_getfsmap_check_keys(&head->fmh_keys[0], &head->fmh_keys[1]))
-+		return -EINVAL;
+-	low_brec.r = *low_rec;
+-	high_brec.r = *high_rec;
+-	query.priv = priv;
+-	query.fn = fn;
+ 	return xfs_btree_query_range(cur, &low_brec, &high_brec,
+ 			xfs_rmap_query_range_helper, &query);
+ }
  
- 	use_rmap = xfs_has_rmapbt(mp) &&
- 		   has_capability_noaudit(current, CAP_SYS_ADMIN);
- 	head->fmh_entries = 0;
- 
-@@ -917,19 +932,12 @@ xfs_getfsmap(
- 	 * all other low key mapping types (attr blocks, metadata), each
- 	 * fsmap backend bumps the physical offset as there can be no
- 	 * other mapping for the same physical block range.
- 	 */
- 	dkeys[0] = head->fmh_keys[0];
--	if (dkeys[0].fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
--		if (dkeys[0].fmr_offset)
--			return -EINVAL;
--	}
- 	memset(&dkeys[1], 0xFF, sizeof(struct xfs_fsmap));
- 
--	if (!xfs_getfsmap_check_keys(dkeys, &head->fmh_keys[1]))
--		return -EINVAL;
--
- 	info.next_daddr = head->fmh_keys[0].fmr_physical +
- 			  head->fmh_keys[0].fmr_length;
- 	info.fsmap_recs = fsmap_recs;
- 	info.head = head;
- 
+ /* Find all rmaps. */
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
