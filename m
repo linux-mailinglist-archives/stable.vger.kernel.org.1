@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-152427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726D4AD56BD
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AADAD56BE
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 013B0178892
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:17:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358F2178C0C
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7C2289364;
-	Wed, 11 Jun 2025 13:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590C9289802;
+	Wed, 11 Jun 2025 13:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVsqFVOY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMtAjsvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685252882BF
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192242874EB
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749647771; cv=none; b=HuMOBVutKrp/vDHv7vogOs1136EZlQY9JYY0rmT3Wy+mnFhZe4v/C+j/ZckRzSENurKsWfVMVJNbhZIa/dxmOdXYlHp19SSLgnIyn+Rb2MD0JbWDGaC/Kie90evOdFzWyufzh/RxnkdS21K8fKdlNkb25HC1uj+QV8EHJVYDJJk=
+	t=1749647773; cv=none; b=VxNNizbk5jT1O3QR2HmmcXb0WykiLVWAUwkZADDuYYwPdmDwKPIDaS4p8+2TLRCU/pc5HXruRiSrBNPIn1ukf4eWRvFBCi+EeSL82d+JewG00vupACnJgYkAvCSyCCXCyejYaBcWkVSYnqqLHyvfmqc9K6W/3HaA6QHYIB+q5rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749647771; c=relaxed/simple;
-	bh=HcD0LnNw+vcAJwhj6hNy1nV00hxUweeG8JQqbZi+ga8=;
+	s=arc-20240116; t=1749647773; c=relaxed/simple;
+	bh=Mciknro2lRnftB/P33rryRE4i+uAgf0nkqit1GNEjBw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ugJIZCcCaR4BlNOA0LwWIGWwT6Nm4G/N4w1meuSzsOajGUChsln4FCwgeVFrdp7O4UHuSvyaOY1wOfOybH2fUrm0sIbED2+o45F5WJO3kCo5ZS48ZVbWQkCjy6+ONL7jkmWEx2gqAbDquXHNFJMhOcmREFV6CbE3MC+f0SmUUx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVsqFVOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8237BC4CEEE;
-	Wed, 11 Jun 2025 13:16:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GhPYjEIbRBCH31D75iyHzfFaUFRyhFlBAsIj0ssQ07aOkfhAY5G3j+b76xQ5jadhO5LaJmxfzXo/kdHOkCoDD/JLl72uYm7T+6Bl77V/B/U8GD6S/NmPJoYsGLCTHfh2FWNr2tdrl7LPy9uc5oKaAT0ZBPs9Bl+7pr6KXOPue2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMtAjsvx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823C5C4CEEE;
+	Wed, 11 Jun 2025 13:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749647771;
-	bh=HcD0LnNw+vcAJwhj6hNy1nV00hxUweeG8JQqbZi+ga8=;
+	s=k20201202; t=1749647773;
+	bh=Mciknro2lRnftB/P33rryRE4i+uAgf0nkqit1GNEjBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVsqFVOYhRm93AgY8PmzSjup/1eHIYoReEtkOKsHVMJiStuVz3sVMTfs2rRkRZo4U
-	 F6tOG7uxyXUdasnUM7+e4BMTFQ0GNeoPKvIJlgaUpdYha3uXRiQJxDnqBsLlqQ1Z/P
-	 YCeGTROkRJH+lxZ38alhPWe9ncDePWEtn+5/anh4I4eDX3j4OdMwVP1mA+wWkLt9bX
-	 Q9hLnofuVAkIBHgS7Td3FCCDdLEtw7wiv7PRSIPd1p7Xvq+DTRloQfOPrgLeIS2b7i
-	 ZVPgRIAbiey7wIhKe7NaJiQK8CNshjSoZHE0MHXDeEphLwJSkQ/Go1bs/ZER8+Z4B1
-	 PeybTELvSC+rw==
+	b=KMtAjsvxQeKoMk3vgcHKzOUfM6pY0OwrP7qsc+BSNsHRxoHPvnJOfHxxLhK4NKnA6
+	 DwFW1P1o/G4mUtwUCZHs8KsUI8UnSGUrh9N0cvKtt1v0hb5sTWqiKTXdSYAfue/8+5
+	 Z6ChDBbLBm+fnN9nAhTUX60klOdq7dab2wcg/ajONqkwNyMfstzVENrjNUffoZROUb
+	 wBR6BRVUwT8UdF5fCaHlqYmb7DjpyxwilGNyMNF9sIfyC4q9G8tzZyi61NPl3zRjSY
+	 uiU9XtvnML484uupPaM3ncbhYnfe8ofn6JYwxxs1o/8c1QZkTxLkDgjGobGRKe2o1I
+	 z6EmoK9LX0vLA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	shung-hsi.yu@suse.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6 6.12 1/1] selftests/bpf: Check for timeout in perf_link test
-Date: Wed, 11 Jun 2025 09:16:09 -0400
-Message-Id: <20250610150600-484b48f7ef1ad86d@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y 2/3] rtc: Make rtc_time64_to_tm() support dates before 1970
+Date: Wed, 11 Jun 2025 09:16:11 -0400
+Message-Id: <20250610175629-5fd6f979d691cf10@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250609052941.52073-1-shung-hsi.yu@suse.com>
+In-Reply-To:   <955e2c8f70e95f401530404a72d5bec1dc3dd2aa.1749539184.git.u.kleine-koenig@baylibre.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,36 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb
+The upstream commit SHA1 provided is correct: 7df4cfef8b351fec3156160bedfc7d6d29de4cce
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Shung-Hsi Yu<shung-hsi.yu@suse.com>
-Commit author: Ihor Solodrai<ihor.solodrai@pm.me>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <u.kleine-koenig@baylibre.com>
+Commit author: Alexandre Mergnat<amergnat@baylibre.com>
 
 Status in newer kernel trees:
-6.15.y | Present (exact SHA1)
-6.14.y | Present (exact SHA1)
-6.12.y | Not found
+6.15.y | Present (different SHA1: aa9745977724)
+6.14.y | Present (different SHA1: 1fd85fd8b7ba)
+6.12.y | Present (different SHA1: a6a55fe660f8)
+6.6.y | Present (different SHA1: 9af5a32330f8)
+6.1.y | Present (different SHA1: 75cd3ea1caef)
+5.15.y | Present (different SHA1: fc02a9de9a12)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e6c209da7e0e9 ! 1:  8249587f33f76 selftests/bpf: Check for timeout in perf_link test
-    @@ Commit message
-         Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-         Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-         Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
-    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+1:  7df4cfef8b351 ! 1:  c046d6497bd0a rtc: Make rtc_time64_to_tm() support dates before 1970
+    @@ Metadata
+      ## Commit message ##
+         rtc: Make rtc_time64_to_tm() support dates before 1970
      
-      ## tools/testing/selftests/bpf/prog_tests/perf_link.c ##
-     @@
+    +    commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
+    +
+         Conversion of dates before 1970 is still relevant today because these
+         dates are reused on some hardwares to store dates bigger than the
+         maximal date that is representable in the device's native format.
+    @@ Commit message
+         Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+         Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
+         Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+    +    Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+     
+      ## drivers/rtc/lib.c ##
+     @@ drivers/rtc/lib.c: EXPORT_SYMBOL(rtc_year_days);
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
