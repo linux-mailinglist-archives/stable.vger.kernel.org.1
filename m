@@ -1,65 +1,48 @@
-Return-Path: <stable+bounces-152373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382A8AD49C2
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 05:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DAFAD49F9
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 06:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 443CD179AD9
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 03:53:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1BA617B7BE
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 04:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CD41C75E2;
-	Wed, 11 Jun 2025 03:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EDB170A26;
+	Wed, 11 Jun 2025 04:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CZNmCmjk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewpP+AmK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711F13212A;
-	Wed, 11 Jun 2025 03:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9528313FEE;
+	Wed, 11 Jun 2025 04:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749614017; cv=none; b=r5z/VTI+UJatIQtgHdYP9IW+VN0VTilFa2x5fUnrFoqvmkMQDgOWQcvDeF4s/8LfiTHvMQzWFiUy17YNlZpoXZkXKAjwakVpSFw+VVt4j8bnaVjiVhqV8NO4Zx8wYFLRqpBEjXugBZOwutOxryQWvrHnmrM8j3ZFAL9fgSMVeUg=
+	t=1749615352; cv=none; b=Z1nUdZKxrcSuj6qa1gV4jPOBl9vIZEjUnShZUcFmNLfKNgPbowsF9h6uewWFE1ZuKuvIGUuvcDxVUCmivZe6I3vV5ozQTIfcGTe5J1atVvamWbLpL+ODU8vTGIcrV16KQ56AWL5mEParEdUp/lpAfjlsUw1/em2CZs9Go9+Nq/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749614017; c=relaxed/simple;
-	bh=wm/A6FauAurYm1sipIdO+M/XsU9Nmefj0cel/q+ahx8=;
+	s=arc-20240116; t=1749615352; c=relaxed/simple;
+	bh=wACZzsDFZNRrbR4iZto+DCeNBZtfTvS3A+QWSX9iPr0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OZpJDR2JDyKz6b551MlHGtMq87OoV/I3yYAUi42ukMbuWsxZUIDN15mPnBEW2CkeRbduywu/FDIk/V9vLVYWD777yOxdtb+TC56Ot14tpFN6kvVH2hluWbbcyXFCKj+Vx1fg73OFZ5NUlvjl9MR07IKyagWpVyAaG82KtMjdl1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CZNmCmjk; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749614016; x=1781150016;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wm/A6FauAurYm1sipIdO+M/XsU9Nmefj0cel/q+ahx8=;
-  b=CZNmCmjkKu6r7xEpQfTWCXSWgvANUP9e7SM+6FOJpg6/JwbKLzltbkc7
-   xiT3xajFIoZtaIgRIXZ39+91SDs8ZVPshHeZvt/JF7seXT4ZWrwTGR5/I
-   JsDTC4H7wUR8O+Gp8iIQnz8/lVQFBL1BnDvIn0ErRx2FortHv/7HNYDIF
-   A9VgoAIVF+qAmXgxWCo9JJ/5PxT+vyn9uEByfpnrfvGkIzB+Dn9COalAl
-   pKGOV/ZXLjfd7U3ALqgv3erRyQ+Bn0/FPh1Ag+Bez378OYpg7Y5ag5fkM
-   cXuhCiDlZ12mAJ0uvGPjyc9m9q5TxTmkFhjKQszJW2njXN/AcKVXkF0tn
-   w==;
-X-CSE-ConnectionGUID: vDABhEUdSoqe5zUg0GmKoQ==
-X-CSE-MsgGUID: I5ItbUsgTM2x5dQeZ7FG7A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="39361547"
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="39361547"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:53:35 -0700
-X-CSE-ConnectionGUID: QoyKo9LZQF6wtYB6M9OrbA==
-X-CSE-MsgGUID: ILUiVhorTm+22hzPHc8huw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="152187331"
-Received: from msatwood-mobl.amr.corp.intel.com (HELO [10.125.111.151]) ([10.125.111.151])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 20:53:34 -0700
-Message-ID: <1c282625-c433-4675-b934-030e33a0f6fb@intel.com>
-Date: Tue, 10 Jun 2025 20:53:33 -0700
+	 In-Reply-To:Content-Type; b=ZUuDpxR9T3vsTgHvkeK751V4ZrHASEd1tNygvVYgAkU35wVUUheqvTX9BPvvON9zCi52aqPmeoUk2e/lb4k2Bm+OKWdCB+OTchzVTgINEj1H0eY2ttc1g5jtl+ZEbQ2t1CKb53f8uNb2sZPXFG3NnS3AcaeQjxmsw23VAlfBTwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewpP+AmK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5BEC4CEEE;
+	Wed, 11 Jun 2025 04:15:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749615352;
+	bh=wACZzsDFZNRrbR4iZto+DCeNBZtfTvS3A+QWSX9iPr0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ewpP+AmKEbAjmCU0PhdOn9EVd2FZaynKJvtewvz4byslZl4xPeE1m2p5U1nZNYHe4
+	 vC+cZA2WP0CO4PIRW67pUke6WmSj/ci4zMo51k9meGdVhFj9jW6ur8FzttXN7Bs8Sc
+	 bIDU1fc8p2AP45Sl3ClN92uTw01nUqw1oe7V8EncbPJzbXNvTgunhY7h0tcdIHBmQ4
+	 tTg1nVik+kOc7SAbSmZDCNub3FrLf/YrOqS9lEl3DxpGCBDWUEB8XjbO0WoP0bPCD4
+	 LZFAJh4g3swIDhpw/PamROEbLiRfHRXoHzL/ZduRrh/0lCYAP9wlZ/jor/aavfcD+C
+	 HWxtbJMhgFT6w==
+Message-ID: <1b88323e-8d79-4a79-9e6a-ea817a9e056b@kernel.org>
+Date: Wed, 11 Jun 2025 06:15:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,77 +50,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/mm: Disable INVLPGB when PTI is enabled
-To: Rik van Riel <riel@surriel.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
-Cc: Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Ingo Molnar <mingo@kernel.org>, Nadav Amit <nadav.amit@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org
-References: <20250610222420.E8CBF472@davehans-spike.ostc.intel.com>
- <ce520c1e28475703c71ab817de790823e29cda7e.camel@surriel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: Patch "powerpc: do not build ppc_save_regs.o always" has been
+ added to the 6.15-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20250610115602.1537089-1-sashal@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ce520c1e28475703c71ab817de790823e29cda7e.camel@surriel.com>
-Content-Type: text/plain; charset=UTF-8
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
+ rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
+ rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
+ i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
+ wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
+ ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
+ cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
+ 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
+ w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
+ YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
+ IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
+ BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
+ eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
+ 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
+ XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
+ l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
+ UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
+ gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
+ oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
+ o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
+ Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
+ wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
+ t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
+ YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
+ DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
+ f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
+ 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
+ 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
+ /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
+ 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
+ 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
+ 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
+ wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
+ 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
+ jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
+ wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
+ wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
+ W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
+ f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
+ DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
+ S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
+In-Reply-To: <20250610115602.1537089-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/10/25 17:43, Rik van Riel wrote:
-> On Tue, 2025-06-10 at 15:24 -0700, Dave Hansen wrote:
->> Disable INVLPGB if PTI is enabled. Avoid overrunning the small
->> bitmap.
->>
->> Note: this will be fixed up properly by making the bitmap bigger.
->> For now, just avoid the mostly theoretical bug.
->>
-> Does that mean the patch to make the bitmap bigger
-> is a dependency that needs to be in place before
-> the RAR code (hoping to send out v4 later this week)
-> can be merged?
+On 10. 06. 25, 13:56, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>      powerpc: do not build ppc_save_regs.o always
+> 
+> to the 6.15-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-That's what I was thinking. Your series to fix this all up properly from
-last week looks like the right way. It just seems like a wee bit more
-work than I want to see getting backported. It's not a huge lift, though.
+Please drop this from all trees. It was correctly broken. The whole if 
+was removed later by 93bd4a80efeb521314485a06d8c21157240497bb.
+
+> The filename of the patch is:
+>       powerpc-do-not-build-ppc_save_regs.o-always.patch
+> and it can be found in the queue-6.15 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 242c2ba3f16d92cd81c309725550f6c723833ae3
+> Author: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+> Date:   Thu Apr 17 12:53:05 2025 +0200
+> 
+>      powerpc: do not build ppc_save_regs.o always
+>      
+>      [ Upstream commit 497b7794aef03d525a5be05ae78dd7137c6861a5 ]
+>      
+>      The Fixes commit below tried to add CONFIG_PPC_BOOK3S to one of the
+>      conditions to enable the build of ppc_save_regs.o. But it failed to do
+>      so, in fact. The commit omitted to add a dollar sign.
+>      
+>      Therefore, ppc_save_regs.o is built always these days (as
+>      "(CONFIG_PPC_BOOK3S)" is never an empty string).
+>      
+>      Fix this by adding the missing dollar sign.
+>      
+>      Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+>      Fixes: fc2a5a6161a2 ("powerpc/64s: ppc_save_regs is now needed for all 64s builds")
+>      Acked-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>      Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>      Link: https://patch.msgid.link/20250417105305.397128-1-jirislaby@kernel.org
+>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index 6ac621155ec3c..0c26b2412d173 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -160,7 +160,7 @@ endif
+>   
+>   obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)	+= tm.o
+>   
+> -ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)(CONFIG_PPC_BOOK3S),)
+> +ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)$(CONFIG_PPC_BOOK3S),)
+>   obj-y				+= ppc_save_regs.o
+>   endif
+>   
+
+
+-- 
+js
+suse labs
 
