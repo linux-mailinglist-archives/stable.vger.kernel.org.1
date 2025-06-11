@@ -1,139 +1,204 @@
-Return-Path: <stable+bounces-152420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953DBAD5681
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:08:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCD0AD56A4
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32908188D38E
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:06:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B04EC170BD3
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1039327CCF3;
-	Wed, 11 Jun 2025 13:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85702267B61;
+	Wed, 11 Jun 2025 13:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x9PQQeTz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H1HBSnr+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F17B2874E8
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7393A2777F2
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749647140; cv=none; b=qcVYIiSEV3KSDSwM9wu96lno6cRrfIa9Je4m8ErUfyUU8897TxrnWmTRVxtVZVAj4THmmdZLAS6sjqCpnZAcE0yteoyYXMOIUzcb+Dj6c8UAgX/tZEfXgViVediZMcKrq+abj5kQTStQvzqtMes7dy0o7fM2/qSldcGsJB/eoU0=
+	t=1749647603; cv=none; b=cLXo4OBGPaCKw9RWZShaL3HnIm6m3KentNzGExopYDVUO790K3cPSUKykv3V2RxR8IVdNYUsLZQyjBo2RmzF8tW8TqWC6okt2TfPzGB+tI+hlCziDk28Kyw/rMq+1A3sHNpQ2XAh3opyQq5ynrwSHtbieKFgjTwiAwUJdf/lxaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749647140; c=relaxed/simple;
-	bh=EjVY2ArlQ4qGt0K73z9GDztVoL7a90MNu70YfxiFca8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L8Ms3PlzRExSrcQYlpXGGv3sD3iz5HWFFcwFX37j4VrecTNjSWaWzf/Eb7+CPYa5BfZQbKjvkOlFuHJDgmWv4gfXKsMRsh3tgGGl8b6UozLtVH+Euw4Bx+5sZFpIcpcnH77mgNzjjqq9gvh++ki9ZN3dmr2pQXBiIK2cCxm4UOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x9PQQeTz; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-451e2f0d9c2so7929385e9.1
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 06:05:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749647136; x=1750251936; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X3R09Iyu+oVEvrLJByqrLxu4/r9hm8EBVtdwnnJnPEk=;
-        b=x9PQQeTzy3IXKBRpR4zz1vRcjNz1UqBcdJnRxpRqPQ5BJ1zdDDk7rTCyplxj1ja7o7
-         H0IwxvhW8b0CoK1Zfi8vcwanQKReI02MnD7aO4/TL9Z9SxjIDQRfabRAJFtkIX5d0Z8B
-         DuKhD0WQVNSSdcYDzRHhXK4PDhpo/bCqW+62vcpiL2UQJzyye0Mca1nUxnQkufrucfXa
-         crx6NoAjLxi5rjLMTl54QAmnbw2ebUKNO51eVOBsX/w3yaAOTk2WIDHoHIRSj5QnMlvQ
-         87VmpEm0a1WZOUHmzk6W7o/o4JEfHDJOkmVBk4TorWNQWAbKMoExmg66UJToCijzyt0j
-         OcuA==
+	s=arc-20240116; t=1749647603; c=relaxed/simple;
+	bh=tVjWZZq7aC71e6oZeyUhcEByjY5cRYLLNLRos59IMKw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbI6kEaeZ1nHRt2GEU5v1j0DtEFXKolDG0Kp5cY0bAAx8DTLapYUxrf3u+4aViu+9CMjPDZyLuYNsPRAw+WQlaRu+5doLvg6t4rJQup6oYEIyJyCHethuwcFDVb8SNkjoO//xDs0imINLv1FoUrVodkSZrlJoSmSumcdRZoCINA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H1HBSnr+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749647600;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7/yCkHIcpMtAc9OSRfJ62TeWdUDAL1/W3fcogu/NpP0=;
+	b=H1HBSnr+G3RKDAJld8h6lp0kzhGNBja5vbXfawP46JcBn+Yo7Ysb6GuQ0cMO205cT3o78x
+	pLB/oh9B+3YMsUyuLNXa9o2K46HKvsn3CfC+Q+8j7ntSxL19MViUo2uholNFsGe1O/3ZNK
+	tKsyPufKePdshhe0k8KMg2RqhvGMjxU=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-uISbxn3aMiChSBaQpHirrw-1; Wed, 11 Jun 2025 09:13:18 -0400
+X-MC-Unique: uISbxn3aMiChSBaQpHirrw-1
+X-Mimecast-MFC-AGG-ID: uISbxn3aMiChSBaQpHirrw_1749647598
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7cd06c31ad6so131804685a.0
+        for <Stable@vger.kernel.org>; Wed, 11 Jun 2025 06:13:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749647136; x=1750251936;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X3R09Iyu+oVEvrLJByqrLxu4/r9hm8EBVtdwnnJnPEk=;
-        b=V8IdHT1tSWKD8+RNMYSBTBJZ+cYPYPm5XWniH7V4ljaScwD/A6lX/ufPBDognEeEKN
-         oEkniLlROLPvNLVKXvCJL1rfuZg+e4iZZMC3Q0POZofXsk/wLtjEm3Et9++zoCmFoprj
-         MD1oT1f7kapqeN5MhWSG6DSizFaPCEDD4R1jgIBT6IY6io2iaoa6ZKhVXWPu6UHsZ1Kn
-         y/e85SVg2nQtlyHvHD9hHJaxknq2mJt1HZ349QZgOiswY9P27IAWR2SKFMZsm+bGQ68r
-         vnQytSNBG4emlDFNa9PMznorZaHIJ459UYwPJmy4auw9tD3QBI4HMujfiMPDm7OyYBg+
-         f3Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4b6mrneL1+fu8c2PwSWg4IjIVSw8DptrT7Ui5QQi13p4VvoSOmJR/l/i/AFv3E3BcTIb/MaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2ZGTxc/fMib4V4SNd+0L0Zpsoi0j3pGadvcka210FmJyCL0NW
-	3n8w7vqYMIaBOiELnDJnGMZhXDERy6Qx0C1BLociLCpGkHZD3zPKIaL6VZyTg1idStQ=
-X-Gm-Gg: ASbGncvEWt7GAFBhaiC/y2wLRhBOKsn3s04mYOAob0g73Z/m9Pb4Iq5KObaLFLNBo9C
-	2TaiVC2dZ+hFXycBqBFTmx+NKuzaQSEpKPAbfiGIJBIp1H1TfrOIg6jH2RCfDxOKE1C2PDR6iFv
-	KVpBdJ5A5o28Bht5Ps6c9TfxYd0GuS7iPPqnSlpLsXzW4yZ/OS/p1X9lT6ogT/Bp/bFSkN5bL6W
-	bGvgGig/BhledheuMnmmXZvmAXBKWyQHmce8Cf2L1VgR+mNT/ygp8OBF12TVbcmC+C5amILZdEv
-	s5A4xUvEV0tQLZnk7k03/9w+OxQ0k2nvtrxuHWJxLdAfDkbyLCvhxdeB9yPxs9TToinV4xSL2uT
-	NSrpwSESPJIMDVCP6c7zRfrV7Vycrj/pHGyLeXi/KVILFDol+Wpd5Vtnu
-X-Google-Smtp-Source: AGHT+IE/+ZF0202H2gGrgjMZ/XMTAOBrohuHjeBubUtp7vBfdN9DADireHyArZ8FK4FEDHt2MkhIeg==
-X-Received: by 2002:a05:600c:314c:b0:439:4b23:9e8e with SMTP id 5b1f17b1804b1-453240b0e39mr34289735e9.3.1749647136238;
-        Wed, 11 Jun 2025 06:05:36 -0700 (PDT)
-Received: from [192.168.1.105] (92-184-112-57.mobile.fr.orangecustomers.net. [92.184.112.57])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45325141397sm21364185e9.8.2025.06.11.06.05.35
+        d=1e100.net; s=20230601; t=1749647598; x=1750252398;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7/yCkHIcpMtAc9OSRfJ62TeWdUDAL1/W3fcogu/NpP0=;
+        b=dJp04/FFZVsTOuWpqWeCOu+oG0tBIFGYh/mSk5lOItq+zNHjMCbSqoWO5Qx/JrfeM1
+         QZuioijgKrHUgSNxKSRpBIpwxN8n1R9Qt5DHe+4eehOLBmTFUCQDJZOdp/zNeJQntNBB
+         hJ2eM+9Za0KTnD9zIlDMGFw5w5eIaTUfYOy/EA4HakdXRwzTfzas/Zhj8wW3PN2VqSH+
+         Yt4lZakd4YpEh+zwZH1s97zb238hH1tBcbr9le9BwoGbogaG6c7pZaP+H5w40RrHnPoc
+         cBS/n38YT3tNKxcrLF8PWJSLp2c17T0a2OKOWaY3pnwe4PqeBnHNNZ/rICgLbuf7+2Je
+         D6Dw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIG04xXCMTXghE+6SD4X5afdxZ3KFQOVfOpk55Rn86gxxEX5KpTIJ2WrYu0PKwyuffWe4Vyig=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/wp7Y0e6IIoHdjl2jeKZED4SeIsgIO2VUh4IZoM/JtKeNJGkv
+	vlM0CeHZ3YH3B7k8yMeX0U3FpnZPVLyo8RwhsnGmhOHKXzQ1zAkVIEExvKSnd6gewcKxoRpJkZ3
+	os+aQ6xOQkqC8MEYjajOaFfUpQP99hSwIbgwKoSb/pKok52iHuH7yxzbxiEZXmSY1N8eT
+X-Gm-Gg: ASbGncsgcksRCBcL11Un/mLSN4Fg2U0bHBlqkgLCKnF510B+0LvHwiM9YlLsup27zcS
+	Re0KY/lAsSgMnDNm29dQo7g2K/YrMBJ39hqfiTiBAPGS7/K4IXkVGozpa69tdFZJD/nFq0/lmE8
+	4bixR8ZNciZUjLkUaDSkeJiYH2+zgm3cixAZWGB1BItEB/Y6XD5l4ux29Iw3VSFcTEcz9K1qB4y
+	j9+carKl3Pwsc+wbypF200InId1xqMjIb9ve7R6YOdK1zmwBiru+nlFri3DaY1IkuWj0v5gsUHa
+	zYrjb9ksRdMvmH+K1oNOOjV/r8XstdbN0DIZk40omQ==
+X-Received: by 2002:a05:620a:170f:b0:7d2:26b4:9a91 with SMTP id af79cd13be357-7d3a87f886amr476941285a.2.1749647598025;
+        Wed, 11 Jun 2025 06:13:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHc2fImNRriWGsaw3Op67ph4lhGxj0zvCwpB17iJ/FdZgoWW5fEkHRMUQVllDHDRlj1xdpoSA==
+X-Received: by 2002:a05:620a:170f:b0:7d2:26b4:9a91 with SMTP id af79cd13be357-7d3a87f886amr476933885a.2.1749647597463;
+        Wed, 11 Jun 2025 06:13:17 -0700 (PDT)
+Received: from localhost (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7d3901b12easm539789085a.67.2025.06.11.06.13.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 06:05:36 -0700 (PDT)
-Message-ID: <0e1ae53e-e2a9-44ec-a59b-432bbf8d4b49@linaro.org>
-Date: Wed, 11 Jun 2025 16:05:34 +0300
+        Wed, 11 Jun 2025 06:13:17 -0700 (PDT)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	David Hildenbrand <david@redhat.com>,
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Peter Xu <peterx@redhat.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Aijun Sun <aijun.sun@unisoc.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH v1] mm/gup: Revert "mm: gup: fix infinite loop within __get_longterm_locked"
+Date: Wed, 11 Jun 2025 15:13:14 +0200
+Message-ID: <20250611131314.594529-1-david@redhat.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dmaengine: mediatek: Fix a flag reuse error in
- mtk_cqdma_tx_status()
-To: Qiu-ji Chen <chenqiuji666@gmail.com>, sean.wang@mediatek.com,
- vkoul@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com
-Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org,
- kernel test robot <lkp@intel.com>
-References: <20250606090017.5436-1-chenqiuji666@gmail.com>
-Content-Language: en-US
-From: Eugen Hristev <eugen.hristev@linaro.org>
-In-Reply-To: <20250606090017.5436-1-chenqiuji666@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+After commit 1aaf8c122918 ("mm: gup: fix infinite loop within
+__get_longterm_locked") we are able to longterm pin folios that are not
+supposed to get longterm pinned, simply because they temporarily have
+the LRU flag cleared (esp. temporarily isolated).
 
+For example, two __get_longterm_locked() callers can race, or
+__get_longterm_locked() can race with anything else that temporarily
+isolates folios.
 
-On 6/6/25 12:00, Qiu-ji Chen wrote:
-> Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
-> 
-> Fixes: 157ae5ffd76a ("dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()")
-> Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202505270641.MStzJUfU-lkp@intel.com/
-> Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+The introducing commit mentions the use case of a driver that uses
+vm_ops->fault to insert pages allocated through cma_alloc() into the
+page tables, assuming they can later get longterm pinned. These pages/
+folios would never have the LRU flag set and consequently cannot get
+isolated. There is no known in-tree user making use of that so far,
+fortunately.
 
-Reviewed-by: Eugen Hristev <eugen.hristev@linaro.org>
+To handle that in the future -- and avoid retrying forever to
+isolate/migrate them -- we will need a different mechanism for the CMA
+area *owner* to indicate that it actually already allocated the page and
+is fine with longterm pinning it. The LRU flag is not suitable for that.
 
-> ---
-> V2:
-> Change the inner vc lock from spin_lock_irqsave() to spin_lock()
-> Thanks Eugen Hristev for helpful suggestion.
-> ---
->  drivers/dma/mediatek/mtk-cqdma.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
-> index 47c8adfdc155..9f0c41ca7770 100644
-> --- a/drivers/dma/mediatek/mtk-cqdma.c
-> +++ b/drivers/dma/mediatek/mtk-cqdma.c
-> @@ -449,9 +449,9 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
->  		return ret;
->  
->  	spin_lock_irqsave(&cvc->pc->lock, flags);
-> -	spin_lock_irqsave(&cvc->vc.lock, flags);
-> +	spin_lock(&cvc->vc.lock);
->  	vd = mtk_cqdma_find_active_desc(c, cookie);
-> -	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-> +	spin_unlock(&cvc->vc.lock);
->  	spin_unlock_irqrestore(&cvc->pc->lock, flags);
->  
->  	if (vd) {
+Probably we can lookup the relevant CMA area and query the bitmap; we
+only have have to care about some races, probably. If already allocated,
+we could just allow longterm pinning)
+
+Anyhow, let's fix the "must not be longterm pinned" problem first by
+reverting the original commit.
+
+Fixes: 1aaf8c122918 ("mm: gup: fix infinite loop within __get_longterm_locked")
+Closes: https://lore.kernel.org/all/20250522092755.GA3277597@tiffany/
+Reported-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+Cc: <Stable@vger.kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Cc: Aijun Sun <aijun.sun@unisoc.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/gup.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index e065a49842a87..3c39cbbeebef1 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2303,13 +2303,13 @@ static void pofs_unpin(struct pages_or_folios *pofs)
+ /*
+  * Returns the number of collected folios. Return value is always >= 0.
+  */
+-static void collect_longterm_unpinnable_folios(
++static unsigned long collect_longterm_unpinnable_folios(
+ 		struct list_head *movable_folio_list,
+ 		struct pages_or_folios *pofs)
+ {
++	unsigned long i, collected = 0;
+ 	struct folio *prev_folio = NULL;
+ 	bool drain_allow = true;
+-	unsigned long i;
+ 
+ 	for (i = 0; i < pofs->nr_entries; i++) {
+ 		struct folio *folio = pofs_get_folio(pofs, i);
+@@ -2321,6 +2321,8 @@ static void collect_longterm_unpinnable_folios(
+ 		if (folio_is_longterm_pinnable(folio))
+ 			continue;
+ 
++		collected++;
++
+ 		if (folio_is_device_coherent(folio))
+ 			continue;
+ 
+@@ -2342,6 +2344,8 @@ static void collect_longterm_unpinnable_folios(
+ 				    NR_ISOLATED_ANON + folio_is_file_lru(folio),
+ 				    folio_nr_pages(folio));
+ 	}
++
++	return collected;
+ }
+ 
+ /*
+@@ -2418,9 +2422,11 @@ static long
+ check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
+ {
+ 	LIST_HEAD(movable_folio_list);
++	unsigned long collected;
+ 
+-	collect_longterm_unpinnable_folios(&movable_folio_list, pofs);
+-	if (list_empty(&movable_folio_list))
++	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
++						       pofs);
++	if (!collected)
+ 		return 0;
+ 
+ 	return migrate_longterm_unpinnable_folios(&movable_folio_list, pofs);
+-- 
+2.49.0
 
 
