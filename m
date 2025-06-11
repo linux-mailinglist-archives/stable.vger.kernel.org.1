@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-152468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8AFAD6096
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:02:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F9CAD6095
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8747D3AA6F1
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:01:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33CE31BC24CB
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4891EB39;
-	Wed, 11 Jun 2025 21:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687372BDC28;
+	Wed, 11 Jun 2025 21:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHa1cD4b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRGWkvYl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE16C25949A
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D7C1F4CB7
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675710; cv=none; b=Md4EfGk7mJ+8dRG4M1dFn1IYpHji+QNrMPiplCGG3AuJPV5u/jEPEaaYBW0ERn9Ju462zRw8wvaVN9B8mwWmu4LDk2HSb6Ap2bA+mlD6nCcFIWZY6t4z+T+Y7576eayhdlSkUtcKKXLQnjvz2sS/QIHWZzSiQVouuuRIGDb4YDU=
+	t=1749675711; cv=none; b=H5ASANM+lkUEQS/PKlG73sxkFkXbTxLNMcD6gcVyccgDHALmn1nn0umppvlI4mOz/+2nuTDQ8EyoW+5B6Jik1BRUtyadYBOkz0SdDypFFUBMbSxgspJtjKAMNdwWzM/E7WbEhdJ0gbn515MW7o6cgaS9VU6dxirB6S3gIy7tEAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749675710; c=relaxed/simple;
-	bh=JgQ6lFEGf/8/P0AZ5p/9kNVn5MEy/wxym5fmkn7/z4E=;
+	s=arc-20240116; t=1749675711; c=relaxed/simple;
+	bh=E6HuokVV46EqYg/u6VhOCJDPHsWttmL+/ZRAmcizVuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qb6/YeHn51O4h3VlUrTKlLPKrNwRcdyNGFsu+OboRjMxNJu1CzeF8n8S6FFAXBx9a7swVhHPpVZjHUM+hxq4jF8AjY8c8HWR/Ka4n3r06yyEu5G9tM780fy9ZNtVFaYkyFe2PT8gOPVqB92Xqs/cpinOXzTewQq65CpnNYED048=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHa1cD4b; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version; b=dOQ6CHAnNKkZkFUdjp+lUmrHTtPHhp83SyhlXwthP4orIQh6WxPobc98MAI0PNM7VSx2bF2w4jkkdxwQlJ+wu8nu2K5/O4U9TVzldsGO783L7Jmqn+JVSzPvnmnTu+kWjTrW8QRS/XYZcEKK2rqEr570MoJBE5gkCiC8LQWiLds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRGWkvYl; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-234b9dfb842so3347165ad.1
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:48 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2352e3db62cso2593675ad.2
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749675708; x=1750280508; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749675709; x=1750280509; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NGlkrYyz8Nfk4HOVd3bkXVI8Ve/yITe9i9g3y/fEfWs=;
-        b=KHa1cD4bPCXhvJx8CvLu52iqUPInPkbhbluNbVtlWR4TBc1SZewpAsrHC0vlGlXFyX
-         841iWhNGC2vD8FZ1AWS5SQETWEPKT5TsTKlcwSW8PCqqPoeC2shhE3WLPIaLl6QHCILL
-         7X/VtJ+5kORscddSCu7hYKD3CcyoqSP1sqtQ9/Stn/f+7L9szrjdQeZL5BAQr2Fwj/FS
-         Z36EtkMdKzO+MONxk3XHhPw7aJy0Ej2hqeoDBjqXPTvD10P1XFAiZP1rcXeMVNxs91QW
-         ctVDte77UmgamxsHUiP5uP5c3pDEruH+F5Mswo+P2JACT2AkeH/3FjJjaNPEJd/IkOs5
-         Y6gQ==
+        bh=r/OqZHSg/WUf1DCn0zGOkY7FlNVx7KSzO6R1h+mnq3w=;
+        b=PRGWkvYlDgt4vH44vxJdaumbVQ4K1x1MkDSd06hNN8OtaPj8hlTxYLVV15WiGB237y
+         oTakfbYG5e2B7xNjvbmWCsAHIMqZEuI+MpZxwPpZvhsF7h5ZnOAIBc9LzrmGX912T6o1
+         8iBmfrCXpUAaEQW9OJl7UXAGcdM4wfmI/auhgiuEgO0FhYWeFO4DKuSBUHmXlu5f+7y9
+         uWjPTrsia2qYaCcST/CquYcsqUuMtjpLJnqTmgu2BPZCWkoM8Rx7q6zINgRApWdK7hMK
+         eGiGCRQXf2DNdtQm0t+1eaVuYjJnwmwnaLXjZD97zVVlFJVe/SORgyZTyhPLC/uK4/X3
+         r1Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675708; x=1750280508;
+        d=1e100.net; s=20230601; t=1749675709; x=1750280509;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NGlkrYyz8Nfk4HOVd3bkXVI8Ve/yITe9i9g3y/fEfWs=;
-        b=A9xl3hcF2L8tXNeuIK1hbY/zj/TdHslEq0myap8kHQRzd7t3o/u/pEaOBYmZwAhYkU
-         m53eEaqeU2nXYhhyYMUviAyUEXC5PBvNnGOUYuAvumBRqYhn7PVS0jG/TANt2P5kaRL6
-         T2Ea4jA0cP+BCACqd8kLLSqq+GoxV6DXeiGYErCm4KVOG0sWt57tUJvt12Qv1VraAF1m
-         HUp1VjTPft94UQYJ6D0ORAwna8hMiTWium/TGCmN4va0y8GoeOtXKhXC2/t2xz7d0DVz
-         XgjZGyKqBna57j7xLHkIkR9ck5lWti0VL3mZecfTGl0TPI1bLbiwY1GC5VdMoFs7qaLI
-         kdIw==
-X-Gm-Message-State: AOJu0Yw3MBsL9G5UOfmuQ4Ylxf87TbdEDvQlDaBHviBHF+Jck/T6CmMa
-	wGBQOSxrla4nRgP+BOJD7qZqXdYPeOLzl33IGjdDU75xr4z+KJsqlikxhDSC4smD
-X-Gm-Gg: ASbGncs5MBKHEDrkvYYN6RMS2ptDDK4qBWEb0ynmzRUpt+7zLr7K8XPAyCOHGOfW+Eb
-	mi9MnJV3X+EK+JR+idrhI653vaZ+pFiA1QhGqNM7TFIsUW6WaXMw+3H4lJJaULS77LbByQEmF56
-	5sB2JtOsUElcpDT2Ra37eVOUZSYSYVAr0k7GOxDxf89xTdxXTkKMdWXIdothTgJq4KR+g1rhlsm
-	FuoYAGiA18pGNuhMnPQ9bMODf4xDaRVm/D+H2y00DEGCvC5QpG4yeTXPQ6zzelJU0w0kKEwQbkF
-	EbAn876W7JI5VrYchHnLRcHa92xGsVgJJnRQEPSSyu3u4ZwO6qH+23oazrSypOn9kMDgRyQh9Ly
-	JUIMdzfOsMu/L+j4WRm98xA==
-X-Google-Smtp-Source: AGHT+IG9sIQISYR3oO/Afktk3g7jU6wvFyjEePq7SQsnyy7w8u3VQrHx+Ej0x8zLAmQHB3hM+Ic1yA==
-X-Received: by 2002:a17:902:e889:b0:234:c549:d9f1 with SMTP id d9443c01a7336-2364d90fdc0mr7677455ad.47.1749675707793;
-        Wed, 11 Jun 2025 14:01:47 -0700 (PDT)
+        bh=r/OqZHSg/WUf1DCn0zGOkY7FlNVx7KSzO6R1h+mnq3w=;
+        b=CID/VCQrqGmm/7joqNhpkdQN7Wn34WMj1bsLiOhp6OIFwY5+8nbd0/oB0jUtt8IskN
+         YqJq6gPQMni5/PD0V4zEzWaPjSGyj659shK7ZPfYxhFTukEL6+iv7VMx4d75mK9ssGo5
+         BlyIwLMsX0/Ckw5nYvX2kTjYq7sl7qwL7S7/Ss0Fz48yEPLvvMaG68r6uF2Jqmatw1xJ
+         yxtu1hC0yYHHIW4mJDvH3+nSm9rDzanxooFjUfxHJkfPpiZbIeBgmdHJHUgF0pxroC/J
+         qQ/vcfxg8olibHB0C/IiNx4/l/sTxFSqSsfnAYwUHxthQnFHf4YPyx8nyaJseKS9zfdG
+         5Lcw==
+X-Gm-Message-State: AOJu0YxcPqAkaVSd8g0YIbFbpYbZtMEsk7HnDraAdnlYIAsp4BusJQQQ
+	J/CK1Ias/eMYly/Byo+kIEhq+t+qYCBxJ7vthvjxkdgay22hkTcxigxfAYJT2yVk
+X-Gm-Gg: ASbGncviLoIE3Q2yGHEixeUTSZOdxX973fLa3NzKtwvTMFsufakVw3fy73FhkMX9xfP
+	2zWWBteqYxxsSbg5Q7XQYxIjI9hh6DBd1dfXXgjimWMaNl/ll6rJdQKEVz4EUPfRc3EYAFVJylr
+	4n4wB/I4JJX+hoycqTgmELlDO1oSJtws6U44xUe29FOGiXKB8sQWh1G/ZcJpX0bSq2El3jxibCV
+	yWguZYISzBB0gHmatj2WVdohJA/6yLnsQqI8OgTfvEN/SHrVPxUezRDm/GkSrUIbMEtq0oIYast
+	tAKulnV/fU4PNKkKZ5yDR/O1JnPdrxK4z/l46yl1Xw8jRpm0NlktQGgQ2opd704+x8KznoskE1/
+	Fy9UQlkm5g/I=
+X-Google-Smtp-Source: AGHT+IH+De31efZ6blDRg7Yb25ZZBlzqDXArzx3m2qG8g/geLhowlzjlSzlm82sH3w2R4gMVm+WNcQ==
+X-Received: by 2002:a17:903:2a85:b0:234:d292:be7f with SMTP id d9443c01a7336-23641b1aa78mr63839875ad.31.1749675708865;
+        Wed, 11 Jun 2025 14:01:48 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:391:76ae:2143:7d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:01:47 -0700 (PDT)
+        Wed, 11 Jun 2025 14:01:48 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
@@ -82,9 +82,9 @@ Cc: xfs-stable@lists.linux.dev,
 	Christoph Hellwig <hch@lst.de>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 14/23] xfs: Fix xfs_flush_unmap_range() range for RT
-Date: Wed, 11 Jun 2025 14:01:18 -0700
-Message-ID: <20250611210128.67687-15-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 15/23] xfs: Fix xfs_prepare_shift() range for RT
+Date: Wed, 11 Jun 2025 14:01:19 -0700
+Message-ID: <20250611210128.67687-16-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
 In-Reply-To: <20250611210128.67687-1-leah.rumancik@gmail.com>
 References: <20250611210128.67687-1-leah.rumancik@gmail.com>
@@ -98,54 +98,67 @@ Content-Transfer-Encoding: 8bit
 
 From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit d3b689d7c711a9f36d3e48db9eaa75784a892f4c ]
+[ Upstream commit f23660f059470ec7043748da7641e84183c23bc8 ]
 
-Currently xfs_flush_unmap_range() does unmap for a full RT extent range,
-which we also want to ensure is clean and idle.
+The RT extent range must be considered in the xfs_flush_unmap_range() call
+to stabilize the boundary.
 
 This code change is originally from Dave Chinner.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>4
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: John Garry <john.g.garry@oracle.com>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_bmap_util.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_bmap_util.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index 62b92e92a685..dabae6323c50 100644
+index dabae6323c50..bab8ba224e10 100644
 --- a/fs/xfs/xfs_bmap_util.c
 +++ b/fs/xfs/xfs_bmap_util.c
-@@ -961,18 +961,22 @@ int
- xfs_flush_unmap_range(
+@@ -1057,33 +1057,35 @@ xfs_free_file_space(
+ static int
+ xfs_prepare_shift(
  	struct xfs_inode	*ip,
- 	xfs_off_t		offset,
- 	xfs_off_t		len)
+ 	loff_t			offset)
  {
 -	struct xfs_mount	*mp = ip->i_mount;
- 	struct inode		*inode = VFS_I(ip);
- 	xfs_off_t		rounding, start, end;
++	unsigned int		rounding;
  	int			error;
  
--	rounding = max_t(xfs_off_t, mp->m_sb.sb_blocksize, PAGE_SIZE);
--	start = round_down(offset, rounding);
--	end = round_up(offset + len, rounding) - 1;
-+	/*
-+	 * Make sure we extend the flush out to extent alignment
-+	 * boundaries so any extent range overlapping the start/end
-+	 * of the modification we are about to do is clean and idle.
-+	 */
-+	rounding = max_t(xfs_off_t, xfs_inode_alloc_unitsize(ip), PAGE_SIZE);
-+	start = rounddown_64(offset, rounding);
-+	end = roundup_64(offset + len, rounding) - 1;
+ 	/*
+ 	 * Trim eofblocks to avoid shifting uninitialized post-eof preallocation
+ 	 * into the accessible region of the file.
+ 	 */
+ 	if (xfs_can_free_eofblocks(ip)) {
+ 		error = xfs_free_eofblocks(ip);
+ 		if (error)
+ 			return error;
+ 	}
  
- 	error = filemap_write_and_wait_range(inode->i_mapping, start, end);
- 	if (error)
- 		return error;
- 	truncate_pagecache_range(inode, start, end);
+ 	/*
+ 	 * Shift operations must stabilize the start block offset boundary along
+ 	 * with the full range of the operation. If we don't, a COW writeback
+ 	 * completion could race with an insert, front merge with the start
+ 	 * extent (after split) during the shift and corrupt the file. Start
+-	 * with the block just prior to the start to stabilize the boundary.
++	 * with the allocation unit just prior to the start to stabilize the
++	 * boundary.
+ 	 */
+-	offset = round_down(offset, mp->m_sb.sb_blocksize);
++	rounding = xfs_inode_alloc_unitsize(ip);
++	offset = rounddown_64(offset, rounding);
+ 	if (offset)
+-		offset -= mp->m_sb.sb_blocksize;
++		offset -= rounding;
+ 
+ 	/*
+ 	 * Writeback and invalidate cache for the remainder of the file as we're
+ 	 * about to shift down every extent from offset to EOF.
+ 	 */
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
