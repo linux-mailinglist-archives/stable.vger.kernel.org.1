@@ -1,215 +1,138 @@
-Return-Path: <stable+bounces-152434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C96AD56FB
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:29:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4E9AD5771
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18F3917D3EB
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:29:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D54543A24B2
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B46528851A;
-	Wed, 11 Jun 2025 13:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1699E28314A;
+	Wed, 11 Jun 2025 13:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MUff7qQY"
+	dkim=pass (2048-bit key) header.d=jfarr.cc header.i=@jfarr.cc header.b="ObkTsdIP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HIv6bNXT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D8C288CBA;
-	Wed, 11 Jun 2025 13:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0A01EE033
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749648571; cv=none; b=PbLDCXBIcISo8n7p3Yk8Cs4VgfqSvxuYvNENsHfTWlbcI4bFzhkw9EodaBAG5DxqgqHfzR4YAUplvDW/oNg5WBEWxSV0blb1saE3Sv8m7NBQLy6PGf0Rx73GsxnmJxWAncgS8S1yQXlAE6U4XIRDG5TIglqpeEwoJgIY4jYzwrY=
+	t=1749649448; cv=none; b=kEj6fYOM3kobJKn6HDWbCRCigI9UvsvYA0V65NmhjYe6V46jQioVbyPiC2tw//hwuXviFMUOjH8tlg9GjE8ZWDQHkqiqQ5/+naHRdGdLYJb5bwpewGApyY1N5pIDApp4LPITHnAEXfN8wdYm2RE8uevD56aECCUkLaIH0zaD7rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749648571; c=relaxed/simple;
-	bh=d2mcdUmO+BYF/qbSZuCE4ru87gtgJ35/TnOg6YcwVQY=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=okNu9tkTcOS2JSWqMDwl+qGKJWFCjssWe32uSFea3e7ICKwaYRULyMzAOG7wtb9Aw5zmGsfLOmXgvELphmoSMdgqPMQaVCZAOtr1pSEcVzX79HdhrbLOo5x/Ju17q1FZdpLjHCU2nqhqhHNQHyQbMXVUFWlcgBGnL+XwIkaUd5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MUff7qQY; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749648570; x=1781184570;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=d2mcdUmO+BYF/qbSZuCE4ru87gtgJ35/TnOg6YcwVQY=;
-  b=MUff7qQYh2kYXzFlHtDzhnt7jmf9dYNppkAApeukzCt0KNQX5/KoVVgW
-   l19lEheBab7zemrM/Ei6nPFEEyphFAx58ESmZ6cn56kDzhKPJR2di8zt8
-   nueH+TtEDqlN4qZ6UhVcLuOLJF6NERyVvFGNM3riPTVxe2nycU76me+xF
-   3UE1bYL2RAp329weSkarx/5J3dLDilAIAqENjpgjBIYylnRxL93YBA1Ax
-   /UofL/8kd1FKgmxwpbpgnuML+RdT/g8HevSMrMbBBp+F7FuA4Mxam/DVh
-   o3eVnUp223um+DjHgYI6yN6zBCaR8JgkRdGWw8c5XEliXQqyMKPkHgm3C
-   A==;
-X-CSE-ConnectionGUID: iqOei3iRRP2AR8t93woZ6w==
-X-CSE-MsgGUID: ObQ/5tDlSbaqF2NtxSiK6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51783995"
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
-   d="scan'208";a="51783995"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 06:29:29 -0700
-X-CSE-ConnectionGUID: V0dsG4E1QFq903s7ubTtcA==
-X-CSE-MsgGUID: NL47asc7TUKj245eMOh51Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
-   d="scan'208";a="150995910"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.183])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 06:29:24 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 11 Jun 2025 16:29:21 +0300 (EEST)
-To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
-cc: "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>, 
-    "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, 
-    Hans de Goede <hdegoede@redhat.com>, 
-    "De Marchi, Lucas" <lucas.demarchi@intel.com>, 
-    "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, 
-    "thomas.hellstrom@linux.intel.com" <thomas.hellstrom@linux.intel.com>, 
-    "airlied@gmail.com" <airlied@gmail.com>, 
-    "simona@ffwll.ch" <simona@ffwll.ch>, 
-    "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>, 
-    "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NULL
- pointer access
-In-Reply-To: <IA1PR11MB6418026EFDD6B6EAD882CA95C175A@IA1PR11MB6418.namprd11.prod.outlook.com>
-Message-ID: <1530a75b-fe92-b6de-6c97-bf8de20241be@linux.intel.com>
-References: <20250610211225.1085901-1-michael.j.ruhl@intel.com> <20250610211225.1085901-2-michael.j.ruhl@intel.com> <e4f3a1e0-5332-212d-6ad0-8a72dcaf554a@linux.intel.com> <IA1PR11MB6418026EFDD6B6EAD882CA95C175A@IA1PR11MB6418.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1749649448; c=relaxed/simple;
+	bh=tRPnHbTaJp5buuGuenpj0aR2gEqSBUKq/lwCG9OVtnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jojTwZRKADmHnIWpAILJKvxOxsvLe8Ssp6t+V5U7YjxUSueXJdH1mfBZiBYIWHuUWw38Q7nLP+uKmUKjwEj1xbF8IHhrXZotNxw+yGjaNWmrG/3ZSf8cjH+9l0UAgKWfn6i2FdX8l4nwP93MttT038qgPHYjUFWuZ7IusMsKhLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jfarr.cc; spf=pass smtp.mailfrom=jfarr.cc; dkim=pass (2048-bit key) header.d=jfarr.cc header.i=@jfarr.cc header.b=ObkTsdIP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HIv6bNXT; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=jfarr.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jfarr.cc
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 054EC114020B;
+	Wed, 11 Jun 2025 09:44:04 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 11 Jun 2025 09:44:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1749649444;
+	 x=1749735844; bh=AoHuy+PPAI7s4KgapqYPKF9IeslQPaIqBSDo9lRfrCo=; b=
+	ObkTsdIPWe3S/3OoXpyT/oZs1C3bcymBRHpHFw2gttHP9tSztnQAp4NLpC3yxv97
+	tNojWquIMI5BQUZLKYy4+eYyuYNkWf3OlA4+ZtfU1pfINfZSYO66nG4mmH44JMr0
+	uSQlLw5HQd5MSgCTA30PnBILxjmXDd0zFVh0ywFmhg6321I7GaVU/A4sl4b4zWts
+	WfXW887KIdVjvOd6kJtagnekUpxIiqViLkf/OCoNn8PF9hjSmu/V2FXVXEWKV8Y6
+	p+IBRzHhoBbvl7wYqljSYot32rf8wsxP/HO2fEfxrZTMsclWHeuJXYnLg1kZ/9tr
+	kIaRLVGm1pftLvK8JlYVYg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1749649444; x=
+	1749735844; bh=AoHuy+PPAI7s4KgapqYPKF9IeslQPaIqBSDo9lRfrCo=; b=H
+	Iv6bNXT+5AeGkMkqGGQRjk82D+TwbodsqNZrENG0D6sYS8XvkC9DUQfrjlQD5vGl
+	N+OIdIBU3pr/00GKZtz79Ma1UH0XVl8bYIar4BpppE8oOzCuX3S/qOHWZzEtQH24
+	ULniUyu8bF2ZkLYk4l9V4fKUZh+oCpRrDBD7e75E99gK+nCKKKodrK1ZqI9ZxMHI
+	qWitUAfrtb+FD/jWYU5v7np/HJmuZoCcI/zi8lLATucpONhjU5WrHPXW7JCCAkCZ
+	fOsVpGorZRTNveTjzcBUHATB4txcHhsjS7IFjARERFlq7oaNVkhyNLS0qri4Uzm1
+	0FvSVMpE6dq2Tb5Y30xaw==
+X-ME-Sender: <xms:JIhJaNMgogllZwaQB4OonqvlB6zsX3cklMY9v4bpI4oVwFWGbPM4yg>
+    <xme:JIhJaP-n_0cWMYzsk1_D3FAaH92UfaNUNdQGqS5sR7cLkVlKb59YukNQZbxPekN1V
+    wu9Pk0TkfTe0kRrkGs>
+X-ME-Received: <xmr:JIhJaMT5PVHkZ6Eiz-xOtV-pnCiN-RQMtYpzhD3Fnn60WFdho7l0FA4VXy9BEjo6lL69TybfxxjcQ3xCrczlY9T_24ZC>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduvdefgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenfghrlhcuvffnffculdeftddmnecujfgurhepfffhvfevuffk
+    fhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeflrghnucfjvghnughrihhkucfhrg
+    hrrhcuoehkvghrnhgvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeffvddu
+    leetjeeitdeutedvudeghfdufedvkeevleetlefhfeekvefgtedvkeevffenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghrnhgvlhesjhhf
+    rghrrhdrtggtpdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehsrghshhgrlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgv
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:JIhJaJvcXMOVX-QvnyVI85_a3VqbkvTOfKtX2MU4Jn-PnQPEcy_x0A>
+    <xmx:JIhJaFf05KFqmVcVtCFeXc11RAxVcrsOpA2c7GMNHL9NRxtahFWEBw>
+    <xmx:JIhJaF3PHNX3ZRJ4EeA_UOnXhw8cn3HjW7t193ENcvumIgH24On92w>
+    <xmx:JIhJaB9q6-FT1agEEFMzUCRtkIIYnEcxIIwjTFXL2VTaKJ5xTdezTQ>
+    <xmx:JIhJaMpOq41Ypi8jmFAuy75P17yyyv6CvR5wPqrKQs5SnGeLz5jgrYQ6>
+Feedback-ID: i01d149f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Jun 2025 09:44:04 -0400 (EDT)
+Date: Wed, 11 Jun 2025 15:44:02 +0200
+From: Jan Hendrik Farr <kernel@jfarr.cc>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] Compiler Attributes: disable __counted_by for clang
+ < 19.1.3
+Message-ID: <aEmIIqfXc0ml65U_@archlinux>
+References: <20241029140036.577804-2-kernel@jfarr.cc>
+ <20250610163544-efd1151d43dd472a@stable.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1373891594-1749648561=:957"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250610163544-efd1151d43dd472a@stable.kernel.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 11 09:16:01, Sasha Levin wrote:
+> [ Sasha's backport helper bot ]
+> 
+> Hi,
+> 
+> Summary of potential issues:
+> ⚠️ Found matching upstream commit but patch is missing proper reference to it
+> 
+> Found matching upstream commit: f06e108a3dc53c0f5234d18de0bd224753db5019
+> 
+> Note: The patch differs from the upstream commit:
+> ---
+> 1:  f06e108a3dc53 < -:  ------------- Compiler Attributes: disable __counted_by for clang < 19.1.3
+> -:  ------------- > 1:  fc85704c3dae5 Linux 6.15.2
+> ---
+> 
+> Results of testing on various branches:
+> 
+> | Branch                    | Patch Apply | Build Test |
+> |---------------------------|-------------|------------|
+> | stable/linux-5.4.y        |  Success    |  Success   |
 
---8323328-1373891594-1749648561=:957
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On Wed, 11 Jun 2025, Ruhl, Michael J wrote:
+I guess this patch has been erroneously picked up by the backport
+helper. This was the patch for upstream that already got into 6.13 and
+has already been applied to 6.12, 6.11 and backported to 6.6 back in
+December.
 
-> >-----Original Message-----
-> >From: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> >Sent: Wednesday, June 11, 2025 6:42 AM
-> >To: Ruhl, Michael J <michael.j.ruhl@intel.com>
-> >Cc: platform-driver-x86@vger.kernel.org; intel-xe@lists.freedesktop.org;=
- Hans
-> >de Goede <hdegoede@redhat.com>; De Marchi, Lucas
-> ><lucas.demarchi@intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>;
-> >thomas.hellstrom@linux.intel.com; airlied@gmail.com; simona@ffwll.ch;
-> >david.e.box@linux.intel.com; stable@vger.kernel.org
-> >Subject: Re: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NUL=
-L
-> >pointer access
-> >
-> >On Tue, 10 Jun 2025, Michael J. Ruhl wrote:
-> >
-> >> Usage of the intel_pmt_read() for binary sysfs, requires a pcidev.  Th=
-e
-> >> current use of the endpoint value is only valid for telemetry endpoint
-> >> usage.
-> >>
-> >> Without the ep, the crashlog usage causes the following NULL pointer
-> >> exception:
-> >>
-> >> BUG: kernel NULL pointer dereference, address: 0000000000000000
-> >> Oops: Oops: 0000 [#1] SMP NOPTI
-> >> RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
-> >> Code:
-> >> Call Trace:
-> >>  <TASK>
-> >>  ? sysfs_kf_bin_read+0xc0/0xe0
-> >>  kernfs_fop_read_iter+0xac/0x1a0
-> >>  vfs_read+0x26d/0x350
-> >>  ksys_read+0x6b/0xe0
-> >>  __x64_sys_read+0x1d/0x30
-> >>  x64_sys_call+0x1bc8/0x1d70
-> >>  do_syscall_64+0x6d/0x110
-> >>
-> >> Augment the inte_pmt_entry to include the pcidev to allow for access t=
-o
-> >
-> >intel_pmt_entry
->=20
-> I have also been told that should be "intel_pmt_entry()"....  when I redo=
-, is that
-> more correct?
+Best Regards
+Jan
 
-?? For structs, don't use (). Use () after any name that refers to a=20
-C function or a function like macro.
-
-You could also say the struct intel_pmt_entry to indicate unambiguously to=
-=20
-the reader what kind of object sits behind the name.
-
-> Thanks,
->=20
-> M
->=20
-> >> the pcidev and avoid the NULL pointer exception.
-> >>
-> >> Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to=
- read
-> >telemetry")
-> >> Cc: <stable@vger.kernel.org>
-> >> Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-> >> ---
-> >>  drivers/platform/x86/intel/pmt/class.c | 3 ++-
-> >>  drivers/platform/x86/intel/pmt/class.h | 1 +
-> >>  2 files changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/platform/x86/intel/pmt/class.c
-> >b/drivers/platform/x86/intel/pmt/class.c
-> >> index 7233b654bbad..d046e8752173 100644
-> >> --- a/drivers/platform/x86/intel/pmt/class.c
-> >> +++ b/drivers/platform/x86/intel/pmt/class.c
-> >> @@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *ko=
-bj,
-> >>  =09if (count > entry->size - off)
-> >>  =09=09count =3D entry->size - off;
-> >>
-> >> -=09count =3D pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry-
-> >>header.guid, buf,
-> >> +=09count =3D pmt_telem_read_mmio(entry->pcidev, entry->cb, entry-
-> >>header.guid, buf,
-> >>  =09=09=09=09    entry->base, off, count);
-> >>
-> >>  =09return count;
-> >> @@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct
-> >intel_pmt_entry *entry,
-> >>  =09=09return -EINVAL;
-> >>  =09}
-> >>
-> >> +=09entry->pcidev =3D pci_dev;
-> >>  =09entry->guid =3D header->guid;
-> >>  =09entry->size =3D header->size;
-> >>  =09entry->cb =3D ivdev->priv_data;
-> >> diff --git a/drivers/platform/x86/intel/pmt/class.h
-> >b/drivers/platform/x86/intel/pmt/class.h
-> >> index b2006d57779d..f6ce80c4e051 100644
-> >> --- a/drivers/platform/x86/intel/pmt/class.h
-> >> +++ b/drivers/platform/x86/intel/pmt/class.h
-> >> @@ -39,6 +39,7 @@ struct intel_pmt_header {
-> >>
-> >>  struct intel_pmt_entry {
-> >>  =09struct telem_endpoint=09*ep;
-> >> +=09struct pci_dev=09=09*pcidev;
-> >>  =09struct intel_pmt_header=09header;
-> >>  =09struct bin_attribute=09pmt_bin_attr;
-> >>  =09struct kobject=09=09*kobj;
-> >>
-> >
-> >--
-> > i.
->=20
-
---=20
- i.
-
---8323328-1373891594-1749648561=:957--
 
