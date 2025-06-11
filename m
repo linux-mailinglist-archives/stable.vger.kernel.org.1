@@ -1,88 +1,89 @@
-Return-Path: <stable+bounces-152461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36481AD608F
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:01:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEF7AD6093
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E5843A9F90
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:01:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E46C7ACD90
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1252BDC28;
-	Wed, 11 Jun 2025 21:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8396D2BD586;
+	Wed, 11 Jun 2025 21:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbpDTbtE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GGORpscj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3553A2BD586
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085E235048
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675702; cv=none; b=ArgJqpCwV6BsTGVyweYFj1hFEqy6x0dM+qr4fnDZipNo4VVgQ9u5lwI9VcqhgPThzJq+Z2sMUqfUwb3VGJz5qm+5HWRyQwui0nEMNccm/6IoG9WsXgfBJczr5eloimH7pO3k0eGTfHPkg2u8DythU/myDSQcTiaWI9t2NvNvE20=
+	t=1749675707; cv=none; b=HKtR5fSpi7b63iddTKxb05xpurQJrbsYtvDhYPKCJE1VpkjelyzI5JzEkZn1MASVtxDr6sgLXto1mhm8UQe2xLL9aEPD9mvzTvmgvHCh/dOZwaP1bT9OSJwfbGZxRnt5urSimOhOIqlJrNGsL+DEMAAgC1CvypmStVFSYCzdyHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749675702; c=relaxed/simple;
-	bh=SnbSz1PFXeGQcR6SbyF5h2tun7RW4MEGOqaPeAnZCCE=;
+	s=arc-20240116; t=1749675707; c=relaxed/simple;
+	bh=fEnqQJBoIMspiHc1+iYaC6/No+0b26zdA/A01NogzlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBhDj3a9qqJuSsbNVlMcmdVZwwo6IlofNRXZk3o+ti22sKLtktBOQOTJEtgcoA5EhfTJyE0gIykkAhvTbpYpxuEJ+l72WN8oSLafwyh+yhRTH4WISETqXIXg9ZagmUJY0p2hgy2sZuormpRVkg3G28vLAw6iz49zxey/kwosCYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbpDTbtE; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=PdK9r5GLtHnmFMtEssaLetsdQPl9YyW3OtwQFtRrs4yXJwdwq+xY20L6plRmNRe1LawD1tko54s0LwOMo729/z1qB7hxMOnAXZvXkWA+IRcaRP3O83lnhjh5uoBlYrZzj4YJ8J/L44c498VDyg2AmGjCJB4Fx+O2Grs1YmXIS78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GGORpscj; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-235ef62066eso3136535ad.3
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:41 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-234b440afa7so2794725ad.0
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749675700; x=1750280500; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749675705; x=1750280505; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A55kwomAR0Cx6KCYYxRQ9CmZaSeG18xPNWaIusqMLBI=;
-        b=nbpDTbtEexuTRp/Osh67/KGYA2IQKhYC43lC89WvUwTcoOFpk73V8RmowjE4W4FHw6
-         +XMQW2fLejJ7PHkwhTiNvIK3D0Fc9BepmijIlRWUd4kz6ZLZ/AUyCplWWfBaDtuGOkbU
-         xpZ4EHonf+r4Tv1/n/5DSq9NS9zEKoD4ojLV9Kth+Zvrq1PVcbJaIWRwZBJUvXQnPnJw
-         BZRN4M64G4jnE0Gg0VmIw0toN916FZOddOCE4zkmm/18q3RYjioLDRImPtj0jfP5ZMW7
-         IHoSh+Ad1M6BP64UIaa7Z1jW3ZX0E+f5S1Y9aEhgryK9Sv8htddMfMnU0kkmx7YogI1C
-         W6kg==
+        bh=irxgzmDMwFI/i01CgqOCDO3hWCgkpNmdZEJK8uZPb5I=;
+        b=GGORpscjnS39W1YMgQEGoJrgu/DuxPXdK50rrXSEzHoKrnR5Gd6SbuiQi2yH74r5fS
+         v5esOdZPF14OWglScHUrGZxVDa1xW9Zy33FHcRnh/UqjsoTDNGYMlbSL76BzLS7Lz65T
+         lUv1ygf7FOxxuVPRHL/YpaAJyyTPnV9kgRMtZo0yEG85KvNl+nZIX4Y/T/UJ7GJo0wDt
+         NbQe7YOIQ+YK/Cq8deJVr39MLRZcgYqE8KtGjeWMnDzWTbJzzweRQk1YsmfBtSf0jxDo
+         LFSmSCqTAvQ6z9TdBUcEkXI73vh5llSGay5Mt6Fz3e7tEIXomLibDFOPCwRDNdqczT6c
+         tGyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675700; x=1750280500;
+        d=1e100.net; s=20230601; t=1749675705; x=1750280505;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=A55kwomAR0Cx6KCYYxRQ9CmZaSeG18xPNWaIusqMLBI=;
-        b=KoCl2lhlvIh51vx77otows2i12pmH4js6bDDXYZDcpS+s89Az/8W2ReDavDQzMofGc
-         1Eg0cZdQRTnW0JyKJpsQ1ib6yckVpVjV7pnnv1a+setkD3u3NrHV+ebmUOctVyNfOVck
-         O65N9Q2OE5vGYYUNNFn2C0MxxremG63YWDRWfa2wvAg79+0ofAEDjxMBKVLDOBSQDbW9
-         HL0BLCVeEeEL9gO0VgjHTSbit3yqpsg2pjB6mW1se0s3EN3i9zYeJcCHutcKsr/7gvKb
-         Z4/fCj1vRlyIGsCYGBciP1L+oYaGpUlqpZdmiAfymMtn0aTn/tjWI21cGcettcR/oTqw
-         g0XQ==
-X-Gm-Message-State: AOJu0YyzPlPsMzC2bUAFxO2cPC0YNfb+jMoKPEVlAnpsCSoAZmTlM1CO
-	czdWDd/ZyVRb9g0F8mDU+xjGUWBNlFQm2Hcfgkqup5Tq35BIuPjojoQQJQteiyKw
-X-Gm-Gg: ASbGncswZR52p5DhNrkQMZ5XWwW0ueacroLUQT3t5NVEgs5V4p5T793eZ63/W00O/wJ
-	QXscqNzUZmAeN0m2JBjRDAMM9AXtP7C8dJ9FAuiQMSUm/QZeiu43qGub59ujct8M2LLU5mYM9bF
-	vDG+McCTT84kqM2Lgp9cGNAJqjT9I0msBICNAcMIwwzRPGKwRvQd3v+G2ZF6eiSjvADjtPCRmCw
-	PsHlV9PCHuA2F9CYh7VLBfQ8V3o54ZczZJnVu1PxjQpFGCHm7Svw36kHM1MFkv7ho4Cdf35etDF
-	ZAH62zfsJg1wUEItT75OfwETM00rB3dKp091sSk0oebdUwvxUZyIleBeSfAE629pLzAkM3KmL35
-	UJX1SjAscFbo=
-X-Google-Smtp-Source: AGHT+IEJwcnJ7j3yy1hiX2JYtNIMV/SXCQ9HVeWwfXirRcHzIo6gvjX1l21/RkphWgiILJkxqSpeTg==
-X-Received: by 2002:a17:903:2283:b0:235:caf9:8b08 with SMTP id d9443c01a7336-23641ac7e8amr67477245ad.23.1749675700304;
-        Wed, 11 Jun 2025 14:01:40 -0700 (PDT)
+        bh=irxgzmDMwFI/i01CgqOCDO3hWCgkpNmdZEJK8uZPb5I=;
+        b=tFlzuyCtaiwP1ghcbZTjdrqUsQIiDF7QFUYrO5WKIFOVgin3/XbLiHyZ6cX1IAK3LM
+         GDPLuwPrWBETHYGHkib2WUHzK1lxeXl4l0wpJWV3wn/G27EF9z3CRK/a1efEORIILkde
+         vYeLx6TatumTfUs6SjDOA+Dw4NlFU0muMUCvt7SAsNPlTy4589StE01YfGGhT0my48Rn
+         zyOqde6puOqkLkAe+7UFFHiTQTOaNsJHafJ8uUkFxSYDycYUbsdquYSxy/vMGJtUU2ez
+         bWNuG/kvak4sWuMgXcIWGRHWyIAk7WKsSVF3JhFzkw5FULBfu8Dd92WmUHEu1n8C0F0T
+         sKVg==
+X-Gm-Message-State: AOJu0YwVhn2RVvj12I2eRbCgjEEewK/N4PQMSLN8bRcdMRQB8n4+8uLp
+	6YNr7AFGnTuBHDc+cb1vup6ieQ/K7RalB9EIvs2fhdOSvDGQ7hPeHfK+BNxqU9+f
+X-Gm-Gg: ASbGncvcnpLI3Dz8O/DVhTvH8PIWDUtU22LXKCz/NlKcPEJ6G1+JzupSfrXI1HPYSTE
+	/Vdc7dB9+qZ2nOYFsbEfxe97g5O+fcqggQAwPmqDAfcbS2Ln3WzXYbwEc7ylmZC4nmq/uvkOCJQ
+	/4fCUsi46d0MIRhhjVLGZj7YYFfGLXfig+rd1/1hxKjVcqkUDWlyYbREmtxuLzoEZoKHBmei3Jp
+	wm4YBwrnxjgYED8t1jTRkZrdAe1XFVh/0Au7hTdVWbsppLbrEP6MRT280JTH+YxJoihLKzmuoxA
+	xAuU5VF5np4gIiUyi93a+f+EPJx/pJElcRoMyLyGwNUlE8muw/b9TioFfpemg0vBZg5WIV4uCDA
+	cvji1EbORkXY=
+X-Google-Smtp-Source: AGHT+IGq8wOz44Y7oKvzKYohp/+55NoVy3HFWTVe8K/WeQ+tO+fumo3DtvzHTVp1v6u/1Z9ROXKTOw==
+X-Received: by 2002:a17:903:1b10:b0:234:8f5d:e3b6 with SMTP id d9443c01a7336-23641aa2481mr57836115ad.3.1749675701345;
+        Wed, 11 Jun 2025 14:01:41 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:391:76ae:2143:7d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:01:39 -0700 (PDT)
+        Wed, 11 Jun 2025 14:01:40 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	chandan.babu@oracle.com,
 	catherine.hoang@oracle.com,
 	djwong@kernel.org,
+	Dave Chinner <david@fromorbit.com>,
 	Dave Chinner <dchinner@redhat.com>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 07/23] xfs: fix xfs_btree_query_range callers to initialize btree rec fully
-Date: Wed, 11 Jun 2025 14:01:11 -0700
-Message-ID: <20250611210128.67687-8-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 08/23] xfs: fix an agbno overflow in __xfs_getfsmap_datadev
+Date: Wed, 11 Jun 2025 14:01:12 -0700
+Message-ID: <20250611210128.67687-9-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
 In-Reply-To: <20250611210128.67687-1-leah.rumancik@gmail.com>
 References: <20250611210128.67687-1-leah.rumancik@gmail.com>
@@ -96,114 +97,127 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 75dc0345312221971903b2e28279b7e24b7dbb1b ]
+[ Upstream commit cfa2df68b7ceb49ac9eb2d295ab0c5974dbf17e7 ]
 
-Use struct initializers to ensure that the xfs_btree_irecs passed into
-the query_range function are completely initialized.  No functional
-changes, just closing some sloppy hygiene.
+Dave Chinner reported that xfs/273 fails if the AG size happens to be an
+exact power of two.  I traced this to an agbno integer overflow when the
+current GETFSMAP call is a continuation of a previous GETFSMAP call, and
+the last record returned was non-shareable space at the end of an AG.
 
+__xfs_getfsmap_datadev sets up a data device query by converting the
+incoming fmr_physical into an xfs_fsblock_t and cracking it into an agno
+and agbno pair.  In the (failing) case of where fmr_blockcount of the
+low key is nonzero and the record was for a non-shareable extent, it
+will add fmr_blockcount to start_fsb and info->low.rm_startblock.
+
+If the low key was actually the last record for that AG, then this
+addition causes info->low.rm_startblock to point beyond EOAG.  When the
+rmapbt range query starts, it'll return an empty set, and fsmap moves on
+to the next AG.
+
+Or so I thought.  Remember how we added to start_fsb?
+
+If agsize < 1<<agblklog, start_fsb points to the same AG as the original
+fmr_physical from the low key.  We run the rmapbt query, which returns
+nothing, so getfsmap zeroes info->low and moves on to the next AG.
+
+If agsize == 1<<agblklog, start_fsb now points to the next AG.  We run
+the rmapbt query on the next AG with the excessively large
+rm_startblock.  If this next AG is actually the last AG, we'll set
+info->high to EOFS (which is now has a lower rm_startblock than
+info->low), and the ranged btree query code will return -EINVAL.  If
+it's not the last AG, we ignore all records for the intermediate AGs.
+
+Oops.
+
+Fix this by decoding start_fsb into agno and agbno only after making
+adjustments to start_fsb.  This means that info->low.rm_startblock will
+always be set to a valid agbno, and we always start the rmapbt iteration
+in the correct AG.
+
+While we're at it, fix the predicate for determining if an fsmap record
+represents non-shareable space to include file data on pre-reflink
+filesystems.
+
+Reported-by: Dave Chinner <david@fromorbit.com>
+Fixes: 63ef7a35912dd ("xfs: fix interval filtering in multi-step fsmap queries")
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Reviewed-by: Dave Chinner <dchinner@redhat.com>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/libxfs/xfs_alloc.c    | 10 +++-------
- fs/xfs/libxfs/xfs_refcount.c | 13 +++++++------
- fs/xfs/libxfs/xfs_rmap.c     | 10 +++-------
- 3 files changed, 13 insertions(+), 20 deletions(-)
+ fs/xfs/xfs_fsmap.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_alloc.c b/fs/xfs/libxfs/xfs_alloc.c
-index c08265f19136..cd5b197d7046 100644
---- a/fs/xfs/libxfs/xfs_alloc.c
-+++ b/fs/xfs/libxfs/xfs_alloc.c
-@@ -3543,19 +3543,15 @@ xfs_alloc_query_range(
- 	const struct xfs_alloc_rec_incore	*low_rec,
- 	const struct xfs_alloc_rec_incore	*high_rec,
- 	xfs_alloc_query_range_fn		fn,
- 	void					*priv)
- {
--	union xfs_btree_irec			low_brec;
--	union xfs_btree_irec			high_brec;
--	struct xfs_alloc_query_range_info	query;
-+	union xfs_btree_irec			low_brec = { .a = *low_rec };
-+	union xfs_btree_irec			high_brec = { .a = *high_rec };
-+	struct xfs_alloc_query_range_info	query = { .priv = priv, .fn = fn };
- 
- 	ASSERT(cur->bc_btnum == XFS_BTNUM_BNO);
--	low_brec.a = *low_rec;
--	high_brec.a = *high_rec;
--	query.priv = priv;
--	query.fn = fn;
- 	return xfs_btree_query_range(cur, &low_brec, &high_brec,
- 			xfs_alloc_query_range_helper, &query);
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index d10f2c719220..956a5670e56c 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -563,10 +563,23 @@ xfs_getfsmap_rtdev_rtbitmap(
+ 	xfs_iunlock(mp->m_rbmip, XFS_ILOCK_SHARED);
+ 	return error;
  }
+ #endif /* CONFIG_XFS_RT */
  
- /* Find all free space records. */
-diff --git a/fs/xfs/libxfs/xfs_refcount.c b/fs/xfs/libxfs/xfs_refcount.c
-index 4ec7a81dd3ef..7e16e76fd2e1 100644
---- a/fs/xfs/libxfs/xfs_refcount.c
-+++ b/fs/xfs/libxfs/xfs_refcount.c
-@@ -1901,12 +1901,17 @@ xfs_refcount_recover_cow_leftovers(
- 	struct xfs_trans		*tp;
- 	struct xfs_btree_cur		*cur;
- 	struct xfs_buf			*agbp;
- 	struct xfs_refcount_recovery	*rr, *n;
- 	struct list_head		debris;
--	union xfs_btree_irec		low;
--	union xfs_btree_irec		high;
-+	union xfs_btree_irec		low = {
-+		.rc.rc_domain		= XFS_REFC_DOMAIN_COW,
-+	};
-+	union xfs_btree_irec		high = {
-+		.rc.rc_domain		= XFS_REFC_DOMAIN_COW,
-+		.rc.rc_startblock	= -1U,
-+	};
- 	xfs_fsblock_t			fsb;
- 	int				error;
- 
- 	/* reflink filesystems mustn't have AGs larger than 2^31-1 blocks */
- 	BUILD_BUG_ON(XFS_MAX_CRC_AG_BLOCKS >= XFS_REFC_COWFLAG);
-@@ -1933,14 +1938,10 @@ xfs_refcount_recover_cow_leftovers(
++static inline bool
++rmap_not_shareable(struct xfs_mount *mp, const struct xfs_rmap_irec *r)
++{
++	if (!xfs_has_reflink(mp))
++		return true;
++	if (XFS_RMAP_NON_INODE_OWNER(r->rm_owner))
++		return true;
++	if (r->rm_flags & (XFS_RMAP_ATTR_FORK | XFS_RMAP_BMBT_BLOCK |
++			   XFS_RMAP_UNWRITTEN))
++		return true;
++	return false;
++}
++
+ /* Execute a getfsmap query against the regular data device. */
+ STATIC int
+ __xfs_getfsmap_datadev(
+ 	struct xfs_trans		*tp,
+ 	const struct xfs_fsmap		*keys,
+@@ -596,35 +609,33 @@ __xfs_getfsmap_datadev(
+ 	/*
+ 	 * Convert the fsmap low/high keys to AG based keys.  Initialize
+ 	 * low to the fsmap low key and max out the high key to the end
+ 	 * of the AG.
+ 	 */
+-	info->low.rm_startblock = XFS_FSB_TO_AGBNO(mp, start_fsb);
+ 	info->low.rm_offset = XFS_BB_TO_FSBT(mp, keys[0].fmr_offset);
+ 	error = xfs_fsmap_owner_to_rmap(&info->low, &keys[0]);
  	if (error)
- 		goto out_trans;
- 	cur = xfs_refcountbt_init_cursor(mp, tp, agbp, pag);
+ 		return error;
+ 	info->low.rm_blockcount = XFS_BB_TO_FSBT(mp, keys[0].fmr_length);
+ 	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
  
- 	/* Find all the leftover CoW staging extents. */
--	memset(&low, 0, sizeof(low));
--	memset(&high, 0, sizeof(high));
--	low.rc.rc_domain = high.rc.rc_domain = XFS_REFC_DOMAIN_COW;
--	high.rc.rc_startblock = -1U;
- 	error = xfs_btree_query_range(cur, &low, &high,
- 			xfs_refcount_recover_extent, &debris);
- 	xfs_btree_del_cursor(cur, error);
- 	xfs_trans_brelse(tp, agbp);
- 	xfs_trans_cancel(tp);
-diff --git a/fs/xfs/libxfs/xfs_rmap.c b/fs/xfs/libxfs/xfs_rmap.c
-index b56aca1e7c66..95d3599561ce 100644
---- a/fs/xfs/libxfs/xfs_rmap.c
-+++ b/fs/xfs/libxfs/xfs_rmap.c
-@@ -2335,18 +2335,14 @@ xfs_rmap_query_range(
- 	const struct xfs_rmap_irec		*low_rec,
- 	const struct xfs_rmap_irec		*high_rec,
- 	xfs_rmap_query_range_fn			fn,
- 	void					*priv)
- {
--	union xfs_btree_irec			low_brec;
--	union xfs_btree_irec			high_brec;
--	struct xfs_rmap_query_range_info	query;
-+	union xfs_btree_irec			low_brec = { .r = *low_rec };
-+	union xfs_btree_irec			high_brec = { .r = *high_rec };
-+	struct xfs_rmap_query_range_info	query = { .priv = priv, .fn = fn };
+ 	/* Adjust the low key if we are continuing from where we left off. */
+ 	if (info->low.rm_blockcount == 0) {
+-		/* empty */
+-	} else if (XFS_RMAP_NON_INODE_OWNER(info->low.rm_owner) ||
+-		   (info->low.rm_flags & (XFS_RMAP_ATTR_FORK |
+-					  XFS_RMAP_BMBT_BLOCK |
+-					  XFS_RMAP_UNWRITTEN))) {
+-		info->low.rm_startblock += info->low.rm_blockcount;
++		/* No previous record from which to continue */
++	} else if (rmap_not_shareable(mp, &info->low)) {
++		/* Last record seen was an unshareable extent */
+ 		info->low.rm_owner = 0;
+ 		info->low.rm_offset = 0;
  
--	low_brec.r = *low_rec;
--	high_brec.r = *high_rec;
--	query.priv = priv;
--	query.fn = fn;
- 	return xfs_btree_query_range(cur, &low_brec, &high_brec,
- 			xfs_rmap_query_range_helper, &query);
- }
+ 		start_fsb += info->low.rm_blockcount;
+ 		if (XFS_FSB_TO_DADDR(mp, start_fsb) >= eofs)
+ 			return 0;
+ 	} else {
++		/* Last record seen was a shareable file data extent */
+ 		info->low.rm_offset += info->low.rm_blockcount;
+ 	}
++	info->low.rm_startblock = XFS_FSB_TO_AGBNO(mp, start_fsb);
  
- /* Find all rmaps. */
+ 	info->high.rm_startblock = -1U;
+ 	info->high.rm_owner = ULLONG_MAX;
+ 	info->high.rm_offset = ULLONG_MAX;
+ 	info->high.rm_blockcount = 0;
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
