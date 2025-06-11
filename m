@@ -1,143 +1,168 @@
-Return-Path: <stable+bounces-152445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07648AD5A75
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 17:29:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C977AD5C81
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 18:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACA5F3A2A02
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:26:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6033A896D
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 16:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94331B87C9;
-	Wed, 11 Jun 2025 15:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138362063D2;
+	Wed, 11 Jun 2025 16:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="E8VFAdOT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mQEtm9mN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC01AF0C8
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 15:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D25202981
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 16:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749655606; cv=none; b=pMZ1oS1CbTL/TCdXukl1FSF3lGz96ghtsv45rcFoBENamqvSU0SyUAQyAfURSk6+b++BJH9X7Atlkci8skhD3MmjaeBn17778RdcSjzNUfmwNtnQh7UDh6TZ//Rg4/oXhWA38Af10cKUlVR+NaSJr+wi0e6UElr4Yb/X5NhwgQU=
+	t=1749660058; cv=none; b=W4EanD+cJhTwwfpT2GEmXan5tzkzIGpJkloacdNR2juIscdDoSLi5CzIiFD18Kv2nSIZQ9GcV7ntsdnXjt/E3Wv/snLZ3ZXLh6ipNfD+Hb4Q4GImwP5ufDdHLXSgRLFHJ8qzYcmWidGGJMkt5Sf44aL07FzYVlprfXNDgXctR+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749655606; c=relaxed/simple;
-	bh=Zclb6nP9tKkJil/hrncF8At7GwOesOJIVfldb1hH5Ls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FT/QUApoMcNus9KxDqyXCbpVRU15iJYCmuXTJ1nwWw28cHJTZiIeH2RRvQtaI+VCxlck1/VDwmXMQjW/cAKqO6DWaULqRq6yLRAqUjJwfH3eZJq0YEAKf/CPlzy4t5HnovKM950QZfGuCbFle3UtGJnb+PsbPeElwOMTAtqGpa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=E8VFAdOT; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-86a55400875so603881339f.3
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 08:26:44 -0700 (PDT)
+	s=arc-20240116; t=1749660058; c=relaxed/simple;
+	bh=/6eyRRANtwCdEcAc81Ue2N4a43wLrgsSwCP2Bx5UkAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BMxbjAFZvOLvfI1Ell/dgxnB1tMd2wbPwFJ6YejRh6ccD6Qt1P02EAaF9FXR9RwdUh9RpvfoNnVlV7pQ8BwFwisa7y5V0JJ5j0iGCzBJGfboPw2eQoIMIZdi6r8xNfbWkTXhL+RHEoRa5xRQr1+uaa3owhXBRUl1QQAx83b8pRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mQEtm9mN; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a4fea34e07so66068f8f.1
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 09:40:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1749655604; x=1750260404; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=25gqdr8OB8B8YYkPUeyMN7WbLBqsy7NImg1t9TKxdME=;
-        b=E8VFAdOTu+z7NAH3Y9NFWPox06EIuHK/dw3gj7rHm+qecwZF01BLOFMRbYXcDDNVDv
-         YO9fn5kdmEku+d8ANek+tYGF3vb7h1wN/Hfy2Zj/vzHCCysf+WqoVGLz0miCgGaGOhQC
-         tpoiFMhp4uiHzIZtrd6JtKxPBfaY50y+s53WotNLrwzkhY5+pg47NGs0bKnd3XWmuYZ3
-         mesEXznMEeAGV8devH5qRRaH1M7DUDpEkhc4KjDXPmvOBbYEfTFyicgRFwtFyM1kw3tx
-         kMhoJvPIAV1odxZKkslbZRSZgnOfMsQR3alnr5hM5/1yf7pvn2Ik1arzmoJEPOD3mW8C
-         EziA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1749660051; x=1750264851; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jz3zcDTTQk1I6bLW6bPLRoyLpYGLTqEdEcVzh4gsi0g=;
+        b=mQEtm9mNtDofDE+excWoSCCbOPiYHF4r7yPJnR8onjDAld4YGBmqhCKdYbeAdiIVyw
+         ObRMmx7a+iPcqg45x1/xigB4xbmX8AQ8pTHQlxZWx9n3zTx7K+6w6pHECK37jK9q4wVh
+         kh6E0yHqJXDqLKB0mokCeWS7yxMuNBSddfG4SMqC2WXyP7jJLgNePKQFvNmnBEpbMa6p
+         UAegF6DiPeidNTPNENmedHmpwViIMB0L2Y2DTkL0OpuoUW2diHrWaxmgmvn+W0GDlYfJ
+         TAFZLiEplnFi/Dy6A0ma4vSPN2Q1acvIQ+1MtG8SQ6xUOuYrGKpThhOLHI3SQ3JnJ4aW
+         E+Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749655604; x=1750260404;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=25gqdr8OB8B8YYkPUeyMN7WbLBqsy7NImg1t9TKxdME=;
-        b=S8mI67zwGGFvb3DdN4/DaPc0X/GOnN+5I3dwo2ariqKWRCCzq99jShNILrcsUXrjUM
-         h1x1iskkb3irgkDERBFdWPvvj3QvrrxCQVrTIjk6pqmJhaIVrAGmzjnkU45kAC7Wn2Vd
-         7c/AvYhgfrmzZ3h6GnRVsjSePCRErx3PsoXzWCtbIPrFavlFuED7KJ/Acxy1MsZdw4r5
-         ygXujLPBrOoy7hiK0U+wzSJwIdKlOw9/b6EmuDiGGGjanbCpV/7MU/QwvigqfauwRrFU
-         APIzPaTnmy0jqVj2xy4lE2RgyaOKcifxRs6reM2slrd8IbHDk3nDVEcEmVKjEKSE+lpR
-         J9HQ==
-X-Gm-Message-State: AOJu0YyyooYDE8gsArTGsHyJRF44HvXB7tK5gzwBqlZA5A8ZAoIQx42B
-	SmOv76d/Cx8dkE/ob1HsjkCDtgbcmkrloVPsmX93i+KlsWbd/h1GyQVIu1FrO89Kchw=
-X-Gm-Gg: ASbGncs/qQxQGrvWCeYHofAbCvtpD42jD05rZOh2fHeSDyYYlPUjLul7QFQMVMakpGt
-	OM+UgW+Prl52psg5YE2KbZhPdFMyhPaWzdtCGe0Op62RS7PbzWNyjQGcIDnpCcb0KWdnOVdk8bh
-	rR47ZcZWPgnyjNJVpC+VS2WstL6XbMYGX4xnTrYhLNWOLnjtV+gNTH4EQhLvywkQUYJ9GvU40DF
-	EHhp+qCdHxl6gt/++IVeeK6jQgzVAGmRkOlBlAiOYqT8AaxoC7YA3no2ka9zjS787yVVpWby0p9
-	5DCqNPhI8Mgi6jRylCg809lo3iFjE/VTAY9wOgMEvuit1NVxMKVLEfV2jA==
-X-Google-Smtp-Source: AGHT+IHaxfT+O57Vn8979jdX84yGSFMet3prL9YRAAW17QgstqoINM/JBUR9h2E/1+qlZME9XacRsQ==
-X-Received: by 2002:a05:6602:36ce:b0:85a:e279:1ed6 with SMTP id ca18e2360f4ac-875bc472084mr439890139f.11.1749655603849;
-        Wed, 11 Jun 2025 08:26:43 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-875bc5b4294sm44276539f.14.2025.06.11.08.26.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 08:26:43 -0700 (PDT)
-Message-ID: <afb8792b-a78d-4886-bf9a-23121510dec5@kernel.dk>
-Date: Wed, 11 Jun 2025 09:26:41 -0600
+        d=1e100.net; s=20230601; t=1749660051; x=1750264851;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jz3zcDTTQk1I6bLW6bPLRoyLpYGLTqEdEcVzh4gsi0g=;
+        b=cFFwDPma/RUtJOq7+oNc4B9L3bSXLIrAnVIsibCMypvqccKLixJr3rj+DIb74DoS2D
+         ITW9zCbMUoYbQUxhn48YOANH5GzbHPTE3XhPXljmcKvwbJzRv7RI7mEyXVzz00aqgttz
+         xIxw4hEFWN7Gfm1OaVzlu4Fopeag7Bh3dRJ/9893wHK7YqQU7wOVBNN1gTVvbdco0nWh
+         UsnfiNyxr92Bsyu8Vv93jwMD++G+SI4AZvvOJJ64yDzJ3SNE/xuGGG+qUooDylGyVXP/
+         dDBrfxVieRRY5nwOhg8TXD24ZygXHMSY2IPUVmtft/221sQWMVvw6Ts5qJbmWoVeW9Ah
+         vG/g==
+X-Forwarded-Encrypted: i=1; AJvYcCW7VpSJbji49mGo4FV9Szx6UDAC6Z7z8H1DRyWSAZfwjH5Uv+XZtnfPAXwqBWYimv7qpl/EbtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0CM7zu2zcy/FPjQ4LtstDI0klaJ51TYDjl/n/VXEek7wD77hj
+	uK48Fl6ai6P7N3jB6BiKabmUKMNVmxoCgU0ZMoOyo0j33EE/L/2eQCklNGzkr6IPW4t1uKTe2XN
+	L9g1s
+X-Gm-Gg: ASbGnctP1vPmYFwDg32Ail1c8F8oOlKvwI3o8JXrLMSwurJLVbtS0YKw3zEgiVh0iy9
+	QuG1T2P+qZtzoyHOhkp2RSweBipGtq75AUu/JjuHMtOkgDyMoEmisj4k2GyiemlL5dF3WfbRn/u
+	FdWjhNPomB33byJlDBM5LZOUDQyyQzRqDqlZ4OhQY6wwcClfyyraNlx64Gb0VbvGZUWGtCkkU+i
+	244p8nsLuZGXrcVwI2RTDyrWGiepwTvLoYAcNPbdfjB7giSn4PxlDCKdQdnTM6YgW8sCzkAAqlY
+	HiBlW5WG7DrRyrmeXFujT4FjLReUurMYa82Jo7LR+Fa8BgbococGEKuHQCye0Bybp2TeZLPrbbw
+	YzPdX/6IUiH+yKpxty2ppZq+5Q+wf
+X-Google-Smtp-Source: AGHT+IFI+EBnQlswVejgehxAiVf5xKnGx4c0e+6Dst82gz+K4BCYFpQbPA3/jk2LywLWEGxTCZnveQ==
+X-Received: by 2002:a05:6000:2282:b0:3a4:d53d:be22 with SMTP id ffacd0b85a97d-3a558800edcmr2945559f8f.58.1749660050935;
+        Wed, 11 Jun 2025 09:40:50 -0700 (PDT)
+Received: from localhost (p200300f65f13c80400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f13:c804::1b9])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45325226682sm25886195e9.36.2025.06.11.09.40.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 09:40:50 -0700 (PDT)
+Date: Wed, 11 Jun 2025 18:40:48 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Greg KH <gregkh@linuxfoundation.org>, 
+	Ingo Saitz <ingo@hannover.ccc.de>
+Cc: 1104745@bugs.debian.org, stable@vger.kernel.org
+Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
+ CONFIG_RANDSTRUCT
+Message-ID: <snq7vjlketwasar4jdufnoostk7xm7umdm6y2xao4tmi4653pd@d6uemvag32nj>
+References: <174645965734.16657.5032027654487191240.reportbug@spatz.zoo>
+ <hix7rqnglwxgmhamcu5sjkbaeexsogb5it4dyuu7f5bzovygnj@3sn4an7qgd6g>
+ <aEVJDjS6_po-kMj-@spatz.zoo>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "block: don't reorder requests in
- blk_add_rq_to_plug"
-To: Ming Lei <ming.lei@redhat.com>,
- Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-Cc: stable@vger.kernel.org, kernel test robot <oliver.sang@intel.com>,
- Hagar Hemdan <hagarhem@amazon.com>, Shaoying Xu <shaoyi@amazon.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Keith Busch <kbusch@kernel.org>,
- Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux.dev, linux-nvme@lists.infradead.org,
- linux-fsdevel@vger.kernel.org
-References: <20250611121626.7252-1-abuehaze@amazon.com>
- <aEmcZLGtQFWMDDXZ@fedora>
-From: Jens Axboe <axboe@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <aEmcZLGtQFWMDDXZ@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wmft4jswazlqcapc"
+Content-Disposition: inline
+In-Reply-To: <aEVJDjS6_po-kMj-@spatz.zoo>
 
-On 6/11/25 9:10 AM, Ming Lei wrote:
-> On Wed, Jun 11, 2025 at 12:14:54PM +0000, Hazem Mohamed Abuelfotoh wrote:
->> This reverts commit e70c301faece15b618e54b613b1fd6ece3dd05b4.
->>
->> Commit <e70c301faece> ("block: don't reorder requests in
->> blk_add_rq_to_plug") reversed how requests are stored in the blk_plug
->> list, this had significant impact on bio merging with requests exist on
->> the plug list. This impact has been reported in [1] and could easily be
->> reproducible using 4k randwrite fio benchmark on an NVME based SSD without
->> having any filesystem on the disk.
->>
->> My benchmark is:
->>
->>     fio --time_based --name=benchmark --size=50G --rw=randwrite \
->> 	--runtime=60 --filename="/dev/nvme1n1" --ioengine=psync \
->> 	--randrepeat=0 --iodepth=1 --fsync=64 --invalidate=1 \
->> 	--verify=0 --verify_fatal=0 --blocksize=4k --numjobs=4 \
->> 	--group_reporting
->>
->> On 1.9TiB SSD(180K Max IOPS) attached to i3.16xlarge AWS EC2 instance.
->>
->> Kernel        |  fio (B.W MiB/sec)  | I/O size (iostat)
->> --------------+---------------------+--------------------
->> 6.15.1        |   362               |  2KiB
->> 6.15.1+revert |   660 (+82%)        |  4KiB
->> --------------+---------------------+--------------------
-> 
-> I just run one quick test in my test VM, but can't reproduce it.
-> 
-> Also be curious, why does writeback produce so many 2KiB bios?
 
-I was pondering that too, sounds like a misconfiguration of sorts. But
-even without that, in a quick synthetic test here locally, I do see a
-lot of missed merges that is solved with the alternative patch I sent
-out. I strongly suspect it'll fix this issue too.
+--wmft4jswazlqcapc
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: Bug#1104745: gcc-15 ICE compiling linux kernel 6.14.5 with
+ CONFIG_RANDSTRUCT
+MIME-Version: 1.0
 
--- 
-Jens Axboe
+Hello Greg, hello Ingo,
+
+On Sun, Jun 08, 2025 at 10:25:50AM +0200, Ingo Saitz wrote:
+> On Wed, Jun 04, 2025 at 10:43:11PM +0200, Uwe Kleine-K=F6nig wrote:
+> > Control: tag -1 + fixed-upstream
+> > Control: forwarded -1 https://lore.kernel.org/r/20250530221824.work.623=
+-kees@kernel.org
+> >=20
+> > Hello,
+> >=20
+> > On Mon, May 05, 2025 at 05:40:57PM +0200, Ingo Saitz wrote:
+> > > When compiling the linux kernel (tested on 6.15-rc5 and 6.14.5 from
+> > > kernel.org) with CONFIG_RANDSTRUCT enabled, gcc-15 throws an ICE:
+> > >=20
+> > > arch/x86/kernel/cpu/proc.c:174:14: internal compiler error: in compty=
+pes_check_enum_int, at c/c-typeck.cc:1516
+> > >   174 | const struct seq_operations cpuinfo_op =3D {
+> > >       |              ^~~~~~~~~~~~~~
+> >=20
+> > This is claimed to be fixed in upstream by commit
+> > https://git.kernel.org/linus/f39f18f3c3531aa802b58a20d39d96e82eb96c14
+> > that is scheduled to be included in 6.16-rc1.
+>=20
+> I can confirm applying the patches
+>=20
+>     e136a4062174a9a8d1c1447ca040ea81accfa6a8: randstruct: gcc-plugin: Rem=
+ove bogus void member
+>     f39f18f3c3531aa802b58a20d39d96e82eb96c14: randstruct: gcc-plugin: Fix=
+ attribute addition
+>=20
+> fixes the compile issue (on vanilla 6.12, 6.14 and 6.15 kernel trees;
+> the kernels seem to run fine, too, so far). The first patch was needed
+> for the second to apply cleanly. But I can try to backport only
+> f39f18f3c3531aa802b58a20d39d96e82eb96c14 and see if it still compiles.
+
+@Ingo: Thanks for testing and confirming the backport works.
+
+@gregkh: I think it's reasonable to backport both
+e136a4062174a9a8d1c1447ca040ea81accfa6a8 and
+f39f18f3c3531aa802b58a20d39d96e82eb96c14. Do you already have these on
+your radar?
+
+Best regards
+Uwe
+
+--wmft4jswazlqcapc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhJsYwACgkQj4D7WH0S
+/k7p4QgAs2IyNUlagvq6dYvu+FazwrwDo9aeaeBfmDKQQcyM4NxtK8XJrv0OTe7r
+GGDZXYMsHOIghFmoOUFhg9JdmrJy9a+HKsAX4a6R370VR4Fth71sL3FowmFGfZ4P
+1Kvm0Ac4nZLEuKsyXl9LAkNsFJDBY1B9X91F0FukHs3/A3DQVdzASutPNt2LHQfw
+YPPRnA7lNGtfIgppvWLkGz3647vPBIFpG0362PI+syRtXte29CvlYKigP26snOCm
+jzTs8jXM3T/q/R7qMJLigfxVO+hxOcBk8znYIANQwQZBc7+eKAWbgN5EXoIULoQd
+CGi/0n/2TkmS20zGUI1BK9//ntD6Iw==
+=+a3R
+-----END PGP SIGNATURE-----
+
+--wmft4jswazlqcapc--
 
