@@ -1,78 +1,80 @@
-Return-Path: <stable+bounces-152418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E301AD5624
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 14:57:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D57FAD566B
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F2DE7A6645
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 12:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C121C162A87
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2608728466D;
-	Wed, 11 Jun 2025 12:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66A6283FC4;
+	Wed, 11 Jun 2025 13:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="3SNeEW8J"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KqnP/F5B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BD428314B
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 12:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D79264F88
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749646620; cv=none; b=qaV4hT7qlQGYPtdYUOZt2rsDRp8BqDDrZnrDeFuGex7geSSUMxj8crBoYL5tRAfQ7dOwG2N4afylQp29Mcq7+NeYtlXtbcju52hscVFDlAtseArxzlrk/Zb1xx2JiYzvf/L00w60tx+4uLrlLYwm4Zn0Lxz/3e2nEiuXkFhaOnc=
+	t=1749647093; cv=none; b=n6Iy/Xi7OAn0d4KfzbpEjKghiuDdqIk3TLhltjMSeBeTWVc6XFDOWxILc8+InmyjgpTYwcXkQvMErDaQuFPX7EzWegvrpvMaZGjZPyh3/Wsr2qwS7uuLv5/V8FUKFCBNRs1yyT71XDHkeA2nlukqJ686r10+znreKCCJNQpRXOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749646620; c=relaxed/simple;
-	bh=WFBUbKMMnKHZdjkqyPfepwRYRaY3PMbvKPZrZUg2BWM=;
+	s=arc-20240116; t=1749647093; c=relaxed/simple;
+	bh=k5waaBh9LoM/S8QVD0ttHeEtj4oYMj1eBNvv46Hvl/M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VE8LcOzFaaQISFiK0iM7IloNM4ncV2WY78cQd9kmWJQxjQayE/RkZHUceZi22XN+Mrow0VnICZUcd8iUiIN4p1eRiNpIb1hIVHosfSEgwHZSEW3VDOoaLtOjZuU4g1cSnq0JCMBv2ytS/N0uRnyvB8kbg9HYQp4WujnzEOAHi7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=3SNeEW8J; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-873573bfe49so300521639f.2
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 05:56:58 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=Jyi0QrbCAWzM3XEvNNegVZY/+elUcA9AtRJljGvUBC+ex1T+KG6yiXqxWSd3Wu5fUCONyDTjAKaVKpvptivMWa0/1+rxJDW+wTjrCR+heLS7qRY32hm4g8HyNnNCffaUnwBkrKl5/CMaXqYaZxpOCy20fzQheCUrlFjXdQKqD+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KqnP/F5B; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a548a73ff2so3227740f8f.0
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 06:04:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1749646617; x=1750251417; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1749647090; x=1750251890; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=BPGWj6XVqoqMlOowKe5NeP45YX5gIMyOrC/TyjewJiI=;
-        b=3SNeEW8JE6h/oz8q6m6QF2ImTL+tlmycebGzUU801zIFrCEDkbol5VveffiMdaCcVr
-         DR4DtdLs0b+1vL/7V92uya5ywuKnyqGYVSg0ovhGxi0LJoY7dxjooMAxjnoIBEzQXMr+
-         qMeCgAww9N0HEgBHk0ug5O3IF+BFEyTe1ylZYv+Y826rZiB61Q2HaxeJnbGKLVKmd7gE
-         Aeg10w+4veLhgu4Nb+O8L6MkAU1TZQkC7AhlyIGuZtpexzE1kEY4l5aPG9Hz/W2teHnY
-         49kehI159q8ArkYpHFN9doyq3ao1juv/h8HlhUTH3p4/xVB/T2oRSBlwS1sUivjQy8Bs
-         7uQw==
+        bh=3OhmJykF73g4g4DUewCzO19WAhssmAxRzm/neMwhoQQ=;
+        b=KqnP/F5BOiVC16fwG/0QDiVrfzcQllV1rQYeQG/wZIpcqQcm9hLTFnec2IspgVX+la
+         S3mC0mM2x7EfgoQt1QUW60ki0vGFQ0Yai45+mBrwwOhfyvGbz5bPaWcRlinQdYMrBK1n
+         CH8ubval0aFPYj0F+doAuAkvGnDoTaeJ0VzXC0p1jIzKdOwDgAzLImlBBc84hUxzerAd
+         bgGpCa/LmmxnMQUarUW6hgz/4Pdz7GV+rzT3g7vLiev00JRYDutVkCUh0bxsZO8CR0/E
+         DWBpXHFSqC6BG2IOUhfIUBBUEXYUpk2yHKFsK+MBneOV1fBFuVUWfili1yLX8PRvXsoK
+         zXXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749646617; x=1750251417;
+        d=1e100.net; s=20230601; t=1749647090; x=1750251890;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BPGWj6XVqoqMlOowKe5NeP45YX5gIMyOrC/TyjewJiI=;
-        b=pBH/2Ttit2w9cOIX8llXwRtFoABU7PCseCMEM46IY99ZW3mFHsnpUfBQUegNRa/A0k
-         4s91GhzhoIsccz4zxg+wPW/3mVdD5JNMsFNX1n6ya7U2LcILyWSOBM6bZNplqipkDt96
-         7ieY8kPre6QlN3VjGVOIIL3qOBoahk26EueH1wyMZGsc6ElOhprbo6c3m67z61bn/AUc
-         EaEMLGjAPLxN1EQ2+PUGIwYwWjnfawX8tBzOi5cbyJDaIdOIztyKJDIUpfAeQ2gZ908I
-         oYX8+hHy9sswmIAGIhuh9sur51J4z7Y3WDo1DQpdnntYKlL6MKF8IrFKAoalgAjODnK4
-         34YA==
-X-Gm-Message-State: AOJu0Yy0XjBkJ80wMcdhj16RbcMJnNxovuRtpQk3I5vdVbFst/TK9FhF
-	4mUliFukM1n/nPiGmgNV7ob1Jlx4b0t8MPJ5u5HKcIqJbt8m7KzXSVbSoaGZizQuDJA=
-X-Gm-Gg: ASbGncvMTskoEx0E2fLQX0A8z6OKXZAegSCWVodsJyaOxZEWI34ULGEAhMl7QQd5YS4
-	DhJNf5Zyu80+mnX9qNXDg1E7rlMSJWb7Eu/JeTIDnf6f5zbAbLm44qjJAhUkz65SUH2jk1qayVK
-	+qUVaPcS+nDlt0qibVpimk4rm5I55v3tLT7guebEQnGYQf7rX3f5WbbiW2Ak54dyAgGgcLXbeA+
-	LtvOVNMdEZKjgkFkbTi6MqCG3/gRsOW0dWdOuHrdjfC0F4qCoMwaUjE0HUjGb+aKcQZi7eSo5Xt
-	NTDrbERMeJUwg632iCbYphsL9uf945hpnrkl77Fdw5YqypLghVQAWx4Cgxhsu2pWF3FL3g==
-X-Google-Smtp-Source: AGHT+IERz9UEhN3gPoO6s9ZO+TGganlwoJirBS1zd34gle1XGHdmdK7NOLrIX/f0q//+H5iwkCSLYQ==
-X-Received: by 2002:a05:6e02:12e8:b0:3d9:668c:a702 with SMTP id e9e14a558f8ab-3ddf4d5d68emr25015895ab.9.1749646617386;
-        Wed, 11 Jun 2025 05:56:57 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ddf4768c0dsm3851505ab.55.2025.06.11.05.56.56
+        bh=3OhmJykF73g4g4DUewCzO19WAhssmAxRzm/neMwhoQQ=;
+        b=fe28B2QMQ30HZJxSoAmdP736fxNec3o/VUKtpss4vNRpgoXcxT5Djh4DHJPE3JHWof
+         34Zet6AyEgqeZTQ06Mjon56vmbfdSgTanhssc0N9SQZft2FJnSJzM0jV4nHCUCSZJatu
+         dxDAugrDIv/y6NoauL7+6r9tO7RoDgEFLAQfLCO3/TK5BusXYHi4gUIJyrQn5ZV5gUYA
+         HmxQhMdJZZjUlA+Npu914Inrco3Z5z6h6aElDEUzvC+Sw33fl2+ADAMK3rYfvD7MW4ol
+         FSJ1gxym9mKcdngo1E+fZNjOauXnu4BTwA7C2eB/6sgBuXEIBCxK7eZr6se1fN9ELxBS
+         GBzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTgpvWR61ZLutEy9OtG00a+VYSSzRd4tCfQa14p3HPFo033w0Ay9Fves6yjEwfK2Rzvw/XRRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpG4K1aHHDtvNdDEkHI1/xiRKub3l4sYRwmGq+5bhgCNN40/g0
+	4vG4OZTXY2XnJHxgs6TUmJuAqVrSXR+t4j3a3zxsd0Qm8eZABy3wQ1PxiG8THAkhGSY=
+X-Gm-Gg: ASbGncvTuTxXuVNgR9HsDXON4kQbGNfG20vvLRBaFCHebDRSwTl0XrpkiAZv9VBVuFE
+	vIdPfVUqYmK1+M/7bc4PitiXTmypIvFIKMz07rbPZw4ssPlhRptC/2et6MGesKZk5hYvP+ThHPI
+	C8OUkjZZpYAmlzkkc/ROkv9z0jJZiNkqO9LW6uNbh//xKDNGq9X12nlvNQF9/IZimyEewKPopmO
+	84YrCCKW8lfHIip5u2KsFK+WqB/nesN4dE9zrIgXbJHd6t1yIgv8LH71BTVppGWMm+Wle6jZkSL
+	1ALG/4LG+PoN9LULEuyjONf+DUVtpga4dZRMtfcjGjxb/rs2+SqOM1U0oNpuNNZUR5EUClKA2tW
+	HYnukxwrwk426ljDQ5VnawAkRkMkLMg0kUVqhS+m+lvL4rw==
+X-Google-Smtp-Source: AGHT+IFzkW8lPMC7tzTRiI6f7ckQa2Ooh8n8VNSW4sNQvkqTlYj+uMr4gzo2JsXa5wbaxyrrmtUcfg==
+X-Received: by 2002:a05:6000:24c8:b0:3a4:d83a:eb4c with SMTP id ffacd0b85a97d-3a558a43cb0mr2754736f8f.57.1749647089644;
+        Wed, 11 Jun 2025 06:04:49 -0700 (PDT)
+Received: from [192.168.1.105] (92-184-112-57.mobile.fr.orangecustomers.net. [92.184.112.57])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a53244f516sm15211113f8f.74.2025.06.11.06.04.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 05:56:56 -0700 (PDT)
-Message-ID: <ed33ffb7-31bf-490c-b1ae-304a6e4b9a0f@kernel.dk>
-Date: Wed, 11 Jun 2025 06:56:55 -0600
+        Wed, 11 Jun 2025 06:04:49 -0700 (PDT)
+Message-ID: <51e609a8-cea5-43be-9e4c-6790f7d40138@linaro.org>
+Date: Wed, 11 Jun 2025 16:04:47 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,54 +82,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "block: don't reorder requests in
- blk_add_rq_to_plug"
-To: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-Cc: stable@vger.kernel.org, kernel test robot <oliver.sang@intel.com>,
- Hagar Hemdan <hagarhem@amazon.com>, Shaoying Xu <shaoyi@amazon.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Keith Busch <kbusch@kernel.org>,
- Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux.dev, linux-nvme@lists.infradead.org
-References: <20250611121626.7252-1-abuehaze@amazon.com>
+Subject: Re: [PATCH] dmaengine: mediatek: Fix a flag reuse error in
+ mtk_cqdma_tx_status()
+To: Qiu-ji Chen <chenqiuji666@gmail.com>
+Cc: sean.wang@mediatek.com, vkoul@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, dmaengine@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
+ stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+References: <20250606071709.4738-1-chenqiuji666@gmail.com>
+ <ff77f70e-344d-4b8a-a27f-c8287d49339c@linaro.org>
+ <CANgpojXWk1zvu32bMuGgkVGVNvPw+0NWmSUC62Sbc3WcUXAd3A@mail.gmail.com>
+ <ca3ce8df-aa4f-4422-8455-29db2440d8d5@linaro.org>
+ <CANgpojV51R5sKvowPiMk5MRAzJ3KZoti6mRXjD3Knfz6kk6+MA@mail.gmail.com>
 Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20250611121626.7252-1-abuehaze@amazon.com>
+From: Eugen Hristev <eugen.hristev@linaro.org>
+In-Reply-To: <CANgpojV51R5sKvowPiMk5MRAzJ3KZoti6mRXjD3Knfz6kk6+MA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/11/25 6:14 AM, Hazem Mohamed Abuelfotoh wrote:
-> This reverts commit e70c301faece15b618e54b613b1fd6ece3dd05b4.
+
+
+On 6/6/25 20:48, Qiu-ji Chen wrote:
+> Hello Eugen,
 > 
-> Commit <e70c301faece> ("block: don't reorder requests in
-> blk_add_rq_to_plug") reversed how requests are stored in the blk_plug
-> list, this had significant impact on bio merging with requests exist on
-> the plug list. This impact has been reported in [1] and could easily be
-> reproducible using 4k randwrite fio benchmark on an NVME based SSD without
-> having any filesystem on the disk.
+> Thank you for discussing this with me!
+> 
+> In this specific code scenario, the lock acquisition order is strictly
+> fixed (e.g., pc->lock is always acquired before vc->lock). This
+> sequence is linear and won't interleave with other code paths in a
+> conflicting nested pattern (e.g., the pc → vc sequence never coexists
+> with a potential vc → pc sequence). Therefore, a standard spin_lock()
+> is sufficient to safely prevent deadlocks, and explicitly declaring a
+> nesting level via spin_lock_nested() is unnecessary.
+> 
+> Additionally, using spin_lock_nested() would require specifying an
+> extra nesting subclass parameter. This adds unnecessary complexity to
+> the code and could adversely affect maintainability for other
+> developers working on it in the future.
 
-Rather than revert this commit, why not just attempt a tail merge?
-Something ala this, totally untested.
+Okay, this makes sense. Thanks for explaining
 
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 3af1d284add5..708ded67d52a 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -998,6 +998,10 @@ bool blk_attempt_plug_merge(struct request_queue *q, struct bio *bio,
- 	if (!plug || rq_list_empty(&plug->mq_list))
- 		return false;
- 
-+	rq = plug->mq_list.tail;
-+	if (rq->q == q)
-+		return blk_attempt_bio_merge(q, rq, bio, nr_segs, false) == BIO_MERGE_OK;
-+
- 	rq_list_for_each(&plug->mq_list, rq) {
- 		if (rq->q == q) {
- 			if (blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
+> 
+> Best regards,
+> Qiu-ji Chen
+> 
+>> On 6/6/25 12:14, Qiu-ji Chen wrote:
+>>>> On 6/6/25 10:17, Qiu-ji Chen wrote:
+>>>>> Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
+>>>> If the first spin_lock_irqsave already saved the irq flags and disabled
+>>>> them, would it be meaningful to actually use a simple spin_lock for the
+>>>> second lock ? Or rather spin_lock_nested since there is a second nested
+>>>> lock taken ?
+>>>>
+>>>> Eugen
+>>>>
+>>>
+>>> Hello Eugen,
+>>>
+>>> Thanks for helpful suggestion. The modification has been submitted in
+>>> patch v2 as discussed.
+>>>
+>>> Best regards,
+>>> Qiu-ji Chen
+>>
+>> You are welcome, but in fact I suggested two alternatives. Any reason
+>> you picked this one instead of the other ?
 
--- 
-Jens Axboe
 
