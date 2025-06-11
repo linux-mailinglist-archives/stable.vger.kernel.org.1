@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-152459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB093AD608C
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:01:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8496EAD608D
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2CB77ACE20
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:00:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3353AAAFF
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73A425949A;
-	Wed, 11 Jun 2025 21:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F062BD5B0;
+	Wed, 11 Jun 2025 21:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyJPF2AR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bxyGgj7C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F64D2BD586
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776622BDC2C
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675700; cv=none; b=BkyKG4hMdWlqaJrYTaVcnThZOcN7MMOXPZkFfel4i7AGkY82WZjHXbTy7UwKYG20o5BE6QeKNtH3p+KsYsXL2OZ7Lo1gA2JoBJjp8z769ss2/vuYlbbjKW3Gbx8V4hbZ8RYgqlqfBctPsrg5qu7yMsf+0DlltSA57XQfhm8wEEc=
+	t=1749675702; cv=none; b=nLdlYQD9070Wr2o6l67Zv7VOyn1K1tXqG7Fk6YGIUtK/6bFY07OiixkTL8LRyBebHDUIxEwmJMhctPupA0rz+xVGuLeVVZDkp7XmSjS857cxjo6PnuARvjsyTL03xogxb+34k9ZJuf08oDgNTHeC9eocgEYFi/ViQTRB6g7v4sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749675700; c=relaxed/simple;
-	bh=dA3Bk3T7Hw25A6cRVhjnp1isfvGCExwRcl7eHgL883Y=;
+	s=arc-20240116; t=1749675702; c=relaxed/simple;
+	bh=adgWZRszik8iB0P3tjWcTMeG13rS5Z3kyLJi5NZaIDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eo2Gr6FcDddqtk3vOFG7aP8Xop1aH1wsWqFP7cmXhuCeDBK5kBoRb8ybEGfPAg8vtLw1YkN6OJ0GcnJ9eUrHNmGyuLUk8CGN49W0Z43FOdgzrzms98elxgqKIxAYdtfImJL8D+b9OKPJxj9TxkVDAtFzUSv2A1Sl9FK6S4EfsbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyJPF2AR; arc=none smtp.client-ip=209.85.216.53
+	 MIME-Version; b=rM0VMUEMrG9cvjTw6/qo8TdXtdtz3y0S07R9kRrz54DgAbj39+H30gX3gB5jM9iPfoqYtIQ2bIBNV1SwwrKGg7yStBckQMilEfWVrZdP5Bas8RKEGYYzwS34QvPTa9J4Xs7A/DdYuz5M/Ex/qX8JU2YCb5j3SSlawd3/OhgAqAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bxyGgj7C; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-313a188174fso1263629a91.1
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:38 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23508d30142so3634455ad.0
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749675698; x=1750280498; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749675699; x=1750280499; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MGcQUwZO2mA8QewyqXgdnzIRooDKJjWxPTOOk1GtVDs=;
-        b=CyJPF2ARzyb83+C7ALCtylykjxNiD6DOszk3EV8ZcOsPxmj8k5bVlBbk0rjJVSi+FO
-         pcLLqPsaMQMYVzIS8vLcg9cuh4nkc8ES5NEwL5xWZECBeHjoI7OPBnu9GuRK4YPBa+Mq
-         jMVEWWzRuPitgCMWAUQsRY1Mvdn2xghwqVCU+Hz3vmecw42PZMCS8xBC2W6phrDl8hxl
-         fl2EQkrl4L8kNb2HX/vUMJUH6uUF2/DVJm8Xcbn6fkRDdqhGSylulkCNv3xry7scgnSh
-         QNfV8BwkHRsMSw9t3GBFshpli99IG3Rek98TrHCnIonus16XpayhYsob1vDFKKklStrM
-         jelQ==
+        bh=eRw3S/Zgssjc97Ua04jEevgFpNMhNf2M/EAnbZb0l+k=;
+        b=bxyGgj7C4xdxfA4LD8CI22dXluaGMrS72yeQm1m8GVJLpGjRdf3tfTJ0tc5nOR5F7e
+         VbBBMhA165rL7c+GZP+1/rT/5ODp6J+pfKhAyw2A4pKNmoAMn8N9XhxsFciVRP5sd0Q6
+         ZHHJ4hNyYR4nZ2JGBl3mUS3/8VO1KE80oxIhK6o9eHefca09e7h0QzhA2qC5GgNdd1Q7
+         TaoS79FS4HN0yG/kt9C3j/F50l8XmcPTJLhficc5QJ5CROTOAO+h9kc4XJ6gA2ezSuLI
+         +Mj0CUjgBuvwT2pRtE1T/1zV1u4DXkYQq7v5zUjivQq/Q9gv6CT7uOBLhHsGa3IjJkMJ
+         KnGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675698; x=1750280498;
+        d=1e100.net; s=20230601; t=1749675699; x=1750280499;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MGcQUwZO2mA8QewyqXgdnzIRooDKJjWxPTOOk1GtVDs=;
-        b=U+HpuTzGxMwo6AGzjSiubSjQo72bt+wR+8BqBpQOl0OsAEQuYZZ6Gj9ufkW/s/vdW2
-         fv9IFsMvbN8LcaxQ7p0/VK9fdxxxkYC2jeCZrGeAMRhWYzgwFuKcL45g6s6mMHOkozOD
-         YPl2yOf2HHAgdj0QFaTr4WaOSJllBGpr1W3xPnqZ6CffJ7XdGaNejGPEeJunbkF8pYON
-         Y6gUDUE55NPkwhuZuguic1+xnZBs6dNE2lhECwp72jH2bVienhTScEmeOJiL/n2S6Z3z
-         p/7AD1cki2E1XElNnJxADFRzPWxEbB2MUswSpaUtAS/5dyDATc8QI+azBX5MdxeWi9vt
-         hfGQ==
-X-Gm-Message-State: AOJu0YwSr8aIFMjoYAeRfUJpXN7KbHEBVFqDePiq3dyhfGhH6u/M8QyI
-	2vwMaBVEs3ofC51EIDK+BWRlaPxm7mopAQmLI6QeEeAHsDAQTbl3BrTnXIdBmtYm
-X-Gm-Gg: ASbGncuhgeUOXEHVvLfyBBL/xdnRAauMruGE9tMuVxWowW0U0onpmD5g4SLb75NpuNk
-	TKz3u4qO/OdKjARlF2+1hVgL3LKQyH/On3yGGlndkAYhtwDlKO4jhIkgqgOFmuo1jUDUNXjKBXy
-	zUCwClk52x6P1yzCLx0Cjf+RypNrY6ehNkgkO0WM4EgUCZlj3XZKt+Q+J0I9IR5MYIG9Rt4NrU6
-	x/wGhdc59SA/hYO+YGr4NI+lzU+I4HfmqnEluRmp6CNQ/aIWfUwYazasXg0XSHcNNLdID+Iu6T1
-	bBwyXWq6N8qMSpRv4tKAPWy8B8uCIWYC+zjmxLIT4iqqeWaezdHLGlBTVCfYnHY+SsZqm9KPdYV
-	5UsL01P6Wp3s=
-X-Google-Smtp-Source: AGHT+IF/C1yxftibFjbfFuIJ+1+6t9FYL18U6EwAcYTkj1kIPKo8li5HBWIai/wiyX1kWTb55pmOiA==
-X-Received: by 2002:a17:90b:1850:b0:2fa:17e4:b1cf with SMTP id 98e67ed59e1d1-313bfd7b069mr1205386a91.2.1749675698201;
-        Wed, 11 Jun 2025 14:01:38 -0700 (PDT)
+        bh=eRw3S/Zgssjc97Ua04jEevgFpNMhNf2M/EAnbZb0l+k=;
+        b=PI/PEs3ox3mnNxhctexh5dDDiAZrVzfSQzRnZptZ1cr14J/dzuC2zF0ekqjf5T1acC
+         YSHBqOvASLWvZrEoxhBhm3tGVwWGgHdlkhdU+fr1lIYjDgFDXOLui8A0RRX5hzaPwwHM
+         jV/2HRnQrOaA62R7cnM/noSY39SYwuvdUWLNjP1Oh/ICTD7+jQMzdSboypuCNLW4feiP
+         CjLhp0bMPWhD6+qzqdYDcmCNDZDVvfZ4Yz3Lpr1SdVPwwiw0Ma7+mSMc0BBiID/HKfe5
+         LW1oGyD6VsppY/Jv4DtrMhS6hvTtfYL2G6rXy6g5f4LFXsSJzKRwjPxvmn6Ka5Y1C2vj
+         WmZA==
+X-Gm-Message-State: AOJu0YzsN8py7jcLnbjVKk//VmHpCghhs216gpr7PtgfxRn7V4ci9ZhF
+	9MmeXRki3tTLdhExVv7jsShMDU4H/6heSkXsmcGhxpwboZS7uKBCB8JOtPwlAFSN
+X-Gm-Gg: ASbGncsNDnGRclv1T5ZHvIdFz5KNpc09CfVgNBe96fd3zDpXnAZXKvqPEyxiva4MDFf
+	caHjNRRcyDg34SoaPdOU8v1eWMARocv99TV7tq3ez9/x3FE5cU/ZSynVkbObh0KUWvnsLsMHOxG
+	+8zYLn19iUYLkppfOPEKjyI7HORP7q0dpUdOXxdAL5Fhh+YOIsMQu1MtxwaNBUZBdCz1v46yiRg
+	A85ouruCGoUN80zvVqnnP9L1ArofUn+eO8K6q0QFRpIfJWOzQ8ZZkunWG5BK+U+0QvQZPS7W/CN
+	DPA+bII1FML0VnfJs1QQjDarQaQSl9BU09Wr/MBn8aSY3/2V4mu4SZnAvp6o58Hd2x6XQfcC7S3
+	mi90z/XgFvXM=
+X-Google-Smtp-Source: AGHT+IELhMxL+ujD8gW+pINRJGhoNrUmuRh4sHphV1r5nzCqblWECK7CsBHn6G55e/mZh/MCaIGoXw==
+X-Received: by 2002:a17:902:d58f:b0:235:a9b:21e0 with SMTP id d9443c01a7336-2364c67d44bmr16291885ad.0.1749675699223;
+        Wed, 11 Jun 2025 14:01:39 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:391:76ae:2143:7d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.37
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:01:37 -0700 (PDT)
+        Wed, 11 Jun 2025 14:01:38 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
@@ -80,9 +80,9 @@ Cc: xfs-stable@lists.linux.dev,
 	djwong@kernel.org,
 	Dave Chinner <dchinner@redhat.com>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 05/23] xfs: fix logdev fsmap query result filtering
-Date: Wed, 11 Jun 2025 14:01:09 -0700
-Message-ID: <20250611210128.67687-6-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 06/23] xfs: validate fsmap offsets specified in the query keys
+Date: Wed, 11 Jun 2025 14:01:10 -0700
+Message-ID: <20250611210128.67687-7-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
 In-Reply-To: <20250611210128.67687-1-leah.rumancik@gmail.com>
 References: <20250611210128.67687-1-leah.rumancik@gmail.com>
@@ -96,79 +96,116 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit a949a1c2a198e048630a8b0741a99b85a5d88136 ]
+[ Upstream commit 3ee9351e74907fe3acb0721c315af25b05dc87da ]
 
-The external log device fsmap backend doesn't have an rmapbt to query,
-so it's wasteful to spend time initializing the rmap_irec objects.
-Worse yet, the log could (someday) be longer than 2^32 fsblocks, so
-using the rmap irec structure will result in integer overflows.
+Improve the validation of the fsmap offset fields in the query keys and
+move the validation to the top of the function now that we have pushed
+the low key adjustment code downwards.
 
-Fix this mess by computing the start address that we want from keys[0]
-directly, and use the daddr-based record filtering algorithm that we
-also use for rtbitmap queries.
+Also fix some indenting issues that aren't worth a separate patch.
 
-Fixes: e89c041338ed ("xfs: implement the GETFSMAP ioctl")
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Reviewed-by: Dave Chinner <dchinner@redhat.com>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_fsmap.c | 30 ++++++++----------------------
- 1 file changed, 8 insertions(+), 22 deletions(-)
+ fs/xfs/xfs_fsmap.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
 diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index 202f162515bd..cdd806d80b7c 100644
+index cdd806d80b7c..d10f2c719220 100644
 --- a/fs/xfs/xfs_fsmap.c
 +++ b/fs/xfs/xfs_fsmap.c
-@@ -435,40 +435,26 @@ xfs_getfsmap_logdev(
- 	struct xfs_getfsmap_info	*info)
+@@ -800,10 +800,23 @@ xfs_getfsmap_is_valid_device(
+ STATIC bool
+ xfs_getfsmap_check_keys(
+ 	struct xfs_fsmap		*low_key,
+ 	struct xfs_fsmap		*high_key)
  {
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_rmap_irec		rmap;
- 	xfs_daddr_t			rec_daddr, len_daddr;
--	xfs_fsblock_t			start_fsb;
--	int				error;
-+	xfs_fsblock_t			start_fsb, end_fsb;
-+	uint64_t			eofs;
++	if (low_key->fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
++		if (low_key->fmr_offset)
++			return false;
++	}
++	if (high_key->fmr_flags != -1U &&
++	    (high_key->fmr_flags & (FMR_OF_SPECIAL_OWNER |
++				    FMR_OF_EXTENT_MAP))) {
++		if (high_key->fmr_offset && high_key->fmr_offset != -1ULL)
++			return false;
++	}
++	if (high_key->fmr_length && high_key->fmr_length != -1ULL)
++		return false;
++
+ 	if (low_key->fmr_device > high_key->fmr_device)
+ 		return false;
+ 	if (low_key->fmr_device < high_key->fmr_device)
+ 		return true;
  
--	/* Set up search keys */
-+	eofs = XFS_FSB_TO_BB(mp, mp->m_sb.sb_logblocks);
-+	if (keys[0].fmr_physical >= eofs)
-+		return 0;
- 	start_fsb = XFS_BB_TO_FSBT(mp,
- 				keys[0].fmr_physical + keys[0].fmr_length);
--	info->low.rm_startblock = XFS_BB_TO_FSBT(mp, keys[0].fmr_physical);
--	info->low.rm_offset = XFS_BB_TO_FSBT(mp, keys[0].fmr_offset);
--	error = xfs_fsmap_owner_to_rmap(&info->low, keys);
--	if (error)
--		return error;
--	info->low.rm_blockcount = 0;
--	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
-+	end_fsb = XFS_BB_TO_FSB(mp, min(eofs - 1, keys[1].fmr_physical));
+@@ -843,39 +856,41 @@ xfs_getfsmap_check_keys(
+  *
+  * Key to Confusion
+  * ----------------
+  * There are multiple levels of keys and counters at work here:
+  * xfs_fsmap_head.fmh_keys	-- low and high fsmap keys passed in;
+- * 				   these reflect fs-wide sector addrs.
++ *				   these reflect fs-wide sector addrs.
+  * dkeys			-- fmh_keys used to query each device;
+- * 				   these are fmh_keys but w/ the low key
+- * 				   bumped up by fmr_length.
++ *				   these are fmh_keys but w/ the low key
++ *				   bumped up by fmr_length.
+  * xfs_getfsmap_info.next_daddr	-- next disk addr we expect to see; this
+  *				   is how we detect gaps in the fsmap
+ 				   records and report them.
+  * xfs_getfsmap_info.low/high	-- per-AG low/high keys computed from
+- * 				   dkeys; used to query the metadata.
++ *				   dkeys; used to query the metadata.
+  */
+ int
+ xfs_getfsmap(
+ 	struct xfs_mount		*mp,
+ 	struct xfs_fsmap_head		*head,
+ 	struct fsmap			*fsmap_recs)
+ {
+ 	struct xfs_trans		*tp = NULL;
+ 	struct xfs_fsmap		dkeys[2];	/* per-dev keys */
+ 	struct xfs_getfsmap_dev		handlers[XFS_GETFSMAP_DEVS];
+ 	struct xfs_getfsmap_info	info = { NULL };
+ 	bool				use_rmap;
+ 	int				i;
+ 	int				error = 0;
  
- 	/* Adjust the low key if we are continuing from where we left off. */
- 	if (keys[0].fmr_length > 0)
- 		info->low_daddr = XFS_FSB_TO_BB(mp, start_fsb);
+ 	if (head->fmh_iflags & ~FMH_IF_VALID)
+ 		return -EINVAL;
+ 	if (!xfs_getfsmap_is_valid_device(mp, &head->fmh_keys[0]) ||
+ 	    !xfs_getfsmap_is_valid_device(mp, &head->fmh_keys[1]))
+ 		return -EINVAL;
++	if (!xfs_getfsmap_check_keys(&head->fmh_keys[0], &head->fmh_keys[1]))
++		return -EINVAL;
  
--	error = xfs_fsmap_owner_to_rmap(&info->high, keys + 1);
--	if (error)
--		return error;
--	info->high.rm_startblock = -1U;
--	info->high.rm_owner = ULLONG_MAX;
--	info->high.rm_offset = ULLONG_MAX;
--	info->high.rm_blockcount = 0;
--	info->high.rm_flags = XFS_RMAP_KEY_FLAGS | XFS_RMAP_REC_FLAGS;
--	info->missing_owner = XFS_FMR_OWN_FREE;
+ 	use_rmap = xfs_has_rmapbt(mp) &&
+ 		   has_capability_noaudit(current, CAP_SYS_ADMIN);
+ 	head->fmh_entries = 0;
+ 
+@@ -917,19 +932,12 @@ xfs_getfsmap(
+ 	 * all other low key mapping types (attr blocks, metadata), each
+ 	 * fsmap backend bumps the physical offset as there can be no
+ 	 * other mapping for the same physical block range.
+ 	 */
+ 	dkeys[0] = head->fmh_keys[0];
+-	if (dkeys[0].fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
+-		if (dkeys[0].fmr_offset)
+-			return -EINVAL;
+-	}
+ 	memset(&dkeys[1], 0xFF, sizeof(struct xfs_fsmap));
+ 
+-	if (!xfs_getfsmap_check_keys(dkeys, &head->fmh_keys[1]))
+-		return -EINVAL;
 -
--	trace_xfs_fsmap_low_key(mp, info->dev, NULLAGNUMBER, &info->low);
--	trace_xfs_fsmap_high_key(mp, info->dev, NULLAGNUMBER, &info->high);
-+	trace_xfs_fsmap_low_key_linear(mp, info->dev, start_fsb);
-+	trace_xfs_fsmap_high_key_linear(mp, info->dev, end_fsb);
+ 	info.next_daddr = head->fmh_keys[0].fmr_physical +
+ 			  head->fmh_keys[0].fmr_length;
+ 	info.fsmap_recs = fsmap_recs;
+ 	info.head = head;
  
- 	if (start_fsb > 0)
- 		return 0;
- 
- 	/* Fabricate an rmap entry for the external log device. */
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
