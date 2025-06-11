@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-152430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA552AD56DF
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:24:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DCDAD56DE
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 15:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A801D7AC8DF
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:23:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 365F017DA70
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB77724502D;
-	Wed, 11 Jun 2025 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF322882A5;
+	Wed, 11 Jun 2025 13:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nWnAYL7g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFSQT3mk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA061E485
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDD0283CBF
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 13:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749648274; cv=none; b=g4PacZ6owsajGLWkZkz6dGJ5oQiPYXslIdyjKOo2DzE3Bu7lEukIxhIOVhOzSLXyG4IXxDvmPposs0XMpZDfQBtw/WYvth93Ht621sKKtb8lq2JjhOITz7NxV3cjrM9jP72yb6zkHALOqR2fXsTAggq8gjLsU7Sd8HBb2x49XGw=
+	t=1749648276; cv=none; b=hv8FiSkLxUGibNuEzZVfYpIHxa8OjGGEu2Cyny+XSPClwuF/hNFonxsioB0J1Fb5KQ6FqIwxl28RY38U7SjS7ne+3/QElBalza87aNJTlTUXzgw3z6z1otYIEuRP+4X+TRPyuwEkZF/p0XHtwcFwfLCPQ//QNNBou5xKuKljHHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749648274; c=relaxed/simple;
-	bh=KjgsEj0tpYxwdWbAev/p0Ky4qIhAATsmGH4ZK8w8WYM=;
+	s=arc-20240116; t=1749648276; c=relaxed/simple;
+	bh=8FiPvX05igtm22WPLOij5dz310sapdP+enat0A2LX8Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BD++iExQiD/KA5kEj2DHpXtcIRuH+e9uBiluYFeS+KxISKYw9Z0QNQ0brAsxk2DWh+iQeoUvtaNlaZsiagVS9zLes9WsySm0WS22psIOWFjKTJSskSXf00Ap6ufJtjrfn+Q1+EzijCJsHRpG9ZrpQMndGDC8iDLBRrjSEMKgxr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nWnAYL7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8031FC4CEEE;
-	Wed, 11 Jun 2025 13:24:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OSFifyixTJC3fuCQPfMJ7e55cBFD35r8rR7xLWzugRA5HpZWiwaFrWMcqqOstpCgmsGipsmb3ypfb52VJPQyISwCiPrTWKQnccPnnD6RWZlbXzqvyT0g3GSmv2TzgDmLdsCR6sSs2mGV4OajeG6CVC5xbs9zqNDZh1B2VqrKP7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFSQT3mk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F32AC4CEEE;
+	Wed, 11 Jun 2025 13:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749648274;
-	bh=KjgsEj0tpYxwdWbAev/p0Ky4qIhAATsmGH4ZK8w8WYM=;
+	s=k20201202; t=1749648275;
+	bh=8FiPvX05igtm22WPLOij5dz310sapdP+enat0A2LX8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWnAYL7gxI76bpJec/XVOkCRIqUJWY8SnRjQjh2C/3sZugvGXo885by/cbpRH+uy2
-	 GeW97sK28meQyUogSudUgG880q2RoyTdyZLQa+qp8GrTsi/2j+ah2HRv/dS0bmzIh6
-	 TI/nikA7rqoWL33GaMAvW2HSKpRmIs6PzDyqHgdZ63/3m9z8KybLez49W709xgWdX9
-	 4TgH5avds7+SNxuizIcCZNwp046oInuQiooh8fDdPSIxo2K/KIKJUjzqYIzA+ZZykA
-	 4RT0P06amMUi+08mubkmOTMGH+JN3pssSYqLa/ZqQ2qsH4SD/lwrkPfj39grZx61XH
-	 3VvJiGnLOrYMA==
+	b=GFSQT3mkFOnJJOKZRliz6uSAjDV6hwKXNJO3XALvqm3TgFpSDGfhFOrtCdp39o+kC
+	 CQ7BDxTgAdsv0jtVBzyKGNQ6q425sdQ5ck8YahMKRuejrXZUqBxdKHlgc75ilCl+Il
+	 OgFFuTfosXYSJqzqIWAsWX00wY3CsnFQ7+sW9wrBSVo5YeKa5b5K+k16Ba1igZRr42
+	 LBTUpSf7cKjFceUdTjW1GmO+Gc/z5v3TmozvPfty4c97fxtIYuoQgvL+YvMgtC/yzW
+	 sUmg6KGCaZNbg7qyOI0mleCpdOn9myfSGeg2Wy61AGzk//Fwkj3unOauBZvnlYw7H5
+	 GyRqhkT0qNPPA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y 3/3] rtc: Fix offset calculation for .start_secs < 0
-Date: Wed, 11 Jun 2025 09:24:32 -0400
-Message-Id: <20250610180120-50d991767c9b46a7@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] net: make for_each_netdev_dump() a little more bug-proof
+Date: Wed, 11 Jun 2025 09:24:34 -0400
+Message-Id: <20250610135724-77a7a6a3ffb7350e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:   <1f965f4886f65e45423f863930ccc7139944272d.1749539184.git.u.kleine-koenig@baylibre.com>
+In-Reply-To:  <20250610-nl-dump-v1-1-2f05a5fa8358@codeconstruct.com.au>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,45 +67,46 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d
+The upstream commit SHA1 provided is correct: f22b4b55edb507a2b30981e133b66b642be4d13f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: <u.kleine-koenig@baylibre.com>
-Commit author: Alexandre Mergnat<amergnat@baylibre.com>
+Backport author: Jeremy Kerr<jk@codeconstruct.com.au>
+Commit author: Jakub Kicinski<kuba@kernel.org>
 
 Status in newer kernel trees:
-6.15.y | Present (different SHA1: cea549ca705b)
-6.14.y | Present (different SHA1: 57082e0300d5)
-6.12.y | Present (different SHA1: 6b482b16f32e)
-6.6.y | Present (different SHA1: 3d8efdcbc6ce)
-6.1.y | Present (different SHA1: b2677da58ed4)
-5.15.y | Present (different SHA1: 0931dc7be5dd)
+6.15.y | Present (exact SHA1)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fe9f5f96cfe8b ! 1:  8aa260951391e rtc: Fix offset calculation for .start_secs < 0
+1:  f22b4b55edb50 ! 1:  9d419b60cbfdf net: make for_each_netdev_dump() a little more bug-proof
     @@ Metadata
       ## Commit message ##
-         rtc: Fix offset calculation for .start_secs < 0
+         net: make for_each_netdev_dump() a little more bug-proof
      
-    +    commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
+    +    commit f22b4b55edb507a2b30981e133b66b642be4d13f upstream.
     +
-         The comparison
-     
-                 rtc->start_secs > rtc->range_max
+         I find the behavior of xa_for_each_start() slightly counter-intuitive.
+         It doesn't end the iteration by making the index point after the last
+         element. IOW calling xa_for_each_start() again after it "finished"
     @@ Commit message
-         Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-         Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
-         Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-    +    Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+         Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+         Signed-off-by: David S. Miller <davem@davemloft.net>
+    +    Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
      
-      ## drivers/rtc/class.c ##
-     @@ drivers/rtc/class.c: static void rtc_device_get_offset(struct rtc_device *rtc)
+      ## include/linux/netdevice.h ##
+    -@@ include/linux/netdevice.h: int call_netdevice_notifiers_info(unsigned long val,
+    +@@ include/linux/netdevice.h: extern rwlock_t				dev_base_lock;		/* Device list lock */
+      #define net_device_entry(lh)	list_entry(lh, struct net_device, dev_list)
+      
+      #define for_each_netdev_dump(net, d, ifindex)				\
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
