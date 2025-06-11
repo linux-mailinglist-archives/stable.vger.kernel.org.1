@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-152484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C97AD61D8
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:49:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306E7AD61DB
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4C031E1F74
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:49:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 157387AA2C2
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04742246778;
-	Wed, 11 Jun 2025 21:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107112475F2;
+	Wed, 11 Jun 2025 21:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="X1KUaJ2v"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="EidgVnMi"
 X-Original-To: stable@vger.kernel.org
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089002459D2;
-	Wed, 11 Jun 2025 21:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8048246BD8;
+	Wed, 11 Jun 2025 21:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749678520; cv=none; b=Hp/fvHNuejwCOllAmlfhxVNADdFhCmWXC3m41LSmyYCTGeCEUoqYqD3Q0QSrAeoQAHFSFJpeGMLCEZIsEAsMzfxdffukOwb6WUHkH0i/7n9qOZBfs9W+IUcJrPGnhnVUPNhFZB1AGsNIUn5On7CoP30CKcJZ1kXVMBx662Yfmd8=
+	t=1749678529; cv=none; b=BqcjPag/0/NoS3C8G108NVe5iBcy4YgjyZaPgUD0yCM6Tc9GcXToah6wqp41vhxXeqyWExPStXKUYaXnEvLvoDdoxCOvpfQ4wOJLbX9J1WnG605QszJs6IfCYVxVutnk+iu5SiBZizvByT4Es48T714dii66vqT5A7fMBCykA0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749678520; c=relaxed/simple;
-	bh=LH3RSD841MZ/Wiu+j6uCJ53sshntEVWDrCUzXD6Diq0=;
+	s=arc-20240116; t=1749678529; c=relaxed/simple;
+	bh=p125Qdh7AXpcJlrV+7yqlZZwam5I0mnuIIk+bsJi8UU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=d7wF4y4LumL/i482v3AeRM0Xx+N6grjdIb3SX9SRud+2W+zbmpIa5Qxx5JenV93yyrMYjrjilyaIwcRb1mFvjdRa9w5oXsxXX3buvf8k3Rvt9ZycDhTeZj90fqP3zLz/eVmtO8hxa394Bn3V5O7lXinZ8EQoaeY03eygQAp1Ew4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=X1KUaJ2v; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=jehTSceDXq4wo1appcXu70F3UOJ1vdHDSDRPeHkRp9fKN6OV5uNThmxov70mPe9yQCOR5atiOpJbyRu/l6Epci36QnHGsiFM4gxNBPJFyxpmOhL7ckxSQpTsHTkenuYL2BKpDQipUQ1T+WhQDJ57fhwOYmnCbcz45pXPTxLG3Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=EidgVnMi; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1749678516;
-	bh=LH3RSD841MZ/Wiu+j6uCJ53sshntEVWDrCUzXD6Diq0=;
+	s=mail; t=1749678526;
+	bh=p125Qdh7AXpcJlrV+7yqlZZwam5I0mnuIIk+bsJi8UU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=X1KUaJ2vZwipKPBKokVHgxzdwtYRuJjl1kPJJnlJRoEZsVaLlH7zvZbqAru5khxja
-	 UdazX8hjDh3qWdJEMpTTnHKE/JHAbKmNX7yijDy+DUt+ZoZKani5n7TidH3PNS0HE/
-	 zbf7rbjoEjvcYwcmcoSRN2TJgU7Z07KOJWHGwvDorHqzWRZ7bmkpmXUth+Owb1LVrl
-	 b0L3vcnwziQl3r2jtx6klopCEyKTEcVFMt904uKxIjHJ3hupWP7AAnBXjSL1MRDDr3
-	 rAFBRexrxeLCGq+3mvUhbpeELFkLTycraMSG1Mhm/7p2lK//T4MHCNCaV20CC9pUCz
-	 cjjSSx+t5wXUA==
+	b=EidgVnMiQFzztrReyrHUBVJ/dgBh0iS528uSU6ZSU0dw/oVXjLTONw6yvYb3IBPqR
+	 fKgkeucn1eAdTsG9IGr5r2aUrGrxN6zYq7QdHqiCmC4B2zFZDg7TQ2Scgu1sd8Vkma
+	 /SDNw9lX2QVSf79dLPn5C6nN0SqBisjOIt9F2xoXzfsDGUwlygMqnwXUlB33nyq/cD
+	 J+eh0MSZQk8Vd1Il9blFhNbKZsEAk+7KZhyEnvNY1mRQzI+tfGnnc6nJ1MWCJYMAHN
+	 elozjHQDkEKzQZ3L1vxI/6Li0jeFjXFFpvi0NF2PChhCmw9F5Y1S3CwcqhF6ed1T5e
+	 1bPu91kPSGFTQ==
 Received: from localhost (unknown [212.93.144.165])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: cristicc)
-	by bali.collaboradmins.com (Postfix) with UTF8SMTPSA id 182F617E1560;
-	Wed, 11 Jun 2025 23:48:36 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with UTF8SMTPSA id EFA8C17E0342;
+	Wed, 11 Jun 2025 23:48:45 +0200 (CEST)
 From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Date: Thu, 12 Jun 2025 00:47:48 +0300
-Subject: [PATCH 2/3] arm64: dts: rockchip: Enable HDMI PHY clk provider on
- rk3576
+Date: Thu, 12 Jun 2025 00:47:49 +0300
+Subject: [PATCH 3/3] arm64: dts: rockchip: Add HDMI PHY PLL clock source to
+ VOP2 on rk3576
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-rk3576-hdmitx-fix-v1-2-4b11007d8675@collabora.com>
+Message-Id: <20250612-rk3576-hdmitx-fix-v1-3-4b11007d8675@collabora.com>
 References: <20250612-rk3576-hdmitx-fix-v1-0-4b11007d8675@collabora.com>
 In-Reply-To: <20250612-rk3576-hdmitx-fix-v1-0-4b11007d8675@collabora.com>
 To: Sandy Huang <hjc@rock-chips.com>, 
@@ -78,32 +78,51 @@ Cc: kernel@collabora.com, Andy Yan <andyshrk@163.com>,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
 
-As with the RK3588 SoC, the HDMI PHY PLL on RK3576 can be used as a more
-accurate pixel clock source for VOP2, which is actually mandatory to
-ensure proper support for display modes handling.
+Since commit c871a311edf0 ("phy: rockchip: samsung-hdptx: Setup TMDS
+char rate via phy_configure_opts_hdmi"), the workaround of passing the
+rate from DW HDMI QP bridge driver via phy_set_bus_width() became
+partially broken, as it cannot reliably handle mode switches anymore.
 
-Add the missing #clock-cells property to allow using the clock provider
-functionality of HDMI PHY.
+Attempting to fix this up at PHY level would not only introduce
+additional hacks, but it would also fail to adequately resolve the
+display issues that are a consequence of the system CRU limitations.
 
-Fixes: ad0ea230ab2a ("arm64: dts: rockchip: Add hdmi for rk3576")
+Instead, proceed with the solution already implemented for RK3588: make
+use of the HDMI PHY PLL as a better suited DCLK source for VOP2. This
+will not only address the aforementioned problem, but it should also
+facilitate the proper operation of display modes up to 4K@60Hz.
+
+It's worth noting that anything above 4K@30Hz still requires high TMDS
+clock ratio and scrambling support, which hasn't been mainlined yet.
+
+Fixes: d74b842cab08 ("arm64: dts: rockchip: Add vop for rk3576")
 Cc: stable@vger.kernel.org
 Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3576.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3576.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3576.dtsi b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-index 1086482f04792325dc4c22fb8ceeb27eef59afe4..6a13fe0c3513fb2ff7cd535aa70e3386c37696e4 100644
+index 6a13fe0c3513fb2ff7cd535aa70e3386c37696e4..b1ac23035dd789f0478bf10c78c74ef167d94904 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3576.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3576.dtsi
-@@ -2391,6 +2391,7 @@ hdptxphy: hdmiphy@2b000000 {
- 			reg = <0x0 0x2b000000 0x0 0x2000>;
- 			clocks = <&cru CLK_PHY_REF_SRC>, <&cru PCLK_HDPTX_APB>;
- 			clock-names = "ref", "apb";
-+			#clock-cells = <0>;
- 			resets = <&cru SRST_P_HDPTX_APB>, <&cru SRST_HDPTX_INIT>,
- 				 <&cru SRST_HDPTX_CMN>, <&cru SRST_HDPTX_LANE>;
- 			reset-names = "apb", "init", "cmn", "lane";
+@@ -1155,12 +1155,14 @@ vop: vop@27d00000 {
+ 				 <&cru HCLK_VOP>,
+ 				 <&cru DCLK_VP0>,
+ 				 <&cru DCLK_VP1>,
+-				 <&cru DCLK_VP2>;
++				 <&cru DCLK_VP2>,
++				 <&hdptxphy>;
+ 			clock-names = "aclk",
+ 				      "hclk",
+ 				      "dclk_vp0",
+ 				      "dclk_vp1",
+-				      "dclk_vp2";
++				      "dclk_vp2",
++				      "pll_hdmiphy0";
+ 			iommus = <&vop_mmu>;
+ 			power-domains = <&power RK3576_PD_VOP>;
+ 			rockchip,grf = <&sys_grf>;
 
 -- 
 2.49.0
