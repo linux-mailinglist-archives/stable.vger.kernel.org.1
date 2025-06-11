@@ -1,233 +1,120 @@
-Return-Path: <stable+bounces-152415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567A6AD553C
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 14:17:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD79DAD559F
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 14:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CBEA3ABD8A
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 12:16:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9325B1E04EE
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 12:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6292C27AC3C;
-	Wed, 11 Jun 2025 12:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF4D2E6123;
+	Wed, 11 Jun 2025 12:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="ftFRl3nH"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="wvgj7aGI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C3B78F34;
-	Wed, 11 Jun 2025 12:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEBF155322
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 12:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749644220; cv=none; b=hyQ5ZRKegvAK6p/wEWX+KvmTeLN77Rjf3uWUCZZEf7Z9snG8VxQwa1ta5IOYAw2WS9mzrIik96NG+zaFLmL9DEQ6muFGdRHxQ9wquLpaNrjRuvZV49Tt4goWviF1ckWlH6rWF8WuronK1HbT3QJmXgavDQ7ymIH70s6fmG4S69k=
+	t=1749645228; cv=none; b=krtf/J07KAlm14ilgLJh+csb0wKjKCAAlL1EcckDiGxHS1DTtFOzY7JP2eIkBP50JbMWpL3QduTh+01Vp1ezFMVpmG9NmFp/pAfTPknFVxeCl+lH/CWLHq1zR7/6fCQzxX7IvZhTGPG/OGUoliWhPuUhN9SB4l6/VK3B6rg5rEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749644220; c=relaxed/simple;
-	bh=2fgo+DfYW6hkb8u8dSOtf7+gmhcII4bUlVTgpcygRbs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZZs53l41/2ypuMu81ckoH52AwzbdyCbcpNP6738wd1yFr+DY2Nj/Z/TYp4wV8wcxW0VnaCBxc5XnPLj9ryffH2k4C6qzLxuUTdL31GkHCbG0RaiV+yc3PNZJb9d1y6IPUEtVELn8UlbzSXaZozaeCNrmVI7xbqVsQyvHfw7x2rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=ftFRl3nH; arc=none smtp.client-ip=52.95.48.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1749645228; c=relaxed/simple;
+	bh=g3NAXjEVv53ME39m4WFK3zaviYHTbygBx9suNW1Gghc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TuPdIcO+MBmkD8VK8KsCgTO+Rg6kCmZaueolN756Yg2Ua8MkPT3nJMqdqTZfxVPQxACySsW2kpE5Q1GfUHV+tBgPCWlulA3xt8iK3zvYx8kmRQn962sORPAdfhKuf40twyZoSfiA3FdFEs9yXzyj5/GJF1R3F/EvLc9hUArbejk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=wvgj7aGI; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-453066fad06so29366705e9.2
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 05:33:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1749644218; x=1781180218;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=B4ji9po20KtVxaeun/VeETG8Hky3+gtaCUe9OwsWfc0=;
-  b=ftFRl3nHGkMmMMGA7v/gX7WPNBMMKAEx8asCfi+Z9B/8WW3NJ7sfn2OF
-   1v9BE5XL5otu6rJyMUtOli5XVNalb2zRYw+BMZRPUsJrYWl5WNsigM7zK
-   sqERkvCrAixTX/JY4Bg5h15dSPGbO4mcicXyN32go0C/s6DtukOMc7PSm
-   d27W0BIod/AGP9yLp3Jr5vKbln9ri5eYsppRP6IbDYrI7SQsnV2q+olmT
-   EX+jV0a16Q7yY0+g4MopM9E9ejvwHI8YFsfSIUklS8WmIqFeE4j5U1NqY
-   qZ0S/2VPduyjraMDZuSg85eCLu8CoJotmG0CA61dKaxfcXEnvZeJ3ujna
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.16,227,1744070400"; 
-   d="scan'208";a="500409699"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 12:16:55 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.10.100:23515]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.1.131:2525] with esmtp (Farcaster)
- id 59df4382-3cb2-4f51-a171-145e622f87ad; Wed, 11 Jun 2025 12:16:54 +0000 (UTC)
-X-Farcaster-Flow-ID: 59df4382-3cb2-4f51-a171-145e622f87ad
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 11 Jun 2025 12:16:54 +0000
-Received: from dev-dsk-abuehaze-1c-21d23c85.eu-west-1.amazon.com
- (10.13.244.41) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
- 15.2.1544.14; Wed, 11 Jun 2025 12:16:48 +0000
-From: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-To:
-CC: <abuehaze@amazon.com>, <stable@vger.kernel.org>, kernel test robot
-	<oliver.sang@intel.com>, Hagar Hemdan <hagarhem@amazon.com>, Shaoying Xu
-	<shaoyi@amazon.com>, Jens Axboe <axboe@kernel.dk>, "Michael S. Tsirkin"
-	<mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, Keith Busch <kbusch@kernel.org>, "Christoph
- Hellwig" <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<virtualization@lists.linux.dev>, <linux-nvme@lists.infradead.org>
-Subject: [PATCH] Revert "block: don't reorder requests in blk_add_rq_to_plug"
-Date: Wed, 11 Jun 2025 12:14:54 +0000
-Message-ID: <20250611121626.7252-1-abuehaze@amazon.com>
-X-Mailer: git-send-email 2.47.1
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1749645225; x=1750250025; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=58tB31KJ4kl8/PiwakZKBV9Caj2k0aAHpQ5UO46MXf8=;
+        b=wvgj7aGIW7nNH3KEdd/Gaao/JvQpErAchCv1Z/8i+fWdiOWJzgeMdkRorHZ/A3z1Kn
+         WiMJGOqKQNoG16lUzt8h3gHqnunYgiLhTJpGNFrcvxOISyBPlv6/bC+sY1fKK0yMHpEm
+         KMvuwX6If2cDtbeDAhdWqr3aNFngiulnhrneswIyZox858Tm/aQ6UAd6k5xKpL4NQvMj
+         Gsx0zTVkDas0It0Wg73hGPhglCENGBImoH2iqqEJerefbTENwZ5YSLVkhjwACu9QCY1Q
+         m2cEUFk6efkiYXKEecB9bFjXEqfRLrIlR2QKtlaHaJwI8aniz1MRUG8uoQRwFUW5OreI
+         dpdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749645225; x=1750250025;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=58tB31KJ4kl8/PiwakZKBV9Caj2k0aAHpQ5UO46MXf8=;
+        b=Gt7++hTseCVKOgY0NX/gsWKZm2eu0JgAlwGSxO4e5qY/P3HTPRzR5RcbY3to2c+vZ4
+         LceXEd8zJv4LX37aClxYsGiHV0cIn40KmTPwpRIfVczuYDPNzOxUkn9imUBxwgeSTzTq
+         0QV8YsRfFPq6sZcNWzuVnlInQRSTkCuktRGWxu4STqfdkLczU41vx3GDwsTi5pXUPQQs
+         yDN4Zjrme/E/uJUTRbfyLDTmDsvml+j07iJnsXg8nctV8sAx2YGsXX2/0wXe6gzmpjnw
+         WnVkXlt1ouavyL7Xi0eBnyQjuHJSALRE5+KApsGQFQlFLF64IqeH6iqikitSwM1uGwFs
+         1JAA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/BPDVMtjH4AYaeXkIu51vpN/eu3T9MyJtyLkP9gqamqvFnTXxXLna0bz2ZvZ87bCqT8mw2AE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUOtjWKLoRiAs1y3BSIYQZy1APPrqUgRaJ0wfA1mqNuHv1dMB7
+	Sn489TZWJIiwJr579LyVKH9ApzREF3JGSfQ9iBTnX2oCMsFwqfjIJUzFCoju1n/Izog=
+X-Gm-Gg: ASbGnctkAWO2SDvyIk35yXjRZwVOE+H7pH8T72xLWNY+7wBmTE8A5sUdVddAKBMyI0C
+	bp4H9qEFTXXchb49+10RqgoVbTGLSldfup6zfUdcaavbVHsW5by9wTWy7z6gXhOTE8nyq1bPYp6
+	fiaKS3XZ/HbmiDrNeOls1x83fbvjb0NQ/r84p1AxHkPgj5QExeoqWabvEfaaDgZtPhTvJm8KJA5
+	IPKpEKkMRc1Fp0NMWukKQo0kQlpLuVrO0FZmCSsOHO04O3jKFuIAlHFdDD+Mp5ccXW3ApjzeAMI
+	2tuezMiYdu2QYoPopxRu+iIrxhBLgcUy7dIEL8oJ3AmC1vZkcwdDudUxqxCgh1w=
+X-Google-Smtp-Source: AGHT+IH+yTHZNTGeC/+RF5wU+jFRSmzOWMhHxhfFM0B/77rWsjy5ljPuBPABLlLuzVsDVde3T5b07A==
+X-Received: by 2002:a05:600c:4686:b0:453:9b3:5b65 with SMTP id 5b1f17b1804b1-453248b09a4mr27662635e9.8.1749645224718;
+        Wed, 11 Jun 2025 05:33:44 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:3994:acce:fbc8:2f34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453252165c6sm19762355e9.29.2025.06.11.05.33.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 05:33:44 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Binbin Zhou <zhoubb.aaron@gmail.com>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	loongarch@lists.linux.dev,
+	linux-gpio@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] gpio: loongson-64bit: Correct Loongson-7A2000 ACPI GPIO access mode
+Date: Wed, 11 Jun 2025 14:33:40 +0200
+Message-ID: <174964521463.38087.18017006359179937333.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250610115926.347845-1-zhoubinbin@loongson.cn>
+References: <20250610115926.347845-1-zhoubinbin@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
- EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-This reverts commit e70c301faece15b618e54b613b1fd6ece3dd05b4.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Commit <e70c301faece> ("block: don't reorder requests in
-blk_add_rq_to_plug") reversed how requests are stored in the blk_plug
-list, this had significant impact on bio merging with requests exist on
-the plug list. This impact has been reported in [1] and could easily be
-reproducible using 4k randwrite fio benchmark on an NVME based SSD without
-having any filesystem on the disk.
 
-My benchmark is:
+On Tue, 10 Jun 2025 19:59:26 +0800, Binbin Zhou wrote:
+> According to the description of the Loongson-7A2000 ACPI GPIO register in
+> the manual, its access mode should be BIT_CTRL_MODE, otherwise there maybe
+> some unpredictable behavior.
+> 
+> 
 
-    fio --time_based --name=benchmark --size=50G --rw=randwrite \
-	--runtime=60 --filename="/dev/nvme1n1" --ioengine=psync \
-	--randrepeat=0 --iodepth=1 --fsync=64 --invalidate=1 \
-	--verify=0 --verify_fatal=0 --blocksize=4k --numjobs=4 \
-	--group_reporting
+Applied, thanks!
 
-On 1.9TiB SSD(180K Max IOPS) attached to i3.16xlarge AWS EC2 instance.
+[1/1] gpio: loongson-64bit: Correct Loongson-7A2000 ACPI GPIO access mode
+      https://git.kernel.org/brgl/linux/c/72f37957007d25f4290e3ba40d40aaec1dd0b0cf
 
-Kernel        |  fio (B.W MiB/sec)  | I/O size (iostat)
---------------+---------------------+--------------------
-6.15.1        |   362               |  2KiB
-6.15.1+revert |   660 (+82%)        |  4KiB
---------------+---------------------+--------------------
-
-I have run iostat while the fio benchmark was running and was able to
-see that the I/O size seen on the disk is shown as 2KB without this revert
-while it's 4KB with the revert. In the bad case the write bandwidth
-is capped at around 362MiB/sec which almost 2KiB * 180K IOPS so we are
-hitting the SSD Disk IOPS limit which is 180K. After the revert the I/O
-size has been doubled to 4KiB hence the bandwidth has been almost doubled
-as we no longer hit the Disk IOPS limit.
-
-I have done some tracing using bpftrace & bcc and was able to conclude that
-the reason behind the I/O size discrepancy with the revert is that this
-fio benchmark is subimitting each 4k I/O as 2 contiguous 2KB bios.
-
-In the good case each 2 bios are merged in a 4KB request that's then been
-submitted to the disk while in the bad case 2K bios are submitted to the
-disk without merging because blk_attempt_plug_merge() failed to merge
-them as seen below.
-
-**Without the revert**
-
-[12:12:28]
-r::blk_attempt_plug_merge():int:$retval
-         COUNT      EVENT
-         5618       $retval = 1
-         176578     $retval = 0
-
-**With the revert**
-
-[12:11:43]
-r::blk_attempt_plug_merge():int:$retval
-        COUNT      EVENT
-        146684     $retval = 0
-        146686     $retval = 1
-
-In blk_attempt_plug_merge() we are iterating ithrought the plug list
-from head to tail looking for a request with which we can merge the
-most recently submitted bio.
-
-With commit <e70c301faece> ("block: don't reorder requests in
-blk_add_rq_to_plug") the most recent request will be at the tail so
-blk_attempt_plug_merge() will fail because it tries to merge bio with
-the plug list head. In blk_attempt_plug_merge() we don't iterate across
-the whole plug list because as we exit the loop once we fail merging in
-blk_attempt_bio_merge().
-
-In commit <bc490f81731> ("block: change plugging to use a singly linked
-list") the plug list has been changed to single linked list so there's
-no way to iterate the list from tail to head which is the only way to
-mitigate the impact on bio merging if we want to keep commit <e70c301faece>
-("block: don't reorder requests in blk_add_rq_to_plug").
-
-Given that moving plug list to a single linked list was mainly for
-performance reason then let's revert commit <e70c301faece> ("block: don't
-reorder requests in blk_add_rq_to_plug") for now to mitigate the
-reported performance regression.
-
-[1] https://lore.kernel.org/lkml/202412122112.ca47bcec-lkp@intel.com/
-
-Cc: stable@vger.kernel.org      # 6.12
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Reported-by: Hagar  Hemdan <hagarhem@amazon.com>
-Reported-and-bisected-by: Shaoying Xu <shaoyi@amazon.com>
-Signed-off-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
----
- block/blk-mq.c             | 4 ++--
- drivers/block/virtio_blk.c | 2 +-
- drivers/nvme/host/pci.c    | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index c2697db59109..28965cac19fb 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1394,7 +1394,7 @@ static void blk_add_rq_to_plug(struct blk_plug *plug, struct request *rq)
- 	 */
- 	if (!plug->has_elevator && (rq->rq_flags & RQF_SCHED_TAGS))
- 		plug->has_elevator = true;
--	rq_list_add_tail(&plug->mq_list, rq);
-+	rq_list_add_head(&plug->mq_list, rq);
- 	plug->rq_count++;
- }
- 
-@@ -2846,7 +2846,7 @@ static void blk_mq_dispatch_plug_list(struct blk_plug *plug, bool from_sched)
- 			rq_list_add_tail(&requeue_list, rq);
- 			continue;
- 		}
--		list_add_tail(&rq->queuelist, &list);
-+		list_add(&rq->queuelist, &list);
- 		depth++;
- 	} while (!rq_list_empty(&plug->mq_list));
- 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 7cffea01d868..7992a171f905 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -513,7 +513,7 @@ static void virtio_queue_rqs(struct rq_list *rqlist)
- 		vq = this_vq;
- 
- 		if (virtblk_prep_rq_batch(req))
--			rq_list_add_tail(&submit_list, req);
-+			rq_list_add_head(&submit_list, req); /* reverse order */
- 		else
- 			rq_list_add_tail(&requeue_list, req);
- 	}
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index f1dd804151b1..5f7da42f9dac 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1026,7 +1026,7 @@ static void nvme_queue_rqs(struct rq_list *rqlist)
- 		nvmeq = req->mq_hctx->driver_data;
- 
- 		if (nvme_prep_rq_batch(nvmeq, req))
--			rq_list_add_tail(&submit_list, req);
-+			rq_list_add_head(&submit_list, req); /* reverse order */
- 		else
- 			rq_list_add_tail(&requeue_list, req);
- 	}
+Best regards,
 -- 
-2.47.1
-
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
