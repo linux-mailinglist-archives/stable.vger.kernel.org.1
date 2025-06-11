@@ -1,137 +1,157 @@
-Return-Path: <stable+bounces-152406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4BBAD5174
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 12:20:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A3AAD5240
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 12:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D83E1BC0132
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 10:17:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 570F57AA493
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 10:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539BA267F75;
-	Wed, 11 Jun 2025 10:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFAB2676D3;
+	Wed, 11 Jun 2025 10:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkA0HPZw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gz/8p5pm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEDC2620C6;
-	Wed, 11 Jun 2025 10:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCEA2222A0;
+	Wed, 11 Jun 2025 10:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749636911; cv=none; b=PW3Q8tOTvQrRv4z3rkGJCxa5IDgV3Aj8pLBQMKu/vKleN4gAcVCOk66zUD1Y2ynlJIZuxfjOTjtM1hAY1OQeBK7Fzja8BnXG9qg5Cwb7eJSxBUq4J1j17wcxoJl00v5uIddb04rX+ZpiDY7GpdeaG1Fi9z4WciKmQpj8GDPINTA=
+	t=1749638539; cv=none; b=opNLweLK4Hl403gh/4YpA4A0cryeQgtf0wX2LvVdTOSUpFygaJA4Ih1iYREDf6LB7Pn+DVVSCWDABIHFf6g7+ShpTOn/LaiHpeYUD1PLUmI21K6lHfmgijizsOY68H++ujFa0gqSzqVW2k70Srtr7twtcKLPPrcIiqrjeMiyFBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749636911; c=relaxed/simple;
-	bh=0jt+ieRTt3nJS+sA5TXn3x66rs2/r295hipYdSbMfPQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nU1+pYLHFZwjzCrfm582k7mrfQQF9QjpP9rzKfVwa0JMKp2CUdUXiWKfMztlIvOeShqqQZKAGWNtrQ85F/FVBSCc8cv7gr8yATqweQdQEgyRzZLHKJfYeCyk6uLOONP8yVoLUYkARW8MVvy8da0PrfJH8POqj2a9GNJLnpf7iqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkA0HPZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4786CC4CEF1;
-	Wed, 11 Jun 2025 10:15:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749636910;
-	bh=0jt+ieRTt3nJS+sA5TXn3x66rs2/r295hipYdSbMfPQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nkA0HPZw4x5N6eOgYkRmMmlIvafFoRG58zueI0bBVj3PUZKiM1TopBgmqnwqeUNAT
-	 mICVyaNWWPOBj2XXs8xabma2ushIIcTUY2iEPa1gZRKoasOu4sSg2U82UWXbsgXAeG
-	 DlxvoidfDKaxBTIP3Pd7arMVX8mAPJdl0SFiSkFSjnjSESLpL0m2SCRBfk+MCFYd1X
-	 2t2TQwAM9XWhfqMCBoQovQLekJiHgj4Oc6zzq93zbUO1Rwyte2Iszjkcw4d3jajMyi
-	 iSpExhKcVuqYJEt49741590i6zruTa5pSFPUxbvKMeJLicV3TCN87+yfc2GIGXjApW
-	 jrFO2Pp6fOjkA==
-Message-ID: <8242fbd5-85f8-4ab0-b796-24d0048e8bdc@kernel.org>
-Date: Wed, 11 Jun 2025 12:15:07 +0200
+	s=arc-20240116; t=1749638539; c=relaxed/simple;
+	bh=h08gi4WLI6tcGkAwrH+Thpr07BPoSnIzkPWpfLw/hfY=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=OWLMMNqQYGJbCIwLV+eR0rTuKBOliYBWKLk8FgUtd56d2SVz/e8gVTjOXB8eCODCoajVszSA/jnRw6iSSHclnb/dyDG+xvpqn7FWLDgJviwm8If+cyNJEKd4o7/KhSMhnTFR41tZsS572EBOoI1OQ4B4yLp2lF5KBNxfjgfwTnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gz/8p5pm; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749638538; x=1781174538;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=h08gi4WLI6tcGkAwrH+Thpr07BPoSnIzkPWpfLw/hfY=;
+  b=gz/8p5pmWTZjGYtYQCGafI5h1d8NwkdPj1cdexR+SJCLXTMVpivBoCIL
+   lSHCewk0uH1WCfr20Nspn6p0x9PaWqw3qeZZvUQ+i8pJsX/RCHgVMR5Rh
+   Jh2THmzbaBbgB53La5TgrJmZ2ytzqh8LXgqh9ZGp+kA+HeowusWhABzCN
+   SRWh2/3xniM9XOPkL6qAxKl2Iz3ed5MnOyQK4QhJZVlCD48SHxqyajcTX
+   bs6odbi+mqb8JwDBdXsJZBaY1u652omJpj1VSdVpsz03NMaX99By0OKTi
+   NOb3GUv9c8IVGkxixjw9ouwEZM0/KYhK9DxqNujmVW2HkSbk7zdVBC/Yi
+   Q==;
+X-CSE-ConnectionGUID: bQbv3VmUTsy+K2NIn3tC4Q==
+X-CSE-MsgGUID: oOOyH7xTS4qbxPPTt2k8WQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="55579937"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="55579937"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 03:42:16 -0700
+X-CSE-ConnectionGUID: j9wcgsUQTH6sMQgM6O0/oA==
+X-CSE-MsgGUID: maI4rBXCRCqFr7C+RSwyzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="147515911"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.183])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 03:42:12 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Wed, 11 Jun 2025 13:42:08 +0300 (EEST)
+To: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
+cc: platform-driver-x86@vger.kernel.org, intel-xe@lists.freedesktop.org, 
+    Hans de Goede <hdegoede@redhat.com>, lucas.demarchi@intel.com, 
+    rodrigo.vivi@intel.com, thomas.hellstrom@linux.intel.com, 
+    airlied@gmail.com, simona@ffwll.ch, david.e.box@linux.intel.com, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH v4 01/10] platform/x86/intel/pmt: fix a crashlog NULL
+ pointer access
+In-Reply-To: <20250610211225.1085901-2-michael.j.ruhl@intel.com>
+Message-ID: <e4f3a1e0-5332-212d-6ad0-8a72dcaf554a@linux.intel.com>
+References: <20250610211225.1085901-1-michael.j.ruhl@intel.com> <20250610211225.1085901-2-michael.j.ruhl@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "powerpc: do not build ppc_save_regs.o always" has been
- added to the 6.15-stable tree
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org,
- stable-commits@vger.kernel.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-References: <20250610115602.1537089-1-sashal@kernel.org>
- <1b88323e-8d79-4a79-9e6a-ea817a9e056b@kernel.org>
- <784650aa-80e5-4f1a-8a7f-6e61c3225e77@csgroup.eu>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <784650aa-80e5-4f1a-8a7f-6e61c3225e77@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-On 11. 06. 25, 7:39, Christophe Leroy wrote:
-> 
-> 
-> Le 11/06/2025 à 06:15, Jiri Slaby a écrit :
->> On 10. 06. 25, 13:56, Sasha Levin wrote:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>      powerpc: do not build ppc_save_regs.o always
->>>
->>> to the 6.15-stable tree which can be found at:
->>>      https://eur01.safelinks.protection.outlook.com/? 
->>> url=http%3A%2F%2Fwww.kernel.org%2Fgit%2F%3Fp%3Dlinux%2Fkernel%2Fgit%2Fstable%2Fstable-queue.git%3Ba%3Dsummary&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cf9c2453dd6154212e43a08dda89ea845%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638852121563909145%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ckwC5j7O2j%2FATCggT3jwcKl3K5HRVpwA7DxjZUGnwZg%3D&reserved=0
->>
->> Please drop this from all trees. It was correctly broken. The whole if 
->> was removed later by 93bd4a80efeb521314485a06d8c21157240497bb.
-> 
-> Isn't it better to keep it and add 93bd4a80efeb ("powerpc/kernel: Fix 
-> ppc_save_regs inclusion in build") instead of droping it and keep a bad 
-> test that works by chance ?
+On Tue, 10 Jun 2025, Michael J. Ruhl wrote:
 
-Makes sense to me too (it worked by a chance for almost a decade). So 
-all or nothing...
+> Usage of the intel_pmt_read() for binary sysfs, requires a pcidev.  The
+> current use of the endpoint value is only valid for telemetry endpoint
+> usage.
+> 
+> Without the ep, the crashlog usage causes the following NULL pointer
+> exception:
+> 
+> BUG: kernel NULL pointer dereference, address: 0000000000000000
+> Oops: Oops: 0000 [#1] SMP NOPTI
+> RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+> Code:
+> Call Trace:
+>  <TASK>
+>  ? sysfs_kf_bin_read+0xc0/0xe0
+>  kernfs_fop_read_iter+0xac/0x1a0
+>  vfs_read+0x26d/0x350
+>  ksys_read+0x6b/0xe0
+>  __x64_sys_read+0x1d/0x30
+>  x64_sys_call+0x1bc8/0x1d70
+>  do_syscall_64+0x6d/0x110
+> 
+> Augment the inte_pmt_entry to include the pcidev to allow for access to
 
-thanks,
+intel_pmt_entry
+
+> the pcidev and avoid the NULL pointer exception.
+> 
+> Fixes: 416eeb2e1fc7 ("platform/x86/intel/pmt: telemetry: Export API to read telemetry")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+> ---
+>  drivers/platform/x86/intel/pmt/class.c | 3 ++-
+>  drivers/platform/x86/intel/pmt/class.h | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
+> index 7233b654bbad..d046e8752173 100644
+> --- a/drivers/platform/x86/intel/pmt/class.c
+> +++ b/drivers/platform/x86/intel/pmt/class.c
+> @@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
+>  	if (count > entry->size - off)
+>  		count = entry->size - off;
+>  
+> -	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
+> +	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+>  				    entry->base, off, count);
+>  
+>  	return count;
+> @@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(struct intel_pmt_entry *entry,
+>  		return -EINVAL;
+>  	}
+>  
+> +	entry->pcidev = pci_dev;
+>  	entry->guid = header->guid;
+>  	entry->size = header->size;
+>  	entry->cb = ivdev->priv_data;
+> diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
+> index b2006d57779d..f6ce80c4e051 100644
+> --- a/drivers/platform/x86/intel/pmt/class.h
+> +++ b/drivers/platform/x86/intel/pmt/class.h
+> @@ -39,6 +39,7 @@ struct intel_pmt_header {
+>  
+>  struct intel_pmt_entry {
+>  	struct telem_endpoint	*ep;
+> +	struct pci_dev		*pcidev;
+>  	struct intel_pmt_header	header;
+>  	struct bin_attribute	pmt_bin_attr;
+>  	struct kobject		*kobj;
+> 
+
 -- 
-js
-suse labs
+ i.
+
 
