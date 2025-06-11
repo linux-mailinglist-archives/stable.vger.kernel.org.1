@@ -1,320 +1,184 @@
-Return-Path: <stable+bounces-152450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8630FAD5E35
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 20:32:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F17DAD5E66
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 20:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B8F4179D8D
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 18:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAA13A95E3
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 18:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2145F25BF17;
-	Wed, 11 Jun 2025 18:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9930C1DE2CC;
+	Wed, 11 Jun 2025 18:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZ2sHWTi"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UMmMCFRj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2089.outbound.protection.outlook.com [40.107.102.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26BC2A1BF;
-	Wed, 11 Jun 2025 18:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749666738; cv=none; b=m2t969mmMLR7kpUkx95ipSR2JbFWuzag7uM2PS8V/fP0/2tFMNMOcLlQQVGSSoDl0VgNTao4gY+z22PdkFdQTPDXsPkSdv+JC7Cj5YqSJ2MmxKixgsTbJ1D+DrNxSUZHlJNQvnEtlplgDqCnCDWDDgnPBYdjojVoIgJpPBF7T7o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749666738; c=relaxed/simple;
-	bh=1uswyV+euVkL0AB+M7lXpjVibViATfLNROU7KRjGg5A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NL29nYKiOdViIg0u7rsJBhaFZwDlfaWPiKcVeepzNZ3lMea7hRIYT8X7cAoCtELx1Um7GWY4hKd+In/SAcyeb955jKcfCHhtkQdRWm1VuuUlVEl2LLnAZMxnxcSLxWhR9/WpYMVEIjgWCrwpQlhCHaIGMNmpny2rNtr/S2lelQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZ2sHWTi; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ad89c32a7b5so23251666b.2;
-        Wed, 11 Jun 2025 11:32:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749666734; x=1750271534; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HSjIXkNGEgRZZ4qsmd9FzkBC8kgD7Px41RUUCeGIEKo=;
-        b=IZ2sHWTiy5KXAWXeJ4KyEEWlT1Ax27fgdl1h6UhsBXBgPIVHRa8vcp3/KKYOnXyUKt
-         AInCd7dZrmyu42TU1FKLnHa+Vn5vaPGW+wKmsFWsDn5BOIuFVy03BS/k2k8rQugTyMrN
-         mPrEGxwRVwT0bWS1VlBVVlqV5s7RdEukTdIZKLaAdg20venpLcoaKBDKX8XUbBDO4tTZ
-         wRywdhJJPxynRdEL0y3GYklg1sDNLC0eIB2DdpJ/a4yXm1lu+GE/Dt/R/jdegDV1rqSp
-         y+H5R86oR0o0hUxOCSVNGSVNRhCNFAwD95REqjTT8/jZ8GQYM+WWtzo/7rxsfVPB0l73
-         DR9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749666734; x=1750271534;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HSjIXkNGEgRZZ4qsmd9FzkBC8kgD7Px41RUUCeGIEKo=;
-        b=sxTnOTH3Ih22Yxn2ddE1XDkXK3eWwxfUf8b7wylhu2mjbMmS/XOqyg8g82UK5ZkpOR
-         KCrW6a5Mh/ZIUV3CBK/6MfoXgaxWY6XXbfzWDrfNDBaEZLsqMHJLteMTkBvxXN6rjEDd
-         DZk4PG0njjnINm53A51qTjSBfRl/qd0LmcmzzBBM3qeJ9hRg6ybIQ5XptBR/vg/8ITDp
-         JOn7fOtqKlWThzkk1uRXjhdyEkHRl3nbXKIFQ9hoqalt4t/0jrAkeorgAvDcSmLfjSny
-         XlLTMfOPHUDnMv2qG4WJb0iymUc2l6SSbhwZ4SowQC/pqcntsstsUBm8qfzSn5H153WH
-         g9xA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGfJs1KuysxiaYU+ZY5QkH0aDClUmehY2n1bVKerCHcHyxmmDBZLde9zSHCPgcNIUR35DgOEQuleg=@vger.kernel.org, AJvYcCWwwx9zy4MspAEMwTBWskW08MPCZP8dF4DPgrI0stuvRM2sLLKvESsxuBSTvmQsf0WlrOQJ87/+@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbl3BuA4+XXgAQg3LgkXF/hRUXQ6w/bokNQYw6hwQfxJWaJV7T
-	g47nLkuzAZiuJkqMiajcW6hOdXeSCaoHzUTwJEj731tBiId8cdbUET2/j1oYCDCRDTuufdqm8dW
-	oHM1Zvz1kngqUyt2Ds6+yUj+Yli1v4/tPIsJQbwk=
-X-Gm-Gg: ASbGnctUp29O/J4YXvkECs7uBSMNwNRZzGs/luSe8G5oizvyKweI8HPCqIqp28bh+jY
-	NJZYoEuti/D2BG0CJQryl/ugjQ4aNJoD7hrdLx3sSZx7f9DQ9KRLQ4kdtVZmR8XEZVjEw24TPgA
-	+Y8G+DQQcADyl179ZNpz4U3cnMQi/klCGDG2+Ldss=
-X-Google-Smtp-Source: AGHT+IEEJOoMZoaDP8TrMDo++u9j60YJaGpEQxpKWClxxCQIlsr77/YHfFQMVQjjwx+N4I0jcoGkbQimA/9Aqaq842Q=
-X-Received: by 2002:a17:907:9303:b0:add:deb0:8b64 with SMTP id
- a640c23a62f3a-ade8955ec01mr409852966b.24.1749666733913; Wed, 11 Jun 2025
- 11:32:13 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3571221567
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 18:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749667284; cv=fail; b=dieaAGZ5jt+4SP/4IpN+XUhMFA52QOAlhU8gGZ57Awy0bb/g3vee7F+y4zqnWSkUOtDFmWoodKaLtKbs8Kuh8ES4D3oSOSkT4Oyrrj1tTkNeulCojtB0ULa69n5Mcwn+CtPOqIWQmUHP9N2abAC65bAJx8y5A35RakjQg8rk3bo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749667284; c=relaxed/simple;
+	bh=RD7TEmXu7R0DPNeDZFDCNhB495M01e2vKAFAaR1MxYY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V2Fxz6sWorCQjKmMAjqy/5Pc34T5fl+wM2aPXgfwZzjHVMf1M6kANK+qZ/HspDhtkVXv9pfkGu9W/0xMJihQizYNQ7rnyr4HMtv84k99Sp1ghbhy1M/CMjID9eK30BZZGP5nWlJi1nNAu7bm15MZKwL0hgBF3GEMkvML6nkaYns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UMmMCFRj; arc=fail smtp.client-ip=40.107.102.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N7Cb8GbPVSbGXYrzzZk6aO0RaaK832wDfF9CndvLgHNEBqiMCh5mUVZTpAc7j5jyrCAWJ2WMS8iiDTY3r/pPlRJguM0Zvmb+SS/AFal2I+SeZsgZPLpRQWzauLd7V6hQv6R+nbrQFXOdEVq/Aey+Lg7ukTCZiL9fgXEIXGIs18dmCKURijsly1MwfiQvMqQQnXTcqzb4WqSdgbng8fyghtrKqydKVYYiFp8vhHCMVXY9V/9TH1ZjJSzSkrQYqmjJ1sgrIAQvn6ooCoDZzhQFk7VKgLBe0f348bkqcQQ/J7p71h3Tb+ukjrVmi/u1MwMlzbk44AVZUZVxQBDrbShy5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xv+xO0k0tM8wJh6In7a3ref/HZ2fEBuGCSCfk/vFMGQ=;
+ b=JW2cxkCLNNI8JOwyeE+jZ+mRpA/bvWewXVmXJlK1nWMC19N6xOfqOXiNNNZVHAJfduS2QEoO6IZ6mXln1MNuEBXIi8DmhA6se/LWNBTs7+iJUfP88V2GPjyM7xPS6sDChHsj7eS9ql4QLZHLzx9AzUO6n7yA8fLASdL6bTsnMvgo9Ikk2KqrDWKaE6z2uhNd2QI+kj06ekRYoFUvLe+ALkIoUX42ol4uiIvwP7okVM3k9IHu6je/zmXrFaZXEe5qezx2eecZBQEMdltQqXhtaVDY7TKkgxnETc2BfVfFkqZz/afkYxKCZ3hBpQokvLXEB+AUdkMrTE/rAoHTJz41Tw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xv+xO0k0tM8wJh6In7a3ref/HZ2fEBuGCSCfk/vFMGQ=;
+ b=UMmMCFRj4A/m29jKY+xdHPk/GDxmCc2tLjgZIip1kUzQH5tUqXW9bXxG8QPnARc4ZSCBe5GY5dMsc9aRUSga2G62P6yA3LprrWt+BSduhbQ6iABK3tj4MiXpoHhhQH/lH+OodNj8nt94WiL5SjbATEe3lm6moTu2bIVGofaSxS0=
+Received: from BN9PR03CA0622.namprd03.prod.outlook.com (2603:10b6:408:106::27)
+ by DS5PPF8002542C7.namprd12.prod.outlook.com (2603:10b6:f:fc00::657) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.34; Wed, 11 Jun
+ 2025 18:41:19 +0000
+Received: from BL6PEPF0001AB77.namprd02.prod.outlook.com
+ (2603:10b6:408:106:cafe::e2) by BN9PR03CA0622.outlook.office365.com
+ (2603:10b6:408:106::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.22 via Frontend Transport; Wed,
+ 11 Jun 2025 18:41:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB77.mail.protection.outlook.com (10.167.242.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8835.15 via Frontend Transport; Wed, 11 Jun 2025 18:41:19 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Jun
+ 2025 13:41:15 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Jun
+ 2025 13:41:15 -0500
+Received: from aaurabin-z5-cachy.amd.com (10.180.168.240) by
+ SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Wed, 11 Jun 2025 13:41:15 -0500
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
+ Zuo" <jerry.zuo@amd.com>, Daniel Wheeler <daniel.wheeler@amd.com>, Alex Hung
+	<alex.hung@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
+ Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH 05/10] drm/amd/display: Check dce_hwseq before dereferencing it
+Date: Wed, 11 Jun 2025 14:39:55 -0400
+Message-ID: <20250611184111.517494-6-aurabindo.pillai@amd.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250611184111.517494-1-aurabindo.pillai@amd.com>
+References: <20250611184111.517494-1-aurabindo.pillai@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1749539184.git.u.kleine-koenig@baylibre.com>
- <955e2c8f70e95f401530404a72d5bec1dc3dd2aa.1749539184.git.u.kleine-koenig@baylibre.com>
- <CAOfgUPg0Z6e5+awuqVMa7QUPiJ7aPp-dX6QNk80Y-bhpBYcsoQ@mail.gmail.com> <20250611073350f9e928ec@mail.local>
-In-Reply-To: <20250611073350f9e928ec@mail.local>
-Reply-To: cassio.neri@gmail.com
-From: Cassio Neri <cassio.neri@gmail.com>
-Date: Wed, 11 Jun 2025 19:32:02 +0100
-X-Gm-Features: AX0GCFtLANWqHaTUE9zhq3IvzxDDSTJBn4-WqlKRkQbhu1D2Je-7kswNme8eyRU
-Message-ID: <CAOfgUPgw-4ZNXm7P3hP-KQfmNf2xyKyUUJLsOgW2HNF9JWjtjg@mail.gmail.com>
-Subject: Re: [PATCH 5.10.y 2/3] rtc: Make rtc_time64_to_tm() support dates
- before 1970
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	Alessandro Zummo <a.zummo@towertech.it>, Alexandre Mergnat <amergnat@baylibre.com>, stable@vger.kernel.org, 
-	linux-rtc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB77:EE_|DS5PPF8002542C7:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d21a43f-6d76-4a3f-046f-08dda9178e29
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?c3vSxaqS8q1qJQR7oBAYvTr3Rlk+DEliCra4zoawFfZYNoHzQNxpKamsb13/?=
+ =?us-ascii?Q?VeuhF3jicIYxtVmHzR8aJ4yXepUoBlczXdUgHaB5IZ20OVIyNFb/uqjJr2lY?=
+ =?us-ascii?Q?NanXBHv2g3yTkJ6bQG6xqjCI1PDh7av6DVvNQ8RCIaL6V9cqkJAPR1QH39kL?=
+ =?us-ascii?Q?QhdMiLx7tt9J3Mq/A+XVxFgGjvVcDiMYpp4Kvz2qs8/vN/GjlX924uLjkak8?=
+ =?us-ascii?Q?uKa1CMy+laI0Dus1KL/1ZuIIg3cnnHk8LHVETjjqA0dZgc4Pqd4jOzXmxeVt?=
+ =?us-ascii?Q?o/8PzZwYzrPPk2Y7MoxvzjfkKFRZveAypPOMrGTtPQNbjfv3qcaMWucDnvEY?=
+ =?us-ascii?Q?AhU68vST4SLgCI8WoFFL+Rj6cqPDjt4r2YEPDPZ586QhrHI2u2YqeAVz42Bi?=
+ =?us-ascii?Q?wqqGRCdrzBKgfG8DvPbdCQEfwfgN3NVZHNRdKfPeTmsX2xF4V4VvBT1QcqKt?=
+ =?us-ascii?Q?dA4V/wDjLh6hfq8kcTWjvgZhpItASHyjAla3BdcFduARC7axaYafX9iBjz90?=
+ =?us-ascii?Q?A6bEzMav773s17/b13rZZ/a3N5107y+eJGo6BLA/l0/yYLXlodIx2VGxowVB?=
+ =?us-ascii?Q?fPsespPruQ70NdMZlzX1VW/L3WFrXogd62+5t/LPhCX7NhSEyVTCiTaJw+FA?=
+ =?us-ascii?Q?LE3rq8Ln8VUg2BX952g/dhlR2/Qg/lnoV7pKyKra6j/IoHbjJDOCBdHD/dLH?=
+ =?us-ascii?Q?wK+CX2F7R1kEhosxvQRYKZCh4wJntrCx0SS54+12yoa1ezdS7SukgTX89LPU?=
+ =?us-ascii?Q?bzmsH8Yul1AjgBgSDEAYoMzjabs7yZ17G7xgDy4Adat+IFEzK2lzb8Gi9ShL?=
+ =?us-ascii?Q?Ijb/YeV2d1g9TfZTHKKkxAk1a7KnajaW9Ecpg/h84TAGk+L/GD4f2uTFZ5rD?=
+ =?us-ascii?Q?P22trId2aoeC76WODz8Lkx7HZD8PxB3LmFKYnWzu3RzlFD4uYqUkQgcPSRlb?=
+ =?us-ascii?Q?k/085m5jxxSVe4eGMux83j5/Rp4GeyswtR+0MAxa/kQzVrbTHX6Ln3POeDsL?=
+ =?us-ascii?Q?Ke24uRUbYP0q6l3OLh1ydPiDISjZwQWSNHywJr171s61zoNMKJU5A30BSTqC?=
+ =?us-ascii?Q?6uFfCSfGomIlj5M3moEbFkYNcbXLjUtqKgVDf9NL+DKsa4x0Xgm4GeLHj3As?=
+ =?us-ascii?Q?Kf8S+HD87lY/fsXlDR3UMvhoBpM64OR4eGmMOdyANz6CuOJlYBrAFaKb8j2Q?=
+ =?us-ascii?Q?iCcbGafJKC+m9vyjvZ2/hjAWDuSbFM3RCjPDrwYCD/raoQpisnovZzPwHcwj?=
+ =?us-ascii?Q?54ETWG0NjHV9kAJtO+LGvONkDWRdIClY4vN5awv5clmuJ93qLTfKUjoGx9U3?=
+ =?us-ascii?Q?0rsx2DrNro2MMRD2v42G4hietEGd1N5RTI9vnLdaCalhQ/wMEuCld+tbHC5p?=
+ =?us-ascii?Q?hxBcohX1Rg4SIynP4+TRhwWuWkAAhXXF+CeWHDDypuNcwL5omSk6iGg8veeW?=
+ =?us-ascii?Q?wWZMd4QBREpHCV+57W4Xx6LBkmeTZb7gTTsJemndTxV7P4+2qsVGaFFNuco8?=
+ =?us-ascii?Q?iJjbdh794bx7C3GNL3WtTqwy7x1Zku0McoZE?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2025 18:41:19.0446
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d21a43f-6d76-4a3f-046f-08dda9178e29
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB77.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF8002542C7
 
-Hi Uwe and Alexandre,
+From: Alex Hung <alex.hung@amd.com>
 
-Thank both of you for your replies.
+[WHAT]
 
-Sure, I understand that you couldn't miss the merge window and that
-improvements can be made later. I wish I could contribute with a patch
-but I don't have much bandwidth now. I've obviously done this in the
-past but I have already forgotten all the processes and figuring that
-out again would be a steep learning curve for me. In any case, please
-do not hesitate to get in touch if you think I can help.
+hws was checked for null earlier in dce110_blank_stream, indicating hws
+can be null, and should be checked whenever it is used.
 
-I'll be happy if you read my paper but here is another source which
-gives a very good overview and, I dare to say, is more entertaining
-:-)
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://www.youtube.com/watch?v=3DJ9KijLyP-yg
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index c717cc1eca6d..542468224789 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1227,7 +1227,7 @@ void dce110_blank_stream(struct pipe_ctx *pipe_ctx)
+ 		return;
+ 
+ 	if (link->local_sink && link->local_sink->sink_signal == SIGNAL_TYPE_EDP) {
+-		if (!link->skip_implict_edp_power_control)
++		if (!link->skip_implict_edp_power_control && hws)
+ 			hws->funcs.edp_backlight_control(link, false);
+ 		link->dc->hwss.set_abm_immediate_disable(pipe_ctx);
+ 	}
+-- 
+2.49.0
 
-(The talk is about the algorithms and has close to nothing to do with C++.)
-
-Thank you again and best wishes,
-Cassio.
-
-
-On Wed, 11 Jun 2025 at 08:33, Alexandre Belloni
-<alexandre.belloni@bootlin.com> wrote:
->
-> Hello Cassio,
->
-> On 10/06/2025 21:31:48+0100, Cassio Neri wrote:
-> > Hi all,
-> >
-> > Although untested, I'm pretty sure that with very small changes, the
-> > previous revision (1d1bb12) can handle dates prior to 1970-01-01 with n=
-o
-> > need to add extra branches or arithmetic operations. Indeed, 1d1bb12
-> > contains:
-> >
-> > <code>
-> > /* time must be positive */
-> > days =3D div_s64_rem(time, 86400, &secs);
-> >
-> > /* day of the week, 1970-01-01 was a Thursday */
-> > tm->tm_wday =3D (days + 4) % 7;
-> >
-> > /* long comments */
-> >
-> > udays =3D ((u32) days) + 719468;
-> > </code>
-> >
-> > This could have been changed to:
-> >
-> > <code>
-> > /* time must be >=3D  -719468 * 86400 which corresponds to 0000-03-01 *=
-/
-> > udays =3D div_u64_rem(time + 719468 * 86400, 86400, &secs);
-> >
-> > /* day of the week, 0000-03-01 was a Wednesday (in the proleptic Gregor=
-ian
-> > calendar)  */
-> > tm->tm_wday =3D (days + 3) % 7;
-> >
-> > /* long comments */
-> > </code>
-> >
-> > Indeed, the addition of 719468 * 86400 to `time` makes `days` to be 719=
-468
-> > more than it should be. Therefore, in the calculation of `udays`, the
-> > addition of 719468 becomes unnecessary and thus, `udays =3D=3D days`. M=
-oreover,
-> > this means that `days` can be removed altogether and replaced by `udays=
-`.
-> > (Not the other way around because in the remaining code `udays` must be
-> > u32.)
-> >
-> > Now, 719468 % 7 =3D 1 and thus tm->wday is 1 day after what it should b=
-e and
-> > we correct that by adding 3 instead of 4.
-> >
-> > Therefore, I suggest these changes on top of 1d1bb12 instead of those m=
-ade
-> > in 7df4cfe. Since you're working on this, can I please kindly suggest t=
-wo
-> > other changes?
-> >
-> > 1) Change the reference provided in the long comment. It should say, "T=
-he
-> > following algorithm is, basically, Figure 12 of Neri and Schneider [1]"=
- and
-> > [1] should refer to the published article:
-> >
-> >    Neri C, Schneider L. Euclidean affine functions and their applicatio=
-n to
-> > calendar algorithms. Softw Pract Exper. 2023;53(4):937-970. doi:
-> > 10.1002/spe.3172
-> >    https://doi.org/10.1002/spe.3172
-> >
-> > The article is much better written and clearer than the pre-print curre=
-ntly
-> > referred to.
-> >
->
-> Thanks for your input, I wanted to look again at your paper and make thos=
-e
-> optimizations which is why I took so long to review the original patch.
-> Unfortunately, I didn't have the time before the merge window.
->
-> I would also gladly take patches for this if you are up for the task.
->
-> > 2) Function rtc_time64_to_tm_test_date_range in drivers/rtc/lib_test.c,=
- is
-> > a kunit test that checks the result for everyday in a 160000 years rang=
-e
-> > starting at 1970-01-01. It'd be nice if this test is adapted to the new
-> > code and starts at 1900-01-01 (technically, it could start at 0000-03-0=
-1
-> > but since tm->year counts from 1900, it would be weird to see tm->year =
-=3D=3D
-> > -1900 to mean that the calendar year is 0.) Also 160000 is definitely a=
-n
-> > overkill (my bad!) and a couple of thousands of years, say 3000, should=
- be
-> > more than safe for anyone. :-)
->
-> This is also something on my radar as some have been complaining about th=
-e time
-> it takes to run those tests.
->
-> >
-> > Many thanks,
-> > Cassio.
-> >
-> >
-> >
-> > On Tue, 10 Jun 2025 at 08:35, Uwe Kleine-K=C3=B6nig <u.kleine-koenig@ba=
-ylibre.com>
-> > wrote:
-> >
-> > > From: Alexandre Mergnat <amergnat@baylibre.com>
-> > >
-> > > commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
-> > >
-> > > Conversion of dates before 1970 is still relevant today because these
-> > > dates are reused on some hardwares to store dates bigger than the
-> > > maximal date that is representable in the device's native format.
-> > > This prominently and very soon affects the hardware covered by the
-> > > rtc-mt6397 driver that can only natively store dates in the interval
-> > > 1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
-> > > to such a device, rtc_time64_to_tm() must do the right thing for
-> > > time=3D-2208988800.
-> > >
-> > > Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-> > > Reviewed-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> > > Link:
-> > > https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@bayli=
-bre.com
-> > > Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> > > ---
-> > >  drivers/rtc/lib.c | 24 +++++++++++++++++++-----
-> > >  1 file changed, 19 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/drivers/rtc/lib.c b/drivers/rtc/lib.c
-> > > index fe361652727a..13b5b1f20465 100644
-> > > --- a/drivers/rtc/lib.c
-> > > +++ b/drivers/rtc/lib.c
-> > > @@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
-> > >   * rtc_time64_to_tm - converts time64_t to rtc_time.
-> > >   *
-> > >   * @time:      The number of seconds since 01-01-1970 00:00:00.
-> > > - *             (Must be positive.)
-> > > + *             Works for values since at least 1900
-> > >   * @tm:                Pointer to the struct rtc_time.
-> > >   */
-> > >  void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
-> > >  {
-> > > -       unsigned int secs;
-> > > -       int days;
-> > > +       int days, secs;
-> > >
-> > >         u64 u64tmp;
-> > >         u32 u32tmp, udays, century, day_of_century, year_of_century, =
-year,
-> > >                 day_of_year, month, day;
-> > >         bool is_Jan_or_Feb, is_leap_year;
-> > >
-> > > -       /* time must be positive */
-> > > +       /*
-> > > +        * Get days and seconds while preserving the sign to
-> > > +        * handle negative time values (dates before 1970-01-01)
-> > > +        */
-> > >         days =3D div_s64_rem(time, 86400, &secs);
-> > >
-> > > +       /*
-> > > +        * We need 0 <=3D secs < 86400 which isn't given for negative
-> > > +        * values of time. Fixup accordingly.
-> > > +        */
-> > > +       if (secs < 0) {
-> > > +               days -=3D 1;
-> > > +               secs +=3D 86400;
-> > > +       }
-> > > +
-> > >         /* day of the week, 1970-01-01 was a Thursday */
-> > >         tm->tm_wday =3D (days + 4) % 7;
-> > > +       /* Ensure tm_wday is always positive */
-> > > +       if (tm->tm_wday < 0)
-> > > +               tm->tm_wday +=3D 7;
-> > >
-> > >         /*
-> > >          * The following algorithm is, basically, Proposition 6.3 of =
-Neri
-> > > @@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, struct rtc_ti=
-me
-> > > *tm)
-> > >          * thus, is slightly different from [1].
-> > >          */
-> > >
-> > > -       udays           =3D ((u32) days) + 719468;
-> > > +       udays           =3D days + 719468;
-> > >
-> > >         u32tmp          =3D 4 * udays + 3;
-> > >         century         =3D u32tmp / 146097;
-> > > --
-> > > 2.49.0
-> > >
-> > >
 
