@@ -1,78 +1,54 @@
-Return-Path: <stable+bounces-152396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE01AD4A67
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 07:24:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946ABAD4A8D
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 07:50:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342E917B8A2
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 05:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871AD179D1C
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 05:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25596227586;
-	Wed, 11 Jun 2025 05:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="WHUwX5FT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7CF226556;
+	Wed, 11 Jun 2025 05:50:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D495622689C
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 05:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1977218AC7;
+	Wed, 11 Jun 2025 05:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.236.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749619439; cv=none; b=Gj1CP313iSM88gpG5opRQFFDAiqn108FWfzSCYP6OgGvEbOGSbezzzA5Qy9jgzrfqaLzeDL/Hxs47Y+5IRsM+K+rZTBw0oZe3GjKOwt5em+h3IIBCf6wSdOakUp1TjPkht3s4/dUepOAma4hvx5LBr0aOPxwRfgbCh3ZsYreskI=
+	t=1749621037; cv=none; b=UAS64srYa/hb3pgdbtq1UptZEQbidR9xROkgVrLRIDQIBRUot2giavdWhz+pwGNpllU1zJwXo9Xd8zdAN3qU9W2eiz1HRngGZR2D9XFCnHCKxKG0OT2vgUdlKwb1KJmvYtYRN7KHaoA2jom8eeRL9CFhyScH+eaO1NHkCgOXbFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749619439; c=relaxed/simple;
-	bh=ZRvJ4sTArvkMQ3RZLBCPBHuH82M/Wau366iNsz5Hsn4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=NeJp/VjSDHb8VUzKvUOhXbPHFvQ5H8S2ZAgnKU0CzN3bhX6XLh4N/ytTePDqgA+W5p88eceG2GfYMQcwzAMKgCEEjCNtZPwMHOsnd2ep4RSVHqKRrsSTwoapDlAv7lsv7OHkuI7Yz22uO08oiShqouOz2lz3HVq0Gtp31GP3ScA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=WHUwX5FT; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a531fcaa05so2605511f8f.3
-        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 22:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1749619436; x=1750224236; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:content-language:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ZOq6Bm91egLyNY4GfKgWUHZN2VR0kd26K9RfUAujw0=;
-        b=WHUwX5FTnDiuplje+Q9J/Rmw9BwP/g0lZ9fXjKsWrXJ8U/6Bb29Y7WAO0F55g7CPg9
-         3gU0JkPvUp2SNdSD8Li5dm2pM1I3RC+4al7wAweC7r86oTlaOqvabT41LRKHtz5Lur5n
-         ccyzhu6K5ds4VIwAbLyk0FWg9VEni1zVsOxmIr0v35e8MTkMh4yRtQ6svHMPLD3fArTm
-         cGY/Z3mJCbI5J0eQO4y93XPRMqIXu67OwGWpAxcHUr0MhuxrA/F0cuCaa/UfF4myQzUG
-         gzYEI64gSrG/ECKidqU4QeViGyHcsedXI+hJcfcMP2F6Cjb7OR6vPen/+CbmfLah1nc6
-         n/TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749619436; x=1750224236;
-        h=content-transfer-encoding:to:subject:content-language:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7ZOq6Bm91egLyNY4GfKgWUHZN2VR0kd26K9RfUAujw0=;
-        b=t8QsFJYYLzy+tiOFXpRXaiiSJ2br5/rpkh6Cwo/rj0kmeeE6v2vpxPnc7M7ikOfXaX
-         1e/plH91An07AJdhWgAXPTkzxoVLunKKROk6GPoAfvd5Prb0e/O4vgCLoCwXAhlCw9/G
-         h+GXt+KE3LfmQ0TwlIUr7F6jOoGxvKLzYN4lrxmpFhSKbEPiHASf9rGS3OJIQSeZ6TBp
-         0RSMAH+h5LOafsP23ZDljIYWXoezyIFoJEPKYDbGCKZhPW9m5w2hAGuW+xajdYn1adtf
-         tlYXKs/9z9nQtOlwWS8ojZFWPa2y/nLgaCGBzJUDRug6NeJcN3uuJjkpkuRCQrlK0FSw
-         Ns9g==
-X-Gm-Message-State: AOJu0Yxh9MoGZStXLUbMdOQiEOq5AXqvEmIEf77jZNB2cZbBxQkl68d6
-	iZn+P2J4DQ7DAUVGPlXCDMgqlN4dF8oDAMgOEw3IPiNjeyVKH0rJSEtc4ou0WVuLtfeBc3s5VA2
-	fhpHL
-X-Gm-Gg: ASbGncveAEpIEpe20m89U6N1wCXheLDK3rxq21wikImJ0rnpNayvmdP9wfNFIuPGKTd
-	BDIkiVgwfH1LDypYCIHzqyxOEw/qQ1bK1Jnbad9zU1wmgpIupQS7SmB9vouktEa7iJpN9i3kx5j
-	Rj7q15xsB1rGbFDj0A2e+8cI+M3PHGX0cZO43ADCOZfiSzRs0TmF1H50nreRBvXSynFHaRGOpGe
-	9Efe6DkJSWmm+UotpjiJyBBnBl8lrX/wF96OgNYl7m1uU3a79zr0TDYrHlpDjDbVSaGklpGj6Uo
-	zYKJhbAPS+lmOb4X6pCMEroNjdsgpjGpmPdYtgbVKiqNBAP1sq8Ww4ToA/awtZuTH7lhiAI=
-X-Google-Smtp-Source: AGHT+IFaPHndSHVrwkehC/VTOfv39ieh28zF9QlF8aTE1BIPnk9d1Ytd+SxjdWeg062XxjhgvZ7LIg==
-X-Received: by 2002:a05:6000:18ab:b0:3a3:6b07:20a1 with SMTP id ffacd0b85a97d-3a558afdfc8mr1081969f8f.40.1749619435649;
-        Tue, 10 Jun 2025 22:23:55 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.126])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323b33c3sm14268695f8f.34.2025.06.10.22.23.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jun 2025 22:23:55 -0700 (PDT)
-Message-ID: <6aa4a135-eb89-49e0-b450-7fa30d7684ee@tuxon.dev>
-Date: Wed, 11 Jun 2025 08:23:54 +0300
+	s=arc-20240116; t=1749621037; c=relaxed/simple;
+	bh=ndq1OniZPBYfUSjmaheprfQngbdgr+TRmbTdQkuM4bg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GwsJxLlOrHLSjUktRwy8vH1o+YACFNHGYIw6suvfpLIdDYtQoKai+Q9pB6MQNwLAONFpD/mE+4l7xa84fd1AC7EBLBqvr/BOKXJzAP2nJ02POQjDX3My4RwEjeDabHuBSt7BP07tYg5gumjDOKh6O8xMZWXBZK5mxwcOseEUqzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.236.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bHDxv2zs6z9sZD;
+	Wed, 11 Jun 2025 07:39:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id lqSJzO4FXAI2; Wed, 11 Jun 2025 07:39:47 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bHDxv2DRwz9sZ2;
+	Wed, 11 Jun 2025 07:39:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 480B28B76D;
+	Wed, 11 Jun 2025 07:39:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 4RoeSFg0AWwk; Wed, 11 Jun 2025 07:39:47 +0200 (CEST)
+Received: from [10.25.207.146] (unknown [10.25.207.146])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 164798B769;
+	Wed, 11 Jun 2025 07:39:47 +0200 (CEST)
+Message-ID: <784650aa-80e5-4f1a-8a7f-6e61c3225e77@csgroup.eu>
+Date: Wed, 11 Jun 2025 07:39:46 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,27 +56,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-Subject: Backport sh-sci fixes to 6.12.y
-To: linux-stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: Patch "powerpc: do not build ppc_save_regs.o always" has been
+ added to the 6.15-stable tree
+To: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+ stable-commits@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20250610115602.1537089-1-sashal@kernel.org>
+ <1b88323e-8d79-4a79-9e6a-ea817a9e056b@kernel.org>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <1b88323e-8d79-4a79-9e6a-ea817a9e056b@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi, stable team,
 
-Please backport the following commits to 6.12.y:
 
-1/ 239f11209e5f ("serial: sh-sci: Move runtime PM enable to
-   sci_probe_single()")
-2/ 5f1017069933 ("serial: sh-sci: Clean sci_ports[0] after at earlycon
-   exit")
-3/ 651dee03696e ("serial: sh-sci: Increment the runtime usage counter for
-   the earlycon device")
+Le 11/06/2025 à 06:15, Jiri Slaby a écrit :
+> On 10. 06. 25, 13:56, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>      powerpc: do not build ppc_save_regs.o always
+>>
+>> to the 6.15-stable tree which can be found at:
+>>      https://eur01.safelinks.protection.outlook.com/? 
+>> url=http%3A%2F%2Fwww.kernel.org%2Fgit%2F%3Fp%3Dlinux%2Fkernel%2Fgit%2Fstable%2Fstable-queue.git%3Ba%3Dsummary&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cf9c2453dd6154212e43a08dda89ea845%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638852121563909145%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ckwC5j7O2j%2FATCggT3jwcKl3K5HRVpwA7DxjZUGnwZg%3D&reserved=0
+> 
+> Please drop this from all trees. It was correctly broken. The whole if 
+> was removed later by 93bd4a80efeb521314485a06d8c21157240497bb.
 
-These applies cleanly on top of 6.12.y (if applied in the order provided
-above) and fix the debug console on Renesas devices.
+Isn't it better to keep it and add 93bd4a80efeb ("powerpc/kernel: Fix 
+ppc_save_regs inclusion in build") instead of droping it and keep a bad 
+test that works by chance ?
 
-Thank you,
-Claudiu Beznea
+Christophe
+
+> 
+>> The filename of the patch is:
+>>       powerpc-do-not-build-ppc_save_regs.o-always.patch
+>> and it can be found in the queue-6.15 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>>
+>>
+>>
+>> commit 242c2ba3f16d92cd81c309725550f6c723833ae3
+>> Author: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+>> Date:   Thu Apr 17 12:53:05 2025 +0200
+>>
+>>      powerpc: do not build ppc_save_regs.o always
+>>      [ Upstream commit 497b7794aef03d525a5be05ae78dd7137c6861a5 ]
+>>      The Fixes commit below tried to add CONFIG_PPC_BOOK3S to one of the
+>>      conditions to enable the build of ppc_save_regs.o. But it failed 
+>> to do
+>>      so, in fact. The commit omitted to add a dollar sign.
+>>      Therefore, ppc_save_regs.o is built always these days (as
+>>      "(CONFIG_PPC_BOOK3S)" is never an empty string).
+>>      Fix this by adding the missing dollar sign.
+>>      Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+>>      Fixes: fc2a5a6161a2 ("powerpc/64s: ppc_save_regs is now needed 
+>> for all 64s builds")
+>>      Acked-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>>      Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>      Link: https://eur01.safelinks.protection.outlook.com/? 
+>> url=https%3A%2F%2Fpatch.msgid.link%2F20250417105305.397128-1- 
+>> jirislaby%40kernel.org&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cf9c2453dd6154212e43a08dda89ea845%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638852121563928665%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=z4VKRS6xdEjQb0KWlyAaZD7Oykeqdou4ji8bb56yShY%3D&reserved=0
+>>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>
+>> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+>> index 6ac621155ec3c..0c26b2412d173 100644
+>> --- a/arch/powerpc/kernel/Makefile
+>> +++ b/arch/powerpc/kernel/Makefile
+>> @@ -160,7 +160,7 @@ endif
+>>   obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)    += tm.o
+>> -ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)(CONFIG_PPC_BOOK3S),)
+>> +ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)$(CONFIG_PPC_BOOK3S),)
+>>   obj-y                += ppc_save_regs.o
+>>   endif
+> 
+> 
+
 
