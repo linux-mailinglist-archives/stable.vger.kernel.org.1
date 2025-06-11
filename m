@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-152476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C52AD609C
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:02:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8060FAD609E
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1953117AF1F
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:02:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 961C217BFCD
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB40C235048;
-	Wed, 11 Jun 2025 21:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ABD19A;
+	Wed, 11 Jun 2025 21:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h9xodekz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AJL+6UPZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3213C2BD586
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC311DFF7
+	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749675718; cv=none; b=Z8YQGnJHSw2xGeXxzkAIeHUgvLYgd9HViOvllA8pZGQMCA3YO6LgSKMF3ZYghG/jiHuwB3j7+O59+qbDbF1/YKDrT2NVnvz9I4gF67AQpE4f6bKTDyMEJXmAvbpp30No1hj41V5Q+kgR+aXAMA0e4uncb6naVUs9vH6SpH9jC5g=
+	t=1749675719; cv=none; b=D8JYvqXO8i1PPILsiOeEdpQAg4T3Ie8YJNA93JnVEjTzsNPc5F5ZwVFoACyaszYQqrzKDDv+Fum83aeKXTiPLNDi8zrtaBK9m8bTUmEg/5Jrf57g+rc/f4slt8g6AhYzx9uBQBoGj9Oi2d/9BUbZyin2Rp3YuOqQ5ch+oK77L5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749675718; c=relaxed/simple;
-	bh=HRlVbQHVKUonur6/rDbdcdj5RQwrMnl8Jz2TPwmQjNE=;
+	s=arc-20240116; t=1749675719; c=relaxed/simple;
+	bh=4cK6Ba6ZQhHcZfiKHkqwBc8TB54HRic1mF7Hq5fYX18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJ0cYHjxS0kjthAMgEzugOcC5YyN6yQ7QGx0QHmzI/5/q0jA8zchXZhZ0rlf+DyUrpZ0l7HTE6Z3DjYaL2sPjxUbKBOG4BUcJUrzVB1yyVsWnKYsOtmZqRnUTelkFpuR6kHWgCRajfD5KR1dwRa7MLe6zRoD635T60p0jgAV+70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h9xodekz; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version; b=OFOmwoa/uy8NqiUzSeht5aZyYqXeWut4Giaupsa1rPPW0Y7GqfNpwoGtB3qC2Fkvqv/CxKbJtQkJlgxaoMKuMg9rPXdyXf42NV7vcpA/G/DTmy8iIpcHlZGCaELEudGnJcHiiiDHbpgACRqhpFDbnae14Ed7wtWDZc/N0xECP00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AJL+6UPZ; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22c33677183so2583375ad.2
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:57 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-23526264386so2662705ad.2
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 14:01:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749675716; x=1750280516; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749675717; x=1750280517; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PNgT6mCogBaun03aqM7D4rRQ0pA3FbmuNH6YmGuxHKs=;
-        b=h9xodekz55apcvtTA+pcBFaU4cBSN/lHpngFw27UZBexdNt+fJ9prLFK5oL7Cha3XV
-         Offx/QQhGdgm1GTk2pnJbJVNNNOPq0UE/c/DuBV0sjlb/271Y/7J3DUoDbAXhGBzhAtq
-         aXSMq9dphctHKMIMSMEm79DKUF+ilcn4O791RNk0p8hzr5++C3Zf74j9sP0D9+LmuIr0
-         n8S133MItJVsZrlaTh8NWfTv1INOE3F9J/1ZeR3bNLnTN/kJprT++syN51OBNp85/Qyo
-         qGgxKNfeeV7sAXp71HJu3SVecahjSl3qH0gf7LSacAByp5R1OWWsFvRiYhb4LhofYLoS
-         2Kuw==
+        bh=pIMck/J7HmGb3HCvlJ+XEKrpOfsyTEh/GTB7pCjuu+s=;
+        b=AJL+6UPZTcc5Qs7wv7ptH1fw5WSLSVcqoa8Ruq7d3QoWtVw77vvQ8dLcRcZG6WEUqW
+         xTsnXEm843nH+JF0RlS1qWYDsw73uAjuR5kbi8GiFMndGM9MixTcOsnnrRnrkaMFPvgr
+         sYYUubYQj7TSl0QdDfAckQ6z6Mcx9R26n6DXIzdbqv8KLpLY9g9ix34aG7DXnHZywXfd
+         JYLbKTcPDEIsJWnkquRa/fMgPEFW+jPwItsNLuyjMYM8k2CRNfSHZ7KbSUcBJK0wh2Af
+         zRfVd+vWa3Otl0vDbNl9fpszCQMcMgnbUvowWVSfM4FQUUOm/XYqsWZvxvdrpFw8DEqg
+         MK0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749675716; x=1750280516;
+        d=1e100.net; s=20230601; t=1749675717; x=1750280517;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PNgT6mCogBaun03aqM7D4rRQ0pA3FbmuNH6YmGuxHKs=;
-        b=r7bawsSGlFzR6t/rUbNNCMeuhB80fjIvBvifZmxAEHxkJSydbu1/l0d7JhDpuzwcyB
-         bjFNB3bN+psM5r6osEpcA1E7gMIgoZCn0R1+2TM/+cpBaze6OGajN0jwOeUVHwWdMylE
-         9M35W+bOlEpowydL1xMXb8SE+7oTMhi2rrX7nAjjZkLz++Cw2SMP4qdwC50ki0NdmUhZ
-         olifVpMWjG6aE1soaD0j897RYTc86o/dZI39UX00HTqK5ueiwldRBfVvfJT3m3+krR6S
-         Hn2Ks6tsHcCb5r6eF87bLslf1HjZ1C7IhaqwYj0XPS+9BKLU5Hl7wSozW5wqAvHQduPv
-         de1Q==
-X-Gm-Message-State: AOJu0Yzb4LsRcjXLjdN+fyZcJjMHXlfdDMBt4BRMBHpIPx70g0Uxjwmu
-	mrj1PSyffw8zbSzpm9hHwOILvs0EQTu1/wpBJIFowkhwz38IXI1ERHznhaOCjYk5
-X-Gm-Gg: ASbGncuhJ+PPQK6nX6bTzj6hOwL/KLckXGXBnMT9YLVnlSAP1AcACtYqI0YhDfXPBNU
-	yP2x3bC3ty9DH3V2RFMdnaCxZPwEN4jCnjuimPHCIdR3hsNCK1U67Vrqnj6bSnMUDcq7Cugo61s
-	MBy9YvkrS/8qKB5fMUgWOubkBWEtinJGvLeNhOZpvtgjQehp3QymY94OJB2b/Xe0SbDD2/ixo6f
-	Ue/RWJClOBgcQKwAFo8ppRYL32EqFoHQDodSp4zr5kdAOlLckEOgN1MdOjtNHbenjjZcIb44g/4
-	D961vifo9xGYZG9FKpjjdXVmJGJgJcvPKAAsXyRMXCd2DS8KSQT82keZcy4KXtejAPfY7H5n9fw
-	0QEuBDEzlxFo=
-X-Google-Smtp-Source: AGHT+IHbpUhEa9TVPUU3+fAHAmwOMDV9WTzF9fz+wyK1vq9GcNI6sPypMQS10881aLt9i/hyVh81Ww==
-X-Received: by 2002:a17:902:d50c:b0:234:9068:ed99 with SMTP id d9443c01a7336-2364ca8552bmr13898475ad.24.1749675716252;
-        Wed, 11 Jun 2025 14:01:56 -0700 (PDT)
+        bh=pIMck/J7HmGb3HCvlJ+XEKrpOfsyTEh/GTB7pCjuu+s=;
+        b=aXjn4yk9ad6uL9ncVVaAaybiXpgVTUKhuEoftsjip8sWfcfseJro/Of4up4cg8kcfL
+         wQMvEm5G3BWhjbcCaCMSJGbHBi6W1RfodnetCMz+0m4ZyHwdPbpi9hfgmWKbla6zoP9x
+         Bu4K/KD3bde+gJ0+EIDiRCh+tSKhPWAquV76Th5FWSf/8xzherLj285ZgFFIKlpjU3O8
+         kPFF94Daw9Y51eLm1/UlrV2SoN7ZVHLJNz52noXxv05xXA4wo5Y5I1Ecog4CH9OkqMVq
+         9uDfHpGRczPZDpYYwJkmHdOSpmX2+w61iefFhy/zQiusGYhq8dGgmv4+vQpPrLWt3Z48
+         qd4w==
+X-Gm-Message-State: AOJu0Yy46Sfn/w+GCoqCA00Ny4XQXZuQ7p17WAuPAbWHVEFQ2JF+CQ2B
+	aetymGvTWEEy+gRYwvZCTtwoq03b+hpk6SWi0lDj+sUOpMpVeso8aApVEjxvL9i7
+X-Gm-Gg: ASbGncsvJm8h4RIhqhMUM8pc9D1uXh9RWHdpcpOoJrfdmxfDtY+EUivtE4x5D5MOv7Z
+	HRro28HEqPbHZVPaUjF0/sx8Dy68b9TGtkydccUd17DHxWFWx7tBVSZGPf4mQ/Aj8rcFy2X3ukk
+	ZRg3AoREAae0/GhEJTsTJ8Wd2ax33iAIJTqLzc+WR2ygbYKKCPF3tTGTMAvyuV6qLIT3AzAlGcD
+	xFBwL0klsAClNNFl3RnMK7n9nY9tz6N+82bG6mCtJERs4WrQcCeUSHZ4GDkdJJ9FroIRoXhOZaB
+	NCFyHDJjjndGByR6pUHN2Jsbc+JoQgMSrcBqKNKgP2bymssJFiNPhvu/3Qrdx2mHB0jyW0lrQI6
+	1HoHx+O9MmOY=
+X-Google-Smtp-Source: AGHT+IEi3V5OdJZq9FG/s/Adr2qgPeDe4btzNVlAo5V9W3ZZ3KBbPTXJjMboo2M/E0I7DDDLOxbttA==
+X-Received: by 2002:a17:903:22cd:b0:235:1706:1ff6 with SMTP id d9443c01a7336-2364d54486cmr10046975ad.0.1749675717307;
+        Wed, 11 Jun 2025 14:01:57 -0700 (PDT)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:391:76ae:2143:7d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.55
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c86sm62005ad.101.2025.06.11.14.01.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 14:01:55 -0700 (PDT)
+        Wed, 11 Jun 2025 14:01:56 -0700 (PDT)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
@@ -81,9 +81,9 @@ Cc: xfs-stable@lists.linux.dev,
 	Christoph Hellwig <hch@lst.de>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 22/23] xfs: take m_growlock when running growfsrt
-Date: Wed, 11 Jun 2025 14:01:26 -0700
-Message-ID: <20250611210128.67687-23-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 23/23] xfs: reset rootdir extent size hint after growfsrt
+Date: Wed, 11 Jun 2025 14:01:27 -0700
+Message-ID: <20250611210128.67687-24-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
 In-Reply-To: <20250611210128.67687-1-leah.rumancik@gmail.com>
 References: <20250611210128.67687-1-leah.rumancik@gmail.com>
@@ -97,10 +97,15 @@ Content-Transfer-Encoding: 8bit
 
 From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 16e1fbdce9c8d084863fd63cdaff8fb2a54e2f88 ]
+[ Upstream commit a24cae8fc1f13f6f6929351309f248fd2e9351ce ]
 
-Take the grow lock when we're expanding the realtime volume, like we do
-for the other growfs calls.
+If growfsrt is run on a filesystem that doesn't have a rt volume, it's
+possible to change the rt extent size.  If the root directory was
+previously set up with an inherited extent size hint and rtinherit, it's
+possible that the hint is no longer a multiple of the rt extent size.
+Although the verifiers don't complain about this, xfs_repair will, so if
+we detect this situation, log the root directory to clean it up.  This
+is still racy, but it's better than nothing.
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
@@ -108,133 +113,86 @@ Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 38 +++++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 13 deletions(-)
+ fs/xfs/xfs_rtalloc.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
 diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 5cf1e91f4c20..149fcfc485d8 100644
+index 149fcfc485d8..fc21b4e81ade 100644
 --- a/fs/xfs/xfs_rtalloc.c
 +++ b/fs/xfs/xfs_rtalloc.c
-@@ -951,83 +951,93 @@ xfs_growfs_rt(
- 		return -EPERM;
- 
- 	/* Needs to have been mounted with an rt device. */
- 	if (!XFS_IS_REALTIME_MOUNT(mp))
- 		return -EINVAL;
-+
-+	if (!mutex_trylock(&mp->m_growlock))
-+		return -EWOULDBLOCK;
- 	/*
- 	 * Mount should fail if the rt bitmap/summary files don't load, but
- 	 * we'll check anyway.
- 	 */
-+	error = -EINVAL;
- 	if (!mp->m_rbmip || !mp->m_rsumip)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Shrink not supported. */
- 	if (in->newblocks <= sbp->sb_rblocks)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Can only change rt extent size when adding rt volume. */
- 	if (sbp->sb_rblocks > 0 && in->extsize != sbp->sb_rextsize)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Range check the extent size. */
- 	if (XFS_FSB_TO_B(mp, in->extsize) > XFS_MAX_RTEXTSIZE ||
- 	    XFS_FSB_TO_B(mp, in->extsize) < XFS_MIN_RTEXTSIZE)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Unsupported realtime features. */
-+	error = -EOPNOTSUPP;
- 	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp) || xfs_has_quota(mp))
--		return -EOPNOTSUPP;
-+		goto out_unlock;
- 
- 	nrblocks = in->newblocks;
- 	error = xfs_sb_validate_fsb_count(sbp, nrblocks);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 	/*
- 	 * Read in the last block of the device, make sure it exists.
- 	 */
- 	error = xfs_buf_read_uncached(mp->m_rtdev_targp,
- 				XFS_FSB_TO_BB(mp, nrblocks - 1),
- 				XFS_FSB_TO_BB(mp, 1), 0, &bp, NULL);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 	xfs_buf_relse(bp);
- 
- 	/*
- 	 * Calculate new parameters.  These are the final values to be reached.
- 	 */
- 	nrextents = nrblocks;
- 	do_div(nrextents, in->extsize);
--	if (!xfs_validate_rtextents(nrextents))
--		return -EINVAL;
-+	if (!xfs_validate_rtextents(nrextents)) {
-+		error = -EINVAL;
-+		goto out_unlock;
-+	}
- 	nrbmblocks = howmany_64(nrextents, NBBY * sbp->sb_blocksize);
- 	nrextslog = xfs_compute_rextslog(nrextents);
- 	nrsumlevels = nrextslog + 1;
- 	nrsumsize = (uint)sizeof(xfs_suminfo_t) * nrsumlevels * nrbmblocks;
- 	nrsumblocks = XFS_B_TO_FSB(mp, nrsumsize);
- 	nrsumsize = XFS_FSB_TO_B(mp, nrsumblocks);
- 	/*
- 	 * New summary size can't be more than half the size of
- 	 * the log.  This prevents us from getting a log overflow,
- 	 * since we'll log basically the whole summary file at once.
- 	 */
--	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1))
--		return -EINVAL;
-+	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1)) {
-+		error = -EINVAL;
-+		goto out_unlock;
-+	}
-+
- 	/*
- 	 * Get the old block counts for bitmap and summary inodes.
- 	 * These can't change since other growfs callers are locked out.
- 	 */
- 	rbmblocks = XFS_B_TO_FSB(mp, mp->m_rbmip->i_disk_size);
- 	rsumblocks = XFS_B_TO_FSB(mp, mp->m_rsumip->i_disk_size);
- 	/*
- 	 * Allocate space to the bitmap and summary files, as necessary.
- 	 */
- 	error = xfs_growfs_rt_alloc(mp, rbmblocks, nrbmblocks, mp->m_rbmip);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 	error = xfs_growfs_rt_alloc(mp, rsumblocks, nrsumblocks, mp->m_rsumip);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 
- 	rsum_cache = mp->m_rsum_cache;
- 	if (nrbmblocks != sbp->sb_rbmblocks)
- 		xfs_alloc_rsum_cache(mp, nrbmblocks);
- 
-@@ -1188,10 +1198,12 @@ xfs_growfs_rt(
- 		} else {
- 			kmem_free(rsum_cache);
- 		}
- 	}
- 
-+out_unlock:
-+	mutex_unlock(&mp->m_growlock);
- 	return error;
+@@ -913,10 +913,43 @@ xfs_alloc_rsum_cache(
+ 	mp->m_rsum_cache = kvzalloc(rbmblocks, GFP_KERNEL);
+ 	if (!mp->m_rsum_cache)
+ 		xfs_warn(mp, "could not allocate realtime summary cache");
  }
  
++/*
++ * If we changed the rt extent size (meaning there was no rt volume previously)
++ * and the root directory had EXTSZINHERIT and RTINHERIT set, it's possible
++ * that the extent size hint on the root directory is no longer congruent with
++ * the new rt extent size.  Log the rootdir inode to fix this.
++ */
++static int
++xfs_growfs_rt_fixup_extsize(
++	struct xfs_mount	*mp)
++{
++	struct xfs_inode	*ip = mp->m_rootip;
++	struct xfs_trans	*tp;
++	int			error = 0;
++
++	xfs_ilock(ip, XFS_IOLOCK_EXCL);
++	if (!(ip->i_diflags & XFS_DIFLAG_RTINHERIT) ||
++	    !(ip->i_diflags & XFS_DIFLAG_EXTSZINHERIT))
++		goto out_iolock;
++
++	error = xfs_trans_alloc_inode(ip, &M_RES(mp)->tr_ichange, 0, 0, false,
++			&tp);
++	if (error)
++		goto out_iolock;
++
++	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
++	error = xfs_trans_commit(tp);
++	xfs_iunlock(ip, XFS_ILOCK_EXCL);
++
++out_iolock:
++	xfs_iunlock(ip, XFS_IOLOCK_EXCL);
++	return error;
++}
++
  /*
-  * Allocate an extent in the realtime subvolume, with the usual allocation
+  * Visible (exported) functions.
+  */
+ 
+ /*
+@@ -942,10 +975,11 @@ xfs_growfs_rt(
+ 	xfs_extlen_t	rbmblocks;	/* current number of rt bitmap blocks */
+ 	xfs_extlen_t	rsumblocks;	/* current number of rt summary blks */
+ 	xfs_sb_t	*sbp;		/* old superblock */
+ 	xfs_fsblock_t	sumbno;		/* summary block number */
+ 	uint8_t		*rsum_cache;	/* old summary cache */
++	xfs_agblock_t	old_rextsize = mp->m_sb.sb_rextsize;
+ 
+ 	sbp = &mp->m_sb;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+@@ -1175,10 +1209,16 @@ xfs_growfs_rt(
+ 		mp->m_features |= XFS_FEAT_REALTIME;
+ 	}
+ 	if (error)
+ 		goto out_free;
+ 
++	if (old_rextsize != in->extsize) {
++		error = xfs_growfs_rt_fixup_extsize(mp);
++		if (error)
++			goto out_free;
++	}
++
+ 	/* Update secondary superblocks now the physical grow has completed */
+ 	error = xfs_update_secondary_sbs(mp);
+ 
+ out_free:
+ 	/*
 -- 
 2.50.0.rc1.591.g9c95f17f64-goog
 
