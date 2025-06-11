@@ -1,151 +1,147 @@
-Return-Path: <stable+bounces-152367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F46AD483C
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 03:49:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44953AD484D
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 03:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FFC83A91F6
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 01:48:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94DE67ACBFA
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 01:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFE91D516F;
-	Wed, 11 Jun 2025 01:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85538154C17;
+	Wed, 11 Jun 2025 01:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="t0ERzUHN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFA61B81DC;
-	Wed, 11 Jun 2025 01:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3059914F9F9;
+	Wed, 11 Jun 2025 01:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749606435; cv=none; b=iaKMiZTYa9Sw0EnMVGqV4qTWprB0kH1npR6kBL4LuGyJint+BD+HeywDLUXYFLYHHInH9c/yQ/HsLRXlyJ4rzfO43u/NpPfvIsQzbw6azkFoc3sVexwcriRliRZzyGZOspPEZsjpoKxZoGDXS+G5Agl6TTtLfKBLo1B0LFqTlfs=
+	t=1749606973; cv=none; b=ogIm67eBEUmDtlG8xEKdItlc/9sBbDBDOAiq7qpYj8/YUiSdSpcJUJCgBkMjg6S6yBB05Lb4Dr0PnIaAeBwv74a2yESo+3MKUGh1eSIMCkrwMX79Fc550bYPm6WkPaJV4d4MWI6E47hyUYa1FwfkeDOOwBnxEMkBioUFqquS79k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749606435; c=relaxed/simple;
-	bh=HOHcURIPteDflYVHmtZS9DkZpLOo2uCpk98aZBpsWxk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JnGlU/o8fj7CutEYFQrGBv/L2a4ujt8BtruhswELmd2wZN0Q3U8IYzXAYEDkvz3gXG42pGYPjVXKzryHw387CFetzzlIcmaeOY+UI+tcSSzaMvk7pnvWea4t/o2KMU4x8MLyHNxHp4FRyl2gj3KDhj+31yYrJWOCKiPjgSSypDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxC3Ie4EhosEITAQ--.47015S3;
-	Wed, 11 Jun 2025 09:47:10 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowMCx7MQL4Eho0EoVAQ--.65102S7;
-	Wed, 11 Jun 2025 09:47:10 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Xianglai Li <lixianglai@loongson.cn>
-Cc: kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 5/9] LoongArch: KVM: INTC: Avoid overflow with array index
-Date: Wed, 11 Jun 2025 09:46:47 +0800
-Message-Id: <20250611014651.3042734-6-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250611014651.3042734-1-maobibo@loongson.cn>
-References: <20250611014651.3042734-1-maobibo@loongson.cn>
+	s=arc-20240116; t=1749606973; c=relaxed/simple;
+	bh=dYs7pXrbZbO77LjwnPJlOMYmWNiX/mDFmzkxHu9oWKM=;
+	h=Date:To:From:Subject:Message-Id; b=lRCixkAJEPwvWEj8BnPm5mRgDACqX6QT8/WRV7AnLrTeLcbGkIMNX5+BxPt5ELGH/j8Jhp0Enqm4c18UmchKxfWy94dTnNgT6w5429/ie1/4ptasfJZsX4Ewzv0O3tNJlsRZgoyu4udCMVQbbhshO0khEYWZBKbgYQuBVIQH1J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=t0ERzUHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AADCC4CEF0;
+	Wed, 11 Jun 2025 01:56:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1749606972;
+	bh=dYs7pXrbZbO77LjwnPJlOMYmWNiX/mDFmzkxHu9oWKM=;
+	h=Date:To:From:Subject:From;
+	b=t0ERzUHNZmdT4N2WP65g/I1lBaPRUFdeIOwto+MP/E9ITw8QKA4wqGHvUclOV8Dur
+	 ozk+qyfMjMo6N8n82ZQkUJ535F9+9zkuXwLLc/pDDcDgCPrILRh5rESFPdxQ0aumCY
+	 vr849c+wlCjr3T5VozpZP+H7uxgsNxKYU2tXCFis=
+Date: Tue, 10 Jun 2025 18:56:12 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,Liam.Howlett@Oracle.com,richard.weiyang@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + maple_tree-fix-mt_destroy_walk-on-root-leaf-node.patch added to mm-new branch
+Message-Id: <20250611015612.9AADCC4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCx7MQL4Eho0EoVAQ--.65102S7
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Variable index is modified and reused as array index when modify
-register EIOINTC_ENABLE. There will be array index overflow problem.
 
-Cc: stable@vger.kernel.org
-Fixes: 3956a52bc05b ("LoongArch: KVM: Add EIOINTC read and write functions")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+The patch titled
+     Subject: maple_tree: fix mt_destroy_walk() on root leaf node
+has been added to the -mm mm-new branch.  Its filename is
+     maple_tree-fix-mt_destroy_walk-on-root-leaf-node.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-fix-mt_destroy_walk-on-root-leaf-node.patch
+
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Wei Yang <richard.weiyang@gmail.com>
+Subject: maple_tree: fix mt_destroy_walk() on root leaf node
+Date: Wed, 11 Jun 2025 01:12:51 +0000
+
+Patch series "maple_tree: Fix the replacement of a root leaf node", v3.
+
+On destroy we should set each node dead.  But current code miss this when
+the maple tree has only the root node.
+
+The reason is that mt_destroy_walk() leverages mte_destroy_descend() to
+set the node dead, but this is skipped since the only root node is a leaf.
+
+Patch 1 fixes this.
+
+When adding a test case, I found we always get the new value even when we
+leave the old root node not dead.  It turns out we always re-walk the tree
+in mas_walk().  It looks like a typo on the status check of mas_walk().
+
+Patch 2 fixes this.
+
+Patch 3 adds a test case to assert retrieving new value when overwriting
+the whole range to a tree with only root node.
+
+
+This patch (of 3):
+
+On destroy, we should set each node dead.  But current code miss this when
+the maple tree has only the root node.
+
+The reason is mt_destroy_walk() leverage mte_destroy_descend() to set node
+dead, but this is skipped since the only root node is a leaf.
+
+Fixes this by setting the node dead if it is a leaf.
+
+Link: https://lkml.kernel.org/r/20250611011253.19515-1-richard.weiyang@gmail.com
+Link: https://lkml.kernel.org/r/20250611011253.19515-2-richard.weiyang@gmail.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/loongarch/kvm/intc/eiointc.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-index ed80bf290755..0bc870796f56 100644
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -447,17 +447,16 @@ static int loongarch_eiointc_writew(struct kvm_vcpu *vcpu,
- 		break;
- 	case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
- 		index = (offset - EIOINTC_ENABLE_START) >> 1;
--		old_data = s->enable.reg_u32[index];
-+		old_data = s->enable.reg_u16[index];
- 		s->enable.reg_u16[index] = data;
- 		/*
- 		 * 1: enable irq.
- 		 * update irq when isr is set.
- 		 */
- 		data = s->enable.reg_u16[index] & ~old_data & s->isr.reg_u16[index];
--		index = index << 1;
- 		for (i = 0; i < sizeof(data); i++) {
- 			u8 mask = (data >> (i * 8)) & 0xff;
--			eiointc_enable_irq(vcpu, s, index + i, mask, 1);
-+			eiointc_enable_irq(vcpu, s, index * 2 + i, mask, 1);
- 		}
- 		/*
- 		 * 0: disable irq.
-@@ -466,7 +465,7 @@ static int loongarch_eiointc_writew(struct kvm_vcpu *vcpu,
- 		data = ~s->enable.reg_u16[index] & old_data & s->isr.reg_u16[index];
- 		for (i = 0; i < sizeof(data); i++) {
- 			u8 mask = (data >> (i * 8)) & 0xff;
--			eiointc_enable_irq(vcpu, s, index, mask, 0);
-+			eiointc_enable_irq(vcpu, s, index * 2 + i, mask, 0);
- 		}
- 		break;
- 	case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
-@@ -540,10 +539,9 @@ static int loongarch_eiointc_writel(struct kvm_vcpu *vcpu,
- 		 * update irq when isr is set.
- 		 */
- 		data = s->enable.reg_u32[index] & ~old_data & s->isr.reg_u32[index];
--		index = index << 2;
- 		for (i = 0; i < sizeof(data); i++) {
- 			u8 mask = (data >> (i * 8)) & 0xff;
--			eiointc_enable_irq(vcpu, s, index + i, mask, 1);
-+			eiointc_enable_irq(vcpu, s, index * 4 + i, mask, 1);
- 		}
- 		/*
- 		 * 0: disable irq.
-@@ -552,7 +550,7 @@ static int loongarch_eiointc_writel(struct kvm_vcpu *vcpu,
- 		data = ~s->enable.reg_u32[index] & old_data & s->isr.reg_u32[index];
- 		for (i = 0; i < sizeof(data); i++) {
- 			u8 mask = (data >> (i * 8)) & 0xff;
--			eiointc_enable_irq(vcpu, s, index, mask, 0);
-+			eiointc_enable_irq(vcpu, s, index * 4 + i, mask, 0);
- 		}
- 		break;
- 	case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
-@@ -626,10 +624,9 @@ static int loongarch_eiointc_writeq(struct kvm_vcpu *vcpu,
- 		 * update irq when isr is set.
- 		 */
- 		data = s->enable.reg_u64[index] & ~old_data & s->isr.reg_u64[index];
--		index = index << 3;
- 		for (i = 0; i < sizeof(data); i++) {
- 			u8 mask = (data >> (i * 8)) & 0xff;
--			eiointc_enable_irq(vcpu, s, index + i, mask, 1);
-+			eiointc_enable_irq(vcpu, s, index * 8 + i, mask, 1);
- 		}
- 		/*
- 		 * 0: disable irq.
-@@ -638,7 +635,7 @@ static int loongarch_eiointc_writeq(struct kvm_vcpu *vcpu,
- 		data = ~s->enable.reg_u64[index] & old_data & s->isr.reg_u64[index];
- 		for (i = 0; i < sizeof(data); i++) {
- 			u8 mask = (data >> (i * 8)) & 0xff;
--			eiointc_enable_irq(vcpu, s, index, mask, 0);
-+			eiointc_enable_irq(vcpu, s, index * 8 + i, mask, 0);
- 		}
- 		break;
- 	case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
--- 
-2.39.3
+ lib/maple_tree.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/lib/maple_tree.c~maple_tree-fix-mt_destroy_walk-on-root-leaf-node
++++ a/lib/maple_tree.c
+@@ -5319,6 +5319,7 @@ static void mt_destroy_walk(struct maple
+ 	struct maple_enode *start;
+ 
+ 	if (mte_is_leaf(enode)) {
++		mte_set_node_dead(enode);
+ 		node->type = mte_node_type(enode);
+ 		goto free_leaf;
+ 	}
+_
+
+Patches currently in -mm which might be from richard.weiyang@gmail.com are
+
+maple_tree-fix-mt_destroy_walk-on-root-leaf-node.patch
+maple_tree-restart-walk-on-correct-status.patch
+maple_tree-assert-retrieving-new-value-on-a-tree-containing-just-a-leaf-node.patch
 
 
