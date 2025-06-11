@@ -1,125 +1,140 @@
-Return-Path: <stable+bounces-152362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EABAD47C3
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 03:13:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3F4AD482C
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 03:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D968E189CAA7
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 01:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE3CD3A39CB
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 01:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5960F22615;
-	Wed, 11 Jun 2025 01:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+NgpO/X"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419C7145A05;
+	Wed, 11 Jun 2025 01:47:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D1C28F3
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 01:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B941885B4;
+	Wed, 11 Jun 2025 01:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749604382; cv=none; b=Sy/w4n/+dBF+v3guyYiPz2r3WeNbFK5EZrSZv4b5Qg78LMLTSXHrlXSttjrWD5Je52IMBjw8oQkfelWYrVp9IK986YcVsY7lFoVKlxRu40YBT1CDeR4g5LyIX0lH3AVA5gcuK9Ouz3/u3GdNt1GLjFTca61IPQhVEH7AKPIbYqw=
+	t=1749606427; cv=none; b=usRY5/fIfzHOOFKzPnl2UwEU97OIvIsOFQYIyjPw5Fuk0IhJgeG24bjNa7VnMQYIqIP/fvskrElGcIzJ8TfaFrlW4vyt5YBFkqYbLe6QoUiZn+M0LLXTbf5K5O1dCciaOFF5j3waJldxNfvBLW4hfO2ugUGMK1wO3W9dAAO3ZkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749604382; c=relaxed/simple;
-	bh=Oy3+8cdokoYP7+O8eXUIfolD7g+IxpH49uHeq7vRBys=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=PcLrNBOHWfQZzACQpLGOmuSTsF6GgrmASG8C6yWYuEWz+vND/0Hqq5RQfdl4DlowlsVBVdxSEsYSJWuD2zSmikfPh9fatPoB4CwxbWHbDjUgUfVrYS7rv6BheKNjKmsRVNVuBQAN5BKSoeBiYSc9CwVgZMM8+bhaD5Uf2UcWTAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+NgpO/X; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-adb2bb25105so983673566b.0
-        for <stable@vger.kernel.org>; Tue, 10 Jun 2025 18:13:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749604379; x=1750209179; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/q9F0QVgKQXBPTRqYCAtV3TQoo4PQHbILQ0hjeePie4=;
-        b=Q+NgpO/XPNIbB/VHEaFSsKMPSJSAaI7yKrm/95ZrL1BKN/s/JDXf+L9WYGwQaudlPP
-         HIsi6MjdpuZJgxEw8qfKzhZURS5ClKVYaSOSc9KGO8NQzi86am12+sWb8pDvaxMotTSQ
-         QPcvcEBOyPQpUjqXip3DswQUOuvqeh3uomzHYYiRCruQQ5OQPPgoqjZTVqU9bpfXLrJg
-         WW544EgwtIQGfC8kLwGKfnLSXo6ViC0B3KEEooC5e4reGcYs9hSelo+S/jjPEY9i7BtH
-         5d9TlI975ULYBlRjLw/i//tnZL4ZvxDtfBliVGBcegvtF4pzuyeNXWId3iJegOYCdBqV
-         nCLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749604379; x=1750209179;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/q9F0QVgKQXBPTRqYCAtV3TQoo4PQHbILQ0hjeePie4=;
-        b=pEoQiRjROnkLRIJIU7Z4/rq7pI2fXzhOyx8JXhVx9Gwag9kNZf4e2V2dWX9VLJebLD
-         YCn+tYOq5G7bDFT0B9ovwvfCdQZKQMo/KBXMjqg4Odr2GKux/2C+ah6YM6Lf0M8NU/iu
-         CoC2JM1WPej0/z/ssH2oreyu97UIkpjbUqIfFKvhmTTLkxgxol0xElrcekTA59oZgeL8
-         uaVMrVGWmVw3a4YZeewvaI8+IHMELpDaSwv7AOY7D2P5ON1CVzml6XRaygKn0GOCGR+Z
-         a7Bs/PO494Kvyu3CBEiTYV5myOqTplyiyL9dx4sOUHsydb7OI/ZrPiqknZVrz7ruRIZz
-         lJNw==
-X-Forwarded-Encrypted: i=1; AJvYcCUn+u1a7jzeUoSsXNilDtKQFGhcjsHJqwH1w2eIYdUUy+Ki6Qc5qHmCes9lVk7OodIDYwlNF90=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoYWp3mqmyMEBflQqWRjU3HL3CzVJKi5ToqEkdNnRJgQQtGpdq
-	BK4xOg9i92jmMAwrhxulU7vnYzdvTmjdpcKbzZmDKIxqNwxVaeScrSZ7
-X-Gm-Gg: ASbGncsFH6A/YcVzvW1UoBDtmsAhg8pOKYyVXf7iCJkGpA6DOW1y0MlwSjYh+2/qKrU
-	wAwLe2uhQ+7X7my25m+Xv7IvufY5/AUt4RwKLjyTHqvCBY8f6xRuEkpVW/GEpT6G4+aDdk3fE7N
-	G8JEmS8cke4jM6JFO1fPiq8yUsLCELxFlyv+R++hunHQRqbOegXWGq00uMw2LqfHtJ8LnlRP6p8
-	JsoOQr5JO/hKpSvMwOGS/Xd3nGWWRmuH7RsjZI8o7+9o6fbEkwdFxDKYTFHNmmerNLPs+H/5XVd
-	yPoE24+pZ2Qb+3EEPieGNUH8x4nxXPnMd+PY1fmvslGn7pZB4iMu8nImEs6KYw==
-X-Google-Smtp-Source: AGHT+IG40UJ332YITSwQAm9A2G9QbVijkCR1+TXJHPaXkxzDWWirrsZgm9nKrWeCE7JvwCH5z+AM+Q==
-X-Received: by 2002:a17:907:60d0:b0:ada:abf7:d0e1 with SMTP id a640c23a62f3a-ade8c8d9dfdmr76014766b.37.1749604378658;
-        Tue, 10 Jun 2025 18:12:58 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1dc38388sm797360166b.130.2025.06.10.18.12.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 10 Jun 2025 18:12:58 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	willy@infradead.org
-Cc: maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	"Liam R . Howlett" <Liam.Howlett@Oracle.com>,
+	s=arc-20240116; t=1749606427; c=relaxed/simple;
+	bh=JYTWJ4bzufmG4/W3c+dyWMhzf9Zd60/BveoZVPfRXoo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KrTG9VpKNLGOT/Vdd6OIspEwQh9TzIZ9srRPyMT32hI9zeMPrwoo65+ZJPd0kWOZzY17qyePq4S5m1l8XSRoZlbOYXaXnjLUkoYexXnvINaY9RzSkEf2idVq4rxwo+VuDC1TyYoHCoapQZiPfaU0jht2sS1Ni1yS3t3eAiLMYYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8CxqmoW4EhookITAQ--.6399S3;
+	Wed, 11 Jun 2025 09:47:02 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowMCx7MQL4Eho0EoVAQ--.65102S3;
+	Wed, 11 Jun 2025 09:47:01 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Xianglai Li <lixianglai@loongson.cn>
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [Patch v3 2/3] maple_tree: restart walk on correct status
-Date: Wed, 11 Jun 2025 01:12:52 +0000
-Message-Id: <20250611011253.19515-3-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20250611011253.19515-1-richard.weiyang@gmail.com>
-References: <20250611011253.19515-1-richard.weiyang@gmail.com>
+Subject: [PATCH v3 1/9] LoongArch: KVM: INTC: Fix interrupt route update with eiointc
+Date: Wed, 11 Jun 2025 09:46:43 +0800
+Message-Id: <20250611014651.3042734-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20250611014651.3042734-1-maobibo@loongson.cn>
+References: <20250611014651.3042734-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMCx7MQL4Eho0EoVAQ--.65102S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Commit a8091f039c1e ("maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW
-states") adds more status during maple tree walk. But it introduce a
-typo on the status check during walk.
+With function eiointc_update_sw_coremap(), there is forced assignment
+like val = *(u64 *)pvalue. Parameter pvalue may be pointer to char type
+or others, there is problem with forced assignment with u64 type.
 
-It expects to mean neither active nor start, we would restart the walk,
-while current code means we would always restart the walk.
+Here the detailed value is passed rather address pointer.
 
-Fixes: a8091f039c1e ("maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW states")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 3956a52bc05b ("LoongArch: KVM: Add EIOINTC read and write functions")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- lib/maple_tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kvm/intc/eiointc.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index b0c345b6e646..7144dbbc3481 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -4930,7 +4930,7 @@ void *mas_walk(struct ma_state *mas)
- {
- 	void *entry;
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index f39929d7bf8a..d2c521b0e923 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -66,10 +66,9 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
+ }
  
--	if (!mas_is_active(mas) || !mas_is_start(mas))
-+	if (!mas_is_active(mas) && !mas_is_start(mas))
- 		mas->status = ma_start;
- retry:
- 	entry = mas_state_walk(mas);
+ static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
+-					int irq, void *pvalue, u32 len, bool notify)
++					int irq, u64 val, u32 len, bool notify)
+ {
+ 	int i, cpu;
+-	u64 val = *(u64 *)pvalue;
+ 
+ 	for (i = 0; i < len; i++) {
+ 		cpu = val & 0xff;
+@@ -398,7 +397,7 @@ static int loongarch_eiointc_writeb(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq;
+ 		s->coremap.reg_u8[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -484,7 +483,7 @@ static int loongarch_eiointc_writew(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq >> 1;
+ 		s->coremap.reg_u16[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -570,7 +569,7 @@ static int loongarch_eiointc_writel(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq >> 2;
+ 		s->coremap.reg_u32[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -656,7 +655,7 @@ static int loongarch_eiointc_writeq(struct kvm_vcpu *vcpu,
+ 		irq = offset - EIOINTC_COREMAP_START;
+ 		index = irq >> 3;
+ 		s->coremap.reg_u64[index] = data;
+-		eiointc_update_sw_coremap(s, irq, (void *)&data, sizeof(data), true);
++		eiointc_update_sw_coremap(s, irq, data, sizeof(data), true);
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+@@ -809,7 +808,7 @@ static int kvm_eiointc_ctrl_access(struct kvm_device *dev,
+ 		for (i = 0; i < (EIOINTC_IRQS / 4); i++) {
+ 			start_irq = i * 4;
+ 			eiointc_update_sw_coremap(s, start_irq,
+-					(void *)&s->coremap.reg_u32[i], sizeof(u32), false);
++					s->coremap.reg_u32[i], sizeof(u32), false);
+ 		}
+ 		break;
+ 	default:
 -- 
-2.34.1
+2.39.3
 
 
