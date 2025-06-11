@@ -1,151 +1,151 @@
-Return-Path: <stable+bounces-152413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD7FAD5428
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:38:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC8FAD536C
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 13:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF49F3AC9E3
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 11:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3F7C1668AA
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 11:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A08623ABBD;
-	Wed, 11 Jun 2025 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D912E6120;
+	Wed, 11 Jun 2025 11:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K5EVTs2C"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C7239E72;
-	Wed, 11 Jun 2025 11:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49632E6111;
+	Wed, 11 Jun 2025 11:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749641894; cv=none; b=VXSfBKtVmhYuPS1BZOJN4k288tfLppN6AdSyQlmLgzTYumjiWh+/wXaVt8ZGnOBGFrn0yuTfg5q9EX7J1Hk+7Ju6xS8gJTeA1y281MH5FnECzXQnRmnNldy8sdW2YctG/cNUOQOSsFUS3RIe8h2b8XlvmouL2yAaABMlQsnBseA=
+	t=1749640461; cv=none; b=PRltIDgEI4lXKudC8XphVgH3V6gSjthlczQ2NSF5oYXcJfDauOkDTXlVQPBuGFRxJf+x/Eroifdndoyv6RtyCjHRtE7UAFrz+Fsrri4jConYjeU443eYPEQH9svtwMsukzbETgKGlroPt3KiO94FryyzPv/wwhHI4+jDxMWuhlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749641894; c=relaxed/simple;
-	bh=jjTJVlRygJ+lZrV1UJpL8DR7Nwo+5KGKiceb+pjpmro=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=gedK2ybm1m3T0wdWhVBU/aoLB5EO98UmHEDzC7+f7uXXjAFjJRQKmzd+lBziZ/fbOowqgdofdhxBIWISN0q4z+No/3yhJy1vIrsfWphfCQ9Uz0EeNIot1JA8DUwRXjvSCiJEBPt97YK/xs1zFZdvVlzCR64NEnL2UGVTPscwj0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=gladserv.com; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gladserv.com
-Received: from [2a0c:e303:0:7000:1adb:f2ff:fe4f:84eb] (port=45472 helo=localhost)
-	by bregans-1.gladserv.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(envelope-from <brett@gladserv.com>)
-	id 1uPJFu-006nQJ-1k;
-	Wed, 11 Jun 2025 11:04:30 +0000
-Date: Wed, 11 Jun 2025 13:04:29 +0200
-From: Brett Sheffield <bacs@librecast.net>
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
-Subject: 6.12.y longterm regression - IPv6 UDP packet fragmentation
-Message-ID: <aElivdUXqd1OqgMY@karahi.gladserv.com>
+	s=arc-20240116; t=1749640461; c=relaxed/simple;
+	bh=y925YUPVV5s/vp2niWj79RIoOFMnpOxmI/oV+HU43X4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MbXbV5bHroy1SAltIJR/jLsvh9uy1pR5HASHA1L+WExM3NPx4tuyZPSCzP9xTXTEDMgpDkgCt6oVTOx9i+/2/I6lV+KLKRmPxI9CnX035OPnGZclfqemT2SRCvNjWajICerF3xToug/pYXEJ5U0+B+Q4xbWoMCs7+oVlFK8/ilE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K5EVTs2C; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749640460; x=1781176460;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y925YUPVV5s/vp2niWj79RIoOFMnpOxmI/oV+HU43X4=;
+  b=K5EVTs2CjpkoUfxg1s5bv/5CjBQl4fWja7Fo/BphoDsZWCMAcfOscsFp
+   2a3cJGCXSINJeV9mt8XPTZ6/BmXlS/XNaUcGStE8Tw9frjc75vAMFHCGF
+   a9OWaEhb74qL/jeyUMGqrNz7ImMkivSmgSmar0O6jQC5VGZ8TRQbBAORG
+   6IqyTloFrzee0rwM4tnXWoU2IU+FyZcn3mMkeK2D8aycxtX7X5LjYZLI9
+   zgOx1e3xqJvbZKn7tORyCbpM/MRbnPOh8tDf6tutDcElsGA7r9UeSkL7h
+   qByMnEIk5sOrNkLLy7Hm37p0XLRhfIH2al5cVPKCdUV8MvZMcZYoC50/w
+   w==;
+X-CSE-ConnectionGUID: xuiwMWvXSrSodmYe2vg2ew==
+X-CSE-MsgGUID: TxzrF4h2TL6yW0sEiu/UdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51641391"
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="51641391"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 04:14:19 -0700
+X-CSE-ConnectionGUID: BtCC/FP3RW+OIba4AN2NGw==
+X-CSE-MsgGUID: zo6/TCtHTZ2zD0s0cWfmGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,227,1744095600"; 
+   d="scan'208";a="147524461"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmviesa008.fm.intel.com with ESMTP; 11 Jun 2025 04:14:17 -0700
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v1] usb: acpi: fix device link removal
+Date: Wed, 11 Jun 2025 14:14:15 +0300
+Message-ID: <20250611111415.2707865-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="40GOL/uwi4gwDFwN"
-Content-Disposition: inline
-Organisation: Gladserv Limited.  Registered in Scotland with company number SC318051. Registered Office 272 Bath Street, Glasgow, G2 4JR, Scotland. VAT Registration Number 902 6097 39.
+Content-Transfer-Encoding: 8bit
 
+The device link to the USB4 host interface has to be removed
+manually since it's no longer auto removed.
 
---40GOL/uwi4gwDFwN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: 623dae3e7084 ("usb: acpi: fix boot hang due to early incorrect 'tunneled' USB3 device links")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+ drivers/usb/core/hub.c      | 3 +++
+ drivers/usb/core/usb-acpi.c | 4 +++-
+ include/linux/usb.h         | 2 ++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-Hello Stable Maintainers,
-
-Longterm kernel 6.12.y backports commit:
-
-- a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a "ipv6: save dontfrag in cork"
-
-but does not backport these related commits:
-
-- 54580ccdd8a9c6821fd6f72171d435480867e4c3 "ipv6: remove leftover ip6 cookie initializer"
-- 096208592b09c2f5fc0c1a174694efa41c04209d "ipv6: replace ipcm6_init calls with ipcm6_init_sk"
-
-This causes a regression when sending IPv6 UDP packets by preventing
-fragmentation and instead returning EMSGSIZE. I have attached a program which
-demonstrates the issue.
-
-sendmsg() returns correctly (8192) on a working kernel, and returns -1
-(EMSGSIZE) when the regression is present.
-
-The regression is not present in the mainline kernel.
-
-Applying the two missing commits to 6.12.y fixes the regression.
-
-Cheers,
-
-
-Brett
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 770d1e91183c..14229dcb0952 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2337,6 +2337,9 @@ void usb_disconnect(struct usb_device **pdev)
+ 	usb_remove_ep_devs(&udev->ep0);
+ 	usb_unlock_device(udev);
+ 
++	if (udev->usb4_link)
++		device_link_del(udev->usb4_link);
++
+ 	/* Unregister the device.  The device driver is responsible
+ 	 * for de-configuring the device and invoking the remove-device
+ 	 * notifier chain (used by usbfs and possibly others).
+diff --git a/drivers/usb/core/usb-acpi.c b/drivers/usb/core/usb-acpi.c
+index ea1ce8beb0cb..489dbdc96f94 100644
+--- a/drivers/usb/core/usb-acpi.c
++++ b/drivers/usb/core/usb-acpi.c
+@@ -157,7 +157,7 @@ EXPORT_SYMBOL_GPL(usb_acpi_set_power_state);
+  */
+ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
+ {
+-	const struct device_link *link;
++	struct device_link *link;
+ 	struct usb_port *port_dev;
+ 	struct usb_hub *hub;
+ 
+@@ -188,6 +188,8 @@ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
+ 	dev_dbg(&port_dev->dev, "Created device link from %s to %s\n",
+ 		dev_name(&port_dev->child->dev), dev_name(nhi_fwnode->dev));
+ 
++	udev->usb4_link = link;
++
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index 1b2545b4363b..92c752f5446f 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -614,6 +614,7 @@ struct usb3_lpm_parameters {
+  *	FIXME -- complete doc
+  * @authenticated: Crypto authentication passed
+  * @tunnel_mode: Connection native or tunneled over USB4
++ * @usb4_link: device link to the USB4 host interface
+  * @lpm_capable: device supports LPM
+  * @lpm_devinit_allow: Allow USB3 device initiated LPM, exit latency is in range
+  * @usb2_hw_lpm_capable: device can perform USB2 hardware LPM
+@@ -724,6 +725,7 @@ struct usb_device {
+ 	unsigned reset_resume:1;
+ 	unsigned port_is_suspended:1;
+ 	enum usb_link_tunnel_mode tunnel_mode;
++	struct device_link *usb4_link;
+ 
+ 	int slot_id;
+ 	struct usb2_lpm_parameters l1_params;
 -- 
-Brett Sheffield (he/him)
-Librecast - Decentralising the Internet with Multicast
-https://librecast.net/
-https://blog.brettsheffield.com/
+2.47.2
 
---40GOL/uwi4gwDFwN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="6.12.y-frag.c"
-
-/*
- * 6.12.y backports commit:
- * - a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a "ipv6: save dontfrag in cork"
- * but does not backport:
- * - 54580ccdd8a9c6821fd6f72171d435480867e4c3 "ipv6: remove leftover ip6 cookie initializer"
- * - 096208592b09c2f5fc0c1a174694efa41c04209d "ipv6: replace ipcm6_init calls with ipcm6_init_sk"
- *
- * This causes a regression when sending IPv6 UDP packets by preventing
- * fragmentation and instead returning EMSGSIZE. This program demonstrates the
- * issue. sendmsg returns correctly (8192) on a working kernel, and returns -1
- * (EMSGSIZE) when the regression is present.
- *
- * The regression is not present in the mainline kernel.
- *
- * Applying the missing commits to 6.12.y fixes the regression.
- */
-
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <stdio.h>
-
-#define LARGER_THAN_MTU 8192
-
-int main(void)
-{
-	/* address doesn't matter, use an IPv6 multicast address for simplicity */
-	struct in6_addr addr = {
-		.s6_addr[0] = 0xff, /* multicast */
-		.s6_addr[1] = 0x12, /* set flags (T, link-local) */
-	};
-	struct sockaddr_in6 sa = {
-		.sin6_family = AF_INET6,
-		.sin6_addr = addr,
-		.sin6_port = 4242
-	};
-	char buf[LARGER_THAN_MTU] = {0};
-	struct iovec iov = { .iov_base = buf, .iov_len = sizeof buf};
-	struct msghdr msg = {
-		.msg_iov = &iov,
-		.msg_iovlen = 1,
-		.msg_name = (struct sockaddr *)&sa,
-		.msg_namelen = sizeof sa,
-	};
-	ssize_t rc;
-	int s = socket(AF_INET6, SOCK_DGRAM, 0);
-	msg.msg_name = (struct sockaddr *)&sa;
-	msg.msg_namelen = sizeof sa;
-	rc = sendmsg(s, &msg, 0);
-	if (rc == -1) {
-		perror("send");
-		return 1;
-	}
-	printf("send() returned %zi\n", rc);
-	return 0;
-}
-
---40GOL/uwi4gwDFwN--
 
