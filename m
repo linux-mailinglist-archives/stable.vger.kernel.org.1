@@ -1,174 +1,149 @@
-Return-Path: <stable+bounces-152478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30848AD6152
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:30:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52725AD6153
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 23:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DAE3AB3C1
-	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:29:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16A24174104
+	for <lists+stable@lfdr.de>; Wed, 11 Jun 2025 21:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA5324678B;
-	Wed, 11 Jun 2025 21:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE38228CA9;
+	Wed, 11 Jun 2025 21:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netscape.net header.i=@netscape.net header.b="AaberSS/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jSnsuMcf"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic317-21.consmr.mail.gq1.yahoo.com (sonic317-21.consmr.mail.gq1.yahoo.com [98.137.66.147])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A322F24467B
-	for <stable@vger.kernel.org>; Wed, 11 Jun 2025 21:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.66.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A40186A;
+	Wed, 11 Jun 2025 21:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749677405; cv=none; b=uKJQoMCl53WgHXIx65wCqU/Ia2H9+yMKyMgm89/G+JFdEySVJoFsqPO/NPKKrka9G5eMjcWeYjljtsim98u4wwFkY34sroRhYbgxenrKtM4aTjA7acVF+CztNQoCN9h6q8766ud/AvnnRbjSPnolbHHaCOv0C7jrEDCb5IRao4U=
+	t=1749677450; cv=none; b=piDl+3pPCaundN3RAZu7dCm0IKrEDERgImtS+AYklNwqHdWwC3GEESGW359usixjQxkhwsQ0lO1EbNWdf5jAW7k5khU6ZLmakhf0tGZN7VSi/IJvk3aoGJ/X8qhSFmHoHYiuzaV9MlBiEczd0NSu8kx/+scgX2mkoLlTFadTupM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749677405; c=relaxed/simple;
-	bh=RgiEN215K9HvHdG5bCdRGDth2UiwDiTfQCW5BOvoxOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uhGT16E77Yx2anEv3+I3FoMuEiz6PcxFlTmjNahWSjVWQgDThCQtlkgK1dlNa9M8Sqdg4P0NTGMQGBJeKdUi2ajCdU+yr+PZ37zrYyOB5cY8DuKM6jhtSz1Qc28iFcJ93asaUE5A1yzEDg1kRNxDXDuePQ9iZPY33HTKbjRfmNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=netscape.net; spf=pass smtp.mailfrom=netscape.net; dkim=pass (2048-bit key) header.d=netscape.net header.i=@netscape.net header.b=AaberSS/; arc=none smtp.client-ip=98.137.66.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=netscape.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netscape.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netscape.net; s=a2048; t=1749677397; bh=WMY3NvcWXS0B0R2y6CGAr0cpFfD3M63L1PMUB/jUFTc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=AaberSS/AHV3Cff69P2nGpStPhg3/yl2xCDLVY42MRbeDZRKUBckFsjnkJz1GM+W73Yg+C+iQAb7xie4JTv3fM6R91hC177nJyoZB/pIGGkwab4EqU+olA3UFFTqmHdKDeqep3PtXEQrMcPsCBme8r4WmtrM/KulcB7CSNwflwcOZAVtdg0xJdTmKBFHM7u3sBWISCTvLyu1VClzNKlgGie6+0erJ0GbHTLZEd7IXNfpfWLXYRGHnWvDmWSBlqbKjV6n8U/MGiytOK/z/bmxsKHmNLHPctU/1cucXP1/kP2evgt4c9mZQca2g1C2yv/NqxHlKT92JDCR8tlnHaOTPw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1749677397; bh=MXsq7Cdnrdy0l89HKbpw9u+TRrikME7H8KgX9zmfYZH=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=EfP3K9M/oTmjUwJpVRrw7+EL4MdSIGGt8x7Non7m/71cZQLUCgdXgpa7O/XXf9jTo+8FcgkZVcqurbcrLpyrdMUUHH8wazDfLMACn3dS/OL84TP4OftSfDphfr5bp+3O+ZWfqG+gMFUmSuVWYNCvDpJNPYMdYUrwOlJYlZEifbat9+itl4f/7+D9y2yLRprizGuHkNmVkHUbR5j0VAxIaKkJ60Qup0JAaZNBgnv1drUmibcW7nMJc4aH8Qp365MRtYHrqzfix7PWV/pPtLCXkrdO5OxjLjrmoeVPJ/Zd7yDqYTj7cG7EHbXELyzTbgeOKZLIgPab4JGBHKhpdoskSg==
-X-YMail-OSG: 7xnI42kVM1k9wbONvAkH9k_5qKUHXbdQjq0_Rl3vnvRIBXviDzL2iNtMadjO_V4
- CidATuiL2Z2OUR4RAlu1fysrXV.n.ZAtzIiyvvzRgpbOFNxl.NeqE5BvVxSsh_RDrQ5Vd1ltZsCk
- C18ul21KmkFq2PNi1rK1VUvfIStD50UxNR2Nm4UZ9VwGAplY.heTxMaEIpgcZqogTduxKiAkk4dq
- RKH9mkjuoVbKkKtJvatIg6t8DdbsmGXUlkKzIYjKC4.ojp8UepEtGoK1pDGVp9UW0wz5Q596L3aC
- jt_MZEgQYbUzIdRfA2LASvUAAOqzjaDJQQ8ghG_6XXjXMUp9bQEaPkGfPj7hE_zrLLvK9qVUGLdL
- Acqd4F_zn.zh146MWsIVYSccMZN.FBksqVnRdkEvbYioeVbzAuKYHn61oOYeIrb2hnldDtxFQpRi
- vhnsCVEKbDdv5FnAHlojaDbInLNw3VuD9cN2YdSy5GzWvj48XmWY3eSAMgsuaF6kTUir27ILDeCM
- eDIN.KFyZaenUVpNSfwPoJzu4BquxPjRMCHVwx_tEUqKTvAH8Tgm.D6upgJBasSeR5r_upaivoqS
- NDqrW5Tqv0S_OPi9Vg3E3QE2JORWiiajlYY0TVTZfTPCVLlFS5ePvHvOeF95NgfjeVtR.Ins5Geo
- PgzfKaiBsWMRe8HoZO8bH1eX3iXyj9OLlHVocZUBu9GrJri1Fi6gmperDOPcG8DbyPhmAhbwkzDn
- FF5oqwD0ETQItAFrYY3zZ40ZwgT8a2OZftAkgUkh7oQvdLBtXaIAOYr3SAleJHJ9cfsju9InYwk8
- 86lj_9ciU0qpWYiaR49t951VWqExktnQsQm96PREuoPkawd1uPZD3vlyNHoIWTUv9dMWWi8u1yjK
- xHmuSG8W7oqYe.CWcq2tk02GuCdqIKDsTBUcxr8ERX1cPq1Tx67y1A_ilefQKzgSgWkkU5b3xIRN
- 9MCPCFIozaUx1BneTRr6CRnDoA2E.o5yo3bo_siw7PFOjr_pvJq5Qv0XEHIQXVidAQgvyWe_04Xx
- Vm11IbMLzBzJYPwr6oRTfJS2WdsgDyOkbDuhFtz1zcuqUIJbTsG4gBp2xd9747P10JxFI2HcAtP5
- 2uHWMwVsFkwrLxx2bo5dFlRU4KEVWQp8UY45ikp2E8V7DacuEAXxMuCD9W.CVtW6FUFivUCpRJKM
- Rgih9QPzblylKDb2GorM_lB4R.j0Mx4HUrDcb2lL_LM5vi.STlU.YdoP8DC6N.3txVuKzAXhqx2_
- MztGyNsXnNwRolYSjFpwuQ9xnl.kNmijG5Nb6togk9CLdsgb5kF3W0o1HIwq8Yd4YE4eG_nQL2sb
- 7Q_BO4yH_Y0BypBfqB6DWpjlB17nyD8fD4ROabpluhkFyY4XxmTky3ToZ7Qv8SELISFdOtpTDius
- zVaOi5HXbB6XejZd2kEn8TcVwtlmSKx.JdP8KZsDhpxAA7GR2ODmYBnzCE91a.Y5WMidU1AN8ndt
- ur5N9YPJJp6GdOG1Yq4INLTfRre6dipJA9bG.0kkICO8ihpDzAvjyG12VDz2.Gsf0ogqGzU2Gryt
- TbeDaE.gH1lBILk3rAV6bheAMEpus0udytxGu7MSoF2cM9_Fj0ONtArvk7zuvNXUQ83XHcLkb_.N
- 6_VazYnrEsYs2vBVohVVCVr7VYZfc4cEwDo8Cp8xOiym8h6zF7EHso6QQxygkCjaFjA1QvTT1YFT
- 05_fHXpI815nVxIPdMWXzlvyG0z9.rRYuk_d7xIBzrF494yKzx2AwEGoL6l1AR64xcDJd6UEwnVr
- fqdzZDfcxfEzHHehvbokQBNC8weiBrbvPWEu1ePhLaeT4vtaUl9GaUdRwX2KSe5YW2m_DsAEkISl
- 6CXLDmHr.5v7A51FQfqmg_mgboaYH4YaJop_JGVXTPQ76mgfukSyyE50R7omdT1aU2o3q0R6OOH9
- BakSUPz4vbicMi7Z8xCUdlo8tv2PgflVUY7gAydkBMTnsJaVexFEuX8OYvkmCZSlugsvzg76M8NG
- Yy5V_xiqsBJ8tmNrMdN0vuDWlZQ154snwtjVA5yobIbxYhaYuEKxpMqFCiZ.LeHlDN4h7VtAawpe
- C_FQqZQUO.UPdkjFkQ7WSL0Qal4vXeVE7fHwfak.igpckxZrOQKXrs3q2oYQjjvIlgcI6j7jpOt3
- zZ8j11OsdN4tsZ7i1vxVWEROsJUw2bKISZk0LDg7ViFjHgm5GYubGe3E1YKmkB4CC2OJmEXVJMvs
- nJduIiVdDcrZZBsh00Kp8Iep6WQ--
-X-Sonic-MF: <brchuckz@netscape.net>
-X-Sonic-ID: 99dfe5fe-d7dd-4022-a633-711a9deceddd
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.gq1.yahoo.com with HTTP; Wed, 11 Jun 2025 21:29:57 +0000
-Received: by hermes--production-bf1-689c4795f-x8q2d (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 64c1e2fe68fd12a6b1755d3c37cec48f;
-          Wed, 11 Jun 2025 21:09:41 +0000 (UTC)
-Message-ID: <10895316-e3fd-4483-9986-a6bcb217b20a@netscape.net>
-Date: Wed, 11 Jun 2025 17:09:39 -0400
+	s=arc-20240116; t=1749677450; c=relaxed/simple;
+	bh=QY/+VOMB3hjC1vh3UgKqUkYoH3CgOEIg2LM7M9goxTg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=h4cOC+1KuL5lcbkyOj3BtZdg2X8LvPqXeDtqDNCRt8odi3KcNlLpjRVo/UtVJQzjl/TfM1Rg51fHNFHvLMz+It2ibQ2fRL5XY9xWl+TGdq6pXIpdJDUvA7mhmYSFRqi263K7aRuAD5+3sxToB1c/UcufNgi4iclnzgb8TwYV7Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jSnsuMcf; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-747c2cc3419so323721b3a.2;
+        Wed, 11 Jun 2025 14:30:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749677448; x=1750282248; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HsnCCnxN20sfpCU7Ra0k0nlSofD440pIeWpk86OcN64=;
+        b=jSnsuMcfCrS1RZWIHcV4p7EmIeCMS/S+cm43D+ubcDRbKxk5attFBcbxodjpLsAEqx
+         BTAujqbri/GyonButz2oESPIAul9UOuyO6uhRFMwc342ZjkMGzN12I8KBujO/RG673GP
+         I1pms3zBPxrTYdoMgAqjmJMmTVF7Lpn6uBCNRF/fdKR5CyNGSRZD9uivJ5opTZ9aSSZF
+         c0tlRhY6bWiO+V4sxxH1K7J6k8qciHv+yZ0MNBc9/+jXSx0VrXvt6nMUnFJR2r2Chrgd
+         DklO/fDMDfEdminI3yrGi1OykrIdkGG7gQyrswxQ+hHv3phzjOVlx49s11TQ9Dp9axTW
+         nRoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749677448; x=1750282248;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HsnCCnxN20sfpCU7Ra0k0nlSofD440pIeWpk86OcN64=;
+        b=NOP9nV4aaF1adTRJBN5xDDyPyKpEuDVZSscb2qLUpEEy5isxjtWucF8CRvlaW5eqpZ
+         dr2c+rWz7FLWWtxZEdYgoeyweG48Ko7tGo5CWuuEW2JwkGb9CpBLIbvDDjVTefAW5Ljd
+         v6Iqgr8fT1Df4N7iURsRfo5blhrUT657QLQw+f7km4Cvjmy2zh5rc/2w4Pd1a/Zw/Jwg
+         s8bC/AMtJT9uoABRNZRRb0zWxGFxs2+flhbP/rHdibYk3I1L/k+c9IJI+Go5haBdIv5y
+         BwbwZYOSrqLbWNLJZGYv/Jk5e2CHRE5RBsTwqLGaO+sgocO8U6AuxuG++YwouXxdKoL3
+         qAEw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/JJhr6KxN5ORIghqggEDqjQ3x/VqTghBqjeipVe1YATSfJCQX7KWrUIOcDaNdJPgzmDZWaJSf@vger.kernel.org, AJvYcCWxrw9bPawVB8PepYgaOBEmge3X0/pPHPt+zrdOMX/mVhr7FhUNgQv65KCEVMKawIO+aUJUnyvEOFWn+NE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHEtVkyPU1speeEt4hX0fGAL1TeUebSWB3Jl85m/Mhqt9OzkIh
+	msnUPCRMoI1o4sysHDJ0a9hSEFmb1CnmdQmNFzYVnAWkWHGMtKpGttnw/eKrtTSh
+X-Gm-Gg: ASbGncsa0GuiK3OWOaKLLOd0fThfY2u6LIapVfvFkngj9j5dXZq6CGzQAuvaWKcyyDb
+	k9squ8xMYPwlW6BOFmwYjff1nE3KoDjq/ZilBNlgYqIJjtF9Yq6c7f9m5D7CbMDorjZu9ur6d5w
+	Z2rt3eJQMUyrEbzSs3sDId+tQ2OiyyKAG7GRGLVGoUVHVOCzVdqM9nKMMHy6IFVq1F2B8CWNIYj
+	wC4G+qT8h486p0MEx4o74OIG1hF62fhYAuZwFO1G8ocEzixDwrUhstTG8h4mvL7HWrQeSLELmy1
+	V2gsBfe0GCxHmvyVStyM6/iLQ+jFPveSWN0x1xEpwcyV7eBrqk52h8OKQQdgog==
+X-Google-Smtp-Source: AGHT+IGATYByORSgsAFit5O8cnNwbGYaHuvhIPD9to+nw2gFdfr7AgTwiNvnef3L06hk91VNfWadog==
+X-Received: by 2002:a05:6a00:b45:b0:736:5725:59b4 with SMTP id d2e1a72fcca58-7487bfe8e07mr1557216b3a.3.1749677447847;
+        Wed, 11 Jun 2025 14:30:47 -0700 (PDT)
+Received: from [192.168.1.26] ([181.88.247.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74880896402sm31992b3a.49.2025.06.11.14.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 14:30:47 -0700 (PDT)
+From: Kurt Borja <kuurtb@gmail.com>
+Date: Wed, 11 Jun 2025 18:30:40 -0300
+Subject: [PATCH] Revert "platform/x86: alienware-wmi-wmax: Add G-Mode
+ support to Alienware m16 R1"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] x86/its: explicitly manage permissions for ITS pages
-To: Mike Rapoport <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
- =?UTF-8?B?Su+/vXJnZW4gR3Jv?= <jgross@suse.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- Xin Li <xin@zytor.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, x86@kernel.org
-References: <20250603111446.2609381-1-rppt@kernel.org>
- <20250603111446.2609381-5-rppt@kernel.org>
- <20250603135845.GA38114@noisy.programming.kicks-ass.net>
- <aD8IeQLZUDvgoQZm@kernel.org>
-Content-Language: en-US
-From: Chuck Zmudzinski <brchuckz@netscape.net>
-In-Reply-To: <aD8IeQLZUDvgoQZm@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.23956 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250611-m16-rev-v1-1-72d13bad03c9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAID1SWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDM0ND3VxDM12gQl0LQwPLJAujlNRUYwMloOqCotS0zAqwSdGxtbUAMKP
+ V4lkAAAA=
+X-Change-ID: 20250611-m16-rev-8109b82dee30
+To: Hans de Goede <hdegoede@redhat.com>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Armin Wolf <W_Armin@gmx.de>
+Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
+ linux-kernel@vger.kernel.org, Cihan Ozakca <cozakca@outlook.com>, 
+ stable@vger.kernel.org, Kurt Borja <kuurtb@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1581; i=kuurtb@gmail.com;
+ h=from:subject:message-id; bh=QY/+VOMB3hjC1vh3UgKqUkYoH3CgOEIg2LM7M9goxTg=;
+ b=owGbwMvMwCUmluBs8WX+lTTG02pJDBmeX1tS5TbMX3dMcD7b0h3le21rSh/NPvSglsuovU+3f
+ O3sn7/WdZSyMIhxMciKKbK0Jyz69igq763fgdD7MHNYmUCGMHBxCsBEbnox/BVPf/2oZcWrbdMu
+ vuJ6NUHt6Ul/tyJuW4OzueILDs/S1ddh+B+7MMTkfmzab49lxVsNk9S4/Py+L2jcMek1Z7P0z5p
+ 7GzgB
+X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
+ fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
 
-On 6/3/25 10:36 AM, Mike Rapoport wrote:
-> On Tue, Jun 03, 2025 at 03:58:45PM +0200, Peter Zijlstra wrote:
-> > On Tue, Jun 03, 2025 at 02:14:44PM +0300, Mike Rapoport wrote:
-> > > From: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-> > > 
-> > > execmem_alloc() sets permissions differently depending on the kernel
-> > > configuration, CPU support for PSE and whether a page is allocated
-> > > before or after mark_rodata_ro().
-> > > 
-> > > Add tracking for pages allocated for ITS when patching the core kernel
-> > > and make sure the permissions for ITS pages are explicitly managed for
-> > > both kernel and module allocations.
-> > > 
-> > > Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > > ---
-> > 
-> > How about something like this on top?
->
-> Works for me :)
->
-> > --- a/arch/x86/kernel/alternative.c
-> > +++ b/arch/x86/kernel/alternative.c
-> > @@ -121,7 +121,6 @@ struct its_array its_pages;
-> >  static void *__its_alloc(struct its_array *pages)
-> >  {
-> >  	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-> > -
-> >  	if (!page)
-> >  		return NULL;
-> >  
-> > @@ -172,6 +171,9 @@ static void *its_init_thunk(void *thunk,
-> >  
-> >  static void its_pages_protect(struct its_array *pages)
-> >  {
-> > +	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-> > +		return;
-> > +
->
-> But modules generally use STRICT_MODULE_RWX.
-> Do you want to make the its pages stricter than normal module text?
->
-> >  	for (int i = 0; i < pages->num; i++) {
-> >  		void *page = pages->pages[i];
-> >  		execmem_restore_rox(page, PAGE_SIZE);
-> > @@ -180,8 +182,7 @@ static void its_pages_protect(struct its
-> >  
-> >  static void its_fini_core(void)
-> >  {
-> > -	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-> > -		its_pages_protect(&its_pages);
-> > +	its_pages_protect(&its_pages);
-> >  	kfree(its_pages.pages);
-> >  }
-> >  
-> > @@ -207,8 +208,7 @@ void its_fini_mod(struct module *mod)
-> >  	its_page = NULL;
-> >  	mutex_unlock(&text_mutex);
-> >  
-> > -	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
-> > -		its_pages_protect(&mod->arch.its_pages);
-> > +	its_pages_protect(&mod->arch.its_pages);
-> >  }
->
+This reverts commit 5ff79cabb23a2f14d2ed29e9596aec908905a0e6.
 
-I tested the 5-patch series without this 6th patch on top of 6.15.2 released yesterday
-and it fixes a crash I get in 6.15.2 in my Xen PV dom0 without this patch set.
+Although the Alienware m16 R1 AMD model supports G-Mode, it actually has
+a lower power ceiling than plain "performance" profile, which results in
+lower performance.
 
-I also  tried this 6th patch (including Mike's suggested removal of the three lines from
-Peter's add-on 6th patch ) but I got a kernel panic in Xen PV dom0 with this extra patch.
+Reported-by: Cihan Ozakca <cozakca@outlook.com>
+Cc: stable@vger.kernel.org # 6.15.x
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+Hi all,
 
-Chuck Zmudzinski
+Contrary to (my) intuition, imitating Windows behavior actually results
+in LOWER performance.
+
+I was having second thoughts about this revert because users will notice
+that "performance" not longer turns on the G-Mode key found in this
+laptop. Some users may think this is actually a regression, but IMO
+lower performance is worse.
+---
+ drivers/platform/x86/dell/alienware-wmi-wmax.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/platform/x86/dell/alienware-wmi-wmax.c b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+index c42f9228b0b255fe962b735ac96486824e83945f..20ec122a9fe0571a1ecd2ccf630615564ab30481 100644
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -119,7 +119,7 @@ static const struct dmi_system_id awcc_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
+ 		},
+-		.driver_data = &g_series_quirks,
++		.driver_data = &generic_quirks,
+ 	},
+ 	{
+ 		.ident = "Alienware m16 R2",
+
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250611-m16-rev-8109b82dee30
+-- 
+ ~ Kurt
+
 
