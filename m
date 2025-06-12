@@ -1,110 +1,158 @@
-Return-Path: <stable+bounces-152557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E741AD737C
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 16:18:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10B7AD7399
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 16:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 403363AD982
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 14:14:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64086164478
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 14:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E9022157F;
-	Thu, 12 Jun 2025 14:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643F02522B4;
+	Thu, 12 Jun 2025 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="rLQ63c4K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hztyPOui"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E10B19049B;
-	Thu, 12 Jun 2025 14:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D824886F;
+	Thu, 12 Jun 2025 14:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749737660; cv=none; b=Z15qZcI30I6AqjuewkBCU6KvYIhUo4RK8ydzygFTl5e/GmtbjN71I1SASUqLtFu1k9qg33BmjsGvEnXCL8qNm5bNi6RLnxpXBqnUnp8kC1lQAL435EQYWKTU4y/UiScvQtQN6i1yisHin1Kj0b3O8G0oEV6QCcJtfqvgw7qxZVo=
+	t=1749737900; cv=none; b=Bx8LNmefFqmSyBOyImXisvrilXG9xxnwPKWa0xIX6qn8+A8Ne1iOX7FG4FBrqazZfdQbLKP7zUvjWoWjyB17ogJzdAHIkV8BQpBWxyzOk4bfBNs4fkHHGbbrMuGqxvabVj9JS4BSH8mVk8jsKIurCU6tVNizRtf4Ikcg29IpigI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749737660; c=relaxed/simple;
-	bh=/ZJkPhEibj3MRPgMngwUIY78iCtXynAw21Rdt2Ce18w=;
-	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=D5ch5qsvmNjGVkjCM6XPpSVlyy5HtZQQl6efmKaaMTAkb7izqme3vYOs+GXPzmb/CLa76qDPI0fZzAnmg/Qe5Yl6K69BomHS0WtYz/i4HHUNp948JQCLLXAUDp7H+qE9reCxVGKnIVAo7/E5fg3tvYOPi55k+z9gFD1BY7Hl9/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=rLQ63c4K; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from [192.168.178.76] (host-212-18-30-247.customer.m-online.net [212.18.30.247])
-	(Authenticated sender: g.gottleuber@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPSA id 9E63E2FC01A4;
-	Thu, 12 Jun 2025 16:08:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1749737336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=s5RIfBjLWs/xgjxHgpqZTRDMhe9rCAFWtvXm/cCwe04=;
-	b=rLQ63c4KFwKsdCLhObDXXmCpVSmdMv9txk1MrlfTzroHr2j2j7QInvwdgbM3YAbgBRZW9C
-	cF1KyBivKbPYLLbqxJXEFszUJPKhq3fLaa0zR0IdBSgw/QUD09JGN4iKYyYYraCQl/QpM1
-	H4Uu1ols9PKB7cq1dLE0CVo77Gw1LtU=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=g.gottleuber@tuxedocomputers.com smtp.mailfrom=ggo@tuxedocomputers.com
-Message-ID: <fd10cda4-cd9b-487e-b7c6-83c98c9db3f8@tuxedocomputers.com>
-Date: Thu, 12 Jun 2025 16:08:55 +0200
+	s=arc-20240116; t=1749737900; c=relaxed/simple;
+	bh=Wm19W6ILPyOeVaqrzCWwFLG2OCJ4d848SPSkvqb417Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GY2gSkrcYBSj7S2x/uHdjqRduFpH1WRdXsRmtgTaxQQyUahDg1cYnHEEA3AnDIX8jA4/Q7Dk5ON+nW6179TqykrV9KpgNgauTQl71v1jVI7bneJIwyQc/b+n8xCXdD0lTbf0cE9296EJuW3ZkQnBuNgg+0fu2x15/uSgLNkEM7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hztyPOui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91108C4CEEB;
+	Thu, 12 Jun 2025 14:18:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749737899;
+	bh=Wm19W6ILPyOeVaqrzCWwFLG2OCJ4d848SPSkvqb417Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hztyPOuiSOpQZp4kcZZX9PexGV7E1EiqNM0y3SDDcEaxmDRYMjDLmh5pHh2orL/nK
+	 c4K6NAYIlE1zP8QtIKNNRWFznHuppEHjvN54IQID5NEiZVZne0oD/AiwySG8q91dW1
+	 31zA3+n7qtg6QC07ocsLzJdhjJC0XT2JSX81Mz6f0xv/JszL5ZaEEKLkMDJKRa75Lx
+	 2t2CMyn/4w0s0Aq5bKWEViqRoAXgGzA+IabEmFfaJ9naCGNtVsIdraOmjaST/l5AFj
+	 c4KGNlfqsncJZOG9HjikmvTR4/+kEfYBkC4A63xqSxdJHbdWzgVHTa2bnoBiC0g+X0
+	 UVZbnm4M+uA5g==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: kernel-dev@rsta79.anonaddy.me,
+	Hans de Goede <hansg@kernel.org>,
+	Andy Yang <andyybtc79@gmail.com>,
+	Mikko Juhani Korhonen <mjkorhon@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-ide@vger.kernel.org,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] ata: ahci: Disallow LPM for ASUSPRO-D840SA motherboard
+Date: Thu, 12 Jun 2025 16:17:51 +0200
+Message-ID: <20250612141750.2108342-2-cassel@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org, regressions@lists.linux.dev,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From: ggo@tuxedocomputers.com
-Cc: amd-gfx@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Hamza Mahfooz <hamza.mahfooz@amd.com>,
- Werner Sembach <wse@tuxedocomputers.com>,
- Christoffer Sandberg <cs@tuxedocomputers.com>
-Subject: [REGRESSION] drm/amd/display: Radeon 840M/860M: bisected suspend
- crash
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3400; i=cassel@kernel.org; h=from:subject; bh=Wm19W6ILPyOeVaqrzCWwFLG2OCJ4d848SPSkvqb417Y=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDK8HvbFs8ZP7BRTPPrw5plvm1byR4hxv3klrsIqwMQn+ lJ6w/yUjlIWBjEuBlkxRRbfHy77i7vdpxxXvGMDM4eVCWQIAxenAEwk7xbDP4srAZGdywIDPRef 1PlTaSvd65M+O+MC18dQ0yLJTeefLmL4Zym5w/hJd5PtrGWCB4JeRF8WfFaoffWpnIVzaOfOUwU rmQE=
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-Hi,
+A user has bisected a regression which causes graphical corruptions on his
+screen to commit 7627a0edef54 ("ata: ahci: Drop low power policy board
+type").
 
-I have discovered that two small form factor desktops with Ryzen AI 7
-350 and Ryzen AI 5 340 crash when woken up from suspend. I can see how
-the LED on the USB mouse is switched on when I trigger a resume via
-keyboard button, but the display remains black. The kernel also no
-longer responds to Magic SysRq keys in this state.
+Simply reverting commit 7627a0edef54 ("ata: ahci: Drop low power policy
+board type") makes the graphical corruptions on his screen to go away.
+(Note: there are no visible messages in dmesg that indicates a problem
+with AHCI.)
 
-The problem affects all kernels after merge b50753547453 (v6.11.0). But
-this merge only adds PCI_DEVICE_ID_AMD_1AH_M60H_ROOT with commit
-59c34008d (necessary to trigger this bug with Ryzen AI CPU).
-I cherry-picked this commit and continued searching. Which finally led
-me to commit f6098641d3e - drm/amd/display: fix s2idle entry for DCN3.5+
+The user also reports that the problem occurs regardless if there is an
+HDD or an SSD connected via AHCI, so the problem is not device related.
 
-If I remove the code, which has changed somewhat in the meantime, then
-the suspend works without any problems. See the following patch.
+The devices also work fine on other motherboards, so it seems specific to
+the ASUSPRO-D840SA motherboard.
 
-Regards,
-Georg
+While enabling low power modes for AHCI is not supposed to affect
+completely unrelated hardware, like a graphics card, it does however
+allow the system to enter deeper PC-states, which could expose ACPI issues
+that were previously not visible (because the system never entered these
+lower power states before).
 
+There are previous examples where enabling LPM exposed serious BIOS/ACPI
+bugs, see e.g. commit 240630e61870 ("ahci: Disable LPM on Lenovo 50 series
+laptops with a too old BIOS").
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index d3100f641ac6..76204ae70acc 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3121,9 +3121,6 @@ static int dm_suspend(struct amdgpu_ip_block
-*ip_block)
+Since there hasn't been any BIOS update in years for the ASUSPRO-D840SA
+motherboard, disable LPM for this board, in order to avoid entering lower
+PC-states, which triggers graphical corruptions.
 
- 	dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D3);
+Cc: stable@vger.kernel.org
+Reported-by: Andy Yang <andyybtc79@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220111
+Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+Changes since v2:
+-Rework how we handle the quirk so that we also quirk future BIOS versions
+ unless a build date is explicitly added to driver_data.
 
--	if (dm->dc->caps.ips_support && adev->in_s0ix)
--		dc_allow_idle_optimizations(dm->dc, true);
--
- 	dc_dmub_srv_set_power_state(dm->dc->ctx->dmub_srv,
-DC_ACPI_CM_POWER_STATE_D3);
+ drivers/ata/ahci.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
- 	return 0;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index e7c8357cbc54..c8ad8ace7496 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1410,8 +1410,15 @@ static bool ahci_broken_suspend(struct pci_dev *pdev)
+ 
+ static bool ahci_broken_lpm(struct pci_dev *pdev)
+ {
++	/*
++	 * Platforms with LPM problems.
++	 * If driver_data is NULL, there is no existing BIOS version with
++	 * functioning LPM.
++	 * If driver_data is non-NULL, then driver_data contains the DMI BIOS
++	 * build date of the first BIOS version with functioning LPM (i.e. older
++	 * BIOS versions have broken LPM).
++	 */
+ 	static const struct dmi_system_id sysids[] = {
+-		/* Various Lenovo 50 series have LPM issues with older BIOSen */
+ 		{
+ 			.matches = {
+ 				DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+@@ -1440,6 +1447,13 @@ static bool ahci_broken_lpm(struct pci_dev *pdev)
+ 			},
+ 			.driver_data = "20180409", /* 2.35 */
+ 		},
++		{
++			.matches = {
++				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++				DMI_MATCH(DMI_PRODUCT_VERSION, "ASUSPRO D840MB_M840SA"),
++			},
++			/* 320 is broken, there is no known good version yet. */
++		},
+ 		{ }	/* terminate list */
+ 	};
+ 	const struct dmi_system_id *dmi = dmi_first_match(sysids);
+@@ -1449,6 +1463,9 @@ static bool ahci_broken_lpm(struct pci_dev *pdev)
+ 	if (!dmi)
+ 		return false;
+ 
++	if (!dmi->driver_data)
++		return true;
++
+ 	dmi_get_date(DMI_BIOS_DATE, &year, &month, &date);
+ 	snprintf(buf, sizeof(buf), "%04d%02d%02d", year, month, date);
+ 
+-- 
+2.49.0
 
 
