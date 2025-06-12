@@ -1,129 +1,168 @@
-Return-Path: <stable+bounces-152552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DF9AD706E
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 14:30:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F57AD707B
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 14:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 796543A40EB
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 12:30:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEB0D3A3D93
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 12:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82567221FDC;
-	Thu, 12 Jun 2025 12:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441332F432A;
+	Thu, 12 Jun 2025 12:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Pdr3jsG8"
-X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WqrwYlJ3"
+X-Original-To: Stable@vger.kernel.org
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2069.outbound.protection.outlook.com [40.107.220.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5687B46B8;
-	Thu, 12 Jun 2025 12:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749731441; cv=none; b=SpsbHFIUyaU/x6nNCJXUPI6EOC1NzNZRgEevN4UmmoBTqD062cVsdnfoEcsD0qag1EGwVMdnoYAvm52+2uuaLXJIfnhTDJkAYdxoYIaSfk60AOeEqvF6LENVuTGQ7K+jSi/3wNYzg74nCEyxKZoVdOfxSuEbe0YAIBQ3Ubomr00=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749731441; c=relaxed/simple;
-	bh=xMj0PeXUpejsICB72qzZq/FU9wUca+EJE4sWUqWhTeA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y7VMaqWD4eU68EnxbP99yz5RrT+JDjUYMq4rZaWMCH4L73bwsuaP1Z+4SCovQ5+dyF91JBvRLPPRz7QV6mE6EmgrLPPYg6ZufvUDLwgiV/DyLrTSe5QlC1iRE7KA2HLrt+AAr/nYZGY1JYvnHOsC4NL/WN+zA+/Krrz5qV1fL4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Pdr3jsG8; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1749731436;
-	bh=xMj0PeXUpejsICB72qzZq/FU9wUca+EJE4sWUqWhTeA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Pdr3jsG8LEBbrTq48ZzhTF8vjLwU0K+gNO+X2iv7Gdtf7LmKBdaFEIz5QMWdeccwD
-	 GLCxrTWkvx74UkGx64K3aPq/B4r5m2wWanFUdRsvxE/zkUcEWjvmC0tdmaSl7DthRD
-	 5BeuUwEdjAOZP363EEtatAdEPq2wvbL19UMWfJpDqLJEWqCebJY82sVUPdY5Cah+Bp
-	 d6wLrrwIXhisc4G9pCT8qm9/8yoDg9PO+QNBA6isGJKMkProKjiDrtP+vHW8of9oIv
-	 T0bBlbb2VBZy8YlsWjQe1n9JNo/CshEopiXzxi9osJgM+NETN7+2eF9RvK13lDKGw6
-	 5cndkuogjgGWQ==
-Received: from [192.168.1.90] (unknown [212.93.144.165])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: cristicc)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 48C9D17E06BF;
-	Thu, 12 Jun 2025 14:30:35 +0200 (CEST)
-Message-ID: <85cb44fd-f597-443e-81b4-e259513aec9f@collabora.com>
-Date: Thu, 12 Jun 2025 15:30:23 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED422F430C
+	for <Stable@vger.kernel.org>; Thu, 12 Jun 2025 12:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749731559; cv=fail; b=Mmk6Ow7E3RkfClgUPU8sGXv6sMX/xt8CU5+l3lik6xsyJ44Eg10kgbVwlR8yRDja+V2+MhagVsbY1/qlYnPH9qpKdCoOCwHpJwpAxEtbrv173LLkA+mu3IzdKN9mR1B6g0eVA4/SIopU40WPDAm7jKmNMvrR0JNnSOa3kYbQSDY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749731559; c=relaxed/simple;
+	bh=1GkUQjLpfWhAIh9cYc5mmYwmRfyKM64B2zr9LMGLROg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=elG3h6suin/eolrUmnm/sfMkAy09aretldB8BuMGi1uvy9nf5/3y+1729T/Y/LOwcbfvMsu7dY3NmTLZIT+J0/EQWAtgeGUF8nj+j7Wa168ZDqMQIdD86Bjk7HC4w15egGqievR/mi6XmBWJtpQq06bbYQmc90cEmWsPV7qQOnU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WqrwYlJ3; arc=fail smtp.client-ip=40.107.220.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FeWie+u5hCqcH4LqYDCRi+pvcSR9Jy/AC5+1jOfxjLhMDP0CM7/eeDakcXRuSvFKk3hmSa8VRz/lxBeqnD5upean1BD2pxH/0f+gBwU4SK2Wk7c1VP5uzm8B69xcqxLdOedfPzept5S0pUMmAAMrGoVyWE4Xt6NGLIaFZzgVFkHYH3mgjITcURcY0h05ywb1sBXKHYfNqGvEcJonAye4EXYy2DzSnWEaXDHjy3QgVK9hZjU8Trg2qvrfj3c3qN7LF88QW0Zb8QYN+KhVx9OgezwGBbsxE117GcehdoSQ5pth1gOJB90wMWGYQ7jtnQvj9tQPqnphd5xSNb7Ldxcq9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ws99A85UOMOrIlYH0Zvc3VvPIpfs3iU2ulFMGzrBlmk=;
+ b=PndQlNHsPqjI97QA1t6RzASgWe0ZzsDgMD0ClodEeAvUHbTW76aibJPSCfcMfeSRBcGRvuFxplQK6O+w+F9AK5/DOWDz5NpFMsBHaFqpnzDpxwNgcrnda5wqQmOs4RLxwO9426MTmYPw8syfEOkq17L/xWbksnAhszsnnkWPqrlkdFB7gDbnYm8C6HSY9fjDVkjmX6+++RQBXAEQGXcnDa7acar1qIEQP4NHumFIMq029D7SpWuJdcFql9CacEbSxpGAc3Ru2/GdwcYhyGSRjM+HnlFoZNkGr3mTZWTn5duBXgfQqYbUJjZQnlOPhiCcoKlUg0oGrNJkYjDPrC0hUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ws99A85UOMOrIlYH0Zvc3VvPIpfs3iU2ulFMGzrBlmk=;
+ b=WqrwYlJ3fgaiX5Xjwm7UbNlubb3RX7ro+hTESLM0A6hlTvJXqzgv0BZJ+4LL+a+sh/iD3FZOvYT5Gndv4ru3FsFPsqR5n5/2DqXFlJKeFguAg++JxhnhxKVbjN6n3ztx1/HlPjCDZAweVUCsmIXQbiAgM90QuWxWV0dGfUZv4DLp7MBvEqY7dkMNZ4N/BKgR5HynUEpXlD+N361wwM1bQhOp8t38fGIzsywbB692ovCk4IvF0TnNc2v50HJ4KlVBZ0dFqxy4mh8fJfqAlCY2f0/I+4LxuV2kiupLKWRQT4Fq5JaadcFX3+UiZBiIQbfwvSWaqgKhrd5gOvyEr0DJOA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by LV5PR12MB9802.namprd12.prod.outlook.com (2603:10b6:408:2f8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Thu, 12 Jun
+ 2025 12:32:35 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%6]) with mapi id 15.20.8792.038; Thu, 12 Jun 2025
+ 12:32:35 +0000
+Date: Thu, 12 Jun 2025 09:32:34 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Vasant Hegde <vasant.hegde@amd.com>
+Cc: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Jerry Snitselaar <jsnitsel@redhat.com>, patches@lists.linux.dev,
+	Stable@vger.kernel.org,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Subject: Re: [PATCH v2] iommu/amd: Fix geometry.aperture_end for V2 tables
+Message-ID: <20250612123234.GS543171@nvidia.com>
+References: <0-v2-0615cc99b88a+1ce-amdv2_geo_jgg@nvidia.com>
+ <16da73bf-647d-4373-bc07-343bfc44da57@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16da73bf-647d-4373-bc07-343bfc44da57@amd.com>
+X-ClientProxiedBy: YT3PR01CA0022.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:86::26) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] arm64: dts: rockchip: Fix HDMI output on RK3576
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
- Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
- <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-rockchip@lists.infradead.org
-Cc: kernel@collabora.com, Andy Yan <andyshrk@163.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250612-rk3576-hdmitx-fix-v1-0-4b11007d8675@collabora.com>
- <3011644.e9J7NaK4W3@workhorse>
-Content-Language: en-US
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-In-Reply-To: <3011644.e9J7NaK4W3@workhorse>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|LV5PR12MB9802:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66b80b83-b5c7-48a7-f567-08dda9ad357f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8kZK39EX5RUS4KDYeudKk6xwT3WVu6KL8HNXzJIZXQxbV5y/r3flK9OLVlhw?=
+ =?us-ascii?Q?TYOFsd+CRZUeqPOyY3AFBKuVDNLTw4ofVRpgpPhC3uXOwSYJCEeJ/hkBfz0o?=
+ =?us-ascii?Q?WWky7wJN2tawlPqELlpJ7ebM5u3SZ4+vT0XmsHCnXVg54NNWD6hbwHTFrhz/?=
+ =?us-ascii?Q?Uaq7GBEyYewf040DOzojoWMwo7b2lrZXz2vJX8UWCEFH8Q85w4rs+gEUwF0A?=
+ =?us-ascii?Q?+ztgmjHmy74SGxuCSk2/CXflJyYhtreauVwHXPRVvtGg2lZphf0teUerXKBi?=
+ =?us-ascii?Q?2OwdrunUb0naPXZEQFJL5B2Ry3+BFzJzofDjc5lZBDklweSjIvxaH0HR98SJ?=
+ =?us-ascii?Q?TWPo+tECq43/Y5xJg3eCCHDczqQQ1QWiTemMG04RKPUH7iNfe6EvWKDVFOMH?=
+ =?us-ascii?Q?Sqpd0LeNo2ul8aSN61bxT9nY53vtHUvkcDqF/BOrcPAA3eXyZuINfLHY2Idy?=
+ =?us-ascii?Q?M4EJVMxqyz6XFImoTx/jMObfdwzIzAy+Q0fU6n1z8kSfZTJrVG+tG0mMzR60?=
+ =?us-ascii?Q?NU/B3gcWyVakGdMKgFH9gDBy5th9ClocDUR5qzec90hd6t6K/qXLE5cpSSq1?=
+ =?us-ascii?Q?ZmhkPPd5UKAfN390RHoPbKLvo4vK/MGY8s6UCM/8TWUqxzTO0hZ6lc5PMDHJ?=
+ =?us-ascii?Q?ZpgFSrRAaE2tr0uGwuVP/TO06kZWLIxviazIF/brXQwYeNV6XXFb5d+CMlqJ?=
+ =?us-ascii?Q?AMnVikjzEO1BCO9dwLgrqVYmYmd76gku+UuO+rXjhtFXnQ8dogGc4QFqHa6b?=
+ =?us-ascii?Q?dO92B4rQZrvBn9YlGSjiPwLiJvwlRmvnFI8GGS1Tf1+V1HdW4J2WFfkNJdBx?=
+ =?us-ascii?Q?U6YFOIi9wcUeU3qvLbH8cdUIdN9PKQqVLTNI3xOt5CfoPt/9OseLtlnaVXAR?=
+ =?us-ascii?Q?MYd/Elv26Gy14ecVxddkoM44U8RGYCGri3JsV4JQki+jvmfQVRXljOBJnVHY?=
+ =?us-ascii?Q?WIMGH1BlAPTb+Kza6CgRiY70KnEc9/thoTbBY2L1601tjdLa5I50FFWc0x9N?=
+ =?us-ascii?Q?CRzxX945QPuoIPk5GMunuscmzFrZK7wownC14/ncV8uxxzsch8EtWCCP7r3/?=
+ =?us-ascii?Q?t5c78x4m9UzLCROUb0KWzba1ZgyVYR+qMKf8MupQTnTeAG29sSVTEOfS7Kcy?=
+ =?us-ascii?Q?6VIW7a0PZJqrhrhD4lwiUhEXgt/oqYX21RSR9GHJ95XjAhaSOXvRz69ahRov?=
+ =?us-ascii?Q?9pcPSYdd5hYGucuulZH3sry319/BqNBJqpqZZBGZzQSwTxhBsr6o8Ib7AXYn?=
+ =?us-ascii?Q?t7wENsKinkiZeVVA6KSORg1LbnqaXpXH9uGNtS/fI7rRrZVF1+sxjbMoLRTn?=
+ =?us-ascii?Q?gZ66eC6OYCkdc4bcqXdwkbvMGTfFBLI9WZomFvvoeExWoAhweRXHo8UWklR7?=
+ =?us-ascii?Q?Z0xV3Wee2Fyxjd3lFeOAj/pYPg6rC5u3BwiKurgpUV3Q8W4VCQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?c0nPe+61AW5k0QmTrAQanFSOc95EnRKVuIrzckiokc2niZ0XYKpHCac69tfh?=
+ =?us-ascii?Q?UOK+MNjkA2I9YtMLFIZQtOlEOsoCcgUqhC4HR6xOBgjNBoescv/RT06cC22l?=
+ =?us-ascii?Q?JuomL9Q1bAp2+4Nh4lzWU+wC2IltlX6ahffZ/mh5bisxb3PuAf8bm5uCJedY?=
+ =?us-ascii?Q?v09a5QXOQT9ZQ+TznTmdJEjRdRJ3Oirm31Sd01Cb8y+m/Hh/V8MDok1+4rHU?=
+ =?us-ascii?Q?/z6I7A3D0bpC9MJLukBRthfgu+ZqKm4O26wUAo4If40rppFJUIVzIYIaq9hu?=
+ =?us-ascii?Q?ahcQP2vskkH8fOnf7EUGifwiB75M2EBcYv/D51AUn4e6TYMAC46+ybL24N/E?=
+ =?us-ascii?Q?Sa26n4jZZL46OpZ/CHoSl43gCq6ghkpLkAr9c9WpZ3EJCPmS0TnIFFgUQNYB?=
+ =?us-ascii?Q?nLCReIzrfBO4K0KWKtiZ7wZJYkrYjgEJmcQMAE5GmwPE93OQFSOvFQcEmgu3?=
+ =?us-ascii?Q?D0gPnERgvUa0P1aP9hSYrUm6lc4uEiVoB/GiDZfnByuNOo2yRG3gsg9oJFNQ?=
+ =?us-ascii?Q?zObMpfoLFUSLyqW1Y70/tz2iAEynbj4qSZnpa50H31hsaChBh5dJ9IcEzwMH?=
+ =?us-ascii?Q?5yBDgaWS+4aFBP1/6tQ0mMRvA9dfZi3MqWYKfOVgYbsujBQPSs6TKKyvtowI?=
+ =?us-ascii?Q?O+xelVH9UHeLeVEFEcSoElUJ42LOYIKDjFQtNHv7C3zzu7Rqz0tEI7DHRkD7?=
+ =?us-ascii?Q?PzQe9eaFpEtYM8FAdL2QjldZqAY1cAp1KpxhCKq1gc2q5s0pxVaYc6NmC5uC?=
+ =?us-ascii?Q?V2OvTf8KNUcersQxMIjSK5dZWtxj4T1uCnI2j2ecovHqZ6lqJzwHG7nzrD2X?=
+ =?us-ascii?Q?lOua10+5xPc7syH4Y38NDwNQYnohLjUn0M3ffyotzH6DeE9Zl4t9CI9GwllI?=
+ =?us-ascii?Q?ESQvxw1mIwFW/77woKTrJ2QLsL5iC6eb+IXuYmWru79NXfXv64T7JdGxCLdS?=
+ =?us-ascii?Q?r8DMEuWdr2Xaui2hLXLwOuoukZgfWh7cnZkm1UKiUeiZ2gMug0Y6adqFEtp/?=
+ =?us-ascii?Q?e20vSxlyiiTy9vSbgm8+W6TxMiUY3b1tJEDCQ00LTekLj/sR1awxmnzv6OwQ?=
+ =?us-ascii?Q?dOy8rArifoQt/0k3HFPTV4LYxjcRXkpkSCPz9GsfamX7ntQrClw1WJkT2po1?=
+ =?us-ascii?Q?u8JAC82i770j8Vk5WubtHnqtK1xkRayvGvbLeJuTAyobwcQ3Q1irDIaTk++D?=
+ =?us-ascii?Q?w2t99r+gdmVtQo1WcKbygpuQlORBjPil1DKIw3Oyum5f1zBSrmb1iiUIc7z8?=
+ =?us-ascii?Q?PGPjRQ+jWZlG+TRsfC6grCbSeqnxIbVYGKOAWCiMjgWT2UlMjkL9MqV6WDIl?=
+ =?us-ascii?Q?NiC+8D6aEBRPAsKvfCcSxNvsyDGvZan5RFi8BM74Bpi9wKA75gzfMDJg8hnZ?=
+ =?us-ascii?Q?fZG6+XMelVlB2Swz8kSugUvTDtoKVMK06CYtFAtJoOS1JHrQN2DZIvvS/AVi?=
+ =?us-ascii?Q?dQ0UOlC9uyLkTu/b52TOk9LTRuL1q8Ajum6+xRh8K4fWmG6ZNKRwlNFMBdkH?=
+ =?us-ascii?Q?D9nPSeQUNeIImeR77TmAX3k32Xe935V6ILFQKl46iBV9Oh1u8gLPcw9oDNBr?=
+ =?us-ascii?Q?HDSH0wheqVh20GiAyuf1BSEuH5djhEm33+YSQTQP?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66b80b83-b5c7-48a7-f567-08dda9ad357f
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 12:32:35.0847
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: W0oVaZqV9hy7B+xFF3s/U8g5fW8iWZC+RYdM3B8egdzmO222ty5L/CW2IjnjdOWB
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR12MB9802
 
-Hi Nicolas,
+On Thu, Jun 12, 2025 at 10:54:00AM +0530, Vasant Hegde wrote:
+> > This will also make the iommu_domain work consistently on all PASID 0 and
+> > PASID != 1.
+> 
+> You meant PASID != 0 ?
 
-On 6/12/25 3:13 PM, Nicolas Frattaroli wrote:
-> On Wednesday, 11 June 2025 23:47:46 Central European Summer Time Cristian Ciocaltea wrote:
->> Since commit c871a311edf0 ("phy: rockchip: samsung-hdptx: Setup TMDS
->> char rate via phy_configure_opts_hdmi"), the workaround of passing the
->> PHY rate from DW HDMI QP bridge driver via phy_set_bus_width() became
->> partially broken, unless the rate adjustment is done as with RK3588,
->> i.e. by CCF from VOP2.
->>
->> Attempting to fix this up at PHY level would not only introduce
->> additional hacks, but it would also fail to adequately resolve the
->> display issues that are a consequence of the system CRU limitations.
->>
->> Therefore, let's proceed with the solution already implemented for
->> RK3588, that is to make use of the HDMI PHY PLL as a more accurate DCLK
->> source in VOP2.
->>
->> It's worth noting a follow-up patch is going to drop the hack from the
->> bridge driver altogether, while switching to HDMI PHY configuration API
->> for setting up the TMDS character rate.
->>
->> Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
->> ---
->> Cristian Ciocaltea (3):
->>       dt-bindings: display: vop2: Add optional PLL clock property for rk3576
->>       arm64: dts: rockchip: Enable HDMI PHY clk provider on rk3576
->>       arm64: dts: rockchip: Add HDMI PHY PLL clock source to VOP2 on rk3576
->>
->>  .../bindings/display/rockchip/rockchip-vop2.yaml   | 56 +++++++++++++++++-----
->>  arch/arm64/boot/dts/rockchip/rk3576.dtsi           |  7 ++-
->>  2 files changed, 49 insertions(+), 14 deletions(-)
->> ---
->> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
->> change-id: 20250611-rk3576-hdmitx-fix-e030fbdb0d17
->>
-> 
-> For the whole series:
-> 
-> Tested-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> 
-> This fixes HDMI output for 4K resolutions on my RK3576 ArmSoM Sige5.
-> The DTB checks and bindings checks pass as well.
-Many thanks for the additional testing!
+Yes, thanks
 
-Regards,
-Cristian
+Jason
 
