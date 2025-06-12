@@ -1,94 +1,108 @@
-Return-Path: <stable+bounces-152570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305B6AD78EB
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 19:28:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84197AD7933
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 19:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5A83AF118
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 17:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46120162F30
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 17:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC7D2BCF43;
-	Thu, 12 Jun 2025 17:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AD027146B;
+	Thu, 12 Jun 2025 17:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6/VuU+s"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="OOzYm4Nc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0908F29CB49;
-	Thu, 12 Jun 2025 17:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D5F235C1E
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 17:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749749276; cv=none; b=uZLpTNlcAi/MKBD3XOpet1InWQaMeYhsLnvA4LQdpXThFLp4nBfOFKAckHEMAmQG+o58CSAvmH6dqSrCvnF5APEP0iRd6z/Z18oe9p3wooPywcGdxnFWdy5twGq2DXz9JRHE6yCnx1UDLzqh4tev+avEVlzOxK6KE5ZMAxB9A38=
+	t=1749749941; cv=none; b=uPqAvz2Lsf80hPXXhs1UjV7dCQ84jpxM87BaOoT+jS6Txu08ynh/zVMzZLFWLaRESVkY4BNOI7FdL6qM8WC6impU2DBgZbofx8jwfrQP9jcJX1FRmg0vB1yf4KiTMgpXK/yhRngqw8tNJ5lndTkDHjdTVMJuaGCwQbI4kJt3OwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749749276; c=relaxed/simple;
-	bh=H67rdJiIBIuzT3hLyIDtDtrf85zTgpnUrwpNkRv16WY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ppMYNbO7sJVCujVVwXy8YirSYkaPmyTirxMxJkHBbrltlLJ3A0vPDaOqtQxi6OZ4fmkdtQuXlvCVgvec5hzeaUk2j5ESpF7ebF1z67Pqn+H8EwiMYX2YncvMk3kIxG+rZPb5CHNenrpmaQKPObwZL2HW/kwqbmnSZPhXERoneFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6/VuU+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A16DC4CEF0;
-	Thu, 12 Jun 2025 17:27:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749749275;
-	bh=H67rdJiIBIuzT3hLyIDtDtrf85zTgpnUrwpNkRv16WY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6/VuU+sEbZhvI4MqJoho1sr38mqFEgf7E4wpshRVcfUQP2vQS/JF71WRspca7LT4
-	 69yCeddn0NovXmTKNYwHRvkOyVUEUnGi8Kku7exZN9lkBtzTJuVgiSIPlAbQjYSX3W
-	 TedWRiYXtT7PWgXzTLhqYZzBA/rJtnKFMON+NZf+RtfvAZg4Crn6bQ98BVWgzfVRt8
-	 2VQdEDk7W6IFsZEzZGYM272j6VXIpKEz2vtgGE+AInHBsJ5kwWfOMYV0Klsn7iZiPI
-	 EtRxlaj8dlpEc68F04FcCvr6aq99CaeG/NB0k9gZ1XdBefLvEfqEWyCyHrt/5Jl/k2
-	 K+lSzxYw0fo/Q==
-From: Will Deacon <will@kernel.org>
-To: catalin.marinas@arm.com,
-	Dev Jain <dev.jain@arm.com>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	david@redhat.com,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	mark.rutland@arm.com,
-	yang@os.amperecomputing.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] arm64: Restrict pagetable teardown to avoid false warning
-Date: Thu, 12 Jun 2025 18:27:46 +0100
-Message-Id: <174974002001.2447691.5560596379050052913.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20250527082633.61073-1-dev.jain@arm.com>
-References: <20250527082633.61073-1-dev.jain@arm.com>
+	s=arc-20240116; t=1749749941; c=relaxed/simple;
+	bh=aAB2yhGhf/FAgwfubAOGkPhordjM5AIhfyD4t7m2+L0=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=WUsNuUTJQ+g2+gHL2aRluiwJdwaAVmJoYGmo2qD1a839fMZLLTKmnGEGwPh82BSAJiF3OExpImm2g5cFh+q07hOvw4mG53bscZ7NXlt6ExyjnQmCl4B4JK3KjQzOCqSYUPe84CZBVqhX0mP4UoND8MR21kCr/MaWgeQYOrajdtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=OOzYm4Nc; arc=none smtp.client-ip=209.85.166.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-3ddd2710d14so9894565ab.2
+        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 10:38:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1749749935; x=1750354735; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l80CneWFsJjwT0yLsFNo3lvCWgsM1Nlzg/3pe85ojOg=;
+        b=OOzYm4NcsfXm8GicIXnnMqadPKddBHgmfLP3+Nml+L3nip09eMLbmwNmQGrvribKgV
+         VznYx/5A+9NZlTT5LgP83D8QGzR2t7+n3Lb9bJjW9lQRmqB3G0h9+PptiMorbk65trON
+         v/gjNSEz9yhvHzTjw17a8Eu13Feq7B7CBEwIYixGr4Ltg6XH4/Tp6+WBLz1X30Vvgxap
+         /4k2q6aQCXWvkRk9s2JmdFud9hZ17Up0hMRqEBSc1RPoYyzZj6cS82/I6EbI0pgHO4LF
+         uE705o7ezPPZxYqq6PS5PFrH6UXUXWs1fYq2CmwIU2Q7h5gA82/4+tHMecVHZvkvtcUa
+         mHPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749749935; x=1750354735;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=l80CneWFsJjwT0yLsFNo3lvCWgsM1Nlzg/3pe85ojOg=;
+        b=oJRePokeS8OfSnaNvecxhlyvasENmY5gJ5BnQgjfNp08uHdTl6cVmtvpALe3sao22v
+         zXoIrOYWwc9HvOOvC9lIrYwbr6uK+vMMftdpiVU5MaMZ81fezcNIOp4rAnTKVJuOaYML
+         +vueAPtfdpHgFGgI9ueRlzQh2ufqu0LqafCyk71LhJRxWADf5HMQFw2Fw19NI2vk37pJ
+         La+RPj4cczCZCTaGrHPvcEW+iG4fRot+T38EbyS12b6kFujmQ6of0wYAt7yCZkFun6Em
+         OBkpchh6bwPMNrcIWIL9g4VJop1Sg6g3necSPV6QpfrLuhNLSYOSi1koOTjgENyEjreD
+         saLg==
+X-Gm-Message-State: AOJu0YxX/AOWRYMUGMVMakQGqiMYyq/JB2Oy0xdw5B3THLEQQ752Xexu
+	lFt7GSpiPV3CsuzSSIH38d+GUW5+Tc4ZXTkUEmTSNGYvuc2cm1bKLvIqZsL3O7NEbu1LogBnKKv
+	10+r4
+X-Gm-Gg: ASbGncuYDL1UyJjbTpIF7gy57mrcG5/82eztIrkocqJ3y52c3H83aPzDnXS1YVD9mST
+	z74tA39fYBTwyT2Z49Dc0V7ZOcQ8w/0dfIUUehc0CVKTY5jwD9/mick0vcl3f3Se4QSa2dn9Vbz
+	mi6vbzeUBLp08zSieFEFQjnnx347b0iio6R5d9Jly2oXmzvfjX/+54DosBt//7qdofqotCi5RVc
+	oh6TWdzsJ2taSoRzrFJFspmGhlr9Wgth+uuqPwmY4BzF/WLsOnoKwWyRqmrF/uW8NywgiBUYuJL
+	AHia7OBx59rrlYrP2ZJNj/+Wg9FW9bJd2CagZ8EsVh4cr3ocSMWu/wrRDg==
+X-Google-Smtp-Source: AGHT+IFGtB43XuRE8+GzV2Kq0gUxzq7HK5bEhShdPoovySxqaJf7s2ir1gMdVnj/TIsQuXoubg0iYg==
+X-Received: by 2002:a05:6e02:180a:b0:3dd:b5fd:aafd with SMTP id e9e14a558f8ab-3ddfffb6db3mr9808735ab.2.1749749935389;
+        Thu, 12 Jun 2025 10:38:55 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ddfba05d11sm5430575ab.3.2025.06.12.10.38.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 10:38:54 -0700 (PDT)
+Message-ID: <906ba919-32e6-4534-bbad-2cd18e1098ca@kernel.dk>
+Date: Thu, 12 Jun 2025 11:38:53 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable <stable@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jens Axboe <axboe@kernel.dk>
+Subject: Revert of a commit in 6.6-stable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 27 May 2025 13:56:33 +0530, Dev Jain wrote:
-> Commit 9c006972c3fe removes the pxd_present() checks because the caller
-> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller only
-> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
-> pmd_free_pte_page(), wherein the pmd may be none. Thus it is possible to
-> hit a warning in the latter, since pmd_none => !pmd_table(). Thus, add
-> a pmd_present() check in pud_free_pmd_page().
-> 
-> [...]
+Hi Greg and crew,
 
-Applied to arm64 (for-next/fixes), thanks!
+Can you revert:
 
-[1/1] arm64: Restrict pagetable teardown to avoid false warning
-      https://git.kernel.org/arm64/c/650768c512fa
+commit 746e7d285dcb96caa1845fbbb62b14bf4010cdfb
+Author: Jens Axboe <axboe@kernel.dk>
+Date:   Wed May 7 08:07:09 2025 -0600
 
-Cheers,
+    io_uring: ensure deferred completions are posted for multishot
+
+in 6.6-stable? There's some missing dependencies that makes this not
+work right, I'll bring it back in a series instead.
+
 -- 
-Will
+Jens Axboe
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+
 
