@@ -1,100 +1,112 @@
-Return-Path: <stable+bounces-152493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35ADFAD646E
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:23:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4388AD649F
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F0A3AC045
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 00:23:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C72A17AE27
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 00:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7A4BA34;
-	Thu, 12 Jun 2025 00:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D36D51022;
+	Thu, 12 Jun 2025 00:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lb3oGvzk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APAOw6/a"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6418C2F2
-	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 00:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA4E182D0;
+	Thu, 12 Jun 2025 00:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749687831; cv=none; b=dH7twMN7pqP4W9xp5DcE5WoLSFthvKeMHLkaTC6KkYj30G8NxTOfTyK7F7axb5dq9Fb0/FuBfQYg1S+5ytnHXNQ9s1GHpuDivR1lTGXhxWbRJl8xZqSCsHQFmxZc4Oc6D6nthKyy3RVxuGG8B07nMGUGoZwZPGubZK9XRnCI4LU=
+	t=1749688801; cv=none; b=i0UbWdWkrkOQOdhSX2FbtCwZa2jWCI/UKMP+8mGW/SSFohcut4CUKFIFZJ/mD/LRc8SLauQehr/sU8jinNbE+HAZJ4goSzeHAdnaz4DqTD7bFy/SyYFh8PVulZDYIJXJhPhnCyLe/0HWKotDyBWOUhIcud7qwJzudaJO7/wkicg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749687831; c=relaxed/simple;
-	bh=zzyT5Gcb0oGSG/QbZlaf7uMoiLkoSuSWyXN9FeI7puk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jt4BKPDGXXQ1aSlHd7IKXzyAa+gcTaPHuzmcOZjBb7QoypXHbfL/R5IE+Vf3SHmwkSM/UEIzKoQF9+UtQrcGf63maF9NNBfYsJFbRLNrxXON3E6q4Ox5ZrWOvoV5rr5kXehJNL8Kw7DNkj+Q9Ubrl14BzDgDPJHgPLQIAzvyQhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lb3oGvzk; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749687830; x=1781223830;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=zzyT5Gcb0oGSG/QbZlaf7uMoiLkoSuSWyXN9FeI7puk=;
-  b=Lb3oGvzkFXpjeUf7pgDvPNdNDf2syaWJgUp/9xHcYhAy/qKgkibOIMXU
-   3FeojnSOk3kyDmFqTix4sItT+AHqijMHPzWgd8kE6ly45sFn8rb8Q5NIW
-   4NEAC3ZWIpEU/isV92tkPCrVyxiKWLZKaK5QAmfONoQYeKH+96ux1VY66
-   yBACj42EVolvLe+4gx4plCDj4qb0P7z2PDAwwjY7KGSYBXq3hERabptew
-   k0CQqEk6Ce1baFoS8ipyFNXF9LR/7aab9IgR8ofBRqM0kBdNwbZaOMUnf
-   DaEc8l7ULWCS/+czn+u5i6Tg94n/Jkhpi9VBlyuC918cDnscEA/1jg92m
-   w==;
-X-CSE-ConnectionGUID: omqPTAAdQVOPWt1wmHmKog==
-X-CSE-MsgGUID: oTX0DzELRF2Szg9O4lz80w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11461"; a="51993336"
-X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
-   d="scan'208";a="51993336"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2025 17:23:49 -0700
-X-CSE-ConnectionGUID: db44clUqSCqwkTRgf4kaGg==
-X-CSE-MsgGUID: qdJNRhGURxm/Jo4jQU9wdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,229,1744095600"; 
-   d="scan'208";a="170523377"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Jun 2025 17:23:48 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uPVjN-000AxC-1b;
-	Thu, 12 Jun 2025 00:23:45 +0000
-Date: Thu, 12 Jun 2025 08:23:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Karan Tilak Kumar <kartilak@cisco.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 1/5] scsi: fnic: Set appropriate logging level for log
- message
-Message-ID: <aEoeCY0rgX79K2Cr@fa745dba57a8>
+	s=arc-20240116; t=1749688801; c=relaxed/simple;
+	bh=jpj01HFrpsqQ9KoLARSa3nYvj53bpFwNKRQ3OKEk8As=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Nh4UeYKiquZoIbF0n/Lx2Krny19yEbOOfJQhiFicxgxqUKMpJKd6oF7+SUyIdYB+Qu2BsNpAjUTex3aBaX0QmH3qRzPQrdhLjOjEW5NcJduYaFo9mp+P8dnTjPDoVG8tl3EHJVOS7yELaXkrt++P4tEOSFwapvd4PhV4pFBKtu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APAOw6/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61D1C4CEE3;
+	Thu, 12 Jun 2025 00:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749688800;
+	bh=jpj01HFrpsqQ9KoLARSa3nYvj53bpFwNKRQ3OKEk8As=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=APAOw6/aLgn4GH1zi0JCsdqyqGgxnYvd2c3XYJyK8H42HsA8b2XK0h9PyTuORr8rS
+	 xrsz+w2cIGCRMxmANmtxU2i4QHYofyh3pDGp0SgDQvm77ZC+tvpyojsGTrcjp578Ad
+	 veA2m+LNcdQbMeyvU2BdE9zpvruzDOJwGJdjRdafK1659VGtsCn2N7bZb4Apv3RHSD
+	 7JBNOQBNKJ0vAiWCipa/554cQeMscB0/o//c7iF47hFWDAt1zy76d+xpEhN5h40gfn
+	 2JkXZuqGaSFaWW5bJNxW2pM/I4TYEWxrIzY/KPG+0gWnbO6pbCFMfgyT1bEZv2xctX
+	 OHFJjGTYVr4Dw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADAB3822D1A;
+	Thu, 12 Jun 2025 00:40:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250612002212.4144-1-kartilak@cisco.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 1/2] net: clear the dst when changing skb protocol
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174968883075.3549461.11849610540706113890.git-patchwork-notify@kernel.org>
+Date: Thu, 12 Jun 2025 00:40:30 +0000
+References: <20250610001245.1981782-1-kuba@kernel.org>
+In-Reply-To: <20250610001245.1981782-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ willemdebruijn.kernel@gmail.com, maze@google.com, daniel@iogearbox.net,
+ stable@vger.kernel.org, martin.lau@linux.dev, john.fastabend@gmail.com,
+ eddyz87@gmail.com, sdf@fomichev.me, haoluo@google.com, willemb@google.com,
+ william.xuanziyang@huawei.com, alan.maguire@oracle.com, bpf@vger.kernel.org,
+ shuah@kernel.org, linux-kselftest@vger.kernel.org, yonghong.song@linux.dev
 
-Hi,
+Hello:
 
-Thanks for your patch.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+On Mon,  9 Jun 2025 17:12:44 -0700 you wrote:
+> A not-so-careful NAT46 BPF program can crash the kernel
+> if it indiscriminately flips ingress packets from v4 to v6:
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>     ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+>     ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+>     process_backlog (net/core/dev.c:6186:4)
+>     napi_poll (net/core/dev.c:6906:9)
+>     net_rx_action (net/core/dev.c:7028:13)
+>     do_softirq (kernel/softirq.c:462:3)
+>     netif_rx (net/core/dev.c:5326:3)
+>     dev_loopback_xmit (net/core/dev.c:4015:2)
+>     ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+>     NF_HOOK (./include/linux/netfilter.h:314:9)
+>     ip_mc_output (net/ipv4/ip_output.c:400:5)
+>     dst_output (./include/net/dst.h:459:9)
+>     ip_local_out (net/ipv4/ip_output.c:130:9)
+>     ip_send_skb (net/ipv4/ip_output.c:1496:8)
+>     udp_send_skb (net/ipv4/udp.c:1040:8)
+>     udp_sendmsg (net/ipv4/udp.c:1328:10)
+> 
+> [...]
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Here is the summary with links:
+  - [net,v3,1/2] net: clear the dst when changing skb protocol
+    https://git.kernel.org/netdev/net/c/ba9db6f907ac
+  - [net,v3,2/2] selftests: net: add test case for NAT46 looping back dst
+    https://git.kernel.org/netdev/net/c/567766954b2d
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2 1/5] scsi: fnic: Set appropriate logging level for log message
-Link: https://lore.kernel.org/stable/20250612002212.4144-1-kartilak%40cisco.com
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
