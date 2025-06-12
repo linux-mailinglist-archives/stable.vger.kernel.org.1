@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-152532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D7DAD679B
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:10:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC8DAD67E5
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:21:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 150C87A87C4
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 06:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8123D17C2D1
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 06:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935BA1E503C;
-	Thu, 12 Jun 2025 06:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AD31F4165;
+	Thu, 12 Jun 2025 06:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ujmRRHy5"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RrNJ+46u"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA609153598;
-	Thu, 12 Jun 2025 06:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAAD1F3B98;
+	Thu, 12 Jun 2025 06:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749708593; cv=none; b=FR4CcYN22nT8melF6i3H9u/mDiHkqNibGakiE0HKa20mGwhyNMsp3/YkUmCHzQEDvyFIc4TeojUYDSr6tCalj0Kxg3aBgJwfw/1ePjImdTPXBpGSyzTC6MAHvY9wrPQUKP6Ur+iYHd3MD39zUcJTrsm0FpHJTQI3pqdkO3LtkHE=
+	t=1749709258; cv=none; b=PZ97oKliv2T+bRxgNn4GYcuGWIRXrU5OND2hxlDhWEg6x72rs1baraLb/gqP1guKuaHUgXy7XYZ9ngGw8ZKNzFqDMzRdD16Vs88f9XP6Etz9CtXs2NlBj7dKCMSVhtU3kPvjd4Hw0uJ0KVS9ZN5Lb7rkrIFqjClzANX3ZcqIHxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749708593; c=relaxed/simple;
-	bh=RPYCvGAVPmOnxF5mE8GPAXnDp5Vd7Htjbido3wbk+8o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZXMOmGRdkRGrdmZoiVVSZ1NMADsEZbWw4u8xd0CAKfwZV9H3yaHrRWecF4HvEICl/BsUJvPeL07y+PwWSMzAZKRvC3lrzD6V4eqT7PvFQ15uDELC8MEr7MZdqf2Gr7vegxrjo20gfSBc15Ak7kEcIitVrLX+P/nIYtKyQrAPvqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ujmRRHy5; arc=none smtp.client-ip=210.61.82.184
+	s=arc-20240116; t=1749709258; c=relaxed/simple;
+	bh=ojsbwyH59F5Jp9teEXuI0ovZhoR5vYZZ21JJdWmQpfw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XmOzZc7LXrvXdOErlRJayXQuQltzBH2DSAftddxm1dodpYfXphXU+JrvkKTl+5zgMZ7jPW06iPibUIhJxkpMDZm3eUOsKtNHpvGZRpceuTCpZOagRPK/+vPtsd7VSJydbzGQsBKHuKdXGQppOP6i7o2OlaLq7u91BtABuOYwOkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RrNJ+46u; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: d0f9e20c475311f0b33aeb1e7f16c2b6-20250612
+X-UUID: 62395f80475511f0b910cdf5d4d8066a-20250612
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=BMTmXRh93Y4E4geHiDgflULudSTQePu1g+BOPOBu0To=;
-	b=ujmRRHy51wCJrpGrB9IdycAJQWyv5L4I9JYy33kZlhT2xwpJ3+qkToilWDAE7bfY9d0kmUxJisbpBENLGoqEaZa9fOm6FA5nUdA5vo/KpKiy3oP7t6YdtvR/ZYUK6kFYeyHhBf+mNzu3Lln3p0HES0Hu29y7PNaJkO9eN7ftpes=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=NUZ6ZLFO3Sr7Q0l5Coxwe0qp3xU21QgYUZFflSsuWJE=;
+	b=RrNJ+46ucyqHtH63F0+DjpDSXVhr/b9fhOmgWKGLy/yewS782DEN3CJXoe1GnxwDN/QLYP1K2ushvDptShLtaoCxdEM414+Ht1metKb8euXkcCQ41sBOOkJuOy2lNPl0BywDhfTWNLcFtPWkCc3KithjI6+rLRT3y6StQ/1SPs4=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.2.3,REQID:05878140-9a9b-4669-84f1-c7f0a5ef1f58,IP:0,UR
+X-CID-O-INFO: VERSION:1.2.3,REQID:6ed11a4e-0fca-462c-88a0-4208889f4b4a,IP:0,UR
 	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:-5
-X-CID-META: VersionHash:09905cf,CLOUDID:6ab49958-abad-4ac2-9923-3af0a8a9a079,B
+X-CID-META: VersionHash:09905cf,CLOUDID:ee006028-fdd2-4021-9c0c-83548fdcf243,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
 	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
 	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -46,18 +46,18 @@ X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d0f9e20c475311f0b33aeb1e7f16c2b6-20250612
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+X-UUID: 62395f80475511f0b910cdf5d4d8066a-20250612
+Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
 	(envelope-from <mingyen.hsieh@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1659988403; Thu, 12 Jun 2025 14:09:36 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+	with ESMTP id 569675781; Thu, 12 Jun 2025 14:20:49 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Thu, 12 Jun 2025 14:09:34 +0800
+ 15.2.1258.39; Thu, 12 Jun 2025 14:20:47 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Thu, 12 Jun 2025 14:09:34 +0800
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Thu, 12 Jun 2025 14:20:47 +0800
 From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
 To: <nbd@nbd.name>, <lorenzo@kernel.org>
 CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
@@ -65,11 +65,11 @@ CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
 	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
 	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
 	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH] wifi: mt76: mt7925: fix the wrong config for tx interrupt
-Date: Thu, 12 Jun 2025 14:09:31 +0800
-Message-ID: <20250612060931.135635-1-mingyen.hsieh@mediatek.com>
+	<linux-mediatek@lists.infradead.org>, Michael Lo <michael.lo@mediatek.com>,
+	<stable@vger.kernel.org>, Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: fix invalid array index in ssid assignment during hw scan
+Date: Thu, 12 Jun 2025 14:20:46 +0800
+Message-ID: <20250612062046.160598-1-mingyen.hsieh@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,33 +81,52 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Michael Lo <michael.lo@mediatek.com>
 
-MT_INT_TX_DONE_MCU_WM may cause tx interrupt to be mishandled
-during a reset failure, leading to the reset process failing.
-By using MT_INT_TX_DONE_MCU instead of MT_INT_TX_DONE_MCU_WM,
-the handling of tx interrupt is improved.
+Update the destination index to use 'n_ssids', which is incremented only
+when a valid SSID is present. Previously, both mt76_connac_mcu_hw_scan()
+and mt7925_mcu_hw_scan() used the loop index 'i' for the destination
+array, potentially leaving gaps if any source SSIDs had zero length.
 
 Cc: stable@vger.kernel.org
 Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/regs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c      | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-index 547489092c29..341987e47f67 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-@@ -58,7 +58,7 @@
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index db85a9d984c5..660c8df89910 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1740,8 +1740,8 @@ int mt76_connac_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		if (!sreq->ssids[i].ssid_len)
+ 			continue;
  
- #define MT_INT_TX_DONE_MCU		(MT_INT_TX_DONE_MCU_WM |	\
- 					 MT_INT_TX_DONE_FWDL)
--#define MT_INT_TX_DONE_ALL		(MT_INT_TX_DONE_MCU_WM |	\
-+#define MT_INT_TX_DONE_ALL		(MT_INT_TX_DONE_MCU |	\
- 					 MT_INT_TX_DONE_BAND0 |	\
- 					GENMASK(18, 4))
+-		req->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+-		memcpy(req->ssids[i].ssid, sreq->ssids[i].ssid,
++		req->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
++		memcpy(req->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+ 		n_ssids++;
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 2bd506a4208c..66bac3047b2b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -3178,8 +3178,8 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		if (i > MT7925_RNR_SCAN_MAX_BSSIDS)
+ 			break;
  
+-		ssid->ssids[i].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
+-		memcpy(ssid->ssids[i].ssid, sreq->ssids[i].ssid,
++		ssid->ssids[n_ssids].ssid_len = cpu_to_le32(sreq->ssids[i].ssid_len);
++		memcpy(ssid->ssids[n_ssids].ssid, sreq->ssids[i].ssid,
+ 		       sreq->ssids[i].ssid_len);
+ 		n_ssids++;
+ 	}
 -- 
 2.34.1
 
