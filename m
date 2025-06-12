@@ -1,161 +1,98 @@
-Return-Path: <stable+bounces-152499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D733AD64B1
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:45:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C02DAD653F
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 03:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079071BC0B04
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 00:46:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4A76179235
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 01:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A372744D;
-	Thu, 12 Jun 2025 00:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3367183CA6;
+	Thu, 12 Jun 2025 01:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="DsCKPGCo"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="a4fpncla"
 X-Original-To: stable@vger.kernel.org
-Received: from rcdn-iport-7.cisco.com (rcdn-iport-7.cisco.com [173.37.86.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CDB44C77;
-	Thu, 12 Jun 2025 00:45:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B50101DE;
+	Thu, 12 Jun 2025 01:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749689151; cv=none; b=HNb1nyVYjJ1p4NydiUTQCxCL5WoSMhG1NLL3UIilEpPraaC/6J0vXoaxijNMeecWzlQ2NwaO21tQMQHfyrPYRGpA820KQFNeHWg9gCq7+vJ+1D/HC7B1qtELI+W/YfAXTb0EYJUzQfA/9AC5yPy8wXKKZ9OVsDAdoR5BuMgAPqQ=
+	t=1749692899; cv=none; b=lNg+En4+8vjYqrU01W+/3RSGspR6Z1KsxA4XTzVjqTomDUzHMckCOmn3GHarAaeYmEZ40eb3w96W9a4Oi/o6EtBadMq5JdF91BEjYo70oZno74qD/IgOSqfw6kah25cj8hjr0pLf03J2RbFcmvNl9qI4MvXkLokqaaHZ/QD3cBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749689151; c=relaxed/simple;
-	bh=bKDZExpTVr2pGtwZnZLCuVNx9sxw+4CpIbC6hw/Xx/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqMnXmyw+HmtDTGbUyFntsDhzXl1ubzzZJmTKNQDAS84xgUQ0vtQ3KCx8wMRGIDMoN4ZZNy0Tu4ZSmYYx/FGxMd7Pv63gotyJlJ5YuxwD9n2PJhaYv2cOp8zY3ILH4ewMvtGSC7Rr3DqX50nykvu7TwpV11JrBQ0YOA+EjttBo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=DsCKPGCo; arc=none smtp.client-ip=173.37.86.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=1435; q=dns/txt;
-  s=iport01; t=1749689150; x=1750898750;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=yE83WXXy7htpJHWda3RTgdsS+5aW/fHR3g7XMaHM/fc=;
-  b=DsCKPGCodiuSl2E4vvKQFa/JqRL5aQuKJm3ghPDylYV6veog8qcE8V5B
-   /Y+kxMB29xB7AkKnwWptPpX6E13DQHXBEteoGKgtv3Ggyhf98ynYWyi2q
-   mC+8vmA8/4/dx6fKe2fuRd9W1dVLkkK+fNzxZMjwS0lYvUQpVd3YIkOfo
-   fARtyfeMFHTP6NxgAFGc0uZbk5eJO3qP9Ij225vCwz6171gaNrNKsudop
-   curWoglgO5hz8DRjHFvUbUHY5cKnCe6q9CCInBWb1umu8yXGjc+UOJrNC
-   aONyRtcEG2rRm9fuIydPn0/ZUCepqKrI9pxEFTL3rQRmBWA1n2Nxx4AWn
-   g==;
-X-CSE-ConnectionGUID: DOrEmQ+XSsCivpxNuCGB1w==
-X-CSE-MsgGUID: OZB2mSG0Rn2RGKx9+mmsJA==
-X-IPAS-Result: =?us-ascii?q?A0ANAACCIkpo/5IQJK1aGwEBAQEBAQEBBQEBARIBAQEDA?=
- =?us-ascii?q?wEBAYF/BgEBAQsBgkqBUkMZMIxwhzSgOoElA1cPAQEBD1EEAQGFBwKLZgImN?=
- =?us-ascii?q?AkOAQIEAQEBAQMCAwEBAQEBAQEBAQEBCwEBBQEBAQIBBwWBDhOGCIZbAgEDJ?=
- =?us-ascii?q?wsBRhBRVhmDAoJvA7AIgXkzgQHeN4FugUkBjUxwhHcnFQaBSUSBFYJ5b4FSg?=
- =?us-ascii?q?z6FdwSDOqEeSIEeA1ksAVUTDQoLBwWBYwM1DAsuFW4yHYINhRmCEosHhEkrT?=
- =?us-ascii?q?4UhhQUkcg8HSkADCxgNSBEsNxQbBj5uB5gLg3CBDnyBRCmlV6ELhCWhUxozh?=
- =?us-ascii?q?ASNDZlQmQSpOIFoPIFZMxoIGxWDIlIZD44tFrtVJjI8AgcLAQEDCZIUAQE?=
-IronPort-Data: A9a23:gYKs/q3PsmTXZ4z4s/bD5Ttwkn2cJEfYwER7XKvMYLTBsI5bpzwPy
- GYXWzqBP/iMYGr1Kotzb4rl/UIP65LSndZnSgpq3Hw8FHgiRegpqji6wuYcGwvIc6UvmWo+t
- 512huHodZ5yFjmG4E70aNANlFEkvYmQXL3wFeXYDS54QA5gWU8JhAlq8wIDqtYAbeORXUXU5
- 7sen+WFYAX4g2AtazpPg06+gEoHUMra6WtwUmMWPZinjHeG/1EJAZQWI72GLneQauF8Au6gS
- u/f+6qy92Xf8g1FIovNfmHTKxBirhb6ZGBiu1IOM0SQqkEqSh8ajs7XAMEhhXJ/0F1lqTzeJ
- OJl7vRcQS9xVkHFdX90vxNwS0mSNoUekFPLzOTWXcG7lyX7n3XQL/pGIGYsEIghudZMGkpP6
- +QIDi0mQTramLfjqF67YrEEasULJc3vOsYb/3pn1zycVadgSpHYSKKM7thdtNsyrpkRRrCFO
- YxAN3w2MEqojx5nYj/7DLo9lf20h332cBVTqUmeouw85G27IAlZi+i9YISPJI3SLSlTtmGqj
- DjDxEuhOBdADvO82WvG93e3pMaayEsXX6pXTtVU7MVCjFSVgGcaEgUbU0e2u9G9i0i3QdUZL
- FYbkgIsoKo43EiqSMTtGRyypTiPuRt0c99ZCfE77keVx7bZ+R2UAEADVDdKbNFgv8gzLRQo0
- 1KPktzpBBR1vbGVQG7b/bCRxRuoNDYYN3QqfyIITQIZpdLkpekbihPJU8YmE6OviNDxMS//z
- irMryUkgbgXy8kR2M2T+VHBniLpvZPSTyYr6QjNGGGo9AV0YMiifYPAwUPH5PxEIa6HQVSb+
- nsJgc6T6KYJF57lqcCWaOwJGLfs47OONyfRxAY+WZIg7D+qvXWkeOi8/Q1DGaugCe5cEReBX
- aMZkVk5CEN7VJdyUZJKXg==
-IronPort-HdrOrdr: A9a23:vDTsE65Ze4jr9VJZDgPXwOfXdLJyesId70hD6qm+c3Bom6uj5q
- STdZsguyMc5Ax6ZJhko6HiBEDiewK4yXcW2+gs1N6ZNWGMhILrFvAB0WKI+VLd8kPFm9J15O
- NJb7V+BNrsDVJzkMr2pDWjH81I+qjhzEnRv4fjJ7MHd3ASV0mmhD0JbDqmLg==
-X-Talos-CUID: =?us-ascii?q?9a23=3AQmv89mplRI4ab5gAEECyEyTmUewCaFDY9TTgGFS?=
- =?us-ascii?q?TCHhxWJuIYnC6obwxxg=3D=3D?=
-X-Talos-MUID: 9a23:6sGIfQkJ2s7k2A/onw+HdnpFBu0y5p+BUHoLy68pmNnVdil1IBW02WE=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.16,229,1744070400"; 
-   d="scan'208";a="388862690"
-Received: from alln-l-core-09.cisco.com ([173.36.16.146])
-  by rcdn-iport-7.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 12 Jun 2025 00:45:48 +0000
-Received: from fedora.lan?044cisco.com (unknown [10.188.19.134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kartilak@cisco.com)
-	by alln-l-core-09.cisco.com (Postfix) with ESMTPSA id EF99C18000443;
-	Thu, 12 Jun 2025 00:45:46 +0000 (GMT)
-From: Karan Tilak Kumar <kartilak@cisco.com>
-To: sebaddel@cisco.com
-Cc: arulponn@cisco.com,
-	djhawar@cisco.com,
-	gcboffa@cisco.com,
-	mkai2@cisco.com,
-	satishkh@cisco.com,
-	aeasi@cisco.com,
-	jejb@linux.ibm.com,
-	martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jmeneghi@redhat.com,
-	revers@redhat.com,
-	dan.carpenter@linaro.org,
-	Karan Tilak Kumar <kartilak@cisco.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 4/5] scsi: fnic: Turn off FDMI ACTIVE flags on link down
-Date: Wed, 11 Jun 2025 17:44:25 -0700
-Message-ID: <20250612004426.4661-4-kartilak@cisco.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250612004426.4661-1-kartilak@cisco.com>
-References: <20250612004426.4661-1-kartilak@cisco.com>
+	s=arc-20240116; t=1749692899; c=relaxed/simple;
+	bh=YIM5rjA0nqx+LZ4XlvstnUSBCVZR05FXT4rNVTEZQxk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CBPP71BVFMDZLbdaid14+QCHsahDL1FW+rNX+wB1JLPAFRhWToWRBernq3xVM1BEcNoeXdQu7pFQHmqFw1HSUlEZNIrXM8k3L7ebGoPIItjkoH0nBe4pKPoimzVTJoB3s8yfi/5tS3rPU0GE0sKV2jrtHb2TZE6eMqsFpkOfPJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=a4fpncla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D76CC4CEE3;
+	Thu, 12 Jun 2025 01:48:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1749692898;
+	bh=YIM5rjA0nqx+LZ4XlvstnUSBCVZR05FXT4rNVTEZQxk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=a4fpnclaANpqpXGrmLcI/n+ZIveELb+FLe/ZOCGYsk5CKZ33f0dskjrnJEkrHG2kg
+	 thQRYhDofqy84bMd5P/cKKcwxpWXDvYFpGOmEHNMje9NqRybxJCe/xqEXL3sfAUqn0
+	 R/9w2e46KP9H0rlNcKoBna/0fAgi9PGRgSZCPzco=
+Date: Wed, 11 Jun 2025 18:48:17 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: corbet@lwn.net, colyli@kernel.org, kent.overstreet@linux.dev,
+ robertpang@google.com, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-bcache@vger.kernel.org,
+ jserv@ccns.ncku.edu.tw, stable@vger.kernel.org
+Subject: Re: [PATCH 0/8] Fix bcache regression with equality-aware heap APIs
+Message-Id: <20250611184817.bf9fee25d6947a9bcf60b6f9@linux-foundation.org>
+In-Reply-To: <20250610215516.1513296-1-visitorckw@gmail.com>
+References: <20250610215516.1513296-1-visitorckw@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-User: kartilak@cisco.com
-X-Outbound-SMTP-Client: 10.188.19.134, [10.188.19.134]
-X-Outbound-Node: alln-l-core-09.cisco.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When the link goes down and comes up, FDMI requests are not sent out
-anymore.
-Fix bug by turning off FNIC_FDMI_ACTIVE when the link goes down.
+On Wed, 11 Jun 2025 05:55:08 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
 
-Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
-Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
-Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
-Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
-Reviewed-by: Arun Easi <aeasi@cisco.com>
-Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
-Cc: <stable@vger.kernel.org> # 6.14.x Please see patch description
-Signed-off-by: Karan Tilak Kumar <kartilak@cisco.com>
----
- drivers/scsi/fnic/fdls_disc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+> This patch series introduces equality-aware variants of the min heap
+> API that use a top-down heapify strategy to improve performance when
+> many elements are equal under the comparison function. It also updates
+> the documentation accordingly and modifies bcache to use the new APIs
+> to fix a performance regression caused by the switch to the generic min
+> heap library.
+> 
+> In particular, invalidate_buckets_lru() in bcache suffered from
+> increased comparison overhead due to the bottom-up strategy introduced
+> in commit 866898efbb25 ("bcache: remove heap-related macros and switch
+> to generic min_heap"). The regression is addressed by switching to the
+> equality-aware variants and using the inline versions to avoid function
+> call overhead in this hot path.
+> 
+> Cc: stable@vger.kernel.org
 
-diff --git a/drivers/scsi/fnic/fdls_disc.c b/drivers/scsi/fnic/fdls_disc.c
-index 9e9939d41fa8..14691db4d5f9 100644
---- a/drivers/scsi/fnic/fdls_disc.c
-+++ b/drivers/scsi/fnic/fdls_disc.c
-@@ -5078,9 +5078,12 @@ void fnic_fdls_link_down(struct fnic_iport_s *iport)
- 		fdls_delete_tport(iport, tport);
- 	}
- 
--	if ((fnic_fdmi_support == 1) && (iport->fabric.fdmi_pending > 0)) {
--		timer_delete_sync(&iport->fabric.fdmi_timer);
--		iport->fabric.fdmi_pending = 0;
-+	if (fnic_fdmi_support == 1) {
-+		if (iport->fabric.fdmi_pending > 0) {
-+			timer_delete_sync(&iport->fabric.fdmi_timer);
-+			iport->fabric.fdmi_pending = 0;
-+		}
-+		iport->flags &= ~FNIC_FDMI_ACTIVE;
- 	}
- 
- 	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
--- 
-2.47.1
+To justify a -stable backport this performance regression would need to
+have a pretty significant impact upon real-world userspace.  Especially
+as the patchset is large.
 
+Unfortunately the changelog provides no indication of the magnitude of
+the userspace impact.   Please tell us this, in detail.
+
+Also, if we are to address this regression in -stable kernels then
+reverting 866898efbb25 is an obvious way - it is far far safer.  So
+please also tell us why the proposed patchset is a better way for us to
+go.
+
+(Also, each patch should have a fixes:866898efbb25 to help direct the
+backporting efforts)
+
+
+I'll add the patches to mm.git to get you some testing but from what
+I'm presently seeing the -stable backporting would be unwise.
 
