@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-152562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88621AD7531
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 17:07:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC56AD7521
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 17:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E9E3189589C
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 15:02:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB57163422
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 15:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC6127A914;
-	Thu, 12 Jun 2025 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506D628A1EA;
+	Thu, 12 Jun 2025 15:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="jI3AIceG"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="bn6KTEPY"
 X-Original-To: stable@vger.kernel.org
 Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FCA27A121;
-	Thu, 12 Jun 2025 15:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAF3289839;
+	Thu, 12 Jun 2025 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749740447; cv=none; b=J4tWGq3iFmQdwMHots6L61VMrVmur78zmBWljwSTlJ6o6iUWdIH1AxfCRfO/2qxX+9JGLQgIwkv/tnT4i/PiYyGh9IiEafKS5bxtwKljsSfMZPI/R9HXkcJu9NyGf73SXP9S3wttGGEnGNvEG0f80Gfqy1Fs4USS/5JFwul5jTE=
+	t=1749740482; cv=none; b=V73SM+H2TkjuiWNbf6Vp+igohocfgxFtGkMFMD0sAoMUT1sjS+9+2uEZtpcTSZsq6L0ph4n19fcK0ZXIZuul+cGceWOkMjpicxiaZYaQGeOL7e7U2SE1RYclExwKqmLWgdsECtPkFmdWbWQ4jn6OLS3u2PUwSds2RoQA5qO+Njg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749740447; c=relaxed/simple;
-	bh=KbVD8W1QVZAFqfq85+oBgINP5cpWpTrtB33hPtktZ+Q=;
+	s=arc-20240116; t=1749740482; c=relaxed/simple;
+	bh=D8o5aKxiqPDfJaP/Wlra9wiusUGgyAqkKg4+LuSvXis=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Nzl4z+mWHJ+Zhp/hTCDkAmpWyQ74fOokDxVOfT/zSclBbr69zWhY7EUdbxlUYMoZKvZ0PHYuL0t2YRDzxk8GW2hdqZ2ALnpSHbGAIR7I+83giJ7Rgs61/Rg8wLbIAGHnXEXncTm5EoBTvlvXRH4wtdt9aXGBHC66uc+xOf9VZzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=jI3AIceG; arc=none smtp.client-ip=178.21.23.139
+	 In-Reply-To:To:Cc; b=R0h61lwUAWaHHCr/1VnTDAbN3Lf+IBBpxYnY16QCxhTg+d31GwsYDo8yVkJIqXrwHzIl8RFZvSk4KUKdxR4PX8qbWKwNeF74JA6Wtg2HXEZ+qa11eDMD3VPwJpQCIlrIEqrF8WTFy6xpw5FDLSI1vV07aUguQYQ3Pc/t8Hmtcds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=bn6KTEPY; arc=none smtp.client-ip=178.21.23.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
 Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 7830325BDA;
-	Thu, 12 Jun 2025 17:00:44 +0200 (CEST)
+	by disroot.org (Postfix) with ESMTP id 175ED25F66;
+	Thu, 12 Jun 2025 17:01:19 +0200 (CEST)
 X-Virus-Scanned: SPAM Filter at disroot.org
 Received: from layka.disroot.org ([127.0.0.1])
  by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id LMeiQ2439zKd; Thu, 12 Jun 2025 17:00:43 +0200 (CEST)
+ id cJPnsxm7-FXg; Thu, 12 Jun 2025 17:01:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1749740443; bh=KbVD8W1QVZAFqfq85+oBgINP5cpWpTrtB33hPtktZ+Q=;
+	t=1749740451; bh=D8o5aKxiqPDfJaP/Wlra9wiusUGgyAqkKg4+LuSvXis=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jI3AIceGSQxra2yoTfTIA90AEBneXw4SWE6pC0dq8CDmGvDnLSQQyPZlovnj3eAnL
-	 QJ8f1iIm/HEkB9EhB2v1Oz1uw9fEHQTzqd/F1uiXndB0FOp2+jfOiDqM/gsf+0K1Lp
-	 WZZCUHNZifvvoQMnj1cO4gf4R5bI7G/zDhc3CWLg7Rh/HxLlvdrdtM8iXP2P1nlon/
-	 6siEdYIR3d8jHJp/XrgVaVQLUkvXBhMAfosUtse/HtLtZX+e/MN43odHAmGfUfY7UQ
-	 aGhI0gCJ97dKLk5fi2JWihqjvCLw3IcQwFmBugV3Ii/G7ZsPgjfFk7nPKeOET8FxoD
-	 YYz5M9ZYZgJxw==
+	b=bn6KTEPYJhfvaGt2QBHkIbHgJCb0CRBaJ/IOnV4I4/F+ritPtnyNle5ZETilDMpKH
+	 wlskdq4ZogKkt4ZQUyt5ACHvpcTI8ns3LoPm6eozssU35Mty+H9IrEEcjFrgUVoQXc
+	 Q0OZlDCF5bT//0HqW3WkfhdCinrYgtsZqm88DDfKzT9Q3p12/NJOoAaK4s8N8yNFLC
+	 chsw/wkVS/0aA2e3ZwErcEuwCtIBHyLLhpdeKlLMFhUGRvO80txL6l9d91prm4OS+5
+	 6u3RgLDsXztehL5tc6nx1BgdnbrIKc9//oTT0A57cT3cCZRqPhAYj0U+8dv1MBY78+
+	 JVwwxiTm0bp7w==
 From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Date: Thu, 12 Jun 2025 20:29:19 +0530
-Subject: [PATCH v2 1/2] drm/exynos: exynos7_drm_decon: fix call of
- decon_commit()
+Date: Thu, 12 Jun 2025 20:29:20 +0530
+Subject: [PATCH v2 2/2] drm/exynos: exynos7_drm_decon: add vblank check in
+ IRQ handling
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250612-exynosdrm-decon-v2-1-d6c1d21c8057@disroot.org>
+Message-Id: <20250612-exynosdrm-decon-v2-2-d6c1d21c8057@disroot.org>
 References: <20250612-exynosdrm-decon-v2-0-d6c1d21c8057@disroot.org>
 In-Reply-To: <20250612-exynosdrm-decon-v2-0-d6c1d21c8057@disroot.org>
 To: Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
@@ -74,48 +74,52 @@ Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
  linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
  devicetree@vger.kernel.org, Kaustabh Chakraborty <kauschluss@disroot.org>, 
  stable@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749740428; l=1313;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749740428; l=1467;
  i=kauschluss@disroot.org; s=20250202; h=from:subject:message-id;
- bh=KbVD8W1QVZAFqfq85+oBgINP5cpWpTrtB33hPtktZ+Q=;
- b=3RvGk19WcfpcLnwZ3sIxU4O4s2l4UIkGy0HYA+2T/gW8t0neQhz8mhwCSXco4kguluClsWlGi
- LeoLEAjC/YgAuHmhHqrrnwVmDRmxZ4uSB9sY5rn+V+EZ6WT89QbRA/z
+ bh=D8o5aKxiqPDfJaP/Wlra9wiusUGgyAqkKg4+LuSvXis=;
+ b=e+o8Wo7jtjYn2hZT25bsk7JQTuoWvuRvUzHVhB4xhIPbD24Y+LwjAiDqnP5zIbfSGS0+N8Epw
+ 4T77CIPXp6GCgnmWlOdaABdsRVXGTKb/4QHtsL0yevgkRsR90EloPvb
 X-Developer-Key: i=kauschluss@disroot.org; a=ed25519;
  pk=h2xeR+V2I1+GrfDPAhZa3M+NWA0Cnbdkkq1bH3ct1hE=
 
-decon_commit() has a condition guard at the beginning:
+If there's support for another console device (such as a TTY serial),
+the kernel occasionally panics during boot. The panic message and a
+relevant snippet of the call stack is as follows:
 
-	if (ctx->suspended)
-		return;
+  Unable to handle kernel NULL pointer dereference at virtual address 000000000000000
+  Call trace:
+    drm_crtc_handle_vblank+0x10/0x30 (P)
+    decon_irq_handler+0x88/0xb4
+    [...]
 
-But, when it is being called from decon_atomic_enable(), ctx->suspended
-is still set to true, which prevents its execution. decon_commit() is
-vital for setting up display timing values, without which the display
-pipeline fails to function properly. Call the function after
-ctx->suspended is set to false as a fix.
+Otherwise, the panics don't happen. This indicates that it's some sort
+of race condition.
+
+Add a check to validate if the drm device can handle vblanks before
+calling drm_crtc_handle_vblank() to avoid this.
 
 Cc: stable@vger.kernel.org
 Fixes: 96976c3d9aff ("drm/exynos: Add DECON driver")
 Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
 ---
- drivers/gpu/drm/exynos/exynos7_drm_decon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/exynos/exynos7_drm_decon.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/gpu/drm/exynos/exynos7_drm_decon.c b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-index f91daefa9d2bc5e314c279822047e60ee0d7ca99..43bcbe2e2917df43d7c2d27a9771e892628dd682 100644
+index 43bcbe2e2917df43d7c2d27a9771e892628dd682..c0c0f23169c993ac315fc8d7bcbd09ea6ec9966a 100644
 --- a/drivers/gpu/drm/exynos/exynos7_drm_decon.c
 +++ b/drivers/gpu/drm/exynos/exynos7_drm_decon.c
-@@ -583,9 +583,9 @@ static void decon_atomic_enable(struct exynos_drm_crtc *crtc)
- 	if (test_and_clear_bit(0, &ctx->irq_flags))
- 		decon_enable_vblank(ctx->crtc);
+@@ -636,6 +636,10 @@ static irqreturn_t decon_irq_handler(int irq, void *dev_id)
+ 	if (!ctx->drm_dev)
+ 		goto out;
  
--	decon_commit(ctx->crtc);
--
- 	ctx->suspended = false;
++	/* check if crtc and vblank have been initialized properly */
++	if (!drm_dev_has_vblank(ctx->drm_dev))
++		goto out;
 +
-+	decon_commit(ctx->crtc);
- }
+ 	if (!ctx->i80_if) {
+ 		drm_crtc_handle_vblank(&ctx->crtc->base);
  
- static void decon_atomic_disable(struct exynos_drm_crtc *crtc)
 
 -- 
 2.49.0
