@@ -1,173 +1,216 @@
-Return-Path: <stable+bounces-152584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF34AD7E55
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 00:20:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41649AD7EA1
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 00:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D43513A2F74
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 22:19:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B88173B4A71
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 22:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DAB2D8798;
-	Thu, 12 Jun 2025 22:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5324232785;
+	Thu, 12 Jun 2025 22:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="JvDcJYfy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MIlbGrnG"
 X-Original-To: stable@vger.kernel.org
-Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEE8522F;
-	Thu, 12 Jun 2025 22:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.77
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749766795; cv=none; b=D7KoiDhZ2QLzoMM71BfgnFPKPcU9awnv+LcZ9noiqECqneiTnzJlSj5azJ8XuqDMa8SNoUtaXfngHdYXSjz5aHoI7ISRfEDJ60ClupbYOEwKrf1MuV+2ulhRZyQ8w8igvghpbiEEg9ofTVidNlkoEwR/RUfkDodf178SFgzhsT0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749766795; c=relaxed/simple;
-	bh=VF6dgA8PUluVs8ZETgx38AO4rpz46KSCJwyvC/T+z7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYky5Ug6v440yiDO9zIDuvaH3W8SOAKpcENFzJvL9eyHAHYuKrcNibC5WpA0Iisk5NsM+iDuAGCKPFyGSKxHK1lrL1yb7UERLl1QJ9Pv+LO0lHos5lD4h4+Nm7yFoKU1QpdSynu/cy+cdAwH7O6ckBtnrcYkjxy9HHwQ9w1p788=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=JvDcJYfy; arc=none smtp.client-ip=173.37.86.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=1687; q=dns/txt;
-  s=iport01; t=1749766794; x=1750976394;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=uNiuCMRk8oRhq5D+rETvdReJllmt9JDTe094QIpWu9w=;
-  b=JvDcJYfypMaxpAI9/0eX1FKoByuu5sdRv5elC0fH6afOWD4qiOA3Orsk
-   ISr+oSIBDnw11e6yrnMgR9m6wDYuE/yW8t4H/232fXDRTyA2ntO9IYoHC
-   1vMMPGMyYCsAsLk4XgcHQiU6B2Kre3jK8O4y2X4uPeh6kCp8ahqav7r4h
-   OiybjhqAPUbe1tIdO9HYCC51MqUIIV3nyLzSPwlIVP+giWXChc5q08R2M
-   Mz/IwhMhi7TyPglFPgYIXio02JVxozLKX7ddHQClNFVKb9r/FggPlCMzy
-   fW2vM/iFZ4s2ybHZHpMYZBXo0A3h/LivgCgTM6cCUFtww/T+GY91sm+07
-   A==;
-X-CSE-ConnectionGUID: XDrJ7GfgRk6E9jsS/Ry2VQ==
-X-CSE-MsgGUID: lmGaW74EQm24ptdCgkEirg==
-X-IPAS-Result: =?us-ascii?q?A0ANAAAxUUto/5MQJK1aGwEBAgIBAQUBARQBAQMDAQGCA?=
- =?us-ascii?q?AYBAQwBgkqBUkMZMIxwhzSCIZ4ZgSUDVw8BAQEPUQQBAYUHAotmAiY0CQ4BA?=
- =?us-ascii?q?gQBAQEBAwIDAQEBAQEBAQEBAQELAQEFAQEBAgEHBYEOE4YIhlsCAQMnCwFGE?=
- =?us-ascii?q?FFWGYMCgm8DsASBeTOBAd43gW6BSQGNTHCEdycVBoFJRIEVgnlvgVKDPoV3B?=
- =?us-ascii?q?IM6lTOLa0iBHgNZLAFVEw0KCwcFgWMDNQwLLhVuMh2CDYUZghKLCIRJK0+FI?=
- =?us-ascii?q?YUHJHIPBkdAAwsYDUgRLDcUGwY+bgeYCYNwgQ58gS0WASmlV6ELhCWhUxozq?=
- =?us-ascii?q?mGZBKk4gWg8gVkzGggbFYMiUhkPji0Wu1UmMjwCBwsBAQMJkXIBAQ?=
-IronPort-Data: A9a23:p8IUAagNDNlQCbcq068o8WyDX161iBEKZh0ujC45NGQN5FlHY01je
- htvCGCBPKyCNmX0KtonaoqzpksP6MXSyodqSQFkrCwzECpjpJueD7x1DKtf0wB+jyHnZBg6h
- ynLQoCYdKjYdleF+FH1dOKn9CAmvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
- vus5ZSBULOZ82QsaD9MtfvZ8EkHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
- 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
- Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqUo1vxVXk5A+
- sYbdh1cbAu4wNinmoyCH7wEasQLdKEHPasWvnVmiDWcBvE8TNWaG+PB5MRT23E7gcUm8fT2P
- pVCL2ExKk2eJUQTZT/7C7pm9Ausrnr2aSFZrFuWjaE2+GPUigd21dABNfKOK4TWGZgFzhvwS
- mTu+2HWCy5FaPGmzGDZ6m6greDMsCLhV9dHfFG/3rsw6LGJ/UQfARtQXlKhufS/lkOkc9ZeL
- UUO/Wwpt6da3E6mTNPVWxy+vW7CvxQZHdFXFoUS7QiX1qvSpR6UGmUeVTNHQNs8vcQySHoh0
- Vrht9HsCDpiv72UYWiQ+redsXW5Pi19BXUPeyIeViMf7tXjqZ11hRXKJv5nEaionpj2FCv2z
- jSisicznfMQgNQN2qH9+krI6xqop57UXksu7R7Wdnyq4xk/Z4O/YYGsr1/B4p5oN5qQRF2Ml
- GYLltLY7+0UC5yJ0iuXT40w8KqB7vKBNnjYxFVoBZRkrmzr8H+4docW6zZ7TKt0Dvs5lfbSS
- Be7kWtsCFV7ZhNGsYcfj1qNNvkX
-IronPort-HdrOrdr: A9a23:tzQmlKChuvoykG/lHemD55DYdb4zR+YMi2TDGXocdfUzSL39qy
- nAppomPHPP4gr5HUtQ+uxoW5PwJE80l6QV3WB5B97LNzUO+lHYTr2KhrGM/9SPIUDD398Y/b
- t8cqR4Fd37BUV3gILH+gWieuxQp+VviJrJuQ8bpE0dND2DrMpbnmFENjo=
-X-Talos-CUID: =?us-ascii?q?9a23=3Arcy3r2ucDB+wqEhK2VuZf/qn6IsVXmf/k1jeLHW?=
- =?us-ascii?q?7V0s4SqauDmWBop1dxp8=3D?=
-X-Talos-MUID: 9a23:WxjzKQnJGLlFv5Ujr0vndnpmMehh3PvyJXkIy8kep8WvOi9dOi2S2WE=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.16,231,1744070400"; 
-   d="scan'208";a="390445885"
-Received: from alln-l-core-10.cisco.com ([173.36.16.147])
-  by rcdn-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 12 Jun 2025 22:19:47 +0000
-Received: from fedora.lan?044cisco.com (unknown [10.188.19.134])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kartilak@cisco.com)
-	by alln-l-core-10.cisco.com (Postfix) with ESMTPSA id B0AC81800015F;
-	Thu, 12 Jun 2025 22:19:45 +0000 (GMT)
-From: Karan Tilak Kumar <kartilak@cisco.com>
-To: sebaddel@cisco.com
-Cc: arulponn@cisco.com,
-	djhawar@cisco.com,
-	gcboffa@cisco.com,
-	mkai2@cisco.com,
-	satishkh@cisco.com,
-	aeasi@cisco.com,
-	jejb@linux.ibm.com,
-	martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jmeneghi@redhat.com,
-	revers@redhat.com,
-	dan.carpenter@linaro.org,
-	Karan Tilak Kumar <kartilak@cisco.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 4/5] scsi: fnic: Turn off FDMI ACTIVE flags on link down
-Date: Thu, 12 Jun 2025 15:18:04 -0700
-Message-ID: <20250612221805.4066-4-kartilak@cisco.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250612221805.4066-1-kartilak@cisco.com>
-References: <20250612221805.4066-1-kartilak@cisco.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F379E1DED60
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 22:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749768898; cv=fail; b=WDz6CCfFTuDMaihxkjNHZS2Iu9Wrx4ur1+xBOBd3oWdPqY5+2DwQEBzhGVh40ca0vnUX3Q5Q9taVP7T/4UylMrqLQ7a8jKFLir7aVt77ZV2O/QEYo11A+hqbLryZdT4hJXzr6ND/FanltHCgJTyFMCO5iKy38KDt6UHbu+o7P4U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749768898; c=relaxed/simple;
+	bh=MWFdgvEs0ICT79iboF8UhvdWWHfajfvt/tfUq/0/Vhw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QzZWANJzJH45Pt5gGBR3vuwM1PJu4//YXQFPgEA4/fTmK3we9lgh3tNKt6LBqt+8T5ug5KHURg+bdUeS0Qdmoygw7luJ9WwjzrCImFFS9B+W4XWAze0ra3Vnkry8e+5GFDxngdi12fL0wA2sQpwKtedMLGjKpMFLXHrmNx/aOqg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MIlbGrnG; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749768897; x=1781304897;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=MWFdgvEs0ICT79iboF8UhvdWWHfajfvt/tfUq/0/Vhw=;
+  b=MIlbGrnG1RYWspWxmA2C52uQE9Ym5p098120ZLHw1Ul9m+rEUiUqfDYR
+   5VYvD2eWzn6VFlc9LGlCP+XfKR6bDW8GWFZyJUTND6MqUqUBXZJgGlF0N
+   Zhy2BYBMJiuY+K6U+eo4JtxA3fGbqQVFDjGX/aUXPZzJYnnf0wfPGiHms
+   DtSPWUEK+gRNviV1r8VvzsF06bMq7HuOFz38qmq4pvu/NcnFHCptkhWYn
+   n5Fz+w7Cyk5B5y7GhawkzG1Pu5vPg/aJKHqhsQndtNs1eikmoIY1zWZN9
+   QKFTS80qQxqZt0Jlr/bLSGCbmq1MXUQc3g+sCDU/h0qJo6zxq4Obz3LFI
+   w==;
+X-CSE-ConnectionGUID: yOIfCZXASnSj4tNz5f3BUw==
+X-CSE-MsgGUID: 533WK7O/TEKWSCohHynpYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="63323129"
+X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
+   d="scan'208";a="63323129"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 15:54:56 -0700
+X-CSE-ConnectionGUID: JeiQmcAVS6mtUc2CQOuKWA==
+X-CSE-MsgGUID: 5iAJWP9+TIeTM88h/XU40Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
+   d="scan'208";a="152943443"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 15:54:56 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 12 Jun 2025 15:54:55 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 15:54:55 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.51) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 12 Jun 2025 15:54:55 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yBSMzuF7NLKEobtQUJs1n6qeyA6Tpz/JoQaSk4sE2cwSo+dLc5Lqw0nBSx5dgxEzHEuYU7zPMRnz7SwkBBSXZtMmKaoeP4xKq4TVG2ecEsKCZyK7sLUeL8PbNMPP9Mz81uVirS0rgfGQ3W3ut/e/Re4Q2+jPr5L5GH2QcqwTTAhdC6JI/GlIiFJrutjbiRtQjrhJW6fK2LY7gfNRc+qgLcg65enseCBLeRNjR/3lLclBL061/2kfAcMsPiOsJap2kl37TM4I/cuTD6QtI7Sc4Z8Hx9y4IuyQfBPjtTQ6O/tZa8GfKI7mMW2rAM5nl1F3wFRRXEed4udtw5hm5GLSXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c2DhxgiFqiBZpVkEPeePCFr0ebJj3U7u40ua+JaeZ/A=;
+ b=WpmUCuIvlP5vTR2fhKMXNeUWuRZCdip/ucuuUVgEMfSCod3CHQBitFtQzUlUPUizX1/sDt53lgeerKhIAEYbKiEetC66xiKWkLkVECv+qPZPYe7FeXqHgDls1swngl9/OUn8ihRx4ZRS9L4SLL2qgZpVKiW/UQ4s98lVdQdxGxW/jBqCXdsShwjHtnLnYzJPHAYDV5reED8itvU0p4r6N5k7PyKq8c0h0ISmkJ44vLNKgXHm1CDpSiXEd6jgYR7NTVJAqWi5La5DnqYK3hyIdEk0gyZyky7YOOxLImatkwCdp+B5YhhEhY15yeGX/K3SK/q5nMFFKRvGsjaWn4RC+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by DM6PR11MB4753.namprd11.prod.outlook.com (2603:10b6:5:2ac::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.18; Thu, 12 Jun
+ 2025 22:54:53 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%5]) with mapi id 15.20.8835.018; Thu, 12 Jun 2025
+ 22:54:53 +0000
+Date: Thu, 12 Jun 2025 15:56:29 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/xe: Fix memset on iomem
+Message-ID: <aEtbHSkl1/1JU5Jg@lstrano-desk.jf.intel.com>
+References: <20250612-vmap-vaddr-v1-1-26238ed443eb@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250612-vmap-vaddr-v1-1-26238ed443eb@intel.com>
+X-ClientProxiedBy: BY3PR05CA0028.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::33) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-User: kartilak@cisco.com
-X-Outbound-SMTP-Client: 10.188.19.134, [10.188.19.134]
-X-Outbound-Node: alln-l-core-10.cisco.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DM6PR11MB4753:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3cd7a7b-d479-492f-eb9a-08ddaa04250d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?DosCi5sdFwmQy7h0zZu4RvR4f7IuAB1O64jH7QSMZoRlk3wq4JUS1oSPtzV+?=
+ =?us-ascii?Q?eLzf2/3TqVEnvqxbtv0UmM6pp9xT9eq6ic5Li3gNHKRfWM2zUmJs+lbZCdnX?=
+ =?us-ascii?Q?g+40ukIHMdWp1owOsqmJq3VSCmZVDzm1Ikp1DgPaSAh1Tol6F0ajsjeyBib4?=
+ =?us-ascii?Q?w5FqqN7W4xRZF0VLXzbOHWpMw4XlmjdD8zVH8sSvni4WU9+/Dg3HAWiR9fov?=
+ =?us-ascii?Q?frpJs8Wo2/a7QWZhnvlvE1j0tZHiQcxKwTtoCohwlltXZ6/MF63pt2GL+Bkt?=
+ =?us-ascii?Q?DczGrOGPUxvFzsjEJ0KbrMs5ksQIBiIIsPVwtOI4eBZ/8XYUyMuhN1qcxk9i?=
+ =?us-ascii?Q?ph7NNyUHv2x0TOdvYziNX+dFtYwt8BjUbEFy1LpM9mCfchZcCrrbZ5mnBEvV?=
+ =?us-ascii?Q?rR4w6pKS/RFSykIzr/stT/38pgggv2kusjuHXWbnPvFSBcSpVD8DIJWkTT32?=
+ =?us-ascii?Q?nsFc3hqWRpw7DrWfxhY/5ZhdknOZ9enobpI8jLMv7f8UY8oL3vqibNeObauZ?=
+ =?us-ascii?Q?oqdYoPaWyZrmk8RNw3HwTq+mrKo5fmjT2DMO5fAxlbL/PkYIIC35YDNUQU+O?=
+ =?us-ascii?Q?ZtZJ3Zv9hBgHHRKUmbjW/j8svjE3TD3ynpH7/EnpZTheqBtMrZsKAMGZk4al?=
+ =?us-ascii?Q?hJfVfqa6sl6lUQzFKCFH7EyPNfT4puDJrmk1Q8zi9lRuUSvDreoSCnylee+G?=
+ =?us-ascii?Q?KYfBR7GjUKFKGhOoDjc+lpYYoADTV8acnKX8MPqMJIuR6ddKtlYHAdDY+cuD?=
+ =?us-ascii?Q?7mNLbyMTdlAj4FeNeLw9bsd1dgP080DcyvsfHdr+4nndZxEhOOllO2fXuUd+?=
+ =?us-ascii?Q?XEV4I2nHQH5W9i0qma9FM1JM/AZqQORxuAkNvYJEK1JGnA8rV3o116msB0Bx?=
+ =?us-ascii?Q?PR+0p5YIQWuznAvhzqh07aRIBq3xkvYv7zpeIRcFtFX6fUfgu+Sq+G9p+Dey?=
+ =?us-ascii?Q?tJL5up8IXz8Ony1z+eBCHlx51buDzlbbQh8yKZUVLVZxy5q+/vtOfSL9yRKT?=
+ =?us-ascii?Q?9MAzjE2ob0ap2ORHynMpPdkpAGNcZw8geifgv4M4wcXSB1EjEe7YGGTNXDrf?=
+ =?us-ascii?Q?ILYnwdGwt+ZNZQaxjkzKHVK4Ds5XrP8pNb8dB2E+UCXI3ZL41JufRDPjv4Um?=
+ =?us-ascii?Q?RQ3Rv+2acZaNbBzeRwpk6GmTTLLHE2xx4fWqAQpaFCkKK1w6t2D+v5gd4inl?=
+ =?us-ascii?Q?WUB2uvUENJ9DaS5MbyOotY/sNoFBHyX045+tAIubDvZbWtoNxXcVEDDVL8jZ?=
+ =?us-ascii?Q?sKpG7Ra4AJcWpIIlbUdioXq9fix1I68hMF+1UXj+cvR/S7RoUWbj8fN0f0SO?=
+ =?us-ascii?Q?Baqj/KViA1Vv2/rEsFJawTwdzt68Hf3SAcrAudypQ9v0EbVxcZpdXlOVTYui?=
+ =?us-ascii?Q?/ECpLrvn82QPbdv2EPn0VcfueX6KeQEJ52rso89uzDXxryjBDLU5LmTNGob3?=
+ =?us-ascii?Q?/Tm9OhBalMM=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xgWVvvPLn1fXmLAbj77ArMoO0e8NrQMzZj/1tbxRuY0+h+ZzcfT3wlZNkBk0?=
+ =?us-ascii?Q?ftgNC4C+I87N6f1RGEN/fL9sCv0cmYsJG1HoeOmnDFkP3bIDFsrv8sAQBPCh?=
+ =?us-ascii?Q?7hdbU8NOyDuRwL17FOVlQYNt7p2b2CyHz22qY7tL+k3cMXCGmeqpnMqnta98?=
+ =?us-ascii?Q?i0dCJK6gADb6vnovaQBF85gZCjpUp7mUMOBNgLtWjsgdqbU5tFsGmSsgrVvj?=
+ =?us-ascii?Q?6sFqgsyUsJCKxuDRSMY33CB+tNrDdpdn3EnrtARE3/Y8Z4J1TgyNqcUTn5GB?=
+ =?us-ascii?Q?uXfPazp1nRYtgMAoO26+PauIC3Ri9HSewkVWJbfem1aJOU85jj1+FYheOr3q?=
+ =?us-ascii?Q?RKw9U8hK0qP7eGnV1qAmxMR3GpuHgBcnRs5qhq5oAkWkNRTAu5Z/jVakfdWD?=
+ =?us-ascii?Q?bCfMU8an9egeInGIBm3S3pp5R5uN3kI8eMWuEar2K4bAnVC3YvglmK+eCY06?=
+ =?us-ascii?Q?8UAvKJqYaQLn+TSUL9QEdfYcVHgfAXkMJItaYhnzuxUQsjR18htMHTvDcwty?=
+ =?us-ascii?Q?r4TNddGMQ428tZo/7vYd0bWe69tNfo0Ow8RM8jfiOX+OyWpqRWhAh0ckEW41?=
+ =?us-ascii?Q?v7w7wYJMcKHlMT0+njumhsb02XnmF8fuD6f5hTUUpi6kenbIXDzeUxEPFzyY?=
+ =?us-ascii?Q?wsoDq7TMv7rm/M2u3Ki0D3IEkA4f2wshXfrppvbgEMyHBIugkwn1YusaEM5t?=
+ =?us-ascii?Q?h+dPrY149HbM79Y79HwqzipCCt6pCmr8nR6GN7KCEDNE4f/XsBas5uwOYb2M?=
+ =?us-ascii?Q?BqH+Ar3Kf4ZgGIDKOGRqOZ3fhgzcfUTZblxA05EMT16duzPYdFyG6pOA41OS?=
+ =?us-ascii?Q?g33+TWMwf4PF334tjscXPDbz5mAOsCMu5mOapnjUEj9UNC316yF3+pPX9TQJ?=
+ =?us-ascii?Q?FreQPFGEOIWQ18d2Eef3nquA61j8pg8ckONFN6zVCxHBf+o49sS141VWS1EH?=
+ =?us-ascii?Q?bJqwMLt2RUHQlM8evKd3/dj/Pz/wwp2AJmwnVmcZqi46E9SiaSXDhzy+xecA?=
+ =?us-ascii?Q?UQgH/aKncuIyKdpFZ1LEBJ/Ezr3qoJ6qbT7iblJdVJReIel2b3ra08dF/dax?=
+ =?us-ascii?Q?9unPj+2NHDigHqu+GCi5/TzDwyJ4eMTY45dhXvbFpVd4dGujTUBvjKrSGC7n?=
+ =?us-ascii?Q?i5z4Jgl0N4gvaN7AQPMpJUQ5QSu+RFw2W+a7HbQfClWIfhwbUnD09emIi1uZ?=
+ =?us-ascii?Q?MD0WdfZLLUHEpx6gAACAMd1UVCRwid3cCaJO8t6Jj74yTHVLFUX3bF6ZSCQm?=
+ =?us-ascii?Q?1wn75KKsq3kbhO5R4FE1+baFRsYT80SCNsXlEzUN8HiSGOmUvyocA1DmKrb7?=
+ =?us-ascii?Q?f4lktGUnukF2TwLvWkK15QBtopD6KT42uTfDjlhqR11NfsOUAeFOEIAZjIkv?=
+ =?us-ascii?Q?qHthwU18K8IhhSYWA6EIhyVvoTlr8TFMyBJLcaIksBsPBUC81DsQL+0BopOO?=
+ =?us-ascii?Q?2wdjPvOx/UYNRPKQ/+W/2gQxe/8Z96dmohSZem+fgvIv549iK+ufQipJooqd?=
+ =?us-ascii?Q?q16tXFv2ZX7CCQrZDN5p7SFSbK9z35SSIs+g6B3AM1uoOz+8mfaX5KN2cn3q?=
+ =?us-ascii?Q?njIZLORZ3g769+oQo/d8nRcHHdJTCA1+9UF7W9rd3i28MRiaE4tg0fa3BFIr?=
+ =?us-ascii?Q?+g=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3cd7a7b-d479-492f-eb9a-08ddaa04250d
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 22:54:53.6148
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bW+KUoHheAZVJmaQCayNJZByZI35xdU/AhiRCq2DGdcBZ6ie3IwJYfAzzpaqP6Pvu0BFUwxM0ws9qkDVQHDgfw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4753
+X-OriginatorOrg: intel.com
 
-When the link goes down and comes up, FDMI requests are not sent out
-anymore.
-Fix bug by turning off FNIC_FDMI_ACTIVE when the link goes down.
+On Thu, Jun 12, 2025 at 03:14:12PM -0700, Lucas De Marchi wrote:
+> It should rather use xe_map_memset() as the BO is created with
+> XE_BO_FLAG_VRAM_IF_DGFX in xe_guc_pc_init().
+> 
+> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 
-Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
-Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
-Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
-Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
-Reviewed-by: Arun Easi <aeasi@cisco.com>
-Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Karan Tilak Kumar <kartilak@cisco.com>
----
-Changes between v3 and v4:
-    - Incorporate review comments from Dan:
-	- Remove comments from Cc tag
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
-Changes between v2 and v3:
-    - Incorporate review comments from Dan:
-	- Add Cc to stable
-
-Changes between v1 and v2:
-    - Incorporate review comments from Dan:
-	- Add Fixes tag
----
- drivers/scsi/fnic/fdls_disc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/scsi/fnic/fdls_disc.c b/drivers/scsi/fnic/fdls_disc.c
-index 9e9939d41fa8..14691db4d5f9 100644
---- a/drivers/scsi/fnic/fdls_disc.c
-+++ b/drivers/scsi/fnic/fdls_disc.c
-@@ -5078,9 +5078,12 @@ void fnic_fdls_link_down(struct fnic_iport_s *iport)
- 		fdls_delete_tport(iport, tport);
- 	}
- 
--	if ((fnic_fdmi_support == 1) && (iport->fabric.fdmi_pending > 0)) {
--		timer_delete_sync(&iport->fabric.fdmi_timer);
--		iport->fabric.fdmi_pending = 0;
-+	if (fnic_fdmi_support == 1) {
-+		if (iport->fabric.fdmi_pending > 0) {
-+			timer_delete_sync(&iport->fabric.fdmi_timer);
-+			iport->fabric.fdmi_pending = 0;
-+		}
-+		iport->flags &= ~FNIC_FDMI_ACTIVE;
- 	}
- 
- 	FNIC_FCS_DBG(KERN_INFO, fnic->host, fnic->fnic_num,
--- 
-2.47.1
-
+> ---
+>  drivers/gpu/drm/xe/xe_guc_pc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+> index 18c6239920355..3beaaa7b25c1b 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_pc.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+> @@ -1068,7 +1068,7 @@ int xe_guc_pc_start(struct xe_guc_pc *pc)
+>  		goto out;
+>  	}
+>  
+> -	memset(pc->bo->vmap.vaddr, 0, size);
+> +	xe_map_memset(xe, &pc->bo->vmap, 0, 0, size);
+>  	slpc_shared_data_write(pc, header.size, size);
+>  
+>  	earlier = ktime_get();
+> 
+> 
+> 
 
