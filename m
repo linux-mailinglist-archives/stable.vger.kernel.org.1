@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-152505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D84BAD6587
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 04:23:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FEBAD658D
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 04:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4801BC3CFC
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:23:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B1C2C0AC4
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749CF1C860E;
-	Thu, 12 Jun 2025 02:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C7D1C07C3;
+	Thu, 12 Jun 2025 02:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svZGvMZM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMoTuRN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D691C84BA
-	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 02:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C551472622
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 02:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749694947; cv=none; b=pufJh3dyM1MnAVZqf2s9nMJ2aGUZGviSMAl8U7V/AQAb5wzxLMGGfrUBXRH9EdKNA3cyYRJCyO/+fi4+5NYCbr7EGT49/8PSOVCxubD873iMH5PjXxjgarsOwzzwfjW4s4j07TkcDd49cMizYqx5VrHrrVOCPOlN9e4GiGaEnK4=
+	t=1749694948; cv=none; b=bYGT69RyVOsWSAJh4NGEJeefLMCpvMPX+EgpdnZ7WjsWQr6+05igOJwh4Ab5RHtHCSY3nLNt78fNJTuk0aTEBaVlyc6MCdc8+PgNdXFPyn6hPdIJeLAXY3Lfy+HF9YqBYSiua3Prj5rVfGJ1QC7f3AoLRWjh/nwuDPD3NtqijEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749694947; c=relaxed/simple;
-	bh=ngEriYARCC9zcoXz/c+LU8Ls5+op73s2As9SsHMbvr0=;
+	s=arc-20240116; t=1749694948; c=relaxed/simple;
+	bh=Y3TzTy/39BOQLccievmfnduxX3m/NT0+OLLS8uYouJM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g171JPESZXL4RnhITkZ8HxbetXaczw6PmDtuPTr9JEiLixU4gFUQgX2kg0BJ0dPk1kj5fXw5/3DlcenYywmzPlf7Zh/Oh/LrOocm7N7+JG7o22FOUswDqzFnClYKJlHZyQJTbxaQ1cRugC0v6LWQRTd4ey1AG7RyPdORFj8xTu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svZGvMZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DECC4CEE3;
-	Thu, 12 Jun 2025 02:22:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DfQ/sfGl4swD1lvx3FCAvcD456DHCuWaa+xRgK/Tcb5mhz6duxO4JqmxAKF6PZykqKFvDBLGa0hfhma4tAoF/tI81CFiJIzCAE77MBHR7WZTreFG+i8h+gx9oVPaDnx+NA+GuMLuhdZ9pMC/E8Sh/8em3jOYbEJKI0hz0xUnL04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMoTuRN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9B3C4CEE3;
+	Thu, 12 Jun 2025 02:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749694946;
-	bh=ngEriYARCC9zcoXz/c+LU8Ls5+op73s2As9SsHMbvr0=;
+	s=k20201202; t=1749694948;
+	bh=Y3TzTy/39BOQLccievmfnduxX3m/NT0+OLLS8uYouJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=svZGvMZMGTn/Eri60ogY1HuZa459kUpJoMRlqZIEmYTE5xZsp/AQXM/0VxlUfWVy3
-	 tQsZ7/pCNCwueZQYI0bmuk85KKV6Of6YRZQK/he0jnyFDZSMbMbrk977IJ4S/uz1ET
-	 vVcq5D3EbfBEOawHE+Y6LdL/v3LLDx3oLWkb5C902TvAnu1ioOOg7H98Cm7Oc7g1/d
-	 Lii3JQ/UeHP7+ObzybKxzvgJEEqM7ytoAX/3NtN2T6miRzpeLlPtlJfoOIsTT8/Hc2
-	 fsP6Pbz3xrPGVTJwyR7wbWJs0XEshHmyHYTXx/K8lxhM7Y7Wfv4hfUUkTYphC3gr1n
-	 OmcUj1UfhoTuQ==
+	b=dMoTuRN0ouQkq5+cx2Qun1sOP5EszlhOvKuge/1Z/byhb/sS4K1GGNjz1BbNNHxCl
+	 CjkzhbLA2Wj0HoviZotWGYtRU825sK2N8zKsqM1+9z5zHUAUvneyj2IFbTUnUaI4LE
+	 i35PyeTLNHx14VvIWLhDhOUTiiClFugJL2gwqUa5r+GCr5cB5NPQcXfAfZmA1u+o1I
+	 9CifCf4LU/6wt3ppA04lHuOTTlrPaC+Sk9ii3AnGpUeqH7eLy0hRG5XwAojOQPfdez
+	 3e3R53ywPYTYQfnJFFxC2zXmBkJLdcIzQDU2XwwpL2hOWrfF4qf3VyrvN9tovk7VUS
+	 4Rh2Y82qMa4kw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Claudiu <claudiu.beznea@tuxon.dev>,
+Cc: Larry Bassel <larry.bassel@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y 1/4] serial: sh-sci: Check if TX data was written to device in .tx_empty()
-Date: Wed, 11 Jun 2025 22:22:25 -0400
-Message-Id: <20250611100338-327a61e603d1d1e1@stable.kernel.org>
+Subject: Re: [PATCH 5.4.y] NFSD: Fix ia_size underflow
+Date: Wed, 11 Jun 2025 22:22:27 -0400
+Message-Id: <20250611095438-6568922294ccce73@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250611050552.597806-2-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To:  <20250610235321.3021295-1-larry.bassel@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,87 +67,57 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 7cc0e0a43a91052477c2921f924a37d9c3891f0c
+The upstream commit SHA1 provided is correct: e6faac3f58c7c4176b66f63def17a34232a17b0e
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Claudiu<claudiu.beznea@tuxon.dev>
-Commit author: Claudiu Beznea<claudiu.beznea.uj@bp.renesas.com>
+Backport author: Larry Bassel<larry.bassel@oracle.com>
+Commit author: Chuck Lever<chuck.lever@oracle.com>
 
 Status in newer kernel trees:
 6.15.y | Present (exact SHA1)
 6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: 7415bc5198ef)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (different SHA1: 8e0ecaf7a7e5)
+5.10.y | Present (different SHA1: 38d02ba22e43)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7cc0e0a43a910 ! 1:  7703151faa0b0 serial: sh-sci: Check if TX data was written to device in .tx_empty()
+1:  e6faac3f58c7c ! 1:  6dd1d223c9523 NFSD: Fix ia_size underflow
     @@ Metadata
       ## Commit message ##
-         serial: sh-sci: Check if TX data was written to device in .tx_empty()
+         NFSD: Fix ia_size underflow
      
-    +    commit 7cc0e0a43a91052477c2921f924a37d9c3891f0c upstream.
+    +    [ Upstream commit e6faac3f58c7c4176b66f63def17a34232a17b0e ]
     +
-         On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
-         is called. The uart_suspend_port() calls 3 times the
-         struct uart_port::ops::tx_empty() before shutting down the port.
+         iattr::ia_size is a loff_t, which is a signed 64-bit type. NFSv3 and
+         NFSv4 both define file size as an unsigned 64-bit type. Thus there
+         is a range of valid file size values an NFS client can send that is
     @@ Commit message
-         Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-         Link: https://lore.kernel.org/r/20241125115856.513642-1-claudiu.beznea.uj@bp.renesas.com
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    [claudiu.beznea: fixed conflict by:
-    +     - keeping serial_port_out() instead of sci_port_out() in
-    +       sci_transmit_chars()
-    +     - keeping !uart_circ_empty(xmit) condition in sci_dma_tx_complete(),
-    +       after s->tx_occurred = true; assignement]
-    +    Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
      
-      ## drivers/tty/serial/sh-sci.c ##
-     @@ drivers/tty/serial/sh-sci.c: struct sci_port {
-    @@ drivers/tty/serial/sh-sci.c: struct sci_port {
-      #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
-     @@ drivers/tty/serial/sh-sci.c: static void sci_transmit_chars(struct uart_port *port)
-      {
-    - 	struct tty_port *tport = &port->state->port;
-    + 	struct circ_buf *xmit = &port->state->xmit;
-      	unsigned int stopped = uart_tx_stopped(port);
-     +	struct sci_port *s = to_sci_port(port);
-      	unsigned short status;
-    @@ drivers/tty/serial/sh-sci.c: static void sci_transmit_chars(struct uart_port *po
-     @@ drivers/tty/serial/sh-sci.c: static void sci_transmit_chars(struct uart_port *port)
-      		}
-      
-    - 		sci_serial_out(port, SCxTDR, c);
-    + 		serial_port_out(port, SCxTDR, c);
-     +		s->tx_occurred = true;
-      
-      		port->icount.tx++;
-      	} while (--count > 0);
-     @@ drivers/tty/serial/sh-sci.c: static void sci_dma_tx_complete(void *arg)
-    - 	if (kfifo_len(&tport->xmit_fifo) < WAKEUP_CHARS)
-    + 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
-      		uart_write_wakeup(port);
-      
-     +	s->tx_occurred = true;
+         Cc: stable@vger.kernel.org
+         Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+    +    (cherry picked from commit e6faac3f58c7c4176b66f63def17a34232a17b0e)
+    +    [Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 2f221d6f7b88
+    +    attr: handle idmapped mounts]
+    +    Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+     
+      ## fs/nfsd/vfs.c ##
+     @@ fs/nfsd/vfs.c: nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp, struct iattr *iap,
+    @@ fs/nfsd/vfs.c: nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp, struct i
+     +		if (iap->ia_size < 0)
+     +			goto out_unlock;
      +
-    - 	if (!kfifo_is_empty(&tport->xmit_fifo)) {
-    + 	if (!uart_circ_empty(xmit)) {
-      		s->cookie_tx = 0;
-      		schedule_work(&s->work_tx);
-     @@ drivers/tty/serial/sh-sci.c: static void sci_flush_buffer(struct uart_port *port)
-    @@ drivers/tty/serial/sh-sci.c: static inline void sci_free_dma(struct uart_port *p
-      
-     @@ drivers/tty/serial/sh-sci.c: static unsigned int sci_tx_empty(struct uart_port *port)
-      {
-    - 	unsigned short status = sci_serial_in(port, SCxSR);
-    + 	unsigned short status = serial_port_in(port, SCxSR);
-      	unsigned short in_tx_fifo = sci_txfill(port);
-     +	struct sci_port *s = to_sci_port(port);
-     +
+    - 		host_err = notify_change(&init_user_ns, dentry, &size_attr, NULL);
+    + 		host_err = notify_change(dentry, &size_attr, NULL);
+      		if (host_err)
+      			goto out_unlock;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
