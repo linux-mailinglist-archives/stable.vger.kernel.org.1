@@ -1,157 +1,139 @@
-Return-Path: <stable+bounces-152537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC17AD68E3
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 09:23:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22018AD6953
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 09:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61B3D3A499E
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 07:22:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166611BC1A3F
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 07:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E6B120E708;
-	Thu, 12 Jun 2025 07:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F7B2147E7;
+	Thu, 12 Jun 2025 07:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fuW7oxnd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RB7mHz2P"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C948E1F5424;
-	Thu, 12 Jun 2025 07:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1918F21325D
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 07:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749712983; cv=none; b=SxeeTw5lcnIGbvuJRHDRD+Ks/2Z51neS9brFdxAB0N46yU5OHaVWjHlvHikES6dRn2vY0lYhEygU3fBLyZpA6Vi/Ux/IU/RsqnYKAz8VnFBvLR+IpLUBo3Cik+XePm1UT6myR1falqkX+IIfA+fb1yna0vMtn4mzU5SJU5waYZc=
+	t=1749714157; cv=none; b=cjrA2znvQ5jjuwsiHO7UcEUIIDd3E5jv9ZLXGGduEMSvpZQ2yvrIyr9aMQg76b/gIqcQT2AMy5Zoo+qatxBmdebkVr/p95/8s2J1Gj3VwBj1oSfwTjJzgDJgEoVB7xKLeHTvyfJBq6sWSLLQhYJkgPZH7vgWU2ZA+u2nG4WUT40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749712983; c=relaxed/simple;
-	bh=dlPN21CVUBErePf9xinJB149BiY9qZlgWt5xnJNachg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pZtFt1p+QV+NwYUwPgLPSznH63VQ45XSGyU7yWzbl+LCNMvLizuaM3u0D/rMsz1WEwIDqSbYzfTcJPW/FTHeQumRJ+saxXI5Tna6C6qZSJw2oryeya8t56KLxWXjDjyh+mhCN4tpqvTdMLlGFqRtSS2+E2woE967R+QmFJnVQZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fuW7oxnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16138C4CEEA;
-	Thu, 12 Jun 2025 07:23:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749712983;
-	bh=dlPN21CVUBErePf9xinJB149BiY9qZlgWt5xnJNachg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fuW7oxndcGLCcwnniKw5Ai6dpH2r7+5ySzxFZio5P4aMtnIgIiyJj2Gt54LKLa6i9
-	 XEHYGllblQfk0rdh0MuZTn9C+w2Uk36dniCvqkVbVNTmBdyDt9xzRIrmBcZX6p7p6I
-	 MByEiD9hH+YjDy2pe2fnCI0jjhAj7eZ7znj9RX5o+I5Mbz7dVTEEld0qgoBSgYyYy7
-	 /hHNPClE+MoL5zyBVjILbIH00jFio28Kn08sdgbp+5nOC+zsfwTYAHbWBT/F/pEFw0
-	 9XeIqwabLfIMB1GQakvGmX+Sl0rtMOFIeWAflzfq8uyjXpuTwoPSEoGg3nuCZB0NnP
-	 It88yuyVanhyA==
-Message-ID: <5c210121-c9b8-4458-b1ad-0da24732ac72@kernel.org>
-Date: Thu, 12 Jun 2025 09:23:00 +0200
+	s=arc-20240116; t=1749714157; c=relaxed/simple;
+	bh=liD84H33mldJ5FwcAo5b42k0QKzep4H4rmYW/0tE3Po=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ixM5j4fek/yWqHGTi/n3EZLMG2YH78Bs/SCE/Pzex37IaeWCAwVbwD2ICRt31hetOnl5bjVMRZAvoFE0ysOYWGaLkR6ouh4nPzebKfayZdHnbldy1D7mGpPTpl45yjuQeI/yLyTJs8I45tbsSQNIHU7N+pQoYU9DsFimsxQQlvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RB7mHz2P; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a3798794d3so710954f8f.1
+        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 00:42:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749714154; x=1750318954; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pOjdW6tvwIHGvqgEBjcYXxpqXXP0mM93Bi1E5VHKi0I=;
+        b=RB7mHz2P2F0km9hNYYtu3w9W1j0fp/y1iV6+QIlaCDcvOSzig+rw9sfzzBLqoNB9My
+         FC0BFiaK7emHFD9TfA3KoCEgVCMmooWs5v8kXWeJxYp0GXatPBKkxRo96PLPF6be1G70
+         wLKRi4UcC1JJWBC9uNDWrtn9j2csf4afhir3kvjc+p4qP6Xck5DJsdbimN2+fS8KekDG
+         wMVUbeTYauqAoKxVs/4Ljj2jEwi44JjRtkG58FmM7ZcHmw+95RfQ+1ZkGYPgww5xTQUV
+         u7aKlNpEpnGPTunoHhOsXFFONPmfcpcL0onPOS4cxzaEC+EgcOJnsj8re5KGWIqnoJHj
+         M2hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749714154; x=1750318954;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pOjdW6tvwIHGvqgEBjcYXxpqXXP0mM93Bi1E5VHKi0I=;
+        b=e9vU5l+kFjiC5MW4yfoWkUQKZrzVEfx0xHXKKdeqT7BAnEO0zwri69iJKqqqdnnV2F
+         3mtW3sZ2wtk6q8cv4rM5lfzkWUdX6O7RGKeA2iCxb7YkniVWf9RKSmpofudfNOG1F44y
+         LwTtbpz+2MCGTgH3efBROuQDb37eRZwH28GBLFI+Qy6gDUgE8EdxFvy59T5Um0wM4CP6
+         cfGL/WroYwuHyOEqC9fIAl2U58zZSoB59O2yDXS74TGOn25c+0BjHoVqOBVUoTRicSQ+
+         XgmaIwV1HVmVpqdtm6wIr/zpLNchC5Fm1+yYQGXEItL6n5JPrgQ0seU9+Ch/XugwhPsm
+         FH8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWj7fNaUashzWqyu+FCNmCYYPONdQRmgZtNW1oq4m08M42kLjBFMvFoXNv1OFoa00LFvZwcS9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDZfw6vZyO36zLPoVRlGmULWlRM4rJdbcK/NgAUw66QBo6TBWq
+	RwuBUhwKVhCLAniLf0LDsaKE2LX0B0kkQvR8B7MqjYrBZM3hgwFXhQaDLkJ+Y61jDGg=
+X-Gm-Gg: ASbGnctD/68mSGysPQl7/60wE/q4WfyD2J3edrItfhYTj78rms6ox7oeyaTrtH/PHS1
+	75msw2NVu38C42BO89rB2/xzm+ihRxY1s9WMzkQrTeIHZnLCpT6hf8A0TfqMkpEUVKkD8y+xd7s
+	hcM63qGjvbq8CqD7dLfASIHQI3pATLV+3pbkjmXCtEIbCCcxbOro/aLKDbPdizzQrt4T35d36a/
+	PGB5ImfRLByReqHbkC/w/6YhWMUK+uVJNABotJryWjjvvR4H/MNd2VeqlLz60At8bfcJgrBMQwy
+	JMKrnwyfpLXwa41W2iGH0sA23UXBAErDBrOevWngI55MZf5ROaruHac7TvrzBb8wcKA=
+X-Google-Smtp-Source: AGHT+IHK4uQuCn2XQWMjU/bTqraytEDLe7/LB0UXdjlju8466jLpB8n5+oghPZtv4fc6nLejDkqEyw==
+X-Received: by 2002:a05:6000:2308:b0:3a4:e740:cd72 with SMTP id ffacd0b85a97d-3a56127883dmr1425617f8f.13.1749714154457;
+        Thu, 12 Jun 2025 00:42:34 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-453305a0d9dsm3836115e9.21.2025.06.12.00.42.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Jun 2025 00:42:34 -0700 (PDT)
+Date: Thu, 12 Jun 2025 10:42:30 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Karan Tilak Kumar <kartilak@cisco.com>
+Cc: sebaddel@cisco.com, arulponn@cisco.com, djhawar@cisco.com,
+	gcboffa@cisco.com, mkai2@cisco.com, satishkh@cisco.com,
+	aeasi@cisco.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	jmeneghi@redhat.com, revers@redhat.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] scsi: fnic: Fix crash in fnic_wq_cmpl_handler
+ when FDMI times out
+Message-ID: <aEqE5okf2jfV9kwt@stanley.mountain>
+References: <20250612004426.4661-1-kartilak@cisco.com>
+ <20250612004426.4661-2-kartilak@cisco.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.15 05/34] ACPICA: Apply ACPI_NONSTRING in more places
-To: Collin Funk <collin.funk1@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Ahmed Salem <x0rw3ll@gmail.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-References: <87ecvpcypw.fsf@gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <87ecvpcypw.fsf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612004426.4661-2-kartilak@cisco.com>
 
-On 12. 06. 25, 7:31, Collin Funk wrote:
-> Hi Greg,
+On Wed, Jun 11, 2025 at 05:44:23PM -0700, Karan Tilak Kumar wrote:
+> When both the RHBA and RPA FDMI requests time out, fnic reuses a frame
+> to send ABTS for each of them. On send completion, this causes an
+> attempt to free the same frame twice that leads to a crash.
 > 
-> Sorry for the exta mail. Accidently put CC emails in the subject...
+> Fix crash by allocating separate frames for RHBA and RPA,
+> and modify ABTS logic accordingly.
 > 
->> --- a/tools/power/acpi/tools/acpidump/apfiles.c
->> +++ b/tools/power/acpi/tools/acpidump/apfiles.c
->> @@ -103,7 +103,7 @@ int ap_open_output_file(char *pathname)
->>   
->>   int ap_write_to_binary_file(struct acpi_table_header *table, u32 instance)
->>   {
->> -	char filename[ACPI_NAMESEG_SIZE + 16];
->> +	char filename[ACPI_NAMESEG_SIZE + 16] ACPI_NONSTRING;
->>   	char instance_str[16];
->>   	ACPI_FILE file;
->>   	acpi_size actual;
+> Tested by checking MDS for FDMI information.
+> Tested by using instrumented driver to:
+> Drop PLOGI response
+> Drop RHBA response
+> Drop RPA response
+> Drop RHBA and RPA response
+> Drop PLOGI response + ABTS response
+> Drop RHBA response + ABTS response
+> Drop RPA response + ABTS response
+> Drop RHBA and RPA response + ABTS response for both of them
 > 
-> This one seems incorrect, as I was alerted to by the following warning:
-> 
->      apfiles.c: In function ‘ap_write_to_binary_file’:
->      apfiles.c:137:9: warning: ‘__builtin_strlen’ argument 1 declared attribute ‘nonstring’ [-Wstringop-overread]
->        137 |         strcat(filename, FILE_SUFFIX_BINARY_TABLE);
->            |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->      apfiles.c:106:14: note: argument ‘filename’ declared here
->        106 |         char filename[ACPI_NAMESEG_SIZE + 16] ACPI_NONSTRING;
->            |              ^~~~~~~~
-> 
-> The 'strcat' function is only well defined on NUL-terminated
-> strings. Also, there is a line of code:
-> 
->      filename[ACPI_NAMESEG_SIZE] = 0;
-> 
-> That also makes me think it is a string.
+> Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
+> Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
+> Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
+> Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
+> Tested-by: Arun Easi <aeasi@cisco.com>
+> Co-developed-by: Arun Easi <aeasi@cisco.com>
+> Signed-off-by: Arun Easi <aeasi@cisco.com>
+> Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
+> Cc: <stable@vger.kernel.org> # 6.14.x Please see patch description
 
-Ugh, indeed.
+I'm a bit confused.  Why do we need to specify 6.14.x?  I would have
+assumed that the Fixes tag was enough information.  What are we supposed
+to see in the patch description?
 
-FTR this is about 70662db73d54 ("ACPICA: Apply ACPI_NONSTRING in more 
-places").
+I suspect you're making this too complicated...  Just put
+Cc: <stable@vger.kernel.org> and a Fixes tag and let the scripts figure
+it out.  Or put in the commit description, "The Fixes tag points to
+an older kernel because XXX but really this should only be backported
+to 6.14.x because YYY."
 
-To me neither the above, nor struct acpi_db_execute_walk's:
-   char name_seg[ACPI_NAMESEG_SIZE + 1] ACPI_NONSTRING;
-is correct in the commit.
+regards,
+dan carpenter
 
-This is broken in upstream/-next too.
-
-thanks,
--- 
-js
-suse labs
 
