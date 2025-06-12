@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-152520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1287AAD658C
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 04:24:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A8DAD658B
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 04:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9FE1189C2D2
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:24:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6FF97AAC77
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 02:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314071EBA0D;
-	Thu, 12 Jun 2025 02:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6051E0E1A;
+	Thu, 12 Jun 2025 02:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKF7JzuM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VIpmtEM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44DC1E47AE
-	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 02:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE451B4156
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 02:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749694976; cv=none; b=uaHjXJM0NSqBD2/Lcurw1mKS8Sx0AhatTOib4ZZ/ykldRXNeurclUhkLtSQRgm15RjOtYUx9Uk4TlsEV4oUTU5/f+G/55dZUnu3Qd6G7Sjp7BiQEswvvrMdjaoV5m7wDSZChQ+K4B+4YDzZJEMF1ChiKIrR+RNyLTsjUzQ9qrmA=
+	t=1749694978; cv=none; b=YttfmTopnumG0r3AO1nJbgjBKCUvgtAnA1qBAr+DVuk5zLQw7qhHoT7T06pkfa4gk++ZRCCenlGQsnzncCss7pq/QV2SLPq3zaGxGb6r+bVeCaBNIaCuAp2uaQI/b0mC/h4J9aiLiiWRBuQ8o2Av/NFJw7Tvv+j4eq5Qm1f43o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749694976; c=relaxed/simple;
-	bh=O039DW4WGGXTlkTgbyEvYtv8OnQAZMX1nhwdqJNbYU4=;
+	s=arc-20240116; t=1749694978; c=relaxed/simple;
+	bh=8PYEF64gfwoyDY9YNFNU/C8V9vfOsl3kCBR7YtW/VyQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MZUSLpxkv9tPkM9m7C1T8BaQfQNraLp+Ay8y3rOxvSJkCNychMeOg/HNidyrSRTH4OJtfIotdWU6CYXTQYopALzPZHtZZmLxQvCxh2Lm35wML1XKGDn5PWpGZfNnsh+CC5ihvX6Q5CzFGuaLHB4QanCrSXtdvPDjsGZTOezYqGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKF7JzuM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B132C4CEE3;
-	Thu, 12 Jun 2025 02:22:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OcVXwYOA/wXwfn96+6ObjgRq3VlNTACk3HJxAnDmk7Rwvh3YFjuQmQ4Jnvpu04DCLD2bE5fT+oUA3/So1Ao8WQrXFEu0IixcXrB8Xh4zqPEsvsZ/NlDDhyqwu3/pBJzJDkp2minZj9Ctm9ubQ3o3SlREwH6HRKouxnPVoxUeoNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VIpmtEM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47986C4CEE3;
+	Thu, 12 Jun 2025 02:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749694975;
-	bh=O039DW4WGGXTlkTgbyEvYtv8OnQAZMX1nhwdqJNbYU4=;
+	s=k20201202; t=1749694977;
+	bh=8PYEF64gfwoyDY9YNFNU/C8V9vfOsl3kCBR7YtW/VyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKF7JzuMfwQWRzRggYhgAy7w5pwKZNA5Hae0u/T5ZcFwMY5FnhlBoIHho3NB/+etB
-	 MJt+1Tjk3OaXV8RJRx0mo+bw05aUTc0Arb+1afQfC8hpxNfwmNs0lHHcOyuNZN378J
-	 mVzg3mLAIVTtMQ7CYqRmHn2q+AHYHLWa1a7pc7csx642bOJc7JMJiJGDpHVZ/8cFDk
-	 kttXZDz660B1cVHqze36D4C11moKRgmld6GRtA/AOLxxRb4r8u381lQpD4Y4bpMIZk
-	 iB2sLqAKWwgtTy+phngLz39hJp9V+/qtLGrZrYCxoJN8UVQVNsscMvbO81fGVmyCr+
-	 U8qhVpKfSLt1w==
+	b=VIpmtEM4exbrxXqSbyfkFxa/XrVkCYFHgVK2JJmXp/urPco0goFKPrNmv8vtYiMQH
+	 3e8twohrCJzpyOSzVHw9G6R0VA9ubtLPKd8wXVJgsNstjkhKWHb2B9vhH6IfE3XscV
+	 gmyyYRhxEWWpN6+fhPUQe//jX0qtuI33FS0z74ghHbekfELVUTbT//6wNWTfrgJRQ0
+	 F/yPSVORMaTvWqy6qQrCyvaK1/+rOdFalRv5684SWhdl+ASjcfPeseTk9/KY7bns8i
+	 AleUz7GrsIl46fVZdn9BZv4d1QklJQKLstekMj40Z2WB4jkIopz94v8+A2YG77Vz8l
+	 Fva9gVxMLXliQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Claudiu <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y 1/4] serial: sh-sci: Check if TX data was written to device in .tx_empty()
-Date: Wed, 11 Jun 2025 22:22:54 -0400
-Message-Id: <20250611111849-125190ad0bc78885@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y 1/4] serial: sh-sci: Check if TX data was written to device in .tx_empty()
+Date: Wed, 11 Jun 2025 22:22:56 -0400
+Message-Id: <20250611102736-b6b4bc2cb0f8e0b8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250611050131.471315-2-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To:  <20250611050517.582880-2-claudiu.beznea.uj@bp.renesas.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,11 +78,10 @@ Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (different SHA1: 7415bc5198ef)
 6.6.y | Not found
-6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7cc0e0a43a910 ! 1:  0cf02d41640cb serial: sh-sci: Check if TX data was written to device in .tx_empty()
+1:  7cc0e0a43a910 ! 1:  f0c586ba383b9 serial: sh-sci: Check if TX data was written to device in .tx_empty()
     @@ Metadata
       ## Commit message ##
          serial: sh-sci: Check if TX data was written to device in .tx_empty()
@@ -151,5 +150,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
