@@ -1,139 +1,145 @@
-Return-Path: <stable+bounces-152538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22018AD6953
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 09:42:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98400AD69F3
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 10:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166611BC1A3F
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 07:42:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6553A7AB6
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F7B2147E7;
-	Thu, 12 Jun 2025 07:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B365B21CC4F;
+	Thu, 12 Jun 2025 08:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RB7mHz2P"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Eeeec68B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1918F21325D
-	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 07:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EBE1A2381
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 08:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749714157; cv=none; b=cjrA2znvQ5jjuwsiHO7UcEUIIDd3E5jv9ZLXGGduEMSvpZQ2yvrIyr9aMQg76b/gIqcQT2AMy5Zoo+qatxBmdebkVr/p95/8s2J1Gj3VwBj1oSfwTjJzgDJgEoVB7xKLeHTvyfJBq6sWSLLQhYJkgPZH7vgWU2ZA+u2nG4WUT40=
+	t=1749715643; cv=none; b=sp+I6y+vKgZaHs4MbwnABbZQ/wT/XvBOaOR7+s7BTxMs3KqC0k6wbISXqOwiGXj5cS/dWn5wAQJ2eaG3PlZPY1YUa554xbWJg3zfd0QX26Va0JL2+L2GnD4lkpuSbYdlHDouiE3Jgw9u6S/2M25jXG2YgW5O7jEdU18JHTIiIlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749714157; c=relaxed/simple;
-	bh=liD84H33mldJ5FwcAo5b42k0QKzep4H4rmYW/0tE3Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ixM5j4fek/yWqHGTi/n3EZLMG2YH78Bs/SCE/Pzex37IaeWCAwVbwD2ICRt31hetOnl5bjVMRZAvoFE0ysOYWGaLkR6ouh4nPzebKfayZdHnbldy1D7mGpPTpl45yjuQeI/yLyTJs8I45tbsSQNIHU7N+pQoYU9DsFimsxQQlvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RB7mHz2P; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1749715643; c=relaxed/simple;
+	bh=8tDz2WWtHl5iNiZtu805A7AYCZLwxYys726Q+3nadXg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o1g9ZhClRFP7yIHUoRUTfkLWIGmxC0a4y3PNsKp+HPby3KPDccP2a7MDcoiuWD7MD7X2Ya03gx+fL7Wl5AfZHVciZm8blUY+E+lUtyV+StaHrpO8ikaZSlyIbIupFen9mGlsa3DafY3mTdu/snoiEi+dc0XN8N/yjK91UeK5wR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Eeeec68B; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a3798794d3so710954f8f.1
-        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 00:42:35 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a510432236so636133f8f.0
+        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 01:07:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749714154; x=1750318954; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pOjdW6tvwIHGvqgEBjcYXxpqXXP0mM93Bi1E5VHKi0I=;
-        b=RB7mHz2P2F0km9hNYYtu3w9W1j0fp/y1iV6+QIlaCDcvOSzig+rw9sfzzBLqoNB9My
-         FC0BFiaK7emHFD9TfA3KoCEgVCMmooWs5v8kXWeJxYp0GXatPBKkxRo96PLPF6be1G70
-         wLKRi4UcC1JJWBC9uNDWrtn9j2csf4afhir3kvjc+p4qP6Xck5DJsdbimN2+fS8KekDG
-         wMVUbeTYauqAoKxVs/4Ljj2jEwi44JjRtkG58FmM7ZcHmw+95RfQ+1ZkGYPgww5xTQUV
-         u7aKlNpEpnGPTunoHhOsXFFONPmfcpcL0onPOS4cxzaEC+EgcOJnsj8re5KGWIqnoJHj
-         M2hQ==
+        d=linaro.org; s=google; t=1749715639; x=1750320439; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8EsXhAjGTTQWpaDRlErU9rdRhfOKTZnFTlIFcBZuhGs=;
+        b=Eeeec68BK+ZVINceo2v3/MoOp6XZjFie5jO82x99y06q5MJctyeOMq0LVWL2idfgxn
+         pXuVu+z+x1M6hjoATQ/YPBdwNryPfRH8/dol1IoTwZ5ClwNimNCtMrZv3w4gsSXMTDFC
+         Myy72ZJis11uL2KuIh9rmFZSQrPL2CVTd6w6pVXJtGFIvZINUBr+HeOxzIFR7R872qMI
+         8Ows8AGMrBqKwpp+Gz94kqnESkDiyO1UgIOP/haZbZQOKhKDu7H0SyYgcG5+9QNcm2Kb
+         dy+bnPa45mPbUxAWaRCizI2SnW51CLdF7f4083CE951yMxgOLgR/hQcV7GTBmhwzzf+Q
+         GCTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749714154; x=1750318954;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pOjdW6tvwIHGvqgEBjcYXxpqXXP0mM93Bi1E5VHKi0I=;
-        b=e9vU5l+kFjiC5MW4yfoWkUQKZrzVEfx0xHXKKdeqT7BAnEO0zwri69iJKqqqdnnV2F
-         3mtW3sZ2wtk6q8cv4rM5lfzkWUdX6O7RGKeA2iCxb7YkniVWf9RKSmpofudfNOG1F44y
-         LwTtbpz+2MCGTgH3efBROuQDb37eRZwH28GBLFI+Qy6gDUgE8EdxFvy59T5Um0wM4CP6
-         cfGL/WroYwuHyOEqC9fIAl2U58zZSoB59O2yDXS74TGOn25c+0BjHoVqOBVUoTRicSQ+
-         XgmaIwV1HVmVpqdtm6wIr/zpLNchC5Fm1+yYQGXEItL6n5JPrgQ0seU9+Ch/XugwhPsm
-         FH8A==
-X-Forwarded-Encrypted: i=1; AJvYcCWj7fNaUashzWqyu+FCNmCYYPONdQRmgZtNW1oq4m08M42kLjBFMvFoXNv1OFoa00LFvZwcS9A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDZfw6vZyO36zLPoVRlGmULWlRM4rJdbcK/NgAUw66QBo6TBWq
-	RwuBUhwKVhCLAniLf0LDsaKE2LX0B0kkQvR8B7MqjYrBZM3hgwFXhQaDLkJ+Y61jDGg=
-X-Gm-Gg: ASbGnctD/68mSGysPQl7/60wE/q4WfyD2J3edrItfhYTj78rms6ox7oeyaTrtH/PHS1
-	75msw2NVu38C42BO89rB2/xzm+ihRxY1s9WMzkQrTeIHZnLCpT6hf8A0TfqMkpEUVKkD8y+xd7s
-	hcM63qGjvbq8CqD7dLfASIHQI3pATLV+3pbkjmXCtEIbCCcxbOro/aLKDbPdizzQrt4T35d36a/
-	PGB5ImfRLByReqHbkC/w/6YhWMUK+uVJNABotJryWjjvvR4H/MNd2VeqlLz60At8bfcJgrBMQwy
-	JMKrnwyfpLXwa41W2iGH0sA23UXBAErDBrOevWngI55MZf5ROaruHac7TvrzBb8wcKA=
-X-Google-Smtp-Source: AGHT+IHK4uQuCn2XQWMjU/bTqraytEDLe7/LB0UXdjlju8466jLpB8n5+oghPZtv4fc6nLejDkqEyw==
-X-Received: by 2002:a05:6000:2308:b0:3a4:e740:cd72 with SMTP id ffacd0b85a97d-3a56127883dmr1425617f8f.13.1749714154457;
-        Thu, 12 Jun 2025 00:42:34 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-453305a0d9dsm3836115e9.21.2025.06.12.00.42.33
+        d=1e100.net; s=20230601; t=1749715639; x=1750320439;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8EsXhAjGTTQWpaDRlErU9rdRhfOKTZnFTlIFcBZuhGs=;
+        b=iWnH0tbgt1Ww6Xm2BDVSWPsFEZ+tBgqnxjA0+WTgbvtEqSrd7RAZ7EuoDYhOECpeWj
+         5SB2X1GLDBmlSDcKy+qZ4HEg/DJahtGypCBIJBX5kyFgB17rua/4qXLsICfqcmlgEsOn
+         lyZhaRHXHzlW8LtQyyQHPTb4tY4cB0leGieEdYi2/Xik2z8agHdINYL+e3/xhtTFNh8d
+         BGuc2memqbc5O6UFpKkMCs6+IGTeNlg/KfD9io4VzLCIqaT5BQaRxJebiPI3blQXkgdY
+         NafHK/804X4GgHK5muufPtmlEK/AllEJLT6s9vK9TkAUXgBPJidYBU9fQgqXP0/AKZ5S
+         Do4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWGZ+CcL9t54nLCr6RjZGXSKU7B+uuOUckY5FHRjgJf4l0QpuYYK/qCbd58WOPfcWG5LXBI1Gg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywkg/O+iEg8F9Uo38nPeIEVo7x7RRftADvXuZuz2P45GdPssI36
+	VVVfaY8wu+4D3K9o7hYyRIGdKSXtou5f/y+fr6M2g3zCtjqMxDYarJWwQ1sFb+IU+cQ=
+X-Gm-Gg: ASbGncsXY0FsP8r301YLLvNju/9Tlyg/7PF9e83AYAuIzwM1TPg8IhyzYsi9EiUkaAq
+	HaaWVqoOgPEJtYgpKuaiRIC4C2KnUGnbl9pZNydyesQ6P41I7XVGE/2Mi4KjnQ5WvG5BfYi5f3f
+	lBeCFjfySiFGwC3blzY4Sn0/C50IKbqVlQjXlcvZtAwQH4a8KX1xdRDvlqA4FkBXUUppZJ0JKed
+	W7EupbPn02SYqLN/JRmLMa6/x8UgRB2v+UfoSriknCNvyn9HfSURtuy7weP+0aMDH2V91WenmXI
+	RBw5HvafOGGQ0znDTOlZ5Y6fPVX9fciLFgr40GqG+6U7AuMFmh53cKsHojERhIKl7lRPEesDorF
+	aAB/Br5Ip2Xp6Ou94Ch4PG9o=
+X-Google-Smtp-Source: AGHT+IELKF2BpPbSWqRYk4Gz6CQukHgSMRWMkrUf0ssis7ZGRpZXgfdefuUMTWLkzrdWYkstVJZCJA==
+X-Received: by 2002:a5d:588e:0:b0:3a4:ef70:e0e1 with SMTP id ffacd0b85a97d-3a56130ce70mr1541851f8f.55.1749715639161;
+        Thu, 12 Jun 2025 01:07:19 -0700 (PDT)
+Received: from [127.0.0.1] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532de8c64esm12942335e9.7.2025.06.12.01.07.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 00:42:34 -0700 (PDT)
-Date: Thu, 12 Jun 2025 10:42:30 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Karan Tilak Kumar <kartilak@cisco.com>
-Cc: sebaddel@cisco.com, arulponn@cisco.com, djhawar@cisco.com,
-	gcboffa@cisco.com, mkai2@cisco.com, satishkh@cisco.com,
-	aeasi@cisco.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jmeneghi@redhat.com, revers@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] scsi: fnic: Fix crash in fnic_wq_cmpl_handler
- when FDMI times out
-Message-ID: <aEqE5okf2jfV9kwt@stanley.mountain>
-References: <20250612004426.4661-1-kartilak@cisco.com>
- <20250612004426.4661-2-kartilak@cisco.com>
+        Thu, 12 Jun 2025 01:07:18 -0700 (PDT)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 0/2] media: qcom: camss: Fix two bugs in mainline
+Date: Thu, 12 Jun 2025 09:07:14 +0100
+Message-Id: <20250612-linux-next-25-05-30-daily-reviews-v1-0-88ba033a9a03@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250612004426.4661-2-kartilak@cisco.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALKKSmgC/x2NQQrCMBQFr1L+2ge/sbHgVcRFsK/6oURJtEZK7
+ 97Y5SxmZpHMZMxybhZJnC3bM1ZoD43cHiHeCRsqi1Pn9dQqJoufgsjyhvNQj6NiCDb98Nf5zeh
+ 6jr4j2TNI7bwSRyv743Jd1w05S/pscwAAAA==
+X-Change-ID: 20250610-linux-next-25-05-30-daily-reviews-47ef54eee7ea
+To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@xs4all.nl>, Depeng Shao <quic_depengs@quicinc.com>, 
+ Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
+ Hans Verkuil <hans.verkuil@cisco.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1140;
+ i=bryan.odonoghue@linaro.org; h=from:subject:message-id;
+ bh=8tDz2WWtHl5iNiZtu805A7AYCZLwxYys726Q+3nadXg=;
+ b=owEBbQKS/ZANAwAIASJxO7Ohjcg6AcsmYgBoSoq0qnkiS+TZmmJnu9CFHauELJP3na1Z5aUm+
+ he35PUBSsOJAjMEAAEIAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCaEqKtAAKCRAicTuzoY3I
+ OjYpD/90owDahLx/oFJlZo5Dugmf1+6K/ibsQ/tHTcVrnVzTfDIQ8SgAsyKaCu3rT9x/pIvsRoJ
+ 8swTBTOFm1n9Zvjt+i0lDh5FY+gKvOmsu05f0JNTzBYZjjFkv1aAE7Noh48Zqrfjym5qBmeIet9
+ VTxj/mDb5wyg6Tx7A1/te2bhnJXqaBl2/d988Ouzsg8DWMxIAfZlLrQ76dG0JQ2deoFiMHTvE6V
+ h0O3k1rgwBE9nSHbqUrY8n2t2V8y5GByYHrezqpxswjMfdQ4wqhFaulTgLhuSEq+dl49QVpcRL9
+ tPxXcEqzxzpATIg9Ep7CLFXH+eAkppLZfcDEiXIK18GdFgOJhTxW2ppSvlNNOXtDzH9XgkqLTW6
+ lgZ1tWxtjhdDkiCxN65I9vn6cbKELju4a5VrS4qH4jsufLB4ebc/XAfX7QLGCYyIBNPn+dhBglo
+ Edp9BoOx0kNd09gFw/qZFIKrzZupQtHjB2oqLjREzpcr9Mqn583jai+4UKPfjoqa+3eH3N9/BjX
+ AGQOM6v+uBKPXB+ai/pbih3ZeEZFVaH4T2mJkZ/+vKR//o3sS61mdXMGJYPqQ6PxuFCJiZOayj+
+ 1ewPnybUvQR0MkXP75LDSIcac07osETEn+xRX3NjvAD4mWIFHhGjCS0rdQEcxWziJ0UEv6/nc9T
+ OQxxF+8eicIIwrg==
+X-Developer-Key: i=bryan.odonoghue@linaro.org; a=openpgp;
+ fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
 
-On Wed, Jun 11, 2025 at 05:44:23PM -0700, Karan Tilak Kumar wrote:
-> When both the RHBA and RPA FDMI requests time out, fnic reuses a frame
-> to send ABTS for each of them. On send completion, this causes an
-> attempt to free the same frame twice that leads to a crash.
-> 
-> Fix crash by allocating separate frames for RHBA and RPA,
-> and modify ABTS logic accordingly.
-> 
-> Tested by checking MDS for FDMI information.
-> Tested by using instrumented driver to:
-> Drop PLOGI response
-> Drop RHBA response
-> Drop RPA response
-> Drop RHBA and RPA response
-> Drop PLOGI response + ABTS response
-> Drop RHBA response + ABTS response
-> Drop RPA response + ABTS response
-> Drop RHBA and RPA response + ABTS response for both of them
-> 
-> Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
-> Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
-> Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
-> Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
-> Tested-by: Arun Easi <aeasi@cisco.com>
-> Co-developed-by: Arun Easi <aeasi@cisco.com>
-> Signed-off-by: Arun Easi <aeasi@cisco.com>
-> Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
-> Cc: <stable@vger.kernel.org> # 6.14.x Please see patch description
+Two bug fixes here.
 
-I'm a bit confused.  Why do we need to specify 6.14.x?  I would have
-assumed that the Fixes tag was enough information.  What are we supposed
-to see in the patch description?
+First up SDM630/SDM660 hasn't been probing because moving the CSIPHY gen2
+init sequence into a common location also moved the default case of the
+switch statement which rejects non-gen2 devices.
 
-I suspect you're making this too complicated...  Just put
-Cc: <stable@vger.kernel.org> and a Fixes tag and let the scripts figure
-it out.  Or put in the commit description, "The Fixes tag points to
-an older kernel because XXX but really this should only be backported
-to 6.14.x because YYY."
+Second is a fix for a very longstanding bug which is a race-condition
+between fully enumerating /dev/videoX devices along with all of their
+dependent data-structures and gating user-space access to those devices.
 
-regards,
-dan carpenter
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+---
+Bryan O'Donoghue (2):
+      media: qcom: camss: csiphy-3ph: Fix inadvertent dropping of SDM660/SDM670 phy init
+      media: qcom: camss: vfe: Fix registration sequencing bug
+
+ drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c | 3 +--
+ drivers/media/platform/qcom/camss/camss-vfe.c            | 8 ++++++++
+ drivers/media/platform/qcom/camss/camss-vfe.h            | 1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
+---
+base-commit: 8666245114d979b963dc23894a03c74ecab8a7a6
+change-id: 20250610-linux-next-25-05-30-daily-reviews-47ef54eee7ea
+
+Best regards,
+-- 
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
 
