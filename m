@@ -1,155 +1,357 @@
-Return-Path: <stable+bounces-152543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6FEAD6B22
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 10:43:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD58AD6B24
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 10:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B270917ABC0
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:43:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E472F7AEFB6
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EFA228CB5;
-	Thu, 12 Jun 2025 08:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5783022126E;
+	Thu, 12 Jun 2025 08:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f6HpwNVF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hneDcHjl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DF322068B
-	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 08:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4C32153CB
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 08:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749717574; cv=none; b=Zxdf3oJtZwCICxdsehsUzh+LF8AGr77lBxtQIodcKoa2kCs7RiuBuwXY2WkCZEjPysODcb74vefFwUeh+InXnYasY076OTO4Vo3Vgl562F13oGxFPLT739KwO7eYLI/kwbe2lKsTbzyFxoqIqZcvOHy4ZSML3ycw63h/s2VpmvU=
+	t=1749717672; cv=none; b=s2sN0NXA9aILJ8h/Q13ReI4LYU2BQCFugePrljwGBc6+OUmzovUIuwkHIdGlRV2WJPxOnvG1/cSSlsreP0qgUDSnm3W3rJmKXk9YCDiB1m8x+ulB/V+HPaVoByw9ZaLvxyzlko9Sf46g8p4tlMtWSBz+ewAW/lYHbI2cTcWCIac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749717574; c=relaxed/simple;
-	bh=hJ7X/tNOTl73bwX25xhIlJdNu9sTqCaD1Ms/vj4d5r8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/VrioYwXxAGycrjukgKIdhsJ1nwL2o4X+DTUPvlvVKjGF5MQjqRtRCZ63PhKr5c/Iz9N3O/5aQPGP3Oa7t/VHzVePzFFuEMWNgTQaccvYMjiGsljWsv9o6DhaZLCsGEwN9+pP4fWiRBU471eCQr4t0nun4sD9HmhhoqGJrZ2qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f6HpwNVF; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a510432236so665312f8f.0
-        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 01:39:31 -0700 (PDT)
+	s=arc-20240116; t=1749717672; c=relaxed/simple;
+	bh=hSqx4txxq8gI1uF8LcZg7h66OFOVPUieInvvRk7qxzQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rjzmd21Sgo1EHIQjSYGyHk1gvLw7lQLF5lq41275WeiyGXnS9xy8EZxu34aTgJAj3uBiw3lWhgNdrtlqXiFPjFJsOB/7+Sdod87qopKbq2eJzT4AYKAQzHnXeItLvXJzwIEJjDyDpTqrypVdgzhpIHtKA6mBnlBVg94mY7KyW2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hneDcHjl; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4a4323fe8caso5295591cf.2
+        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 01:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749717570; x=1750322370; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xMn86gBGFQBElUD4C04aCEWWj1Sy8fLs55GPp5ijFjA=;
-        b=f6HpwNVFfRi6W2Sms6MVNsmZYI8KveHZfl5sXNiONtB3sWnyVSGfRsYBZTYaCAhKHS
-         ow9wJHssthE1f/VBDrhhCvzvLJpgdxwdcPQ4hsd+rOMAkPPTpKzX4X+tzcK636E2lwDc
-         jd8hF1Zx0dpZcHRNNRvRrl7dXNWfyVu4tdI47FliadoQX2UoRhBGLT0pRe54aOZZp4Nr
-         /qmJO86dAlFVhMP2YP5q9V5VOefgEry+/t6ZSO2lUrGzJ832ddopLSwIfnNU2RLBc0ED
-         8TROy/N9a8W7zpmJWHf/SfccoGJs1Z96uOA/OK+lDTI41JBkfAH/nQa/xNrFrpz8KKz/
-         lNWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749717570; x=1750322370;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1749717669; x=1750322469; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xMn86gBGFQBElUD4C04aCEWWj1Sy8fLs55GPp5ijFjA=;
-        b=Jf+gMxbNA1QjHl9LS84OF1Qcd0NrBXEPpKmfewPFEYaaut05GXdfaJ+3spiVWCq9p3
-         z0NelfZEKqy4SY3wBaV0ebmc5m7hvX4KC1rRYHpUoxepdCQDDqD6ZM/6KL1kJ83Mh85p
-         1rLlLRMkidzc6cTPCROwv5vzd1OMQxfGU3LHUbO/6+a89B68CYiY/x1O3iLKTzHGLAU4
-         pOuoWhTjuNe0oCYITLfp8bseh4a2xi7nnIJG2hyGuUuKHrKD/Fr7Lvh0IMagrCQxLTvn
-         jQjrYeneS0PY5uyreZ9/JSRnHdoEV7+hqI0SzIA05+Vw9REPuE3ff2IgzndgZfCQmGzV
-         7Vwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQRyJMO2Aisupu2mxmI5OSh+bQchO++FHf3oFLL2GpgEwHhK2pqNCq14U9B5A7HKP8+xE0ovw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxobFvDb9VOYqKNr+mZz3Yk1Wr1w604EsXh5v9l9T/RpfVCQIuv
-	7+6rrsKvuKdz5xD+iivaZqLzBNfj3Xy6NxuKNEGDr2EfyeB6VZyMZ7v01SZbZAIQo14=
-X-Gm-Gg: ASbGncux572xLTOiqhuanYxNUvAh63BH2YIF4T4V1L1qeWQnqDOMA9Ih41oqahz5seZ
-	1LBfus0TnJdTK5KnC8HcKi8ga8kPqaNjV6mgqfc5foLHP/929hf8skU+NyyhVqP3J2ul5j2GHVO
-	BlqB8wil7KErQXYZrmTOyuJrP+VXs9LMOET11qdB0E/SAnLXhuz9YUX8qXg469hB76A7ilAClS9
-	jP/0m3w0efDmXhEVwJ5Hn3Dmy57pELz4/h1NvHpuDAqMnXujY+41jpKNekm5XZTzyi/vIPU3Oqu
-	eZEKX8r+EU0KVE/1lKH1/ZI7dVQ7h2idDFoqHSXi8K0zENJchdr63Mu63/Y4HBixhJs=
-X-Google-Smtp-Source: AGHT+IF/U38N89Oos/Ii+uKueDvpQelJtkG4+ZSkUxRWatEFCL62scczRT/E2Bk0UmIqZpbCKrbN4g==
-X-Received: by 2002:a05:6000:178a:b0:3a4:f038:af76 with SMTP id ffacd0b85a97d-3a56130bf3emr1772951f8f.53.1749717570107;
-        Thu, 12 Jun 2025 01:39:30 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a561b4bb17sm1299122f8f.68.2025.06.12.01.39.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 01:39:29 -0700 (PDT)
-Date: Thu, 12 Jun 2025 11:39:25 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Karan Tilak Kumar <kartilak@cisco.com>
-Cc: sebaddel@cisco.com, arulponn@cisco.com, djhawar@cisco.com,
-	gcboffa@cisco.com, mkai2@cisco.com, satishkh@cisco.com,
-	aeasi@cisco.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	jmeneghi@redhat.com, revers@redhat.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] scsi: fnic: Fix crash in fnic_wq_cmpl_handler
- when FDMI times out
-Message-ID: <aEqSPahh0b5h39J0@stanley.mountain>
-References: <20250612004426.4661-1-kartilak@cisco.com>
- <20250612004426.4661-2-kartilak@cisco.com>
- <aEqE5okf2jfV9kwt@stanley.mountain>
+        bh=pG4m3qnxqkuuUaaqQ/lqlW3im/VPaeSofB2HpjpdB08=;
+        b=hneDcHjlhtfq5pZ2RzSe/0fTtP0+PpAkgBzTfMn0FPxq0JersW+Tw7mo5ar/m53Neh
+         owhBBlpxoIlKdbWRO4XrYlpKIm1JnVv3bu60RQ56XLFvnOfhd6HWhsnY8/i6BWWZfn4K
+         lgjChOG2Y3W1Pa961AjxBLPk8E6ycWuHy8Q1QTYF+DCSCwu59oqoUW5nZSgtzwG2TL1T
+         sreUp2Dszx2C05HQ5LnvFbjtkFUjF9xs2AqbFQNaMwGI4bh5CCCMgDzdrEDknRGsiyGG
+         +UFA00lXCiokvPYouEG4vOkrcxb4LLBBNumzzy9VXcnkshoOL9zeu0CpQgRiqRx1EBWK
+         v11g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749717669; x=1750322469;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pG4m3qnxqkuuUaaqQ/lqlW3im/VPaeSofB2HpjpdB08=;
+        b=CcNxVVfscODV9lDFJvbdrASusqEKYtxagsa7VpdnkNcDqy2chzZJoRfQuKsa6bJiTN
+         0veEKBMEzlwGmhI1OSbvAnUwMuH0gqfywyjF2v1UWyiLiEkrelBe4dFi297EbO0q1Zjj
+         9bsG6OQpAB1Jbl6GVktMPE7MRrgWCOsRRHAfXZv4o2TgBAKVMyvXDpHKH7QiRRY93CDe
+         /bta4UebfzjwBDLZ15xlDcmZkizU1ukydSPFs4vHV72uiFSIZ9vg5iKSWKk4hW+93SUW
+         Iom0EETPGMy2HGXf4SVK1AFhyCCL3QFGhiE/lcfqswOow6bHHuV8vyfy7Ao0hjO+S1tV
+         8NBw==
+X-Gm-Message-State: AOJu0YxBe3FTReh0tWyqAquNfKdqNlqZyeYIoqkrW9ZUbAZqf1PspbCw
+	NT6zi/vGeWZ31mb8y2UWRN+ICe+z3JSdSmPvgZXakasCOtG0peUoCkNKC5fsSiUYz13VZIczugL
+	NTFsn7Y1va7CJYiPZ8ha/XtYYySNQWMLyJaYYaJxU0B6oMHP+sCXwhSSl7Ps=
+X-Gm-Gg: ASbGncumW5Qu43dtAsPyhKzFB+5baRVzS4co9JnqiM2TMwKY0CGyYWkSxd3GJDwvv4c
+	kMAzgxG17GQMTd9gRxuNyOG7qVPnRYvCSSWjfk+sWqDFEUo6Boz93sj3oj+9cpOXkCUEcFQZWmB
+	YcmJNalCbV4ZHgzI9nfMuHcW4TIHv+ALw35kYv7/t7Ud4=
+X-Google-Smtp-Source: AGHT+IGq1tKCdpl5eOp5ScpqnO2GB6G3iipZVjzMXjVS5r9PAygfJq0a4mklQG4ibHkpsp/sULi5Enycx2K+YPe7MoU=
+X-Received: by 2002:a05:622a:5c8d:b0:4a6:f587:ade2 with SMTP id
+ d75a77b69052e-4a72425a642mr34685001cf.18.1749717668636; Thu, 12 Jun 2025
+ 01:41:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEqE5okf2jfV9kwt@stanley.mountain>
+References: <20250522224433.3219290-1-sashal@kernel.org>
+In-Reply-To: <20250522224433.3219290-1-sashal@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 12 Jun 2025 01:40:57 -0700
+X-Gm-Features: AX0GCFvpfZhZhtuk65OozudfpPY6ypAmouJwPqzPqBaFkMfCwP7QQASrRaoz9Dw
+Message-ID: <CANn89i+jADLAqpg-gOyHFZiFEb0Pks46h=9d8-FiPa1_HEv3YA@mail.gmail.com>
+Subject: Re: Patch "tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()"
+ has been added to the 6.6-stable tree
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, ij@kernel.org, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 12, 2025 at 10:42:30AM +0300, Dan Carpenter wrote:
-> On Wed, Jun 11, 2025 at 05:44:23PM -0700, Karan Tilak Kumar wrote:
-> > When both the RHBA and RPA FDMI requests time out, fnic reuses a frame
-> > to send ABTS for each of them. On send completion, this causes an
-> > attempt to free the same frame twice that leads to a crash.
-> > 
-> > Fix crash by allocating separate frames for RHBA and RPA,
-> > and modify ABTS logic accordingly.
-> > 
-> > Tested by checking MDS for FDMI information.
-> > Tested by using instrumented driver to:
-> > Drop PLOGI response
-> > Drop RHBA response
-> > Drop RPA response
-> > Drop RHBA and RPA response
-> > Drop PLOGI response + ABTS response
-> > Drop RHBA response + ABTS response
-> > Drop RPA response + ABTS response
-> > Drop RHBA and RPA response + ABTS response for both of them
-> > 
-> > Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
-> > Reviewed-by: Sesidhar Baddela <sebaddel@cisco.com>
-> > Reviewed-by: Arulprabhu Ponnusamy <arulponn@cisco.com>
-> > Reviewed-by: Gian Carlo Boffa <gcboffa@cisco.com>
-> > Tested-by: Arun Easi <aeasi@cisco.com>
-> > Co-developed-by: Arun Easi <aeasi@cisco.com>
-> > Signed-off-by: Arun Easi <aeasi@cisco.com>
-> > Tested-by: Karan Tilak Kumar <kartilak@cisco.com>
-> > Cc: <stable@vger.kernel.org> # 6.14.x Please see patch description
-> 
-> I'm a bit confused.  Why do we need to specify 6.14.x?  I would have
-> assumed that the Fixes tag was enough information.  What are we supposed
-> to see in the patch description?
-> 
-> I suspect you're making this too complicated...  Just put
-> Cc: <stable@vger.kernel.org> and a Fixes tag and let the scripts figure
-> it out.  Or put in the commit description, "The Fixes tag points to
-> an older kernel because XXX but really this should only be backported
-> to 6.14.x because YYY."
+On Thu, May 22, 2025 at 3:44=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> This is a note to let you know that I've just added the patch titled
+>
+>     tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
+>
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>
+> The filename of the patch is:
+>      tcp-reorganize-tcp_in_ack_event-and-tcp_count_delive.patch
+> and it can be found in the queue-6.6 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>
+>
 
-But here even with the comment in the commit description, you would still
-just say:
+May I ask why this patch was backported to stable versions  ?
 
-Cc: <stable@vger.kernel.org> # 6.14.x
+This is causing a packetdrill test to fail.
 
-The stable maintainers trust you to list the correct kernel and don't
-need to know the reasoning.
+Ilpo, can you take a look ?
 
-I much prefer to keep it simple whenever possible.  We had bad CVE where
-someone left off the Fixes tag and instead specified
-"Cc: <stable@vger.kernel.org> # 4.1" where 4.1 was the oldest supported
-kernel on kernel.org.  The patch should have been applied to the older
-vendor kernels but it wasn't because the the tag was wrong.
+# packetdrill --ip_version=3Dipv6 --mtu=3D1520 dctcp-plb-simple.pkt
+dctcp-plb-simple.pkt:49: error handling packet: inconsistent
+flowlabels for this packet: expected: 0x1c50c vs actual: 0xb867c
+script packet:  0.032224 P.W 5001:6001(1000) ack 1 <nop,nop,TS val 100 ecr =
+100>
+actual packet:  0.032209 P.W 5001:6001(1000) ack 1 win 255 <nop,nop,TS
+val 124 ecr 100>
 
-regards,
-dan carpenter
+$ cat dctcp-plb-simple.pkt
+// DCTCP PLB Test
+// Check that DCTCP rehashes based on PLB congestion conditions
 
+`sysctl -qw net/ipv4/tcp_ecn=3D1 \
+            net/ipv4/tcp_congestion_control=3Ddctcp \
+            net/ipv4/tcp_plb_enabled=3D1 \
+            net/ipv4/tcp_rmem=3D"4096 131072 15000000"`
+
+// Initialize connection
+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) =3D 3
+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+   +0 bind(3, ..., ...) =3D 0
+   +0 listen(3, 1) =3D 0
+
+// ECN handshake: send EW flags in SYN packet, E flag in SYN-ACK response
+   +0 < SEW 0:0(0) win 32792 <mss 1460,sackOK,TS val 100 ecr 100,nop,wscale=
+ 6>
+   +0 > (flowlabel 0x1) SE. 0:0(0) ack 1 <mss 1460,sackOK,TS val 100
+ecr 100,nop,wscale 8>
+   +0 < . 1:1(0) ack 1 win 257
+   +0 accept(3, ..., ...) =3D 4
+   +0 getsockopt(4, IPPROTO_TCP, TCP_CONGESTION, "dctcp", [5]) =3D 0
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x1) P. 1:1001(1000) ack 1 <nop,nop,TS val 100 ecr 100>
+   +0 < . 1:1(0) ack 1001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // no ECN mark, flowlabel won't change.
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x1) P. 1001:2001(1000) ack 1 <nop,nop,TS val 100 ecr 10=
+0>
+   +0 < . 1:1(0) ack 2001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // No packets ECN-marked.
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x1) P. 2001:3001(1000) ack 1 <nop,nop,TS val 100 ecr 10=
+0>
+   +0 < E.  1:1(0) ack 3001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // ECN-marked. 1 congested round.
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x1) PW. 3001:4001(1000) ack 1 <nop,nop,TS val 100 ecr 1=
+00>
+   +0 < E.  1:1(0) ack 4001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // ECN-marked. 2 congested round.
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x1) PW. 4001:5001(1000) ack 1 <nop,nop,TS val 100 ecr 1=
+00>
+   +0 < E. 1:1(0) ack 5001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // ECN-marked. 3 congested round.
+
+   +0 write(4, ..., 1000) =3D 1000
+   // Flowlabel will change next round
+   +0 > (flowlabel 0x1) PW. 5001:6001(1000) ack 1 <nop,nop,TS val 100 ecr 1=
+00>
+   +0 < .  1:1(0) ack 6001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // No packets ECN-marked. 0 congested round.
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x2) P. 6001:7001(1000) ack 1 <nop,nop,TS val 100 ecr 10=
+0>
+   +0 < .  1:1(0) ack 7001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // No packets ECN-marked. Verify new flowlabel
+
+   +0 write(4, ..., 1000) =3D 1000
+   +0 > (flowlabel 0x2) P. 7001:8001(1000) ack 1 <nop,nop,TS val 100 ecr 10=
+0>
+   +0 < .  1:1(0) ack 8001 win 1000 <nop,nop,TS val 100 ecr 100>
+   // No packets ECN-marked. New flowlabel should stick
+
+
+>
+> commit c39f5ebea6713c908f64e4682c26d144d9a659de
+> Author: Ilpo J=C3=A4rvinen <ij@kernel.org>
+> Date:   Wed Mar 5 23:38:41 2025 +0100
+>
+>     tcp: reorganize tcp_in_ack_event() and tcp_count_delivered()
+>
+>     [ Upstream commit 149dfb31615e22271d2525f078c95ea49bc4db24 ]
+>
+>     - Move tcp_count_delivered() earlier and split tcp_count_delivered_ce=
+()
+>       out of it
+>     - Move tcp_in_ack_event() later
+>     - While at it, remove the inline from tcp_in_ack_event() and let
+>       the compiler to decide
+>
+>     Accurate ECN's heuristics does not know if there is going
+>     to be ACE field based CE counter increase or not until after
+>     rtx queue has been processed. Only then the number of ACKed
+>     bytes/pkts is available. As CE or not affects presence of
+>     FLAG_ECE, that information for tcp_in_ack_event is not yet
+>     available in the old location of the call to tcp_in_ack_event().
+>
+>     Signed-off-by: Ilpo J=C3=A4rvinen <ij@kernel.org>
+>     Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>     Signed-off-by: David S. Miller <davem@davemloft.net>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 10d38ec0ff5ac..a172248b66783 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -425,6 +425,20 @@ static bool tcp_ecn_rcv_ecn_echo(const struct tcp_so=
+ck *tp, const struct tcphdr
+>         return false;
+>  }
+>
+> +static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
+> +{
+> +       tp->delivered_ce +=3D ecn_count;
+> +}
+> +
+> +/* Updates the delivered and delivered_ce counts */
+> +static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
+> +                               bool ece_ack)
+> +{
+> +       tp->delivered +=3D delivered;
+> +       if (ece_ack)
+> +               tcp_count_delivered_ce(tp, delivered);
+> +}
+> +
+>  /* Buffer size and advertised window tuning.
+>   *
+>   * 1. Tuning sk->sk_sndbuf, when connection enters established state.
+> @@ -1137,15 +1151,6 @@ void tcp_mark_skb_lost(struct sock *sk, struct sk_=
+buff *skb)
+>         }
+>  }
+>
+> -/* Updates the delivered and delivered_ce counts */
+> -static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
+> -                               bool ece_ack)
+> -{
+> -       tp->delivered +=3D delivered;
+> -       if (ece_ack)
+> -               tp->delivered_ce +=3D delivered;
+> -}
+> -
+>  /* This procedure tags the retransmission queue when SACKs arrive.
+>   *
+>   * We have three tag bits: SACKED(S), RETRANS(R) and LOST(L).
+> @@ -3816,12 +3821,23 @@ static void tcp_process_tlp_ack(struct sock *sk, =
+u32 ack, int flag)
+>         }
+>  }
+>
+> -static inline void tcp_in_ack_event(struct sock *sk, u32 flags)
+> +static void tcp_in_ack_event(struct sock *sk, int flag)
+>  {
+>         const struct inet_connection_sock *icsk =3D inet_csk(sk);
+>
+> -       if (icsk->icsk_ca_ops->in_ack_event)
+> -               icsk->icsk_ca_ops->in_ack_event(sk, flags);
+> +       if (icsk->icsk_ca_ops->in_ack_event) {
+> +               u32 ack_ev_flags =3D 0;
+> +
+> +               if (flag & FLAG_WIN_UPDATE)
+> +                       ack_ev_flags |=3D CA_ACK_WIN_UPDATE;
+> +               if (flag & FLAG_SLOWPATH) {
+> +                       ack_ev_flags |=3D CA_ACK_SLOWPATH;
+> +                       if (flag & FLAG_ECE)
+> +                               ack_ev_flags |=3D CA_ACK_ECE;
+> +               }
+> +
+> +               icsk->icsk_ca_ops->in_ack_event(sk, ack_ev_flags);
+> +       }
+>  }
+>
+>  /* Congestion control has updated the cwnd already. So if we're in
+> @@ -3938,12 +3954,8 @@ static int tcp_ack(struct sock *sk, const struct s=
+k_buff *skb, int flag)
+>                 tcp_snd_una_update(tp, ack);
+>                 flag |=3D FLAG_WIN_UPDATE;
+>
+> -               tcp_in_ack_event(sk, CA_ACK_WIN_UPDATE);
+> -
+>                 NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPHPACKS);
+>         } else {
+> -               u32 ack_ev_flags =3D CA_ACK_SLOWPATH;
+> -
+>                 if (ack_seq !=3D TCP_SKB_CB(skb)->end_seq)
+>                         flag |=3D FLAG_DATA;
+>                 else
+> @@ -3955,19 +3967,12 @@ static int tcp_ack(struct sock *sk, const struct =
+sk_buff *skb, int flag)
+>                         flag |=3D tcp_sacktag_write_queue(sk, skb, prior_=
+snd_una,
+>                                                         &sack_state);
+>
+> -               if (tcp_ecn_rcv_ecn_echo(tp, tcp_hdr(skb))) {
+> +               if (tcp_ecn_rcv_ecn_echo(tp, tcp_hdr(skb)))
+>                         flag |=3D FLAG_ECE;
+> -                       ack_ev_flags |=3D CA_ACK_ECE;
+> -               }
+>
+>                 if (sack_state.sack_delivered)
+>                         tcp_count_delivered(tp, sack_state.sack_delivered=
+,
+>                                             flag & FLAG_ECE);
+> -
+> -               if (flag & FLAG_WIN_UPDATE)
+> -                       ack_ev_flags |=3D CA_ACK_WIN_UPDATE;
+> -
+> -               tcp_in_ack_event(sk, ack_ev_flags);
+>         }
+>
+>         /* This is a deviation from RFC3168 since it states that:
+> @@ -3994,6 +3999,8 @@ static int tcp_ack(struct sock *sk, const struct sk=
+_buff *skb, int flag)
+>
+>         tcp_rack_update_reo_wnd(sk, &rs);
+>
+> +       tcp_in_ack_event(sk, flag);
+> +
+>         if (tp->tlp_high_seq)
+>                 tcp_process_tlp_ack(sk, ack, flag);
+>
+> @@ -4025,6 +4032,7 @@ static int tcp_ack(struct sock *sk, const struct sk=
+_buff *skb, int flag)
+>         return 1;
+>
+>  no_queue:
+> +       tcp_in_ack_event(sk, flag);
+>         /* If data was DSACKed, see if we can undo a cwnd reduction. */
+>         if (flag & FLAG_DSACKING_ACK) {
+>                 tcp_fastretrans_alert(sk, prior_snd_una, num_dupack, &fla=
+g,
 
