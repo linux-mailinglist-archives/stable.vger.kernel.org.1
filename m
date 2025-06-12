@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-152535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81856AD6825
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:46:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F83AD684D
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 08:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED5037AB491
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 06:45:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C541898B38
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 06:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6A81A5B92;
-	Thu, 12 Jun 2025 06:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F711202981;
+	Thu, 12 Jun 2025 06:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZGhQFlgX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EkHuE9Kl"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C281DDC37
-	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 06:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2351FBC90
+	for <stable@vger.kernel.org>; Thu, 12 Jun 2025 06:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749710787; cv=none; b=YSn5vZX4Wsig3SUtAloU0P1G31KCsTbAYUpe2dlqYol8axhScdUICpCduEoqSXTe8UnQMX/jjG7mekx6J5bvePqycdMGTHQu42DYdyAenN1pAz6b1P88RKFefldPCQFRUHFzlLkszUxS4c7rOtTA4yCOfnW23gyPzVhJ7ECBTWI=
+	t=1749711316; cv=none; b=Ra5zHXGfKSJDOgM9tM3n6CJx1oFllxDfdx1PH2rlCYQ5sWUquZl3CDeYRuY3u+G8kPBJpt2kAMSmvFyIt6ZrpDlg18BmWWTbsW4sxw4IVSGl9hZCb9Jkc2KGxY5fZDvkAErwOnkaHjgO6nPaArmAmm+Fxm+iHbWNW2J1lvdpgq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749710787; c=relaxed/simple;
-	bh=IipZv141DufKgYkSUWXgjF9SSwNa9LoPKUeg2jWaMFs=;
+	s=arc-20240116; t=1749711316; c=relaxed/simple;
+	bh=IqcXjZu44Mml/Q06OAMWUQdB8BKS+1HRehFsSwvaPEg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FxO1l2JMZfnr9XNw7czqGe1BIYr6b8O+jyDHlMBZffUf4ylos/EuIm3zGzmMbyi97q0HOqjDKdeofzpBqgfjb3vXYCziuQ+smmnn7TcncNCc1MrgHstbBk5prOH5ARjGkyS5HuJDZpt+fRt8m7l5bGFcttb+uTN09Ffcg21PaU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZGhQFlgX; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=p14i68fFiyvbiEzZo7KSrmZWGQRs5mfPh7nFDfEwyaUHbLJJ1X5BneJnG0Bm7AAkUgfKqY5mcj6OOWJU0j1HYbIrBTUIQ/haOajs55gsDyeYfVzRw64l8s0Hqnl2UnWJxfaKx0JjkqP0CbFjG57wAVd4rXZhl2BgmeGHGnevHhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EkHuE9Kl; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749710784;
+	s=mimecast20190719; t=1749711313;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iIzkhRpa1dZPuoK2BlfsPGBgeWv5TwKlqrn2D99cAqA=;
-	b=ZGhQFlgXwdh4Cpi8++UtbFqJ2KRa4dZ/5EUmRp+7RsRWVK3wpKtqM+bAgwb59j4sf/Ba9Z
-	Bo0WVeixZA7THh828ROLNYrPaqcPiJ06qel1Z4CZTkVv1+Ip5EWCiwOB3745Us2bBOrWqi
-	MF/NLWQzPx283xCJGR5rwi5cLYfdr5k=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JSWiuXrWaWNg/L//dAUjqt0FVUEKmzq568u+oIeTgbc=;
+	b=EkHuE9KlxCGWfwiaL3h0XKJao9FKh98O7kaZro4C6HSG7ECPrZXz7DiuyMSP482CMhfXB6
+	Mapwi99sPU19f3EElvDwdyMaEH6h0NbkSznCiGyZcHNtjjV+XsMF5LfSAINypkjOZBq0My
+	wXrClqbxVAQ1+/OL0PfIQTuGAH4d1Fs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-Lrpp7bdONEaWe3B9R2QDIA-1; Thu, 12 Jun 2025 02:46:23 -0400
-X-MC-Unique: Lrpp7bdONEaWe3B9R2QDIA-1
-X-Mimecast-MFC-AGG-ID: Lrpp7bdONEaWe3B9R2QDIA_1749710782
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43eed325461so2887495e9.3
-        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 23:46:23 -0700 (PDT)
+ us-mta-55-xbxI0jYeMbeswhqWkJ-Mmg-1; Thu, 12 Jun 2025 02:55:11 -0400
+X-MC-Unique: xbxI0jYeMbeswhqWkJ-Mmg-1
+X-Mimecast-MFC-AGG-ID: xbxI0jYeMbeswhqWkJ-Mmg_1749711310
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a4fabcafecso327386f8f.0
+        for <stable@vger.kernel.org>; Wed, 11 Jun 2025 23:55:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749710782; x=1750315582;
+        d=1e100.net; s=20230601; t=1749711310; x=1750316110;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=iIzkhRpa1dZPuoK2BlfsPGBgeWv5TwKlqrn2D99cAqA=;
-        b=GBITS/R/ZZ8ZH1obCycnD1TEE9p25cxyIVuDaY3PwySppzQYMD+KxZDITa41cCbqQb
-         cHVxHxM7eoRemtii0cv2JN8XrEbRbZYO04sNk9sFibywxJcaa77jV1czcxWdqLata3qh
-         kJNxjyKn7iDynVm8fqoxkIw3Fu9pl0VHFWU5Yie5mKoyfd8K+KxyLSHeWFZ4bp4yK9ef
-         wDt86836yyWPn57UUpUW0AlTRtIMy/d1TGeMqOFG64ef4xKHSPTn13fNQfHNf0+/iN3w
-         OzKGJ/qe4MrexQaFWJT7wB7Wc4tIV7wlUYyjO8SqKlJx/UrvDHSRCryaWv1iiuxnNLad
-         6naA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNlGpT6uIisJC8boHGt8jK+EdRw/z0QXwTO8ODSU3EsATl9ddBhsUrsSn8ZrtkBuiMFXGPjmk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLadx+q/p9H6R7GBXWNVbn/JN/GBm3NTy4bhbJpNTc8o0Uyosh
-	fd+yuR3PtjboN8fv5hAV9ahn6cqAaApAb9c3loaXSBKN86D6IW9X3kRtXO5FtWCzV0SeLjMC16Q
-	jdjj1YqwZ7vNjNU0MEyjuV/VCe4JTuh71iGzj9mxBZ/f6cYXQ9sAxAu5SzA==
-X-Gm-Gg: ASbGncvJX14slW2esSp4iMw/BQVLKMpprkIx+ld3hNKj+SuOSQeN+YlFsF31PWFS0NB
-	NgvbDSHAL9DUK/BINRZyveoSk5bb6okBj5X2ZKlzQqn+Kd+XygXhrAZSpSu+GAxM+FLCpw54GUG
-	HODHqkxaCVa0WgN1uEoeCoujtw33P4otmliWNQGFC4m2D/2eG+64ppsvTacn82QPg7YBWd5OTVz
-	atuOq2o+/FbqjBu9wUEGyU0qj/5slZYCUDRQiF/6BAJfcbHjebJIjVJE6/2UUSJ9kKUNhReHhDj
-	C7Vvq3+YjM7VBmH6Qg8xwnLyyWBS+OenYUMJhRvHLwyjZStIi/AsEEactl8p2AqYZyw1BdkKAlk
-	NtoDiRRiiHtaEBMnUfTbNTqyLwrVf1AQirhLtOeKYn8csuss5AQ==
-X-Received: by 2002:a05:600c:1c9e:b0:450:d012:df85 with SMTP id 5b1f17b1804b1-4532b915f4cmr27084575e9.18.1749710781962;
-        Wed, 11 Jun 2025 23:46:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9CX26GoEV2BCNczSNv1t4oY27XPzEIg8IbOmnXnRc1IGtfEL5drtXFBMEzg5dY7jqMLb1YA==
-X-Received: by 2002:a05:600c:1c9e:b0:450:d012:df85 with SMTP id 5b1f17b1804b1-4532b915f4cmr27084335e9.18.1749710781510;
-        Wed, 11 Jun 2025 23:46:21 -0700 (PDT)
+        bh=JSWiuXrWaWNg/L//dAUjqt0FVUEKmzq568u+oIeTgbc=;
+        b=WfGWz5Hcp6ic7wDizCNnRIZbZVPOfj+AEP18IOA6U8d4Z/RPXSVVusAnBL+28w8VgF
+         aOS+0NQDf7kT2roKQkz2EnaAu2AvAcQmE4tDvtYsf5knxUaSGbkCgFscDCqilGRqfW73
+         IQadpmt9rVUCWHlRrOFU9s6Bnn5bX9j9pQjDRvShgajpyN2FUqBD8AI+tvBZkos+H61N
+         WSAUgu47ruhmS51jWv90LQBwBt7QZHsuSt/ptffFjhIiltbGrp02Z79DbJyuEJVevsi0
+         Vge5gAWy8oQpQhPrazRQZwwkspyVU7W/6WMPun6m4Grw9F0DLfXoIo8zw/r22YXoQCkV
+         Irzw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7IJhs5qJFPTwD64zcfM503JcBj8C+OvFDObCNrcOl1UWKDOVy9jRK+9TFiPmel5eGFnd8P4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyp8Ek9lOyfnqURZFSTPgDGD0mmBf+1XBaFAcBJomGRk5EVqsfa
+	I6/QUEikNrGFP67QIX8CbN6uGSFVUr89GiJNY1gmUb/ovTrL5MtuOFrYYC+tPFa2jyljPAqG4Gb
+	XiLPqVXs12HVAVn+X2zsF/2p5V/wyfNXJPLPhDkDKUBCiho8MhwUB/4oF2w==
+X-Gm-Gg: ASbGncu1L8R5MKtYamtZ8VtRiEU40hX1PmXcoo2ZqMGCOJc2xYQeGWLX18fk+6N4F08
+	UETUrcrCQKI0+M6XiuucFbD2TvAwEjH+QXZ7qO9dVHw9kQdQNt8UazDZ/L765GzgJgJe8LGU8h7
+	uP36M1x12RBCcQoKszOiKLAbjryOj4vJTUBXRTABWi48F31cGnBbwy3tGKal2sP+OfKh510I3eq
+	TGZoNK5UtXWKDcctVA7bEB9xjh4XGL4Oh6XUs+pNnfJhIoBJufYm8JLzc2VUM1ExBeS+uZbQi0M
+	Y9bKZVuszKPmKt8W5vjJzGyVTAYbYbZUo3Hog4eIFjaH2WrRoawIqUC8lXZMq/QH4L0VognCdNd
+	NmN7XnTiisbORGj48mYhAd81OBSC1HDcd7TOEs+5J6UsxfsMmLw==
+X-Received: by 2002:a5d:5f96:0:b0:3a4:d0dc:184d with SMTP id ffacd0b85a97d-3a5586dc413mr4861253f8f.27.1749711310203;
+        Wed, 11 Jun 2025 23:55:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrKF3kZCkydZM2t5D9v/uaqJUfqJNkCQxO4p8k0rvlVbALIq5ShGx56bCxD8499/B2r5mHKg==
+X-Received: by 2002:a5d:5f96:0:b0:3a4:d0dc:184d with SMTP id ffacd0b85a97d-3a5586dc413mr4861217f8f.27.1749711309741;
+        Wed, 11 Jun 2025 23:55:09 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f2c:1e00:1e1e:7a32:e798:6457? (p200300d82f2c1e001e1e7a32e7986457.dip0.t-ipconnect.de. [2003:d8:2f2c:1e00:1e1e:7a32:e798:6457])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e2446b0sm10338425e9.21.2025.06.11.23.46.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a561a3cd11sm1053968f8f.59.2025.06.11.23.55.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 23:46:21 -0700 (PDT)
-Message-ID: <fa65d0ed-ccd0-4cca-9ac4-fad423e498b6@redhat.com>
-Date: Thu, 12 Jun 2025 08:46:19 +0200
+        Wed, 11 Jun 2025 23:55:09 -0700 (PDT)
+Message-ID: <00d0156e-0052-4a02-9816-d0815b4ff02e@redhat.com>
+Date: Thu, 12 Jun 2025 08:55:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,21 +92,20 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/3] mm/huge_memory: don't ignore queried cachemode in
  vmf_insert_pfn_pud()
-To: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Alistair Popple <apopple@nvidia.com>,
+To: Alistair Popple <apopple@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
  <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Oscar Salvador <osalvador@suse.de>,
- stable@vger.kernel.org
+ Dev Jain <dev.jain@arm.com>, Dan Williams <dan.j.williams@intel.com>,
+ Oscar Salvador <osalvador@suse.de>, stable@vger.kernel.org
 References: <20250611120654.545963-1-david@redhat.com>
  <20250611120654.545963-2-david@redhat.com>
- <684a58bf34666_2491100d7@dwillia2-xfh.jf.intel.com.notmuch>
+ <dvstixx4pey6euns6xttep5bbc4jhz6smtgheijviwkbawnqbm@tqhbg4hzeiog>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -154,58 +153,91 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <684a58bf34666_2491100d7@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <dvstixx4pey6euns6xttep5bbc4jhz6smtgheijviwkbawnqbm@tqhbg4hzeiog>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12.06.25 06:34, Dan Williams wrote:
-> David Hildenbrand wrote:
+On 12.06.25 03:56, Alistair Popple wrote:
+> On Wed, Jun 11, 2025 at 02:06:52PM +0200, David Hildenbrand wrote:
 >> We setup the cache mode but ... don't forward the updated pgprot to
 >> insert_pfn_pud().
 >>
 >> Only a problem on x86-64 PAT when mapping PFNs using PUDs that
 >> require a special cachemode.
+>>
+>> Fix it by using the proper pgprot where the cachemode was setup.
+>>
+>> Identified by code inspection.
+>>
+>> Fixes: 7b806d229ef1 ("mm: remove vmf_insert_pfn_xxx_prot() for huge page-table entries")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>>   mm/huge_memory.c | 7 +++----
+>>   1 file changed, 3 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index d3e66136e41a3..49b98082c5401 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -1516,10 +1516,9 @@ static pud_t maybe_pud_mkwrite(pud_t pud, struct vm_area_struct *vma)
+>>   }
+>>   
+>>   static void insert_pfn_pud(struct vm_area_struct *vma, unsigned long addr,
+>> -		pud_t *pud, pfn_t pfn, bool write)
+>> +		pud_t *pud, pfn_t pfn, pgprot_t prot, bool write)
+>>   {
+>>   	struct mm_struct *mm = vma->vm_mm;
+>> -	pgprot_t prot = vma->vm_page_prot;
+>>   	pud_t entry;
+>>   
+>>   	if (!pud_none(*pud)) {
+>> @@ -1581,7 +1580,7 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, pfn_t pfn, bool write)
+>>   	pfnmap_setup_cachemode_pfn(pfn_t_to_pfn(pfn), &pgprot);
+>>   
+>>   	ptl = pud_lock(vma->vm_mm, vmf->pud);
+>> -	insert_pfn_pud(vma, addr, vmf->pud, pfn, write);
+>> +	insert_pfn_pud(vma, addr, vmf->pud, pfn, pgprot, write);
+>>   	spin_unlock(ptl);
+>>   
+>>   	return VM_FAULT_NOPAGE;
+>> @@ -1625,7 +1624,7 @@ vm_fault_t vmf_insert_folio_pud(struct vm_fault *vmf, struct folio *folio,
+>>   		add_mm_counter(mm, mm_counter_file(folio), HPAGE_PUD_NR);
+>>   	}
+>>   	insert_pfn_pud(vma, addr, vmf->pud, pfn_to_pfn_t(folio_pfn(folio)),
+>> -		write);
+>> +		       vma->vm_page_prot, write);
 > 
-> This is only a problem if the kernel mapped the pud in advance of userspace
-> mapping it, right?
+> Actually It's not immediately obvious to me why we don't call track_pfn_insert()
+> and forward the pgprot here as well.
 
-Good question, PAT code is confusing.
+(track_pfn_insert is now called pfnmap_setup_cachemode_pfn)
 
-What I understood is that drivers like vfio will register the range with 
-the expected cachemode, and then rely on vm_insert_* to fill out the 
-cachemode for them.
+Prior to me adding vmf_insert_folio_pud()
+> device DAX would call vmf_insert_pfn_pud(), and the intent at least seems to
+> have been to change pgprot for that (and we did for the PTE/PMD versions).
 
-Peter explained it in the dicussion here [1] how e.g., vfio triggers 
-that early registration.
-
-Regarding vfio, I can see that we do in vfio_pci_core_mmap() 
-unconditionally:
-
-vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
-
-and probably rely on us querying the actual cachemode to be used later.
-
-vfio can map all kinds of different memory types ...
-
-[1] https://lkml.kernel.org/r/aBDXr-Qp4z0tS50P@x1.local
+It's only for PFNMAP mappings as far as I understand. I think this is 
+mostly about drivers mapping actual weird stuff with weird memory types 
+(e.g., vfio mapping mmio etc) into the page tables, that does not have a 
+struct page.
 
 > 
-> The change looks good.
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> ...but I am struggling with the scenario where this causes problems in
-> practice, where vm_page_prot is the wrong cachemode.
+> However now that the ZONE_DEVICE folios are refcounted normally I switched
+> device dax to using vmf_insert_folio_*() which never changes pgprot based on x86
+> PAT. So I think we probably need to either add that to vmf_insert_folio_*() or
+> a new variant or make it the responsibility of callers to figure out the correct
+> pgprot.
 
-Yeah, it's all confusing.
+I would assume that for ZONE_DEVICE the cachemode is always simpler 
+(e.g., no MMIO?)?
 
-But as long as we don't conclude that pfnmap_setup_cachemode_pfn() can 
-be removed entirely (esp. also from pte / pmd case), this seems to be 
-the right thing to do and was accidental change in the introducing commit.
+In any case, I would assume ZONE_DEVICE only ended up "accidentally" 
+triggering it and that it didn't make a difference.
 
-Is it actually stable material? I don't know, but possibly getting 
-cachemodes wrongs sounds ... bad?
+Observe that pfnmap_setup_cachemode_pfn() is only called from 
+vmf_insert_pfn_*() ... well, and our ugly friend __vm_insert_mixed() 
+that similarly inserts a PFN mapping.
 
 -- 
 Cheers,
