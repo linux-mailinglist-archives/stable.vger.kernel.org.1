@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-152523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC617AD665B
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 06:01:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D40AD6673
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 06:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F25903AD6C8
-	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 04:00:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BA3417FF4A
+	for <lists+stable@lfdr.de>; Thu, 12 Jun 2025 04:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7911DDC37;
-	Thu, 12 Jun 2025 04:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C6E21C9E8;
+	Thu, 12 Jun 2025 04:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcqCyHAq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjVLvHu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC1C1C32FF;
-	Thu, 12 Jun 2025 04:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8B7214A7C;
+	Thu, 12 Jun 2025 04:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749700855; cv=none; b=CzG1HuH7zQPdqJFm7DUfCcucUKPfCAeJyoqkwWYkyHcIs2JZzXMk374oWj0htjKOIeiXT0pOc1lNeWa3afcosbGHGFabejfv3OASgbKGWi2Vy1oUwBIpxJb+hJV22csqNjxVIxpo4XKnPiQ+L0h/s3FKc4YN44TnmW2yqkrGbto=
+	t=1749700860; cv=none; b=BM/EV8Io/LZBTiJVKgDzH9LEhgsjlH+OqUSGulnzXaSk/E9rSbGl4SU0wY5KGWt48hqrT/Sg1+hk0qYmgnj5ay4j7G13CZL7ZoO6cuGadLeStG2pjq2dURt48Os3XvplMkrZK2RdSxSXhgUPOFtNU7NCZjg1P/ia1Rmeh1mFTcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749700855; c=relaxed/simple;
-	bh=RNOBAoQ4FlcbcHzSQexrGIpqp38M7Y0na4e0BuXj+JM=;
+	s=arc-20240116; t=1749700860; c=relaxed/simple;
+	bh=pDRU92uHlGJ5yI50jxsfiGWXXJPvSCxz68BeIKGRH7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qpltrrPTBX4/JVqwDN6b+qh3nPcp6QrwcbkXNeQgDbFSUKqIvTl4Ob23hj7ZBUsqTAl20ZW2Cawa6AtMuTHYVJ8unG/RUE1w6vR4YPG6U/OjZamrzfNYDqp10QeF5nijRQflWeAlfXG26NTX/jlD5XdJkVnsbARybrTXUUW9dEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcqCyHAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D45C4CEEA;
-	Thu, 12 Jun 2025 04:00:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rDoHnp9o6GYo2Ja4OcM+o2ocIqQE1V7pq5meMiIcoXvIGzS37/l9UPsc0iq9qdcDxfj9RHMeaj3TQZW7db/DgFHi/St4uXgpj0osoohpvXESfX46spbdkVfQpfr5cVQdf8Cz+8T1YAWxo1zXDhNYEtn2UQH/kIhcl+bwLQzJkBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjVLvHu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BEAC4CEEB;
+	Thu, 12 Jun 2025 04:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749700854;
-	bh=RNOBAoQ4FlcbcHzSQexrGIpqp38M7Y0na4e0BuXj+JM=;
+	s=k20201202; t=1749700860;
+	bh=pDRU92uHlGJ5yI50jxsfiGWXXJPvSCxz68BeIKGRH7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcqCyHAqCEeSXpfh9vxS0s0cbuiJMAzHt90Udk+csPYBm7HlJIhsE46fUXeTUgRQi
-	 I0+FO7rZCu4g4b6WjXlblFOcDIxdxIiCvEtQeeSxVzu7F9jO1KKQRX0t2/msu4gHMh
-	 heMwwrzsgEyqLQBc2DrpUUcxA8DXCdGZr3uy5bF4o8Q/SW3YLcItvJKaibOaMs7oXR
-	 7THcfMK2hq8+spwOvm1m++f+Tte7uO6IbgIxntrPwkOFULgavoktqlCy5bhvO/3xYU
-	 aQHsF/TugdzzxEdQx1lPljmOKrBMJ7IIHj2YiQzZnVcQbVSrFPTqIBNfmtxJmpxjl1
-	 2K1OI1JA3FuEg==
+	b=gjVLvHu6xm7HAer3xppPj2JLMnkmEkvPO6afVfWM1nu7m2Vjod4v0+pqEOUTDlcRi
+	 0wRlag4+MV9nfsfEFVZOTxqi67JAblftQAuGtlUV8jI8JMRI6VYdXHZx3QmmrdhHet
+	 kbFAsG5YX8KH61o0+ZNwVpu8dNxQ5ZNTGaNfjdkyP8yXvJXicNNuozzyGH/k2nKpyw
+	 rXPrjHk5qm4cfAouSboStFJ4AMHsA+hMigJf+yAhwm6RkH0mEWqkBde8poL+mG2Z9X
+	 ZJG9ErLrF+Av2U8sGejaDluwgCrICLyxtKhtKapbC2rMBVwBA70T5Hwjd0TT7gMnVy
+	 euN5AiBob6sCg==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Michael Turquette <mturquette@baylibre.com>,
 	Stephen Boyd <sboyd@kernel.org>,
 	linux-arm-msm@vger.kernel.org,
 	linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] clk: qcom: gcc-ipq8074: fix broken freq table for nss_port6_tx_clk_src
-Date: Wed, 11 Jun 2025 23:00:33 -0500
-Message-ID: <174970084199.547582.1426735315594799373.b4-ty@kernel.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <lumag@kernel.org>
+Subject: Re: [PATCH v6] clk: qcom: dispcc-sm8750: Fix setting rate byte and pixel clocks
+Date: Wed, 11 Jun 2025 23:00:40 -0500
+Message-ID: <174970084199.547582.700390478777102209.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250522202600.4028-1-ansuelsmth@gmail.com>
-References: <20250522202600.4028-1-ansuelsmth@gmail.com>
+In-Reply-To: <20250520090741.45820-2-krzysztof.kozlowski@linaro.org>
+References: <20250520090741.45820-2-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,21 +67,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 22 May 2025 22:25:55 +0200, Christian Marangi wrote:
-> With the conversion done by commit e88f03230dc0 ("clk: qcom: gcc-ipq8074:
-> rework nss_port5/6 clock to multiple conf") a Copy-Paste error was made
-> for the nss_port6_tx_clk_src frequency table.
+On Tue, 20 May 2025 11:07:42 +0200, Krzysztof Kozlowski wrote:
+> On SM8750 the setting rate of pixel and byte clocks, while the parent
+> DSI PHY PLL, fails with:
 > 
-> This was caused by the wrong setting of the parent in
-> ftbl_nss_port6_tx_clk_src that was wrongly set to P_UNIPHY1_RX instead
-> of P_UNIPHY2_TX.
+>   disp_cc_mdss_byte0_clk_src: rcg didn't update its configuration.
+> 
+> DSI PHY PLL has to be unprepared and its "PLL Power Down" bits in
+> CMN_CTRL_0 asserted.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] clk: qcom: gcc-ipq8074: fix broken freq table for nss_port6_tx_clk_src
-      commit: 077ec7bcec9a8987d2a133afb7e13011878c7576
+[1/1] clk: qcom: dispcc-sm8750: Fix setting rate byte and pixel clocks
+      commit: 0acf9e65a47d1e489c8b24c45a64436e30bcccf4
 
 Best regards,
 -- 
