@@ -1,154 +1,109 @@
-Return-Path: <stable+bounces-152616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C3AAD898C
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 12:33:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C822AD8A78
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 13:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EFC53AA56D
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 10:33:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AFCF189D8C5
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 11:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A47C21B9C5;
-	Fri, 13 Jun 2025 10:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F72D5C78;
+	Fri, 13 Jun 2025 11:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gYSoxEzB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tl7P6l97"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766C279E1;
-	Fri, 13 Jun 2025 10:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EBB2D2392;
+	Fri, 13 Jun 2025 11:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749810800; cv=none; b=cFDAy6NatbKrH9FqD5N29zD/NSZoaSn6piONf9FJTHIWSpylS46nLUNtrZJtd9OD8NtlrTbl2BNVmwxoYmbzX0zP7aPrvFIueRoMQkClzBKRULH2qpfRxPC0W8yZy6N7agj7Kju+jWuyW6qc/SJq6Gu0fyUFt63XGzxeCtL83OA=
+	t=1749814244; cv=none; b=k97t2w4c4nm6D7m8gKL1LRoQoIoWHBvDKgyzlh5L79HrlMrrLKavI9LqY2AI0p9L5RzcfLpdRVcW6vM/L6uQlkDLnj77vLZijz3b16A8it/NZglKVsYJ2QSAvGOFphy3HEx4fY8n8Qye/+i9y0RH9DsWf3NRaO7QUFGIdW7/JxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749810800; c=relaxed/simple;
-	bh=DA/GpmXgrYZDR1Jokw6r2RFpNDpiElINfqhDc1jBzZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m2s3IVCo2QkgLdTOdW2pIu8gZK+YL/Vrz7qGrJvADdg9J3zS7ufUc7d0i6QR+mtJKbnCQnqlvyS5JQD4JZWNZ29iLkwpWAzHhQDx/VyoeWKgbFGYFFqnUj+Md182d8veBnxCssosyLE/9hW67KGywG7IImci1XKCyb+heOWEEf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gYSoxEzB; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749810799; x=1781346799;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DA/GpmXgrYZDR1Jokw6r2RFpNDpiElINfqhDc1jBzZE=;
-  b=gYSoxEzBgb+iBgQ1qRPgNcSUe2A929abnllmw8nSz57FwHCsDsK68T0f
-   Fbjgjwe0lzyT8o/faO8ddzI61VTRJgl52TYO7XhA1R031Xz8MC43fCEWm
-   kt01xMoZQFn4bO8qdluezSM4oPOaWtMBpWz8z2gmHiNSxKyHnKGJGLfkh
-   7TSzSsB5tVaSZ3tN5CCiHuPt1PrysNSR9nqeDGIecMm1QlIxTetLLJG22
-   74Ho5NB7glZvdxQWthJ5hj4cdvZbojYFbMux2pvB3czxRm4kLkhkp4VpB
-   YA1Le54GKEWkV63D2a3i2GFfUtJh8+HkVDmFyFkbkzjVGFdhZp33rqki2
-   A==;
-X-CSE-ConnectionGUID: QPsNl8FIT5SnGHq+rd06SQ==
-X-CSE-MsgGUID: upwFH8p1Qv69NXDmA7Hzsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="55695736"
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="55695736"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 03:33:17 -0700
-X-CSE-ConnectionGUID: l8eTIZgDTUWpx5Zx4PRHGg==
-X-CSE-MsgGUID: Awor3s5vQSmA8lh5BWGMKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
-   d="scan'208";a="148680699"
-Received: from silpixa00400314.ir.intel.com (HELO silpixa00400314.ger.corp.intel.com) ([10.237.223.204])
-  by fmviesa009.fm.intel.com with ESMTP; 13 Jun 2025 03:33:15 -0700
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To: herbert@gondor.apana.org.au
-Cc: ebiggers@kernel.org,
-	linux-crypto@vger.kernel.org,
-	qat-linux@intel.com,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] crypto: qat - lower priority for skcipher and aead algorithms
-Date: Fri, 13 Jun 2025 11:32:27 +0100
-Message-ID: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1749814244; c=relaxed/simple;
+	bh=fKaEXM82Lo7S4nejpjTamokjZxkFmTO2OuYbJtxRBXY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FNRwtA/ikW9cfMQap41RCB1VK2HN68ki5Zw0sdxZXSeHaiJG4nu5l1BVm2NGQfYc03KBGQrTiR8r86SEWTXGHPDrP/dMCDDQN1YD1qREghBQAOegeBUzyYgaJxorO7jYsVFOkoGCguppeuVLKEGjoIRuxKu3S4hiDPW43UxemVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tl7P6l97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84C0C4CEE3;
+	Fri, 13 Jun 2025 11:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749814244;
+	bh=fKaEXM82Lo7S4nejpjTamokjZxkFmTO2OuYbJtxRBXY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tl7P6l970i9E7ubkajOLSgJfWngtT+204zANfmMffPbqNuPJahyLPUkKeb6PHBwvr
+	 y7xdpf4F9hzARr596upXoxCuwHRZSyrWQsOnd+6/p99yz+TNWe3rSON/wk8ipPYf3m
+	 MushoSVMLa65rSM3TDwF/4zWlPzyRTbPnuqG0rHqM+TdbfcCK0A/5mRhsUVF8ayChW
+	 f+jH3Y4obZKMEQF/5rI8S7vcwFRrNsWMEMfLz39VYizwXLrGoZoBVwx0V2LCQxyCHS
+	 HSIqJzuUhD7RypW84DRgsR1IhsEGIrApfvBy74NdK1RyvjXImJGp3ktcFZft6fZuAN
+	 gBqd9pEHrddLw==
+Message-ID: <1295512f-2856-4e1c-9a07-742433de5d50@kernel.org>
+Date: Fri, 13 Jun 2025 20:30:41 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 - Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] ata: ahci: Disallow LPM for ASUSPRO-D840SA motherboard
+To: Niklas Cassel <cassel@kernel.org>
+Cc: kernel-dev@rsta79.anonaddy.me, Hans de Goede <hansg@kernel.org>,
+ Andy Yang <andyybtc79@gmail.com>, Mikko Juhani Korhonen
+ <mjkorhon@gmail.com>, Mika Westerberg <mika.westerberg@linux.intel.com>,
+ linux-ide@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>,
+ stable@vger.kernel.org
+References: <20250612141750.2108342-2-cassel@kernel.org>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20250612141750.2108342-2-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Most kernel applications utilizing the crypto API operate synchronously
-and on small buffer sizes, therefore do not benefit from QAT acceleration.
+On 6/12/25 23:17, Niklas Cassel wrote:
+> A user has bisected a regression which causes graphical corruptions on his
+> screen to commit 7627a0edef54 ("ata: ahci: Drop low power policy board
+> type").
+> 
+> Simply reverting commit 7627a0edef54 ("ata: ahci: Drop low power policy
+> board type") makes the graphical corruptions on his screen to go away.
+> (Note: there are no visible messages in dmesg that indicates a problem
+> with AHCI.)
+> 
+> The user also reports that the problem occurs regardless if there is an
+> HDD or an SSD connected via AHCI, so the problem is not device related.
+> 
+> The devices also work fine on other motherboards, so it seems specific to
+> the ASUSPRO-D840SA motherboard.
+> 
+> While enabling low power modes for AHCI is not supposed to affect
+> completely unrelated hardware, like a graphics card, it does however
+> allow the system to enter deeper PC-states, which could expose ACPI issues
+> that were previously not visible (because the system never entered these
+> lower power states before).
+> 
+> There are previous examples where enabling LPM exposed serious BIOS/ACPI
+> bugs, see e.g. commit 240630e61870 ("ahci: Disable LPM on Lenovo 50 series
+> laptops with a too old BIOS").
+> 
+> Since there hasn't been any BIOS update in years for the ASUSPRO-D840SA
+> motherboard, disable LPM for this board, in order to avoid entering lower
+> PC-states, which triggers graphical corruptions.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Andy Yang <andyybtc79@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220111
+> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
 
-Reduce the priority of QAT implementations for both skcipher and aead
-algorithms, allowing more suitable alternatives to be selected by default.
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
-Cc: stable@vger.kernel.org
----
- drivers/crypto/intel/qat/qat_common/qat_algs.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_algs.c b/drivers/crypto/intel/qat/qat_common/qat_algs.c
-index 3c4bba4a8779..d69cc1e5e023 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_algs.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_algs.c
-@@ -1277,7 +1277,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha1),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha1",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1294,7 +1294,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha256),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha256",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1311,7 +1311,7 @@ static struct aead_alg qat_aeads[] = { {
- 	.base = {
- 		.cra_name = "authenc(hmac(sha512),cbc(aes))",
- 		.cra_driver_name = "qat_aes_cbc_hmac_sha512",
--		.cra_priority = 4001,
-+		.cra_priority = 100,
- 		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 		.cra_blocksize = AES_BLOCK_SIZE,
- 		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
-@@ -1329,7 +1329,7 @@ static struct aead_alg qat_aeads[] = { {
- static struct skcipher_alg qat_skciphers[] = { {
- 	.base.cra_name = "cbc(aes)",
- 	.base.cra_driver_name = "qat_aes_cbc",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1347,7 +1347,7 @@ static struct skcipher_alg qat_skciphers[] = { {
- }, {
- 	.base.cra_name = "ctr(aes)",
- 	.base.cra_driver_name = "qat_aes_ctr",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = 1,
- 	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
-@@ -1365,7 +1365,7 @@ static struct skcipher_alg qat_skciphers[] = { {
- }, {
- 	.base.cra_name = "xts(aes)",
- 	.base.cra_driver_name = "qat_aes_xts",
--	.base.cra_priority = 4001,
-+	.base.cra_priority = 100,
- 	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_NEED_FALLBACK |
- 			  CRYPTO_ALG_ALLOCATES_MEMORY,
- 	.base.cra_blocksize = AES_BLOCK_SIZE,
 -- 
-2.49.0
-
+Damien Le Moal
+Western Digital Research
 
