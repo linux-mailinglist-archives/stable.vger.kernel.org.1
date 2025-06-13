@@ -1,132 +1,115 @@
-Return-Path: <stable+bounces-152595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC206AD802E
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 03:18:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DC9AD8084
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 03:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD1F518856B6
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 01:19:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF32617F764
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 01:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D731C84C5;
-	Fri, 13 Jun 2025 01:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C2F1DF27E;
+	Fri, 13 Jun 2025 01:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="hGHoMLUZ"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WbLF8tKE"
 X-Original-To: stable@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478561420DD;
-	Fri, 13 Jun 2025 01:18:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17592F4317;
+	Fri, 13 Jun 2025 01:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749777526; cv=none; b=oe7gL8JyEriNEUzM3cGzL9ajkGYJY29vMbY02iGqkTueIS3uzn3dSLaRuW/le+moSvEhqn9do/xLf/v2v3qGqfMIGE+dcHcf3E+TSk6tlHFAaTw/9ZK8c5a+zw51HZAt4xGat8SM3WzuHrMpS+fMJ83+ARPwRnCHsmXYyF+QH5M=
+	t=1749779486; cv=none; b=VHuISwreBBL+bT8Wk8pU1+Zeho51ldKKGqYGd3h0Wkkuu4s1/rI424KEmUCMOvpnNvsHJNheja+j8q68C2GF7YMbXwrpdhzaQqEfzCfFauADytq5ix6DvM7HU8duzdryWkJFjdNhkprTqTC/hvkJfaNxtqgt8MdV5TVlEi8x2cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749777526; c=relaxed/simple;
-	bh=mzLaYBl+Y/d7BQANb7I+GDNo+dl/a7Akffi+nhcQ84s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gIofHeg0p+JCWPZ9ykS4EnbVBTXkFGUmp+D6Dep1vfPCbkIiUId3iZUXH24XIR6bhvuIPctuEXe2vE6YyeSgtK7r8vUdZi2UgwKokpelHDtjtb3Q+Wpz+ewr0HdpbadxrtadNQzdsYhraHgQsPnJwmTL8vpb2k0iLvH0OZpWpb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=hGHoMLUZ; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id DABF822394;
-	Fri, 13 Jun 2025 01:12:46 +0000 (UTC)
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id AEA6726260;
-	Fri, 13 Jun 2025 01:12:37 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 021413E8B6;
-	Fri, 13 Jun 2025 01:12:30 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 9E57C40078;
-	Fri, 13 Jun 2025 01:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1749777149; bh=mzLaYBl+Y/d7BQANb7I+GDNo+dl/a7Akffi+nhcQ84s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hGHoMLUZOLZCVgdW8cq0dvyersBeAz3xkHIZ2Omj7r5z+HuEW/pPNfTDO8K0Wrsxy
-	 PaFq534iNvtvMVkds2hnrsbyeuvgvQ1VD72sjrEnooOrYdKWIsbh3LCCSoX7Uq4NJ5
-	 mQuhUKNKnd4AYL5C3TFHvzaRDPGNyi6nx0e1X6nE=
-Received: from [19.191.1.9] (unknown [223.76.243.206])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id ED8D5411D6;
-	Fri, 13 Jun 2025 01:12:20 +0000 (UTC)
-Message-ID: <60cb6d5e-45f1-45a1-b142-22e3dfd203f9@aosc.io>
-Date: Fri, 13 Jun 2025 09:12:12 +0800
+	s=arc-20240116; t=1749779486; c=relaxed/simple;
+	bh=ZcmbzzIH8NfdZu2s5rxXHIEvUaPQzWN18XnMuRodkYo=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=KJkYMdbIMwsGTLM7i/c+Nu0rq0RGrhYqmFPLzXeFTw9DyWP5wt9k/M8gdbmmqYLrmjxG1/gxBlznmW2JZrKuKIL6obEWQKWtyg7YXNTBoniHn+LCR+HItGBv060y/QEwGJincVLKoBpqWP7O+nYXmY1rPGFX7F+bnT5na4MB/fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WbLF8tKE; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1749779475; h=Message-ID:Subject:Date:From:To;
+	bh=yDetjs0aIvL2AA6xb/B29yP5noh604GTkuav4SUpDZ0=;
+	b=WbLF8tKET5waC7Zn6vhD/R1c7T7+n8h6quL13kTU4Eb80ihqCKf1CNWpoX9DGsrqDFlFY7M3PHRPBdiGo6g5L1je6AhARkvnTpVEsOocVJV/Y9VhxE54zvx7JqNBMVb0WV/5obOODdk/a0pGTHYS4TB2roOhe2Jxcljvn4XXVBI=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Wdik-bu_1749779474 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 13 Jun 2025 09:51:15 +0800
+Message-ID: <1749779468.7241242-3-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net] virtio-net: drop the multi-buffer XDP packet in zerocopy
+Date: Fri, 13 Jun 2025 09:51:08 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org,
+ Bui Quang Minh <minhquangbui99@gmail.com>,
+ stable@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20250603150613.83802-1-minhquangbui99@gmail.com>
+In-Reply-To: <20250603150613.83802-1-minhquangbui99@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] drm/xe: enable driver usage on non-4KiB kernels
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Francois Dugast
- <francois.dugast@intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- =?UTF-8?Q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Zhanjun Dong <zhanjun.dong@intel.com>, Matt Roper
- <matthew.d.roper@intel.com>, Alan Previn
- <alan.previn.teres.alexis@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Mateusz Naklicki <mateusz.naklicki@intel.com>,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Kexy Biscuit <kexybiscuit@aosc.io>, Shang Yatsen <429839446@qq.com>,
- Wenbin Fang <fangwenbin@vip.qq.com>, Haien Liang <27873200@qq.com>,
- Jianfeng Liu <liujianfeng1994@gmail.com>, Shirong Liu <lsr1024@qq.com>,
- Haofeng Wu <s2600cw2@126.com>
-References: <20250604-upstream-xe-non-4k-v2-v2-0-ce7905da7b08@aosc.io>
- <yyzxfqydczvfxddfsa4ebi7kyj5ezl2v4wbl5fopkdz6qwvjrg@fnhpcvfsp2dm>
-Content-Language: en-US
-From: Mingcong Bai <jeffbai@aosc.io>
-In-Reply-To: <yyzxfqydczvfxddfsa4ebi7kyj5ezl2v4wbl5fopkdz6qwvjrg@fnhpcvfsp2dm>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Queue-Id: 9E57C40078
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.10 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[ce7905da7b08.aosc.io:server fail];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,intel.com,gmail.com,ffwll.ch,kernel.org,suse.de,lists.freedesktop.org,vger.kernel.org,aosc.io,qq.com,vip.qq.com,126.com];
-	FREEMAIL_ENVRCPT(0.00)[126.com,gmail.com,qq.com,vip.qq.com];
-	TO_DN_SOME(0.00)[]
 
-Hi Lucas
+On Tue,  3 Jun 2025 22:06:13 +0700, Bui Quang Minh <minhquangbui99@gmail.com> wrote:
+> In virtio-net, we have not yet supported multi-buffer XDP packet in
+> zerocopy mode when there is a binding XDP program. However, in that
+> case, when receiving multi-buffer XDP packet, we skip the XDP program
+> and return XDP_PASS. As a result, the packet is passed to normal network
+> stack which is an incorrect behavior. This commit instead returns
+> XDP_DROP in that case.
+>
+> Fixes: 99c861b44eb1 ("virtio_net: xsk: rx: support recv merge mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 
-在 2025/6/13 08:13, Lucas De Marchi 写道:
-> For some reason this patch series didn't make it to any mailing
-> list... it only shows the b4-sent and stable:
-> https://lore.kernel.org/intel-xe/20250604-upstream-xe-non-4k-v2-v2-0- 
-> ce7905da7b08@aosc.io/
-> 
-> Could you resend this series?
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-That's strange... I have just resent the series.
-
-Best Regards,
-Mingcong Bai
+> ---
+>  drivers/net/virtio_net.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index e53ba600605a..4c35324d6e5b 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -1309,9 +1309,14 @@ static struct sk_buff *virtnet_receive_xsk_merge(struct net_device *dev, struct
+>  	ret = XDP_PASS;
+>  	rcu_read_lock();
+>  	prog = rcu_dereference(rq->xdp_prog);
+> -	/* TODO: support multi buffer. */
+> -	if (prog && num_buf == 1)
+> -		ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit, stats);
+> +	if (prog) {
+> +		/* TODO: support multi buffer. */
+> +		if (num_buf == 1)
+> +			ret = virtnet_xdp_handler(prog, xdp, dev, xdp_xmit,
+> +						  stats);
+> +		else
+> +			ret = XDP_DROP;
+> +	}
+>  	rcu_read_unlock();
+>
+>  	switch (ret) {
+> --
+> 2.43.0
+>
 
