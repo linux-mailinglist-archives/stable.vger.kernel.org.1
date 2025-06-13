@@ -1,189 +1,148 @@
-Return-Path: <stable+bounces-152600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBBDAD8204
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 05:55:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D94AD823B
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 06:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106643B7CF2
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 03:55:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFFBB17F6EE
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 04:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6117025291C;
-	Fri, 13 Jun 2025 03:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21B4246791;
+	Fri, 13 Jun 2025 04:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="qgFb5GSz"
 X-Original-To: stable@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73D920B804;
-	Fri, 13 Jun 2025 03:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467792F4333
+	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 04:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749786933; cv=none; b=lWNXdkZNuIvn4mlidYuHAJwPLRSeD3hVK22vpzsiHPiNZAoM8syy3DPwPLefxA6zS7+u2F/b2kLX76CmUvfE3ZDSGr/CK+lT8FzjN3Tj59viAQkQ/AXHF2BLOiIDfLyUzLU2XJtsXS7UT28qPd9gS7hgFUHw+oJYBDDkQW9hAAg=
+	t=1749790721; cv=none; b=ZqkJEiSY/zSOm2oIW5t+WP95l8Z+XN5qGzuVPTbDSUT0Qy7lcWjmqqnufUNBYG7mPC8yB4jS492qtLqOQDgQJ604JI/8yeBqowadhleCwS9ABEbRTUpBypLvbdTV0bNf8ag9hUY0pg7BRM7WUlIS9790TlM+Z/jRwPZ9z8EpsOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749786933; c=relaxed/simple;
-	bh=KB5nwV0rrCyqMKw0DZjgDmOOJVHOB+5s/KK30BOM6d4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ikxWx6SCLEwhSZpIolqXGOcosm1lMTPC439wx5ibBQoMrsH4UyhirNl62OoKIdqgK1nOM3m393EvhRvN2Cvm/1TSKmOokzssibbxBLmR3YdeVHTy97hXYp8RcmwGzoHT+xPimIzC8UvJsEDvrSjF2nEb3PLxVJ757NwU30ztbzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id A3C342C06659;
-	Fri, 13 Jun 2025 05:55:19 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 8BD7EEEAA0; Fri, 13 Jun 2025 05:55:19 +0200 (CEST)
-Date: Fri, 13 Jun 2025 05:55:19 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Joel Mathew Thomas <proxy0@tutamail.com>
-Subject: Re: Patch "PCI: pciehp: Ignore Link Down/Up caused by Secondary Bus
- Reset" has been added to the 6.15-stable tree
-Message-ID: <aEuhJ_ldVUwI6u-V@wunner.de>
-References: <20250610121606.1556304-1-sashal@kernel.org>
+	s=arc-20240116; t=1749790721; c=relaxed/simple;
+	bh=Wesaa8VNA4Ubt+y/N1vt5Pqot5XvDgiOPDgrALDlj0w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AojcgunYIKbi9ONGseMdz+t/TD2tt6bFulW6HArAjmyNDajkoChbhfzis1OvUqU7r8lSGSm3qtiS+/pSrJBP66M49dX7O0KnGjIo26eotjFSHPDZXbYTTcv437mKCQi4RAG+m/1X27JO32E29XKFqu3bPLxkCQj/su4aBaCW0BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=qgFb5GSz; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43edecbfb46so12890985e9.0
+        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 21:58:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1749790717; x=1750395517; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3+T8+BNeLHVuyhQQdh4y/PB3afxUPghJX6G+TJfvU9E=;
+        b=qgFb5GSzbYMeijgvF1gw43lBDu7cvLInhfAnXPz0smyv1wIJY0lfneh5KrSJAFWCp6
+         ryKNvLXKkKp2uw3e4neV/uytMbQQIzQ+PwfRZujvF78CVN5xzIfn4va7UgRT8ntCumib
+         U2W20ow+YEKJZ89gJuoDz1bdQFEPXdsp4L38tWxK0w2Y3XQasf6BQgJ3R02AGNjz7xE9
+         nXySHN5BEyUeTAsQ5evvFh2zAzBuC6dlmYnH1x+DEbTXtPWoyoYxuogyBOpaCASAuIKI
+         FWrUlqbaWyKnNlm39dR3lnX4xHN00eP1wdIYwEJQwXdrs518LVXnpOGhJjQra/+8hwQF
+         HVww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749790717; x=1750395517;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3+T8+BNeLHVuyhQQdh4y/PB3afxUPghJX6G+TJfvU9E=;
+        b=rLLf7H98+BcaaZssgZHIkWPtlR+Ft5/B6N0AtIAUP3e0/pgR+Yg4Yudohz5oyBU+yK
+         1zE9FsOii533WZ5Pt+dhvK4xDm/bjeOYZObdob6rIY+lanlZkmRyDwF/xxe3bgB7M6Zg
+         r2nCwP9zjSzqhs74z/VhI/MzybWebONkwUKyt5eAUQSneejAaRsHnAEEzP2rMGKs6RoZ
+         5GPPUo9hlVQx9OXIGIVC7Qz1BEBLXWGRPBZqhSObGk9bsYiLhljmVIfx8iGj+e+LBbKa
+         LX9ogC0ohKnHDDDFmRazrv0AKNoRijIPfOH9+unCkyB6skqZUOdmNgaDqn5CGaWZVC5g
+         1dwg==
+X-Gm-Message-State: AOJu0Ywrt8tyAcJnzdfgutiPhCnaP7reyGF9kdZo0GDR8EQF/1PHCA7j
+	Pc76zPFUYpZEi2dxBkO50IiieAIhMxkF1KOHaIFFiPPYGHiTGpiFzMQSONCfsD2kCss=
+X-Gm-Gg: ASbGncuwW2dQJGi4p7wI1oBq4R1GlST43PyTUyhBNUwIXQqxAQDRdTEzxTFy18D2+WR
+	zlqlGH/N3UWgOgIoLsmCg24IFT4erEA8FFZLzxoexZkXDjqTt/a/AMhIzGF7FM1+nKprUZb94Zm
+	L5msUrKi1bpePotQpnAtbh8wlbu42IuTcJDxf0UGd2Nt0HwBAdXJQ4BtOXY/QZ4HVo9K2XZ/zcD
+	4i71BkQDaaWqkNd9HK4/nU9hOgVUUNdevs1T93wp9MkDP00RPB/sD31pIBT44GQkYh473FMu8Qm
+	IfZKxExbDfyHJZBzdDRHWo2ZWFPqPKhdIzRfcA0iF4cNwQxkZjqqRhLh5nnGd5mSCwnjVkRzmQQ
+	aePI8vA==
+X-Google-Smtp-Source: AGHT+IEg3YVEp3Pwf3jnLxnku0Bq4liGi2hQEdQ5JrlR6bVBM4reuyGsu3oWruk+WCMv8uUVIYfKSw==
+X-Received: by 2002:a05:600c:821a:b0:440:6a79:6df0 with SMTP id 5b1f17b1804b1-45334b63134mr10775985e9.22.1749790717242;
+        Thu, 12 Jun 2025 21:58:37 -0700 (PDT)
+Received: from [192.168.50.4] ([82.78.167.110])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a53f79sm1172893f8f.4.2025.06.12.21.58.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Jun 2025 21:58:36 -0700 (PDT)
+Message-ID: <43227f48-9d0f-4798-92d9-a1ccc497d37a@tuxon.dev>
+Date: Fri, 13 Jun 2025 07:58:35 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: Backport sh-sci fixes to 6.12.y
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-stable <stable@vger.kernel.org>
+References: <6aa4a135-eb89-49e0-b450-7fa30d7684ee@tuxon.dev>
+ <aEsqctMnzUfinUga@lappy>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Content-Language: en-US
+In-Reply-To: <aEsqctMnzUfinUga@lappy>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250610121606.1556304-1-sashal@kernel.org>
 
-[cc += Joel Mathew Thomas]
+Hi, Sasha,
 
-On Tue, Jun 10, 2025 at 08:16:05AM -0400, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
+On 12.06.2025 22:28, Sasha Levin wrote:
+> On Wed, Jun 11, 2025 at 08:23:54AM +0300, Claudiu Beznea wrote:
+>> Hi, stable team,
+>>
+>> Please backport the following commits to 6.12.y:
+>>
+>> 1/ 239f11209e5f ("serial: sh-sci: Move runtime PM enable to
+>>   sci_probe_single()")
+>> 2/ 5f1017069933 ("serial: sh-sci: Clean sci_ports[0] after at earlycon
+>>   exit")
+>> 3/ 651dee03696e ("serial: sh-sci: Increment the runtime usage counter for
+>>   the earlycon device")
+>>
+>> These applies cleanly on top of 6.12.y (if applied in the order provided
+>> above) and fix the debug console on Renesas devices.
 > 
->     PCI: pciehp: Ignore Link Down/Up caused by Secondary Bus Reset
+> Could you please take another look at this? The first commit applies,
+> the second one is already in tree, and the third one conflicts.
 > 
-> to the 6.15-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      pci-pciehp-ignore-link-down-up-caused-by-secondary-b.patch
-> and it can be found in the queue-6.15 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
 
-Hi Sasha, thanks for selecting the above (which is 2af781a9edc4 upstream)
-as a 6.15 backport.
+I double checked it and applies clean on top of v6.12.33:
 
-A small feature request, could you amend the stable tooling to cc
-people tagged as Reported-by and Tested-by?  I think they're the
-ones most interested in seeing something backported.
+039164b1a5e4 (HEAD) serial: sh-sci: Increment the runtime usage counter for
+the earlycon device
+6a0ed6d47c02 serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+a25aa21fb6c3 serial: sh-sci: Move runtime PM enable to sci_probe_single()
+e03ced99c437 (tag: v6.12.33, linux-stable/linux-6.12.y) Linux 6.12.33
+80fe1ebc1fbc Revert "drm/amd/display: more liberal vmin/vmax update for
+freesync"
+d452b168da17 dt-bindings: phy: imx8mq-usb: fix
+fsl,phy-tx-vboost-level-microvolt property
+1ed84b17fa9b dt-bindings: usb: cypress,hx3: Add support for all variants
 
-Thanks!
+Would there be a chance that you have searched the second commit in 6.12.y
+by its title? There was another approach for commit 2 which was integrated
+then reverted. The title was the same. Grepping on the current 6.12.y gives
+this output:
 
-Lukas
+> git log --oneline --grep="serial: sh-sci: Clean sci_ports\[0\] after at
+earlycon exit"
+fa0e202e23ff Revert "serial: sh-sci: Clean sci_ports[0] after at earlycon exit"
+0ff91b3bf53e serial: sh-sci: Clean sci_ports[0] after at earlycon exit
 
-> commit 161a7237de69f65ccfe68da318343f3719149480
-> Author: Lukas Wunner <lukas@wunner.de>
-> Date:   Thu Apr 10 17:27:12 2025 +0200
-> 
->     PCI: pciehp: Ignore Link Down/Up caused by Secondary Bus Reset
->     
->     [ Upstream commit 2af781a9edc4ef5f6684c0710cc3542d9be48b31 ]
->     
->     When a Secondary Bus Reset is issued at a hotplug port, it causes a Data
->     Link Layer State Changed event as a side effect.  On hotplug ports using
->     in-band presence detect, it additionally causes a Presence Detect Changed
->     event.
->     
->     These spurious events should not result in teardown and re-enumeration of
->     the device in the slot.  Hence commit 2e35afaefe64 ("PCI: pciehp: Add
->     reset_slot() method") masked the Presence Detect Changed Enable bit in the
->     Slot Control register during a Secondary Bus Reset.  Commit 06a8d89af551
->     ("PCI: pciehp: Disable link notification across slot reset") additionally
->     masked the Data Link Layer State Changed Enable bit.
->     
->     However masking those bits only disables interrupt generation (PCIe r6.2
->     sec 6.7.3.1).  The events are still visible in the Slot Status register
->     and picked up by the IRQ handler if it runs during a Secondary Bus Reset.
->     This can happen if the interrupt is shared or if an unmasked hotplug event
->     occurs, e.g. Attention Button Pressed or Power Fault Detected.
->     
->     The likelihood of this happening used to be small, so it wasn't much of a
->     problem in practice.  That has changed with the recent introduction of
->     bandwidth control in v6.13-rc1 with commit 665745f27487 ("PCI/bwctrl:
->     Re-add BW notification portdrv as PCIe BW controller"):
->     
->     Bandwidth control shares the interrupt with PCIe hotplug.  A Secondary Bus
->     Reset causes a Link Bandwidth Notification, so the hotplug IRQ handler
->     runs, picks up the masked events and tears down the device in the slot.
->     
->     As a result, Joel reports VFIO passthrough failure of a GPU, which Ilpo
->     root-caused to the incorrect handling of masked hotplug events.
->     
->     Clearly, a more reliable way is needed to ignore spurious hotplug events.
->     
->     For Downstream Port Containment, a new ignore mechanism was introduced by
->     commit a97396c6eb13 ("PCI: pciehp: Ignore Link Down/Up caused by DPC").
->     It has been working reliably for the past four years.
->     
->     Adapt it for Secondary Bus Resets.
->     
->     Introduce two helpers to annotate code sections which cause spurious link
->     changes:  pci_hp_ignore_link_change() and pci_hp_unignore_link_change()
->     Use those helpers in lieu of masking interrupts in the Slot Control
->     register.
->     
->     Introduce a helper to check whether such a code section is executing
->     concurrently and if so, await it:  pci_hp_spurious_link_change()
->     Invoke the helper in the hotplug IRQ thread pciehp_ist().  Re-use the
->     IRQ thread's existing code which ignores DPC-induced link changes unless
->     the link is unexpectedly down after reset recovery or the device was
->     replaced during the bus reset.
->     
->     That code block in pciehp_ist() was previously only executed if a Data
->     Link Layer State Changed event has occurred.  Additionally execute it for
->     Presence Detect Changed events.  That's necessary for compatibility with
->     PCIe r1.0 hotplug ports because Data Link Layer State Changed didn't exist
->     before PCIe r1.1.  DPC was added with PCIe r3.1 and thus DPC-capable
->     hotplug ports always support Data Link Layer State Changed events.
->     But the same cannot be assumed for Secondary Bus Reset, which already
->     existed in PCIe r1.0.
->     
->     Secondary Bus Reset is only one of many causes of spurious link changes.
->     Others include runtime suspend to D3cold, firmware updates or FPGA
->     reconfiguration.  The new pci_hp_{,un}ignore_link_change() helpers may be
->     used by all kinds of drivers to annotate such code sections, hence their
->     declarations are publicly visible in <linux/pci.h>.  A case in point is
->     the Mellanox Ethernet driver which disables a firmware reset feature if
->     the Ethernet card is attached to a hotplug port, see commit 3d7a3f2612d7
->     ("net/mlx5: Nack sync reset request when HotPlug is enabled").  Going
->     forward, PCIe hotplug will be able to cope gracefully with all such use
->     cases once the code sections are properly annotated.
->     
->     The new helpers internally use two bits in struct pci_dev's priv_flags as
->     well as a wait_queue.  This mirrors what was done for DPC by commit
->     a97396c6eb13 ("PCI: pciehp: Ignore Link Down/Up caused by DPC").  That may
->     be insufficient if spurious link changes are caused by multiple sources
->     simultaneously.  An example might be a Secondary Bus Reset issued by AER
->     during FPGA reconfiguration.  If this turns out to happen in real life,
->     support for it can easily be added by replacing the PCI_LINK_CHANGING flag
->     with an atomic_t counter incremented by pci_hp_ignore_link_change() and
->     decremented by pci_hp_unignore_link_change().  Instead of awaiting a zero
->     PCI_LINK_CHANGING flag, the pci_hp_spurious_link_change() helper would
->     then simply await a zero counter.
->     
->     Fixes: 665745f27487 ("PCI/bwctrl: Re-add BW notification portdrv as PCIe BW controller")
->     Reported-by: Joel Mathew Thomas <proxy0@tutamail.com>
->     Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219765
->     Signed-off-by: Lukas Wunner <lukas@wunner.de>
->     Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
->     Tested-by: Joel Mathew Thomas <proxy0@tutamail.com>
->     Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->     Reviewed-by: Ilpo J�rvinen <ilpo.jarvinen@linux.intel.com>
->     Link: https://patch.msgid.link/d04deaf49d634a2edf42bf3c06ed81b4ca54d17b.1744298239.git.lukas@wunner.de
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the content of the reverted patch and patch 2 is different.
+
+If commit 2 is not applied then commit 3 fails to apply.
+
+Could you please let me know?
+
+Thank you,
+Claudiu
 
