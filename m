@@ -1,178 +1,143 @@
-Return-Path: <stable+bounces-152620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756DCAD8D25
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 15:35:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221B8AD8D2B
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 15:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 759521896295
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 13:35:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D757017EB12
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 13:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE97E158DD4;
-	Fri, 13 Jun 2025 13:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB7E18A6DF;
+	Fri, 13 Jun 2025 13:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eL3wz9D5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SO8FJIhD";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="eL3wz9D5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="SO8FJIhD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KsKDBui+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F60154426
-	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 13:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A277E14D2B7;
+	Fri, 13 Jun 2025 13:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749821701; cv=none; b=g0g3OrbXP41khLcZlpeJxHDtUnts/inmoJ8wRoanDTXoEQ1jFTGNfKWZDI9L/xLARuXVJOdMQ9mMaMAK2nqK5ryU4SsieXzB4gXIov9MBqU1WRC1G13SG9WghqqdEr/FNmkinZEs0cOPDiOW7gXfxHiRsVlluZjY/5v+3/dgL1A=
+	t=1749821774; cv=none; b=jalA437TsEL7UaEsewQ3tyyxAAKqqFd3jSVIB9XzMN1Rd3QU+OV+KP/KZRS4GseRXPQVCzI+lQWUv2gsqKaSmfC+oPaFf9WDi5BYRPTonne2+zIt36zz70xISj7xMaycr4/7rSTBY9v5mFCTBvJ4cm2h7VryrP6utubBlbQcbKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749821701; c=relaxed/simple;
-	bh=XkMEBbTYnB+JeeXyiEmPzLJHSnxCwIn+zzhMy1tKDyE=;
+	s=arc-20240116; t=1749821774; c=relaxed/simple;
+	bh=9SdAV1IzVJqJeu3b1IS5tXD6bXFiTIoEnAT8XdsDnFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nL+vVWTCIh9KNIsrg1mFddXQZd90KM0YIMi0Epm/PvQ1nbu3h78EfDsmjpvbfwHf3LIaQ+U4qYej3xVwj8ZORI4nz0j64169DcpB6KaUGPTDde0RvHVeFXZCnRufd/qn4GeA0fDUiXaF4M+YH1rYPOIY1Q5ftX3KltoTyhraxlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eL3wz9D5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SO8FJIhD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=eL3wz9D5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=SO8FJIhD; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 432F0219A0;
-	Fri, 13 Jun 2025 13:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749821692; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K+MrFWmai8pF8/h/UUDqJNHotxCxTwja1uE2TOdFPFM=;
-	b=eL3wz9D5ii5Ei5uDLcHOPf4maC4NKWyq+v5ZIW/z1Zfi+EgE15vu1FYk1DlsmXBxag6t88
-	LYLEFGLxsmMSG3Uog3RrHhpfehL1OhWnHmuZRsNxoP+YMFZu3oGoERKO8dqMxFfTqTclQw
-	qyQX4xxjvaPq1bI3Ko7Voqy28ZPaUlc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749821692;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K+MrFWmai8pF8/h/UUDqJNHotxCxTwja1uE2TOdFPFM=;
-	b=SO8FJIhD43ThSBxjsd6jBeWR4lGQuk18SStUlxOe9zTNwbstyBn97n5geQUSi8WpAH3PLm
-	UV2Ufd68xxtC52AA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=eL3wz9D5;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SO8FJIhD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749821692; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K+MrFWmai8pF8/h/UUDqJNHotxCxTwja1uE2TOdFPFM=;
-	b=eL3wz9D5ii5Ei5uDLcHOPf4maC4NKWyq+v5ZIW/z1Zfi+EgE15vu1FYk1DlsmXBxag6t88
-	LYLEFGLxsmMSG3Uog3RrHhpfehL1OhWnHmuZRsNxoP+YMFZu3oGoERKO8dqMxFfTqTclQw
-	qyQX4xxjvaPq1bI3Ko7Voqy28ZPaUlc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749821692;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K+MrFWmai8pF8/h/UUDqJNHotxCxTwja1uE2TOdFPFM=;
-	b=SO8FJIhD43ThSBxjsd6jBeWR4lGQuk18SStUlxOe9zTNwbstyBn97n5geQUSi8WpAH3PLm
-	UV2Ufd68xxtC52AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 36BA8137FE;
-	Fri, 13 Jun 2025 13:34:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DcdzCvsoTGjsBgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Fri, 13 Jun 2025 13:34:51 +0000
-Date: Fri, 13 Jun 2025 15:34:45 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alistair Popple <apopple@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mm/huge_memory: don't ignore queried cachemode in
- vmf_insert_pfn_pud()
-Message-ID: <aEwo9aUZTwW_rFJ9@localhost.localdomain>
-References: <20250613092702.1943533-1-david@redhat.com>
- <20250613092702.1943533-2-david@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZrcdtBQDeYdVIhqQpAyuXGA3OMu0nxiGaGkY8nA6f90kDcKNRxADlCFO4Yq6yyfRiJksKCwkagOieqYjolxL/dn4Wfu1LBs3AJWcjyBQkhStih8g2bs/AYhylGDlCCDProAloXtiPEm/JZbPF/JFExSnzD37kni3mZOjIsBpFKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KsKDBui+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8797C4CEE3;
+	Fri, 13 Jun 2025 13:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749821774;
+	bh=9SdAV1IzVJqJeu3b1IS5tXD6bXFiTIoEnAT8XdsDnFk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KsKDBui+jwcthfxtzu+dyVSEaItRtuPnZOdd7xuJcJUeM/yr/bHhqaQjiGXB7Ahg6
+	 wCZwZAPtdzixsCvjyqP5cNHgjIEs6pdFz9gvo/IoJGii3MeWw8w67PhYVQmVNlyaHL
+	 hIccovWszX822mrp2SwLSFE1cuDD2i8+ruRkwcnhA29UHVn0ol0Vyb1Hn9QEc91phI
+	 n3G/TXDb/DyAJwy29WoeEQfJFVX3CSMZ4VhPVNaPlCL51Xk5TfF9Mr6xuFGO/aNTN8
+	 QfAPdbWvW6urFSxUbTvKNtyADHN3JC3ySdzNWj4h603nVW/zmGfYu3tDX7SdVxR6Js
+	 kE1HmXITCleDg==
+Date: Fri, 13 Jun 2025 14:36:10 +0100
+From: Lee Jones <lee@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
+	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Tom Vincent <linux@tlvince.com>
+Subject: Re: [PATCH v2] mfd: cros_ec: Separate charge-control probing from
+ USB-PD
+Message-ID: <20250613133610.GU381401@google.com>
+References: <20250609-cros-ec-mfd-chctl-probe-v2-1-33b236a7b7bc@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250613092702.1943533-2-david@redhat.com>
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 432F0219A0
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,nvidia.com:email,suse.de:dkim,suse.de:email];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -4.51
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250609-cros-ec-mfd-chctl-probe-v2-1-33b236a7b7bc@weissschuh.net>
 
-On Fri, Jun 13, 2025 at 11:27:00AM +0200, David Hildenbrand wrote:
-> We setup the cache mode but ... don't forward the updated pgprot to
-> insert_pfn_pud().
-> 
-> Only a problem on x86-64 PAT when mapping PFNs using PUDs that
-> require a special cachemode.
-> 
-> Fix it by using the proper pgprot where the cachemode was setup.
-> 
-> It is unclear in which configurations we would get the cachemode wrong:
-> through vfio seems possible. Getting cachemodes wrong is usually ... bad.
-> As the fix is easy, let's backport it to stable.
-> 
-> Identified by code inspection.
-> 
-> Fixes: 7b806d229ef1 ("mm: remove vmf_insert_pfn_xxx_prot() for huge page-table entries")
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Tested-by: Dan Williams <dan.j.williams@intel.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+On Mon, 09 Jun 2025, Thomas Weißschuh wrote:
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> The charge-control subsystem in the ChromeOS EC is not strictly tied to
+> its USB-PD subsystem.
+> Since commit 7613bc0d116a ("mfd: cros_ec: Don't load charger with UCSI")
+> the presence of EC_FEATURE_UCSI_PPM would inhibit the probing of the
+> charge-control driver.
+> Furthermore recent versions of the EC firmware in Framework laptops
+> hard-disable EC_FEATURE_USB_PD to avoid probing cros-usbpd-charger,
+> which then also breaks cros-charge-control.
+> 
+> Instead use the dedicated EC_FEATURE_CHARGER.
+> 
+> Link: https://github.com/FrameworkComputer/EmbeddedController/commit/1d7bcf1d50137c8c01969eb65880bc83e424597e
+> Fixes: 555b5fcdb844 ("mfd: cros_ec: Register charge control subdevice")
+> Cc: stable@vger.kernel.org
+> Tested-by: Tom Vincent <linux@tlvince.com>
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> ---
+> Changes in v2:
+> - Rebase onto v6.16-rc1
+> - Pick up tested-by from Tom
+> - Also Cc stable@
+> - Link to v1: https://lore.kernel.org/r/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net
 
+Whoops, I already applied v1.  However, I did all of these things manually.
+
+> ---
+>  drivers/mfd/cros_ec_dev.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+> index 9f84a52b48d6a8994d23edba999398684303ee64..dc80a272726bb16b58253418999021cd56dfd975 100644
+> --- a/drivers/mfd/cros_ec_dev.c
+> +++ b/drivers/mfd/cros_ec_dev.c
+> @@ -87,7 +87,6 @@ static const struct mfd_cell cros_ec_sensorhub_cells[] = {
+>  };
+>  
+>  static const struct mfd_cell cros_usbpd_charger_cells[] = {
+> -	{ .name = "cros-charge-control", },
+>  	{ .name = "cros-usbpd-charger", },
+>  	{ .name = "cros-usbpd-logger", },
+>  };
+> @@ -112,6 +111,10 @@ static const struct mfd_cell cros_ec_ucsi_cells[] = {
+>  	{ .name = "cros_ec_ucsi", },
+>  };
+>  
+> +static const struct mfd_cell cros_ec_charge_control_cells[] = {
+> +	{ .name = "cros-charge-control", },
+> +};
+> +
+>  static const struct cros_feature_to_cells cros_subdevices[] = {
+>  	{
+>  		.id		= EC_FEATURE_CEC,
+> @@ -148,6 +151,11 @@ static const struct cros_feature_to_cells cros_subdevices[] = {
+>  		.mfd_cells	= cros_ec_keyboard_leds_cells,
+>  		.num_cells	= ARRAY_SIZE(cros_ec_keyboard_leds_cells),
+>  	},
+> +	{
+> +		.id		= EC_FEATURE_CHARGER,
+> +		.mfd_cells	= cros_ec_charge_control_cells,
+> +		.num_cells	= ARRAY_SIZE(cros_ec_charge_control_cells),
+> +	},
+>  };
+>  
+>  static const struct mfd_cell cros_ec_platform_cells[] = {
+> 
+> ---
+> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+> change-id: 20250521-cros-ec-mfd-chctl-probe-64a63ac9c160
+> 
+> Best regards,
+> -- 
+> Thomas Weißschuh <linux@weissschuh.net>
+> 
 
 -- 
-Oscar Salvador
-SUSE Labs
+Lee Jones [李琼斯]
 
