@@ -1,203 +1,189 @@
-Return-Path: <stable+bounces-152599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322C8AD8143
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 04:52:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBBDAD8204
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 05:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8A8A3A017C
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 02:52:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106643B7CF2
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 03:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C10D24169A;
-	Fri, 13 Jun 2025 02:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xhv9mNah"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6117025291C;
+	Fri, 13 Jun 2025 03:55:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8802118A6AD
-	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 02:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73D920B804;
+	Fri, 13 Jun 2025 03:55:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749783138; cv=none; b=RUjGzEcUYd1iKMTLQ6JUqa0rW1zh4JpaeGNZ0ikPnTw9vRsmwWg6tgXqcitpKHoRzDkwLZLNOlgFIeMR5ZaQaTMjPu0NGxfhfK6ZZvgrNKvwqK/+tBUo4mg62xd8LIKIRiFkD79ZV17IJpOZSQJpIyVbzPWVihS2QvaW5KF0bd0=
+	t=1749786933; cv=none; b=lWNXdkZNuIvn4mlidYuHAJwPLRSeD3hVK22vpzsiHPiNZAoM8syy3DPwPLefxA6zS7+u2F/b2kLX76CmUvfE3ZDSGr/CK+lT8FzjN3Tj59viAQkQ/AXHF2BLOiIDfLyUzLU2XJtsXS7UT28qPd9gS7hgFUHw+oJYBDDkQW9hAAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749783138; c=relaxed/simple;
-	bh=nYk6HdzFLt64/RM5C0y/3p3H4xCf/634Nv1ZOcfo690=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jlWMVMJuXKAsLf2GfBjpMatnjeXnaMByji/YUv3m64hvmznz3BrXXKIAIk3gYNqPiP3PS0VOP7LzyJj1jWOcBsQl6IIaswWJ2UoS91a8Id7uWywMaJ7zMEb1PrfLUYpwV976Nh91tw6rZ2SmpTLWOk3wmrfTLT7qRCaHUnmi5NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xhv9mNah; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-23649faf69fso16651105ad.0
-        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 19:52:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749783136; x=1750387936; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j1QAQYjhRY6VZzSDU0ZFwRsyHmXvKEp5ZfhKVHci6qU=;
-        b=Xhv9mNah9mL014GO1YZ8V3DE9Un5eJTdXTTtLToq6F6vUNmnA+I6t0yrGIp54UNweY
-         FL5anLdYwz2jaxjUYuvBER58M9RTPfc4ZG5SIwpoQpTwDIzrkcjQ+BqM1hUSrDCT2mom
-         VNvMnuXoO7HjnrT3ubLRcykEQ2ivxH3GLZPVJHW7dVYpTwkS+aD8XJUe9It7f/+UqAy2
-         lJj5rXmPR03GPvm0VU6CwvewoaHmcyuRF7wbmsJvyVxZmkJ9ZTSsnIKp1zjzfhLIl/1H
-         XmOuHoLPhfFkspjniEoZVNYxf9hqbulrWcY8MSeh9zdxR5uu98OsAF235mCPnUuNIecs
-         Q8ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749783136; x=1750387936;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j1QAQYjhRY6VZzSDU0ZFwRsyHmXvKEp5ZfhKVHci6qU=;
-        b=XTYWh86bGx0kXP2nVfGFkcEOhEOuVF47EHjS40ib/VoMEcClH8yXkerZZfcLCORAin
-         H/hUO7LhswfMY4vdsSfOHHuxgAbeOJWSip9f2YYxj2MiHVWQuEPxPJ3ygzltezZ+K7Ua
-         TxwfmsS6qCZQJ723xHKSWy6tyyQirdXauq6jPJ0WVa88jLCXGw3cskZq0hi9A8YL62QL
-         fkAskKVCTeTr+vBajRdUDHiOdwwC9VB1F4HiO/FXC4WK2jFloiu/lbeIzOjrR1MpzcHu
-         X41IoPMOT+0V3eJwEeDsgVA2rr1m5wcJnjlVHfjAjxjlW2BPHtywgCV9JZuTKkfWKzXx
-         d/Sw==
-X-Gm-Message-State: AOJu0YxbermgHWdew+002tYDhFftip4x2z73wcqwKsVY1k+mF7TsFhxY
-	0+PEkh4dSS78dZ8QuRU1uFfa92CJllhnNZCRJedGeslAryLinEOEbQhpZOMSbUL0
-X-Gm-Gg: ASbGncvvSoPs+/zdbpyk3SmUA4r+/zsDOboGBgy1MqmDiMbc6H6T3NZj5D+1avx66Y4
-	UqGYhkwaDAfyqIZo4QHNsURPXWziS5pPohH+/WBZYPloTChwzjmbaEkX62yc95u0hz7whH9y019
-	JCZeqdOO7p5LpiOOccp8RI0lp6wr5nct0NAetgknr0DK2Yh1K7JVsfHoPRzjA3UnSNUnxo/zRJe
-	H2dC3ndmriQLjdJb2YvjPQ1SrgHlmdUlNzgWblS/uAgM8oxejvqCvUtrYhJZ66Ew4bkUN5pdEFp
-	aPh9N7CHZUDrLDoMnxj6z7FLTkNt9CH4O+B3DHgs7rcHVYH8dMae7u5VHpK160YuHCCrVgxJO7b
-	ELsuZqyhjy+DlZhGyJD/FTPUOa5r0EC8E1BXT
-X-Google-Smtp-Source: AGHT+IGKtQqENBxU4ySDUzDv4MsvEqfPugvo9xaZfw2KKsaEAsui13EbCQiKCb5UnHnqXZRB8CQKcA==
-X-Received: by 2002:a17:903:1cf:b0:234:b41e:37a4 with SMTP id d9443c01a7336-2365d888103mr16242975ad.6.1749783135549;
-        Thu, 12 Jun 2025 19:52:15 -0700 (PDT)
-Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2365de782d3sm4411295ad.115.2025.06.12.19.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 19:52:15 -0700 (PDT)
-From: Zenm Chen <zenmchen@gmail.com>
+	s=arc-20240116; t=1749786933; c=relaxed/simple;
+	bh=KB5nwV0rrCyqMKw0DZjgDmOOJVHOB+5s/KK30BOM6d4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ikxWx6SCLEwhSZpIolqXGOcosm1lMTPC439wx5ibBQoMrsH4UyhirNl62OoKIdqgK1nOM3m393EvhRvN2Cvm/1TSKmOokzssibbxBLmR3YdeVHTy97hXYp8RcmwGzoHT+xPimIzC8UvJsEDvrSjF2nEb3PLxVJ757NwU30ztbzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id A3C342C06659;
+	Fri, 13 Jun 2025 05:55:19 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8BD7EEEAA0; Fri, 13 Jun 2025 05:55:19 +0200 (CEST)
+Date: Fri, 13 Jun 2025 05:55:19 +0200
+From: Lukas Wunner <lukas@wunner.de>
 To: stable@vger.kernel.org
-Cc: pkshih@realtek.com,
-	zenmchen@gmail.com
-Subject: [PATCH 6.12.y] wifi: rtw89: phy: add dummy C2H event handler for report of TAS power
-Date: Fri, 13 Jun 2025 10:52:12 +0800
-Message-ID: <20250613025212.6303-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.49.0
+Cc: stable-commits@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Joel Mathew Thomas <proxy0@tutamail.com>
+Subject: Re: Patch "PCI: pciehp: Ignore Link Down/Up caused by Secondary Bus
+ Reset" has been added to the 6.15-stable tree
+Message-ID: <aEuhJ_ldVUwI6u-V@wunner.de>
+References: <20250610121606.1556304-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250610121606.1556304-1-sashal@kernel.org>
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+[cc += Joel Mathew Thomas]
 
-[ Upstream commit 09489812013f9ff3850c3af9900c88012b8c1e5d ]
+On Tue, Jun 10, 2025 at 08:16:05AM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     PCI: pciehp: Ignore Link Down/Up caused by Secondary Bus Reset
+> 
+> to the 6.15-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      pci-pciehp-ignore-link-down-up-caused-by-secondary-b.patch
+> and it can be found in the queue-6.15 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-The newer firmware, like RTL8852C version 0.27.111.0, will notify driver
-report of TAS (Time Averaged SAR) power by new C2H events. This is to
-assist in higher accurate calculation of TAS.
+Hi Sasha, thanks for selecting the above (which is 2af781a9edc4 upstream)
+as a 6.15 backport.
 
-For now, driver doesn't use the report yet, so add a dummy handler to
-avoid it throws info like:
-   rtw89_8852ce 0000:03:00.0: c2h class 9 func 6 not support
+A small feature request, could you amend the stable tooling to cc
+people tagged as Reported-by and Tested-by?  I think they're the
+ones most interested in seeing something backported.
 
-Also add "MAC" and "PHY" to the message to disambiguate the source of
-C2H event.
+Thanks!
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241209042127.21424-1-pkshih@realtek.com
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
----
-Currently the rtw89 driver in kernel 6.12.y could spam the system log with
-the messages below if the distro provides a newer firmware, backport this
-patch to 6.12.y to fix it.
+Lukas
 
-[   13.207637] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   17.115171] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   19.117996] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   21.122162] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   23.123588] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   25.127008] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   31.246591] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   34.665080] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   41.064308] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   43.067127] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   45.069878] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   47.072845] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   49.265599] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   51.268512] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   53.271490] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-[   55.274271] rtw89_8852ce 0000:02:00.0: c2h class 9 func 6 not support
-
----
- drivers/net/wireless/realtek/rtw89/mac.c |  4 ++--
- drivers/net/wireless/realtek/rtw89/phy.c | 10 ++++++++--
- drivers/net/wireless/realtek/rtw89/phy.h |  1 +
- 3 files changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 9b09d4b7d..2188bca89 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -5513,11 +5513,11 @@ void rtw89_mac_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 	case RTW89_MAC_C2H_CLASS_FWDBG:
- 		return;
- 	default:
--		rtw89_info(rtwdev, "c2h class %d not support\n", class);
-+		rtw89_info(rtwdev, "MAC c2h class %d not support\n", class);
- 		return;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "c2h class %d func %d not support\n", class,
-+		rtw89_info(rtwdev, "MAC c2h class %d func %d not support\n", class,
- 			   func);
- 		return;
- 	}
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 5c31639b4..355c3f58a 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -3062,10 +3062,16 @@ rtw89_phy_c2h_rfk_report_state(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u3
- 		    (int)(len - sizeof(report->hdr)), &report->state);
- }
- 
-+static void
-+rtw89_phy_c2h_rfk_log_tas_pwr(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
-+{
-+}
-+
- static
- void (* const rtw89_phy_c2h_rfk_report_handler[])(struct rtw89_dev *rtwdev,
- 						  struct sk_buff *c2h, u32 len) = {
- 	[RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE] = rtw89_phy_c2h_rfk_report_state,
-+	[RTW89_PHY_C2H_RFK_LOG_TAS_PWR] = rtw89_phy_c2h_rfk_log_tas_pwr,
- };
- 
- bool rtw89_phy_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func)
-@@ -3119,11 +3125,11 @@ void rtw89_phy_c2h_handle(struct rtw89_dev *rtwdev, struct sk_buff *skb,
- 			return;
- 		fallthrough;
- 	default:
--		rtw89_info(rtwdev, "c2h class %d not support\n", class);
-+		rtw89_info(rtwdev, "PHY c2h class %d not support\n", class);
- 		return;
- 	}
- 	if (!handler) {
--		rtw89_info(rtwdev, "c2h class %d func %d not support\n", class,
-+		rtw89_info(rtwdev, "PHY c2h class %d func %d not support\n", class,
- 			   func);
- 		return;
- 	}
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 9bb9c9c8e..961a4bacb 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -151,6 +151,7 @@ enum rtw89_phy_c2h_rfk_log_func {
- 
- enum rtw89_phy_c2h_rfk_report_func {
- 	RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE = 0,
-+	RTW89_PHY_C2H_RFK_LOG_TAS_PWR = 6,
- };
- 
- enum rtw89_phy_c2h_dm_func {
--- 
-2.49.0
-
+> commit 161a7237de69f65ccfe68da318343f3719149480
+> Author: Lukas Wunner <lukas@wunner.de>
+> Date:   Thu Apr 10 17:27:12 2025 +0200
+> 
+>     PCI: pciehp: Ignore Link Down/Up caused by Secondary Bus Reset
+>     
+>     [ Upstream commit 2af781a9edc4ef5f6684c0710cc3542d9be48b31 ]
+>     
+>     When a Secondary Bus Reset is issued at a hotplug port, it causes a Data
+>     Link Layer State Changed event as a side effect.  On hotplug ports using
+>     in-band presence detect, it additionally causes a Presence Detect Changed
+>     event.
+>     
+>     These spurious events should not result in teardown and re-enumeration of
+>     the device in the slot.  Hence commit 2e35afaefe64 ("PCI: pciehp: Add
+>     reset_slot() method") masked the Presence Detect Changed Enable bit in the
+>     Slot Control register during a Secondary Bus Reset.  Commit 06a8d89af551
+>     ("PCI: pciehp: Disable link notification across slot reset") additionally
+>     masked the Data Link Layer State Changed Enable bit.
+>     
+>     However masking those bits only disables interrupt generation (PCIe r6.2
+>     sec 6.7.3.1).  The events are still visible in the Slot Status register
+>     and picked up by the IRQ handler if it runs during a Secondary Bus Reset.
+>     This can happen if the interrupt is shared or if an unmasked hotplug event
+>     occurs, e.g. Attention Button Pressed or Power Fault Detected.
+>     
+>     The likelihood of this happening used to be small, so it wasn't much of a
+>     problem in practice.  That has changed with the recent introduction of
+>     bandwidth control in v6.13-rc1 with commit 665745f27487 ("PCI/bwctrl:
+>     Re-add BW notification portdrv as PCIe BW controller"):
+>     
+>     Bandwidth control shares the interrupt with PCIe hotplug.  A Secondary Bus
+>     Reset causes a Link Bandwidth Notification, so the hotplug IRQ handler
+>     runs, picks up the masked events and tears down the device in the slot.
+>     
+>     As a result, Joel reports VFIO passthrough failure of a GPU, which Ilpo
+>     root-caused to the incorrect handling of masked hotplug events.
+>     
+>     Clearly, a more reliable way is needed to ignore spurious hotplug events.
+>     
+>     For Downstream Port Containment, a new ignore mechanism was introduced by
+>     commit a97396c6eb13 ("PCI: pciehp: Ignore Link Down/Up caused by DPC").
+>     It has been working reliably for the past four years.
+>     
+>     Adapt it for Secondary Bus Resets.
+>     
+>     Introduce two helpers to annotate code sections which cause spurious link
+>     changes:  pci_hp_ignore_link_change() and pci_hp_unignore_link_change()
+>     Use those helpers in lieu of masking interrupts in the Slot Control
+>     register.
+>     
+>     Introduce a helper to check whether such a code section is executing
+>     concurrently and if so, await it:  pci_hp_spurious_link_change()
+>     Invoke the helper in the hotplug IRQ thread pciehp_ist().  Re-use the
+>     IRQ thread's existing code which ignores DPC-induced link changes unless
+>     the link is unexpectedly down after reset recovery or the device was
+>     replaced during the bus reset.
+>     
+>     That code block in pciehp_ist() was previously only executed if a Data
+>     Link Layer State Changed event has occurred.  Additionally execute it for
+>     Presence Detect Changed events.  That's necessary for compatibility with
+>     PCIe r1.0 hotplug ports because Data Link Layer State Changed didn't exist
+>     before PCIe r1.1.  DPC was added with PCIe r3.1 and thus DPC-capable
+>     hotplug ports always support Data Link Layer State Changed events.
+>     But the same cannot be assumed for Secondary Bus Reset, which already
+>     existed in PCIe r1.0.
+>     
+>     Secondary Bus Reset is only one of many causes of spurious link changes.
+>     Others include runtime suspend to D3cold, firmware updates or FPGA
+>     reconfiguration.  The new pci_hp_{,un}ignore_link_change() helpers may be
+>     used by all kinds of drivers to annotate such code sections, hence their
+>     declarations are publicly visible in <linux/pci.h>.  A case in point is
+>     the Mellanox Ethernet driver which disables a firmware reset feature if
+>     the Ethernet card is attached to a hotplug port, see commit 3d7a3f2612d7
+>     ("net/mlx5: Nack sync reset request when HotPlug is enabled").  Going
+>     forward, PCIe hotplug will be able to cope gracefully with all such use
+>     cases once the code sections are properly annotated.
+>     
+>     The new helpers internally use two bits in struct pci_dev's priv_flags as
+>     well as a wait_queue.  This mirrors what was done for DPC by commit
+>     a97396c6eb13 ("PCI: pciehp: Ignore Link Down/Up caused by DPC").  That may
+>     be insufficient if spurious link changes are caused by multiple sources
+>     simultaneously.  An example might be a Secondary Bus Reset issued by AER
+>     during FPGA reconfiguration.  If this turns out to happen in real life,
+>     support for it can easily be added by replacing the PCI_LINK_CHANGING flag
+>     with an atomic_t counter incremented by pci_hp_ignore_link_change() and
+>     decremented by pci_hp_unignore_link_change().  Instead of awaiting a zero
+>     PCI_LINK_CHANGING flag, the pci_hp_spurious_link_change() helper would
+>     then simply await a zero counter.
+>     
+>     Fixes: 665745f27487 ("PCI/bwctrl: Re-add BW notification portdrv as PCIe BW controller")
+>     Reported-by: Joel Mathew Thomas <proxy0@tutamail.com>
+>     Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219765
+>     Signed-off-by: Lukas Wunner <lukas@wunner.de>
+>     Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>     Tested-by: Joel Mathew Thomas <proxy0@tutamail.com>
+>     Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>     Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+>     Link: https://patch.msgid.link/d04deaf49d634a2edf42bf3c06ed81b4ca54d17b.1744298239.git.lukas@wunner.de
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
 
