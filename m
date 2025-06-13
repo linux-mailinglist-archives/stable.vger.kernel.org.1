@@ -1,384 +1,233 @@
-Return-Path: <stable+bounces-152587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1A8AD7F83
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 02:13:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FF7AD7FC5
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 02:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DBFB3B31BC
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 00:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22B41176DC7
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 00:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5D072625;
-	Fri, 13 Jun 2025 00:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DCC183CA6;
+	Fri, 13 Jun 2025 00:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P3ZR+nO9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMtNsi1j"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1CE72615;
-	Fri, 13 Jun 2025 00:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749773617; cv=fail; b=aW/fEKheY3hItUbCrgzXbjNlTzD2HYjhhgD83i2C+6PVeENtteCYJaxum2o8H0/0bYnMXPRSsdbMijiB/3EgqyB1mcmh5lct8SZyrf7BpveB2NREGkt7DRw99WOnPoIMfGwSWgSVL6bt6OE4nXhyUCTKN6Jl6smbh5+Sr4fyT54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749773617; c=relaxed/simple;
-	bh=f+x1Rf8T0i0Zo6qeXyXPMgpp7oROna3QqU0injqd8tk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iA0Sknm5X/siXQcdENl0raM06TRPujapoq8ubvZ6TzBkNsJY9PYpb3gwN1bS+EUTT+FomfnlfpMF3PNys/Fh99ZHFs2P0kGonp71gk1M19pt8zSuj+v2aPBrkqfBOEzpK4mBC8dAlJXB7yIu943hgsbIkWdgXYnJ5wGd6jmV1LE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P3ZR+nO9; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749773615; x=1781309615;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=f+x1Rf8T0i0Zo6qeXyXPMgpp7oROna3QqU0injqd8tk=;
-  b=P3ZR+nO9YiTjnXHjK+csxQRMICllaa33xQqsJCuuA4+Vyq2EIFIrfIRR
-   Lret8lk/y7jg+EQSPyTYNiVpwHrsQx0pN2Rf9dJ9yxUx7Ur6i0/GG5EqJ
-   TeC3VSAl8+Mn2fuxVPOQlaYlqpfRGf4GLNjDXk//eNQvMcJkVOcCeFlo3
-   dTlKDRhdYqHyb3jVG3AvuZQHMKR6WDKW1DyetEe3+NXRJoi/cY4Ce77eK
-   xV+Oqj2X5CMAPBMg1MSdi6RHfjm+/bdkd/TCH7YUyUHEKd3t9LsCWyRdG
-   7D4ZG9b4l6F/DZViM4oquAwGOu1qogfMHiOc5qAo8HecdEGdY25OT2uXM
-   Q==;
-X-CSE-ConnectionGUID: aC7DC5tKSKODPRi/+gF8Bg==
-X-CSE-MsgGUID: i7Wf9awtQQOc2Gr+nrx/9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="51893743"
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
-   d="scan'208";a="51893743"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 17:13:34 -0700
-X-CSE-ConnectionGUID: kqr8+jbwT5WJvs36JG1Qwg==
-X-CSE-MsgGUID: NWW1WU3PT6+M8uDBZOzxfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,232,1744095600"; 
-   d="scan'208";a="148035867"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2025 17:13:33 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 17:13:32 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Thu, 12 Jun 2025 17:13:32 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.59)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Jun 2025 17:13:31 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OieOENsz35KLyonJOK6G26VbtHsrA2vWeqcnnQ+LJZmpzobaKYRVZuWMJkN/l2EcoJubg/NzFmch7uxm8J32NgMdh/FzM5VNKDc5v9+0vYiBk0IX0768Q3gAnnyZg8QMlLjsuzl7KJLBH4GL+t3fGgqdl2vmI3tXdj/b5gOb2pNEt9kCPBWB+Iiu0w7iQlRXCpG9Esf3GpLxYToyOcxklM89rNMuiNzGETTiTfeOEH/3i4oWpTTQ4UBxRLnQhDt0P1tWBKZZxBX50BpF6IQ9Ccx+RRTJXfQChjHFMaI9nEDSooSfkbFzCPbwTIPWuKUor2ge8SnELXVF2ynGsW5k6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6TKn5s8KhRd7w7fCpZH7k02dBmJab43m7Hpw8f0Wmt4=;
- b=it15JcDh0FveEH/huSMctcKMctuW857CU9SK4tMLF3KtLgiz4/Jq2H3MCJEaQVl0ZqK30bd0ocX0hntnwRPo3f8kFuCx3Xh8N9gdYyrqWd7/5WXiihkyMyDgomGOCx/4loqPX0FgjWZId3PRwkVl4Adn/AaCjjhagJzEcAS0WpdDhXUhpdVvIwlp7VVi8g2FV2dV+qrTwbmQYlnGfNWs5sIiiDWSawi1ur1hcaRU0nqhdJtNYY+HZQD+TFMNkDQDCyMElkDxYk4lmTQ3nAE8o25xhB6pvrjyWOWx0u1KHcXI//ME9YCVOvAcorqDWkF4Gs8j7pDH0D6LtxnXAQWmBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by PH3PPF179F31853.namprd11.prod.outlook.com (2603:10b6:518:1::d0b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.22; Fri, 13 Jun
- 2025 00:13:16 +0000
-Received: from CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
- ([fe80::7141:316f:77a0:9c44%5]) with mapi id 15.20.8835.018; Fri, 13 Jun 2025
- 00:13:15 +0000
-Date: Thu, 12 Jun 2025 19:13:10 -0500
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: <jeffbai@aosc.io>
-CC: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Francois Dugast <francois.dugast@intel.com>,
-	Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
-	=?utf-8?B?Sm9zw6k=?= Roberto de Souza <jose.souza@intel.com>, "Mauro Carvalho
- Chehab" <mauro.chehab@linux.intel.com>, Matthew Brost
-	<matthew.brost@intel.com>, Zhanjun Dong <zhanjun.dong@intel.com>, Matt Roper
-	<matthew.d.roper@intel.com>, Alan Previn
-	<alan.previn.teres.alexis@intel.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, Mateusz Naklicki
-	<mateusz.naklicki@intel.com>, <intel-xe@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Kexy Biscuit <kexybiscuit@aosc.io>, Shang Yatsen
-	<429839446@qq.com>, Wenbin Fang <fangwenbin@vip.qq.com>, Haien Liang
-	<27873200@qq.com>, Jianfeng Liu <liujianfeng1994@gmail.com>, Shirong Liu
-	<lsr1024@qq.com>, Haofeng Wu <s2600cw2@126.com>
-Subject: Re: [PATCH v2 0/5] drm/xe: enable driver usage on non-4KiB kernels
-Message-ID: <yyzxfqydczvfxddfsa4ebi7kyj5ezl2v4wbl5fopkdz6qwvjrg@fnhpcvfsp2dm>
-References: <20250604-upstream-xe-non-4k-v2-v2-0-ce7905da7b08@aosc.io>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250604-upstream-xe-non-4k-v2-v2-0-ce7905da7b08@aosc.io>
-X-ClientProxiedBy: BY3PR10CA0004.namprd10.prod.outlook.com
- (2603:10b6:a03:255::9) To CY5PR11MB6139.namprd11.prod.outlook.com
- (2603:10b6:930:29::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B00B1E50E;
+	Fri, 13 Jun 2025 00:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749775946; cv=none; b=Bn81xjK3MX/jdmX9z/Tz5lmIIh1c3WZN5/Oq7pqzTrO1jl+UlkZaiHscak/WyG7nDI6YACPRT5+m4JYniLPCBMsqVnNaYMIRe3ck0t1j3W5EqLjVnjR+tvQhZvECm9j3NJnd31WpfAk/mUmC7wGrfCguw4Kc7h2ss6SCFxMgkr4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749775946; c=relaxed/simple;
+	bh=zYnEt50T6HH6yXctm14L1LYMIn+qqVY7N987qbg5Y2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VroWaDWHN1HU/pNbabmphfLHifmf3aW/w61rjPRbWCFrUNS8t2E0Dg4tS35ML/IvFKGVQBySf3Du1+UYp9C3/wDb2dQRZBTW5l1boJenclMflnyWyw3us3BPM/N3UsDQFWknw/Ie3cLbRc8y4qF0kYVr/mNXQ2HkkrLNlevUEHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMtNsi1j; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2352400344aso15093875ad.2;
+        Thu, 12 Jun 2025 17:52:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749775944; x=1750380744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vs8aFDDa/6pS7nm7uFvj1j/mB5OzAhtsWOm1HgHPobg=;
+        b=mMtNsi1j2Ndwqv7XxPBjw3W8/lP/HL0D7/cWh//3IjqlGApqFLE1PVCOOIRZAzcr6Y
+         g6sNSNTxd16VqQc3xaoRp/D83c/GFaLg/Vw6tG3kPFyZuEBEAX6m5P9AbGpgGVw0UcGk
+         mLwmzfhKRBfj9/ts9uI4l7kUxCKvbEMDpTpvjptQfPpmgCO9kJYh4b44LKo/6AlH/00r
+         cpzlB0CTNVZfHdmT1QPSWbYUGd/pE800V0MQJo9fZXNn/DXI6YjIOgtNAPKV4mSfrssm
+         MbvJIIQX6Irlu0q3nxhjIw5kq/7ry4z/1IPadFbvy/fguHhRnmMwVtk2phvM2vLS0TwY
+         CCig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749775944; x=1750380744;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vs8aFDDa/6pS7nm7uFvj1j/mB5OzAhtsWOm1HgHPobg=;
+        b=XFuOt0wFsSRKyMwAmIl8BEPTnj4zoHogwkV6Hzf3l7oLluSnqexbVN++WnjCycoqGG
+         CpbQl8lBWMAiELGSY3P21njFVu3lsbZo7+NLqaZkhE197Akr1NhlyT8Ee7S3POaX33EF
+         oApVy2HW5iYu+o9Oy6CH8Jx6QH/zRwjok0sJwojzkNV9pOHxYQ/8Vel6PerclbJwPzND
+         p2tZBucroIt/dmNnwgyB3oOImtQWPItp3zd30JK9wGuNJK+Pt8W6VWTGzOoahBF4+LJs
+         XbZjiW0Aej1Ysf9rEcRsdFWn97MQrCItxcSyy4dOEiNMYsPwJ6+RiY/sQS2ZTNX61xto
+         IrVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIcMVIrBYol2PcfncZMSIkQRhOKxTBccT7Td7159Wj8gXpOGYn0cTGrSktQH39ixz/B5J5I6O9bVdJG1Ym9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT9gSqwk4dck6iA16rfSLkRzHy+8/slG0zll8MxCeMKLg5NiIv
+	J2h+1Lcn7cZS/BjfMEUd0rY9+2LQF/Kh6REeDbb16PYSV8D6ISJ+tP8jXODsu8/e
+X-Gm-Gg: ASbGncsfn5SIDq21fKcOxUS7/XbQ0v/TwQIw7zMbevOpolKQXDw9ooZ+k7bYheL5wjI
+	dM29kIl6LsdinO1sJL/rwwG+iULYX5FhPQAJTh1JbjFcNigUpsxFghPioyquAegvJDW6waHtTqv
+	Bf7JXYaPzZ5ak2IZctERhXGFE9rxLS14XcNnu41aLUxWSbHDxLyUSDb6bsiD5jy2Z7NWL2haEVU
+	/G6Hg9xLju03i8xXsE4XOeYQraTqYCbEMn+kRE1IBaRjHRkQiKWz/hafsC1DRS82KzItsO3vS/T
+	CLWlL44AZf3bobc02ddkb6qDaRXA+xvy8YKFqBn8P+kJWHuQjGX2DweWoNnNrNOm4q+ythdm3Mf
+	QpPdjNf4FnutcvJkuDLl+rT/rCRcstrq/FruE
+X-Google-Smtp-Source: AGHT+IEtoe5vHbBt2WbXNyPZhE8AKhdqj1K6DasQKeIxnxdt7FVU0e1I2peb55IXVOZ27WRtFplSUA==
+X-Received: by 2002:a17:903:1b6b:b0:223:65dc:4580 with SMTP id d9443c01a7336-2365de4ae41mr14756705ad.52.1749775943557;
+        Thu, 12 Jun 2025 17:52:23 -0700 (PDT)
+Received: from localhost.localdomain (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2365deb049asm3351015ad.182.2025.06.12.17.52.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Jun 2025 17:52:23 -0700 (PDT)
+From: Zenm Chen <zenmchen@gmail.com>
+To: stable@vger.kernel.org
+Cc: pkshih@realtek.com,
+	zenmchen@gmail.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH 6.6.y] wifi: rtw89: pci: use DBI function for 8852AE/8852BE/8851BE
+Date: Fri, 13 Jun 2025 08:52:19 +0800
+Message-ID: <20250613005219.3408-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|PH3PPF179F31853:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70b4f680-c80f-430b-217b-08ddaa0f17c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?djBSclRudXlMcFc5MUMveDNKTXdXeDFVcGUzUzR1VGJsZFNUUCtJKyt1VCtJ?=
- =?utf-8?B?aWxRYU1TN2ZHM2Q3QWpTOG1CTWM1OW1pdVJ6bWlGSUxCeGNGVVZ0VFI1K01z?=
- =?utf-8?B?eG9VUWFQWVpjRWV1NXE0eHVNVEp6a08zSm1sVlBTd3BteWRSeHVBajJWRlZz?=
- =?utf-8?B?RnIrUW90QXh6T2xST2V6aktmT2JhN0REendGMFlDNkI0Q3haLytScGdIUUl1?=
- =?utf-8?B?NWpoWHdKZTNwc1VyYlFTYnorU2x2SG5RZm5mYlUxdVVRMHIrdTJBRGVibUpn?=
- =?utf-8?B?bE1Nb3JkSkJ5M0VpRnBaekdrdXNDVldXb2F2dDBPZmJuak1KVjRRL1RaMjVl?=
- =?utf-8?B?bG5DZnkxYUVBRUZyYTlVTllPR1pTaFZOYjc4dnZwaUVoSkdpTHNhUkppT2xG?=
- =?utf-8?B?VDRZcmEwY0hjN2tpN01VY3FzZWsyQ01ETm90WVptaEFqeGJNRVhQTGI5SHR4?=
- =?utf-8?B?cTd0NDB1dEM1amNYU0wyaUtOZjNkaVEwSmdoUlc3Y3VXbk9FNTFPa25JMUEx?=
- =?utf-8?B?ekxyMzlVcWxzZjF3YnR6MnlMUGdxUlpEczJjeDlVRUR3N2RTQTlsZlZPQTF0?=
- =?utf-8?B?cVp5NFZ3Sk81QTBGSG0yYjJ2MklHWERscnY1WStQVHFRRFZ2OS9qZHd1NVVY?=
- =?utf-8?B?U1FQWi85Ukt3cS9iNUEwOGtUL1N1QXliVUFFdXlnSjVoMDd5U1VRWXlJUUh0?=
- =?utf-8?B?dVlCb0hlNmoyR2NXeEM5cUhNWGV1azUzUEVLOVpIRWJ5NGNtSkZIY29YbWFp?=
- =?utf-8?B?TG9pSDZjTW8wZWszVlg3bHMvTGtHTWZjWVIvT1BhN1pmTWdXYzc3b045Nllj?=
- =?utf-8?B?Mm1TT2R1dWFUZEVsRlF0bjRVQkszbm9zL05UREQyTjVjRVl0R3NmUnNldVZ4?=
- =?utf-8?B?SkFOcGhPbGlXaFdHbmsvNENXMEdKdTFjYzVONE9IMFVuSmMyM284QjYwcW9x?=
- =?utf-8?B?eEh6RnBUS2ZsalZybDJ1b3Y1NDN2b0k1ajRoTWljU21TMExXOXlva2UrZENv?=
- =?utf-8?B?S3kvTjdObGx3Y1FsbVcxTjIxNTJudG9jOFR2ZXZSeDhlT2c4Ylp0SSs1R2o4?=
- =?utf-8?B?UHZrUDkzREd2NEVKRmZRWGIvQlZ3S2ltZStqczlkL01tTHRlQmlydWlmTnRp?=
- =?utf-8?B?L2NXR25PMkZ3RjIwaDh5eE1SRnRQSTdDS0VuZ1orZzRRbkhGZ0Y3dmI0bHBD?=
- =?utf-8?B?cnZmVk5WUkZ3Ykc3Z0U1bWJlRFdJSUFxdEdrcEQyVzhhVkk3Y29uZlhnbzN3?=
- =?utf-8?B?TlErejlRejNaWEt6L095WWJ4TVd2RFhrMC84OVV5VDQ4RzU4SUtWeEwyUGlC?=
- =?utf-8?B?cmpKS2hlVmJWY28wSGxsakkvVGEyNXd3bjZvdHVaZmowbGY3YzVReVJEaC9v?=
- =?utf-8?B?bDN5Z3lZL2xnUjJPTFg2STR6TGl0U0NURWNUUVlPeFRUSnN4OUZISjhvQjE0?=
- =?utf-8?B?VzBjK0hkbkR5NWpQenpFQkpmcE9IdEhNd08xTGs0UksvZUp5c2hNNVg0ZjlB?=
- =?utf-8?B?RjRLVnZrajc5R2hwdFRJVUMxdFJIZG8xOFdPdWhDZlc5RmpZUmYwMnVkNG5m?=
- =?utf-8?B?NUpnNExJalkxdkZqMytneklhalpqWGFsNnJWN201M1A0Ny9SaEhnNURHemNh?=
- =?utf-8?B?NTJ1eitzYlJlbXdlU1ROOXpHZkc2VmVlSlNEQVBmV3hkd0VKZHgxOHBFbkd1?=
- =?utf-8?B?MjdtRGo3T1BiNWlvZ0dKZzg4ZHNXQWxFQndZRW1KWjBFSjJyWmRIdy9nS1JG?=
- =?utf-8?B?MGJTbUE3aytoYUI4a0VhMHoxUUhWS1hJSlBwYkVPV3dVWUdpbU5UNDQ1VE54?=
- =?utf-8?B?UDgraXBKMW1MdnJTN0xBcXlYNU5BdnphUC9HUTB0VXBOM2QySlBKNCt2eXlk?=
- =?utf-8?Q?K5LGMkijdC8Dv?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6139.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S3JHUjJCdTRyUXNsV25CN0RYTlFLZFZ6KzlXdSswbFF6NlRmYVlzcWFlb3gz?=
- =?utf-8?B?TC9BaDBwS0lVZC8wWFVDK2luQlZIK0wvOHo1Z1pvOGhJSHpqaWZlWUtxN3hj?=
- =?utf-8?B?NjloQzRXMG1MNkU2emxROVAxeHdPc3gzUzIzSm1panZSUWl6djNGcDVsdTdw?=
- =?utf-8?B?dnR4d255REJ4TG1EN2FacGRtcm8xbVowN3VoWXJkVlFmMGo4U3NWR2Vwenpt?=
- =?utf-8?B?NUphcWxWTWtIUU1jOG4wT0U4dUlBVnFHYVcvaG1FRlRCOHlnQUNBZjJsUEp1?=
- =?utf-8?B?ZHFjVXdxLzdQbHltRTFYTEg0a2FRUmxnREtLaDUrMHEza0tVckFBa1Jia0ow?=
- =?utf-8?B?Y0VVeG5OVWcxSDF2UDJqeGlZZjlqU2FORTRIWXNIcStIOTNscXZ2Tzc3dEg4?=
- =?utf-8?B?QzErNnRlNUhiOUVaY1U0WjJVaDBSem84YktQQXlTWjZHSW4yWDdBYXhYcDJz?=
- =?utf-8?B?ZE5NOHU0dWJqOTRNYmtaYnJjT2FpMEZqQjgvWC9xVTdQb0pnM1RKbkt3MFRk?=
- =?utf-8?B?d1ByY3JrNGRYRXhtWUM2SkR4TWM5V1B1NGZRbFp5cEc3OXJnVWUva241eWFH?=
- =?utf-8?B?UFluWHNsWHZOdGowM1VLM1F0YmxCSDQrQ1ZWUG5zWllwMEdYaTQ5M3RETkd1?=
- =?utf-8?B?YVZIcXlDSlBvZUtaWlB1TDVWdS9tTVhYUlFBb0htUXhIR3NpMWhycGtub0Nw?=
- =?utf-8?B?cGpIdjhaWTNCU0lCdkFGeWV1QXp4bUhEU3BCeGhIeXkreGNtUUFIVGljbjNF?=
- =?utf-8?B?OHVScjg3NWFRZmFHdlgwSnpJUHR6U0FQeTMvSHpJeWdCN2J2UnBKRE0xOUMr?=
- =?utf-8?B?RTYvT1JSSVFTTXNtalBhQVpSbkgyYTNzbjNtWTlTcE8xTWFNUXkyTTV3K1F0?=
- =?utf-8?B?TlVTR29uMDZRRSsxNklVVHREazJTS0I1Z3gwTjMrYkgwbDFFQVFla2tmWFo1?=
- =?utf-8?B?UkpZSW01OUFMMEJMY1cvRWxTOENvckt3QTY3N0pwUVlCNGtzT2J2Q1VIaWNH?=
- =?utf-8?B?SGZuWS9DSFp6d1owWWRPazB5TUwwRFc3RjI0NkhGS2R5WCtYbkpyUzZGREIr?=
- =?utf-8?B?UW1UWkwrdDJHdVVpRlo1UHd3VnhYM0FjNDhBNXBmWG42L1NIOWE3Y1FSdVBK?=
- =?utf-8?B?S2txZi81YVdWVkJqQjhaSCtubllUZUtwdEhjTXlNNW5WOWtMemtRNVBJVHJj?=
- =?utf-8?B?dCtERkJqMUIzeFkvd0hYYnBSa0xPd3Nlall4ZEE1UWRTUTVZM0tVVFJWTWpl?=
- =?utf-8?B?cmJ1Z09PTkM2d1VTQ2Jxa0pNQnE0U1R0ZGkxZ2x6ZzlRZDFtWk1Kajh6SjBx?=
- =?utf-8?B?Y3BWK282S1FHUkMxNVo0Y1M1TVZxbHJKTWtSNnF6aStzV3FqMzZQUDBIZVBq?=
- =?utf-8?B?QkNoc2xMa2xhaDJ0Q25KZENpb3YwZGh0aHRRYUNCU29IWU9Wcm5oVXlRaTJH?=
- =?utf-8?B?bklvb29CVlo0T2pXQTBMUk8raFQrbTVCVlJQQ2YzTUUrMFdXSWgyM1JnMWpD?=
- =?utf-8?B?TlhtTDdGQXpLNE9mNnc3TWlzOFVKMU5qVlhUUy9Xa2IzWE55N3MybEJyZnUw?=
- =?utf-8?B?RmpuVFRsZFRkaFFYdXZGMVFyY2g4SERBOEFiK0YzSXNRRm1LRkx1Ry8vWnFs?=
- =?utf-8?B?THhlWjhoZ1ZQeWU4dmY2WWFlUnVXamJoSDV1cnhHREZxb2poSFU3ai9zOGli?=
- =?utf-8?B?UEVDdzQ0emttRTN3ZlNDSHNjN1B1UTBGd1V6d3diM25WZGVOcTY1cXllb3hU?=
- =?utf-8?B?YUtEZ0ZNZGdtNFE2VkdPOHAwT2o0M3UwdEFFUm5OSkpEVVNjbVIxSHRmNzky?=
- =?utf-8?B?M2RtTklRT3lMcUlNRHY1U0dPWjl5ZmtJRVhFbEVoQzk3L3FDQ2FlRUFUV2Fs?=
- =?utf-8?B?TlNOT0RYUnptc3RPbDV4c2hPWjRtQ3RkblJGVzlxczQ1SkdVYS8zNjJ6Zmla?=
- =?utf-8?B?ekI2MXRFNGZST3VJYXNoRUZhQmoyVUZwS2IyZ3FWcVYwaVc5L3lUdjZFMDFt?=
- =?utf-8?B?TVVnaTlkamV6Q0lZU1ByUzhKWGpBcmFWdkcrejhQWnREblQ3L21Jb21uSm1F?=
- =?utf-8?B?YTNNWWJhK1hNUDJwQTlxeUlYNFVma21TWGt5OEQ2cVVFMEdrdFRyRERFb1FX?=
- =?utf-8?B?Tm5YL2V2RFcwTEkwWmxmdjdlbWttSlZBakNDNm04MzZ1V2w3ZDBoNnN2MFFH?=
- =?utf-8?B?K2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70b4f680-c80f-430b-217b-08ddaa0f17c4
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 00:13:15.8764
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GI8c3x7WMz97ukOl7u2CComtyJPLA2zYy/x7ht5v1FQ+I/FcYsx66UD23XM2g9z/m6uutiB/wS3uM1Dzc2S0nN2+efCqabkEqgrF8lfnJYk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF179F31853
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-For some reason this patch series didn't make it to any mailing
-list... it only shows the b4-sent and stable:
-https://lore.kernel.org/intel-xe/20250604-upstream-xe-non-4k-v2-v2-0-ce7905da7b08@aosc.io/
+From: Chin-Yen Lee <timlee@realtek.com>
 
-Could you resend this series?
+[ Upstream commit 9496d62f3877bc0f97b415bc04af98d092878026 ]
 
-thanks
-Lucas De Marchi
+Sometimes driver can't use kernel API pci_read/write_config_byte
+to access the PCI config space of above address 0x100 due to
+the negotiated PCI setting. 8852AE/8852BE/8851BE provide another
+way called DBI function, which belongs to WiFi mac and could
+access all PCI config space for this case.
 
-On Wed, Jun 04, 2025 at 10:57:54AM +0800, Mingcong Bai via B4 Relay wrote:
->This patch series attempts to enable the use of xe DRM driver on non-4KiB
->kernel page platforms. This involves fixing the ttm/bo interface, as well
->as parts of the userspace API to make use of kernel `PAGE_SIZE' for
->alignment instead of the assumed `SZ_4K', it also fixes incorrect usage of
->`PAGE_SIZE' in the GuC and ring buffer interface code to make sure all
->instructions/commands were aligned to 4KiB barriers (per the Programmer's
->Manual for the GPUs covered by this DRM driver).
->
->This issue was first discovered and reported by members of the LoongArch
->user communities, whose hardware commonly ran on 16KiB-page kernels. The
->patch series began on an unassuming branch of a downstream kernel tree
->maintained by Shang Yatsen.[^1]
->
->It worked well but remained sparsely documented, a lot of the work done
->here relied on Shang Yatsen's original patch.
->
->AOSC OS then picked it up[^2] to provide Intel Xe/Arc support for users of
->its LoongArch port, for which I worked extensively on. After months of
->positive user feedback and from encouragement from Kexy Biscuit, my
->colleague at the community, I decided to examine its potential for
->upstreaming, cross-reference kernel and Intel documentation to better
->document and revise this patch.
->
->Now that this series has been tested good (for boot up, OpenGL, and
->playback of a standardised set of video samples[^3] on the following
->platforms (motherboard + GPU model):
->
->- x86-64, 4KiB kernel page:
->    - MS-7D42 + Intel Arc A580
->    - COLORFIRE B760M-MEOW WIFI D5 + Intel Arc B580
->- LoongArch, 16KiB kernel page:
->    - XA61200 + GUNNIR DG1 Blue Halberd (Intel DG1)
->    - XA61200 + GUNNIR Iris Xe Index 4 (Intel DG1)
->    - XA61200 + GUNNIR Intel Iris Xe Max Index V2 (Intel DG1)
->    - XA61200 + GUNNIR Intel Arc A380 Index 6G (Intel Arc A380)
->    - XA61200 + ASRock Arc A380 Challenger ITX OC (Intel Arc A380)
->    - XA61200 + Intel Arc A580
->    - XA61200 + GUNNIR Intel Arc A750 Photon 8G OC (Intel Arc A750)
->    - XA61200 + Intel Arc B580
->    - XB612B0 + GUNNIR Intel Iris Xe Max Index V2 (Intel DG1)
->    - XB612B0 + GUNNIR Intel Arc A380 Index 6G (Intel Arc A380)
->    - ASUS XC-LS3A6M + GUNNIR Intel Arc B580 INDEX 12G (Intel Arc B580)
->
->On these platforms, basic functionalities tested good but the driver was
->unstable with occasional resets (I do suspect however, that this platform
->suffers from PCIe coherence issues, as instability only occurs under heavy
->VRAM I/O load):
->
->- AArch64, 4KiB/64KiB kernel pages:
->    - ERUN-FD3000 (Phytium D3000) + GUNNIR Intel Iris Xe Max Index V2
->      (Intel DG1)
->    - ERUN-FD3000 (Phytium D3000) + GUNNIR Intel Arc A380 Index 6G
->      (Intel Arc A380)
->    - ERUN-FD3000 (Phytium D3000) + GUNNIR Intel Arc A750 Photon 8G OC
->      (Intel Arc A750)
->
->I think that this patch series is now ready for your comment and review.
->Please forgive me if I made any simple mistake or used wrong terminologies,
->but I have never worked on a patch for the DRM subsystem and my experience
->is still quite thin.
->
->But anyway, just letting you all know that Intel Xe/Arc works on non-4KiB
->kernel page platforms (and honestly, it's great to use, especially for
->games and media playback)!
->
->[^1]: https://github.com/FanFansfan/loongson-linux/tree/loongarch-xe
->[^2]: We maintained Shang Yatsen's patch until our v6.13.3 tree, until
->      we decided to test and send this series upstream,
->      https://github.com/AOSC-Tracking/linux/tree/aosc/v6.13.3
->[^3]: Delicious hot pot!
->      https://repo.aosc.io/ahvl/sample-videos-20250223.tar.zst
->
->---
->Matthew(s), Lucas, and Francois:
->
->Thanks again for your patience and review.
->
->I recently had a job change and it put me off this series for months, but
->I'm back (and should be a lot more responsive now) - sorry! Let's get this
->ball rolling again.
->
->I was unfortunately unable to revise 1/5 from v1 as you requested, neither
->of your suggestions to allow allocation of VRAM smaller than page size
->worked... So I kept that part as is.
->
->As for the your comment in 5/5, I'm not sure about what the right approach
->to implement a SZ_64K >= PAGE_SIZE assert was, as there are many other
->instances of similar ternary conditional operators in the xe code. Correct
->me if I'm wrong but I felt that it might be better handled in a separate
->patch series?
->
->---
->Changes in v2:
->
->- Define `GUC_ALIGN' and use them in GuC code to improve clarity.
->- Update documentation on `DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT'.
->- Rebase, and other minor changes.
->- Link to v1:
->  https://lore.kernel.org/all/20250226-xe-non-4k-fix-v1-0-80f23b5ee40e@aosc.io/
->
->To: Lucas De Marchi <lucas.demarchi@intel.com>
->To: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->To: Rodrigo Vivi <rodrigo.vivi@intel.com>
->To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->To: Maxime Ripard <mripard@kernel.org>
->To: Thomas Zimmermann <tzimmermann@suse.de>
->To: David Airlie <airlied@gmail.com>
->To: Simona Vetter <simona@ffwll.ch>
->To: José Roberto de Souza <jose.souza@intel.com>
->To: Francois Dugast <francois.dugast@intel.com>
->To: Matthew Brost <matthew.brost@intel.com>
->To: Alan Previn <alan.previn.teres.alexis@intel.com>
->To: Zhanjun Dong <zhanjun.dong@intel.com>
->To: Matt Roper <matthew.d.roper@intel.com>
->To: Mateusz Naklicki <mateusz.naklicki@intel.com>
->Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
->Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->Cc: intel-xe@lists.freedesktop.org
->Cc: dri-devel@lists.freedesktop.org
->Cc: linux-kernel@vger.kernel.org
->Suggested-by: Kexy Biscuit <kexybiscuit@aosc.io>
->Co-developed-by: Shang Yatsen <429839446@qq.com>
->Signed-off-by: Shang Yatsen <429839446@qq.com>
->Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
->
->---
->Mingcong Bai (5):
->      drm/xe/bo: fix alignment with non-4KiB kernel page sizes
->      drm/xe/guc: use GUC_SIZE (SZ_4K) for alignment
->      drm/xe/regs: fix RING_CTL_SIZE(size) calculation
->      drm/xe: use 4KiB alignment for cursor jumps
->      drm/xe/query: use PAGE_SIZE as the minimum page alignment
->
-> drivers/gpu/drm/xe/regs/xe_engine_regs.h |  2 +-
-> drivers/gpu/drm/xe/xe_bo.c               |  8 ++++----
-> drivers/gpu/drm/xe/xe_guc.c              |  4 ++--
-> drivers/gpu/drm/xe/xe_guc.h              |  3 +++
-> drivers/gpu/drm/xe/xe_guc_ads.c          | 32 ++++++++++++++++----------------
-> drivers/gpu/drm/xe/xe_guc_capture.c      |  8 ++++----
-> drivers/gpu/drm/xe/xe_guc_ct.c           |  2 +-
-> drivers/gpu/drm/xe/xe_guc_log.c          |  5 +++--
-> drivers/gpu/drm/xe/xe_guc_pc.c           |  4 ++--
-> drivers/gpu/drm/xe/xe_migrate.c          |  4 ++--
-> drivers/gpu/drm/xe/xe_query.c            |  2 +-
-> include/uapi/drm/xe_drm.h                |  7 +++++--
-> 12 files changed, 44 insertions(+), 37 deletions(-)
->---
->base-commit: 546b1c9e93c2bb8cf5ed24e0be1c86bb089b3253
->change-id: 20250603-upstream-xe-non-4k-v2-4acf253c9bfd
->
->Best regards,
->-- 
->Mingcong Bai <jeffbai@aosc.io>
->
->
+Link: https://lore.kernel.org/linux-wireless/79fe81b7db7148b9a7da2353c16d70fb@realtek.com/T/#t
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240103012346.6822-1-pkshih@realtek.com
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+Without this patch applied, the rtw89 driver in kernel 6.6.y may fail to 
+initialize the RTL8852BE chip and print the error messages below on
+some platforms [1].
+
+[ 13.449168] rtw89_8852be_git 0000:02:00.0: [ERR]pci config read 719
+[ 13.449754] rtw89_8852be_git 0000:02:00.0: [ERR] pcie autok fail -22
+[ 13.450353] rtw89_8852be_git 0000:02:00.0: failed to setup chip information
+[ 13.455857] rtw89_8852be_git: probe of 0000:02:00.0 failed with error -22
+
+[1] https://github.com/a5a5aa555oo/rtw89/issues/3
+
+---
+ drivers/net/wireless/realtek/rtw89/pci.c | 69 +++++++++++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/pci.h |  1 +
+ 2 files changed, 68 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 30cc6e03c..33b2543ee 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -1822,22 +1822,87 @@ static int rtw89_write16_mdio_clr(struct rtw89_dev *rtwdev, u8 addr, u16 mask, u
+ 	return 0;
+ }
+ 
++static int rtw89_dbi_write8(struct rtw89_dev *rtwdev, u16 addr, u8 data)
++{
++	u16 addr_2lsb = addr & B_AX_DBI_2LSB;
++	u16 write_addr;
++	u8 flag;
++	int ret;
++
++	write_addr = addr & B_AX_DBI_ADDR_MSK;
++	write_addr |= u16_encode_bits(BIT(addr_2lsb), B_AX_DBI_WREN_MSK);
++	rtw89_write8(rtwdev, R_AX_DBI_WDATA + addr_2lsb, data);
++	rtw89_write16(rtwdev, R_AX_DBI_FLAG, write_addr);
++	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_WFLAG >> 16);
++
++	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
++				       10 * RTW89_PCI_WR_RETRY_CNT, false,
++				       rtwdev, R_AX_DBI_FLAG + 2);
++	if (ret)
++		rtw89_err(rtwdev, "failed to write DBI register, addr=0x%X\n",
++			  addr);
++
++	return ret;
++}
++
++static int rtw89_dbi_read8(struct rtw89_dev *rtwdev, u16 addr, u8 *value)
++{
++	u16 read_addr = addr & B_AX_DBI_ADDR_MSK;
++	u8 flag;
++	int ret;
++
++	rtw89_write16(rtwdev, R_AX_DBI_FLAG, read_addr);
++	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_RFLAG >> 16);
++
++	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
++				       10 * RTW89_PCI_WR_RETRY_CNT, false,
++				       rtwdev, R_AX_DBI_FLAG + 2);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to read DBI register, addr=0x%X\n",
++			  addr);
++		return ret;
++	}
++
++	read_addr = R_AX_DBI_RDATA + (addr & 3);
++	*value = rtw89_read8(rtwdev, read_addr);
++
++	return 0;
++}
++
+ static int rtw89_pci_write_config_byte(struct rtw89_dev *rtwdev, u16 addr,
+ 				       u8 data)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	struct pci_dev *pdev = rtwpci->pdev;
++	int ret;
++
++	ret = pci_write_config_byte(pdev, addr, data);
++	if (!ret)
++		return 0;
+ 
+-	return pci_write_config_byte(pdev, addr, data);
++	if (chip_id == RTL8852A || chip_id == RTL8852B || chip_id == RTL8851B)
++		ret = rtw89_dbi_write8(rtwdev, addr, data);
++
++	return ret;
+ }
+ 
+ static int rtw89_pci_read_config_byte(struct rtw89_dev *rtwdev, u16 addr,
+ 				      u8 *value)
+ {
+ 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
++	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	struct pci_dev *pdev = rtwpci->pdev;
++	int ret;
+ 
+-	return pci_read_config_byte(pdev, addr, value);
++	ret = pci_read_config_byte(pdev, addr, value);
++	if (!ret)
++		return 0;
++
++	if (chip_id == RTL8852A || chip_id == RTL8852B || chip_id == RTL8851B)
++		ret = rtw89_dbi_read8(rtwdev, addr, value);
++
++	return ret;
+ }
+ 
+ static int rtw89_pci_config_byte_set(struct rtw89_dev *rtwdev, u16 addr,
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index 4259b79b1..119c0608b 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -42,6 +42,7 @@
+ #define B_AX_DBI_WFLAG			BIT(16)
+ #define B_AX_DBI_WREN_MSK		GENMASK(15, 12)
+ #define B_AX_DBI_ADDR_MSK		GENMASK(11, 2)
++#define B_AX_DBI_2LSB			GENMASK(1, 0)
+ #define R_AX_DBI_WDATA			0x1094
+ #define R_AX_DBI_RDATA			0x1098
+ 
+-- 
+2.49.0
+
 
