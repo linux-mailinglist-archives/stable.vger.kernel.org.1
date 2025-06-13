@@ -1,100 +1,165 @@
-Return-Path: <stable+bounces-152637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8038AD986D
-	for <lists+stable@lfdr.de>; Sat, 14 Jun 2025 01:03:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B3EAD989A
+	for <lists+stable@lfdr.de>; Sat, 14 Jun 2025 01:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BC283BE226
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 23:03:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B94A87B0A8E
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 23:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010FA26B774;
-	Fri, 13 Jun 2025 23:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8863A28FA84;
+	Fri, 13 Jun 2025 23:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DB2T1qG5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ip4hUmyL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102AD2AE6D
-	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 23:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA07F28EA76;
+	Fri, 13 Jun 2025 23:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749855810; cv=none; b=LLiBdOm7L3SaWMvvAlLs5J6uhcUzpIrPAvPjezFhu1bI7hn1x1DgKAEEQaMiefajrMIZ9KvSNnXxRqLNX6fTqA/tV8sLNG6DL4tr2CAEBmWSCIneyLUa6W/RVN0IvEFPr3JuDnEqxRgce+tLroEAsxA/mJO3zAG3ttxj6brZXAw=
+	t=1749856798; cv=none; b=TB0qbojmcmgdM7nNIkrNuNJd543kSgH4Evlozd+4WmE2Jw7dkmmlnIgFeVrnoyHVC75UpCqmKrzIxnBm34Ve2rVMwrgUKoTZ9KYGrQrLwgiWn/rj5+4lZsiCz5OHR8q0+Doe8s4oKDJwmJMcTNYKfRDPxMUqAZKRbHMU78d9H+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749855810; c=relaxed/simple;
-	bh=o9R/sx2f39J8GmkU6AoxxwG2q+QiRnlD3yDtxkYfVkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=PZZ2VjRIgYBknqXGZsMyM7aYP2UCh7zx8sLaqGaYOJR7X79O+amk3kdc5E47MiZ05UN61n3ikRFU0U6vwi7XglaWqx8nF0QKjcUMMqtPWpawnUeJ51+ikRqQLq7SEaLdOEoEIpTgf4DZlEiDRn5hL+Q3vXPeId3sJ2QLmEXd+O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DB2T1qG5; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749855809; x=1781391809;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=o9R/sx2f39J8GmkU6AoxxwG2q+QiRnlD3yDtxkYfVkU=;
-  b=DB2T1qG5JVEN6Z9J6CUCBbMy5QWHTPS70vMT7l1iN1M/5AzI1+X8HRxO
-   HHHKZnci3Wh32XTO09/NMlpCcNU/STgBLFfP0MUPLXSJVI+Id1aheECGB
-   PAVOw+gdz0gFSV+35bZFK9pgvhcAM5NFAvPcfJtNEs3q0Wt4vv3t30EXV
-   YWnhfOYWYSEcZ+LxmGHdTxZhxuSP8UaO/CvTn1yPUBHipBs/AAQ23O6d/
-   C78zhwslTtEMlHsZobOYrDfLPXXHd7HEDVh5iJN79fMjw2bWTTVxJXLRS
-   Pr+HVge2+L4m2MUjNl4Wrk1nACUhcXKXWpewGkpQmpr46MV4Rx/pbrUFI
-   A==;
-X-CSE-ConnectionGUID: 7xnm8Ud+TVmtEcPGcq+7cQ==
-X-CSE-MsgGUID: AxaHx/d1QoKqyjSYqVe2gA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11463"; a="51194773"
-X-IronPort-AV: E=Sophos;i="6.16,235,1744095600"; 
-   d="scan'208";a="51194773"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 16:03:28 -0700
-X-CSE-ConnectionGUID: yAhMgi9KSFeiRy48GcNfkw==
-X-CSE-MsgGUID: IrWewGDvRe26Y8m+vQjKUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,235,1744095600"; 
-   d="scan'208";a="148485482"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 13 Jun 2025 16:03:27 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uQDQi-000D42-2q;
-	Fri, 13 Jun 2025 23:03:24 +0000
-Date: Sat, 14 Jun 2025 07:03:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: mhkelley58@gmail.com
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/1] Drivers: hv: Select CONFIG_SYSFB only if EFI is
- enabled
-Message-ID: <aEyuMCuFsZ981cEr@9978228ff6ac>
+	s=arc-20240116; t=1749856798; c=relaxed/simple;
+	bh=bcZuyPoS5TY+Y74is6sExuoGp8BF7wkEybtx4YILCd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gdoGZ9PFZvtkBeXuKZbxjSvnVorlArj2SuqdCivaRJG3CT73ZugK36CicjaUzRGnVpr7ahZPzqtHhVqa7Ddl2Z9YCiMNARklWQjUBQ9mFWAxaBTCh9QKwNF5yNoecpl3IpOXSIttO8/vtgkbdd5Rt9HvE8P7AwGy7vLjGVRrL9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ip4hUmyL; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b3182c6d03bso431405a12.0;
+        Fri, 13 Jun 2025 16:19:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749856796; x=1750461596; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GGkSjekPp20C8RFg/1qiK22k8lYciBn5l4gWbgxyXx8=;
+        b=Ip4hUmyLqH1tU1Sk5oQkmxureT99KORcEvKyYoMUfbpvUcPlmi3/OyeET4mrtEMSry
+         q3nQWiIMxxtX/LqnpSlBhl9D6CLIRlyMkOlskxvcSb4zBHOjloFWNU5wBARFB6pW+zxd
+         OF39xmOekQ1unQu9JVAvNDBYZ3uSuCedkbSfS2ArHJ+1D4aZKl8QiARpEyXIa1BVVRbr
+         /aQ0HnPVVDjQz42h75yNAfJQWxVbsyuJN4+Mt/860evnIAHt2BBxXthkjHLCINvGpv5a
+         P/vAftA2tTPT1DFki1e+TfX6FpQFwH4TEvTeGWIATIYU3G2wHAjKm/0/q7hUWVJ1eqVB
+         uBXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749856796; x=1750461596;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GGkSjekPp20C8RFg/1qiK22k8lYciBn5l4gWbgxyXx8=;
+        b=TT0w0qLNITWar2p3Mz135dYlZbDxcvW7ty61f12D7grpuKtK/gDQWqqyk/V5lf0vfF
+         09HAg6JkMHFFdau88LCCzkqNtULedxIh4d8DbjnD9+yG9ZmHkADN1HzmYv91YBE+UkjT
+         gj9Az9Sh7Q6zQNQitNWE4WTDE5kBPfZ7o3A2TSRCQ9Hs8uICx0KyADY6bl4A8t3PU7jJ
+         xf8bVLBuE4SscCE9Qq1bIBaDNy6yBpz7bru6ypFmYVsYkyqpuORSLsIgwK+Cz6Kg/3v4
+         fKB2YAWIicWdsMrh0aw32IuvZXyBkaVx9/W4K065q8bV9MRA91PbOk+PkC7G7r2xpTtF
+         r4uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHihxqsk4I3R/y1AhIpLCBXUBM8ryqTqBd1IVmFsnZnbSSrIRKn3ckgOH8snn9kqg0UZ/L1PrZ/Qi4GIso@vger.kernel.org, AJvYcCVguWvXHL6TsnoKkRdIgAJeS1XBFN8y9+NUWm7E4fORIh4PAUuz1Xfhe2UJfhnOq387TA22NAjqllVPevM=@vger.kernel.org, AJvYcCWe3S8kvfDwlFvwSvHiX+9FRwttJuuwA2f6Fz1fkTBSe/dVnjRweO9UyFCHZWXhnYkut36p56fr@vger.kernel.org, AJvYcCX3fqWvCgOooEZuodikr75r7WvMfiO/dbI2M8ypfnXbmM4ycUgclwhaBHaEa0ltGjohYycE5CWIO4IE@vger.kernel.org
+X-Gm-Message-State: AOJu0YznFuRRl+IIqMNFl6vpo4ZTkG2L3qQoSCfIDasM8ixjDasnd9o/
+	0LDC+lX5dhfUW3XIzgrq1RGLGgjM/audrfSb67raD/q6nb9jSSyLsZq7
+X-Gm-Gg: ASbGncvBEc9mG1ibb7h+FGwhjskgIXDn92ts+IBbwlLzgJ+mxpzJM4uHUOJbpOGB+iK
+	/1gR/IAofaWAlj8RQYOPfDWF3R+zndBHbngeDeaGy0usmKZkacINOfMlAAjRluTpbWZ9vbq5/aX
+	caMmaYlBOlzyFNihD1sGsMyqRVg5M9xn7GaF1uw0JMRzqLLzKbjUjdICqrFfR9Nh5YokV7rg6EK
+	JBkwWv13E1N4JGXQ0BbEWXkV4g16qe4oal6ffhBDviJx0+sakRW/DE96/1H0k0JXfGoC9wlEj+Y
+	KduZU+Pgu8qWAcdoyB6ZJIAycsi3GwZ4RsO7C5512IobTT8DjbeV48bqxYvx4y05GqgAcBenrqp
+	r2jGppIcwufKxIA==
+X-Google-Smtp-Source: AGHT+IGRDA8rtHbr3BM4Iaal2yZGRiefv2wcGquxzfNqyO3WqlQTLD6NDZr/rAtztCW1hjT2NcSB6A==
+X-Received: by 2002:a05:6a20:729f:b0:21a:3d97:e93a with SMTP id adf61e73a8af0-21fbd5d9253mr1546691637.42.1749856795963;
+        Fri, 13 Jun 2025 16:19:55 -0700 (PDT)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fe1639fe0sm2354429a12.14.2025.06.13.16.19.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Jun 2025 16:19:55 -0700 (PDT)
+Date: Sat, 14 Jun 2025 07:19:51 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Robert Pang <robertpang@google.com>, corbet@lwn.net, colyli@kernel.org,
+	kent.overstreet@linux.dev, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-bcache@vger.kernel.org,
+	jserv@ccns.ncku.edu.tw, stable@vger.kernel.org
+Subject: Re: [PATCH 0/8] Fix bcache regression with equality-aware heap APIs
+Message-ID: <aEyyF9SsTGguEBGd@visitorckw-System-Product-Name>
+References: <20250610215516.1513296-1-visitorckw@gmail.com>
+ <20250611184817.bf9fee25d6947a9bcf60b6f9@linux-foundation.org>
+ <aEvCHUcNOe1YPv37@visitorckw-System-Product-Name>
+ <CAJhEC05+0S69z+3+FB2Cd0hD+pCRyWTKLEOsc8BOmH73p1m+KQ@mail.gmail.com>
+ <20250613110415.b898c62c7c09ff6e8b0149e9@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250613230059.380483-1-mhklinux@outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250613110415.b898c62c7c09ff6e8b0149e9@linux-foundation.org>
 
-Hi,
+Hi Andrew,
 
-Thanks for your patch.
+On Fri, Jun 13, 2025 at 11:04:15AM -0700, Andrew Morton wrote:
+> On Fri, 13 Jun 2025 23:26:33 +0900 Robert Pang <robertpang@google.com> wrote:
+> 
+> > Hi Andrew
+> > 
+> > Bcache is designed to boost the I/O performance of slower storage
+> > (HDDs, network-attached storage) by leveraging fast SSDs as a block
+> > cache. This functionality is critical in significantly reducing I/O
+> > latency. Therefore, any notable increase in bcache's latency severely
+> > diminishes its value. For instance, our tests show a P100 (max)
+> > latency spike from 600 ms to 2.4 seconds every 5 minutes due to this
+> > regression. In real-world environments, this  increase will cause
+> > frequent timeouts and stalls in end-user applications that rely on
+> > bcache's latency improvements, highlighting the urgent need to address
+> > this issue.
+> 
+> Great, thanks.  Let's please incorporate this into the v2 changelogging.
+> 
+> > > > Also, if we are to address this regression in -stable kernels then
+> > > > reverting 866898efbb25 is an obvious way - it is far far safer.  So
+> > > > please also tell us why the proposed patchset is a better way for us to
+> > > > go.
+> > > >
+> > > I agree that reverting 866898efbb25 is a much safer and smaller change
+> > > for backporting. In fact, I previously raised the discussion of whether
+> > > we should revert the commit or instead introduce an equality-aware API
+> > > and use it. The bcache maintainer preferred the latter, and I also
+> > > believe that it is a more forward-looking approach. Given that bcache
+> > > has run into this issue, it's likely that other users with similar use
+> > > cases may encounter it as well. We wouldn't want those users to
+> > > continue relying on the current default heapify behavior. So, although
+> > > reverting may be more suitable for stable in isolation, adding an
+> > > equality-aware API could better serve a broader set of use cases going
+> > > forward.
+> 
+> "much safer and smaller" is very desirable for backporting, please. 
+> After all, 866898efbb25 didn't really fix anything and reverting that
+> takes us back to a known-to-work implementation.
+> 
+> I of course have no problem making the changes in this patchset for
+> "going forward"!
+> 
+> So if agreeable, please prepare a patch which reverts 866898efbb25. 
+> Robert's words above are a great basis for that patch's description.
+> 
+Sure, I'll prepare a revert patch to address the issue and plan to
+submit it for backporting to -stable.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+However, I'd like to confirm whether the following patch series
+structure would be appropriate:
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+- Patch 1: Revert 866898efbb25 and CC it to stable
+- Patch 2–8: Introduce the new equality-aware heap API
+- Patch 9: Revert Patch 1 and switch bcache to use the new API
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/1] Drivers: hv: Select CONFIG_SYSFB only if EFI is enabled
-Link: https://lore.kernel.org/stable/20250613230059.380483-1-mhklinux%40outlook.com
+In this case, we would only backport Patch 1 to stable.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Alternatively, would you prefer we simply revert 866898efbb25 without
+introducing and using the new API in the same series?
 
-
-
+Regards,
+Kuan-Wei
 
