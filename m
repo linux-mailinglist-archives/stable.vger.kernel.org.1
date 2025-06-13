@@ -1,116 +1,155 @@
-Return-Path: <stable+bounces-152629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0D2AD9449
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 20:18:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEF9AD94F3
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 21:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1BD1E4686
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 18:18:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A271BC3676
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 19:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DA020F080;
-	Fri, 13 Jun 2025 18:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B61723771C;
+	Fri, 13 Jun 2025 19:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EYY16kp8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGBG++1Z"
 X-Original-To: stable@vger.kernel.org
-Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD1D1BEF8C
-	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 18:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556F32E11A5;
+	Fri, 13 Jun 2025 19:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749838685; cv=none; b=P5SUUsRG7I49HigHexd5j7hr+N1C7WgXglmQdJXBGVrjKseKghAMuir9HasOW7ILnDQu45L2pvXd3M+r8ty+m9S18h3jg9uzooREVqxVglYNuL5ObucbKYT9COlaqgKjqhqudA3XTkMV3whrNeX4lxrI8jFdjaGTNDGMX4dytbs=
+	t=1749841339; cv=none; b=kScxmnSh9Y/qzmMSVCvfXYSAwUklAtedutqIgoQOmfAnYHTX8GmlE1soxtWwiKOgY8MCJ2SYKFQRzb4Ob/iKefMY4Rk/DHfEeHyUuwiGpx6xdgie+RVe3J8yCArhluOOnMnXEQZR+0Hz0NSAHGJ9y0dyXvlqG19aHAZZ2k9eH2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749838685; c=relaxed/simple;
-	bh=/21KfSGf5kewRZOgx7Pvs00Jp0aZ0SxfWor4+YYwWiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NsbmxfQy+X7iLMBS0yrLPcjzHb8XJUjDy8wLg0LwlBAXpvIT3izkSngjjexa9vnc4dn6/e92mdBFFvDuVcCNyROh3sqIJ7NvbpcNhAfG2ZoiFtVvrQi7yKktZ9n34r/UCMRH/BA2+1uUrnCnoMGMoNmbOYuuUZTGKD+CPEf1eG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EYY16kp8; arc=none smtp.client-ip=217.70.178.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EEAEA442A3;
-	Fri, 13 Jun 2025 18:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749838676;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=A6FU6SDX17aNoN9IEiJOQ14OoPG5LsdEowjWPMC4qis=;
-	b=EYY16kp8QCmJNQdvBcaIjmCNYUvmdtonw/HtqEgIDjdj5xqFniRybwzuJKvTW1hXNsgewC
-	9rBQ9eVjgzfCtqe9fz/wucIeosUTFP00S6FVkLjeh9cGkfog7JWiOcR1BsMShoRZjsDs2i
-	VO8cgiV9OwqjqsrPCISsyVU7ZoJw2ZoiuSgK/732rZUCLCM56741lQY6Gk6ITyzy04ZA5p
-	G3DYlUx+pClnN7uBEaNZcZV3IuBm7SDehRQAb4DXa54G3UdkkKCiB2QRMkm7avLfABmThG
-	9J+F3U9kxpkbN+nw55FRctez267FnH18sbyUhr1JM9E6UivLie1MwRkm7fiZTw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>
-Cc: Steam Lin <stlin2@winbond.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andreas Dannenberg <dannenberg@ti.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/3] mtd: spinand: winbond: Fix W35N number of planes/LUN
-Date: Fri, 13 Jun 2025 20:17:46 +0200
-Message-ID: <20250613181748.1270842-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1749841339; c=relaxed/simple;
+	bh=6PwNri2M3YdedhjwUN0NNQh3fr8ouiZE3mD0OKU7XBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CAeqn3tY4dqsamRw6psbkGH2qoxs/K5F6ORdo3d9ekGDVSWS13YkbbIqVs68N5LTAGDUA3W21HKvaQS4oR6V3nVLQt8wvp61U8w7dktk0W38vV+z4xFvwtJPnhcyAynh/gETYpsvEcpiSutKc3EbjwVtmZcc9KqSV/yihiSM6bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGBG++1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E14C4CEE3;
+	Fri, 13 Jun 2025 19:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749841337;
+	bh=6PwNri2M3YdedhjwUN0NNQh3fr8ouiZE3mD0OKU7XBU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kGBG++1ZyBY/yRYlusUTWXp0lKESovpxbWY7WGlOWsKvq48M+hKI5wUW2sl5xw56a
+	 Yr5dFGsRsKuNCFQsr/SmPtF/SFr8FYy58Qn+heZgZlLCEwghUIeKn2nq47Kmi1nUfv
+	 gDjSyGlYg58+mIAD1GotspMVIhU/ASUJWlOYcBUh7LdZbY1YIRUogL5JT02YrDlmca
+	 vIqjWR7S7KOsh4qxCkHOSRkfft4ZMP3PRBDCqZiCSC1MLuiCmVNFmSo2nAJ4PNSaOM
+	 yNhKeiYTbbQT5Cvl+WBecu2hXvYUzEDVbxjglyDVaWnj4yv2dH+RaZ7a3M7y9ixCfh
+	 a26nO/wZmKX6g==
+Date: Fri, 13 Jun 2025 12:01:50 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: herbert@gondor.apana.org.au, linux-crypto@vger.kernel.org,
+	qat-linux@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: qat - lower priority for skcipher and aead
+ algorithms
+Message-ID: <20250613190150.GD1284@sol>
+References: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddukeeihecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegteefudelfeejffehveelgefgtddvudfhudegueeijeevjeeivdfhudfgtedtheenucfkphepvdgrtddumegtsgdurgemvdefmegsjedvvdemrgdutdgrmeelfhgvkeemudgsiegvmeelledtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudgrmedvfeemsgejvddvmegruddtrgemlehfvgekmedusgeivgemleeltddupdhhvghlohepfhifrddrpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddupdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehtuhguohhrrdgrmhgsrghruhhssehlihhnrghrohdrohhrghdprhgtphhtthhopehprhgrthihuhhshheskhgvrhhnvghlrdhorhhgpdhrtghpthhto
- hepmhhitghhrggvlhesfigrlhhlvgdrtggtpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehsthhlihhnvdesfihinhgsohhnugdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
 
-There's been a mistake when extracting the geometry of the W35N02 and
-W35N04 chips from the datasheet. There is a single plane, however there
-are respectively 2 and 4 LUNs. They are actually referred in the
-datasheet as dies (equivalent of target), but as there is no die select
-operation and the chips only feature a single configuration register for
-the entire chip (instead of one per die), we can reasonably assume we
-are talking about LUNs and not dies.
+On Fri, Jun 13, 2025 at 11:32:27AM +0100, Giovanni Cabiddu wrote:
+> Most kernel applications utilizing the crypto API operate synchronously
+> and on small buffer sizes, therefore do not benefit from QAT acceleration.
+> 
+> Reduce the priority of QAT implementations for both skcipher and aead
+> algorithms, allowing more suitable alternatives to be selected by default.
+> 
+> Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> Link: https://lore.kernel.org/all/20250613012357.GA3603104@google.com/
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/crypto/intel/qat/qat_common/qat_algs.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/crypto/intel/qat/qat_common/qat_algs.c b/drivers/crypto/intel/qat/qat_common/qat_algs.c
+> index 3c4bba4a8779..d69cc1e5e023 100644
+> --- a/drivers/crypto/intel/qat/qat_common/qat_algs.c
+> +++ b/drivers/crypto/intel/qat/qat_common/qat_algs.c
+> @@ -1277,7 +1277,7 @@ static struct aead_alg qat_aeads[] = { {
+>  	.base = {
+>  		.cra_name = "authenc(hmac(sha1),cbc(aes))",
+>  		.cra_driver_name = "qat_aes_cbc_hmac_sha1",
+> -		.cra_priority = 4001,
+> +		.cra_priority = 100,
+>  		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+>  		.cra_blocksize = AES_BLOCK_SIZE,
+>  		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
+> @@ -1294,7 +1294,7 @@ static struct aead_alg qat_aeads[] = { {
+>  	.base = {
+>  		.cra_name = "authenc(hmac(sha256),cbc(aes))",
+>  		.cra_driver_name = "qat_aes_cbc_hmac_sha256",
+> -		.cra_priority = 4001,
+> +		.cra_priority = 100,
+>  		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+>  		.cra_blocksize = AES_BLOCK_SIZE,
+>  		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
+> @@ -1311,7 +1311,7 @@ static struct aead_alg qat_aeads[] = { {
+>  	.base = {
+>  		.cra_name = "authenc(hmac(sha512),cbc(aes))",
+>  		.cra_driver_name = "qat_aes_cbc_hmac_sha512",
+> -		.cra_priority = 4001,
+> +		.cra_priority = 100,
+>  		.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+>  		.cra_blocksize = AES_BLOCK_SIZE,
+>  		.cra_ctxsize = sizeof(struct qat_alg_aead_ctx),
+> @@ -1329,7 +1329,7 @@ static struct aead_alg qat_aeads[] = { {
+>  static struct skcipher_alg qat_skciphers[] = { {
+>  	.base.cra_name = "cbc(aes)",
+>  	.base.cra_driver_name = "qat_aes_cbc",
+> -	.base.cra_priority = 4001,
+> +	.base.cra_priority = 100,
+>  	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+>  	.base.cra_blocksize = AES_BLOCK_SIZE,
+>  	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
+> @@ -1347,7 +1347,7 @@ static struct skcipher_alg qat_skciphers[] = { {
+>  }, {
+>  	.base.cra_name = "ctr(aes)",
+>  	.base.cra_driver_name = "qat_aes_ctr",
+> -	.base.cra_priority = 4001,
+> +	.base.cra_priority = 100,
+>  	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_ALLOCATES_MEMORY,
+>  	.base.cra_blocksize = 1,
+>  	.base.cra_ctxsize = sizeof(struct qat_alg_skcipher_ctx),
+> @@ -1365,7 +1365,7 @@ static struct skcipher_alg qat_skciphers[] = { {
+>  }, {
+>  	.base.cra_name = "xts(aes)",
+>  	.base.cra_driver_name = "qat_aes_xts",
+> -	.base.cra_priority = 4001,
+> +	.base.cra_priority = 100,
+>  	.base.cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_NEED_FALLBACK |
+>  			  CRYPTO_ALG_ALLOCATES_MEMORY,
+>  	.base.cra_blocksize = AES_BLOCK_SIZE,
+> -- 
+> 2.49.0
+> 
 
-Reported-by: Andreas Dannenberg <dannenberg@ti.com>
-Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
-Fixes: 25e08bf66660 ("mtd: spinand: winbond: Add support for W35N02JW and W35N04JW chips")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/mtd/nand/spi/winbond.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Eric Biggers <ebiggers@kernel.org>
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 19f8dd4a6370..2808bbd7a16e 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -289,7 +289,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL)),
- 	SPINAND_INFO("W35N02JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x22),
--		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 2, 1, 1),
-+		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 2, 1),
- 		     NAND_ECCREQ(1, 512),
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
- 					      &write_cache_octal_variants,
-@@ -298,7 +298,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL)),
- 	SPINAND_INFO("W35N04JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x23),
--		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 4, 1, 1),
-+		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 4, 1),
- 		     NAND_ECCREQ(1, 512),
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
- 					      &write_cache_octal_variants,
--- 
-2.48.1
+But, I think your commit message may be misleading:
 
+> Most kernel applications utilizing the crypto API operate synchronously
+> and on small buffer sizes, therefore do not benefit from QAT acceleration.
+
+That implies that QAT acceleration *would* be beneficial for kernel applications
+using asynchronous processing, large buffer sizes, or both.
+
+But as far as I know, that hasn't been shown to be true either.  Those things
+would likely make the performance characteristics of the QAT driver less bad,
+but that doesn't necessarily mean it would become better than VAES.  VAES is
+already incredibly fast, and far easier to use.
+
+- Eric
 
