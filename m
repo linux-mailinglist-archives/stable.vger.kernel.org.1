@@ -1,146 +1,101 @@
-Return-Path: <stable+bounces-152603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785AFAD82E5
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 08:02:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AE3AD82F2
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 08:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 082AA7A77ED
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 06:01:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45B273B40EF
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 06:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF11254848;
-	Fri, 13 Jun 2025 06:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438D25486E;
+	Fri, 13 Jun 2025 06:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KQ6FULog"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQrGWcMX"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E61183CA6;
-	Fri, 13 Jun 2025 06:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E35F255F25
+	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 06:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749794561; cv=none; b=Zd574o0WENhJK1WnCoZgAVKoJ/Xs9SSClYjyATgQ9Q7BI7qx0UYZd30TPGgfTA1IOIqNNbmUN+GvbRm44RZSclb4AYLEis6896yQ/Y96iKwmZs7qDuM0GixchD2nwKISsZmn/ZMrdd5Ot53vmySYkbGIZS2LLLZnwL7A6jMjqIM=
+	t=1749794945; cv=none; b=p1msqJsnPjQc0InD7rS19YlFmwrfMwhNpPfypN24Y5/LUzbQDYMWkz1BnbeeNyWVq8bN/2mC6oBqCoKfG/Ck33OvKAthUKVs8W+02aMggK4u33ZFL4Ppv8WUls5w1lsTBA+49ZLEig2MHBa8GKUIvpZO3P9UAqk+XjUGIXM4VFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749794561; c=relaxed/simple;
-	bh=wSh2OKSV2CA+7iXWOs9/JXA+nC2k2MOKfyH6PG71jwg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=owYHSDpEKPjmhVmSKSxlYwY1PV+3YDBaP98UbQV7Xa76/EymYQBA/+q2EP5qBMoNZITTDEx4HGh3hOltGzcGXvGzL/rCQcedqoAt9V+g2KZQZiN6bfX8YZ6Cjydm7FKdRhvw9WWUHWrJRZQgo5SQ492zZzwpmyiYzigwQnjmk6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KQ6FULog; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 55D62I613055176;
-	Fri, 13 Jun 2025 01:02:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1749794538;
-	bh=6+5lF4XbIHB36glldEYa0buQM6Y0o3f7nE1tTSBNNYY=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=KQ6FULogi98z1wXgXQbwsrOSMtLDlQ86S0j8xLpLy+y4N7zvfgekwVxOdsK2KM3XB
-	 EUxznGb65wm8ObGF94TBzgZ+vi+9qFF0QZ809ILCrrMzQwsaUSx5bRVf3guAR+e1dq
-	 meyRRYPD4kZpC0NIuwDXFx/3GV8DCKo3xssyKv7c=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 55D62HJW011196
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 13 Jun 2025 01:02:17 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 13
- Jun 2025 01:02:17 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 13 Jun 2025 01:02:17 -0500
-Received: from [172.24.227.115] (abhilash-hp.dhcp.ti.com [172.24.227.115])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 55D62DBB3120662;
-	Fri, 13 Jun 2025 01:02:13 -0500
-Message-ID: <6dafe9e8-7c94-4b53-80fb-c6807c6cefd2@ti.com>
-Date: Fri, 13 Jun 2025 11:32:12 +0530
+	s=arc-20240116; t=1749794945; c=relaxed/simple;
+	bh=tJ/om+ceomx13bsjFtekyKTo77DmddwBT1kyb/+82QM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=JAzZ0V9rZ/7I6ODcGteYWG8mQ9ClI4Hz3Wiigkbz3Htrk0W12gfXoayFmCaLH6KJW7wiZzyhv0l6byX7W/FAhyM2MCGjtdkeizEO4IH+t8xo5DY7yk/eb1AyCRca063FCd+uAXirFzLCbyq+LdE9pG0YvLWvIcEOflLWYTPZ4+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQrGWcMX; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-607c2b96b29so3643949a12.1
+        for <stable@vger.kernel.org>; Thu, 12 Jun 2025 23:09:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749794942; x=1750399742; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UDLqbXfo+VFjKuPOXyUv0l0VtBaeRhl0TqCgV1xn8U8=;
+        b=MQrGWcMXCgGi4SaJX9IX+o8ugmAj1X7Q3Ti+8Y0/oi4APSUT4UNZOZY+BPJW7R2J/t
+         IXcVqL1zWu2gYZcWmHQaNfTxZl0p2MMD/WwFXaUU6Z8q4gWcOhdDuoV62UDHMEQMRUAo
+         WLBKSClydBBrSpscYImfyoj6S0U6bPzmARJGpILv2ewGzZsgLIhYILncxLVajDaLW41P
+         ROTko3N4Vv9OhxY0XIxpXIaHdtJzD5MLshwXtinnu2zC/P3Mgt7JTIncjcKGy9/gQYYL
+         bKPhhjuHn27l5MhDFUsdZqgfXtjUeZuRMZn/srVFJVI/72FYUF2IJ67WTCgnCazogzcP
+         hqmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749794942; x=1750399742;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UDLqbXfo+VFjKuPOXyUv0l0VtBaeRhl0TqCgV1xn8U8=;
+        b=nMHrpNaBwRZX3soLOn1CKDeVCyWbKD4eplS0VTuaDPiMmIe1qxfe+BzzCGfVauv8To
+         9ABVUXYBm1EYnVo6xu0Q/klDYlhpuNU6cbg9pX4ZdZo2u05HaN7/GwNzs6YjSSMatM5s
+         /nvXd1j3WolWivRhFJ5u+Nf+IESRabi29xZMJQ5PxrALXCQYlyhfqRprRAAJBw6f2goW
+         hTvs3io96smwiu/UQpWHxlGZgkssCR5u5blNkyJm0ccQouI0qegWcZhFPpYMKsu2paUu
+         Uegz2uckhpmbITDivulrCFJVLO9vs/c7NrD3wyp5Af+N/EvaKUNORy9IjTNCNZ0SYqmj
+         UBEw==
+X-Gm-Message-State: AOJu0Yz/zcZxU/T+VTnb+2lIFrlxFY6+t5L9GWxR6no6+DeF+F9GbAIG
+	qpI+9U8QI9VkIkgtKUaLSYX/ttqQQZFdnz2l8RtZN627u7zC7Yk1+ADlCN4n+dajHnpi9NNSqQo
+	pn5LgV6bvotOX/HrKpOD54TB5Nv3u9U+wT+Da
+X-Gm-Gg: ASbGncv7HuILGs3mnuSLs7EPUQ47bh6celhmLGgSpJH99exdL6BFHfeZlFDrft4Ad0d
+	Je4adpQ1Lozk2xiBYU2yGi8eIT1aXxCo624wwfKY/iFEqYkff3VdVVcePs2ZlGONxTTA9i3jqx7
+	zVdeWYZUtcWEji4sNav93ioeFe/gzKtjZLlAtu1SsIfA==
+X-Google-Smtp-Source: AGHT+IFFmjmLTFpuHGicZ6A05E4iGPGBja8GxdWx2Wxgp/UXrXfLFR+mb314vf2iFxqOdeQoQm/+yzb6okBR5Tt2b20=
+X-Received: by 2002:a17:907:da9:b0:ad8:a04e:dbd9 with SMTP id
+ a640c23a62f3a-adec5d21666mr182121866b.31.1749794941795; Thu, 12 Jun 2025
+ 23:09:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] media: ti, cdns: Multiple pixel support and misc
- fixes
-To: Jai Luthra <jai.luthra@ideasonboard.com>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Hans Verkuil <hverkuil@xs4all.nl>,
-        Tomi Valkeinen
-	<tomi.valkeinen@ideasonboard.com>,
-        Sakari Ailus
-	<sakari.ailus@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>
-CC: Devarsh Thakkar <devarsht@ti.com>, Rishikesh Donadkar <r-donadkar@ti.com>,
-        Vaishnav Achath <vaishnav.a@ti.com>,
-        Changhuang Liang
-	<changhuang.liang@starfivetech.com>,
-        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250410-probe_fixes-v2-0-801bc6eebdea@ideasonboard.com>
-Content-Language: en-US
-From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
-In-Reply-To: <20250410-probe_fixes-v2-0-801bc6eebdea@ideasonboard.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+From: Dave Airlie <airlied@gmail.com>
+Date: Fri, 13 Jun 2025 16:08:50 +1000
+X-Gm-Features: AX0GCFsVvJuALPXwwSx8WUfcDeGQDYvg4_C2QkU2GEkjZzqIr0zEH5lbUV60T8Y
+Message-ID: <CAPM=9twiDpukMfKMOqSLXGHDfnQxGFjNnau1_XRt8pueL4MkoQ@mail.gmail.com>
+Subject: two nouveau patches for 6.15 stable
+To: stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Jai,
-Thanks for the patch series.
+Hey,
 
-On 10/04/25 12:18, Jai Luthra wrote:
-> Hi,
-> 
-> The first four patches in this series are miscellaneous fixes and
-> improvements in the Cadence and TI CSI-RX drivers around probing, fwnode
-> and link creation.
-> 
-> The last two patches add support for transmitting multiple pixels per
-> clock on the internal bus between Cadence CSI-RX bridge and TI CSI-RX
-> wrapper. As this internal bus is 32-bit wide, the maximum number of
-> pixels that can be transmitted per cycle depend upon the format's bit
-> width. Secondly, the downstream element must support unpacking of
-> multiple pixels.
-> 
-> Thus we export a module function that can be used by the downstream
-> driver to negotiate the pixels per cycle on the output pixel stream of
-> the Cadence bridge.
-> 
-> Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
-> ---
+Can we please get
 
-For the entire series,
+4570355f8eaa476164cfb7ca959fdbf0cebbc9eb
+Author: Zhi Wang <zhiw@nvidia.com>
+Date:   Thu Feb 27 01:35:53 2025 +0000
 
-Tested-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com> [on AM68SK]
+    drm/nouveau/nvkm: factor out current GSP RPC command policies
 
-> Changes in v2:
-> - Rebase on v6.15-rc1
-> - Fix lkp warnings in PATCH 5/6 missing header for FIELD_PREP
-> - Add R-By tags from Devarsh and Changhuang
-> - Link to v1: https://lore.kernel.org/r/20250324-probe_fixes-v1-0-5cd5b9e1cfac@ideasonboard.com
-> 
-> ---
-> Jai Luthra (6):
->        media: ti: j721e-csi2rx: Use devm_of_platform_populate
->        media: ti: j721e-csi2rx: Use fwnode_get_named_child_node
->        media: ti: j721e-csi2rx: Fix source subdev link creation
->        media: cadence: csi2rx: Implement get_fwnode_pad op
->        media: cadence: cdns-csi2rx: Support multiple pixels per clock cycle
->        media: ti: j721e-csi2rx: Support multiple pixels per clock
-> 
->   drivers/media/platform/cadence/cdns-csi2rx.c       | 76 +++++++++++++++++-----
->   drivers/media/platform/cadence/cdns-csi2rx.h       | 19 ++++++
->   drivers/media/platform/ti/Kconfig                  |  3 +-
->   .../media/platform/ti/j721e-csi2rx/j721e-csi2rx.c  | 66 ++++++++++++++-----
->   4 files changed, 129 insertions(+), 35 deletions(-)
-> ---
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> change-id: 20250314-probe_fixes-7e0ec33c7fee
-> 
-> Best regards,
+a738fa9105ac2897701ba4067c33e85faa27d1e2
+Author: Zhi Wang <zhiw@nvidia.com>
+Date:   Thu Feb 27 01:35:54 2025 +0000
+
+    drm/nouveau/nvkm: introduce new GSP reply policy NVKM_GSP_RPC_REPLY_POLL
+
+Into 6.15 stable they fix a major regression in suspend/resume on nouveau.
+
+Thanks,
+Dave.
 
