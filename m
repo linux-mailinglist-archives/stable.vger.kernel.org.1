@@ -1,198 +1,254 @@
-Return-Path: <stable+bounces-152611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6D1AD8772
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 11:14:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87AEFAD87AB
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 11:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2CA17C07D
-	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 09:14:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E55717B6F7
+	for <lists+stable@lfdr.de>; Fri, 13 Jun 2025 09:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA28279DD4;
-	Fri, 13 Jun 2025 09:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204B5279DA8;
+	Fri, 13 Jun 2025 09:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f7wccNY/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FktldHB0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95C8279DCF
-	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 09:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749806029; cv=none; b=Bg8hU2sUjno0NMa3V93yimRbS4MfFft3Ed/SYFrwtXLRIlzjKKNZ7INoGZmNFzwfERy7JMTInzchvufOXy2UIoTAQmZwT04ulRqiZEcWeF79/Lu79fpDM4qteMWcBOuDY2Fx+0tX3YdL+HV+GETW2T3B3C9ivSKVlCvZfUgmsmI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749806029; c=relaxed/simple;
-	bh=W3o3VkA9R41ABqUB6EM0CchrljGSzF20t0WFgGKvOZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d6tR+sB13Votf5mXn22K8QOFQm498wjZBmH1WCR8IyeyDauBiEHy3cN+QwHEgpno6CCdFxH4gj+s4wG7coKYwc/1592mv2CxL3lTWVt9/az0QaficTdIuJoSGR+p89ggsbL1lcJHRbqqBnxRwTPprgkynu6DqZP3WcPMaqfkoiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f7wccNY/; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-55325956c93so219519e87.1
-        for <stable@vger.kernel.org>; Fri, 13 Jun 2025 02:13:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749806025; x=1750410825; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=23wQo7liyOIk9856bf2K4MBM9HMhUL1JUtFemuTkldE=;
-        b=f7wccNY/mo1VdqoAsmNrgQuBuolRb+ZV6GmiFXxMPaEleWGRrN0xA9mIniAf50vMC0
-         C1cOktm6IMowLci264aokHBCQrC3e7D9khdItZG9uu6YLwK83j84wkL0a8n44QdF9sna
-         wahI+7af3VkU1Hv/60f9rYT1kITzxkLylwj1gGETB9lSxV1b8FYLYDQ0AFjKL0aTWBbC
-         Kzhlkb0B4Wd2D8Wp5bBzwqBKaBKi5ruJ+iO8T5aBEajN3SQ3NCJAXZ1+uOZfBLYe7zDu
-         dw7StTTLLNuM1GHp4TH059yK8roSXaeNZ9iwx5BR32KQFB/ErqpPlK3x8nn0c2/K9Olo
-         QS/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749806025; x=1750410825;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=23wQo7liyOIk9856bf2K4MBM9HMhUL1JUtFemuTkldE=;
-        b=Ju9C6MbRODGSYlPKHRYfEeb/Sw5WIGXRU+j/PeJqRnbJ7dRWfHeZHnAxHORsOb8BEl
-         StVrcoXHckukXLIPz++tPnljTn+R2fGSZ4Lti2bPJfJwykHu+sSXBbZB69gKves/iolZ
-         QZYVv8Q6bgThNR3duUTplJzyE900jA5bjhl/HrCADG1Lr5VWfrjC+k3BLvvaa8CvyB2u
-         IyYanwORPwogqQyIEXRwzUUyPelPaiP2uJw1hg8oZ+89lHdndHodCB1zulXF620tw4JR
-         bt3ECejGi8EdXBLfsNQyoP+rToNjRG7GFHvJB+SzF0/4Am4iX4BgxnULwQDsT7QbRQFP
-         E/Og==
-X-Forwarded-Encrypted: i=1; AJvYcCWxWBaMrtRV/qzfnWxM3MCHjjwFcyTmbJ6xuz+PrOBJzpTQymXlAyUfTFN4WplrD7iAPGmcDi0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYxsqiX8Il0jgtVZG/JZvaInODbCwttXAkySrEQ2R8mtLD8JPO
-	1E4azKub0ZEZ5xZLudJJLdOcfmEySdLbJo3wdlRRIvaUwZ4NIrL780VX2RFxofHBl1SIQBAp6Qm
-	dZ5uA
-X-Gm-Gg: ASbGncs/Rnp8tWFn163ZogpeXpoN5vjBvclfcT3bcXbfBVpfFz1cvYyP4jvGyzAidrl
-	9hR3Y8NJCTxfUNOmE8pslIaFhe7xP94ILpMTW/efOYjX2laHLReNPQT3Tk0atYZUni+LbGF5+M/
-	iIpI4pL2erVPs9flyYPpvo1IdEaTey+GWNJ7WXDnBzfy08VzI0b7UUhjR6r06DuMJHAH3ehfYNQ
-	RG2lseILL2SjpipUm4UwiE5A3OizpGuENtxWQmBaurtI+zf45F8wlWEgFkR4/bpWjn42OhbNvse
-	EjAsO1W2rC9rQlJrTMwQqTD8W9NDhHs2FlxHJTHfDlapoKkoY8JmKRmEhM9xD4JZfRzlvhMegnS
-	P+8UeC+EOIrTnvyjl6/nECzm3MJDcQ+J9Swl+emoH
-X-Google-Smtp-Source: AGHT+IHcu1Xw3nrbZ4W7GCdPuwlEWi04dXVVEXHb+OxqkAVhnop5YBhtxDz/mVa/t2mU+QwfzqVgnw==
-X-Received: by 2002:a05:6512:1591:b0:550:d534:4673 with SMTP id 2adb3069b0e04-553af9b48edmr153841e87.14.1749806024805;
-        Fri, 13 Jun 2025 02:13:44 -0700 (PDT)
-Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ae234437sm267196e87.53.2025.06.13.02.13.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jun 2025 02:13:44 -0700 (PDT)
-Message-ID: <c90a5fd3-f52e-4103-a979-7f155733bb59@linaro.org>
-Date: Fri, 13 Jun 2025 12:13:42 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CDD19049B
+	for <stable@vger.kernel.org>; Fri, 13 Jun 2025 09:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749806499; cv=fail; b=XF3m2vhXb91sU8THuPP6W0RLRITp715x8/JkWK4CkMdVkK4x6422gtoJvt2XW+7IKaYCnrfpakvCjyoFLPtEja/OVJpMS4oVeDjaILK0hsNC9nVk7rEc3O3hufnM2/nVzrLUdu7vjvRjDE5zcGxQmKd1X/2+URW+nwviKujIXgk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749806499; c=relaxed/simple;
+	bh=Zjinwn4XO9d2tOyOzyAO8ymEdV10jRZjUBBKdxnFtVg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Me9mium13DIIb7Op63/a/IibfniiviW6WzElPl1Q5243+LDbz5j/kD72PJPUVOzhZZNKe71zm/yiFcJ55edL7mnfQFyZaoNJtEtfdELGeP3+NLVBlyBCEH71QTo6mb2r5K7SwNlwX90FSBiGamB6upuI/0ejeDpPIW1dQuVD32A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FktldHB0; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749806498; x=1781342498;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Zjinwn4XO9d2tOyOzyAO8ymEdV10jRZjUBBKdxnFtVg=;
+  b=FktldHB0Q+JUz61821NpL6RhygrcYX70FNLrklSehi/Q0Pjr1pZUlaES
+   DkQMdInFyOzJeE+m/WnZMkbXW9zzg64qT5FXdrHXYKKI96re5hbhWq6oZ
+   qiNUwOzDZ6rwTwbmMIaU3A9mOQAwToeWLxTJE+ncXEV57O37/A3N3Uvhi
+   pXfr/b4pIlmPyQ1lnO2A6cVxVasOEZcCEYnHem3fzjkq7elUdOqNpHAgc
+   +48mlk0pkWqNhkpmjrpeYoo5Np228aixc3q5iPCLsmJZHonH7saMjAdwE
+   fJmDFBN5AHpYWenKtOp7sLou8IaDSzVK/pGaeQSs3dPSHVPTIXjhXQ2tv
+   g==;
+X-CSE-ConnectionGUID: SvNo6dSxTU+PcJgipo1U1A==
+X-CSE-MsgGUID: nzbokzpDQxupDa0rGN8Upg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11462"; a="52112435"
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
+   d="scan'208";a="52112435"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 02:21:38 -0700
+X-CSE-ConnectionGUID: W10zS2y2SIqS75Qz3sFxaw==
+X-CSE-MsgGUID: hogS5q5JRg6fkn2tW+ricA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,233,1744095600"; 
+   d="scan'208";a="153069811"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2025 02:21:37 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 13 Jun 2025 02:21:37 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Fri, 13 Jun 2025 02:21:37 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (40.107.244.62)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 13 Jun 2025 02:21:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VaiIS+c/QsYB8GXnJZm8Er6GAZaSmmSraPBu5MSTGi6g2+1ReeGdARKr5yDxWHMlBuw1G1Q8H4YRrloL9ZyquMm9rh2wJDkEw/kESZtgp1iQPQq/MccUDKTqYwTt6Ly5bbntNZXmHHATb/U3f5kKAezKN2qaLIs1yex4fBAEV7CyKy7G2VVOUSg/OF+S3y3Pq6K19rTWkui3VzNgkVWtHlX4YkMy5oB5Tl78BxNNQYn2XIfYJVCKuqtR2Kj5taWdCF9NRB9p+BheKTxAkzaMyDSsilnkr9UIddVozuWbFYLu0sCgEol9vCrXCJUg+UnxZWUIA/mULosPpo8gsjjY8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aLpP3Wn8tJOreRnp4f1UkeHtW1S4f/ogAEF1JEwbjFE=;
+ b=oYoCAXw3qssA54ptiswQDs5aGQSiVqcYoWyQrmAjt38PCz9mjy4BPebVngoNoVxgJa9/gmqeIirKdFkWOsXb8vXYMA4oqO6IzVJSwl6o/D0Kg9oFyUCQYNTWxfE0SX4e1xsxG1KegNrJ7t4j1p6lD0alZAE5HLZQgr1adTvY7XztgaUmeMi66bQSLaXz/EJnUaJncSGNORO2lK7puDqnkhmzRZoJ2W7EAePDVBA+PC6zhuHmp3EGncyuaPsBYJALc19bBJHHTcpCUtTUJGFxUDrugiwXvWlnwDyGWCkB5t+Vst8ajZj1U+1lE2BCMmvc95qFOKe5ulKNjmJtTcA//A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f13) by SJ5PPFC295640A5.namprd11.prod.outlook.com
+ (2603:10b6:a0f:fc02::852) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.18; Fri, 13 Jun
+ 2025 09:21:30 +0000
+Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
+ ([fe80::9c2a:ba60:c5fe:6a64]) by DM3PPF208195D8D.namprd11.prod.outlook.com
+ ([fe80::9c2a:ba60:c5fe:6a64%4]) with mapi id 15.20.8813.020; Fri, 13 Jun 2025
+ 09:21:29 +0000
+From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+	"intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+CC: "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] drm/i915/snps_hdmi_pll: Fix 64-bit divisor truncation by
+ using div64_u64
+Thread-Topic: [PATCH] drm/i915/snps_hdmi_pll: Fix 64-bit divisor truncation by
+ using div64_u64
+Thread-Index: AQHb3Cu1Vg6oqALM2kOByIvenE4nRLQA0J6A
+Date: Fri, 13 Jun 2025 09:21:29 +0000
+Message-ID: <DM3PPF208195D8D7AE02DFC41F677A44511E377A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+References: <20250613061246.1118579-1-ankit.k.nautiyal@intel.com>
+In-Reply-To: <20250613061246.1118579-1-ankit.k.nautiyal@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|SJ5PPFC295640A5:EE_
+x-ms-office365-filtering-correlation-id: 52710789-c52b-4ca4-1824-08ddaa5badf8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018|7053199007;
+x-microsoft-antispam-message-info: =?us-ascii?Q?PL5NlEzjh+zuee8uxdQ7Tbtju22pUC5gqEmV7JC0nAW2sKim9HA4XL+8eAKd?=
+ =?us-ascii?Q?iaQenqJEry1w4bBp4E8GVnvxkRbYoX9XuzMjwgTfX51Gis4RKfuKwHQJpeSV?=
+ =?us-ascii?Q?W9MKhR7ML/ATbjFTknQSWVvuHN1fgivNsTE/bu17sP2FL/E/Q6E//7DEVYDF?=
+ =?us-ascii?Q?srdw5BHrFHphchpUxeiaDCxHyAoqPoJIdRZjyRvnQAypcpAL6w/UBYRd8tjW?=
+ =?us-ascii?Q?mjyGXMjHAjHLOguPgP/ttQ6gEFv2sYozHZcVumwIUJkSdeq/UZg5kgbD13un?=
+ =?us-ascii?Q?SJrisZkFeVby+ZKvdM/XtffCKE6aPaMpexcu1cPtPdQMISA2BOPQt6pVTsa6?=
+ =?us-ascii?Q?3+0QJVF8+MWt/Sqn6kXL/atMEOqTYN7BU6mdeZ9zO8kb3wx/W1PFGSzI8sSb?=
+ =?us-ascii?Q?nxzOG9/psR/97HQFu3pO8hrMreJsp0mrqhjMetWtFCrD5TCUO0spYzdZf1qF?=
+ =?us-ascii?Q?qZl+mo0kMpGePywZ0Wl4IBvR00W67Zc6KN+NIVR+x9pLseEf0oEx8+/O+Mwe?=
+ =?us-ascii?Q?LKrsKF0ZifGuSxXVaq253d2gLWv9BQNqyFWA+viZfoQlce8l6Ph9/5d7sTEF?=
+ =?us-ascii?Q?JujgXY4Cw4jd7suqRI5WA2vMtxH1eobVTQQHuj2hYfrEq2M/G7Kce0H/sV1Q?=
+ =?us-ascii?Q?1k+fuhXyLE4cWaOPd3Se5dshmiXpjq+SM02Q3vFhFDgSokSWudMauOV0IX0H?=
+ =?us-ascii?Q?dD+fXHlZ+FedZk8tKHuhaD50nz9qNob4lLpnoQ5DMDF3annmLCBXLd9JGccd?=
+ =?us-ascii?Q?W/Tzmy3DEIrmcVf3VxgAY2S0dxgjcFUUkXmtbYH8MkKtuGa3fJ4yw8VCc0M9?=
+ =?us-ascii?Q?eWjKQl8Lzp+qea+t5sgJoChA9cEQ6AaXVLmokSvZ7BJKjm8ZlduCO4WABse6?=
+ =?us-ascii?Q?ImKCXPmBdgpLfsdx1Rn/Mdi92b/lOJqAyngaqDYazn8U7L4PgAToqDi+JneM?=
+ =?us-ascii?Q?x7ubleAaKnpYrkerk6HZ/hDXE4ASN4F8lUzWwTeFy//taeW0bJCCGiZD9d/E?=
+ =?us-ascii?Q?3eQTgV0lrLoRJUeQTctOa0jVLvT2wHPMugUme1P4jvi8Lbkht5KMeU2IJNlE?=
+ =?us-ascii?Q?BYrgyP9+EhtkQ6hZ6c5yQHjZOHqaHykPhBwVcXrKQcyguY3vwDYCYXaCMt7k?=
+ =?us-ascii?Q?7POFF/UQuUo/VRA06JXvzUO16dUIEqRnypH8NZ37xh+0b/Z3LmjU7JE9xMVs?=
+ =?us-ascii?Q?2FFjzeEf8cLi0q7eGr2CvE1efxwXkcdXXhO4b2r2tI8xhyVMjKKecAEIgpXr?=
+ =?us-ascii?Q?nNv0Y/ZOzg+VYWoYauR70k5S2LV3rqpJlbgIKO5c6MDfoYwlZ0qnrCSMtSxr?=
+ =?us-ascii?Q?57XXIedm+cMSV8XkUOfdx/XGQ73hwsHu78g+ttPqKx8QqrJdP+3vHOhexfcp?=
+ =?us-ascii?Q?lOBufiEUYFuAsHbckwOSbzr5MTHNKh6oEP5LcKXKKMV1Pf0xDf3O/jr4RU7J?=
+ =?us-ascii?Q?h/U8iS5HZARWBQptCN7SXbueOxjiCOWnpg7K3Ilcd+xiJ+CTwSSbKJYfcNKn?=
+ =?us-ascii?Q?4Y+8WPNPQ97sxCY=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PPF208195D8D.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018)(7053199007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NLXrgLtkhUjtTyD6uhr9GgsJRAQOTHRwv+vEmPNpEqYWdpfhu/EbDz+cYl7N?=
+ =?us-ascii?Q?s7/lau15lq/+Qqd+Esl/tDDbz01qMWnbzZS0ScKjhrtXJyOxeqNeewWPBG/o?=
+ =?us-ascii?Q?Q7SSSd84miuDKNkvi9SsAJd7b4TIUwaBDjFyUR54hHDgRvOX1dVKXgN2TD/p?=
+ =?us-ascii?Q?s2nYFYkyt90XeGpz21ANa6InEXQZ6sUaeH5XgnM3RED6qYqiNjFFK47q5cgN?=
+ =?us-ascii?Q?EN1GU4VEEXFtUavrZlc2TA5pGTBkQt251nVj3nrUrRF2AQewRjFodO+JYskN?=
+ =?us-ascii?Q?CdHmDjRCJAiN8DRnWl+v4eFGZ4TT55ydCHoU2tbtHzWO1qcIRphgQWCxBnj3?=
+ =?us-ascii?Q?4/7pHLKIj2uqj6NjAFxYTm0NXVPQ0GqXgDQvhrXbnF8sF8E5c+jMh+6o5Xhr?=
+ =?us-ascii?Q?c14HJrVTLMo+Xt+9BYR5nEkCUQj6YQXVA/M/We8wkgpCWsRRj4TZ9nbKR5ZP?=
+ =?us-ascii?Q?wv4cBnFXdw+TJ9HBt8z1+0AMj0liOK91eJjese3ey9dDLonIq4rcB3TsTtXq?=
+ =?us-ascii?Q?auCJ69Jxaw3fb/WE5ikvSfMslwKZo5kCQwSBOh+fE6gZipHtQvuZ08rEixvN?=
+ =?us-ascii?Q?yItlUAv49fKqmxDyLAas9rjuw4pB1qmY6yzo2TafIDnEb65tdiH6V4E4zHau?=
+ =?us-ascii?Q?kLrzb4L3lbxR+2NBYRVoA7b+wgFeQd70f8P5MXdyh3NaGu7bTnqdt8UBG1wT?=
+ =?us-ascii?Q?bPpcMHsuiUlG2wrLCViupQMvdcMBLQTb5uLK51xM43UTUW7lwihv9LprNHUF?=
+ =?us-ascii?Q?Ejev2obJSlF2wS1K1P04fjyCgMfxvX+GVAnEa9aSpjwoKXlwN9JIFY8MGQl0?=
+ =?us-ascii?Q?dXv0J+Y0xWwWlEHVCsWYa2p2tZ3RfP9otEVrucHk5I1Ae6OOBjECXzCJlgkK?=
+ =?us-ascii?Q?1CaEcPKCfPv5WrrzxY57oxq5KViXwEtO8lf68IBg9JCNI2tF3RK2QGtzqf9u?=
+ =?us-ascii?Q?Mu2uosadAwtgT2o3QLofJ1+iU2LqtpagTjmISo4imyQP9aQDyR9vByOfxFKA?=
+ =?us-ascii?Q?E+kko/wwHEdwUwyNmWZAxzb7cSqYEzr8LD3bIHTbtmxarb4xmSaKeljq+Tcj?=
+ =?us-ascii?Q?oFtrx33V9R2OvSH6K4tSCy1ojTss/orvTekzHHci0L4E9tHW/shqjZzulggf?=
+ =?us-ascii?Q?dLOOaIJjvGbE+KAjhWVbEgIG4HFHEDBJ/1VsAthZx2i2o4BUytBP5zu/ej5Z?=
+ =?us-ascii?Q?YdOwnbL2u01b43zzzz6hqVGr8fSj04s216Wnjq8NTrIYy2AkRTh93zSAAQ2B?=
+ =?us-ascii?Q?gLPL8T21/VUSBpb1QnOjp1lNUfVKydfPJ18QilLp9ms8ZHNbT5jCR5x42RTH?=
+ =?us-ascii?Q?rUbWIFFY3iHFv64BTVl8xdXuvDgVWltXFnUYNr4V2dyf3ZMmG9AZxRLCTVq5?=
+ =?us-ascii?Q?7/A9ZGEYcxr9j1h+cjXOajiGyPj+mNgzYaZZPL/V7fN5nqMbsZh7q4wAy0FR?=
+ =?us-ascii?Q?E/WlAxep1aPHFcK11igLGIHGC6kDEYjtH0qHmKl9qRgRdNz/9y2rkzv66JjC?=
+ =?us-ascii?Q?adaK8E2bfKq38PyVZ3CCjMkW2ute6xt1UpvI7Fp4kZmC9y2UgtR+t/Y/XbyW?=
+ =?us-ascii?Q?lyCs1+zkAadop/+RsBJOGO+Mrt9q7aqY5jATgWdR?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] media: qcom: camss: vfe: Fix registration sequencing
- bug
-Content-Language: ru-RU
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Depeng Shao <quic_depengs@quicinc.com>,
- Hans Verkuil <hans.verkuil@cisco.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Johan Hovold <johan+linaro@kernel.org>
-References: <20250612-linux-next-25-05-30-daily-reviews-v1-0-88ba033a9a03@linaro.org>
- <20250612-linux-next-25-05-30-daily-reviews-v1-2-88ba033a9a03@linaro.org>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20250612-linux-next-25-05-30-daily-reviews-v1-2-88ba033a9a03@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 52710789-c52b-4ca4-1824-08ddaa5badf8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2025 09:21:29.3846
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: T18wtKScTXuWD8q3b+Nl3mms/tO/MR39T4yJKu3esWLkiuh/AV3yBhf8jsfusJGMTT1O2YWLpZ/ro9q4qWaLcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFC295640A5
+X-OriginatorOrg: intel.com
 
-Hi Bryan.
 
-On 6/12/25 11:07, Bryan O'Donoghue wrote:
-> msm_vfe_register_entities loops through each Raw Data Interface input line.
-> For each loop we add video device with its associated pads.
-> 
-> Once a single /dev/video0 node has been populated it is possible for
 
-Here is a typo, /dev/video0 should be replaced by something like /dev/videoX.
+> -----Original Message-----
+> From: Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>
+> Sent: Friday, June 13, 2025 11:43 AM
+> To: intel-gfx@lists.freedesktop.org
+> Cc: intel-xe@lists.freedesktop.org; Kandpal, Suraj <suraj.kandpal@intel.c=
+om>;
+> jani.nikula@linux.intel.com; stable@vger.kernel.org
+> Subject: [PATCH] drm/i915/snps_hdmi_pll: Fix 64-bit divisor truncation by
+> using div64_u64
+>=20
+> DIV_ROUND_CLOSEST_ULL uses do_div(), which expects a 32-bit divisor.
+> When passing a 64-bit constant like CURVE2_MULTIPLIER, the value is silen=
+tly
+> truncated to u32, potentially leading to incorrect results on large divis=
+ors.
+>=20
+> Replace DIV_ROUND_CLOSEST_ULL with div64_u64(), which correctly handles
+> full 64-bit division. Since the result is clamped between
+> 1 and 127, rounding is unnecessary and truncating division is sufficient.
+>=20
+> Fixes: 5947642004bf ("drm/i915/display: Add support for SNPS PHY HDMI PLL
+> algorithm for DG2")
+> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.15+
+> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-> camss_find_sensor_pad to run. This routine scans through a list of media
-> entities taking a pointer pad = media_entity->pad[0] and assuming that
-> pointer is always valid.
-> 
-> It is possible for both the enumeration loop in msm_vfe_register_entities()
-> and a call from user-space to run concurrently.
+LGTM,
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 
-Here comes my insufficient understanding, please explain further.
+> ---
+>  drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
+> b/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
+> index 74bb3bedf30f..ac609bdf6653 100644
+> --- a/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
+> +++ b/drivers/gpu/drm/i915/display/intel_snps_hdmi_pll.c
+> @@ -103,8 +103,8 @@ static void get_ana_cp_int_prop(u64 vco_clk,
+>  			    DIV_ROUND_DOWN_ULL(curve_1_interpolated,
+> CURVE0_MULTIPLIER)));
+>=20
+>  	ana_cp_int_temp =3D
+> -
+> 	DIV_ROUND_CLOSEST_ULL(DIV_ROUND_DOWN_ULL(adjusted_vco_cl
+> k1, curve_2_scaled1),
+> -				      CURVE2_MULTIPLIER);
+> +		div64_u64(DIV_ROUND_DOWN_ULL(adjusted_vco_clk1,
+> curve_2_scaled1),
+> +			  CURVE2_MULTIPLIER);
+>=20
+>  	*ana_cp_int =3D max(1, min(ana_cp_int_temp, 127));
+>=20
+> --
+> 2.45.2
 
-Per se this concurrent execution shall not lead to the encountered bug,
-both an initialization of media entity pads by media_entity_pads_init()
-and a registration of a v4l2 devnode inside msm_video_register() are
-done under in a proper sequence, aren't they?
-
- From what I read there is no bug stated.
-
-> Adding some deliberate sleep code into the loop in
-> msm_vfe_register_entities() and constructing a user-space program to open
-> every /dev/videoX node in a tight continuous loop, quickly shows the
-> following error.
-> 
-> [  691.074558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
-> [  691.074933] Call trace:
-> [  691.074935]  camss_find_sensor_pad+0x74/0x114 [qcom_camss] (P)
-> [  691.074946]  camss_get_pixel_clock+0x18/0x64 [qcom_camss]
-> [  691.074956]  vfe_get+0xc0/0x54c [qcom_camss]
-> [  691.074968]  vfe_set_power+0x58/0xf4c [qcom_camss]
-> [  691.074978]  pipeline_pm_power_one+0x124/0x140 [videodev]
-> [  691.074986]  pipeline_pm_power+0x70/0x100 [videodev]
-> [  691.074992]  v4l2_pipeline_pm_use+0x54/0x90 [videodev]
-> [  691.074998]  v4l2_pipeline_pm_get+0x14/0x20 [videodev]
-> [  691.075005]  video_open+0x74/0xe0 [qcom_camss]
-> [  691.075014]  v4l2_open+0xa8/0x124 [videodev]
-> [  691.075021]  chrdev_open+0xb0/0x21c
-> [  691.075031]  do_dentry_open+0x138/0x4c4
-> [  691.075040]  vfs_open+0x2c/0xe8
-> [  691.075044]  path_openat+0x6f0/0x10a0
-> [  691.075050]  do_filp_open+0xa8/0x164
-> [  691.075054]  do_sys_openat2+0x94/0x104
-> [  691.075058]  __arm64_sys_openat+0x64/0xc0
-> [  691.075061]  invoke_syscall+0x48/0x104
-> [  691.075069]  el0_svc_common.constprop.0+0x40/0xe0
-> [  691.075075]  do_el0_svc+0x1c/0x28
-> [  691.075080]  el0_svc+0x30/0xcc
-> [  691.075085]  el0t_64_sync_handler+0x10c/0x138
-> [  691.075088]  el0t_64_sync+0x198/0x19c
-> 
-> Taking the vfe->power_lock is not possible since
-> v4l2_device_register_subdev takes the mdev->graph_lock. Later on fops->open
-> takes the mdev->graph_lock followed by vfe_get() -> taking vfe->power_lock.
-
-It's unclear what is the connection between the issue and a call to
-v4l2_device_register_subdev(), the latter is related to /dev/v4l-subdevX
-devnodes, but all way above the talk was about /dev/videoX devnodes, no?
-
-> Introduce a simple enumeration_complete bool which is false initially and
-> only set true once in our init routine after we complete enumeration.
-
-It might be a fix (what is the bug actually? it's still left unexplained)
-at the price of the machine state complification, a much better fix would
-be not to create and expose a non-ready /dev/videoX devnode by calling
-video_register_device() too early.
-
-> 
-> If user-space tries to interact with the VFE before complete enumeration it
-> will receive -EAGAIN.
-
-It sounds like a critical change in the kernel to userspace ABI of open(2)
-syscall for CAMSS V4L2 devnodes, unfortunately... EAGAIN could be received,
-if open() is called with O_NONBLOCK flag, otherwise the syscall shall be
-blocked.
-
-I believe a completion of media device entities/pads registration before
-creating a devnode should solve all the issues in a proper way.
-
-> Cc: stable@vger.kernel.org
-> Fixes: 4c98a5f57f90 ("media: camss: Add VFE files")
-> Reported-by: Johan Hovold <johan+linaro@kernel.org>
-> Closes: https://lore.kernel.org/all/Zwjw6XfVWcufMlqM@hovoldconsulting.com
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
---
-Best wishes,
-Vladimir
 
