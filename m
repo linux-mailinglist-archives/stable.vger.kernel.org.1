@@ -1,181 +1,86 @@
-Return-Path: <stable+bounces-152639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED7BAD98FE
-	for <lists+stable@lfdr.de>; Sat, 14 Jun 2025 02:13:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C752AD9979
+	for <lists+stable@lfdr.de>; Sat, 14 Jun 2025 03:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AD243BC252
-	for <lists+stable@lfdr.de>; Sat, 14 Jun 2025 00:12:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F152D7AC9EB
+	for <lists+stable@lfdr.de>; Sat, 14 Jun 2025 01:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52D61C32;
-	Sat, 14 Jun 2025 00:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9872A1AA;
+	Sat, 14 Jun 2025 01:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QiQPAGtO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="o4wUnS8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8679110F2;
-	Sat, 14 Jun 2025 00:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECC62E11CF;
+	Sat, 14 Jun 2025 01:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749859975; cv=none; b=HT5JTJAhpzoV0IKIxPsmiPP84BSUtQ8T408rSY65GlQduqdMqgw4D+K/OW7JJoQNyPwqYfNJiLbZRLGNrD1Lfz/RKxujVI5qDiDDeW50z0430/VXUyhNkUXytPHMqNM+/gBsNxlf/ZCdpcf4mf9pwgEAG5kzfF0sK9dHKeQX49c=
+	t=1749864688; cv=none; b=MoTjOqfwEyzo4YJDH/UuNC3xf15RJGwtwWlajqoBXa2owr34idu1eQGQV/mxAMJJ4qN/ktv9otVErNwK3KO2fOodXk6PoNuJtap5Ipe9Jcb4U43wHgnRc9dpbDN6y/GL0SQfSXMyHCB9okeFexgRNIVc7mPsryrpVZLo5q62ReY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749859975; c=relaxed/simple;
-	bh=IJc5ZHfOGeimAjOuGu5s+foh+4ke5TY1mqPm/hhKO7k=;
-	h=Date:To:From:Subject:Message-Id; b=deUjtZAd6skbtNHZivEE73UPCwq9NEGOQCvju0GtuMa/k2TD+NxK3utMK2wlULXBUGzNBIzXkECXV387C/gWwU3Quz5uBLoZd56abI3l46T0wgQuaxnsOjQdBzqN/cQG485Itu/44a/Fy9wRR9BWIV6O1VyKCdBvGTp/SWoXT6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QiQPAGtO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C31C4CEE3;
-	Sat, 14 Jun 2025 00:12:54 +0000 (UTC)
+	s=arc-20240116; t=1749864688; c=relaxed/simple;
+	bh=D0at5//Awrh06HYuevfzb4zRyl2X0q3tzcu+Lc0TD4A=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=mpXWoMP3xV15n76sx2+baFVBWY1jfQ2ZBFpUOS8TIR1wEd7NayKCgy1omAOdfcaGSW+yMfWXugqvC7tZjYJhTyTOYDB2acrRmUUEPUEsQ4DnE0JZ6mb8HVuAb9rt/ikAGoskXVbIFrjXSYzXw6M5Uh51ZOWpygADlKjjoDg8fHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=o4wUnS8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A24C4CEE3;
+	Sat, 14 Jun 2025 01:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1749859975;
-	bh=IJc5ZHfOGeimAjOuGu5s+foh+4ke5TY1mqPm/hhKO7k=;
-	h=Date:To:From:Subject:From;
-	b=QiQPAGtO8ZdjKoGwSSsK3D6ZNBg7FCrrRHkdf24kY/2va9pgGI3OfgmImTjsjVqYK
-	 3WMHgH5AdeMEi7ULUyjRylc5gjkO+bpxFHaom3WwLZnPUQDjQZ1ynhkXvTe9pX8IEo
-	 8d3MbO08jh0Lqiao9sU9qh8Rf60MnucoAoGrq9Ug=
-Date: Fri, 13 Jun 2025 17:12:54 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,ryan.roberts@arm.com,rppt@kernel.org,osalvador@suse.de,npache@redhat.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,jgg@nvidia.com,dev.jain@arm.com,dan.j.williams@intel.com,baolin.wang@linux.alibaba.com,apopple@nvidia.com,david@redhat.com,akpm@linux-foundation.org
+	s=korg; t=1749864687;
+	bh=D0at5//Awrh06HYuevfzb4zRyl2X0q3tzcu+Lc0TD4A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=o4wUnS8G3zUU2+8wmH8J2wfk9no5dUui43QE5ExzG8iXlMm/IzTo2mDiafSjMZdGQ
+	 H4tQW9iWokIuNVc0GXuM7a1xQJhjBHdtrSgPzMBIwVd/IXmpmh22CTyLtFlnenfWm8
+	 v/NBXMA96kTlcx8s4UPLo3a2QnP0F7IEMn374JIE=
+Date: Fri, 13 Jun 2025 18:31:26 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch added to mm-unstable branch
-Message-Id: <20250614001255.04C31C4CEE3@smtp.kernel.org>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: Robert Pang <robertpang@google.com>, corbet@lwn.net, colyli@kernel.org,
+ kent.overstreet@linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-bcache@vger.kernel.org,
+ jserv@ccns.ncku.edu.tw, stable@vger.kernel.org
+Subject: Re: [PATCH 0/8] Fix bcache regression with equality-aware heap APIs
+Message-Id: <20250613183126.9bd25d84b912f18c249bb010@linux-foundation.org>
+In-Reply-To: <aEyyF9SsTGguEBGd@visitorckw-System-Product-Name>
+References: <20250610215516.1513296-1-visitorckw@gmail.com>
+	<20250611184817.bf9fee25d6947a9bcf60b6f9@linux-foundation.org>
+	<aEvCHUcNOe1YPv37@visitorckw-System-Product-Name>
+	<CAJhEC05+0S69z+3+FB2Cd0hD+pCRyWTKLEOsc8BOmH73p1m+KQ@mail.gmail.com>
+	<20250613110415.b898c62c7c09ff6e8b0149e9@linux-foundation.org>
+	<aEyyF9SsTGguEBGd@visitorckw-System-Product-Name>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On Sat, 14 Jun 2025 07:19:51 +0800 Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
 
-The patch titled
-     Subject: mm/huge_memory: don't ignore queried cachemode in vmf_insert_pfn_pud()
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch
+> Sure, I'll prepare a revert patch to address the issue and plan to
+> submit it for backporting to -stable.
+> 
+> However, I'd like to confirm whether the following patch series
+> structure would be appropriate:
+> 
+> - Patch 1: Revert 866898efbb25 and CC it to stable
+> - Patch 2–8: Introduce the new equality-aware heap API
+> - Patch 9: Revert Patch 1 and switch bcache to use the new API
+> 
+> In this case, we would only backport Patch 1 to stable.
+> 
+> Alternatively, would you prefer we simply revert 866898efbb25 without
+> introducing and using the new API in the same series?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch
-
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: David Hildenbrand <david@redhat.com>
-Subject: mm/huge_memory: don't ignore queried cachemode in vmf_insert_pfn_pud()
-Date: Fri, 13 Jun 2025 11:27:00 +0200
-
-Patch series "mm/huge_memory: vmf_insert_folio_*() and
-vmf_insert_pfn_pud() fixes", v3.
-
-While working on improving vm_normal_page() and friends, I stumbled over
-this issues: refcounted "normal" folios must not be marked using
-pmd_special() / pud_special().  Otherwise, we're effectively telling the
-system that these folios are no "normal", violating the rules we
-documented for vm_normal_page().
-
-Fortunately, there are not many pmd_special()/pud_special() users yet.  So
-far there doesn't seem to be serious damage.
-
-Tested using the ndctl tests ("ndctl:dax" suite).
-
-
-This patch (of 3):
-
-We set up the cache mode but ...  don't forward the updated pgprot to
-insert_pfn_pud().
-
-Only a problem on x86-64 PAT when mapping PFNs using PUDs that require a
-special cachemode.
-
-Fix it by using the proper pgprot where the cachemode was setup.
-
-It is unclear in which configurations we would get the cachemode wrong:
-through vfio seems possible.  Getting cachemodes wrong is usually ... 
-bad.  As the fix is easy, let's backport it to stable.
-
-Identified by code inspection.
-
-Link: https://lkml.kernel.org/r/20250613092702.1943533-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20250613092702.1943533-2-david@redhat.com
-Fixes: 7b806d229ef1 ("mm: remove vmf_insert_pfn_xxx_prot() for huge page-table entries")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Tested-by: Dan Williams <dan.j.williams@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Mariano Pache <npache@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/huge_memory.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
---- a/mm/huge_memory.c~mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud
-+++ a/mm/huge_memory.c
-@@ -1516,10 +1516,9 @@ static pud_t maybe_pud_mkwrite(pud_t pud
- }
- 
- static void insert_pfn_pud(struct vm_area_struct *vma, unsigned long addr,
--		pud_t *pud, pfn_t pfn, bool write)
-+		pud_t *pud, pfn_t pfn, pgprot_t prot, bool write)
- {
- 	struct mm_struct *mm = vma->vm_mm;
--	pgprot_t prot = vma->vm_page_prot;
- 	pud_t entry;
- 
- 	if (!pud_none(*pud)) {
-@@ -1581,7 +1580,7 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_
- 	pfnmap_setup_cachemode_pfn(pfn_t_to_pfn(pfn), &pgprot);
- 
- 	ptl = pud_lock(vma->vm_mm, vmf->pud);
--	insert_pfn_pud(vma, addr, vmf->pud, pfn, write);
-+	insert_pfn_pud(vma, addr, vmf->pud, pfn, pgprot, write);
- 	spin_unlock(ptl);
- 
- 	return VM_FAULT_NOPAGE;
-@@ -1625,7 +1624,7 @@ vm_fault_t vmf_insert_folio_pud(struct v
- 		add_mm_counter(mm, mm_counter_file(folio), HPAGE_PUD_NR);
- 	}
- 	insert_pfn_pud(vma, addr, vmf->pud, pfn_to_pfn_t(folio_pfn(folio)),
--		write);
-+		       vma->vm_page_prot, write);
- 	spin_unlock(ptl);
- 
- 	return VM_FAULT_NOPAGE;
-_
-
-Patches currently in -mm which might be from david@redhat.com are
-
-mm-gup-revert-mm-gup-fix-infinite-loop-within-__get_longterm_locked.patch
-mm-gup-remove-vm_bug_ons.patch
-mm-gup-remove-vm_bug_ons-fix.patch
-mm-huge_memory-dont-ignore-queried-cachemode-in-vmf_insert_pfn_pud.patch
-mm-huge_memory-dont-mark-refcounted-folios-special-in-vmf_insert_folio_pmd.patch
-mm-huge_memory-dont-mark-refcounted-folios-special-in-vmf_insert_folio_pud.patch
-
+Yes, just the revert for now, please.  Let's not make that dependent on
+new development.
 
