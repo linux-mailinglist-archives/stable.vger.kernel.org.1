@@ -1,245 +1,237 @@
-Return-Path: <stable+bounces-152651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17705ADA108
-	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 06:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AD7ADA11C
+	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 07:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AABE7170E30
-	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 04:53:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CD7171F26
+	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 05:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5DC2367D5;
-	Sun, 15 Jun 2025 04:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33381A5BA0;
+	Sun, 15 Jun 2025 05:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ho4jYYIK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnnqJR8Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270B41BC3F;
-	Sun, 15 Jun 2025 04:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5626B7E1;
+	Sun, 15 Jun 2025 05:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749963226; cv=none; b=P9fC6RKlZ6sgvT+5vmgc+pPweoe9ME9oIKjZXprGqKm/vlyF1j2AknBF7mEE/LO/nsnHG2lTVYm9MkUZS+4Bl24qDnd7PSyarEiCQGQ/bRXyeYvK42jUXkN/SkOKOQ39Hkgcg40l1c3sKNhObuXcx+jp0bXvldXDoXCZDTU04ZI=
+	t=1749966669; cv=none; b=ndOr9NOCJrQDFyt+c+TAznEJkyAegOhxBe2LBhT4+trna+C2m6gp/g8iBlnk+myw+qVoXdH1723nXYYhgL2OMBKDv4CU8aFvMrHudbUhMTJBu09XGqR7FfNZ0cdd8790X8APw3C6227pNda2ofnm5pMLPXIX9cM9qys12IeIuBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749963226; c=relaxed/simple;
-	bh=jKskpqcoXOguF1H1TjZ0pWmBZVDnOT0/xNqcoD0cSAE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cop3fA0Y+VmkDss/3wxik55bKeBb8btHH/9XKnr48c0Ck0d+935PoyeOiRkdJHqwqDHT1YTH2on5ZpOnpZzwPD7/sh/u7nEGrCk0RW/6xM6W7z5LuT6J2/c4UetT9i0PXF3QYTb2CBcfG6mgpGXwtgoxsw8ftpN9yzEMvtNftDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ho4jYYIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560C4C4CEE3;
-	Sun, 15 Jun 2025 04:53:45 +0000 (UTC)
+	s=arc-20240116; t=1749966669; c=relaxed/simple;
+	bh=6N+nJohxUYmU9dyQImiIi5I7duGmVAsXiiFmutRJHZM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QWg+tu5ncM7XzdIeF/LmM9NmW1qouEX77DZiNBESLpH/qHQ7siXTUM41DlPpShJLgje+afhDYdnwwW61giBChHViFiAfNG2UfbP0+MrU5fP7qzHXgomVBIS0QCGKvdR/w4KCSOIWb/djuHoABiN1VIKijKJegS8OEHrzvm5fwC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnnqJR8Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D41AC4CEE3;
+	Sun, 15 Jun 2025 05:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749963225;
-	bh=jKskpqcoXOguF1H1TjZ0pWmBZVDnOT0/xNqcoD0cSAE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ho4jYYIKxZ5jOqawvrhaEPBhEZPCrM8ChRozSncyaAqNV+riPwKkyanQnMEwAdbVm
-	 /XRV6xyzV0raa/vd5Vhy6VpZ8GrTZtwKLpy7aNs7hKsQojtsMYvTe4DMgacX8pDInr
-	 a0nfAZcxldXCif58iYfsInWiFqV6glddb5yOs9caUGyMCurbwn84kg4SOsvfVqmUGB
-	 Wo3qxBpEPl9p0JEvf41ii0/lxxoogeSXHuFEhDZ2/SG3fUxUxujR9c7exo5bBPUZzE
-	 GPlWpZSiPtJDcT+Br/m9zwgcOyyBKtPXd8G/lx6adWU0CoQnHdvVGNZu/NSTRtgW+q
-	 /J7vgLI1jS06A==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-fscrypt@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	ceph-devel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fscrypt: don't use problematic non-inline crypto accelerators
-Date: Sat, 14 Jun 2025 21:51:45 -0700
-Message-ID: <20250615045145.224567-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1749966669;
+	bh=6N+nJohxUYmU9dyQImiIi5I7duGmVAsXiiFmutRJHZM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YnnqJR8Qzbgpv2FS3/rDvyQqU9HryewynZZ6sYqOxr1KxIXXlUwg7u18tUS2GScn9
+	 yW2HJePtVXLqSaXhZOYPTaBee/w0VRORnUEqnjBIyvWSCXZGWAOjp91wlnqmQbbAXE
+	 ZeBQi+ze3/IPJmMeetd0nAdXUjisPVRi9JlZBhvtIn63ka1dbPXJHIJyGXo/yDlUBq
+	 QM36OT9i5W51eNh7FxheIFJSlgT4PsC27cXpVBcNrPbdAqGTtn/bbM9GMNL9OCHIfE
+	 aLhSpnV2dJwcePhKWVSIGF+Wa0gnxz/DnAV/QfEzuknShcHk9kMmyt+Cmn89sdEqvG
+	 MrsBrpphLSS+w==
+Date: Sun, 15 Jun 2025 13:51:03 +0800
+From: Coly Li <colyli@kernel.org>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, 
+	robertpang@google.com, linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org, 
+	jserv@ccns.ncku.edu.tw, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] Revert "bcache: update min_heap_callbacks to use
+ default builtin swap"
+Message-ID: <sciqwitrhiosfwo3mrqy5ybf3u65m7vghcet7mnefxyh7uwl2m@viciqkpuoozn>
+References: <20250614202353.1632957-1-visitorckw@gmail.com>
+ <20250614202353.1632957-2-visitorckw@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250614202353.1632957-2-visitorckw@gmail.com>
 
-From: Eric Biggers <ebiggers@google.com>
+On Sun, Jun 15, 2025 at 04:23:51AM +0800, Kuan-Wei Chiu wrote:
+> This reverts commit 3d8a9a1c35227c3f1b0bd132c9f0a80dbda07b65.
+> 
+> Although removing the custom swap function simplified the code, this
+> change is part of a broader migration to the generic min_heap API that
+> introduced significant performance regressions in bcache.
+> 
+> As reported by Robert, bcache now suffers from latency spikes, with
+> P100 (max) latency increasing from 600 ms to 2.4 seconds every 5
+> minutes. These regressions degrade bcache's effectiveness as a
+> low-latency cache layer and lead to frequent timeouts and application
+> stalls in production environments.
+> 
+> This revert is part of a series of changes to restore previous
+> performance by undoing the min_heap transition.
+> 
+> Link: https://lore.kernel.org/lkml/CAJhEC05+0S69z+3+FB2Cd0hD+pCRyWTKLEOsc8BOmH73p1m+KQ@mail.gmail.com
+> Fixes: 866898efbb25 ("bcache: remove heap-related macros and switch to generic min_heap")
+> Fixes: 92a8b224b833 ("lib/min_heap: introduce non-inline versions of min heap API functions")
+> Reported-by: Robert Pang <robertpang@google.com>
+> Closes: https://lore.kernel.org/linux-bcache/CAJhEC06F_AtrPgw2-7CvCqZgeStgCtitbD-ryuPpXQA-JG5XXw@mail.gmail.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-Make fscrypt no longer use Crypto API drivers for non-inline crypto
-accelerators, even when the Crypto API prioritizes them over CPU-based
-code (which unfortunately it often does).  These drivers tend to be
-really problematic, especially for fscrypt's synchronous workload.
+Acked-by: Coly Li <colyli@kernel.org>
 
-Specifically, exclude drivers that have CRYPTO_ALG_KERN_DRIVER_ONLY or
-CRYPTO_ALG_ALLOCATES_MEMORY set.  (Later, CRYPTO_ALG_ASYNC should be
-excluded too.  That's omitted for now to keep this commit backportable,
-since until recently some CPU-based code had CRYPTO_ALG_ASYNC set.)
+Thanks.
 
-There are two major issues with these drivers: bugs and performance.
 
-First, these drivers tend to be buggy.  They're fundamentally much more
-error-prone and harder to test than the CPU-based code, and they often
-don't get tested before kernel releases.  Released drivers have
-en/decrypted data incorrectly.  These bugs cause real issues for fscrypt
-users who often didn't even want to use these drivers, for example:
+> ---
+>  drivers/md/bcache/alloc.c    | 11 +++++++++--
+>  drivers/md/bcache/bset.c     | 14 +++++++++++---
+>  drivers/md/bcache/extents.c  | 10 +++++++++-
+>  drivers/md/bcache/movinggc.c | 10 +++++++++-
+>  4 files changed, 38 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/md/bcache/alloc.c b/drivers/md/bcache/alloc.c
+> index 8998e61efa40..da50f6661bae 100644
+> --- a/drivers/md/bcache/alloc.c
+> +++ b/drivers/md/bcache/alloc.c
+> @@ -189,16 +189,23 @@ static inline bool new_bucket_min_cmp(const void *l, const void *r, void *args)
+>  	return new_bucket_prio(ca, *lhs) < new_bucket_prio(ca, *rhs);
+>  }
+>  
+> +static inline void new_bucket_swap(void *l, void *r, void __always_unused *args)
+> +{
+> +	struct bucket **lhs = l, **rhs = r;
+> +
+> +	swap(*lhs, *rhs);
+> +}
+> +
+>  static void invalidate_buckets_lru(struct cache *ca)
+>  {
+>  	struct bucket *b;
+>  	const struct min_heap_callbacks bucket_max_cmp_callback = {
+>  		.less = new_bucket_max_cmp,
+> -		.swp = NULL,
+> +		.swp = new_bucket_swap,
+>  	};
+>  	const struct min_heap_callbacks bucket_min_cmp_callback = {
+>  		.less = new_bucket_min_cmp,
+> -		.swp = NULL,
+> +		.swp = new_bucket_swap,
+>  	};
+>  
+>  	ca->heap.nr = 0;
+> diff --git a/drivers/md/bcache/bset.c b/drivers/md/bcache/bset.c
+> index 68258a16e125..bd97d8626887 100644
+> --- a/drivers/md/bcache/bset.c
+> +++ b/drivers/md/bcache/bset.c
+> @@ -1093,6 +1093,14 @@ static inline bool new_btree_iter_cmp(const void *l, const void *r, void __alway
+>  	return bkey_cmp(_l->k, _r->k) <= 0;
+>  }
+>  
+> +static inline void new_btree_iter_swap(void *iter1, void *iter2, void __always_unused *args)
+> +{
+> +	struct btree_iter_set *_iter1 = iter1;
+> +	struct btree_iter_set *_iter2 = iter2;
+> +
+> +	swap(*_iter1, *_iter2);
+> +}
+> +
+>  static inline bool btree_iter_end(struct btree_iter *iter)
+>  {
+>  	return !iter->heap.nr;
+> @@ -1103,7 +1111,7 @@ void bch_btree_iter_push(struct btree_iter *iter, struct bkey *k,
+>  {
+>  	const struct min_heap_callbacks callbacks = {
+>  		.less = new_btree_iter_cmp,
+> -		.swp = NULL,
+> +		.swp = new_btree_iter_swap,
+>  	};
+>  
+>  	if (k != end)
+> @@ -1149,7 +1157,7 @@ static inline struct bkey *__bch_btree_iter_next(struct btree_iter *iter,
+>  	struct bkey *ret = NULL;
+>  	const struct min_heap_callbacks callbacks = {
+>  		.less = cmp,
+> -		.swp = NULL,
+> +		.swp = new_btree_iter_swap,
+>  	};
+>  
+>  	if (!btree_iter_end(iter)) {
+> @@ -1223,7 +1231,7 @@ static void btree_mergesort(struct btree_keys *b, struct bset *out,
+>  		: bch_ptr_invalid;
+>  	const struct min_heap_callbacks callbacks = {
+>  		.less = b->ops->sort_cmp,
+> -		.swp = NULL,
+> +		.swp = new_btree_iter_swap,
+>  	};
+>  
+>  	/* Heapify the iterator, using our comparison function */
+> diff --git a/drivers/md/bcache/extents.c b/drivers/md/bcache/extents.c
+> index 4b84fda1530a..a7221e5dbe81 100644
+> --- a/drivers/md/bcache/extents.c
+> +++ b/drivers/md/bcache/extents.c
+> @@ -266,12 +266,20 @@ static bool new_bch_extent_sort_cmp(const void *l, const void *r, void __always_
+>  	return !(c ? c > 0 : _l->k < _r->k);
+>  }
+>  
+> +static inline void new_btree_iter_swap(void *iter1, void *iter2, void __always_unused *args)
+> +{
+> +	struct btree_iter_set *_iter1 = iter1;
+> +	struct btree_iter_set *_iter2 = iter2;
+> +
+> +	swap(*_iter1, *_iter2);
+> +}
+> +
+>  static struct bkey *bch_extent_sort_fixup(struct btree_iter *iter,
+>  					  struct bkey *tmp)
+>  {
+>  	const struct min_heap_callbacks callbacks = {
+>  		.less = new_bch_extent_sort_cmp,
+> -		.swp = NULL,
+> +		.swp = new_btree_iter_swap,
+>  	};
+>  	while (iter->heap.nr > 1) {
+>  		struct btree_iter_set *top = iter->heap.data, *i = top + 1;
+> diff --git a/drivers/md/bcache/movinggc.c b/drivers/md/bcache/movinggc.c
+> index 45ca134cbf02..d6c73dd8eb2b 100644
+> --- a/drivers/md/bcache/movinggc.c
+> +++ b/drivers/md/bcache/movinggc.c
+> @@ -190,6 +190,14 @@ static bool new_bucket_cmp(const void *l, const void *r, void __always_unused *a
+>  	return GC_SECTORS_USED(*_l) >= GC_SECTORS_USED(*_r);
+>  }
+>  
+> +static void new_bucket_swap(void *l, void *r, void __always_unused *args)
+> +{
+> +	struct bucket **_l = l;
+> +	struct bucket **_r = r;
+> +
+> +	swap(*_l, *_r);
+> +}
+> +
+>  static unsigned int bucket_heap_top(struct cache *ca)
+>  {
+>  	struct bucket *b;
+> @@ -204,7 +212,7 @@ void bch_moving_gc(struct cache_set *c)
+>  	unsigned long sectors_to_move, reserve_sectors;
+>  	const struct min_heap_callbacks callbacks = {
+>  		.less = new_bucket_cmp,
+> -		.swp = NULL,
+> +		.swp = new_bucket_swap,
+>  	};
+>  
+>  	if (!c->copy_gc_enabled)
+> -- 
+> 2.34.1
+> 
 
-- https://github.com/google/fscryptctl/issues/32
-- https://github.com/google/fscryptctl/issues/9
-- https://lore.kernel.org/r/PH0PR02MB731916ECDB6C613665863B6CFFAA2@PH0PR02MB7319.namprd02.prod.outlook.com
-
-These drivers have also caused issues for dm-crypt users, including data
-corruption and deadlocks.  Since Linux v5.10, dm-crypt has disabled most
-of these drivers by excluding CRYPTO_ALG_ALLOCATES_MEMORY.
-
-Second, the CPU-based crypto tends to be faster, often *much* faster.
-This may seem counterintuitive, but benchmarks clearly show it.  There's
-a *lot* of overhead associated with going to a hardware driver, off the
-CPU, and back again.  Measuring synchronous AES-256-XTS encryption of
-4096-byte messages (fscrypt's workload) on two platforms with non-inline
-crypto accelerators that I have access to:
-
-  Intel Emerald Rapids server:
-
-     xts-aes-vaes-avx512:  16171 MB/s  [CPU-based, Vector AES]
-     xts(ecb(aes-generic)):  305 MB/s  [CPU-based, generic C code]
-     qat_aes_xts:            289 MB/s  [Offload, Intel QuickAssist]
-
-  Qualcomm SM8650 HDK:
-
-     xts-aes-ce:            4301 MB/s  [CPU-based, ARMv8 Crypto Extensions]
-     xts(ecb(aes-generic)):  265 MB/s  [CPU-based, generic C code]
-     xts-aes-qce:             73 MB/s  [Offload, Qualcomm Crypto Engine]
-
-So, using the "accelerators" is over 50 times slower than just using the
-CPU.  Not only that, it's even slower than the generic C code, which
-suggests that even on platforms whose CPUs lack AES instructions the
-performance benefit of any accelerator would be marginal at best.
-
-The usefulness of the accelerators could be improved with a different
-software architecture that allows blocks to be efficiently en/decrypted
-in parallel.  But fscrypt does not do that today, and even the async
-support in the Crypto API isn't really all that efficient.  And even if
-the accelerator was used perfectly efficiently, it seems unlikely to
-help on small I/O requests, for which latency is really important.
-
-As of this writing, the Crypto API prioritizes qat_aes_xts over
-xts-aes-vaes-avx512.  Therefore, this commit greatly improves fscrypt
-performance on Intel servers that have QAT and the QAT driver enabled.
-qat_aes_xts is going to be deprioritized in the Crypto API (like I did
-for xts-aes-qce recently too).  But as this seems to be a common pattern
-with all the "accelerators", fscrypt should just disable all of them.
-
-An argument that has been given in favor of non-inline crypto
-accelerators is that they can protect keys in hardware.  But fscrypt
-does not take advantage of that, so it is irrelevant.  (Also, it would
-be quite difficult for fscrypt to do that.)
-
-Note that fscrypt does support inline encryption engines, using raw or
-hardware-wrapped keys.  These actually do work well and are widely used.
-These do not use the "Crypto API" and are unaffected by this commit.
-
-Fixes: b30ab0e03407 ("ext4 crypto: add ext4 encryption facilities")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
-
-Changed in v2:
-- Improved commit message and comment
-- Dropped CRYPTO_ALG_ASYNC from the mask, to make this patch
-  backport-friendly
-- Added Fixes and Cc stable
-
- fs/crypto/fscrypt_private.h | 16 ++++++++++++++++
- fs/crypto/hkdf.c            |  2 +-
- fs/crypto/keysetup.c        |  3 ++-
- fs/crypto/keysetup_v1.c     |  3 ++-
- 4 files changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/fs/crypto/fscrypt_private.h b/fs/crypto/fscrypt_private.h
-index c1d92074b65c5..0e95c7a095d49 100644
---- a/fs/crypto/fscrypt_private.h
-+++ b/fs/crypto/fscrypt_private.h
-@@ -43,10 +43,26 @@
-  * hardware-wrapped keys has made it misleading as it's only for raw keys.
-  * Don't use it in kernel code; use one of the above constants instead.
-  */
- #undef FSCRYPT_MAX_KEY_SIZE
- 
-+/*
-+ * This mask is passed as the third argument to the crypto_alloc_*() functions
-+ * to prevent fscrypt from using the Crypto API drivers for non-inline crypto
-+ * accelerators.  Those drivers have been problematic for fscrypt.  fscrypt
-+ * users have reported hangs and even incorrect en/decryption with these
-+ * drivers.  Since going to the driver, off CPU, and back again is really slow,
-+ * such drivers can be over 50 times slower than the CPU-based code for
-+ * fscrypt's synchronous workload.  Even on platforms that lack AES instructions
-+ * on the CPU, any performance benefit is likely to be marginal at best.
-+ *
-+ * Note that fscrypt also supports inline encryption engines.  Those don't use
-+ * the Crypto API and work much better than non-inline accelerators.
-+ */
-+#define FSCRYPT_CRYPTOAPI_MASK \
-+	(CRYPTO_ALG_ALLOCATES_MEMORY | CRYPTO_ALG_KERN_DRIVER_ONLY)
-+
- #define FSCRYPT_CONTEXT_V1	1
- #define FSCRYPT_CONTEXT_V2	2
- 
- /* Keep this in sync with include/uapi/linux/fscrypt.h */
- #define FSCRYPT_MODE_MAX	FSCRYPT_MODE_AES_256_HCTR2
-diff --git a/fs/crypto/hkdf.c b/fs/crypto/hkdf.c
-index 0f3028adc9c72..5b9c21cfe2b45 100644
---- a/fs/crypto/hkdf.c
-+++ b/fs/crypto/hkdf.c
-@@ -56,11 +56,11 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
- 	struct crypto_shash *hmac_tfm;
- 	static const u8 default_salt[HKDF_HASHLEN];
- 	u8 prk[HKDF_HASHLEN];
- 	int err;
- 
--	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
-+	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, FSCRYPT_CRYPTOAPI_MASK);
- 	if (IS_ERR(hmac_tfm)) {
- 		fscrypt_err(NULL, "Error allocating " HKDF_HMAC_ALG ": %ld",
- 			    PTR_ERR(hmac_tfm));
- 		return PTR_ERR(hmac_tfm);
- 	}
-diff --git a/fs/crypto/keysetup.c b/fs/crypto/keysetup.c
-index 0d71843af9469..d8113a7196979 100644
---- a/fs/crypto/keysetup.c
-+++ b/fs/crypto/keysetup.c
-@@ -101,11 +101,12 @@ fscrypt_allocate_skcipher(struct fscrypt_mode *mode, const u8 *raw_key,
- 			  const struct inode *inode)
- {
- 	struct crypto_skcipher *tfm;
- 	int err;
- 
--	tfm = crypto_alloc_skcipher(mode->cipher_str, 0, 0);
-+	tfm = crypto_alloc_skcipher(mode->cipher_str, 0,
-+				    FSCRYPT_CRYPTOAPI_MASK);
- 	if (IS_ERR(tfm)) {
- 		if (PTR_ERR(tfm) == -ENOENT) {
- 			fscrypt_warn(inode,
- 				     "Missing crypto API support for %s (API name: \"%s\")",
- 				     mode->friendly_name, mode->cipher_str);
-diff --git a/fs/crypto/keysetup_v1.c b/fs/crypto/keysetup_v1.c
-index b70521c55132b..158ceae8a5bce 100644
---- a/fs/crypto/keysetup_v1.c
-+++ b/fs/crypto/keysetup_v1.c
-@@ -50,11 +50,12 @@ static int derive_key_aes(const u8 *master_key,
- {
- 	int res = 0;
- 	struct skcipher_request *req = NULL;
- 	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist src_sg, dst_sg;
--	struct crypto_skcipher *tfm = crypto_alloc_skcipher("ecb(aes)", 0, 0);
-+	struct crypto_skcipher *tfm =
-+		crypto_alloc_skcipher("ecb(aes)", 0, FSCRYPT_CRYPTOAPI_MASK);
- 
- 	if (IS_ERR(tfm)) {
- 		res = PTR_ERR(tfm);
- 		tfm = NULL;
- 		goto out;
-
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
 -- 
-2.49.0
-
+Coly Li
 
