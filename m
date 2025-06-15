@@ -1,113 +1,122 @@
-Return-Path: <stable+bounces-152665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B74ADA259
-	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 17:37:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78F2ADA27F
+	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 18:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D250C188E195
-	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 15:37:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17977188F804
+	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 16:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA4E27586E;
-	Sun, 15 Jun 2025 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA59189B84;
+	Sun, 15 Jun 2025 16:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zadara.com header.i=@zadara.com header.b="S6B63R2G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwMg58Vy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEEB1BC3F
-	for <stable@vger.kernel.org>; Sun, 15 Jun 2025 15:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11415383;
+	Sun, 15 Jun 2025 16:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750001818; cv=none; b=akRqSyCBDRv6nlBySp0Iabxnw+8111YV5Pa2do5J7AjUAf8D95ePkz9uBXcnZw5gFYQIHYN+PYd8QnPsQJXpdA4LtYzj5my5kRgsyD0TyE2NJgvd9cSjlTvrUN2rDXwX7ue9NBRQEh+OECXk6lRpgxhsi27X9uVX8+o4N73t4/g=
+	t=1750003272; cv=none; b=uVGMhMivS3s9GPKe73CUzqjAGWSuyGMWNWM+/NqqsJoNJ1XYqkHj4DZyJ98Z+lhIn65lqbcJRMZeJRSQzQpb4fT5QZSZiTzKdCOj9kxkTw4eKd7Lg3COexQ/Jzw6zRB4QW6wdu+9sPjAME5YyNueZPyC/Jt2FiI8pbjGYSNc38I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750001818; c=relaxed/simple;
-	bh=DkHzpBRH1O7eKbb31v0W+kLZbCpUW8F6Cd2clufPCuw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=mLp21+B427Ee5Wz0XmDV+oFHUVQHzweRFwlORrfladE0by0pUFg9Ik3uOAaLgGj5hzGCwJy0WkA4FOM+lX15AChdfKWzUy2th9oC8QzX33rwAFJSBa7bJlhdzuU+oBtvN0EBI0o5KvAemfVDRLk6swlmKZ7RW97RfGR0wjhffvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zadara.com; spf=pass smtp.mailfrom=zadarastorage.com; dkim=pass (2048-bit key) header.d=zadara.com header.i=@zadara.com header.b=S6B63R2G; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zadara.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zadarastorage.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-74800b81f1bso2969752b3a.1
-        for <stable@vger.kernel.org>; Sun, 15 Jun 2025 08:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=zadara.com; s=google; t=1750001815; x=1750606615; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=K0VuObXtSd8wmv+9XvUrESsF/3WA2Nz5/RgfdH6EkCU=;
-        b=S6B63R2Gzu9E3VUX8mzWtUgSyi92qH3E9P5SWs3IhBk8K6o3/vxkLW6iHjbIvcxt42
-         RRTsNyMgACC+JCFZxghDJoMOFGD2rTND5v5sWA5SU2FJoVXowoQgoEjHDcnd7+abLOEv
-         Hv065y6/Eb6dnvF1lAHoOvIuEqDFmb0GIARgdhxZi/rL2H4VTYihjJf1xlCku3o3NwDs
-         P3w4fBirEw/b+pSK+8emHqJHyWQC+BrQ/Phxc4+Txc4tcRZ8V6cN/6X0LmpiINMFRdf8
-         R7YW2Ou2a8vZg7PY4UMtlcXMmMXiWmha/9IP3hYwsZ9OmJkzEQHEXQkqZN2A7DNhvh7s
-         053A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750001815; x=1750606615;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K0VuObXtSd8wmv+9XvUrESsF/3WA2Nz5/RgfdH6EkCU=;
-        b=sJV0tKPl0xEdxJU528IPGWZ+YWb+EyMeRgprLMetYB7A78ZwGUbsMyT16a2Du1vDZp
-         hnkr1h2fBX2X+xwDEtnVfNZ/rJf6Z/5qrADz6Kxm2TLK0G7B7F12iCCI54RVOEc/STFU
-         y1VT+vA3DQcdSgVFBtjOR167xa8YJd3bY/p4UMW36LUoO3v93RmGY5hmrNCemkNjTu4I
-         kvaUUiUekAhWSqinbfLm1i4Gvdm/qteOcJurK+IqwJ4iYuPyyrqgO+sW02o9rYAKR55j
-         jVlloBwPTVvvYZhi5Ubhr+z+dKeGPQLRCfALKaKj5q1rbDobtNpC1mpJ02Cgv6lH9B52
-         Xb5A==
-X-Gm-Message-State: AOJu0Yy1N/5LNQm/AtXRCDqnLcJHImOSq7KrRd3iBME7GZbyImMgBtiN
-	9ZrHKSSypGrGOHh8TqgYq4E1Yj6TcFJ8G+VEdVRtTHcULeMOds5GvMdvGUp5WdIqW1XzY/9mMp0
-	OT5TNCne5GX+RpOB/d4AlaGcZAsjlDhgQ0O2hoD0S0qsI0kpLP5iw+JbW2Q==
-X-Gm-Gg: ASbGncvwL1CqTaO+SFR/99z2Rm6/Kh0yCAX3yL5Q48RWj2GZZgWVypGLGxc3S8Qp02J
-	KXRhFVyTeUsOsuxaKm/9R33be4RZAWtH/hVTUDSVtecdlZUD2RnCyQuoiTJFgo/k4sPefwqleLN
-	igEM8bWbaoNDBz3KHDA1E4/TYpEUTrLxoRLfibjOXErqI=
-X-Google-Smtp-Source: AGHT+IFhvRX3rf16RIYzpA5wWOD1PJbxilQQe6mZLmLYbJA1BkNRltLT2QWZ2XCIPdHnYJ88sGDJ8EJyhEZSQwBB7qg=
-X-Received: by 2002:a05:6a21:68a:b0:1f5:7ba7:69d8 with SMTP id
- adf61e73a8af0-21fbd4ddb26mr8499341637.15.1750001815470; Sun, 15 Jun 2025
- 08:36:55 -0700 (PDT)
+	s=arc-20240116; t=1750003272; c=relaxed/simple;
+	bh=iei+Rbi1EMsM3VoJTS+GLsvIcopbRLAxDDDRUGZbLlo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NsBrS+g7xCb8FJjxlcj6CfyVsxYXRAEowGLFFI9tfgqO1flU6BIF0P6d40/Ju/qdUZimreTyLyVP5cAcT11s4pZWzWeFOFnWxD2EEZv9IJVA2d8/eseZ7/JzkrF2c8i0RB6RWTNblr24/6GEvQsWdT+Mz+dvXYfw43YySkTjl5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwMg58Vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62194C4CEE3;
+	Sun, 15 Jun 2025 16:01:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750003271;
+	bh=iei+Rbi1EMsM3VoJTS+GLsvIcopbRLAxDDDRUGZbLlo=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=LwMg58VyykYKgijDs9VvqD0l3vO45uUoCAVQHiwY5atNJP4KtA8Uk27Iyt/hj14ZV
+	 yIyBTUp/pQ7pm+K+GkZ7Ok3AAUPWLlbvqacfSbYFdpyyR9yN1ZdzBRP84bNpMZ/xsj
+	 unGOFF4Hi4OH2UdHXT7wZsA92WgurjZgFe8eR4z+BdFnxGN83B3Ox1MQEzvcByKYlq
+	 l1DQ3oP28YUQiTKtjMuPKG2UmWYFvIVLErXutNBAQlvhtnpFFlCsKCsu7lJIlvFH55
+	 hw2WgIKCo5VYHR6J7NU1nQb8ZTgBS2i8zkM+f9myvUGptMGN3/zONLedsVUHFx0ogs
+	 ztzHNSJ8b3D+A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52DDFC61CE8;
+	Sun, 15 Jun 2025 16:01:11 +0000 (UTC)
+From: Yang Xiwen via B4 Relay <devnull+forbidden405.outlook.com@kernel.org>
+Date: Mon, 16 Jun 2025 00:01:10 +0800
+Subject: [PATCH] i2c: qup: jump out of the loop in case of timeout
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Alex Lyakas <alex.lyakas@zadara.com>
-Date: Sun, 15 Jun 2025 18:36:44 +0300
-X-Gm-Features: AX0GCFvOO7LlhJvW9oiySCX7MKtXdytCLU8q9p01ku9qsJ8Z8RiQuAViQAMcKKs
-Message-ID: <CAOcd+r0Rg6JGMjwZnCran8s+dbqZ+VyUcgP_u7EucKEXZasOdg@mail.gmail.com>
-Subject: stable patch 42fac18 missing from linux-6.6
-To: stable@vger.kernel.org, gregkh@linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250616-qca-i2c-v1-1-2a8d37ee0a30@outlook.com>
+X-B4-Tracking: v=1; b=H4sIAEbuTmgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDM0NT3cLkRN1Mo2TdFBPDpCQzw8REU8tUJaDqgqLUtMwKsEnRsbW1ACh
+ PBhNZAAAA
+To: Andi Shyti <andi.shyti@kernel.org>, 
+ Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Yang Xiwen <forbidden405@outlook.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750003271; l=1276;
+ i=forbidden405@outlook.com; s=20230724; h=from:subject:message-id;
+ bh=7A4MyX2wBo/3swedAnLq8MA5y/hamSq89OQJdzuf1oA=;
+ b=TYce6RfqS10iEeMra5WRsEso/JZvK/1nNmpkB8vrnFU1IEaN1FN/sM8Acao00LTn63aEfJj7x
+ M/7eiwbqmFDAE+0bJ6f3myfi92GEKMeyGL+3pN2T7gKsicrMi3I+wvc
+X-Developer-Key: i=forbidden405@outlook.com; a=ed25519;
+ pk=qOD5jhp891/Xzc+H/PZ8LWVSWE3O/XCQnAg+5vdU2IU=
+X-Endpoint-Received: by B4 Relay for forbidden405@outlook.com/20230724 with
+ auth_id=67
+X-Original-From: Yang Xiwen <forbidden405@outlook.com>
+Reply-To: forbidden405@outlook.com
 
-Greetings,
+From: Yang Xiwen <forbidden405@outlook.com>
 
-The following patch [1]:
-"42fac18 btrfs: check delayed refs when we're checking if a ref exists"
-has been marked as
-"CC: stable@vger.kernel.org # 5.4+"
-but I do not see that it has been backported to linux-6.6.y branch.
+Original logic only sets the return value but doesn't jump out of the
+loop if the bus is kept active by a client. This is not expected. A
+malicious or buggy i2c client can hang the kernel in this case and
+should be avoided. This is observed during a long time test with a
+PCA953x GPIO extender.
 
-Can this patch be picked up in the next version of linux-6.6 please?
+Fix it by changing the logic to not only sets the return value, but also
+jumps out of the loop and return to the caller with -ETIMEDOUT.
 
-Thanks,
-Alex.
+Cc: stable@vger.kernel.org
+Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
+---
+ drivers/i2c/busses/i2c-qup.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-[1]
-commit 42fac187b5c746227c92d024f1caf33bc1d337e4
-Author: Josef Bacik <josef@toxicpanda.com>
-Date:   Thu Apr 11 16:41:20 2024 -0400
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index 3a36d682ed57..5b053e51f4c9 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -452,8 +452,10 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 		if (!(status & I2C_STATUS_BUS_ACTIVE))
+ 			break;
+ 
+-		if (time_after(jiffies, timeout))
++		if (time_after(jiffies, timeout)) {
+ 			ret = -ETIMEDOUT;
++			break;
++		}
+ 
+ 		usleep_range(len, len * 2);
+ 	}
 
-    btrfs: check delayed refs when we're checking if a ref exists
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250615-qca-i2c-d41bb61aa59e
 
-    In the patch 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete
-    resume") I added some code to handle file systems that had been
-    corrupted by a bug that incorrectly skipped updating the drop progress
-    key while dropping a snapshot.  This code would check to see if we had
-    already deleted our reference for a child block, and skip the deletion
-    if we had already.
-...
-    Fixes: 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete resume")
-    CC: stable@vger.kernel.org # 5.4+
-    Reviewed-by: Filipe Manana <fdmanana@suse.com>
-    Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-    Signed-off-by: David Sterba <dsterba@suse.com>
+Best regards,
+-- 
+Yang Xiwen <forbidden405@outlook.com>
+
+
 
