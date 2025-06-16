@@ -1,215 +1,119 @@
-Return-Path: <stable+bounces-152705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C923ADB005
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:16:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48CFADB169
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 15:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FF6316B85D
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 12:16:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3594170AF7
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 13:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E186A2E4277;
-	Mon, 16 Jun 2025 12:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F17B2DBF6D;
+	Mon, 16 Jun 2025 13:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmE5wL6i"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="I6KwpY03"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2B52E426F;
-	Mon, 16 Jun 2025 12:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1395A285CBF;
+	Mon, 16 Jun 2025 13:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750076128; cv=none; b=UPVuIFI9CPdAHgl6wVv9IVkZGbzpTHHYsrWkdpmL4d22bBdA/QQ6IVGuYYdD3PcfiKxO6XtwyWJbC+j5HaiEtIqjYsrPrQcenLSGCO6ZDLsgweIZlzk5mqEDSjnGGuTgWbjntjxo6vGJNo59NhbFireKrRpcar2A9GtFzF2c2Y0=
+	t=1750079647; cv=none; b=d4UTXKUC9ek14xEh0UZtxcOQ5rH9O57onW9UI2UTUeMNFT58X7Lzm5EiPqXyXZHFqc2d/AIi4cPoQE4sHLBi+qSO42jpeI5cMTsbWtlRu2moecacBEf8S4Ap5s5n96DNxmws7nW8Yt4msYbofJ8v9ehIcQD6ECKxoDbMHeSV0LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750076128; c=relaxed/simple;
-	bh=f2KGMeFwQsSAT8oxGQsWFauxCTtaTcqmi4sViT9XyLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nSFuGGNUy1iFcIKcV5oSCOmy1KXyRRXxc8NKmp5OciYZKiAxko74NWBBExZ5QPCopx2oJTSX/6teGWeAH1cX1E1jy6vdThx0yGNkiSykwAzMEGJfEqga1mQ92/1XU60UzxI29q+eEtuQFe0XVLBYGDVUqykxsExoYeKoWwwN8uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmE5wL6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAA4C4CEEA;
-	Mon, 16 Jun 2025 12:15:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750076128;
-	bh=f2KGMeFwQsSAT8oxGQsWFauxCTtaTcqmi4sViT9XyLo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FmE5wL6igUSom2Gtojgifa76hjNOzCtcPsnUAe7W81afvCzwqSTZ6tdNCwt54ws2d
-	 jqv58ruqtUagSgl7OGxoBj4KAiA/7QZtko8o+I5DS1Wu5Eo4emoezHI7C7741wA40l
-	 JUNtUCI/H5fmG1iRC8Cah1rwXOHqz1LxnupneXPgPkXkpq1iffaZEzKfrmttf9Wn0m
-	 BqGMTfRH+95qiEDT4/ISepUasmU8oi0MEx8MYCx4LQpV0mUXbHO+rGIb8oAC2xFeji
-	 lgz/APvdm/lwLzcTupayaVRAXbjNUJQXPAGww3h7qAoRtY6CfMIra51aAuePlSyxIS
-	 Liheb324QnxWw==
-Date: Mon, 16 Jun 2025 14:15:23 +0200
-From: Carlos Maiolino <cem@kernel.org>
-To: Christian Theune <ct@flyingcircus.io>
-Cc: stable@vger.kernel.org, 
-	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, regressions@lists.linux.dev
-Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
-Message-ID: <hoszywa5az7z4yxubonbhs2p2ysnut3s7jjnkd7ckz4sgdyqw2@ifuor5qnl7yu>
-References: <M1JxD6k5Sdxnq-pztTdv_FZwURA8AaT9qWNFUYGCmhiTRQFESfH7xqdOqQjz-oKQiin8pQckoNhfNyCHu-cxEQ==@protonmail.internalid>
- <14E1A49D-23BF-4929-A679-E6D5C8977D40@flyingcircus.io>
- <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
- <Z9Ih4yZoepxhmmH5Jrd1bCz35l6iPh5g2J61q2NR7loEdQb_aRquKdD1xLaE_5SPMlkBM8zLdVfdPvvKuNBrGQ==@protonmail.internalid>
- <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
- <g7wcgkxdlbshztwihayxma7xkxe23nic7zcreb3eyg3yeld5cu@yk7l2e4ibajk>
- <M0QJfqa7-6M2vnPhyeyy36xCOmCEL83O7lj-ky1DXTqQXa677-oE8C_nAsBCBglBp_6k7vLeN4a2nJ6R3JuQxw==@protonmail.internalid>
- <01751810-C689-4270-8797-FC0D632B6AB6@flyingcircus.io>
+	s=arc-20240116; t=1750079647; c=relaxed/simple;
+	bh=wn1OkAAM2Ccd9UCgqxhQGWkH0mXDr7YIcyVSK3M2wtw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iVHKByKnhsWfdd6XOFPCwXY+ov/nH0IUio2MW2nxV0lXQHN4z1bz1M2R+rnP/Ml3aFSnfz2TzzCOZ2iKZ/akycKVO1zixj49LYsIV55QatWkBDORD/HxEHSaPSrnQpYKar0dhI/ueTKB/YzOmDJtXoSjjwgBBeSNJrRyQKJkv2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=I6KwpY03; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1750079637;
+	bh=uPBAGZy6R1PjnTGdxsiEYdDy+NUG1t2EFZNMiKI6egA=;
+	h=From:Subject:Date:To:Cc;
+	b=I6KwpY03w88PFgiWEf2PmautpWVe9dZGZTdWKrhOf0aHsSlZTZAcWf4qW3uPN/25n
+	 pPIcnBuY49xhsixkLINKjlxQRU9emTcGcTKB+ORxw+4v7yICvZgcqwmXUeff9CrJ/o
+	 HBC14x4EOgZKGbqKbDUcAEcL2Ia5l9A+bfaUlPeEjQPoEf7bH0a4ooFEU1UzH67QBF
+	 1zAyoTG5MwgyQaXtziDa6DJcJmFigh+iatbuzLwU4fZjE6wIM31gdtcMS8oqa9ZCTG
+	 sDGz57TESvcZBSMAGjGi6L6V8JVTCFO+kJKamaFVwDQpFU/XfbcP9zqCttLzLJWzB5
+	 CUNdX8WNfOYLQ==
+Received: from [127.0.1.1] (unknown [180.150.112.166])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 596AA685DD;
+	Mon, 16 Jun 2025 21:13:55 +0800 (AWST)
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH v2 00/10] soc: aspeed: lpc-snoop: Miscellaneous fixes
+Date: Mon, 16 Jun 2025 22:43:37 +0930
+Message-Id: <20250616-aspeed-lpc-snoop-fixes-v2-0-3cdd59c934d3@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <01751810-C689-4270-8797-FC0D632B6AB6@flyingcircus.io>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIEYUGgC/3WNyw6CMBREf4V07SV9ACGu/A/Domkv0kTb2luIh
+ vDvVjRx5fLMZOasjDA5JHasVpZwceSCLyAPFTOT9hcEZwszyWXLGy5AU0S0cI0GyIcQYXQPJMD
+ Wyr5XViutWBnHhHtRtufhwwnvc/nPv3BylEN67vJFvNOvR/z1LAI4dM3YSolK2248mWDRBE85z
+ SbXJtxqPbNh27YXhBDrSNwAAAA=
+X-Change-ID: 20250401-aspeed-lpc-snoop-fixes-e5d2883da3a3
+To: linux-aspeed@lists.ozlabs.org
+Cc: Joel Stanley <joel@jms.id.au>, Henry Martin <bsdhenrymartin@gmail.com>, 
+ Jean Delvare <jdelvare@suse.de>, 
+ Patrick Rudolph <patrick.rudolph@9elements.com>, 
+ Andrew Geissler <geissonator@yahoo.com>, 
+ Ninad Palsule <ninad@linux.ibm.com>, Patrick Venture <venture@google.com>, 
+ Robert Lippert <roblip@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-On Mon, Jun 16, 2025 at 12:09:21PM +0200, Christian Theune wrote:
-> 
-> > On 16. Jun 2025, at 11:47, Carlos Maiolino <cem@kernel.org> wrote:
-> >
-> > On Mon, Jun 16, 2025 at 10:59:34AM +0200, Christian Theune wrote:
-> >>
-> >>
-> >>> On 16. Jun 2025, at 10:50, Carlos Maiolino <cem@kernel.org> wrote:
-> >>>
-> >>> On Thu, Jun 12, 2025 at 03:37:10PM +0200, Christian Theune wrote:
-> >>>> Hi,
-> >>>>
-> >>>> in the last week, after updating to 6.6.92, we’ve encountered a number of VMs reporting temporarily hung tasks blocking the whole system for a few minutes. They unblock by themselves and have similar tracebacks.
-> >>>>
-> >>>> The IO PSIs show 100% pressure for that time, but the underlying devices are still processing read and write IO (well within their capacity). I’ve eliminated the underlying storage (Ceph) as the source of problems as I couldn’t find any latency outliers or significant queuing during that time.
-> >>>>
-> >>>> I’ve seen somewhat similar reports on 6.6.88 and 6.6.77, but those might have been different outliers.
-> >>>>
-> >>>> I’m attaching 3 logs - my intuition and the data so far leads me to consider this might be a kernel bug. I haven’t found a way to reproduce this, yet.
-> >>>
-> >>> From a first glance, these machines are struggling because IO contention as you
-> >>> mentioned, more often than not they seem to be stalling waiting for log space to
-> >>> be freed, so any operation in the FS gets throttled while the journal isn't
-> >>> written back. If you have a small enough journal it will need to issue IO often
-> >>> enough to cause IO contention. So, I'd point it to a slow storage or small
-> >>> enough log area (or both).
-> >>
-> >> Yeah, my current analysis didn’t show any storage performance issues. I’ll revisit this once more to make sure I’m not missing anything. We’ve previously had issues in this area that turned out to be kernel bugs. We didn’t change anything regarding journal sizes and only a recent kernel upgrade seemed to be relevant.
-> >
-> > You mentioned you saw PSI showing a huge pressure ration, during the time, which
-> > might be generated by the journal writeback and giving it's a SYNC write, IOs
-> > will stall if your storage can't write it fast enough. IIRC, most of the threads
-> > from the logs you shared were waiting for log space to be able to continue,
-> > which causes the log to flush things to disk and of course increase IO usage.
-> > If your storage can't handle these IO bursts, then you'll get the stalls you're
-> > seeing.
-> > I am not discarding a possibility you are hitting a bug here, but it so far
-> > seems your storage is not being able to service IOs fast enough to avoid such IO
-> > stalls, or something else throttling IOs, XFS seems just the victim.
-> 
-> Yeah, it’s annoying, I know. To paraphrase "any sufficiently advanced bug is indistinguishable from slow storage”. ;)
-> 
-> As promised, I’ll dive deeper into the storage performance analysis, all telemetry so far was completely innocuous, but it’s a complex layering of SSDs → Ceph → Qemu … Usually if we have performance issues then the metrics reflect this quite obviously and will affect many machines at the same time. As this has always just affected one single VM at a time but spread over time my gut feeling is a bit more on the side of “it might be maybe a bug”. As those things tend to be hard/nasty to diagnose I wanted to raise the flag early on to see whether other’s might be having an “aha” moment if they’re experiencing something similar.
-> 
-> I’ll get back to you in 2-3 days with results from the storage analysis.
-> 
-> > Can you share the xfs_info of one of these filesystems? I'm curious about the FS
-> > geometry.
-> 
-> Sure:
-> 
-> # xfs_info /
-> meta-data=/dev/disk/by-label/root isize=512    agcount=21, agsize=655040 blks
->          =                       sectsz=512   attr=2, projid32bit=1
->          =                       crc=1        finobt=1, sparse=1, rmapbt=0
->          =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
->          =                       exchange=0
-> data     =                       bsize=4096   blocks=13106171, imaxpct=25
->          =                       sunit=0      swidth=0 blks
-> naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0
-> log      =internal log           bsize=4096   blocks=16384, version=2
->          =                       sectsz=512   sunit=0 blks, lazy-count=1
-> realtime =none                   extsz=4096   blocks=0, rtextents=0
+Henry's bug[1] and fix[2] prompted some further inspection by
+Jean.
 
-This seems to have been extended a few times, but nothing out-of-reality. Looks
-fine, but, is this one of the filesystems where you are facing the problem? I'm
-surprised this is the root FS, do you have that much IO into the rootFS?
+This series provides fixes for the remaining issues Jean identified, as
+well as reworking the channel paths to reduce cleanup required in error
+paths. It is based on v6.16-rc1.
 
-> 
-> # xfs_info /tmp/
-> meta-data=/dev/vdb1              isize=512    agcount=8, agsize=229376 blks
->          =                       sectsz=512   attr=2, projid32bit=1
->          =                       crc=1        finobt=1, sparse=1, rmapbt=0
->          =                       reflink=0    bigtime=0 inobtcount=0 nrext64=0
->          =                       exchange=0
-> data     =                       bsize=4096   blocks=1833979, imaxpct=25
->          =                       sunit=1024   swidth=1024 blks
-> naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0
-> log      =internal log           bsize=4096   blocks=2560, version=2
->          =                       sectsz=512   sunit=8 blks, lazy-count=1
-> realtime =none                   extsz=4096   blocks=0, rtextents=0
+Lightly tested under qemu and on an AST2600 EVB. Further testing on
+platforms designed around the snoop device appreciated.
 
-This is worrisome. Your journal size is 10MiB, this can easily keep stalling IO
-waiting for log space to be freed, depending on the nature of the machine this
-can be easily triggered. I'm curious though how you made this FS, because 2560
-is below the minimal log size that xfsprogs allows since (/me goes look
-into git log) 2022, xfsprogs 5.15.
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=219934
+[2]: https://lore.kernel.org/all/20250401074647.21300-1-bsdhenrymartin@gmail.com/
 
-FWIW, one of the reasons the minimum journal log size has been increased is the
-latency/stalls that happens when waiting for free log space, which is exactly
-the symptom you've been seeing.
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+---
+Changes in v2:
+- Address comments on v1 from Jean
+- Implement channel indexing using enums to avoid unnecessary tests
+- Switch to devm_clk_get_enabled()
+- Use dev_err_probe() where possible
+- Link to v1: https://patch.msgid.link/20250411-aspeed-lpc-snoop-fixes-v1-0-64f522e3ad6f@codeconstruct.com.au
 
-I'd suggest you to check the xfsprogs commit below if you want more details,
-but if this is one of the filesystems where you see the stalls, this might very
-well be the cause:
+---
+Andrew Jeffery (10):
+      soc: aspeed: lpc-snoop: Cleanup resources in stack-order
+      soc: aspeed: lpc-snoop: Don't disable channels that aren't enabled
+      soc: aspeed: lpc-snoop: Ensure model_data is valid
+      soc: aspeed: lpc-snoop: Constrain parameters in channel paths
+      soc: aspeed: lpc-snoop: Rename 'channel' to 'index' in channel paths
+      soc: aspeed: lpc-snoop: Rearrange channel paths
+      soc: aspeed: lpc-snoop: Switch to devm_clk_get_enabled()
+      soc: aspeed: lpc-snoop: Use dev_err_probe() where possible
+      soc: aspeed: lpc-snoop: Consolidate channel initialisation
+      soc: aspeed: lpc-snoop: Lift channel config to const structs
 
-commit cdfa467edd2d1863de067680b0a3ec4458e5ff4a
-Author: Eric Sandeen <sandeen@redhat.com>
-Date:   Wed Apr 6 16:50:31 2022 -0400
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 224 +++++++++++++++++-----------------
+ 1 file changed, 110 insertions(+), 114 deletions(-)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250401-aspeed-lpc-snoop-fixes-e5d2883da3a3
 
-    mkfs: increase the minimum log size to 64MB when possible
+Best regards,
+-- 
+Andrew Jeffery <andrew@codeconstruct.com.au>
 
-> 
-> 
-> >
-> >>
-> >>> There has been a few improvements though during Linux 6.9 on the log performance,
-> >>> but I can't tell if you have any of those improvements around.
-> >>> I'd suggest you trying to run a newer upstream kernel, otherwise you'll get very
-> >>> limited support from the upstream community. If you can't, I'd suggest you
-> >>> reporting this issue to your vendor, so they can track what you are/are not
-> >>> using in your current kernel.
-> >>
-> >> Yeah, we’ve started upgrading selected/affected projects to 6.12, to see whether this improves things.
-> >
-> > Good enough.
-> >
-> >>
-> >>> FWIW, I'm not sure if NixOS uses linux-stable kernels or not. If that's the
-> >>> case, running a newer kernel suggestion is still valid.
-> >>
-> >> We’re running the NixOS mainline versions which are very vanilla. There are very very 4 small patches that only fix up things around building and binary paths for helpers to call to adapt them to the nix environment.
-> >
-> > I see. There were some improvements in the newer versions, so if you can rule
-> > out any possibly fixed bug is worth it.
-> >
-> >
-> >>
-> >> Christian
-> >>
-> >>
-> >> --
-> >> Christian Theune · ct@flyingcircus.io · +49 345 219401 0
-> >> Flying Circus Internet Operations GmbH · https://flyingcircus.io
-> >> Leipziger Str. 70/71 · 06108 Halle (Saale) · Deutschland
-> >> HR Stendal HRB 21169 · Geschäftsführer: Christian Theune, Christian Zagrodnick
-> 
-> 
-> --
-> Christian Theune · ct@flyingcircus.io · +49 345 219401 0
-> Flying Circus Internet Operations GmbH · https://flyingcircus.io
-> Leipziger Str. 70/71 · 06108 Halle (Saale) · Deutschland
-> HR Stendal HRB 21169 · Geschäftsführer: Christian Theune, Christian Zagrodnick
-> 
-> 
 
