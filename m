@@ -1,140 +1,124 @@
-Return-Path: <stable+bounces-152698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347F2ADAB5C
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 11:01:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B875ADABA4
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 11:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1990188BD7D
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 09:00:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DBA53AE121
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 09:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A982C2737F5;
-	Mon, 16 Jun 2025 08:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF742737FC;
+	Mon, 16 Jun 2025 09:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="T4981MuA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csja2bDf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E188273D64;
-	Mon, 16 Jun 2025 08:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF211DB92A;
+	Mon, 16 Jun 2025 09:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750064395; cv=none; b=DoOBg6kiuT/JllF6hC52oCfeLsH7y0REv/hL1UxrohLn3y439Ekr4XG8NCw7GMOLueOSDh/cDYbjuCxz7tAaP/wLNByOFen8rfgfGY7vxeS8g4FWP6MimbukQK/6FjyM674CN22jULWxkzkWC66ANRsTMy6myY0mkAtmnxww9gM=
+	t=1750065560; cv=none; b=p6d/mFC1O/GLUQEC1Unf82mlmyMi2oT74apJMd3zYZzdHYDRx2Kt+S3Y8LShdm68l0o4VOTVuSfQ+5CbUTQXPIzppfIl2xXs+gbU7qZNbY9YD37b7p0RhXXSS/Zi5k2LujaVpUiqIZYJZNcs88hPXLf7dn2dM1t7s/FQB5MAJGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750064395; c=relaxed/simple;
-	bh=TRDI+1LI77i41Lpbd2URKLy/orUrVbjKB17ATEDujTE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=De70SsJwJWbxdMryEVUB/ci8vFVkoFDdaVC6P3wWVOA9Er0DaVWxVfTE2QwywDm9btGdYGUIftC9lfTzK7+liwmnz6RKBoCA5meUFrS+5qbsg4UX27mNOK9hZuraVCUP/CF0HYWEvmDLTkste26y2d0bquNnYuBPIjuV2Xjp148=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=T4981MuA; arc=none smtp.client-ip=212.122.41.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-	s=mail; t=1750064384;
-	bh=TRDI+1LI77i41Lpbd2URKLy/orUrVbjKB17ATEDujTE=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=T4981MuAA/1FClS2do81A8YiMvgLw6Bq9BblssGPs4YqpHGLlJxvYyXMzCYk8c0yP
-	 /ulix4xnaciFgr5yISW4vA3KQ1ln2T69RsXdsjUDkQccUFBhsGRN4QrbLgJpeblWQl
-	 vB5STFsHBvtGwg9JwQTgsdXDcmEsSjQgvDwdpWg0=
+	s=arc-20240116; t=1750065560; c=relaxed/simple;
+	bh=cIWgCue/aqvpSg/kLDSZwh6pFlaG1xIal/HdrKsv3tA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOvmAWPn8YqSCLoJ9pOUIZmc8m9au6iSsuydMWmFmOGQfSlYN4GMOeU0nqjblaCfcOq5hgSw4c/ZzawrZoO0xwDkDyFjsuA6lcMdshnFfjQVIt9ei1msBewkrxwusPL+N0oUNDHIWyvPlPJYVcLyIps3+RaTqjss97K/TcA/5dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csja2bDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7A5C4CEEE;
+	Mon, 16 Jun 2025 09:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750065560;
+	bh=cIWgCue/aqvpSg/kLDSZwh6pFlaG1xIal/HdrKsv3tA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=csja2bDfFVXwJHWt9Mv+cG/BZxIObuzgt1mBo5mgh8rbGQnTZx8gvAxRHHyOhFy0a
+	 G0scb5aTnlGOrkoLj/IIqrQGA0N8ZaYJX9swYbqcetVA1INH/BO9MUSky41vA2KPGK
+	 cKo+uLHW6PutUn58QN2K4C7n5nk69ibXq63hVOUr3jvP2KwxtVlfdKVtmiKG9IoKGL
+	 jLBItFuxKDmT2/lFbLFNKef/lPKlPn3lH2Rbe3HAXNZEyGdGy8EwIIk/PiBup1CzU5
+	 jwiHY3QOSItn6IStk4J0QihcCSTJm8VZI0T5Voic2AMx0PwPoBa6+CLR8vT8DddXsz
+	 PRLn3slXKLQgw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uR5zo-000000005ZR-2jKu;
+	Mon, 16 Jun 2025 11:19:17 +0200
+Date: Mon, 16 Jun 2025 11:19:16 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Depeng Shao <quic_depengs@quicinc.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Hans Verkuil <hans.verkuil@cisco.com>, linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: [PATCH 2/2] media: qcom: camss: vfe: Fix registration sequencing
+ bug
+Message-ID: <aE_hlGHkRZqFFacR@hovoldconsulting.com>
+References: <20250612-linux-next-25-05-30-daily-reviews-v1-0-88ba033a9a03@linaro.org>
+ <20250612-linux-next-25-05-30-daily-reviews-v1-2-88ba033a9a03@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
-From: Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
-Date: Mon, 16 Jun 2025 10:59:34 +0200
-Cc: stable@vger.kernel.org,
- "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
- regressions@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
-References: <M1JxD6k5Sdxnq-pztTdv_FZwURA8AaT9qWNFUYGCmhiTRQFESfH7xqdOqQjz-oKQiin8pQckoNhfNyCHu-cxEQ==@protonmail.internalid>
- <14E1A49D-23BF-4929-A679-E6D5C8977D40@flyingcircus.io>
- <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
-To: Carlos Maiolino <cem@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612-linux-next-25-05-30-daily-reviews-v1-2-88ba033a9a03@linaro.org>
 
+On Thu, Jun 12, 2025 at 09:07:16AM +0100, Bryan O'Donoghue wrote:
+> msm_vfe_register_entities loops through each Raw Data Interface input line.
+> For each loop we add video device with its associated pads.
+> 
+> Once a single /dev/video0 node has been populated it is possible for
+> camss_find_sensor_pad to run. This routine scans through a list of media
+> entities taking a pointer pad = media_entity->pad[0] and assuming that
+> pointer is always valid.
+> 
+> It is possible for both the enumeration loop in msm_vfe_register_entities()
+> and a call from user-space to run concurrently.
+> 
+> Adding some deliberate sleep code into the loop in
+> msm_vfe_register_entities() and constructing a user-space program to open
+> every /dev/videoX node in a tight continuous loop, quickly shows the
+> following error.
+> 
+> [  691.074558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
+> [  691.074933] Call trace:
+> [  691.074935]  camss_find_sensor_pad+0x74/0x114 [qcom_camss] (P)
+> [  691.074946]  camss_get_pixel_clock+0x18/0x64 [qcom_camss]
+> [  691.074956]  vfe_get+0xc0/0x54c [qcom_camss]
+> [  691.074968]  vfe_set_power+0x58/0xf4c [qcom_camss]
+> [  691.074978]  pipeline_pm_power_one+0x124/0x140 [videodev]
+> [  691.074986]  pipeline_pm_power+0x70/0x100 [videodev]
+> [  691.074992]  v4l2_pipeline_pm_use+0x54/0x90 [videodev]
+> [  691.074998]  v4l2_pipeline_pm_get+0x14/0x20 [videodev]
+> [  691.075005]  video_open+0x74/0xe0 [qcom_camss]
+> [  691.075014]  v4l2_open+0xa8/0x124 [videodev]
+> [  691.075021]  chrdev_open+0xb0/0x21c
+> [  691.075031]  do_dentry_open+0x138/0x4c4
+> [  691.075040]  vfs_open+0x2c/0xe8
 
+> Taking the vfe->power_lock is not possible since
+> v4l2_device_register_subdev takes the mdev->graph_lock. Later on fops->open
+> takes the mdev->graph_lock followed by vfe_get() -> taking vfe->power_lock.
+> 
+> Introduce a simple enumeration_complete bool which is false initially and
+> only set true once in our init routine after we complete enumeration.
+> 
+> If user-space tries to interact with the VFE before complete enumeration it
+> will receive -EAGAIN.
 
-> On 16. Jun 2025, at 10:50, Carlos Maiolino <cem@kernel.org> wrote:
->=20
-> On Thu, Jun 12, 2025 at 03:37:10PM +0200, Christian Theune wrote:
->> Hi,
->>=20
->> in the last week, after updating to 6.6.92, we=E2=80=99ve encountered =
-a number of VMs reporting temporarily hung tasks blocking the whole =
-system for a few minutes. They unblock by themselves and have similar =
-tracebacks.
->>=20
->> The IO PSIs show 100% pressure for that time, but the underlying =
-devices are still processing read and write IO (well within their =
-capacity). I=E2=80=99ve eliminated the underlying storage (Ceph) as the =
-source of problems as I couldn=E2=80=99t find any latency outliers or =
-significant queuing during that time.
->>=20
->> I=E2=80=99ve seen somewhat similar reports on 6.6.88 and 6.6.77, but =
-those might have been different outliers.
->>=20
->> I=E2=80=99m attaching 3 logs - my intuition and the data so far leads =
-me to consider this might be a kernel bug. I haven=E2=80=99t found a way =
-to reproduce this, yet.
->=20
-> =46rom a first glance, these machines are struggling because IO =
-contention as you
-> mentioned, more often than not they seem to be stalling waiting for =
-log space to
-> be freed, so any operation in the FS gets throttled while the journal =
-isn't
-> written back. If you have a small enough journal it will need to issue =
-IO often
-> enough to cause IO contention. So, I'd point it to a slow storage or =
-small
-> enough log area (or both).
+As Vladimir also pointed out, this is at best just papering over the
+issue.
 
-Yeah, my current analysis didn=E2=80=99t show any storage performance =
-issues. I=E2=80=99ll revisit this once more to make sure I=E2=80=99m not =
-missing anything. We=E2=80=99ve previously had issues in this area that =
-turned out to be kernel bugs. We didn=E2=80=99t change anything =
-regarding journal sizes and only a recent kernel upgrade seemed to be =
-relevant.
+You need to make sure the video device is not registered until it's
+ready to be used. That is the bug that needs fixing.
 
-> There has been a few improvements though during Linux 6.9 on the log =
-performance,
-> but I can't tell if you have any of those improvements around.
-> I'd suggest you trying to run a newer upstream kernel, otherwise =
-you'll get very
-> limited support from the upstream community. If you can't, I'd suggest =
-you
-> reporting this issue to your vendor, so they can track what you =
-are/are not
-> using in your current kernel.
-
-Yeah, we=E2=80=99ve started upgrading selected/affected projects to =
-6.12, to see whether this improves things.
-
-> FWIW, I'm not sure if NixOS uses linux-stable kernels or not. If =
-that's the
-> case, running a newer kernel suggestion is still valid.
-
-We=E2=80=99re running the NixOS mainline versions which are very =
-vanilla. There are very very 4 small patches that only fix up things =
-around building and binary paths for helpers to call to adapt them to =
-the nix environment.
-
-Christian
-
-
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
-
+Johan
 
