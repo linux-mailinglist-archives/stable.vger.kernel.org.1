@@ -1,119 +1,140 @@
-Return-Path: <stable+bounces-152697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B1FADAB50
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 10:59:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347F2ADAB5C
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 11:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CC7E3ABB1C
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 08:58:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1990188BD7D
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 09:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4578B272E6D;
-	Mon, 16 Jun 2025 08:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A982C2737F5;
+	Mon, 16 Jun 2025 08:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JkzNPxan"
+	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="T4981MuA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B26A270578
-	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 08:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E188273D64;
+	Mon, 16 Jun 2025 08:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750064313; cv=none; b=C8N7+mMGyNYwPYChYFK7Ioy9c+vmv9eH+iYm3AYvyxBu51u8O80tAv8r0EDGQ3EC7OcwZOWwdhbA9RHA9+gVH2DceHq/pccc2gF4CxNFPuEhKn4TsKep+h5OX3qD1QRhfF02g6o2q7ZkCuzCMwdI9lmPsBy6xgj1KoG6YJ8JYwM=
+	t=1750064395; cv=none; b=DoOBg6kiuT/JllF6hC52oCfeLsH7y0REv/hL1UxrohLn3y439Ekr4XG8NCw7GMOLueOSDh/cDYbjuCxz7tAaP/wLNByOFen8rfgfGY7vxeS8g4FWP6MimbukQK/6FjyM674CN22jULWxkzkWC66ANRsTMy6myY0mkAtmnxww9gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750064313; c=relaxed/simple;
-	bh=g7tlwdRNtN0gqtJClqvwnCStjM6vCVUxxCaFkz13PfI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=okzreILlBx/RfTQpwpPR/bshr6hDKkNc+W0pV1MXRSL/4F8Se22VtimIfwJkHlBcDdTfH0Pt+R/lnXSWQGmCxxx4mN2cxtiw+XaaKuHdKJzK5vAMpPjumAdJ3qEV4dY36+KiGvY+vmfeK/jy+wrsbEVf8ng2IeXs6rZxPy1J3E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--anvithdosapati.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JkzNPxan; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--anvithdosapati.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-748b4034b42so1446000b3a.3
-        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 01:58:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750064311; x=1750669111; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ERVQz1A2O2BXzPah5knZjJSx5XV0pxIWUqYZQG345/A=;
-        b=JkzNPxanarVjXL7Iu8RW6H+YSn7e2LqAE2rbonskKeaGa54b0QtsCjbK7mquaxZkLu
-         bSgnGjTJ4iPfa7PXIOiPD6ZIoGR7n3WAIDimHE6yXUVgtMIaZwFr+cHJV6P1ueO8OO89
-         vuVgQBw4a6SKkgMD6DXgdDgT4KAY8+WdJy/L8VADaSfB1IyB0WQwOT90teMNHhNClHs+
-         eFhudXrrMI5Ga95QHpWOq/Ep0t8hhnlcTx8k3O2bxash4G3JRZAD19ZGUhuZOhUETCOD
-         PFwR3VzDbpjgmNHomILvkx7pdtTaqugSB8xzZ5Sc/8y5Vw2KbcmiAzG9LOCRkST1Rxcq
-         Vx1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750064311; x=1750669111;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ERVQz1A2O2BXzPah5knZjJSx5XV0pxIWUqYZQG345/A=;
-        b=mgRPAQ9LsG66ghTh/ohgRwH4RD+K+iSeqSgSHIP+jTVpcvOtWXUh763O+F9RyJLNOq
-         ULbcCrTzRSEy/tageVUF61F0aPi+Y9jVRcn77RcltiWUJiI8PqMa1+blqPBP0NLfQAya
-         t174PC+fuA9BZY6z7mkWF/mMuN+3B2PlJdkp8sViP1QQ2ayO5mwlnj3+pOBLq5IhRpLc
-         Xjz1mwYh8/mvx+WNLCwrwZCt8SheBBKKWAPk0r77yDb6DRM/IPI2AIblNcE6sTue6gt2
-         6Vp4mGhLUgqv0Z0B5Es/uUWjs+H7UTiXBjdXbWAC/+0W42zHhIrxh/iB9wLIwoGG2INd
-         hyGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUq4/alyiW6pQmuN5ziAj1tRne8/knE6ud35a5KXsyYQH6sifkXq0Qpamr0Sz8U5WXDx8gw7Mw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLjnvDSD3f4b99BGv8I8ULqaKyYLLKG5fFQg+wQPd1qzoQRU4w
-	PwTFfo8bqoZtSWHbWpJu0wt8YY9/DMwopWpbsfnkTJwKJyUE19wMdYOxaBfHn2RM0By2X/TIdfi
-	1w7d0LST9twSH1eTcsg+2Dy99pQqV/b7y2px4Hw==
-X-Google-Smtp-Source: AGHT+IFhXs6n3o6icotL1+3XeLD9ZY9eTAmeu2x57RShZxqj4RSih7awjaXGE2lMq+jpHBr9PWJ3C6BLb0Iepg4J0wUDcg==
-X-Received: from pgam2.prod.google.com ([2002:a05:6a02:2b42:b0:b2c:2104:8856])
- (user=anvithdosapati job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:9ccb:b0:215:eafc:abda with SMTP id adf61e73a8af0-21fbd4d48f6mr11377195637.18.1750064310866;
- Mon, 16 Jun 2025 01:58:30 -0700 (PDT)
-Date: Mon, 16 Jun 2025 08:57:34 +0000
+	s=arc-20240116; t=1750064395; c=relaxed/simple;
+	bh=TRDI+1LI77i41Lpbd2URKLy/orUrVbjKB17ATEDujTE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=De70SsJwJWbxdMryEVUB/ci8vFVkoFDdaVC6P3wWVOA9Er0DaVWxVfTE2QwywDm9btGdYGUIftC9lfTzK7+liwmnz6RKBoCA5meUFrS+5qbsg4UX27mNOK9hZuraVCUP/CF0HYWEvmDLTkste26y2d0bquNnYuBPIjuV2Xjp148=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=T4981MuA; arc=none smtp.client-ip=212.122.41.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+	s=mail; t=1750064384;
+	bh=TRDI+1LI77i41Lpbd2URKLy/orUrVbjKB17ATEDujTE=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=T4981MuAA/1FClS2do81A8YiMvgLw6Bq9BblssGPs4YqpHGLlJxvYyXMzCYk8c0yP
+	 /ulix4xnaciFgr5yISW4vA3KQ1ln2T69RsXdsjUDkQccUFBhsGRN4QrbLgJpeblWQl
+	 vB5STFsHBvtGwg9JwQTgsdXDcmEsSjQgvDwdpWg0=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
-Message-ID: <20250616085734.2133581-1-anvithdosapati@google.com>
-Subject: [PATCH v2] scsi: ufs: core: Fix clk scaling to be conditional in
- reset and restore
-From: Anvith Dosapati <anvithdosapati@google.com>
-To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, Subhash Jadavani <subhashj@codeaurora.org>, linux-scsi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, manugautam@google.com, vamshigajjela@google.com, 
-	anvithdosapati <anvithdosapati@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
+From: Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
+Date: Mon, 16 Jun 2025 10:59:34 +0200
+Cc: stable@vger.kernel.org,
+ "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+ regressions@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
+References: <M1JxD6k5Sdxnq-pztTdv_FZwURA8AaT9qWNFUYGCmhiTRQFESfH7xqdOqQjz-oKQiin8pQckoNhfNyCHu-cxEQ==@protonmail.internalid>
+ <14E1A49D-23BF-4929-A679-E6D5C8977D40@flyingcircus.io>
+ <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
+To: Carlos Maiolino <cem@kernel.org>
 
-From: anvithdosapati <anvithdosapati@google.com>
 
-In ufshcd_host_reset_and_restore, scale up clocks only when clock
-scaling is supported. Without this change cpu latency is voted for 0
-(ufshcd_pm_qos_update) during resume unconditionally.
 
-Signed-off-by: anvithdosapati <anvithdosapati@google.com>
-Fixes: a3cd5ec55f6c7 ("scsi: ufs: add load based scaling of UFS gear")
-Cc: stable@vger.kernel.org
----
-v2:
-- Update commit message
-- Add Fixes and Cc stable
+> On 16. Jun 2025, at 10:50, Carlos Maiolino <cem@kernel.org> wrote:
+>=20
+> On Thu, Jun 12, 2025 at 03:37:10PM +0200, Christian Theune wrote:
+>> Hi,
+>>=20
+>> in the last week, after updating to 6.6.92, we=E2=80=99ve encountered =
+a number of VMs reporting temporarily hung tasks blocking the whole =
+system for a few minutes. They unblock by themselves and have similar =
+tracebacks.
+>>=20
+>> The IO PSIs show 100% pressure for that time, but the underlying =
+devices are still processing read and write IO (well within their =
+capacity). I=E2=80=99ve eliminated the underlying storage (Ceph) as the =
+source of problems as I couldn=E2=80=99t find any latency outliers or =
+significant queuing during that time.
+>>=20
+>> I=E2=80=99ve seen somewhat similar reports on 6.6.88 and 6.6.77, but =
+those might have been different outliers.
+>>=20
+>> I=E2=80=99m attaching 3 logs - my intuition and the data so far leads =
+me to consider this might be a kernel bug. I haven=E2=80=99t found a way =
+to reproduce this, yet.
+>=20
+> =46rom a first glance, these machines are struggling because IO =
+contention as you
+> mentioned, more often than not they seem to be stalling waiting for =
+log space to
+> be freed, so any operation in the FS gets throttled while the journal =
+isn't
+> written back. If you have a small enough journal it will need to issue =
+IO often
+> enough to cause IO contention. So, I'd point it to a slow storage or =
+small
+> enough log area (or both).
 
- drivers/ufs/core/ufshcd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Yeah, my current analysis didn=E2=80=99t show any storage performance =
+issues. I=E2=80=99ll revisit this once more to make sure I=E2=80=99m not =
+missing anything. We=E2=80=99ve previously had issues in this area that =
+turned out to be kernel bugs. We didn=E2=80=99t change anything =
+regarding journal sizes and only a recent kernel upgrade seemed to be =
+relevant.
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 4410e7d93b7d..fac381ea2b3a 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -7802,7 +7802,8 @@ static int ufshcd_host_reset_and_restore(struct ufs_hba *hba)
- 	hba->silence_err_logs = false;
- 
- 	/* scale up clocks to max frequency before full reinitialization */
--	ufshcd_scale_clks(hba, ULONG_MAX, true);
-+	if (ufshcd_is_clkscaling_supported(hba))
-+		ufshcd_scale_clks(hba, ULONG_MAX, true);
- 
- 	err = ufshcd_hba_enable(hba);
- 
--- 
-2.50.0.rc1.591.g9c95f17f64-goog
+> There has been a few improvements though during Linux 6.9 on the log =
+performance,
+> but I can't tell if you have any of those improvements around.
+> I'd suggest you trying to run a newer upstream kernel, otherwise =
+you'll get very
+> limited support from the upstream community. If you can't, I'd suggest =
+you
+> reporting this issue to your vendor, so they can track what you =
+are/are not
+> using in your current kernel.
+
+Yeah, we=E2=80=99ve started upgrading selected/affected projects to =
+6.12, to see whether this improves things.
+
+> FWIW, I'm not sure if NixOS uses linux-stable kernels or not. If =
+that's the
+> case, running a newer kernel suggestion is still valid.
+
+We=E2=80=99re running the NixOS mainline versions which are very =
+vanilla. There are very very 4 small patches that only fix up things =
+around building and binary paths for helpers to call to adapt them to =
+the nix environment.
+
+Christian
+
+
+--=20
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
 
 
