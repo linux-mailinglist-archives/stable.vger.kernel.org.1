@@ -1,123 +1,119 @@
-Return-Path: <stable+bounces-152696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4BAAADAB29
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 10:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B1FADAB50
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 10:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7118E3A6EED
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 08:51:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CC7E3ABB1C
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 08:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C106826D4E5;
-	Mon, 16 Jun 2025 08:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4578B272E6D;
+	Mon, 16 Jun 2025 08:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jrHj06No"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JkzNPxan"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210411BF58;
-	Mon, 16 Jun 2025 08:51:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B26A270578
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 08:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750063916; cv=none; b=OobsTB2PfvZamgahAGbZdchIxwAI63Wp15ojSXEaEonz2EJFjfDSxSZjPr4B3YNyophIyrpyEe7feMpJpoHYfTlkCOgFNV1rCIPFJRRVsLckX4TBW1IPFIqzaGlkwiG/n3TjA/W/nffKHoXDjKHroREfW2CBJ4ZUI7gqZcaiMAU=
+	t=1750064313; cv=none; b=C8N7+mMGyNYwPYChYFK7Ioy9c+vmv9eH+iYm3AYvyxBu51u8O80tAv8r0EDGQ3EC7OcwZOWwdhbA9RHA9+gVH2DceHq/pccc2gF4CxNFPuEhKn4TsKep+h5OX3qD1QRhfF02g6o2q7ZkCuzCMwdI9lmPsBy6xgj1KoG6YJ8JYwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750063916; c=relaxed/simple;
-	bh=inXjClZ8KCAtFIEJ83Cvg/hIv2lal3GwBdS/NVkTN+M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FjuZBRaa94fY7IA8JgbK4RMpCFQiuZUUpCFipLueSVq85DH9iZfPvNV26GK2RM7h+HTYgjLh4Z+0Gw+24E/14M8iOHIEIMCNg2R7dlbYS1x9prGPTPj8RxFNaDr2Y0ZtnyL3d+3nwkrShdUH4zsII44tmb+uStVkGD7+jnW+Syw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jrHj06No; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CB22543288;
-	Mon, 16 Jun 2025 08:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750063905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8vR4Mo91o9W5Rfe7HfmnM13FB8xa17YYmej7HRSfPgE=;
-	b=jrHj06NoqICbL4eSH/F0XmoLjMCcX8qYiJkPp8/S8yBzBsIDdROZHs1rGW4B+shClDr5w5
-	4RWRcVwWqVSO0PfHdEvLs5hsWzKMc7vDEiryjiC2VVpeEfxzqacLra8GQHJifQsKwef24G
-	lOb/OfPm00KTLCVwFCDYY49oISkgbZC3Yn0WPaanz39h0eevLhgMFf7yi66ob+fpIe2UZi
-	3TCnJ6LYu9w//ZzMlHckkQm0odx+BU/c/h9/cpGWkAZxqKxYDbj6dvqHeeOTbPQPlCAUWE
-	swSjsHxPZH96i/qiprto9lJhdqxJZ8pFDBehvlDOmAsgQuuu57tfv+TFqIhHoA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jacky Huang <ychuang3@nuvoton.com>,  Shan-Chun Hung
- <schung@nuvoton.com>,  Linus Walleij <linus.walleij@linaro.org>,  Steam
- Lin <stlin2@winbond.com>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  linux-arm-kernel@lists.infradead.org,
-  linux-gpio@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: nuvoton: Fix boot on ma35dx platforms
-In-Reply-To: <CAHp75VcfaU41FV-uN=82GdUqRadxYc6XaLX2Hr9x-4RfAV8CEg@mail.gmail.com>
-	(Andy Shevchenko's message of "Sat, 14 Jun 2025 00:07:51 +0300")
-References: <20250613181312.1269794-1-miquel.raynal@bootlin.com>
-	<CAHp75VcfaU41FV-uN=82GdUqRadxYc6XaLX2Hr9x-4RfAV8CEg@mail.gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 16 Jun 2025 10:51:42 +0200
-Message-ID: <87tt4gnk69.fsf@bootlin.com>
+	s=arc-20240116; t=1750064313; c=relaxed/simple;
+	bh=g7tlwdRNtN0gqtJClqvwnCStjM6vCVUxxCaFkz13PfI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=okzreILlBx/RfTQpwpPR/bshr6hDKkNc+W0pV1MXRSL/4F8Se22VtimIfwJkHlBcDdTfH0Pt+R/lnXSWQGmCxxx4mN2cxtiw+XaaKuHdKJzK5vAMpPjumAdJ3qEV4dY36+KiGvY+vmfeK/jy+wrsbEVf8ng2IeXs6rZxPy1J3E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--anvithdosapati.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JkzNPxan; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--anvithdosapati.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-748b4034b42so1446000b3a.3
+        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 01:58:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750064311; x=1750669111; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ERVQz1A2O2BXzPah5knZjJSx5XV0pxIWUqYZQG345/A=;
+        b=JkzNPxanarVjXL7Iu8RW6H+YSn7e2LqAE2rbonskKeaGa54b0QtsCjbK7mquaxZkLu
+         bSgnGjTJ4iPfa7PXIOiPD6ZIoGR7n3WAIDimHE6yXUVgtMIaZwFr+cHJV6P1ueO8OO89
+         vuVgQBw4a6SKkgMD6DXgdDgT4KAY8+WdJy/L8VADaSfB1IyB0WQwOT90teMNHhNClHs+
+         eFhudXrrMI5Ga95QHpWOq/Ep0t8hhnlcTx8k3O2bxash4G3JRZAD19ZGUhuZOhUETCOD
+         PFwR3VzDbpjgmNHomILvkx7pdtTaqugSB8xzZ5Sc/8y5Vw2KbcmiAzG9LOCRkST1Rxcq
+         Vx1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750064311; x=1750669111;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ERVQz1A2O2BXzPah5knZjJSx5XV0pxIWUqYZQG345/A=;
+        b=mgRPAQ9LsG66ghTh/ohgRwH4RD+K+iSeqSgSHIP+jTVpcvOtWXUh763O+F9RyJLNOq
+         ULbcCrTzRSEy/tageVUF61F0aPi+Y9jVRcn77RcltiWUJiI8PqMa1+blqPBP0NLfQAya
+         t174PC+fuA9BZY6z7mkWF/mMuN+3B2PlJdkp8sViP1QQ2ayO5mwlnj3+pOBLq5IhRpLc
+         Xjz1mwYh8/mvx+WNLCwrwZCt8SheBBKKWAPk0r77yDb6DRM/IPI2AIblNcE6sTue6gt2
+         6Vp4mGhLUgqv0Z0B5Es/uUWjs+H7UTiXBjdXbWAC/+0W42zHhIrxh/iB9wLIwoGG2INd
+         hyGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUq4/alyiW6pQmuN5ziAj1tRne8/knE6ud35a5KXsyYQH6sifkXq0Qpamr0Sz8U5WXDx8gw7Mw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLjnvDSD3f4b99BGv8I8ULqaKyYLLKG5fFQg+wQPd1qzoQRU4w
+	PwTFfo8bqoZtSWHbWpJu0wt8YY9/DMwopWpbsfnkTJwKJyUE19wMdYOxaBfHn2RM0By2X/TIdfi
+	1w7d0LST9twSH1eTcsg+2Dy99pQqV/b7y2px4Hw==
+X-Google-Smtp-Source: AGHT+IFhXs6n3o6icotL1+3XeLD9ZY9eTAmeu2x57RShZxqj4RSih7awjaXGE2lMq+jpHBr9PWJ3C6BLb0Iepg4J0wUDcg==
+X-Received: from pgam2.prod.google.com ([2002:a05:6a02:2b42:b0:b2c:2104:8856])
+ (user=anvithdosapati job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:9ccb:b0:215:eafc:abda with SMTP id adf61e73a8af0-21fbd4d48f6mr11377195637.18.1750064310866;
+ Mon, 16 Jun 2025 01:58:30 -0700 (PDT)
+Date: Mon, 16 Jun 2025 08:57:34 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddviedugecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffeghfejtdefieeguddukedujeektdeihfelleeuieeuveehkedvleduheeivdefnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepledprhgtphhtthhopegrnhguhidrshhhvghvtghhvghnkhhosehgmhgrihhlrdgtohhmpdhrtghpthhtohephigthhhurghnghefsehnuhhvohhtohhnrdgtohhmpdhrtghpthhtohepshgthhhunhhgsehnuhhvohhtohhnrdgtohhmpdhrtghpthhtoheplhhinhhushdrfigrlhhlvghijheslhhinhgrrhhordhorhhgpdhrtghpthhtohepshhtlhhinhdvseifihhnsghonhgurdgtohhmpdhrtghpthhto
- hepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqghhpihhosehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-Sasl: miquel.raynal@bootlin.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.0.rc1.591.g9c95f17f64-goog
+Message-ID: <20250616085734.2133581-1-anvithdosapati@google.com>
+Subject: [PATCH v2] scsi: ufs: core: Fix clk scaling to be conditional in
+ reset and restore
+From: Anvith Dosapati <anvithdosapati@google.com>
+To: Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+	Bart Van Assche <bvanassche@acm.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Subhash Jadavani <subhashj@codeaurora.org>, linux-scsi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, manugautam@google.com, vamshigajjela@google.com, 
+	anvithdosapati <anvithdosapati@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Andy,
+From: anvithdosapati <anvithdosapati@google.com>
 
-On 14/06/2025 at 00:07:51 +03, Andy Shevchenko <andy.shevchenko@gmail.com> =
-wrote:
+In ufshcd_host_reset_and_restore, scale up clocks only when clock
+scaling is supported. Without this change cpu latency is voted for 0
+(ufshcd_pm_qos_update) during resume unconditionally.
 
-> On Fri, Jun 13, 2025 at 9:13=E2=80=AFPM Miquel Raynal <miquel.raynal@boot=
-lin.com> wrote:
->>
->> As part of a wider cleanup trying to get rid of OF specific APIs, an
->> incorrect (and partially unrelated) cleanup was introduced.
->>
->> The goal was to replace a device_for_each_chil_node() loop including an
->> additional condition inside by a macro doing both the loop and the
->> check on a single line.
->>
->> The snippet:
->>
->>         device_for_each_child_node(dev, child)
->>                 if (fwnode_property_present(child, "gpio-controller"))
->>                         continue;
->>
->> was replaced by:
->>
->>         for_each_gpiochip_node(dev, child)
->>
->> which expands into:
->>
->>         device_for_each_child_node(dev, child)
->>                 for_each_if(fwnode_property_present(child, "gpio-control=
-ler"))
->>
->> This change is actually doing the opposite of what was initially
->> expected, breaking the probe of this driver, breaking at the same time
->> the whole boot of Nuvoton platforms (no more console, the kernel WARN()).
->>
->> Revert these two changes to roll back to the correct behavior.
->
-> Thank you for the report and the fix.
-> Can we also add a comment on top of each of these if:s to prevent from
-> blind change in the future?
+Signed-off-by: anvithdosapati <anvithdosapati@google.com>
+Fixes: a3cd5ec55f6c7 ("scsi: ufs: add load based scaling of UFS gear")
+Cc: stable@vger.kernel.org
+---
+v2:
+- Update commit message
+- Add Fixes and Cc stable
 
-I believe it's fine like that, The difference is subtle, it is okay and
-unavoidable to make this kind of small mistake sometimes.
+ drivers/ufs/core/ufshcd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Cheers,
-Miqu=C3=A8l
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 4410e7d93b7d..fac381ea2b3a 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -7802,7 +7802,8 @@ static int ufshcd_host_reset_and_restore(struct ufs_hba *hba)
+ 	hba->silence_err_logs = false;
+ 
+ 	/* scale up clocks to max frequency before full reinitialization */
+-	ufshcd_scale_clks(hba, ULONG_MAX, true);
++	if (ufshcd_is_clkscaling_supported(hba))
++		ufshcd_scale_clks(hba, ULONG_MAX, true);
+ 
+ 	err = ufshcd_hba_enable(hba);
+ 
+-- 
+2.50.0.rc1.591.g9c95f17f64-goog
+
 
