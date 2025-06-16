@@ -1,135 +1,152 @@
-Return-Path: <stable+bounces-152681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D721ADA477
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 00:59:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B897AADA4DF
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 02:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473A8188E943
-	for <lists+stable@lfdr.de>; Sun, 15 Jun 2025 23:00:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FAC716C547
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 00:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FE627B4FA;
-	Sun, 15 Jun 2025 22:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5FCBE65;
+	Mon, 16 Jun 2025 00:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BoWUDO59"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QOwC9Y4Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC861F09AD;
-	Sun, 15 Jun 2025 22:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACCA360
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 00:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750028393; cv=none; b=ZH+89kPu/JPi6g1gjjENMUAR9KfjcU2SC1+0jUjqvjpsICtTTmufatzr5y2SH46Xfew86IPwDWUt9nn39c+jp5/oMtHMKF8WRFlLOlxx1BVsreD8EQSQ0k8ER0Efi30qdflVZRqoCZ8xE3II4pF6yh52/XJNzk1S32YG3wt7lWc=
+	t=1750032682; cv=none; b=mAjAYg8JW3VhieoTuSi39QkmQb5Ysssz7+ewi7d0BPPJ/HzVBGA5nEMvoXykeugqfqABhS3PbXnTQ/KFOVB8UDLOrf6bYAFmVwMSwvIvMTRCNK17+atxMgkdWkbKLVkTn4yM3R5xnYwfRmEuYuJ1k7pJ6+m1OWQqdqcp2n1nL+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750028393; c=relaxed/simple;
-	bh=YR3upt6a7NIgFrhsrnVSjKhZGYJ8tzeA4EEKjyuJIa4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EuLNwlyxJLIafJqJ+jf1xOfLdKxTxyVYkMMoR7tjL+lmQEUTTlrHKu07bmEVbh47AmXyY53ioUcYrUj5KYyRfPNY1CW5Na9Ee4+WpMvn0bhLhmOfXx3B9whhzArIZ37V4KzYhmh659egM0F5xzRavKF4T9lVvFoSNvzpgbhsHyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BoWUDO59; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-450cfb79177so23606095e9.0;
-        Sun, 15 Jun 2025 15:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750028390; x=1750633190; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=asoSzLl/Wq1XUSwb4kGRQ/8z2OWVCrEll4V7xShXbq8=;
-        b=BoWUDO594vdfJSiLmW0Oy1NlJL8vofO1OTJxSVHI3Qrap/Ogv+Ewjb1YnURs/AMf8Y
-         E0nv7GDzbzB2n3zAepENkkE2GYTvZEobOh2h2OVu7v4Y3UWD+5aG5kgoPki8pQ2Fxuoo
-         wWJ1DJ2Vv/b9Ab6o5cQIILUUZnet0MA6mDTfcQMHiqTqbmRARv3BTBo4RaV5SUCTMHDZ
-         fSvuMD1rm19Hn5vlfs7F759DhRykHMpgZwZpkfkBmrjg6PMOeBuKYUTM6YIr+ZKsbMYB
-         pON6ML3Gu+gA2RIpWItVtMCwTIXMT+L/ie3H+XDSZ9N9M6099WrQnYzmbt8TxvPZokVm
-         ONOw==
+	s=arc-20240116; t=1750032682; c=relaxed/simple;
+	bh=mbkkVgFYRVW7IBPbu1Cg2y20fCsMjcz3upWXASAHUPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DD2ryCTp2XHIQIu84JXVKyGkTbc8eDa99+oaeUWxRB8YUrm34nA5F9H6ehuHzGLGWL6TbhP3Nd2Y+PFb/1an7aBxvquRF5vnAWv9dESvreoXpJiaB7YFGLmWBsm5lcsQQxAizOtK7RZRLKfnm0QyKJZ9NREMhQszJHv/3a7wS6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QOwC9Y4Q; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55FN0dxC016220
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 00:11:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=QGemQSnd+YjmPoLsIXiSnMUG
+	hACJiUpHSlGPF4aQmUA=; b=QOwC9Y4QgzPoAIrn0bA4HgO6mxvb90gK25lWV7gV
+	G0D7OncQoXfJMZeX/nN2ZXtYjRUNPu5hahwvSVsZPZ3Y/rPOo7qd+gpV2eVQpQXD
+	k7FPM/dHX1XS1QGsR9YCsxVnqW/Vqs0QKiWSJ/OK5SjyoqEsETZu+Z6Q0eBldU7a
+	wv54188WyiWoSvR3uEsh8WLrW6IIhEkAae3f432SbqJatUbovgtMVnBt6cUWnwrP
+	NuDNIHWxpy7dvrtXMoV2lu7ZiiYNVtDCBCdz6vl58XfRVQOdNh0so0g/WblFkqyZ
+	MFONlRKu3+SAwXyym+3gJf/wZN0/cxQGbsrKOwiWLKWXPA==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4792c9tgyv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 00:11:12 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7c5e2a31f75so1350114985a.1
+        for <stable@vger.kernel.org>; Sun, 15 Jun 2025 17:11:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750028390; x=1750633190;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=asoSzLl/Wq1XUSwb4kGRQ/8z2OWVCrEll4V7xShXbq8=;
-        b=WIudIcAPsXgqAf5PsdiClCUYkphSp4y939jOcdOIZ5n7Aio3rMiU9If1wzVguIupfx
-         blNbbrUU6JUXylFxapvVQrbGRLM1JH0a2U/cRpODisJei8gfx4s+fgG7Nznskq+X1uT5
-         IbsMVaXWayDeQbiUpfWIjB+xqqKFvIv3m+w2FsJ4GDPh832IXPJT1HmliENlN58xuTMi
-         YGo3VgAR6zdgDjDaZKI1PUaU54Wl9t3s4hHjFS82JmC8YlsjMsDrSGrQw/ukEHqan6UR
-         JVIbhhha5i2R9nVSR1J3OWzjcwAr248heOMMyFyrkW3Uo40Dmg0DLe+OZFkbrjz/v1KS
-         jhzw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgj0s8HKJB0daT+gjF5OAsC0TJ0Oezkc0p8290pMoehP0bvccA8pWBGchhoDgJERS7P34hCJg/@vger.kernel.org, AJvYcCWDrsEXjjWCERfsHv+4T0fzopqimx79bD8yWa7efzsH6XW6jexVnbwzkpUzkvc4vwLd+2rgbptt6XK5dpXA@vger.kernel.org, AJvYcCXVAbFoEn9b05CWjAYPzNogJh6gJAzSD4FiI51+9KFARvldAtZM5ZXo7XvUQtYvsq6SFPCzi0eezkDoYA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfypS0wknXZuvvNRfvcOKfNVGp9sMp8jhmoyKxEr+1EnGxX91G
-	XZvPyioZZITeyfE4HGP1gC01PQOUMmEieV7A3W12N0lGw7aUC6mWTCPB
-X-Gm-Gg: ASbGncueq4hgxznxTaAq3BR0KYiv7wO5ggToLN/p979VS0I8FVp/GB7d4bTJsPfuo0x
-	Kj2djLUgm6pVEMjvZwJfELfb3hLzswQKwPS1b0aqnYJ5+c8KbpJFortk8DaoQJ3KiQxCO+eHhkQ
-	oX3j8e6yLY6Av67mvsdhRzWaoyrhIByDeQXvjXKU6fdYMNWK/78qHkf54nOyHY7xj7t/VLNO6DO
-	ApsNlrmL9hDjYqqEwo0/oE4Alzxql6pZKJ2Yo/mFupAhVH/W9fcau9Tne0BaM4s4DFm38IbwZfc
-	DgoPQ1u548YHebz4Eej8F1+TQs3X92Lqva9HcGNOh2TMoiQxhSQhYMm6tCsuzg==
-X-Google-Smtp-Source: AGHT+IGVXFqrvjaIKJKycIaXRqAwg7yGhm/Jk1Fyt/0+B+0jhnfHEEyUyGQ43RFeYdaDIAYuTGjz2A==
-X-Received: by 2002:a05:600c:4fc3:b0:441:b3f0:e5f6 with SMTP id 5b1f17b1804b1-4533caecda9mr59334065e9.25.1750028390367;
-        Sun, 15 Jun 2025 15:59:50 -0700 (PDT)
-Received: from qasdev.Home ([2a02:c7c:f4f0:900:e9f2:3619:31b7:c717])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e13d009sm124887155e9.20.2025.06.15.15.59.49
+        d=1e100.net; s=20230601; t=1750032671; x=1750637471;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QGemQSnd+YjmPoLsIXiSnMUGhACJiUpHSlGPF4aQmUA=;
+        b=jn4TIzgrni2PNgnk/cYjgCUzAGeIP2Igr9uEN8zQPnMRqb2KA2dtoUQoC2VaRzY25D
+         szhvUYwr1r1ouabNgrrUh8TgYDx/XPigPIXlOxmYfvx7hQeg5H8S74e47VSibw5tjzFS
+         HywhoCBKYq+zkIUVl4g7lcoNNCjhxUEHVFYPXUbdX1ZLmXMhbjQAgbu0fqiwMTP8NPjI
+         /ZvEOXZgYkRMau34AVe+zw1AgGAAvyQQ2/90UiBLmEdsGao8Kuuf0ZKFxoIqy04SAvBx
+         mxkL4s3wJDbxCNMGqKYrO9T3hTekVHAx2qH9VE9HcAbPAXccLRbJeRudrw9SjOKE3xL4
+         zf2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUXg9x5tnylUAjlf8oAUW39WG3NBnZXYuh3foFAAE5VuzNoWaZDs53nUpQ+W11o6+sKQrCYpgk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyU6OSWJrNPi/68lAssNaZgF2dr16EClhkQyQL47gPCz0bsuKT
+	YD95SBrH9o4sbaMOGTdX5T5qd0ans9sZp+bBQ+2z4U+MsgqTvEOt3TrFSa9fMmQ/LegulbpMQZJ
+	I/UDlAMrknu0gJGy1jwjKIVMuGj1aIw5Je6isiepLfo+RBn2oYBoKg7k11a4=
+X-Gm-Gg: ASbGnctSGWst63vt8ZYfsqJbluDYl4FCaGc0s85BjkcKoHD21ZYuqBzgg3T0dJSJiUP
+	2GBekbCbHeimSD99fEu4xuD7E3HgeKehc4DWBkjMNX1A4MEOS9pcASbB9uVEdfM8ve9vL6ktAQW
+	nAGSNi/SPCHyPG9OBgI/kFrhij4FkUBO5ZDkzHv9xzCiodH00WfnfqMiC216Ydb1vGkhNgLMyRU
+	I4GoMhr33k3KY7qJsKaCFJ0LL2MmV+5Ctgl5Qt3BSaspSVbRfQKfoI3xQ8EVJdwpzTeBiyshpNV
+	74RgYnB5uPSaaYMdt6Dlk4hqpAp+jByTZyowdwRD5oFeukhEtNvEmtrwTIvysTdVGTaRis8Jv+5
+	IU68c48WlK6AHV1+8IRfzCLlTm0YrykZsIO8=
+X-Received: by 2002:a05:620a:1a05:b0:7ce:bc1a:4902 with SMTP id af79cd13be357-7d3c6c16d6dmr1294939585a.13.1750032671258;
+        Sun, 15 Jun 2025 17:11:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbSkDjTNs/Dr3Bi6RCwQRdoGGC3GS5fEbglwoZQ8FxFoTXhFx7VD+QofnLhJtsly5onZKa8Q==
+X-Received: by 2002:a05:620a:1a05:b0:7ce:bc1a:4902 with SMTP id af79cd13be357-7d3c6c16d6dmr1294936985a.13.1750032670871;
+        Sun, 15 Jun 2025 17:11:10 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a0c3-3a00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a0c3:3a00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b378371e9sm13076831fa.46.2025.06.15.17.11.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Jun 2025 15:59:49 -0700 (PDT)
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: gargaditya08@live.com,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] HID: appletb-kbd: fix "appletb_backlight" backlight device reference counting
-Date: Sun, 15 Jun 2025 23:59:41 +0100
-Message-Id: <20250615225941.18320-1-qasdev00@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        Sun, 15 Jun 2025 17:11:08 -0700 (PDT)
+Date: Mon, 16 Jun 2025 03:11:05 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Alexey Klimov <alexey.klimov@linaro.org>
+Cc: robin.clark@oss.qualcomm.com, will@kernel.org, robin.murphy@arm.com,
+        linux-arm-msm@vger.kernel.org, joro@8bytes.org, iommu@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, andersson@kernel.org
+Subject: Re: [PATCH v2] iommu/arm-smmu-qcom: Add SM6115 MDSS compatible
+Message-ID: <bodnhg576oaludi2icuodo5ycjrplkjxpci3yh6sj62bbfj7ry@z2hm4cg7dclb>
+References: <20250613173238.15061-1-alexey.klimov@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250613173238.15061-1-alexey.klimov@linaro.org>
+X-Proofpoint-GUID: 0kGNQrrOjCoX-sh0zSw63vj1BqSNO94E
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE1MDE4MCBTYWx0ZWRfX6RcberAQwVa6
+ OUNjTzmA9KIuMbCFlXkwEFMRKgFcWT8H9x0fMN4xpAzv43527EnrergZhh1JRvzQexpq6NgnpGe
+ ct5N1ssLg91T3lAlhEm8s40vAa/cLVcYU44UfKtXEbPcpxjpWMMWhqThrlmB2/R1r+D6YXnPw28
+ Ai41QsFKydsCJFuN+Ob+DKoq1bVefOJ8OaBr0EO7jhlpIOfUFkr89v9geE0E1eThHIbqLFpyaUl
+ BO2edF/D50fvUYZPbCAmGjqaG+JutPg0BW/ocAx0LSG54eZ8RFgeciZe4qLQXbXbJ2S+x9gfWSP
+ FlbWFjEx7KJGKif09rLd4wOH9DoP/rZrkCuXqwr0Or4/Svxlz6d10mqFivzZk2Pa0O1l2eYaql0
+ 0WwD7yqvCJ3a7pan+kj90LJSYAq/zCb0fCPFiE0EcPlnf00eCR0xtvpT5S7SCE8A1O6wujMw
+X-Proofpoint-ORIG-GUID: 0kGNQrrOjCoX-sh0zSw63vj1BqSNO94E
+X-Authority-Analysis: v=2.4 cv=etffzppX c=1 sm=1 tr=0 ts=684f6120 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6IFa9wvqVegA:10 a=EUspDBNiAAAA:8 a=7TFj5ihdlhLXfTPaXogA:9 a=CjuIK1q_8ugA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-15_10,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 adultscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 mlxlogscore=512
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506150180
 
-During appletb_kbd_probe, probe attempts to get the backlight device
-by name. When this happens backlight_device_get_by_name looks for a
-device in the backlight class which has name "appletb_backlight" and
-upon finding a match it increments the reference count for the device
-and returns it to the caller. However this reference is never released 
-leading to a reference leak.
+On Fri, Jun 13, 2025 at 06:32:38PM +0100, Alexey Klimov wrote:
+> Add the SM6115 MDSS compatible to clients compatible list, as it also
+> needs that workaround.
+> Without this workaround, for example, QRB4210 RB2 which is based on
+> SM4250/SM6115 generates a lot of smmu unhandled context faults during
+> boot:
+> 
+> arm_smmu_context_fault: 116854 callbacks suppressed
+> arm-smmu c600000.iommu: Unhandled context fault: fsr=0x402,
+> iova=0x5c0ec600, fsynr=0x320021, cbfrsynra=0x420, cb=5
+> arm-smmu c600000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x420
+> arm-smmu c600000.iommu: FSYNR0 = 00320021 [S1CBNDX=50 PNU PLVL=1]
+> arm-smmu c600000.iommu: Unhandled context fault: fsr=0x402,
+> iova=0x5c0d7800, fsynr=0x320021, cbfrsynra=0x420, cb=5
+> arm-smmu c600000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x420
+> 
+> and also failed initialisation of lontium lt9611uxc, gpu and dpu is
+> observed:
+> (binding MDSS components triggered by lt9611uxc have failed)
+> 
 
-Fix this by decrementing the backlight device reference count on removal
-via put_device and on probe failure.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-Fixes: 93a0fc489481 ("HID: hid-appletb-kbd: add support for automatic brightness control while using the touchbar")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
----
- drivers/hid/hid-appletb-kbd.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-appletb-kbd.c b/drivers/hid/hid-appletb-kbd.c
-index ef51b2c06872..e06567886e50 100644
---- a/drivers/hid/hid-appletb-kbd.c
-+++ b/drivers/hid/hid-appletb-kbd.c
-@@ -438,6 +438,8 @@ static int appletb_kbd_probe(struct hid_device *hdev, const struct hid_device_id
- 	return 0;
- 
- close_hw:
-+	if (kbd->backlight_dev)
-+		put_device(&kbd->backlight_dev->dev);
- 	hid_hw_close(hdev);
- stop_hw:
- 	hid_hw_stop(hdev);
-@@ -453,6 +455,9 @@ static void appletb_kbd_remove(struct hid_device *hdev)
- 	input_unregister_handler(&kbd->inp_handler);
- 	timer_delete_sync(&kbd->inactivity_timer);
- 
-+	if (kbd->backlight_dev)
-+		put_device(&kbd->backlight_dev->dev);
-+
- 	hid_hw_close(hdev);
- 	hid_hw_stop(hdev);
- }
 -- 
-2.39.5
-
+With best wishes
+Dmitry
 
