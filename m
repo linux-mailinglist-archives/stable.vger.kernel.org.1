@@ -1,112 +1,165 @@
-Return-Path: <stable+bounces-152718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB538ADB3A3
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 16:24:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F03FADB394
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 16:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA4EA1882745
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:22:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 712481732C8
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69E921B185;
-	Mon, 16 Jun 2025 14:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5543220012B;
+	Mon, 16 Jun 2025 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBx8fsLo"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Fsa02vM4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5A41FDE31;
-	Mon, 16 Jun 2025 14:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719762BF007;
+	Mon, 16 Jun 2025 14:18:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750083454; cv=none; b=oVrlVkcnX7C5WwNhgrU81+e4eg+C+ZwF7s1nEXSjUbNFjVkjtpJoro0ZXWIgQRrHYt9IjTpvZvESneD7Ry4KW6X5d0Ryg+1SXak+lmOw2njCC7GawsV+fXTNHtPcFIozqoyTyNSt13aixYeovcaBg9BqNCtt+81QW8O0iRKRE64=
+	t=1750083496; cv=none; b=QWcrylW7L+2MPNeLr+2UGIs6a6S1QitszyS52UEcjMw5dNBCc+dIUNwVVsyF5n73bS4jYlL3UkSrkQb9u2M1yg5sSJiSqvQ0kMsg2x324OL0+HAw60WPXRiynF0tKBG3fZvZpSE1jovkAy9wXONITBgCpKXc2Yb/iEqQpAzHHto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750083454; c=relaxed/simple;
-	bh=7vD+jdFcbRODnTyocCRqC2CBnN4fjCfLQDbcXwpnOFU=;
+	s=arc-20240116; t=1750083496; c=relaxed/simple;
+	bh=g5hkkCFVVy5nrxXUzmyCUC6UU/Y4W+zHRoFgMxj6+C8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zsvpf4a/h+sG7F9ep7+s7eOiXxGvlMYQxblfqArMD3u6NoUOTFTJurzqaRnV54UWH9nJJofpM0SzfXzy0e/+X71znyhEIpZuLdiC/t11NfB3OfLU9meHVzCkmYIXsOrsLj9Sy7Qnj5Q6C8XWX4lVYVX9JRGhv/XZn52NOm8zwLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBx8fsLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E27C4CEEA;
-	Mon, 16 Jun 2025 14:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750083454;
-	bh=7vD+jdFcbRODnTyocCRqC2CBnN4fjCfLQDbcXwpnOFU=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=loKgAnJ/OKxuIPL8jvd5xdU/4qXJCf7ePXRn6jisXydj6oDN5kVGZ+Vw1rpa2fj772X5ktYfNtFgAZOV0ON5ovwS8Q0rXLpYBkKatRxmibHGWMFX0TAc1usNKm8W7sHQIYI0KGXKJjC3Rt/6TGTgIGtJfwhjE48lURKOOBTSjpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Fsa02vM4; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BA83D346;
+	Mon, 16 Jun 2025 16:18:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1750083480;
+	bh=g5hkkCFVVy5nrxXUzmyCUC6UU/Y4W+zHRoFgMxj6+C8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JBx8fsLok416/BE/CRF9cIHl1X7u6rcJT9hirMbzyUtEPyE5nP27OqsGSo9d6VcrM
-	 rnZk3M53sB+oeNQ815/7F89jqwyJQKRNenNBCsH3tGIn8P9ceUPGhfNFWnwJF1IcLx
-	 qQUPXZUK/1AftN5AznCXG0ZbWdTZRICNSZ0IiRdg=
-Date: Mon, 16 Jun 2025 16:17:30 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kuen-Han Tsai <khtsai@google.com>
-Cc: prashanth.k@oss.qualcomm.com, hulianqin@vivo.com,
-	krzysztof.kozlowski@linaro.org, mwalle@kernel.org,
-	jirislaby@kernel.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] usb: gadget: u_serial: Fix race condition in TTY
- wakeup
-Message-ID: <2025061634-heavily-outrage-603a@gregkh>
-References: <20250616132152.1544096-1-khtsai@google.com>
- <20250616132152.1544096-2-khtsai@google.com>
+	b=Fsa02vM4rIlIdskUmm7P8u4eBSuBRHcLo1QpPeMzgNmuXGa86y7DXYsYR+2vN5CXz
+	 XXN5wborwvmaU2CdeNUnZxgsfow04oYeJq4WQ89f+E+QPFB8RAIVdEzXaypxDJxRtP
+	 8141nuT/vHeib1Q/GidC+T8Q1nSpy23XUBpOtoww=
+Date: Mon, 16 Jun 2025 17:17:56 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: Naushir Patuck <naush@raspberrypi.com>,
+	Nick Hollinghurst <nick.hollinghurst@raspberrypi.com>,
+	David Plowman <david.plowman@raspberrypi.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>, linux-media@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v7 4/4] media: pisp_be: Fix pm_runtime underrun in probe
+Message-ID: <20250616141756.GC32454@pendragon.ideasonboard.com>
+References: <20250606-pispbe-mainline-split-jobs-handling-v6-v7-0-46169f0622b7@ideasonboard.com>
+ <20250606-pispbe-mainline-split-jobs-handling-v6-v7-4-46169f0622b7@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250616132152.1544096-2-khtsai@google.com>
+In-Reply-To: <20250606-pispbe-mainline-split-jobs-handling-v6-v7-4-46169f0622b7@ideasonboard.com>
 
-On Mon, Jun 16, 2025 at 09:21:47PM +0800, Kuen-Han Tsai wrote:
-> A race condition occurs when gs_start_io() calls either gs_start_rx() or
-> gs_start_tx(), as those functions briefly drop the port_lock for
-> usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-> port.tty and port_usb, respectively.
+Hi Jacopo,
+
+Thank you for the patch.
+
+On Fri, Jun 06, 2025 at 12:29:24PM +0200, Jacopo Mondi wrote:
+> During the probe() routine, the PiSP BE driver needs to power up the
+> interface in order to identify and initialize the hardware.
 > 
-> Use the null-safe TTY Port helper function to wake up TTY.
+> The driver resumes the interface by calling the
+> pispbe_runtime_resume() function directly, without going
+> through the pm_runtime helpers, but later suspends it by calling
+> pm_runtime_put_autosuspend().
+> 
+> This causes a PM usage count imbalance at probe time, notified by the
+> runtime_pm framework with the below message in the system log:
+> 
+>  pispbe 1000880000.pisp_be: Runtime PM usage count underflow!
+> 
+> Fix this by resuming the interface using the pm runtime helpers instead
+> of calling the resume function directly and use the pm_runtime framework
+> in the probe() error path. While at it, remove manual suspend of the
+> interface in the remove() function. The driver cannot be unloaded if in
+> use, so simply disable runtime pm.
+> 
+> To simplify the implementation, make the driver depend on PM as the
+> RPI5 platform where the ISP is integrated in uses the PM framework by
+> default.
+> 
+> Fixes: 12187bd5d4f8 ("media: raspberrypi: Add support for PiSP BE")
+> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> 
+> --
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-> Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+
+This should go just below the Fixes: tag.
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
-> Explanation:
->     CPU1:                            CPU2:
->     gserial_connect() // lock
->                                      gs_close() // await lock
->     gs_start_rx()     // unlock
->     usb_ep_queue()
->                                      gs_close() // lock, reset port_tty and unlock
->     gs_start_rx()     // lock
->     tty_wakeup()      // dereference
-
-Why isn't this up in the changelog?
-
+>  drivers/media/platform/raspberrypi/pisp_be/Kconfig   | 1 +
+>  drivers/media/platform/raspberrypi/pisp_be/pisp_be.c | 5 ++---
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> Stack traces:
-> [   51.494375][  T278] ttyGS1: shutdown
-> [   51.494817][  T269] android_work: sent uevent USB_STATE=DISCONNECTED
-> [   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep1in OUT/ep1out
-> [   52.516288][ T1026] android_work: sent uevent USB_STATE=CONNECTED
-> [   52.551667][ T1533] gserial_connect: start ttyGS1
-> [   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.tty=0000000046bd4060
-> [   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> [   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> [   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-> [   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
-> [   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) ...
-> [   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
-> [   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) done!
-> [   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
-> [   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-> [   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_wakeup(), port->port.tty=0000000000000000
-> [   52.747629][ T1533] Unable to handle kernel NULL pointer dereference at virtual address 00000000000001f8
+> diff --git a/drivers/media/platform/raspberrypi/pisp_be/Kconfig b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+> index 46765a2e4c4d..a9e51fd94aad 100644
+> --- a/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+> +++ b/drivers/media/platform/raspberrypi/pisp_be/Kconfig
+> @@ -3,6 +3,7 @@ config VIDEO_RASPBERRYPI_PISP_BE
+>  	depends on V4L_PLATFORM_DRIVERS
+>  	depends on VIDEO_DEV
+>  	depends on ARCH_BCM2835 || COMPILE_TEST
+> +	depends on PM
+>  	select VIDEO_V4L2_SUBDEV_API
+>  	select MEDIA_CONTROLLER
+>  	select VIDEOBUF2_DMA_CONTIG
+> diff --git a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+> index c25f7d9b404c..e49e4cc322db 100644
+> --- a/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+> +++ b/drivers/media/platform/raspberrypi/pisp_be/pisp_be.c
+> @@ -1718,7 +1718,7 @@ static int pispbe_probe(struct platform_device *pdev)
+>  	pm_runtime_use_autosuspend(pispbe->dev);
+>  	pm_runtime_enable(pispbe->dev);
+>  
+> -	ret = pispbe_runtime_resume(pispbe->dev);
+> +	ret = pm_runtime_resume_and_get(pispbe->dev);
+>  	if (ret)
+>  		goto pm_runtime_disable_err;
+>  
+> @@ -1740,7 +1740,7 @@ static int pispbe_probe(struct platform_device *pdev)
+>  disable_devs_err:
+>  	pispbe_destroy_devices(pispbe);
+>  pm_runtime_suspend_err:
+> -	pispbe_runtime_suspend(pispbe->dev);
+> +	pm_runtime_put(pispbe->dev);
+>  pm_runtime_disable_err:
+>  	pm_runtime_dont_use_autosuspend(pispbe->dev);
+>  	pm_runtime_disable(pispbe->dev);
+> @@ -1754,7 +1754,6 @@ static void pispbe_remove(struct platform_device *pdev)
+>  
+>  	pispbe_destroy_devices(pispbe);
+>  
+> -	pispbe_runtime_suspend(pispbe->dev);
+>  	pm_runtime_dont_use_autosuspend(pispbe->dev);
+>  	pm_runtime_disable(pispbe->dev);
+>  }
 
-What is [khtsai] from?
+-- 
+Regards,
 
-thanks,
-
-greg k-h
+Laurent Pinchart
 
