@@ -1,198 +1,235 @@
-Return-Path: <stable+bounces-152723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9CBADB4D1
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 17:04:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6A8ADB4E1
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 17:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F6001882B79
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 15:01:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87C79188F5CC
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 15:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1763B259C92;
-	Mon, 16 Jun 2025 15:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3234F4ED;
+	Mon, 16 Jun 2025 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qXnVaIqG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oEclBkBj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CF3219319
-	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 15:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750086032; cv=none; b=BAgUzdh3sstepPCYPCL6sTXFh8K/hxaXlb8w5WQ2eW/sGEQ8KcXQTv8rIqkJg2dH3JuAQXQmiLXnqYOVm8MzNlrtja+2qLYWUzmTpn+GG7AV1niHJ3Q5sDPAE0tKBFqVd2pkuGicIHqun9CUpZzOv3qsCeMT5IdIV6CljD6GJiY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750086032; c=relaxed/simple;
-	bh=8Qz4YGaD6cLHLVFtCKiuK3DnRJnR9B6rKT0UrLz3m1g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FjSnttCvWW7U7Q/mYlzo/IJr0FnNcGBHiJopbo+JSNJV151z4uL8P8ganJmdpIFfTA9kEQ0jKEuz+m5lQIxy1k5lmUU8F5OrdLMkADrKl2jZ5YYLmHTD1Y/MxxBdgY4kN8qqSHoVGaUzIR4KioI+O5nJK4V5zFE8E9rcvLC5oxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qXnVaIqG; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-32b4eb13e8cso1670231fa.1
-        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 08:00:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750086028; x=1750690828; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f1aLoL1S+4ZJBixxlMIoR0CEXIRiJhCxjZa38dTlXmo=;
-        b=qXnVaIqGWK7zLb3Mb3oQa3yCgFPLZrqVJyfttL1hsBpG4JiA76QKaDSXSmyoO3Ipwi
-         NgiKQqOfbHz88k25U8KMJf8IKh/Fjp1G5n/kmgdAkSo5ZmP5H6fKnVJpS1f9ccTGnwqS
-         gCToNC547E5hp7Gtu3DuQj7+su8hTg70XE2VV0W6PobgVOft4ppyBvC0EIWvDa6Ghvx6
-         zHpieG3gSNS/w6RxBQ1wBJFefH92PoYU3zReadYLlfDcQCtDAmOGt+qETXvL02ZVulfi
-         GXRsMVCDHz4amTN5H5dwyHCSzpMRCJlUR4hqZGUyxw7nmz/8viUzwfq5hh5zNwRIpeFC
-         tDyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750086028; x=1750690828;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1aLoL1S+4ZJBixxlMIoR0CEXIRiJhCxjZa38dTlXmo=;
-        b=f4UIYaY8ZSprJacUx/yfiuPcknzmAI1tWiHiUZ8k5ZQoBYzu4Hd/iehPjH2Vj0+ck/
-         dFe50KHLYcROF3bpepdS1BmOjLhsrEQECziekQ6ZwZhvkBrISN7P82uA7z3rHtEcB+vt
-         zZKl/uY7RBcJxUkyizvdm/fZdRehsL9klYLvNn/KPqvXYFngfZFYBDD5S3TYC4/hqgA1
-         rapSCzk4xUgGJC4ytvHxy2fxop4s5XFc2njYa0+xNVjgntQXP72V7y6ztDo31PrjshG5
-         N5dXOzWldnn0Kg0yL3lZHaTL3HHWlPJSJvqmLk0twD1AjNUf8ajrjYFlt5geGQ/FOmG3
-         1UEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXxDi9ujkmXL/19JPnrYUstgiKkw0/5w49XrZzx6xJOxrsPS6S+bAnxoXKdRRIs6+pNWRAkcc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLN2CKT2xl+pxdncTbGsMIV7IZER4YLPQDKMcHWP9Tb/ROdIAb
-	OCKmFgVwRKvCaCKfeca5H/ptC7lmbwF+JEF740rwL0e+nx4KBIABKym4tOBTZXg6juo=
-X-Gm-Gg: ASbGncvdoF/KKL4Lcaofoai1W/Dp3q3H8n6rk+QX7J5EEHk5DIkVcvYGOWuvgWuEwaw
-	nAQcxD1tz6QtOtbxlAFkdUVHFS8DBUteKpV/OLCf1RjiHN8nxdM0GppSb9D4w4TDqi7b2P/b8N2
-	9t0YDzl2i4tUPCl/AW0zAaLzLEoi2cWSeQBHBmTx4o9fzKoRN72IuFpPDnBj9Eek09HNwgCRJTY
-	/3C8rxr6+Yp0Kq6p+HLhoVvUdwJAAKfw/lXtpVCl931Cryrxi2ob0UgmiiKQR5J/9lPRjIj1pk0
-	R+LGpRDTHkWHFMXuZU14XFBZRT8zXdWlVWPVsL7wjvEF6FxiXuwoEJ4pIVv/zhB7vVooTJ3mqTO
-	Dj9z0aV0rsmcBjclmysOy3fv0wUv0TnZwYxIVeZ9+SXeyreqbJBM=
-X-Google-Smtp-Source: AGHT+IEMjTrTfims1std1120/Q7TNV359N7W3OaZq1V3B3UUxWoAc+ufSBTDYaK4P5kpgxcIeprfqg==
-X-Received: by 2002:a2e:bea4:0:b0:32a:7d76:2660 with SMTP id 38308e7fff4ca-32b4a2c4dafmr7377791fa.2.1750086027287;
-        Mon, 16 Jun 2025 08:00:27 -0700 (PDT)
-Received: from [192.168.1.4] (88-112-131-206.elisa-laajakaista.fi. [88.112.131.206])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b3316fbd6sm15800921fa.56.2025.06.16.08.00.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Jun 2025 08:00:26 -0700 (PDT)
-Message-ID: <fe113f83-fbbd-4e3b-8b42-a4f50c7c7489@linaro.org>
-Date: Mon, 16 Jun 2025 18:00:19 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B621DB377;
+	Mon, 16 Jun 2025 15:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750086201; cv=fail; b=CPKPZ7zZVuWzwkyBlZ2i4n4HwGqDRM3j5uIweqVGAbCTCpi5LbT6BbPrUvdWEVvA+2a+g2qW4C2Z05SxVaQKHZ+9RdK4qLA91DOyb/UDAf2mdwl6GFHEB2s1W0AvFFeWSTFvv+QkG6FmpI5sxs4JdpxqL8kOC64SzHYyIkDxwco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750086201; c=relaxed/simple;
+	bh=LQcsvMvhVrtKV2kPukAojP+sRLvxNQYdDWfW7Riq9wI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ngSsC6jSIR4FmO6bEFD+i49qfFWUx6CiWS7sPQ1Wb0ZP1vwzxMROgRv3aX+qAcIuJl5KUP3MUhXHppZMAO+WnFQcf9oNp4ElASVng0AWgHXIxnaAH+qYLoUOhyyt7I8Fwyww0PWQiomI9HbbiZEbVdv2CrHowf5TkBLHIelhi10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oEclBkBj; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750086200; x=1781622200;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=LQcsvMvhVrtKV2kPukAojP+sRLvxNQYdDWfW7Riq9wI=;
+  b=oEclBkBjZH0EttYcgpbphBQTNOj75ZswiUi3uAA6twyj5nsPPSNGYPCN
+   yDHMSaSjSOXJ+WyVq7SDsDe6tsAMWqjTOUl4zxLqv5e1VLG/XUDtpaY2Q
+   Y0Z/Ewqp3g8LmJ+Ppb78mzszr3y19Bp5YPTkPAhDnlfJyCwIiviYBbjIB
+   cPoWkWXc1gtr5d5R9SVI4LteEOUAj/Mkl2HWmfDqlnFwpD9AewAb9BbHj
+   RbU88L+7SwTz/VbdR2wc1u8tcm2DTRL34lS00hS2fDd/S2lqmkxd/UpW3
+   Tu2S9MDbX0q5JGuxDOlbXnvmpDskecbFO6whRjfBNq7j2q1qtekCuO/ic
+   Q==;
+X-CSE-ConnectionGUID: /fPrKJk7R9yyAsIk2gp0KA==
+X-CSE-MsgGUID: 11xxOxCGSQ+TZ0U+24UcKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52214719"
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
+   d="scan'208";a="52214719"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 08:03:11 -0700
+X-CSE-ConnectionGUID: Rbz15PnUTgGGGIo8+2yZNA==
+X-CSE-MsgGUID: fCtL4zKCQ2aB4zCHOvcsVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,241,1744095600"; 
+   d="scan'208";a="185755962"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 08:03:10 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 16 Jun 2025 08:03:09 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Mon, 16 Jun 2025 08:03:09 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.66)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 16 Jun 2025 08:03:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hnIZ5GO36tjGo17x5/BebcKNcfafDnSXGEHc+VzWQgw26TAzW2suoswh+C8KCtle0k5G/somwMryAB8qdTtv0VQac7QR7heqrdikk415j8KhxEpN3Qpomtn6PkNmSN955JGyvY9SyvU0LoAvtfqaavjwoJF6bbB1bPz9ByydIN1icRi8whidUceq+Ze2svfmoEp5subzKnhKSuWY51nGF/hwCPl4WjKl5KaHKU1Ng/XGgs00AO+EzRXCCf/UtekXpZmj2SEAFd0Scwv8++Bh8nRIp6YZpZvTc05waUtB4iVdF420204MednEQvJp+kxvmQDCSvdNn+47hJAv0dRGxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Iof8G5fMvJaV00NBEeM6TsQa0hxt11ARzSn8jTZsF7M=;
+ b=ir9r9JoLO114QBfWBk0PMkAWx96aoGjLBjXczDXAIyoup6LD67Gv/njN7H8soRNRlPNvtwD4Xc87zkzI1KEIkni6Bx5gAzXEqODfcmWSORIdpMyxpOXwJhFTN3YUufdJm3cSMfKIq6ALlqY8y1z1CHBigSwN7H763VmO7bBg5VC1WMiB+cUNqZiLttuLdn8PhSP57bMqh17X0hN5V1VY1jlM36EACBd7COu738Zxy43ocVzykw8NVPTqeVdlPBW/8D5p94vcjkWXDOUZCySYwQcEtB4Zqh8EtfP8yJUaT9eABQaIxB6bbYr3iBr+veLBniPbi6OcQjeXedMXZ6l0zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6366.namprd11.prod.outlook.com (2603:10b6:930:3a::8)
+ by DS4PPF178D5B043.namprd11.prod.outlook.com (2603:10b6:f:fc02::d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Mon, 16 Jun
+ 2025 15:02:38 +0000
+Received: from CY5PR11MB6366.namprd11.prod.outlook.com
+ ([fe80::6826:6928:9e6:d778]) by CY5PR11MB6366.namprd11.prod.outlook.com
+ ([fe80::6826:6928:9e6:d778%5]) with mapi id 15.20.8835.027; Mon, 16 Jun 2025
+ 15:02:37 +0000
+Date: Mon, 16 Jun 2025 16:02:30 +0100
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+CC: <ebiggers@kernel.org>, <linux-crypto@vger.kernel.org>,
+	<qat-linux@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] crypto: qat - lower priority for skcipher and aead
+ algorithms
+Message-ID: <aFAyBgwCUN2NLXOE@gcabiddu-mobl.ger.corp.intel.com>
+References: <20250613103309.22440-1-giovanni.cabiddu@intel.com>
+ <aE-a-q_wQ5qNFcF_@gondor.apana.org.au>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aE-a-q_wQ5qNFcF_@gondor.apana.org.au>
+Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 -
+ Collinstown Industrial Park, Leixlip, County Kildare - Ireland
+X-ClientProxiedBy: DUZP191CA0067.EURP191.PROD.OUTLOOK.COM
+ (2603:10a6:10:4fa::26) To CY5PR11MB6366.namprd11.prod.outlook.com
+ (2603:10b6:930:3a::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] media: qcom: camss: vfe: Fix registration sequencing
- bug
-Content-Language: ru-RU
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Johan Hovold <johan@kernel.org>
-Cc: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Depeng Shao <quic_depengs@quicinc.com>,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Johan Hovold <johan+linaro@kernel.org>
-References: <20250612-linux-next-25-05-30-daily-reviews-v1-0-88ba033a9a03@linaro.org>
- <20250612-linux-next-25-05-30-daily-reviews-v1-2-88ba033a9a03@linaro.org>
- <c90a5fd3-f52e-4103-a979-7f155733bb59@linaro.org>
- <21bc46d0-7e11-48d3-a09d-5e55e96ca122@linaro.org>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <21bc46d0-7e11-48d3-a09d-5e55e96ca122@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6366:EE_|DS4PPF178D5B043:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab61b8ed-f31e-45c4-99a2-08ddace6d53b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7RL8Nxb0rnzkOJRSnixpmZKZ4hurePSv0tXEjoRjuoD/wkzBgqPgBt4JKWYX?=
+ =?us-ascii?Q?/jZNLPHes2vFvtow+7/ERVfKAOTPsspPRmsttZo8v+zleRoFKwIpGYSUvBSv?=
+ =?us-ascii?Q?ZiLHywF75+iLL9zEK+G39EEnBdOrq7NNgrOMXMMwDBNocv4pxV5Swpw81fM+?=
+ =?us-ascii?Q?Xf2j8VurxUGx2tKA43XWTXU/qrMN0Spg+Kpk6mdtpAyFBJmFG2dM1PV1fi1Z?=
+ =?us-ascii?Q?+K/Cgpaab4RxMhOf5aOmg7hSSLoGZtGRI0DANyKiLoJvsHIR5viDju7iS6Pr?=
+ =?us-ascii?Q?rSt1GpMZxM5QuNA0v3ktzIXb+E+C4zoCa390VsCMXIbyGSnwl96dCLam3X9F?=
+ =?us-ascii?Q?ZW6Fepx8l8OdpOY2F6knR0tiAnIo0UVN2cdgHrDudKxfK7OkOAYyvAiR4mqg?=
+ =?us-ascii?Q?B/wcCmtPeFp0HL28eNERLFH68ygswyl0ErkqlxyleKc53Z5o/VkXYOkUdgzu?=
+ =?us-ascii?Q?vIacJp5ORA+d65iY1IT6/5sQ4q/wh0MsxF5wi27Sxf93SayuQFL+7NQ9ejUf?=
+ =?us-ascii?Q?+dwk2Avi1X8tNd9rcGCCaQrWqO0MR04K9KOXq1ZYHoBCKRFMg5M/uE8ZOo9N?=
+ =?us-ascii?Q?8tXJeR1otKYHEbO50E4N2wD1cCJGXi9UxmkzDLGCNKOGKbCzDMHzgmlPuTcM?=
+ =?us-ascii?Q?LNGeiq8U3+5E1lt45wxh+gMzYZfZvtbQbP0NVQdKqGZ4kHm7lCKtw571fbLs?=
+ =?us-ascii?Q?FwQk9d633AcL9yHZFgR6shJ2OmeA3+mxNj8dcKOJq1YgJ41XUrN8SlBEERUy?=
+ =?us-ascii?Q?/DHOUmCmYRsQuBwYvODlIusrGmKdl7ljzeTvz5CpUkk7s1xjDFR2Oey9jWbM?=
+ =?us-ascii?Q?cy896iaLTSJlB+MJVMwdyeNpY5CDXpeDgJKngvUe8dbuJf0gfYkVnZBD6isx?=
+ =?us-ascii?Q?3BCYD6CcYM+aevnMkGkwfBrtZfDh9oODyso+YRec72LlwXwSo6ciVoz24Y7W?=
+ =?us-ascii?Q?eclxSRoFPG3HU9bwnDB5vNvfxZF+QHhuZFLG3lf5qh4e352N+cpl3RJC+1Jk?=
+ =?us-ascii?Q?8D2loUHJffh9uIjYrDcOROqwX2aRGV0DewgAFKfo1YBicWGCI48xY5abHfP/?=
+ =?us-ascii?Q?R17DrLS93CPoSSOEzsOCBfz81RrBDDyqt4enh1cwQc1klO2wIAYiIa99VBI3?=
+ =?us-ascii?Q?U/fRuMcKqmtjXAyXle5Cc6oY1L/nwB431hdKsG0PeGxro8HG91pvMJej8pfm?=
+ =?us-ascii?Q?pLFoN/DNDJmAPi/IpEruEnv9Y7aeO6elakAbrxrbwOd5/uU80K49bAUr+M5k?=
+ =?us-ascii?Q?dLlhZdy56kcnGCK+78LIJ7xIwgFFX1eM1a6PWX8Hx19BpiOdMP9dtL9t2qyV?=
+ =?us-ascii?Q?pYlnrG/PwXZb2Lc0h1Li2CfVZI9ny4AA5G4CnUXYrHQi/PuOpUAH3E8aiF9G?=
+ =?us-ascii?Q?99OPDzXR1tEk5JYu2EAenzpfjdXkUKxQmifccSpRS8a+8PJsvIPRa+xfP537?=
+ =?us-ascii?Q?Sd0xaj2UBw0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6366.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nQURhHOHHTPujP4+D842GD/iMy8r95Dc8tS3IslSjv6nLNmDZr4lMQ545y6H?=
+ =?us-ascii?Q?ZSJuGD11CopJxfl7TB48QScTs8eq/YLr+AbMAhXEW3u+Ks6+dyTJw9hz41lc?=
+ =?us-ascii?Q?w1eFFGmdfCo+B20vhIEcGvqlFRsvhgfUBSput6wT5PLEmd1VwnTxWRTHThIv?=
+ =?us-ascii?Q?gJKL7ALR5LSDTNQX3V34neHn+zC76R4qV+cGT7FCNbAqxob+JX78zI0V7hRb?=
+ =?us-ascii?Q?yAUbd/+Xt3T1l8NGAzN9MNEu1jmp2L2l0lm+AcmfuoodIzWDxt07tT8cfQxh?=
+ =?us-ascii?Q?n1K4rAyXdmh/A6/HrsS2Zbf/79arxEefHgycfXXJt40Ezd07+A98BekL/zlU?=
+ =?us-ascii?Q?BdWM+/Aad8PxQ83ysFMwh1BwTOLpUbLdsuAzhVrkJbV4MGAR1D6Ll5+N25at?=
+ =?us-ascii?Q?eNPwYyPPVQhumwpUVOX/W2/XP6tLRxb0avRjEbEt1XxoLxTI/WBdrjOQKuPS?=
+ =?us-ascii?Q?MrZtL2H8Rhk4xJ4R1XPtuwsK+N8tCBh43hZpaRXMCXORAn/DClU240HbdPiA?=
+ =?us-ascii?Q?PlZOiGNQE48OyPG/P5w8eOsJyXDLoze9QoMiut2SZLTPy6+A5Nqdzlpk3IWp?=
+ =?us-ascii?Q?wQ7oLT0wgJV4te9ybD4cTjwZcp+fKEIBkBBVzfFyMoEoDf7qAlcHcKFyLaVo?=
+ =?us-ascii?Q?JRSMKzW/BqhoZ7vtnyJBTwRJ4TQPQSLwS8aaCrXYpWMjU5HZK9Hs8BImVST9?=
+ =?us-ascii?Q?HlPxJkiH9tEqz/O2QC+J6ykelHoBXzwcKvZyaWIwYixGQW/ZI7wUWPv9qUvS?=
+ =?us-ascii?Q?iHQtprmJSIgwLLAAXfZoSgjofpT/QDyAG95bf8U3JU4PiDIdF6mTYVZWiuG2?=
+ =?us-ascii?Q?SdvaFlc4hfpoe/m0dOFjhz2guaMBSYMqRkq0Y89693jlrpCZZWdxDb3+HTXl?=
+ =?us-ascii?Q?ogHPc6E9Dp+ep1/qaFa9XOWQzUgzP79boHG9Bh1Z4goICVTkSu6VwhCFNKA3?=
+ =?us-ascii?Q?X0o2MJYYSViGgRmkuFXi4rceu2X6oiT7qEz5v7tGQpvEVUvrgXhNVZenrz7N?=
+ =?us-ascii?Q?CshFe50VUgG/xIYI3+XVp8EYvD9qCTOzaXXEOHeq3v/x5GijHZJg64AnFjWw?=
+ =?us-ascii?Q?EiFSymeGQwfOOm0+mgmSFoF0hKYxrkLeKXFEQVH8LTfyzY9+JtpH5vt2AeTV?=
+ =?us-ascii?Q?5E37w8cI+z+2gawMeqkzonL+MFSIk3rsqnm3+EtMPNR0AW8eiaCiueihoKZP?=
+ =?us-ascii?Q?viWTbM/Prs8m2yzZWSBjUa0Z7p0UOocEFOHkxv2w/I+ZCMku00RQCKFm6lXm?=
+ =?us-ascii?Q?cet+f/ocPC/B2OZEcyJXMidi3ld1PSxqYp2A+xGxcZinCBE5ddjN1smVBZGM?=
+ =?us-ascii?Q?PuxUv9tULofbHYIxtjM6dX+d8y6wN8fXy17mBq1TnOpz2MYUC1iz44FnUGd5?=
+ =?us-ascii?Q?JmG3EakzxQ0oMqzVcrVHKY/zda+zn8xNIy65g0jh/SU1YB4HHUBY+ZQAf14Y?=
+ =?us-ascii?Q?6oFMkGahyWZtjPP1YNZDmhmE/mTy4npHZ70Rxf9u+rjmvk0arJXAPUZmAbM3?=
+ =?us-ascii?Q?jmISTDbpKtAA1BsSa3Ezk6LOo44DFQXZPZUz4pId9/zmH57s9vVtIFthuRtr?=
+ =?us-ascii?Q?A25LQPzkSNgzMPohYM3S97jJSR1ytCAWcKYOK0K4eWVbIw4EbkPs7+W2v7jI?=
+ =?us-ascii?Q?Uw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab61b8ed-f31e-45c4-99a2-08ddace6d53b
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6366.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 15:02:37.8888
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZqTxRdngRmVeMpPbBvipAWTVYqbsRvoneuv2IjvQCv6urJmc8CB0YQj92Gh1UXZuQEShs18Xhz2sDFNlVke/xNN1kaSSzZnlwiGA/YOuKgc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF178D5B043
+X-OriginatorOrg: intel.com
 
-Hi Bryan.
-
-On 6/16/25 17:09, Bryan O'Donoghue wrote:
-> On 13/06/2025 10:13, Vladimir Zapolskiy wrote:
->>
->> Per se this concurrent execution shall not lead to the encountered bug,
+On Mon, Jun 16, 2025 at 12:18:02PM +0800, Herbert Xu wrote:
+> On Fri, Jun 13, 2025 at 11:32:27AM +0100, Giovanni Cabiddu wrote:
+> > Most kernel applications utilizing the crypto API operate synchronously
+> > and on small buffer sizes, therefore do not benefit from QAT acceleration.
 > 
-> What does that mean ? Please re-read the commit log, the analysis is all
-> there.
+> So what performance numbers should we be getting with QAT if the
+> buffer sizes were large enough?
 
-The concurrent execution does not state a problem, moreover it's a feature
-of operating systems.
+Specifically for AES128-XTS, under optimal conditions, the current
+generation of QAT (GEN4) can achieve approximately 12 GB/s throughput at
+4KB block sizes using a single device. Systems typically include between
+1 and 4 QAT devices per socket and each device contains two internal
+engines capable of performing that algorithm.
 
->> both an initialization of media entity pads by media_entity_pads_init()
->> and a registration of a v4l2 devnode inside msm_video_register() are
->> done under in a proper sequence, aren't they?
-> 
-> No, I clearly haven't explained this clearly enough in the commit log.
-> 
-> vfe0_rdi0 == /dev/video0 is complete. vfe0_rdi1 is not complete there is
-> no /dev/video1 in user-space.
+This level of performance is observed in userspace, where it is possible
+to (1) batch requests to amortize MMIO overhead (e.g., multiple requests
+per write), (2) submit requests asynchronously, (3) use flat buffers
+instead of scatter-gather lists, and (4) rely on polling rather than
+interrupts.
 
-Please let me ask for a few improvements to the commit message of the next
-version of the fix.
+However, in the kernel, we are currently unable to keep the accelerator
+sufficiently busy. For example, using a synthetic synchronous and single
+threaded benchmark on a Sapphire Rapids system, with interrupts properly
+affinitized, I observed throughput of around 500 Mbps with 4KB buffers.
+Debugfs statistics (telemetry) indicated that the accelerator was
+utilized at only ~4%.
 
-Te information like "vfe0_rdi0 == /dev/video0" etc. above vaguely assumes
-so much of the context, that the statements become wrong, let's remove
-ambiguity instead of its amplification.
+Given this, VAES is currently the more suitable choice for kernel use
+cases. The patch to lower the priority of QAT's symmetric crypto
+algorithms reflects this practical reality. The original high priority
+(4001) was set when the driver was first upstreamed in 2014 and had not
+been revisited until now.
 
-> vfe_get() is called for an RDI in a VFE, camss_find_sensor_pad() assumes
-> all RDIs are populated.
-> 
+That said, symmetric encryption support in QAT remains relevant for
+chained operations, where compression and encryption can be offloaded in
+a single request. This capability is planned for full support in GEN6
+and may be backported to GEN4 if there is sufficient demand. However,
+there is currently no infrastructure or in-kernel user for this
+functionality.
 
-This is a good and almost sufficient one line problem description.
+Regards,
 
-Still there is an issue, you mention vfe_get() and camss_find_sensor_pad()
-functions, however both of them are good, and the problem lays within
-vfe_set_clock_rates() function, that's the exact place in the driver code,
-which iterates over all VFE lines like all of them are initialized.
-
-> We can't use any VFE mutex to synchronise this because
-> 
-> lock(vfe->mutex);
-> lock(media->mutex);
-> 
-> and
-> lock(media->mutex);
-> lock(vfe->mutex);
-> 
-> happen.
-> 
-> So we can educate vfe_get() about the RDI it is operating on or we can
-> flag that a VFE - all of it's subordinate RDIs are available.
-> 
-> I didn't much like teaching vfe_get() about which RDI index because the
-> code looked ugly for 8916 you have to assume on one of the code paths
-> that it always operates on RDI0, which is an invalid assumption.
-
-vfe_get() and mutices are all red herring, there is no problem with
-vfe_get(), there is no problem with camss_find_sensor_pad(), and there
-is no expectation to find a proper fix in any of these two functions.
-
-Johan and me pointed the way out how to fix the encoundered issue properly,
-once again, and please don't hesitate to ask questions, if my short
-explanations are unclear to you.
-
-The fix is to issue any of VFE line devnodes for userspace strictly after
-the completion of all media entity pads initialization. Do you have an
-idea how to implement it, or should I help with it? It'd be totally okay.
-
-> The other way to fix this is:
-> 
-> +++ b/drivers/media/platform/qcom/camss/camss.c
-> @@ -2988,7 +2988,7 @@ struct media_pad *camss_find_sensor_pad(struct
-> media_entity *entity)
-> 
->           while (1) {
->                   pad = &entity->pads[0];
-> -               if (!(pad->flags & MEDIA_PAD_FL_SINK))
-> +               if (!pad || !(pad->flags & MEDIA_PAD_FL_SINK))
-> 
-> 
-> But then you see that every other driver treats pad = &entity->pads[0]
-> as always non-NULL.
-
-There is another expected way with zero problems, see the comment above.
-
-There is no proven problem with camss_find_sensor_pad() funcition, and
-it should be left unmodified.
-
---
-Best wishes,
-Vladimir
+-- 
+Giovanni
 
