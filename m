@@ -1,86 +1,152 @@
-Return-Path: <stable+bounces-152720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31962ADB3A8
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 16:25:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A0EADB408
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 16:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9EFD18929D7
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05AD18832A1
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959FC21D585;
-	Mon, 16 Jun 2025 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574B6200B99;
+	Mon, 16 Jun 2025 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLNFJMq3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N4J4Rtgu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484E61FFC59;
-	Mon, 16 Jun 2025 14:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4531E833D
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 14:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750083496; cv=none; b=NDKm260JxfeWzyFTXSs9CumFU1qPAC6RMqARb96mpsLdvl0CT1h/NWZXuaQStDWtx0YuEF0kPN+dXomF1Kpx+QwlD97i289Xfzz6XsKAdGsg3DGIMknz4jhZrWoCiKz6sNoGBNP0cjPfoohK/VtSFxPV/BP7j/a9wJsuMBxmXWs=
+	t=1750084567; cv=none; b=hPsmb5G6EbAaUw9aP53Aj9vC0EGkeBlC+9mHgOEBeQnChDSUZ4Ica9gDukmw+qmgciStnfn+qQ3gWz6ELGWUvrpP45SeSzaXXGH577R8FVT5EFvqO/rrs8d0S0P+bsGTpQVpAUXKR99UmtTK9Tls/IfI+Idku0Z+3nwY+CrGjuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750083496; c=relaxed/simple;
-	bh=5adsMQ0TDAhlIaGYvF670/1IDRxVrU+Q3eKWf6nrccg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DS165uT1O6+TgrG85OIal22POk7HpPwfu/m4tjwNn+zdRwSmwI8GRVNftFVRCqj36iM87gEIWz6mtLqO3OTx4TKK6Slhv8Cbc8Czj0z8tqzNbvEuQV11elV/csvBJGmWVU7HYwzcdSAW0YUsQhcTTWffVT22856ASZcDoa63kUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLNFJMq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74816C4CEED;
-	Mon, 16 Jun 2025 14:18:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750083495;
-	bh=5adsMQ0TDAhlIaGYvF670/1IDRxVrU+Q3eKWf6nrccg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sLNFJMq3h3shBLwZpvAliCw36NIXJ9+FZhnZRWBEnv62iTXStnesZo9T4RHqxd3T2
-	 vK06AaAlS4aFBmznsJWtMlfZyI/9FOpxXpGVFzDOX8L67FsSKfxi0K0saLprcF1AYL
-	 4emc4YhJcZrQIkztzBAHq/oPneHG7IN8VnikzIGU=
-Date: Mon, 16 Jun 2025 16:18:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kuen-Han Tsai <khtsai@google.com>
-Cc: prashanth.k@oss.qualcomm.com, hulianqin@vivo.com,
-	krzysztof.kozlowski@linaro.org, mwalle@kernel.org,
-	jirislaby@kernel.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] Revert "usb: gadget: u_serial: Add null pointer
- check in gs_start_io"
-Message-ID: <2025061642-likeness-heaving-dd75@gregkh>
-References: <20250616132152.1544096-1-khtsai@google.com>
+	s=arc-20240116; t=1750084567; c=relaxed/simple;
+	bh=lkkn5j7H4sLb0NDyrQUhe3JZh/b0R5tBG6NCHDSKDxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gNWgXoECQco31Gf6EorhoiY7ih55L09TfDQFNK+3N5y4icbrHCV11gtIypOaxU8RXglYDNJXFiZVCqXtArH5QGRwrgPqfeMDWZeaodJJVAE4TxXLoI0YRh2ILGc8Ly1RGMzZx9/cBiEv7V6zgmgtCcwM6EIKPl9+UcUVNy/8xVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N4J4Rtgu; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750084563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8P6C3VOyWCSr/Pw6J8JHTXM1e6kPxEGsyDCYoqRWzKY=;
+	b=N4J4RtguSJeYPdptpQdXF4/nGxmbRdw453KpfUgTJeFIj5MsAdDmXrsK3OwlhEIqL/F03y
+	A7qZW68KRwRtA6gCFeuKI9IHu3c42pWgFv8mRh710mIWxsqtdI9jirb/WZ0P0I4i/zulGb
+	veCzvv/7xqHsGQJ7E5jJjF1iK9mTvD4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-A0YSDCDRPDWKqA_PIVDCKg-1; Mon,
+ 16 Jun 2025 10:35:46 -0400
+X-MC-Unique: A0YSDCDRPDWKqA_PIVDCKg-1
+X-Mimecast-MFC-AGG-ID: A0YSDCDRPDWKqA_PIVDCKg_1750084543
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 660351809C82;
+	Mon, 16 Jun 2025 14:35:43 +0000 (UTC)
+Received: from [10.22.64.24] (unknown [10.22.64.24])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 68AEE195608F;
+	Mon, 16 Jun 2025 14:35:40 +0000 (UTC)
+Message-ID: <6cf23067-de70-45b9-ad83-90e96c5ea189@redhat.com>
+Date: Mon, 16 Jun 2025 10:35:39 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616132152.1544096-1-khtsai@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/5] scsi: fnic: Turn off FDMI ACTIVE flags on link
+ down
+To: "Karan Tilak Kumar (kartilak)" <kartilak@cisco.com>,
+ "Sesidhar Baddela (sebaddel)" <sebaddel@cisco.com>
+Cc: "Arulprabhu Ponnusamy (arulponn)" <arulponn@cisco.com>,
+ "Dhanraj Jhawar (djhawar)" <djhawar@cisco.com>,
+ "Gian Carlo Boffa (gcboffa)" <gcboffa@cisco.com>,
+ "Masa Kai (mkai2)" <mkai2@cisco.com>,
+ "Satish Kharat (satishkh)" <satishkh@cisco.com>,
+ "Arun Easi (aeasi)" <aeasi@cisco.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "revers@redhat.com" <revers@redhat.com>,
+ "dan.carpenter@linaro.org" <dan.carpenter@linaro.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250612221805.4066-1-kartilak@cisco.com>
+ <20250612221805.4066-4-kartilak@cisco.com>
+ <7a33bd90-7f1b-49ad-b24c-1808073f7f5e@redhat.com>
+ <SJ0PR11MB589646EBDF785F570E35E774C377A@SJ0PR11MB5896.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: John Meneghini <jmeneghi@redhat.com>
+Organization: RHEL Core Storge Team
+In-Reply-To: <SJ0PR11MB589646EBDF785F570E35E774C377A@SJ0PR11MB5896.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Jun 16, 2025 at 09:21:46PM +0800, Kuen-Han Tsai wrote:
-> This reverts commit ffd603f214237e250271162a5b325c6199a65382.
+Sounds good to me. Please make these changes in your v5 patch series and I'll approve.
+
+/John
+
+On 6/13/25 5:59 PM, Karan Tilak Kumar (kartilak) wrote:
+> On Friday, June 13, 2025 1:29 PM, John Meneghini <jmeneghi@redhat.com> wrote:
+>>
+>> Hi Karan.
+>>
+>> You've got two patches in this series with the same Fixes: tag.
+>>
+>> [PATCH v4 2/5] scsi: fnic: Fix crash in fnic_wq_cmpl_handler when FDMI times out
+>> Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
+>>
+>> [PATCH v4 4/5] scsi: fnic: Turn off FDMI ACTIVE flags on link down
+>> Fixes: 09c1e6ab4ab2 ("scsi: fnic: Add and integrate support for FDMI")
+>>
+>> both of these patches modify the same file:
+>>
+>> drivers/scsi/fnic/fdls_disc.c
+>>
+>> So I recommend you squash patch 4/5 and patch 2/5 into one.
+>>
+>> Thanks,
+>>
+>> /John
 > 
-> Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
-> gs_start_io") adds null pointer checks at the beginning of the
-> gs_start_io() function to prevent a null pointer dereference. However,
-> these checks are redundant because the function's comment already
-> requires callers to hold the port_lock and ensure port.tty and port_usb
-> are not null. All existing callers already follow these rules.
+> Thanks for your proposal, John.
 > 
-> The true cause of the null pointer dereference is a race condition. When
-> gs_start_io() calls either gs_start_rx() or gs_start_tx(), the port_lock
-> is temporarily released for usb_ep_queue(). This allows port.tty and
-> port_usb to be cleared.
+> I'm a bit hesitant to squash them into one since each patch fixes unrelated bugs.
+> The reason they have the same fixes tag is because we found two separate issues in the same commit.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
+> I get your concern, however. What do you think about the following?
+> 
+> Move this patch to the beginning and increment driver version to 1.8.0.1:
+> [PATCH v4 2/5] scsi: fnic: Fix crash in fnic_wq_cmpl_handler when FDMI times out
+> 
+> Move this patch to the next and increment driver version to 1.8.0.2:
+> [PATCH v4 4/5] scsi: fnic: Turn off FDMI ACTIVE flags on link down
+> 
+> Move this patch to the next:
+> [PATCH v4 3/5] scsi: fnic: Add and improve logs in FDMI and FDMI ABTS paths
+> 
+> Ideally, I would have liked to squash this above patch with the first patch in this series, since it's easier to debug if and when an issue occurs in that path.
+> I separated them since it would be easier to review. I could add a Fixes tag here as well, but I'm not sure about that since they are just log messages,
+> and they are not really fixes.
+> 
+> Move this patch to the end:
+> [PATCH v4 1/5] scsi: fnic: Set appropriate logging level for log message
+> 
+> Regards,
+> Karan
+> 
 
-As this is removing unneeded checks, why is it cc: stable?  What bug is
-being resolved here?
-
-confused,
-
-greg k-h
 
