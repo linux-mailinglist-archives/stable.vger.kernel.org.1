@@ -1,157 +1,140 @@
-Return-Path: <stable+bounces-152711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5778ADB1A6
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 15:22:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D48ADB1C4
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 15:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EC307A2C8A
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 13:20:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 604DC16234E
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 13:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7739A2BE7C7;
-	Mon, 16 Jun 2025 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E223D2980B0;
+	Mon, 16 Jun 2025 13:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uACVJSQJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XShyaIPv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B5E285C9F
-	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 13:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442F82DBF5B;
+	Mon, 16 Jun 2025 13:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080130; cv=none; b=oQSB8OUlfXDCBEZN5dUfub5fj1TcqmZeAF41PICh8hUfSqolhe4ZO1g178oTsmxfuPqr+O20ZLmhiYsza2NjcW17SEPaMeKW+0OE7Sngp4DXuGECCNYIjrx11D2xhqSUIX4qtZIrZuSsPzai7A2EKP3FcUncWhY3DvRO0EVd2+s=
+	t=1750080352; cv=none; b=fWx35q/kopet3zvWsVD1GE+m6428N/Sz5DNoy/gR4oG2EG/PAhUJbfmggeo/k5KfbVqoPkwKv6ucTR/tC3D4I3v7rDQfSSrxfHFtYTUpqtfrkRD3p7UD+ldHoLlcrHXNzJxfqcllGcZ2sQpu8xyFR4igT4zUkshsKNlL1ICodMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080130; c=relaxed/simple;
-	bh=96HwMABA3lat6ZaJt+24p8PnCvjukTFtGwymnSobeyo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mqsIu+h9BPoV5NQ7mUgt/KDzg2jCkPHBlib5I4prfI1gmtmLJ6WEcyDKvbW6ytPsAjJX9FjdPMdZaTdSt8ehEWKDoZk5shVYMDwFYWNzfKOuK8Cn1z1+kpUGQNTz7I+HRTKrXo9mvvUbDxdvc0yueqmnr7ElXwBS1j0z2yPkzLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uACVJSQJ; arc=none smtp.client-ip=209.85.208.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-32b48369fadso10320841fa.0
-        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 06:22:08 -0700 (PDT)
+	s=arc-20240116; t=1750080352; c=relaxed/simple;
+	bh=td7khtP98l7Q2qh50OlQWBKZ7UZjfxc2FqvRip6lP7A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DATvBFFDmDkcBVJn39f2QdhzNmnrMgjyls85SgWvsWxMYg023h+JBJXcJ2kvXoU3rdIEqEkFfEKBVa8BBpZ3aREHfKRcjD9SOA9+G0p/dFWc0ByZrmS57DIDdl86hYAy0tbZboECrsigELmZMjG/K3rp79DuNfZj0l0PUygDzVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XShyaIPv; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7485bcb8b7cso3541467b3a.1;
+        Mon, 16 Jun 2025 06:25:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750080127; x=1750684927; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vO6E1genm1NfTChAjYKuzLF6v70uWc0Xmgx3nG50sAw=;
-        b=uACVJSQJ3caLeXpVNEm9VxP3JsY7gfHZ0AKShMC1kFGFzOvL82Eb5TVPrX99wcTPQW
-         wQPYTxjKL05wf9AF/ae1DJPFfq/38LWriKJjDaLotecAWb8S5WgpBZgTKwpA6BeBLFuX
-         avfXKQi2q/8WMQCmp9aMkyLjiLb300SjozV/wjf1zeuE5BLRqeZ/M3DnsLyB1BUVlq8h
-         oBb0MbNs2Oa4vf5nGz4rBux9/jwvMJ/O2atYnK7O5+ZJnWKMzrCCluPhQfvrycjpbZrE
-         cX0IIDkeiTsS7he2qndIz5OVNKaVXhtdHZ94XvLqQHhIF6x+wyWFO4GpfXGFuZ2ZNOYD
-         3jLg==
+        d=gmail.com; s=20230601; t=1750080350; x=1750685150; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zPykcaldmChQZHEMlm465r/ktpDt3VnqSSRAnP0PM/8=;
+        b=XShyaIPvNRM8Y2D6HDn7WEJxwP5n9mFlRhyC8p+8PebSKKfpMeqOzNQJjRZWM5T8o4
+         461gTWfJEheFT/wj/aGJImHJjdrKB/HSnwrKt4kPnGwyLRXeuktLomjINshrZtReZBNY
+         2ECCht29r5fBoV4eavAt9EaH8osgTxpez08yLqFr16kAX5UKyKHwbsRxpzT/Ir/e7rKs
+         mphliHojSwAe9Sg9fFRT0w2mO619ul0jnJyVx7QOVMjaYE8xfKHSEwTVEN0XubTi12u6
+         ct5wQvmMcrO78LZZwvunIpoB0KVfyGx/EISp0yLQvpPsnBHXkb/kSP0US//Dd8gK3oFm
+         +9/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750080127; x=1750684927;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vO6E1genm1NfTChAjYKuzLF6v70uWc0Xmgx3nG50sAw=;
-        b=Rj5cQGk4JTcFb2JjyzAfTVlFK4sZ4h2uFiF124rViFoomV6DfslEjs2lmzBfx0tTef
-         O8FFqmRNNTlVz19leptwpo1Vh7JVSrMClOqvfMHCZhYI9VcEdCg/rJtkDuYeqenFK6Pz
-         tSWFDEv4lkrRrRbQOiBnEDO+2u5o9Eno425sXaJy2ph8WfQuA/toe5SV73/MBdgkAWwW
-         Ttakk8eyYL3SbTfPeq/7AjNSxVsEQtQP1umwffcTeLBLMA4xcb+OoXSpzSafN6PlD6BS
-         4iu/VpvI7p4C/OqyJ5itWbZh37QzGimN146QlugowHaCag8d/9DUKOmryRTHaOzeayyg
-         BlMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNPRz2zxWu+z+onaflg+6MfjYW5vGvMMGIiszy7rNXgyXrSzybXXvAXItYTVfYPfmgiFrcMpw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywi8+yvZK2AckFALLmC8VwmeEr0LEgv3tpSV7R25lE0jgFLXK2j
-	WFpjOC4aRsRrXsjqjDMJIpb7XhHVsoDVo5bD0/RoRzRRvFqmOHhivYnZOJjKjkPOITwv4WuCUch
-	YNv6BcQ==
-X-Google-Smtp-Source: AGHT+IFkt/Rh1bB1x+RfplLzW+PaREG+5HeLz6GmLPczhv2jggzzAjkVBt+PwypmVdooMJyZhNAqyFDMU9k=
-X-Received: from ljdr25.prod.google.com ([2002:a05:651c:4199:b0:32a:78e9:1a99])
- (user=khtsai job=prod-delivery.src-stubby-dispatcher) by 2002:a05:651c:50a:b0:30b:f0dd:9096
- with SMTP id 38308e7fff4ca-32b46e8e2fdmr28896961fa.12.1750080126678; Mon, 16
- Jun 2025 06:22:06 -0700 (PDT)
-Date: Mon, 16 Jun 2025 21:21:47 +0800
-In-Reply-To: <20250616132152.1544096-1-khtsai@google.com>
+        d=1e100.net; s=20230601; t=1750080350; x=1750685150;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zPykcaldmChQZHEMlm465r/ktpDt3VnqSSRAnP0PM/8=;
+        b=WwnoHsHRkmrXs3ozbvJ0jvpxD4iMgnXiAsHRg1+/mTJMBCbpDvo8GJIMUteby9XGED
+         +U/5cEjLXbWt/fvFPTFmfhJdaB+uI8/Tu+LKa3gsUzhVnx7TBHMFVkuKmZCneJtq5JzC
+         DT37b2IyKk0XG2m1SqiWHnVNG06pbJdEsfR+YcH/aYs2k9PEwHsAoFw6YlHxvskGv9UJ
+         BNKdBlJ/Ab6dDpNreYPsUIlH4ge7K0QFTZ/lqvu7OfaUrxqFWlWEjzBjTXHaSh/Qp+mg
+         1LfX+aTVa5p+MGlvLV2f0Pw706TE3523tocJhI2Thwgswk859jM7wem4EUDX8qq2ltAE
+         rY2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWM4aGlMWmjNDpTrOrnGx+2rsvta5C7/41uqj3tuSmIkil+v0ADaDjPOSRUGT6bREgNrAo0+TLCbRPRBBc=@vger.kernel.org, AJvYcCX2Zome2nyOxoE4qQoMRXgp0RT/qokn61WzuiUKoetBwVcR0UJ/TE5udEC1/QPx1AmsRSbzBaby@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjBqHka7Mrm40Wq5I4kxfnCU1+48wTWIOg0xa8GimZFcg+oPSK
+	VecBoaLCnFYph7+4dU811Zy7ZInG5lO+64Oam96WFYpBAvkED9jN0tYT
+X-Gm-Gg: ASbGncsW2jQKQ3vnaoLh/ZYSJVaB6ldwsdc3uRv8Te/E+9Qv2UJBhUJfeNG/DrXgRKY
+	mFBlcCkvn/ml1EAGuSXrHfb6mU5XPdDxWu7TINnU9zA0M3k0hs+EtYa3hm3tgqvDUCdDXrzcX+A
+	o07tqC8EgWNY47EpaK1hAZW6NVyMsePu8Vjpmdlz2qZznyTPubh/nlx8gob45d8Zi4iXF88YgQd
+	TskPfNjC0iAlS9av4EWrGU6I2g0qckK7nLdTpiibEvRwTKuj/MgDdTHXDnbkFfdtv2OjsKQSWVl
+	MSKBZoxex0LX198xz+WBuy8f+NK2JS+uvhb0fvkB0e7mRpdWXxnAyUrm6zHXpGz7JUiN6g==
+X-Google-Smtp-Source: AGHT+IGGC0yG9eWTrvC96f40RZCC+M7NlH4ZHN5h3TAKdLDn6BgEURju/EiL6fGQTx8qNnzcyUZCzQ==
+X-Received: by 2002:a05:6a00:846:b0:73e:1e21:b653 with SMTP id d2e1a72fcca58-7489cf5a90fmr12310846b3a.5.1750080350538;
+        Mon, 16 Jun 2025 06:25:50 -0700 (PDT)
+Received: from localhost ([42.120.103.50])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7488ffec9c6sm6750467b3a.9.2025.06.16.06.25.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 06:25:50 -0700 (PDT)
+From: Yuhao Jiang <danisjiang@gmail.com>
+To: ericvh@kernel.org,
+	lucho@ionkov.net,
+	asmadeus@codewreck.org
+Cc: linux_oss@crudebyte.com,
+	v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	security@kernel.org,
+	stable@vger.kernel.org,
+	Yuhao Jiang <danisjiang@gmail.com>
+Subject: [PATCH] net/9p: Fix buffer overflow in USB transport layer
+Date: Mon, 16 Jun 2025 21:25:39 +0800
+Message-ID: <20250616132539.63434-1-danisjiang@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250616132152.1544096-1-khtsai@google.com>
-X-Mailer: git-send-email 2.50.0.rc2.692.g299adb8693-goog
-Message-ID: <20250616132152.1544096-2-khtsai@google.com>
-Subject: [PATCH 2/2] usb: gadget: u_serial: Fix race condition in TTY wakeup
-From: Kuen-Han Tsai <khtsai@google.com>
-To: gregkh@linuxfoundation.org, prashanth.k@oss.qualcomm.com, 
-	khtsai@google.com, hulianqin@vivo.com, krzysztof.kozlowski@linaro.org, 
-	mwalle@kernel.org, jirislaby@kernel.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-A race condition occurs when gs_start_io() calls either gs_start_rx() or
-gs_start_tx(), as those functions briefly drop the port_lock for
-usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clear
-port.tty and port_usb, respectively.
+A buffer overflow vulnerability exists in the USB 9pfs transport layer
+where inconsistent size validation between packet header parsing and
+actual data copying allows a malicious USB host to overflow heap buffers.
 
-Use the null-safe TTY Port helper function to wake up TTY.
+The issue occurs because:
+- usb9pfs_rx_header() validates only the declared size in packet header
+- usb9pfs_rx_complete() uses req->actual (actual received bytes) for memcpy
 
+This allows an attacker to craft packets with small declared size (bypassing
+validation) but large actual payload (triggering overflow in memcpy).
+
+Add validation in usb9pfs_rx_complete() to ensure req->actual does not
+exceed the buffer capacity before copying data.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
 Cc: stable@vger.kernel.org
-Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
 ---
-Explanation:
-    CPU1:                            CPU2:
-    gserial_connect() // lock
-                                     gs_close() // await lock
-    gs_start_rx()     // unlock
-    usb_ep_queue()
-                                     gs_close() // lock, reset port_tty and unlock
-    gs_start_rx()     // lock
-    tty_wakeup()      // dereference
+ net/9p/trans_usbg.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Stack traces:
-[   51.494375][  T278] ttyGS1: shutdown
-[   51.494817][  T269] android_work: sent uevent USB_STATE=DISCONNECTED
-[   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep1in OUT/ep1out
-[   52.516288][ T1026] android_work: sent uevent USB_STATE=CONNECTED
-[   52.551667][ T1533] gserial_connect: start ttyGS1
-[   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.tty=0000000046bd4060
-[   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-[   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-[   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-[   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
-[   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) ...
-[   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
-[   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) done!
-[   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
-[   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-[   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_wakeup(), port->port.tty=0000000000000000
-[   52.747629][ T1533] Unable to handle kernel NULL pointer dereference at virtual address 00000000000001f8
----
- drivers/usb/gadget/function/u_serial.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-index c043bdc30d8a..540dc5ab96fc 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -295,8 +295,8 @@ __acquires(&port->port_lock)
- 			break;
- 	}
-
--	if (do_tty_wake && port->port.tty)
--		tty_wakeup(port->port.tty);
-+	if (do_tty_wake)
-+		tty_port_tty_wakeup(&port->port);
- 	return status;
- }
-
-@@ -574,7 +574,7 @@ static int gs_start_io(struct gs_port *port)
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
--		tty_wakeup(port->port.tty);
-+		tty_port_tty_wakeup(&port->port);
- 	} else {
- 		/* Free reqs only if we are still connected */
- 		if (port->port_usb) {
---
-2.50.0.rc2.692.g299adb8693-goog
+diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+index 6b694f117aef..047a2862fc84 100644
+--- a/net/9p/trans_usbg.c
++++ b/net/9p/trans_usbg.c
+@@ -242,6 +242,15 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
+ 	if (!p9_rx_req)
+ 		return;
+ 
++	/* Validate actual received size against buffer capacity */
++	if (req->actual > p9_rx_req->rc.capacity) {
++		dev_err(&cdev->gadget->dev,
++			"received data size %u exceeds buffer capacity %zu\n",
++			req->actual, p9_rx_req->rc.capacity);
++		p9_req_put(usb9pfs->client, p9_rx_req);
++		return;
++	}
++
+ 	memcpy(p9_rx_req->rc.sdata, req->buf, req->actual);
+ 
+ 	p9_rx_req->rc.size = req->actual;
+-- 
+2.43.0
 
 
