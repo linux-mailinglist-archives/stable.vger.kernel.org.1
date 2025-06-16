@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-152686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAFBADA675
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 04:48:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C446BADA67B
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 04:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87FDB164AEE
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 02:48:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44D927A7759
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 02:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23F577104;
-	Mon, 16 Jun 2025 02:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE276CA5E;
+	Mon, 16 Jun 2025 02:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="mfYPF7vH"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ptYKwV1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E4815DBC1
-	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 02:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB2417B50A
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 02:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750042089; cv=none; b=WL8VyEbxNTpWqs1PG/6ZyrKoQdGeCf/lUr/Kf+hP8Cmr5hCg5VX5ifngIHz9pGpg26DbV3yKrvE+hm+OFTMtYln3mq2FmCtdUYIFfLoamsqad5znNsdzFX0Ld86PobiR3Vd5BZebDhN5wW6FQqYKhMhpf6zbZDJLpSRl79zEDxs=
+	t=1750042213; cv=none; b=bN0YiW0XWasdeuZb+d94IFOPRY0deCmZ74Uh6qdnD7ttkpEslZobp4JnyEVwEFR4Pe083q+th4OZ5NK1HDoK++PbBfRllauT5oojAhjKUiy/vQ6nGgYyA9gtBqXuSl4A9xuwwq+6t8L0n/knVutsZLdIiSlJZ/aWYnTqlr2yrmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750042089; c=relaxed/simple;
-	bh=rKjS7IHSbv2O7HU9FOqi3Bm7mXBBlOW9LcggSL/iDuA=;
+	s=arc-20240116; t=1750042213; c=relaxed/simple;
+	bh=D+I/pvvXY+DxZZseLuN0uZa+T6m563qfKW9m+HAXqkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifNRJm4JsR6Pn4uBFnsgQ+J5+xjxTxonybFa3FkSdgt2L5Kis521ncDV07qfYZQCrdWRKkizV/nwoaQzzpcgJNnu1x7zhCypmaKLPzqWQG3STo3GxuASOG2ghmcWM5/jkHVKrN9p99y65GezpdbIOrYgO6CV7TiGTJBMv5gwG5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=mfYPF7vH; arc=none smtp.client-ip=213.97.179.56
+	 MIME-Version; b=ovppw+g+dc9CCYD4u2hvaaw29uXblpdQNwdQLU5aRsR06AI2dUpqlCUcR6goB7BK5fcGFjq225hmWQuoLY4Hkh3d5T04cmZFQ9mNXpg2lOCMYsMasGlQTkdNCcXkW22+nBsF+TkBjBN/qmFT9pLiyMsREiVwJHurohfJ9u0WnLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ptYKwV1Y; arc=none smtp.client-ip=213.97.179.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,16 +37,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=kK7vOvl6LM7OKwbpoPd70MjOZXOBnJLiT9t5EQMM8PA=; b=mfYPF7vH4m3Ut/syqVeIlyMgaa
-	jXwRoZOpzVpRy01m0iyOI0WMHOg4hikZUkOa/F9KzA37uLs+v/fkfYddgTq4E+++AHBUl4WPmdreG
-	dl9DZtn5dR1n5V0AqsEjEJKS0xtt5R5sPTJ8RDF5Eo+g4gzSxnxqyUYawOthSQdm5F3b9qdebT2ca
-	oy8/fkGY/23MTC2YAzUa2K7CC1grUEPkxe3sxzDXzyFr3+aVf2n+UIsHPZZobxno9OJEuEZDWjR4u
-	IPvTe4RuUpBJMDHRqUEIM2VSNZKYgnxR27+hLLqUBoV+G+i+UpHHleBSBXciod1oDhNDZstQrQOwo
-	HJXzuE+Q==;
+	bh=8jpQPF6oDc69eyAxjjNcss4GVS9U+QydqFoVR4ycFoM=; b=ptYKwV1YFAtX90hQBCX5EoBEmc
+	+NNn0SA00QRpPcetlRSyPEQpJkKZbRrUrXOv2+gkIIr8+ZB5spLSMcmX/vQ9di5p9hS0tp5FpzV+6
+	hBjtQo8pKIfJZGz3ay4xZq3IDeISZpgCS9AD+FgAByeu1nmRmR+A31TRfGFdaEKQoplVueq0YT9T/
+	+yETSASVoym2dLXMqRWX1xlpW6OTZSUwRdYYSJuMUtcQvtnVTcfyuF6e0HzHq+CXKnkh3RbK1NNer
+	1E4vEgQYHi8OK1OZbqdBOeDHwP1ktiUbbZFXL0jVTuy+xq59nQeNRpo7D6eQRZm/0VAgPSr/s93r5
+	8fojP02w==;
 Received: from 114-44-254-110.dynamic-ip.hinet.net ([114.44.254.110] helo=gavin-HP-Z840-Workstation..)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uQzt5-003vfb-0p; Mon, 16 Jun 2025 04:47:55 +0200
+	id 1uQzv5-003viF-Qg; Mon, 16 Jun 2025 04:50:00 +0200
 From: Gavin Guo <gavinguo@igalia.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -58,12 +58,12 @@ Cc: David Hildenbrand <david@redhat.com>,
 	Matthew Wilcox <willy@infradead.org>,
 	Miaohe Lin <linmiaohe@huawei.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 6.1.y] mm/huge_memory: fix dereferencing invalid pmd migration entry
-Date: Mon, 16 Jun 2025 10:47:47 +0800
-Message-ID: <20250616024748.1789123-1-gavinguo@igalia.com>
+Subject: [PATCH 6.6.y] mm/huge_memory: fix dereferencing invalid pmd migration entry
+Date: Mon, 16 Jun 2025 10:49:52 +0800
+Message-ID: <20250616024952.1791381-1-gavinguo@igalia.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2025051203-thrift-spool-ebc8@gregkh>
-References: <2025051203-thrift-spool-ebc8@gregkh>
+In-Reply-To: <2025051202-nutrient-upswing-4a86@gregkh>
+References: <2025051202-nutrient-upswing-4a86@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -130,18 +130,18 @@ Signed-off-by: Gavin Guo <gavinguo@igalia.com>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f53bc54dacb3..d697d6b73f2c 100644
+index 635f0f0f6860..ad04162f637c 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2282,6 +2282,7 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -2260,6 +2260,7 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
  {
  	spinlock_t *ptl;
  	struct mmu_notifier_range range;
 +	bool pmd_migration = is_pmd_migration_entry(*pmd);
  
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, vma->vm_mm,
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
  				address & HPAGE_PMD_MASK,
-@@ -2296,13 +2297,12 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -2274,13 +2275,12 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
  	VM_BUG_ON(freeze && !folio);
  	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
  
@@ -160,7 +160,7 @@ index f53bc54dacb3..d697d6b73f2c 100644
  		__split_huge_pmd_locked(vma, pmd, range.start, freeze);
  	}
 
-base-commit: 58485ff1a74f6c5be9e7c6aafb7293e4337348e7
+base-commit: c2603c511feb427b2b09f74b57816a81272932a1
 -- 
 2.43.0
 
