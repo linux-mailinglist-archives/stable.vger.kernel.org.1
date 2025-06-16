@@ -1,213 +1,118 @@
-Return-Path: <stable+bounces-152703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F14ADADE3
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 12:59:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E51ADAFDD
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DFB4188B667
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 11:00:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A18F27A5756
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 12:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0540729B8E0;
-	Mon, 16 Jun 2025 10:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727052E4240;
+	Mon, 16 Jun 2025 12:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Vtik706T"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="EiMAQ/Qm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E9B1465A5;
-	Mon, 16 Jun 2025 10:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED592E4241
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 12:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750071586; cv=none; b=kIoxOgTPVH8xmEaAlnL1kJxFTbKTEl45RfltRE4sXNDObo3+3xr78rQjT9/CS0GnCr/zACSZdJQucyHc3Xoy3Y0foW7e4LiVBDMKi40wBaA2625Mac5VJSUuH8vh0DcM3YqzH4suVJZ2M6hQJkW/VbmoLJ+Rg4NvO0pPv5QEvJk=
+	t=1750075786; cv=none; b=G3rMVyri8vT8bJEM7RzpXFmJ2wj7JgRP1e9XRlqMO8Q1u4jt7awWyXrDhg7LaizLI7VAPJex5L9t8PKvjo9hhKnzjdDSVrw310zm17PZZin/f+JJicMlh7tbowjzEnV4BEIySIYDJI5+0SK8vibH6KOMJIoc8ZcvRUIJwUx7/So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750071586; c=relaxed/simple;
-	bh=vh0ChoyvFOfuB08SmeEbn8gLSfHzaq+vHJE9lbd9YcQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=J4eaD6sMxxu75RCvJbzkcFlyV4li2eZ5DB9AW3G2kDmJhxVxEc1sac+9mF06U5J1d8mInsPJuWDoCIXHWd82Muufq1cIdhduuvN9MUrJUZ3jyZVWCs0IbhHjSkQjYKzGziR9yNqgz0/ZrYx53PFaEj/65ZUGYLscYfkigYKHyUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Vtik706T; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G8eVSh010256;
-	Mon, 16 Jun 2025 10:59:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	CBwca7iYJlCgH/85QR5/GTDEW6kvwbktN5KO9BTcuxs=; b=Vtik706TdElAa/pz
-	CZTMn8edh5aW6vjVz74wDz/nz+bOKTC8yKJ28Ur/BhE4spoF8yjdKDYDS4I4LFdi
-	h12BeGHuphMRf2ra69sxDFNlM+yypY194kweS4zn/vFwxvEQe542MUFlCCaE5WLt
-	W9k0jrN4Hc4WURur/iM6WYf2QaXGcJ4NueNoiI+ZH50ANUBWRuxKgUoQmyjjfVHR
-	E0F3m7/pDCGi4dNDmOaggiYdFSwhsXxZUExvvVAio6w2E5PMJWqVVglEPjXS5sx5
-	YBMgegHD3vRdbCeYmf3g2fkep0eyHuZc5c1yVrPv/c4B9vtMywZMsN6ytOOGWBQm
-	S+AjDA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791f7475r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Jun 2025 10:59:38 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55GAxbl0012424
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Jun 2025 10:59:37 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 16 Jun
- 2025 03:59:34 -0700
-Message-ID: <28744dbe-1759-4abe-8f1b-505a2a71c5fb@quicinc.com>
-Date: Mon, 16 Jun 2025 18:59:32 +0800
+	s=arc-20240116; t=1750075786; c=relaxed/simple;
+	bh=EYrrDilvdga+E1vzHBnZRq3OykAxV9itkfRuMPAXZ+M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=BIuHLodY/BOKlFR388xJkjylBZrJGlxgW5FElBZkv7+SyXhM+hKQHguMH4tjwB/i0fICQdQHzvOff+xIhDyQJPiHAD+TSYa2BxCyaKHXmXOWbN/xRfDKk84I8LC9WeusVQkPuDIn/AC5TGTuC3R2xQlowxftFtt06vf8yxuR1ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=EiMAQ/Qm; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250616120941euoutp027ae62a1b5a177fa307879bb7d57dc0f2~JhKalpHrF3006030060euoutp02-
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 12:09:41 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250616120941euoutp027ae62a1b5a177fa307879bb7d57dc0f2~JhKalpHrF3006030060euoutp02-
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1750075781;
+	bh=JJMZlZ/EXjEkuE1I03QKBankQc62X7dLkhxQ/QdZRGY=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=EiMAQ/QmH2eYiaUqGw4WMbN2SONw8s3+AofBiZgcUXdUMM4X4y6JVtS8zixkaLtha
+	 hDqwFUJSXi1X/L6BeSLK8RIRAC1tZ/dADPh8QMN7rwBkLLjt5rURcikukSlK2EL0jF
+	 ZdvWR7BTBynBoJLvWghddxGsoQw4XG43JujvqUEk=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250616120941eucas1p2329f4080332615953fa77ba5ad0c0155~JhKaR2O-O1539115391eucas1p2w;
+	Mon, 16 Jun 2025 12:09:41 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250616120940eusmtip12e7864750bb508173ef4a2860829f61e~JhKZ1-4y20132101321eusmtip1J;
+	Mon, 16 Jun 2025 12:09:40 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-fpga@vger.kernel.org
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Moritz Fischer
+	<mdf@kernel.org>, Wu Hao <hao.wu@intel.com>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>, Michal Simek <michal.simek@amd.com>, Jason
+	Gunthorpe <jgg@ziepe.ca>, stable@vger.kernel.org
+Subject: [PATCH v2] zynq_fpga: use sgtable-based scatterlist wrappers
+Date: Mon, 16 Jun 2025 14:09:32 +0200
+Message-Id: <20250616120932.1090614-1-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] wifi: ath12k: fix dest ring-buffer corruption
-To: Praneesh P <praneesh.p@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>,
-        P Praneesh <quic_ppranees@quicinc.com>
-CC: Johan Hovold <johan+linaro@kernel.org>,
-        Jeff Johnson
-	<jjohnson@kernel.org>,
-        Miaoqing Pan <quic_miaoqing@quicinc.com>,
-        "Remi
- Pommarel" <repk@triplefau.lt>, <linux-wireless@vger.kernel.org>,
-        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250604144509.28374-1-johan+linaro@kernel.org>
- <20250604144509.28374-2-johan+linaro@kernel.org>
- <6f3eb9fa-617e-4434-8fc4-33dd92c4bdd2@quicinc.com>
- <aEFqsghEuJc3xxlU@hovoldconsulting.com>
- <ed06d62a-4b98-443a-a2ed-c92058bb521a@quicinc.com>
- <63c2c889-0a09-4b25-a1d2-2aaa92d75d9f@oss.qualcomm.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <63c2c889-0a09-4b25-a1d2-2aaa92d75d9f@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDA2NyBTYWx0ZWRfX1Hcwpd5M6DH5
- bYkEsWskogVGS+pM0AxPyEqIz5ag2uXDsgAYnLDPRt2iVGhOir4jNlMCsC4InxjQe57byDceAhf
- tiR4YRzJzVY5Girita3/igbxzAqDGyiHNSpdIo1KXNdd1I4nVcScs8hSDZBMmjhkJp08/PG0XRy
- w8fuch0D5VE3I39CHligx+PbquCgwdVipsCPtpFtiaWMGMG9ZPDJ4pU8p22NjRAVlJv2E8l9JHS
- wAxPRWSnn7GCyVwJ08HuzJIP1cVmzgrpMn+YQjNkwykTvNWGwEJOQ4F6tm56QuNU8tessR0kmBd
- 99UsQUkonyWCpqjFise1yH2yZixcETulDlyVE5KCNdAzQVKZSF5bJ5x+srNsSR0G2kLoeF6FZsU
- kFET/TepEtPpohfy6YuWg3m4yCHasJLaUDJS5ho5P/hsUtQ60VBIt3BewI2s2OM7Y41ow1an
-X-Proofpoint-GUID: 236sAS0ZcdOMniQ1vXu9DWFADIqWe0TX
-X-Proofpoint-ORIG-GUID: 236sAS0ZcdOMniQ1vXu9DWFADIqWe0TX
-X-Authority-Analysis: v=2.4 cv=FrIF/3rq c=1 sm=1 tr=0 ts=684ff91a cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
- a=jdvWKOla6C7U-uX_HBcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-16_04,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
- malwarescore=0 phishscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2506160067
+X-CMS-MailID: 20250616120941eucas1p2329f4080332615953fa77ba5ad0c0155
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250616120941eucas1p2329f4080332615953fa77ba5ad0c0155
+X-EPHeader: CA
+X-CMS-RootMailID: 20250616120941eucas1p2329f4080332615953fa77ba5ad0c0155
+References: <CGME20250616120941eucas1p2329f4080332615953fa77ba5ad0c0155@eucas1p2.samsung.com>
 
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of statterlists related calls. dma_unmap_sg() function
+has to be called with the number of elements originally passed to the
+dma_map_sg() function, not the one returned in sgtable's nents.
 
+CC: stable@vger.kernel.org
+Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+v2:
+- fixed build break (missing flags parameter)
+---
+ drivers/fpga/zynq-fpga.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 6/16/2025 5:29 PM, Praneesh P wrote:
-> 
-> On 6/5/2025 4:19 PM, Baochen Qiang wrote:
->>
->> On 6/5/2025 6:00 PM, Johan Hovold wrote:
->>> On Thu, Jun 05, 2025 at 04:41:32PM +0800, Baochen Qiang wrote:
->>>> On 6/4/2025 10:45 PM, Johan Hovold wrote:
->>>>> Add the missing memory barrier to make sure that destination ring
->>>>> descriptors are read after the head pointers to avoid using stale data
->>>>> on weakly ordered architectures like aarch64.
->>>>>
->>>>> The barrier is added to the ath12k_hal_srng_access_begin() helper for
->>>>> symmetry with follow-on fixes for source ring buffer corruption which
->>>>> will add barriers to ath12k_hal_srng_access_end().
->>>>>
->>>>> Note that this may fix the empty descriptor issue recently worked around
->>>>> by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
->>>>> monitor ring").
->>>> why? I would expect drunk cookies are valid in case of HAL_MON_DEST_INFO0_EMPTY_DESC,
->>>> rather than anything caused by reordering.
->>> Based on a quick look it seemed like this could possibly fall in the
->>> same category as some of the other workarounds I've spotted while
->>> looking into these ordering issues (e.g. f9fff67d2d7c ("wifi: ath11k:
->>> Fix SKB corruption in REO destination ring")).
->>>
->>> If you say this one is clearly unrelated, I'll drop the comment.
->> Praneesh, could you comment here since you made that change?
-> Empty/Drop descriptor is intentionally issued by the hardware during backpressure scenario
-> and is unrelated to the issue discussed in this patch series.
-
-Thanks Praneesh.
-
-Johan, according to that, please drop the comment.
-
->>>>> @@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe
->>>>> *pipe,
->>>>>           goto err;
->>>>>       }
->>>>>   -    /* Make sure descriptor is read after the head pointer. */
->>>>> -    dma_rmb();
->>>>> -
->>>>>       *nbytes = ath12k_hal_ce_dst_status_get_length(desc);
->>>>>         *skb = pipe->dest_ring->skb[sw_index];
->>>>> diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/
->>>>> hal.c
->>>>> index 91d5126ca149..9eea13ed5565 100644
->>>>> --- a/drivers/net/wireless/ath/ath12k/hal.c
->>>>> +++ b/drivers/net/wireless/ath/ath12k/hal.c
->>>>> @@ -2126,13 +2126,24 @@ void *ath12k_hal_srng_src_get_next_reaped(struct ath12k_base
->>>>> *ab,
->>>>>     void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
->>>>>   {
->>>>> +    u32 hp;
->>>>> +
->>>>>       lockdep_assert_held(&srng->lock);
->>>>>   -    if (srng->ring_dir == HAL_SRNG_DIR_SRC)
->>>>> +    if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
->>>>>           srng->u.src_ring.cached_tp =
->>>>>               *(volatile u32 *)srng->u.src_ring.tp_addr;
->>>>> -    else
->>>>> -        srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
->>>>> +    } else {
->>>>> +        hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
->>>>> +
->>>>> +        if (hp != srng->u.dst_ring.cached_hp) {
->>>> This consumes additional CPU cycles in hot path, which is a concern to me.
->>>>
->>>> Based on that, I prefer the v1 implementation.
->>> The conditional avoids a memory barrier in case the ring is empty, so
->>> for all callers but ath12k_ce_completed_recv_next() it's an improvement
->>> over v1 in that sense.
->>>
->>> I could make the barrier unconditional, which will only add one barrier
->>> to ath12k_ce_completed_recv_next() in case the ring is empty compared to
->>> v1. Perhaps that's a good compromise if you worry about the extra
->>> comparison?
->> I guess the unconditional barrier also has impact on performance? If so I am not sure
->> which one is better then ...
->>
->> Let's just keep it as is and see what others think.
->>
->>> I very much want to avoid having both explicit barriers in the caller
->>> and barriers in the hal end() helper. I think it should be either or.
->>>  
->>>>> +            srng->u.dst_ring.cached_hp = hp;
->>>>> +            /* Make sure descriptor is read after the head
->>>>> +             * pointer.
->>>>> +             */
->>>>> +            dma_rmb();
->>>>> +        }
->>>>> +    }
->>> Johan
->>
+diff --git drivers/fpga/zynq-fpga.c drivers/fpga/zynq-fpga.c
+index f7e08f7ea9ef..0be0d569589d 100644
+--- drivers/fpga/zynq-fpga.c
++++ drivers/fpga/zynq-fpga.c
+@@ -406,7 +406,7 @@ static int zynq_fpga_ops_write(struct fpga_manager *mgr, struct sg_table *sgt)
+ 	}
+ 
+ 	priv->dma_nelms =
+-	    dma_map_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	    dma_map_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+ 	if (priv->dma_nelms == 0) {
+ 		dev_err(&mgr->dev, "Unable to DMA map (TO_DEVICE)\n");
+ 		return -ENOMEM;
+@@ -478,7 +478,7 @@ static int zynq_fpga_ops_write(struct fpga_manager *mgr, struct sg_table *sgt)
+ 	clk_disable(priv->clk);
+ 
+ out_free:
+-	dma_unmap_sg(mgr->dev.parent, sgt->sgl, sgt->nents, DMA_TO_DEVICE);
++	dma_unmap_sgtable(mgr->dev.parent, sgt, DMA_TO_DEVICE, 0);
+ 	return err;
+ }
+ 
+-- 
+2.34.1
 
 
