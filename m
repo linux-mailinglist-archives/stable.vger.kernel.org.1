@@ -1,254 +1,213 @@
-Return-Path: <stable+bounces-152702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37081ADAD10
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 12:09:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F14ADADE3
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 12:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E84C67A5F42
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 10:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DFB4188B667
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 11:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D876D27EFF6;
-	Mon, 16 Jun 2025 10:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0540729B8E0;
+	Mon, 16 Jun 2025 10:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="RPoWjhAm"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Vtik706T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFB227F008;
-	Mon, 16 Jun 2025 10:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E9B1465A5;
+	Mon, 16 Jun 2025 10:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750068575; cv=none; b=cwOxusMkdleV/OMiUSebfDhv9+AwDClaqklsQA6/+IJj5HcGxqxniKiqqEvPj3AqrU3aXxFp3Ba6A6qrqm0wzOp6mUDf8XelUydWM4uS51jMiMmGulVvdJ9eyUZDUd5c1iFDJmFv6HL/JIo1Yp4r1XEEuyCnLanDiyTTT7kMyHc=
+	t=1750071586; cv=none; b=kIoxOgTPVH8xmEaAlnL1kJxFTbKTEl45RfltRE4sXNDObo3+3xr78rQjT9/CS0GnCr/zACSZdJQucyHc3Xoy3Y0foW7e4LiVBDMKi40wBaA2625Mac5VJSUuH8vh0DcM3YqzH4suVJZ2M6hQJkW/VbmoLJ+Rg4NvO0pPv5QEvJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750068575; c=relaxed/simple;
-	bh=GUY8/63BQv85kRQHfmjIq1+ft2+ClaRKl8r4IWk1ocQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=k0vHMZKirWobe9XT75RmHEFil7gkzb/YI1XjcGL381BhxVIUF7YiPS+ZUy2LZfOavtxJQwRhsr2vCNTPRNzfhgOHz+P2NIClVpaL1UGlNIrkONRl5+jGR7fe4rAPrK43eVDpHuFkxF7MeOG+CJ93T7tSBrgyRAtjIT++aaDAFhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=RPoWjhAm; arc=none smtp.client-ip=212.122.41.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-	s=mail; t=1750068571;
-	bh=itB1oOGdFQkL5Y75629jq0JbuLdjXKutsArus/swJBA=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=RPoWjhAmO/c8bHNIyHNNg7x1zgLkEkwVrzUu1Av4PXh8ywypox9KUUjPRFs6cs9Wn
-	 0JEMZWN8h3hzqyGuFDGO6p7X8oAVddz+9xGTS+1VdW3XmLyPZ6dTHulV4i8CGZpRZp
-	 HgILLVS1+OG0rb4egCGhx/H5x/arourOL15ENYmQ=
+	s=arc-20240116; t=1750071586; c=relaxed/simple;
+	bh=vh0ChoyvFOfuB08SmeEbn8gLSfHzaq+vHJE9lbd9YcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=J4eaD6sMxxu75RCvJbzkcFlyV4li2eZ5DB9AW3G2kDmJhxVxEc1sac+9mF06U5J1d8mInsPJuWDoCIXHWd82Muufq1cIdhduuvN9MUrJUZ3jyZVWCs0IbhHjSkQjYKzGziR9yNqgz0/ZrYx53PFaEj/65ZUGYLscYfkigYKHyUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Vtik706T; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G8eVSh010256;
+	Mon, 16 Jun 2025 10:59:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	CBwca7iYJlCgH/85QR5/GTDEW6kvwbktN5KO9BTcuxs=; b=Vtik706TdElAa/pz
+	CZTMn8edh5aW6vjVz74wDz/nz+bOKTC8yKJ28Ur/BhE4spoF8yjdKDYDS4I4LFdi
+	h12BeGHuphMRf2ra69sxDFNlM+yypY194kweS4zn/vFwxvEQe542MUFlCCaE5WLt
+	W9k0jrN4Hc4WURur/iM6WYf2QaXGcJ4NueNoiI+ZH50ANUBWRuxKgUoQmyjjfVHR
+	E0F3m7/pDCGi4dNDmOaggiYdFSwhsXxZUExvvVAio6w2E5PMJWqVVglEPjXS5sx5
+	YBMgegHD3vRdbCeYmf3g2fkep0eyHuZc5c1yVrPv/c4B9vtMywZMsN6ytOOGWBQm
+	S+AjDA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4791f7475r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Jun 2025 10:59:38 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 55GAxbl0012424
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Jun 2025 10:59:37 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 16 Jun
+ 2025 03:59:34 -0700
+Message-ID: <28744dbe-1759-4abe-8f1b-505a2a71c5fb@quicinc.com>
+Date: Mon, 16 Jun 2025 18:59:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
-From: Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <g7wcgkxdlbshztwihayxma7xkxe23nic7zcreb3eyg3yeld5cu@yk7l2e4ibajk>
-Date: Mon, 16 Jun 2025 12:09:21 +0200
-Cc: stable@vger.kernel.org,
- "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
- regressions@lists.linux.dev
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <01751810-C689-4270-8797-FC0D632B6AB6@flyingcircus.io>
-References: <M1JxD6k5Sdxnq-pztTdv_FZwURA8AaT9qWNFUYGCmhiTRQFESfH7xqdOqQjz-oKQiin8pQckoNhfNyCHu-cxEQ==@protonmail.internalid>
- <14E1A49D-23BF-4929-A679-E6D5C8977D40@flyingcircus.io>
- <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
- <Z9Ih4yZoepxhmmH5Jrd1bCz35l6iPh5g2J61q2NR7loEdQb_aRquKdD1xLaE_5SPMlkBM8zLdVfdPvvKuNBrGQ==@protonmail.internalid>
- <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
- <g7wcgkxdlbshztwihayxma7xkxe23nic7zcreb3eyg3yeld5cu@yk7l2e4ibajk>
-To: Carlos Maiolino <cem@kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] wifi: ath12k: fix dest ring-buffer corruption
+To: Praneesh P <praneesh.p@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>,
+        P Praneesh <quic_ppranees@quicinc.com>
+CC: Johan Hovold <johan+linaro@kernel.org>,
+        Jeff Johnson
+	<jjohnson@kernel.org>,
+        Miaoqing Pan <quic_miaoqing@quicinc.com>,
+        "Remi
+ Pommarel" <repk@triplefau.lt>, <linux-wireless@vger.kernel.org>,
+        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250604144509.28374-1-johan+linaro@kernel.org>
+ <20250604144509.28374-2-johan+linaro@kernel.org>
+ <6f3eb9fa-617e-4434-8fc4-33dd92c4bdd2@quicinc.com>
+ <aEFqsghEuJc3xxlU@hovoldconsulting.com>
+ <ed06d62a-4b98-443a-a2ed-c92058bb521a@quicinc.com>
+ <63c2c889-0a09-4b25-a1d2-2aaa92d75d9f@oss.qualcomm.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <63c2c889-0a09-4b25-a1d2-2aaa92d75d9f@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDA2NyBTYWx0ZWRfX1Hcwpd5M6DH5
+ bYkEsWskogVGS+pM0AxPyEqIz5ag2uXDsgAYnLDPRt2iVGhOir4jNlMCsC4InxjQe57byDceAhf
+ tiR4YRzJzVY5Girita3/igbxzAqDGyiHNSpdIo1KXNdd1I4nVcScs8hSDZBMmjhkJp08/PG0XRy
+ w8fuch0D5VE3I39CHligx+PbquCgwdVipsCPtpFtiaWMGMG9ZPDJ4pU8p22NjRAVlJv2E8l9JHS
+ wAxPRWSnn7GCyVwJ08HuzJIP1cVmzgrpMn+YQjNkwykTvNWGwEJOQ4F6tm56QuNU8tessR0kmBd
+ 99UsQUkonyWCpqjFise1yH2yZixcETulDlyVE5KCNdAzQVKZSF5bJ5x+srNsSR0G2kLoeF6FZsU
+ kFET/TepEtPpohfy6YuWg3m4yCHasJLaUDJS5ho5P/hsUtQ60VBIt3BewI2s2OM7Y41ow1an
+X-Proofpoint-GUID: 236sAS0ZcdOMniQ1vXu9DWFADIqWe0TX
+X-Proofpoint-ORIG-GUID: 236sAS0ZcdOMniQ1vXu9DWFADIqWe0TX
+X-Authority-Analysis: v=2.4 cv=FrIF/3rq c=1 sm=1 tr=0 ts=684ff91a cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10
+ a=jdvWKOla6C7U-uX_HBcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-16_04,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506160067
 
 
-> On 16. Jun 2025, at 11:47, Carlos Maiolino <cem@kernel.org> wrote:
->=20
-> On Mon, Jun 16, 2025 at 10:59:34AM +0200, Christian Theune wrote:
->>=20
->>=20
->>> On 16. Jun 2025, at 10:50, Carlos Maiolino <cem@kernel.org> wrote:
->>>=20
->>> On Thu, Jun 12, 2025 at 03:37:10PM +0200, Christian Theune wrote:
->>>> Hi,
->>>>=20
->>>> in the last week, after updating to 6.6.92, we=E2=80=99ve =
-encountered a number of VMs reporting temporarily hung tasks blocking =
-the whole system for a few minutes. They unblock by themselves and have =
-similar tracebacks.
->>>>=20
->>>> The IO PSIs show 100% pressure for that time, but the underlying =
-devices are still processing read and write IO (well within their =
-capacity). I=E2=80=99ve eliminated the underlying storage (Ceph) as the =
-source of problems as I couldn=E2=80=99t find any latency outliers or =
-significant queuing during that time.
->>>>=20
->>>> I=E2=80=99ve seen somewhat similar reports on 6.6.88 and 6.6.77, =
-but those might have been different outliers.
->>>>=20
->>>> I=E2=80=99m attaching 3 logs - my intuition and the data so far =
-leads me to consider this might be a kernel bug. I haven=E2=80=99t found =
-a way to reproduce this, yet.
->>>=20
->>> =46rom a first glance, these machines are struggling because IO =
-contention as you
->>> mentioned, more often than not they seem to be stalling waiting for =
-log space to
->>> be freed, so any operation in the FS gets throttled while the =
-journal isn't
->>> written back. If you have a small enough journal it will need to =
-issue IO often
->>> enough to cause IO contention. So, I'd point it to a slow storage or =
-small
->>> enough log area (or both).
->>=20
->> Yeah, my current analysis didn=E2=80=99t show any storage performance =
-issues. I=E2=80=99ll revisit this once more to make sure I=E2=80=99m not =
-missing anything. We=E2=80=99ve previously had issues in this area that =
-turned out to be kernel bugs. We didn=E2=80=99t change anything =
-regarding journal sizes and only a recent kernel upgrade seemed to be =
-relevant.
->=20
-> You mentioned you saw PSI showing a huge pressure ration, during the =
-time, which
-> might be generated by the journal writeback and giving it's a SYNC =
-write, IOs
-> will stall if your storage can't write it fast enough. IIRC, most of =
-the threads
-> from the logs you shared were waiting for log space to be able to =
-continue,
-> which causes the log to flush things to disk and of course increase IO =
-usage.
-> If your storage can't handle these IO bursts, then you'll get the =
-stalls you're
-> seeing.
-> I am not discarding a possibility you are hitting a bug here, but it =
-so far
-> seems your storage is not being able to service IOs fast enough to =
-avoid such IO
-> stalls, or something else throttling IOs, XFS seems just the victim.
 
-Yeah, it=E2=80=99s annoying, I know. To paraphrase "any sufficiently =
-advanced bug is indistinguishable from slow storage=E2=80=9D. ;)=09
+On 6/16/2025 5:29 PM, Praneesh P wrote:
+> 
+> On 6/5/2025 4:19 PM, Baochen Qiang wrote:
+>>
+>> On 6/5/2025 6:00 PM, Johan Hovold wrote:
+>>> On Thu, Jun 05, 2025 at 04:41:32PM +0800, Baochen Qiang wrote:
+>>>> On 6/4/2025 10:45 PM, Johan Hovold wrote:
+>>>>> Add the missing memory barrier to make sure that destination ring
+>>>>> descriptors are read after the head pointers to avoid using stale data
+>>>>> on weakly ordered architectures like aarch64.
+>>>>>
+>>>>> The barrier is added to the ath12k_hal_srng_access_begin() helper for
+>>>>> symmetry with follow-on fixes for source ring buffer corruption which
+>>>>> will add barriers to ath12k_hal_srng_access_end().
+>>>>>
+>>>>> Note that this may fix the empty descriptor issue recently worked around
+>>>>> by commit 51ad34a47e9f ("wifi: ath12k: Add drop descriptor handling for
+>>>>> monitor ring").
+>>>> why? I would expect drunk cookies are valid in case of HAL_MON_DEST_INFO0_EMPTY_DESC,
+>>>> rather than anything caused by reordering.
+>>> Based on a quick look it seemed like this could possibly fall in the
+>>> same category as some of the other workarounds I've spotted while
+>>> looking into these ordering issues (e.g. f9fff67d2d7c ("wifi: ath11k:
+>>> Fix SKB corruption in REO destination ring")).
+>>>
+>>> If you say this one is clearly unrelated, I'll drop the comment.
+>> Praneesh, could you comment here since you made that change?
+> Empty/Drop descriptor is intentionally issued by the hardware during backpressure scenario
+> and is unrelated to the issue discussed in this patch series.
 
-As promised, I=E2=80=99ll dive deeper into the storage performance =
-analysis, all telemetry so far was completely innocuous, but it=E2=80=99s =
-a complex layering of SSDs =E2=86=92 Ceph =E2=86=92 Qemu =E2=80=A6 =
-Usually if we have performance issues then the metrics reflect this =
-quite obviously and will affect many machines at the same time. As this =
-has always just affected one single VM at a time but spread over time my =
-gut feeling is a bit more on the side of =E2=80=9Cit might be maybe a =
-bug=E2=80=9D. As those things tend to be hard/nasty to diagnose I wanted =
-to raise the flag early on to see whether other=E2=80=99s might be =
-having an =E2=80=9Caha=E2=80=9D moment if they=E2=80=99re experiencing =
-something similar.
+Thanks Praneesh.
 
-I=E2=80=99ll get back to you in 2-3 days with results from the storage =
-analysis.
+Johan, according to that, please drop the comment.
 
-> Can you share the xfs_info of one of these filesystems? I'm curious =
-about the FS
-> geometry.
-
-Sure:
-
-# xfs_info /
-meta-data=3D/dev/disk/by-label/root isize=3D512    agcount=3D21, =
-agsize=3D655040 blks
-         =3D                       sectsz=3D512   attr=3D2, =
-projid32bit=3D1
-         =3D                       crc=3D1        finobt=3D1, sparse=3D1, =
-rmapbt=3D0
-         =3D                       reflink=3D1    bigtime=3D1 =
-inobtcount=3D1 nrext64=3D0
-         =3D                       exchange=3D0
-data     =3D                       bsize=3D4096   blocks=3D13106171, =
-imaxpct=3D25
-         =3D                       sunit=3D0      swidth=3D0 blks
-naming   =3Dversion 2              bsize=3D4096   ascii-ci=3D0, ftype=3D1,=
- parent=3D0
-log      =3Dinternal log           bsize=3D4096   blocks=3D16384, =
-version=3D2
-         =3D                       sectsz=3D512   sunit=3D0 blks, =
-lazy-count=3D1
-realtime =3Dnone                   extsz=3D4096   blocks=3D0, =
-rtextents=3D0
-
-# xfs_info /tmp/
-meta-data=3D/dev/vdb1              isize=3D512    agcount=3D8, =
-agsize=3D229376 blks
-         =3D                       sectsz=3D512   attr=3D2, =
-projid32bit=3D1
-         =3D                       crc=3D1        finobt=3D1, sparse=3D1, =
-rmapbt=3D0
-         =3D                       reflink=3D0    bigtime=3D0 =
-inobtcount=3D0 nrext64=3D0
-         =3D                       exchange=3D0
-data     =3D                       bsize=3D4096   blocks=3D1833979, =
-imaxpct=3D25
-         =3D                       sunit=3D1024   swidth=3D1024 blks
-naming   =3Dversion 2              bsize=3D4096   ascii-ci=3D0, ftype=3D1,=
- parent=3D0
-log      =3Dinternal log           bsize=3D4096   blocks=3D2560, =
-version=3D2
-         =3D                       sectsz=3D512   sunit=3D8 blks, =
-lazy-count=3D1
-realtime =3Dnone                   extsz=3D4096   blocks=3D0, =
-rtextents=3D0
-
-
->=20
->>=20
->>> There has been a few improvements though during Linux 6.9 on the log =
-performance,
->>> but I can't tell if you have any of those improvements around.
->>> I'd suggest you trying to run a newer upstream kernel, otherwise =
-you'll get very
->>> limited support from the upstream community. If you can't, I'd =
-suggest you
->>> reporting this issue to your vendor, so they can track what you =
-are/are not
->>> using in your current kernel.
->>=20
->> Yeah, we=E2=80=99ve started upgrading selected/affected projects to =
-6.12, to see whether this improves things.
->=20
-> Good enough.
->=20
->>=20
->>> FWIW, I'm not sure if NixOS uses linux-stable kernels or not. If =
-that's the
->>> case, running a newer kernel suggestion is still valid.
->>=20
->> We=E2=80=99re running the NixOS mainline versions which are very =
-vanilla. There are very very 4 small patches that only fix up things =
-around building and binary paths for helpers to call to adapt them to =
-the nix environment.
->=20
-> I see. There were some improvements in the newer versions, so if you =
-can rule
-> out any possibly fixed bug is worth it.
->=20
->=20
->>=20
->> Christian
->>=20
->>=20
->> --
->> Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
->> Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
->> Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
->> HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian =
-Theune, Christian Zagrodnick
-
-
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
+>>>>> @@ -343,9 +343,6 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe
+>>>>> *pipe,
+>>>>>           goto err;
+>>>>>       }
+>>>>>   -    /* Make sure descriptor is read after the head pointer. */
+>>>>> -    dma_rmb();
+>>>>> -
+>>>>>       *nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+>>>>>         *skb = pipe->dest_ring->skb[sw_index];
+>>>>> diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/
+>>>>> hal.c
+>>>>> index 91d5126ca149..9eea13ed5565 100644
+>>>>> --- a/drivers/net/wireless/ath/ath12k/hal.c
+>>>>> +++ b/drivers/net/wireless/ath/ath12k/hal.c
+>>>>> @@ -2126,13 +2126,24 @@ void *ath12k_hal_srng_src_get_next_reaped(struct ath12k_base
+>>>>> *ab,
+>>>>>     void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
+>>>>>   {
+>>>>> +    u32 hp;
+>>>>> +
+>>>>>       lockdep_assert_held(&srng->lock);
+>>>>>   -    if (srng->ring_dir == HAL_SRNG_DIR_SRC)
+>>>>> +    if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+>>>>>           srng->u.src_ring.cached_tp =
+>>>>>               *(volatile u32 *)srng->u.src_ring.tp_addr;
+>>>>> -    else
+>>>>> -        srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+>>>>> +    } else {
+>>>>> +        hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+>>>>> +
+>>>>> +        if (hp != srng->u.dst_ring.cached_hp) {
+>>>> This consumes additional CPU cycles in hot path, which is a concern to me.
+>>>>
+>>>> Based on that, I prefer the v1 implementation.
+>>> The conditional avoids a memory barrier in case the ring is empty, so
+>>> for all callers but ath12k_ce_completed_recv_next() it's an improvement
+>>> over v1 in that sense.
+>>>
+>>> I could make the barrier unconditional, which will only add one barrier
+>>> to ath12k_ce_completed_recv_next() in case the ring is empty compared to
+>>> v1. Perhaps that's a good compromise if you worry about the extra
+>>> comparison?
+>> I guess the unconditional barrier also has impact on performance? If so I am not sure
+>> which one is better then ...
+>>
+>> Let's just keep it as is and see what others think.
+>>
+>>> I very much want to avoid having both explicit barriers in the caller
+>>> and barriers in the hal end() helper. I think it should be either or.
+>>>  
+>>>>> +            srng->u.dst_ring.cached_hp = hp;
+>>>>> +            /* Make sure descriptor is read after the head
+>>>>> +             * pointer.
+>>>>> +             */
+>>>>> +            dma_rmb();
+>>>>> +        }
+>>>>> +    }
+>>> Johan
+>>
 
 
