@@ -1,144 +1,146 @@
-Return-Path: <stable+bounces-152741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D26EADBD61
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 01:10:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7ACADBD83
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 01:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F7FF189061C
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 23:10:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 044783AC3F4
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 23:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091082264C4;
-	Mon, 16 Jun 2025 23:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC922264A6;
+	Mon, 16 Jun 2025 23:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ba1Vh+Nr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sHKbxxsV"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5265E223DD5;
-	Mon, 16 Jun 2025 23:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A2834545;
+	Mon, 16 Jun 2025 23:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750115416; cv=none; b=q9X5Jt6mZjsTBFBvmzcNyq7VGHyU+t5bBSdRlDB2pN0L/IwIzVc/HzUqNjdgFFO0rO83e+gg0Z+T1aKVLR3hdT54GUYcMa0ghb6tpbYQZLH7sL2LjYHjPOQLI7dYNKPgL9W12gP53ngLjZ8GIw6W4gxwkpfLRheUcbitse0leVA=
+	t=1750116090; cv=none; b=jz/pno2zn7CbRW5nDX7dpmaPxI0wd9yMPsdXDmwlKmd0k2+3dDZ15WV/rAN9ZEFJJIocWHAnFAcJD13fz7x+/qRmNVIfN+dIpu49TKI1i79bhuVyAtqn7njmxyLzVwlj9UYiN16VRt2WD+NJ3eXPUjDWZHM0omepSZoswOCOa4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750115416; c=relaxed/simple;
-	bh=l/dsEKZik8069kBgbRAsR0tcPdM8xcTYaQmnuK2tb18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uoc3gh/IxUWhOCpTpzxd72d7kaubKJLjkWmmIyAvP4jeVn0dJr36xj/q/P1z/dS5Bu+BYsbL2qJczHuOhy4axBcHZrxB871AWOTpyY0pq3lnJpO9iPKYC4XsXXKXtEWwecoB/Rx8blF2goDzFWWf/lNGUic/z7Zi/RHfrA537Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ba1Vh+Nr; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 45E3014C2D3;
-	Tue, 17 Jun 2025 01:00:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1750114827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LSj4gXCyHisTwhB2BQnYcgpL/7V+l81OjPQ3XMozPiY=;
-	b=ba1Vh+NrSIjd7dsdd0+OHQAo7kEOIiMCbiZJITasBMpb06v5GCKFJzfa1Q00oZ7ppDVJYG
-	V+JsgYIurMccniqSrkVZn6QnSlVESpbxMFZPC8sfVKmKZ+D3eo+daYi/ML7Vs8MJu4t/cR
-	1BtXctHoYjA4lz1+e8LJvfTLuJIMFlCmmGvQXCcVMABgSNMwml7IPYNukXzENuyJR/XK7w
-	LIkPx8oP95IJ7trvfZ/myMEkKZumsIBRyJr+knK01jJeJ8WRyBrEAcGxgk9x92o3cIZwfM
-	mlxTijTq0BCrtF6ANKmdm/PJN/2PMo81dXOiCXGii/KvVky1ARmGdwrB/hSKmw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id ffc07ee8;
-	Mon, 16 Jun 2025 23:00:23 +0000 (UTC)
-Date: Tue, 17 Jun 2025 08:00:08 +0900
-From: asmadeus@codewreck.org
-To: Yuhao Jiang <danisjiang@gmail.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org,
-	security@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net/9p: Fix buffer overflow in USB transport layer
-Message-ID: <aFCh-JXnifNXTgSt@codewreck.org>
-References: <20250616132539.63434-1-danisjiang@gmail.com>
+	s=arc-20240116; t=1750116090; c=relaxed/simple;
+	bh=GCiKWlw5/RrdHinuuJoSOCeLqjABp+XNFv1qKbj3wMA=;
+	h=Date:To:From:Subject:Message-Id; b=EcXNC6KoUeJzJXCz8ZNLUaPWmOi4fIKJvRs/qyk812SBr49nea4WsXZE0PxG52kbggnVZ3SuDVf8N9sBcvmP8pw+lOFJNuFGi9ZFQfO065vFabyhVvAU0qAqW4e8fGJwitI0hrOeSVHsd9RoefR5pWn1TYM6IQXtyltW9WPYdhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sHKbxxsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40A7C4CEEA;
+	Mon, 16 Jun 2025 23:21:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1750116089;
+	bh=GCiKWlw5/RrdHinuuJoSOCeLqjABp+XNFv1qKbj3wMA=;
+	h=Date:To:From:Subject:From;
+	b=sHKbxxsV12+MzXaC0TpRWZYuOUhdF4/hsEFrrsxlJuE6mu/f4txE8ogy4sVcyVdAi
+	 BouS/7aINLvR1QpWCpdnj5uYzj51oxyQjYDoPw77+Uxhj8AxbqCPh4YAvs52+O/IM5
+	 m0pSPUUiIi0yveSNKKYr+wznAmz/4anx2Je17o/M=
+Date: Mon, 16 Jun 2025 16:21:29 -0700
+To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,zhangpeng.00@bytedance.com,willy@infradead.org,surenb@google.com,Steve.Kang@unisoc.com,stable@vger.kernel.org,sidhartha.kumar@oracle.com,lorenzo.stoakes@oracle.com,hailong.liu@oppo.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250616232129.A40A7C4CEEA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250616132539.63434-1-danisjiang@gmail.com>
 
-Yuhao Jiang wrote on Mon, Jun 16, 2025 at 09:25:39PM +0800:
-> A buffer overflow vulnerability exists in the USB 9pfs transport layer
-> where inconsistent size validation between packet header parsing and
-> actual data copying allows a malicious USB host to overflow heap buffers.
-> 
-> The issue occurs because:
-> - usb9pfs_rx_header() validates only the declared size in packet header
-> - usb9pfs_rx_complete() uses req->actual (actual received bytes) for memcpy
-> 
-> This allows an attacker to craft packets with small declared size (bypassing
-> validation) but large actual payload (triggering overflow in memcpy).
-> 
-> Add validation in usb9pfs_rx_complete() to ensure req->actual does not
-> exceed the buffer capacity before copying data.
 
-Thanks for this check!
+The patch titled
+     Subject: maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate.patch
 
-Did you reproduce this or was this static analysis found?
-(to knowi if you tested wrt question below)
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate.patch
 
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
-> ---
->  net/9p/trans_usbg.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-> index 6b694f117aef..047a2862fc84 100644
-> --- a/net/9p/trans_usbg.c
-> +++ b/net/9p/trans_usbg.c
-> @@ -242,6 +242,15 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, struct usb_request *req)
->  	if (!p9_rx_req)
->  		return;
->  
-> +	/* Validate actual received size against buffer capacity */
-> +	if (req->actual > p9_rx_req->rc.capacity) {
-> +		dev_err(&cdev->gadget->dev,
-> +			"received data size %u exceeds buffer capacity %zu\n",
-> +			req->actual, p9_rx_req->rc.capacity);
-> +		p9_req_put(usb9pfs->client, p9_rx_req);
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I still haven't gotten around to setting up something to test this, and
-even less the error case, but I'm not sure a single put is enough --
-p9_client_cb does another put.
-Conceptually I think it's better to mark the error and move on
-e.g. (not even compile tested)
-```
-	int status = REQ_STATUS_RCVD;
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-	[...]
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-	if (req->actual > p9_rx_req->rc.capacity) {
-		dev_err(...)
-		req->actual = 0;
-		status = REQ_STATUS_ERROR;
-	}
-	
-	memcpy(..)
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-        p9_rx_req->rc.size = req->actual;
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: fix MA_STATE_PREALLOC flag in mas_preallocate()
+Date: Mon, 16 Jun 2025 14:45:20 -0400
 
-        p9_client_cb(usb9pfs->client, p9_rx_req, status);
-        p9_req_put(usb9pfs->client, p9_rx_req);
+Temporarily clear the preallocation flag when explicitly requesting
+allocations.  Pre-existing allocations are already counted against the
+request through mas_node_count_gfp(), but the allocations will not happen
+if the MA_STATE_PREALLOC flag is set.  This flag is meant to avoid
+re-allocating in bulk allocation mode, and to detect issues with
+preallocation calculations.
 
-	complete(&usb9pfs->received);
-```
-(I'm not sure overriding req->actual is allowed, might be safer to use
-an intermediate variable like status instead)
+The MA_STATE_PREALLOC flag should also always be set on zero allocations
+so that detection of underflow allocations will print a WARN_ON() during
+consumption.
 
-What do you think?
+User visible effect of this flaw is a WARN_ON() followed by a null pointer
+dereference when subsequent requests for larger number of nodes is
+ignored, such as the vma merge retry in mmap_region() caused by drivers
+altering the vma flags (which happens in v6.6, at least)
 
-Thanks,
--- 
-Dominique Martinet | Asmadeus
+Link: https://lkml.kernel.org/r/20250616184521.3382795-3-Liam.Howlett@oracle.com
+Fixes: 54a611b605901 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Reported-by: Hailong Liu <hailong.liu@oppo.com>
+Link: https://lore.kernel.org/all/1652f7eb-a51b-4fee-8058-c73af63bacd1@oppo.com/
+Link: https://lore.kernel.org/all/20250428184058.1416274-1-Liam.Howlett@oracle.com/
+Link: https://lore.kernel.org/all/20250429014754.1479118-1-Liam.Howlett@oracle.com/
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>
+Cc: zhangpeng.00@bytedance.com <zhangpeng.00@bytedance.com>
+Cc: Steve Kang <Steve.Kang@unisoc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/maple_tree.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/lib/maple_tree.c~maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate
++++ a/lib/maple_tree.c
+@@ -5527,8 +5527,9 @@ int mas_preallocate(struct ma_state *mas
+ 	mas->store_type = mas_wr_store_type(&wr_mas);
+ 	request = mas_prealloc_calc(&wr_mas, entry);
+ 	if (!request)
+-		return ret;
++		goto set_flag;
+ 
++	mas->mas_flags &= ~MA_STATE_PREALLOC;
+ 	mas_node_count_gfp(mas, request, gfp);
+ 	if (mas_is_err(mas)) {
+ 		mas_set_alloc_req(mas, 0);
+@@ -5538,6 +5539,7 @@ int mas_preallocate(struct ma_state *mas
+ 		return ret;
+ 	}
+ 
++set_flag:
+ 	mas->mas_flags |= MA_STATE_PREALLOC;
+ 	return ret;
+ }
+_
+
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+
+maple_tree-fix-ma_state_prealloc-flag-in-mas_preallocate.patch
+testing-raix-tree-maple-increase-readers-and-reduce-delay-for-faster-machines.patch
+
 
