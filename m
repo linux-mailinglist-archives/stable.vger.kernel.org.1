@@ -1,114 +1,103 @@
-Return-Path: <stable+bounces-152693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274B7ADAA7A
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 10:16:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E40ADAA89
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 10:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB3783A3154
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 08:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 557633A5D55
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 08:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7756215062;
-	Mon, 16 Jun 2025 08:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915402309B9;
+	Mon, 16 Jun 2025 08:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xo/NIfof"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WG4c9r5z"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEADB20966B;
-	Mon, 16 Jun 2025 08:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB92E2C1A2
+	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 08:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750061808; cv=none; b=dCBla3tZmKNvUR5mXXWOeUzWFkW9Yn79KN/u+GhoKQyqXs2XfVCXd+SRXZhimewB6wQtdOag/8DGqovtGjmWqtImMm3Xqi2sWcnJnO4nkfrjNl7sVyfLNfauRGKgu+mCgUvR0oin+jHXVyNjd9KXfmn5NZRN2eKVUb3wRQ1vjeg=
+	t=1750061912; cv=none; b=PkvPMdIEYMcKaJgaxbxnulhXv5wR+qdjQ/idOSg578q+1Cbe0zBsepUB3dY9Bn6D4a6pynBs6R40aDrzqjIUtTg1yhtMVH3mzUWJBmOKt6Gt6nTQMdcTS9PaPavXyqQQBTvoEjXii6yuPgfHTn2iZu8oplsb79GZxAlt6e7BkXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750061808; c=relaxed/simple;
-	bh=ms63Y5bN5cNjm4BY6/NMSCVEFQghhTtMZ3/PHINoXYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G5kXZhoex5j5R6GR+lFEv94fgHvxqwDg1uvJKOc6Lo7l9pUmsoJe5B1kRQWNL9tPJwY32MulzQHQwCxRycOjLCilmGuojenMRF9J+IEG4nehmKIkTR7NlGbhVNUFbGzgfVwAJjIHqK1yip0xcnHm7dUK+223Mgj2wY/OYbY6Mfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xo/NIfof; arc=none smtp.client-ip=192.198.163.15
+	s=arc-20240116; t=1750061912; c=relaxed/simple;
+	bh=kCuE4KyG97M5pODntl3QQffNMuZGSfuTpS/w7AJk3L0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cKBLWP1xbDiIxABgzsmkxHuC8v6j49Cb/QPHqQjmoUjaa+1YpMnsQ7GRIJmwaHsztrMtGKb2BL1RmjP4v1bGRoee12zLqOye+FLENAhuqwsUtXjE7VuHGlpIXkV/9LoOpszz/BZ46chzWKGeS9m54bMaoIJaxNmPK1q/8HYZg4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WG4c9r5z; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750061807; x=1781597807;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ms63Y5bN5cNjm4BY6/NMSCVEFQghhTtMZ3/PHINoXYI=;
-  b=Xo/NIfofkRbHW0PHnU+htIIssEYbjaKxMm4WPLEueTylnAwiGdojB8rs
-   jyivAVwB56OU4usJ5gsqA4CDp9JR16bQM4Mhxo7ohpdkKQEFg5tC6H9G+
-   YFD34O8De6D70823ks+sPDKi6w/Z/khcoRt+SjDb68b9oV3Zpa4aYWypc
-   hUjXC9+/Vl5eT5cWuetp/wpOn3BsdSSP4csyedZQNcYhQ8D/qeQXWDJkT
-   FLdR+Xp3Q14uH/791fcFrkGpShPKhwQQhR4MnMuxoGhEX4YnVKRqGevz5
-   swj5P6AefXxmbaxwAszT0Ry2vpeVBwxEqeFP2pzeegQ04aQKyd6gb3Rdb
-   g==;
-X-CSE-ConnectionGUID: lVXWJ89jQGi8vyHtAqZUBw==
-X-CSE-MsgGUID: M+jTFaNmQumyeb7DPR5hUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="52340983"
+  t=1750061911; x=1781597911;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=kCuE4KyG97M5pODntl3QQffNMuZGSfuTpS/w7AJk3L0=;
+  b=WG4c9r5z+W9JAihUu0bAbQqBFOhZ4paVc5IN3sZd7p8Mc7yD5IlsXNYJ
+   HEAZyhpK33P5qNTLUs7ouyGrDa5twqxQZndmLQozAINJF9K8n2z0qZOOn
+   cXNegBZqb7hXcMjBHqpD03kV+QhE1NYuzbiUCWaFZbV81QqTzBv7ta9P5
+   RAHa9h6h9yzZzciz3yJC+uMW0nIo3r50bHo5tXFvcr0b7aE1JbcsD40hh
+   TCHYgLrFH5h9qc25YAQOXoPi3GhLkO7knN0kTCBPRCdx89UpxY+/+Tdjw
+   YiIrYt6m16pPnduT4OswyL3v6LtEw5gKIkknLq7QMpYEbSthDAJ5AUIzL
+   A==;
+X-CSE-ConnectionGUID: kXU+GL5EQLGrNXVDYKfCjg==
+X-CSE-MsgGUID: iaPEnknUSPar8citQ3FL4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="51307273"
 X-IronPort-AV: E=Sophos;i="6.16,240,1744095600"; 
-   d="scan'208";a="52340983"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 01:16:45 -0700
-X-CSE-ConnectionGUID: 72ugTpnMTyO5kECClA+jXA==
-X-CSE-MsgGUID: yAKeyPt/Qy6W1ifsJP751w==
+   d="scan'208";a="51307273"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 01:18:30 -0700
+X-CSE-ConnectionGUID: qacDgixFSnezQuiISeOASA==
+X-CSE-MsgGUID: ROpcA9P9R2S6sdydfJVItg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,240,1744095600"; 
-   d="scan'208";a="148252535"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa006.fm.intel.com with ESMTP; 16 Jun 2025 01:16:43 -0700
-Date: Mon, 16 Jun 2025 16:09:33 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, m.szyprowski@samsung.com
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, linux-fpga@vger.kernel.org,
-	Moritz Fischer <mdf@kernel.org>, Wu Hao <hao.wu@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>, Tom Rix <trix@redhat.com>,
-	Michal Simek <michal.simek@amd.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] fpga: zynq-fpga: use sgtable-based scatterlist wrappers
-Message-ID: <aE/RPUBPnE/Tn1OU@yilunxu-OptiPlex-7050>
-References: <CGME20250527093152eucas1p24a904b0d973252ebc0d05034a276e9cf@eucas1p2.samsung.com>
- <20250527093137.505621-1-m.szyprowski@samsung.com>
- <20250527121128.GB123169@ziepe.ca>
- <aEvt4p2REHlW+EkV@yilunxu-OptiPlex-7050>
+   d="scan'208";a="149315604"
+Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.68])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2025 01:18:29 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+ intel-gfx@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org, suraj.kandpal@intel.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/snps_hdmi_pll: Fix 64-bit divisor truncation
+ by using div64_u64
+In-Reply-To: <267c5213-5be1-4fab-bf38-8f80074a3194@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250613061246.1118579-1-ankit.k.nautiyal@intel.com>
+ <0d7742055fbbadf97cc3a361de6838a7d0203f51@intel.com>
+ <267c5213-5be1-4fab-bf38-8f80074a3194@intel.com>
+Date: Mon, 16 Jun 2025 11:18:25 +0300
+Message-ID: <f3ee226ac5802243e845c3ea7caa238c1cfeea65@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEvt4p2REHlW+EkV@yilunxu-OptiPlex-7050>
+Content-Type: text/plain
 
-On Fri, Jun 13, 2025 at 05:22:42PM +0800, Xu Yilun wrote:
-> On Tue, May 27, 2025 at 09:11:28AM -0300, Jason Gunthorpe wrote:
-> > On Tue, May 27, 2025 at 11:31:37AM +0200, Marek Szyprowski wrote:
-> > > Use common wrappers operating directly on the struct sg_table objects to
-> > > fix incorrect use of statterlists related calls. dma_unmap_sg() function
-> > > has to be called with the number of elements originally passed to the
-> > > dma_map_sg() function, not the one returned in sgtable's nents.
-> > > 
-> > > CC: stable@vger.kernel.org
-> > > Fixes: 425902f5c8e3 ("fpga zynq: Use the scatterlist interface")
-> > > Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> > > ---
-> > >  drivers/fpga/zynq-fpga.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
-> Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-> 
-> Applied to for-next.
+On Sun, 15 Jun 2025, "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com> wrote:
+> On 6/13/2025 3:06 PM, Jani Nikula wrote:
+>> On Fri, 13 Jun 2025, Ankit Nautiyal<ankit.k.nautiyal@intel.com> wrote:
+>>>   	*ana_cp_int = max(1, min(ana_cp_int_temp, 127));
+>> Unrelated to this patch, but this should be:
+>>
+>> 	*ana_cp_int = clamp(ana_cp_int_temp, 1, 127);
+>>
+>> There's a similar issue with ana_cp_prop also in the file.
+>>
+> Agreed. Should there be a separate patch for this?
 
-Hello, Marek:
+Yes. That's why I emphasized "unrelated to this patch". ;)
 
-I've removed the patch from for-next. Please fix the issue.
+BR,
+Jani.
 
-https://lore.kernel.org/all/20250616141151.64eb59e0@canb.auug.org.au/
 
-Thanks,
-Yilun
-
+-- 
+Jani Nikula, Intel
 
