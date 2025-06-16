@@ -1,192 +1,179 @@
-Return-Path: <stable+bounces-152713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE829ADB1EB
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 15:30:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B13AADB2F3
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 16:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 861161883D0F
-	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 13:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13800168787
+	for <lists+stable@lfdr.de>; Mon, 16 Jun 2025 14:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D86C1F4168;
-	Mon, 16 Jun 2025 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEA62BF01D;
+	Mon, 16 Jun 2025 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dgvadkcd"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Z0Fs+YDa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2087.outbound.protection.outlook.com [40.107.243.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46FF2BEFFE
-	for <stable@vger.kernel.org>; Mon, 16 Jun 2025 13:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080615; cv=none; b=rTYyzAu1l84TL0792fG4g3Y/5QK2SdXMOlZhXQ436seT09n+77Cx/Gh87rHURhRSu0k8rBxzWo6s67je4v4l9EoEhJU3Fjuc7iqdWLYYG8qbLy0XDQ7LI+rpndFH3fdITGN+ghqEGBzzDTKap2yqqs5HfOkweVMdT60DJA9lE+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080615; c=relaxed/simple;
-	bh=59qFySa7X+/ac5Ydc1pV7JddQfv8+DTKdIh521qRg7s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B9A/vHOmq9MHX6SMLD5IFsFjgArYcr668PtL2AtduLxAZIY9PlkZph3xeB+rl1PTJlw/0j0dBLhHGEVYQ/N6w7GdQBiFfudUmxld7CgQiKoyh2BMuMBiu8gTZpryWdYq9uLxxxWmwX6rxyNAbNUDQove9NCatbC8jx/0OMN6n5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dgvadkcd; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-234eaea2e4eso4284905ad.0
-        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 06:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750080613; x=1750685413; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B+QmnhYc0vGa92UC7MvCez/Zyxtl9c45qHEYK1lXUtU=;
-        b=DgvadkcdpwO5KHlPGNfyhN9EhdisquHf5uViPO2ktCpHmwPCbrrqJlnTNDNTfkbgIz
-         jfnUqrOAz/W6gUT6SMhqQw+7ZqbnTSAaD/XQEbYG/KRd1YarDz1G7nKk9IcdRTVxYc2Q
-         LOOvMlw8CPx2qEvHTPG+2nSNQMb6ecZaMlqJiIovTqwETEnpDYE1LVzBiuLvbE578fRJ
-         tnX9Mb/zCvtICaiecEFP2B1OnSovg+Ly8GmjfiXHy2Q0fv7Fhsb4bmetn+sSq/7NSumX
-         qVHzpLKTNXdlcTXfvv+I8daVkCQUiwPpuOLiKUHPayBrAwDvFVEoJtXgWdBjGwQYsgB/
-         Z5bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750080613; x=1750685413;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B+QmnhYc0vGa92UC7MvCez/Zyxtl9c45qHEYK1lXUtU=;
-        b=IXrqxk2F6gq/NneMMdepNdbIh5yfOKrzpwGCRLYHbfRDNw4y3I825HPDaj/WDhsbQz
-         K6LSG0B0QrddcEgfIEf439HF4NoNVLwaifM6b1DaJxvi3A2cGzMUjXdcQBRkZ+cXxGaU
-         5AdAPvFhJFcQiWiCKJ8UXdbYQs3qPGv86QleFAkHB9HFL0bzHGNyx7XnVlROdwPFdIU8
-         /nI1hKwV9MhBBdLxxw/tJjLx40eeykjWwttNRJzcrcVbKr3mukfv0fmGXM6/yXmL/j9N
-         Ofngtgw48+eGRGxPmhm71SaLBniKyurLLpTsunjSL/n9mSsz5QR0b58TLQdHb+D2Gf+W
-         yDJw==
-X-Gm-Message-State: AOJu0YxR2tosqifFRc0THcmXuhifINUVKpPzunQrKHkJs56QNDLvrprf
-	mQdiBGqhEgz6tFilVGJ77oa6R2eyKdjED0ug8swlhlKT01izMVmmSOWpkuElzWzpuX2pmCFFvG2
-	zvhlPRrsUfcdyj41T2i/I6lUSA9Tq0SewhA1E
-X-Gm-Gg: ASbGncvBhuNjbaM9jDYxhhnXXf/+f6o2Po+4J+M3kPnlq7xeiuW2uVejwjcVx4a1RGd
-	mAXactyT/35Kd96OWx53698nWyvm31vNDd+EjbbtMShL1PLq9PGkasPqOySZkn1+hbvrzEXHUAi
-	v4lFlhYBmcL9yOQaFPuG1ZsSFi9dAtxe0mrTujmOozPnHX
-X-Google-Smtp-Source: AGHT+IGh7h6yA8zvALC5hiiGFj0J/FBflTGa0Uz6Pkt1gyHm0RW4BdoiBIlQbL9w6OGrh/35fpnh4uTxfdlAObUNoZM=
-X-Received: by 2002:a17:90b:1ccc:b0:311:c939:c842 with SMTP id
- 98e67ed59e1d1-313f1de6397mr5102153a91.7.1750080613063; Mon, 16 Jun 2025
- 06:30:13 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E6B1C4A0A;
+	Mon, 16 Jun 2025 14:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750082717; cv=fail; b=HOLt0OGuAFSQRWSEBJ+3BD+oFIayAB1j0HcliS65+Unl9rhpx5ZbAFGuZHS9O6TSPKho1ujusvahgbLjEdk0mFQliaKwJRwvOA6+LnNEg20kpKpdWpY34Do/WRB6PNu3eqOVcW05vBpKK38KECDwQaYyfG/ExFG0XdA6n3gibJM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750082717; c=relaxed/simple;
+	bh=lAVTJi+wXMlfox2aVuavQwA8UTMx33ajFn0Bx9e/ol8=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=UIQMwurdogLb7qIkq07HNtAz0en/rFG9Di9lJR7xJYxN2gkJzEkh+WO0UaOK/BK34MLPEJzIpSgpinsR2jdbGehotYEpLTsXhHMOT9EU5sGSelS4OQ89XjbVDQmnGcpehjcPp6o6O+3nDLHx/ahhB7NItz+ovY7JzKihT1jb5M4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Z0Fs+YDa; arc=fail smtp.client-ip=40.107.243.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K1m/e5Od1XKMNgf/KOTePg+umm221xCb1v4cr5v3vepY4C+lBpGE0axsygDD8cYk2Q2Yn010KTe0ympEOvi+Qqek4jg5AyW8WbzMVdFTDmFJVf3hh9TjdZivjHt1QemTuk5iJDV9W5mnTmqVu7i6Y87dGoAHWb1AYqyPxmc4C+v5+OG67jSWg2/Gb6DbzSZ4G2h6wl7bwHbmuckcWaRZX6TftZBtLhSjHGqd8VLoTrFju+dASFoBlJQUT7OD4pJB+fz32vw4geCFzeGoSaLwOsW1atTncS0eykc7lEv7Ry8IDRyccCrJD6yRAAG5lMdD3xPLULq8+SQQD9R8LhX1NA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zv0y2lROi6qFbGebpltEch+ESDRhZib34r23HUsNmsA=;
+ b=aNm7H4vtsdCU4BYbzOZX08lrGzlzfFbZh4aTct+LRdaBOpSGDCeXirujMLptypT3KJQzGkXar0MdTGUHu7IFGG6u2oyjdH/1ff3NsXRXpLDBNQPEvL26rWiOnzUiVM+Qprgm8N1boSCcgrjaChzRVqKK7BWG9qquRmfTgYTdNR54ziT7lvpvHlsY08/xoDHPojNeeqAI/Np2NI/8W526bi4BWlU2gGDc+IrWtnvoYubq+GvflnhdbsIWF7j9YsDkjCgSL2xWEY+054zuH04xT/aPtV3PPAt3yacXog1Y4yExeDI9J9j6G61FG84optAps6eBwRcQsbMTfMA1DjD0Mg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zv0y2lROi6qFbGebpltEch+ESDRhZib34r23HUsNmsA=;
+ b=Z0Fs+YDah0mf5tVzkMLg0RVYv1VhLIyw+uZ/yEW2pvjl9yRhGkj4iyxdW/L0cKoduGWuxc2HGDCJl/d4ZbzvF4rhO6QdkQfqEauywRzX+mK9iI2OnKgYM0b6Dv5nyWOi+eiLP3b7Tk6ZeSPJQ92l5GQRP6uqQz3dsHvnaP4FSK4GlTYPSUZWoyGlZrzinMg8M5ZzqRqsjrhY9OMiJEJogDNobZWWbcheO1GRfVhQTZMJUVhdbBZ20a5vg2x3lVlmupDBAIUlQM9x0775C8d6tDt0AJCNYSj4zN/xayurMMzgQqFy/eegOZ4M0V60MLZpp/QUhmuQEtFLlqCs7T+G+g==
+Received: from SJ0PR13CA0022.namprd13.prod.outlook.com (2603:10b6:a03:2c0::27)
+ by MN2PR12MB4208.namprd12.prod.outlook.com (2603:10b6:208:1d0::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Mon, 16 Jun
+ 2025 14:05:13 +0000
+Received: from MWH0EPF000971E2.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c0:cafe::62) by SJ0PR13CA0022.outlook.office365.com
+ (2603:10b6:a03:2c0::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.23 via Frontend Transport; Mon,
+ 16 Jun 2025 14:05:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MWH0EPF000971E2.mail.protection.outlook.com (10.167.243.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8835.15 via Frontend Transport; Mon, 16 Jun 2025 14:05:12 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 16 Jun
+ 2025 07:04:59 -0700
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 16 Jun
+ 2025 07:04:53 -0700
+References: <20250615131317.1089541-1-sashal@kernel.org>
+User-agent: mu4e 1.8.14; emacs 29.4
+From: Petr Machata <petrm@nvidia.com>
+To: <stable@vger.kernel.org>
+CC: <stable-commits@vger.kernel.org>, <petrm@mellanox.com>, Jamal Hadi Salim
+	<jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko
+	<jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: Patch "net: sch_ets: Add a new Qdisc" has been added to the
+ 5.4-stable tree
+Date: Mon, 16 Jun 2025 15:50:09 +0200
+In-Reply-To: <20250615131317.1089541-1-sashal@kernel.org>
+Message-ID: <871prjvl32.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <c415d9e0b08bcba068b01700225bf560@disroot.org> <CADnq5_PX1dYF2Jd3q7ghaBjpPhNLq9EmFJtN1w6YOSfVo++7sA@mail.gmail.com>
- <69b5ebaa719355994a383fa026dc3fba@disroot.org>
-In-Reply-To: <69b5ebaa719355994a383fa026dc3fba@disroot.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 16 Jun 2025 09:29:59 -0400
-X-Gm-Features: AX0GCFthNM7567uej1TQBWHUevhiCE9wm4x56veEnyNPJYkkpKzt0iW-4Hg9ffs
-Message-ID: <CADnq5_PkOuAHuDjMNXABEcenaZFZgU044G=9pTu=EgMr_grXbw@mail.gmail.com>
-Subject: Re: Unplayable framerates in game but specific kernel versions work,
- maybe amdgpu problem
-To: machion@disroot.org
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com, 
-	christian.koenig@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E2:EE_|MN2PR12MB4208:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e1bd758-1000-404d-34a9-08ddacdecfc7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?grOrOJs/tsOfDYZUVnONXdh2m/pusnLeALIrbpdzgKI1L19gvqifndEXOQq8?=
+ =?us-ascii?Q?Y2MCYp6W4uzyjtf133bFoFdQCALS7pFtKdFhCkN2xOlXzpjJzifp+lL86NHL?=
+ =?us-ascii?Q?k7zpm9Lbc/uM1lr2E/in0eeLarNbNn1zK3ox6E4FO24lZzmld/NJAF/KM/F3?=
+ =?us-ascii?Q?rWRoqWwvagLCvLvB0D2i5nTEGx5pJ5WSSTsdVUHwncc0SZQxmGz4LLBHfOG9?=
+ =?us-ascii?Q?8oglfOpDJ81RROVj6vjWHXR/AblLvp302hhGp4x/ZqGh3jGjGUCIcqh6i5uQ?=
+ =?us-ascii?Q?T5o5vV5zxWm2AFCClRNHOvz02ygTSL4fmV8BiXb6dVfAQwKIzNPfpObsFjgr?=
+ =?us-ascii?Q?IlrI6/6rySQzGqQUiXDLQV9lhn1U7ynD+8mh8MICaCxyaToKRfLYS4IcAGF6?=
+ =?us-ascii?Q?W8mLP8WfTFiXWVkvRtaSU9n3lDVCQFS3SKj5C7pBShBQAo2iEmbegtiUBkfl?=
+ =?us-ascii?Q?1ZLR8XLJXjRM9rjvlDzRX8Qtqqa3Iab8EAApGM9edYtd9aeXcHqNnRvHvTEW?=
+ =?us-ascii?Q?BTbM86hkEezLewcQiUCsJl3d8f82guYLgf4Log9K8GHF6id7qBrbbTAsHtwP?=
+ =?us-ascii?Q?8BPDLt9ILfGUzc3ZOrpxn3BUVVtgza4o1+vB5FgQBuz/vCHTg7tnX+U3/6aN?=
+ =?us-ascii?Q?EYr07m30mDAi0dhbrhvFkjDLggjNvvaII5aRo5ouvtHsdbRZWjQIUxvfWVNz?=
+ =?us-ascii?Q?xY9p86WBdyydy/NF0DWmr6KfubD10XvBTBC15Ro7Fq6k2QYzPpeAwotJCuAe?=
+ =?us-ascii?Q?x7QRfDnmSM0QQ6K3Pqz8ktmghdXQqFkbBDcwrBuCmG0Bsg/glDMZ5bEogLg5?=
+ =?us-ascii?Q?h6c5tcDQX7XMi4xAob9ICG3ogO2Ag1AC6j4EHBwzYuH/s/21YttL1PXjd6xs?=
+ =?us-ascii?Q?kalA213oIZRH0x88AJfXR0K+E2WcBZCavEPpJPBFiwsggqGUMPPlGR49B3jZ?=
+ =?us-ascii?Q?Wg0O6aZhuObjD6VLf83TFJ5DhYBoNC5J/OWA/Z2bYTWDZCiqkrdPGVlFW29i?=
+ =?us-ascii?Q?OpZGkk9Eef/JHg1/9kp3SuLbfg/lHPCd3dyL2erujIeEO5KEna8SttuJ+oVZ?=
+ =?us-ascii?Q?XEGDwmXoVITrTS3XpZU1/IUJzOOOWa50eGb/N9EB7yH15GVU4qSnquH3lRQl?=
+ =?us-ascii?Q?gR2jQPTKi5/fhnsxESzJvW3oW/YC5wME/RLeH7UvPC68mqZiWBwU8sAvID78?=
+ =?us-ascii?Q?Pe4IlWDCiyWx7C8r9F7ewSAa+ccSj0xzcwgmpyz3dr9joMTcNADggCd+83dn?=
+ =?us-ascii?Q?vjvFl/pPEivq6PLqcXCKfBDORzaRNRNRikpCElPNc+YTS/T0eHUOUUoZIj+d?=
+ =?us-ascii?Q?jEQ1+2kHwaJeCE6zuSirfoNJhyemnf0ShxNoSiQiNwsFfvM8NZJpGtvoUvxH?=
+ =?us-ascii?Q?f4m3irrQIUCulLOl6u2cTtja/gCkdywofya9zZFQPu5+878wAYRwaPAA+InU?=
+ =?us-ascii?Q?z54Ji4rvA7kt8gpjAHE5UU3HGmu2yI3dMwzjZzyjf3trqcPaqOxdVXNcJHR+?=
+ =?us-ascii?Q?318e1KUgWX4bhuGcpi3unFAKHWw0MPX8IOS16OHQRCvnv03Fr5lD65ZAJg?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 14:05:12.3734
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e1bd758-1000-404d-34a9-08ddacdecfc7
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000971E2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4208
 
-On Fri, Jun 13, 2025 at 3:38=E2=80=AFPM <machion@disroot.org> wrote:
->
-> Hi,
-> sorry for the delay.
-> Besides less time, I had to make myself familiar with bisecting and
-> again kernel compiling. Last time I compiled the kernel myself was
-> around 2010 I think.
->
-> Anyway it seems I found the bad commit. The result after bisecting 10
-> commits is:
->
-> a53d959fe660341788cb8dbc3ac3330d90a09ecf is the first bad commit
-> commit a53d959fe660341788cb8dbc3ac3330d90a09ecf
-> Author: Christian K=C3=B6nig <christian.koenig@amd.com>
-> Date:   Thu Mar 20 14:46:18 2025 +0100
->
->      drm/amdgpu: immediately use GTT for new allocations
->
->      commit a755906fb2b8370c43e91ba437ae1b3e228e8b02 upstream.
->
->      Only use GTT as a fallback if we already have a backing store. This
->      prevents evictions when an application constantly allocates and
-> frees new
->      memory.
->
->      Partially fixes
->      https://gitlab.freedesktop.org/drm/amd/-/issues/3844#note_2833985.
->
->      Signed-off-by: Christian K=C3=B6nig <christian.koenig@amd.com>
->      Fixes: 216c1282dde3 ("drm/amdgpu: use GTT only as fallback for
-> VRAM|GTT")
->      Acked-by: Alex Deucher <alexander.deucher@amd.com>
->      Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
->      Cc: stable@vger.kernel.org
->      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
->   drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Unfortunately reverting that commit will reintroduce a similar
-performance issue for lots of other uses.  See:
-https://gitlab.freedesktop.org/drm/amd/-/issues/3844#note_2827990
-for a description of the fundemental problem.
+Sasha Levin <sashal@kernel.org> writes:
 
-Alex
+> This is a note to let you know that I've just added the patch titled
+>
+>     net: sch_ets: Add a new Qdisc
+>
+> to the 5.4-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>
+> The filename of the patch is:
+>      net-sch_ets-add-a-new-qdisc.patch
+> and it can be found in the queue-5.4 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
->
-> Marion
->
->
-> Am 2025-05-08 15:18, schrieb Alex Deucher:
-> > On Thu, May 8, 2025 at 9:13=E2=80=AFAM <machion@disroot.org> wrote:
-> >>
-> >> Hello kernel/driver developers,
-> >>
-> >> I hope, with my information it's possible to find a bug/problem in the
-> >> kernel. Otherwise I am sorry, that I disturbed you.
-> >> I only use LTS kernels, but I can narrow it down to a hand full of
-> >> them,
-> >> where it works.
-> >>
-> >> The PC: Manjaro Stable/Cinnamon/X11/AMD Ryzen 5 2600/Radeon HD
-> >> 7790/8GB
-> >> RAM
-> >> I already asked the Manjaro community, but with no luck.
-> >>
-> >> The game: Hellpoint (GOG Linux latest version, Unity3D-Engine v2021),
-> >> uses vulkan
-> >>
-> >> ---
-> >>
-> >> I came a long road of kernels. I had many versions of 5.4, 5.10, 5.15,
-> >> 6.1 and 6.6 and and the game was always unplayable, because the frames
-> >> where around 1fps (performance of PC is not the problem).
-> >> I asked the mesa and cinnamon team for help in the past, but also with
-> >> no luck.
-> >> It never worked, till on 2025-03-29 when I installed 6.12.19 for the
-> >> first time and it worked!
-> >>
-> >> But it only worked with 6.12.19, 6.12.20 and 6.12.21
-> >> When I updated to 6.12.25, it was back to unplayable.
-> >
-> > Can you bisect to see what fixed it in 6.12.19 or what broke it in
-> > 6.12.25?  For example if it was working in 6.12.21 and not working in
-> > 6.12.25, you can bisect between 6.12.21 and .25.
-> >
-> > Alex
-> >
-> >>
-> >> For testing I installed 6.14.4 with the same result. It doesn't work.
-> >>
-> >> I also compared file /proc/config.gz of both kernels (6.12.21 <>
-> >> 6.14.4), but can't seem to see drastic changes to the graphical part.
-> >>
-> >> I presume it has something to do with amdgpu.
-> >>
-> >> If you need more information, I would be happy to help.
-> >>
-> >> Kind regards,
-> >> Marion
+Not sure what the motivation is to include a pure added feature to a
+stable tree. But if you truly want the patch, then there were a couple
+follow up fixes over the years. At least the following look like patches
+to code that would be problematic in 5.4.y as well:
+
+cd9b50adc6bb ("net/sched: ets: fix crash when flipping from 'strict' to 'quantum'")
+454d3e1ae057 ("net/sched: sch_ets: properly init all active DRR list handles")
+de6d25924c2a ("net/sched: sch_ets: don't peek at classes beyond 'nbands'")
+c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
+d62b04fca434 ("net: sched: fix ets qdisc OOB Indexing")
+1a6d0c00fa07 ("net_sched: ets: Fix double list add in class with netem as child qdisc")
 
