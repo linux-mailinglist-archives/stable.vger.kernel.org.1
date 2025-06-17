@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEBFADD8F0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87836ADDA08
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA1919E068A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6224A80BC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0372ED850;
-	Tue, 17 Jun 2025 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B4E2FA630;
+	Tue, 17 Jun 2025 16:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdqDl6tt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ2u82Ap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B702FA64D;
-	Tue, 17 Jun 2025 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221A82FA624;
+	Tue, 17 Jun 2025 16:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178236; cv=none; b=NXRI9fXpc00aAdlDTEQFr8P7QA3UftWCCslLWjuPzJcfx/+8X9Q0eHggBTWMdmUi5M9O1nSwufGm5M4yStbHiN2qH/wHCXe6Z5zLZ4P1JC8pJnGyTjENUNQibaYvI1zT6nG8RcDI4tIDsj0LaSyOPXLPE84+PUKugPgellcd9pE=
+	t=1750179355; cv=none; b=uKFV0eNus0ra25y8u+V376m14Bt5Mjigca+QlVqRJPJY0wYaMM1QsDSi+C8KOxlP/IZElTe4kTHD7QhtB02XpnyG7PiETjncs/gtEHfoAqi+eVRrMmrlYm8z+EALBKcEl02so61kL6tpewva/G8Jo6J+NaaZXUO3C8lEcTQD350=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178236; c=relaxed/simple;
-	bh=Y8pNo12M6Jwa7XJqm4lLp12+YihR62puu6zQx5xJ6Ic=;
+	s=arc-20240116; t=1750179355; c=relaxed/simple;
+	bh=wUeSev2eFUkS0OkrCuN4XxiD4d08gPGamXvUlSDjeaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3HfwSPpHPWxp4n+TxTkS30vkuO8rWXnw25o7Hmmwe6cbvDLMfNo9TL0pOpRkbEmDYgiCfk2VPqhoFHo3TDNZLplQB4cHnYGCZxt8g400kYYfgwrseW84aUFS13IJXNXz/aVyTJ1xYO7uIZtynJKZSHEgnDa4ALhLr3sHZrghJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdqDl6tt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B6EC4CEE3;
-	Tue, 17 Jun 2025 16:37:15 +0000 (UTC)
+	 MIME-Version; b=U2iuFjd7lmcWEgrA4QlKkWVjB3alpksl5oJKNZ1LFzRVPH9QkcoM/9oPtVqgaqOchP+FXR6O33XEElEQoa9fRMxmUy2YUdsYCPo26CgMfS5A130YSR+QZkOyetk7Qc4Vo5zx+djaGMByGKFkfk+msftS2rGehKmeO+9ig2ap8I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ2u82Ap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5B0C4CEE3;
+	Tue, 17 Jun 2025 16:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178235;
-	bh=Y8pNo12M6Jwa7XJqm4lLp12+YihR62puu6zQx5xJ6Ic=;
+	s=korg; t=1750179355;
+	bh=wUeSev2eFUkS0OkrCuN4XxiD4d08gPGamXvUlSDjeaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdqDl6ttAMapPqTqV6O+osqEEfsuAU3stTlKWgDkKpK6aYQJZJy8fz8HMYsrB3xqv
-	 LGP7tOVaGm67W8qZL3hSDn5V4I11rEZmaYuKhPFFh9GUuougND7rryIzxWIBLLxX0t
-	 J6n1KQPII8izTsMft0C7PErhRTlbncfAfLhLQ3Z8=
+	b=GZ2u82ApMAcTVm5pIvNH7Ls/gbwNm/E8e1vfoNcn6LLednhkwvAbmmyUkCsy002UL
+	 5xaYRqX0DkQjPgSgZSNFtnehyGBQ7Z4BklV3UfHKFuMd9fNLfkm+4iuDqrogmwgB1N
+	 aHwSvk0iher673j58ZotY+oWvzvmduy69RzdqNsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Greental <yonatan02greental@gmail.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Jakub Raczynski <j.raczynski@samsung.com>,
+	Wenjing Shan <wenjing.shan@samsung.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 444/512] powerpc/vas: Return -EINVAL if the offset is non-zero in mmap()
-Date: Tue, 17 Jun 2025 17:26:50 +0200
-Message-ID: <20250617152437.552843652@linuxfoundation.org>
+Subject: [PATCH 6.15 703/780] net/mdiobus: Fix potential out-of-bounds read/write access
+Date: Tue, 17 Jun 2025 17:26:51 +0200
+Message-ID: <20250617152520.126469435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Jakub Raczynski <j.raczynski@samsung.com>
 
-[ Upstream commit 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b ]
+[ Upstream commit 0e629694126ca388916f059453a1c36adde219c4 ]
 
-The user space calls mmap() to map VAS window paste address
-and the kernel returns the complete mapped page for each
-window. So return -EINVAL if non-zero is passed for offset
-parameter to mmap().
+When using publicly available tools like 'mdio-tools' to read/write data
+from/to network interface and its PHY via mdiobus, there is no verification of
+parameters passed to the ioctl and it accepts any mdio address.
+Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
+but it is possible to pass higher value than that via ioctl.
+While read/write operation should generally fail in this case,
+mdiobus provides stats array, where wrong address may allow out-of-bounds
+read/write.
 
-See Documentation/arch/powerpc/vas-api.rst for mmap()
-restrictions.
+Fix that by adding address verification before read/write operation.
+While this excludes this access from any statistics, it improves security of
+read/write operation.
 
-Co-developed-by: Jonathan Greental <yonatan02greental@gmail.com>
-Signed-off-by: Jonathan Greental <yonatan02greental@gmail.com>
-Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
-Fixes: dda44eb29c23 ("powerpc/vas: Add VAS user space API")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610021227.361980-2-maddy@linux.ibm.com
+Fixes: 080bb352fad00 ("net: phy: Maintain MDIO device and bus statistics")
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/book3s/vas-api.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/phy/mdio_bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index 0b6365d85d117..dc6f75d3ac6ef 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -521,6 +521,15 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index ede596c1a69d1..adb17ec937151 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -903,6 +903,9 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
  
-+	/*
-+	 * Map complete page to the paste address. So the user
-+	 * space should pass 0ULL to the offset parameter.
-+	 */
-+	if (vma->vm_pgoff) {
-+		pr_debug("Page offset unsupported to map paste address\n");
-+		return -EINVAL;
-+	}
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
 +
- 	/* Ensure instance has an open send window */
- 	if (!txwin) {
- 		pr_err("No send window open?\n");
+ 	if (bus->read)
+ 		retval = bus->read(bus, addr, regnum);
+ 	else
+@@ -932,6 +935,9 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
++
+ 	if (bus->write)
+ 		err = bus->write(bus, addr, regnum, val);
+ 	else
 -- 
 2.39.5
 
