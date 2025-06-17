@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E8FADD572
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2C6ADD516
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADBB318990F8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:12:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A6C2C53A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB272ECEA2;
-	Tue, 17 Jun 2025 16:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28BF2ECD37;
+	Tue, 17 Jun 2025 16:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcQ9+Usn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRXOmA/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2BB2ECD1F;
-	Tue, 17 Jun 2025 16:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0672F2346;
+	Tue, 17 Jun 2025 16:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176515; cv=none; b=gjXepTf1zGPphdK0O8mO+vie7vfGrdd28OPv0z+J/NRyOTlgNo7mOdkGTV3NfDLi/ssElMEhPf/oCDytP48+Md2DyUh8aCv+OB7dbFDoXIyOtx9m55zkAiVIlZtxTAFfXBJDouosfJUIMgITBCsxaXL33JZ8HMAOi4sTwZqZw7s=
+	t=1750176334; cv=none; b=c8zqXityDNTmnzvtYxgNQ5gHYdnKr4OwgUqcGGRTOKHpu0OQ0tIdDmHsN5WO2SfxPqjXcP0tXmlkcrmjm7nISGi7+V/d9IsqOrKDAe7Ff74NwJXyaBLS792v+m8srgRM938fhNIj8RMfg/JsZb+IGfBJZanUmFZwU61aDOE3gP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176515; c=relaxed/simple;
-	bh=2NSBx9a3+blILm4gkFNNJFQ0Ah1fIGJGM9l/gD9mcI8=;
+	s=arc-20240116; t=1750176334; c=relaxed/simple;
+	bh=cXHIzIrzF3uOMmEReQ5HgSgFjvPZeWg92DualDz8YPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dm/mp8ponKIaPevfZDXEdw1QsLzXlZVMPMTgUFnwZiE/BG+cTkOIOGUltZdp5dX7BiZQnP+cwCbwK+R+C5/oFbLQoNJhJAW3oDG9pMUfm6QeL3TH/FbrMItD9YzfybNYFDqdQ4ehtwaCq5sZn60gZUZiek9FAe/gzSdrb2azwtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcQ9+Usn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CAEC4CEE3;
-	Tue, 17 Jun 2025 16:08:34 +0000 (UTC)
+	 MIME-Version; b=gQIBKdv4WOc4FJgwjyU1XMWAhJZBLiK7HQq/UWPFiuA3gpWcJp6hZ5hCMqh2ntnAgaUh27v/4QtctFlo0oDZ1o5FRXcpoYLl5LZsVyLkcv27xkDfvgrVWYABmlfihmz5cLFzqbYzER/3bxJWqQJvxUGRe7HFyCVQyQMuNxgzZ8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRXOmA/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF801C4CEE3;
+	Tue, 17 Jun 2025 16:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176515;
-	bh=2NSBx9a3+blILm4gkFNNJFQ0Ah1fIGJGM9l/gD9mcI8=;
+	s=korg; t=1750176334;
+	bh=cXHIzIrzF3uOMmEReQ5HgSgFjvPZeWg92DualDz8YPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcQ9+UsnLmVXyHGdKxokgtjuoez6Kx+WgrnUTFT1k35iGg7FuinPJyQppPdNnNluM
-	 ZzNrIDIeCCcbR7WJXHVDN1A/jYTG6qkXkT4329+Msh4m6aH09g1UbzpKUJOESNaQ+z
-	 NEPyqUDNrwNTi6pwZbPEiWQPNhzq5ZDuD2M+jgkM=
+	b=PRXOmA/VAOj5ofTdvMnwRyrdk0W2hwGFWF72PCBwImONV6UtnUiK9SNkq5Gzj4MQ0
+	 LOMWJRCbudZNa1uHJUsdkXIVG/abWUgbld9sHkaQtUE45UKD3P55L681qEoZ3gh1VY
+	 xF802f+fK5tBDcBSnqahvDDXfHlMPxGAtuRzTQ0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 178/780] wifi: ath12k: Fix WMI tag for EHT rate in peer assoc
-Date: Tue, 17 Jun 2025 17:18:06 +0200
-Message-ID: <20250617152458.723336821@linuxfoundation.org>
+Subject: [PATCH 6.15 179/780] wifi: ath12k: Fix buffer overflow in debugfs
+Date: Tue, 17 Jun 2025 17:18:07 +0200
+Message-ID: <20250617152458.762527565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,40 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1a0e65750b55d2cf5de4a9bf7d6d55718784bdb7 ]
+[ Upstream commit 8c7a5031a6b0d42e640fbd2d5d05f61f74e32dce ]
 
-Incorrect WMI tag is used for EHT rate update from host to firmware
-while encoding peer assoc WMI.
+If the user tries to write more than 32 bytes then it results in memory
+corruption.  Fortunately, this is debugfs so it's limited to root users.
 
-Correct the WMI tag used for EHT rate update from WMI_TAG_HE_RATE_SET
-to the proper tag. This ensures firmware does not mistakenly update HE rate during parsing.
-
-Found during code review. Compile tested only.
-
-Fixes: 5b70ec6036c1 ("wifi: ath12k: add WMI support for EHT peer")
-Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250409152341.944628-1-ramya.gnanasekar@oss.qualcomm.com
+Fixes: 3f73c24f28b3 ("wifi: ath12k: Add support to enable debugfs_htt_stats")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/35daefbd-d493-41d9-b192-96177d521b40@stanley.mountain
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 6d1ea5f3a791b..6374e86f89f3d 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2351,7 +2351,7 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index 1c0d5fa39a8dc..aeaf970339d4d 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -5377,6 +5377,9 @@ static ssize_t ath12k_write_htt_stats_type(struct file *file,
+ 	const int size = 32;
+ 	int num_args;
  
- 	for (i = 0; i < arg->peer_eht_mcs_count; i++) {
- 		eht_mcs = ptr;
--		eht_mcs->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_HE_RATE_SET,
-+		eht_mcs->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_EHT_RATE_SET,
- 							     sizeof(*eht_mcs));
- 
- 		eht_mcs->rx_mcs_set = cpu_to_le32(arg->peer_eht_rx_mcs_set[i]);
++	if (count > size)
++		return -EINVAL;
++
+ 	char *buf __free(kfree) = kzalloc(size, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
