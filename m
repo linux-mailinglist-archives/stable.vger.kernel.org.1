@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92B8ADD962
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37DAADD777
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1FD65A1420
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA8B34A0917
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CC6285055;
-	Tue, 17 Jun 2025 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9522EE273;
+	Tue, 17 Jun 2025 16:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUqRfUaY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUMFXbCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2672FA630;
-	Tue, 17 Jun 2025 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292112EE5FF;
+	Tue, 17 Jun 2025 16:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179199; cv=none; b=Tyx897yIHcV7QoWyNluGpbD0xAdnIRuNi6Jo/qqYSoG/4eja9WHC1+murr2DFFCwhSM5ChvT326KRosEnLDcxj0lqp4gqEAY5ah4dYZdN1WP7ufPGneMepnV2f1lPX5fXg6iC3xSf7buYx/7cw6XrUH99WpAyd6AbHqaRMKE74w=
+	t=1750177938; cv=none; b=D7suG2u5jfcBi5kmGM+DCPwFgtdgto2edflKKfRKmK/eKdg/EroNizEgMWSyV7iuidNgPXNEt3bNFlu9c2LoruLMDKpRtbCBZCsJo+0F8XQ4W0KEN2p9I8uS1CZKyzQJWcr9qVVr5SilFQHf8xlpGUWCJj3JG4KwUTMyuLGyteg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179199; c=relaxed/simple;
-	bh=PPqKOc8TKldgSgRFXWpMTFnwuPdHp/alZGbMN4Vn39M=;
+	s=arc-20240116; t=1750177938; c=relaxed/simple;
+	bh=ekNboKFFYXbB3pqvYgYg/3KJJS6ZnCVtRsPG8UDZgwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd2/fL22bUD8Kf79XUIZAtHopDG5Tv5JxBq+CVxq7RR5aCP0ck7w2yS3PTuLB2qd/xWfdDHW/zSJoZ9iM9SnjYd0+umcXjJdS7vC277ZjxHEeg5VuKn7zviAh9u4UPj0JZgM6BZ1XSU6EYn/YpClQPco6sI5QXNt18aQI/1dlf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUqRfUaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B79C4CEE3;
-	Tue, 17 Jun 2025 16:53:18 +0000 (UTC)
+	 MIME-Version; b=a7CjMmKB8u8YgCAoLgZnaAlT1QM3jpUgAta7NKgPvn5FRg3XJ8T+Wg9WwfsIkUKCPj47ILJXj66COcyZEWDcu8kqwgezmiZN6QEfEI9mywIKpuom6UTs2J68VoTySUZZIQDAkLQazBGsQeQngI0pa+vZPMqrVqGBmMqMppGjx1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUMFXbCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F101C4CEE3;
+	Tue, 17 Jun 2025 16:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179199;
-	bh=PPqKOc8TKldgSgRFXWpMTFnwuPdHp/alZGbMN4Vn39M=;
+	s=korg; t=1750177938;
+	bh=ekNboKFFYXbB3pqvYgYg/3KJJS6ZnCVtRsPG8UDZgwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUqRfUaYMep2IcAs5H34Fj7DmGaXu9u8C5FA2EAm0vuAkWpSSO0btgegN1SFz03wK
-	 qr+R6abe6Aql0XF+o1UJeEbxeo5ky1gOW3RDXYhJXmL58Ufgmpj2W2/nhecnp6Vv8Y
-	 1S4uo5D1u/AgPijJuSncMa8GlLgacK5I3hZ+Izo0=
+	b=fUMFXbCkeAO5xDcJFy/AXxGIDSMsx3qpXIm6IHq6LEnTzIr0zgBEtn1San5ObFajx
+	 z9Flr8PV08wkrJpxV14wRTW/BzcnkYYZZvyJkKesdNj1nlT1ekpgE4RT8e5wRplxmE
+	 lpEcBCITaPrBsxRe+o/2FPnmikwjOHLPx90L9JC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 679/780] wifi: ath12k: fix uaf in ath12k_core_init()
+Subject: [PATCH 6.12 421/512] Bluetooth: btintel_pcie: Increase the tx and rx descriptor count
 Date: Tue, 17 Jun 2025 17:26:27 +0200
-Message-ID: <20250617152519.118285727@linuxfoundation.org>
+Message-ID: <20250617152436.632935442@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
+From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
 
-[ Upstream commit f3fe49dbddd73f0155a8935af47cb63693069dbe ]
+[ Upstream commit 2dd711102ce69ae41f65d09c012441227d4aa983 ]
 
-When the execution of ath12k_core_hw_group_assign() or
-ath12k_core_hw_group_create() fails, the registered notifier chain is not
-unregistered properly. Its memory is freed after rmmod, which may trigger
-to a use-after-free (UAF) issue if there is a subsequent access to this
-notifier chain.
+This change addresses latency issues observed in HID use cases where
+events arrive in bursts. By increasing the Rx descriptor count to 64,
+the firmware can handle bursty data more effectively, reducing latency
+and preventing buffer overflows.
 
-Fixes the issue by calling ath12k_core_panic_notifier_unregister() in
-failure cases.
-
-Call trace:
- notifier_chain_register+0x4c/0x1f0 (P)
- atomic_notifier_chain_register+0x38/0x68
- ath12k_core_init+0x50/0x4e8 [ath12k]
- ath12k_pci_probe+0x5f8/0xc28 [ath12k]
- pci_device_probe+0xbc/0x1a8
- really_probe+0xc8/0x3a0
- __driver_probe_device+0x84/0x1b0
- driver_probe_device+0x44/0x130
- __driver_attach+0xcc/0x208
- bus_for_each_dev+0x84/0x100
- driver_attach+0x2c/0x40
- bus_add_driver+0x130/0x260
- driver_register+0x70/0x138
- __pci_register_driver+0x68/0x80
- ath12k_pci_init+0x30/0x68 [ath12k]
- ath12k_init+0x28/0x78 [ath12k]
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: 6f245ea0ec6c ("wifi: ath12k: introduce device group abstraction")
-Signed-off-by: Miaoqing Pan <miaoqing.pan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250604055250.1228501-1-miaoqing.pan@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/bluetooth/btintel_pcie.c | 24 ++++++++++++------------
+ drivers/bluetooth/btintel_pcie.h |  7 +++++--
+ 2 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 770156347ffad..261f52b327e89 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -1902,7 +1902,8 @@ int ath12k_core_init(struct ath12k_base *ab)
- 	if (!ag) {
- 		mutex_unlock(&ath12k_hw_group_mutex);
- 		ath12k_warn(ab, "unable to get hw group\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto err_unregister_notifier;
- 	}
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index b8065b7ec70b6..c02d671396e24 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -1148,8 +1148,8 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
+ 	 *  + size of index * Number of queues(2) * type of index array(4)
+ 	 *  + size of context information
+ 	 */
+-	total = (sizeof(struct tfd) + sizeof(struct urbd0) + sizeof(struct frbd)
+-		+ sizeof(struct urbd1)) * BTINTEL_DESCS_COUNT;
++	total = (sizeof(struct tfd) + sizeof(struct urbd0)) * BTINTEL_PCIE_TX_DESCS_COUNT;
++	total += (sizeof(struct frbd) + sizeof(struct urbd1)) * BTINTEL_PCIE_RX_DESCS_COUNT;
  
- 	mutex_unlock(&ath12k_hw_group_mutex);
-@@ -1917,7 +1918,7 @@ int ath12k_core_init(struct ath12k_base *ab)
- 		if (ret) {
- 			mutex_unlock(&ag->mutex);
- 			ath12k_warn(ab, "unable to create hw group\n");
--			goto err;
-+			goto err_destroy_hw_group;
- 		}
- 	}
+ 	/* Add the sum of size of index array and size of ci struct */
+ 	total += (sizeof(u16) * BTINTEL_PCIE_NUM_QUEUES * 4) + sizeof(struct ctx_info);
+@@ -1174,36 +1174,36 @@ static int btintel_pcie_alloc(struct btintel_pcie_data *data)
+ 	data->dma_v_addr = v_addr;
  
-@@ -1925,9 +1926,12 @@ int ath12k_core_init(struct ath12k_base *ab)
+ 	/* Setup descriptor count */
+-	data->txq.count = BTINTEL_DESCS_COUNT;
+-	data->rxq.count = BTINTEL_DESCS_COUNT;
++	data->txq.count = BTINTEL_PCIE_TX_DESCS_COUNT;
++	data->rxq.count = BTINTEL_PCIE_RX_DESCS_COUNT;
  
- 	return 0;
+ 	/* Setup tfds */
+ 	data->txq.tfds_p_addr = p_addr;
+ 	data->txq.tfds = v_addr;
  
--err:
-+err_destroy_hw_group:
- 	ath12k_core_hw_group_destroy(ab->ag);
- 	ath12k_core_hw_group_unassign(ab);
-+err_unregister_notifier:
-+	ath12k_core_panic_notifier_unregister(ab);
+-	p_addr += (sizeof(struct tfd) * BTINTEL_DESCS_COUNT);
+-	v_addr += (sizeof(struct tfd) * BTINTEL_DESCS_COUNT);
++	p_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
++	v_addr += (sizeof(struct tfd) * BTINTEL_PCIE_TX_DESCS_COUNT);
+ 
+ 	/* Setup urbd0 */
+ 	data->txq.urbd0s_p_addr = p_addr;
+ 	data->txq.urbd0s = v_addr;
+ 
+-	p_addr += (sizeof(struct urbd0) * BTINTEL_DESCS_COUNT);
+-	v_addr += (sizeof(struct urbd0) * BTINTEL_DESCS_COUNT);
++	p_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
++	v_addr += (sizeof(struct urbd0) * BTINTEL_PCIE_TX_DESCS_COUNT);
+ 
+ 	/* Setup FRBD*/
+ 	data->rxq.frbds_p_addr = p_addr;
+ 	data->rxq.frbds = v_addr;
+ 
+-	p_addr += (sizeof(struct frbd) * BTINTEL_DESCS_COUNT);
+-	v_addr += (sizeof(struct frbd) * BTINTEL_DESCS_COUNT);
++	p_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
++	v_addr += (sizeof(struct frbd) * BTINTEL_PCIE_RX_DESCS_COUNT);
+ 
+ 	/* Setup urbd1 */
+ 	data->rxq.urbd1s_p_addr = p_addr;
+ 	data->rxq.urbd1s = v_addr;
+ 
+-	p_addr += (sizeof(struct urbd1) * BTINTEL_DESCS_COUNT);
+-	v_addr += (sizeof(struct urbd1) * BTINTEL_DESCS_COUNT);
++	p_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
++	v_addr += (sizeof(struct urbd1) * BTINTEL_PCIE_RX_DESCS_COUNT);
+ 
+ 	/* Setup data buffers for txq */
+ 	err = btintel_pcie_setup_txq_bufs(data, &data->txq);
+diff --git a/drivers/bluetooth/btintel_pcie.h b/drivers/bluetooth/btintel_pcie.h
+index 5f7747f334ab8..ee0eec0237afd 100644
+--- a/drivers/bluetooth/btintel_pcie.h
++++ b/drivers/bluetooth/btintel_pcie.h
+@@ -81,8 +81,11 @@ enum {
+ /* Default interrupt timeout in msec */
+ #define BTINTEL_DEFAULT_INTR_TIMEOUT_MS	3000
+ 
+-/* The number of descriptors in TX/RX queues */
+-#define BTINTEL_DESCS_COUNT	16
++/* The number of descriptors in TX queues */
++#define BTINTEL_PCIE_TX_DESCS_COUNT	32
 +
- 	return ret;
- }
++/* The number of descriptors in RX queues */
++#define BTINTEL_PCIE_RX_DESCS_COUNT	64
  
+ /* Number of Queue for TX and RX
+  * It indicates the index of the IA(Index Array)
 -- 
 2.39.5
 
