@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE42ADDA1F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A542ADD67A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 124192C591C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 656E94A09ED
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF45F2FA633;
-	Tue, 17 Jun 2025 16:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCF82EF2AD;
+	Tue, 17 Jun 2025 16:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJxxs3oR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ3x224U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5D02FA624;
-	Tue, 17 Jun 2025 16:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7D02EA14E;
+	Tue, 17 Jun 2025 16:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179478; cv=none; b=GjV8i6yGXpZ+OR2SaDJCE/b/oTzLgVL/yiI09zSRJYuQ0MEKAtKQ2sZ2HIDXBAewCatA0WCcQkwB1//LHbxLyUshqnf9O1zpgDvGubCKTHUTtBW8H8q644alItDASzZ11N0cmMeUY5Gnf2UDAHzCNWAU0nvAU7IknxIzVBX4+/g=
+	t=1750177136; cv=none; b=IdEAl2EK8xlraYqQg/Rg0ZatiTjP7E7lrchmK/NXLTo8E+cLv94s4wii6A4QRD1DTeUOM9JElq9aH3Aw3Myz10sM5ZhTwy6A+4XpGjQbtgq+jgmHhmsLDOSDytpVMWmO3iWHREP3oQFd8O3kq3MQtGtO+wZUecmL0Id6x9nAxfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179478; c=relaxed/simple;
-	bh=tQXjlStfPU9KJCqDJpQIka2l65II/vZKODV+Fa6GOJ0=;
+	s=arc-20240116; t=1750177136; c=relaxed/simple;
+	bh=csBi3P1F0FCM9KnMti+ilmVEkuw5h+fqy3p7jAMpknU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHCfmwBkjC5MC5JIHfEGM9opvr+1pMKrf17peJ8xNo3wVyRIBlLPsaRn4WrSlX9Z0kTS2Qsb0DYkPHSDXAx2nQe6c2t5b6jwcPMF4uXB8QyjoC2KvAmDWsh6J1WU2rubeibwsTCxRpqdAH6iGTCQR8NHAJE6/tmYWBws+GGYDWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJxxs3oR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C089C4CEE3;
-	Tue, 17 Jun 2025 16:57:57 +0000 (UTC)
+	 MIME-Version; b=QrIsggWqMnjajrbUbawBsixtGHqVTPibwwau5AtXMA/Brpkg9R0EGKlUef9OswX1AX8Tm6XaPDO1QpY8K2EFVbaxSa6i+TfjZJx9lNo078QOfT8u4AR1VAGH6YPLfwDiOauU1vJDga8cgz89hRsmqrvvrHujbAILw75al/T9oK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ3x224U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B033C4CEE3;
+	Tue, 17 Jun 2025 16:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179478;
-	bh=tQXjlStfPU9KJCqDJpQIka2l65II/vZKODV+Fa6GOJ0=;
+	s=korg; t=1750177135;
+	bh=csBi3P1F0FCM9KnMti+ilmVEkuw5h+fqy3p7jAMpknU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJxxs3oR08sOHfrma4INmUQMZcbwQ8QMIMt+/jynUi6K0FKTjPpL7g7WrluqRPKEI
-	 zgFmLI/FmwSQVrJstNe9ZISsiiVYVMPFqVPzU0aISiDqueXCwCQJ2hYH78T8NYIo46
-	 /GcZTCVVq14yAaIS3cQoNC3I2Z3q5EXO/MMSY248=
+	b=BJ3x224U6xNRFiel78r4buAHWjJ86T7eMYl1ejF+uupBwkiAUTsfmQ0g8xKBBlNqy
+	 MWEhBs9oqbFiRc0AgmbFysxxTDrTk6kcHO6Fq5FdP4D9y3O0GUE8Qibx6lx4rcP9O1
+	 7YjJM5tIqPPT7QgJ0JYt9QFQFGYxIVisMyBvWWdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.15 758/780] usb: cdnsp: Fix issue with detecting USB 3.2 speed
+	stable@kernel.org,
+	Stefano Stabellini <stefano.stabellini@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 351/356] xen/arm: call uaccess_ttbr0_enable for dm_op hypercall
 Date: Tue, 17 Jun 2025 17:27:46 +0200
-Message-ID: <20250617152522.375115452@linuxfoundation.org>
+Message-ID: <20250617152352.264682461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Stefano Stabellini <stefano.stabellini@amd.com>
 
-commit 2852788cfbe9ca1ab68509d65804413871f741f9 upstream.
+commit 7f9bbc1140ff8796230bc2634055763e271fd692 upstream.
 
-Patch adds support for detecting SuperSpeedPlus Gen1 x2 and
-SuperSpeedPlus Gen2 x2 speed.
+dm_op hypercalls might come from userspace and pass memory addresses as
+parameters. The memory addresses typically correspond to buffers
+allocated in userspace to hold extra hypercall parameters.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95387AD98EDCA695FECE52BADD96A@PH7PR07MB9538.namprd07.prod.outlook.com
+On ARM, when CONFIG_ARM64_SW_TTBR0_PAN is enabled, they might not be
+accessible by Xen, as a result ioreq hypercalls might fail. See the
+existing comment in arch/arm64/xen/hypercall.S regarding privcmd_call
+for reference.
+
+For privcmd_call, Linux calls uaccess_ttbr0_enable before issuing the
+hypercall thanks to commit 9cf09d68b89a. We need to do the same for
+dm_op. This resolves the problem.
+
+Cc: stable@kernel.org
+Fixes: 9cf09d68b89a ("arm64: xen: Enable user access before a privcmd hvc call")
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <alpine.DEB.2.22.394.2505121446370.8380@ubuntu-linux-20-04-desktop>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c |    3 ++-
- drivers/usb/cdns3/cdnsp-gadget.h |    4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/xen/hypercall.S |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -29,7 +29,8 @@
- unsigned int cdnsp_port_speed(unsigned int port_status)
- {
- 	/*Detect gadget speed based on PORTSC register*/
--	if (DEV_SUPERSPEEDPLUS(port_status))
-+	if (DEV_SUPERSPEEDPLUS(port_status) ||
-+	    DEV_SSP_GEN1x2(port_status) || DEV_SSP_GEN2x2(port_status))
- 		return USB_SPEED_SUPER_PLUS;
- 	else if (DEV_SUPERSPEED(port_status))
- 		return USB_SPEED_SUPER;
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -285,11 +285,15 @@ struct cdnsp_port_regs {
- #define XDEV_HS			(0x3 << 10)
- #define XDEV_SS			(0x4 << 10)
- #define XDEV_SSP		(0x5 << 10)
-+#define XDEV_SSP1x2		(0x6 << 10)
-+#define XDEV_SSP2x2		(0x7 << 10)
- #define DEV_UNDEFSPEED(p)	(((p) & DEV_SPEED_MASK) == (0x0 << 10))
- #define DEV_FULLSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_FS)
- #define DEV_HIGHSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_HS)
- #define DEV_SUPERSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_SS)
- #define DEV_SUPERSPEEDPLUS(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP)
-+#define DEV_SSP_GEN1x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP1x2)
-+#define DEV_SSP_GEN2x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP2x2)
- #define DEV_SUPERSPEED_ANY(p)	(((p) & DEV_SPEED_MASK) >= XDEV_SS)
- #define DEV_PORT_SPEED(p)	(((p) >> 10) & 0x0f)
- /* Port Link State Write Strobe - set this when changing link state */
+--- a/arch/arm64/xen/hypercall.S
++++ b/arch/arm64/xen/hypercall.S
+@@ -83,7 +83,26 @@ HYPERCALL3(vcpu_op);
+ HYPERCALL1(platform_op_raw);
+ HYPERCALL2(multicall);
+ HYPERCALL2(vm_assist);
+-HYPERCALL3(dm_op);
++
++SYM_FUNC_START(HYPERVISOR_dm_op)
++	mov x16, #__HYPERVISOR_dm_op;	\
++	/*
++	 * dm_op hypercalls are issued by the userspace. The kernel needs to
++	 * enable access to TTBR0_EL1 as the hypervisor would issue stage 1
++	 * translations to user memory via AT instructions. Since AT
++	 * instructions are not affected by the PAN bit (ARMv8.1), we only
++	 * need the explicit uaccess_enable/disable if the TTBR0 PAN emulation
++	 * is enabled (it implies that hardware UAO and PAN disabled).
++	 */
++	uaccess_ttbr0_enable x6, x7, x8
++	hvc XEN_IMM
++
++	/*
++	 * Disable userspace access from kernel once the hyp call completed.
++	 */
++	uaccess_ttbr0_disable x6, x7
++	ret
++SYM_FUNC_END(HYPERVISOR_dm_op);
+ 
+ SYM_FUNC_START(privcmd_call)
+ 	mov x16, x0
 
 
 
