@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-152758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8783EADC542
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 10:45:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D38ADC544
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 10:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34415171267
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 08:45:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F3427A5BAF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 08:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3656290BBD;
-	Tue, 17 Jun 2025 08:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DD2290D8E;
+	Tue, 17 Jun 2025 08:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dA0zexcY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eiG6I71H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DB528FFE5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D19128FFF3;
 	Tue, 17 Jun 2025 08:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750149890; cv=none; b=Z4IBZD0ueJeaco9ph7Wfdbr9yUy1ZWLJTeP61eiQeJ+kpzx2gJrLC1da2zPsPA52HZ+H4UJp7NkXmAn/HoqGF9tacYOpvrGEkJyYuZMRdABkUJ+bVwEXrNAlkm29UJj7JyMdvpiavAZVmGQ6PkaLB88pb7U1kPoV9lL6O5HYR9U=
+	t=1750149890; cv=none; b=WkRNN7cW+UmvMS09F8eZoYKlMe7lR59THdxyE67alKOcsrpevMFAxwfr4xysDy/Nm9Fb1V5NrnY6fjpNLKR7RZjg+zaqANX4vfXL9IVyg9ldwfRngJR6zmRNBAFVqJhsvHXp1km2vdr52ZyIP0v1HIUJzvsaa4rXNs3Jtsnk6U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1750149890; c=relaxed/simple;
-	bh=SvXAxL/4I1X7cvYUjcC80e7Q09OqTbdWtCdJhyx3ICY=;
+	bh=+MUNkeZX4lfJkqkDUxXwsfHCfiNVsvvgpyJ+FU0nu4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvK5CPwJ71K46anFTi3rb7sDUpgnmg/8mtoFat/UqheYUM1Ksw+7TVHCOcNVmNUkuxFvrWLlhJ09xsCjP9XX+DxV+2H8R5cmKiBVYV9ZQD1EXOI0xC+70T2R+hkll8TtNc9tW64C8t5s+symknefBheN2SnL60xgF7sasjucMDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dA0zexcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECCDC4CEF0;
+	 MIME-Version; b=Q5BE+RTZ9p6lpmljjm6ol2sH59vSAoy1t3eki6/iUwUQV6toDB94Z9XU3zKrcGOr0lIyYuVQy5ddsQ3tAktsmQzCD+bedynJensUnP0IrfcmLXl5fW1sukp3q1BG4WlLhNfkVvu8kFhRix8eLqg+5JsBskLw7SJnyjRUyQOUBCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eiG6I71H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BBDC4CEF6;
 	Tue, 17 Jun 2025 08:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1750149890;
-	bh=SvXAxL/4I1X7cvYUjcC80e7Q09OqTbdWtCdJhyx3ICY=;
+	bh=+MUNkeZX4lfJkqkDUxXwsfHCfiNVsvvgpyJ+FU0nu4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dA0zexcYVRjaBlixv11jjYTmBY8aLGf3clA5ljYPzD+L3DcSBUaP7lQz2Ca/MhVix
-	 2+G/ZxLKUORNOMolJYDGVKGnT4e1hJu3FC/uU7w2YLWZHA7wtH+MQZwYOeqdpj6G7m
-	 4duIoBHbcJf4QCzl8eotBjZoqwuzWYleB0FjaLrgqgcDqI83v5AgGuBgXeFPfVekjy
-	 teUc3s3VuurpvINNr9XvLrhnncH2TRbIHahqSXqpiVnks0dfXB4sKK5OFJo3A1DLn2
-	 lCoR/CaVan3pgKyHJxLZuqJs2KkFg88MDRzR44bPocGt651Nl0pC7yo5WuqjPRkxF1
-	 t+rfCizdHCpJg==
+	b=eiG6I71H+yRSGnNvzn7KWYE8hPyV9oZX8el5NBvINVCLx3keaZadfp29ObB/xOMkj
+	 iUIzGcANaK/yegxiFSNfBhbfL2snUKvqJjgCPLRmIO4+86pn6DPwwjN77tAXxFr4uu
+	 5DM138I5Wq5X0WvqWV7qTlsDqdKjhqWzdfSB7OStiMnTw8gH7Zd/znkplpdRWwJyKT
+	 20C5uHpXLAQmaM4Y9LC6/ZFQ74sLFb89zOPLtmGnLj6nGZZ90Xcd9FviR2iYv9CvH5
+	 sE7PJ+wcUAoLy/WKIT6HRNSsC5q7GGWVxBU+PLh9eQdO7hYeAbC38Pp8qMwoajy/B9
+	 d9z+1vl7IRMBQ==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1uRRw0-000000003mn-0BRJ;
+	id 1uRRw0-000000003ms-0xB1;
 	Tue, 17 Jun 2025 10:44:48 +0200
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Jeff Johnson <jjohnson@kernel.org>
@@ -55,9 +55,9 @@ Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/4] wifi: ath12k: fix dest ring-buffer corruption
-Date: Tue, 17 Jun 2025 10:43:59 +0200
-Message-ID: <20250617084402.14475-2-johan+linaro@kernel.org>
+Subject: [PATCH v3 3/4] wifi: ath12k: fix source ring-buffer corruption
+Date: Tue, 17 Jun 2025 10:44:01 +0200
+Message-ID: <20250617084402.14475-4-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617084402.14475-1-johan+linaro@kernel.org>
 References: <20250617084402.14475-1-johan+linaro@kernel.org>
@@ -69,70 +69,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the missing memory barrier to make sure that destination ring
-descriptors are read after the head pointers to avoid using stale data
-on weakly ordered architectures like aarch64.
+Add the missing memory barrier to make sure that LMAC source ring
+descriptors are written before updating the head pointer to avoid
+passing stale data to the firmware on weakly ordered architectures like
+aarch64.
 
-The barrier is added to the ath12k_hal_srng_access_begin() helper for
-symmetry with follow-on fixes for source ring buffer corruption which
-will add barriers to ath12k_hal_srng_access_end().
+Note that non-LMAC rings use MMIO write accessors which have the
+required write memory barrier.
 
 Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
 Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org	# 6.3
+Cc: stable@vger.kernel.org      # 6.3
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/ce.c  |  3 ---
- drivers/net/wireless/ath/ath12k/hal.c | 17 ++++++++++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/hal.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
-index 3f3439262cf4..f7c15b547504 100644
---- a/drivers/net/wireless/ath/ath12k/ce.c
-+++ b/drivers/net/wireless/ath/ath12k/ce.c
-@@ -433,9 +433,6 @@ static int ath12k_ce_completed_recv_next(struct ath12k_ce_pipe *pipe,
- 		goto err;
- 	}
- 
--	/* Make sure descriptor is read after the head pointer. */
--	dma_rmb();
--
- 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
- 
- 	*skb = pipe->dest_ring->skb[sw_index];
 diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index a301898e5849..f8bd3837b9dc 100644
+index 726969cfcaec..d8193d9577bb 100644
 --- a/drivers/net/wireless/ath/ath12k/hal.c
 +++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -2143,13 +2143,24 @@ void *ath12k_hal_srng_src_get_next_reaped(struct ath12k_base *ab,
- 
- void ath12k_hal_srng_access_begin(struct ath12k_base *ab, struct hal_srng *srng)
- {
-+	u32 hp;
-+
- 	lockdep_assert_held(&srng->lock);
- 
--	if (srng->ring_dir == HAL_SRNG_DIR_SRC)
-+	if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
- 		srng->u.src_ring.cached_tp =
- 			*(volatile u32 *)srng->u.src_ring.tp_addr;
--	else
--		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
-+	} else {
-+		hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
-+
-+		if (hp != srng->u.dst_ring.cached_hp) {
-+			srng->u.dst_ring.cached_hp = hp;
-+			/* Make sure descriptor is read after the head
-+			 * pointer.
+@@ -2178,7 +2178,11 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
+-			*srng->u.src_ring.hp_addr = srng->u.src_ring.hp;
++			/* Make sure descriptor is written before updating the
++			 * head pointer.
 +			 */
-+			dma_rmb();
-+		}
-+	}
- }
- 
- /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
++			dma_wmb();
++			WRITE_ONCE(*srng->u.src_ring.hp_addr, srng->u.src_ring.hp);
+ 		} else {
+ 			srng->u.dst_ring.last_hp = *srng->u.dst_ring.hp_addr;
+ 			*srng->u.dst_ring.tp_addr = srng->u.dst_ring.tp;
+@@ -2187,6 +2191,10 @@ void ath12k_hal_srng_access_end(struct ath12k_base *ab, struct hal_srng *srng)
+ 		if (srng->ring_dir == HAL_SRNG_DIR_SRC) {
+ 			srng->u.src_ring.last_tp =
+ 				*(volatile u32 *)srng->u.src_ring.tp_addr;
++			/* Assume implementation use an MMIO write accessor
++			 * which has the required wmb() so that the descriptor
++			 * is written before the updating the head pointer.
++			 */
+ 			ath12k_hif_write32(ab,
+ 					   (unsigned long)srng->u.src_ring.hp_addr -
+ 					   (unsigned long)ab->mem,
 -- 
 2.49.0
 
