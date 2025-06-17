@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB5EADD432
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6867ADD8B2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5935E19459EC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0CC44A3C33
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE772DFF07;
-	Tue, 17 Jun 2025 15:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33BD285050;
+	Tue, 17 Jun 2025 16:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmSqL87m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlzjN9VO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5608E2F234A;
-	Tue, 17 Jun 2025 15:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F91B285061;
+	Tue, 17 Jun 2025 16:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175668; cv=none; b=WtResLBzmRMoYM7+avxXkF2iVwHB62nH0FCyyYe60Mt8Q+dQFzQgCH1XsK06KipfZb5+7zgsWdDsmD2Ro9heNSGRw3J5ShAN0N7bgdgBouwrS2uFPPEj+HzOsqdDvPmNKeTEUDwlVWcIqrMETp5Qw2Gdj2hLWi46dzte8tl//Ns=
+	t=1750178102; cv=none; b=JQQGi+/fHiN5rE/WBi4YmPDsHIAM/CqN7Im5ZMXleJyiml79EB+gAmGtqP+71mEqYipBY7JPyqIwmW4Pou80LWw+iHfEcmkCHO/28MN6S/cD/IVXDzJC3OUQLJoX9bA4jWtfBFg4YSSszoIHBhk3p6DZeCHro8PL4kA75CIU6jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175668; c=relaxed/simple;
-	bh=plSKBrq8eNy/L/TjQDX6AbsR+k45+fsrOEjV5tjIBuI=;
+	s=arc-20240116; t=1750178102; c=relaxed/simple;
+	bh=nS5XPUo+MsciwtZEIlvlHBbNEV+L0Hdg4hNWn/EdFuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VujExWHKpO6XaK+ztOTrSL74lQx+el9gHe3pNktdIpT29k3RXyDm4ywoEqUM2D1AO6SofqRP7yxMsHr63bANfSfR+d3K7F+W1a9xL1P5AInKc9aBFnVGqD3k+xTnwfG6prhhGim/7F+1pzbz37KzmyiLZOIt4SH0FU9XC118xFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmSqL87m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8948C4CEE3;
-	Tue, 17 Jun 2025 15:54:27 +0000 (UTC)
+	 MIME-Version; b=e/ksGkLQ7TvRnmPpPFl7NkCqM9EEA6MfhnJMnaUdFCrsVvQWsu5esJCb//B84LWe13AhG/HszoPccQUomhVFk9VzLzy/J0EaE0SICMJesdZwhyfIi8XQ8OiyysfGdLRcA0esyfFgn3Ee+8yVN73ZtbZo5sBjZp+KSTbnMXZjEpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlzjN9VO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFD3C4CEE7;
+	Tue, 17 Jun 2025 16:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175668;
-	bh=plSKBrq8eNy/L/TjQDX6AbsR+k45+fsrOEjV5tjIBuI=;
+	s=korg; t=1750178102;
+	bh=nS5XPUo+MsciwtZEIlvlHBbNEV+L0Hdg4hNWn/EdFuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EmSqL87mSyW7xwWIbV32+azl4xhTPZQ7GMOQ5nfbImcsFTujGQV77gRSykYC6YTPN
-	 pQJkoigNw8b2nCqEjr286vrO7saFgpUuw/wR7SIU3NPXSGVMLXSHTQtLDiWVz9YmCU
-	 indeZQYk3ooWYDkLdQO62VeRNbiVGfHW3qMknXE0=
+	b=WlzjN9VOqOhC0IW1zKOj/QOBcJb5f8B9P2kmKsvaslBWtAGmtmxX+VPo77Awhnruf
+	 n17jjcSgc8/0ySB7lMRAtBE5bm162KGP17Kyh8jqSxgcAYuDaJGpMtdea/Eh+Jo0WI
+	 o/rVi3kT2Ql+uSPJuemW6X2YIzOpzvCAKTztJ8Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/512] clk: qcom: camcc-sm6350: Add *_wait_val values for GDSCs
+Subject: [PATCH 6.15 410/780] arm64: dts: renesas: white-hawk-ard-audio: Fix TPU0 groups
 Date: Tue, 17 Jun 2025 17:21:58 +0200
-Message-ID: <20250617152425.769282480@linuxfoundation.org>
+Message-ID: <20250617152508.163197653@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
 
-[ Upstream commit e7b1c13280ad866f3b935f6c658713c41db61635 ]
+[ Upstream commit 652eea251dd852f02cef6223f367220acb3d1867 ]
 
-Compared to the msm-4.19 driver the mainline GDSC driver always sets the
-bits for en_rest, en_few & clk_dis, and if those values are not set
-per-GDSC in the respective driver then the default value from the GDSC
-driver is used. The downstream driver only conditionally sets
-clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
+White Hawk ARD audio uses a clock generated by the TPU, but commit
+3d144ef10a44 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes") renamed
+pin group "tpu_to0_a" to "tpu_to0_b".  Update DTS accordingly otherwise
+the sound driver does not receive a clock signal.
 
-Correct this situation by explicitly setting those values. For all GDSCs
-the reset value of those bits are used.
-
-Fixes: 80f5451d9a7c ("clk: qcom: Add camera clock controller driver for SM6350")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-1-1f252d9c5e4e@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 3d144ef10a448f89 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes")
+Signed-off-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/TYCPR01MB8740608B675365215ADB0374B49CA@TYCPR01MB8740.jpnprd01.prod.outlook.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-sm6350.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
-index f6634cc8663ef..418668184ec35 100644
---- a/drivers/clk/qcom/camcc-sm6350.c
-+++ b/drivers/clk/qcom/camcc-sm6350.c
-@@ -1694,6 +1694,9 @@ static struct clk_branch camcc_sys_tmr_clk = {
+diff --git a/arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso b/arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso
+index c27b9b3d4e5f4..f2d53e958da11 100644
+--- a/arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso
++++ b/arch/arm64/boot/dts/renesas/white-hawk-ard-audio-da7212.dtso
+@@ -108,7 +108,7 @@
+ 	};
  
- static struct gdsc bps_gdsc = {
- 	.gdscr = 0x6004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "bps_gdsc",
- 	},
-@@ -1703,6 +1706,9 @@ static struct gdsc bps_gdsc = {
- 
- static struct gdsc ipe_0_gdsc = {
- 	.gdscr = 0x7004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ipe_0_gdsc",
- 	},
-@@ -1712,6 +1718,9 @@ static struct gdsc ipe_0_gdsc = {
- 
- static struct gdsc ife_0_gdsc = {
- 	.gdscr = 0x9004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ife_0_gdsc",
- 	},
-@@ -1720,6 +1729,9 @@ static struct gdsc ife_0_gdsc = {
- 
- static struct gdsc ife_1_gdsc = {
- 	.gdscr = 0xa004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ife_1_gdsc",
- 	},
-@@ -1728,6 +1740,9 @@ static struct gdsc ife_1_gdsc = {
- 
- static struct gdsc ife_2_gdsc = {
- 	.gdscr = 0xb004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "ife_2_gdsc",
- 	},
-@@ -1736,6 +1751,9 @@ static struct gdsc ife_2_gdsc = {
- 
- static struct gdsc titan_top_gdsc = {
- 	.gdscr = 0x14004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "titan_top_gdsc",
- 	},
+ 	tpu0_pins: tpu0 {
+-		groups = "tpu_to0_a";
++		groups = "tpu_to0_b";
+ 		function = "tpu";
+ 	};
+ };
 -- 
 2.39.5
 
