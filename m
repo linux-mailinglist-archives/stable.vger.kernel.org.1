@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D6AADD7EE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9037ADD4C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:14:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA1D0403AF3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58ED0189DF65
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1F32ED15E;
-	Tue, 17 Jun 2025 16:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058D82DFF26;
+	Tue, 17 Jun 2025 16:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgEC6Uzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yqmud+zb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509F61E98E3;
-	Tue, 17 Jun 2025 16:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B431318A6AE;
+	Tue, 17 Jun 2025 16:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177842; cv=none; b=SUE2ftU0TgVWBvcWVhlFSEWtkpx9kGMEwmSnW445w8MlZkU7BYfTxlVbZ5J1QXo/5Sa+Frq+srl+Y7wdGxx6tYLZ0dvqXEZQzqL5p4ewvqTmeUnCkp/cDwjt7WiYh+1iY5s3+DNGFLlTQ3q6YPG8VJojP725HzYHWRy7kuqlOa8=
+	t=1750176209; cv=none; b=df+3UHKH+mGQsYCuC/GA2vSRGlmwQtr550fFdWEfLgpp1uAp9HIP3TTE553N6wT2jQ0FmErxL+Wo4Pulvn9B8jXj581VKCrx5QfFdpw37Ne+9nOzJu+h1EZh8T7Z4CnetsxioiPaKcrFArWeXO+FBk9uDx+sdlb0n2EYOi62+L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177842; c=relaxed/simple;
-	bh=9q2Dq3MCiqkDUZf1e7LxAzef6RvUcCL2nZi2Ot93Udg=;
+	s=arc-20240116; t=1750176209; c=relaxed/simple;
+	bh=Pbd/rG0/6Cokg5KKCHaQQqUE5ubpYvWb+2sOuwImAGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjjVhq6Pz3hNTcv9rlsYTpsElemhbAc9ojaKmt9xJATsd3h+57VJ59O5kGSYWfvAOVPbDJT3InQ0hcub8uoimX+AHnwBqaOu9/Gul+rd2wu024Yl9KteEKEVyW9VBscR4nrBdLOIv3R2XnaqE1Me7oCjyvnFPHW1d96L8K7kI58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgEC6Uzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43FAC4CEE3;
-	Tue, 17 Jun 2025 16:30:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AwBWp3WRUDufIdv+Lh6m1OASrOiVOYa5aj2+Y9xLLoax+tZbxLIcKS/E95EQgzuMWpktDSiOAbyYzVkWIp8YzEXgeThpL2eUDAmtAbSBfz1BqAdfiDz0hvfM+lX6iTPijsnJhocslZm2uPze8xpdr2dOKjfJcDDaFWeei5n+3P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yqmud+zb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250C1C4CEE3;
+	Tue, 17 Jun 2025 16:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177842;
-	bh=9q2Dq3MCiqkDUZf1e7LxAzef6RvUcCL2nZi2Ot93Udg=;
+	s=korg; t=1750176209;
+	bh=Pbd/rG0/6Cokg5KKCHaQQqUE5ubpYvWb+2sOuwImAGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgEC6UzkQw+omOZjK8MKaaOqcc0vYIfFgwqPzEMT6EopMh6acPA0PHkfHQFD8jTy2
-	 N4skzk79qUjLdrKiDWdzDPaQmR9K3uMsQlrj3W6UMAQe1LusjKiF7PMLFqhtyjlY7z
-	 s11z49OheJq0ARzRlu6w2IeRQDN6ne5lu3Bos8iY=
+	b=Yqmud+zbdO7HdrCdcANa+xgetKLTnqlIGH/oC/3IAW5ioWAtQ5I59ucLY0MO5nhpm
+	 dbpHz76SirdKn9Jvzikd2goXGeq/VU8yrX8sxOs76OHNTo9inYcNU9uOHx0Pn57pVn
+	 YE6M5yYYvUJBy056WX2LTuFP7jI/SxxDlaNp+k5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 404/512] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
+Subject: [PATCH 6.6 255/356] net: dsa: tag_brcm: legacy: fix pskb_may_pull length
 Date: Tue, 17 Jun 2025 17:26:10 +0200
-Message-ID: <20250617152435.951868126@linuxfoundation.org>
+Message-ID: <20250617152348.474549118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit f709b78aecab519dbcefa9a6603b94ad18c553e3 ]
+[ Upstream commit efdddc4484859082da6c7877ed144c8121c8ea55 ]
 
-New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
-ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
+BRCM_LEG_PORT_ID was incorrectly used for pskb_may_pull length.
+The correct check is BRCM_LEG_TAG_LEN + VLAN_HLEN, or 10 bytes.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529124406.2513779-1-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/dsa/tag_brcm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10828,6 +10828,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC245_FIXUP_HP_ZBOOK_FIREFLY_G12A),
- 	SND_PCI_QUIRK(0x103c, 0x8e1b, "HP EliteBook G12", ALC245_FIXUP_HP_ZBOOK_FIREFLY_G12A),
- 	SND_PCI_QUIRK(0x103c, 0x8e1c, "HP EliteBook G12", ALC245_FIXUP_HP_ZBOOK_FIREFLY_G12A),
-+	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e2c, "HP EliteBook 16 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e36, "HP 14 Enstrom OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e37, "HP 16 Piston OmniBook X", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
+index cacdafb41200e..146c1dbd15a93 100644
+--- a/net/dsa/tag_brcm.c
++++ b/net/dsa/tag_brcm.c
+@@ -257,7 +257,7 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
+ 	int source_port;
+ 	u8 *brcm_tag;
+ 
+-	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_PORT_ID)))
++	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
+ 		return NULL;
+ 
+ 	brcm_tag = dsa_etype_header_pos_rx(skb);
+-- 
+2.39.5
+
 
 
 
