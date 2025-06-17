@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781ADADDA36
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:15:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842A2ADD4B4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A1511BC249F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:53:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E252C459C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D72115B0EC;
-	Tue, 17 Jun 2025 16:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD412ED87A;
+	Tue, 17 Jun 2025 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYOkPwkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImnOxjt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360112FA622;
-	Tue, 17 Jun 2025 16:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEDD2ED877;
+	Tue, 17 Jun 2025 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179118; cv=none; b=L2nj3TftRFJDMWWG8JJsh/SKGMYGXuv3AznWyUc6svCa+736mzqFtNERoCO7dndTzd228tbHlz+oP4c2Jxwt5hoaR4GOH2IixzD2nF/L//1C7HGrSDBJuypgCNtp11+M0LLKwLL0Q7W84D6aSEXvtPsH3Bp/XwyGzw9kiPs3ZI4=
+	t=1750176134; cv=none; b=HVH9XaqzbiELA7HMLPpmzWZLuCm8FMVxNC93HIRScZfLgiv52IigENVaqD3Cj8wH3FBlX9POkh23RbMUIj8Wt/pxtTaji2uzk4aNIyauWeqwEimWsv0yZOkN6uFGQEf47j9w8hGZXB0MCgVOwfUqmBoPR4gZ/2VRkPiacAhED0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179118; c=relaxed/simple;
-	bh=KHZlFHKIW1MoQoJN6y34/ZPz90Wa2rj29vX4kzkN44g=;
+	s=arc-20240116; t=1750176134; c=relaxed/simple;
+	bh=XSH42miACtDUDeda3JC3CJwlb+SYuGGRrdYHw2kwEoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l0yenW2t308PPdN8QhlVKzfJyVJRrd9yFfx5hFxxtFTjmwU+/Dduuar5dJiInBkyYQ0pIMmNQPRoXPTHnv+Fo2/2xyTlFD92saYUn4GZOCURuBrH6x2VcNkzh5+bmG5fVVMJ9APi38u/r8wyUDqPVokWCB16zNvB+/TknuY5yT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYOkPwkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1789C4CEE3;
-	Tue, 17 Jun 2025 16:51:57 +0000 (UTC)
+	 MIME-Version; b=UHZxMX7Hf98qe3UBM9EFon5U8KKK13zQtrt/fimeOhnKJQzt91zZJypK+KuPeI/0KdTZKX/DBP5xANJQAQ4iVHVSPCONH2Mt799cNs8l7/nzpIw/aQl82gmiqSpwFfGvJoSOUkMTyydximdHTt60lerIay2AK3bKJN1xKPy8TYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImnOxjt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBA4C4CEE3;
+	Tue, 17 Jun 2025 16:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179118;
-	bh=KHZlFHKIW1MoQoJN6y34/ZPz90Wa2rj29vX4kzkN44g=;
+	s=korg; t=1750176134;
+	bh=XSH42miACtDUDeda3JC3CJwlb+SYuGGRrdYHw2kwEoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYOkPwkbsrjpnV6eClmIbVjuKkI9rEpI3Q3zTlXi0KhPrymM4Po0Oi9zta4ybbw2E
-	 lrD4zzM8yZ4jeVcZ8mbKV0j72paOlmS0prqxvGgbgi9zo28stzKWjKbGvCJ6Mqvi8C
-	 hjH2kmBB2UJ7QuchX8ZbG+MJJRBpbliXttIlH8Vc=
+	b=ImnOxjt2Ve0WxTH0iMAmO+zQIu0IrjKux95y3/AXSB0P9UtVMRDRo1WnHrf6wW1dA
+	 07tTpZf6JD7+GnfpZW7OFgDyVybR4/qKt1cgAZRDevJ+AQl1Ff243Q39rLolEnxxra
+	 EnTuS4xnn9Iwxo14AHF71lpSAk74yYsu7NTbvBUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Kazuma Kondo <kazuma-kondo@nec.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 654/780] fs: allow clone_private_mount() for a path on real rootfs
-Date: Tue, 17 Jun 2025 17:26:02 +0200
-Message-ID: <20250617152518.106661152@linuxfoundation.org>
+Subject: [PATCH 6.6 248/356] net: lan966x: Make sure to insert the vlan tags also in host mode
+Date: Tue, 17 Jun 2025 17:26:03 +0200
+Message-ID: <20250617152348.189314248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: KONDO KAZUMA(近藤　和真) <kazuma-kondo@nec.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 4954346d80fb047cb78776d9f2ebd6a050f80c5f ]
+[ Upstream commit 27eab4c644236a9324084a70fe79e511cbd07393 ]
 
-Mounting overlayfs with a directory on real rootfs (initramfs)
-as upperdir has failed with following message since commit
-db04662e2f4f ("fs: allow detached mounts in clone_private_mount()").
+When running these commands on DUT (and similar at the other end)
+ip link set dev eth0 up
+ip link add link eth0 name eth0.10 type vlan id 10
+ip addr add 10.0.0.1/24 dev eth0.10
+ip link set dev eth0.10 up
+ping 10.0.0.2
 
-  [    4.080134] overlayfs: failed to clone upperpath
+The ping will fail.
 
-Overlayfs mount uses clone_private_mount() to create internal mount
-for the underlying layers.
+The reason why is failing is because, the network interfaces for lan966x
+have a flag saying that the HW can insert the vlan tags into the
+frames(NETIF_F_HW_VLAN_CTAG_TX). Meaning that the frames that are
+transmitted don't have the vlan tag inside the skb data, but they have
+it inside the skb. We already get that vlan tag and put it in the IFH
+but the problem is that we don't configure the HW to rewrite the frame
+when the interface is in host mode.
+The fix consists in actually configuring the HW to insert the vlan tag
+if it is different than 0.
 
-The commit made clone_private_mount() reject real rootfs because
-it does not have a parent mount and is in the initial mount namespace,
-that is not an anonymous mount namespace.
-
-This issue can be fixed by modifying the permission check
-of clone_private_mount() following [1].
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: db04662e2f4f ("fs: allow detached mounts in clone_private_mount()")
-Link: https://lore.kernel.org/all/20250514190252.GQ2023217@ZenIV/ [1]
-Link: https://lore.kernel.org/all/20250506194849.GT2023217@ZenIV/
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Kazuma Kondo <kazuma-kondo@nec.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Fixes: 6d2c186afa5d ("net: lan966x: Add vlan support.")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250528093619.3738998-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ .../ethernet/microchip/lan966x/lan966x_main.c |  1 +
+ .../ethernet/microchip/lan966x/lan966x_main.h |  1 +
+ .../microchip/lan966x/lan966x_switchdev.c     |  1 +
+ .../ethernet/microchip/lan966x/lan966x_vlan.c | 21 +++++++++++++++++++
+ 4 files changed, 24 insertions(+)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index e2780f413a2e0..07bc500a248ec 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2492,18 +2492,19 @@ struct vfsmount *clone_private_mount(const struct path *path)
- 	if (IS_MNT_UNBINDABLE(old_mnt))
- 		return ERR_PTR(-EINVAL);
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 05f6c92275830..b424e75fd40c4 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -881,6 +881,7 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+ 	lan966x_vlan_port_set_vlan_aware(port, 0);
+ 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
+ 	lan966x_vlan_port_apply(port);
++	lan966x_vlan_port_rew_host(port);
  
--	if (mnt_has_parent(old_mnt)) {
--		if (!check_mnt(old_mnt))
--			return ERR_PTR(-EINVAL);
--	} else {
--		if (!is_mounted(&old_mnt->mnt))
--			return ERR_PTR(-EINVAL);
--
--		/* Make sure this isn't something purely kernel internal. */
--		if (!is_anon_ns(old_mnt->mnt_ns))
-+	/*
-+	 * Make sure the source mount is acceptable.
-+	 * Anything mounted in our mount namespace is allowed.
-+	 * Otherwise, it must be the root of an anonymous mount
-+	 * namespace, and we need to make sure no namespace
-+	 * loops get created.
-+	 */
-+	if (!check_mnt(old_mnt)) {
-+		if (!is_mounted(&old_mnt->mnt) ||
-+			!is_anon_ns(old_mnt->mnt_ns) ||
-+			mnt_has_parent(old_mnt))
- 			return ERR_PTR(-EINVAL);
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+index b65d58a1552b5..5a16d76eb000d 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+@@ -549,6 +549,7 @@ void lan966x_vlan_port_apply(struct lan966x_port *port);
+ bool lan966x_vlan_cpu_member_cpu_vlan_mask(struct lan966x *lan966x, u16 vid);
+ void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
+ 				      bool vlan_aware);
++void lan966x_vlan_port_rew_host(struct lan966x_port *port);
+ int lan966x_vlan_port_set_vid(struct lan966x_port *port,
+ 			      u16 vid,
+ 			      bool pvid,
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
+index 1c88120eb291a..bcb4db76b75cd 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
+@@ -297,6 +297,7 @@ static void lan966x_port_bridge_leave(struct lan966x_port *port,
+ 	lan966x_vlan_port_set_vlan_aware(port, false);
+ 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
+ 	lan966x_vlan_port_apply(port);
++	lan966x_vlan_port_rew_host(port);
+ }
  
--		/* Make sure we don't create mount namespace loops. */
- 		if (!check_for_nsfs_mounts(old_mnt))
- 			return ERR_PTR(-EINVAL);
- 	}
+ int lan966x_port_changeupper(struct net_device *dev,
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
+index 3c44660128dae..ffb245fb7d678 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
+@@ -149,6 +149,27 @@ void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
+ 	port->vlan_aware = vlan_aware;
+ }
+ 
++/* When the interface is in host mode, the interface should not be vlan aware
++ * but it should insert all the tags that it gets from the network stack.
++ * The tags are not in the data of the frame but actually in the skb and the ifh
++ * is configured already to get this tag. So what we need to do is to update the
++ * rewriter to insert the vlan tag for all frames which have a vlan tag
++ * different than 0.
++ */
++void lan966x_vlan_port_rew_host(struct lan966x_port *port)
++{
++	struct lan966x *lan966x = port->lan966x;
++	u32 val;
++
++	/* Tag all frames except when VID=0*/
++	val = REW_TAG_CFG_TAG_CFG_SET(2);
++
++	/* Update only some bits in the register */
++	lan_rmw(val,
++		REW_TAG_CFG_TAG_CFG,
++		lan966x, REW_TAG_CFG(port->chip_port));
++}
++
+ void lan966x_vlan_port_apply(struct lan966x_port *port)
+ {
+ 	struct lan966x *lan966x = port->lan966x;
 -- 
 2.39.5
 
