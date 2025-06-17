@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE30AADD5AA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB26ADD93D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491783BEB13
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BBB6188C87B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362D02356A4;
-	Tue, 17 Jun 2025 16:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0992EA148;
+	Tue, 17 Jun 2025 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMNPontN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT6w197L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4087202C38;
-	Tue, 17 Jun 2025 16:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C092EA142;
+	Tue, 17 Jun 2025 16:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176684; cv=none; b=OU2uBGuVrx8w06t8+Ghz9OSNHrm/snjSxBmpo+HcXKxZCjbPl4PLSc43wRKV1xqLLmuaEF4yQQMZI4Ta0QGo5ypPIeBGJ2TpwDVORUD8k1gKn8+wTv69GPkFlJOYDP0OPuUrd49Q1aD1am9J9JalO6mW9LkQwMrKIrafdyoUHiI=
+	t=1750178148; cv=none; b=WRxSGoBNovNPCGduc0aW0n/2sZP+E5NjbreaXPk3XV9oOiOLiP87P6uWMfOIekvjuQ0GvyDsHQ2GImw44Lfq+lX/5Y6NNvg57BHV5iKgN39kH3Ko+T7dBkz9k9YpT+v8wN5bKq+qlnxki2yVBuHIs0pf8VaZF3c2xg5gUxchALk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176684; c=relaxed/simple;
-	bh=AuZjo+pUx7BCNBkaHxrCF+b4ndXte9Fjq6jLDSXWZbw=;
+	s=arc-20240116; t=1750178148; c=relaxed/simple;
+	bh=hIkKG2sSc4z2sVQQzeeabjdzIb025dBpbLLVJsMB8u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcWAbzczspHnyHmVn3Wa6V+dCufY0236kNOM2VIO8WP+ufCjckYTslSN8awSnPWVB3BVgKBHR8ncX/d/vkyZMtdZObUmAxUph6P0uxbDh89podoTi6bFr8ZE5RyuBuzBan1+dlC87/NOblhRItou38M5uzoBogcx5Yu4fhOrRjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMNPontN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CEDC4CEE3;
-	Tue, 17 Jun 2025 16:11:22 +0000 (UTC)
+	 MIME-Version; b=X9D3btAhGi2m8hxKPX9jpJtRQV4FKbWWhqsx8TCWfFreNPzzSp6k5ZR0uBqzlT/zfKqGXXymRkphencLoFbcWjgTO+EJDs68mNUn0vXEmg1XF/kNtvojB1uPUjC7K7Esp4pxZZk0o/VSJrKx6YlfGO02tQd5UsYj1QgVXBlxiaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jT6w197L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A21C4CEE3;
+	Tue, 17 Jun 2025 16:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176683;
-	bh=AuZjo+pUx7BCNBkaHxrCF+b4ndXte9Fjq6jLDSXWZbw=;
+	s=korg; t=1750178148;
+	bh=hIkKG2sSc4z2sVQQzeeabjdzIb025dBpbLLVJsMB8u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMNPontNvVNcaIq05kgcQeUNXSu/fMAxyK7ppKHSEvzkwzaDECSlakQqMM7fiSDsH
-	 qrAvApRoJNU5VlioVooGC9osHcAFUm9YsdAqoeg0TVYp4S9jb5rvcx+G9iBVxizxIe
-	 7koKuiUJYcVR4qdgLpzBIKLV4NPsh04RHYvm+30o=
+	b=jT6w197LgbI0mQOLucRLrnrYYfzTcKcxfe3RCGhuAFedYPqWkSnZPQKjgDGZualqb
+	 0hRHLj6/I4m/DKPuAuImaa7/RX07SNUNNSz7EQjuNt64nuJCelGQvdwZbOj3EV2MaK
+	 FJJurgQNQy28KDFIvDofun5hiln/cMkdYWCnxHeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Slenska <wojciech.slenska@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Andreu Montiel <Andreu.Montiel@technica-engineering.de>,
+	Carlos Fernandez <carlos.fernandez@technica-engineering.de>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 304/356] pinctrl: qcom: pinctrl-qcm2290: Add missing pins
+Subject: [PATCH 6.12 453/512] macsec: MACsec SCI assignment for ES = 0
 Date: Tue, 17 Jun 2025 17:26:59 +0200
-Message-ID: <20250617152350.405201823@linuxfoundation.org>
+Message-ID: <20250617152437.924118321@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Slenska <wojciech.slenska@gmail.com>
+From: Carlos Fernandez <carlos.fernandez@technica-engineering.de>
 
-[ Upstream commit 315345610faee8a0568b522dba9e35067d1732ab ]
+[ Upstream commit d9816ec74e6d6aa29219d010bba3f780ba1d9d75 ]
 
-Added the missing pins to the qcm2290_pins table.
+According to 802.1AE standard, when ES and SC flags in TCI are zero,
+used SCI should be the current active SC_RX. Current code uses the
+header MAC address. Without this patch, when ES flag is 0 (using a
+bridge or switch), header MAC will not fit the SCI and MACSec frames
+will be discarted.
 
-Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
-Fixes: 48e049ef1238 ("pinctrl: qcom: Add QCM2290 pinctrl driver")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250523101437.59092-1-wojciech.slenska@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+In order to test this issue, MACsec link should be stablished between
+two interfaces, setting SC and ES flags to zero and a port identifier
+different than one. For example, using ip macsec tools:
+
+ip link add link $ETH0 macsec0 type macsec port 11 send_sci off
+end_station off
+ip macsec add macsec0 tx sa 0 pn 2 on key 01 $ETH1_KEY
+ip macsec add macsec0 rx port 11 address $ETH1_MAC
+ip macsec add macsec0 rx port 11 address $ETH1_MAC sa 0 pn 2 on key 02
+ip link set dev macsec0 up
+
+ip link add link $ETH1 macsec1 type macsec port 11 send_sci off
+end_station off
+ip macsec add macsec1 tx sa 0 pn 2 on key 01 $ETH0_KEY
+ip macsec add macsec1 rx port 11 address $ETH0_MAC
+ip macsec add macsec1 rx port 11 address $ETH0_MAC sa 0 pn 2 on key 02
+ip link set dev macsec1 up
+
+Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
+Co-developed-by: Andreu Montiel <Andreu.Montiel@technica-engineering.de>
+Signed-off-by: Andreu Montiel <Andreu.Montiel@technica-engineering.de>
+Signed-off-by: Carlos Fernandez <carlos.fernandez@technica-engineering.de>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-qcm2290.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/macsec.c | 40 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 34 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-qcm2290.c b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-index f5c1c427b44e9..61b7c22e963c2 100644
---- a/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-+++ b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-@@ -165,6 +165,10 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
- 	PINCTRL_PIN(62, "GPIO_62"),
- 	PINCTRL_PIN(63, "GPIO_63"),
- 	PINCTRL_PIN(64, "GPIO_64"),
-+	PINCTRL_PIN(65, "GPIO_65"),
-+	PINCTRL_PIN(66, "GPIO_66"),
-+	PINCTRL_PIN(67, "GPIO_67"),
-+	PINCTRL_PIN(68, "GPIO_68"),
- 	PINCTRL_PIN(69, "GPIO_69"),
- 	PINCTRL_PIN(70, "GPIO_70"),
- 	PINCTRL_PIN(71, "GPIO_71"),
-@@ -179,12 +183,17 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
- 	PINCTRL_PIN(80, "GPIO_80"),
- 	PINCTRL_PIN(81, "GPIO_81"),
- 	PINCTRL_PIN(82, "GPIO_82"),
-+	PINCTRL_PIN(83, "GPIO_83"),
-+	PINCTRL_PIN(84, "GPIO_84"),
-+	PINCTRL_PIN(85, "GPIO_85"),
- 	PINCTRL_PIN(86, "GPIO_86"),
- 	PINCTRL_PIN(87, "GPIO_87"),
- 	PINCTRL_PIN(88, "GPIO_88"),
- 	PINCTRL_PIN(89, "GPIO_89"),
- 	PINCTRL_PIN(90, "GPIO_90"),
- 	PINCTRL_PIN(91, "GPIO_91"),
-+	PINCTRL_PIN(92, "GPIO_92"),
-+	PINCTRL_PIN(93, "GPIO_93"),
- 	PINCTRL_PIN(94, "GPIO_94"),
- 	PINCTRL_PIN(95, "GPIO_95"),
- 	PINCTRL_PIN(96, "GPIO_96"),
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index ee21592825738..090a56a5e456a 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -246,15 +246,39 @@ static sci_t make_sci(const u8 *addr, __be16 port)
+ 	return sci;
+ }
+ 
+-static sci_t macsec_frame_sci(struct macsec_eth_header *hdr, bool sci_present)
++static sci_t macsec_active_sci(struct macsec_secy *secy)
+ {
+-	sci_t sci;
++	struct macsec_rx_sc *rx_sc = rcu_dereference_bh(secy->rx_sc);
++
++	/* Case single RX SC */
++	if (rx_sc && !rcu_dereference_bh(rx_sc->next))
++		return (rx_sc->active) ? rx_sc->sci : 0;
++	/* Case no RX SC or multiple */
++	else
++		return 0;
++}
++
++static sci_t macsec_frame_sci(struct macsec_eth_header *hdr, bool sci_present,
++			      struct macsec_rxh_data *rxd)
++{
++	struct macsec_dev *macsec;
++	sci_t sci = 0;
+ 
+-	if (sci_present)
++	/* SC = 1 */
++	if (sci_present) {
+ 		memcpy(&sci, hdr->secure_channel_id,
+ 		       sizeof(hdr->secure_channel_id));
+-	else
++	/* SC = 0; ES = 0 */
++	} else if ((!(hdr->tci_an & (MACSEC_TCI_ES | MACSEC_TCI_SC))) &&
++		   (list_is_singular(&rxd->secys))) {
++		/* Only one SECY should exist on this scenario */
++		macsec = list_first_or_null_rcu(&rxd->secys, struct macsec_dev,
++						secys);
++		if (macsec)
++			return macsec_active_sci(&macsec->secy);
++	} else {
+ 		sci = make_sci(hdr->eth.h_source, MACSEC_PORT_ES);
++	}
+ 
+ 	return sci;
+ }
+@@ -1108,7 +1132,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 	struct macsec_rxh_data *rxd;
+ 	struct macsec_dev *macsec;
+ 	unsigned int len;
+-	sci_t sci;
++	sci_t sci = 0;
+ 	u32 hdr_pn;
+ 	bool cbit;
+ 	struct pcpu_rx_sc_stats *rxsc_stats;
+@@ -1155,11 +1179,14 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 
+ 	macsec_skb_cb(skb)->has_sci = !!(hdr->tci_an & MACSEC_TCI_SC);
+ 	macsec_skb_cb(skb)->assoc_num = hdr->tci_an & MACSEC_AN_MASK;
+-	sci = macsec_frame_sci(hdr, macsec_skb_cb(skb)->has_sci);
+ 
+ 	rcu_read_lock();
+ 	rxd = macsec_data_rcu(skb->dev);
+ 
++	sci = macsec_frame_sci(hdr, macsec_skb_cb(skb)->has_sci, rxd);
++	if (!sci)
++		goto drop_nosc;
++
+ 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
+ 		struct macsec_rx_sc *sc = find_rx_sc(&macsec->secy, sci);
+ 
+@@ -1282,6 +1309,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 	macsec_rxsa_put(rx_sa);
+ drop_nosa:
+ 	macsec_rxsc_put(rx_sc);
++drop_nosc:
+ 	rcu_read_unlock();
+ drop_direct:
+ 	kfree_skb(skb);
 -- 
 2.39.5
 
