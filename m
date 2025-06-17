@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1F4ADD735
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5437ADD68E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16DBB19E404E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCFED4A059A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9657B2EF28C;
-	Tue, 17 Jun 2025 16:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479682DFF29;
+	Tue, 17 Jun 2025 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck9sVfvs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1GrquA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461032DFF2A;
-	Tue, 17 Jun 2025 16:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9A42E8DE0;
+	Tue, 17 Jun 2025 16:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177337; cv=none; b=prjsYJ1wO8hx1DEyZ92Ba+r9wNYgyZPgiib+x7kdI1956v72jEC78qSYNGcmlcmCA/WC+dZ2+4HDUyMHJV5Kl7bJpNT8o1GTIKaRBqMZ1kbAX+Gr6NXu/bBNDefgQ4BoKIp4Q9/z0egvvf1dnQmkt+7MfZ5rzD2fuS4xZC2fue8=
+	t=1750177344; cv=none; b=egpGjTqy86jUiCpx7TZw3DcGSK0Ti1mrSeKjpSiCzBf0pE8jgUiU29x1RmCWnWj3zb36lN1eCmpcWNS0zwq5WQ0gWFsURcq5k9IdPSPqwAE1J0qKlwlqoXNi9JIib9EMh813Ysjdvx6y0OlAVhGLcpjk9BgR9wXheEEX9LW7M9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177337; c=relaxed/simple;
-	bh=euKA2LHtJqnsRImKEfGE8P5+W/lk9MCq5X2KoALPEi4=;
+	s=arc-20240116; t=1750177344; c=relaxed/simple;
+	bh=LWGsE404Shqx+3HmkSILsiVkxmLh5PgoIdZugbYhRMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUTxtOFtM5TBIW5heW2pc3/RbUPF3u+WgloL1peWsp9hypN7lwjmnwCnVUdf3MmkrMartLSLYxDn3uRQEtrnMO8xn6MwOOiEYeb25buM6SKUund/f32Y2K24F201kz85vxHdPoo6VGCi0UdySb1Pk1LpQtPr3hkn4poxgrPJVOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck9sVfvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6823C4CEE3;
-	Tue, 17 Jun 2025 16:22:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BAdRG7ZvpucSxTW/mmWLAmUy3fXJhJFsWz88MibL/U4cPTU+MsHhdi2a6tBfhf+YdrRBE2NYg/uMqu5l6zJAaJxrcu51PDrIP3iLab3yy+57ozsoKfRib++n4kvSet2IWu/1oMCu3PtlHSzG86OmE/JXXmkGYiDNh4B1c4qxQb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1GrquA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1A7C4CEE3;
+	Tue, 17 Jun 2025 16:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177337;
-	bh=euKA2LHtJqnsRImKEfGE8P5+W/lk9MCq5X2KoALPEi4=;
+	s=korg; t=1750177343;
+	bh=LWGsE404Shqx+3HmkSILsiVkxmLh5PgoIdZugbYhRMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ck9sVfvs/qvux+sEAh0Wzm2JpXSkG2hF9xqq0PpnXu8JDVOSHwdBY1ed9N86ujT0R
-	 VSumbRAQlAYRQCzZcT4r+maEo7/zubjUoT/OFYk1uQMwAJ7ttArISTNqgtR6JMEkD6
-	 2S/l6JqDRWm9KXr3pJRCAGY8SH1c2FRKwsfyQ7SI=
+	b=p1GrquA5seouxElQQsywDLwJeVwvHbONdXkmgiG+uvMak8elnQx2BsD7abjiVMPcH
+	 7G6sarVf7nM6TgvlusEZKd0H/Lzg9mGckRjuxuhjFyd5RCmV1utRcRIdLrW7+n9WtP
+	 DetZlxyAoe5xxDd5PTci1tEzljhl5jiwGJxyxJcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	WangYuli <wangyuli@uniontech.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/512] usb: acpi: Prevent null pointer dereference in usb_acpi_add_usb4_devlink()
-Date: Tue, 17 Jun 2025 17:24:55 +0200
-Message-ID: <20250617152432.929921429@linuxfoundation.org>
+Subject: [PATCH 6.12 330/512] MIPS: Loongson64: Add missing #interrupt-cells for loongson64c_ls7a
+Date: Tue, 17 Jun 2025 17:24:56 +0200
+Message-ID: <20250617152432.986833565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -60,51 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 73fb0ec9436ae87bcae067ce35d6cdd72bade86c ]
+[ Upstream commit 6d223b8ffcd1593d032b71875def2daa71c53111 ]
 
-As demonstrated by the fix for update_port_device_state,
-commit 12783c0b9e2c ("usb: core: Prevent null pointer dereference in update_port_device_state"),
-usb_hub_to_struct_hub() can return NULL in certain scenarios,
-such as during hub driver unbind or teardown race conditions,
-even if the underlying usb_device structure exists.
+Similar to commit 98a9e2ac3755 ("MIPS: Loongson64: DTS: Fix msi node for ls7a").
 
-Plus, all other places that call usb_hub_to_struct_hub() in the same file
-do check for NULL return values.
+Fix follow warnings:
+  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts:28.31-36.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
+  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-If usb_hub_to_struct_hub() returns NULL, the subsequent access to
-hub->ports[udev->portnum - 1] will cause a null pointer dereference.
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: f1bfb4a6fed6 ("usb: acpi: add device link between tunneled USB3 device and USB4 Host Interface")
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250417195032.1811338-1-chenyuan0y@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
+Tested-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/usb-acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/core/usb-acpi.c b/drivers/usb/core/usb-acpi.c
-index 03c22114214b5..494e21a11cd26 100644
---- a/drivers/usb/core/usb-acpi.c
-+++ b/drivers/usb/core/usb-acpi.c
-@@ -165,6 +165,8 @@ static int usb_acpi_add_usb4_devlink(struct usb_device *udev)
- 		return 0;
- 
- 	hub = usb_hub_to_struct_hub(udev->parent);
-+	if (!hub)
-+		return 0;
- 	port_dev = hub->ports[udev->portnum - 1];
- 
- 	struct fwnode_handle *nhi_fwnode __free(fwnode_handle) =
+diff --git a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
+index c7ea4f1c0bb21..6c277ab83d4b9 100644
+--- a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
++++ b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
+@@ -29,6 +29,7 @@
+ 		compatible = "loongson,pch-msi-1.0";
+ 		reg = <0 0x2ff00000 0 0x8>;
+ 		interrupt-controller;
++		#interrupt-cells = <1>;
+ 		msi-controller;
+ 		loongson,msi-base-vec = <64>;
+ 		loongson,msi-num-vecs = <64>;
 -- 
 2.39.5
 
