@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-153242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C766AADD33D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5ECADD334
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26B9F17929E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA85A1895ACE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DA02F236C;
-	Tue, 17 Jun 2025 15:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E635E2EE609;
+	Tue, 17 Jun 2025 15:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDiTrkQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoLkIngf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E812F2369;
-	Tue, 17 Jun 2025 15:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BA72EE605;
+	Tue, 17 Jun 2025 15:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175333; cv=none; b=UQ4Za5xa2sVXOwaZIt1yLWy9JyalUoTs6hh4X4Z0hHK3STqaSlJDsikUoIESqqrzQ2nvAnNwiMPX1hrqYvtKw1dYoVB+lhxg5W4NuoCucDodjBt7j5LYIITMaDi/G3SrqTRdKzVtjqTIOAAsK4NsujmcNROWFQ9QItv63LBo2pA=
+	t=1750175153; cv=none; b=tnR7WkkPYB02fLYkRY4CAUZhZJ4rj307B/13E1n0NuJbLBVIPVy7vURzKN0X5IcHRl0FUM/6S/8mJECvbQoImnxOJZe20YGK8x6RY4SrRFWFmy5QcrYvOZR8bDkhSnXnbnyyBnlZ31b6F/g68qzUSUDUb/+B8656uacnXb13eUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175333; c=relaxed/simple;
-	bh=A99DWILIGTU+NhexuJL9d+6C0Bwh+NRP2slq56xsRCY=;
+	s=arc-20240116; t=1750175153; c=relaxed/simple;
+	bh=ILuM9r83mV7bhqxzose2yo/ezRtYgfBZV+KrNKqM0Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Em6uhJ0KreOk+ZENz4adatYChkooQIcZj2rUr3UPgtJMa8MjZ4CGy6MrOH0c/5vseQlA9Tr64/jEhjFsAnF0I5TJQkZwf/2khw5glkYwxAVBFjvwKBMX9cRgTL1rEfT1qj0F7/RJ3l30EoZZW4RJjuW6qgAZIHRO64dTcQUG0kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDiTrkQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06B3C4CEE3;
-	Tue, 17 Jun 2025 15:48:51 +0000 (UTC)
+	 MIME-Version; b=sGkh4QQDbfY09JOSD6FhlneWi7gijNnk/JQuusML9NdzPhrCw7m7RGYxNLupfoErwpBwiaJCsJzHgoCzJWTRDsXsJTpaq7azxzpxP1B751lXZCxn2sQK7vKZwUbjAZ9MhvvQNezJSEMtSeo/xk/IG6EAuVHzLQPdsA/pppPNaNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoLkIngf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA2EC4CEE3;
+	Tue, 17 Jun 2025 15:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175332;
-	bh=A99DWILIGTU+NhexuJL9d+6C0Bwh+NRP2slq56xsRCY=;
+	s=korg; t=1750175153;
+	bh=ILuM9r83mV7bhqxzose2yo/ezRtYgfBZV+KrNKqM0Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDiTrkQpZsmyZPo4jlop0X+HCL33Y95ZBbtQLJtQr3qM53BMn3c0Q3ynTTcvCOEs/
-	 Hhb8Xl4XQHGnf4iPcJNkMOYMiCyd4hDNBi2j0c9T8tuKXIeE2+09H2pdfIdQIRJOCe
-	 Q1NFnyBPHNsvv23KMa4zTQQZnENeiIBQ5W6Mfy5M=
+	b=ZoLkIngf0Kra/zVC5yj6KoQOnMeReXp+gZTeUqy/kHdYxuW+RlWCHX3+ARDYWov2e
+	 hoL0y5iaPcSN3WpdOzyBLamXAL/S03uXsthhZ2bs35O5dq8qA2rtU0D6lFKN+AdHfh
+	 V71MX56TXpIV3G/+uVqIvGlcL/lZQAHwUvFMhem4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
+	Alexander Lobakin <alobakin@pm.me>,
 	Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/356] net: phy: clear phydev->devlink when the link is deleted
-Date: Tue, 17 Jun 2025 17:24:22 +0200
-Message-ID: <20250617152344.149954363@linuxfoundation.org>
+Subject: [PATCH 6.6 148/356] net: phy: fix up const issues in to_mdio_device() and to_phy_device()
+Date: Tue, 17 Jun 2025 17:24:23 +0200
+Message-ID: <20250617152344.189639544@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -68,59 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 0795b05a59b1371b18ffbf09d385296b12e9f5d5 ]
+[ Upstream commit e9cb929670a1e98b592b30f03f06e9e20110f318 ]
 
-There is a potential crash issue when disabling and re-enabling the
-network port. When disabling the network port, phy_detach() calls
-device_link_del() to remove the device link, but it does not clear
-phydev->devlink, so phydev->devlink is not a NULL pointer. Then the
-network port is re-enabled, but if phy_attach_direct() fails before
-calling device_link_add(), the code jumps to the "error" label and
-calls phy_detach(). Since phydev->devlink retains the old value from
-the previous attach/detach cycle, device_link_del() uses the old value,
-which accesses a NULL pointer and causes a crash. The simplified crash
-log is as follows.
+Both to_mdio_device() and to_phy_device() "throw away" the const pointer
+attribute passed to them and return a non-const pointer, which generally
+is not a good thing overall.  Fix this up by using container_of_const()
+which was designed for this very problem.
 
-[   24.702421] Call trace:
-[   24.704856]  device_link_put_kref+0x20/0x120
-[   24.709124]  device_link_del+0x30/0x48
-[   24.712864]  phy_detach+0x24/0x168
-[   24.716261]  phy_attach_direct+0x168/0x3a4
-[   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
-[   24.725140]  phylink_of_phy_connect+0x1c/0x34
-
-Therefore, phydev->devlink needs to be cleared when the device link is
-deleted.
-
-Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250523083759.3741168-1-wei.fang@nxp.com
+Cc: Alexander Lobakin <alobakin@pm.me>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Fixes: 7eab14de73a8 ("mdio, phy: fix -Wshadow warnings triggered by nested container_of()")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2025052246-conduit-glory-8fc9@gregkh
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/mdio.h | 5 +----
+ include/linux/phy.h  | 5 +----
+ 2 files changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index ec2a3d16b1a2d..cde0e80474a1d 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1806,8 +1806,10 @@ void phy_detach(struct phy_device *phydev)
- 	struct module *ndev_owner = NULL;
- 	struct mii_bus *bus;
+diff --git a/include/linux/mdio.h b/include/linux/mdio.h
+index 8fa23bdcedbf9..0bca1a960853f 100644
+--- a/include/linux/mdio.h
++++ b/include/linux/mdio.h
+@@ -44,10 +44,7 @@ struct mdio_device {
+ 	unsigned int reset_deassert_delay;
+ };
  
--	if (phydev->devlink)
-+	if (phydev->devlink) {
- 		device_link_del(phydev->devlink);
-+		phydev->devlink = NULL;
-+	}
+-static inline struct mdio_device *to_mdio_device(const struct device *dev)
+-{
+-	return container_of(dev, struct mdio_device, dev);
+-}
++#define to_mdio_device(__dev)	container_of_const(__dev, struct mdio_device, dev)
  
- 	if (phydev->sysfs_links) {
- 		if (dev)
+ /* struct mdio_driver_common: Common to all MDIO drivers */
+ struct mdio_driver_common {
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 5aa30ee998104..a57e799b1de18 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -766,10 +766,7 @@ struct phy_device {
+ /* Generic phy_device::dev_flags */
+ #define PHY_F_NO_IRQ		0x80000000
+ 
+-static inline struct phy_device *to_phy_device(const struct device *dev)
+-{
+-	return container_of(to_mdio_device(dev), struct phy_device, mdio);
+-}
++#define to_phy_device(__dev)	container_of_const(to_mdio_device(__dev), struct phy_device, mdio)
+ 
+ /**
+  * struct phy_tdr_config - Configuration of a TDR raw test
 -- 
 2.39.5
 
