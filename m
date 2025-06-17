@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-153588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEFCADD556
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1765ADD7B1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2156D19E12CE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:11:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 302CF3ABCD4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A592EA168;
-	Tue, 17 Jun 2025 16:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA9C2264B7;
+	Tue, 17 Jun 2025 16:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ2Kp+ND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSSDilVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021152EA15D;
-	Tue, 17 Jun 2025 16:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E7E188006;
+	Tue, 17 Jun 2025 16:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176447; cv=none; b=QV5MNdmgz6ZVbMJrvFYoUWqOswSCwZ8VHeJCMSgKFyRwGWJH795su8MJ8VfXHG4ZR/VGaZ8cTmYyKLPHG0pA3ihcTrNXXxQb8H+JdO3NhwJrz41/Kv2xsib81LZXj2A6NHROqFEaEFamS1x93ASbe1smx2RPfyBD14t7tHo3LBA=
+	t=1750177981; cv=none; b=u0uc6GzrmTWzfUD7zLtKD2hs8udE2Jr0za19UwuEdjkNzPTSeXHSU8UpYcaG9gJ2wv4F0odXNgb3gQ5sSw6nEWU48MB+SNX6f4ZS61TCa1QzGQ2Ddlruayx6/Yp6OZ/Vfw9FY4d+mJnWG2b9LJ/aRJ6w6BW6jrmpbaKu9Dr+75U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176447; c=relaxed/simple;
-	bh=Ai/Bq6+VpCGLQWYbv5smlSJuNnz010uiZe55eoEYA60=;
+	s=arc-20240116; t=1750177981; c=relaxed/simple;
+	bh=esN/mIdLYg2PwSBHSlvQk2fb09q0U220ey1ptjxV9bY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3xg8HbauU9XjGKb2IMp7I9P8FeC/1e4vMNqhwxvgK2hvs/Cy58o6b+z2RwGDaC7Zmhwl7958JPNbmh0bHZy1L9KqwPsCcPnQlzo8j5kXwjy2NmE77IlCzRZhFQ155ABUwP1v/VslVfftq3zW8PDaGXxULTwLcamFkbpIKFkAgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ2Kp+ND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AE9C4CEE3;
-	Tue, 17 Jun 2025 16:07:26 +0000 (UTC)
+	 MIME-Version; b=TAAlYM6OsHHHTFNlhLa22wjafzlE/Vlrpig1DeIHE75Mxq/QYO62fyDEoizghxxfO2LJfNn/Jchn6ZNunxK6v/6YhsTOOV0SnJPnOccMZTbTNoEwQy+31JP1TH+jrpMbpdP0hnjujeG9yXliUSPtyWyrBoecBleubNhTcx7niB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSSDilVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46733C4CEE3;
+	Tue, 17 Jun 2025 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176446;
-	bh=Ai/Bq6+VpCGLQWYbv5smlSJuNnz010uiZe55eoEYA60=;
+	s=korg; t=1750177980;
+	bh=esN/mIdLYg2PwSBHSlvQk2fb09q0U220ey1ptjxV9bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJ2Kp+NDxSoan7WaxnimFsb6p2k2aWSZb0inhLO4OY0FyzZTnCXbZTqacdu3zJWlB
-	 wtikK7Vaf1mn6rSPQdivDr2qLD02mUrb1+N6R0/kSJKBZfWL9GcElMrrKkn2MzDBhb
-	 kbK5tY/UM+HYjVr2eN9GXffszz7hgBWuYikaGP7c=
+	b=LSSDilVQLOpq6NFvJnJo1vAqv3Go7qJQ41C/F++mL6YBGN+yeHeFj/DkVgX+7CBWE
+	 vfZd2cBC6w3L57oUCuu1bGPNFkZUEQVWbo70FPaW+c1Qk5+cBM+iTcB1H2vPeLIuyc
+	 cv8jse7M7ggcUpd20XYJeMP1hXw5k+WloLcRMepg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 278/356] net: dsa: microchip: linearize skb for tail-tagging switches
+Subject: [PATCH 6.12 427/512] ptp: remove ptp->n_vclocks check logic in ptp_vclock_in_use()
 Date: Tue, 17 Jun 2025 17:26:33 +0200
-Message-ID: <20250617152349.384743028@linuxfoundation.org>
+Message-ID: <20250617152436.871394859@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Unterwurzacher <jakobunt@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
+[ Upstream commit 87f7ce260a3c838b49e1dc1ceedf1006795157a2 ]
 
-The pointer arithmentic for accessing the tail tag only works
-for linear skbs.
+There is no disagreement that we should check both ptp->is_virtual_clock
+and ptp->n_vclocks to check if the ptp virtual clock is in use.
 
-For nonlinear skbs, it reads uninitialized memory inside the
-skb headroom, essentially randomizing the tag. I have observed
-it gets set to 6 most of the time.
+However, when we acquire ptp->n_vclocks_mux to read ptp->n_vclocks in
+ptp_vclock_in_use(), we observe a recursive lock in the call trace
+starting from n_vclocks_store().
 
-Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
-(which does not exist for the ksz9896 that's in use), dropping the packet.
-Debug prints added by me (not included in this patch):
+============================================
+WARNING: possible recursive locking detected
+6.15.0-rc6 #1 Not tainted
+--------------------------------------------
+syz.0.1540/13807 is trying to acquire lock:
+ffff888035a24868 (&ptp->n_vclocks_mux){+.+.}-{4:4}, at:
+ ptp_vclock_in_use drivers/ptp/ptp_private.h:103 [inline]
+ffff888035a24868 (&ptp->n_vclocks_mux){+.+.}-{4:4}, at:
+ ptp_clock_unregister+0x21/0x250 drivers/ptp/ptp_clock.c:415
 
-	[  256.645337] ksz9477_rcv:323 tag0=6
-	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
-	               mac=(64,14) mac_len=14 net=(78,0) trans=78
-	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
-	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
-	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
-	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
-	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
-	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
-	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
+but task is already holding lock:
+ffff888030704868 (&ptp->n_vclocks_mux){+.+.}-{4:4}, at:
+ n_vclocks_store+0xf1/0x6d0 drivers/ptp/ptp_sysfs.c:215
 
-Call skb_linearize before trying to access the tag.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
-hand, and also applies the same fix to ksz8795_rcv which seems to have
-the same problem.
+       CPU0
+       ----
+  lock(&ptp->n_vclocks_mux);
+  lock(&ptp->n_vclocks_mux);
 
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-CC: stable@vger.kernel.org
-Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
-Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
+ *** DEADLOCK ***
+....
+============================================
+
+The best way to solve this is to remove the logic that checks
+ptp->n_vclocks in ptp_vclock_in_use().
+
+The reason why this is appropriate is that any path that uses
+ptp->n_vclocks must unconditionally check if ptp->n_vclocks is greater
+than 0 before unregistering vclocks, and all functions are already
+written this way. And in the function that uses ptp->n_vclocks, we
+already get ptp->n_vclocks_mux before unregistering vclocks.
+
+Therefore, we need to remove the redundant check for ptp->n_vclocks in
+ptp_vclock_in_use() to prevent recursive locking.
+
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20250520160717.7350-1-aha310510@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/tag_ksz.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/ptp/ptp_private.h | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index 7bf87fa471a0c..0a16c04c4bfc4 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -139,7 +139,12 @@ static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index 18934e28469ee..528d86a33f37d 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -98,17 +98,7 @@ static inline int queue_cnt(const struct timestamp_event_queue *q)
+ /* Check if ptp virtual clock is in use */
+ static inline bool ptp_vclock_in_use(struct ptp_clock *ptp)
  {
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
- 
- 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
+-	bool in_use = false;
+-
+-	if (mutex_lock_interruptible(&ptp->n_vclocks_mux))
+-		return true;
+-
+-	if (!ptp->is_virtual_clock && ptp->n_vclocks)
+-		in_use = true;
+-
+-	mutex_unlock(&ptp->n_vclocks_mux);
+-
+-	return in_use;
++	return !ptp->is_virtual_clock;
  }
-@@ -301,10 +306,16 @@ static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
  
- static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	/* Tag decoding */
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
-+	unsigned int port;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	/* Tag decoding */
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 
- 	/* Extra 4-bytes PTP timestamp */
- 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION) {
+ /* Check if ptp clock shall be free running */
 -- 
 2.39.5
 
