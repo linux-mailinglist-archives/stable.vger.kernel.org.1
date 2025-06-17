@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-153791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9419ADD65D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08CEADD7DA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B905D17FFDA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 061467AD8AC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26172ED14D;
-	Tue, 17 Jun 2025 16:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC3B1ADC97;
+	Tue, 17 Jun 2025 16:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BB9cLQhf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJKCCFF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7B32EA17C;
-	Tue, 17 Jun 2025 16:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311C3285075;
+	Tue, 17 Jun 2025 16:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177110; cv=none; b=nnAXXBh+xcxukLu7fVGEoqMMU+xTDqFJgjTs4arNoj58CiGqPDL3mlmSO+hnpiY+c/K/Yg60Uok5aegMly14jobJUoVWh4KWgcrRxcVlgf9t2oSlyKTZEQbuvCgYbQ2E8mi0/2J4wslMr8o/73yhE/N94CvkS3JNoammRCWW55E=
+	t=1750178792; cv=none; b=p/QFccz7UhrmR0p6tvTWa4KpXx5iQ7eGY55M4Rrg40akxzamTKtxrwTsvRQgfxA1Ul8vNvYN0wuqILXwuGuFhX+jM7AruL0oa9YOiIiwv9jUAD7g/U7oHGGAb93H0uQg/g3y6UpwWNo8TC5fpNJO8JZDmBE4+mvFKFrH+O0OAEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177110; c=relaxed/simple;
-	bh=+Hatp4nQE5AhRQ9DJMMlt5+EN33aZtsSgAYrDSdpaeY=;
+	s=arc-20240116; t=1750178792; c=relaxed/simple;
+	bh=NIcr+fxy+k4SAe1WjIQLAGq7Ww93ESH498ZagjswnD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0yU6nN2jBSajWMgratSQ4Pvf9Ux+vm3YVZ6rvQ9jnbZe51XorbU55pHf+URUYe4UZ742ftffZ2mEvWlOjZEJnQ5sOhGsTaqOyl5YZI9cvMV04aE310YdQOkboqOIRG+h2aPhYcgQY8Dx+2uboxfekZntAwDeTJY1egWaA8cR94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BB9cLQhf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7E2C4CEE3;
-	Tue, 17 Jun 2025 16:18:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MdWZI0KfReU0q/bnbmMTj5LS95v3yCtZEJ1owjsdZJqk2CxLBYmG3vMpDsgMSgTrsggXazyXek4AxpriZZQhYdv8H9eohnnSvFmeeQLimcjNNsuZYabe97711wVOz8R0S1iznjNOZ6vPGSk3FyFoFqd7/KPER7zghfTVzdn9C2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJKCCFF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C23C4CEE3;
+	Tue, 17 Jun 2025 16:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177109;
-	bh=+Hatp4nQE5AhRQ9DJMMlt5+EN33aZtsSgAYrDSdpaeY=;
+	s=korg; t=1750178792;
+	bh=NIcr+fxy+k4SAe1WjIQLAGq7Ww93ESH498ZagjswnD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BB9cLQhf/XyZJgupd+8HkQZyGA/yZUh+oxl63cJ34rhzv5hsbDozyXvlDGroeygb6
-	 czbMwGOEYbuZJoPbyHUt8p1fMTtc8w3s9u3adNk3CPeVefYIG0tmsmCOnwL02V9Vbb
-	 d0HBScuxJh3y/LZiBA3Zqa3aPMk1Y7gJNJ0wElKc=
+	b=RJKCCFF4aocA+sfgXwhJuwQPjk6ZXoIbvk/zDJHGoeQwulmFZvm3DATzor4ibHjYd
+	 WpnZnJ1CN8WhnXzL6EGuPKuGHp0QFvGETtPYjcomCcIbDmRy16gDiZSv/FM2vhKhmR
+	 rSKGEjy3d9HXGhEjPipbC4rJKlKOrPSvwjkMuMak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/512] perf record: Fix incorrect --user-regs comments
+Subject: [PATCH 6.15 556/780] drm/xe: Make xe_gt_freq part of the Documentation
 Date: Tue, 17 Jun 2025 17:24:24 +0200
-Message-ID: <20250617152431.672173494@linuxfoundation.org>
+Message-ID: <20250617152514.141606163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,50 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-[ Upstream commit a4a859eb6704a8aa46aa1cec5396c8d41383a26b ]
+[ Upstream commit 55f8aa083604ce098c9d6a0911c6bcde15d03a80 ]
 
-The comment of "--user-regs" option is not correct, fix it.
+The documentation was created with the creation of the component,
+however it has never been actually shown in the actual Documentation.
 
-"on interrupt," -> "in user space,"
+While doing this, fixes the identation style, to avoid new warnings
+while building htmldocs.
 
-Fixes: 84c417422798c897 ("perf record: Support direct --user-regs arguments")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403060810.196028-1-dapeng1.mi@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: bef52b5c7a19 ("drm/xe: Create a xe_gt_freq component for raw management and sysfs")
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20250521165146.39616-3-rodrigo.vivi@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit af53f0fd99c3bbb3afd29f1612c9e88c5a92cc01)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/gpu/xe/index.rst      |  1 +
+ Documentation/gpu/xe/xe_gt_freq.rst | 14 ++++++++++++++
+ drivers/gpu/drm/xe/xe_gt_freq.c     |  2 ++
+ 3 files changed, 17 insertions(+)
+ create mode 100644 Documentation/gpu/xe/xe_gt_freq.rst
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index adbaf80b398c1..ab9035573a15e 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -3471,7 +3471,7 @@ static struct option __record_options[] = {
- 		    "sample selected machine registers on interrupt,"
- 		    " use '-I?' to list register names", parse_intr_regs),
- 	OPT_CALLBACK_OPTARG(0, "user-regs", &record.opts.sample_user_regs, NULL, "any register",
--		    "sample selected machine registers on interrupt,"
-+		    "sample selected machine registers in user space,"
- 		    " use '--user-regs=?' to list register names", parse_user_regs),
- 	OPT_BOOLEAN(0, "running-time", &record.opts.running_time,
- 		    "Record running/enabled time of read (:S) events"),
+diff --git a/Documentation/gpu/xe/index.rst b/Documentation/gpu/xe/index.rst
+index 92cfb25e64d32..b53a0cc7f66a3 100644
+--- a/Documentation/gpu/xe/index.rst
++++ b/Documentation/gpu/xe/index.rst
+@@ -16,6 +16,7 @@ DG2, etc is provided to prototype the driver.
+    xe_migrate
+    xe_cs
+    xe_pm
++   xe_gt_freq
+    xe_pcode
+    xe_gt_mcr
+    xe_wa
+diff --git a/Documentation/gpu/xe/xe_gt_freq.rst b/Documentation/gpu/xe/xe_gt_freq.rst
+new file mode 100644
+index 0000000000000..c0811200e3275
+--- /dev/null
++++ b/Documentation/gpu/xe/xe_gt_freq.rst
+@@ -0,0 +1,14 @@
++.. SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++==========================
++Xe GT Frequency Management
++==========================
++
++.. kernel-doc:: drivers/gpu/drm/xe/xe_gt_freq.c
++   :doc: Xe GT Frequency Management
++
++Internal API
++============
++
++.. kernel-doc:: drivers/gpu/drm/xe/xe_gt_freq.c
++   :internal:
+diff --git a/drivers/gpu/drm/xe/xe_gt_freq.c b/drivers/gpu/drm/xe/xe_gt_freq.c
+index 604bdc7c81736..985efbc685286 100644
+--- a/drivers/gpu/drm/xe/xe_gt_freq.c
++++ b/drivers/gpu/drm/xe/xe_gt_freq.c
+@@ -32,6 +32,7 @@
+  * Xe's Freq provides a sysfs API for frequency management:
+  *
+  * device/tile#/gt#/freq0/<item>_freq *read-only* files:
++ *
+  * - act_freq: The actual resolved frequency decided by PCODE.
+  * - cur_freq: The current one requested by GuC PC to the PCODE.
+  * - rpn_freq: The Render Performance (RP) N level, which is the minimal one.
+@@ -39,6 +40,7 @@
+  * - rp0_freq: The Render Performance (RP) 0 level, which is the maximum one.
+  *
+  * device/tile#/gt#/freq0/<item>_freq *read-write* files:
++ *
+  * - min_freq: Min frequency request.
+  * - max_freq: Max frequency request.
+  *             If max <= min, then freq_min becomes a fixed frequency request.
 -- 
 2.39.5
 
