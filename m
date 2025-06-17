@@ -1,63 +1,69 @@
-Return-Path: <stable+bounces-153934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEB3ADD727
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E7DADD42E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0954116B862
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00DF17EBE7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92942F234A;
-	Tue, 17 Jun 2025 16:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED14C2ED855;
+	Tue, 17 Jun 2025 15:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNoyUQe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5fTXr8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760C42EF2BE;
-	Tue, 17 Jun 2025 16:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FB82ED17C;
+	Tue, 17 Jun 2025 15:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177571; cv=none; b=O+iKF6pfv8Zuc7MtclRnycEmvjXJOT8meThXPkrdHmMou02qB8bGKngMFETj12kc6iSCyMyfe/qF7xGEeStFQ8QXtGv9Z0NeL7jfU/j87KN90iACJyPDpvw5+WWfaecbJxRZTNX2RiCdaHKrWRLwxd5yg1klu08pcgkGUkVAAZs=
+	t=1750175834; cv=none; b=sxvMN74IggS1PQS2d3uGoztP8ZhR6QZdLHx6p7lry/PBi4yiTGd/Lu1IAmHm262yatc5uJHWStkDEI2BuiTaaGYdrvaB97+5mDOlo51LQa8/nzsX49SSqSxMThHDeemBFQEbPZM/4CLUWU5pnup6aOSHCabUMeYu6AvA/A5j8E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177571; c=relaxed/simple;
-	bh=2gGg3MFk71+WH9xnbmP68/QT9SPGJ5MxbzHDucvLIsY=;
+	s=arc-20240116; t=1750175834; c=relaxed/simple;
+	bh=2X98Nb9/jV+v+5pvTZKSzMPSMO1jQy6Nb7Gk0wZXqxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKKcK1v5pM2UVVWpXKmcSqpzFyDinoWi+kaOXCZIsgHRWX/OEJ0dW9BQAVcsor/9DFirE7EVsRf4Qvug+p06r0ONw6zMFhh7URjtrMnUogencqM2/l0sozskEGivgvb2ii7wq0ho6MVpHXhm54twNlcVzlmlMSsvn3tpksl3JyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNoyUQe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AA1C4CEF0;
-	Tue, 17 Jun 2025 16:26:10 +0000 (UTC)
+	 MIME-Version; b=Ul77iKmj3W7ZH1WXzuStH3a/5fXp1PTvqQT+QlsGD2y8kKC2IbQJm65YyvnM/yPBzeAGTFzqnaYwq1b7AVZ+xl+qp98Pg53UqSxiTlqvNrmfMOqs+928lFqyW/IsQmmpukRBf+D2FXRDwtNqosP/8hnZMi2bUrFp8D5uiNDL1A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5fTXr8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42DEC4CEF0;
+	Tue, 17 Jun 2025 15:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177571;
-	bh=2gGg3MFk71+WH9xnbmP68/QT9SPGJ5MxbzHDucvLIsY=;
+	s=korg; t=1750175834;
+	bh=2X98Nb9/jV+v+5pvTZKSzMPSMO1jQy6Nb7Gk0wZXqxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNoyUQe0hB0M2LIvjtRkRKorrtwYWSk7B/MizNoq7TqFApzFOItWQH8kt4vUjJAlj
-	 pKO92J82WzquaAbnRMDJQOo4iDxac1kD8avRJfasIa1Ce+TyhJj0oSIuXf327cMVSU
-	 +Ro30TnbZ6mNw/O+lOZS1b/sBybf1ukfhMixuGbk=
+	b=p5fTXr8YItltCS+uZ0jMPO2d2cPerp8VjMZq5hgKNWNbuhPR2P+KSdAy9EvS3Ttlv
+	 0bEz5hzZ3P7fhoVSFY5YgvzrLA6YF7eS1XWJdeiDmxqc31zwWFuowk+lfDf9sHNSHz
+	 i0T7/ovJt1I7tXliplnaeoKYRlUJDe9uhfdNe8+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesus Narvaez <jesus.narvaez@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Alan Previn <alan.previn.teres.alexis@intel.com>,
-	Anshuman Gupta <anshuman.gupta@intel.com>,
-	Mousumi Jana <mousumi.jana@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Anubhav Shelat <ashelat@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 365/512] drm/i915/guc: Check if expecting reply before decrementing outstanding_submission_g2h
-Date: Tue, 17 Jun 2025 17:25:31 +0200
-Message-ID: <20250617152434.365009797@linuxfoundation.org>
+Subject: [PATCH 6.6 217/356] perf trace: Always print return value for syscalls returning a pid
+Date: Tue, 17 Jun 2025 17:25:32 +0200
+Message-ID: <20250617152346.940828976@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,54 +75,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesus Narvaez <jesus.narvaez@intel.com>
+From: Anubhav Shelat <ashelat@redhat.com>
 
-[ Upstream commit c557fd1050f6691dde36818dfc1a4c415c42901b ]
+[ Upstream commit c7a48ea9b919e2fa0e4a1d9938fdb03e9afe276c ]
 
-When sending a H2G message where a reply is expected in
-guc_submission_send_busy_loop(), outstanding_submission_g2h is
-incremented before the send. However, if there is an error sending the
-message, outstanding_submission_g2h is decremented without checking if a
-reply is expected.
+The syscalls that were consistently observed were set_robust_list and
+rseq. This is because perf cannot find their child process.
 
-Therefore, check if reply is expected when there is a failure before
-decrementing outstanding_submission_g2h.
+This change ensures that the return value is always printed.
 
-Fixes: 2f2cc53b5fe7 ("drm/i915/guc: Close deregister-context race against CT-loss")
-Signed-off-by: Jesus Narvaez <jesus.narvaez@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: Mousumi Jana <mousumi.jana@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://lore.kernel.org/r/20250514225224.4142684-1-jesus.narvaez@intel.com
-(cherry picked from commit a6a26786f22a4ab0227bcf610510c4c9c2df0808)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Before:
+     0.256 ( 0.001 ms): set_robust_list(head: 0x7f09c77dba20, len: 24)                        =
+     0.259 ( 0.001 ms): rseq(rseq: 0x7f09c77dc0e0, rseq_len: 32, sig: 1392848979)             =
+After:
+     0.270 ( 0.002 ms): set_robust_list(head: 0x7f0bb14a6a20, len: 24)                        = 0
+     0.273 ( 0.002 ms): rseq(rseq: 0x7f0bb14a70e0, rseq_len: 32, sig: 1392848979)             = 0
+
+Committer notes:
+
+As discussed in the thread in the Link: tag below, these two don't
+return a pid, but for syscalls returning one, we need to print the
+result and if we manage to find the children in 'perf trace' data
+structures, then print its name as well.
+
+Fixes: 11c8e39f5133aed9 ("perf trace: Infrastructure to show COMM strings for syscalls returning PIDs")
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Anubhav Shelat <ashelat@redhat.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250403160411.159238-2-ashelat@redhat.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 2 +-
+ tools/perf/builtin-trace.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index 8aaadbb702df6..00e2cf92d99c7 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -633,7 +633,7 @@ static int guc_submission_send_busy_loop(struct intel_guc *guc,
- 		atomic_inc(&guc->outstanding_submission_g2h);
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 908509df007ba..7ee3285af10c9 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2586,8 +2586,8 @@ errno_print: {
+ 	else if (sc->fmt->errpid) {
+ 		struct thread *child = machine__find_thread(trace->host, ret, ret);
  
- 	ret = intel_guc_send_busy_loop(guc, action, len, g2h_len_dw, loop);
--	if (ret)
-+	if (ret && g2h_len_dw)
- 		atomic_dec(&guc->outstanding_submission_g2h);
- 
- 	return ret;
++		fprintf(trace->output, "%ld", ret);
+ 		if (child != NULL) {
+-			fprintf(trace->output, "%ld", ret);
+ 			if (thread__comm_set(child))
+ 				fprintf(trace->output, " (%s)", thread__comm_str(child));
+ 			thread__put(child);
 -- 
 2.39.5
 
