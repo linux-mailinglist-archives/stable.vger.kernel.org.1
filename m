@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2C9ADD5D9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5640ADD5F1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 487937AE406
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A5BF7AF98C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259642ED84D;
-	Tue, 17 Jun 2025 16:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC812F949D;
+	Tue, 17 Jun 2025 16:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOAprzy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTI8RFsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6192EE29E;
-	Tue, 17 Jun 2025 16:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0FA2F949A;
+	Tue, 17 Jun 2025 16:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176800; cv=none; b=pKjVPapFxyyTuzhyBs8oc38/UyOVKILZe8gENEx1kt8Mtsed4q/qrTSnxQyim3NdLRSZ9xJ4bV4Q3DazMw4VJInsS578FpR5mbIvbMhHxmH1lwmWV/OhLT85Vg4RdSJq6fgZEGVgYgSSHznipyiDh6iy3zQQDIaE3ShIf69YNA4=
+	t=1750176810; cv=none; b=dDG/SIleooy0X/X4Z6BuGC+gmifzL3J9xvcAqv4q+vwuy8+B10kAhZJ2NO6XO8D3GV/9t/VDH1oE79EeRVn27Vr5qO3u7KBKRgzpmNbprYTWcwbZ+Eb+UZ5M+5uDKUrEIehrC0HUjkJ1LM0wzxCe8ngRNH0V8RfkQKtbtQ+ru9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176800; c=relaxed/simple;
-	bh=aTo5Wi5AEQ9G4wTRl7IfgnIMKmLl5EsMqLnrYSvuzRg=;
+	s=arc-20240116; t=1750176810; c=relaxed/simple;
+	bh=Rusr4OSSCoKlbujJDlXqICgBUTsNtQbs6ZVNr3p/hzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4VnPff413L/FHYXke/2sdOdZSQ2xVoBC+BLuBfSF7Ah8GWv6ISN9bi+CSfs/NlWeWwh9DN2vFvoPJu67LBRE86lH4iXoURzw0S1kMmhfKus0LOhV0JfDXy6jb0tZgAzxTf8WTNNdwxOpwl3sXJR9JFGQY9TCV6xUhakw4a77U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOAprzy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C49C4CEF0;
-	Tue, 17 Jun 2025 16:13:20 +0000 (UTC)
+	 MIME-Version; b=Kth4jwX1mZ5ImeDwIm0jlsnxxVKdh9hudIOP1YeyPnUAvq0AGMU1sLXj012zEvZdTeHnYK0n698auz5j9phX7aC+2HGskYCgOKorBGQIsJXmfZkzxz0bK9i1EY2UqUhUQsH5v7hCkudLj1spWuuHfOTufCMpjPoBjAMSrKqz42o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTI8RFsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B00CC4CEE3;
+	Tue, 17 Jun 2025 16:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176800;
-	bh=aTo5Wi5AEQ9G4wTRl7IfgnIMKmLl5EsMqLnrYSvuzRg=;
+	s=korg; t=1750176810;
+	bh=Rusr4OSSCoKlbujJDlXqICgBUTsNtQbs6ZVNr3p/hzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOAprzy8+UCM4k5q6pL2VeS6/xeG6I1pOfuhthf6WVIrOVEYquN6c2ICSX5UEppCA
-	 nNjc0bpTJpTcrHfeBKb36D6110aA4O9l8f62As8xinCS4CxpQhl66ikyG57vpN8UKd
-	 mjoWXRZKSXmNk+kI/krvULaLwUvlK+u12WC8W++0=
+	b=NTI8RFsigH673NcKpD7IMP/qugB9UKItN0/r33Gyu/N74FQKxdjA63+esXZ77hId7
+	 w31NRHPxSYOQu2tBeGOmBmDFhdhvdcLPDHr3Vl8dcifcKPItlShfMprK5c9vURSV1a
+	 XyYxQGt94zzgT8JrWJczcKfCNYsWWj3+FhWIX+3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Prusakowski <jprusakowski@google.com>,
+	Daeho Jeong <daehojeong@google.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 227/780] f2fs: fix to detect gcing page in f2fs_is_cp_guaranteed()
-Date: Tue, 17 Jun 2025 17:18:55 +0200
-Message-ID: <20250617152500.700735605@linuxfoundation.org>
+Subject: [PATCH 6.15 228/780] f2fs: zone: fix to calculate first_zoned_segno correctly
+Date: Tue, 17 Jun 2025 17:18:56 +0200
+Message-ID: <20250617152500.740636586@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,87 +69,263 @@ Content-Transfer-Encoding: 8bit
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit aa1be8dd64163eca4dde7fd2557eb19927a06a47 ]
+[ Upstream commit dc6d9ef57fcf42fac1b3be4bff5ac5b3f1e8f9f3 ]
 
-Jan Prusakowski reported a f2fs bug as below:
+A zoned device can has both conventional zones and sequential zones,
+so we should not treat first segment of zoned device as first_zoned_segno,
+instead, we need to check zone type for each zone during traversing zoned
+device to find first_zoned_segno.
 
-f2fs/007 will hang kernel during testing w/ below configs:
+Otherwise, for below case, first_zoned_segno will be 0, which could be
+wrong.
 
-kernel 6.12.18 (from pixel-kernel/android16-6.12)
-export MKFS_OPTIONS="-O encrypt -O extra_attr -O project_quota -O quota"
-export F2FS_MOUNT_OPTIONS="test_dummy_encryption,discard,fsync_mode=nobarrier,reserve_root=32768,checkpoint_merge,atgc"
+create_null_blk 512 2 1024 1024
+mkfs.f2fs -m /dev/nullb0
 
-cat /proc/<umount_proc_id>/stack
-f2fs_wait_on_all_pages+0xa3/0x130
-do_checkpoint+0x40c/0x5d0
-f2fs_write_checkpoint+0x258/0x550
-kill_f2fs_super+0x14f/0x190
-deactivate_locked_super+0x30/0xb0
-cleanup_mnt+0xba/0x150
-task_work_run+0x59/0xa0
-syscall_exit_to_user_mode+0x12d/0x130
-do_syscall_64+0x57/0x110
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Testcase:
 
-cat /sys/kernel/debug/f2fs/status
+export SCRIPTS_PATH=/share/git/scripts
 
-  - IO_W (CP: -256, Data:  256, Flush: (   0    0    1), Discard: (   0    0)) cmd:    0 undiscard:   0
+test multiple devices w/ zoned device
+for ((i=0;i<8;i++)) do {
+	zonesize=$((2<<$i))
+	conzone=$((4096/$zonesize))
+	seqzone=$((4096/$zonesize))
+	$SCRIPTS_PATH/nullblk_create.sh 512 $zonesize $conzone $seqzone
+	mkfs.f2fs -f -m /dev/vdb -c /dev/nullb0
+	mount /dev/vdb /mnt/f2fs
+	touch /mnt/f2fs/file
+	f2fs_io pinfile set /mnt/f2fs/file $((8589934592*2))
+	stat /mnt/f2fs/file
+	df
+	cat /proc/fs/f2fs/vdb/segment_info
+	umount /mnt/f2fs
+	$SCRIPTS_PATH/nullblk_remove.sh 0
+} done
 
-CP IOs reference count becomes negative.
+test single zoned device
+for ((i=0;i<8;i++)) do {
+	zonesize=$((2<<$i))
+	conzone=$((4096/$zonesize))
+	seqzone=$((4096/$zonesize))
+	$SCRIPTS_PATH/nullblk_create.sh 512 $zonesize $conzone $seqzone
+	mkfs.f2fs -f -m /dev/nullb0
+	mount /dev/nullb0 /mnt/f2fs
+	touch /mnt/f2fs/file
+	f2fs_io pinfile set /mnt/f2fs/file $((8589934592*2))
+	stat /mnt/f2fs/file
+	df
+	cat /proc/fs/f2fs/nullb0/segment_info
+	umount /mnt/f2fs
+	$SCRIPTS_PATH/nullblk_remove.sh 0
+} done
 
-The root cause is:
-
-After 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block
-migration"), we will tag page w/ gcing flag for raw page of cluster
-during its migration.
-
-However, if the inode is both encrypted and compressed, during
-ioc_decompress(), it will tag page w/ gcing flag, and it increase
-F2FS_WB_DATA reference count:
-- f2fs_write_multi_page
- - f2fs_write_raw_page
-  - f2fs_write_single_page
-   - do_write_page
-    - f2fs_submit_page_write
-     - WB_DATA_TYPE(bio_page, fio->compressed_page)
-     : bio_page is encrypted, so mapping is NULL, and fio->compressed_page
-       is NULL, it returns F2FS_WB_DATA
-     - inc_page_count(.., F2FS_WB_DATA)
-
-Then, during end_io(), it decrease F2FS_WB_CP_DATA reference count:
-- f2fs_write_end_io
- - f2fs_compress_write_end_io
-  - fscrypt_pagecache_folio
-  : get raw page from encrypted page
-  - WB_DATA_TYPE(&folio->page, false)
-  : raw page has gcing flag, it returns F2FS_WB_CP_DATA
-  - dec_page_count(.., F2FS_WB_CP_DATA)
-
-In order to fix this issue, we need to detect gcing flag in raw page
-in f2fs_is_cp_guaranteed().
-
-Fixes: 4961acdd65c9 ("f2fs: fix to tag gcing flag on page during block migration")
-Reported-by: Jan Prusakowski <jprusakowski@google.com>
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Cc: Daeho Jeong <daehojeong@google.com>
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/data.c    |  2 +-
+ fs/f2fs/f2fs.h    | 36 ++++++++++++++++++++++++++++--------
+ fs/f2fs/segment.c | 10 +++++-----
+ fs/f2fs/super.c   | 41 +++++++++++++++++++++++++++++++++++------
+ 4 files changed, 69 insertions(+), 20 deletions(-)
 
 diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 5a7888a5923ca..81b25dd15a0b9 100644
+index 81b25dd15a0b9..b0b8748ae287f 100644
 --- a/fs/f2fs/data.c
 +++ b/fs/f2fs/data.c
-@@ -54,7 +54,7 @@ bool f2fs_is_cp_guaranteed(struct page *page)
- 	struct f2fs_sb_info *sbi;
+@@ -3966,7 +3966,7 @@ static int check_swap_activate(struct swap_info_struct *sis,
  
- 	if (fscrypt_is_bounce_page(page))
--		return false;
-+		return page_private_gcing(fscrypt_pagecache_page(page));
+ 		if ((pblock - SM_I(sbi)->main_blkaddr) % blks_per_sec ||
+ 				nr_pblocks % blks_per_sec ||
+-				!f2fs_valid_pinned_area(sbi, pblock)) {
++				f2fs_is_sequential_zone_area(sbi, pblock)) {
+ 			bool last_extent = false;
  
- 	inode = mapping->host;
- 	sbi = F2FS_I_SB(inode);
+ 			not_aligned++;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 6dcac5ab041c8..4f34a7d9760a1 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1780,7 +1780,7 @@ struct f2fs_sb_info {
+ 	unsigned int dirty_device;		/* for checkpoint data flush */
+ 	spinlock_t dev_lock;			/* protect dirty_device */
+ 	bool aligned_blksize;			/* all devices has the same logical blksize */
+-	unsigned int first_zoned_segno;		/* first zoned segno */
++	unsigned int first_seq_zone_segno;	/* first segno in sequential zone */
+ 
+ 	/* For write statistics */
+ 	u64 sectors_written_start;
+@@ -4628,12 +4628,16 @@ F2FS_FEATURE_FUNCS(readonly, RO);
+ F2FS_FEATURE_FUNCS(device_alias, DEVICE_ALIAS);
+ 
+ #ifdef CONFIG_BLK_DEV_ZONED
+-static inline bool f2fs_blkz_is_seq(struct f2fs_sb_info *sbi, int devi,
+-				    block_t blkaddr)
++static inline bool f2fs_zone_is_seq(struct f2fs_sb_info *sbi, int devi,
++							unsigned int zone)
+ {
+-	unsigned int zno = blkaddr / sbi->blocks_per_blkz;
++	return test_bit(zone, FDEV(devi).blkz_seq);
++}
+ 
+-	return test_bit(zno, FDEV(devi).blkz_seq);
++static inline bool f2fs_blkz_is_seq(struct f2fs_sb_info *sbi, int devi,
++								block_t blkaddr)
++{
++	return f2fs_zone_is_seq(sbi, devi, blkaddr / sbi->blocks_per_blkz);
+ }
+ #endif
+ 
+@@ -4705,15 +4709,31 @@ static inline bool f2fs_lfs_mode(struct f2fs_sb_info *sbi)
+ 	return F2FS_OPTION(sbi).fs_mode == FS_MODE_LFS;
+ }
+ 
+-static inline bool f2fs_valid_pinned_area(struct f2fs_sb_info *sbi,
++static inline bool f2fs_is_sequential_zone_area(struct f2fs_sb_info *sbi,
+ 					  block_t blkaddr)
+ {
+ 	if (f2fs_sb_has_blkzoned(sbi)) {
++#ifdef CONFIG_BLK_DEV_ZONED
+ 		int devi = f2fs_target_device_index(sbi, blkaddr);
+ 
+-		return !bdev_is_zoned(FDEV(devi).bdev);
++		if (!bdev_is_zoned(FDEV(devi).bdev))
++			return false;
++
++		if (f2fs_is_multi_device(sbi)) {
++			if (blkaddr < FDEV(devi).start_blk ||
++				blkaddr > FDEV(devi).end_blk) {
++				f2fs_err(sbi, "Invalid block %x", blkaddr);
++				return false;
++			}
++			blkaddr -= FDEV(devi).start_blk;
++		}
++
++		return f2fs_blkz_is_seq(sbi, devi, blkaddr);
++#else
++		return false;
++#endif
+ 	}
+-	return true;
++	return false;
+ }
+ 
+ static inline bool f2fs_low_mem_mode(struct f2fs_sb_info *sbi)
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 396ef71f41e35..2a71e70c9ac97 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2777,7 +2777,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_PRIOR_CONV || pinning)
+ 			segno = 0;
+ 		else
+-			segno = max(sbi->first_zoned_segno, *newseg);
++			segno = max(sbi->first_seq_zone_segno, *newseg);
+ 		hint = GET_SEC_FROM_SEG(sbi, segno);
+ 	}
+ #endif
+@@ -2789,7 +2789,7 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 	if (secno >= MAIN_SECS(sbi) && f2fs_sb_has_blkzoned(sbi)) {
+ 		/* Write only to sequential zones */
+ 		if (sbi->blkzone_alloc_policy == BLKZONE_ALLOC_ONLY_SEQ) {
+-			hint = GET_SEC_FROM_SEG(sbi, sbi->first_zoned_segno);
++			hint = GET_SEC_FROM_SEG(sbi, sbi->first_seq_zone_segno);
+ 			secno = find_next_zero_bit(free_i->free_secmap, MAIN_SECS(sbi), hint);
+ 		} else
+ 			secno = find_first_zero_bit(free_i->free_secmap,
+@@ -2838,9 +2838,9 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 	/* set it as dirty segment in free segmap */
+ 	f2fs_bug_on(sbi, test_bit(segno, free_i->free_segmap));
+ 
+-	/* no free section in conventional zone */
++	/* no free section in conventional device or conventional zone */
+ 	if (new_sec && pinning &&
+-		!f2fs_valid_pinned_area(sbi, START_BLOCK(sbi, segno))) {
++		f2fs_is_sequential_zone_area(sbi, START_BLOCK(sbi, segno))) {
+ 		ret = -EAGAIN;
+ 		goto out_unlock;
+ 	}
+@@ -3311,7 +3311,7 @@ int f2fs_allocate_pinning_section(struct f2fs_sb_info *sbi)
+ 
+ 	if (f2fs_sb_has_blkzoned(sbi) && err == -EAGAIN && gc_required) {
+ 		f2fs_down_write(&sbi->gc_lock);
+-		err = f2fs_gc_range(sbi, 0, GET_SEGNO(sbi, FDEV(0).end_blk),
++		err = f2fs_gc_range(sbi, 0, sbi->first_seq_zone_segno - 1,
+ 				true, ZONED_PIN_SEC_REQUIRED_COUNT);
+ 		f2fs_up_write(&sbi->gc_lock);
+ 
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index f087b2b71c898..7a3bc85df6a7a 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4304,14 +4304,35 @@ static void f2fs_record_error_work(struct work_struct *work)
+ 	f2fs_record_stop_reason(sbi);
+ }
+ 
+-static inline unsigned int get_first_zoned_segno(struct f2fs_sb_info *sbi)
++static inline unsigned int get_first_seq_zone_segno(struct f2fs_sb_info *sbi)
+ {
++#ifdef CONFIG_BLK_DEV_ZONED
++	unsigned int zoneno, total_zones;
+ 	int devi;
+ 
+-	for (devi = 0; devi < sbi->s_ndevs; devi++)
+-		if (bdev_is_zoned(FDEV(devi).bdev))
+-			return GET_SEGNO(sbi, FDEV(devi).start_blk);
+-	return 0;
++	if (!f2fs_sb_has_blkzoned(sbi))
++		return NULL_SEGNO;
++
++	for (devi = 0; devi < sbi->s_ndevs; devi++) {
++		if (!bdev_is_zoned(FDEV(devi).bdev))
++			continue;
++
++		total_zones = GET_ZONE_FROM_SEG(sbi, FDEV(devi).total_segments);
++
++		for (zoneno = 0; zoneno < total_zones; zoneno++) {
++			unsigned int segs, blks;
++
++			if (!f2fs_zone_is_seq(sbi, devi, zoneno))
++				continue;
++
++			segs = GET_SEG_FROM_SEC(sbi,
++					zoneno * sbi->secs_per_zone);
++			blks = SEGS_TO_BLKS(sbi, segs);
++			return GET_SEGNO(sbi, FDEV(devi).start_blk + blks);
++		}
++	}
++#endif
++	return NULL_SEGNO;
+ }
+ 
+ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
+@@ -4348,6 +4369,14 @@ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
+ #endif
+ 
+ 	for (i = 0; i < max_devices; i++) {
++		if (max_devices == 1) {
++			FDEV(i).total_segments =
++				le32_to_cpu(raw_super->segment_count_main);
++			FDEV(i).start_blk = 0;
++			FDEV(i).end_blk = FDEV(i).total_segments *
++						BLKS_PER_SEG(sbi);
++		}
++
+ 		if (i == 0)
+ 			FDEV(0).bdev_file = sbi->sb->s_bdev_file;
+ 		else if (!RDEV(i).path[0])
+@@ -4718,7 +4747,7 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
+ 	sbi->sectors_written_start = f2fs_get_sectors_written(sbi);
+ 
+ 	/* get segno of first zoned block device */
+-	sbi->first_zoned_segno = get_first_zoned_segno(sbi);
++	sbi->first_seq_zone_segno = get_first_seq_zone_segno(sbi);
+ 
+ 	/* Read accumulated write IO statistics if exists */
+ 	seg_i = CURSEG_I(sbi, CURSEG_HOT_NODE);
 -- 
 2.39.5
 
