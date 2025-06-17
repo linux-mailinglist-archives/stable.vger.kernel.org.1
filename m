@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B104ADDA1D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF344ADD61D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7113016D2DA
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 585517AE2C7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E732FA638;
-	Tue, 17 Jun 2025 16:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95142EF2A6;
+	Tue, 17 Jun 2025 16:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwFucV9u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QO5qGH6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1462FA623;
-	Tue, 17 Jun 2025 16:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A282DFF1E;
+	Tue, 17 Jun 2025 16:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179500; cv=none; b=Suhwu9/494vMDE8MvOhdbpIhY/tYtjVJ83/J22OrPdCSUxPE26M35TFmZyFShnq6/a9fqwwb3NjKs77g+9fW4olzK8l6nJJjaCx9yMbTM1D94ElInFlarrFt2FcYN+wxjwfbXm8/OnFp1IDCEGkuyvoe7QPKOaKCrIQ5qf2Ct1g=
+	t=1750176918; cv=none; b=o34e3AAhveidPCoVzofnfa3luVfC+ZLNcwlA3VnCpWAI4cRe3y5PRRlqPdt6bkKhDRmCGuvDpdpuRIy2AsURV8A2y5QY0OHwtvT4ij2HH190etl+TCOhYykpA+V4BUi/rhsCMH/2cRIFId1GEl16uW/JxY3f7PLTbYk7pGRBjk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179500; c=relaxed/simple;
-	bh=8K4l55Hx2qgYksL6qUrkwStnkmyqwHbpw7L0IcEkuj4=;
+	s=arc-20240116; t=1750176918; c=relaxed/simple;
+	bh=vg96rpcWWN1P9P4ZCOvjrIgVb3koJTn4ObMl60DVrQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=laBXxYmXXximPMQabh3jVsKiyhruGq57HyBZRrd2gaW8ovftLKjdbgYxQaRp64CxTUVTxe+L1DxVew7xe2lDfxt2lJo+TJwz3xnYbjq8Q6AeiEx1JbNTuQlTH+9VJKDkkoULgB1U7ffFCFxNeisRCkkqpd3xW7s/PmnnwphF478=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwFucV9u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9669CC4CEE3;
-	Tue, 17 Jun 2025 16:58:19 +0000 (UTC)
+	 MIME-Version; b=baBy/tF28eezZ1SHTvYStk88o0JVs1xh9OgBww6joV3o9OkqGXnNNwphARkS/C/aW5OKCAVA2CggJucptvKKzEHaha2D6Y77FSaal5T9soW9PvWhaFFBBu0F61J4gFM+Z3EGDO7rgdi7CtxDb+GiP1xqdyx4K6QeSd11dFkdBg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QO5qGH6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C54C4CEE3;
+	Tue, 17 Jun 2025 16:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179500;
-	bh=8K4l55Hx2qgYksL6qUrkwStnkmyqwHbpw7L0IcEkuj4=;
+	s=korg; t=1750176918;
+	bh=vg96rpcWWN1P9P4ZCOvjrIgVb3koJTn4ObMl60DVrQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwFucV9uJ68BvgcDcWXpqqbixhxD3+ZkCUuxAvySOg3tq03xRSR76nkXFCMPwkmwb
-	 U6RWMXuAjCxe7WOD/21IApu2lPqDkJbDITey57q4ANT0pMcY5YC3UeWQFkEZuowRwo
-	 hvbM8g4jgbySo7woDMqeoO3QPG/3Mx3h4TwVxDkY=
+	b=QO5qGH6iCeK2w/Xdzocy+1pDAk04el5CpuHZhT0RSqjEJFxCojwDx5e2Jsf9c2T1A
+	 0zOTiusEfxIcftKT5NuynzXsxMQYEylr0OsJjSzoAhuKey9mGZILibJykPzweIAt/2
+	 +Pw89UfWw6nsEorGG2bP0Zc/ySRjGplRHTfvWP9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 737/780] bio: Fix bio_first_folio() for SPARSEMEM without VMEMMAP
+Subject: [PATCH 6.6 330/356] net_sched: ets: fix a race in ets_qdisc_change()
 Date: Tue, 17 Jun 2025 17:27:25 +0200
-Message-ID: <20250617152521.514850504@linuxfoundation.org>
+Message-ID: <20250617152351.429777101@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f826ec7966a63d48e16e0868af4e038bf9a1a3ae ]
+[ Upstream commit d92adacdd8c2960be856e0b82acc5b7c5395fddb ]
 
-It is possible for physically contiguous folios to have discontiguous
-struct pages if SPARSEMEM is enabled and SPARSEMEM_VMEMMAP is not.
-This is correctly handled by folio_page_idx(), so remove this open-coded
-implementation.
+Gerrard Tai reported a race condition in ETS, whenever SFQ perturb timer
+fires at the wrong time.
 
-Fixes: 640d1930bef4 (block: Add bio_for_each_folio_all())
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20250612144126.2849931-1-willy@infradead.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The race is as follows:
+
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
+
+This can be abused to underflow a parent's qlen.
+
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
+
+Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250611111515.1983366-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bio.h | 2 +-
+ net/sched/sch_ets.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index b786ec5bcc81d..b474a47ec7eef 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -291,7 +291,7 @@ static inline void bio_first_folio(struct folio_iter *fi, struct bio *bio,
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 9da86db4d2c2f..3ee46f6e005da 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -661,7 +661,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+ 			list_del_init(&q->classes[i].alist);
+-		qdisc_tree_flush_backlog(q->classes[i].qdisc);
++		qdisc_purge_queue(q->classes[i].qdisc);
+ 	}
+ 	q->nstrict = nstrict;
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
+-- 
+2.39.5
+
+
+
+ded" Error message: "Failed to find required string:'Out-Out;'."
+---- end(-1) ----
+132: perf script task-analyzer tests                                 : FAILED!
+```
+
+The buf_size if always set to phdr->p_filesz, but that may be 0
+causing a free and realloc to return NULL. This is treated in
+filename__read_build_id like a failure and the buffer is freed again.
+
+To avoid this problem only grow buf, meaning the buf_size will never
+be 0. This also reduces the number of memory (re)allocations.
+
+Fixes: b691f64360ecec49 ("perf symbols: Implement poor man's ELF parser")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250501070003.22251-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/perf/util/symbol-minimal.c | 34 +++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
+
+diff --git a/tools/perf/util/symbol-minimal.c b/tools/perf/util/symbol-minimal.c
+index c6f369b5d893f..d8da3da01fe6b 100644
+--- a/tools/perf/util/symbol-minimal.c
++++ b/tools/perf/util/symbol-minimal.c
+@@ -147,18 +147,19 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 			if (phdr->p_type != PT_NOTE)
+ 				continue;
  
- 	fi->folio = page_folio(bvec->bv_page);
- 	fi->offset = bvec->bv_offset +
--			PAGE_SIZE * (bvec->bv_page - &fi->folio->page);
-+			PAGE_SIZE * folio_page_idx(fi->folio, bvec->bv_page);
- 	fi->_seg_count = bvec->bv_len;
- 	fi->length = min(folio_size(fi->folio) - fi->offset, fi->_seg_count);
- 	fi->_next = folio_next(fi->folio);
+-			buf_size = phdr->p_filesz;
+ 			offset = phdr->p_offset;
+-			tmp = realloc(buf, buf_size);
+-			if (tmp == NULL)
+-				goto out_free;
+-
+-			buf = tmp;
++			if (phdr->p_filesz > buf_size) {
++				buf_size = phdr->p_filesz;
++				tmp = realloc(buf, buf_size);
++				if (tmp == NULL)
++					goto out_free;
++				buf = tmp;
++			}
+ 			fseek(fp, offset, SEEK_SET);
+-			if (fread(buf, buf_size, 1, fp) != 1)
++			if (fread(buf, phdr->p_filesz, 1, fp) != 1)
+ 				goto out_free;
+ 
+-			ret = read_build_id(buf, buf_size, bid, need_swap);
++			ret = read_build_id(buf, phdr->p_filesz, bid, need_swap);
+ 			if (ret == 0) {
+ 				ret = bid->size;
+ 				break;
+@@ -199,18 +200,19 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 			if (phdr->p_type != PT_NOTE)
+ 				continue;
+ 
+-			buf_size = phdr->p_filesz;
+ 			offset = phdr->p_offset;
+-			tmp = realloc(buf, buf_size);
+-			if (tmp == NULL)
+-				goto out_free;
+-
+-			buf = tmp;
++			if (phdr->p_filesz > buf_size) {
++				buf_size = phdr->p_filesz;
++				tmp = realloc(buf, buf_size);
++				if (tmp == NULL)
++					goto out_free;
++				buf = tmp;
++			}
+ 			fseek(fp, offset, SEEK_SET);
+-			if (fread(buf, buf_size, 1, fp) != 1)
++			if (fread(buf, phdr->p_filesz, 1, fp) != 1)
+ 				goto out_free;
+ 
+-			ret = read_build_id(buf, buf_size, bid, need_swap);
++			ret = read_build_id(buf, phdr->p_filesz, bid, need_swap);
+ 			if (ret == 0) {
+ 				ret = bid->size;
+ 				break;
 -- 
 2.39.5
 
