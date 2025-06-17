@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-152961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248A9ADD1B0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:33:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AD9ADD1C2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E2773BD5B5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C7D7A15F1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB2F293443;
-	Tue, 17 Jun 2025 15:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B912E9753;
+	Tue, 17 Jun 2025 15:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIeVfRP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/fiZsRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2961E8332;
-	Tue, 17 Jun 2025 15:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E774623B633;
+	Tue, 17 Jun 2025 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174401; cv=none; b=GadV2GiEEvlRjbQ8KyaiFe5/R8DTpUYwpR13zwK4gXjosdc+gXeCHVlRbn52C8FJcJNPK6pxasWXrrKX5Kz19krgFbGXLpREko4PtVQx1OLaHcZGR7D+N0EqW0yXoIcfYN0YypiZs0FjeHUW6ao02nvFD9WzHBVOlGZUGaHgTMc=
+	t=1750174408; cv=none; b=hlk0BM3iFv6EAQ+hYFlGj+JsQxdodUgr+exRBou52xeKAhD8efn3uhazJCSepn6/c/NgZgj8WGEH5jUksFR+3R0rzXV0LReS1fiuXo92+zB1efhKJHq4k6RuGQuqU0dKl6g5iycpyDyP3sTLmMS+yL/Xy9qq04VQplK+ljKkGd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174401; c=relaxed/simple;
-	bh=IKSs0I3EX58+8NhWsJZit5dUyIq9eN3pEdbeielj4L8=;
+	s=arc-20240116; t=1750174408; c=relaxed/simple;
+	bh=V+jYs8ZGLWmqJcP6Wa7qdrFxxP29zwxuIq+tvPcTWXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3wVRCBiZUrUGGUUlnXTfg55J8G1F/CEDzDw+NzDr0/Fs6UySMZk9Ozcy/9qEe69bwIoCSqOFaRDjc6LC0wTNJFS6bI/Si1/UfjofpZ7LA7jtc/IjiFmbxW/yQyTsyOk6Pwd6wasqzPiGrWvb2txiWTXAYDNWSz+WVKrURYwuSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIeVfRP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E02FC4CEE3;
-	Tue, 17 Jun 2025 15:33:20 +0000 (UTC)
+	 MIME-Version; b=dg8e/jlzXhJvs59VscK1zLw4JGoBU7htdWySedOlhCKPk8WkXudRuOYOFitLJpP+E1cbnxs4vBwh9lJUSDgB/5iFqsP2NN3usNGjnhm5llUDNBKv1Th5FUMNNbMz2ViSYVhFP1KVTHkTddcLmBOB0nubpO9gBS7h7MALqiU8EGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/fiZsRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61624C4CEE7;
+	Tue, 17 Jun 2025 15:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174401;
-	bh=IKSs0I3EX58+8NhWsJZit5dUyIq9eN3pEdbeielj4L8=;
+	s=korg; t=1750174407;
+	bh=V+jYs8ZGLWmqJcP6Wa7qdrFxxP29zwxuIq+tvPcTWXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIeVfRP/IDkUnLiwG+w7OvD4PMDNtNI9uP7l1C+WYYq053FUxvSTGIn+gUq95lwa4
-	 ORdeeDl2XuBxEmX1hFsupOKnaAehplTIYpQm9Gh/jKkN/rrK/EelrOENoVq/BvLfrH
-	 6d2LkK9R5wgBP4AmWl2K2Xt58tiqHm8OgQ59cAAM=
+	b=L/fiZsROZI7nVkdiQgAS33kdVcWwf/pNAl04rkzxj+VC7arALagSIVhAzXGWIAhBO
+	 Od3hyizkeaNVB11BHE5/tKXm8VhlrdjW8aBcrKC2GZbo+0xADCs0nySDzSGqIp0dn1
+	 21lFc/fCkRHFUM51LKV2uKTgJflhTLXb1eEVEyEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	peter-yc.chang@mediatek.com,
-	John Stultz <jstultz@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Annie Li <jiayanli@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/512] sched/core: Tweak wait_task_inactive() to force dequeue sched_delayed tasks
-Date: Tue, 17 Jun 2025 17:19:40 +0200
-Message-ID: <20250617152420.103801005@linuxfoundation.org>
+Subject: [PATCH 6.12 015/512] x86/microcode/AMD: Do not return error when microcode update is not necessary
+Date: Tue, 17 Jun 2025 17:19:41 +0200
+Message-ID: <20250617152420.144852037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,62 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Annie Li <jiayanli@google.com>
 
-[ Upstream commit b7ca5743a2604156d6083b88cefacef983f3a3a6 ]
+[ Upstream commit b43dc4ab097859c24e2a6993119c927cffc856aa ]
 
-It was reported that in 6.12, smpboot_create_threads() was
-taking much longer then in 6.6.
+After
 
-I narrowed down the call path to:
- smpboot_create_threads()
- -> kthread_create_on_cpu()
-    -> kthread_bind()
-       -> __kthread_bind_mask()
-          ->wait_task_inactive()
+  6f059e634dcd("x86/microcode: Clarify the late load logic"),
 
-Where in wait_task_inactive() we were regularly hitting the
-queued case, which sets a 1 tick timeout, which when called
-multiple times in a row, accumulates quickly into a long
-delay.
+if the load is up-to-date, the AMD side returns UCODE_OK which leads to
+load_late_locked() returning -EBADFD.
 
-I noticed disabling the DELAY_DEQUEUE sched feature recovered
-the performance, and it seems the newly create tasks are usually
-sched_delayed and left on the runqueue.
+Handle UCODE_OK in the switch case to avoid this error.
 
-So in wait_task_inactive() when we see the task
-p->se.sched_delayed, manually dequeue the sched_delayed task
-with DEQUEUE_DELAYED, so we don't have to constantly wait a
-tick.
+  [ bp: Massage commit message. ]
 
-Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
-Reported-by: peter-yc.chang@mediatek.com
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Link: https://lkml.kernel.org/r/20250429150736.3778580-1-jstultz@google.com
+Fixes: 6f059e634dcd ("x86/microcode: Clarify the late load logic")
+Signed-off-by: Annie Li <jiayanli@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250430053424.77438-1-jiayanli@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kernel/cpu/microcode/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 814abc7ad994a..51f36de5990a3 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -2229,6 +2229,12 @@ unsigned long wait_task_inactive(struct task_struct *p, unsigned int match_state
- 		 * just go back and repeat.
- 		 */
- 		rq = task_rq_lock(p, &rf);
-+		/*
-+		 * If task is sched_delayed, force dequeue it, to avoid always
-+		 * hitting the tick timeout in the queued case
-+		 */
-+		if (p->se.sched_delayed)
-+			dequeue_task(rq, p, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
- 		trace_sched_wait_task(p);
- 		running = task_on_cpu(rq, p);
- 		queued = task_on_rq_queued(p);
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index 079f046ee26d1..e8021d3e58824 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -696,6 +696,8 @@ static int load_late_locked(void)
+ 		return load_late_stop_cpus(true);
+ 	case UCODE_NFOUND:
+ 		return -ENOENT;
++	case UCODE_OK:
++		return 0;
+ 	default:
+ 		return -EBADFD;
+ 	}
 -- 
 2.39.5
 
