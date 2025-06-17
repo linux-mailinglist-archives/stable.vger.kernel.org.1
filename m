@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7683AADD430
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4742ADD529
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1969D7A56CB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D27E23BC2E7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1500236453;
-	Tue, 17 Jun 2025 16:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEBB2ECD1C;
+	Tue, 17 Jun 2025 16:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWiK2Zsf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFmIPTU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E20E221F14;
-	Tue, 17 Jun 2025 16:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F772E7163;
+	Tue, 17 Jun 2025 16:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176275; cv=none; b=U0VnhZom1fkRLcyZwGwNMB6QU6hgykDh7BDQszAIyEoS5Xt/5VNUaOzwecS4PojBG7Wl31u2d8euDX61JO2a7qDjKt5E/1LCromJIeW3ZB6wmtCxpJsgF5BJnwTARbM9pW9Zq1HztgsKrED5KHrWV0B0nhYhzezOIecAcFD2dzg=
+	t=1750176315; cv=none; b=Nxa5zxj5VsFFK6X6ae2QptTzLtMKvHXgbq2tqBLaahkx4vYPj2gNR44F3D5yIfs6GT66yxMQ3n+q9H0UgJPgNZ3t256WWTHiByl+zt5OopI/KnJXi3XOKwlLLJUswvSXgEvN7ikfa48b3rN+fUI0WzFMQdjvuEwhEE6o12/suAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176275; c=relaxed/simple;
-	bh=aZy3ypc3QMVVFsIjZB8s9Ycd0JKSb9h8kKppu7S7F8A=;
+	s=arc-20240116; t=1750176315; c=relaxed/simple;
+	bh=uoQ0E1RHzY7/StZvEAa+GdIzfZaAy4sSQUrZi1JHtQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zg4YGLjMXCEk+8gEkKpYa1yger57ugcSzsXv6yDUMpkR48Tpc410xlTmj32fOqDtqCIrAA8WJ7z6jHEfygfXf7o3Uvepo/ybmQAn6vTKARjVEk4AA9+kZHAFrk0r/LaVAOx5lEzORSeSJywKu9X3MKvIry/r6za1/zRY1+SfH2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWiK2Zsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A851FC4CEE3;
-	Tue, 17 Jun 2025 16:04:34 +0000 (UTC)
+	 MIME-Version; b=oXUAbpl33S2GvY4uZvFHSD4NC7ehAmy5MFcGK8mpMyTjxQ61PyAU/10YJ416d3jIpdZK0PAnt1UObUPn+5GzM+sjuzDjKug9FvI5lEYtxHLUObTFDyBk/EZghq44+i8cvJq5MADqRgKcWf0ks9sr2JoPsjzW5W5JpG93euLT1RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFmIPTU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991AAC4CEE3;
+	Tue, 17 Jun 2025 16:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176275;
-	bh=aZy3ypc3QMVVFsIjZB8s9Ycd0JKSb9h8kKppu7S7F8A=;
+	s=korg; t=1750176315;
+	bh=uoQ0E1RHzY7/StZvEAa+GdIzfZaAy4sSQUrZi1JHtQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWiK2ZsfJsVDqZgJ6A0kRFcLG5OonQ500ex//QIMgU2cLiPcF4j2ut//AyFGKyoUz
-	 b4GVkylbTJwAY+ci7/xc+5Zw6dIAsCOFQNVH0VVhmQzjkBDhYviWzHfNxnphuo1YEc
-	 9sgMw0mNt01hD/I46lW+9gYZUrhzfOa9UIovzrFE=
+	b=gFmIPTU2HdI/1gT9g1oAbBleoKsaM74uGV3TMKW+ufUsWmF53BeGKmorCrVVX/gsk
+	 9Q3bstI2pKHgbKHSt+54iC2GwN/fEG0hoMbtDh+Vi9459J/zQPJmTViGz4abGTEutk
+	 gDgk70tqcQF9P4MDBLNLfAQ3u1Lk5nDqENFQRNDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michal Wajdeczko <michal.wajdeczko@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 156/780] drm/xe/guc: Refactor GuC debugfs initialization
-Date: Tue, 17 Jun 2025 17:17:44 +0200
-Message-ID: <20250617152457.849019049@linuxfoundation.org>
+Subject: [PATCH 6.15 157/780] drm/xe/guc: Dont expose GuC privileged debugfs files if VF
+Date: Tue, 17 Jun 2025 17:17:45 +0200
+Message-ID: <20250617152457.889407637@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -60,7 +60,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
@@ -69,197 +68,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
-[ Upstream commit e15826bb3c2c5377eedc757f2adec8dcaa5255f7 ]
+[ Upstream commit 387444984d7b53dbaee263887cad4ea7c8e57b34 ]
 
-We don't have to drmm_kmalloc() local copy of debugfs_list to
-write there our pointer to the struct xe_guc as we can extract
-pointer to the struct xe_gt from the grandparent debugfs entry,
-in similar way to what we did for GT debugfs files.
-
-Note that there is no change in file/directory structure, just
-refactored how files are created and how functions are called.
+Some of the GuC debugfs files require access to the data that is
+not available on the VFs. Don't expose those files on the VF driver.
 
 Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
 Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://lore.kernel.org/r/20250403142635.1821-2-michal.wajdeczko@intel.com
+Link: https://lore.kernel.org/r/20250403142635.1821-3-michal.wajdeczko@intel.com
 Stable-dep-of: e22d7acf9f47 ("drm/xe/guc: Make creation of SLPC debugfs files conditional")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_debugfs.c | 130 ++++++++++++++--------------
- 1 file changed, 67 insertions(+), 63 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_debugfs.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_guc_debugfs.c b/drivers/gpu/drm/xe/xe_guc_debugfs.c
-index c569ff456e741..9a1c78b89f457 100644
+index 9a1c78b89f457..f33013f8a0f38 100644
 --- a/drivers/gpu/drm/xe/xe_guc_debugfs.c
 +++ b/drivers/gpu/drm/xe/xe_guc_debugfs.c
-@@ -17,101 +17,105 @@
- #include "xe_macros.h"
- #include "xe_pm.h"
+@@ -103,11 +103,20 @@ static int guc_pc(struct xe_guc *guc, struct drm_printer *p)
+ 	return 0;
+ }
  
--static struct xe_guc *node_to_guc(struct drm_info_node *node)
--{
--	return node->info_ent->data;
--}
--
--static int guc_info(struct seq_file *m, void *data)
+-static const struct drm_info_list debugfs_list[] = {
 +/*
-+ * guc_debugfs_show - A show callback for struct drm_info_list
-+ * @m: the &seq_file
-+ * @data: data used by the drm debugfs helpers
-+ *
-+ * This callback can be used in struct drm_info_list to describe debugfs
-+ * files that are &xe_guc specific in similar way how we handle &xe_gt
-+ * specific files using &xe_gt_debugfs_simple_show.
-+ *
-+ * It is assumed that those debugfs files will be created on directory entry
-+ * which grandparent struct dentry d_inode->i_private points to &xe_gt.
-+ *
-+ *      /sys/kernel/debug/dri/0/
-+ *      ├── gt0			# dent->d_parent->d_parent (d_inode->i_private == gt)
-+ *      │   ├── uc		# dent->d_parent
-+ *      │   │   ├── guc_info	# dent
-+ *      │   │   ├── guc_...
-+ *
-+ * This function assumes that &m->private will be set to the &struct
-+ * drm_info_node corresponding to the instance of the info on a given &struct
-+ * drm_minor (see struct drm_info_list.show for details).
-+ *
-+ * This function also assumes that struct drm_info_list.data will point to the
-+ * function code that will actually print a file content::
-+ *
-+ *    int (*print)(struct xe_guc *, struct drm_printer *)
-+ *
-+ * Example::
-+ *
-+ *    int foo(struct xe_guc *guc, struct drm_printer *p)
-+ *    {
-+ *        drm_printf(p, "enabled %d\n", guc->submission_state.enabled);
-+ *        return 0;
-+ *    }
-+ *
-+ *    static const struct drm_info_list bar[] = {
-+ *        { name = "foo", .show = guc_debugfs_show, .data = foo },
-+ *    };
-+ *
-+ *    parent = debugfs_create_dir("uc", gtdir);
-+ *    drm_debugfs_create_files(bar, ARRAY_SIZE(bar), parent, minor);
-+ *
-+ * Return: 0 on success or a negative error code on failure.
++ * only for GuC debugfs files which can be safely used on the VF as well:
++ * - without access to the GuC privileged registers
++ * - without access to the PF specific GuC objects
 + */
-+static int guc_debugfs_show(struct seq_file *m, void *data)
- {
--	struct xe_guc *guc = node_to_guc(m->private);
--	struct xe_device *xe = guc_to_xe(guc);
- 	struct drm_printer p = drm_seq_file_printer(m);
-+	struct drm_info_node *node = m->private;
-+	struct dentry *parent = node->dent->d_parent;
-+	struct dentry *grandparent = parent->d_parent;
-+	struct xe_gt *gt = grandparent->d_inode->i_private;
-+	struct xe_device *xe = gt_to_xe(gt);
-+	int (*print)(struct xe_guc *, struct drm_printer *) = node->info_ent->data;
-+	int ret;
- 
- 	xe_pm_runtime_get(xe);
--	xe_guc_print_info(guc, &p);
-+	ret = print(&gt->uc.guc, &p);
- 	xe_pm_runtime_put(xe);
- 
--	return 0;
-+	return ret;
- }
- 
--static int guc_log(struct seq_file *m, void *data)
-+static int guc_log(struct xe_guc *guc, struct drm_printer *p)
- {
--	struct xe_guc *guc = node_to_guc(m->private);
--	struct xe_device *xe = guc_to_xe(guc);
--	struct drm_printer p = drm_seq_file_printer(m);
--
--	xe_pm_runtime_get(xe);
--	xe_guc_log_print(&guc->log, &p);
--	xe_pm_runtime_put(xe);
--
-+	xe_guc_log_print(&guc->log, p);
- 	return 0;
- }
- 
--static int guc_log_dmesg(struct seq_file *m, void *data)
-+static int guc_log_dmesg(struct xe_guc *guc, struct drm_printer *p)
- {
--	struct xe_guc *guc = node_to_guc(m->private);
--	struct xe_device *xe = guc_to_xe(guc);
--
--	xe_pm_runtime_get(xe);
- 	xe_guc_log_print_dmesg(&guc->log);
--	xe_pm_runtime_put(xe);
--
- 	return 0;
- }
- 
--static int guc_ctb(struct seq_file *m, void *data)
-+static int guc_ctb(struct xe_guc *guc, struct drm_printer *p)
- {
--	struct xe_guc *guc = node_to_guc(m->private);
--	struct xe_device *xe = guc_to_xe(guc);
--	struct drm_printer p = drm_seq_file_printer(m);
--
--	xe_pm_runtime_get(xe);
--	xe_guc_ct_print(&guc->ct, &p, true);
--	xe_pm_runtime_put(xe);
--
-+	xe_guc_ct_print(&guc->ct, p, true);
- 	return 0;
- }
- 
--static int guc_pc(struct seq_file *m, void *data)
-+static int guc_pc(struct xe_guc *guc, struct drm_printer *p)
- {
--	struct xe_guc *guc = node_to_guc(m->private);
--	struct xe_device *xe = guc_to_xe(guc);
--	struct drm_printer p = drm_seq_file_printer(m);
--
--	xe_pm_runtime_get(xe);
--	xe_guc_pc_print(&guc->pc, &p);
--	xe_pm_runtime_put(xe);
--
-+	xe_guc_pc_print(&guc->pc, p);
- 	return 0;
- }
- 
- static const struct drm_info_list debugfs_list[] = {
--	{"guc_info", guc_info, 0},
--	{"guc_log", guc_log, 0},
--	{"guc_log_dmesg", guc_log_dmesg, 0},
--	{"guc_ctb", guc_ctb, 0},
--	{"guc_pc", guc_pc, 0},
-+	{ "guc_info", .show = guc_debugfs_show, .data = xe_guc_print_info },
-+	{ "guc_log", .show = guc_debugfs_show, .data = guc_log },
-+	{ "guc_log_dmesg", .show = guc_debugfs_show, .data = guc_log_dmesg },
++static const struct drm_info_list vf_safe_debugfs_list[] = {
+ 	{ "guc_info", .show = guc_debugfs_show, .data = xe_guc_print_info },
 +	{ "guc_ctb", .show = guc_debugfs_show, .data = guc_ctb },
-+	{ "guc_pc", .show = guc_debugfs_show, .data = guc_pc },
++};
++
++/* everything else should be added here */
++static const struct drm_info_list pf_only_debugfs_list[] = {
+ 	{ "guc_log", .show = guc_debugfs_show, .data = guc_log },
+ 	{ "guc_log_dmesg", .show = guc_debugfs_show, .data = guc_log_dmesg },
+-	{ "guc_ctb", .show = guc_debugfs_show, .data = guc_ctb },
+ 	{ "guc_pc", .show = guc_debugfs_show, .data = guc_pc },
  };
  
- void xe_guc_debugfs_register(struct xe_guc *guc, struct dentry *parent)
+@@ -115,7 +124,12 @@ void xe_guc_debugfs_register(struct xe_guc *guc, struct dentry *parent)
  {
  	struct drm_minor *minor = guc_to_xe(guc)->drm.primary;
--	struct drm_info_list *local;
--	int i;
--
--#define DEBUGFS_SIZE	(ARRAY_SIZE(debugfs_list) * sizeof(struct drm_info_list))
--	local = drmm_kmalloc(&guc_to_xe(guc)->drm, DEBUGFS_SIZE, GFP_KERNEL);
--	if (!local)
--		return;
--
--	memcpy(local, debugfs_list, DEBUGFS_SIZE);
--#undef DEBUGFS_SIZE
--
--	for (i = 0; i < ARRAY_SIZE(debugfs_list); ++i)
--		local[i].data = guc;
  
--	drm_debugfs_create_files(local,
-+	drm_debugfs_create_files(debugfs_list,
- 				 ARRAY_SIZE(debugfs_list),
+-	drm_debugfs_create_files(debugfs_list,
+-				 ARRAY_SIZE(debugfs_list),
++	drm_debugfs_create_files(vf_safe_debugfs_list,
++				 ARRAY_SIZE(vf_safe_debugfs_list),
  				 parent, minor);
++
++	if (!IS_SRIOV_VF(guc_to_xe(guc)))
++		drm_debugfs_create_files(pf_only_debugfs_list,
++					 ARRAY_SIZE(pf_only_debugfs_list),
++					 parent, minor);
  }
 -- 
 2.39.5
