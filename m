@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE25ADD1E0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:35:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B40ADD1A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B68593BD5FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:35:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B273AA5AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3C72EB5AB;
-	Tue, 17 Jun 2025 15:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF96E2ECD0C;
+	Tue, 17 Jun 2025 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNnsKV02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx8zbcwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4DB221F1F;
-	Tue, 17 Jun 2025 15:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE181E8332;
+	Tue, 17 Jun 2025 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174555; cv=none; b=Rkf2xuQ8ACngxvCTagE0RyaFl7tX2AqdJGH5Ny/LJ8UrE8vod5BXUyYJyoqWwD9HisSAtxsvKAvbLQ3++k3EJcqZB/s+0/eFUsKMngJn51BBxU2YdR8YcWgh4z7qQpwoBJGdcDtOjfahibvQi9TucW+E1j2liXvrA8zNIvOAQqU=
+	t=1750174388; cv=none; b=OvDJxe1rV0+3rX26SN3idhtpRxu8YifpoYa0oYZ+4K6ovtb4LrBduF7fStJeu/Hf4XsqReWjRE90OER77zkeN8ift5ZB8vEkiQbpHSrhYcmqTjC6FXET3hGsaxwFnYWf5uAnh9obU3bHL0ErhsZ6KqaLaoUqTX3dm6PySLVxXXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174555; c=relaxed/simple;
-	bh=YvDKIIfWs/BKx8FEWoGZ9xNSVy95NOjuxmEUlLBv854=;
+	s=arc-20240116; t=1750174388; c=relaxed/simple;
+	bh=Tx3ulia7fbdccmfBwdY2vsUDLyPRlfGzVEETYB5h/qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1TaPaIbowPQbkYou8leydpVXU26qPpSXJ38Nxsp6XMPdfRq72MDmurtoKD+9+i2zdJl3vpQgI2lwMZd3JSfHe8nPpBDuwux+ZrdCwjbfZgjeq6R9zS4pzjMNkIDVDsYNEsJkAs3aizCkfw/Q7PL8p5TT4d+TJkgQyX3W6x0trk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNnsKV02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2898EC4CEE3;
-	Tue, 17 Jun 2025 15:35:54 +0000 (UTC)
+	 MIME-Version; b=SU3K3YjzAkSLzAYVqnTcvJKX9Z/rNrEGE022/mG1Lc3a3/ohRqrLMEXJLa5AUHrbvuYYtdrWSn94TMSXg14GrRViIkj/UyOzUnZUhJZNpHWIGhBN+qL5q6T1ZjRa3R/ObkgiEQGkbeamBXVnrQdEV9CcuTM8/Ri+sqRPPBgwoMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx8zbcwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E605DC4CEF4;
+	Tue, 17 Jun 2025 15:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174555;
-	bh=YvDKIIfWs/BKx8FEWoGZ9xNSVy95NOjuxmEUlLBv854=;
+	s=korg; t=1750174388;
+	bh=Tx3ulia7fbdccmfBwdY2vsUDLyPRlfGzVEETYB5h/qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gNnsKV02CHRiKsqqbsJObJOVPloCcbLADIuHhGWgV7Hzqq+8+tQvoQMiRAPJDvZU7
-	 fwSgQG6NF1GzChbuUIY4H5HrYE/gtuCFR/QiRLEU8etlay+lebdfakGpl/2FgbeBmA
-	 CXR3jE9UH9Imh1V/E44/WEEzr4H/dZDJ+I45lR+s=
+	b=kx8zbcwKMTLQN0HClCRTdGmiY4VqxpitIUh+y2VhfRA69+olJAmNBwTEVp7vBjykb
+	 wy5cbdc+828Dk4KHr+bmCwnbLTh9W3oOiu+6qvI0416cW9bu8WN1ObZhvrrQYPF9YJ
+	 CPB/bDcEUoo6k4AIuHwIz/GKwRPgK6dBXnlgEMZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corentin Labbe <clabbe.montjoie@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/512] crypto: sun8i-ss - do not use sg_dma_len before calling DMA functions
-Date: Tue, 17 Jun 2025 17:19:37 +0200
-Message-ID: <20250617152419.985132737@linuxfoundation.org>
+Subject: [PATCH 6.12 012/512] powerpc: do not build ppc_save_regs.o always
+Date: Tue, 17 Jun 2025 17:19:38 +0200
+Message-ID: <20250617152420.024211244@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -66,37 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Corentin Labbe <clabbe.montjoie@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 2dfc7cd74a5e062a5405560447517e7aab1c7341 ]
+[ Upstream commit 497b7794aef03d525a5be05ae78dd7137c6861a5 ]
 
-When testing sun8i-ss with multi_v7_defconfig, all CBC algorithm fail crypto
-selftests.
-This is strange since on sunxi_defconfig, everything was ok.
-The problem was in the IV setup loop which never run because sg_dma_len
-was 0.
+The Fixes commit below tried to add CONFIG_PPC_BOOK3S to one of the
+conditions to enable the build of ppc_save_regs.o. But it failed to do
+so, in fact. The commit omitted to add a dollar sign.
 
-Fixes: 359e893e8af4 ("crypto: sun8i-ss - rework handling of IV")
-Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Therefore, ppc_save_regs.o is built always these days (as
+"(CONFIG_PPC_BOOK3S)" is never an empty string).
+
+Fix this by adding the missing dollar sign.
+
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Fixes: fc2a5a6161a2 ("powerpc/64s: ppc_save_regs is now needed for all 64s builds")
+Acked-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250417105305.397128-1-jirislaby@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 2 +-
+ arch/powerpc/kernel/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-index 9b9605ce8ee62..8831bcb230c2d 100644
---- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-@@ -141,7 +141,7 @@ static int sun8i_ss_setup_ivs(struct skcipher_request *areq)
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index f43c1198768c6..b4006a4a11216 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -162,7 +162,7 @@ endif
  
- 	/* we need to copy all IVs from source in case DMA is bi-directionnal */
- 	while (sg && len) {
--		if (sg_dma_len(sg) == 0) {
-+		if (sg->length == 0) {
- 			sg = sg_next(sg);
- 			continue;
- 		}
+ obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)	+= tm.o
+ 
+-ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)(CONFIG_PPC_BOOK3S),)
++ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)$(CONFIG_PPC_BOOK3S),)
+ obj-y				+= ppc_save_regs.o
+ endif
+ 
 -- 
 2.39.5
 
