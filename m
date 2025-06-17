@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-154109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 365C2ADD8E0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:00:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B70CADD8B1
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 726C61898CAB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231924A5723
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34602E8E05;
-	Tue, 17 Jun 2025 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841CA2E92AD;
+	Tue, 17 Jun 2025 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK5RegIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7DlgjZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8A32E8E06;
-	Tue, 17 Jun 2025 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C26285048;
+	Tue, 17 Jun 2025 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178131; cv=none; b=oKe1M1K1Zjr13FHzKbC9Rj5bd6nbUViK0wj1rKSZY/ptX6Hv+N7vLBjWBmkKliG4mSmHDqpt9BrR4MiWcEry7heOEr6p4T2sFYsn6XzkY97boGGfOZUykZu6kEN/z5qyyApiVpRh0o+ivHJeraXVoEZ0WNzFyOfOtH+0L9Q3Zbs=
+	t=1750178138; cv=none; b=HIwKtnrEj7XwLMPFS5P546Y5ByaChU3j1ZWPyt/2DsOLsjZXlVCdSCU9748SLSrz2SpxLcyGYTOmK8OP2bWn9oNRTM1Hg5/XdnGvDPAXjiviVUiMCYUlwRVgm0Nf/QUn7cZj6CWHsuyD51cPE42UyfYicmo/1Kp31pyN7oxidHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178131; c=relaxed/simple;
-	bh=HVNkpjAUQ7n7po7TtEfn35uzbajtFXwJit+dTKjkWnw=;
+	s=arc-20240116; t=1750178138; c=relaxed/simple;
+	bh=uCFfkCBAWTEAGKgSQiZ2ScyUeV0MjzvPj2+Ik8ElGZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdP9dk3CFI7LabcO8NplYxeZuhx4CKrauOu8DB03iYTlzdvVRqrIH+y0XZFu+U0E9ctr5MTFvM69qMXq9ARQ+bGTm/sAagrh2Lr+fRJH2/JEaGRltn0Bg8h8Ufw9YGEI6qS7FgCT4RsVdKORsQxNQvvxqMsIPztJoerFCFbYKZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK5RegIP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2B9C4CEE3;
-	Tue, 17 Jun 2025 16:35:30 +0000 (UTC)
+	 MIME-Version; b=CuP4dSmQM3KKsoWp1PaCH24QcMw0lHugRUY/5N4/MKTgZA35H9glSsYLu/xr2K9re69Q+B3tSvHe0opuPOr2U2Iq3yncSjJJ9BZdCWOKyezq230Xq1T9KcD9LWN8XmUeUlPZsnS5czGqV1f2RlHdRM3e3tHi/zjswM5NuKhJQqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7DlgjZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A1DC4CEE3;
+	Tue, 17 Jun 2025 16:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178131;
-	bh=HVNkpjAUQ7n7po7TtEfn35uzbajtFXwJit+dTKjkWnw=;
+	s=korg; t=1750178138;
+	bh=uCFfkCBAWTEAGKgSQiZ2ScyUeV0MjzvPj2+Ik8ElGZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pK5RegIPMePaHU+V0o0dI6yuDyeGkcf2nADMj33VNT4dHEqdfOV9evzyTm2Y9/lP7
-	 SyeREKpJxFfr4fJ6JB9F93FGEFNXTsRk26hHGSqyh3pLsHEZnC01YRJ8bQUqhhjKQt
-	 8Z4HelNDbPokGsItt9Wyj7yHdATttFE1bJ/f0vcY=
+	b=I7DlgjZ4P3w1ymrnbOTVtZFUIi2CsAweG1tOcbtDdcITNp4KUOiulUAEAl2DqcoOx
+	 rFO7+OA8zj3kJLkbo0uTP96LwZtuT9JV/wWWz8w9Twjoxp8laDZBQtWDdbrKhAS/g2
+	 FX6v1zB7Vf5TGZAeUAz/ZfoYmDAA7oyBt40M2Al4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	kernel test robot <oliver.sang@intel.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Marco Elver <elver@google.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 414/780] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
-Date: Tue, 17 Jun 2025 17:22:02 +0200
-Message-ID: <20250617152508.334502814@linuxfoundation.org>
+Subject: [PATCH 6.15 415/780] ubsan: integer-overflow: depend on BROKEN to keep this out of CI
+Date: Tue, 17 Jun 2025 17:22:03 +0200
+Message-ID: <20250617152508.374768723@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,71 +69,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
+[ Upstream commit d6a0e0bfecccdcecb08defe75a137c7262352102 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-aspeed_lpc_enable_snoop() does not check for this case, which results in a
-NULL pointer dereference.
+Depending on !COMPILE_TEST isn't sufficient to keep this feature out of
+CI because we can't stop it from being included in randconfig builds.
+This feature is still highly experimental, and is developed in lock-step
+with Clang's Overflow Behavior Types[1]. Depend on BROKEN to keep it
+from being enabled by anyone not expecting it.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
-
-Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
-[arj: Fix Fixes: tag to use subject from 3772e5da4454]
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://discourse.llvm.org/t/rfc-v2-clang-introduce-overflowbehaviortypes-for-wrapping-and-non-wrapping-arithmetic/86507 [1]
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202505281024.f42beaa7-lkp@intel.com
+Fixes: 557f8c582a9b ("ubsan: Reintroduce signed overflow sanitizer")
+Acked-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://lore.kernel.org/r/20250528182616.work.296-kees@kernel.org
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Marco Elver <elver@google.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ lib/Kconfig.ubsan | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index 57ba855f375d9..ef8f355589a58 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -200,11 +200,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
- 	lpc_snoop->chan[channel].miscdev.name =
- 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
-+	if (!lpc_snoop->chan[channel].miscdev.name) {
-+		rc = -ENOMEM;
-+		goto err_free_fifo;
-+	}
- 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
- 	lpc_snoop->chan[channel].miscdev.parent = dev;
- 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
- 	if (rc)
--		return rc;
-+		goto err_free_fifo;
+diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
+index f6ea0c5b5da39..96cd896684676 100644
+--- a/lib/Kconfig.ubsan
++++ b/lib/Kconfig.ubsan
+@@ -118,6 +118,8 @@ config UBSAN_UNREACHABLE
  
- 	/* Enable LPC snoop channel at requested port */
- 	switch (channel) {
-@@ -221,7 +225,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		hicrb_en = HICRB_ENSNP1D;
- 		break;
- 	default:
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto err_misc_deregister;
- 	}
- 
- 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
-@@ -231,6 +236,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	return 0;
-+
-+err_misc_deregister:
-+	misc_deregister(&lpc_snoop->chan[channel].miscdev);
-+err_free_fifo:
-+	kfifo_free(&lpc_snoop->chan[channel].fifo);
- 	return rc;
- }
- 
+ config UBSAN_INTEGER_WRAP
+ 	bool "Perform checking for integer arithmetic wrap-around"
++	# This is very experimental so drop the next line if you really want it
++	depends on BROKEN
+ 	depends on !COMPILE_TEST
+ 	depends on $(cc-option,-fsanitize-undefined-ignore-overflow-pattern=all)
+ 	depends on $(cc-option,-fsanitize=signed-integer-overflow)
 -- 
 2.39.5
 
