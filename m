@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-154399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46F9ADDA42
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:15:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D34ADD4F7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1B65A386E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B44D318988A9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD6D20B807;
-	Tue, 17 Jun 2025 16:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C04F2DFF2F;
+	Tue, 17 Jun 2025 15:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onAlcYzf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojYhDZLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4859A2FA630;
-	Tue, 17 Jun 2025 16:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA012DFF09;
+	Tue, 17 Jun 2025 15:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179069; cv=none; b=Olm6qYGr+YoCRPbJaX6z3LkyjUaGHz6khTTGeps4Ju+zDeVY7FEjp54S5/7YqZxoz5AtOwweNxkVjdEiV488EjYtHJTItTnhc4Jiyx00x63qpbtv+JwAAB4U+gdDx1iJYemKqB49fxuxp6d68sIulmhlTkHcHdr0r55WTw0k3+w=
+	t=1750175930; cv=none; b=WN/PGOLFN0M8L5QnIRyLnK5viSvtXClmFv/G1ceTgJxcwY8JBoLc78ZUAUDU+WXeL0sKX89W9RAbVI2hr7TP1qLfXgXS01ro9v6KEGgxc6cvvgm3bVdseh7PftYps5MkaXNit3S9rSzOquU7DwMIj6mcvvGPvAcMDubFan5Sn0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179069; c=relaxed/simple;
-	bh=JTOyCf+9+8hMlEVzdX98j5QS6JN9YziXOqO1KYA2HB0=;
+	s=arc-20240116; t=1750175930; c=relaxed/simple;
+	bh=aFvb5J7jKeJ9IegFk0Y2igdjN0f6LkaHVagZ+OGJt8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwbuSnge+fQjwQD3+0YZtnMA1+LMHrlOHTDV4f3aaDPQF/yP8A2gJlN5U+6wwXafHO/k1pX6gNkaWsBZrgjviQiBXWzc6maoYFjmOSPqhVVGFMMjCLTFLxHmheGvVNNQqrw6Dsnz0+lnf8UZD1lZ1raGhgCZ+YHF3O43MOLiZtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onAlcYzf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0529C4CEE3;
-	Tue, 17 Jun 2025 16:51:08 +0000 (UTC)
+	 MIME-Version; b=Y2q9tbirIsd94x04HiYaabcNQEvDMZZB2cA/rsYP8hotY04MpeSorLojktWumpZ4cCql+nCLj0XMgAuNQn1/381eIxzOSWbu2NGHTS34Ewr8NOpvi2Yi0WNCRz0H+bBPTM+8SDBf4HthH6UsJpjqlkf83aJp/XTRVLTpkbMf4z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojYhDZLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC746C4CEF0;
+	Tue, 17 Jun 2025 15:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179069;
-	bh=JTOyCf+9+8hMlEVzdX98j5QS6JN9YziXOqO1KYA2HB0=;
+	s=korg; t=1750175930;
+	bh=aFvb5J7jKeJ9IegFk0Y2igdjN0f6LkaHVagZ+OGJt8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onAlcYzf/yVwhhBAQ8wdAStZDE1l1x8WaIzV9NKDTGRH9F0UVUaRzb63TuhSCLVzD
-	 c04KlKppPWBRPGy0Rafu6w6v3yKzr52AFnUnKKRD6kJ+M9lGdG5hiNl6NWXRWR8yKj
-	 Eoff64Yxo15/5napEfwpWCVM77KsmyUX1TFO+Yw0=
+	b=ojYhDZLnyUCwHXwo5oREQCajcWwGgED3PfflgvZ6G2AVsQtPAewugeha6U9T1LIO3
+	 brMc91ue2etXaX1n6+UMt+DOi0tAP333RKjyPXMZQzxJhfrIeTndy7MsEEFbWZw3B5
+	 IOVEU0FfKDfzUjKlskQbKC0sVythN5OaX2vUsYWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mikhail Arkhipov <m.arhipov@rosa.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 610/780] net: dsa: b53: do not enable EEE on bcm63xx
+Subject: [PATCH 6.6 203/356] mtd: nand: ecc-mxic: Fix use of uninitialized variable ret
 Date: Tue, 17 Jun 2025 17:25:18 +0200
-Message-ID: <20250617152516.323238812@linuxfoundation.org>
+Message-ID: <20250617152346.381416802@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Mikhail Arkhipov <m.arhipov@rosa.ru>
 
-[ Upstream commit 1237c2d4a8db79dfd4369bff6930b0e385ed7d5c ]
+[ Upstream commit d95846350aac72303036a70c4cdc69ae314aa26d ]
 
-BCM63xx internal switches do not support EEE, but provide multiple RGMII
-ports where external PHYs may be connected. If one of these PHYs are EEE
-capable, we may try to enable EEE for the MACs, which then hangs the
-system on access of the (non-existent) EEE registers.
+If ctx->steps is zero, the loop processing ECC steps is skipped,
+and the variable ret remains uninitialized. It is later checked
+and returned, which leads to undefined behavior and may cause
+unpredictable results in user space or kernel crashes.
 
-Fix this by checking if the switch actually supports EEE before
-attempting to configure it.
+This scenario can be triggered in edge cases such as misconfigured
+geometry, ECC engine misuse, or if ctx->steps is not validated
+after initialization.
 
-Fixes: 22256b0afb12 ("net: dsa: b53: Move EEE functions to b53")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20250602193953.1010487-2-jonas.gorski@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Initialize ret to zero before the loop to ensure correct and safe
+behavior regardless of the ctx->steps value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
+Signed-off-by: Mikhail Arkhipov <m.arhipov@rosa.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/ecc-mxic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 7216eb8f94936..a316f8c01d0a9 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2348,6 +2348,9 @@ int b53_eee_init(struct dsa_switch *ds, int port, struct phy_device *phy)
+diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
+index 47e10945b8d27..63cb206269dd9 100644
+--- a/drivers/mtd/nand/ecc-mxic.c
++++ b/drivers/mtd/nand/ecc-mxic.c
+@@ -614,7 +614,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
  {
- 	int ret;
+ 	struct mxic_ecc_engine *mxic = nand_to_mxic(nand);
+ 	struct mxic_ecc_ctx *ctx = nand_to_ecc_ctx(nand);
+-	int nents, step, ret;
++	int nents, step, ret = 0;
  
-+	if (!b53_support_eee(ds, port))
-+		return 0;
-+
- 	ret = phy_init_eee(phy, false);
- 	if (ret)
+ 	if (req->mode == MTD_OPS_RAW)
  		return 0;
-@@ -2362,7 +2365,7 @@ bool b53_support_eee(struct dsa_switch *ds, int port)
- {
- 	struct b53_device *dev = ds->priv;
- 
--	return !is5325(dev) && !is5365(dev);
-+	return !is5325(dev) && !is5365(dev) && !is63xx(dev);
- }
- EXPORT_SYMBOL(b53_support_eee);
- 
 -- 
 2.39.5
 
