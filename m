@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-153406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91CBADD433
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:07:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69106ADD794
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FCAF17F525
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:01:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07F92C1C09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4040F2ECE8F;
-	Tue, 17 Jun 2025 15:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07562E973E;
+	Tue, 17 Jun 2025 16:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olWSVu/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqcZeuDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9F28E8;
-	Tue, 17 Jun 2025 15:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD642E92AD;
+	Tue, 17 Jun 2025 16:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175857; cv=none; b=n6wNkzkoR2V9b13O046Q9Gc3yBYXNXAocY6pH2aA3pC24DP28/zt39jrew4LvywOSV0Nhpd2/cqtKVXymxxk5JCu4TXy4RxPX7qsbJdS0llOmjSBViHaakvokj97BogswPMM1NBKeW13ifPKlrWyKzWEZYLd8j7RrPhZcxxEdzI=
+	t=1750177758; cv=none; b=ruK7ez7VGBphPySL5xNDIS5GMLmaygWD3HmXbPOWDNM2xtESxenA0rj2dv+3HEEdrrQdKeDhAgrsjC4M0l1L0f7wB/NKG0Zn1MHfJ5mC/fyzWbGbzxvi1KnSJIfHrcZ6C1P/HSRPJgF4nzpvxh4mFaaoiqXImVhVXMe4+BFdd54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175857; c=relaxed/simple;
-	bh=0q6TKhevpYccwViA+BeI7S5JdKBo2Z1e1upMkoXaFzY=;
+	s=arc-20240116; t=1750177758; c=relaxed/simple;
+	bh=7MlrkWcjD7/Kk0K+u1ONZqWrdkfJe7LxEBrwpjdTJsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYRCDedYjTwK80X3owKqgUNAW1m+CbmYs39DMLMI72lB4EwLFlOZDfP3CmgBD+hBJ1dOpYzOQBQ4W2kmki0k/4u7fU8CrftXQBdo4ZuoLiXk3omZOAw0tLstCG9syWnIxhddfc8sNviy022FFvcQKHmu6BKJtpi07hzzh5Vq4hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olWSVu/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0B8C4CEE3;
-	Tue, 17 Jun 2025 15:57:35 +0000 (UTC)
+	 MIME-Version; b=pNcR6yMniTsOaZP+hBXDK8KUvoDi0ORFBXgYkbNx3Coymwxlfl+G/lLynQIRyUlffCkRGVVLuaimMJU+6NhOeO6yOCvejxQd7Gzb68/VB8VAC3OLPUZZcFLRHHYGSjm+5GN/sao+4HgWtgFz99CMcz6Xc4Jani3NbzYuR9fE05I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqcZeuDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65EBC4CEE3;
+	Tue, 17 Jun 2025 16:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175856;
-	bh=0q6TKhevpYccwViA+BeI7S5JdKBo2Z1e1upMkoXaFzY=;
+	s=korg; t=1750177757;
+	bh=7MlrkWcjD7/Kk0K+u1ONZqWrdkfJe7LxEBrwpjdTJsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olWSVu/gbE3yIJBtdIHphMA/leSvX3DeU5BToyMVoqSnyJso+L4fq0oAkt8FRZR36
-	 YuklS1iFA3fzMLzMm+HlF24MD4RhD56s48EF55mRhQ3rZO6t/lWzHAwVbY0Macmte3
-	 nuyq4Ta8v/jc/Wzg0YOI1xK4UJ714zm3Pvk18a8Y=
+	b=dqcZeuDnfKWzeynOvqIMlUFx8JRBJKENA7NpfvZej189v8H4ULzmx0+gyJOwjBnVj
+	 BDUTyuPH1GgBYEnOH4tjuuqTzg0xhBcO+uHO+JnjGXRGZQAxnAkQpAqeaNAgFoavC/
+	 vPbGndB+/yejihLM8Z0II4MBDpV6hVd62ml6tnIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Jinjian Song <jinjian.song@fibocom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/356] nfs: ignore SB_RDONLY when remounting nfs
-Date: Tue, 17 Jun 2025 17:25:34 +0200
-Message-ID: <20250617152347.017549458@linuxfoundation.org>
+Subject: [PATCH 6.12 369/512] net: wwan: t7xx: Fix napi rx poll issue
+Date: Tue, 17 Jun 2025 17:25:35 +0200
+Message-ID: <20250617152434.537772388@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Jinjian Song <jinjian.song@fibocom.com>
 
-[ Upstream commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a ]
+[ Upstream commit 905fe0845bb27e4eed2ca27ea06e6c4847f1b2b1 ]
 
-In some scenarios, when mounting NFS, more than one superblock may be
-created. The final superblock used is the last one created, but only the
-first superblock carries the ro flag passed from user space. If a ro flag
-is added to the superblock via remount, it will trigger the issue
-described in Link[1].
+When driver handles the napi rx polling requests, the netdev might
+have been released by the dellink logic triggered by the disconnect
+operation on user plane. However, in the logic of processing skb in
+polling, an invalid netdev is still being used, which causes a panic.
 
-Link[2] attempted to address this by marking the superblock as ro during
-the initial mount. However, this introduced a new problem in scenarios
-where multiple mount points share the same superblock:
-[root@a ~]# mount /dev/sdb /mnt/sdb
-[root@a ~]# echo "/mnt/sdb *(rw,no_root_squash)" > /etc/exports
-[root@a ~]# echo "/mnt/sdb/test_dir2 *(ro,no_root_squash)" >> /etc/exports
-[root@a ~]# systemctl restart nfs-server
-[root@a ~]# mount -t nfs -o rw 127.0.0.1:/mnt/sdb/test_dir1 /mnt/test_mp1
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (rw,relatime,...
-[root@a ~]# mount -t nfs -o ro 127.0.0.1:/mnt/sdb/test_dir2 /mnt/test_mp2
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (ro,relatime,...
-127.0.0.1:/mnt/sdb/test_dir2 on /mnt/test_mp2 type nfs4 (ro,relatime,...
-[root@a ~]#
+BUG: kernel NULL pointer dereference, address: 00000000000000f1
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:dev_gro_receive+0x3a/0x620
+[...]
+Call Trace:
+ <IRQ>
+ ? __die_body+0x68/0xb0
+ ? page_fault_oops+0x379/0x3e0
+ ? exc_page_fault+0x4f/0xa0
+ ? asm_exc_page_fault+0x22/0x30
+ ? __pfx_t7xx_ccmni_recv_skb+0x10/0x10 [mtk_t7xx (HASH:1400 7)]
+ ? dev_gro_receive+0x3a/0x620
+ napi_gro_receive+0xad/0x170
+ t7xx_ccmni_recv_skb+0x48/0x70 [mtk_t7xx (HASH:1400 7)]
+ t7xx_dpmaif_napi_rx_poll+0x590/0x800 [mtk_t7xx (HASH:1400 7)]
+ net_rx_action+0x103/0x470
+ irq_exit_rcu+0x13a/0x310
+ sysvec_apic_timer_interrupt+0x56/0x90
+ </IRQ>
 
-When mounting the second NFS, the shared superblock is marked as ro,
-causing the previous NFS mount to become read-only.
-
-To resolve both issues, the ro flag is no longer applied to the superblock
-during remount. Instead, the ro flag on the mount is used to control
-whether the mount point is read-only.
-
-Fixes: 281cad46b34d ("NFS: Create a submount rpc_op")
-Link[1]: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Link[2]: https://lore.kernel.org/all/20241130035818.1459775-1-lilingfeng3@huawei.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 5545b7b9f294 ("net: wwan: t7xx: Add NAPI support")
+Signed-off-by: Jinjian Song <jinjian.song@fibocom.com>
+Link: https://patch.msgid.link/20250530031648.5592-1-jinjian.song@fibocom.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wwan/t7xx/t7xx_netdev.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 59bf4b2c0f86e..4e72ee57fc8fc 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1020,6 +1020,16 @@ int nfs_reconfigure(struct fs_context *fc)
+diff --git a/drivers/net/wwan/t7xx/t7xx_netdev.c b/drivers/net/wwan/t7xx/t7xx_netdev.c
+index 91fa082e9cab8..fc0a7cb181df2 100644
+--- a/drivers/net/wwan/t7xx/t7xx_netdev.c
++++ b/drivers/net/wwan/t7xx/t7xx_netdev.c
+@@ -302,7 +302,7 @@ static int t7xx_ccmni_wwan_newlink(void *ctxt, struct net_device *dev, u32 if_id
+ 	ccmni->ctlb = ctlb;
+ 	ccmni->dev = dev;
+ 	atomic_set(&ccmni->usage, 0);
+-	ctlb->ccmni_inst[if_id] = ccmni;
++	WRITE_ONCE(ctlb->ccmni_inst[if_id], ccmni);
  
- 	sync_filesystem(sb);
+ 	ret = register_netdevice(dev);
+ 	if (ret)
+@@ -324,6 +324,7 @@ static void t7xx_ccmni_wwan_dellink(void *ctxt, struct net_device *dev, struct l
+ 	if (WARN_ON(ctlb->ccmni_inst[if_id] != ccmni))
+ 		return;
  
-+	/*
-+	 * The SB_RDONLY flag has been removed from the superblock during
-+	 * mounts to prevent interference between different filesystems.
-+	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
-+	 * during reconfiguration; otherwise, it may also result in the
-+	 * creation of redundant superblocks when mounting a directory with
-+	 * different rw and ro flags multiple times.
-+	 */
-+	fc->sb_flags_mask &= ~SB_RDONLY;
-+
- 	/*
- 	 * Userspace mount programs that send binary options generally send
- 	 * them populated with default values. We have no way to know which
++	WRITE_ONCE(ctlb->ccmni_inst[if_id], NULL);
+ 	unregister_netdevice(dev);
+ }
+ 
+@@ -419,7 +420,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
+ 
+ 	skb_cb = T7XX_SKB_CB(skb);
+ 	netif_id = skb_cb->netif_idx;
+-	ccmni = ccmni_ctlb->ccmni_inst[netif_id];
++	ccmni = READ_ONCE(ccmni_ctlb->ccmni_inst[netif_id]);
+ 	if (!ccmni) {
+ 		dev_kfree_skb(skb);
+ 		return;
+@@ -441,7 +442,7 @@ static void t7xx_ccmni_recv_skb(struct t7xx_ccmni_ctrl *ccmni_ctlb, struct sk_bu
+ 
+ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
+ {
+-	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
++	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
+ 	struct netdev_queue *net_queue;
+ 
+ 	if (netif_running(ccmni->dev) && atomic_read(&ccmni->usage) > 0) {
+@@ -453,7 +454,7 @@ static void t7xx_ccmni_queue_tx_irq_notify(struct t7xx_ccmni_ctrl *ctlb, int qno
+ 
+ static void t7xx_ccmni_queue_tx_full_notify(struct t7xx_ccmni_ctrl *ctlb, int qno)
+ {
+-	struct t7xx_ccmni *ccmni = ctlb->ccmni_inst[0];
++	struct t7xx_ccmni *ccmni = READ_ONCE(ctlb->ccmni_inst[0]);
+ 	struct netdev_queue *net_queue;
+ 
+ 	if (atomic_read(&ccmni->usage) > 0) {
+@@ -471,7 +472,7 @@ static void t7xx_ccmni_queue_state_notify(struct t7xx_pci_dev *t7xx_dev,
+ 	if (ctlb->md_sta != MD_STATE_READY)
+ 		return;
+ 
+-	if (!ctlb->ccmni_inst[0]) {
++	if (!READ_ONCE(ctlb->ccmni_inst[0])) {
+ 		dev_warn(&t7xx_dev->pdev->dev, "No netdev registered yet\n");
+ 		return;
+ 	}
 -- 
 2.39.5
 
