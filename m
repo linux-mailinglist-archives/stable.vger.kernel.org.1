@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A365BADD792
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E7BADD450
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232632C66C0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B869C194330F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1012F2C74;
-	Tue, 17 Jun 2025 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313752EA155;
+	Tue, 17 Jun 2025 15:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjHxYzFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM3iWzZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167A52F2C6B;
-	Tue, 17 Jun 2025 16:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6FF2EA14F;
+	Tue, 17 Jun 2025 15:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178007; cv=none; b=AerUnhZ5AYXh6LV+662uZrbimd15Zu11evN7L8nyNwPJdTR2/hZdR5XnXQUp2rJ9m17QVLhleJpkB/JIMkvkaVLoMBAguk0U/M6k6kMBbUlJPnj5SeLoja3ujUywrYaRxdpiiCGdwF8CFUBWF2FR+RnNuXEtRVgtC746G2ED+To=
+	t=1750175711; cv=none; b=eQk68KMLfGf7L/3ye3nCr51Fi/5XuN2e7tWqZN1NgPhlgT/QstsNctj4u1q3Iyc64nk60ydYY7YC3An+Z2RLn3pVYMj1Jt1ozqcumeLOnUtb6+XPKTeH/ujS7fOkOSQLR8GcynpwKyMRG8XJslxuHXPRqWHmu+YAMp8wvV5lRf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178007; c=relaxed/simple;
-	bh=aOJS2mjHjjsQsBJhn+i9RZWbaXrXn5m0ufVu2S8c4u4=;
+	s=arc-20240116; t=1750175711; c=relaxed/simple;
+	bh=FfZW0Jv0Bs/jKdwdR0PYysYWcr2z9QbDGjlKwuCSv9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3rKUishpLokBBab//YWkRgr0LJeu3GzGIxQ2xHorafzCZ1npiDUHHPb/vCGzqadHQqYuzYZoynT3upC3F831L2R032tqkhh2H1iE4uZnVEImsqRhHqxrAVu8JzUmJeZvRmI70qCPSLR8WzdEkfBZewCH9gjftY7xntl2NHuVnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjHxYzFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E34C4CEF0;
-	Tue, 17 Jun 2025 16:33:26 +0000 (UTC)
+	 MIME-Version; b=PZ/7uROD229nuS/ZDse0nWDiOzSIheV+GQhhbAoOPL86Rm8Iaksao7IBYmJ4nPdfkZXV7/sEK6MnmXtggc4eMMlw3Xkk1hqR8rK14/LBq24MIW/MxrMk/D6X+dyqi2ugJiL7louJIu6YlT9b5vt6eCJCoMHnEtvTxSbpNSDZC54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM3iWzZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F905C4CEE3;
+	Tue, 17 Jun 2025 15:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178007;
-	bh=aOJS2mjHjjsQsBJhn+i9RZWbaXrXn5m0ufVu2S8c4u4=;
+	s=korg; t=1750175710;
+	bh=FfZW0Jv0Bs/jKdwdR0PYysYWcr2z9QbDGjlKwuCSv9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjHxYzFFkIOnqttQEwEOfBFwphFDHECC96Uo3oBJ5Edh97O7qB5wbGARmgm8+LUk5
-	 GBtTk7l3E2aYqcVDaf0oLetdhZjoDdKqlofbYTHKmt86ImB8kz6euX2913nOzTKu3z
-	 72r9NLRcQVp5+NM2fzMQPZmvD7VM3B8V9g2bsCTk=
+	b=qM3iWzZmPKyvv8Mj+GdnbpkPTkUhc+e4P+EQ6Nb0b8u01/YDbnJNZssy0tV7rpnM1
+	 Yw0xS5WWo7GpI/HlvQC/DT+UJLUJEbl6LDjSKV4ROt5LOjTUoBWWWtzXnycj50GdCM
+	 K+JK+gs58E7RveL9joNKsO6U73AFLHIRleXq7Nws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Wiepert <jonathan.wiepert@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 395/780] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
-Date: Tue, 17 Jun 2025 17:21:43 +0200
-Message-ID: <20250617152507.541792311@linuxfoundation.org>
+Subject: [PATCH 6.12 138/512] Use thread-safe function pointer in libbpf_print
+Date: Tue, 17 Jun 2025 17:21:44 +0200
+Message-ID: <20250617152425.192282393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Jonathan Wiepert <jonathan.wiepert@gmail.com>
 
-[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
+[ Upstream commit 91dbac4076537b464639953c055c460d2bdfc7ea ]
 
-In preparation for writing logs, in nilfs_btree_propagate(), which makes
-parent and ancestor node blocks dirty starting from a modified data block
-or b-tree node block, if the starting block does not belong to the b-tree,
-i.e.  is isolated, nilfs_btree_do_lookup() called within the function
-fails with -ENOENT.
+This patch fixes a thread safety bug where libbpf_print uses the
+global variable storing the print function pointer rather than the local
+variable that had the print function set via __atomic_load_n.
 
-In this case, even though -ENOENT is an internal code, it is propagated to
-the log writer via nilfs_bmap_propagate() and may be erroneously returned
-to system calls such as fsync().
-
-Fix this issue by changing the error code to -EINVAL in this case, and
-having the bmap layer detect metadata corruption and convert the error
-code appropriately.
-
-Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f1cb927cdb62 ("libbpf: Ensure print callback usage is thread-safe")
+Signed-off-by: Jonathan Wiepert <jonathan.wiepert@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Link: https://lore.kernel.org/bpf/20250424221457.793068-1-jonathan.wiepert@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index 0d8f7fb15c2e5..dd0c8e560ef6a 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -2102,11 +2102,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index c6eceae4d6ff6..bb24f6bac2073 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -285,7 +285,7 @@ void libbpf_print(enum libbpf_print_level level, const char *format, ...)
+ 	old_errno = errno;
  
- 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
- 	if (ret < 0) {
--		if (unlikely(ret == -ENOENT))
-+		if (unlikely(ret == -ENOENT)) {
- 			nilfs_crit(btree->b_inode->i_sb,
- 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
- 				   btree->b_inode->i_ino,
- 				   (unsigned long long)key, level);
-+			ret = -EINVAL;
-+		}
- 		goto out;
- 	}
+ 	va_start(args, format);
+-	__libbpf_pr(level, format, args);
++	print_fn(level, format, args);
+ 	va_end(args);
  
+ 	errno = old_errno;
 -- 
 2.39.5
 
