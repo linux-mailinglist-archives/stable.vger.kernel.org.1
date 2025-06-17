@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B97ADD6F2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8E3ADD7BF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA81918960A8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73CF41945839
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2942E2EA174;
-	Tue, 17 Jun 2025 16:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F78E2ECD37;
+	Tue, 17 Jun 2025 16:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMtlQy3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cG7WjkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91972EA16C;
-	Tue, 17 Jun 2025 16:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3988D2ECD23;
+	Tue, 17 Jun 2025 16:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177503; cv=none; b=OYG3wNbBgZHLu/vwVQuyyQ1zmSCk1p90Pmx2ip/YvuFKDcRVnCk3frj3oRkMbdbOAUwwYNMJwXpHDUqp/iz02j6vt9x1cJqg3OEb1OjT7uFlq7qCdytheStxMJoZiZ47YNWJZW/B1hhT3kbx8sgkEWkgOHryHfz3C4AynXo34oE=
+	t=1750177510; cv=none; b=Pltou+iee5G2+6csxuz0674Z7E8jUNz0VLm+fRBJGJ2CEWdymMQJFWBB6mOCoQc73q1XDCLt1P83TApvx3stpyNNmVDe0NO3Knj8l147yzmM1fWQsX/iB840dJ/g2XanbA0KhXKrG/1x5sU0ctriudy2+YBpCS6GDwmMyKcpdvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177503; c=relaxed/simple;
-	bh=pd7FkzlKvB05P9fWIZGdTMELEdwBt+F5MSgXbEcxprw=;
+	s=arc-20240116; t=1750177510; c=relaxed/simple;
+	bh=FPbCxWyjGpnLHbDtbkHx8w8XjkFYosu9wVqYu8GowSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CM8RE6fmkus4jO6YdtFG4wnuD9i+fCBRYVo4rysk9bPuJWfTsokSLpGMQI3NfwJb0e78uAN6dJTUu+PwyYGfq12nfB7Xil/tdq5AsNYFmPYJQAuy+6KCXS4Z8SrcvhV0jiO03p12owkLirGepTRuB8k+6g2kI8cI1xQuXiZoObo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMtlQy3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49679C4CEE3;
-	Tue, 17 Jun 2025 16:25:03 +0000 (UTC)
+	 MIME-Version; b=QCwIZgz10790CRNsE2M8Qy84Pz+0mizuh6cVMV6JiHm6iO6OEEeYOHM9fALbQqXYkPmNdLng3Uzqfy665DmN0hzpLcXjjzt66GiJvs43on6EBONrB/mZ4tZz9oFVr90+e8XcpETbtfjdkG1EDrRETbvs0qOy45HOjvVan4kM2QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cG7WjkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F379C4CEE7;
+	Tue, 17 Jun 2025 16:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177503;
-	bh=pd7FkzlKvB05P9fWIZGdTMELEdwBt+F5MSgXbEcxprw=;
+	s=korg; t=1750177510;
+	bh=FPbCxWyjGpnLHbDtbkHx8w8XjkFYosu9wVqYu8GowSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMtlQy3oOpJLmvJPXUNOdHCaCCSAa/bsQt/zjAD7u+0fC9hRW6T9p6TQZpzH/EMXF
-	 nYw5AU8EMtMB8Ydti+mr8vddcl2wiWjmr08ijpKFe19pb1siM+fkvhAn19Rlq3ysmn
-	 iLN67o4SzTbrWauSE5Uvptagr4HfmijRZGgVbYy8=
+	b=0cG7WjkGPcUU7+l5kaUhPV78kj9596pi+lgpxRAT6tJG6+81no33d2+GQfYEUbcWL
+	 cOtjDfuQDnFFsNKekuppvU3u/Mh6CZbrWG70BvM6wKnD9oicNJXmbj398fFlVufqM/
+	 7WAWwdS4hbz1CrFPQlDcbG0Y5tk9iEI/ejiPIbCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 316/780] net: usb: aqc111: fix error handling of usbnet read calls
-Date: Tue, 17 Jun 2025 17:20:24 +0200
-Message-ID: <20250617152504.328154570@linuxfoundation.org>
+Subject: [PATCH 6.15 317/780] octeontx2-af: Send Link events one by one
+Date: Tue, 17 Jun 2025 17:20:25 +0200
+Message-ID: <20250617152504.368098680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,103 +68,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 405b0d610745fb5e84fc2961d9b960abb9f3d107 ]
+[ Upstream commit ba5cb47b56e5d89f0a5eb5163ffbfda1e3e7cef0 ]
 
-Syzkaller, courtesy of syzbot, identified an error (see report [1]) in
-aqc111 driver, caused by incomplete sanitation of usb read calls'
-results. This problem is quite similar to the one fixed in commit
-920a9fa27e78 ("net: asix: add proper error handling of usb read errors").
+Send link events one after another otherwise new message
+is overwriting the message which is being processed by PF.
 
-For instance, usbnet_read_cmd() may read fewer than 'size' bytes,
-even if the caller expected the full amount, and aqc111_read_cmd()
-will not check its result properly. As [1] shows, this may lead
-to MAC address in aqc111_bind() being only partly initialized,
-triggering KMSAN warnings.
-
-Fix the issue by verifying that the number of bytes read is
-as expected and not less.
-
-[1] Partial syzbot report:
-BUG: KMSAN: uninit-value in is_valid_ether_addr include/linux/etherdevice.h:208 [inline]
-BUG: KMSAN: uninit-value in usbnet_probe+0x2e57/0x4390 drivers/net/usb/usbnet.c:1830
- is_valid_ether_addr include/linux/etherdevice.h:208 [inline]
- usbnet_probe+0x2e57/0x4390 drivers/net/usb/usbnet.c:1830
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:-1 [inline]
- really_probe+0x4d1/0xd90 drivers/base/dd.c:658
- __driver_probe_device+0x268/0x380 drivers/base/dd.c:800
-...
-
-Uninit was stored to memory at:
- dev_addr_mod+0xb0/0x550 net/core/dev_addr_lists.c:582
- __dev_addr_set include/linux/netdevice.h:4874 [inline]
- eth_hw_addr_set include/linux/etherdevice.h:325 [inline]
- aqc111_bind+0x35f/0x1150 drivers/net/usb/aqc111.c:717
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
-...
-
-Uninit was stored to memory at:
- ether_addr_copy include/linux/etherdevice.h:305 [inline]
- aqc111_read_perm_mac drivers/net/usb/aqc111.c:663 [inline]
- aqc111_bind+0x794/0x1150 drivers/net/usb/aqc111.c:713
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:-1 [inline]
-...
-
-Local variable buf.i created at:
- aqc111_read_perm_mac drivers/net/usb/aqc111.c:656 [inline]
- aqc111_bind+0x221/0x1150 drivers/net/usb/aqc111.c:713
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
-
-Reported-by: syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3b6b9ff7b80430020c7b
-Tested-by: syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com
-Fixes: df2d59a2ab6c ("net: usb: aqc111: Add support for getting and setting of MAC address")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250520113240.2369438-1-n.zhandarovich@fintech.ru
+Fixes: a88e0f936ba9 ("octeontx2: Detect the mbox up or down message via register")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1747823443-404-1-git-send-email-sbhatta@marvell.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c | 2 ++
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c    | 2 ++
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c    | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index ff5be2cbf17b9..453a2cf82753f 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -30,10 +30,13 @@ static int aqc111_read_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
- 	ret = usbnet_read_cmd_nopm(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
- 				   USB_RECIP_DEVICE, value, index, data, size);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+index 655dd4726d36e..0277d226293e9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+@@ -143,6 +143,8 @@ static int mcs_notify_pfvf(struct mcs_intr_event *event, struct rvu *rvu)
  
--	if (unlikely(ret < 0))
-+	if (unlikely(ret < size)) {
-+		ret = ret < 0 ? ret : -ENODATA;
+ 	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pf);
+ 
++	otx2_mbox_wait_for_rsp(&rvu->afpf_wq_info.mbox_up, pf);
 +
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+	}
+ 	mutex_unlock(&rvu->mbox_lock);
  
- 	return ret;
+ 	return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+index 992fa0b82e8d2..ebb56eb0d18cf 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -272,6 +272,8 @@ static void cgx_notify_pfs(struct cgx_link_event *event, struct rvu *rvu)
+ 
+ 		otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pfid);
+ 
++		otx2_mbox_wait_for_rsp(&rvu->afpf_wq_info.mbox_up, pfid);
++
+ 		mutex_unlock(&rvu->mbox_lock);
+ 	} while (pfmap);
  }
-@@ -46,10 +49,13 @@ static int aqc111_read_cmd(struct usbnet *dev, u8 cmd, u16 value,
- 	ret = usbnet_read_cmd(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
- 			      USB_RECIP_DEVICE, value, index, data, size);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index 052ae5923e3a8..32953cca108c8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -60,6 +60,8 @@ static int rvu_rep_up_notify(struct rvu *rvu, struct rep_event *event)
  
--	if (unlikely(ret < 0))
-+	if (unlikely(ret < size)) {
-+		ret = ret < 0 ? ret : -ENODATA;
+ 	otx2_mbox_msg_send_up(&rvu->afpf_wq_info.mbox_up, pf);
+ 
++	otx2_mbox_wait_for_rsp(&rvu->afpf_wq_info.mbox_up, pf);
 +
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+	}
- 
- 	return ret;
+ 	mutex_unlock(&rvu->mbox_lock);
+ 	return 0;
  }
 -- 
 2.39.5
