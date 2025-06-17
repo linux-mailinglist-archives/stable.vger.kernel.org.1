@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7ABADD666
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDF0ADD6BB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1B3717F657
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:24:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB691943A85
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF172ED16B;
-	Tue, 17 Jun 2025 16:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64502EF2B6;
+	Tue, 17 Jun 2025 16:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fvg1lKtt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqsRxLym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A733D2ED16D;
-	Tue, 17 Jun 2025 16:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642E02EF2B0;
+	Tue, 17 Jun 2025 16:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177119; cv=none; b=H9asBfYEiObv1iL02CZBm0/srn9x1fuFrU2JEq8ozwTB4T1Na8YRrtfoTfxadWkNQFl1BHdM1nalX4AVmP6Rt20EvZGCPLEzlSSA3RWaNYNIL1jsI9TArTBIl6szRXVzM4DhvdeRyRTcCh5ISMPm5fZRr10MPdEQYEQRLRGaw4k=
+	t=1750177129; cv=none; b=Yhc3Fwc7ePZhhVtFhG7P8AnoxE55fvTs3Hk4UfHhc1I1eu7pF03oBFzPcmzpDwYb/Jh738GtawLt7h6WUsVRGTUqPzUqAWx69LFfOXPVPsDbzyaox+P5cMrPSfl7blMW4vCJO0B18/0Ili9dJur6zxyGnS7RZ7w28qc3J9RXvYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177119; c=relaxed/simple;
-	bh=r0fl+5gjZYX+97RCB7W5cl1iHwG46O3ZM98vf6sN9oI=;
+	s=arc-20240116; t=1750177129; c=relaxed/simple;
+	bh=yv/kf/4U1RwoxFZpUvKXyArVINh9Ht1z7jcOisSn3Qo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pL2uQ34jyEH6nnJgL1AslaZyTLtuluo42hMq4dPLHARF9f2lnXY3WXpBSi/4rJkFnBI57aKwNCqh9n2L2q+K68BMayN9CmolXCslM5n5t9XG4tWCgdK+gVvt2LgIWOU2QR4L0sVPY/klv7sFAQX1ZEwrdzeyt9+Zqfu2dRVsEC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fvg1lKtt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F48CC4CEE3;
-	Tue, 17 Jun 2025 16:18:38 +0000 (UTC)
+	 MIME-Version; b=VIIRUPqF0guvU9ts8LzUjwTkItKm+XnD5/nCjQIKytC0FEyPeslBlNc722LCs/6jHQleXc/6Bvic8mxAPSDAGgRnw7Bpd7srBnLW9aMDIkKf/EFdA0ER4oRRQXVYno8Mx8SNwLeQktSI+GxGGk7e0/m+09SEWVXhwsfpLZd3RF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqsRxLym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BD1C4CEF0;
+	Tue, 17 Jun 2025 16:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177119;
-	bh=r0fl+5gjZYX+97RCB7W5cl1iHwG46O3ZM98vf6sN9oI=;
+	s=korg; t=1750177129;
+	bh=yv/kf/4U1RwoxFZpUvKXyArVINh9Ht1z7jcOisSn3Qo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fvg1lKtt98om7/mRK6O9/Z4gqXCit6McKimIyCspHLmRERaSeIZOY7vXemSyaHf45
-	 ldMxnTyQn+7bYIAJeQgDIWzhv1RombGQzzEALxsn9Q6e7qM4MPFWnlCjA8VOZDNcKU
-	 XiL9ZTHgTr4OE1Hh/ATWuiQdGZ912zLHcrtlmkaQ=
+	b=oqsRxLymAw1gVYXQ+VYJ8uvVgpgDy8n4SGm6lg/xpD7rDMZCIJuhkbUHQPVNY18f5
+	 pB4TXyAmdg72nuSszK1gc0xpZ9A2VXw3t9K4VrOuO1Ub2YLldeng618QOy3J4nmtN1
+	 PF6TzwuOzdEwOYkOKcrhpviBwKipAKqN6fJfskXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+45b0c89a0fc7ae8dbadc@syzkaller.appspotmail.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Tao Chen <chen.dylane@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 263/780] bpf: Fix WARN() in get_bpf_raw_tp_regs
-Date: Tue, 17 Jun 2025 17:19:31 +0200
-Message-ID: <20250617152502.164801461@linuxfoundation.org>
+Subject: [PATCH 6.15 264/780] dt-bindings: soc: fsl,qman-fqd: Fix reserved-memory.yaml reference
+Date: Tue, 17 Jun 2025 17:19:32 +0200
+Message-ID: <20250617152502.204686231@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,84 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 3880cdbed1c4607e378f58fa924c5d6df900d1d3 ]
+[ Upstream commit 1090c38bbfd9ab7f22830c0e8a5c605e7d4ef084 ]
 
-syzkaller reported an issue:
+The reserved-memory.yaml reference needs the full path. No warnings were
+generated because the example has the wrong compatible string, so fix
+that too.
 
-WARNING: CPU: 3 PID: 5971 at kernel/trace/bpf_trace.c:1861 get_bpf_raw_tp_regs+0xa4/0x100 kernel/trace/bpf_trace.c:1861
-Modules linked in:
-CPU: 3 UID: 0 PID: 5971 Comm: syz-executor205 Not tainted 6.15.0-rc5-syzkaller-00038-g707df3375124 #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:get_bpf_raw_tp_regs+0xa4/0x100 kernel/trace/bpf_trace.c:1861
-RSP: 0018:ffffc90003636fa8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000003 RCX: ffffffff81c6bc4c
-RDX: ffff888032efc880 RSI: ffffffff81c6bc83 RDI: 0000000000000005
-RBP: ffff88806a730860 R08: 0000000000000005 R09: 0000000000000003
-R10: 0000000000000004 R11: 0000000000000000 R12: 0000000000000004
-R13: 0000000000000001 R14: ffffc90003637008 R15: 0000000000000900
-FS:  0000000000000000(0000) GS:ffff8880d6cdf000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7baee09130 CR3: 0000000029f5a000 CR4: 0000000000352ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ____bpf_get_stack_raw_tp kernel/trace/bpf_trace.c:1934 [inline]
- bpf_get_stack_raw_tp+0x24/0x160 kernel/trace/bpf_trace.c:1931
- bpf_prog_ec3b2eefa702d8d3+0x43/0x47
- bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
- __bpf_prog_run include/linux/filter.h:718 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- __bpf_trace_run kernel/trace/bpf_trace.c:2363 [inline]
- bpf_trace_run3+0x23f/0x5a0 kernel/trace/bpf_trace.c:2405
- __bpf_trace_mmap_lock_acquire_returned+0xfc/0x140 include/trace/events/mmap_lock.h:47
- __traceiter_mmap_lock_acquire_returned+0x79/0xc0 include/trace/events/mmap_lock.h:47
- __do_trace_mmap_lock_acquire_returned include/trace/events/mmap_lock.h:47 [inline]
- trace_mmap_lock_acquire_returned include/trace/events/mmap_lock.h:47 [inline]
- __mmap_lock_do_trace_acquire_returned+0x138/0x1f0 mm/mmap_lock.c:35
- __mmap_lock_trace_acquire_returned include/linux/mmap_lock.h:36 [inline]
- mmap_read_trylock include/linux/mmap_lock.h:204 [inline]
- stack_map_get_build_id_offset+0x535/0x6f0 kernel/bpf/stackmap.c:157
- __bpf_get_stack+0x307/0xa10 kernel/bpf/stackmap.c:483
- ____bpf_get_stack kernel/bpf/stackmap.c:499 [inline]
- bpf_get_stack+0x32/0x40 kernel/bpf/stackmap.c:496
- ____bpf_get_stack_raw_tp kernel/trace/bpf_trace.c:1941 [inline]
- bpf_get_stack_raw_tp+0x124/0x160 kernel/trace/bpf_trace.c:1931
- bpf_prog_ec3b2eefa702d8d3+0x43/0x47
-
-Tracepoint like trace_mmap_lock_acquire_returned may cause nested call
-as the corner case show above, which will be resolved with more general
-method in the future. As a result, WARN_ON_ONCE will be triggered. As
-Alexei suggested, remove the WARN_ON_ONCE first.
-
-Fixes: 9594dc3c7e71 ("bpf: fix nested bpf tracepoints with per-cpu data")
-Reported-by: syzbot+45b0c89a0fc7ae8dbadc@syzkaller.appspotmail.com
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250513042747.757042-1-chen.dylane@linux.dev
-
-Closes: https://lore.kernel.org/bpf/8bc2554d-1052-4922-8832-e0078a033e1d@gmail.com
+Fixes: 304a90c4f75d ("dt-bindings: soc: fsl: Convert q(b)man-* to yaml format")
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20250507154231.1590634-1-robh@kernel.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 0f5906f43d7ca..e1bf9c06007fb 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1858,7 +1858,7 @@ static struct pt_regs *get_bpf_raw_tp_regs(void)
- 	struct bpf_raw_tp_regs *tp_regs = this_cpu_ptr(&bpf_raw_tp_regs);
- 	int nest_level = this_cpu_inc_return(bpf_raw_tp_nest_level);
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+index de0b4ae740ff2..a975bce599750 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,qman-fqd.yaml
+@@ -50,7 +50,7 @@ required:
+   - compatible
  
--	if (WARN_ON_ONCE(nest_level > ARRAY_SIZE(tp_regs->regs))) {
-+	if (nest_level > ARRAY_SIZE(tp_regs->regs)) {
- 		this_cpu_dec(bpf_raw_tp_nest_level);
- 		return ERR_PTR(-EBUSY);
- 	}
+ allOf:
+-  - $ref: reserved-memory.yaml
++  - $ref: /schemas/reserved-memory/reserved-memory.yaml
+ 
+ unevaluatedProperties: false
+ 
+@@ -61,7 +61,7 @@ examples:
+         #size-cells = <2>;
+ 
+         qman-fqd {
+-            compatible = "shared-dma-pool";
++            compatible = "fsl,qman-fqd";
+             size = <0 0x400000>;
+             alignment = <0 0x400000>;
+             no-map;
 -- 
 2.39.5
 
