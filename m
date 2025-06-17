@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41384ADD92D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F57ADD53B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBDB95A00F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E9303BEBD9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CD1235071;
-	Tue, 17 Jun 2025 16:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A659B2DFF2B;
+	Tue, 17 Jun 2025 16:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeAAmMMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3e7b04b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A4718E025;
-	Tue, 17 Jun 2025 16:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604E42DFF1B;
+	Tue, 17 Jun 2025 16:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179212; cv=none; b=Rh3V0ncc06fasnmZ2PRmCFeLk0Qw8YlHUx9RhbZbaKkc187XYbNpRQp4VX0fFWFDH29bTPWC4+ZEZ1Sl+51xY40hSRW0+rK1xmoskJSa89/JtkRcSIl8krdg0C0DOqtq1msR5dWIUb7cCcCD4eVoggn1cy9+JiMAPdnuU0xOrzI=
+	t=1750176424; cv=none; b=UI3W3E8uf2uW3a1tdNK1wtzJI3wZee5pivf0w7Lbi9YkWOvkkpHz26rOI3aME6LSZlgsTjdBLkkAl+5BGSxQp25DIReYZQB2W203yKTQC71MQJFHnn9uXJXEihDRvA8Y+oXX/KKiqVqCKDF3cl/3WvKgccCiUSPT1LyRudovDFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179212; c=relaxed/simple;
-	bh=GaIaDROnCU1qd1SJ6bc2vj0kCqMC+UIgPXgZVyG50Ks=;
+	s=arc-20240116; t=1750176424; c=relaxed/simple;
+	bh=WWEqq9yoUgZxIVYTQBvTiCuvK7FhrG1r/446Uqniv70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9mzEns7qFkThdYnJ/hCvsn63S1doAkJQZyCzUmsCg9UYX2gxrNimPZ6T7e9ZG9w+7zHprFXBIN2cHrjc19KZF+dU2cNqjzsrseka8Rh/MrNQD3hcPpSXGrkXmypHLSYNYkUwLOqvOC6iAeXgqvQlkNjOa/1mb+22gSFTLO+/bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeAAmMMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2208C4CEE3;
-	Tue, 17 Jun 2025 16:53:31 +0000 (UTC)
+	 MIME-Version; b=d+RzXzlao64DFfv9Lo+bQm4KHvg9Q/oP7OHsr+7VIMXeDmF3BKABKipO2pRmGvg6Dpc8FZ6xsEJccAfyKCUFpTGsHVaTHyIM0hD38dnOpseMv9xU7OTPsx7WaqYoYnihxJkNfHgTSH4QZ/iDiMVBTbE7iiVHEV4vePXXtKHz7xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3e7b04b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8A4C4CEE7;
+	Tue, 17 Jun 2025 16:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179212;
-	bh=GaIaDROnCU1qd1SJ6bc2vj0kCqMC+UIgPXgZVyG50Ks=;
+	s=korg; t=1750176424;
+	bh=WWEqq9yoUgZxIVYTQBvTiCuvK7FhrG1r/446Uqniv70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeAAmMMGVuoSGEtzPfo5k7aopiGCiY3IVlOROJa/qZ/ZbeHODNi6W4nnym0hczoB+
-	 gZrUA3AErt9y7tqNuOIp3G41NGC9We4LZAZCF3sFJika5qmqV8TGtejwOa3gIFvhsS
-	 N0EWKvIDPTrcVmGSNDY7q1wmTOhB65GoOyE2/dIk=
+	b=B3e7b04bHvGsRB2HO47U6JST0Ybrc4rIxljcYb2S/QoIpxxiVACTIckarq6QFFKXK
+	 hV8+L/b6/ipZpVQArzvrYm+qaf5G+H4VE72Tk9NWvNnmmvwp7T4YwaXpzvOK0xcO8O
+	 jxmJdw79rVW9fWv97KF53qPAJ1t/5/lalEOhk9sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Slenska <wojciech.slenska@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 683/780] pinctrl: qcom: pinctrl-qcm2290: Add missing pins
+Subject: [PATCH 6.6 276/356] do_change_type(): refuse to operate on unmounted/not ours mounts
 Date: Tue, 17 Jun 2025 17:26:31 +0200
-Message-ID: <20250617152519.287655362@linuxfoundation.org>
+Message-ID: <20250617152349.302755393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Slenska <wojciech.slenska@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 315345610faee8a0568b522dba9e35067d1732ab ]
+[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
 
-Added the missing pins to the qcm2290_pins table.
+Ensure that propagation settings can only be changed for mounts located
+in the caller's mount namespace. This change aligns permission checking
+with the rest of mount(2).
 
-Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
-Fixes: 48e049ef1238 ("pinctrl: qcom: Add QCM2290 pinctrl driver")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250523101437.59092-1-wojciech.slenska@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-qcm2290.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/namespace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-qcm2290.c b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-index ba699eac9ee8b..20e9bccda4cd6 100644
---- a/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-+++ b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
-@@ -165,6 +165,10 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
- 	PINCTRL_PIN(62, "GPIO_62"),
- 	PINCTRL_PIN(63, "GPIO_63"),
- 	PINCTRL_PIN(64, "GPIO_64"),
-+	PINCTRL_PIN(65, "GPIO_65"),
-+	PINCTRL_PIN(66, "GPIO_66"),
-+	PINCTRL_PIN(67, "GPIO_67"),
-+	PINCTRL_PIN(68, "GPIO_68"),
- 	PINCTRL_PIN(69, "GPIO_69"),
- 	PINCTRL_PIN(70, "GPIO_70"),
- 	PINCTRL_PIN(71, "GPIO_71"),
-@@ -179,12 +183,17 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
- 	PINCTRL_PIN(80, "GPIO_80"),
- 	PINCTRL_PIN(81, "GPIO_81"),
- 	PINCTRL_PIN(82, "GPIO_82"),
-+	PINCTRL_PIN(83, "GPIO_83"),
-+	PINCTRL_PIN(84, "GPIO_84"),
-+	PINCTRL_PIN(85, "GPIO_85"),
- 	PINCTRL_PIN(86, "GPIO_86"),
- 	PINCTRL_PIN(87, "GPIO_87"),
- 	PINCTRL_PIN(88, "GPIO_88"),
- 	PINCTRL_PIN(89, "GPIO_89"),
- 	PINCTRL_PIN(90, "GPIO_90"),
- 	PINCTRL_PIN(91, "GPIO_91"),
-+	PINCTRL_PIN(92, "GPIO_92"),
-+	PINCTRL_PIN(93, "GPIO_93"),
- 	PINCTRL_PIN(94, "GPIO_94"),
- 	PINCTRL_PIN(95, "GPIO_95"),
- 	PINCTRL_PIN(96, "GPIO_96"),
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 4d8afd0e1eb8f..eab9185e22858 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2557,6 +2557,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
+ 
+ 	namespace_lock();
++	if (!check_mnt(mnt)) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
 -- 
 2.39.5
 
