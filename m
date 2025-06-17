@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F42ADD2E6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD79CADD2E9
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:51:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846DB1686F7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD97162851
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6B72F237E;
-	Tue, 17 Jun 2025 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9132ECD1C;
+	Tue, 17 Jun 2025 15:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgF4aFD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSlW4VDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E1B2F2374;
-	Tue, 17 Jun 2025 15:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ACA2ECE81;
+	Tue, 17 Jun 2025 15:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175089; cv=none; b=W2T0iLcpqO/nwHgX4IzDfet3hFf0MpPpuVPR9eUkB/XhmFIBqxT/6kc63TQp8fnIBxz1a5+FZOxtf+O2tC60hv0Jgol/+WFTBm2y0wM4S+Tu3TEPu5S7CbqCQv7FJU1310H1SU7SykIGjeWu1b6lRR0CYLweIINp7pJhIWIgj/U=
+	t=1750175101; cv=none; b=Wfh9W1jWYJ4WCgAcp6FusdNlhJItG2AYP+yubxX0bgJhPSZOoBOFBOHH2CU0J9kisY3uqc5OtaR/pXWgeH+2CnFu5X+Bu+5aVjZGMRcorMPGjlk83GBotQPQsELN1XIrxVjlpW67Q9Xjuu1KA2BJOuU8jJebe1IIkSevxZ5mZGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175089; c=relaxed/simple;
-	bh=nzcCbmTkJvlxWcUjsiuKgNQxs+Z3+2kF3J3mr2P/f2E=;
+	s=arc-20240116; t=1750175101; c=relaxed/simple;
+	bh=4HDVizlx01AD8M1apxipEPYGJ4zsrrPrLspJkmdJZ6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAdTAUp+Teg6CKjL9DjLVDgOgLHFQ9lBtdQA3sm5PsV4RFxri04yDomMsqxFaThsgWWS0qR8QWFdZw+79IKiesrttdFEaF8VYoz/J8Jh/2TBmxY73GU/NZrqdtn3mu0TBzolqHgC3gzbMhd5xvGtPNAbs2JWeLSRmI/FBnT/6Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgF4aFD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28473C4CEE3;
-	Tue, 17 Jun 2025 15:44:47 +0000 (UTC)
+	 MIME-Version; b=TlhsoZuY1PYk3b6UzHDwZjfYr2MzogfhNA4OT/Ib/6vbaiOduihuKAVSFg7LwCk3btkwZ3YRx8voKcTX2vWbksYcoouZbr76rfMxIRdyqO3UiQGNo2HH+LRnfHXa0+JGx909tVxrF1pYHDJIYhIr6VmCSKtdQo6avBpsotthxa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSlW4VDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4394C4CEE3;
+	Tue, 17 Jun 2025 15:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175088;
-	bh=nzcCbmTkJvlxWcUjsiuKgNQxs+Z3+2kF3J3mr2P/f2E=;
+	s=korg; t=1750175101;
+	bh=4HDVizlx01AD8M1apxipEPYGJ4zsrrPrLspJkmdJZ6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgF4aFD9n5PNwJwMMGmgpIONxDCp/LB8jIqtWtyizFe9HKu3hBCNlnRt0VivWLZ4M
-	 KezUyhVqx0fi6CTi8PmSBIhlrVoiTgp+FATvVUCprLBsVPHADjFC9s6f2Xs+w5FLgB
-	 hYSqPKXDNeIIas1ea5c6cAQv1mGlaaEQEimFuqOQ=
+	b=XSlW4VDwuAVESshzsRdLX80hTaPEJqDhyYALH/KGrwb3BYfZ0ZS5Lcfz+MzMSVa8g
+	 EZpSTNMHfh/j0Woj5IYSAXWcprR5HVCqxXJ5SayjPY0Y0xGsoU73/mZ3SzUsNrN9jY
+	 iJZrVA4WtV4/6AP61FzUvijKWpgBJxozxS8O7W3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuewen Yan <xuewen.yan@unisoc.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Tianchen Ding <dtcccc@linux.alibaba.com>
-Subject: [PATCH 6.15 048/780] sched/fair: Fixup wake_up_sync() vs DELAYED_DEQUEUE
-Date: Tue, 17 Jun 2025 17:15:56 +0200
-Message-ID: <20250617152453.457655601@linuxfoundation.org>
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 049/780] kunit: Fix wrong parameter to kunit_deactivate_static_stub()
+Date: Tue, 17 Jun 2025 17:15:57 +0200
+Message-ID: <20250617152453.497813700@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -68,59 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xuewen Yan <xuewen.yan@unisoc.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit aa3ee4f0b7541382c9f6f43f7408d73a5d4f4042 ]
+[ Upstream commit 772e50a76ee664e75581624f512df4e45582605a ]
 
-Delayed dequeued feature keeps a sleeping task enqueued until its
-lag has elapsed. As a result, it stays also visible in rq->nr_running.
-So when in wake_affine_idle(), we should use the real running-tasks
-in rq to check whether we should place the wake-up task to
-current cpu.
-On the other hand, add a helper function to return the nr-delayed.
+kunit_deactivate_static_stub() accepts real_fn_addr instead of
+replacement_addr.  In the case, it always passes NULL to
+kunit_deactivate_static_stub().
 
-Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Reviewed-and-tested-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20250303105241.17251-2-xuewen.yan@unisoc.com
+Fix it.
+
+Link: https://lore.kernel.org/r/20250520082050.2254875-1-tzungbi@kernel.org
+Fixes: e047c5eaa763 ("kunit: Expose 'static stub' API to redirect functions")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ lib/kunit/static_stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 0fb9bf995a479..0c04ed4148525 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7196,6 +7196,11 @@ static bool dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
- 	return true;
- }
+diff --git a/lib/kunit/static_stub.c b/lib/kunit/static_stub.c
+index 92b2cccd5e763..484fd85251b41 100644
+--- a/lib/kunit/static_stub.c
++++ b/lib/kunit/static_stub.c
+@@ -96,7 +96,7 @@ void __kunit_activate_static_stub(struct kunit *test,
  
-+static inline unsigned int cfs_h_nr_delayed(struct rq *rq)
-+{
-+	return (rq->cfs.h_nr_queued - rq->cfs.h_nr_runnable);
-+}
-+
- #ifdef CONFIG_SMP
+ 	/* If the replacement address is NULL, deactivate the stub. */
+ 	if (!replacement_addr) {
+-		kunit_deactivate_static_stub(test, replacement_addr);
++		kunit_deactivate_static_stub(test, real_fn_addr);
+ 		return;
+ 	}
  
- /* Working cpumask for: sched_balance_rq(), sched_balance_newidle(). */
-@@ -7357,8 +7362,12 @@ wake_affine_idle(int this_cpu, int prev_cpu, int sync)
- 	if (available_idle_cpu(this_cpu) && cpus_share_cache(this_cpu, prev_cpu))
- 		return available_idle_cpu(prev_cpu) ? prev_cpu : this_cpu;
- 
--	if (sync && cpu_rq(this_cpu)->nr_running == 1)
--		return this_cpu;
-+	if (sync) {
-+		struct rq *rq = cpu_rq(this_cpu);
-+
-+		if ((rq->nr_running - cfs_h_nr_delayed(rq)) == 1)
-+			return this_cpu;
-+	}
- 
- 	if (available_idle_cpu(prev_cpu))
- 		return prev_cpu;
 -- 
 2.39.5
 
