@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382E5ADD302
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC437ADD27B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0236F3A524D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A8DA3A3DE0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233032EE5F7;
-	Tue, 17 Jun 2025 15:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99A2ECE98;
+	Tue, 17 Jun 2025 15:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny7mfZPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sk8lDkWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D446E2EE5E3;
-	Tue, 17 Jun 2025 15:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B2D2ECE8A;
+	Tue, 17 Jun 2025 15:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175140; cv=none; b=ZNg5ZSdTAGihhh0QxFiyhdyDMZMv32vpXDoL/OeuTUB3WF2kldRjk7SuS6GvUeexY8J1awWatRVrj9xViTVHQSnScGLe5twW+dtK4D+Nae0MCtXBRpMWfcrP4wKavn29ooTJ1x37tL9cit/cZMkQ2N/bvJsH4AP8PS/hpHBgVzc=
+	t=1750174943; cv=none; b=XBJQNPEVuC4/d6rPft01IsgDdqTF89wdrTorG9vDmobKwJKuPe6hiiJEorOZkPGTzyIW0uQUMylz9hBmTHwxOQZR3Cpv1VkdPi4qSRnAswucZNbOKS4OskbtPQNbamFc8//pzzy8p0dAjTksLcr1NaxveexjFH0O2z2LA+pUPS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175140; c=relaxed/simple;
-	bh=P6kMKSZyofVnwfcVZN1cP6ObYgdfLMd5apA/uXxSsec=;
+	s=arc-20240116; t=1750174943; c=relaxed/simple;
+	bh=GErZEjKMCH8R36SWtJ2JVMKwx1UQwtBdu+iZZbBnANE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRE1w3l9uPdaZVX4i4dduFSFXYRh4ZsfnODjwtfKjby0vBbT5qJQgnaU6xiCKBi/uejcHC+UW+rt8J/gRCo9lc+TlGo0sC2s3uIXFNDtw9qnVxTWtPj9w5EBOdAOlP6h/Jv4rA1/VlYQM8WP8vNC8OZb4IprK1QGDRkUfUgRt8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny7mfZPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6910C4CEE3;
-	Tue, 17 Jun 2025 15:45:39 +0000 (UTC)
+	 MIME-Version; b=ZShRqBP81TwA9RoBWNpEQ3MDcnq6ZOWNoronDc0+IuPophTWoPB2dnBTTiCYRnBuqAzwTcUsY2VG7NC7t9LqWdZ7i7R7tI3NcEoUB+j+T7kuDmB/dIX9nsDrIq7GQ4fChLYft6jq7AhUm8ybaVW40eUMdK6e0WZNOE4S4gUS0Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sk8lDkWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860C2C4CEF3;
+	Tue, 17 Jun 2025 15:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175140;
-	bh=P6kMKSZyofVnwfcVZN1cP6ObYgdfLMd5apA/uXxSsec=;
+	s=korg; t=1750174943;
+	bh=GErZEjKMCH8R36SWtJ2JVMKwx1UQwtBdu+iZZbBnANE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ny7mfZPnN540ynlY0iymOc5laeky9Z/qHotcJa58beDcvsbAFo9X14uxVWWtDuEMO
-	 blEyfeo4Ry1ee3FoTICi+ddKlNVJrpSPWf5cIVfblJrO9Dy/SqKr9VRtFF+XLLZFaJ
-	 CnpCiratZJUh5XRYIv4ZTq5jFxgrgXUAk6rwuTjg=
+	b=Sk8lDkWabvrh1IOD9BtmLBt6bPPFhKq2JN+Pd4Wbp5vNKYt9l6fde3Igv38N6eraR
+	 krEbNJkUzCg3rwsNT8RUw/MsH0yKjMQtDoLX7HBTjgLF+yt19AZAxUqMChPcCXdQL5
+	 vZuv43kaET7uoKeK7YaPczcCghrv5niMMFptViPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
 	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/356] hisi_acc_vfio_pci: add eq and aeq interruption restore
-Date: Tue, 17 Jun 2025 17:24:04 +0200
-Message-ID: <20250617152343.431289526@linuxfoundation.org>
+Subject: [PATCH 6.6 130/356] hisi_acc_vfio_pci: bugfix live migration function without VF device driver
+Date: Tue, 17 Jun 2025 17:24:05 +0200
+Message-ID: <20250617152343.469431079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -69,61 +69,76 @@ Content-Transfer-Encoding: 8bit
 
 From: Longfang Liu <liulongfang@huawei.com>
 
-[ Upstream commit 3495cec0787721ba7a9d5c19d0bbb66d182de584 ]
+[ Upstream commit 2777a40998deb36f96b6afc48bd397cf58a4edf0 ]
 
-In order to ensure that the task packets of the accelerator
-device are not lost during the migration process, it is necessary
-to send an EQ and AEQ command to the device after the live migration
-is completed and to update the completion position of the task queue.
+If the VF device driver is not loaded in the Guest OS and we attempt to
+perform device data migration, the address of the migrated data will
+be NULL.
+The live migration recovery operation on the destination side will
+access a null address value, which will cause access errors.
 
-Let the device recheck the completed tasks data and if there are
-uncollected packets, device resend a task completion interrupt
-to the software.
+Therefore, live migration of VMs without added VF device drivers
+does not require device data migration.
+In addition, when the queue address data obtained by the destination
+is empty, device queue recovery processing will not be performed.
 
 Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
 Signed-off-by: Longfang Liu <liulongfang@huawei.com>
 Reviewed-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Link: https://lore.kernel.org/r/20250510081155.55840-3-liulongfang@huawei.com
+Link: https://lore.kernel.org/r/20250510081155.55840-6-liulongfang@huawei.com
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 22 +++++++++++++------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index d09e7d295625d..521f969e1c608 100644
+index 521f969e1c608..712b178c42aae 100644
 --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
 +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -470,6 +470,19 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 	return 0;
- }
- 
-+static void vf_qm_xeqc_save(struct hisi_qm *qm,
-+			    struct hisi_acc_vf_migration_file *migf)
-+{
-+	struct acc_vf_data *vf_data = &migf->vf_data;
-+	u16 eq_head, aeq_head;
-+
-+	eq_head = vf_data->qm_eqc_dw[0] & 0xFFFF;
-+	qm_db(qm, 0, QM_DOORBELL_CMD_EQ, eq_head, 0);
-+
-+	aeq_head = vf_data->qm_aeqc_dw[0] & 0xFFFF;
-+	qm_db(qm, 0, QM_DOORBELL_CMD_AEQ, aeq_head, 0);
-+}
-+
- static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
- 			   struct hisi_acc_vf_migration_file *migf)
- {
-@@ -566,6 +579,9 @@ static int vf_qm_state_save(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+@@ -426,13 +426,6 @@ static int vf_qm_check_match(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 		return -EINVAL;
  	}
  
- 	migf->total_length = sizeof(struct acc_vf_data);
-+	/* Save eqc and aeqc interrupt information */
-+	vf_qm_xeqc_save(vf_qm, migf);
-+
+-	ret = qm_write_regs(vf_qm, QM_VF_STATE, &vf_data->vf_qm_state, 1);
+-	if (ret) {
+-		dev_err(dev, "failed to write QM_VF_STATE\n");
+-		return ret;
+-	}
+-
+-	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
+ 	hisi_acc_vdev->match_done = true;
  	return 0;
  }
+@@ -498,6 +491,20 @@ static int vf_qm_load_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
+ 	if (migf->total_length < sizeof(struct acc_vf_data))
+ 		return -EINVAL;
  
++	if (!vf_data->eqe_dma || !vf_data->aeqe_dma ||
++	    !vf_data->sqc_dma || !vf_data->cqc_dma) {
++		dev_info(dev, "resume dma addr is NULL!\n");
++		hisi_acc_vdev->vf_qm_state = QM_NOT_READY;
++		return 0;
++	}
++
++	ret = qm_write_regs(qm, QM_VF_STATE, &vf_data->vf_qm_state, 1);
++	if (ret) {
++		dev_err(dev, "failed to write QM_VF_STATE\n");
++		return -EINVAL;
++	}
++	hisi_acc_vdev->vf_qm_state = vf_data->vf_qm_state;
++
+ 	qm->eqe_dma = vf_data->eqe_dma;
+ 	qm->aeqe_dma = vf_data->aeqe_dma;
+ 	qm->sqc_dma = vf_data->sqc_dma;
+@@ -1397,6 +1404,7 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
+ 	hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
+ 	hisi_acc_vdev->pf_qm = pf_qm;
+ 	hisi_acc_vdev->vf_dev = pdev;
++	hisi_acc_vdev->vf_qm_state = QM_NOT_READY;
+ 	mutex_init(&hisi_acc_vdev->state_mutex);
+ 
+ 	core_vdev->migration_flags = VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_PRE_COPY;
 -- 
 2.39.5
 
