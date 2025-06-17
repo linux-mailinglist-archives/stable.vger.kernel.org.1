@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-152848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3A0ADCDA9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C192ADCDAB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED7C3AF3DD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:38:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4726D3AC7BA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A80F2E2655;
-	Tue, 17 Jun 2025 13:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D802E2654;
+	Tue, 17 Jun 2025 13:37:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE1F21FF53
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B620C2DE1ED
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 13:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750167462; cv=none; b=PmNwAR1Cnbr4mIhj5Ca9J7U+FydEds3g3JyG6GSpbPxst9nE96vj1fGeqbPBwuW4h4nCYZbyISVs5h5c8SiBLtT5Pk9DKUC08df0blL9ldhtGroakTBKfM0tyw1DDNzmEnN6rStiRKnUlxiBda8FVbW5QCK7Sch1HdDVhKWzWFo=
+	t=1750167464; cv=none; b=Upd86CGvGg7SKkXKUHk0eDx2lgmBtXMk19xUw5yBuQptWsDgYp/nti5IOifnqCfFCO6GNOAJlAOf1zfTIzgnf8Vl97tfkJa5LU50h2b120WYMBjy0XRp4R4zsoDYgPlzbEFLWJlKH9UvR03SRbvy65kzSS5fwJadM+4/e/OPIH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750167462; c=relaxed/simple;
-	bh=CRrQrQa6BBj/BkMwaNWjh8/VRkAWGpg+AprDLpfOwfk=;
+	s=arc-20240116; t=1750167464; c=relaxed/simple;
+	bh=dVYySzy8m0DA/oA8nYipY7v8dxrjKXovPoNEsnKU7lQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FsIhghdZxeQc3Qloe/G/AcXQKrAskdOXk+/9nT2Pk9q67ad2SrasNViAzC98HnouIzRy7qarhgVu5Fms61oWKOXxVDEUAGe+u3wEk97+4JspsymVyaF5docj4kdpZZHH1tTO6yfy1sA1GctgM2A8gtYTtT59OmlB5ELJNMddCKg=
+	 MIME-Version; b=IJvmLOhAaU/d0cR1IXPpbY7BO3ewuPTLzGvvn6SVuLHf5QwJlt7oE6pjsNY2WST5iyWxiHj8WerKvVb5qFRQY6TRQd3l9rya2imEc4q8Fs5njoJ/02lXuvtB9/6UnbwzOG5j0QnBtHH/PENI4pT0ooc49jZ7AKIhB5KOPd6Ja54=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDE061595;
-	Tue, 17 Jun 2025 06:37:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A0901596;
+	Tue, 17 Jun 2025 06:37:21 -0700 (PDT)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2001B3F673;
-	Tue, 17 Jun 2025 06:37:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 50D3E3F673;
+	Tue, 17 Jun 2025 06:37:40 -0700 (PDT)
 From: Mark Rutland <mark.rutland@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: broonie@kernel.org,
@@ -44,9 +44,9 @@ Cc: broonie@kernel.org,
 	stable@vger.kernel.org,
 	tabba@google.com,
 	will@kernel.org
-Subject: [PATCH 4/7] KVM: arm64: Remove ad-hoc CPTR manipulation from fpsimd_sve_sync()
-Date: Tue, 17 Jun 2025 14:37:15 +0100
-Message-Id: <20250617133718.4014181-5-mark.rutland@arm.com>
+Subject: [PATCH 5/7] KVM: arm64: Remove ad-hoc CPTR manipulation from kvm_hyp_handle_fpsimd()
+Date: Tue, 17 Jun 2025 14:37:16 +0100
+Message-Id: <20250617133718.4014181-6-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20250617133718.4014181-1-mark.rutland@arm.com>
 References: <20250617133718.4014181-1-mark.rutland@arm.com>
@@ -58,39 +58,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There's no need for fpsimd_sve_sync() to write to CPTR/CPACR. All
-relevant traps are always disabled earlier within __kvm_vcpu_run(), when
-__deactivate_cptr_traps() configures CPTR/CPACR.
+The hyp code FPSIMD/SVE/SME trap handling logic has some rather messy
+open-coded manipulation of CPTR/CPACR. This is benign for non-nested
+guests, but broken for nested guests, as the guest hypervisor's CPTR
+configuration is not taken into account.
 
-With irrelevant details elided, the flow is:
+Consider the case where L0 provides FPSIMD+SVE to an L1 guest
+hypervisor, and the L1 guest hypervisor only provides FPSIMD to an L2
+guest (with L1 configuring CPTR/CPACR to trap SVE usage from L2). If the
+L2 guest triggers an FPSIMD trap to the L0 hypervisor,
+kvm_hyp_handle_fpsimd() will see that the vCPU supports FPSIMD+SVE, and
+will configure CPTR/CPACR to NOT trap FPSIMD+SVE before returning to the
+L2 guest. Consequently the L2 guest would be able to manipulate SVE
+state even though the L1 hypervisor had configured CPTR/CPACR to forbid
+this.
 
-handle___kvm_vcpu_run(...)
-{
-	flush_hyp_vcpu(...) {
-		fpsimd_sve_flush(...);
-	}
-
-	__kvm_vcpu_run(...) {
-		__activate_traps(...) {
-			__activate_cptr_traps(...);
-		}
-
-		do {
-			__guest_enter(...);
-		} while (...);
-
-		__deactivate_traps(....) {
-			__deactivate_cptr_traps(...);
-		}
-	}
-
-	sync_hyp_vcpu(...) {
-		fpsimd_sve_sync(...);
-	}
-}
-
-Remove the unnecessary write to CPTR/CPACR. An ISB is still necessary,
-so a comment is added to describe this requirement.
+Clean this up, and fix the nested virt issue by always using
+__deactivate_cptr_traps() and __activate_cptr_traps() to manage the CPTR
+traps. This removes the need for the ad-hoc fixup in
+kvm_hyp_save_fpsimd_host(), and ensures that any guest hypervisor
+configuration of CPTR/CPACR is taken into account.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
@@ -100,25 +87,51 @@ Cc: Mark Brown <broonie@kernel.org>
 Cc: Oliver Upton <oliver.upton@linux.dev>
 Cc: Will Deacon <will@kernel.org>
 ---
- arch/arm64/kvm/hyp/nvhe/hyp-main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/kvm/hyp/nvhe/hyp-main.c b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-index e9198e56e784b..3206b2c07f82a 100644
---- a/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-+++ b/arch/arm64/kvm/hyp/nvhe/hyp-main.c
-@@ -69,7 +69,10 @@ static void fpsimd_sve_sync(struct kvm_vcpu *vcpu)
- 	if (!guest_owns_fp_regs())
- 		return;
+diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+index 9b025276fcc8e..ce001a2b6421c 100644
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -617,11 +617,6 @@ static void kvm_hyp_save_fpsimd_host(struct kvm_vcpu *vcpu)
+ 	 */
+ 	if (system_supports_sve()) {
+ 		__hyp_sve_save_host();
+-
+-		/* Re-enable SVE traps if not supported for the guest vcpu. */
+-		if (!vcpu_has_sve(vcpu))
+-			cpacr_clear_set(CPACR_EL1_ZEN, 0);
+-
+ 	} else {
+ 		__fpsimd_save_state(host_data_ptr(host_ctxt.fp_regs));
+ 	}
+@@ -672,10 +667,7 @@ static inline bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 	/* Valid trap.  Switch the context: */
  
--	cpacr_clear_set(0, CPACR_EL1_FPEN | CPACR_EL1_ZEN);
-+	/*
-+	 * Traps have been disabled by __deactivate_cptr_traps(), but there
-+	 * hasn't necessarily been a context synchronization event yet.
-+	 */
+ 	/* First disable enough traps to allow us to update the registers */
+-	if (sve_guest || (is_protected_kvm_enabled() && system_supports_sve()))
+-		cpacr_clear_set(0, CPACR_EL1_FPEN | CPACR_EL1_ZEN);
+-	else
+-		cpacr_clear_set(0, CPACR_EL1_FPEN);
++	__deactivate_cptr_traps(vcpu);
  	isb();
  
- 	if (vcpu_has_sve(vcpu))
+ 	/* Write out the host state if it's in the registers */
+@@ -697,6 +689,13 @@ static inline bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 
+ 	*host_data_ptr(fp_owner) = FP_STATE_GUEST_OWNED;
+ 
++	/*
++	 * Re-enable traps necessary for the current state of the guest, e.g.
++	 * those enabled by a guest hypervisor. The ERET to the guest will
++	 * provide the necessary context synchronization.
++	 */
++	__activate_cptr_traps(vcpu);
++
+ 	return true;
+ }
+ 
 -- 
 2.30.2
 
