@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-153760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29689ADD626
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CA1ADD9AF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1C0F1777C9
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB461944C58
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004D528505D;
-	Tue, 17 Jun 2025 16:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA30623B603;
+	Tue, 17 Jun 2025 16:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ag0TnGl3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+buchPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2877285058;
-	Tue, 17 Jun 2025 16:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942362CCC5;
+	Tue, 17 Jun 2025 16:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177010; cv=none; b=gnLUME+rklxr3Rj5TOYamYmGFl/7O44URiVD4QHv4OVB7BB7SZAWizjEEVRhyifPzIdy7F7sB52wb122jh9Rrfukz8Ypv8N5V7GUPvh94MooGw/YcBEnDCmq8/dCy3B/anpkqtp3CSEXVdUWxq9dE8xCqbuv4Ni7d7LH8rY5RQM=
+	t=1750178870; cv=none; b=tpzbNIjBJZWDW2EnusZwKuRUOkDanBXk9csccIHKK0eiUaehX6UfCwflFdycLLFFrV8jAPmY6TA4qrY1BxHLrYSZ7HMS87RXIh8wPa0VkMS+434muTTtR/FjmbXxw3RrIV+isgFsyvHwQGvdnD9KkbvvgjcHJNuN6AYib/fBqX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177010; c=relaxed/simple;
-	bh=p1IuQXhl0GvpXNOaXc8zPdyiEeJKguVWiZgHAO+ArgM=;
+	s=arc-20240116; t=1750178870; c=relaxed/simple;
+	bh=jqSuOVKrYqGtQ0VkZGrf2jrO/s649Yqp3MmL9biG4ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqPxWBqqOOYUzUwntWCqNJfz22M/yRO7UIqqrLnUSWXuklAwGNKqNjPXcrz1kgnE2rBxXd+A0ai0VfHPFa91Z4xvahF2MLiy5UBZrt5yA7Clbg9xYjdXvAP8wGesz4J8SNeKampEE66UbSj2PUYTC2fQlhI+aSnaIQtIa5iWYWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ag0TnGl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC0CC4CEE7;
-	Tue, 17 Jun 2025 16:16:50 +0000 (UTC)
+	 MIME-Version; b=jnxlSNCxrYE7geyN+UjILRckfFqsZiajqUxu6Gut3nYfCfS3Tbo0GLv7NjIW3OuvZNvhNz+V4i2D9s5agOpg+459iL5z2qukoAetCaKjs29ciGoxZIco3I6KhAs618PGoGPW9DLMLHAOBW+laYeOmT637hh2DUoSiol77N6FuoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+buchPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263D0C4CEE3;
+	Tue, 17 Jun 2025 16:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177010;
-	bh=p1IuQXhl0GvpXNOaXc8zPdyiEeJKguVWiZgHAO+ArgM=;
+	s=korg; t=1750178870;
+	bh=jqSuOVKrYqGtQ0VkZGrf2jrO/s649Yqp3MmL9biG4ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ag0TnGl3u588N0ecpnFRE2JV/oKHQndldI9SxCo6M1t5slGbQRE+kNjXu8VEiIwB+
-	 7XsQ1aQh/nMgFeDdpIv46Pb8xHM1p7XDwg1kfJfmURzosRZgjin83sA5DfRpUxOGC/
-	 vun+dCF+ij+JeWvYe49GPLhotyUD1eCQextSqkYQ=
+	b=D+buchPIJLLG7ZhrPv8uACLn8t7lSsmCheqcS6jZOlvivKPxwHE8ET1v0ZStKlZ9P
+	 P9kzSiPFJuKNlbQ/w4AQhuQDUsUMvHxcN3GGHuq9MsKJu94mQ4TB04DOYuSNY7G9wV
+	 q7HB2Zw7/vJ6vIVZJvoMDDEGHVVTC46ZCZZUwmrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Judith Mendez <jm@ti.com>,
-	Andrew Davis <afd@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 288/512] remoteproc: k3-r5: Drop check performed in k3_r5_rproc_{mbox_callback/kick}
-Date: Tue, 17 Jun 2025 17:24:14 +0200
-Message-ID: <20250617152431.274729182@linuxfoundation.org>
+Subject: [PATCH 6.15 547/780] USB: gadget: udc: fix const issue in gadget_match_driver()
+Date: Tue, 17 Jun 2025 17:24:15 +0200
+Message-ID: <20250617152513.787395227@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 9995dbfc2235efabdb3759606d522e1a7ec3bdcb ]
+[ Upstream commit 5f5cc794fac605afd3bef8065e33096aeacf6257 ]
 
-Commit f3f11cfe8907 ("remoteproc: k3-r5: Acquire mailbox handle during
-probe routine") introduced a check in the "k3_r5_rproc_mbox_callback()"
-and "k3_r5_rproc_kick()" callbacks, causing them to exit if the remote
-core's state is "RPROC_DETACHED". However, the "__rproc_attach()"
-function that is responsible for attaching to a remote core, updates
-the state of the remote core to "RPROC_ATTACHED" only after invoking
-"rproc_start_subdevices()".
+gadget_match_driver() takes a const pointer, and then decides to cast it
+away into a non-const one, which is not a good thing to do overall.  Fix
+this up by properly setting the pointers to be const to preserve that
+attribute.
 
-The "rproc_start_subdevices()" function triggers the probe of the Virtio
-RPMsg devices associated with the remote core, which require that the
-"k3_r5_rproc_kick()" and "k3_r5_rproc_mbox_callback()" callbacks are
-functional. Hence, drop the check in the callbacks.
-
-Fixes: f3f11cfe8907 ("remoteproc: k3-r5: Acquire mailbox handle during probe routine")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20250513054510.3439842-2-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Link: https://lore.kernel.org/r/2025052139-rash-unsaddle-7c5e@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/usb/gadget/udc/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-index 747ee467da88c..4894461aa65f3 100644
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -194,10 +194,6 @@ static void k3_r5_rproc_mbox_callback(struct mbox_client *client, void *data)
- 	const char *name = kproc->rproc->name;
- 	u32 msg = omap_mbox_message(data);
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 4b3d5075621aa..d709e24c1fd42 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1570,7 +1570,7 @@ static int gadget_match_driver(struct device *dev, const struct device_driver *d
+ {
+ 	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
+ 	struct usb_udc *udc = gadget->udc;
+-	struct usb_gadget_driver *driver = container_of(drv,
++	const struct usb_gadget_driver *driver = container_of(drv,
+ 			struct usb_gadget_driver, driver);
  
--	/* Do not forward message from a detached core */
--	if (kproc->rproc->state == RPROC_DETACHED)
--		return;
--
- 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
- 
- 	switch (msg) {
-@@ -233,10 +229,6 @@ static void k3_r5_rproc_kick(struct rproc *rproc, int vqid)
- 	mbox_msg_t msg = (mbox_msg_t)vqid;
- 	int ret;
- 
--	/* Do not forward message to a detached core */
--	if (kproc->rproc->state == RPROC_DETACHED)
--		return;
--
- 	/* send the index of the triggered virtqueue in the mailbox payload */
- 	ret = mbox_send_message(kproc->mbox, (void *)msg);
- 	if (ret < 0)
+ 	/* If the driver specifies a udc_name, it must match the UDC's name */
 -- 
 2.39.5
 
