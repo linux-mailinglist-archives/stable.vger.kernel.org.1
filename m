@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE59ADD511
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 897E0ADD537
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9FED3A9A41
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07EEA19E07CE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C62EF292;
-	Tue, 17 Jun 2025 16:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8BE2DFF23;
+	Tue, 17 Jun 2025 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VM8NPG1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQdBVMe5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AD82DFF10;
-	Tue, 17 Jun 2025 16:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2B2F2365;
+	Tue, 17 Jun 2025 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176193; cv=none; b=awKj0srl1zFf9z0UIKIxsLiCViQqkvGf23Evrgi4c1jBvP21er7V2orFtAXHHXOfwMk4oDjHOECLwTG4IAAq/7HG+AA+h3VSl6a47fwfVYL552oMPkmEWPDflBthkkdJdpm4u7ABmGlvArWhFY6jzkeFlTScfCyk8KxZPu7E+p4=
+	t=1750176206; cv=none; b=iuPc1grEOzpF3vudHKQWj1as7AJTMtNY7hAEWLR/l6OUQTA5o3VuMRfcVVT26UrFgnMx2yLjvTO+v6rGKMUth0WckJ9QzbLBqgBxHv7vni1QnnefmOgJjZw/UuTJf+rDqbmjheR7hqTqp81jDaHKFNMH2pYC4DOwm3k/a7H1wgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176193; c=relaxed/simple;
-	bh=RzH3W9pVSo8zwTN5YBbOLYGU3Wk5gnqXgRPNKnqT3j8=;
+	s=arc-20240116; t=1750176206; c=relaxed/simple;
+	bh=bVjytFvC9HPRg+lHbcjwZFfho4N3dffSXC4Juf33kI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSt/lA4N9tjl3ByvCTRWsqfmf7pV2nCYx42FCuooLlO9C1qdCvIv2hBQiWmE8dlaOxtuls5mKMBlzPJ5RwmHs/txLisjdjLWaQh6bFbh9geWqY8XjAkywzGH8RRhrBAv9raDXQTLVgkTxAcG1B74pnaqpDuxJN7zulesxn9E8do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VM8NPG1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72903C4CEE3;
-	Tue, 17 Jun 2025 16:03:12 +0000 (UTC)
+	 MIME-Version; b=qkVXF72rkHa8BRnvW/yXQZEVxeoGppRZoE5lTIPNIA/oXgm3dZruLwIVS8MgfokTKwNl+sPUKelmMBAoqiMxIYFpoCRzTsZ7M5uLXF9q2m8NQpO/4aioL8Dfo3zNhR7Vyf9XYLmae73D/zQQcjN3aCaZuL+WVEuuKbgkufYmtWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQdBVMe5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43F0C4CEE3;
+	Tue, 17 Jun 2025 16:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176193;
-	bh=RzH3W9pVSo8zwTN5YBbOLYGU3Wk5gnqXgRPNKnqT3j8=;
+	s=korg; t=1750176206;
+	bh=bVjytFvC9HPRg+lHbcjwZFfho4N3dffSXC4Juf33kI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VM8NPG1nOCentgRGUrK5XynWjZqNaECpxXjtwdZy8meUYllkVcPvQ06kQ9PcCles8
-	 IWY6/L3dpdPv5T8bLMJKprdHiCbT/etav2Pkf/jm+Kc+560Odu6/zc2gojTk8sy/Gp
-	 KoCPllraXEM3tVvYboZDHl0xKMVY7Q+edmybzrEE=
+	b=QQdBVMe5uP0anOgCfeJxS3OzbC4z8/Llq3lOAI+Qb+wwbHveG9h5vr6j878UcfXn1
+	 og2wX7nlBFlJC4gLU+jaYm85YHGtva4vuAwXiHXJXYrj73nyIIMhEe+6Ofb6cKt6Qs
+	 EcrH6gom/fYJYQ3PeEmXZ/wLLuSb/pKHq8PxvzKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com,
-	KaFai Wan <mannkafai@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 205/512] bpf: Avoid __bpf_prog_ret0_warn when jit fails
-Date: Tue, 17 Jun 2025 17:22:51 +0200
-Message-ID: <20250617152427.943152190@linuxfoundation.org>
+Subject: [PATCH 6.12 206/512] net: phy: clear phydev->devlink when the link is deleted
+Date: Tue, 17 Jun 2025 17:22:52 +0200
+Message-ID: <20250617152427.980523626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,55 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: KaFai Wan <mannkafai@gmail.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 86bc9c742426a16b52a10ef61f5b721aecca2344 ]
+[ Upstream commit 0795b05a59b1371b18ffbf09d385296b12e9f5d5 ]
 
-syzkaller reported an issue:
+There is a potential crash issue when disabling and re-enabling the
+network port. When disabling the network port, phy_detach() calls
+device_link_del() to remove the device link, but it does not clear
+phydev->devlink, so phydev->devlink is not a NULL pointer. Then the
+network port is re-enabled, but if phy_attach_direct() fails before
+calling device_link_add(), the code jumps to the "error" label and
+calls phy_detach(). Since phydev->devlink retains the old value from
+the previous attach/detach cycle, device_link_del() uses the old value,
+which accesses a NULL pointer and causes a crash. The simplified crash
+log is as follows.
 
-WARNING: CPU: 3 PID: 217 at kernel/bpf/core.c:2357 __bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
-Modules linked in:
-CPU: 3 UID: 0 PID: 217 Comm: kworker/u32:6 Not tainted 6.15.0-rc4-syzkaller-00040-g8bac8898fe39
-RIP: 0010:__bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
-Call Trace:
- <TASK>
- bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
- __bpf_prog_run include/linux/filter.h:718 [inline]
- bpf_prog_run include/linux/filter.h:725 [inline]
- cls_bpf_classify+0x74a/0x1110 net/sched/cls_bpf.c:105
- ...
+[   24.702421] Call trace:
+[   24.704856]  device_link_put_kref+0x20/0x120
+[   24.709124]  device_link_del+0x30/0x48
+[   24.712864]  phy_detach+0x24/0x168
+[   24.716261]  phy_attach_direct+0x168/0x3a4
+[   24.720352]  phylink_fwnode_phy_connect+0xc8/0x14c
+[   24.725140]  phylink_of_phy_connect+0x1c/0x34
 
-When creating bpf program, 'fp->jit_requested' depends on bpf_jit_enable.
-This issue is triggered because of CONFIG_BPF_JIT_ALWAYS_ON is not set
-and bpf_jit_enable is set to 1, causing the arch to attempt JIT the prog,
-but jit failed due to FAULT_INJECTION. As a result, incorrectly
-treats the program as valid, when the program runs it calls
-`__bpf_prog_ret0_warn` and triggers the WARN_ON_ONCE(1).
+Therefore, phydev->devlink needs to be cleared when the device link is
+deleted.
 
-Reported-by: syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/6816e34e.a70a0220.254cdc.002c.GAE@google.com
-Fixes: fa9dd599b4da ("bpf: get rid of pure_initcall dependency to enable jits")
-Signed-off-by: KaFai Wan <mannkafai@gmail.com>
-Link: https://lore.kernel.org/r/20250526133358.2594176-1-mannkafai@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250523083759.3741168-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index a713cc7b00849..68a327158989b 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2419,7 +2419,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
- 	/* In case of BPF to BPF calls, verifier did all the prep
- 	 * work with regards to JITing, etc.
- 	 */
--	bool jit_needed = false;
-+	bool jit_needed = fp->jit_requested;
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 8af44224480f1..13dea33d86ffa 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2010,8 +2010,10 @@ void phy_detach(struct phy_device *phydev)
+ 	struct module *ndev_owner = NULL;
+ 	struct mii_bus *bus;
  
- 	if (fp->bpf_func)
- 		goto finalize;
+-	if (phydev->devlink)
++	if (phydev->devlink) {
+ 		device_link_del(phydev->devlink);
++		phydev->devlink = NULL;
++	}
+ 
+ 	if (phydev->sysfs_links) {
+ 		if (dev)
 -- 
 2.39.5
 
