@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-154133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190D1ADD827
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:52:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D89ADD616
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48CC53A872B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EE42C5904
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEF12ECEB1;
-	Tue, 17 Jun 2025 16:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0402F2375;
+	Tue, 17 Jun 2025 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsHNwT7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWZull62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF832ECEAA;
-	Tue, 17 Jun 2025 16:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7840F2EF2B2;
+	Tue, 17 Jun 2025 16:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178207; cv=none; b=bzZeVG/G5/ghn1Os79/MAF0rMyfrYgygmvqNplXPjcdQNzXk1xZjEb65GFvcVb0bvxXF0FmjbKy6fO2+tUb9Dl+L9/phj8EM5s+TZunTQonMt2FtXehJm2I5gQJf6/yBWSrSyB+NJuN/GZigOH70KpwKlmG1QZ+oqwYEQ0Yojtg=
+	t=1750176774; cv=none; b=AZEUVNJV3hizaLFaTbBC8IbvMv8t3uoNsnLOhr7qGkD7fHKBOCpn+BIYMoOeqCTJI6TCoLMbasYFqdqqZmNT1CYopym7EwoIRK8k1wP9IJnRNoHH34cVnQ2PidZnKAmRq6++RbF5/tDcwLYivO69xIavSBZ9t8xMxTHFlJ4kYhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178207; c=relaxed/simple;
-	bh=AgrlHYfMaz7AfsgNN5sySumFfiHJ2S83C+JedbmcRoo=;
+	s=arc-20240116; t=1750176774; c=relaxed/simple;
+	bh=0WX7px96VbevHg/GA74mB7GfnLMC25EhYpNnVg7FEto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZsrU1E0QU5jTDNu7OHdEc1Vy2nbNbeuLgP9UY8U6u+FhCuxlOglO8EbwACH7JukQkzlE+mH8am0yzOnypSiuj7/Ki7C7VN3saPxTlkIx1cLdCvq33uFKYT5dFw5YKl+L8k6h6UxRJdeeZUiNqZiSy5kEv3oMPB57l2wiSIEemtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsHNwT7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3386CC4CEE3;
-	Tue, 17 Jun 2025 16:36:47 +0000 (UTC)
+	 MIME-Version; b=R8TC6/Q4FKWts/zLH54xeqD2v19uMoQoMUtYOjPxgHOAq5rWtB0YktdatscJ1F9pjWSoH6cyBFOfYOxTYGf/yyZBWBCkDQdmnx5sfcTdX8xIUC1mkILIorcK8aZLmdbkBegDyjnGK08FXF6SZLu5B2ao2JXxfmpk4CKArXQM1/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWZull62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC75DC4CEE3;
+	Tue, 17 Jun 2025 16:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178207;
-	bh=AgrlHYfMaz7AfsgNN5sySumFfiHJ2S83C+JedbmcRoo=;
+	s=korg; t=1750176774;
+	bh=0WX7px96VbevHg/GA74mB7GfnLMC25EhYpNnVg7FEto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsHNwT7s++Ivf8CMP5dRA5cwMoUXDGI1uqvI1Od+sfRm3o+dLXK7IoCGqBUKizZqg
-	 wD5htmzyrqoRrSw0mGan/qiSycWrCzLa9N3EcZ04YAAlYtMmCYMqhjCtSq4zAtuXDt
-	 PPeesREF7o00On77Um6pXwrbrtwa6StDRcxXbb/k=
+	b=vWZull62shBiIu46zO/TlhjkUtiyJyiXDyCOZd91OqJAwphyejRt5wyTZ9TMvn8BV
+	 fVp/KZp6Xk+MdEKRrsZPqCLbWcjTt4LXMUayjJr4W+eVmhtYvJA1M89nQl+0fQH/2O
+	 9YeXobq080l7bZuhBcEVp1K/2K+qLVHTCv6e3Wg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Amir Tzin <amirtz@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 461/512] net/mlx5: Fix ECVF vports unload on shutdown flow
+Subject: [PATCH 6.6 312/356] drm/meson: fix more rounding issues with 59.94Hz modes
 Date: Tue, 17 Jun 2025 17:27:07 +0200
-Message-ID: <20250617152438.248023402@linuxfoundation.org>
+Message-ID: <20250617152350.723813597@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Tzin <amirtz@nvidia.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 687560d8a9a2d654829ad0da1ec24242f1de711d ]
+[ Upstream commit 0cee6c4d3518b2e757aedae78771f17149f57653 ]
 
-Fix shutdown flow UAF when a virtual function is created on the embedded
-chip (ECVF) of a BlueField device. In such case the vport acl ingress
-table is not properly destroyed.
+Commit 1017560164b6 ("drm/meson: use unsigned long long / Hz for
+frequency types") attempts to resolve video playback using 59.94Hz.
+ using YUV420 by changing the clock calculation to use
+Hz instead of kHz (thus yielding more precision).
 
-ECVF functionality is independent of ecpf_vport_exists capability and
-thus functions mlx5_eswitch_(enable|disable)_pf_vf_vports() should not
-test it when enabling/disabling ECVF vports.
+The basic calculation itself is correct, however the comparisions in
+meson_vclk_vic_supported_freq() and meson_vclk_setup() don't work
+anymore for 59.94Hz modes (using the freq * 1000 / 1001 logic). For
+example, drm/edid specifies a 593407kHz clock for 3840x2160@59.94Hz.
+With the mentioend commit we convert this to Hz. Then meson_vclk
+tries to find a matchig "params" entry (as the clock setup code
+currently only supports specific frequencies) by taking the venc_freq
+from the params and calculating the "alt frequency" (used for the
+59.94Hz modes) from it, which is:
+  (594000000Hz * 1000) / 1001 = 593406593Hz
 
-kernel log:
-[] refcount_t: underflow; use-after-free.
-[] WARNING: CPU: 3 PID: 1 at lib/refcount.c:28
-   refcount_warn_saturate+0x124/0x220
-----------------
-[] Call trace:
-[] refcount_warn_saturate+0x124/0x220
-[] tree_put_node+0x164/0x1e0 [mlx5_core]
-[] mlx5_destroy_flow_table+0x98/0x2c0 [mlx5_core]
-[] esw_acl_ingress_table_destroy+0x28/0x40 [mlx5_core]
-[] esw_acl_ingress_lgcy_cleanup+0x80/0xf4 [mlx5_core]
-[] esw_legacy_vport_acl_cleanup+0x44/0x60 [mlx5_core]
-[] esw_vport_cleanup+0x64/0x90 [mlx5_core]
-[] mlx5_esw_vport_disable+0xc0/0x1d0 [mlx5_core]
-[] mlx5_eswitch_unload_ec_vf_vports+0xcc/0x150 [mlx5_core]
-[] mlx5_eswitch_disable_sriov+0x198/0x2a0 [mlx5_core]
-[] mlx5_device_disable_sriov+0xb8/0x1e0 [mlx5_core]
-[] mlx5_sriov_detach+0x40/0x50 [mlx5_core]
-[] mlx5_unload+0x40/0xc4 [mlx5_core]
-[] mlx5_unload_one_devl_locked+0x6c/0xe4 [mlx5_core]
-[] mlx5_unload_one+0x3c/0x60 [mlx5_core]
-[] shutdown+0x7c/0xa4 [mlx5_core]
-[] pci_device_shutdown+0x3c/0xa0
-[] device_shutdown+0x170/0x340
-[] __do_sys_reboot+0x1f4/0x2a0
-[] __arm64_sys_reboot+0x2c/0x40
-[] invoke_syscall+0x78/0x100
-[] el0_svc_common.constprop.0+0x54/0x184
-[] do_el0_svc+0x30/0xac
-[] el0_svc+0x48/0x160
-[] el0t_64_sync_handler+0xa4/0x12c
-[] el0t_64_sync+0x1a4/0x1a8
-[] --[ end trace 9c4601d68c70030e ]---
+Similar calculation is applied to the phy_freq (TMDS clock), which is 10
+times the pixel clock.
 
-Fixes: a7719b29a821 ("net/mlx5: Add management of EC VF vports")
-Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Amir Tzin <amirtz@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250610151514.1094735-3-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Implement a new meson_vclk_freqs_are_matching_param() function whose
+purpose is to compare if the requested and calculated frequencies. They
+may not match exactly (for the reasons mentioned above). Allow the
+clocks to deviate slightly to make the 59.94Hz modes again.
+
+Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
+Reported-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250609202751.962208-1-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 21 ++++++++++++-------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/meson/meson_vclk.c | 55 ++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 7aef30dbd82d6..6544546a1153f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1295,12 +1295,15 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
- 		ret = mlx5_eswitch_load_pf_vf_vport(esw, MLX5_VPORT_ECPF, enabled_events);
- 		if (ret)
- 			goto ecpf_err;
--		if (mlx5_core_ec_sriov_enabled(esw->dev)) {
--			ret = mlx5_eswitch_load_ec_vf_vports(esw, esw->esw_funcs.num_ec_vfs,
--							     enabled_events);
--			if (ret)
--				goto ec_vf_err;
--		}
-+	}
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index c4123bb958e4c..dfe0c28a0f054 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -110,10 +110,7 @@
+ #define HDMI_PLL_LOCK		BIT(31)
+ #define HDMI_PLL_LOCK_G12A	(3 << 30)
+ 
+-#define PIXEL_FREQ_1000_1001(_freq)	\
+-	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
+-#define PHY_FREQ_1000_1001(_freq)	\
+-	(PIXEL_FREQ_1000_1001(DIV_ROUND_DOWN_ULL(_freq, 10ULL)) * 10)
++#define FREQ_1000_1001(_freq)	DIV_ROUND_CLOSEST_ULL((_freq) * 1000ULL, 1001ULL)
+ 
+ /* VID PLL Dividers */
+ enum {
+@@ -772,6 +769,36 @@ static void meson_hdmi_pll_generic_set(struct meson_drm *priv,
+ 		  pll_freq);
+ }
+ 
++static bool meson_vclk_freqs_are_matching_param(unsigned int idx,
++						unsigned long long phy_freq,
++						unsigned long long vclk_freq)
++{
++	DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
++			 idx, params[idx].vclk_freq,
++			 FREQ_1000_1001(params[idx].vclk_freq));
++	DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
++			 idx, params[idx].phy_freq,
++			 FREQ_1000_1001(params[idx].phy_freq));
 +
-+	/* Enable ECVF vports */
-+	if (mlx5_core_ec_sriov_enabled(esw->dev)) {
-+		ret = mlx5_eswitch_load_ec_vf_vports(esw,
-+						     esw->esw_funcs.num_ec_vfs,
-+						     enabled_events);
-+		if (ret)
-+			goto ec_vf_err;
++	/* Match strict frequency */
++	if (phy_freq == params[idx].phy_freq &&
++	    vclk_freq == params[idx].vclk_freq)
++		return true;
++
++	/* Match 1000/1001 variant: vclk deviation has to be less than 1kHz
++	 * (drm EDID is defined in 1kHz steps, so everything smaller must be
++	 * rounding error) and the PHY freq deviation has to be less than
++	 * 10kHz (as the TMDS clock is 10 times the pixel clock, so anything
++	 * smaller must be rounding error as well).
++	 */
++	if (abs(vclk_freq - FREQ_1000_1001(params[idx].vclk_freq)) < 1000 &&
++	    abs(phy_freq - FREQ_1000_1001(params[idx].phy_freq)) < 10000)
++		return true;
++
++	/* no match */
++	return false;
++}
++
+ enum drm_mode_status
+ meson_vclk_vic_supported_freq(struct meson_drm *priv,
+ 			      unsigned long long phy_freq,
+@@ -790,19 +817,7 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
  	}
  
- 	/* Enable VF vports */
-@@ -1331,9 +1334,11 @@ void mlx5_eswitch_disable_pf_vf_vports(struct mlx5_eswitch *esw)
- {
- 	mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
- 
-+	if (mlx5_core_ec_sriov_enabled(esw->dev))
-+		mlx5_eswitch_unload_ec_vf_vports(esw,
-+						 esw->esw_funcs.num_ec_vfs);
-+
- 	if (mlx5_ecpf_vport_exists(esw->dev)) {
--		if (mlx5_core_ec_sriov_enabled(esw->dev))
--			mlx5_eswitch_unload_ec_vf_vports(esw, esw->esw_funcs.num_vfs);
- 		mlx5_eswitch_unload_pf_vf_vport(esw, MLX5_VPORT_ECPF);
+ 	for (i = 0 ; params[i].pixel_freq ; ++i) {
+-		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
+-				 i, params[i].vclk_freq,
+-				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
+-		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
+-				 i, params[i].phy_freq,
+-				 PHY_FREQ_1000_1001(params[i].phy_freq));
+-		/* Match strict frequency */
+-		if (phy_freq == params[i].phy_freq &&
+-		    vclk_freq == params[i].vclk_freq)
+-			return MODE_OK;
+-		/* Match 1000/1001 variant */
+-		if (phy_freq == PHY_FREQ_1000_1001(params[i].phy_freq) &&
+-		    vclk_freq == PIXEL_FREQ_1000_1001(params[i].vclk_freq))
++		if (meson_vclk_freqs_are_matching_param(i, phy_freq, vclk_freq))
+ 			return MODE_OK;
  	}
  
+@@ -1075,10 +1090,8 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+ 	}
+ 
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+-		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == PHY_FREQ_1000_1001(params[freq].phy_freq)) &&
+-		    (vclk_freq == params[freq].vclk_freq ||
+-		     vclk_freq == PIXEL_FREQ_1000_1001(params[freq].vclk_freq))) {
++		if (meson_vclk_freqs_are_matching_param(freq, phy_freq,
++							vclk_freq)) {
+ 			if (vclk_freq != params[freq].vclk_freq)
+ 				vic_alternate_clock = true;
+ 			else
 -- 
 2.39.5
 
