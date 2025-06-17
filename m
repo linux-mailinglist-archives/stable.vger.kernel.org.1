@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-154277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494FDADD928
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:03:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1963BADD5ED
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C24DF1BC0FC2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5422C27A8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711B92DFF1E;
-	Tue, 17 Jun 2025 16:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E61E2ECD37;
+	Tue, 17 Jun 2025 16:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yB1nfTb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+Fw/cL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0E68F54;
-	Tue, 17 Jun 2025 16:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2D02ECD33;
+	Tue, 17 Jun 2025 16:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178672; cv=none; b=Ra5oUx8VKHeNKLQI8TLqRHneH/L7CHg2UkY1Hg/JW5gEERTIgX++Y3arKkM89UCXteaUlR4ZriUzbsl9KCB5Muwff+fdHqYR9leFjsDfSEXjXVv0GjcnuoKmIOw3lT0SS15zFk1atyaCP5Em2TNaplwC6sYpliSCCWAw+M5dzFM=
+	t=1750176739; cv=none; b=p+1knY28gEUYT8tMJ+hGmIFDQC+bOEAeUW7X/bZWKqGtsIbePz44kpaAjMhCWix8m0PFULl2UFOfKnbTMSsWh3O0kYeWmmoYWimseXis/TeI5pwvXSUgmnh+EVFodJllW3AYnlKbzcc1RoI2zDMJePXB4lE0SBmfIIAEhyREPCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178672; c=relaxed/simple;
-	bh=vr/AWA56XpntZVAmd9Q1a0gg189XCUUAW2ncyBErcZA=;
+	s=arc-20240116; t=1750176739; c=relaxed/simple;
+	bh=2CfXjLQIgmlAvEhnTwbUGk827VVd5HuL2IiH+KkLGIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOYN5EXlEknDcyW5Z9MuGVypFv1KFtSVhPA3vAjwVfcqhXHt3qLG878Zquu0X3ohMWb5TheOfaoVuh5FND8aZxh3eSy9mCww0W2Q/7MswtsumAi9NHyGstqE570EgxrSxm8LIuwGkL3DkNgFE1nwPB5SEBhBcuU4W6HysgEAF+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yB1nfTb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92344C4CEF0;
-	Tue, 17 Jun 2025 16:44:31 +0000 (UTC)
+	 MIME-Version; b=eob6HCzQIEAzxWTv5U4T5ai9M2SNFotxHpRrGtrY/Ya+fB70HVy7s6df8AH3hh/6jw0hc3cmBUHZURTFEigyNkpmMRCxOM90CcYznIg/HjGOKYnmRBdXNpPcJcZapwUMLdiLwt8leHi3nzqwqoEZNL5y+sMJi0hGRdGz3BhLSt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+Fw/cL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CAAC4CEE3;
+	Tue, 17 Jun 2025 16:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178672;
-	bh=vr/AWA56XpntZVAmd9Q1a0gg189XCUUAW2ncyBErcZA=;
+	s=korg; t=1750176738;
+	bh=2CfXjLQIgmlAvEhnTwbUGk827VVd5HuL2IiH+KkLGIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yB1nfTb6C4cHScRr9Ob23+3fZuuloGYybFp8u7a6Dd7e2TgX3F9dYMqodR0oQTh00
-	 EupHNmPTXbYRpa1wCMrSssH9uIoazC4bdAx3bLQN/ldKA5jxF6u4ATWnzRGC3aeh6t
-	 uR6ib1jUYS8HMtbI4G+KgJqgNbgnL0r5bFGhHEwA=
+	b=w+Fw/cL+ZafeOX463v2MaMLkN4NC9Hy3tyQfcfZhh6ULmETRp18ncYsiOM1hvMort
+	 zzwG7KHyqB2n/zeEEdjcWhlVicPw8gU+JGRYSo2SMDrC278MxjxZWxrxNsb0i6IZw6
+	 xxIehF0nnirRKfBpY8kKov4Zaj96pA81fwxNF/hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 519/780] iio: filter: admv8818: fix integer overflow
-Date: Tue, 17 Jun 2025 17:23:47 +0200
-Message-ID: <20250617152512.644400290@linuxfoundation.org>
+Subject: [PATCH 6.12 262/512] arm64: dts: qcom: qcm2290: fix (some) of QUP interconnects
+Date: Tue, 17 Jun 2025 17:23:48 +0200
+Message-ID: <20250617152430.202024115@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Winchenbach <swinchenbach@arka.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit fb6009a28d77edec4eb548b5875dae8c79b88467 ]
+[ Upstream commit e07d2d57a1c7254d25597dcdd34f318a91ec9398 ]
 
-HZ_PER_MHZ is only unsigned long. This math overflows, leading to
-incorrect results.
+While adding interconnect support for the QCM2290 platform some of them
+got the c&p error, rogue MASTER_APPSS_PROC for the config_noc
+interconnect. Turn that into SLAVE_QUP_0 as expected.
 
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-4-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 5b970ff0193d ("arm64: dts: qcom: qcm2290: Hook up interconnects")
+Reported-by: Konrad Dybcio <konradybcio@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250207-rb1-bt-v4-4-d810fc8c94a9@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/qcm2290.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 3d8740caa1455..cd3aff9a2f7bf 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -154,7 +154,7 @@ static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- 	}
- 
- 	/* Close HPF frequency gap between 12 and 12.5 GHz */
--	if (freq >= 12000 * HZ_PER_MHZ && freq <= 12500 * HZ_PER_MHZ) {
-+	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
- 		hpf_band = 3;
- 		hpf_step = 15;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/qcm2290.dtsi b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+index 79bc42ffb6a1f..2cfdf5bd5fd9b 100644
+--- a/arch/arm64/boot/dts/qcom/qcm2290.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcm2290.dtsi
+@@ -1073,7 +1073,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				#address-cells = <1>;
+@@ -1092,7 +1092,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				status = "disabled";
+@@ -1137,7 +1137,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				#address-cells = <1>;
+@@ -1184,7 +1184,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				#address-cells = <1>;
+@@ -1231,7 +1231,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				#address-cells = <1>;
+@@ -1278,7 +1278,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				#address-cells = <1>;
+@@ -1297,7 +1297,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				status = "disabled";
+@@ -1342,7 +1342,7 @@
+ 				interconnects = <&qup_virt MASTER_QUP_CORE_0 RPM_ALWAYS_TAG
+ 						 &qup_virt SLAVE_QUP_CORE_0 RPM_ALWAYS_TAG>,
+ 						<&bimc MASTER_APPSS_PROC RPM_ALWAYS_TAG
+-						 &config_noc MASTER_APPSS_PROC RPM_ALWAYS_TAG>;
++						 &config_noc SLAVE_QUP_0 RPM_ALWAYS_TAG>;
+ 				interconnect-names = "qup-core",
+ 						     "qup-config";
+ 				#address-cells = <1>;
 -- 
 2.39.5
 
