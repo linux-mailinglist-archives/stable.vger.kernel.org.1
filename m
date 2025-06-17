@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F91ADD843
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC46ADD451
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A19E4A13A5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 439121945A63
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0CF28507A;
-	Tue, 17 Jun 2025 16:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114BD2DFF17;
+	Tue, 17 Jun 2025 15:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fb11luCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj3FSEBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEBC285070;
-	Tue, 17 Jun 2025 16:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB42C2EB10;
+	Tue, 17 Jun 2025 15:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178108; cv=none; b=EbNdAfQUrlRf8bKkkfLHH2HfMf2Xz5owcZr6RpYvR4TpHMGzoZjhXzWEMNZB13UbKHvP+XHuaq8xtFqjCzno8h907Cg+tcV0V4fVEJGlXZTf0z/FToBSHTRMD6moftSd75YAIej2gUnCm1Oi4r4paokQDOh3rScmJdvtMOkB764=
+	t=1750175681; cv=none; b=QyF7Lu37Q06sPl9kTNl1duortS73egvSP4Ld2v+uDJCmHeR7D4jIipA/3e1YKqxb6QHJoCeezSGhxjLPdaTwYQZIIzVvcugO9qAngs5cSFMNaaVDnPuoVyNHLwvookjRwkCXFPOR/nPkPX9JgK+4xd2QF7WvqY+STRdHiub6xCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178108; c=relaxed/simple;
-	bh=yCAC+feIO4yA1Qsy4U82EtOjBwt+REb/X1IGys6UYws=;
+	s=arc-20240116; t=1750175681; c=relaxed/simple;
+	bh=2MqfDv0abWxMcTiTKTeUGnvGParP36vOrnxVD6vlNRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPW7DED2cW34S/61RxoQExljpO615ItsZR43IbCnRf149FSQ4AB6yyvHZUXYHRWDroEhq0A6tYv9ZUacQ/b+WHgAj9CgdJBoBI/j1nauhkJ2FxucwiayzzS7rly+xwts9xmCuVxCFlcs01a8+Cf/eINp36+ifCHPCMeMvAm0QlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fb11luCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4B7C4CEE3;
-	Tue, 17 Jun 2025 16:35:07 +0000 (UTC)
+	 MIME-Version; b=TNEbe0zHtqTyVh3v5LnxFTs3Df0y7bDZMfd+9+x6xSH5+7H0UwajePDnngyV1IheTtIauCP7RLvUPzkBZh7Xz6I373iRWHiLT4y21isFuvMTdLFACBgUUU7/J+GFdiqnQRTbvdKr2FLpBtQ5B8DK91jT3/lQ3vIq30RZ9UzaHYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uj3FSEBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BE9C4CEE3;
+	Tue, 17 Jun 2025 15:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178108;
-	bh=yCAC+feIO4yA1Qsy4U82EtOjBwt+REb/X1IGys6UYws=;
+	s=korg; t=1750175681;
+	bh=2MqfDv0abWxMcTiTKTeUGnvGParP36vOrnxVD6vlNRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fb11luCgwN62ONHAVEbqDSjt7chg2BhQ/QaDYjwdIOzIN6JAj8GISrlOtKAG7lulU
-	 rlTYh2dmmemDjGmN80MrjWG5i7+WHQZvnD8Xe1/O862Ris3uU/xCOMBOCMS8L8f5xX
-	 zQDLVj/aBgp8T1n/MhLAEhi3okFC3BoEz/lm8sVI=
+	b=uj3FSEBevu0KeE1eu5Tbb1FTZvQmnsg8Mq8u6PKA/G9OCcGjDGytC7E5iZ0Dikuaf
+	 yjjpCsq/Rte+XM0fGLO0mZpnqiFIaLwEbUxbOfYlFmfTBkR4E1dEfNauJiBWTiYbzN
+	 uhxdMWwKE3NkPAnb7ltXl0fMzofNNSV0vDoAIDt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Massot <julien.massot@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 411/780] arm64: dts: mt6359: Rename RTC node to match binding expectations
+Subject: [PATCH 6.12 153/512] clk: qcom: dispcc-sm6350: Add *_wait_val values for GDSCs
 Date: Tue, 17 Jun 2025 17:21:59 +0200
-Message-ID: <20250617152508.201902841@linuxfoundation.org>
+Message-ID: <20250617152425.809337329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Massot <julien.massot@collabora.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit cfe035d8662cfbd6edff9bd89c4b516bbb34c350 ]
+[ Upstream commit 673989d27123618afab56df1143a75454178b4ae ]
 
-Rename the node 'mt6359rtc' to 'rtc', as required by the binding.
+Compared to the msm-4.19 driver the mainline GDSC driver always sets the
+bits for en_rest, en_few & clk_dis, and if those values are not set
+per-GDSC in the respective driver then the default value from the GDSC
+driver is used. The downstream driver only conditionally sets
+clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
 
-Fix the following dtb-check error:
+Correct this situation by explicitly setting those values. For all GDSCs
+the reset value of those bits are used.
 
-mediatek/mt8395-radxa-nio-12l.dtb: pmic: 'mt6359rtc' do not match
-any of the regexes: 'pinctrl-[0-9]+'
-
-Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
-Signed-off-by: Julien Massot <julien.massot@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250514-mt8395-dtb-errors-v2-3-d67b9077c59a@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-2-1f252d9c5e4e@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm6350.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-index 0c479404b3fe3..467d8a4c2aa7f 100644
---- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-@@ -300,7 +300,7 @@
- 			};
- 		};
+diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
+index 2bc6b5f99f572..d52fd4b49a02f 100644
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -680,6 +680,9 @@ static struct clk_branch disp_cc_xo_clk = {
  
--		mt6359rtc: mt6359rtc {
-+		mt6359rtc: rtc {
- 			compatible = "mediatek,mt6358-rtc";
- 		};
- 	};
+ static struct gdsc mdss_gdsc = {
+ 	.gdscr = 0x1004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "mdss_gdsc",
+ 	},
 -- 
 2.39.5
 
