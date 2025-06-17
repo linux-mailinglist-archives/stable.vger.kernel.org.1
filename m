@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-154338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9900ADD957
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C570FADD8BA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43A624A1BED
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:50:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 081564A6EA5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2312EA165;
-	Tue, 17 Jun 2025 16:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863E72ECE80;
+	Tue, 17 Jun 2025 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXAGXPNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2lJ28Og"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576872E8E12;
-	Tue, 17 Jun 2025 16:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40533236453;
+	Tue, 17 Jun 2025 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178877; cv=none; b=pSOMYWGsZo5XGGiRaE9J06TZXQTv5BfZoeplcJ2+Zcj+h5A/6j5vTmHJqe25yEIhVu4kiqmwp0yRnRjxjXdgKGdNGH2jI8qCocMzBIU8l9q0wOiWruAJTpVPdWni2adHWJdhXPvT/ZwWfkmGHpWqw5zmq1A0q6C4O/QiHnOZ4XM=
+	t=1750178773; cv=none; b=fD9JlT/hyTfKat9Uim31VgycmvGXOwwxulgqGqAds0kpdw17bKnBetcLGyneSXQadXMbk9BUbK0NQRQJi4y4EpqA1MXULZz1f6Jy/a4U+J0I+iORvRpshXVXt63mD+LrBIPkysyjuDOiiALqN/g+YkzAPjVmL27hizd9DsjebUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178877; c=relaxed/simple;
-	bh=Zll0u9TdgTT20sfGDYyhSm/0WFgwx0aAoXhlVvbPX9s=;
+	s=arc-20240116; t=1750178773; c=relaxed/simple;
+	bh=hJcfa3pxwvHP+0ivW8gOWmZ27Pj5xAFH8i1Y+PmKkko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFK81DWI5LRZWprnsFBekUIlzHZ71VoXzxpXuzjv07+ET4YkT5IevZCafngpjz6Ywm7mGrKxA8UvKNE+TsmVndf7XW4SolvqQyctYIkYGavN+0Hg8oCwNHK08hrFB0Dt29W50+tiVNpkz6ZPLqvGhlONoQnYEs78WlRN36Gh1iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXAGXPNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B07EC4CEE3;
-	Tue, 17 Jun 2025 16:47:56 +0000 (UTC)
+	 MIME-Version; b=FM4kdUK5NLjIQigO/iQtYAjnLOo29ybbz9wLM8WaXh/Pk8sxbpDKM3AGQNJC4Z9AsLx/7/sM0QOrA2+e983FI+vVTquGvfJEUpqL6J9kBOX7wdn+xo5Rro2rly6PDiJRoQH7QffRDtUqMJaahdGP83MG57mY2sKQsThMdb1BDw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2lJ28Og; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77ACC4CEE3;
+	Tue, 17 Jun 2025 16:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178877;
-	bh=Zll0u9TdgTT20sfGDYyhSm/0WFgwx0aAoXhlVvbPX9s=;
+	s=korg; t=1750178773;
+	bh=hJcfa3pxwvHP+0ivW8gOWmZ27Pj5xAFH8i1Y+PmKkko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXAGXPNkky/ri/xMpafnAtvPvlpdAqxe/NXouCRfBFO/nTxp5pqMq0Aw4YQQOE1x7
-	 oA4Ro7AXrqRQ930hTWIe+mUsLwgnSPTs3yaPWOPZMcvXmHD2diq20ZBEGU0m2yRagp
-	 tvWpK09J6atH+TBVaociNV6XKkjU5opMDVFObROw=
+	b=R2lJ28OgUoRt0SAgdmphxd3UY6SaIkhjWZSDg5gyC6eOgZScsRTV26+UF2LYWqWIW
+	 TmJIGazvQyhvJOp5xxKchOBNusDd1eApKCV6UkoIxVH7SKzP+SobSSLgfQyZ7bkJnT
+	 G+zFv4oZDDTkqALvyb0pT88YO/5kIAHPuYZ4RltM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Moyer <jmoyer@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 549/780] loop: add file_start_write() and file_end_write()
-Date: Tue, 17 Jun 2025 17:24:17 +0200
-Message-ID: <20250617152513.866140025@linuxfoundation.org>
+Subject: [PATCH 6.15 550/780] drm/connector: only call HDMI audio helper plugged cb if non-null
+Date: Tue, 17 Jun 2025 17:24:18 +0200
+Message-ID: <20250617152513.904150308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,61 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-[ Upstream commit 39d86db34e41b96bd86f1955cd0ce6cd9c5fca4c ]
+[ Upstream commit be9b3f9a54101c19226c25ba7163d291183777a0 ]
 
-file_start_write() and file_end_write() should be added around ->write_iter().
+On driver remove, sound/soc/codecs/hdmi-codec.c calls the plugged_cb
+with NULL as the callback function and codec_dev, as seen in its
+hdmi_remove function.
 
-Recently we switch to ->write_iter() from vfs_iter_write(), and the
-implied file_start_write() and file_end_write() are lost.
+The HDMI audio helper then happily tries calling said null function
+pointer, and produces an Oops as a result.
 
-Also we never add them for dio code path, so add them back for covering
-both.
+Fix this by only executing the callback if fn is non-null. This means
+the .plugged_cb and .plugged_cb_dev members still get appropriately
+cleared.
 
-Cc: Jeff Moyer <jmoyer@redhat.com>
-Fixes: f2fed441c69b ("loop: stop using vfs_iter_{read,write} for buffered I/O")
-Fixes: bc07c10a3603 ("block: loop: support DIO & AIO")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250527153405.837216-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: baf616647fe6 ("drm/connector: implement generic HDMI audio helpers")
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250527-hdmi-audio-helper-remove-fix-v1-1-6cf77de364d8@collabora.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/display/drm_hdmi_audio_helper.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index e2b1f377f5856..f8d136684109a 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -308,11 +308,14 @@ static void lo_complete_rq(struct request *rq)
- static void lo_rw_aio_do_completion(struct loop_cmd *cmd)
- {
- 	struct request *rq = blk_mq_rq_from_pdu(cmd);
-+	struct loop_device *lo = rq->q->queuedata;
+diff --git a/drivers/gpu/drm/display/drm_hdmi_audio_helper.c b/drivers/gpu/drm/display/drm_hdmi_audio_helper.c
+index 05afc9f0bdd6b..ae8a0cf595fc6 100644
+--- a/drivers/gpu/drm/display/drm_hdmi_audio_helper.c
++++ b/drivers/gpu/drm/display/drm_hdmi_audio_helper.c
+@@ -103,7 +103,8 @@ static int drm_connector_hdmi_audio_hook_plugged_cb(struct device *dev,
+ 	connector->hdmi_audio.plugged_cb = fn;
+ 	connector->hdmi_audio.plugged_cb_dev = codec_dev;
  
- 	if (!atomic_dec_and_test(&cmd->ref))
- 		return;
- 	kfree(cmd->bvec);
- 	cmd->bvec = NULL;
-+	if (req_op(rq) == REQ_OP_WRITE)
-+		file_end_write(lo->lo_backing_file);
- 	if (likely(!blk_should_fake_timeout(rq->q)))
- 		blk_mq_complete_request(rq);
- }
-@@ -387,9 +390,10 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
- 		cmd->iocb.ki_flags = 0;
- 	}
+-	fn(codec_dev, connector->hdmi_audio.last_state);
++	if (fn)
++		fn(codec_dev, connector->hdmi_audio.last_state);
  
--	if (rw == ITER_SOURCE)
-+	if (rw == ITER_SOURCE) {
-+		file_start_write(lo->lo_backing_file);
- 		ret = file->f_op->write_iter(&cmd->iocb, &iter);
--	else
-+	} else
- 		ret = file->f_op->read_iter(&cmd->iocb, &iter);
+ 	mutex_unlock(&connector->hdmi_audio.lock);
  
- 	lo_rw_aio_do_completion(cmd);
 -- 
 2.39.5
 
