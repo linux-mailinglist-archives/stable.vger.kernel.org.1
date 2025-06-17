@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-153793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C29DADD6D0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2DDADD8AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8204D19E33D4
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57BB1944597
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0CC2EA171;
-	Tue, 17 Jun 2025 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADE52EE602;
+	Tue, 17 Jun 2025 16:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7o5IugV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wa4BnRoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C17D2EA14E;
-	Tue, 17 Jun 2025 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6210F2DFF32;
+	Tue, 17 Jun 2025 16:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177116; cv=none; b=S6bi99njQKnfUcQ3TZewyEhPnKN3sqKnC2sq5yHG0lnP9+37lF3nQOlR2RJmnD1BqC1mipkbO22x3ylpxB925McA7nIjWPwU+VW16qou2dvlT1NQc+MUotK9bt6iQSytZnc24KP5FDZtcykB3XYOC45nxktsTuRy115bqga+Jv4=
+	t=1750178429; cv=none; b=FTeQHzBLW2v+/XPHh2BD05kjcIUHpq65kezeqVmIDWiyl+85hJ8r/JODg/dRsmacY1NXJK4eAjEHt/aEihMchlnd/dNhD0W0+kf+Oljpn7A38EZZb2vzrZtPfqlN+PhkOtg0O0Krg6cnta4WVesmaHky0FoptXuuZDCaiEPw9ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177116; c=relaxed/simple;
-	bh=JgXRAPpGlCu7/Y9pWr0EpwFmcLiYELES4kwp/VBgg08=;
+	s=arc-20240116; t=1750178429; c=relaxed/simple;
+	bh=qTrNK0NnX3vT7Qvy9hUZM4htgFtyx9yC/Q0KMPms4kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6clRWBBHO80x43rMq7iqD1kVrgIcmjHFId7AwprGXwnRmlPvDs4GkUIe9D/OlK+GeZdaTeCulUIk5OyxKcXeBCkUvaEvREKOPg49n7yGztB5P2XvdddTibQgWG6A4InL/LzsPSpL0K0MU978KpNiNZe60Df/L3TnaTTi8AeAag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7o5IugV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A2AC4CEE3;
-	Tue, 17 Jun 2025 16:18:35 +0000 (UTC)
+	 MIME-Version; b=AYytPfwGiDDwIIbJav67PzfJmX3E5MAJFXue4DC/frAjkN2D9h5v11D1l8KhxKLZtaHWh1++Pcz+dTDMS2CCo3HZzr0DWz/xAvcgI40cf9Pun2tJD7W6e1zsxL8gX6TTFjhSRSqYONUaHqICRbHlLILdBj2H+H785Tzh3BnPESE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wa4BnRoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4ADBC4CEE3;
+	Tue, 17 Jun 2025 16:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177116;
-	bh=JgXRAPpGlCu7/Y9pWr0EpwFmcLiYELES4kwp/VBgg08=;
+	s=korg; t=1750178429;
+	bh=qTrNK0NnX3vT7Qvy9hUZM4htgFtyx9yC/Q0KMPms4kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7o5IugVRWPCIKvCsmux5zfB5DmCOA4+yNjpNmbv3bHSjLM8OwzxfVbYz0wCrwdC5
-	 Jgg+9NQm8FjmPAob6PmO/O0sayBfltvcnaSq/QBSkNXDNm14sB6GTU0De+2TR0pUFz
-	 ZKXtWmwnqp8KgvtlPqJAS2jH+4Q3OqOdAeGL0/CE=
+	b=Wa4BnRoLajLRC2sA8SYv5KMvFWx5fZDUdfGgLkd7cKTghrBtbeKiLozHh6mZeyQXU
+	 cdTFw9bmrcd2c27LPTTP5dyYUT2LisnhFP7wt+poObrBtq+fI4ImOzKhFjH+35GAQP
+	 tJ+xanIEeR50htG9q4h1YxLEj9pQmzk8T2wtKPOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 349/356] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
+	David Howells <dhowells@redhat.com>,
+	v9fs@lists.linux.dev,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 498/512] 9p: Add a migrate_folio method
 Date: Tue, 17 Jun 2025 17:27:44 +0200
-Message-ID: <20250617152352.182024880@linuxfoundation.org>
+Message-ID: <20250617152439.800755173@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
+commit 03ddd7725ed1b39cf9251e1a420559f25dac49b3 upstream.
 
-usb core avoids sending a Set-Interface altsetting 0 request after device
-reset, and instead relies on calling usb_disable_interface() and
-usb_enable_interface() to flush and reset host-side of those endpoints.
+The migration code used to be able to migrate dirty 9p folios by writing
+them back using writepage.  When the writepage method was removed,
+we neglected to add a migrate_folio method, which means that dirty 9p
+folios have been unmovable ever since.  This reduced our success at
+defragmenting memory on machines which use 9p heavily.
 
-xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
-during usb_hcd_alloc_bandwidth() callback, which in this case is called
-before flushing the endpoint in usb_disable_interface().
-
-Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
-URBs are flushed before new ring buffers for the endpoints are allocated.
-
-Otherwise host driver will attempt to find and remove old stale URBs
-from a freshly allocated new ringbuffer.
-
-Cc: stable <stable@kernel.org>
-Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
+Fixes: 80105ed2fd27 (9p: Use netfslib read/write_iter)
+Cc: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>
+Cc: v9fs@lists.linux.dev
+Signed-off-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Link: https://lore.kernel.org/r/20250402150005.2309458-2-willy@infradead.org
+Acked-by: Dominique Martinet <asmadeus@codewreck.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/9p/vfs_addr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -6103,6 +6103,7 @@ static int usb_reset_and_verify_device(s
- 	struct usb_hub			*parent_hub;
- 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
- 	struct usb_device_descriptor	descriptor;
-+	struct usb_interface		*intf;
- 	struct usb_host_bos		*bos;
- 	int				i, j, ret = 0;
- 	int				port1 = udev->portnum;
-@@ -6160,6 +6161,18 @@ static int usb_reset_and_verify_device(s
- 	if (!udev->actconfig)
- 		goto done;
- 
-+	/*
-+	 * Some devices can't handle setting default altsetting 0 with a
-+	 * Set-Interface request. Disable host-side endpoints of those
-+	 * interfaces here. Enable and reset them back after host has set
-+	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
-+	 */
-+	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
-+		intf = udev->actconfig->interface[i];
-+		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
-+			usb_disable_interface(udev, intf, true);
-+	}
-+
- 	mutex_lock(hcd->bandwidth_mutex);
- 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
- 	if (ret < 0) {
-@@ -6191,12 +6204,11 @@ static int usb_reset_and_verify_device(s
- 	 */
- 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
- 		struct usb_host_config *config = udev->actconfig;
--		struct usb_interface *intf = config->interface[i];
- 		struct usb_interface_descriptor *desc;
- 
-+		intf = config->interface[i];
- 		desc = &intf->cur_altsetting->desc;
- 		if (desc->bAlternateSetting == 0) {
--			usb_disable_interface(udev, intf, true);
- 			usb_enable_interface(udev, intf, true);
- 			ret = 0;
- 		} else {
+--- a/fs/9p/vfs_addr.c
++++ b/fs/9p/vfs_addr.c
+@@ -160,4 +160,5 @@ const struct address_space_operations v9
+ 	.invalidate_folio	= netfs_invalidate_folio,
+ 	.direct_IO		= noop_direct_IO,
+ 	.writepages		= netfs_writepages,
++	.migrate_folio		= filemap_migrate_folio,
+ };
 
 
 
