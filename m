@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8474ADD7F1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B22ADD836
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C8194A2E46
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FED919E19A5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211672E8DFC;
-	Tue, 17 Jun 2025 16:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523F02E8E13;
+	Tue, 17 Jun 2025 16:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzstQSla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO764FtO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E402DFF22;
-	Tue, 17 Jun 2025 16:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E78E204F73;
+	Tue, 17 Jun 2025 16:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177747; cv=none; b=LJbT+o3bRcou6dI2RjiA9JiDhBlIyUz8JjtOLCViGAMQGf/OVDVB2jczhDFQ0pgmtwEt87zs3UHW+wwkLZcm9WcmncTBhcOC+jqcRFnFMbvNQdiXkHCYIMbOLZMAzhs+4RYNfC00kyh6pcKBNbUlQVakKnVDxiZlaZN3V7chRrc=
+	t=1750177754; cv=none; b=XxDBOk/VUjlG/K0px2uCLOlPMGTN4SSk61LFnIpZ2TNfjIhrYEOtWuioOnW9F5gnCIPjISLSqaIksmh0qIYF4SRky+LPlGUeCXnR0MMDI03DoL/i9G19I8IzwRaq2MauUJUMfGlybAYXD7GCM6+3UoWegxz75Lui26DT0zauIOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177747; c=relaxed/simple;
-	bh=Sjdu81OQgEGMxqcqD5/i1gSY1GBq0aH01RhMJj9FBnc=;
+	s=arc-20240116; t=1750177754; c=relaxed/simple;
+	bh=vm0+0x4oRmhmzc5p7qzOSmmQBb96y21v+brywTG+WPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8cj8Wg9AOu7EyS+T4OWCfIGi60nmNhruzADGWt37FErDstoFjjAbziF9GnkR2CzktVZYCCh0hUKkNVtNlF011yrLZ5VUgDhC7xHnfaLsmL9shqc/PjRLWMwiPImdS7+5KaB4bGrIMJ5btDjiboUOPOr84S26HbUVT2Q+Ip6M3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzstQSla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED08C4CEF3;
-	Tue, 17 Jun 2025 16:29:06 +0000 (UTC)
+	 MIME-Version; b=ehYSa526sHnmgWv/5rD6DrV/gf2nDfLFubmXiLviiBLC2oeuKz3YVlGIKPPAT10OxSnTOW3f3TuUQA4815nN/3e+gu4+j3CldreU4U3u+jCmw7lZmWSrqOG//XimCMVNSW8aMZnHZ7AaGphsXcIRHo2rl6nvd1jfMLZIuixZf8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO764FtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AF4C4CEF0;
+	Tue, 17 Jun 2025 16:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177747;
-	bh=Sjdu81OQgEGMxqcqD5/i1gSY1GBq0aH01RhMJj9FBnc=;
+	s=korg; t=1750177753;
+	bh=vm0+0x4oRmhmzc5p7qzOSmmQBb96y21v+brywTG+WPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzstQSlaNN9B0Dk6iVtRDg55QQ9vSBRnVWnPhhIdQjj9VXQv37TFcAXaxeFc1CEmQ
-	 SJikH9aY2dMsgWpXpBtCRY/rYpqfCYgEq0wlrzVqFa047HU465spDthc4x1gwX/Mt+
-	 CYn/t+HK9ffo6HYtvcE7AjgIO5JbbMnZCP4sT7WE=
+	b=tO764FtOg1uar0vqVaxoeRTbm95pL3/DEOmXrDZj/3djRfGhSCZ805HPlIgHDSkMU
+	 y9jOBP4gGjUpDxCKFSjMPH/ubQ2COevL4/iH+kGi4o3IJFhLJywUunfvaa0WSr4bvH
+	 XR37LWAHqJ/EOm6+XC+gsUFECOtWBXSu7uEEXwyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 332/780] net: phy: mscc: Fix memory leak when using one step timestamping
-Date: Tue, 17 Jun 2025 17:20:40 +0200
-Message-ID: <20250617152504.973374899@linuxfoundation.org>
+Subject: [PATCH 6.15 333/780] octeontx2-pf: QOS: Perform cache sync on send queue teardown
+Date: Tue, 17 Jun 2025 17:20:41 +0200
+Message-ID: <20250617152505.011468492@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,60 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 846992645b25ec4253167e3f931e4597eb84af56 ]
+[ Upstream commit 479c58016099d19686e36f6c50f912360839a7fa ]
 
-Fix memory leak when running one-step timestamping. When running
-one-step sync timestamping, the HW is configured to insert the TX time
-into the frame, so there is no reason to keep the skb anymore. As in
-this case the HW will never generate an interrupt to say that the frame
-was timestamped, then the frame will never released.
-Fix this by freeing the frame in case of one-step timestamping.
+QOS is designed to create a new send queue whenever  a class
+is created, ensuring proper shaping and scheduling. However,
+when multiple send queues are created and deleted in a loop,
+SMMU errors are observed.
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250522115722.2827199-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch addresses the issue by performing an data cache sync
+during the teardown of QOS send queues.
+
+Fixes: ab6dddd2a669 ("octeontx2-pf: qos send queues management")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250522094742.1498295-1-hkelam@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/qos_sq.c   | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index ed8fb14a7f215..6f96f2679f0bf 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1166,18 +1166,24 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
- 		container_of(mii_ts, struct vsc8531_private, mii_ts);
- 
- 	if (!vsc8531->ptp->configured)
--		return;
-+		goto out;
- 
--	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF) {
--		kfree_skb(skb);
--		return;
--	}
-+	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF)
-+		goto out;
-+
-+	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
-+		if (ptp_msg_is_sync(skb, type))
-+			goto out;
- 
- 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 
- 	mutex_lock(&vsc8531->ts_lock);
- 	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
- 	mutex_unlock(&vsc8531->ts_lock);
-+	return;
-+
-+out:
-+	kfree_skb(skb);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos_sq.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos_sq.c
+index c5dbae0e513b6..58d572ce08eff 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos_sq.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos_sq.c
+@@ -256,6 +256,26 @@ int otx2_qos_enable_sq(struct otx2_nic *pfvf, int qidx)
+ 	return err;
  }
  
- static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
++static int otx2_qos_nix_npa_ndc_sync(struct otx2_nic *pfvf)
++{
++	struct ndc_sync_op *req;
++	int rc;
++
++	mutex_lock(&pfvf->mbox.lock);
++
++	req = otx2_mbox_alloc_msg_ndc_sync_op(&pfvf->mbox);
++	if (!req) {
++		mutex_unlock(&pfvf->mbox.lock);
++		return -ENOMEM;
++	}
++
++	req->nix_lf_tx_sync = true;
++	req->npa_lf_sync = true;
++	rc = otx2_sync_mbox_msg(&pfvf->mbox);
++	mutex_unlock(&pfvf->mbox.lock);
++	return rc;
++}
++
+ void otx2_qos_disable_sq(struct otx2_nic *pfvf, int qidx)
+ {
+ 	struct otx2_qset *qset = &pfvf->qset;
+@@ -285,6 +305,8 @@ void otx2_qos_disable_sq(struct otx2_nic *pfvf, int qidx)
+ 
+ 	otx2_qos_sqb_flush(pfvf, sq_idx);
+ 	otx2_smq_flush(pfvf, otx2_get_smq_idx(pfvf, sq_idx));
++	/* NIX/NPA NDC sync */
++	otx2_qos_nix_npa_ndc_sync(pfvf);
+ 	otx2_cleanup_tx_cqes(pfvf, cq);
+ 
+ 	mutex_lock(&pfvf->mbox.lock);
 -- 
 2.39.5
 
