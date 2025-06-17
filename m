@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-154286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EC6ADD7B3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE502ADD64B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17FA7A26FD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7AFF168D9B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A492EA730;
-	Tue, 17 Jun 2025 16:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E012F94BB;
+	Tue, 17 Jun 2025 16:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3ZfVSwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud3Qk3qE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEA32EA729;
-	Tue, 17 Jun 2025 16:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06492F94B0;
+	Tue, 17 Jun 2025 16:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178702; cv=none; b=T7HhGnjMK4DChH/3sQ+zYrBsfaDDTmOI9htHIdxZ1l1gDURYeqA749iUCRWru1/sY+M0B4YKF4g8cE/vx1xZAnzyO3vfPq8dhy6cbBU6QbeKLh3nit6Dx0g4jp4f0sLwVDpAwwOpwrncrL8jR9l2EhfJdeQZJNMBX6E9gEn3InU=
+	t=1750176826; cv=none; b=rDk2xx5vutXtTGEm6hBIVtV7riaFSbEWVkMKdXq9LW4FBD8dQ+ABpNYFadse1suoFeEJ8pgaOtHCLQvztOQy2JjjG2CcN6O9QY/Vs32jEps2zlOVIND1A/QwQBeNvjMOYSbU9jZSj5aB7JP0sMqrULwVcDenti/JgW3pVvk3ot4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178702; c=relaxed/simple;
-	bh=i27bWy4ZbkUoskZXLIf237mB6hgkZXzwkQp0FsKtgZs=;
+	s=arc-20240116; t=1750176826; c=relaxed/simple;
+	bh=EnAhmgJAJF/kUhuY7Eh9uQq6XXhaLs7e0/mRCwdhYf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEe9FLuCaWkko//+oVznf2kIu3YvQkYLr5/aLZuiQhX7ZSGHDXzStJXakxg75OuCVsplwrINwsHUDy3sd3mfqnDYocXVRdDsOCvJ8IH4nGKJ0fJUykQBoY5teSPdbfiSsVLAJTOTNSUbT+kVW/9Sck0g2xLtXbdkOsPDM37smFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3ZfVSwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EB0C4CEE3;
-	Tue, 17 Jun 2025 16:45:01 +0000 (UTC)
+	 MIME-Version; b=KGU/6MJfimD8iJhWelW6/6Y0zJ/qURlRF4pAKkMAmfbRoMbGi/5h53ogT9F6RpANgbiLBaSsf7ion4qHqnTb8w8KO1xU2gZKtpT2uF/soRTQl1wbixRNY1pd/btyAorIGMF6U26MHIJuLYqZzT3KXYd1dMRhhUGzAhIQJ36zCUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud3Qk3qE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A2EC4CEE3;
+	Tue, 17 Jun 2025 16:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178702;
-	bh=i27bWy4ZbkUoskZXLIf237mB6hgkZXzwkQp0FsKtgZs=;
+	s=korg; t=1750176826;
+	bh=EnAhmgJAJF/kUhuY7Eh9uQq6XXhaLs7e0/mRCwdhYf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3ZfVSwJK1p/b8f360Iq369/6Daa0k6SfjEVrcR0VLiMLyI45glycinEqyL97zwy2
-	 4QE9PebhgjXvZMBWLPfURAKvYWKIWtSZE4Udzhk7RNYfn4Xmai6E+hHz7ApgIi4rIB
-	 uCKtc9DDjYo2zx7pZK2L8cBKaB+KV7xH1E/zdZUU=
+	b=Ud3Qk3qE2g8UvSqyuWvYAbozjyPoI3WeaR51qO+kaKfmHBZBvSHVc30rzyxjcAQTg
+	 mZwYug+De/OIyOVVEneDboT98S3Of3clIZFliS9Ei9XX6w+BBA9QDuW+tEKnOIFV+3
+	 9GERPs7mjokK4KSTefOo6pApNuO86dkYVkGNu8nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yabin Cui <yabinc@google.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
+	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
+	Ingo Saitz <ingo@hannover.ccc.de>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 527/780] coresight: core: Disable helpers for devices that fail to enable
-Date: Tue, 17 Jun 2025 17:23:55 +0200
-Message-ID: <20250617152512.971843777@linuxfoundation.org>
+Subject: [PATCH 6.12 270/512] randstruct: gcc-plugin: Fix attribute addition
+Date: Tue, 17 Jun 2025 17:23:56 +0200
+Message-ID: <20250617152430.537725645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yabin Cui <yabinc@google.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit f6028eeeb5e4cf86f93f805098c84974a79bba8a ]
+[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
 
-When enabling a SINK or LINK type coresight device fails, the
-associated helpers should be disabled.
+Based on changes in the 2021 public version of the randstruct
+out-of-tree GCC plugin[1], more carefully update the attributes on
+resulting decls, to avoid tripping checks in GCC 15's
+comptypes_check_enum_int() when it has been configured with
+"--enable-checking=misc":
 
-Fixes: 6148652807ba ("coresight: Enable and disable helper devices adjacent to the path")
-Signed-off-by: Yabin Cui <yabinc@google.com>
-Suggested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250429231301.1952246-3-yabinc@google.com
+arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
+  132 | const struct kexec_file_ops kexec_image_ops = {
+      |              ^~~~~~~~~~~~~~
+ internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
+ fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
+ comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
+ ...
+
+Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
+Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+Closes: https://github.com/KSPP/linux/issues/367
+Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
+Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-core.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ scripts/gcc-plugins/gcc-common.h              | 32 +++++++++++++++++++
+ scripts/gcc-plugins/randomize_layout_plugin.c | 22 ++++++-------
+ 2 files changed, 43 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
-index dabec7073aeda..d3523f0262af8 100644
---- a/drivers/hwtracing/coresight/coresight-core.c
-+++ b/drivers/hwtracing/coresight/coresight-core.c
-@@ -465,7 +465,7 @@ int coresight_enable_path(struct coresight_path *path, enum cs_mode mode,
- 		/* Enable all helpers adjacent to the path first */
- 		ret = coresight_enable_helpers(csdev, mode, path);
- 		if (ret)
--			goto err;
-+			goto err_disable_path;
- 		/*
- 		 * ETF devices are tricky... They can be a link or a sink,
- 		 * depending on how they are configured.  If an ETF has been
-@@ -486,8 +486,10 @@ int coresight_enable_path(struct coresight_path *path, enum cs_mode mode,
- 			 * that need disabling. Disabling the path here
- 			 * would mean we could disrupt an existing session.
- 			 */
--			if (ret)
-+			if (ret) {
-+				coresight_disable_helpers(csdev, path);
- 				goto out;
-+			}
- 			break;
- 		case CORESIGHT_DEV_TYPE_SOURCE:
- 			/* sources are enabled from either sysFS or Perf */
-@@ -497,16 +499,19 @@ int coresight_enable_path(struct coresight_path *path, enum cs_mode mode,
- 			child = list_next_entry(nd, link)->csdev;
- 			ret = coresight_enable_link(csdev, parent, child, source);
- 			if (ret)
--				goto err;
-+				goto err_disable_helpers;
- 			break;
- 		default:
--			goto err;
-+			ret = -EINVAL;
-+			goto err_disable_helpers;
- 		}
- 	}
- 
- out:
- 	return ret;
--err:
-+err_disable_helpers:
-+	coresight_disable_helpers(csdev, path);
-+err_disable_path:
- 	coresight_disable_path_from(path, nd);
- 	goto out;
+diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
+index 3222c1070444f..ef12c8f929eda 100644
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -123,6 +123,38 @@ static inline tree build_const_char_string(int len, const char *str)
+ 	return cstr;
  }
+ 
++static inline void __add_type_attr(tree type, const char *attr, tree args)
++{
++	tree oldattr;
++
++	if (type == NULL_TREE)
++		return;
++	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
++	if (oldattr != NULL_TREE) {
++		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
++		return;
++	}
++
++	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
++	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
++}
++
++static inline void add_type_attr(tree type, const char *attr, tree args)
++{
++	tree main_variant = TYPE_MAIN_VARIANT(type);
++
++	__add_type_attr(TYPE_CANONICAL(type), attr, args);
++	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
++	__add_type_attr(main_variant, attr, args);
++
++	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
++		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
++			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
++
++		__add_type_attr(TYPE_CANONICAL(type), attr, args);
++	}
++}
++
+ #define PASS_INFO(NAME, REF, ID, POS)		\
+ struct register_pass_info NAME##_pass_info = {	\
+ 	.pass = make_##NAME##_pass(),		\
+diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
+index 971a1908a8cc4..ff65a4f87f240 100644
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -73,6 +73,9 @@ static tree handle_randomize_layout_attr(tree *node, tree name, tree args, int f
+ 
+ 	if (TYPE_P(*node)) {
+ 		type = *node;
++	} else if (TREE_CODE(*node) == FIELD_DECL) {
++		*no_add_attrs = false;
++		return NULL_TREE;
+ 	} else {
+ 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
+ 		type = TREE_TYPE(*node);
+@@ -348,15 +351,14 @@ static int relayout_struct(tree type)
+ 		TREE_CHAIN(newtree[i]) = newtree[i+1];
+ 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ 
++	add_type_attr(type, "randomize_performed", NULL_TREE);
++	add_type_attr(type, "designated_init", NULL_TREE);
++	if (has_flexarray)
++		add_type_attr(type, "has_flexarray", NULL_TREE);
++
+ 	main_variant = TYPE_MAIN_VARIANT(type);
+-	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
++	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
+ 		TYPE_FIELDS(variant) = newtree[0];
+-		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
+-		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+-		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+-		if (has_flexarray)
+-			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
+-	}
+ 
+ 	/*
+ 	 * force a re-layout of the main variant
+@@ -424,10 +426,8 @@ static void randomize_type(tree type)
+ 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
+ 		relayout_struct(type);
+ 
+-	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
+-		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
+-		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
+-	}
++	add_type_attr(type, "randomize_considered", NULL_TREE);
++
+ #ifdef __DEBUG_PLUGIN
+ 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
+ #ifdef __DEBUG_VERBOSE
 -- 
 2.39.5
 
