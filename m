@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-153683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49517ADD5D0
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69B1ADD5B2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A1612C5474
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C10D97B0C09
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCAD2ECE95;
-	Tue, 17 Jun 2025 16:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56272ED16B;
+	Tue, 17 Jun 2025 16:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQZ6vPab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpTg4FLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2202ECE88;
-	Tue, 17 Jun 2025 16:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8AD2ED168;
+	Tue, 17 Jun 2025 16:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176753; cv=none; b=PFDsQOutH90nZROL5Enwag9MKE5kqu+hsZVRvqKEm+t/mKwhV4EFgUx/WOxDw+88lQs9NovfOK46AZmsJDfldThH9jszeRt6oH2sLD8Eq/nE1G+7a0w/8EP8E+pRQb2owe/StxvZIgRYFYse1t/HuzwjR/Mi16ANe5y02+2NNEI=
+	t=1750176761; cv=none; b=KAvdsaCKc8jwt/21S0cqhaG/x9Mh3e+QKAhiVC3a5hGnkMIHjKfStnhAh22Q08tDzGxnLUgMpS1wkwd5lz6E2vQuM6KDeQZDnOs0mVsqjJIk7u3n6RqtmGAsJJZiL3RJ/+kwgEnJ2wyLvXTVWqT0StXy+uGffIMGTRWMMIkETHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176753; c=relaxed/simple;
-	bh=9CyAkas/YeMyxIBxmnCFbQjdxLWBAhW+p47Jpb4dT9E=;
+	s=arc-20240116; t=1750176761; c=relaxed/simple;
+	bh=JugRCIzUUks3BiLCtA0T5nuII2ea97IK8RFpCbEtVCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKHNcC5tDlRMYe+LLfdymxnYoU01Hj71Bq7HBJgFHhC/6Oco9rgWHD+ta7hd8h2+5WyB9fCXWoCqfnbCgNYRdhaSudua4CiSte+/stMrU9ZqQxYw0TO84ZcAUd9DUvSkzAahTGyRC78IFuRH0kRgDXty+IbdywvSZVCdagbqp/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQZ6vPab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F143C4CEE3;
-	Tue, 17 Jun 2025 16:12:30 +0000 (UTC)
+	 MIME-Version; b=bjdJaPAnqb3C5OwC40bs34jHOoQEnBJVKZor5y/tZnlVUro+kNg1qu2/DE6LntWBnXTs4Ek+iVn4bM82ShYsOEiB+BM8vd6a4IUOOtURzK2eP8kFp08BNGUa+ZItq9lpdk6mM13/ABZiO0/nD+My1BLdIANVEb6HyjPRfOSv55w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpTg4FLJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DCFC4CEE3;
+	Tue, 17 Jun 2025 16:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176751;
-	bh=9CyAkas/YeMyxIBxmnCFbQjdxLWBAhW+p47Jpb4dT9E=;
+	s=korg; t=1750176761;
+	bh=JugRCIzUUks3BiLCtA0T5nuII2ea97IK8RFpCbEtVCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQZ6vPabgfKwL8nj/z9c0vok7d4UTeoy43dMKzuI60VWRUwA2MuDb9srYrbBrq2sG
-	 0u0RPD8KaDB3KyAQKHhkg7emlbkY3+wwQYxZSyUMFRcREEk4s3MgDzdSsEvIzAmfoG
-	 WObHuQihWhztq6p0k6HnM3bhDFgwoPM+4OKe7c3s=
+	b=tpTg4FLJOWO+K35aPKnPtQ7eW4OcqN74G436DD+ckOc55zKHrruksCPOP4g1IV7KK
+	 vEaiFzJEUwYRUNp7u79QbfQ7RfkbXrCYKnshFlrcTv5mHoeFB7A+uc5AaIUdBdHaUu
+	 YlU98Afq6dMIu23EcqXCUr01Kmn3O0gFcxiJxNqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
-	Duy Nguyen <duy.nguyen.rh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Julien Massot <julien.massot@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/512] arm64: dts: renesas: white-hawk-ard-audio: Fix TPU0 groups
-Date: Tue, 17 Jun 2025 17:23:49 +0200
-Message-ID: <20250617152430.241552957@linuxfoundation.org>
+Subject: [PATCH 6.12 264/512] arm64: dts: mt6359: Rename RTC node to match binding expectations
+Date: Tue, 17 Jun 2025 17:23:50 +0200
+Message-ID: <20250617152430.289723871@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,40 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+From: Julien Massot <julien.massot@collabora.com>
 
-[ Upstream commit 652eea251dd852f02cef6223f367220acb3d1867 ]
+[ Upstream commit cfe035d8662cfbd6edff9bd89c4b516bbb34c350 ]
 
-White Hawk ARD audio uses a clock generated by the TPU, but commit
-3d144ef10a44 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes") renamed
-pin group "tpu_to0_a" to "tpu_to0_b".  Update DTS accordingly otherwise
-the sound driver does not receive a clock signal.
+Rename the node 'mt6359rtc' to 'rtc', as required by the binding.
 
-Fixes: 3d144ef10a448f89 ("pinctrl: renesas: r8a779g0: Fix TPU suffixes")
-Signed-off-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
-Signed-off-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/TYCPR01MB8740608B675365215ADB0374B49CA@TYCPR01MB8740.jpnprd01.prod.outlook.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fix the following dtb-check error:
+
+mediatek/mt8395-radxa-nio-12l.dtb: pmic: 'mt6359rtc' do not match
+any of the regexes: 'pinctrl-[0-9]+'
+
+Fixes: 3b7d143be4b7 ("arm64: dts: mt6359: add PMIC MT6359 related nodes")
+Signed-off-by: Julien Massot <julien.massot@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250514-mt8395-dtb-errors-v2-3-d67b9077c59a@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso  | 2 +-
+ arch/arm64/boot/dts/mediatek/mt6359.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
-index e6cf304c77ee9..5d820bd32ff67 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
-+++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-ard-audio-da7212.dtso
-@@ -108,7 +108,7 @@
- 	};
+diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+index 57af3e7899841..779d6dfb55c00 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
+@@ -298,7 +298,7 @@
+ 			};
+ 		};
  
- 	tpu0_pins: tpu0 {
--		groups = "tpu_to0_a";
-+		groups = "tpu_to0_b";
- 		function = "tpu";
+-		mt6359rtc: mt6359rtc {
++		mt6359rtc: rtc {
+ 			compatible = "mediatek,mt6358-rtc";
+ 		};
  	};
- };
 -- 
 2.39.5
 
