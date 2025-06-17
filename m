@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1DAADD311
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314CEADD35B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 262D37A5123
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82693A35FA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E660204F73;
-	Tue, 17 Jun 2025 15:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5082F234D;
+	Tue, 17 Jun 2025 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hybTIzYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhJP5353"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292A72ED15A;
-	Tue, 17 Jun 2025 15:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F622F2344;
+	Tue, 17 Jun 2025 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175313; cv=none; b=oLhvJLRcyPI38NTnkUC+2dFk85wjgVztm/dMPZTCpYbNykillbRePwGXQRm0AKmuvKxM/COIBIgFlSDmCIV2LxWOnH/NLQjkQ6spx7fyNUPf3UsKSxwTOjfGjknMt4uIMN4wVATGEjM/3t2MjgdLCTzC4lAJHYm/LzPbKuYj8Qs=
+	t=1750175326; cv=none; b=TDbxr3DGGgy48+MToSv4/fLz3+t4wVHunWXH3LeXLuqMORmRAMdm68bUqcjnsntEFq+7pvH+DPYAdxbBNtlY6IXjjt8PT2symgGVIKXMx58aN1RWxBMwwvC/H/v34uE3LmLw0F0UbMkdyJ6lhU0V8YWVRzS+NhNulDjKplK5fdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175313; c=relaxed/simple;
-	bh=FabUC/bgOxEB0m3dbTZ6T5uqv6VBNlULRnyPnV9V3aI=;
+	s=arc-20240116; t=1750175326; c=relaxed/simple;
+	bh=GQfZUI3MJmJuGUCjZDMf9tlnpazh29FUVt3B5/BvPx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIgBJya0sreU7q3852eL2RsU8AV+22y4bj+Ox316mVeCcP5IOMRZAkoE1BM+C0+GosvA9wBp1n3SE+f2UB+1rS6cnN4SVP+LvEBSutCdlcp4g5BzvfpSMJfzOhAdHCQssKg3ltHki9dMQ/E5I+V77WSn6jYV5aNTm18zpToMn5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hybTIzYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811ADC4CEE3;
-	Tue, 17 Jun 2025 15:48:32 +0000 (UTC)
+	 MIME-Version; b=c2KY3TX9CO86UjfduXD8FgEVAn0RAf6ykL2MgnulRIFxSjzH/nqzizPPaWnJIrGMQYnxRwA+Z8bUWpV7SPA/nfskhwVV5t2gXkOdV3a8E2KwwTjqjiAiM0cSNJqCPx3b8552CwF9ZNU0kjg6tsogFhRg9vT9hCdwQmGu4f91fZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhJP5353; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ADBC4CEE7;
+	Tue, 17 Jun 2025 15:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175313;
-	bh=FabUC/bgOxEB0m3dbTZ6T5uqv6VBNlULRnyPnV9V3aI=;
+	s=korg; t=1750175326;
+	bh=GQfZUI3MJmJuGUCjZDMf9tlnpazh29FUVt3B5/BvPx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hybTIzYfGV8sBSQiscBdUgHaGekZWwJQSk4t7N7kjNpGKu/1E5Wk2wHKOnP0IVM8v
-	 ERCE5QhBdhrKmo61yNpNsJh06KK4X9nRmTr5m0t/axYqbNQ4kCzZiuVunr0FQsx2sp
-	 BzAe7Dn40GzCK6DNOYgTBcgI/rTnXUpz8H3efNew=
+	b=MhJP5353JDdTbuyp/Wy7KAC9UYEEt+rScDiUcs+IoVJqnmRkTZfNKcypGnbpdKc80
+	 4Ree4soTD4Ok+cujszPCiDV8gxR2diO7u9OBHef5oy0/zuPDY6CQFktl9fQuDTIkJf
+	 3/6CR8mXbaUSZwtzxBFkiumOnuYgrXoYgwO9Qvc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/512] f2fs: zone: fix to avoid inconsistence in between SIT and SSA
-Date: Tue, 17 Jun 2025 17:21:20 +0200
-Message-ID: <20250617152424.205648354@linuxfoundation.org>
+Subject: [PATCH 6.12 115/512] wifi: ath12k: fix cleanup path after mhi init
+Date: Tue, 17 Jun 2025 17:21:21 +0200
+Message-ID: <20250617152424.248034347@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,72 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-[ Upstream commit 773704c1ef96a8b70d0d186ab725f50548de82c4 ]
+[ Upstream commit 6177c97fb6f05bf0473a2806e3bece7e77693209 ]
 
-w/ below testcase, it will cause inconsistence in between SIT and SSA.
+Currently, the 'err_pci_msi_free' label is misplaced, causing the cleanup
+sequence to be incorrect. Fix this by moving the 'err_pci_msi_free' label
+to the correct position after 'err_irq_affinity_cleanup'.
 
-create_null_blk 512 2 1024 1024
-mkfs.f2fs -m /dev/nullb0
-mount /dev/nullb0 /mnt/f2fs/
-touch /mnt/f2fs/file
-f2fs_io pinfile set /mnt/f2fs/file
-fallocate -l 4GiB /mnt/f2fs/file
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
 
-F2FS-fs (nullb0): Inconsistent segment (0) type [1, 0] in SSA and SIT
-CPU: 5 UID: 0 PID: 2398 Comm: fallocate Tainted: G           O       6.13.0-rc1 #84
-Tainted: [O]=OOT_MODULE
-Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
-Call Trace:
- <TASK>
- dump_stack_lvl+0xb3/0xd0
- dump_stack+0x14/0x20
- f2fs_handle_critical_error+0x18c/0x220 [f2fs]
- f2fs_stop_checkpoint+0x38/0x50 [f2fs]
- do_garbage_collect+0x674/0x6e0 [f2fs]
- f2fs_gc_range+0x12b/0x230 [f2fs]
- f2fs_allocate_pinning_section+0x5c/0x150 [f2fs]
- f2fs_expand_inode_data+0x1cc/0x3c0 [f2fs]
- f2fs_fallocate+0x3c3/0x410 [f2fs]
- vfs_fallocate+0x15f/0x4b0
- __x64_sys_fallocate+0x4a/0x80
- x64_sys_call+0x15e8/0x1b80
- do_syscall_64+0x68/0x130
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f9dba5197ca
-F2FS-fs (nullb0): Stopped filesystem due to reason: 4
-
-The reason is f2fs_gc_range() may try to migrate block in curseg, however,
-its SSA block is not uptodate due to the last summary block data is still
-in cache of curseg.
-
-In this patch, we add a condition in f2fs_gc_range() to check whether
-section is opened or not, and skip block migration for opened section.
-
-Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: a3012f206d07 ("wifi: ath12k: set IRQ affinity to CPU0 in case of one MSI vector")
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403-ath12k-cleanup-v1-1-ad8f67b0e9cf@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath12k/pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index e0469316c7cd4..cd56c0e66657b 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -2072,6 +2072,9 @@ int f2fs_gc_range(struct f2fs_sb_info *sbi,
- 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
- 		};
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 45d537066345a..1068cc07bc9f6 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -1514,12 +1514,12 @@ static int ath12k_pci_probe(struct pci_dev *pdev,
+ err_mhi_unregister:
+ 	ath12k_mhi_unregister(ab_pci);
  
-+		if (IS_CURSEC(sbi, GET_SEC_FROM_SEG(sbi, segno)))
-+			continue;
+-err_pci_msi_free:
+-	ath12k_pci_msi_free(ab_pci);
+-
+ err_irq_affinity_cleanup:
+ 	ath12k_pci_set_irq_affinity_hint(ab_pci, NULL);
+ 
++err_pci_msi_free:
++	ath12k_pci_msi_free(ab_pci);
 +
- 		do_garbage_collect(sbi, segno, &gc_list, FG_GC, true, false);
- 		put_gc_inode(&gc_list);
+ err_pci_free_region:
+ 	ath12k_pci_free_region(ab_pci);
  
 -- 
 2.39.5
