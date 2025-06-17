@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF9EADD5FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:29:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78109ADD7AB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10C065A054F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C66C7ACA13
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C932F235D;
-	Tue, 17 Jun 2025 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4BB2DFF16;
+	Tue, 17 Jun 2025 16:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja/52ER3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yc3+40sP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A642DFF20;
-	Tue, 17 Jun 2025 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19861285057;
+	Tue, 17 Jun 2025 16:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176902; cv=none; b=ABfqiukF51iW8s6O6oGCv/4VJVFsT08P1/qhi2pyY9qBrJPcXUv8dQjt/RurXjnlJ1JnZKvhhmEDhqpdwGB5frP6zS1uDFmLHAWsBirKWPUo7gGONwdKQQRFWOD1BLcn2so8ShSiGA3CjWLkn/H11T8JOMvHRI8O9DY5HMHaFKY=
+	t=1750178666; cv=none; b=CU8PeX3kQiPN/44UUY+2JNOvcMtMZny4hGGvoj2r8MeNzCMkn6s8ip00ZRSdjOkcV8W8bEU45k4mComJlvjbxnAqizs9tE/lOLUfCDJbsVuSYCzcgpU+PQQgxUmdny7+AvH3pmBvRy0i9tWjH9qPkllv7QyQinnXiGF4YM6oRZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176902; c=relaxed/simple;
-	bh=s8j9SiGVLXrKHzuxSG42RoxdwHrjtQPEjv6A4PDtqhw=;
+	s=arc-20240116; t=1750178666; c=relaxed/simple;
+	bh=nJybdNTsiYNPm1Bl1o2Zc3AHX3+BUHZteAaktbG+mCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAAtHOPUQqDx4mlfs4NsgT4jtfcSxiPCMVwMZjNJrTWEBji3Sw5OAN2wp52g0ZrzQFuyjqiuvXUI6VIRIXs64/Rw3EdSV/8LJQjHTK+pq9tCEijSO2sWEEXYtckQh27w7iX33m/0JHCETF+JqSJbq4O5YvkPDnnxxvjdMLpgSNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja/52ER3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789A6C4CEE3;
-	Tue, 17 Jun 2025 16:15:01 +0000 (UTC)
+	 MIME-Version; b=Ih+kS29jimRcj+8D3tkA1L21y8DdV1T1qnnDRntW7wSYZrY9csLEsuFwT4dT2/yZiOCcHCRy+8Zz6Sz1j77rVmeN2LpBzwyi/Crl18o4UWkyVPmMoJRWcBF+pJS/wXOKKoPj1CLA7KbBI1giWau8G+0P4kinbu5LW0AvWlImcWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yc3+40sP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A4BC4CEE3;
+	Tue, 17 Jun 2025 16:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176902;
-	bh=s8j9SiGVLXrKHzuxSG42RoxdwHrjtQPEjv6A4PDtqhw=;
+	s=korg; t=1750178665;
+	bh=nJybdNTsiYNPm1Bl1o2Zc3AHX3+BUHZteAaktbG+mCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ja/52ER3s9GH2vOaueDxAkXbZqbNMN6sIJhWlNcEx7B5yqwnP2DX9ajMSf3tEOsqJ
-	 5lG+Wg64bTrNY+w/CaaCgIe7eOIEXP8lJQxAgzhU776G6ioRKYaqc3SAI7ga/6cUwD
-	 Vn27NILk8ahlayFbpvJEBGzjsqd3lqK9ljj8mgeQ=
+	b=yc3+40sPHG+TQL2Lapv0iq+5nAyO0Lv7g3/UOcWpwSz68FfKG1XGmvPyUwJAA5nEJ
+	 yrKP0DxSHC4912l5rqrPJlb1eFwv+qJb8APNNnlwuJbjVR4ot/Hdwq489nbTYlHdz6
+	 EHMF/n8NrBFkgar9y8wLWrwdPTdg+Q9gBoan/TK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 259/512] ARM: dts: qcom: apq8064: move replicator out of soc node
+Subject: [PATCH 6.15 517/780] thunderbolt: Fix a logic error in wake on connect
 Date: Tue, 17 Jun 2025 17:23:45 +0200
-Message-ID: <20250617152430.083751414@linuxfoundation.org>
+Message-ID: <20250617152512.563725335@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit f2420037d90a8354594b3da541e19dcbb60c75e1 ]
+[ Upstream commit 1a760d10ded372d113a0410c42be246315bbc2ff ]
 
-The CoreSight static replicator device isn't a part of the system MMIO
-bus, as such it should not be a part of the soc node. Follow the example
-of other platforms and move it out of the soc bus to the top-level (and
-reoder ports to follow alphabetic order).
+commit a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect
+on USB4 ports") introduced a sysfs file to control wake up policy
+for a given USB4 port that defaulted to disabled.
 
-Fixes: 7a5c275fd821 ("ARM: dts: qcom: Add apq8064 CoreSight components")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-10-bcedd1406790@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+However when testing commit 4bfeea6ec1c02 ("thunderbolt: Use wake
+on connect and disconnect over suspend") I found that it was working
+even without making changes to the power/wakeup file (which defaults
+to disabled). This is because of a logic error doing a bitwise or
+of the wake-on-connect flag with device_may_wakeup() which should
+have been a logical AND.
+
+Adjust the logic so that policy is only applied when wakeup is
+actually enabled.
+
+Fixes: a5cfc9d65879c ("thunderbolt: Add wake on connect/disconnect on USB4 ports")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-apq8064.dtsi | 67 ++++++++++++------------
- 1 file changed, 34 insertions(+), 33 deletions(-)
+ drivers/thunderbolt/usb4.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
-index 38ce6f5fe6b48..be87c396f05f1 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
-@@ -278,6 +278,40 @@
- 		};
- 	};
+diff --git a/drivers/thunderbolt/usb4.c b/drivers/thunderbolt/usb4.c
+index e51d01671d8e7..3e96f1afd4268 100644
+--- a/drivers/thunderbolt/usb4.c
++++ b/drivers/thunderbolt/usb4.c
+@@ -440,10 +440,10 @@ int usb4_switch_set_wake(struct tb_switch *sw, unsigned int flags)
+ 			bool configured = val & PORT_CS_19_PC;
+ 			usb4 = port->usb4;
  
-+	replicator {
-+		compatible = "arm,coresight-static-replicator";
-+
-+		clocks = <&rpmcc RPM_QDSS_CLK>;
-+		clock-names = "apb_pclk";
-+
-+		in-ports {
-+			port {
-+				replicator_in: endpoint {
-+					remote-endpoint = <&funnel_out>;
-+				};
-+			};
-+		};
-+
-+		out-ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+				replicator_out0: endpoint {
-+					remote-endpoint = <&etb_in>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+				replicator_out1: endpoint {
-+					remote-endpoint = <&tpiu_in>;
-+				};
-+			};
-+		};
-+	};
-+
- 	soc: soc {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -1529,39 +1563,6 @@
- 			};
- 		};
- 
--		replicator {
--			compatible = "arm,coresight-static-replicator";
--
--			clocks = <&rpmcc RPM_QDSS_CLK>;
--			clock-names = "apb_pclk";
--
--			out-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				port@0 {
--					reg = <0>;
--					replicator_out0: endpoint {
--						remote-endpoint = <&etb_in>;
--					};
--				};
--				port@1 {
--					reg = <1>;
--					replicator_out1: endpoint {
--						remote-endpoint = <&tpiu_in>;
--					};
--				};
--			};
--
--			in-ports {
--				port {
--					replicator_in: endpoint {
--						remote-endpoint = <&funnel_out>;
--					};
--				};
--			};
--		};
--
- 		funnel@1a04000 {
- 			compatible = "arm,coresight-dynamic-funnel", "arm,primecell";
- 			reg = <0x1a04000 0x1000>;
+-			if (((flags & TB_WAKE_ON_CONNECT) |
++			if (((flags & TB_WAKE_ON_CONNECT) &&
+ 			      device_may_wakeup(&usb4->dev)) && !configured)
+ 				val |= PORT_CS_19_WOC;
+-			if (((flags & TB_WAKE_ON_DISCONNECT) |
++			if (((flags & TB_WAKE_ON_DISCONNECT) &&
+ 			      device_may_wakeup(&usb4->dev)) && configured)
+ 				val |= PORT_CS_19_WOD;
+ 			if ((flags & TB_WAKE_ON_USB4) && configured)
 -- 
 2.39.5
 
