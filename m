@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-153288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB44ADD3AC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4CBADD3BE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A4B53BFD07
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B4B400088
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738D62EA14E;
-	Tue, 17 Jun 2025 15:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CBE2EA15A;
+	Tue, 17 Jun 2025 15:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rz3VGohI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1MGSIg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313562DFF0B;
-	Tue, 17 Jun 2025 15:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F36B2DFF3D;
+	Tue, 17 Jun 2025 15:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175476; cv=none; b=TbVn/WjJ2VtQ0ZuenZBpt73iJOVrLFkpnDFXvF45xw/woFuHAK/s1JhLa/YpSors8oj0c4rI8tyFylb73h7hkf3W6wpsufsE+fi6IAMM786QeKG7QPyBEEr+dugEfzMHCXGVaZbYUcrAEnbIME+kqZcO/4Y3ncoKC50unQD/xCk=
+	t=1750175487; cv=none; b=NNFEGcUyy98eSjO7bcOK3JXjX7QKNvU1D8Mng4kDk5Nx7azR9yq9DNoRhyFwhmzFC4d0MBupcp9loBmAmrwh5sb7D2vZme6xEPir8+kLO0tgAEOp1rFb9oW1TVCrphhgSVGVhUx0STCK4njl83ugXQexVPF57fzrHbaO29gKSio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175476; c=relaxed/simple;
-	bh=kKNOB9Fcd6vZjhrfrGq0Atq4+io0KRWVrBOdX1DNRsA=;
+	s=arc-20240116; t=1750175487; c=relaxed/simple;
+	bh=iFIGHR9QiYicykvaWT2bwSs/FpySXtwkD04FKQHZUPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKfTB9YWtTxbdJFgxDLHiY0pLoW3SAfgGS1XEMzyAGhEC6ZEOq+JmeCbYbEVFXp2tTiitC77C4VtfIGptq0t3hSkrOPW5Psu4Mb2W2X05+Lmkg0J1GbMY3Yi3OykRWaclDP/JErDxinIx+LRfdpojZS76qdKhgAWDnOqze74pLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rz3VGohI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB0DC4CEF2;
-	Tue, 17 Jun 2025 15:51:14 +0000 (UTC)
+	 MIME-Version; b=RYHmwwQPZd6891qNR07zIhVIBa2zX5y3ff39sBJRix0D3fu0bGAgzKtpynyKI1EPlXpwWWyJAIdhUI/F3AQugWIjBd0U/UU4SXtzrlhfAho+ugRvG0QdNzZZNrpqqI9hGEt3/CKnxyN9PSLS+3IbgUuheLJgtcS5AV3pL38hRRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1MGSIg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB7FC4CEE3;
+	Tue, 17 Jun 2025 15:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175474;
-	bh=kKNOB9Fcd6vZjhrfrGq0Atq4+io0KRWVrBOdX1DNRsA=;
+	s=korg; t=1750175486;
+	bh=iFIGHR9QiYicykvaWT2bwSs/FpySXtwkD04FKQHZUPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rz3VGohIwKctQt96uJ97NrxVRwarYBTa/0GddKTYwfn/xBwHSWDGikePcpIGXjPIg
-	 IG4D2t1QLalUib8mDvLqJa12D+j6PfSWf4ePGgsGu02xPeKk2dWJAplU/7B5KAvlQO
-	 jefSXZ86KQlraee3kTLxCH8MRgt/tWd7Lb69lU28=
+	b=x1MGSIg/6SdJZtcnBeWwb5ao6fAn65hLdDPeDMSRiw+2arhcxQEF8pmbfK/4CkgsU
+	 hfLyi2rsz9KielEkBt3k2DUCGFg3A+2iYf0qjGVFuLvbRwREJCOxJcVUaAYhDE3/nG
+	 /+2T1Xzxyo9C5w8CsZr3C7GBPDgH+BZZVEt3km9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
-	Phillip Lougher <phillip@squashfs.org.uk>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Jan Kara <jack@suse.cz>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/356] Squashfs: check return result of sb_min_blocksize
-Date: Tue, 17 Jun 2025 17:24:55 +0200
-Message-ID: <20250617152345.458591828@linuxfoundation.org>
+Subject: [PATCH 6.6 181/356] ocfs2: fix possible memory leak in ocfs2_finish_quota_recovery
+Date: Tue, 17 Jun 2025 17:24:56 +0200
+Message-ID: <20250617152345.505199642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,64 +73,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
+[ Upstream commit cdc3ed3035d0fe934aa1d9b78ce256752fd3bb7d ]
 
-Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
+If ocfs2_finish_quota_recovery() exits due to an error before passing all
+rc_list elements to ocfs2_recover_local_quota_file() then it can lead to a
+memory leak as rc_list may still contain elements that have to be freed.
 
-Syzkaller forks multiple processes which after mounting the Squashfs
-filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
-Now if this ioctl occurs at the same time another process is in the
-process of mounting a Squashfs filesystem on /dev/loop0, the failure
-occurs.  When this happens the following code in squashfs_fill_super()
-fails.
+Release all memory allocated by ocfs2_add_recovery_chunk() using
+ocfs2_free_quota_recovery() instead of kfree().
 
-----
-msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-msblk->devblksize_log2 = ffz(~msblk->devblksize);
-----
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
-
-As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
-is set to 64.
-
-This subsequently causes the
-
-UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
-shift exponent 64 is too large for 64-bit type 'u64' (aka
-'unsigned long long')
-
-This commit adds a check for a 0 return by sb_min_blocksize().
-
-Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
-Fixes: 0aa666190509 ("Squashfs: super block operations")
-Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Link: https://lkml.kernel.org/r/20250402065628.706359-2-m.masimov@mt-integration.ru
+Fixes: 2205363dce74 ("ocfs2: Implement quota recovery")
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/super.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ocfs2/quota_local.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
-index 22e812808e5cf..3a27d4268b3c4 100644
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -202,6 +202,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
+diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
+index 0ca8975a1df47..c7bda48b5fb21 100644
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -671,7 +671,7 @@ int ocfs2_finish_quota_recovery(struct ocfs2_super *osb,
+ 			break;
+ 	}
+ out:
+-	kfree(rec);
++	ocfs2_free_quota_recovery(rec);
+ 	return status;
+ }
  
- 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-+	if (!msblk->devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
-+
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
- 
- 	mutex_init(&msblk->meta_index_mutex);
 -- 
 2.39.5
 
