@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EF7ADD34D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B53ADD34E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6278E17DC15
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B99D2C071D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BB42ED169;
-	Tue, 17 Jun 2025 15:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44312ECE8A;
+	Tue, 17 Jun 2025 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlRwr/f8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auVG1eDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EB6202C38;
-	Tue, 17 Jun 2025 15:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE262ECD39;
+	Tue, 17 Jun 2025 15:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175348; cv=none; b=DJ2foHPgo4st5Cs+31l8W182NN4wQxrVz0yFA6vGiGvgtZEUv0TouMY8cnjXoFZOyy9v3hnxlhYqzLVV+/8X8604uIFIi9qC2o/qGefBVxRsVHATUsBoZczxr5DC7fz9+FTgMAhBEmiHT8Bsdru00fhiNQDjXtc+I9RkFHg1zwU=
+	t=1750175358; cv=none; b=gzI8vqsUXCPlNmhkjFcMAQjcjFwUoU68u8S21qLf4zXxqhh4pNEd72uF3EYXHPmivHBzGTHFJ4wq+8MLZkA3Yz19dxQi8lsOKdGMPWzqj5KcD4zVvdMRs6Y1uSsb3FOvAU/7kpYKJEP5AaXSI94P9S4daKxOWc9d2847Jv6QcfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175348; c=relaxed/simple;
-	bh=+mg0ztrN35vZyumNvhk1GozbyYRKVHpl2PUkHOrqxJg=;
+	s=arc-20240116; t=1750175358; c=relaxed/simple;
+	bh=GeIrQ2Fx3tYAUh7F77ZuoEw1Vn/JAmIzdoyWsamLy8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcOmbqtdgzn7bSZc5nbZdzJtU+5xEcSqAztSr1/S0CS/IqmZU8yjdMcGbjGAhveth1/TctmTwQr2mECmyTwloY/m5549GeQx2dI6BJcQo/o1dxn5Lqj7G1J5KJk48+dXlWlJjpBA4lFs+gHZ5LLWH3D2sJCgELz1B0g1dp0ainc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlRwr/f8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E517C4CEE3;
-	Tue, 17 Jun 2025 15:49:07 +0000 (UTC)
+	 MIME-Version; b=ZJSL83XVE8j/Z6f2uKhYu/T3Qkb0UJY6YGQR/UVsJ+B7y4kEyKhDtbJzAshImwCuRfxhpuB1BP+J3F7f1QhjSRApDSIG1rKh5JcHrllIdIyiMD5wt1p+acsuCYVDYS2LIrxJSBCSr+pV+WOtlY2DT7VlcNuMvkwTtsETwSUJE8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auVG1eDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C53BC4CEF0;
+	Tue, 17 Jun 2025 15:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175348;
-	bh=+mg0ztrN35vZyumNvhk1GozbyYRKVHpl2PUkHOrqxJg=;
+	s=korg; t=1750175357;
+	bh=GeIrQ2Fx3tYAUh7F77ZuoEw1Vn/JAmIzdoyWsamLy8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VlRwr/f8sSc+JDfLlq2+PoBZOgZ2Y26Cfm6tfQWpy3/ZGFKJPqOEqnSjm2Dg70xzb
-	 6sLjEXLkOLVQKjUAezgtx3CZLO4zGKb9jRzBkGHVuRGVERIgKGDPDyqLh1tjXZoQQC
-	 PD1z+ZKql7UBEbzRG+1Wb8dFueRqBUnvnv4T3JmE=
+	b=auVG1eDUiceVhMg6Jc/rKU7BEcfvALbfz203WWRmiHlUg+7kLAI5RLC194FWvIsKp
+	 7clh2ijGQIDPKalcRTB+vAFS93Uc6jaAA9kDYhiNjH55+KN8RcS7RRIgvL+45f4PLh
+	 P1o2CeIQxY2akdLwZUxP/4HxkiVK5rK+Ls5ZcdGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Adam Ford <aford173@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/356] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
-Date: Tue, 17 Jun 2025 17:24:43 +0200
-Message-ID: <20250617152344.980577851@linuxfoundation.org>
+Subject: [PATCH 6.6 169/356] arm64: dts: imx8mn-beacon: Fix RTC capacitive load
+Date: Tue, 17 Jun 2025 17:24:44 +0200
+Message-ID: <20250617152345.019872885@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -68,26 +69,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
+[ Upstream commit c3f03bec30efd5082b55876846d57b5d17dae7b9 ]
 
 Although not noticeable when used every day, the RTC appears to drift when
 left to sit over time.  This is due to the capacitive load not being
 properly set. Fix RTC drift by correcting the capacitive load setting
 from 7000 to 12500, which matches the actual hardware configuration.
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
 Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index f264102bdb274..8ab0e45f2ad31 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -231,6 +231,7 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index 90073b16536f4..1760062e6ffcf 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -240,6 +240,7 @@
  	rtc: rtc@51 {
  		compatible = "nxp,pcf85263";
  		reg = <0x51>;
