@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-153916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA86ADD72D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:42:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE859ADD745
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7423B281D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346AE3B312E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50432ECEA8;
-	Tue, 17 Jun 2025 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B832F94AB;
+	Tue, 17 Jun 2025 16:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLtVK216"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG6TKrK5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962402ECE83;
-	Tue, 17 Jun 2025 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4812F9492;
+	Tue, 17 Jun 2025 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177513; cv=none; b=kiT4pt6inMrp3QuT5dZlUSEfkXRXLxUbpReTqQVrkl7wCoQyBhBgxhI2lqtVPAYavz1w/ZRpprnlywsyj7Nyj6vWOiyH4Jej2K0M+W6QI00z09GmlAoA7QeI5+UuFK2cdHxnYa42XsLHb8DWM3vzjrk3VXpN+d8lXJbGE/inyGc=
+	t=1750177582; cv=none; b=qqJo8MKv7IwJ1uNPbzorLozKBkOg9JHX3VnXxaS4HINB/w/8hyjtYX3vPpt5RDkaON0MsMFcZP7a044J+gl3DBDjVEhhkB0HShGWuFoTgePXioHCbK4tuSZJI5DHToX7+u5sJ+4YH1MeUhJMUC6a7Zev+QWDHv2Z1g1yfbmtsRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177513; c=relaxed/simple;
-	bh=1BwQxcMYs0p1M3cI7X++Vy14XKgf/VBCihh8NGgbYbk=;
+	s=arc-20240116; t=1750177582; c=relaxed/simple;
+	bh=USO2p/QdaUbmE4uU5NMzWpCMlAlXKf1ElgK4a6uWzPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlnWDum++5e/VTaWBtPJjJxDyyqrQr/703IF7TM3EzcN2lSZZg7JyScC2Ml0xvjE8sPBHIj/tXAr3qeD0QCrfeVyekEgEgjWAhV8znEMsiMSp8nE6AibFLzWGwv70trc8eKfURsX1RbVfZFAWh7StGR8YZk4Z0tUIrQOHRSwUmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLtVK216; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DBBC4CEE3;
-	Tue, 17 Jun 2025 16:25:12 +0000 (UTC)
+	 MIME-Version; b=P272+TftVj0tDc+XwoACF1HZGINCxyHb6ZL5z1baZI+RG9CNKX2ryZiatWY1tkaEdEXxRBUjFVQyHvpdKIjgUr/sYrSv/JbWiu1HE+7g2Q7FdqW2RoKyCzxqUu/zulK4T/6XzACvLngud9mXgwuq/fEO50SUXh8B1JeXKIyneiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG6TKrK5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0275C4CEE3;
+	Tue, 17 Jun 2025 16:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177513;
-	bh=1BwQxcMYs0p1M3cI7X++Vy14XKgf/VBCihh8NGgbYbk=;
+	s=korg; t=1750177582;
+	bh=USO2p/QdaUbmE4uU5NMzWpCMlAlXKf1ElgK4a6uWzPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLtVK216N8wdh1VDQNs/ztHB2LB4LX83bF7TaQsVJqm88dZehng86pmCIW3TeB1jn
-	 pVMktUp+HtS156IMofRRCm23GrnucZCIY3Dkrk9xglyBxZ6iBKNOwbcj4qrErio9kK
-	 oOgWCRO+jxvij2tPDIqxgJYC46qph4CsqRToz3As=
+	b=QG6TKrK5C7Khszr394XCLyWF4ev0v3qE3i/VyRedSKg/u9EhV015QP0fD7+6hSxKY
+	 f9Kq9KMA/RdqdLWrwDG1qPKYN2vuxsXi9a3SSRmQAT0qT0k9af9J+AlNgJm6Ib9Mnh
+	 flSa7xLjY0ObPhPHtbCdopUD32sgM8IEihyDizt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
 	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 304/780] wifi: mt76: mt7996: fix RX buffer size of MCU event
-Date: Tue, 17 Jun 2025 17:20:12 +0200
-Message-ID: <20250617152503.844160720@linuxfoundation.org>
+Subject: [PATCH 6.15 305/780] wifi: mt76: fix available_antennas setting
+Date: Tue, 17 Jun 2025 17:20:13 +0200
+Message-ID: <20250617152503.883643114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,67 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Shayne Chen <shayne.chen@mediatek.com>
 
-[ Upstream commit 42cb27af34de4acf680606fad2c1f2932110591f ]
+[ Upstream commit 249173e94dd5edef9e704f89513de7d9715ddf22 ]
 
-Some management frames are first processed by the firmware and then
-passed to the driver through the MCU event rings. In CONNAC3, event rings
-do not support scatter-gather and have a size limitation of 2048 bytes.
-If a packet sized between 1728 and 2048 bytes arrives from an event ring,
-the ring will hang because the driver attempts to use scatter-gather to
-process it.
+Check if available_antennas_tx and available_antennas_rx are already set
+during the per-chip initialization phase; otherwise, they could be
+overwritten with incorrect values.
 
-To fix this, include the size of struct skb_shared_info in the MCU RX
-buffer size to prevent scatter-gather from being used for event skb in
-mt76_dma_rx_fill_buf().
-
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Co-developed-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Fixes: 69d54ce7491d ("wifi: mt76: mt7996: switch to single multi-radio wiphy")
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-7-shayne.chen@mediatek.com
+Link: https://patch.msgid.link/20250515032952.1653494-8-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/dma.c    | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h | 3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-index 69a7d9b2e38bd..4b68d2fc5e094 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/dma.c
-@@ -493,7 +493,7 @@ int mt7996_dma_init(struct mt7996_dev *dev)
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU],
- 			       MT_RXQ_ID(MT_RXQ_MCU),
- 			       MT7996_RX_MCU_RING_SIZE,
--			       MT_RX_BUF_SIZE,
-+			       MT7996_RX_MCU_BUF_SIZE,
- 			       MT_RXQ_RING_BASE(MT_RXQ_MCU));
- 	if (ret)
- 		return ret;
-@@ -502,7 +502,7 @@ int mt7996_dma_init(struct mt7996_dev *dev)
- 	ret = mt76_queue_alloc(dev, &dev->mt76.q_rx[MT_RXQ_MCU_WA],
- 			       MT_RXQ_ID(MT_RXQ_MCU_WA),
- 			       MT7996_RX_MCU_RING_SIZE_WA,
--			       MT_RX_BUF_SIZE,
-+			       MT7996_RX_MCU_BUF_SIZE,
- 			       MT_RXQ_RING_BASE(MT_RXQ_MCU_WA));
- 	if (ret)
- 		return ret;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index c393784436d4c..77605403b3966 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -29,6 +29,9 @@
- #define MT7996_RX_RING_SIZE		1536
- #define MT7996_RX_MCU_RING_SIZE		512
- #define MT7996_RX_MCU_RING_SIZE_WA	1024
-+/* scatter-gather of mcu event is not supported in connac3 */
-+#define MT7996_RX_MCU_BUF_SIZE		(2048 + \
-+					 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index b88d7e10742ee..e9605dc222910 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -449,8 +449,10 @@ mt76_phy_init(struct mt76_phy *phy, struct ieee80211_hw *hw)
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AIRTIME_FAIRNESS);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_AQL);
  
- #define MT7996_FIRMWARE_WA		"mediatek/mt7996/mt7996_wa.bin"
- #define MT7996_FIRMWARE_WM		"mediatek/mt7996/mt7996_wm.bin"
+-	wiphy->available_antennas_tx = phy->antenna_mask;
+-	wiphy->available_antennas_rx = phy->antenna_mask;
++	if (!wiphy->available_antennas_tx)
++		wiphy->available_antennas_tx = phy->antenna_mask;
++	if (!wiphy->available_antennas_rx)
++		wiphy->available_antennas_rx = phy->antenna_mask;
+ 
+ 	wiphy->sar_capa = &mt76_sar_capa;
+ 	phy->frp = devm_kcalloc(dev->dev, wiphy->sar_capa->num_freq_ranges,
 -- 
 2.39.5
 
