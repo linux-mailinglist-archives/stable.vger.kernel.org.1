@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-153789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C978ADD65F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BC2ADD755
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31E3C7A7A94
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 082507A02F4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8102ED14F;
-	Tue, 17 Jun 2025 16:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CBA2EE263;
+	Tue, 17 Jun 2025 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOq2AeE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/aJRhKO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4E021018A;
-	Tue, 17 Jun 2025 16:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BFC2EA16C;
+	Tue, 17 Jun 2025 16:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177103; cv=none; b=cCwhDJRjEAFU0TnYVDtOs5lanyY6ATJb2DNF6SXjAJW4oO01ufeVIqFaxcV/XxaaAhy1CL2Jr3IeZ97Qm1MyQ+4kUaNIT7euxax3fciYIywdBtZLAgEy97uR0nmouRZhkzaaOrhZtgUN64ZjpRjN03bV+0P9vK2AkaS5kQaJQbo=
+	t=1750178272; cv=none; b=F2zGB7lqbYQljoSpjIAg3deu+Ermz0/uFA/WjCaDQMpbxt7NvxDKlZ4CE4F0vAkgNsEweaI7wFNhydPTNXgcSmZH7XIDcf2wPdyfp9i7+Zm8WxAFR6XBabAQNAbRB1mGQQKX/Va+22MyyrU/TPveraemBSHz9OrmLHbP2r9Wbrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177103; c=relaxed/simple;
-	bh=UyAGmIbAbaz3mu3aGSuoc93VjX+QHMeFydAwLe8Vrq0=;
+	s=arc-20240116; t=1750178272; c=relaxed/simple;
+	bh=7kmcx2x+L6NMREY7++d38Sayl8p2dA909KHzuXCxdh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DvJ2PiMpgwV9F9P538+Y/7yMEvnEgSWzW+baGmQnyaOdZKZW2g5k/LQftmYf0LfTSAIoMKeGm5TQ6kVVTsETCrz4KnBvXsjwgc8jFYaWcfMH6gjroB13u/TUuOqjNwe1BN7woODhkpVz9mUfKuPXFyK4004bQOBlE+fYGf4SBFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOq2AeE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA9FC4CEE3;
-	Tue, 17 Jun 2025 16:18:22 +0000 (UTC)
+	 MIME-Version; b=nsDgezO0GVOGDIVuhUjKptFtHmR3+U51mCX5rOpheH+hNv5dTQt2C8FVruRna76nJch1c/tzTw8YGqcn+t4abQPtt/EwuyrXmtfPt97AqpgxJGvygZbBQjv5azn/poeWMmQcDJB1LoqRcON9Bhs7s6XC5jbWsl8hCw5HulBlaoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/aJRhKO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C86C4CEE3;
+	Tue, 17 Jun 2025 16:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177103;
-	bh=UyAGmIbAbaz3mu3aGSuoc93VjX+QHMeFydAwLe8Vrq0=;
+	s=korg; t=1750178272;
+	bh=7kmcx2x+L6NMREY7++d38Sayl8p2dA909KHzuXCxdh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOq2AeE91goJhqVggqwpTPJZ7N/Bi9VAiB7ffmouAmergZ3/W1n/yV2vIhUUjukFc
-	 qV2idFlCbNepkZ3OEeZFmkAIKr2jksEUw3sojZSidK8x7v56l/tgaZ7okxTE7HYbeG
-	 oLcmet3Wcv4kCgywo5+u94lWzmrjP+cN9YDM3uDE=
+	b=t/aJRhKOboZllhlRbIYih7S4n9x5/4mKDYftZNg67WC6e1tQ71GZTQ1xtvhDoSBol
+	 cQjK+Hh38UFjxy+vmFdi9v8G+DYXnHTx55DP0+thaBS/YvgXgTIh680Zzc5jCYLrAo
+	 1e3T2K0kLH5MqwwkJrKA2+2Jr955KFOTAWVl+/kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 323/356] net/mlx5: Ensure fw pages are always allocated on same NUMA
+Subject: [PATCH 6.12 472/512] gfs2: pass through holder from the VFS for freeze/thaw
 Date: Tue, 17 Jun 2025 17:27:18 +0200
-Message-ID: <20250617152351.153998527@linuxfoundation.org>
+Message-ID: <20250617152438.704212468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit f37258133c1e95e61db532e14067e28b4881bf24 ]
+[ Upstream commit 62a2175ddf7e72941868f164b7c1f92e00f213bd ]
 
-When firmware asks the driver to allocate more pages, using event of
-give_pages, the driver should always allocate it from same NUMA, the
-original device NUMA. Current code uses dev_to_node() which can result
-in different NUMA as it is changed by other driver flows, such as
-mlx5_dma_zalloc_coherent_node(). Instead, use saved numa node for
-allocating firmware pages.
+The filesystem's freeze/thaw functions can be called from contexts where
+the holder isn't userspace but the kernel, e.g., during systemd
+suspend/hibernate. So pass through the freeze/thaw flags from the VFS
+instead of hard-coding them.
 
-Fixes: 311c7c71c9bb ("net/mlx5e: Allocate DMA coherent memory on reader NUMA node")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250610151514.1094735-2-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/super.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-index dcf58efac159c..e0581c6f9cecd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-@@ -291,7 +291,7 @@ static void free_4k(struct mlx5_core_dev *dev, u64 addr, u32 function)
- static int alloc_system_page(struct mlx5_core_dev *dev, u32 function)
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 6d62ff5cb445a..5ecb857cf74e3 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -674,7 +674,7 @@ static int gfs2_sync_fs(struct super_block *sb, int wait)
+ 	return sdp->sd_log_error;
+ }
+ 
+-static int gfs2_do_thaw(struct gfs2_sbd *sdp)
++static int gfs2_do_thaw(struct gfs2_sbd *sdp, enum freeze_holder who)
  {
- 	struct device *device = mlx5_core_dma_dev(dev);
--	int nid = dev_to_node(device);
-+	int nid = dev->priv.numa_node;
- 	struct page *page;
- 	u64 zero_addr = 1;
- 	u64 addr;
+ 	struct super_block *sb = sdp->sd_vfs;
+ 	int error;
+@@ -682,7 +682,7 @@ static int gfs2_do_thaw(struct gfs2_sbd *sdp)
+ 	error = gfs2_freeze_lock_shared(sdp);
+ 	if (error)
+ 		goto fail;
+-	error = thaw_super(sb, FREEZE_HOLDER_USERSPACE);
++	error = thaw_super(sb, who);
+ 	if (!error)
+ 		return 0;
+ 
+@@ -710,7 +710,7 @@ void gfs2_freeze_func(struct work_struct *work)
+ 	gfs2_freeze_unlock(sdp);
+ 	set_bit(SDF_FROZEN, &sdp->sd_flags);
+ 
+-	error = gfs2_do_thaw(sdp);
++	error = gfs2_do_thaw(sdp, FREEZE_HOLDER_USERSPACE);
+ 	if (error)
+ 		goto out;
+ 
+@@ -728,6 +728,7 @@ void gfs2_freeze_func(struct work_struct *work)
+ /**
+  * gfs2_freeze_super - prevent further writes to the filesystem
+  * @sb: the VFS structure for the filesystem
++ * @who: freeze flags
+  *
+  */
+ 
+@@ -744,7 +745,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
+ 	}
+ 
+ 	for (;;) {
+-		error = freeze_super(sb, FREEZE_HOLDER_USERSPACE);
++		error = freeze_super(sb, who);
+ 		if (error) {
+ 			fs_info(sdp, "GFS2: couldn't freeze filesystem: %d\n",
+ 				error);
+@@ -758,7 +759,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who)
+ 			break;
+ 		}
+ 
+-		error = gfs2_do_thaw(sdp);
++		error = gfs2_do_thaw(sdp, who);
+ 		if (error)
+ 			goto out;
+ 
+@@ -796,6 +797,7 @@ static int gfs2_freeze_fs(struct super_block *sb)
+ /**
+  * gfs2_thaw_super - reallow writes to the filesystem
+  * @sb: the VFS structure for the filesystem
++ * @who: freeze flags
+  *
+  */
+ 
+@@ -814,7 +816,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who)
+ 	atomic_inc(&sb->s_active);
+ 	gfs2_freeze_unlock(sdp);
+ 
+-	error = gfs2_do_thaw(sdp);
++	error = gfs2_do_thaw(sdp, who);
+ 
+ 	if (!error) {
+ 		clear_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags);
 -- 
 2.39.5
 
