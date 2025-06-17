@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-153364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E7BADD450
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837B7ADD7BE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B869C194330F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCD584A1178
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313752EA155;
-	Tue, 17 Jun 2025 15:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B7F2F2C46;
+	Tue, 17 Jun 2025 16:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM3iWzZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ0BcqvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6FF2EA14F;
-	Tue, 17 Jun 2025 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEBA2EF2A6;
+	Tue, 17 Jun 2025 16:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175711; cv=none; b=eQk68KMLfGf7L/3ye3nCr51Fi/5XuN2e7tWqZN1NgPhlgT/QstsNctj4u1q3Iyc64nk60ydYY7YC3An+Z2RLn3pVYMj1Jt1ozqcumeLOnUtb6+XPKTeH/ujS7fOkOSQLR8GcynpwKyMRG8XJslxuHXPRqWHmu+YAMp8wvV5lRf0=
+	t=1750178013; cv=none; b=ep6hGrAtenAqEaO9tCOaHFZjNwEnKDP9YkaJA2Q45j/3D7TqXKCgHhS/5zbK9Evbp3BuslbwYoJxoc02yUT5YlbknvurJ47epcT9zM3w3RD1fjN4/sipUKDJ1aO2fPDRwGuy3/Yup+edfufcIu7aL7mrHF8TbyYnQDihjnZGK4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175711; c=relaxed/simple;
-	bh=FfZW0Jv0Bs/jKdwdR0PYysYWcr2z9QbDGjlKwuCSv9I=;
+	s=arc-20240116; t=1750178013; c=relaxed/simple;
+	bh=kMZrI2rrYOqig9Wr9WnaAd1II4GcVx0LZuqJH5FzwGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZ/7uROD229nuS/ZDse0nWDiOzSIheV+GQhhbAoOPL86Rm8Iaksao7IBYmJ4nPdfkZXV7/sEK6MnmXtggc4eMMlw3Xkk1hqR8rK14/LBq24MIW/MxrMk/D6X+dyqi2ugJiL7louJIu6YlT9b5vt6eCJCoMHnEtvTxSbpNSDZC54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM3iWzZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F905C4CEE3;
-	Tue, 17 Jun 2025 15:55:10 +0000 (UTC)
+	 MIME-Version; b=BaOoLT2NpsmxNxGDkaPolufo2mQx5HJHWSIQ9GuNvizmcqOQAr3KgI9NFJZgt+Tbi8MGzMoHLOJJ+ure7IVtMGhFUBOwg6YeinTZXlU4eephcAE2PA/4nmXnXmLDp6THvSs/jhajD8DHb7atpk1ePMMXwk+H2PmasUNTOpQxLcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQ0BcqvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118C3C4CEE7;
+	Tue, 17 Jun 2025 16:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175710;
-	bh=FfZW0Jv0Bs/jKdwdR0PYysYWcr2z9QbDGjlKwuCSv9I=;
+	s=korg; t=1750178013;
+	bh=kMZrI2rrYOqig9Wr9WnaAd1II4GcVx0LZuqJH5FzwGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qM3iWzZmPKyvv8Mj+GdnbpkPTkUhc+e4P+EQ6Nb0b8u01/YDbnJNZssy0tV7rpnM1
-	 Yw0xS5WWo7GpI/HlvQC/DT+UJLUJEbl6LDjSKV4ROt5LOjTUoBWWWtzXnycj50GdCM
-	 K+JK+gs58E7RveL9joNKsO6U73AFLHIRleXq7Nws=
+	b=cQ0BcqvPIjz7SlSpWiea7k0KpJ4ujP1+HtvZ+dw85HJZMWjU9lX+MMFDaw3ah8i8h
+	 +YuSaAkOQ02lEXuV8twXtwry3ELkQ7PIRLBbjtMveiNJLmv4PqzIbNFWsIFdRnLPJn
+	 HMeWflT1kpWCBMpRs9/XUho2OcZU/iE7r9I+rr/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Wiepert <jonathan.wiepert@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/512] Use thread-safe function pointer in libbpf_print
+Subject: [PATCH 6.15 396/780] bus: fsl-mc: fix double-free on mc_dev
 Date: Tue, 17 Jun 2025 17:21:44 +0200
-Message-ID: <20250617152425.192282393@linuxfoundation.org>
+Message-ID: <20250617152507.580471711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Wiepert <jonathan.wiepert@gmail.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 91dbac4076537b464639953c055c460d2bdfc7ea ]
+[ Upstream commit d694bf8a9acdbd061596f3e7549bc8cb70750a60 ]
 
-This patch fixes a thread safety bug where libbpf_print uses the
-global variable storing the print function pointer rather than the local
-variable that had the print function set via __atomic_load_n.
+The blamed commit tried to simplify how the deallocations are done but,
+in the process, introduced a double-free on the mc_dev variable.
 
-Fixes: f1cb927cdb62 ("libbpf: Ensure print callback usage is thread-safe")
-Signed-off-by: Jonathan Wiepert <jonathan.wiepert@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-Link: https://lore.kernel.org/bpf/20250424221457.793068-1-jonathan.wiepert@gmail.com
+In case the MC device is a DPRC, a new mc_bus is allocated and the
+mc_dev variable is just a reference to one of its fields. In this
+circumstance, on the error path only the mc_bus should be freed.
+
+This commit introduces back the following checkpatch warning which is a
+false-positive.
+
+WARNING: kfree(NULL) is safe and this check is probably not required
++       if (mc_bus)
++               kfree(mc_bus);
+
+Fixes: a042fbed0290 ("staging: fsl-mc: simplify couple of deallocations")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-2-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index c6eceae4d6ff6..bb24f6bac2073 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -285,7 +285,7 @@ void libbpf_print(enum libbpf_print_level level, const char *format, ...)
- 	old_errno = errno;
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index a8be8cf246fb6..0c3a38d7f3358 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -906,8 +906,10 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
  
- 	va_start(args, format);
--	__libbpf_pr(level, format, args);
-+	print_fn(level, format, args);
- 	va_end(args);
+ error_cleanup_dev:
+ 	kfree(mc_dev->regions);
+-	kfree(mc_bus);
+-	kfree(mc_dev);
++	if (mc_bus)
++		kfree(mc_bus);
++	else
++		kfree(mc_dev);
  
- 	errno = old_errno;
+ 	return error;
+ }
 -- 
 2.39.5
 
