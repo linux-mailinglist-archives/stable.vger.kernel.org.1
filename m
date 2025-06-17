@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-153711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76454ADD64A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD883ADD5DD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19F962C61FD
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BB8F2C391A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55CC2ED871;
-	Tue, 17 Jun 2025 16:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292CB2ECE9E;
+	Tue, 17 Jun 2025 16:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGG35S1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSaE2QAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F8D2F94B0;
-	Tue, 17 Jun 2025 16:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBADA2DFF0A;
+	Tue, 17 Jun 2025 16:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176843; cv=none; b=lxnDciBKYy7tidx9Psjlns72/1pDbcirGskTYh1e/xPOJTyaMp0nUJNw82HAK4I7dyu+uw+mjQncp5iheqTKjtCkz69x9LnpYfX8vAmgGINSmTkkXi/T7QE3rp8boCbOZm70DWgZ2ce/EiJOjKYVqrvvPxDI7Y57MuuObdxk93U=
+	t=1750176855; cv=none; b=UjLtQOF22HF64+sO6Z0HkPjWI+B6lSffAQt3quiS3WXX8u8yrjIxPy/ZFueQr1cZkCZRXThcCx6SeBaBBbAcqiSkzx/5mkiam0ci/JpjLD+fMH8haSy4r69JhmB47eLhkTKDBw30pXIJqi7DfeBUW4gGrt+yEtj6GdbhvdUOFNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176843; c=relaxed/simple;
-	bh=RoqXf0Bg3Hl2+lVPuYCI51xUcUEPMAVOe91NZaQMOR8=;
+	s=arc-20240116; t=1750176855; c=relaxed/simple;
+	bh=t+YYKOOK8iikaXWTWNH/sTYP94MeJ1EOGb7Oad0X7WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBRN3Bgt8Bcm4CbOu30ReWk2amrU36stn2oYupj12Gw05j3tu2EVmxOPJViMu9KbHFVrp7rTBpe4NbVfw7S7tcQT+2Ac+xru9lyiTa7gvI3s7HTLcnDmHD9Im/LpkIUShmirhtJDdAeI9xvSY4H94xkHfHg9qCI6uYkoRjxFGYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGG35S1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F7DC4CEE3;
-	Tue, 17 Jun 2025 16:14:02 +0000 (UTC)
+	 MIME-Version; b=oyZsO+57lhuUR2AXRmLyldu67e2QpgK53ChDKE6ujey8V4gCuUW3aAdzDwXFRNVE+g1rtWPGAuLnSfeVxIVN5DxHYpgEOYS3ny02kb5MhZoCi5/+TtBx1bXPBM/14itSUqzX49pMOjzJiOR5FROu8Dt5pxMXI6JIExaM2ZK6cWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSaE2QAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0B8C4CEE3;
+	Tue, 17 Jun 2025 16:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176843;
-	bh=RoqXf0Bg3Hl2+lVPuYCI51xUcUEPMAVOe91NZaQMOR8=;
+	s=korg; t=1750176855;
+	bh=t+YYKOOK8iikaXWTWNH/sTYP94MeJ1EOGb7Oad0X7WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGG35S1Mo0Ng56Xsk7If1uaSeU7DmwPQbXuJjZ/hgSUHMHPlJKpmsctxEwVyh7Ldk
-	 OCAoHeoGb14BcvUsW3R99/jPmZ0KR8WyLv0vn8cXwO2/aN8Hok9Q8eaEGPBZjgHDE1
-	 v1Q8SxOBlMmmBVRa9izthdGpwej1miOtkrlTGROY=
+	b=vSaE2QAWcIdEGUuGvADwaHmiFJBV1IA3h5wcdjoAPq8FbLagbTbcZw7B2kDlSxl94
+	 d2LOZe9BjeI9YuW6flvFYI3z599BzCghpZMxESkXoQ8bGynKTNcYB1BlyeahgvrtCs
+	 6yWePLJCblVTPRjnOXKX04pKXh/ew2zwu0dZAHUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 231/780] crypto/krb5: Fix change to use SG miter to use offset
-Date: Tue, 17 Jun 2025 17:18:59 +0200
-Message-ID: <20250617152500.858674718@linuxfoundation.org>
+Subject: [PATCH 6.15 232/780] selftests/bpf: Fix kmem_cache iterator draining
+Date: Tue, 17 Jun 2025 17:19:00 +0200
+Message-ID: <20250617152500.898977156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -71,57 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: T.J. Mercier <tjmercier@google.com>
 
-[ Upstream commit eed848871c96d4b5a7b06307755b75abd0cc7a06 ]
+[ Upstream commit 38d976c32d85ef12dcd2b8a231196f7049548477 ]
 
-The recent patch to make the rfc3961 simplified code use sg_miter rather
-than manually walking the scatterlist to hash the contents of a buffer
-described by that scatterlist failed to take the starting offset into
-account.
+The closing parentheses around the read syscall is misplaced, causing
+single byte reads from the iterator instead of buf sized reads. While
+the end result is the same, many more read calls than necessary are
+performed.
 
-This is indicated by the selftests reporting:
+$ tools/testing/selftests/bpf/vmtest.sh  "./test_progs -t kmem_cache_iter"
+145/1   kmem_cache_iter/check_task_struct:OK
+145/2   kmem_cache_iter/check_slabinfo:OK
+145/3   kmem_cache_iter/open_coded_iter:OK
+145     kmem_cache_iter:OK
+Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
 
-    krb5: Running aes128-cts-hmac-sha256-128 mic
-    krb5: !!! TESTFAIL crypto/krb5/selftest.c:446
-    krb5: MIC mismatch
-
-Fix this by calling sg_miter_skip() before doing the loop to advance
-by the offset.
-
-This only affects packet signing modes and not full encryption in RxGK
-because, for full encryption, the message digest is handled inside the
-authenc and krb5enc drivers.
-
-Note: Nothing in linus/master uses the krb5lib, though the bug is there.
-It is used by AF_RXRPC's RxGK implementation in -next, no need to backport.
-
-Fixes: da6f9bf40ac2 ("crypto: krb5 - Use SG miter instead of doing it by hand")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Chuck Lever <chuck.lever@oracle.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Link: https://patch.msgid.link/3824017.1745835726@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a496d0cdc84d ("selftests/bpf: Add a test for kmem_cache_iter")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://patch.msgid.link/20250428180256.1482899-1-tjmercier@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/krb5/rfc3961_simplified.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/krb5/rfc3961_simplified.c b/crypto/krb5/rfc3961_simplified.c
-index 79180d28baa9f..e49cbdec7c404 100644
---- a/crypto/krb5/rfc3961_simplified.c
-+++ b/crypto/krb5/rfc3961_simplified.c
-@@ -89,6 +89,7 @@ int crypto_shash_update_sg(struct shash_desc *desc, struct scatterlist *sg,
+diff --git a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
+index 8e13a3416a21d..1de14b111931a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/kmem_cache_iter.c
+@@ -104,7 +104,7 @@ void test_kmem_cache_iter(void)
+ 		goto destroy;
  
- 	sg_miter_start(&miter, sg, sg_nents(sg),
- 		       SG_MITER_FROM_SG | SG_MITER_LOCAL);
-+	sg_miter_skip(&miter, offset);
- 	for (i = 0; i < len; i += n) {
- 		sg_miter_next(&miter);
- 		n = min(miter.length, len - i);
+ 	memset(buf, 0, sizeof(buf));
+-	while (read(iter_fd, buf, sizeof(buf) > 0)) {
++	while (read(iter_fd, buf, sizeof(buf)) > 0) {
+ 		/* Read out all contents */
+ 		printf("%s", buf);
+ 	}
 -- 
 2.39.5
 
