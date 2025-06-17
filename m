@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A11ADDA19
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120A4ADD5A0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37BC4A6BDB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C51C7B092C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C97B2DFF10;
-	Tue, 17 Jun 2025 16:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000792EA17E;
+	Tue, 17 Jun 2025 16:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A229LR5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2JEmIo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B8285057;
-	Tue, 17 Jun 2025 16:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20AC18E025;
+	Tue, 17 Jun 2025 16:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178669; cv=none; b=I9/ezgncRLpE/HqFA07JEmA4bZf7kaKBIUsKh5Pn2R4c36AAsUkRlx34R2U9Wkt3tFWq8FAZQTCofUwSatrqGI20O7XAV2aLzrngD8J8pGivCYN7AfCLFNSyCJZxuKPCboB9q/44krbo6ZgDLHx9TXWGBaDPjqEZp5FUTnIspBA=
+	t=1750176720; cv=none; b=h4n+n3Txsbd7yw2+9S3W6IXnGf5OUnQwLAf1DhlaCzGK816F7xxxyEAUFxKRwi++xzfudiMBcpJvup+bf4rKtwFsUo28riEqRfttdUdy0N/flVpcXY3lPDKUCDip9AzCicwQwozh2mlYwN72x62/6hozWh3z+7gfpB1Ti5lJVBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178669; c=relaxed/simple;
-	bh=aTSApfd6aXIyWHUlGVVMclZYun12D6MpX6ABvTQOCoQ=;
+	s=arc-20240116; t=1750176720; c=relaxed/simple;
+	bh=VBCMUEaaRSEbs3UyTEKkuWqJABs6SQmAEjXyQXEiqKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBmr8o42yLDR4ubvrLdAhTfBCn3V65T9N7NdDnXhm5pJy6DIVfH6LL1POCUEJZ6M+0Va2jpn3WJe15MleJyzoQOqWUy+VYM9u0SW2FK5DbS6DxUOvMd2b7Lp0nK20PmilHcMuIp3FTrbrHVDEEU427HRiJGDZ7I7HnvgUuxBvqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A229LR5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E994C4CEE3;
-	Tue, 17 Jun 2025 16:44:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XWl+3ye1c0M1O/UzSJsR8aNsnoQqAQ/Uwc98XtlrIMuqjINvCaRafgeHKiwZUW1sqN2DAq0bpwMFWpCkerbHN9y0XE2kn4LkFB43gQDIu4cl2Jrl6WcsP5SkYdgA8LnoUv1+mPaKA0gG2lmpluCQ8nmOuHbooX87akpXGTpRTss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2JEmIo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21125C4CEE3;
+	Tue, 17 Jun 2025 16:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178668;
-	bh=aTSApfd6aXIyWHUlGVVMclZYun12D6MpX6ABvTQOCoQ=;
+	s=korg; t=1750176720;
+	bh=VBCMUEaaRSEbs3UyTEKkuWqJABs6SQmAEjXyQXEiqKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A229LR5ORKUo+XLbpwmkpt2s8/b5QL8yhKriNFuS8IAfMflnCS0YS4pnHvnSY2dGB
-	 XxLuLm7+Ijq8W50QDwMrZAbJJbOHd8irlvvs+oaTLZYBR5i2svlCPp+3qezOVXprzM
-	 DzcYNAHbySDF7rboQ78VZlIUVUubPdrwF/xqwQIk=
+	b=x2JEmIo8+3BwVFaO5xDTzpyD45rxhkeGlRIimBL2Wkjp7N8VtkC9p/KQrQmFcduJV
+	 b4J+9ybmW7LPdfbOSGmBaezy9INVSGqX4ksgslAm+pKYkjNbjyVMox/rAc7C6I50zG
+	 sueS4adzxnsBXg/Y8RG00Rui81XItsNg4autn774=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Winchenbach <swinchenbach@arka.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Vignesh Raman <vignesh.raman@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 518/780] iio: filter: admv8818: fix band 4, state 15
+Subject: [PATCH 6.12 260/512] arm64: defconfig: mediatek: enable PHY drivers
 Date: Tue, 17 Jun 2025 17:23:46 +0200
-Message-ID: <20250617152512.604787238@linuxfoundation.org>
+Message-ID: <20250617152430.122153734@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Winchenbach <swinchenbach@arka.org>
+From: Vignesh Raman <vignesh.raman@collabora.com>
 
-[ Upstream commit ef0ce24f590ac075d5eda11f2d6434b303333ed6 ]
+[ Upstream commit f52cd248d844f9451858992f924988ac413fdc7e ]
 
-Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
-the ADMV8818 datasheet
+The mediatek display driver fails to probe on mt8173-elm-hana and
+mt8183-kukui-jacuzzi-juniper-sku16 in v6.14-rc4 due to missing PHY
+configurations.
 
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-Link: https://patch.msgid.link/20250328174831.227202-3-sam.winchenbach@framepointer.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Commit 924d66011f24 ("drm/mediatek: stop selecting foreign drivers")
+stopped selecting the MediaTek PHY drivers, requiring them to be
+explicitly enabled in defconfig.
+
+Enable the following PHY drivers for MediaTek platforms:
+CONFIG_PHY_MTK_HDMI=m for HDMI display
+CONFIG_PHY_MTK_MIPI_DSI=m for DSI display
+CONFIG_PHY_MTK_DP=m for DP display
+
+Fixes: 924d66011f24 ("drm/mediatek: stop selecting foreign drivers")
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+Link: https://lore.kernel.org/r/20250512131933.1247830-1-vignesh.raman@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/filter/admv8818.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/configs/defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index d85b7d3de8660..3d8740caa1455 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -103,7 +103,7 @@ static const unsigned long long freq_range_lpf[4][2] = {
- 	{2050000000ULL, 3850000000ULL},
- 	{3350000000ULL, 7250000000ULL},
- 	{7000000000, 13000000000},
--	{12550000000, 18500000000}
-+	{12550000000, 18850000000}
- };
- 
- static const struct regmap_config admv8818_regmap_config = {
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 8fe7dbae33bf9..f988dd79add89 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1536,6 +1536,9 @@ CONFIG_PHY_HISTB_COMBPHY=y
+ CONFIG_PHY_HISI_INNO_USB2=y
+ CONFIG_PHY_MVEBU_CP110_COMPHY=y
+ CONFIG_PHY_MTK_TPHY=y
++CONFIG_PHY_MTK_HDMI=m
++CONFIG_PHY_MTK_MIPI_DSI=m
++CONFIG_PHY_MTK_DP=m
+ CONFIG_PHY_QCOM_EDP=m
+ CONFIG_PHY_QCOM_PCIE2=m
+ CONFIG_PHY_QCOM_QMP=m
 -- 
 2.39.5
 
