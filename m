@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-154492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE1DADDA18
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:13:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4266AADD753
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8237C4001A5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 795177A4294
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7390D2FA62F;
-	Tue, 17 Jun 2025 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5222ED871;
+	Tue, 17 Jun 2025 16:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrRZjAIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE1iU+lC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6062FA626;
-	Tue, 17 Jun 2025 16:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8762FA64D;
+	Tue, 17 Jun 2025 16:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179381; cv=none; b=fwzyocp2FsNRp3PoQMGWTz3R2aTqthMEgvuYsGd9fcB+EQtJAECsQHx7Q2X4R+dqUI3MXeRdxjbpbZfBgXNEJUOcPcVEul4HYPHHpPiUdBtDgqknhjJVSkEEZUwWekqMWH0WSWUxEaVKJ+T/+Gu3gF1MuJsPJQeHdU1TqxcbNKo=
+	t=1750178265; cv=none; b=Kn6eAUmIBFu58loOv286n/vT7YJEKkQsMQHUTM9NgW1NPrGorrZ9fRX8TxpYN/lB/Y6tiRgpue8sGrob6BfSGqkIcZrBhsQEk3495QxsXvQUyXhpp/V41qVWZUfpBg01k3a2HjqBLuwQrvWUdgCM7KeEvnYfYVy4D34lopTifWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179381; c=relaxed/simple;
-	bh=6hZvnRaW5Z/WCvqFgJmnugeJh3dAagz+e3JVXK3R3Wc=;
+	s=arc-20240116; t=1750178265; c=relaxed/simple;
+	bh=nN+dbWLJcCsH4NZgsWdnXaYgcspJLzIkCdSpCn+wH2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXRqKP54CJ+e1AXH4ti0VF47+iwJBnpsLTLuo7EeD3dJKarLvnCtJ2pdkgxgFZKQ/5G+p4XDYjD+C3oSK3pOWAIOJoVESgDMbc+yPPJ2KDgbdOIMzVXGtmu3lWWHLUjK2hW6XKLZhEGccwA1oXhDdyo+V2mwRbp+zbe9GxtJKIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrRZjAIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB7AC4CEE3;
-	Tue, 17 Jun 2025 16:56:20 +0000 (UTC)
+	 MIME-Version; b=M2BD1KDkB0PJM0g6rXFhqZnCvNOl5O2ke/W52KsJ4yONGirwx0V/Kf9ssH9vIoSj0YBmuv8m07+G3udnz8z0KC27SPmnMPDeyMYtw4rIBlENn16uSxHZS7pg435eu2rPhGkgBjizxDEgORH434pFs7RsDrlG5HK3gkfP0EeTXjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE1iU+lC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2930FC4CEF0;
+	Tue, 17 Jun 2025 16:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179380;
-	bh=6hZvnRaW5Z/WCvqFgJmnugeJh3dAagz+e3JVXK3R3Wc=;
+	s=korg; t=1750178265;
+	bh=nN+dbWLJcCsH4NZgsWdnXaYgcspJLzIkCdSpCn+wH2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrRZjAIkSSvc94lO8ydP6nofMbThUm0nh2o7GvKfFUb0akItNpHVI3tcKhxb+oSXc
-	 B+DRHqx1fHN28Rxh7XLTujCcENKqwYHCpZJol9YiqV8Xbm4DE+DAR02YteUH0v7RHu
-	 WAh0J07UfP+FmDUNUB+ItUffi7OP9hWAHqCy0hEI=
+	b=kE1iU+lCFrRC1sH+QhSEMd4DN/DiiUDl1Epg5ApEEHO7wixFxAepaCYs4R9257mb/
+	 /g4cI5mfztGo79CvMUfH+ZtdZ86GaoJCUF3o5oe8cgja16p68VW9rWvUFJw6mPHKGF
+	 ZEOcPg18EgX/3ksniO9D74kOvexY127aFUHHBD+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 728/780] btrfs: exit after state split error at set_extent_bit()
-Date: Tue, 17 Jun 2025 17:27:16 +0200
-Message-ID: <20250617152521.145622349@linuxfoundation.org>
+Subject: [PATCH 6.12 471/512] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
+Date: Tue, 17 Jun 2025 17:27:17 +0200
+Message-ID: <20250617152438.664510685@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 41d69d4d78d8b179bf3bcdfc56d28a12b3a608d2 ]
+[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
 
-If split_state() returned an error we call extent_io_tree_panic() which
-will trigger a BUG() call. However if CONFIG_BUG is disabled, which is an
-uncommon and exotic scenario, then we fallthrough and hit a use after free
-when calling set_state_bits() since the extent state record which the
-local variable 'prealloc' points to was freed by split_state().
+fs_name() has @index as unsigned int, so there is underflow risk for
+operation '@index--'.
 
-So jump to the label 'out' after calling extent_io_tree_panic() and set
-the 'prealloc' pointer to NULL since split_state() has already freed it
-when it hit an error.
+Fix by breaking the for loop when '@index == 0' which is also more proper
+than '@index <= 0' for unsigned integer comparison.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-io-tree.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/filesystems.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/extent-io-tree.c b/fs/btrfs/extent-io-tree.c
-index 92cfde37b1d33..b5b44ea91f999 100644
---- a/fs/btrfs/extent-io-tree.c
-+++ b/fs/btrfs/extent-io-tree.c
-@@ -1252,8 +1252,11 @@ static int __set_extent_bit(struct extent_io_tree *tree, u64 start, u64 end,
- 		if (!prealloc)
- 			goto search_again;
- 		ret = split_state(tree, state, prealloc, end + 1);
--		if (ret)
-+		if (ret) {
- 			extent_io_tree_panic(tree, state, "split", ret);
-+			prealloc = NULL;
-+			goto out;
-+		}
+diff --git a/fs/filesystems.c b/fs/filesystems.c
+index 58b9067b2391c..95e5256821a53 100644
+--- a/fs/filesystems.c
++++ b/fs/filesystems.c
+@@ -156,15 +156,19 @@ static int fs_index(const char __user * __name)
+ static int fs_name(unsigned int index, char __user * buf)
+ {
+ 	struct file_system_type * tmp;
+-	int len, res;
++	int len, res = -EINVAL;
  
- 		set_state_bits(tree, prealloc, bits, changeset);
- 		cache_state(prealloc, cached_state);
+ 	read_lock(&file_systems_lock);
+-	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
+-		if (index <= 0 && try_module_get(tmp->owner))
++	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
++		if (index == 0) {
++			if (try_module_get(tmp->owner))
++				res = 0;
+ 			break;
++		}
++	}
+ 	read_unlock(&file_systems_lock);
+-	if (!tmp)
+-		return -EINVAL;
++	if (res)
++		return res;
+ 
+ 	/* OK, we got the reference, so we can safely block */
+ 	len = strlen(tmp->name) + 1;
 -- 
 2.39.5
 
