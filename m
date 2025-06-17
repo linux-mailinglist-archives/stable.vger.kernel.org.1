@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D037ADD941
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:04:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3407FADD5CB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFCC1886725
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68CA77A685D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3704E2FA633;
-	Tue, 17 Jun 2025 16:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49FE2F2C71;
+	Tue, 17 Jun 2025 16:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCGbu5HC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFWmiPR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E732FA623;
-	Tue, 17 Jun 2025 16:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B482ED172;
+	Tue, 17 Jun 2025 16:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179352; cv=none; b=tBHuHe+4VF/N7cAKWrA9By0HTU8i5JAN5/npKzlVry02LRX05rmXiBNVrYkeFI9kJ1cLbijfLrDFHVzYVxNhsfItkwzf+gk0YQIbXHzn84tLk7/kNOo/3Avw3KsM/iAl1M5epSMrE2qklaKNrp42MAjYfiWUkNGSnN/6F5QRA38=
+	t=1750176787; cv=none; b=CegSmS2l0izHiY5pEI3ShOQNhZrXSqbZCeuJ5A6FQGOoocG3qW8bz0F0IDVF1uDtbG18Yo5KsyiWqxtSVJ4DqM6Pga21h6S8W0rSs6hVNxRkVLRSqmw0f5wZB6Kio9pLI+jxTa0/xCzBbh/SYObPMEQWDIP6cH3L2vhEudHjWQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179352; c=relaxed/simple;
-	bh=lAxVx16948iwgSsnJ7QQbs267rg/Cvkt3QnTryo2l0Q=;
+	s=arc-20240116; t=1750176787; c=relaxed/simple;
+	bh=W4GtbGS0G6RNg7+bf9Y9lSxuAZ4xUad7ERANDXkVFRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMfbDayydcwYz/aNbZlZvVvC5GVuiupTqiT8pAsi8Pr05Mlzoz6bhRsdPqpC/2iRwk63fc+9p3IAOfZnUWKeabgjpvuNfnKvHG2Pu6lnsblbQzf9DEsBe0C0cfzzCghtgzwLWN+jOE6nXPVSF711KdW4k8Rd6p/ZSwOmgU1GiqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCGbu5HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536AEC4CEE3;
-	Tue, 17 Jun 2025 16:55:51 +0000 (UTC)
+	 MIME-Version; b=EhNUSFwiMPuyUrtLdwP50L+3Rn1aeli42qq1UsLSYAjsf52Ldf5OlooE3COuhJYSh8J985AQTTyFKcQA7lRp4IFxmz39B6GTv1F8xcttPsT4u8hbm2jttCBlbdWSND+B3y5+fxsdX0btIYNFO9jM4JizkLVjsxiyd0yA+DdDuzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFWmiPR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC510C4CEE3;
+	Tue, 17 Jun 2025 16:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179351;
-	bh=lAxVx16948iwgSsnJ7QQbs267rg/Cvkt3QnTryo2l0Q=;
+	s=korg; t=1750176787;
+	bh=W4GtbGS0G6RNg7+bf9Y9lSxuAZ4xUad7ERANDXkVFRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCGbu5HCnML1SFgIdcpxNiudRdNOo4Rru1caWxkfATb4wQ86SrgqczgdH62Juvoyq
-	 wue298Sr0l5aTeMSfwHsJAaWvxgM0hofPlTjahqhrXJ75CDe5wvTQ5XjpFKhdlb9CU
-	 98GM3ZwI5UgyE/horE2g9KjvSwxo6ZHfIlQIuY9E=
+	b=OFWmiPR6nwPAFEySJsBslT1T6BshS4L4n85I4L0ZL0kpMEyW+CFC8JWkHmwegrraf
+	 qp4gktrcRLJim0gtmQ9TdQN5YuCuzribcl1HaQpE19IepiTT86yXo6refxr2NJoej3
+	 p70PIP2mKrgVdb5OoOPRlMNO9alh7X7+3CMUjmTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Robert Malz <robert.malz@canonical.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 720/780] net_sched: ets: fix a race in ets_qdisc_change()
+Subject: [PATCH 6.6 313/356] i40e: return false from i40e_reset_vf if reset is in progress
 Date: Tue, 17 Jun 2025 17:27:08 +0200
-Message-ID: <20250617152520.815870526@linuxfoundation.org>
+Message-ID: <20250617152350.762702123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
+References: <20250617152338.212798615@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit d92adacdd8c2960be856e0b82acc5b7c5395fddb ]
+[ Upstream commit a2c90d63b71223d69a813333c1abf4fdacddbbe5 ]
 
-Gerrard Tai reported a race condition in ETS, whenever SFQ perturb timer
-fires at the wrong time.
+The function i40e_vc_reset_vf attempts, up to 20 times, to handle a
+VF reset request, using the return value of i40e_reset_vf as an indicator
+of whether the reset was successfully triggered. Currently, i40e_reset_vf
+always returns true, which causes new reset requests to be ignored if a
+different VF reset is already in progress.
 
-The race is as follows:
+This patch updates the return value of i40e_reset_vf to reflect when
+another VF reset is in progress, allowing the caller to properly use
+the retry mechanism.
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 2c069f0181c62..037f764822b96 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -661,7 +661,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 	for (i = q->nbands; i < oldbands; i++) {
- 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
- 			list_del_init(&q->classes[i].alist);
--		qdisc_tree_flush_backlog(q->classes[i].qdisc);
-+		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index d5509bc16d0d5..348869f05020f 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1552,8 +1552,8 @@ static void i40e_cleanup_reset_vf(struct i40e_vf *vf)
+  * @vf: pointer to the VF structure
+  * @flr: VFLR was issued or not
+  *
+- * Returns true if the VF is in reset, resets successfully, or resets
+- * are disabled and false otherwise.
++ * Return: True if reset was performed successfully or if resets are disabled.
++ * False if reset is already in progress.
+  **/
+ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+ {
+@@ -1572,7 +1572,7 @@ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+ 
+ 	/* If VF is being reset already we don't need to continue. */
+ 	if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+-		return true;
++		return false;
+ 
+ 	i40e_trigger_vf_reset(vf, flr);
+ 
 -- 
 2.39.5
 
