@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57800ADD894
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4CCADD46D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09DEC19E21B3
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAFFD2C2828
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA692EE286;
-	Tue, 17 Jun 2025 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1080E2F548A;
+	Tue, 17 Jun 2025 15:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I45fKjDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN8XLHOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5EA285059;
-	Tue, 17 Jun 2025 16:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE062DFF1F;
+	Tue, 17 Jun 2025 15:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178390; cv=none; b=PN6Krss44QBDTdSwUkvki0Czrb5ooYfW/1954bdkFsv7yYJJWv9qTEWxoyAEc1SK394247+5URhW2mo2cKFVT0mqc133yVyKVGFUBpfj/9qT/g2FpgTJx6BASSBfmFg+Kds9agSs2lWFYYsTl9VgkAzMrZr+kpaTAjf/Aw+MEkM=
+	t=1750175907; cv=none; b=syYjYg0fK2L/2/dZc1mbhD5f2LEjK5d6Kh9hkq3y4o2GSlwn9bPD2kIcfMPx0ChWws+gjjanDC0R6vvngIQyHsosoT5zzrAlwJ3ICtIrhzb9KEESWJ5/EQ9btmsJ9/wqopYsdeldPbqf4G5VQLXH9aAMr4vz+mp+CzL60f6BCd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178390; c=relaxed/simple;
-	bh=PLG3u3XmciOcQEyl4JoZL//NFQ96LhVjdxU7P0WtoGo=;
+	s=arc-20240116; t=1750175907; c=relaxed/simple;
+	bh=ey0HWvXFQ9Y231RuplHoYp2/TMvyPbUh1yjuYoinRvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOkICMjZFYUsRmo2CADu0BXTPFtiXqa2wwmkPvqitCcM5crCW9cBHBeZxpze8/53Y1tX5z0iTnz97ywW/tgTKWKbY3OhtC5L86atqpFfDBTK4ys+nKw0WZ4Nse+B0HCdJbbIBXhIltnoj6tjyg4zvi4/NZv5h8bXatLIvZQNyyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I45fKjDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76031C4CEE3;
-	Tue, 17 Jun 2025 16:39:49 +0000 (UTC)
+	 MIME-Version; b=eQ0/L8mY3B9OsffEQPtHf6Z16XeO5rcnzYzljfD2xNos2uxYzMZ98E/xhaAazParG9D3FdQzs48Agk7Yieh3M51xDrT+IWZmMh2c7d7DNEHVNrsmSPGO8fG979qrJqmu8T/ZIxhs6DAkcpCWZIh6yPvvEj/S6Czbdsv5hIPtjj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN8XLHOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3366C4CEE3;
+	Tue, 17 Jun 2025 15:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178389;
-	bh=PLG3u3XmciOcQEyl4JoZL//NFQ96LhVjdxU7P0WtoGo=;
+	s=korg; t=1750175907;
+	bh=ey0HWvXFQ9Y231RuplHoYp2/TMvyPbUh1yjuYoinRvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I45fKjDMt5jAQljFhrLeT9lqKkhsLKukxFV7txHpvaZ8XXdFajF0hfBSLd81m3TQn
-	 dJI0Omwp5rzV+ZHIFhtvAD8jnIA6BEpS/oLlcWrJq94xGUxpbR4RnfTfYx5UJ7jAn2
-	 OzG4U2+ykATACJKtmiggB3NFWaoGr3EKkgRSXEjA=
+	b=jN8XLHOzEYmfb0iHYeWmoQlPjYOeu0P6J/uBBBsZSvUxPIz20AeNQu6nkUbq877ih
+	 e6syPpW5xcf/eLHRvSAjhjzGf0rUeSDtbl6+3HxZNAIvpcgzrmMXgbzEGkn44F5Yak
+	 qYSBYrUKX9Nc1FqVHiMSisLXXvIpJRzhYD5ucFaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Rolf Eike Beer <eb@emlix.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 431/780] HID: HID_APPLETB_BL should depend on X86
-Date: Tue, 17 Jun 2025 17:22:19 +0200
-Message-ID: <20250617152509.019353397@linuxfoundation.org>
+Subject: [PATCH 6.12 174/512] iommu: remove duplicate selection of DMAR_TABLE
+Date: Tue, 17 Jun 2025 17:22:20 +0200
+Message-ID: <20250617152426.676377365@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Rolf Eike Beer <eb@emlix.com>
 
-[ Upstream commit de7ad66b16b4d397593eafbbb09e9557b558a7e3 ]
+[ Upstream commit 9548feff840a05d61783e6316d08ed37e115f3b1 ]
 
-The Apple Touch Bar is only present on x86 MacBook Pros.  Hence add a
-dependency on X86, to prevent asking the user about this driver when
-configuring a kernel for a different architecture.
+This is already done in intel/Kconfig.
 
-Fixes: 1fd41e5e3d7cc556 ("HID: hid-appletb-bl: add driver for the backlight of Apple Touch Bars")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 70bad345e622 ("iommu: Fix compilation without CONFIG_IOMMU_INTEL")
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/2232605.Mh6RI2rZIc@devpool92.emlix.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 119e5190a2df7..43859fc757470 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -151,6 +151,7 @@ config HID_APPLEIR
- config HID_APPLETB_BL
- 	tristate "Apple Touch Bar Backlight"
- 	depends on BACKLIGHT_CLASS_DEVICE
-+	depends on X86 || COMPILE_TEST
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index b3aa1f5d53218..1469ad0794f28 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -199,7 +199,6 @@ source "drivers/iommu/iommufd/Kconfig"
+ config IRQ_REMAP
+ 	bool "Support for Interrupt Remapping"
+ 	depends on X86_64 && X86_IO_APIC && PCI_MSI && ACPI
+-	select DMAR_TABLE if INTEL_IOMMU
  	help
- 	  Say Y here if you want support for the backlight of Touch Bars on x86
- 	  MacBook Pros.
+ 	  Supports Interrupt remapping for IO-APIC and MSI devices.
+ 	  To use x2apic mode in the CPU's which support x2APIC enhancements or
 -- 
 2.39.5
 
