@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-153092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F98ADD248
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8679BADD249
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65634189AC81
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91FA817D77D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEA42ECD32;
-	Tue, 17 Jun 2025 15:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE3E2EBDCC;
+	Tue, 17 Jun 2025 15:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZLWaMsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C77ypQA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9B2DF3C9;
-	Tue, 17 Jun 2025 15:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C942DF3C9;
+	Tue, 17 Jun 2025 15:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174840; cv=none; b=slx6c9c3uF+NAY7T/BQjx4/8seV2AWNkbFceFc9NUMV/6A0Bg+REkbBsTB8vMnKk7tFUbwxJt/GSYsrcGCht6zows7ep/YNZk1AaRIlZUdRSCYyDTPeI18DXJV2r0KwZcDEOCF3rVzNzI5K68jgEdPKn+jca/Xqj0Yy3k1nt0UE=
+	t=1750174853; cv=none; b=gz8thjNOlkRnuKc8iG8cnOuQD2orksO7jKhc6S1mjkyHTrCCPL9S5yRYRianBEHkp2WDOSt+7SzbVEkO+wj9psDobSFA/pV6ssOEpTrix3P5ubVaqSI2qf7Q1tNNg1WOa4FchkQhbrPc9JSBpwH+/c2WU9sbdh+4Js4ajHRPrJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174840; c=relaxed/simple;
-	bh=j4eWm/wr3NgXfcC2aBap/9bGvccrLZCWzpC3G7erPsI=;
+	s=arc-20240116; t=1750174853; c=relaxed/simple;
+	bh=aF3+v6jO19X6CZiosVcHHegyhlY0joSrYz/UfjrXZfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWXZTq3xrm2pioYJo+PwW9O9oaCmHmtUeJdNsU53NxxRUNpLgGNE6HM+v7K0FWbazsyD84zz8WY6BHpwb8RDU2R1Iq0yF/y31xbfX+04ulvNK3Gj9/Oo8kDHUYILEUervzIH9vzjSi+jTlHAtR+Q4R8rRd87cQw+eulsHHRkSX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZLWaMsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B199C4CEE3;
-	Tue, 17 Jun 2025 15:40:39 +0000 (UTC)
+	 MIME-Version; b=jfunDHXfSQfeDhplQD1NgTT1y1vkIjKknCVyTtIJDc6Imt82BHUvKbA+BKUjnFHCE0cWi9YZT5YiaY8KlNo4nppZX7LfOKssoR9NMIEkPkxh0NUtX+P+wFKsQFo6Ut+rB5jFat/3ieLY/xqaeb69gDWVRWIj9s+TZpZKNm/AT6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C77ypQA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D85EC4CEE3;
+	Tue, 17 Jun 2025 15:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174840;
-	bh=j4eWm/wr3NgXfcC2aBap/9bGvccrLZCWzpC3G7erPsI=;
+	s=korg; t=1750174853;
+	bh=aF3+v6jO19X6CZiosVcHHegyhlY0joSrYz/UfjrXZfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZLWaMsR++G9jeiORq6+v5O8XLj0euZ3XxbfP9CoZBYB3wtTQx60JuaaCZU+oY7Ie
-	 WlylW2PnRmndwZnWQmUENfO9xybUxj5nSL8B/s0oPKLCR/qQz6E+mu2Mv1jHzZq4cX
-	 KMrwRuu7A16fUaDw4CjDQWHR4+B7FCZ7Ehrr/r1A=
+	b=C77ypQA54a3EAB6YpzU3J3FqgvGDpMaOV/fLejf28mOwqu9vNjSv4rZWM+7GKq7+4
+	 ucCxvNoTmGHzJGA2AyHL9sw61LckFLTySQl2aHi8IIC+1c26gOuUp1PAX088I7qrA7
+	 Fs8WJZn2G9AxfjERiXSKdBfBuTRqNd9PmAN7y1Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/356] tracing: Fix error handling in event_trigger_parse()
-Date: Tue, 17 Jun 2025 17:23:53 +0200
-Message-ID: <20250617152342.977412318@linuxfoundation.org>
+Subject: [PATCH 6.6 119/356] ktls, sockmap: Fix missing uncharge operation
+Date: Tue, 17 Jun 2025 17:23:54 +0200
+Message-ID: <20250617152343.015782308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -71,53 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit c5dd28e7fb4f63475b50df4f58311df92939d011 ]
+[ Upstream commit 79f0c39ae7d3dc628c01b02f23ca5d01f9875040 ]
 
-According to trigger_data_alloc() doc, trigger_data_free() should be
-used to free an event_trigger_data object. This fixes a mismatch introduced
-when kzalloc was replaced with trigger_data_alloc without updating
-the corresponding deallocation calls.
+When we specify apply_bytes, we divide the msg into multiple segments,
+each with a length of 'send', and every time we send this part of the data
+using tcp_bpf_sendmsg_redir(), we use sk_msg_return_zero() to uncharge the
+memory of the specified 'send' size.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Link: https://lore.kernel.org/20250507145455.944453325@goodmis.org
-Link: https://lore.kernel.org/20250318112737.4174-1-linmq006@gmail.com
-Fixes: e1f187d09e11 ("tracing: Have existing event_command.parse() implementations use helpers")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-[ SDR: Changed event_trigger_alloc/free() to trigger_data_alloc/free() ]
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+However, if the first segment of data fails to send, for example, the
+peer's buffer is full, we need to release all of the msg. When releasing
+the msg, we haven't uncharged the memory of the subsequent segments.
+
+This modification does not make significant logical changes, but only
+fills in the missing uncharge places.
+
+This issue has existed all along, until it was exposed after we added the
+apply test in test_sockmap:
+commit 3448ad23b34e ("selftests/bpf: Add apply_bytes test to test_txmsg_redir_wait_sndmem in test_sockmap")
+
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
+Closes: https://lore.kernel.org/bpf/aAmIi0vlycHtbXeb@pop-os.localdomain/T/#t
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://lore.kernel.org/r/20250425060015.6968-2-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_trigger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
-index 4c92def8b1143..fe079ff82ef1b 100644
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -1000,7 +1000,7 @@ event_trigger_parse(struct event_command *cmd_ops,
- 
- 	if (remove) {
- 		event_trigger_unregister(cmd_ops, file, glob+1, trigger_data);
--		kfree(trigger_data);
-+		trigger_data_free(trigger_data);
- 		ret = 0;
- 		goto out;
- 	}
-@@ -1027,7 +1027,7 @@ event_trigger_parse(struct event_command *cmd_ops,
- 
-  out_free:
- 	event_trigger_reset_filter(cmd_ops, trigger_data);
--	kfree(trigger_data);
-+	trigger_data_free(trigger_data);
- 	goto out;
- }
- 
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index bf445a518883a..4a9a3aed5d6d4 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -908,6 +908,13 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 					    &msg_redir, send, flags);
+ 		lock_sock(sk);
+ 		if (err < 0) {
++			/* Regardless of whether the data represented by
++			 * msg_redir is sent successfully, we have already
++			 * uncharged it via sk_msg_return_zero(). The
++			 * msg->sg.size represents the remaining unprocessed
++			 * data, which needs to be uncharged here.
++			 */
++			sk_mem_uncharge(sk, msg->sg.size);
+ 			*copied -= sk_msg_free_nocharge(sk, &msg_redir);
+ 			msg->sg.size = 0;
+ 		}
 -- 
 2.39.5
 
