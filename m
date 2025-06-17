@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-154143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C43ADD9E7
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E0AADD88F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 408CC5A0346
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF66B19E04F6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746072ED84B;
-	Tue, 17 Jun 2025 16:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E23A2356A4;
+	Tue, 17 Jun 2025 16:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5NFDN1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agIwQUUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4752FA64D;
-	Tue, 17 Jun 2025 16:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF07A22DF80;
+	Tue, 17 Jun 2025 16:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178239; cv=none; b=Fqpn3RknOgTJikbIhIjYNSSOhmtb54Zctw7AsdlaPnuhjxxIxuMwqO/KiwJVN0cMW2c/7NmYfsQEvH0InasO7Kims4piXz69ncxNgK8AugiQtdMIiHetVT1FeoNF9DZPjJvQtQUI8jFXspqHL6loSbbS+j897iwfSZHehCvd5X4=
+	t=1750178086; cv=none; b=U7O//x8YHoH2B2uI7LOkIugfCLMSQ5DV0s+FRlDypB6h0RztTuoqrYM9nyyjG+yInG/zj5kOlvXW8YYh+dIXb8KkAjyxHTlbejOvtOadVCAqHf0FZAb/xVdZht2HchKCYjLgdq37/sGlIDbycHDRbpflFwXD8cfdS+TQPmFFBLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178239; c=relaxed/simple;
-	bh=HBWWqgapv+rjYa3EeRXzOlIWMTRHWeD8/GpWWQuRzPw=;
+	s=arc-20240116; t=1750178086; c=relaxed/simple;
+	bh=7L6zFq71B65z97zY2jwVUIlpktLew8FTmyUyD8iDsw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UZoa5X8cp5YraSrs2deRWD8/JVlyKI/oIWx5SvXHOT8Rfhs24wNLKAYlOTIF/ceKX3MsP1BHW6P22NJGlnVlsVdmmMsr86ZFD1H1kojpnNafsdlC/iBJZtf5tKWFA8/udhqx+AVFbCiD57n/U3o//902Z5JVbeQUi80NrgQv+do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5NFDN1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85486C4CEE3;
-	Tue, 17 Jun 2025 16:37:18 +0000 (UTC)
+	 MIME-Version; b=Qp893qg7cLLnN4rrbaOQfJpBBHJ2WvoGg0hDep8mPCB6BprZGkmOKeCidxo026Wd1OMxYWnHoaeDsSUdhQvJdhKhZWOKV5Zj5yx11iiT7x+pmOqQ953aB+rVk+27BJeXvMYMlXp0PcFFcw/IFv9RC61Mku4GkLxFCP+EZpzP8x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agIwQUUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56555C4CEF0;
+	Tue, 17 Jun 2025 16:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178239;
-	bh=HBWWqgapv+rjYa3EeRXzOlIWMTRHWeD8/GpWWQuRzPw=;
+	s=korg; t=1750178085;
+	bh=7L6zFq71B65z97zY2jwVUIlpktLew8FTmyUyD8iDsw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5NFDN1TwqjIBVgXaiN/XjfzPD+SPcy5ROGSMWYHp5q7hiNzW8X04gsu2W3FY1F3V
-	 Mr725tZ1sBCOhZ1dEzVPz1bsMezzfJgnArMkBf+QK/CGvy8Zn6/a6SrUrNAmgcOclY
-	 H0ZP2dqmKOk1/348NHr2QBgPoB5LAQvvRAIsVkjQ=
+	b=agIwQUUYLNRKpn8S4uT4WYiLXirYN48RkzNz/jOR3NhYeMs773oNsVmkc0Clbc26S
+	 39vB5NXCQhhhpXXYMA+dnhHyFMoS1UCUxnkrUApVAHoWkLOpjhWOILSnqBqrLh2KJk
+	 8H8xqeC4LgIW9XWBbkdpa1ZXUG8g9kpPPEutEAo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?F=C3=A9lix=20Pi=C3=A9dallu?= <felix.piedallu@non.se.com>,
-	Mark Brown <broonie@kernel.org>,
+	Wojciech Slenska <wojciech.slenska@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 439/512] spi: omap2-mcspi: Disable multi-mode when the previous message kept CS asserted
-Date: Tue, 17 Jun 2025 17:26:45 +0200
-Message-ID: <20250617152437.358775593@linuxfoundation.org>
+Subject: [PATCH 6.12 440/512] pinctrl: qcom: pinctrl-qcm2290: Add missing pins
+Date: Tue, 17 Jun 2025 17:26:46 +0200
+Message-ID: <20250617152437.398260717@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -60,85 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Félix Piédallu <felix.piedallu@non.se.com>
+From: Wojciech Slenska <wojciech.slenska@gmail.com>
 
-[ Upstream commit 10c24e0d2f7cd2bc8a847cf750f01301ce67dbc8 ]
+[ Upstream commit 315345610faee8a0568b522dba9e35067d1732ab ]
 
-When the last transfer of a SPI message has the cs_change flag, the CS is kept
-asserted after the message.
-The next message can't use multi-mode because the CS will be briefly deasserted
-before the first transfer.
+Added the missing pins to the qcm2290_pins table.
 
-Remove the early exit of the list_for_each_entry because the last transfer
-actually needs to be always checked.
-
-Fixes: d153ff4056cb ("spi: omap2-mcspi: Add support for MULTI-mode")
-Signed-off-by: Félix Piédallu <felix.piedallu@non.se.com>
-Link: https://patch.msgid.link/20250606-cs_change_fix-v1-2-27191a98a2e5@non.se.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
+Fixes: 48e049ef1238 ("pinctrl: qcom: Add QCM2290 pinctrl driver")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/20250523101437.59092-1-wojciech.slenska@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-qcm2290.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 05766b98de36f..4c5f12b76de6a 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -134,6 +134,7 @@ struct omap2_mcspi {
- 	size_t			max_xfer_len;
- 	u32			ref_clk_hz;
- 	bool			use_multi_mode;
-+	bool			last_msg_kept_cs;
- };
- 
- struct omap2_mcspi_cs {
-@@ -1269,6 +1270,10 @@ static int omap2_mcspi_prepare_message(struct spi_controller *ctlr,
- 	 * multi-mode is applicable.
- 	 */
- 	mcspi->use_multi_mode = true;
-+
-+	if (mcspi->last_msg_kept_cs)
-+		mcspi->use_multi_mode = false;
-+
- 	list_for_each_entry(tr, &msg->transfers, transfer_list) {
- 		if (!tr->bits_per_word)
- 			bits_per_word = msg->spi->bits_per_word;
-@@ -1289,22 +1294,17 @@ static int omap2_mcspi_prepare_message(struct spi_controller *ctlr,
- 
- 		if (list_is_last(&tr->transfer_list, &msg->transfers)) {
- 			/* Check if transfer asks to keep the CS status after the whole message */
--			if (tr->cs_change)
-+			if (tr->cs_change) {
- 				mcspi->use_multi_mode = false;
-+				mcspi->last_msg_kept_cs = true;
-+			} else {
-+				mcspi->last_msg_kept_cs = false;
-+			}
- 		} else {
- 			/* Check if transfer asks to change the CS status after the transfer */
- 			if (!tr->cs_change)
- 				mcspi->use_multi_mode = false;
- 		}
--
--		/*
--		 * If at least one message is not compatible, switch back to single mode
--		 *
--		 * The bits_per_word of certain transfer can be different, but it will have no
--		 * impact on the signal itself.
--		 */
--		if (!mcspi->use_multi_mode)
--			break;
- 	}
- 
- 	omap2_mcspi_set_mode(ctlr);
+diff --git a/drivers/pinctrl/qcom/pinctrl-qcm2290.c b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
+index f5c1c427b44e9..61b7c22e963c2 100644
+--- a/drivers/pinctrl/qcom/pinctrl-qcm2290.c
++++ b/drivers/pinctrl/qcom/pinctrl-qcm2290.c
+@@ -165,6 +165,10 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
+ 	PINCTRL_PIN(62, "GPIO_62"),
+ 	PINCTRL_PIN(63, "GPIO_63"),
+ 	PINCTRL_PIN(64, "GPIO_64"),
++	PINCTRL_PIN(65, "GPIO_65"),
++	PINCTRL_PIN(66, "GPIO_66"),
++	PINCTRL_PIN(67, "GPIO_67"),
++	PINCTRL_PIN(68, "GPIO_68"),
+ 	PINCTRL_PIN(69, "GPIO_69"),
+ 	PINCTRL_PIN(70, "GPIO_70"),
+ 	PINCTRL_PIN(71, "GPIO_71"),
+@@ -179,12 +183,17 @@ static const struct pinctrl_pin_desc qcm2290_pins[] = {
+ 	PINCTRL_PIN(80, "GPIO_80"),
+ 	PINCTRL_PIN(81, "GPIO_81"),
+ 	PINCTRL_PIN(82, "GPIO_82"),
++	PINCTRL_PIN(83, "GPIO_83"),
++	PINCTRL_PIN(84, "GPIO_84"),
++	PINCTRL_PIN(85, "GPIO_85"),
+ 	PINCTRL_PIN(86, "GPIO_86"),
+ 	PINCTRL_PIN(87, "GPIO_87"),
+ 	PINCTRL_PIN(88, "GPIO_88"),
+ 	PINCTRL_PIN(89, "GPIO_89"),
+ 	PINCTRL_PIN(90, "GPIO_90"),
+ 	PINCTRL_PIN(91, "GPIO_91"),
++	PINCTRL_PIN(92, "GPIO_92"),
++	PINCTRL_PIN(93, "GPIO_93"),
+ 	PINCTRL_PIN(94, "GPIO_94"),
+ 	PINCTRL_PIN(95, "GPIO_95"),
+ 	PINCTRL_PIN(96, "GPIO_96"),
 -- 
 2.39.5
 
