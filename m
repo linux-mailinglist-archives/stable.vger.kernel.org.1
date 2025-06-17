@@ -1,69 +1,56 @@
-Return-Path: <stable+bounces-154233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83886ADD913
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:02:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD212ADD4EE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B26574A4A6E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:46:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5912C50AE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176C82DFF19;
-	Tue, 17 Jun 2025 16:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE46F231A37;
+	Tue, 17 Jun 2025 16:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4FrAY+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dj4DXoj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E462DFF17;
-	Tue, 17 Jun 2025 16:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3431A9B48;
+	Tue, 17 Jun 2025 16:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178531; cv=none; b=EQniLJP9cIP8N6jf3YVhG51DfXj8EJ0ZsL1MNHC9quHs+3Rpy196FLkEzWTKKb7y3O3qqCgvS8NICe4QEx3U4MCQGtRBySfrO1aSiHNDGiyyT432g1vej0uqOqEdsh2WAKPdrxCj+atM4noB6B+36L57ZL5UcGjT3C+HqpdDSfU=
+	t=1750176302; cv=none; b=Ya3pBHHoYnSKIXlM9giNmQvmjSnIotFt7DFFhLz259BRF593qZ73dtJqonbzRzRZikIoddnGJpILapGT/y+9SH5wAzgr/Cn8M+f/5SmfBugnXBwU8BoeNmPAdoAAqW3Taq9bIWhhKb28VdWSfuCbOHo16F6Ym5LMEdrukx6+gtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178531; c=relaxed/simple;
-	bh=/rN0YO76mRMKU36m33n05D89mpU3Odkq+Tw4Lx73hv0=;
+	s=arc-20240116; t=1750176302; c=relaxed/simple;
+	bh=FzTLQOq+1fZ0nsGdCHIXN3/IBeitXhJ/FL/5bsG8eu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJjEjtNWDqebrA1QxMtEbymVWXHQPX17Iu226zVpg52RSxoefHNDGYFowFjFM9EYviAZw6qsFtKDjhc6xaHur76bLjE/R3scR2EpckZ5DbTm3LmvV/hBq3UAle+TAen16GcgLeHO9xHdEkfj0YwYT2o3tuFmkmkyGYWbFczExEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4FrAY+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7FCC4CEE7;
-	Tue, 17 Jun 2025 16:42:11 +0000 (UTC)
+	 MIME-Version; b=hwIpUBozBkik2QaxhfVsoVYIqql7efEGpAh5DrvMZfUAJ6t/xevO+zeT2vqP9qGu6TzupuOal3g40tW8WmgMv4erxQSOAiTmOEdezmZMcJ+TYqr3/HBupUfPdmRZKGmtf7VjUG6af4+ObVPcfWuaYeMZ/VQixFSwLoHxtmfsJzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dj4DXoj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ECBC4CEE3;
+	Tue, 17 Jun 2025 16:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178531;
-	bh=/rN0YO76mRMKU36m33n05D89mpU3Odkq+Tw4Lx73hv0=;
+	s=korg; t=1750176302;
+	bh=FzTLQOq+1fZ0nsGdCHIXN3/IBeitXhJ/FL/5bsG8eu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4FrAY+4oGH0MNSdXuVWUCnQ+HRQbGlSK2gl7Hq937l/dVfbJcRehLjlxE6O20plD
-	 O17j+oXcIPWr+v8pMRsYqiw5hbkz2i8sVWAJLPtWXMJNgrAjc9VT068zM5borluXm3
-	 Hn6EBtmY1hL8fiuFW5M1bj+8NvMIwIKB+aG5ykL4=
+	b=dj4DXoj3S2yxmHrAuDH6eI0cHcMBYxHosVw8Kx2gke2ZAMdt3eTJSER+rRwxEiSEE
+	 1/StYxbaVyqowPoOU/7Kk0BguxM+vHX8QtR+t2MEw8sjI/Tr40u2qNcW1IajBULqmj
+	 NFFkUbW2y/sf8/MpP1UtiNm6wipE16k/xCVmjMhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Chu <howardchu95@gmail.com>,
-	Anubhav Shelat <ashelat@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 473/780] perf trace: Always print return value for syscalls returning a pid
+Subject: [PATCH 6.12 215/512] net: phy: mscc: Stop clearing the the UDPv4 checksum for L2 frames
 Date: Tue, 17 Jun 2025 17:23:01 +0200
-Message-ID: <20250617152510.750973106@linuxfoundation.org>
+Message-ID: <20250617152428.347810514@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,69 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Shelat <ashelat@redhat.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit c7a48ea9b919e2fa0e4a1d9938fdb03e9afe276c ]
+[ Upstream commit 57a92d14659df3e7e7e0052358c8cc68bbbc3b5e ]
 
-The syscalls that were consistently observed were set_robust_list and
-rseq. This is because perf cannot find their child process.
+We have noticed that when PHY timestamping is enabled, L2 frames seems
+to be modified by changing two 2 bytes with a value of 0. The place were
+these 2 bytes seems to be random(or I couldn't find a pattern).  In most
+of the cases the userspace can ignore these frames but if for example
+those 2 bytes are in the correction field there is nothing to do.  This
+seems to happen when configuring the HW for IPv4 even that the flow is
+not enabled.
+These 2 bytes correspond to the UDPv4 checksum and once we don't enable
+clearing the checksum when using L2 frames then the frame doesn't seem
+to be changed anymore.
 
-This change ensures that the return value is always printed.
-
-Before:
-     0.256 ( 0.001 ms): set_robust_list(head: 0x7f09c77dba20, len: 24)                        =
-     0.259 ( 0.001 ms): rseq(rseq: 0x7f09c77dc0e0, rseq_len: 32, sig: 1392848979)             =
-After:
-     0.270 ( 0.002 ms): set_robust_list(head: 0x7f0bb14a6a20, len: 24)                        = 0
-     0.273 ( 0.002 ms): rseq(rseq: 0x7f0bb14a70e0, rseq_len: 32, sig: 1392848979)             = 0
-
-Committer notes:
-
-As discussed in the thread in the Link: tag below, these two don't
-return a pid, but for syscalls returning one, we need to print the
-result and if we manage to find the children in 'perf trace' data
-structures, then print its name as well.
-
-Fixes: 11c8e39f5133aed9 ("perf trace: Infrastructure to show COMM strings for syscalls returning PIDs")
-Reviewed-by: Howard Chu <howardchu95@gmail.com>
-Signed-off-by: Anubhav Shelat <ashelat@redhat.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403160411.159238-2-ashelat@redhat.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250523082716.2935895-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc_ptp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index f98b5efb1f96c..7304e62b69fee 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -3005,8 +3005,8 @@ errno_print: {
- 	else if (sc->fmt->errpid) {
- 		struct thread *child = machine__find_thread(trace->host, ret, ret);
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 0173aa3b4ead1..ce49f3ac6939b 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -943,7 +943,9 @@ static int vsc85xx_ip1_conf(struct phy_device *phydev, enum ts_blk blk,
+ 	/* UDP checksum offset in IPv4 packet
+ 	 * according to: https://tools.ietf.org/html/rfc768
+ 	 */
+-	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26) | IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
++	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26);
++	if (enable)
++		val |= IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
+ 	vsc85xx_ts_write_csr(phydev, blk, MSCC_ANA_IP1_NXT_PROT_UDP_CHKSUM,
+ 			     val);
  
-+		fprintf(trace->output, "%ld", ret);
- 		if (child != NULL) {
--			fprintf(trace->output, "%ld", ret);
- 			if (thread__comm_set(child))
- 				fprintf(trace->output, " (%s)", thread__comm_str(child));
- 			thread__put(child);
 -- 
 2.39.5
 
