@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3893FADD54A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BE7ADD88E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95454189EECB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA9761942F94
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CD52EE60A;
-	Tue, 17 Jun 2025 16:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC542F6936;
+	Tue, 17 Jun 2025 16:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CBjdVDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKyeuP7m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9412EE60C;
-	Tue, 17 Jun 2025 16:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA142F6931;
+	Tue, 17 Jun 2025 16:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176144; cv=none; b=srJHLJn0UVrddTNZ9fCKzJQsMF3m1jFePWWejCN8FQeFNFl7qPInyMx1D5VMlt5mP1uK5a1K9r21rHT92PqNqljX39BnaUzvaa4Vh25vhVNsPCLxj+0TBc+xF9gV3WPow+KWljHwd0VJnvpPF8NBm/5tFvs8fCcvhKGDV5wkMpc=
+	t=1750177796; cv=none; b=H5wvRCXfzN+gGoszmLEv1sIXxiMIrqfPLXk5W+Y5m/crfPnpmz98sbcNH5c87enX35qDR7+n1fwby221n0zB6SaphnYrW79rh4eWka09XwNDWCsJMONUay+m9VEDU0tlnVOxbtoAiB6KuK9xAuzAo1SYgTxHFn+zneVjw9PDgqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176144; c=relaxed/simple;
-	bh=0GraZmJbY/y/3OtAK9Jf785+C1PDWUzjpuTT3QAIr5U=;
+	s=arc-20240116; t=1750177796; c=relaxed/simple;
+	bh=3vUHq7kIz++q0fBsbRcRVf7c/d8ELkxcbU63lsqRccE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BrLWxd97iNdvm8uHsNliyFC3uO3NrBuRkoqS/kWwE1JS6IAxILDkkULAGcrfHHETZBUMUtINHXdpjJcJMO/OyiKqi9K6eSCUYidyYn2F3rOCbGo+175an3fkoqxnpJIsdhuOuSdddel8NjzUt2CtH5hEIgLbZz/JMbL8HlORpRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CBjdVDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D466C4CEE3;
-	Tue, 17 Jun 2025 16:02:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qBqblDEkcduQ3ZbNzy6nOUpncJbfAUIw2QWcmjy7RBNLRReAL6Sepe/Woeikh8mZzYe1p+CmNhtCKDRQpRduyhoUle1DhT91XjMW4pZU5qrAXVxcplOihdwufmmnXP4FweRFS7KmW95ZkgF79tRXIyXeY5mJ58nUKgA0VG6TML8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKyeuP7m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ED9C4CEE3;
+	Tue, 17 Jun 2025 16:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176144;
-	bh=0GraZmJbY/y/3OtAK9Jf785+C1PDWUzjpuTT3QAIr5U=;
+	s=korg; t=1750177796;
+	bh=3vUHq7kIz++q0fBsbRcRVf7c/d8ELkxcbU63lsqRccE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CBjdVDwVxQcmI8+//q7DKUiY7vkitcAA79OAoNcJ0g8aQ9GHmPf3vVl0FxtsatQb
-	 tewbzPx4kHNv6f0rAlZnN7Xp9ykyTPCzof0e7JRQO7cUPcf7eZ0K8ExMFhL14UD15x
-	 6E+U69AKVy5t0gVI1xEgqQy/Lapz56d3K/xXsIDk=
+	b=bKyeuP7mQRIBtluRzONcRCJsgNgb6mVeCnj3WwMt66+wIf7XCMybd4078oDNLEnF6
+	 GI98G2tDOoqjU3ZEd8IgjQFzTyfCDuUg++nHwH5e8nOOwjMfoBbw5WjW7UUajaZs64
+	 o+dbHClyJeuO/7I2aHise5kZ7K/7ME2Fv6x2+AJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
+	Boyuan Zhang <boyuan.zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/356] spi: bcm63xx-spi: fix shared reset
+Subject: [PATCH 6.12 398/512] drm/amd/pm: power up or down vcn by instance
 Date: Tue, 17 Jun 2025 17:26:04 +0200
-Message-ID: <20250617152348.227250921@linuxfoundation.org>
+Message-ID: <20250617152435.716434918@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +64,175 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Boyuan Zhang <boyuan.zhang@amd.com>
 
-[ Upstream commit 5ad20e3d8cfe3b2e42bbddc7e0ebaa74479bb589 ]
+[ Upstream commit 8aaf166703751ffd9a9fbc4d8b996f538b278983 ]
 
-Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
-and HSSPI controllers, so reset shouldn't be exclusive.
+For smu ip with multiple vcn instances (smu 11/13/14), remove all the
+for loop in dpm_set_vcn_enable() functions. And use the instance
+argument to power up/down vcn for the given instance only, instead
+of powering up/down for all vcn instances.
 
-Fixes: 38807adeaf1e ("spi: bcm63xx-spi: add reset support")
-Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250529130915.2519590-2-noltari@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+v2: remove all duplicated functions in v1.
+
+remove for-loop from each ip, and temporarily move to dpm_set_vcn_enable,
+in order to keep the exact same logic as before, until further separation
+in the next patch.
+
+Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ee7360fc27d6 ("drm/amdgpu: read back register after written for VCN v4.0.5")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     |  9 +++--
+ .../amd/pm/swsmu/smu11/sienna_cichlid_ppt.c   | 20 +++++------
+ .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c    | 16 ++++-----
+ .../gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c    | 35 ++++++++-----------
+ 4 files changed, 35 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index ef3a7226db125..a95badb7b7114 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -523,7 +523,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 		return PTR_ERR(clk);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index 59c083a16962d..6535508d01e1f 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -241,6 +241,7 @@ static int smu_dpm_set_vcn_enable(struct smu_context *smu,
+ {
+ 	struct smu_power_context *smu_power = &smu->smu_power;
+ 	struct smu_power_gate *power_gate = &smu_power->power_gate;
++	struct amdgpu_device *adev = smu->adev;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -255,9 +256,11 @@ static int smu_dpm_set_vcn_enable(struct smu_context *smu,
+ 	if (atomic_read(&power_gate->vcn_gated) ^ enable)
+ 		return 0;
+ 
+-	ret = smu->ppt_funcs->dpm_set_vcn_enable(smu, enable, 0xff);
+-	if (!ret)
+-		atomic_set(&power_gate->vcn_gated, !enable);
++	for (int i = 0; i < adev->vcn.num_vcn_inst; i++) {
++		ret = smu->ppt_funcs->dpm_set_vcn_enable(smu, enable, i);
++		if (ret)
++			return ret;
++	}
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 063bb60ff70f0..b2472bfa0c3bb 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -1157,19 +1157,15 @@ static int sienna_cichlid_dpm_set_vcn_enable(struct smu_context *smu,
+ 					      int inst)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+-	int i, ret = 0;
++	int ret = 0;
+ 
+-	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
+-		if (adev->vcn.harvest_config & (1 << i))
+-			continue;
+-		/* vcn dpm on is a prerequisite for vcn power gate messages */
+-		if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_MM_DPM_PG_BIT)) {
+-			ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
+-							      SMU_MSG_PowerUpVcn : SMU_MSG_PowerDownVcn,
+-							      0x10000 * i, NULL);
+-			if (ret)
+-				return ret;
+-		}
++	if (adev->vcn.harvest_config & (1 << inst))
++		return ret;
++	/* vcn dpm on is a prerequisite for vcn power gate messages */
++	if (smu_cmn_feature_is_enabled(smu, SMU_FEATURE_MM_DPM_PG_BIT)) {
++		ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
++						      SMU_MSG_PowerUpVcn : SMU_MSG_PowerDownVcn,
++						      0x10000 * inst, NULL);
  	}
  
--	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	reset = devm_reset_control_get_optional_shared(dev, NULL);
- 	if (IS_ERR(reset))
- 		return PTR_ERR(reset);
+ 	return ret;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index 52da68bbaaf03..8d0e215159fa6 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -2092,18 +2092,14 @@ int smu_v13_0_set_vcn_enable(struct smu_context *smu,
+ 			      int inst)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+-	int i, ret = 0;
++	int ret = 0;
  
+-	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
+-		if (adev->vcn.harvest_config & (1 << i))
+-			continue;
++	if (adev->vcn.harvest_config & (1 << inst))
++		return ret;
+ 
+-		ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
+-						      SMU_MSG_PowerUpVcn : SMU_MSG_PowerDownVcn,
+-						      i << 16U, NULL);
+-		if (ret)
+-			return ret;
+-	}
++	ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
++					      SMU_MSG_PowerUpVcn : SMU_MSG_PowerDownVcn,
++					      inst << 16U, NULL);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
+index 73bd75c34a76e..47cee5a77107a 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0.c
+@@ -1496,29 +1496,24 @@ int smu_v14_0_set_vcn_enable(struct smu_context *smu,
+ 			      int inst)
+ {
+ 	struct amdgpu_device *adev = smu->adev;
+-	int i, ret = 0;
++	int ret = 0;
+ 
+-	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
+-		if (adev->vcn.harvest_config & (1 << i))
+-			continue;
++	if (adev->vcn.harvest_config & (1 << inst))
++		return ret;
+ 
+-		if (smu->is_apu) {
+-			if (i == 0)
+-				ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
+-								      SMU_MSG_PowerUpVcn0 : SMU_MSG_PowerDownVcn0,
+-								      i << 16U, NULL);
+-			else if (i == 1)
+-				ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
+-								      SMU_MSG_PowerUpVcn1 : SMU_MSG_PowerDownVcn1,
+-								      i << 16U, NULL);
+-		} else {
++	if (smu->is_apu) {
++		if (inst == 0)
+ 			ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
+-							      SMU_MSG_PowerUpVcn : SMU_MSG_PowerDownVcn,
+-							      i << 16U, NULL);
+-		}
+-
+-		if (ret)
+-			return ret;
++							      SMU_MSG_PowerUpVcn0 : SMU_MSG_PowerDownVcn0,
++							      inst << 16U, NULL);
++		else if (inst == 1)
++			ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
++							      SMU_MSG_PowerUpVcn1 : SMU_MSG_PowerDownVcn1,
++							      inst << 16U, NULL);
++	} else {
++		ret = smu_cmn_send_smc_msg_with_param(smu, enable ?
++						      SMU_MSG_PowerUpVcn : SMU_MSG_PowerDownVcn,
++						      inst << 16U, NULL);
+ 	}
+ 
+ 	return ret;
 -- 
 2.39.5
 
