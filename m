@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-153367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B367BADD498
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8F2ADD40B
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C45194617C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17C84189ED1A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF62E2E92C8;
-	Tue, 17 Jun 2025 15:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5292EF289;
+	Tue, 17 Jun 2025 15:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwdYX6/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaeuIQrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C56A2F5472;
-	Tue, 17 Jun 2025 15:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095872EF286;
+	Tue, 17 Jun 2025 15:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175721; cv=none; b=tjSFuUwIFRIRXLb4XtvZ3mWpK/daBBHYsqwOaDUG67XV4UblwHKet4Cv/vOHLBjlHFy9ZEPBfC0Xe0ImIy3UNa2tzOLd/VS/cMpaXZEPFy+MjiCUBcwSZYvXsIVktgVQJw2h76ZdsojIVV/O04R3MdpL+Kep9seYNp2nmSKIAp8=
+	t=1750175591; cv=none; b=c9Q8nNrvc599oSQGq9VIXlmUZu6dnX7hhTNj+Q64EHISwQi5RZMv+eu60j4DRtAUt80buAQybFZDg43CUXQ0cDjdQ52bducSQXGNCV2de38i5NVUb+DFhon3gSD5muFsX5wNJy/nWsdzfFE+XZUaqVy47VGp7Xjqc6+jFOWzYIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175721; c=relaxed/simple;
-	bh=mPVKXHC6dEYJKjjodvfpitiqJdA9Qt6Wsu4YioUek90=;
+	s=arc-20240116; t=1750175591; c=relaxed/simple;
+	bh=Lg44UIsWApHoNXq1A7Wm4IuD+tCT31NZ/5JpXk3OEcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBEQgKw2uE7inrTiob1RCCwyj0zMpwymZNsM7yrP+eJOnr/mAk1ECL1OFxsA557dM9MsrhLIsn/+QBw53DaNlRn6ZLrunbCUKBLm2/YUZCLgcHC2Q/gbj/Vl5ZYy6yTGNztC4CYkQBmh4YRWo0xOsUCRzN5a6BTEKQsidR4oBjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwdYX6/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A61C4CEE7;
-	Tue, 17 Jun 2025 15:55:20 +0000 (UTC)
+	 MIME-Version; b=Rxhtpxc18xb4EKtbweETqFzccSnApcMn9Vo30FakKyVaTtaLqm/PKfzUdDiMDJMJJYtLs1uk+IsfRmEZDl1Pu6qeTxs+zDVDVWH69yLz+aJxhEGVc3ooZkwxzU06InUzn+cUTSnDnxttHW78o2zCGWY2lSuSAvJ/UVkFRhwHBZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaeuIQrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB79C4CEE3;
+	Tue, 17 Jun 2025 15:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175721;
-	bh=mPVKXHC6dEYJKjjodvfpitiqJdA9Qt6Wsu4YioUek90=;
+	s=korg; t=1750175590;
+	bh=Lg44UIsWApHoNXq1A7Wm4IuD+tCT31NZ/5JpXk3OEcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwdYX6/vh0tjursFy1iSuHPQcN5pWWsBPMH2yzi9HQSduuCVdTadQExanaPe07rQj
-	 ni2+rA/sCrTlMihIn43Txtu2db0exSJQQHLY/yO5CQLbcRhPNYgxCf5CeMhVs+oN4U
-	 lPYF+kAgT7qZrkq0dS7gcp8krvEwATlA87D1aXFs=
+	b=PaeuIQrpXiUiEYpQKtIJmcdGBiKpt5Y+zGJ1M0l+/2ZAr6VQZqBaP7XMKa+/+T23W
+	 2aUP9+PGvMRy/eG9mmoy3ZLhzVtStPwT+BPLwzORuNpg5tUXCJylrW0RaZLVPmcMsQ
+	 zcu+6Qf6kdSiu09KjaWrxc30Far0JyC6TfufGqEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 098/780] drm/amd/pp: Fix potential NULL pointer dereference in atomctrl_initialize_mc_reg_table
-Date: Tue, 17 Jun 2025 17:16:46 +0200
-Message-ID: <20250617152455.499827538@linuxfoundation.org>
+Subject: [PATCH 6.15 104/780] arm64/fpsimd: Reset FPMR upon exec()
+Date: Tue, 17 Jun 2025 17:16:52 +0200
+Message-ID: <20250617152455.741113377@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,51 +69,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 820116a39f96bdc7d426c33a804b52f53700a919 ]
+[ Upstream commit a90878f297d3dba906a6261deccb1bd4a791ba52 ]
 
-The function atomctrl_initialize_mc_reg_table() and
-atomctrl_initialize_mc_reg_table_v2_2() does not check the return
-value of smu_atom_get_data_table(). If smu_atom_get_data_table()
-fails to retrieve vram_info, it returns NULL which is later
-dereferenced.
+An exec() is expected to reset all FPSIMD/SVE/SME state, and barring
+special handling of the vector lengths, the state is expected to reset
+to zero. This reset is handled in fpsimd_flush_thread(), which the core
+exec() code calls via flush_thread().
 
-Fixes: b3892e2bb519 ("drm/amd/pp: Use atombios api directly in powerplay (v2)")
-Fixes: 5f92b48cf62c ("drm/amd/pm: add mc register table initialization")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+When support was added for FPMR, no logic was added to
+fpsimd_flush_thread() to reset the FPMR value, and thus it is
+erroneously inherited across an exec().
+
+Add the missing reset of FPMR.
+
+Fixes: 203f2b95a882 ("arm64/fpsimd: Support FEAT_FPMR")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250409164010.3480271-9-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/kernel/fpsimd.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-index 4bd92fd782be6..8d40ed0f0e838 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-@@ -143,6 +143,10 @@ int atomctrl_initialize_mc_reg_table(
- 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_1 *)
- 		smu_atom_get_data_table(hwmgr->adev,
- 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
-+	if (!vram_info) {
-+		pr_err("Could not retrieve the VramInfo table!");
-+		return -EINVAL;
-+	}
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 72ab9649c705b..7ae01f02e18b7 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1663,6 +1663,9 @@ void fpsimd_flush_thread(void)
+ 		current->thread.svcr = 0;
+ 	}
  
- 	if (module_index >= vram_info->ucNumOfVRAMModule) {
- 		pr_err("Invalid VramInfo table.");
-@@ -180,6 +184,10 @@ int atomctrl_initialize_mc_reg_table_v2_2(
- 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_2 *)
- 		smu_atom_get_data_table(hwmgr->adev,
- 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
-+	if (!vram_info) {
-+		pr_err("Could not retrieve the VramInfo table!");
-+		return -EINVAL;
-+	}
++	if (system_supports_fpmr())
++		current->thread.uw.fpmr = 0;
++
+ 	current->thread.fp_type = FP_STATE_FPSIMD;
  
- 	if (module_index >= vram_info->ucNumOfVRAMModule) {
- 		pr_err("Invalid VramInfo table.");
+ 	put_cpu_fpsimd_context();
 -- 
 2.39.5
 
