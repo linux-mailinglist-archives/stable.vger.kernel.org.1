@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5D4ADD4FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:15:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F27EEADD501
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BAEC2C4C48
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E26EE17C786
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D022264B7;
-	Tue, 17 Jun 2025 16:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D662EA160;
+	Tue, 17 Jun 2025 16:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9wJTLiw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qJXJxmb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40812EA14E;
-	Tue, 17 Jun 2025 16:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C6F2CCC5;
+	Tue, 17 Jun 2025 16:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176219; cv=none; b=uz7RZ66/L1QUP9kIpeEnSfg7C9GWbGNWx0lwYOCWZVpO1AoVbynWJyRzS4xv+NUjhMS6LjZpfQcKXzxjArfzcQb3VpeFJgEVA5m752wU9LwSrepFvr8e8uw9NOdOWNj9uen5DN/YtTaGB83kOqg0rv9gqQvEiRH0ggx5CcsEFJ8=
+	t=1750176229; cv=none; b=WA9V7hHhOzY2F6qw0G2oenF3gi+9QmPX6Vii9tC+rHT1HQZd5Vwl2c02pXF9y1azgDG6aoeEcPPNIAQan5EndfUPbs/Mzd6HX2k5A3DhZs+b1kXKmFU9Nvkc/SGWpci1pHVaYEEtEFDE6gbIl5FdP0FqSDPb8XtocwDzU20CX+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176219; c=relaxed/simple;
-	bh=1RevyJ5EXpXvP21XP7opYpHn03lcPj3wRmLD2ZaKY0M=;
+	s=arc-20240116; t=1750176229; c=relaxed/simple;
+	bh=0Zo1xd2qm/zsYomEFYgABhlsvf4iPAyCSnGeumnOSQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NX4wlcwxKXg6DKq1ZCTiC1JVQVWzMgrgUTcyQjl4pDlL7uPaW8lj3xu6cmFLTVxouD34/GGMdfrAXx7LLlIo+lX1zsehAiddAtyIXkCO4ayGKbWYaumJoBb/vEJxjgEmh6NW1Th5tQElIP5hzAwVGgvxhlphwhB/G9WVHLt1bc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9wJTLiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15950C4CEE3;
-	Tue, 17 Jun 2025 16:03:38 +0000 (UTC)
+	 MIME-Version; b=mgO6xAywT8VqjfQv4Gdx0Ore+vFUG+rz9O0k+5S94Tp1e6kKthVMVpfvbxM9AoMv6CVYFVBkTFEAy75H42ZgrIpUqi7eb6shJqtDop8/jtTmXpj7icLsSqT8yJaiJEIoV0cwZhlH3zMMIr3wxYhwOoglvaUkDjhAPqKsYLNd61A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qJXJxmb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64B9C4CEE3;
+	Tue, 17 Jun 2025 16:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176219;
-	bh=1RevyJ5EXpXvP21XP7opYpHn03lcPj3wRmLD2ZaKY0M=;
+	s=korg; t=1750176229;
+	bh=0Zo1xd2qm/zsYomEFYgABhlsvf4iPAyCSnGeumnOSQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9wJTLiwXpw91VUgTwuf53VbWsQ5JU5dCdjKo9W9LH1/u46YLhTpzMnZUzdfBjtJm
-	 Xm+naK0i9PpoYALjB1cRdz/o/NqiKeXQstuH8KNwDn9iNr/AT8rI9jPi3sMmTrzQWs
-	 +XiOz/nfoIqtjOuNG4ITDnLUMeQlMe1L8tLFd3T8=
+	b=2qJXJxmbkcO77bDYzGh7TWzjc8+MX3hwPX0HbZnOMDyDKVI3GSgUbj47S1C1vAGwI
+	 OTyRjcS9jYKh32SlhSgbL2avRcELtDb6d7FV/cm7bkR7rfwRD2FrbUaZBvxwUJb6AM
+	 28S3TPCfdVBRcnQX4vd77dZV1zQBefmhFsU7NxEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/356] net: stmmac: make sure that ptp_rate is not 0 before configuring timestamping
-Date: Tue, 17 Jun 2025 17:26:11 +0200
-Message-ID: <20250617152348.513356935@linuxfoundation.org>
+Subject: [PATCH 6.6 257/356] net: Fix checksum update for ILA adj-transport
+Date: Tue, 17 Jun 2025 17:26:12 +0200
+Message-ID: <20250617152348.550981340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -62,89 +61,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 030ce919e114a111e83b7976ecb3597cefd33f26 ]
+[ Upstream commit 6043b794c7668c19dabc4a93c75b924a19474d59 ]
 
-The stmmac platform drivers that do not open-code the clk_ptp_rate value
-after having retrieved the default one from the device-tree can end up
-with 0 in clk_ptp_rate (as clk_get_rate can return 0). It will
-eventually propagate up to PTP initialization when bringing up the
-interface, leading to a divide by 0:
+During ILA address translations, the L4 checksums can be handled in
+different ways. One of them, adj-transport, consist in parsing the
+transport layer and updating any found checksum. This logic relies on
+inet_proto_csum_replace_by_diff and produces an incorrect skb->csum when
+in state CHECKSUM_COMPLETE.
 
- Division by zero in kernel.
- CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.30-00001-g48313bd5768a #22
- Hardware name: STM32 (Device Tree Support)
- Call trace:
-  unwind_backtrace from show_stack+0x18/0x1c
-  show_stack from dump_stack_lvl+0x6c/0x8c
-  dump_stack_lvl from Ldiv0_64+0x8/0x18
-  Ldiv0_64 from stmmac_init_tstamp_counter+0x190/0x1a4
-  stmmac_init_tstamp_counter from stmmac_hw_setup+0xc1c/0x111c
-  stmmac_hw_setup from __stmmac_open+0x18c/0x434
-  __stmmac_open from stmmac_open+0x3c/0xbc
-  stmmac_open from __dev_open+0xf4/0x1ac
-  __dev_open from __dev_change_flags+0x1cc/0x224
-  __dev_change_flags from dev_change_flags+0x24/0x60
-  dev_change_flags from ip_auto_config+0x2e8/0x11a0
-  ip_auto_config from do_one_initcall+0x84/0x33c
-  do_one_initcall from kernel_init_freeable+0x1b8/0x214
-  kernel_init_freeable from kernel_init+0x24/0x140
-  kernel_init from ret_from_fork+0x14/0x28
- Exception stack(0xe0815fb0 to 0xe0815ff8)
+This bug can be reproduced with a simple ILA to SIR mapping, assuming
+packets are received with CHECKSUM_COMPLETE:
 
-Prevent this division by 0 by adding an explicit check and error log
-about the actual issue. While at it, remove the same check from
-stmmac_ptp_register, which then becomes duplicate
+  $ ip a show dev eth0
+  14: eth0@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+      link/ether 62:ae:35:9e:0f:8d brd ff:ff:ff:ff:ff:ff link-netnsid 0
+      inet6 3333:0:0:1::c078/64 scope global
+         valid_lft forever preferred_lft forever
+      inet6 fd00:10:244:1::c078/128 scope global nodad
+         valid_lft forever preferred_lft forever
+      inet6 fe80::60ae:35ff:fe9e:f8d/64 scope link proto kernel_ll
+         valid_lft forever preferred_lft forever
+  $ ip ila add loc_match fd00:10:244:1 loc 3333:0:0:1 \
+      csum-mode adj-transport ident-type luid dev eth0
 
-Fixes: 19d857c9038e ("stmmac: Fix calculations for ptp counters when clock input = 50Mhz.")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-1-d73340a794d5@bootlin.com
+Then I hit [fd00:10:244:1::c078]:8000 with a server listening only on
+[3333:0:0:1::c078]:8000. With the bug, the SYN packet is dropped with
+SKB_DROP_REASON_TCP_CSUM after inet_proto_csum_replace_by_diff changed
+skb->csum. The translation and drop are visible on pwru [1] traces:
+
+  IFACE   TUPLE                                                        FUNC
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ipv6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ip6_rcv_core
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  nf_hook_slow
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  inet_proto_csum_replace_by_diff
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_early_demux
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_route_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input_finish
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_protocol_deliver_rcu
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     raw6_local_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ipv6_raw_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     __skb_checksum_complete
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skb_reason(SKB_DROP_REASON_TCP_CSUM)
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_head_state
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_data
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_free_head
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skbmem
+
+This is happening because inet_proto_csum_replace_by_diff is updating
+skb->csum when it shouldn't. The L4 checksum is updated such that it
+"cancels" the IPv6 address change in terms of checksum computation, so
+the impact on skb->csum is null.
+
+Note this would be different for an IPv4 packet since three fields
+would be updated: the IPv4 address, the IP checksum, and the L4
+checksum. Two would cancel each other and skb->csum would still need
+to be updated to take the L4 checksum change into account.
+
+This patch fixes it by passing an ipv6 flag to
+inet_proto_csum_replace_by_diff, to skip the skb->csum update if we're
+in the IPv6 case. Note the behavior of the only other user of
+inet_proto_csum_replace_by_diff, the BPF subsystem, is left as is in
+this patch and fixed in the subsequent patch.
+
+With the fix, using the reproduction from above, I can confirm
+skb->csum is not touched by inet_proto_csum_replace_by_diff and the TCP
+SYN proceeds to the application after the ILA translation.
+
+Link: https://github.com/cilium/pwru [1]
+Fixes: 65d7ab8de582 ("net: Identifier Locator Addressing module")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/b5539869e3550d46068504feb02d37653d939c0b.1748509484.git.paul.chaignon@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/net/checksum.h    | 2 +-
+ net/core/filter.c         | 2 +-
+ net/core/utils.c          | 4 ++--
+ net/ipv6/ila/ila_common.c | 6 +++---
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index d3d5c01f6dcba..615d25a0e46be 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -842,6 +842,11 @@ int stmmac_init_tstamp_counter(struct stmmac_priv *priv, u32 systime_flags)
- 	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp))
- 		return -EOPNOTSUPP;
+diff --git a/include/net/checksum.h b/include/net/checksum.h
+index 1338cb92c8e72..28b101f26636e 100644
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -158,7 +158,7 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ 			       const __be32 *from, const __be32 *to,
+ 			       bool pseudohdr);
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr);
++				     __wsum diff, bool pseudohdr, bool ipv6);
  
-+	if (!priv->plat->clk_ptp_rate) {
-+		netdev_err(priv->dev, "Invalid PTP clock rate");
-+		return -EINVAL;
-+	}
-+
- 	stmmac_config_hw_tstamping(priv, priv->ptpaddr, systime_flags);
- 	priv->systime_flags = systime_flags;
+ static __always_inline
+ void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 5143c8a9e52ca..e92f3a9017bb4 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1987,7 +1987,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
+ 		if (unlikely(from != 0))
+ 			return -EINVAL;
  
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-index a04bb2e42c4ee..80ecbd73333d9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-@@ -295,7 +295,7 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
+-		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo);
++		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
+ 		break;
+ 	case 2:
+ 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
+diff --git a/net/core/utils.c b/net/core/utils.c
+index c994e95172acf..5895d034bf279 100644
+--- a/net/core/utils.c
++++ b/net/core/utils.c
+@@ -473,11 +473,11 @@ void inet_proto_csum_replace16(__sum16 *sum, struct sk_buff *skb,
+ EXPORT_SYMBOL(inet_proto_csum_replace16);
  
- 	/* Calculate the clock domain crossing (CDC) error if necessary */
- 	priv->plat->cdc_error_adj = 0;
--	if (priv->plat->has_gmac4 && priv->plat->clk_ptp_rate)
-+	if (priv->plat->has_gmac4)
- 		priv->plat->cdc_error_adj = (2 * NSEC_PER_SEC) / priv->plat->clk_ptp_rate;
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr)
++				     __wsum diff, bool pseudohdr, bool ipv6)
+ {
+ 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
+ 		csum_replace_by_diff(sum, diff);
+-		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
++		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr && !ipv6)
+ 			skb->csum = ~csum_sub(diff, skb->csum);
+ 	} else if (pseudohdr) {
+ 		*sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
+diff --git a/net/ipv6/ila/ila_common.c b/net/ipv6/ila/ila_common.c
+index 95e9146918cc6..b8d43ed4689db 100644
+--- a/net/ipv6/ila/ila_common.c
++++ b/net/ipv6/ila/ila_common.c
+@@ -86,7 +86,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
  
- 	stmmac_ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&th->check, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
+ 	case NEXTHDR_UDP:
+@@ -97,7 +97,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
+ 				diff = get_csum_diff(ip6h, p);
+ 				inet_proto_csum_replace_by_diff(&uh->check, skb,
+-								diff, true);
++								diff, true, true);
+ 				if (!uh->check)
+ 					uh->check = CSUM_MANGLED_0;
+ 			}
+@@ -111,7 +111,7 @@ static void ila_csum_adjust_transport(struct sk_buff *skb,
+ 
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&ih->icmp6_cksum, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
+ 	}
 -- 
 2.39.5
 
