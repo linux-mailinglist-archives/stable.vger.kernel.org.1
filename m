@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130CAADD281
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C6EADD287
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730D8160F25
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88142189B0D8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BD22ECD0B;
-	Tue, 17 Jun 2025 15:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42992ECD2F;
+	Tue, 17 Jun 2025 15:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cG0StmVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jgme4ZhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E58723B633;
-	Tue, 17 Jun 2025 15:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBE41E8332;
+	Tue, 17 Jun 2025 15:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174959; cv=none; b=SWP5798CmpgblwjltnjfIwGDkhRhpR8ESiNllaTtpaSRDrHwnawp/l39yJ7IOyOaPBBvmF8IR7pHubZiS7vqa1UoaK345yM+n5hPcqdcBmwMRTjlog8DdXIMle7R6fBseroN2Ag2NeZ8kZK86JKPpDr4pHs5b5eQS91EJojU2SA=
+	t=1750174977; cv=none; b=NrASGn0FQtULegcCyh/RlOowOhnbceNNlLLGK1FIxsB+lI+DQSi+3TlPaZgRt+SnnfoYNP0mhIbVgKWcqt54xmeTMCsm/h8VD1XqX9aEkQh/ODLxcRYFdn8Juq5bEHMDJvS7smPZm40loLDRfzTihben3Dk6c4mk3yLFGjcNsCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174959; c=relaxed/simple;
-	bh=Y6qQlkWsIJMwfzAw5Ali3e6Cwg9X89uOHxfpxWA6+pU=;
+	s=arc-20240116; t=1750174977; c=relaxed/simple;
+	bh=MDWSwxO9YnZP3Rl0gEyGBg6v2jyVHtpQYGsDqBDKcbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tn5ysl2Dnd8+q0j1KAa6bdhhZfw4BL6RWOwMKDr0PixD1uSF0IPr+bgXC4yytkRrTiXAHRQMmEVX+RTXi+rvhFSXjrXdYP4CcYZvcy83dtS9HNHz1FlwWMz9rslO/+0EagG5VrtbMIOE7B5N/aRncECyvPyybjnLkQvsldvfkqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cG0StmVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3BDC4CEE3;
-	Tue, 17 Jun 2025 15:42:38 +0000 (UTC)
+	 MIME-Version; b=WkYv9qMJ0GCCY/bi8Aw+xaB6OKEyT0ZcLmorJg7RcldX0WKQzeqnp+51HUy7PWvWZXoNfOl669PVJYXbYs+sFGEjku+H69foaSXqThDycBH6+Y6UaX6Kr0BIgzypNG5+rf1z91WHXnddGaGO8TRZUz1AukoOQSHtZUER5mnizEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jgme4ZhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32352C4CEE3;
+	Tue, 17 Jun 2025 15:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174959;
-	bh=Y6qQlkWsIJMwfzAw5Ali3e6Cwg9X89uOHxfpxWA6+pU=;
+	s=korg; t=1750174977;
+	bh=MDWSwxO9YnZP3Rl0gEyGBg6v2jyVHtpQYGsDqBDKcbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cG0StmVV1orvzYRvb+T0ctEFDLMLluZSjkWZB7LSB1bz2uyGa3umaWfyqeR4Q3gJj
-	 gSTq4hKIrpE/hjYannf9nbECAuRhxkitFq1l94yvwP6FuR7xIyQTWDpJx63Lgi3FTS
-	 +OzcE4ji+xDS2bV4GTT+UvV8vhC0z2yryzV9sR04=
+	b=Jgme4ZhArQkWcu9hswGQODH+nqwo0FKxleOCowCLAuYd2G20gL/DeWIj9fO3BgpGr
+	 U5UN+ALFbmhw84uiX3qvzsKRDpb6v4Nb0VgBJeRBohi1hqNtSOyXi2FAdy20hgpY1D
+	 8u/CKTVOsYpi9uR059M0Em3bG92NNWXLmc0OU7DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/512] kunit/usercopy: Disable u64 test on 32-bit SPARC
-Date: Tue, 17 Jun 2025 17:20:46 +0200
-Message-ID: <20250617152422.821795403@linuxfoundation.org>
+Subject: [PATCH 6.12 081/512] watchdog: exar: Shorten identity name to fit correctly
+Date: Tue, 17 Jun 2025 17:20:47 +0200
+Message-ID: <20250617152422.862686806@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -60,47 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 0d6efa20e384a41a7f4afdcd8a0aec442c19d33e ]
+[ Upstream commit 8e28276a569addb8a2324439ae473848ee52b056 ]
 
-usercopy of 64 bit values does not work on 32-bit SPARC:
+The static initializer for struct watchdog_info::identity is too long
+and gets initialized without a trailing NUL byte. Since the length
+of "identity" is part of UAPI and tied to ioctls, just shorten
+the name of the device. Avoids the warning seen with GCC 15's
+-Wunterminated-string-initialization option:
 
-    # usercopy_test_valid: EXPECTATION FAILED at lib/tests/usercopy_kunit.c:209
-    Expected val_u64 == 0x5a5b5c5d6a6b6c6d, but
-        val_u64 == 1515936861 (0x5a5b5c5d)
-        0x5a5b5c5d6a6b6c6d == 6510899242581322861 (0x5a5b5c5d6a6b6c6d)
+drivers/watchdog/exar_wdt.c:224:27: warning: initializer-string for array of 'unsigned char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
+  224 |         .identity       = "Exar/MaxLinear XR28V38x Watchdog",
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Disable the test.
-
-Fixes: 4c5d7bc63775 ("usercopy: Add tests for all get_user() sizes")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250416-kunit-sparc-usercopy-v1-1-a772054db3af@linutronix.de
+Fixes: 81126222bd3a ("watchdog: Exar/MaxLinear XR28V38x driver")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250415225246.work.458-kees@kernel.org
 Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/usercopy_kunit.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/watchdog/exar_wdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/usercopy_kunit.c b/lib/usercopy_kunit.c
-index 77fa00a13df77..80f8abe10968c 100644
---- a/lib/usercopy_kunit.c
-+++ b/lib/usercopy_kunit.c
-@@ -27,6 +27,7 @@
- 			    !defined(CONFIG_MICROBLAZE) &&	\
- 			    !defined(CONFIG_NIOS2) &&		\
- 			    !defined(CONFIG_PPC32) &&		\
-+			    !defined(CONFIG_SPARC32) &&		\
- 			    !defined(CONFIG_SUPERH))
- # define TEST_U64
- #endif
+diff --git a/drivers/watchdog/exar_wdt.c b/drivers/watchdog/exar_wdt.c
+index 7c61ff3432711..c2e3bb08df899 100644
+--- a/drivers/watchdog/exar_wdt.c
++++ b/drivers/watchdog/exar_wdt.c
+@@ -221,7 +221,7 @@ static const struct watchdog_info exar_wdt_info = {
+ 	.options	= WDIOF_KEEPALIVEPING |
+ 			  WDIOF_SETTIMEOUT |
+ 			  WDIOF_MAGICCLOSE,
+-	.identity	= "Exar/MaxLinear XR28V38x Watchdog",
++	.identity	= "Exar XR28V38x Watchdog",
+ };
+ 
+ static const struct watchdog_ops exar_wdt_ops = {
 -- 
 2.39.5
 
