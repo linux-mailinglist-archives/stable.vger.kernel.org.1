@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-154502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C15ADDA6C
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:18:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58134ADD7B4
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF065A60F2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308F32C7137
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534F62FA646;
-	Tue, 17 Jun 2025 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B49E2E8E1A;
+	Tue, 17 Jun 2025 16:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJIliZnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSpuRMj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0946D2FA639;
-	Tue, 17 Jun 2025 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9922E8E05;
+	Tue, 17 Jun 2025 16:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179414; cv=none; b=kH9xq1wHmDCmbnkO+2hUaEYTiflo3gClDjNOZYsJOuk6UtDVcvMRTT0KJlvG3Fe+j3ky7jMtwAQMGQqfhhS1rNrg+ge9uHu/nOEMfYoPvGzJw/mveabHF46qLvWWS/N0rx881DzsOWLpxp96aj+1WGL8ufbIyZeRKp9mloKfUrw=
+	t=1750178128; cv=none; b=ljqucXfpb3T2OfWZ6tnFdsHcq+sONwJIKok7oCzcvLimfN3kqIyi2UP3kZWv1T/4qxlywH4b6LoleEj3eUVuw64PC5ioCwfoJploVw60DRC9CIEsmsY39fkyagiXoam6gVWcIP2hVyK9SOg+WOnx+uovJS4WhsMlR4i1BDYJqes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179414; c=relaxed/simple;
-	bh=a4KsCIgF0GaAgMcKPetUU+djdYF7o3sN9NtFv1BrO1g=;
+	s=arc-20240116; t=1750178128; c=relaxed/simple;
+	bh=X4MwqNwTFTAA2oh9Abis/kEIIfi11MGUSxVluYCSm38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/tfD9E0bEPAX+ehameTTBK1bihsaMzgt/d34ZoMg94xX91VBHjIOuhPRowGZuRDNo7pT/PKgvT9nP/nOAkBUgmtAiOj+6KuEw2mhNWAszQ8XvbiVdPrNRJkvP11SZPQxxLsB44hQIEqvuqxiCnaDFqWLIpf43v40uErWTtcdGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJIliZnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606C7C4CEE7;
-	Tue, 17 Jun 2025 16:56:53 +0000 (UTC)
+	 MIME-Version; b=lOxi19/J89d7b7BN87cw57yDWOtDuW/Nrh7dopx1wo/zbwF4hStyBscGgX2ybsgW+lY3AVtWl7cTD5eRRbzSlAic4wrZ4G4fREGoWWneAAeFTbmXcOzFcmCAgumxvdoPYryFVeg0+iQnaJ+V21FoW/4tpQkGcLMHViQOGPmGLqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSpuRMj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA0CC4CEE3;
+	Tue, 17 Jun 2025 16:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179413;
-	bh=a4KsCIgF0GaAgMcKPetUU+djdYF7o3sN9NtFv1BrO1g=;
+	s=korg; t=1750178128;
+	bh=X4MwqNwTFTAA2oh9Abis/kEIIfi11MGUSxVluYCSm38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJIliZnf6FlpBCd79kXDIFXzLCtAlJEUApiYGZKqC8QeJwdXAx2Hf01ci6azH/Vrd
-	 tT9HyzT++GTNpf8G9/gxeuLm7x4UahGugbiygUlgC/TQB4LrvM1q8unQRx/7qIVNeA
-	 x4j8SNFoLE2xr0SACZ/AHWPyGaRkleO6rglX7FU0=
+	b=rSpuRMj9ay5YQrb9Mj2NC9ThOCuGKhVy1o7qQlNggkEIcG5dHEL7VqR+dmJrTwtzL
+	 9k7jB+Hx7vYXfoktCUg9Q24KARWXbAgOkU83eFdAuaySvLWsq32DWWtPzJt+rebxSR
+	 tnNkW9tQcYlRdRAe/b89h/xh4/thfpkImcSdfx8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Robert Malz <robert.malz@canonical.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 708/780] Bluetooth: MGMT: Fix sparse errors
+Subject: [PATCH 6.12 450/512] i40e: retry VFLR handling if there is ongoing VF reset
 Date: Tue, 17 Jun 2025 17:26:56 +0200
-Message-ID: <20250617152520.329519783@linuxfoundation.org>
+Message-ID: <20250617152437.803326358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit 7dd38ba4acbea9875b4ee061e20a26413e39d9f4 ]
+[ Upstream commit fb4e9239e029954a37a00818b21e837cebf2aa10 ]
 
-This fixes the following errors:
+When a VFLR interrupt is received during a VF reset initiated from a
+different source, the VFLR may be not fully handled. This can
+leave the VF in an undefined state.
+To address this, set the I40E_VFLR_EVENT_PENDING bit again during VFLR
+handling if the reset is not yet complete. This ensures the driver
+will properly complete the VF reset in such scenarios.
 
-net/bluetooth/mgmt.c:5400:59: sparse: sparse: incorrect type in argument 3
-(different base types) @@     expected unsigned short [usertype] handle @@
-got restricted __le16 [usertype] monitor_handle @@
-net/bluetooth/mgmt.c:5400:59: sparse:     expected unsigned short [usertype] handle
-net/bluetooth/mgmt.c:5400:59: sparse:     got restricted __le16 [usertype] monitor_handle
-
-Fixes: e6ed54e86aae ("Bluetooth: MGMT: Fix UAF on mgmt_remove_adv_monitor_complete")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506060347.ux2O1p7L-lkp@intel.com/
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index de7adb9a47f97..d540f7b4f75fb 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5102,11 +5102,11 @@ static void mgmt_adv_monitor_added(struct sock *sk, struct hci_dev *hdev,
- }
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index bde41d30c69ee..625fa93fc18bb 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -4328,7 +4328,10 @@ int i40e_vc_process_vflr_event(struct i40e_pf *pf)
+ 		reg = rd32(hw, I40E_GLGEN_VFLRSTAT(reg_idx));
+ 		if (reg & BIT(bit_idx))
+ 			/* i40e_reset_vf will clear the bit in GLGEN_VFLRSTAT */
+-			i40e_reset_vf(vf, true);
++			if (!i40e_reset_vf(vf, true)) {
++				/* At least one VF did not finish resetting, retry next time */
++				set_bit(__I40E_VFLR_EVENT_PENDING, pf->state);
++			}
+ 	}
  
- static void mgmt_adv_monitor_removed(struct sock *sk, struct hci_dev *hdev,
--				     u16 handle)
-+				     __le16 handle)
- {
- 	struct mgmt_ev_adv_monitor_removed ev;
- 
--	ev.monitor_handle = cpu_to_le16(handle);
-+	ev.monitor_handle = handle;
- 
- 	mgmt_event(MGMT_EV_ADV_MONITOR_REMOVED, hdev, &ev, sizeof(ev), sk);
- }
+ 	return 0;
 -- 
 2.39.5
 
