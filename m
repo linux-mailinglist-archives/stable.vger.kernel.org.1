@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-153571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B351BADD5B8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:25:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A225ADD9E2
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C5C1946821
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:09:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 145404A24BD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A752DFF0A;
-	Tue, 17 Jun 2025 16:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7F2285063;
+	Tue, 17 Jun 2025 16:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpKqtD68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1wHJE7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBF32DFF0E;
-	Tue, 17 Jun 2025 16:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10972FA630;
+	Tue, 17 Jun 2025 16:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176393; cv=none; b=R7wiS5VyQPuKftENgkvIbq2RSLP9BxO9GReEnQ244ojO951+N855A55Br2HRyrRdK/yjeYWG2NFLI0OZ+CrIQY09FjE4EOk53DcldbutnifSLCycvvfUyjmEv88rEhmC0VThjktyiOqbUvseS0w9/egHTs1wDGmPcuB5bqY/Ows=
+	t=1750179202; cv=none; b=ir4TbFf2Qto2ZlyCdZK7VoswcYg5vBUtwcJ2fa/f48eG4TphM1fWHMdGjaD4u4rRKldSR0eimOjZarbTowRB58+OeRDVzH2yb9XzcAk2RARkCM51RLkLNacKLoBIo5aeuRb/sdggRpu1CSpbxoTtoPtWlwn1+IMApzsFp7hGzgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176393; c=relaxed/simple;
-	bh=xW4nolXN0jaIvHbemW+VDjTf7CNlrys/4GKxoEtKEuE=;
+	s=arc-20240116; t=1750179202; c=relaxed/simple;
+	bh=5s/WtgnJj1IPqs8fWVf1IBPlDfmel6vP8ESDPXqSUFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9PhXOX/GQXBpTCm8oqOsPMhF7/gk1E6XL8scU48htz2hUQOkZ1FQ9EUdD82Nf51UvIfwWdyn1T/Rz24qMG2KjqHOAlZbE2B2tvgfE5XdYFOvAd+xYuiUDtitPi8qrviK4aSlxroU0zRP+taMLQFP84fZPA+K2Y+UiXb3y7wxjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpKqtD68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E195C4CEE3;
-	Tue, 17 Jun 2025 16:06:32 +0000 (UTC)
+	 MIME-Version; b=lt/ZOzoGM60Jh84pktCgpHlAdQzrcLe1e91yoXv5nFsF7PZTFObtnMrigU5qU+3wwqAWgpI/f681x/iWbiV1nXJvZ9unaVZcEEhWIpNCISv5xLemC6TfNYGtPYL2dhazbiCDn5gDTZlwxXaMeOvb1m06mWdkIT1BPD8iT97r23s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1wHJE7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49EEC4CEE3;
+	Tue, 17 Jun 2025 16:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176392;
-	bh=xW4nolXN0jaIvHbemW+VDjTf7CNlrys/4GKxoEtKEuE=;
+	s=korg; t=1750179202;
+	bh=5s/WtgnJj1IPqs8fWVf1IBPlDfmel6vP8ESDPXqSUFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpKqtD68mGZKbpjRZ8LFPG4Aw4VKyJQfn7Nx5pYnZEfRPXE2sM4VkDT3rQFhftbK6
-	 dxu554fDNaVjbo4i20QVktv+eeE8PD5PUDxHNZ0LQXLmXrBVII9mmWlyQzh0LIqnpq
-	 c3UWdqeVCAPr9rGbLSRx9LNLqOW4aag3jGy21B7Q=
+	b=O1wHJE7w4C7WIeCztTIlhOHXh3EqpDuXH6cyjb76hYgF7O4Ngae5S5YumvsbczaTP
+	 fDOrqEt0QqabrTNzWvoDrDS6pvBrGZ+77my7BbUSF7yyx85fHDo/XOepgNV9XcWgGd
+	 cjKIFOGCGzK7Lv7ofqFtXC9BZ6PXG3BmtlydP4qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuuki NAGAO <wf.yn386@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/356] ASoC: ti: omap-hdmi: Re-add dai_link->platform to fix card init
+Subject: [PATCH 6.15 680/780] regulator: max20086: Fix refcount leak in max20086_parse_regulators_dt()
 Date: Tue, 17 Jun 2025 17:26:28 +0200
-Message-ID: <20250617152349.186943667@linuxfoundation.org>
+Message-ID: <20250617152519.159069481@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuuki NAGAO <wf.yn386@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit bae071aa7bcd034054cec91666c80f812adeccd9 ]
+[ Upstream commit 06118ae36855b7d3d22688298e74a766ccf0cb7a ]
 
-The removed dai_link->platform component cause a fail which
-is exposed at runtime. (ex: when a sound tool is used)
-This patch re-adds the dai_link->platform component to have
-a full card registered.
+There is a missing call to of_node_put() if devm_kcalloc() fails.
+Fix this by changing the code to use cleanup.h magic to drop the
+refcount.
 
-Before this patch:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 1: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 []
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-
-$ speaker-test -D plughw:1,0 -t sine
-speaker-test 1.2.8
-Playback device is plughw:1,0
-Stream parameters are 48000Hz, S16_LE, 1 channels
-Sine wave rate is 440.0000Hz
-Playback open error: -22,Invalid argument
-
-After this patch which restores the platform component:
-$ aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: HDMI [HDMI], device 0: HDMI snd-soc-dummy-dai-0 [HDMI snd-soc-dummy-dai-0]
-  Subdevices: 0/1
-  Subdevice #0: subdevice #0
-
--> Resolve the playback error.
-
-Fixes: 3b0db249cf8f ("ASoC: ti: remove unnecessary dai_link->platform")
-
-Signed-off-by: Yuuki NAGAO <wf.yn386@gmail.com>
-Link: https://patch.msgid.link/20250531141341.81164-1-wf.yn386@gmail.com
+Fixes: 6b0cd72757c6 ("regulator: max20086: fix invalid memory access")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aDVRLqgJWMxYU03G@stanley.mountain
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/omap-hdmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/regulator/max20086-regulator.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/ti/omap-hdmi.c b/sound/soc/ti/omap-hdmi.c
-index 0a731b21e5a58..72fabf22a02ee 100644
---- a/sound/soc/ti/omap-hdmi.c
-+++ b/sound/soc/ti/omap-hdmi.c
-@@ -361,17 +361,20 @@ static int omap_hdmi_audio_probe(struct platform_device *pdev)
- 	if (!card->dai_link)
- 		return -ENOMEM;
+diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
+index 198d45f8e8849..3d333b61fb18c 100644
+--- a/drivers/regulator/max20086-regulator.c
++++ b/drivers/regulator/max20086-regulator.c
+@@ -5,6 +5,7 @@
+ // Copyright (C) 2022 Laurent Pinchart <laurent.pinchart@idesonboard.com>
+ // Copyright (C) 2018 Avnet, Inc.
  
--	compnent = devm_kzalloc(dev, sizeof(*compnent), GFP_KERNEL);
-+	compnent = devm_kzalloc(dev, 2 * sizeof(*compnent), GFP_KERNEL);
- 	if (!compnent)
- 		return -ENOMEM;
--	card->dai_link->cpus		= compnent;
-+	card->dai_link->cpus		= &compnent[0];
- 	card->dai_link->num_cpus	= 1;
- 	card->dai_link->codecs		= &asoc_dummy_dlc;
- 	card->dai_link->num_codecs	= 1;
-+	card->dai_link->platforms	= &compnent[1];
-+	card->dai_link->num_platforms	= 1;
++#include <linux/cleanup.h>
+ #include <linux/err.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/i2c.h>
+@@ -133,11 +134,11 @@ static int max20086_regulators_register(struct max20086 *chip)
+ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
+ {
+ 	struct of_regulator_match *matches;
+-	struct device_node *node;
+ 	unsigned int i;
+ 	int ret;
  
- 	card->dai_link->name = card->name;
- 	card->dai_link->stream_name = card->name;
- 	card->dai_link->cpus->dai_name = dev_name(ad->dssdev);
-+	card->dai_link->platforms->name = dev_name(ad->dssdev);
- 	card->num_links = 1;
- 	card->dev = dev;
+-	node = of_get_child_by_name(chip->dev->of_node, "regulators");
++	struct device_node *node __free(device_node) =
++		of_get_child_by_name(chip->dev->of_node, "regulators");
+ 	if (!node) {
+ 		dev_err(chip->dev, "regulators node not found\n");
+ 		return -ENODEV;
+@@ -153,7 +154,6 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
  
+ 	ret = of_regulator_match(chip->dev, node, matches,
+ 				 chip->info->num_outputs);
+-	of_node_put(node);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to match regulators\n");
+ 		return -EINVAL;
 -- 
 2.39.5
 
