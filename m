@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-153946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42F1ADD6F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB72ADD7D7
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B8E2178660
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E384A3C94
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AAF2ECEA5;
-	Tue, 17 Jun 2025 16:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888E42ED86F;
+	Tue, 17 Jun 2025 16:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOVn5wCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k++gePUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38692F94A0;
-	Tue, 17 Jun 2025 16:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8742F9485;
+	Tue, 17 Jun 2025 16:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177610; cv=none; b=jIfDQPSmE+DUOyDtLl+3alYA96abBX7OHPXjmTpX+11yeSAzItjINgSUKShqtJ2p2k0NwplQslpkMcTSeEQfn7V5vLlUVmPVEAPZBO7RhrZf2FzHBmjFzKnJiDUTxH/s5u+csl7F5Kl1ticSUYiw2MUlxdvaVUapwjTIeRyOR3c=
+	t=1750177617; cv=none; b=OZz9P8ETBkU+Oaavzbg0boeZ7ckkzmJ04CqafeSwePpWxZl/d8fq526WOEioumvmU5JobuWjq0myxS/Aqb8aB5MF00K1sghAG7ylqrC3oHMbJrj4IbsF0+VBFWGPK7tLk1chXJLto28+SqvC0I92cXFHIgeCkbwcRUWxCGMuxZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177610; c=relaxed/simple;
-	bh=38XF+1uI6L4dDe1B/NAuE+KSIAWgdsOpUGXMm0LA4aw=;
+	s=arc-20240116; t=1750177617; c=relaxed/simple;
+	bh=ltmP0lTBBsplyHg/xn4ZrHw224Cq/thdWm103wWN5Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCAWXDa3QU6sihR4apBpA6Ph+ixDODuyVQsOfGtp3P60uZ/sqRL0Wo/BdylhndBVqkh733ynphJEWpFkeVJRZCzzMDzAVRJ+kiLkqhDED+O9nc0eVUwkfrZ5zYd+fbro2mKPXgXyo+cyzpDo5ZwuBl/louwPrHmZVrPjQgh7b+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOVn5wCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C974C4CEE3;
-	Tue, 17 Jun 2025 16:26:50 +0000 (UTC)
+	 MIME-Version; b=XAIDg2RTIc0eVXrCRZ18fzxnqvEoj+K9IMTQhy1dmAmkNtXDPIV2LhVftcq02gKrI2OE4FeQWf0jZfgL4iYePyY4NyL8YVQlgTdITYJpYihdGtbFzBuZ44oituSdvPJanAVl4ZKI4HysRiofyM4LeJJ1Q3IUkjgFLn0tGy+uk3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k++gePUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2087C4CEE3;
+	Tue, 17 Jun 2025 16:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177610;
-	bh=38XF+1uI6L4dDe1B/NAuE+KSIAWgdsOpUGXMm0LA4aw=;
+	s=korg; t=1750177617;
+	bh=ltmP0lTBBsplyHg/xn4ZrHw224Cq/thdWm103wWN5Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOVn5wCiJPg9WVAyIpfKZp8ot/A7FXX2Dr7r0l22iHZBpnR2KWmnieVPfBqxDOZ9A
-	 BsmP1NwtEEZEGfuqMoWZVgzu2OZi6SvwGCLcHtTSQ2La0Cac19WaW3JUk6FoQqLdy2
-	 0oTt1oDBAHB4mJ5QoQHgBEbX54vU1BAzxSWpwdJ8=
+	b=k++gePUkiRA2WYcpY5CAf03tX/8wYkp0sqMGJYHB8/vff5W7A7sabE/PCcWRfAdab
+	 6BObhZIgRpdDbPoLP+1CkQ+DgLkmPFGBsBpFkfd3COeH4pW4UrAlZy+BNLZ8KGUty+
+	 LzvhfYiKATIqm7u45rd3GNi6eVILtYZxrJzQnG/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	John Cheung <john.cs.hey@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Faicker Mo <faicker.mo@zenlayer.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 335/780] calipso: Dont call calipso functions for AF_INET sk.
-Date: Tue, 17 Jun 2025 17:20:43 +0200
-Message-ID: <20250617152505.090555477@linuxfoundation.org>
+Subject: [PATCH 6.15 336/780] net: openvswitch: Fix the dead loop of MPLS parse
+Date: Tue, 17 Jun 2025 17:20:44 +0200
+Message-ID: <20250617152505.138073456@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,106 +68,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Faicker Mo <faicker.mo@zenlayer.com>
 
-[ Upstream commit 6e9f2df1c550ead7cecb3e450af1105735020c92 ]
+[ Upstream commit 0bdc924bfb319fb10d1113cbf091fc26fb7b1f99 ]
 
-syzkaller reported a null-ptr-deref in txopt_get(). [0]
+The unexpected MPLS packet may not end with the bottom label stack.
+When there are many stacks, The label count value has wrapped around.
+A dead loop occurs, soft lockup/CPU stuck finally.
 
-The offset 0x70 was of struct ipv6_txoptions in struct ipv6_pinfo,
-so struct ipv6_pinfo was NULL there.
-
-However, this never happens for IPv6 sockets as inet_sk(sk)->pinet6
-is always set in inet6_create(), meaning the socket was not IPv6 one.
-
-The root cause is missing validation in netlbl_conn_setattr().
-
-netlbl_conn_setattr() switches branches based on struct
-sockaddr.sa_family, which is passed from userspace.  However,
-netlbl_conn_setattr() does not check if the address family matches
-the socket.
-
-The syzkaller must have called connect() for an IPv6 address on
-an IPv4 socket.
-
-We have a proper validation in tcp_v[46]_connect(), but
-security_socket_connect() is called in the earlier stage.
-
-Let's copy the validation to netlbl_conn_setattr().
-
-[0]:
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-CPU: 2 UID: 0 PID: 12928 Comm: syz.9.1677 Not tainted 6.12.0 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:txopt_get include/net/ipv6.h:390 [inline]
-RIP: 0010:
-Code: 02 00 00 49 8b ac 24 f8 02 00 00 e8 84 69 2a fd e8 ff 00 16 fd 48 8d 7d 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 53 02 00 00 48 8b 6d 70 48 85 ed 0f 84 ab 01 00
-RSP: 0018:ffff88811b8afc48 EFLAGS: 00010212
-RAX: dffffc0000000000 RBX: 1ffff11023715f8a RCX: ffffffff841ab00c
-RDX: 000000000000000e RSI: ffffc90007d9e000 RDI: 0000000000000070
-RBP: 0000000000000000 R08: ffffed1023715f9d R09: ffffed1023715f9e
-R10: ffffed1023715f9d R11: 0000000000000003 R12: ffff888123075f00
-R13: ffff88810245bd80 R14: ffff888113646780 R15: ffff888100578a80
-FS:  00007f9019bd7640(0000) GS:ffff8882d2d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f901b927bac CR3: 0000000104788003 CR4: 0000000000770ef0
-PKRU: 80000000
+stack backtrace:
+UBSAN: array-index-out-of-bounds in /build/linux-0Pa0xK/linux-5.15.0/net/openvswitch/flow.c:662:26
+index -1 is out of range for type '__be32 [3]'
+CPU: 34 PID: 0 Comm: swapper/34 Kdump: loaded Tainted: G           OE   5.15.0-121-generic #131-Ubuntu
+Hardware name: Dell Inc. PowerEdge C6420/0JP9TF, BIOS 2.12.2 07/14/2021
 Call Trace:
- <TASK>
- calipso_sock_setattr+0x56/0x80 net/netlabel/netlabel_calipso.c:557
- netlbl_conn_setattr+0x10c/0x280 net/netlabel/netlabel_kapi.c:1177
- selinux_netlbl_socket_connect_helper+0xd3/0x1b0 security/selinux/netlabel.c:569
- selinux_netlbl_socket_connect_locked security/selinux/netlabel.c:597 [inline]
- selinux_netlbl_socket_connect+0xb6/0x100 security/selinux/netlabel.c:615
- selinux_socket_connect+0x5f/0x80 security/selinux/hooks.c:4931
- security_socket_connect+0x50/0xa0 security/security.c:4598
- __sys_connect_file+0xa4/0x190 net/socket.c:2067
- __sys_connect+0x12c/0x170 net/socket.c:2088
- __do_sys_connect net/socket.c:2098 [inline]
- __se_sys_connect net/socket.c:2095 [inline]
- __x64_sys_connect+0x73/0xb0 net/socket.c:2095
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xaa/0x1b0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f901b61a12d
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f9019bd6fa8 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 00007f901b925fa0 RCX: 00007f901b61a12d
-RDX: 000000000000001c RSI: 0000200000000140 RDI: 0000000000000003
-RBP: 00007f901b701505 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f901b5b62a0 R15: 00007f9019bb7000
- </TASK>
-Modules linked in:
+ <IRQ>
+ show_stack+0x52/0x5c
+ dump_stack_lvl+0x4a/0x63
+ dump_stack+0x10/0x16
+ ubsan_epilogue+0x9/0x36
+ __ubsan_handle_out_of_bounds.cold+0x44/0x49
+ key_extract_l3l4+0x82a/0x840 [openvswitch]
+ ? kfree_skbmem+0x52/0xa0
+ key_extract+0x9c/0x2b0 [openvswitch]
+ ovs_flow_key_extract+0x124/0x350 [openvswitch]
+ ovs_vport_receive+0x61/0xd0 [openvswitch]
+ ? kernel_init_free_pages.part.0+0x4a/0x70
+ ? get_page_from_freelist+0x353/0x540
+ netdev_port_receive+0xc4/0x180 [openvswitch]
+ ? netdev_port_receive+0x180/0x180 [openvswitch]
+ netdev_frame_hook+0x1f/0x40 [openvswitch]
+ __netif_receive_skb_core.constprop.0+0x23a/0xf00
+ __netif_receive_skb_list_core+0xfa/0x240
+ netif_receive_skb_list_internal+0x18e/0x2a0
+ napi_complete_done+0x7a/0x1c0
+ bnxt_poll+0x155/0x1c0 [bnxt_en]
+ __napi_poll+0x30/0x180
+ net_rx_action+0x126/0x280
+ ? bnxt_msix+0x67/0x80 [bnxt_en]
+ handle_softirqs+0xda/0x2d0
+ irq_exit_rcu+0x96/0xc0
+ common_interrupt+0x8e/0xa0
+ </IRQ>
 
-Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: John Cheung <john.cs.hey@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAP=Rh=M1LzunrcQB1fSGauMrJrhL6GGps5cPAKzHJXj6GQV+-g@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20250522221858.91240-1-kuniyu@amazon.com
+Fixes: fbdcdd78da7c ("Change in Openvswitch to support MPLS label depth of 3 in ingress direction")
+Signed-off-by: Faicker Mo <faicker.mo@zenlayer.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/259D3404-575D-4A6D-B263-1DF59A67CF89@zenlayer.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_kapi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/openvswitch/flow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
-index cd9160bbc9197..6ea16138582c0 100644
---- a/net/netlabel/netlabel_kapi.c
-+++ b/net/netlabel/netlabel_kapi.c
-@@ -1165,6 +1165,9 @@ int netlbl_conn_setattr(struct sock *sk,
- 		break;
- #if IS_ENABLED(CONFIG_IPV6)
- 	case AF_INET6:
-+		if (sk->sk_family != AF_INET6)
-+			return -EAFNOSUPPORT;
-+
- 		addr6 = (struct sockaddr_in6 *)addr;
- 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
- 						   &addr6->sin6_addr);
+diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+index 8a848ce72e291..b80bd3a907739 100644
+--- a/net/openvswitch/flow.c
++++ b/net/openvswitch/flow.c
+@@ -788,7 +788,7 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
+ 			memset(&key->ipv4, 0, sizeof(key->ipv4));
+ 		}
+ 	} else if (eth_p_mpls(key->eth.type)) {
+-		u8 label_count = 1;
++		size_t label_count = 1;
+ 
+ 		memset(&key->mpls, 0, sizeof(key->mpls));
+ 		skb_set_inner_network_header(skb, skb->mac_len);
 -- 
 2.39.5
 
