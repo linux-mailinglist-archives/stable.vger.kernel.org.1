@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-154244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A930ADD951
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76185ADD547
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BCCB2C6BD6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:47:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEDA940749C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C372EA16E;
-	Tue, 17 Jun 2025 16:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71E62264A5;
+	Tue, 17 Jun 2025 16:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf0TKNDH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrJi+KTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061592EA161;
-	Tue, 17 Jun 2025 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634BD2F2365;
+	Tue, 17 Jun 2025 16:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178565; cv=none; b=ihaaCeXThL766GC07ZgpXdPt35JEFHtCxCm0tCgFzlbQuvIWpEW6IalG/LKhJMPL/TIClkNidJyOWTTnWd7gj+g+G3EhLlaOWlnyzGdvv4EZaD/OveAlFgymJxYnf1XTbFD1uTFGLc5RPh9xsf8b7+LoeHk0OqjhR7X7Zw4TFkE=
+	t=1750176421; cv=none; b=Xga1a009ntbf9eZnI+ZdxOObSP/dywIULrfypnR7MDC4sZjvdIpccjlYTYkSzwyJZQ4Wujtrxq/3QKOgF7xtnezoe5D26hthN+tJrvq/qYLWD8Y7Qe/xIgjw25d9tSaewn/9vCg3S2WL3JaxPtiEO4UUS3a9Ky65xpVI/01EDAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178565; c=relaxed/simple;
-	bh=o9IL9hfjMaDKQoNarJUgR51hqLNlwIgBd6Jmt0xkt18=;
+	s=arc-20240116; t=1750176421; c=relaxed/simple;
+	bh=7pLm6KcLNN74UMme9LvnmqkTUbA4CLyv51Jst+d+sNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoihQSWUk7iv/FVw6IJ55PbjFnIabQdanPTOxHjMgB8v8jWujnZQgPGEXvf2+PYcn0xLvR4GReQI/APpS/MfHaV54egB7KnMPHP5S8yTWmQ/+mCD2V1fXiR4nS7cxNEtdtdExmG+FjHpQBz2VBOvwEB6FG5gy7FNHfGI1RNRNHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf0TKNDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135E2C4CEE3;
-	Tue, 17 Jun 2025 16:42:43 +0000 (UTC)
+	 MIME-Version; b=cIr63ZXhejGOFvUUfMruPwg/a4Xe1zLlLasxAlDjRtdkDNfwevSnLwzHH0kbZvVd7YZcyQMMUPlozuZwA3YPxgb3VyXb/RPhn3kZv/5FbMzqjVOPSdxQSRfJ4lHwiF7bN7j4T6s0ll1wSka0kpFS9BpE02auk2uuwxMJwWABbBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrJi+KTj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D6EC4CEE3;
+	Tue, 17 Jun 2025 16:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178564;
-	bh=o9IL9hfjMaDKQoNarJUgR51hqLNlwIgBd6Jmt0xkt18=;
+	s=korg; t=1750176421;
+	bh=7pLm6KcLNN74UMme9LvnmqkTUbA4CLyv51Jst+d+sNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lf0TKNDHV9WgErP8pInlCQP+sUfTKo4NDV/mEtki9hF+Ir7sKFNsRsc3sREKBu2mI
-	 zSM/nA03S3qAUhRBsMy0zPSScIAq9DUlh8elbhn2AUefJzfSSo+VnioC46Qa6HC0ry
-	 aMCmeHD5T9yfi/o9VUwxX7EtFzJHHav860NJ1UWs=
+	b=vrJi+KTjFUslNh4OIGRyNQmlbTIt2uoN/JXSER5Kpbs36k/fisxxpp+Ir+q9u1z91
+	 +/jZfZOz02GsZkKJY/tT3dWYvRbjmmZHf8WiLVkXnd3ntq3EPwdQtlwp/t4EgleDfq
+	 Bp4nKUI1HIjvYkCiOF7yWXxbOi8ekT2iW0jZS134=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 486/780] exportfs: require ->fh_to_parent() to encode connectable file handles
+Subject: [PATCH 6.12 228/512] arm64: dts: qcom: sc8280xp-x13s: Drop duplicate DMIC supplies
 Date: Tue, 17 Jun 2025 17:23:14 +0200
-Message-ID: <20250617152511.282187346@linuxfoundation.org>
+Message-ID: <20250617152428.869863943@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 5402c4d4d2000a9baa30c1157c97152ec6383733 ]
+[ Upstream commit a2e617f4e6981aa514a569e927f90b0d39bb31b2 ]
 
-When user requests a connectable file handle explicitly with the
-AT_HANDLE_CONNECTABLE flag, fail the request if filesystem (e.g. nfs)
-does not know how to decode a connected non-dir dentry.
+The WCD938x codec provides two controls for each of the MIC_BIASn outputs:
 
-Fixes: c374196b2b9f ("fs: name_to_handle_at() support for "explicit connectable" file handles")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/20250525104731.1461704-1-amir73il@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+ - "MIC BIASn" enables an internal regulator to generate the output
+   with a configurable voltage (qcom,micbiasN-microvolt).
+
+ - "VA MIC BIASn" enables "pull-up mode" that bypasses the internal
+   regulator and directly outputs fixed 1.8V from the VDD_PX pin.
+   This is intended for low-power VA (voice activation) use cases.
+
+The audio-routing setup for the ThinkPad X13s currently specifies both
+as power supplies for the DMICs, but only one of them can be active
+at the same time. In practice, only the internal regulator is used
+with the current setup because the driver prefers it over pull-up mode.
+
+Make this more clear by dropping the redundant routes to the pull-up
+"VA MIC BIASn" supply. There is no functional difference except that we
+skip briefly switching to pull-up mode when shutting down the microphone.
+
+Fixes: 2e498f35c385 ("arm64: dts: qcom: sc8280xp-x13s: fix va dmic dai links and routing")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20241203-x1e80100-va-mic-bias-v1-1-0dfd4d9b492c@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/exportfs.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
-index fc93f0abf513c..25c4a5afbd443 100644
---- a/include/linux/exportfs.h
-+++ b/include/linux/exportfs.h
-@@ -314,6 +314,9 @@ static inline bool exportfs_can_decode_fh(const struct export_operations *nop)
- static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
- 					  int fh_flags)
- {
-+	if (!nop)
-+		return false;
-+
- 	/*
- 	 * If a non-decodeable file handle was requested, we only need to make
- 	 * sure that filesystem did not opt-out of encoding fid.
-@@ -321,6 +324,13 @@ static inline bool exportfs_can_encode_fh(const struct export_operations *nop,
- 	if (fh_flags & EXPORT_FH_FID)
- 		return exportfs_can_encode_fid(nop);
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+index 6a28cab971891..8e5951da5920d 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+@@ -1131,9 +1131,6 @@
+ 		"VA DMIC0", "MIC BIAS1",
+ 		"VA DMIC1", "MIC BIAS1",
+ 		"VA DMIC2", "MIC BIAS3",
+-		"VA DMIC0", "VA MIC BIAS1",
+-		"VA DMIC1", "VA MIC BIAS1",
+-		"VA DMIC2", "VA MIC BIAS3",
+ 		"TX SWR_ADC1", "ADC2_OUTPUT";
  
-+	/*
-+	 * If a connectable file handle was requested, we need to make sure that
-+	 * filesystem can also decode connected file handles.
-+	 */
-+	if ((fh_flags & EXPORT_FH_CONNECTABLE) && !nop->fh_to_parent)
-+		return false;
-+
- 	/*
- 	 * If a decodeable file handle was requested, we need to make sure that
- 	 * filesystem can also decode file handles.
+ 	wcd-playback-dai-link {
 -- 
 2.39.5
 
