@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-153669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ED6ADD59E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:23:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E36ADD856
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B846B7ADA36
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:16:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFE814A2CFD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED122EA170;
-	Tue, 17 Jun 2025 16:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A829B2F5461;
+	Tue, 17 Jun 2025 16:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avFTQQ/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyJFw1u0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A63A237162;
-	Tue, 17 Jun 2025 16:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645412F4328;
+	Tue, 17 Jun 2025 16:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176708; cv=none; b=pCfQAKFeoMYWIsmViMmyleFVO9UM/k/upUQ7q+LbMD2KI1P2lYT3qQE3zt5d8PyXTpuckIx1yEW7SoHn32x5CFQ4lfIpqXLDV1PbUZpfezNijFkQrTIHqGBQV4EaHX11CqFb/K1aWVPWIt2GwF38gXnlMGJks9ij+lCk1zNqS6Y=
+	t=1750178033; cv=none; b=O+erXwD6Eja7dAQvNdl3aG3/SuqaFKWROPn87va3hjRm1CY6gi/73pfJPTgF9JcoFuOmT2bgsoB/4KbvK3KRlBAVaFm0Q1cwVv3xiHe4P3GV1RjU217CFSA7KcgOv3r016e736JAmCzsK/jRuhyMQQWNMNMmRJfNo0EYRq/0z08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176708; c=relaxed/simple;
-	bh=n/+VfxFcfcn3Hrf6HuLc0Y3S+WWT/On9G0vQLQXMVU4=;
+	s=arc-20240116; t=1750178033; c=relaxed/simple;
+	bh=JA0vn0W7D/XKCXXV4DPPR9FEBbpLNsGgCDSvlLVgt/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJrUFeZdUZ8SThgtDLyGdRKOul/0IFLizz6oUEsL9IdlwDTXkc9ndcKIg7JJN0aevuBAHndMgrxY+O4RMG3+WOkbT++wp85ujco3g3NUBpuGlP6loxdAGIJkHUWYySFypXpVgfwdpnHn05PkWaMLY21JVJvNzQ8WKFrQYUH/Cr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avFTQQ/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A003DC4CEE3;
-	Tue, 17 Jun 2025 16:11:47 +0000 (UTC)
+	 MIME-Version; b=d8mJ18a52losmwBdYhA7vMPBeTHXuZKF81tmESYv6KDdG4yWuPhIY/0LcKEZLuTAeDCztPoclpXanfAU9o7qc9KQDXmvSp/pOP/RKT/4Mh/O+NXjdLFmJjDXSfpDy8tsygwiHjitbqPI1Zgw62+sqqK9qco3xDE6b1thyuApITQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyJFw1u0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86DBC4CEE3;
+	Tue, 17 Jun 2025 16:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176708;
-	bh=n/+VfxFcfcn3Hrf6HuLc0Y3S+WWT/On9G0vQLQXMVU4=;
+	s=korg; t=1750178033;
+	bh=JA0vn0W7D/XKCXXV4DPPR9FEBbpLNsGgCDSvlLVgt/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avFTQQ/T3G+kobA9dfWpdKTOuFqSYZYgvz5Y+2fV5pPZ8hG8YP3d00ZktnHBPoxTV
-	 QXYk0CTSEpUOdr3455dab0yMTqTlkZ27Sc+LaJdDe91G9SszSg82ViJa8j9ewSaKSA
-	 L+yjrzyjEL9pQg2gVHaR/rKDGHhhaJGQvQH2Kn+0=
+	b=lyJFw1u0DYqLHv5ms9KGmc/IxewvGETzQuAusIuRG3IWLe9NYhsEaqLNwK1wgdW+W
+	 0KGuCRb+3iaI03B8e6JNgkKZy8YMCyuWoF3xA8bYpjj8LGmhoUZJuEGv0IGCRhlNml
+	 xnWf4jX4c9rNjdTjxytC177wHlHGHJ/cEFb3Mito=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vaishnav Achath <vaishnav.a@ti.com>,
-	Jai Luthra <j-luthra@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/356] arm64: dts: ti: k3-j721e-sk: Model CSI2RX connector mux
-Date: Tue, 17 Jun 2025 17:26:39 +0200
-Message-ID: <20250617152349.620551373@linuxfoundation.org>
+Subject: [PATCH 6.12 434/512] wifi: ath11k: validate ath11k_crypto_mode on top of ath11k_core_qmi_firmware_ready
+Date: Tue, 17 Jun 2025 17:26:40 +0200
+Message-ID: <20250617152437.155431589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vaishnav Achath <vaishnav.a@ti.com>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit f87c88947396674586a42a163b72efa3999e3dee ]
+[ Upstream commit b0d226a60856a1b765bb9a3848c7b2322fd08c47 ]
 
-J721E SK has the CSI2RX routed to a MIPI CSI connector and to 15-pin
-RPi camera connector through an analog mux with GPIO control, model that
-so that an overlay can control the mux state according to connected
-cameras. Also provide labels to the I2C mux bus instances so that a
-generic overlay can be used across multiple platforms.
+if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
+ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
+started/configured. Do the validation as soon as possible in order to avoid
+undoing actions in that case and also to fix the following smatch warning:
 
-J721E SK schematics: https://www.ti.com/lit/zip/sprr438
+drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
+warn: missing unwind goto?
 
-Signed-off-by: Vaishnav Achath <vaishnav.a@ti.com>
-Reviewed-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20240215085518.552692-6-vaishnav.a@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Stable-dep-of: 97b67cc102dc ("arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators")
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202304151955.oqAetVFd-lkp@intel.com/
+Fixes: aa2092a9bab3 ("ath11k: add raw mode and software crypto support")
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250522200519.16858-1-rodrigo.gobbi.7@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 28 +++++++++++++-------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-index ccacb65683b5b..d967b384071cf 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-@@ -286,6 +286,15 @@ tfp410_out: endpoint {
- 			};
- 		};
- 	};
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index d08f40f77031a..8002fb32a2cc1 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -1812,6 +1812,20 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
+ {
+ 	int ret;
+ 
++	switch (ath11k_crypto_mode) {
++	case ATH11K_CRYPT_MODE_SW:
++		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
++		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
++		break;
++	case ATH11K_CRYPT_MODE_HW:
++		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
++		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
++		break;
++	default:
++		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
++		return -EINVAL;
++	}
 +
-+	csi_mux: mux-controller {
-+		compatible = "gpio-mux";
-+		#mux-state-cells = <1>;
-+		mux-gpios = <&main_gpio0 88 GPIO_ACTIVE_HIGH>;
-+		idle-state = <0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&main_csi_mux_sel_pins_default>;
-+	};
- };
+ 	ret = ath11k_core_start_firmware(ab, ab->fw_mode);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to start firmware: %d\n", ret);
+@@ -1830,20 +1844,6 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
+ 		goto err_firmware_stop;
+ 	}
  
- &main_pmx0 {
-@@ -352,6 +361,12 @@ J721E_IOPAD(0x214, PIN_OUTPUT, 4) /* (V4) MCAN1_TX.USB1_DRVVBUS */
- 		>;
- 	};
+-	switch (ath11k_crypto_mode) {
+-	case ATH11K_CRYPT_MODE_SW:
+-		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
+-		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
+-		break;
+-	case ATH11K_CRYPT_MODE_HW:
+-		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
+-		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
+-		break;
+-	default:
+-		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
+-		return -EINVAL;
+-	}
+-
+ 	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
+ 		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
  
-+	main_csi_mux_sel_pins_default: main-csi-mux-sel-default-pins {
-+		pinctrl-single,pins = <
-+			J721E_IOPAD(0x164, PIN_OUTPUT, 7) /* (V29) RGMII5_TD2 */
-+		>;
-+	};
-+
- 	dp0_pins_default: dp0-default-pins {
- 		pinctrl-single,pins = <
- 			J721E_IOPAD(0x1c4, PIN_INPUT, 5) /* SPI0_CS1.DP0_HPD */
-@@ -707,14 +722,14 @@ i2c-mux@70 {
- 		reg = <0x70>;
- 
- 		/* CSI0 I2C */
--		i2c@0 {
-+		cam0_i2c: i2c@0 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <0>;
- 		};
- 
- 		/* CSI1 I2C */
--		i2c@1 {
-+		cam1_i2c: i2c@1 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			reg = <1>;
 -- 
 2.39.5
 
