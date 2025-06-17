@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48002ADD46A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6DFADD778
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBEFE1943CA1
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D226019E4DD8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50371E573F;
-	Tue, 17 Jun 2025 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F3D2ED84A;
+	Tue, 17 Jun 2025 16:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1uvcqK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3dKjJOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C292F2343;
-	Tue, 17 Jun 2025 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1BE2ECEA2;
+	Tue, 17 Jun 2025 16:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175789; cv=none; b=GdqfWKSuO0kssos/b4bDYEyStufi96XbCj+MAk3NBiUkQYHANQMYp2YKJSXhWBuvfspLQKI08g1huSm0z/yQGvcG1d3oqF3xDp0vH7586qzWmUuejhBOpeA1dIWnfqZNlwkPkSlgm78oyqj8vrdyxfJaUfoaB7NPlHUtiXLZkLc=
+	t=1750177552; cv=none; b=VJDvaY9HmZ177lUTFdK1tBxIhL04LcEujTAdPfcbHl5fQVs+10hhHgPXp1DIAKAT6JJItYTumzAyAyLG11+OI+MSfFLz0DR5aad2vwo41x732w+efH/AerzYRjRQKG2WjYd8lhukc4QEPMWHOoqFk8s7Ugg3JH0iqNnOwV2uZb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175789; c=relaxed/simple;
-	bh=ZqohK1o5zI8Ir4Agq3p5i/vRwnwUjJ69DGXcXu43TmI=;
+	s=arc-20240116; t=1750177552; c=relaxed/simple;
+	bh=1ZiHetbPeToCTZoLqVGRT4hUyNAHCsopo+Yv8fGrPtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9BSZr83s8AGH5yvmWmBadCLM7vBW0e0EI0S1e0+JiqsUP4yP2q8O+sqOxjMyN3y70B7J1Ctvg8DBnGd2MqQtPfR3FWkMZqw2VRegfqmhxq8yLBjg72euAxMvtiBsrqihR4GnAna4bAmreFdOvNo1NORUae+fZ5cu7/wQzqgnwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1uvcqK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D57C4CEE3;
-	Tue, 17 Jun 2025 15:56:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j5aB/r/UbvduLG0pnsU4tzs5O4L6AKT1sDnoCLjMjJSXf/kSKDwGOgskHtDhDXdQ1YPD4imZok9Et9oumltHqFqhRNmHaEo6a4LF5kMbZXtAxVYzSzxhl9zWdU6XABeviMUvRA/REsZbwDJz5iIeXNgoJgz/GpqM0899QvjSQMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3dKjJOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE9EC4CEE3;
+	Tue, 17 Jun 2025 16:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175789;
-	bh=ZqohK1o5zI8Ir4Agq3p5i/vRwnwUjJ69DGXcXu43TmI=;
+	s=korg; t=1750177552;
+	bh=1ZiHetbPeToCTZoLqVGRT4hUyNAHCsopo+Yv8fGrPtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1uvcqK6lSWUJ/jIuli32iLXEF6OQFPTF+TXVfhrBjcEa47AhurmqLL5TZbwrNSwH
-	 yoqUGoQ8pg+rP3KrI10t05w1MVdoi4vaXjIoKHhQ12hiAUzZs9oikwhjqRgaRulptM
-	 YvV3JDKDBgAAjF4ZL0CDjJjXUkEdTVwtpOMQoWwQ=
+	b=u3dKjJOtUXkl8iwsrP+ozVpRg3HQocpJyX+aLe40HA19pXKxMh++r4SZGVY0JWPip
+	 1rshBjMa4p/1go/tJlHeMqLhOYv7QqV2pZK7qMRuf7jVfidMVO/C4s1JzIhYUTI+oO
+	 ekA3vnFFsx9knYmGKpYYY0vD1d+NYxlKG8ljctBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/356] mfd: exynos-lpass: Avoid calling exynos_lpass_disable() twice in exynos_lpass_remove()
+Subject: [PATCH 6.12 362/512] net: stmmac: make sure that ptp_rate is not 0 before configuring timestamping
 Date: Tue, 17 Jun 2025 17:25:28 +0200
-Message-ID: <20250617152346.783877018@linuxfoundation.org>
+Message-ID: <20250617152434.247182993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit b70b84556eeca5262d290e8619fe0af5b7664a52 ]
+[ Upstream commit 030ce919e114a111e83b7976ecb3597cefd33f26 ]
 
-exynos_lpass_disable() is called twice in the remove function. Remove
-one of these calls.
+The stmmac platform drivers that do not open-code the clk_ptp_rate value
+after having retrieved the default one from the device-tree can end up
+with 0 in clk_ptp_rate (as clk_get_rate can return 0). It will
+eventually propagate up to PTP initialization when bringing up the
+interface, leading to a divide by 0:
 
-Fixes: 90f447170c6f ("mfd: exynos-lpass: Add runtime PM support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/74d69e8de10308c9855db6d54155a3de4b11abfd.1745247209.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
+ Division by zero in kernel.
+ CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.30-00001-g48313bd5768a #22
+ Hardware name: STM32 (Device Tree Support)
+ Call trace:
+  unwind_backtrace from show_stack+0x18/0x1c
+  show_stack from dump_stack_lvl+0x6c/0x8c
+  dump_stack_lvl from Ldiv0_64+0x8/0x18
+  Ldiv0_64 from stmmac_init_tstamp_counter+0x190/0x1a4
+  stmmac_init_tstamp_counter from stmmac_hw_setup+0xc1c/0x111c
+  stmmac_hw_setup from __stmmac_open+0x18c/0x434
+  __stmmac_open from stmmac_open+0x3c/0xbc
+  stmmac_open from __dev_open+0xf4/0x1ac
+  __dev_open from __dev_change_flags+0x1cc/0x224
+  __dev_change_flags from dev_change_flags+0x24/0x60
+  dev_change_flags from ip_auto_config+0x2e8/0x11a0
+  ip_auto_config from do_one_initcall+0x84/0x33c
+  do_one_initcall from kernel_init_freeable+0x1b8/0x214
+  kernel_init_freeable from kernel_init+0x24/0x140
+  kernel_init from ret_from_fork+0x14/0x28
+ Exception stack(0xe0815fb0 to 0xe0815ff8)
+
+Prevent this division by 0 by adding an explicit check and error log
+about the actual issue. While at it, remove the same check from
+stmmac_ptp_register, which then becomes duplicate
+
+Fixes: 19d857c9038e ("stmmac: Fix calculations for ptp counters when clock input = 50Mhz.")
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-1-d73340a794d5@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/exynos-lpass.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
-index 1506d8d352b19..5e39d91b728fc 100644
---- a/drivers/mfd/exynos-lpass.c
-+++ b/drivers/mfd/exynos-lpass.c
-@@ -141,7 +141,6 @@ static int exynos_lpass_remove(struct platform_device *pdev)
- {
- 	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 918d7f2e8ba99..f68e3ece919cc 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -835,6 +835,11 @@ int stmmac_init_tstamp_counter(struct stmmac_priv *priv, u32 systime_flags)
+ 	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp))
+ 		return -EOPNOTSUPP;
  
--	exynos_lpass_disable(lpass);
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		exynos_lpass_disable(lpass);
++	if (!priv->plat->clk_ptp_rate) {
++		netdev_err(priv->dev, "Invalid PTP clock rate");
++		return -EINVAL;
++	}
++
+ 	stmmac_config_hw_tstamping(priv, priv->ptpaddr, systime_flags);
+ 	priv->systime_flags = systime_flags;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+index a6b1de9a251dd..5c85040a1b937 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+@@ -303,7 +303,7 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
+ 
+ 	/* Calculate the clock domain crossing (CDC) error if necessary */
+ 	priv->plat->cdc_error_adj = 0;
+-	if (priv->plat->has_gmac4 && priv->plat->clk_ptp_rate)
++	if (priv->plat->has_gmac4)
+ 		priv->plat->cdc_error_adj = (2 * NSEC_PER_SEC) / priv->plat->clk_ptp_rate;
+ 
+ 	stmmac_ptp_clock_ops.n_per_out = priv->dma_cap.pps_out_num;
 -- 
 2.39.5
 
