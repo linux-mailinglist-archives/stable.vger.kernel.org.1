@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-154466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E8CADD965
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:05:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14ADADD866
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDED34A479B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACF294A6A3A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DF32264A1;
-	Tue, 17 Jun 2025 16:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607A12F2378;
+	Tue, 17 Jun 2025 16:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNWh+fZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWiL4eBm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25122FA626;
-	Tue, 17 Jun 2025 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B91D2F2370;
+	Tue, 17 Jun 2025 16:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179277; cv=none; b=QUZV3NzgW3kF4lQTo//jkMqYGe+YYgwbhMVaO/w/1bqpNDM3tfz2BjPZMkZC9jlcjHkg7RYQcT8mGLg5QtbnM4C0bmuufSjOubcx2a/IZhbWDcTIa2tGt8GvGsP6M3CrEMFmZWjrEhv3sJVXq2sXuJdEWt9Q931S/r6z5OlXO7c=
+	t=1750177958; cv=none; b=nMlA2Vq3sqYTFZUWGzUjKrjPNQCk+XUW9mo9L1t5moeL/ohfX1IAvgy2AtY6/Ybl5xg8SFBBIOhwuA+tSaREA/ZxwQYrayIdheWehypeDjVDZ2NpXifoZfl3/Zz5j8qKYKYIoI+heshvT+1fkSiJLrbKDiq+4UDsped7mcK6tUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179277; c=relaxed/simple;
-	bh=7HV+TdeMChqdKT3GTMaUACgVx4TOXxTPqUQSe6IjkFw=;
+	s=arc-20240116; t=1750177958; c=relaxed/simple;
+	bh=0cgrny0a2sB6eYytrn7F3bkDknrVsze/Z1n2AsF2LXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWjBd3Jg7HZm8aeNuEZym/u2S+xCDewt+SX1xyvldz0ujEieG0vWCR/WfR8F8Xutxf5cgo/lFCDBByec/cWFIhGzrP37YfhUZwU8mjpxPzuciW3fIHTCYm/iudYNEjXZEp+gOBoleIp5WHm1yODzp9/g95Q74hT/yAKQdvZiyjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNWh+fZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D1CC4CEE3;
-	Tue, 17 Jun 2025 16:54:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pd552GvewFw50zNNtXrttZH5Y6UCgwmqppmeeSFAbauDGRAGLWs2/uKTQZrHoXc6twiAqxRcVRZK7aWL2BaQZ570ZLMpiQRG2Eqbvsm2J5VGB8YZ9mofEBzVIWVSG+edalmQU6rhxSzFgoAg34cg7TGqiaV1f/1kWKjJ1Gkbwd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWiL4eBm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED30C4CEE3;
+	Tue, 17 Jun 2025 16:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179277;
-	bh=7HV+TdeMChqdKT3GTMaUACgVx4TOXxTPqUQSe6IjkFw=;
+	s=korg; t=1750177957;
+	bh=0cgrny0a2sB6eYytrn7F3bkDknrVsze/Z1n2AsF2LXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNWh+fZJDoJAZYQOTCgkzX30GWtox3H+q7vCu65pIl+tFkjSj2VGIHT5f3wP1JymJ
-	 5W4uDwK12W+Ibw91wfzUaFYti54gRF/FpxENM8j89KdMJRVJ3YfQf7AbySR/3JPnJ2
-	 F3MdxPVu5B1/WtPLHczaC0x+cErr0/tkg/shhWuQ=
+	b=eWiL4eBmAgAxU7VsAq1i9AFmmGSTU/5jEM8LX11AD3o6ozn13rcA6JAXxZ4C2XEBI
+	 8UGcw7LUYiqf7mNBxQt30ycFgrLgWNOwaLiiBszy42ZjEs3avPuBhvMJZz6r0Sde3k
+	 InnNxvkhTZc5wjsdyWABzv+AyomhN7iUEplfSAQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Nuno Sa <nuno.sa@analog.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 673/780] wifi: ath11k: dont use static variables in ath11k_debugfs_fw_stats_process()
+Subject: [PATCH 6.12 415/512] dt-bindings: pwm: Correct indentation and style in DTS example
 Date: Tue, 17 Jun 2025 17:26:21 +0200
-Message-ID: <20250617152518.877829901@linuxfoundation.org>
+Message-ID: <20250617152436.397572503@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,132 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 2bcf73b2612dda7432f2c2eaad6679bd291791f2 ]
+[ Upstream commit 78dcad6daa405b8a939cd08f6ccd6c4e2cb50a9c ]
 
-Currently ath11k_debugfs_fw_stats_process() is using static variables to count
-firmware stat events. Taking num_vdev as an example, if for whatever reason (
-say ar->num_started_vdevs is 0 or firmware bug etc.) the following condition
+DTS example in the bindings should be indented with 2- or 4-spaces and
+aligned with opening '- |', so correct any differences like 3-spaces or
+mixtures 2- and 4-spaces in one binding.
 
-	(++num_vdev) == total_vdevs_started
+No functional changes here, but saves some comments during reviews of
+new patches built on existing code.
 
-is not met, is_end is not set thus num_vdev won't be cleared. Next time when
-firmware stats is requested again, even if everything is working fine, we will
-fail due to the condition above will never be satisfied.
-
-The same applies to num_bcn as well.
-
-Change to use non-static counters so that we have a chance to clear them each
-time firmware stats is requested. Currently only ath11k_fw_stats_request() and
-ath11k_debugfs_fw_stats_request() are requesting firmware stats, so clear
-counters there.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-
-Fixes: da3a9d3c1576 ("ath11k: refactor debugfs code into debugfs.c")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250220082448.31039-3-quic_bqiang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20250107125831.225068-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Stable-dep-of: e683131e64f7 ("dt-bindings: pwm: adi,axi-pwmgen: Fix clocks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h    |  2 ++
- drivers/net/wireless/ath/ath11k/debugfs.c | 16 +++++++---------
- drivers/net/wireless/ath/ath11k/mac.c     |  2 ++
- 3 files changed, 11 insertions(+), 9 deletions(-)
+ Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml | 8 ++++----
+ .../devicetree/bindings/pwm/brcm,bcm7038-pwm.yaml         | 8 ++++----
+ Documentation/devicetree/bindings/pwm/brcm,kona-pwm.yaml  | 8 ++++----
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 6abbb29034f07..529aca4f40621 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -599,6 +599,8 @@ struct ath11k_fw_stats {
- 	struct list_head pdevs;
- 	struct list_head vdevs;
- 	struct list_head bcn;
-+	u32 num_vdev_recvd;
-+	u32 num_bcn_recvd;
- };
+diff --git a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
+index aa35209f74cfa..45e112d0efb46 100644
+--- a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
++++ b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
+@@ -41,8 +41,8 @@ unevaluatedProperties: false
+ examples:
+   - |
+     pwm@44b00000 {
+-       compatible = "adi,axi-pwmgen-2.00.a";
+-       reg = <0x44b00000 0x1000>;
+-       clocks = <&spi_clk>;
+-       #pwm-cells = <3>;
++        compatible = "adi,axi-pwmgen-2.00.a";
++        reg = <0x44b00000 0x1000>;
++        clocks = <&spi_clk>;
++        #pwm-cells = <3>;
+     };
+diff --git a/Documentation/devicetree/bindings/pwm/brcm,bcm7038-pwm.yaml b/Documentation/devicetree/bindings/pwm/brcm,bcm7038-pwm.yaml
+index 119de3d7f9dd7..44548a9da1580 100644
+--- a/Documentation/devicetree/bindings/pwm/brcm,bcm7038-pwm.yaml
++++ b/Documentation/devicetree/bindings/pwm/brcm,bcm7038-pwm.yaml
+@@ -35,8 +35,8 @@ additionalProperties: false
+ examples:
+   - |
+     pwm: pwm@f0408000 {
+-       compatible = "brcm,bcm7038-pwm";
+-       reg = <0xf0408000 0x28>;
+-       #pwm-cells = <2>;
+-       clocks = <&upg_fixed>;
++        compatible = "brcm,bcm7038-pwm";
++        reg = <0xf0408000 0x28>;
++        #pwm-cells = <2>;
++        clocks = <&upg_fixed>;
+     };
+diff --git a/Documentation/devicetree/bindings/pwm/brcm,kona-pwm.yaml b/Documentation/devicetree/bindings/pwm/brcm,kona-pwm.yaml
+index e86c8053b366a..fd785da5d3d73 100644
+--- a/Documentation/devicetree/bindings/pwm/brcm,kona-pwm.yaml
++++ b/Documentation/devicetree/bindings/pwm/brcm,kona-pwm.yaml
+@@ -43,9 +43,9 @@ examples:
+     #include <dt-bindings/clock/bcm281xx.h>
  
- struct ath11k_dbg_htt_stats {
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 1d03e3aab011d..27c93c0b4c223 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -98,6 +98,8 @@ static void ath11k_debugfs_fw_stats_reset(struct ath11k *ar)
- 	spin_lock_bh(&ar->data_lock);
- 	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
- 	ath11k_fw_stats_vdevs_free(&ar->fw_stats.vdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
- }
- 
-@@ -106,7 +108,6 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_pdev *pdev;
- 	bool is_end;
--	static unsigned int num_vdev, num_bcn;
- 	size_t total_vdevs_started = 0;
- 	int i;
- 
-@@ -131,15 +132,14 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 				total_vdevs_started += ar->num_started_vdevs;
- 		}
- 
--		is_end = ((++num_vdev) == total_vdevs_started);
-+		is_end = ((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started);
- 
- 		list_splice_tail_init(&stats->vdevs,
- 				      &ar->fw_stats.vdevs);
- 
--		if (is_end) {
-+		if (is_end)
- 			complete(&ar->fw_stats_done);
--			num_vdev = 0;
--		}
-+
- 		return;
- 	}
- 
-@@ -151,15 +151,13 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 		/* Mark end until we reached the count of all started VDEVs
- 		 * within the PDEV
- 		 */
--		is_end = ((++num_bcn) == ar->num_started_vdevs);
-+		is_end = ((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs);
- 
- 		list_splice_tail_init(&stats->bcn,
- 				      &ar->fw_stats.bcn);
- 
--		if (is_end) {
-+		if (is_end)
- 			complete(&ar->fw_stats_done);
--			num_bcn = 0;
--		}
- 	}
- }
- 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 8a018c0190c8a..d97273b205d9f 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -9385,6 +9385,8 @@ static int ath11k_fw_stats_request(struct ath11k *ar,
- 
- 	spin_lock_bh(&ar->data_lock);
- 	ath11k_fw_stats_pdevs_free(&ar->fw_stats.pdevs);
-+	ar->fw_stats.num_vdev_recvd = 0;
-+	ar->fw_stats.num_bcn_recvd = 0;
- 	spin_unlock_bh(&ar->data_lock);
- 
- 	reinit_completion(&ar->fw_stats_complete);
+     pwm@3e01a000 {
+-       compatible = "brcm,bcm11351-pwm", "brcm,kona-pwm";
+-       reg = <0x3e01a000 0xcc>;
+-       clocks = <&slave_ccu BCM281XX_SLAVE_CCU_PWM>;
+-       #pwm-cells = <3>;
++        compatible = "brcm,bcm11351-pwm", "brcm,kona-pwm";
++        reg = <0x3e01a000 0xcc>;
++        clocks = <&slave_ccu BCM281XX_SLAVE_CCU_PWM>;
++        #pwm-cells = <3>;
+     };
+ ...
 -- 
 2.39.5
 
