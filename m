@@ -1,128 +1,158 @@
-Return-Path: <stable+bounces-152773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79021ADC94A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BD31ADCA08
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 13:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0DB177905
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 11:26:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAF63176355
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 11:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142AB2DBF4C;
-	Tue, 17 Jun 2025 11:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A0E2DF3C3;
+	Tue, 17 Jun 2025 11:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itqibxgy"
+	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="e344RWuE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ECD2980AF
-	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 11:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FB621C9FF;
+	Tue, 17 Jun 2025 11:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750159572; cv=none; b=HjH2qbJZLe+SIcXSR6j6+VwXdRjWdbOIQxgWhPdONnv5BmpMxSbyQQ7H+Y/2khq8sI3zfqcl8d7hBwr4/dLHSQchGmcMMfZCkEOQ6jiJ0wWCYRyXklAu4fyop7+hDkxmVsLnKssdK9xEXoD5rF2fqB25i5otCefof4CqizUkclw=
+	t=1750161307; cv=none; b=njSuEDDPkvCotQXx1N6HRxAw2Fu0MWTMcJrPE6mA5H48yVYcIm8ZGZOi78hLHAth7ayk31wpM9LH8a/B9Iswwb2zFhaUcFU8bmDMADsNDGgm7+yhxMln5dllFF8FfaamF54dISijO9OpIShVqnFzdds+kDndeN8PFxtdh5UzqTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750159572; c=relaxed/simple;
-	bh=5ga0mVXkBrTF6swIixBDRctXgbEUPzp1wAowPLM/224=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BG8aUx6rwJGPaYyoiqnXC0P4XSGYnHOFdvxTMtArjydh6Eouf3zanDxiphtJj6izd6nb+l/Zod5R/ONOllWzDKoXnRsKwtb0e9qXAw6iVt8gE30+aqyGV67zN9JErFFq7IiD53hUQmdOuaC2+qSz1cqipeQ9qmwh856tWDFQUGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itqibxgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E25C4CEE3;
-	Tue, 17 Jun 2025 11:26:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750159572;
-	bh=5ga0mVXkBrTF6swIixBDRctXgbEUPzp1wAowPLM/224=;
-	h=Subject:To:Cc:From:Date:From;
-	b=itqibxgylrMUFUmMXImSCDE+glDYfVsGKd6e9axvlnVGL9sNkkF8MrmW3OKqRRJL4
-	 o89f4Oigj9YGvuOLtGahvb2CPmsUZVwsKxspfr5tZL+Gch24PM78PisIP1HDCkk/oR
-	 Y3QIarT1SgJtNqK6vBUeyFfpV0QoeE0NgRBGMwMk=
-Subject: FAILED: patch "[PATCH] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable" failed to apply to 6.1-stable tree
-To: joonas.lahtinen@linux.intel.com,andi.shyti@linux.intel.com,matthew.auld@intel.com,thomas.hellstrom@linux.intel.com,tursulin@ursulin.net,tvrtko.ursulin@igalia.com,ville.syrjala@linux.intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 17 Jun 2025 13:25:55 +0200
-Message-ID: <2025061755-peso-ravage-c101@gregkh>
+	s=arc-20240116; t=1750161307; c=relaxed/simple;
+	bh=VaY0RgAuVnNXtgF9bgVifYBMllpsTY06amRcyiMXzxo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=bRs2G5GsbkhFlCh3qrgapBNaKYI0y1M2VV6sLzXmKQKlQFt8O/+Dq45H2KAz5ypcuHIDecHfzTuJpv7U9DVf7Sx3l0LCD+maNidqk3UKC0Z0Lfy+IJm0T0eU9m4C4FHcuQXsTDXjeSU3XZMqzlNyConfNdk9d4V6wRXXZjp655w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=e344RWuE; arc=none smtp.client-ip=212.122.41.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+	s=mail; t=1750161294;
+	bh=nl9dgRpnr/U9J64zdugmIRjuY1ARPVJozT72kj+VcTw=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=e344RWuE1PZTULODECWnppROfyjtgI3CItM2uYxWDl9WqGTkGuGSI/xwAv6Fypnve
+	 /fsQb+P8znBkQJZx+8r16FAlK/foFGBzmhfKsq1YnmLb2bymAte4FbsyjDNqlo99Yf
+	 vi39aVt4NqJldl4F0S3pogYLC6TnyQ3Pg1CpXzxM=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: temporary hung tasks on XFS since updating to 6.6.92
+From: Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <B380AC75-6B14-4EC9-A398-61A2D33033A7@flyingcircus.io>
+Date: Tue, 17 Jun 2025 13:54:43 +0200
+Cc: stable@vger.kernel.org,
+ "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+ regressions@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0FAE679D-6EE7-4F71-9451-94D0825D1BF8@flyingcircus.io>
+References: <M1JxD6k5Sdxnq-pztTdv_FZwURA8AaT9qWNFUYGCmhiTRQFESfH7xqdOqQjz-oKQiin8pQckoNhfNyCHu-cxEQ==@protonmail.internalid>
+ <14E1A49D-23BF-4929-A679-E6D5C8977D40@flyingcircus.io>
+ <umhydsim2pkxhtux5hizyahwd6hy36yct5znt6u6ewo4fojvgy@zn4gkroozwes>
+ <Z9Ih4yZoepxhmmH5Jrd1bCz35l6iPh5g2J61q2NR7loEdQb_aRquKdD1xLaE_5SPMlkBM8zLdVfdPvvKuNBrGQ==@protonmail.internalid>
+ <3E218629-EA2C-4FD1-B2DB-AA6E40D422EE@flyingcircus.io>
+ <g7wcgkxdlbshztwihayxma7xkxe23nic7zcreb3eyg3yeld5cu@yk7l2e4ibajk>
+ <M0QJfqa7-6M2vnPhyeyy36xCOmCEL83O7lj-ky1DXTqQXa677-oE8C_nAsBCBglBp_6k7vLeN4a2nJ6R3JuQxw==@protonmail.internalid>
+ <01751810-C689-4270-8797-FC0D632B6AB6@flyingcircus.io>
+ <hoszywa5az7z4yxubonbhs2p2ysnut3s7jjnkd7ckz4sgdyqw2@ifuor5qnl7yu>
+ <B380AC75-6B14-4EC9-A398-61A2D33033A7@flyingcircus.io>
+To: Carlos Maiolino <cem@kernel.org>
 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> On 17. Jun 2025, at 07:44, Christian Theune <ct@flyingcircus.io> =
+wrote:
+>=20
+>=20
+>=20
+>> On 16. Jun 2025, at 14:15, Carlos Maiolino <cem@kernel.org> wrote:
+>>=20
+>> On Mon, Jun 16, 2025 at 12:09:21PM +0200, Christian Theune wrote:
+>>=20
+>>>=20
+>>> # xfs_info /tmp/
+>>> meta-data=3D/dev/vdb1              isize=3D512    agcount=3D8, =
+agsize=3D229376 blks
+>>>        =3D                       sectsz=3D512   attr=3D2, =
+projid32bit=3D1
+>>>        =3D                       crc=3D1        finobt=3D1, =
+sparse=3D1, rmapbt=3D0
+>>>        =3D                       reflink=3D0    bigtime=3D0 =
+inobtcount=3D0 nrext64=3D0
+>>>        =3D                       exchange=3D0
+>>> data     =3D                       bsize=3D4096   blocks=3D1833979, =
+imaxpct=3D25
+>>>        =3D                       sunit=3D1024   swidth=3D1024 blks
+>>> naming   =3Dversion 2              bsize=3D4096   ascii-ci=3D0, =
+ftype=3D1, parent=3D0
+>>> log      =3Dinternal log           bsize=3D4096   blocks=3D2560, =
+version=3D2
+>>>        =3D                       sectsz=3D512   sunit=3D8 blks, =
+lazy-count=3D1
+>>> realtime =3Dnone                   extsz=3D4096   blocks=3D0, =
+rtextents=3D0
+>>=20
+>> This is worrisome. Your journal size is 10MiB, this can easily keep =
+stalling IO
+>> waiting for log space to be freed, depending on the nature of the =
+machine this
+>> can be easily triggered. I'm curious though how you made this FS, =
+because 2560
+>> is below the minimal log size that xfsprogs allows since (/me goes =
+look
+>> into git log) 2022, xfsprogs 5.15.
+>>=20
+>> FWIW, one of the reasons the minimum journal log size has been =
+increased is the
+>> latency/stalls that happens when waiting for free log space, which is =
+exactly
+>> the symptom you've been seeing.
+>>=20
+>> I'd suggest you to check the xfsprogs commit below if you want more =
+details,
+>> but if this is one of the filesystems where you see the stalls, this =
+might very
+>> well be the cause:
+>=20
+> Interesting catch! I=E2=80=99ll double check this against our fleet =
+and the affected machines and will dive into the traffic patterns of the =
+specific underlying devices.
+>=20
+> This filesystem is used for /tmp and is getting created fresh after a =
+=E2=80=9Ccold boot=E2=80=9D from our hypervisor. It could be that a =
+number of VMs have only seen warm reboots for a couple of years but get =
+kernel upgrades with warm reboots quite regularly. We=E2=80=99re in the =
+process of changing the /tmp filesystem creation to happen fresh during =
+initrd so that the VM internal xfsprogs will more closely match the =
+guest kernel.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x ed5915cfce2abb9a553c3737badebd4a11d6c9c7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025061755-peso-ravage-c101@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+I=E2=80=99ve checked the log size. A number of machines with very long =
+uptimes have this outdated 10 MiB size. Many machines with less uptime =
+have larger sizes (multiple hundred megabytes). Checking our codebase we =
+let xfsprogs do their thing and don=E2=80=99t fiddle with the defaults.
 
-Possible dependencies:
+The log sizes of the affected machines weren=E2=80=99t all set to 10 MiB =
+- even machines with larger sizes were affected.
 
+I=E2=80=99ll follow up - as promised - with further analysis whether IO =
+starvation from the underlying storage may have occured.
 
+Christian
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From ed5915cfce2abb9a553c3737badebd4a11d6c9c7 Mon Sep 17 00:00:00 2001
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Date: Thu, 22 May 2025 09:41:27 +0300
-Subject: [PATCH] Revert "drm/i915/gem: Allow EXEC_CAPTURE on recoverable
- contexts on DG1"
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-This reverts commit d6e020819612a4a06207af858e0978be4d3e3140.
-
-The IS_DGFX check was put in place because error capture of buffer
-objects is expected to be broken on devices with VRAM.
-
-Userspace fix[1] to the impacted media driver has been submitted, merged
-and a new driver release is out as 25.2.3 where the capture flag is
-dropped on DG1 thus unblocking the usage of media driver on DG1.
-
-[1] https://github.com/intel/media-driver/commit/93c07d9b4b96a78bab21f6acd4eb863f4313ea4a
-
-Cc: stable@vger.kernel.org # v6.0+
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20250522064127.24293-1-joonas.lahtinen@linux.intel.com
-[Joonas: Update message to point out the merged userspace fix]
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-(cherry picked from commit d2dc30e0aa252830f908c8e793d3139d51321370)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index ea9d5063ce78..ca7e9216934a 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -2013,7 +2013,7 @@ static int eb_capture_stage(struct i915_execbuffer *eb)
- 			continue;
- 
- 		if (i915_gem_context_is_recoverable(eb->gem_context) &&
--		    GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 10))
-+		    (IS_DGFX(eb->i915) || GRAPHICS_VER_FULL(eb->i915) > IP_VER(12, 0)))
- 			return -EINVAL;
- 
- 		for_each_batch_create_order(eb, j) {
+--=20
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
 
 
