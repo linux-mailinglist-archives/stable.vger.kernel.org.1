@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D30ADD6BC
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:36:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84849ADD6E8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A77A84070F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:28:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7C9401AD6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EF02E8DFE;
-	Tue, 17 Jun 2025 16:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FB72EE5FB;
+	Tue, 17 Jun 2025 16:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rckrtljH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJV6Qewz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B5D221F14;
-	Tue, 17 Jun 2025 16:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9602EE288;
+	Tue, 17 Jun 2025 16:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177438; cv=none; b=BExdj1M9HoLDahAlJ/hUUHyeTiP4G2LkjhPaxWNszYnxre5vv9CSLwXJRC6DlPFf/vMXxaGOTUgpYf/5I+lXoES6wUJ4Cfmi/mkSG+qBMNH7C2by7TRzU9/erdUFjio4rvJ1zULB3TPhVDwiqftKh6JQQA0+dHmVD7hZ4iLT2fw=
+	t=1750177280; cv=none; b=dnDEbqcXR5h7Rh8vAFX1yXATIQa7kjv/DOtKDZBTCYVbtvMTez1fBJ5HX8x44vHJPXx905+NV6mfG0vBpQW6XT8I8mwvXaZmuFdgfSuvjwG5vBYqWlQSHcKDyFLG0U4ef7CSdwfoeFx5kKMnFlBsaEPY6b7JMINnamv1ERqGmCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177438; c=relaxed/simple;
-	bh=AQTdHGlY25lJX1rWElR3fuMSyYNBVAvzg54lwdEuWyM=;
+	s=arc-20240116; t=1750177280; c=relaxed/simple;
+	bh=z/bf9SVipV+Pi5bbk7KiYlA7knE3C7LbN5MqnhhXMVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSgpVebU3xwhEXHW1QMBnuA0y9ezXFikanj8zwxhBdbjTi8vaf+fNTH1lEk547ZF+W0M5B5cFIam6mGSN/JFrXTIcpw+HubMJA/9hVwmlbnq4Nf/pAw3xzN1PbM/+iKoo2v5qe3MzXLQE1Soi/+7Va0NDqfeT1YI68rsy+4H9EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rckrtljH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA04C4CEF0;
-	Tue, 17 Jun 2025 16:23:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T6f/TzMXes2Fp969fxIkc6IUK0DdSj4J1HgXZJvIQ+W7hTxA6txuhXVWLdcLOKb4uWNS/CTa6uu39flsAHSuVbWM4OsxFG101fsktK1bHxbVhbZmcFnbpNT6w+iEMqxpIOMmMQ8JO7TPzFcXHGugSsRl3ezFXjQ3aFOKUl6JO00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJV6Qewz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFBDC4CEE7;
+	Tue, 17 Jun 2025 16:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177438;
-	bh=AQTdHGlY25lJX1rWElR3fuMSyYNBVAvzg54lwdEuWyM=;
+	s=korg; t=1750177280;
+	bh=z/bf9SVipV+Pi5bbk7KiYlA7knE3C7LbN5MqnhhXMVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rckrtljH/03HVuJFdE/LUT1rz+yfIx0+f28uIq8RO/nLO8S9FKRHMZIBYTX6qjD6B
-	 Ru4qawMaohctz/W+J5O5FSGWrYKhHTcAgeQcGEEai5UDft+ORidj8tjKLkJqevFRCq
-	 0MOylrIXP+kHXe0GO/GP3TjWu/jRSliJEFp/vxvU=
+	b=DJV6QewzCsArntziCyCWseZ1/naVzxPs3e9ZD2HxODx7n0ZflO/VVqCO/BDqJd9JL
+	 GyfxOZ6IpxXEOKmxBO3KNzgqLCMVveWsdkB6cdi55f4bld+3E5aqLS8S5063VdP+ii
+	 ZgKT694ZTdlwFuWoY72/wZuwWTjY/maGMhLvKxJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/512] dmaengine: ti: Add NULL check in udma_probe()
-Date: Tue, 17 Jun 2025 17:24:41 +0200
-Message-ID: <20250617152432.379124964@linuxfoundation.org>
+Subject: [PATCH 6.12 316/512] PCI/ACPI: Fix allocated memory release on error in pci_acpi_scan_root()
+Date: Tue, 17 Jun 2025 17:24:42 +0200
+Message-ID: <20250617152432.418115840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -62,47 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-[ Upstream commit fd447415e74bccd7362f760d4ea727f8e1ebfe91 ]
+[ Upstream commit 631b2af2f35737750af284be22e63da56bf20139 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-udma_probe() does not check for this case, which results in a NULL
-pointer dereference.
+In the pci_acpi_scan_root() function, when creating a PCI bus fails,
+we need to free up the previously allocated memory, which can avoid
+invalid memory usage and save resources.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
-
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Nathan Lynch <nathan.lynch@amd.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250402023900.43440-1-bsdhenrymartin@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 789befdfa389 ("arm64: PCI: Migrate ACPI related functions to pci-acpi.c")
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20250430060603.381504-1-qiaozhe@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-udma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pci-acpi.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index 7d89385c3c450..38b54719587cf 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -5572,7 +5572,8 @@ static int udma_probe(struct platform_device *pdev)
- 		uc->config.dir = DMA_MEM_TO_MEM;
- 		uc->name = devm_kasprintf(dev, GFP_KERNEL, "%s chan%d",
- 					  dev_name(dev), i);
--
-+		if (!uc->name)
-+			return -ENOMEM;
- 		vchan_init(&uc->vc, &ud->ddev);
- 		/* Use custom vchan completion handling */
- 		tasklet_setup(&uc->vc.task, udma_vchan_complete);
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index af370628e5839..b78e0e4173244 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -1676,24 +1676,19 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		return NULL;
+ 
+ 	root_ops = kzalloc(sizeof(*root_ops), GFP_KERNEL);
+-	if (!root_ops) {
+-		kfree(ri);
+-		return NULL;
+-	}
++	if (!root_ops)
++		goto free_ri;
+ 
+ 	ri->cfg = pci_acpi_setup_ecam_mapping(root);
+-	if (!ri->cfg) {
+-		kfree(ri);
+-		kfree(root_ops);
+-		return NULL;
+-	}
++	if (!ri->cfg)
++		goto free_root_ops;
+ 
+ 	root_ops->release_info = pci_acpi_generic_release_info;
+ 	root_ops->prepare_resources = pci_acpi_root_prepare_resources;
+ 	root_ops->pci_ops = (struct pci_ops *)&ri->cfg->ops->pci_ops;
+ 	bus = acpi_pci_root_create(root, root_ops, &ri->common, ri->cfg);
+ 	if (!bus)
+-		return NULL;
++		goto free_cfg;
+ 
+ 	/* If we must preserve the resource configuration, claim now */
+ 	host = pci_find_host_bridge(bus);
+@@ -1710,6 +1705,14 @@ struct pci_bus *pci_acpi_scan_root(struct acpi_pci_root *root)
+ 		pcie_bus_configure_settings(child);
+ 
+ 	return bus;
++
++free_cfg:
++	pci_ecam_free(ri->cfg);
++free_root_ops:
++	kfree(root_ops);
++free_ri:
++	kfree(ri);
++	return NULL;
+ }
+ 
+ void pcibios_add_bus(struct pci_bus *bus)
 -- 
 2.39.5
 
