@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-153388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A4EADD49E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A670EADD7FD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8660719464F2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 491E856035A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0682ECD1C;
-	Tue, 17 Jun 2025 15:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F3C2ECD33;
+	Tue, 17 Jun 2025 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7rwmHqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAVitf4D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DE82ECD1B;
-	Tue, 17 Jun 2025 15:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A731E1C22;
+	Tue, 17 Jun 2025 16:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175795; cv=none; b=qh5xID1ErZLBXv+XkP9VW6jktg2w8nZ0AP7WmMTW39wakMi9PRspWlQPZM2dCXEAwEtw8o4Tfw8x20osqiNaKJaG7xjnvq4AjglvLg7BNuI9S78lEQX6+8S0RReJLNHkMHZTS4US7m0eGMURCw+JAKQR8EIzl9q9+RXz5l/I1Uc=
+	t=1750178189; cv=none; b=gtCKJXMI159BhmE5GrPOqGEoM1sSBC/bmcxlR9rW9AfKRR8MrQpQk5d5yL4MW3dRaUh6SksGOjlePHjx9OHsW2CppsQSVCSr+vub4garDUpswZ+kQWeu142/EvZOKd0itI92OZH2BFOLr6gocQryKM2a5yrT7/nf4oJ+Vh3VkB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175795; c=relaxed/simple;
-	bh=SjwfCq2W6Z95zm6X78bnomxmxNUAX9eOq+Mh/LU6cds=;
+	s=arc-20240116; t=1750178189; c=relaxed/simple;
+	bh=0TNpG1Rir+NbDmO+ZLArgEY3o9Ka7kuFMIH7bfo79fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNi2Q1UEacIkOBxSA7tqBc3Ilmnj+xieNKFOLNKlu/Z02chRwzN0vQNzLfFZpGYLzfbnqe4Qemu0AEOmdGET4dU6yEKjIjPbiaGJiF4g5ouBEF6M5JWpkIGkTNTNjZZ3/fWCXNZjRHlKafL0LSMWXr8oA2cW1KoYblvqBHQwUQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7rwmHqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F85C4CEE3;
-	Tue, 17 Jun 2025 15:56:34 +0000 (UTC)
+	 MIME-Version; b=PQcji9DK7hxBAeYHydJ9X2qelLp65S/cE8m+bxtReispmBhsSM+H9iC0speDkYNPTO4t99ojREBWJ8hn09cYx4RgQBXluaNXQJaB8rsuyVl0v25gLBJ6+lLglpaUMXEHChZVzAkOndfI81u4a8I5fAM4PlEVv2BeY5M5AN6Tr3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAVitf4D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBA8C4CEE3;
+	Tue, 17 Jun 2025 16:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175795;
-	bh=SjwfCq2W6Z95zm6X78bnomxmxNUAX9eOq+Mh/LU6cds=;
+	s=korg; t=1750178189;
+	bh=0TNpG1Rir+NbDmO+ZLArgEY3o9Ka7kuFMIH7bfo79fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7rwmHqXuAWL1HFG6elSz7XWTwJZJGXo07w6DG3eL+S5Tyn0/ONDYHTkozoHoOCF7
-	 VaSBItcHdRbeJ69eA+ttq9el/a8z5f/qbfHSU1hBGS2zswUPeRcvpiMae3zPCLDyx6
-	 pmi8/x8SyCmfVjhdItXGO3RksrCRv+k8wCE5DIaw=
+	b=rAVitf4Dox4jedgz0ZH/qxQJgZKbaXXSiPEM2EskuAF91KpvVbVucdoMLZ7uRnddP
+	 7l4SDuvwoUHcaJ/ssCu7XOVQSTuiPMjJjqRRme9ptWhC4yd8iRK3YXpl/mWWC+e3W0
+	 z2uhwMoqfSk5C9xC7MH/LaL/m3Gjr0yoYBa/Klkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Frank Ch. Eigler" <fche@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/512] ktls, sockmap: Fix missing uncharge operation
+Subject: [PATCH 6.15 422/780] perf build: Warn when libdebuginfod devel files are not available
 Date: Tue, 17 Jun 2025 17:22:10 +0200
-Message-ID: <20250617152426.256160038@linuxfoundation.org>
+Message-ID: <20250617152508.659429609@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +71,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 79f0c39ae7d3dc628c01b02f23ca5d01f9875040 ]
+[ Upstream commit 4fce4b91fd1aabb326c46e237eb4b19ab72598f8 ]
 
-When we specify apply_bytes, we divide the msg into multiple segments,
-each with a length of 'send', and every time we send this part of the data
-using tcp_bpf_sendmsg_redir(), we use sk_msg_return_zero() to uncharge the
-memory of the specified 'send' size.
+While working on 'perf version --build-options' I noticed that:
 
-However, if the first segment of data fails to send, for example, the
-peer's buffer is full, we need to release all of the msg. When releasing
-the msg, we haven't uncharged the memory of the subsequent segments.
+  $ perf version --build-options
+  perf version 6.15.rc1.g312a07a00d31
+                   aio: [ on  ]  # HAVE_AIO_SUPPORT
+                   bpf: [ on  ]  # HAVE_LIBBPF_SUPPORT
+         bpf_skeletons: [ on  ]  # HAVE_BPF_SKEL
+            debuginfod: [ OFF ]  # HAVE_DEBUGINFOD_SUPPORT
+  <SNIP>
 
-This modification does not make significant logical changes, but only
-fills in the missing uncharge places.
+And looking at tools/perf/Makefile.config I also noticed that it is not
+opt-in, meaning we will attempt to build with it in all normal cases.
 
-This issue has existed all along, until it was exposed after we added the
-apply test in test_sockmap:
-commit 3448ad23b34e ("selftests/bpf: Add apply_bytes test to test_txmsg_redir_wait_sndmem in test_sockmap")
+So add the usual warning at build time to let the user know that
+something recommended is missing, now we see:
 
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
-Closes: https://lore.kernel.org/bpf/aAmIi0vlycHtbXeb@pop-os.localdomain/T/#t
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://lore.kernel.org/r/20250425060015.6968-2-jiayuan.chen@linux.dev
+  Makefile.config:563: No elfutils/debuginfod.h found, no debuginfo server support, please install elfutils-debuginfod-client-devel or equivalent
+
+And after following the recommendation:
+
+  $ perf check feature debuginfod
+            debuginfod: [ on  ]  # HAVE_DEBUGINFOD_SUPPORT
+  $ ldd ~/bin/perf | grep debuginfo
+	libdebuginfod.so.1 => /lib64/libdebuginfod.so.1 (0x00007fee5cf5f000)
+  $
+
+With this feature on several perf tools will fetch what is needed and
+not require all the contents of the debuginfo packages, for instance:
+
+  # rpm -qa | grep kernel-debuginfo
+  # pahole --running_kernel_vmlinux
+  pahole: couldn't find a vmlinux that matches the running kernel
+  HINT: Maybe you're inside a container or missing a debuginfo package?
+  #
+  # perf trace -e open* perf probe --vars icmp_rcv
+      0.000 ( 0.005 ms): perf/97391 openat(dfd: CWD, filename: "/etc/ld.so.cache", flags: RDONLY|CLOEXEC) = 3
+      0.014 ( 0.004 ms): perf/97391 openat(dfd: CWD, filename: "/lib64/libm.so.6", flags: RDONLY|CLOEXEC) = 3
+  <SNIP>
+  32130.100 ( 0.008 ms): perf/97391 openat(dfd: CWD, filename: "/root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo") = 3
+  <SNIP>
+  Available variables at icmp_rcv
+        @<icmp_rcv+0>
+                struct sk_buff* skb
+  <SNIP>
+  #
+  # pahole --running_kernel_vmlinux
+  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  # file /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, BuildID[sha1]=aa3c82b4a13f9c0e0301bebb20fe958c4db6f362, with debug_info, not stripped
+  # ls -la /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  -r--------. 1 root root 475401512 Mar 27 21:00 /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  #
+
+Then, cached:
+
+  # perf stat --null perf probe --vars icmp_rcv
+  Available variables at icmp_rcv
+        @<icmp_rcv+0>
+                struct sk_buff* skb
+
+   Performance counter stats for 'perf probe --vars icmp_rcv':
+
+       0.671389041 seconds time elapsed
+
+       0.519176000 seconds user
+       0.150860000 seconds sys
+
+Fixes: c7a14fdcb3fa7736 ("perf build-ids: Fall back to debuginfod query if debuginfo not found")
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Frank Ch. Eigler <fche@redhat.com>
+Link: https://lore.kernel.org/r/Z_dkNDj9EPFwPqq1@gmail.com
+[ Folded patch from Ingo to have the debian/ubuntu devel package added build warning message ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/Makefile.config | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index b3cae4dd4f499..8fb5925f2389e 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -908,6 +908,13 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
- 					    &msg_redir, send, flags);
- 		lock_sock(sk);
- 		if (err < 0) {
-+			/* Regardless of whether the data represented by
-+			 * msg_redir is sent successfully, we have already
-+			 * uncharged it via sk_msg_return_zero(). The
-+			 * msg->sg.size represents the remaining unprocessed
-+			 * data, which needs to be uncharged here.
-+			 */
-+			sk_mem_uncharge(sk, msg->sg.size);
- 			*copied -= sk_msg_free_nocharge(sk, &msg_redir);
- 			msg->sg.size = 0;
- 		}
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index e0c20a5c19cfe..d1ea7bf449647 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -560,6 +560,8 @@ ifndef NO_LIBELF
+     ifeq ($(feature-libdebuginfod), 1)
+       CFLAGS += -DHAVE_DEBUGINFOD_SUPPORT
+       EXTLIBS += -ldebuginfod
++    else
++      $(warning No elfutils/debuginfod.h found, no debuginfo server support, please install libdebuginfod-dev/elfutils-debuginfod-client-devel or equivalent)
+     endif
+   endif
+ 
 -- 
 2.39.5
 
