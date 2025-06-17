@@ -1,53 +1,64 @@
-Return-Path: <stable+bounces-154191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BC8ADD8F6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E638ADD899
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017FD5A0B08
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87DD22C1D99
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F13A2EE293;
-	Tue, 17 Jun 2025 16:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5B92ED855;
+	Tue, 17 Jun 2025 16:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWhu/sU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIdJZUzr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8552EE28B;
-	Tue, 17 Jun 2025 16:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462142CCC5;
+	Tue, 17 Jun 2025 16:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178396; cv=none; b=c3riDb3Cypfn96fzzcDtmfivSERz7/netWEIq4W6/JxVIj0ojB2M0WzXOiiNy29XZ1er+lteCEm4LKofUTVgkdXzaTL6wZzeTijkEdh8uZ6qtbPyXIYQ1Yej6P1Ae9MqWlt/tKCQ2z5hYqB7fcrrfuN3JiSxGK6M4FCu+VCjJw0=
+	t=1750178249; cv=none; b=O+iPmnZ4I2uNhXn7JzoekWS98O2o10iX7+lVJ11V1RBgFXQhh7R4g19+qOWfl4GNRiuXLA5Nf8ach/1vavTSkOApuVeeGmwbnTbw2FS2z9xgZS5yD3AecdcgpEvm/nMBUwHe4zqSzkQzY2SheBmhQxH4BIoocSVJng84Uu77QZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178396; c=relaxed/simple;
-	bh=JKbsWkk7NPSjgpOEjV9kz4Hzny2E62wY907YoCyAIDg=;
+	s=arc-20240116; t=1750178249; c=relaxed/simple;
+	bh=jNm+qWDLcQxG5n4S4FxFGhFm0MH7Y0l0U61wIy0M3uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOgxFH6sxA1I4b55MnPHOtKuDmkRbmnB/DGeDcWHQx8lK+piRttYiFaL3WhqYTya5UBB1M97R+++15ysQQ6s0+PMOcxSBCo025JWEAd4jZ8utqW51N3pMX2YeU0Y4Cjo62QoWHKU27KR0UOdMAQBwXElsxXAe9p3E1fu4+WkKZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWhu/sU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2265DC4CEE3;
-	Tue, 17 Jun 2025 16:39:55 +0000 (UTC)
+	 MIME-Version; b=awUxBmN2SU7QIua5+hwAsfn5o3i/lFIuwFrijtmjhW3ffkM8ewrtUa05h4tTDXbDWbnk+En0CPfZIZuhnv9g9TwdWh+JsBgsCd8v0BkyM14Sozo5Xyiqk+clp4OYha7kFVfkQ5bSSu2LrqestYojSqWEES2iPVkc4qft07uiN/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIdJZUzr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F60AC4CEE3;
+	Tue, 17 Jun 2025 16:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178396;
-	bh=JKbsWkk7NPSjgpOEjV9kz4Hzny2E62wY907YoCyAIDg=;
+	s=korg; t=1750178249;
+	bh=jNm+qWDLcQxG5n4S4FxFGhFm0MH7Y0l0U61wIy0M3uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWhu/sU4/Sh3wyT33Rmb3F2TspqNj/2+fUo/pQA89ndOF/ejpRl+Gatu/+2yjMPL6
-	 /IvUsS72khV9ddojcOtVtySxE/nWF2iPzIkF8L/ZZlBRCUzJhP+J5igyBFnvzY/4F9
-	 TJm3+0fOZwzU9Hj/BtkduShrKfEJjKSkugT5Rw30=
+	b=iIdJZUzrNFyvGMYOgpjSaxHEMBV+aZuLWCSSaN1bfXWbt7u9uy9Ocl6lEzEjt8PAr
+	 +rKtM0Ciu+MtJlRYSfz7m21Ddx/thC7ncSfPBY82jBkVivJJywXNVLK706G75fpJdP
+	 qxa9qDKzwOsfNmuyJ+/x9JHIO0MjGuin3bnHxLnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sean Christopherson <seanjc@google.com>,
+	Stephane Eranian <eranian@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 432/780] x86/irq: Ensure initial PIR loads are performed exactly once
-Date: Tue, 17 Jun 2025 17:22:20 +0200
-Message-ID: <20250617152509.058833820@linuxfoundation.org>
+Subject: [PATCH 6.15 433/780] perf tool_pmu: Fix aggregation on duration_time
+Date: Tue, 17 Jun 2025 17:22:21 +0200
+Message-ID: <20250617152509.101604690@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,37 +77,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 600e9606046ac3b9b7a3f0500d08a179df84c45e ]
+[ Upstream commit 68cb1567439fa325ba980f3b5b67f95d3953eafd ]
 
-Ensure the PIR is read exactly once at the start of handle_pending_pir(),
-to guarantee that checking for an outstanding posted interrupt in a given
-chuck doesn't reload the chunk from the "real" PIR.  Functionally, a reload
-is benign, but it would defeat the purpose of pre-loading into a copy.
+evsel__count_has_error() fails counters when the enabled or running time
+are 0. The duration_time event reads 0 when the cpu_map_idx != 0 to
+avoid aggregating time over CPUs. Change the enable and running time
+to always have a ratio of 100% so that evsel__count_has_error won't
+fail.
 
-Fixes: 1b03d82ba15e ("x86/irq: Install posted MSI notification handler")
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250401163447.846608-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Before:
+```
+$ sudo /tmp/perf/perf stat --per-core -a -M UNCORE_FREQ sleep 1
+
+ Performance counter stats for 'system wide':
+
+S0-D0-C0              1      2,615,819,485      UNC_CLOCK.SOCKET                 #     2.61 UNCORE_FREQ
+S0-D0-C0              2      <not counted>      duration_time
+
+       1.002111784 seconds time elapsed
+```
+
+After:
+```
+$ perf stat --per-core -a -M UNCORE_FREQ sleep 1
+
+ Performance counter stats for 'system wide':
+
+S0-D0-C0              1        758,160,296      UNC_CLOCK.SOCKET                 #     0.76 UNCORE_FREQ
+S0-D0-C0              2      1,003,438,246      duration_time
+
+       1.002486017 seconds time elapsed
+```
+
+Note: the metric reads the value a different way and isn't impacted.
+
+Fixes: 240505b2d0adcdc8 ("perf tool_pmu: Factor tool events into their own PMU")
+Reported-by: Stephane Eranian <eranian@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250423050358.94310-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/tool_pmu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 81f9b78e0f7ba..6cd5d2d6c58af 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -419,7 +419,7 @@ static __always_inline bool handle_pending_pir(u64 *pir, struct pt_regs *regs)
- 	bool handled = false;
+diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
+index 97b327d1ce4a0..727a10e3f9900 100644
+--- a/tools/perf/util/tool_pmu.c
++++ b/tools/perf/util/tool_pmu.c
+@@ -486,8 +486,14 @@ int evsel__tool_pmu_read(struct evsel *evsel, int cpu_map_idx, int thread)
+ 		delta_start *= 1000000000 / ticks_per_sec;
+ 	}
+ 	count->val    = delta_start;
+-	count->ena    = count->run = delta_start;
+ 	count->lost   = 0;
++	/*
++	 * The values of enabled and running must make a ratio of 100%. The
++	 * exact values don't matter as long as they are non-zero to avoid
++	 * issues with evsel__count_has_error.
++	 */
++	count->ena++;
++	count->run++;
+ 	return 0;
+ }
  
- 	for (i = 0; i < 4; i++)
--		pir_copy[i] = pir[i];
-+		pir_copy[i] = READ_ONCE(pir[i]);
- 
- 	for (i = 0; i < 4; i++) {
- 		if (!pir_copy[i])
 -- 
 2.39.5
 
