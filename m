@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-153087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6220ADD28B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF82BADD246
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:40:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714097ABA74
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:39:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49CBA17D73F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3770C2ECD2F;
-	Tue, 17 Jun 2025 15:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72862ECD2A;
+	Tue, 17 Jun 2025 15:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNkoOPrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1AGOB8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63632EB5AB;
-	Tue, 17 Jun 2025 15:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47852E9753;
+	Tue, 17 Jun 2025 15:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174824; cv=none; b=htjClFQgeH9iIs8DytByfYmGSG/F6NSrQHj8wn9J6oY2nOcu+yu+5t8ppoEtnlP99JMCu3scKVxsurLZ6Lhum68mHrFrcxW8eVvdAx3YyONhcEZ5W5Gom6CEFCwYzuIezsPo+OTwY0o/ZZziN50fDnDm7c76jfTv+GUPLMYB1D0=
+	t=1750174833; cv=none; b=N0sdgycOt6+cO73sgclXQ0eOapQtnd9NSnbiBH92vIvRlpiu19BeedOdoR8qwz7gHXYADu8Cq3TXtUeeQmUanO+YX34q8cQFSINPkY6cG3SIoQTCxwcocrijrSYwMo47TO5R/djS6XsnEdSmV9CQu3Sw4/YNK2e2aTqid3ja7y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174824; c=relaxed/simple;
-	bh=h1tAG1q7Xcsghly2q3v90Wyowi5VvGLdbSxgpQcpAzE=;
+	s=arc-20240116; t=1750174833; c=relaxed/simple;
+	bh=ivixVKyU5Pu9o7zJHPcAEo9PbpDOiiHUM9l4W9uw8/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruLAEh0xym6qxCqPo/yQd+zLEth9Rg65g9Cb52Eavt1xhDRH/p+W+JKzn9zCE19AuW4kkRqpdL9J8JPsb46Z0J2gTd4hbB9gNWoyKihrJaF5Orr/CFqdvmKPq+LPsGtXtv535+ICJJa0WBMZ/uztc+IpS1HsZuHCVHlpMcIUAlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNkoOPrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B6CC4CEE7;
-	Tue, 17 Jun 2025 15:40:23 +0000 (UTC)
+	 MIME-Version; b=XFx4tZ9E/nIMNfBj3YnMXAqcxqtoeElY4bfIDZeYHrSXCtkVHaZy12z8F73/0x0Fy/1+DiIyOFkIXeg+rw7S9dqy38+mNlgWmWUrbbmQsEtgT0l5dvGK9Nx20jvMreeMhSRS74ACTEP6nrMb41oZ/bTqlW0LBkLrVennuXQWGp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1AGOB8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1421DC4CEE7;
+	Tue, 17 Jun 2025 15:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750174823;
-	bh=h1tAG1q7Xcsghly2q3v90Wyowi5VvGLdbSxgpQcpAzE=;
+	s=korg; t=1750174833;
+	bh=ivixVKyU5Pu9o7zJHPcAEo9PbpDOiiHUM9l4W9uw8/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNkoOPrx/ww6XXgGtUr83h2xcrbooaN5KLmSyU850ScSl/FdtSJgjYSRkVleLWhqW
-	 qAj9aRClExNJqHR3xQ7tojZWn4KsTGw8gwaH/A345WXP3gWheX1um2aik6m6ExfNXo
-	 a4KmcbnreaQojN3uDMOA9H/+ZcTzmivK0xatrgWk=
+	b=t1AGOB8FErS2VWMWgICZFRHQ+FXuJh/WMBbvFbrVmyN7JzPa/LJ+/UXp9gVR2kBMt
+	 nE08ys8bq+rNd64/dtU1NmqNT3e8wCJPQQIJZLyZ1hXsMCd+ohctCusKt3Bln/fMoL
+	 oWCYZB9dPrbLY6gM3uF4vHPauVi9HZEHztXDYCGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Annie Li <jiayanli@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nam Cao <namcao@linutronix.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 024/780] x86/microcode/AMD: Do not return error when microcode update is not necessary
-Date: Tue, 17 Jun 2025 17:15:32 +0200
-Message-ID: <20250617152452.493239051@linuxfoundation.org>
+Subject: [PATCH 6.15 025/780] selftests: coredump: Properly initialize pointer
+Date: Tue, 17 Jun 2025 17:15:33 +0200
+Message-ID: <20250617152452.533004861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,43 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Annie Li <jiayanli@google.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit b43dc4ab097859c24e2a6993119c927cffc856aa ]
+[ Upstream commit e194d2067c958827810a7a7282dff8773633ad8c ]
 
-After
+The buffer pointer "line" is not initialized. This pointer is passed to
+getline().
 
-  6f059e634dcd("x86/microcode: Clarify the late load logic"),
+It can still work if the stack is zero-initialized, because getline() can
+work with a NULL pointer as buffer.
 
-if the load is up-to-date, the AMD side returns UCODE_OK which leads to
-load_late_locked() returning -EBADFD.
+But this is obviously broken. This bug shows up while running the test on a
+riscv64 machine.
 
-Handle UCODE_OK in the switch case to avoid this error.
+Fix it by properly initializing the pointer.
 
-  [ bp: Massage commit message. ]
-
-Fixes: 6f059e634dcd ("x86/microcode: Clarify the late load logic")
-Signed-off-by: Annie Li <jiayanli@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250430053424.77438-1-jiayanli@google.com
+Fixes: 15858da53542 ("selftests: coredump: Add stackdump test")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/4fb9b6fb3e0040481bacc258c44b4aab5c4df35d.1744383419.git.namcao@linutronix.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c | 2 ++
+ tools/testing/selftests/coredump/stackdump_test.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 079f046ee26d1..e8021d3e58824 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -696,6 +696,8 @@ static int load_late_locked(void)
- 		return load_late_stop_cpus(true);
- 	case UCODE_NFOUND:
- 		return -ENOENT;
-+	case UCODE_OK:
-+		return 0;
- 	default:
- 		return -EBADFD;
+diff --git a/tools/testing/selftests/coredump/stackdump_test.c b/tools/testing/selftests/coredump/stackdump_test.c
+index 137b2364a0820..c23cf95c3f6df 100644
+--- a/tools/testing/selftests/coredump/stackdump_test.c
++++ b/tools/testing/selftests/coredump/stackdump_test.c
+@@ -138,10 +138,12 @@ TEST_F(coredump, stackdump)
+ 	ASSERT_NE(file, NULL);
+ 
+ 	/* Step 4: Make sure all stack pointer values are non-zero */
++	line = NULL;
+ 	for (i = 0; -1 != getline(&line, &line_length, file); ++i) {
+ 		stack = strtoull(line, NULL, 10);
+ 		ASSERT_NE(stack, 0);
  	}
++	free(line);
+ 
+ 	ASSERT_EQ(i, 1 + NUM_THREAD_SPAWN);
+ 
 -- 
 2.39.5
 
