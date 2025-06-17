@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA78ADD9FF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:12:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72585ADD8CB
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2083C19E4A5E
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 416564A1E72
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876B22FA638;
-	Tue, 17 Jun 2025 16:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8E02F3643;
+	Tue, 17 Jun 2025 16:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3Iod9CJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoWZnUr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438CD2FA626;
-	Tue, 17 Jun 2025 16:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F601285055;
+	Tue, 17 Jun 2025 16:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179281; cv=none; b=qf4VDqTCy/2x0/m50X8ynSLUf7e6n2LgbRQkd0LQ47Obi0PdfTrgNUROv3ZHuH4zniyPPsqcZxLKYAnOgP7pteKDP1tYHpgVZhh4iFMXvCoV6FE9KhADskHElg4NHb7cMC6Uq9lOBr6T5Tyj7McxhctUp8phNxKEyimGgpPsPuQ=
+	t=1750178030; cv=none; b=Kys8AuxSjTXr3a1qjNHqXDxPfdJ2aUHt/vcyj0t1Cb3OF0CPrIprXXAIxrhzIjBvkdB+xlSJXk12USj+XPqzSDH2eA7bSjiXZ00pRlY+zRQju92PdCqhoNTX7pMgD6YMfTPBPWP5ytmDVTqQlYbj1L2ITY2QG4+LWuZ5QdOKEuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179281; c=relaxed/simple;
-	bh=0iaFt0wYADB/0e1/GoR+TMk2rupVID6FsJSiS7ZW8Os=;
+	s=arc-20240116; t=1750178030; c=relaxed/simple;
+	bh=uO+fGwNm24vXdkCKobDWW5elWjgI9A7HdZczaP6rvbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnClG+wnwgSU7TSvnNW+4NUGk+unoknFCRvTL7UhXYaTPQe1aXOxCsd32FMezSnaUy3MjLqxAoxk/CjWNTmvKDwJF+3nVa9sNNCab3i4p1BTSfrA8g/IN/44TuEb+Xe/ADOGKsBJYNbPIPQe+HHimqt2lPxvD+uYzjQcX9Icgdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3Iod9CJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75551C4CEE3;
-	Tue, 17 Jun 2025 16:54:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c/kUnffaDLOwW9YPrs/oYFENyLeVNE+pU8QqbNEFCoptuMI22jGoZeOkc9gaoyNf8EX3zj7kJDBT+Zyx3SBec9utmZ6wUergZDOfV+ygB56/n1Ifs+cZLrqq9cRNd2+lb73JWtMpQ68r/4uMfS4Z7OfHZuhyK/zQsd/3MUwbFh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoWZnUr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A9FC4CEE3;
+	Tue, 17 Jun 2025 16:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179281;
-	bh=0iaFt0wYADB/0e1/GoR+TMk2rupVID6FsJSiS7ZW8Os=;
+	s=korg; t=1750178030;
+	bh=uO+fGwNm24vXdkCKobDWW5elWjgI9A7HdZczaP6rvbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3Iod9CJUczJaNkFe1b2zcubp1fhkt3Lbv2QXmwXfDJCJCBxXLovOqRlpJjCze/zH
-	 eQr5CoHpxAj4PAM3xfek1dfL2jhj2g3u9yqavIokAKaS6AJwvMKexE2NeU8L3SikAQ
-	 rBo8SBRpM9kQc7i37aM/osPv/E9jDMXNl1CxTiNA=
+	b=HoWZnUr2jQheG9RDQcIu7IvY9Rk3pD6ZOvBBQB9a5gIFfz0g55R5R9ijeUTKjuMkq
+	 RXqZ9hU3RCdezDOmB/R3h89QS33tOEQTVjNqgeaaPlOgRXweBt+zUJOOOCAPCEvteP
+	 t+EVHJrN5c/fzHTPh/fG5gkEE13/8E99GrNLP01Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 674/780] wifi: ath11k: dont wait when there is no vdev started
+Subject: [PATCH 6.12 416/512] dt-bindings: pwm: adi,axi-pwmgen: Fix clocks
 Date: Tue, 17 Jun 2025 17:26:22 +0200
-Message-ID: <20250617152518.917524084@linuxfoundation.org>
+Message-ID: <20250617152436.435526956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 3b6d00fa883075dcaf49221538230e038a9c0b43 ]
+[ Upstream commit e683131e64f71e957ca77743cb3d313646157329 ]
 
-For WMI_REQUEST_VDEV_STAT request, firmware might split response into
-multiple events dut to buffer limit, hence currently in
-ath11k_debugfs_fw_stats_process() we wait until all events received.
-In case there is no vdev started, this results in that below condition
-would never get satisfied
+Fix a shortcoming in the bindings that doesn't allow for a separate
+external clock.
 
-	((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started)
+The AXI PWMGEN IP block has a compile option ASYNC_CLK_EN that allows
+the use of an external clock for the PWM output separate from the AXI
+clock that runs the peripheral.
 
-finally the requestor would be blocked until wait time out.
+This was missed in the original bindings and so users were writing dts
+files where the one and only clock specified would be the external
+clock, if there was one, incorrectly missing the separate AXI clock.
 
-The same applies to WMI_REQUEST_BCN_STAT request as well due to:
+The correct bindings are that the AXI clock is always required and the
+external clock is optional (must be given only when HDL compile option
+ASYNC_CLK_EN=1).
 
-	((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs)
-
-Change to check the number of started vdev first: if it is zero, finish
-wait directly; if not, follow the old way.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250220082448.31039-4-quic_bqiang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 1edf2c2a2841 ("dt-bindings: pwm: Add AXI PWM generator")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250529-pwm-axi-pwmgen-add-external-clock-v3-2-5d8809a7da91@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/pwm/adi,axi-pwmgen.yaml     | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 27c93c0b4c223..ccf0e62c7d7ae 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -107,7 +107,7 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- {
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_pdev *pdev;
--	bool is_end;
-+	bool is_end = true;
- 	size_t total_vdevs_started = 0;
- 	int i;
+diff --git a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
+index 45e112d0efb46..5575c58357d6e 100644
+--- a/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
++++ b/Documentation/devicetree/bindings/pwm/adi,axi-pwmgen.yaml
+@@ -30,11 +30,19 @@ properties:
+     const: 3
  
-@@ -132,7 +132,9 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 				total_vdevs_started += ar->num_started_vdevs;
- 		}
+   clocks:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 2
++
++  clock-names:
++    minItems: 1
++    items:
++      - const: axi
++      - const: ext
  
--		is_end = ((++ar->fw_stats.num_vdev_recvd) == total_vdevs_started);
-+		if (total_vdevs_started)
-+			is_end = ((++ar->fw_stats.num_vdev_recvd) ==
-+				  total_vdevs_started);
+ required:
+   - reg
+   - clocks
++  - clock-names
  
- 		list_splice_tail_init(&stats->vdevs,
- 				      &ar->fw_stats.vdevs);
-@@ -151,7 +153,9 @@ void ath11k_debugfs_fw_stats_process(struct ath11k *ar, struct ath11k_fw_stats *
- 		/* Mark end until we reached the count of all started VDEVs
- 		 * within the PDEV
- 		 */
--		is_end = ((++ar->fw_stats.num_bcn_recvd) == ar->num_started_vdevs);
-+		if (ar->num_started_vdevs)
-+			is_end = ((++ar->fw_stats.num_bcn_recvd) ==
-+				  ar->num_started_vdevs);
+ unevaluatedProperties: false
  
- 		list_splice_tail_init(&stats->bcn,
- 				      &ar->fw_stats.bcn);
+@@ -43,6 +51,7 @@ examples:
+     pwm@44b00000 {
+         compatible = "adi,axi-pwmgen-2.00.a";
+         reg = <0x44b00000 0x1000>;
+-        clocks = <&spi_clk>;
++        clocks = <&fpga_clk>, <&spi_clk>;
++        clock-names = "axi", "ext";
+         #pwm-cells = <3>;
+     };
 -- 
 2.39.5
 
