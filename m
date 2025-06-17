@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E231ADD44D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2E9ADD8DC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA354406DF8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3D385A3367
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424232E92CD;
-	Tue, 17 Jun 2025 15:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC30D1A2632;
+	Tue, 17 Jun 2025 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpCaO4aI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGZGOwCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EC72ED852;
-	Tue, 17 Jun 2025 15:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CB4285059;
+	Tue, 17 Jun 2025 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175844; cv=none; b=JLnrmGtRwpX2SHuY/BCsdxHXORyRQYc/J8HMxhswIRnWMSKFAFnxmusNzbxl68npz09M6eVnOFjyBDPXmS4LqZZa9ejgL0PHYXDHom2bEayon9/CL2M5p5pfrA9MF+lORpy7u0BxxmTZJ1tDZUqtxj3zzpDYbpJqEZRqMrv9WPI=
+	t=1750179027; cv=none; b=S3pp1FboWDaOUe1BnQjqqgZLmwqf7G5Eryphhy7t+dNWbibnN5YFzcOCTMngmrsAG5sO3yzILdUquyEWzVVg5MPVQF2oXuH4CUmaiOxI3bLyFf8yZzTM3fnunXexCVX1QlvBtSryVejpkxvCvuuXbZLrS8b/br6nkZftkrJ47X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175844; c=relaxed/simple;
-	bh=LFm8LxF6HuOk43rwxJBgH50ZsMmF3Iqoz3YwfCIQcU4=;
+	s=arc-20240116; t=1750179027; c=relaxed/simple;
+	bh=/pZhvcBat39raKEwMyzITJqnYKu9SYyqO3XPsGN33QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSVzk2diYAjPgU2E+w6gumXAp4dA23sEmH6OBlPSjXR5FMTfYH4pc0+i/oSq0mJuDWZLUbbdjelGUUsd7q5pGxj9ZODehnrc1vxWJVlXnA5ySI5i+NMoWtEgy4buRvzPsP8XwpO8l9sVRDqqpmDRVMf2Kw6Id7fdDu47dV350Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpCaO4aI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2036CC4CEE3;
-	Tue, 17 Jun 2025 15:57:22 +0000 (UTC)
+	 MIME-Version; b=OG+2cju5DJr5UhLAcV7cutO08C75eDKoOVwgaNnnABXac2mf4TkVPjpSD3dq+/fJRBstExF0G7nslttk/WrUgcrgST6/bGVVK1PjOddaj4cIUxwweeGAGtJYGSKJIxCUyWWkw+Q72iMs3o0f0OAOBoT8rkOe2TLI/uQ6Hx6Gp4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGZGOwCf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A8DC4CEE3;
+	Tue, 17 Jun 2025 16:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175843;
-	bh=LFm8LxF6HuOk43rwxJBgH50ZsMmF3Iqoz3YwfCIQcU4=;
+	s=korg; t=1750179027;
+	bh=/pZhvcBat39raKEwMyzITJqnYKu9SYyqO3XPsGN33QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpCaO4aItjgytfztLnmleJtHHRpPKMUP4TFTDZtI/J30StVrHmUDs7S0xJGHLKnxe
-	 7HRrp9oJxUr4s3g85kmIeGOdLYsgVFe2CUdoxlw/qeLWj0+mooRc8LCvw11tFh00/7
-	 hW6TmVFwDw+UYCcdz/cPLe/qUmCdrNTq0ZWolo68=
+	b=kGZGOwCfpfeAbDWQyZP6d0NUzqws1SZxRvTnr+jDPMKtZuKXRDleWHeZwLmq677e3
+	 fSbL9IGYFseR3gtqoiml7rPSzO1OBFxkOIRlYR3FE99VSgaWjqCtEARkG525ow+WWf
+	 wtRZMn9g/zDymty898w7FGK6F6WVt/XWsewccpj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/356] nfs: clear SB_RDONLY before getting superblock
+Subject: [PATCH 6.15 625/780] seg6: Fix validation of nexthop addresses
 Date: Tue, 17 Jun 2025 17:25:33 +0200
-Message-ID: <20250617152346.980255360@linuxfoundation.org>
+Message-ID: <20250617152516.929770334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 8cd9b785943c57a136536250da80ba1eb6f8eb18 ]
+[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
 
-As described in the link, commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when
-mounting nfs") removed the check for the ro flag when determining whether
-to share the superblock, which caused issues when mounting different
-subdirectories under the same export directory via NFSv3. However, this
-change did not affect NFSv4.
+The kernel currently validates that the length of the provided nexthop
+address does not exceed the specified length. This can lead to the
+kernel reading uninitialized memory if user space provided a shorter
+length than the specified one.
 
-For NFSv3:
-1) A single superblock is created for the initial mount.
-2) When mounted read-only, this superblock carries the SB_RDONLY flag.
-3) Before commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs"):
-Subsequent rw mounts would not share the existing ro superblock due to
-flag mismatch, creating a new superblock without SB_RDONLY.
-After the commit:
-  The SB_RDONLY flag is ignored during superblock comparison, and this leads
-  to sharing the existing superblock even for rw mounts.
-  Ultimately results in write operations being rejected at the VFS layer.
+Fix by validating that the provided length exactly matches the specified
+one.
 
-For NFSv4:
-1) Multiple superblocks are created and the last one will be kept.
-2) The actually used superblock for ro mounts doesn't carry SB_RDONLY flag.
-Therefore, commit 52cb7f8f1778 doesn't affect NFSv4 mounts.
-
-Clear SB_RDONLY before getting superblock when NFS_MOUNT_UNSHARED is not
-set to fix it.
-
-Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
-Closes: https://lore.kernel.org/all/12d7ea53-1202-4e21-a7ef-431c94758ce5@app.fastmail.com/T/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/ipv6/seg6_local.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index e1bcad5906ae7..59bf4b2c0f86e 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1277,8 +1277,17 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (IS_ERR(server))
- 		return PTR_ERR(server);
- 
-+	/*
-+	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
-+	 * superblock among each filesystem that mounts sub-directories
-+	 * belonging to a single exported root path.
-+	 * To prevent interference between different filesystems, the
-+	 * SB_RDONLY flag should be removed from the superblock.
-+	 */
- 	if (server->flags & NFS_MOUNT_UNSHARED)
- 		compare_super = NULL;
-+	else
-+		fc->sb_flags &= ~SB_RDONLY;
- 
- 	/* -o noac implies -o sync */
- 	if (server->flags & NFS_MOUNT_NOAC)
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index ac1dbd492c22d..a11a02b4ba95b 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1644,10 +1644,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
+ 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
+-	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in_addr) },
+-	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in6_addr) },
++	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
 -- 
 2.39.5
 
