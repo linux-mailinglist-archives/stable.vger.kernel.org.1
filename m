@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-154489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2CBADDA35
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:15:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C96EADD9BA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935BB18998B2
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C8423BC5CE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9272FA624;
-	Tue, 17 Jun 2025 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038C22EE28B;
+	Tue, 17 Jun 2025 16:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFDLG3RW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5Iy6tQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85040CA4B;
-	Tue, 17 Jun 2025 16:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EFA1A5B9D;
+	Tue, 17 Jun 2025 16:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179370; cv=none; b=HVBfYUsyYkdf2AIMFkKrWAZF3m2C2Q809+XYf9sD1q8PbMGWlNiCe5fTVl+k5tGpVawOgq7tgCSqIjF33ObiBVSiacUKruQDbf9sv0u2pBgdAUNoDLwp4bjqJJw4NdCHNgHqNxiE4roRlkbCSpnz9NJuyHvzFw5TbTNWGWm0dCQ=
+	t=1750178400; cv=none; b=EDeFdNEEInHDa98p9uLZ3+JB+64Ml8aOLrUV+NpxOznB0DEQZ/i2RVuIu0upMIzZWpinrJmAvngaWTpEzyL3EvbreFCHwqyLxoPU7DskOf54ur96c3nv/pLJgLsGvr/aszAMBI9bNfmUUQH8halp9LywjyB9H9/y8Duw/AehofI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179370; c=relaxed/simple;
-	bh=z/AwcG6NUAtoiv3A6JExwRik9MMJPPwuPYS5u6rVYlQ=;
+	s=arc-20240116; t=1750178400; c=relaxed/simple;
+	bh=NJkGPvkum+iRq1lTpsI2qF3EBNCbcexuP8SFmfKG8Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHbIUR6eQGFalNgIORY2MAyBVJEWr6rPtVA6QTvkQoCED5QU55Tj53/FrorZoj+zbFSTA7LL2Ctezn0Y96nprH9rQ9fyQaPMSaBnaDD0vrm4FcpwFCzIDMeIK0O7jQTn4t1jpjEcEJ3/LkXXzRFFwwHdErulcLJvO4Xe8wrrU0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFDLG3RW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0926C4CEE3;
-	Tue, 17 Jun 2025 16:56:09 +0000 (UTC)
+	 MIME-Version; b=dODyooW0wVS6qX+FNnSPO9PU1d8kyJYu0E0o2enlA+4Ok5xSKvmsLnEU+aiG/lMluZ3YMu1/Qhsvpm0bBocaFYcGriVZsZsv6FE16GNwAdyA/oWd2PbcLPkpUBLn45p1/Un778ajQi0BpF2HUgMGNvKHPjWj/50Kfu/VTKZYDY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5Iy6tQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98ECC4CEE3;
+	Tue, 17 Jun 2025 16:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179370;
-	bh=z/AwcG6NUAtoiv3A6JExwRik9MMJPPwuPYS5u6rVYlQ=;
+	s=korg; t=1750178400;
+	bh=NJkGPvkum+iRq1lTpsI2qF3EBNCbcexuP8SFmfKG8Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFDLG3RWwUazU0OqrqrZw1MGc1qx0PMZnkLlG6V2JBscecw0OnxuJDuIEdQFcTf5W
-	 +d6DlYp29GKOaCob2wNgWA9zQM+8goR09PxZVUDJPX3jqZC8xvugAzHZYDGdDTG/GH
-	 FgJCSpbypWq9dRNJni/IRwsD8sN3t+qxMX+6PWt0=
+	b=f5Iy6tQvQUP4E78imMhj2nsKVXfmctSISUZIW3JADlbPLXvuttkq1Ii+yjT9tHiDe
+	 9dR3JgAvWn9b3Pyo9jUjsMgpTfwlTRp0z0N6ruD927vHasrtM/6f7yBPFBP/3ANjIJ
+	 U72t3qZzirBMh8HE7WJy2sTpKzS7w+8mgCApbm9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 725/780] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
+Subject: [PATCH 6.12 467/512] net_sched: tbf: fix a race in tbf_change()
 Date: Tue, 17 Jun 2025 17:27:13 +0200
-Message-ID: <20250617152521.017135086@linuxfoundation.org>
+Message-ID: <20250617152438.501085340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
+[ Upstream commit 43eb466041216d25dedaef1c383ad7bd89929cbc ]
 
-fs_name() has @index as unsigned int, so there is underflow risk for
-operation '@index--'.
+Gerrard Tai reported a race condition in TBF, whenever SFQ perturb timer
+fires at the wrong time.
 
-Fix by breaking the for loop when '@index == 0' which is also more proper
-than '@index <= 0' for unsigned integer comparison.
+The race is as follows:
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
+
+This can be abused to underflow a parent's qlen.
+
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
+
+Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://patch.msgid.link/20250611111515.1983366-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/filesystems.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/sched/sch_tbf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/filesystems.c b/fs/filesystems.c
-index 58b9067b2391c..95e5256821a53 100644
---- a/fs/filesystems.c
-+++ b/fs/filesystems.c
-@@ -156,15 +156,19 @@ static int fs_index(const char __user * __name)
- static int fs_name(unsigned int index, char __user * buf)
- {
- 	struct file_system_type * tmp;
--	int len, res;
-+	int len, res = -EINVAL;
+diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
+index dc26b22d53c73..4c977f049670a 100644
+--- a/net/sched/sch_tbf.c
++++ b/net/sched/sch_tbf.c
+@@ -452,7 +452,7 @@ static int tbf_change(struct Qdisc *sch, struct nlattr *opt,
  
- 	read_lock(&file_systems_lock);
--	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
--		if (index <= 0 && try_module_get(tmp->owner))
-+	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
-+		if (index == 0) {
-+			if (try_module_get(tmp->owner))
-+				res = 0;
- 			break;
-+		}
-+	}
- 	read_unlock(&file_systems_lock);
--	if (!tmp)
--		return -EINVAL;
-+	if (res)
-+		return res;
- 
- 	/* OK, we got the reference, so we can safely block */
- 	len = strlen(tmp->name) + 1;
+ 	sch_tree_lock(sch);
+ 	if (child) {
+-		qdisc_tree_flush_backlog(q->qdisc);
++		qdisc_purge_queue(q->qdisc);
+ 		old = q->qdisc;
+ 		q->qdisc = child;
+ 	}
 -- 
 2.39.5
 
