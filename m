@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C421ADD7C6
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:49:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D816DADD797
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78EF2C8268
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:37:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CAB94A626D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983CA2EE277;
-	Tue, 17 Jun 2025 16:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B692EE284;
+	Tue, 17 Jun 2025 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxIAeBMC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgEH6eHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549A42EE271;
-	Tue, 17 Jun 2025 16:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664BF2ED84B;
+	Tue, 17 Jun 2025 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177858; cv=none; b=C3aukuuFrh1a9R7I9jOCCk3hDeOmzaU+04sWfC0kwWpaVqdmED7HoQgSe+3UyYn5lsVbW1NqUr7GSyWYXHU3DO7JN1amp4sU+uyEq/hrIaKC1kAESOza65EZ1OPBMweXIv6C1jRxCM+s3Rbed33Iq/dI7DgUfA+md2WpV3/7Ri8=
+	t=1750177864; cv=none; b=hoKnNjmgQL5ie6yay+vFLY8qv0IJV7DsUDJHYvRqAEgEhgiKSeOp5GZzdBfeQmRncq6lgaE3I9p6qlDr2f13eeJyOoOhZvrbVABQaObt82k0vdQ0Y+f5QVNs/Jp4FYKDlrPMpMeYW3uTPDyWh071ccOZANcOp3biRZm2TcOBKA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177858; c=relaxed/simple;
-	bh=gPHH71KBIWa0hFdd4FLHy3Cth1uR4DmvEFJ8k4ww2Z8=;
+	s=arc-20240116; t=1750177864; c=relaxed/simple;
+	bh=NVn76SVDrEgOE5MN+/gz2RP2dsBiZ05JrdANSPSrzAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFQaeZr00/j7LCQGjb4pOLNkm3JMqBqmJFc5K/Od+QAFUiFQ339KFfirp0JPOtx18Q32ZpjW+KHtoKfblQZp4tZ9NA86u8xZFcFC5pTHNMNn7EMOvXIaJhe5nu6VjSza5s3SdTOPh36zqSfSuPCUJUq8lCX2aPMkobhK5XoMWZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxIAeBMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE44C4CEE3;
-	Tue, 17 Jun 2025 16:30:57 +0000 (UTC)
+	 MIME-Version; b=Fwwy5J7I/rmQmM8x/Ia0Gci5DJ+6Bzky6A/Vy1RndNr6OLWuFLChA9Jf/JMagaikq7qqGkcyyJERy/ZvJvsmmHR5hdQRhTiZwSx9y0hdFlGMUiC539TuFJ7DshsZyLw70NnVbt2e1OdGvz8tmYZoCDzZGYIlEHbhnosY7Z6C30E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgEH6eHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFADC4CEE3;
+	Tue, 17 Jun 2025 16:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177858;
-	bh=gPHH71KBIWa0hFdd4FLHy3Cth1uR4DmvEFJ8k4ww2Z8=;
+	s=korg; t=1750177864;
+	bh=NVn76SVDrEgOE5MN+/gz2RP2dsBiZ05JrdANSPSrzAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxIAeBMC29iIA5hcszPvk61sxyKB38fO26ZTK+NudCClW4v0fPOx56Hx+PO73sjzp
-	 Pd21lNc1oUMwKX6P+V3IjWKFLz8PBRBP+RyJ9ELfxdLM8hlN9T71TeJHTJJw+XjQhc
-	 pwOSdaFyB8ByXkyS5YWJKDTxfdINtRpkk2V0WHDM=
+	b=vgEH6eHH7Z5kog91gBM2TJK+pSrUhygX6pfXmfiuKUG4ljjb28XMMQCbz4C8tUA6o
+	 tXlBF2sxvoJ79Y4yrysytUUoCTGZe90z8n0s86cyR/zHLY1Cfa5FRAj2DW26cX64QL
+	 9m5DwgBk/0uYWttVuRcuOgxXFwN4cyWQOx+5dKws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 373/780] arm64: dts: imx8mn-beacon: Fix RTC capacitive load
-Date: Tue, 17 Jun 2025 17:21:21 +0200
-Message-ID: <20250617152506.647414896@linuxfoundation.org>
+Subject: [PATCH 6.15 374/780] arm64: dts: imx8mp-beacon: Fix RTC capacitive load
+Date: Tue, 17 Jun 2025 17:21:22 +0200
+Message-ID: <20250617152506.685888387@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -69,27 +69,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit c3f03bec30efd5082b55876846d57b5d17dae7b9 ]
+[ Upstream commit 6821ee17537938e919e8b86a541aae451f73165b ]
 
 Although not noticeable when used every day, the RTC appears to drift when
 left to sit over time.  This is due to the capacitive load not being
 properly set. Fix RTC drift by correcting the capacitive load setting
 from 7000 to 12500, which matches the actual hardware configuration.
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
+Fixes: 25a5ccdce767 ("arm64: dts: freescale: Introduce imx8mp-beacon-kit")
 Signed-off-by: Adam Ford <aford173@gmail.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 1 +
+ arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-index 2a64115eebf1c..bb11590473a4c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-@@ -242,6 +242,7 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+index 15f7ab58db36c..88561df70d03a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-beacon-som.dtsi
+@@ -257,6 +257,7 @@
  	rtc: rtc@51 {
  		compatible = "nxp,pcf85263";
  		reg = <0x51>;
