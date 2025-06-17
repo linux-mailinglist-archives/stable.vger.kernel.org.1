@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-154395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B56FADDA3D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:15:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26EBADD6FA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9DA85A36DE
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:52:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE234A2339
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90F2E92AD;
-	Tue, 17 Jun 2025 16:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281812ED146;
+	Tue, 17 Jun 2025 16:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POwLTWIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2CeGPd5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96762E88B1;
-	Tue, 17 Jun 2025 16:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EAC238D49;
+	Tue, 17 Jun 2025 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179056; cv=none; b=Ofk5J3aQ5yQ3+R/C53CS8wbPQ62fwYzmmr8G1L9oBFfayge0B/6YzSgTam1syVK6OZfhxKeLWJUFzy12PioyGXhAzjQiUR8IrW73juDcyFTEKeQSwRnjVuwTlQ4r7yIVIAmDfc4x5GgwAe/56YXXRUMPC500xevrY+ZroGt7jl0=
+	t=1750177648; cv=none; b=aBHLOm60vNkIZsD6JXrDWKDGRx8qGlr/UMdpmbE0GaO3EnSZONuh/pkhR11rR72htq+df8Ia1+6IVpZn4YcnVlMXgSs8BvRDmISvBTmB9wrIKghsWvTVM69LPNNDV0oGfEr4s15z/AbbGLhxNvF1x19a7KSJ74wjSN3+BeDPNbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179056; c=relaxed/simple;
-	bh=DFJLeNdhsVOb01R/5Yg8XiSDlLoXhon0Mx6qQhqKh6Q=;
+	s=arc-20240116; t=1750177648; c=relaxed/simple;
+	bh=Dw+gQgxpq2X5+yja5dprg0m8epPOcjibkabPTD3Ip3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICpB4xJ9efO8f7tfGNhO6fNjgZveAySs8pOLXlSGLgcvGBLNdajKRVSx8Zq+Ul/wRQpmAwFKzVMM5iPydtcn5nNW/3+5jG/BiVCEsWScd7lyMShUXEDVxn5MaZs2+oMXpKSCKELkJOFk2+HoHB2/uAnL/q1JVYJH3F6MauX1/ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POwLTWIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C77EC4CEF1;
-	Tue, 17 Jun 2025 16:50:55 +0000 (UTC)
+	 MIME-Version; b=PRQHPmksmnNhoQhShjoJ8BLZE+0LLdy1ND9Uj8EgTNcaQje5lKb+Ht/WR/4JIFyigH6ieCi6f4eixW1QI2xNmCbe4KkYN40lD2gDFHAKG4YWw0okDKr4C/6qG5Ro2rsL0+uxutUKzZcKERPjkw5ZdKbj8zrvsMVuBXRnKxZexNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2CeGPd5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594C5C4CEE3;
+	Tue, 17 Jun 2025 16:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179056;
-	bh=DFJLeNdhsVOb01R/5Yg8XiSDlLoXhon0Mx6qQhqKh6Q=;
+	s=korg; t=1750177648;
+	bh=Dw+gQgxpq2X5+yja5dprg0m8epPOcjibkabPTD3Ip3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POwLTWIVFB6Y3fsWcfgwIqDBC7Xus2ovwt9c8vUEeEs7HRrDdfaZRekBhhMXkvL3G
-	 bwlqNOPRGhJiXn2GSKCNQqY9ru3G4nZU2LYSuRvzA8+yWQCzXxbNt/Ibcv22lmsTHG
-	 StSOFPL3Vleq3JX40TDRTT9+wsIbdMvtdeDfZrzU=
+	b=w2CeGPd5k5cm/bSXJ4hUHc3ROjoHFmgq1hF4UTelqs6S9x+usRqw1addcnpGQsdwI
+	 ns/NiCEeAm9PsclHgRYp6fz7Wf9rkevkd2RcAB78ffWLyfBHcbycU1g2nDpSUAsau6
+	 fGfsPCE2Of91fIDDp26CV2/k8Bq1tfKaWNsRoo/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Rawat <quic_nitirawa@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 634/780] scsi: ufs: qcom: Prevent calling phy_exit() before phy_init()
+Subject: [PATCH 6.12 376/512] netfilter: nf_set_pipapo_avx2: fix initial map fill
 Date: Tue, 17 Jun 2025 17:25:42 +0200
-Message-ID: <20250617152517.290717525@linuxfoundation.org>
+Message-ID: <20250617152434.828290764@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Rawat <quic_nitirawa@quicinc.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7831003165d37ecb7b33843fcee05cada0359a82 ]
+[ Upstream commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 ]
 
-Prevent calling phy_exit() before phy_init() to avoid abnormal power
-count and the following warning during boot up.
+If the first field doesn't cover the entire start map, then we must zero
+out the remainder, else we leak those bits into the next match round map.
 
-[5.146763] phy phy-1d80000.phy.0: phy_power_on was called before phy_init
+The early fix was incomplete and did only fix up the generic C
+implementation.
 
-Fixes: 7bac65687510 ("scsi: ufs: qcom: Power off the PHY if it was already powered on in ufs_qcom_power_up_sequence()")
-Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-Link: https://lore.kernel.org/r/20250526153821.7918-2-quic_nitirawa@quicinc.com
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+A followup patch adds a test case to nft_concat_range.sh.
+
+Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-qcom.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/netfilter/nft_set_pipapo_avx2.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 2b000c1708ce4..31649f908dd46 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -454,10 +454,9 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
- 	if (ret)
- 		return ret;
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index c15db28c5ebc4..be7c16c79f711 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1113,6 +1113,25 @@ bool nft_pipapo_avx2_estimate(const struct nft_set_desc *desc, u32 features,
+ 	return true;
+ }
  
--	if (phy->power_count) {
-+	if (phy->power_count)
- 		phy_power_off(phy);
--		phy_exit(phy);
--	}
++/**
++ * pipapo_resmap_init_avx2() - Initialise result map before first use
++ * @m:		Matching data, including mapping table
++ * @res_map:	Result map
++ *
++ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
++ */
++static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
++{
++	const struct nft_pipapo_field *f = m->f;
++	int i;
 +
++	/* Starting map doesn't need to be set to all-ones for this implementation,
++	 * but we do need to zero the remaining bits, if any.
++	 */
++	for (i = f->bsize; i < m->bsize_max; i++)
++		res_map[i] = 0ul;
++}
++
+ /**
+  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
+  * @net:	Network namespace
+@@ -1171,7 +1190,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	res  = scratch->map + (map_index ? m->bsize_max : 0);
+ 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
  
- 	/* phy initialization - calibrate the phy */
- 	ret = phy_init(phy);
+-	/* Starting map doesn't need to be set for this implementation */
++	pipapo_resmap_init_avx2(m, res);
+ 
+ 	nft_pipapo_avx2_prepare();
+ 
 -- 
 2.39.5
 
