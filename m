@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-153276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B60DADD373
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:58:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A253ADD3AA
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 794A8162B16
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E4D3BEAE6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00F72ECEAD;
-	Tue, 17 Jun 2025 15:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354192DFF0A;
+	Tue, 17 Jun 2025 15:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSVsyc9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4Z21GXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD95C2F2379;
-	Tue, 17 Jun 2025 15:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EAF2DFF04;
+	Tue, 17 Jun 2025 15:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175439; cv=none; b=MgoU7HLwcPqqBNVzdIp84XZOlTsJx1D5JiNpmzAvE5ICGCUdenL4OocW8/jELiQdgzvp/OXlp2Rt4uUuiCrXeTqAW2mykzXJjVkcVNQYxCDLybet8TiDbsAJ5GOKE1Y2BGaQz9SFdoTNAOSSpMmRzZE+/+ZBqEr5Z6KUHrYLmOM=
+	t=1750175447; cv=none; b=J0lVBkPZbipAJG2zc9x+woLSZD4x7xpS6VPJ+xVK9ZPsT8SQvawRJ6xTZ0lwYi34CMV8PphFgyDgcOpRIFkNHNmWzSuCEG2OKy0mix7H7lFPCWSxI3fmKQX9c2w7h/w1rxeavSDtMI+R6ifSPbwPpyGAsEsm4l24v9VCHpkDHUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175439; c=relaxed/simple;
-	bh=0S6QYNyCJrWYRcDnXFDqiOWFkSFnv/LftaX60DIzMVQ=;
+	s=arc-20240116; t=1750175447; c=relaxed/simple;
+	bh=6wIwrUIevz0OAjkhvA/oili5iKUANLSisFQ4vTdy868=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEau8yedkUVJDf7asZDblImchXmWDFUDTKb8poEeEVcYfXulZi/hYRzmVLqj/ccfDMCJ5r8llYceqjeFXNN/+wv8LyyrrUJi4i5w/l4Opa9C1rxkefPWI4tJiOe6dPLogQssSLTvJWVDhxgiJbsd4/ctaIyZhL872PtmJhqHeRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSVsyc9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE502C4CEE3;
-	Tue, 17 Jun 2025 15:50:37 +0000 (UTC)
+	 MIME-Version; b=glTDJC/zy0dvlch+/jrBGSFb8NsaVdULli/I9Ryd7LNUe+bXqcI4u/BDp3gngerqGuj25l+nhr9io+B2Itj27AHbO2ZuPa6xttVUjLJVuo8WTjhxgSiIq3GwXx/sfxUZHKERTkWo1r24TyQHkhw+oPFFCDdsPrhF1abfxGwrAKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4Z21GXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78268C4CEE3;
+	Tue, 17 Jun 2025 15:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175438;
-	bh=0S6QYNyCJrWYRcDnXFDqiOWFkSFnv/LftaX60DIzMVQ=;
+	s=korg; t=1750175446;
+	bh=6wIwrUIevz0OAjkhvA/oili5iKUANLSisFQ4vTdy868=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSVsyc9Nuv++yei8xS3hEb4FtAtP5taPdnWfarMe5zvnI+WYNll6yGIqORb1ljW4j
-	 X2aUVIXxHAfOX2y9+eUHb+I6nhsvjkJVXF73NnOJVeDu1/bwrdqzACeUBe7Mv58doF
-	 O37YrkjTSqn3PiSROMV084/yqjSxgsGQagoxnhlg=
+	b=f4Z21GXTEKSITkJBqt194J96AVpeUdSyKUEx9Ro8V3eKoHd2CghJMYTdHA+LTVuLg
+	 xDwVwNAMnuDHhntThBRSdzaGTZOpzMJ0HOD9Jn3JjlPQc1uRhWTEoDcP6Mf/jhiM9B
+	 6t6Fez0ASWmm80CztZBhZP1Sdcub8HW8hYJyYtHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Zhen XIN <zhen.xin@nokia-sbell.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/512] xfrm: Use xdo.dev instead of xdo.real_dev
-Date: Tue, 17 Jun 2025 17:21:32 +0200
-Message-ID: <20250617152424.696299116@linuxfoundation.org>
+Subject: [PATCH 6.12 127/512] wifi: rtw88: sdio: map mgmt frames to queue TX_DESC_QSEL_MGMT
+Date: Tue, 17 Jun 2025 17:21:33 +0200
+Message-ID: <20250617152424.736054267@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -68,78 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Zhen XIN <zhen.xin@nokia-sbell.com>
 
-[ Upstream commit 25ac138f58e7d5c8bffa31e8891418d2819180c4 ]
+[ Upstream commit b2effcdc237979dcc533d446a792fc54fd0e1213 ]
 
-The policy offload struct was reused from the state offload and
-real_dev was copied from dev, but it was never set to anything else.
-Simplify the code by always using xdo.dev for policies.
+The rtw88-sdio do not work in AP mode due to the lack of TX status report
+for management frames.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Map the management frames to queue TX_DESC_QSEL_MGMT, which enables the
+chip to generate TX reports for these frames
+
+Tested-on: rtl8723ds
+
+Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
+Signed-off-by: Zhen XIN <zhen.xin@nokia-sbell.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250410154217.1849977-3-zhen.xin@nokia-sbell.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 2 +-
- net/xfrm/xfrm_device.c                                   | 2 --
- net/xfrm/xfrm_state.c                                    | 2 --
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/sdio.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 94edfd7713b5d..39dcbf863421a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -1135,7 +1135,7 @@ mlx5e_ipsec_build_accel_pol_attrs(struct mlx5e_ipsec_pol_entry *pol_entry,
- static int mlx5e_xfrm_add_policy(struct xfrm_policy *x,
- 				 struct netlink_ext_ack *extack)
- {
--	struct net_device *netdev = x->xdo.real_dev;
-+	struct net_device *netdev = x->xdo.dev;
- 	struct mlx5e_ipsec_pol_entry *pol_entry;
- 	struct mlx5e_priv *priv;
- 	int err;
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index b33c4591e09a4..32ad8f3fc81e8 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -373,7 +373,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
- 
- 	xdo->dev = dev;
- 	netdev_tracker_alloc(dev, &xdo->dev_tracker, GFP_ATOMIC);
--	xdo->real_dev = dev;
- 	xdo->type = XFRM_DEV_OFFLOAD_PACKET;
- 	switch (dir) {
- 	case XFRM_POLICY_IN:
-@@ -395,7 +394,6 @@ int xfrm_dev_policy_add(struct net *net, struct xfrm_policy *xp,
- 	err = dev->xfrmdev_ops->xdo_dev_policy_add(xp, extack);
- 	if (err) {
- 		xdo->dev = NULL;
--		xdo->real_dev = NULL;
- 		xdo->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
- 		xdo->dir = 0;
- 		netdev_put(dev, &xdo->dev_tracker);
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index abd725386cb60..7a298058fc16c 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1487,7 +1487,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			xso->type = XFRM_DEV_OFFLOAD_PACKET;
- 			xso->dir = xdo->dir;
- 			xso->dev = xdo->dev;
--			xso->real_dev = xdo->real_dev;
- 			xso->flags = XFRM_DEV_OFFLOAD_FLAG_ACQ;
- 			netdev_hold(xso->dev, &xso->dev_tracker, GFP_ATOMIC);
- 			error = xso->dev->xfrmdev_ops->xdo_dev_state_add(x, NULL);
-@@ -1495,7 +1494,6 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 				xso->dir = 0;
- 				netdev_put(xso->dev, &xso->dev_tracker);
- 				xso->dev = NULL;
--				xso->real_dev = NULL;
- 				xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
- 				x->km.state = XFRM_STATE_DEAD;
- 				to_put = x;
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 1d62b38526c48..0316a0bec96e2 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -718,10 +718,7 @@ static u8 rtw_sdio_get_tx_qsel(struct rtw_dev *rtwdev, struct sk_buff *skb,
+ 	case RTW_TX_QUEUE_H2C:
+ 		return TX_DESC_QSEL_H2C;
+ 	case RTW_TX_QUEUE_MGMT:
+-		if (rtw_chip_wcpu_11n(rtwdev))
+-			return TX_DESC_QSEL_HIGH;
+-		else
+-			return TX_DESC_QSEL_MGMT;
++		return TX_DESC_QSEL_MGMT;
+ 	case RTW_TX_QUEUE_HI0:
+ 		return TX_DESC_QSEL_HIGH;
+ 	default:
 -- 
 2.39.5
 
