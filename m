@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-153790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC3CADD660
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:32:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3766DADD69E
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A940C7A7DDF
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:23:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10CE19E34C0
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100D52ED15E;
-	Tue, 17 Jun 2025 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFAA2ED171;
+	Tue, 17 Jun 2025 16:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BV60iA0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVAbmTcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD022ED149;
-	Tue, 17 Jun 2025 16:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6502EA14E;
+	Tue, 17 Jun 2025 16:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177106; cv=none; b=YpD8NJUKf9I1k14V/YlA+wdQzeIQmdfLul4QlZzahlp2a+gBGSJt461jHWuC9Kj4gV1Qceroy9OzqUhtbAHiXbO15Ml9/CxTV0lzHWIDbXDJLZdj0WJlA1eejwzgFxqUh5izqS5T42ClsAMAF9qFWbmvI/OBPbAbbkc92o9e6VY=
+	t=1750177142; cv=none; b=p2BrOzfMGPgzPjHysjqoLYkET+IHp03teyH5P5CN5GV7hVc5BFrgtqkI+F8RMKArqSLugxNsWkhFkBdWzsQVKPK84o7GARynyr70bD36L2aMEbs4qgdHYb6q6Fl7AQlUNHqevDDPelgxjnAZcW+o0YkJEyjztIeD0J5e6juewbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177106; c=relaxed/simple;
-	bh=FoIjAmIACGwv37wMLn35XpUbPWFEIUyxCTP8S8uw8TQ=;
+	s=arc-20240116; t=1750177142; c=relaxed/simple;
+	bh=ZR2fujcdIMtUNdtqYCiMHk+gqfyXSP+Pjx8ZymjO3f0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZSOdszhm+gRiXzxhHcDwOzvSUb3dtJTpDHYIdOTrSFH/wd4kj1OBuBcOUqN+y0HEvCsQkVrsln7YrjPgElcRXD78m2qfz+9sQ9zhbrL9ZDsrIInNIn2tZ1TrIXYIXU6B0FE8zMrz+XgNbgNjD4owea4+yXG17LEM8cU9E/XB4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BV60iA0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1567CC4CEE3;
-	Tue, 17 Jun 2025 16:18:25 +0000 (UTC)
+	 MIME-Version; b=YeAZmqPBOAntFH6GaqdxEO83xfiXAhGgQ2fLEw7qqATJgN7mpnmunx5RmNDyXNgwmxtelB+3Xx+l82vAQkGpjA5QuUjqQLeShtl2FwJrtTQf2gH2diCOwDkShEIoiFDs6TxJhwg/szLuwz0BhibyTRspm1vwjsLJAL72k16pCQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVAbmTcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F3BC4CEE3;
+	Tue, 17 Jun 2025 16:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750177106;
-	bh=FoIjAmIACGwv37wMLn35XpUbPWFEIUyxCTP8S8uw8TQ=;
+	s=korg; t=1750177142;
+	bh=ZR2fujcdIMtUNdtqYCiMHk+gqfyXSP+Pjx8ZymjO3f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BV60iA0IgFrCX1tJMJgtOFVYVS6iTFPp6EZoPxENpv3OPGNsTh72NFK+t89elRrEx
-	 xvIYUD8ag1FlfA6f5V4mak5g0Z7vtDPSe2rvRuctsKquX+9GagE2KDfq5toszo/w9t
-	 nQ3Zg2x6xMFHV9fk9I7lz1KHvG77x/zAC9gybjKU=
+	b=EVAbmTcWp2Ww+btRUR24Ps1vZvUQsztee+9/QW8Mj0wZ8cAeQrZG0XdIyDxhvUPA1
+	 FRgqHHycPAvqBjIcDXcY9JRgTFVwS3T0WcXKybh3MgOvPEycOQZnVB2oI7Ib3gncK5
+	 XLv1yGKnQxNqBfkFgsTGJPBnGiN0pQOav6kCuHo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 257/780] of: unittest: Unlock on error in unittest_data_add()
-Date: Tue, 17 Jun 2025 17:19:25 +0200
-Message-ID: <20250617152501.923602911@linuxfoundation.org>
+Subject: [PATCH 6.15 258/780] ktls, sockmap: Fix missing uncharge operation
+Date: Tue, 17 Jun 2025 17:19:26 +0200
+Message-ID: <20250617152501.962744596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -67,59 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 493e6cb63a21e9f009dc4c209fd311f2bb777656 ]
+[ Upstream commit 79f0c39ae7d3dc628c01b02f23ca5d01f9875040 ]
 
-The of_overlay_mutex_unlock() was accidentally deleted if "of_root" is
-NULL.  Change this to a goto unlock.
+When we specify apply_bytes, we divide the msg into multiple segments,
+each with a length of 'send', and every time we send this part of the data
+using tcp_bpf_sendmsg_redir(), we use sk_msg_return_zero() to uncharge the
+memory of the specified 'send' size.
 
-Fixes: d1eabd218ede ("of: unittest: treat missing of_root as error instead of fixing up")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/aBHZ1DvXiBcZkWmk@stanley.mountain
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+However, if the first segment of data fails to send, for example, the
+peer's buffer is full, we need to release all of the msg. When releasing
+the msg, we haven't uncharged the memory of the subsequent segments.
+
+This modification does not make significant logical changes, but only
+fills in the missing uncharge places.
+
+This issue has existed all along, until it was exposed after we added the
+apply test in test_sockmap:
+commit 3448ad23b34e ("selftests/bpf: Add apply_bytes test to test_txmsg_redir_wait_sndmem in test_sockmap")
+
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
+Closes: https://lore.kernel.org/bpf/aAmIi0vlycHtbXeb@pop-os.localdomain/T/#t
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://lore.kernel.org/r/20250425060015.6968-2-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/tls/tls_sw.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 64d301893af7b..eeb370e0f5077 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -2029,15 +2029,16 @@ static int __init unittest_data_add(void)
- 	rc = of_resolve_phandles(unittest_data_node);
- 	if (rc) {
- 		pr_err("%s: Failed to resolve phandles (rc=%i)\n", __func__, rc);
--		of_overlay_mutex_unlock();
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 
- 	/* attach the sub-tree to live tree */
- 	if (!of_root) {
- 		pr_warn("%s: no live tree to attach sub-tree\n", __func__);
- 		kfree(unittest_data);
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto unlock;
- 	}
- 
- 	EXPECT_BEGIN(KERN_INFO,
-@@ -2056,9 +2057,10 @@ static int __init unittest_data_add(void)
- 	EXPECT_END(KERN_INFO,
- 		   "Duplicate name in testcase-data, renamed to \"duplicate-name#1\"");
- 
-+unlock:
- 	of_overlay_mutex_unlock();
- 
--	return 0;
-+	return rc;
- }
- 
- #ifdef CONFIG_OF_OVERLAY
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index f3d7d19482da9..fc88e34b7f33f 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -908,6 +908,13 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 					    &msg_redir, send, flags);
+ 		lock_sock(sk);
+ 		if (err < 0) {
++			/* Regardless of whether the data represented by
++			 * msg_redir is sent successfully, we have already
++			 * uncharged it via sk_msg_return_zero(). The
++			 * msg->sg.size represents the remaining unprocessed
++			 * data, which needs to be uncharged here.
++			 */
++			sk_mem_uncharge(sk, msg->sg.size);
+ 			*copied -= sk_msg_free_nocharge(sk, &msg_redir);
+ 			msg->sg.size = 0;
+ 		}
 -- 
 2.39.5
 
