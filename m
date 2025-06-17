@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-154469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D344DADD9B8
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:08:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0835DADD871
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3EE34A7F1A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:55:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD5D34A1347
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F5A285060;
-	Tue, 17 Jun 2025 16:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE8720B807;
+	Tue, 17 Jun 2025 16:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imYi2nGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPkp5eaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99BD238C1E;
-	Tue, 17 Jun 2025 16:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA9921B908;
+	Tue, 17 Jun 2025 16:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179287; cv=none; b=LgOaA783fbTVqV5PHfCvraJVCROGIJH4s2htcqTGO7J+jCR2iXHWpHrsQ8SsghZ+tQtEGi1sAgWTcrTbWTjN1WFgMnK72AbaY7z92TsBBnATecJLIimiQNUqtGPOVqi6voj/l8aCm4o1lMzFilPfsGESpDMae6HS5B7VrcPwR+M=
+	t=1750178076; cv=none; b=ZHhQNnanJzGRSvqcVBQ+nPFAYNnCwThuGThEUNERo1whmoIE6HRbQYkr+mR0PhYZ36OTfk/08zGl91TtUUwmcsRcH9NvHezaAbbUG+0mvrim/iO9Iji/zg8VhB8gP7+jxv8gqBrL0/oAiXRtKgDZ0jHXY7khyghdifJ++sHKDaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179287; c=relaxed/simple;
-	bh=LhVJj8SPGmTgjNrB/wvjq5ZcUsNhYQCR9/wBGSl31GM=;
+	s=arc-20240116; t=1750178076; c=relaxed/simple;
+	bh=gjGf/tTz1X6io0Ymxx3zvYK3JbvCeLADyvtVAfgbJuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qxt7KlZKi+WExHjrBNgB79XwtZ9LP295QrfPJPU4f03Wqn1DdPKXH2BZ67vj7DVw2V5ThmiUwNj/Iz81P5OoghKcfeCzwZ5xrht+L05Tdznxiqt8W0E4Jv1M3T9wcNzY2Kd89ldPJbLGw04dFoBC0zoFUEyxJfgn4pt4moz5v8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imYi2nGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8D7C4CEE3;
-	Tue, 17 Jun 2025 16:54:47 +0000 (UTC)
+	 MIME-Version; b=I5SbBBVxlQDF96dy+SszcdVjWuITzwAGLblDLvYx8Y/3eRck/YbV050NjE2hH4R749jCgE2xHW/WcrvZ3fpuZ9rmHGB81XqlptBQ1mMvi1EkjWhfcYB1jqH/tlEq2tq0PccMUXdXiK76yIqcSJpj0XbXvOHoCziay+6qJ5TcTl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPkp5eaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD3CC4CEE3;
+	Tue, 17 Jun 2025 16:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179287;
-	bh=LhVJj8SPGmTgjNrB/wvjq5ZcUsNhYQCR9/wBGSl31GM=;
+	s=korg; t=1750178075;
+	bh=gjGf/tTz1X6io0Ymxx3zvYK3JbvCeLADyvtVAfgbJuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imYi2nGMBy8D3DAlI85oq+qShJRC0MSLhyz9cZu2PcsUjvEFsR3f7qAEOBv6JgTwk
-	 5Z2tzrLRGEU4++8FVcRyVymNgwrwt2nrzAgUaW9A6OriqJ1SotLHUL3QIJElqKZvUV
-	 cQAbhUSiCIt4KYZmLNQkKt3V8b1lD37y0dNXGbaM=
+	b=YPkp5eaNk/iXlAWGG4tqB/wfnEqiD21OPb4ELUopGiNpyNxozEguCSJfC5Rr0D6fQ
+	 3t2yb0f5HWaQ1jgmFxZo1aTVwFjxlxPZYCfr2DtxRas8ZhOAbLy3ycF8Z6PWpQ9VK8
+	 S+egOSvhIRZM6XCwMtEtrb65Uz7DOf6ftp3STaHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sanjeev Yadav <sanjeev.y@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 676/780] wifi: ath11k: validate ath11k_crypto_mode on top of ath11k_core_qmi_firmware_ready
+Subject: [PATCH 6.12 418/512] scsi: core: ufs: Fix a hang in the error handler
 Date: Tue, 17 Jun 2025 17:26:24 +0200
-Message-ID: <20250617152518.997618601@linuxfoundation.org>
+Message-ID: <20250617152436.513419780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+From: Sanjeev Yadav <sanjeev.y@mediatek.com>
 
-[ Upstream commit b0d226a60856a1b765bb9a3848c7b2322fd08c47 ]
+[ Upstream commit 8a3514d348de87a9d5e2ac00fbac4faae0b97996 ]
 
-if ath11k_crypto_mode is invalid (not ATH11K_CRYPT_MODE_SW/ATH11K_CRYPT_MODE_HW),
-ath11k_core_qmi_firmware_ready() will not undo some actions that was previously
-started/configured. Do the validation as soon as possible in order to avoid
-undoing actions in that case and also to fix the following smatch warning:
+ufshcd_err_handling_prepare() calls ufshcd_rpm_get_sync(). The latter
+function can only succeed if UFSHCD_EH_IN_PROGRESS is not set because
+resuming involves submitting a SCSI command and ufshcd_queuecommand()
+returns SCSI_MLQUEUE_HOST_BUSY if UFSHCD_EH_IN_PROGRESS is set. Fix this
+hang by setting UFSHCD_EH_IN_PROGRESS after ufshcd_rpm_get_sync() has
+been called instead of before.
 
-drivers/net/wireless/ath/ath11k/core.c:2166 ath11k_core_qmi_firmware_ready()
-warn: missing unwind goto?
+Backtrace:
+__switch_to+0x174/0x338
+__schedule+0x600/0x9e4
+schedule+0x7c/0xe8
+schedule_timeout+0xa4/0x1c8
+io_schedule_timeout+0x48/0x70
+wait_for_common_io+0xa8/0x160 //waiting on START_STOP
+wait_for_completion_io_timeout+0x10/0x20
+blk_execute_rq+0xe4/0x1e4
+scsi_execute_cmd+0x108/0x244
+ufshcd_set_dev_pwr_mode+0xe8/0x250
+__ufshcd_wl_resume+0x94/0x354
+ufshcd_wl_runtime_resume+0x3c/0x174
+scsi_runtime_resume+0x64/0xa4
+rpm_resume+0x15c/0xa1c
+__pm_runtime_resume+0x4c/0x90 // Runtime resume ongoing
+ufshcd_err_handler+0x1a0/0xd08
+process_one_work+0x174/0x808
+worker_thread+0x15c/0x490
+kthread+0xf4/0x1ec
+ret_from_fork+0x10/0x20
 
-Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202304151955.oqAetVFd-lkp@intel.com/
-Fixes: aa2092a9bab3 ("ath11k: add raw mode and software crypto support")
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250522200519.16858-1-rodrigo.gobbi.7@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sanjeev Yadav <sanjeev.y@mediatek.com>
+[ bvanassche: rewrote patch description ]
+Fixes: 62694735ca95 ("[SCSI] ufs: Add runtime PM support for UFS host controller driver")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250523201409.1676055-1-bvanassche@acm.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 28 +++++++++++++-------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/ufs/core/ufshcd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 6c346a8df2df1..22eb1b0377ffe 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -1947,6 +1947,20 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- {
- 	int ret;
- 
-+	switch (ath11k_crypto_mode) {
-+	case ATH11K_CRYPT_MODE_SW:
-+		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
-+		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
-+		break;
-+	case ATH11K_CRYPT_MODE_HW:
-+		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
-+		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
-+		break;
-+	default:
-+		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
-+		return -EINVAL;
-+	}
-+
- 	ret = ath11k_core_start_firmware(ab, ab->fw_mode);
- 	if (ret) {
- 		ath11k_err(ab, "failed to start firmware: %d\n", ret);
-@@ -1965,20 +1979,6 @@ int ath11k_core_qmi_firmware_ready(struct ath11k_base *ab)
- 		goto err_firmware_stop;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 247e425428c88..374f505fec3d1 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6577,9 +6577,14 @@ static void ufshcd_err_handler(struct work_struct *work)
+ 		up(&hba->host_sem);
+ 		return;
  	}
- 
--	switch (ath11k_crypto_mode) {
--	case ATH11K_CRYPT_MODE_SW:
--		set_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
--		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
--		break;
--	case ATH11K_CRYPT_MODE_HW:
--		clear_bit(ATH11K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags);
--		clear_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
--		break;
--	default:
--		ath11k_info(ab, "invalid crypto_mode: %d\n", ath11k_crypto_mode);
--		return -EINVAL;
--	}
--
- 	if (ath11k_frame_mode == ATH11K_HW_TXRX_RAW)
- 		set_bit(ATH11K_FLAG_RAW_MODE, &ab->dev_flags);
- 
+-	ufshcd_set_eh_in_progress(hba);
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
++
+ 	ufshcd_err_handling_prepare(hba);
++
++	spin_lock_irqsave(hba->host->host_lock, flags);
++	ufshcd_set_eh_in_progress(hba);
++	spin_unlock_irqrestore(hba->host->host_lock, flags);
++
+ 	/* Complete requests that have door-bell cleared by h/w */
+ 	ufshcd_complete_requests(hba, false);
+ 	spin_lock_irqsave(hba->host->host_lock, flags);
 -- 
 2.39.5
 
