@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-153144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4512CADD292
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:44:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E457ADD304
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBD13BEA73
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:43:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF871885D96
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D772ECD20;
-	Tue, 17 Jun 2025 15:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BCC2ECD1B;
+	Tue, 17 Jun 2025 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCpxdhy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfl9rnQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B459C2ECD0B;
-	Tue, 17 Jun 2025 15:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F22F2379;
+	Tue, 17 Jun 2025 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175019; cv=none; b=IGXXXPEr/Ip6o+dF+t0R61emCLUCZDu/NAnXTI3ByG1zx3QgeUm7ETqMR9DhWgGsC/2K74NVKxV6hOQhjKdEBASMnTR5SXasmfsQOs+liaPP3dUPFAjmG/vJ9GM8QWzAKlrq1QYy7ozey9uTxlccyKCjglIJ8utMUVGBfQwiDMY=
+	t=1750175092; cv=none; b=g56cuBrh6A4nzzInExEpXg0jUATyRHjOhfCMTL0VeXs6B/BttOErxVE0EDh/fh1sr6zH2N0S6f8c8BcX1XuHGZ9onsh1LxOsPFk+Uy+VdadMYH/u3E9Lunn9hBcylOZpxfx4BoxDGdfQgtjuomXgx+c8iyZzOy2WzGHZpxXtLOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175019; c=relaxed/simple;
-	bh=JfJuR8ICMTUKinerAoZClXC34u1PY08xDQE3vTvUMQQ=;
+	s=arc-20240116; t=1750175092; c=relaxed/simple;
+	bh=dnihI/WzpqUJB8BLB8mm3Q0kQB4XcOCuq+KnVYNFVzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bN96ZzzeiAkZabHVWlpYPrH9Sqkzh1qxNZNlSJI+KY7PQGy1+jsij4r0vqJjSITDFjUk8snppTjwNkEu3aLKgmXqB1uy4GDJiqml0tHzxxbQP7U24gDNj42FzrZyi52KClylFDwsFHwFJs8t+6llIq/OU5fbO6vadh8HZp+bBWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCpxdhy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24230C4CEE3;
-	Tue, 17 Jun 2025 15:43:38 +0000 (UTC)
+	 MIME-Version; b=RP8C8Au0DJotpGqR8EXug6GDwHBWNBUNGDCySuH/teUJKOttJ9+iGxq5p7fZXiG/VhuatWPNIjgAHWRVHwO68YAco0TJVSBs5AyajGQnKWMkx7cFsgt24Tgd+N7RW0JBnvjEH8TghMb4l7pJ808QjhvPT9IWHobDJu8Sb+KVdZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfl9rnQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1D7C4CEE7;
+	Tue, 17 Jun 2025 15:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175019;
-	bh=JfJuR8ICMTUKinerAoZClXC34u1PY08xDQE3vTvUMQQ=;
+	s=korg; t=1750175091;
+	bh=dnihI/WzpqUJB8BLB8mm3Q0kQB4XcOCuq+KnVYNFVzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCpxdhy81INADDs6pvKpsBsQQON716dFFp2MOLzEgb/QqFLBDhg5Q6fz/kZ3vg54Q
-	 GZUj13+PnPNx0toJYiKLJL6GTQMwA/F2OWhe3e4N3wI/lyII8gGhhHx7FTwKt/srrB
-	 Y2Qf+ey0soPvXxkcI/9aN0kH9uaifewYeYERolfc=
+	b=vfl9rnQLULDGWmcd163gTW5pdyngSYWQAavK659E03PGbHE6NagKHClnCwA9TDsJT
+	 eq7152GdEY1gE3H4L09x5XrrzCDvYItbee66RvF6ER+d0uwCnCp6ouH7oreuQrWstT
+	 WCVlYkKb6Jy1cjpKom3yYWcsVwN7eTwSHeh3kjdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongbo Yao <andy.xu@hj-micro.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	David Heidelberg <david@ixit.cz>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/512] perf: arm-ni: Fix missing platform_set_drvdata()
-Date: Tue, 17 Jun 2025 17:20:41 +0200
-Message-ID: <20250617152422.616474682@linuxfoundation.org>
+Subject: [PATCH 6.12 076/512] drm/panel: samsung-sofef00: Drop s6e3fc2x01 support
+Date: Tue, 17 Jun 2025 17:20:42 +0200
+Message-ID: <20250617152422.664797254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
 References: <20250617152419.512865572@linuxfoundation.org>
@@ -67,35 +67,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hongbo Yao <andy.xu@hj-micro.com>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-[ Upstream commit fc5106088d6db75df61308ef6de314d1f7959646 ]
+[ Upstream commit e1eb7293ab4107e9e19fa609835e657fe30dfec7 ]
 
-Add missing platform_set_drvdata in arm_ni_probe(), otherwise
-calling platform_get_drvdata() in remove returns NULL.
+We never properly supported this panel and always used the wrong init
+sequence. Drop support so we can move it to it's own proper driver.
 
-Fixes: 4d5a7680f2b4 ("perf: Add driver for Arm NI-700 interconnect PMU")
-Signed-off-by: Hongbo Yao <andy.xu@hj-micro.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20250401054248.3985814-1-andy.xu@hj-micro.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 5933baa36e26 ("drm/panel/samsung-sofef00: Add panel for OnePlus 6/T devices")
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250419-drop-s6e3fc2x01-support-v1-1-05edfe0d27aa@ixit.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-ni.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panel/panel-samsung-sofef00.c | 34 ++-----------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/perf/arm-ni.c b/drivers/perf/arm-ni.c
-index 3f3d2e0f91fa7..b87d3a9ba7d54 100644
---- a/drivers/perf/arm-ni.c
-+++ b/drivers/perf/arm-ni.c
-@@ -661,6 +661,7 @@ static int arm_ni_probe(struct platform_device *pdev)
- 	ni->num_cds = num_cds;
- 	ni->part = part;
- 	ni->id = atomic_fetch_inc(&id);
-+	platform_set_drvdata(pdev, ni);
+diff --git a/drivers/gpu/drm/panel/panel-samsung-sofef00.c b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
+index 04ce925b3d9db..49cfa84b34f0c 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-sofef00.c
++++ b/drivers/gpu/drm/panel/panel-samsung-sofef00.c
+@@ -22,7 +22,6 @@ struct sofef00_panel {
+ 	struct mipi_dsi_device *dsi;
+ 	struct regulator *supply;
+ 	struct gpio_desc *reset_gpio;
+-	const struct drm_display_mode *mode;
+ };
  
- 	for (int v = 0; v < cfg.num_components; v++) {
- 		reg = readl_relaxed(cfg.base + NI_CHILD_PTR(v));
+ static inline
+@@ -159,26 +158,11 @@ static const struct drm_display_mode enchilada_panel_mode = {
+ 	.height_mm = 145,
+ };
+ 
+-static const struct drm_display_mode fajita_panel_mode = {
+-	.clock = (1080 + 72 + 16 + 36) * (2340 + 32 + 4 + 18) * 60 / 1000,
+-	.hdisplay = 1080,
+-	.hsync_start = 1080 + 72,
+-	.hsync_end = 1080 + 72 + 16,
+-	.htotal = 1080 + 72 + 16 + 36,
+-	.vdisplay = 2340,
+-	.vsync_start = 2340 + 32,
+-	.vsync_end = 2340 + 32 + 4,
+-	.vtotal = 2340 + 32 + 4 + 18,
+-	.width_mm = 68,
+-	.height_mm = 145,
+-};
+-
+ static int sofef00_panel_get_modes(struct drm_panel *panel, struct drm_connector *connector)
+ {
+ 	struct drm_display_mode *mode;
+-	struct sofef00_panel *ctx = to_sofef00_panel(panel);
+ 
+-	mode = drm_mode_duplicate(connector->dev, ctx->mode);
++	mode = drm_mode_duplicate(connector->dev, &enchilada_panel_mode);
+ 	if (!mode)
+ 		return -ENOMEM;
+ 
+@@ -239,13 +223,6 @@ static int sofef00_panel_probe(struct mipi_dsi_device *dsi)
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	ctx->mode = of_device_get_match_data(dev);
+-
+-	if (!ctx->mode) {
+-		dev_err(dev, "Missing device mode\n");
+-		return -ENODEV;
+-	}
+-
+ 	ctx->supply = devm_regulator_get(dev, "vddio");
+ 	if (IS_ERR(ctx->supply))
+ 		return dev_err_probe(dev, PTR_ERR(ctx->supply),
+@@ -295,14 +272,7 @@ static void sofef00_panel_remove(struct mipi_dsi_device *dsi)
+ }
+ 
+ static const struct of_device_id sofef00_panel_of_match[] = {
+-	{ // OnePlus 6 / enchilada
+-		.compatible = "samsung,sofef00",
+-		.data = &enchilada_panel_mode,
+-	},
+-	{ // OnePlus 6T / fajita
+-		.compatible = "samsung,s6e3fc2x01",
+-		.data = &fajita_panel_mode,
+-	},
++	{ .compatible = "samsung,sofef00" },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sofef00_panel_of_match);
 -- 
 2.39.5
 
