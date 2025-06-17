@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-153468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DA1ADD4A5
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:12:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45097ADD982
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F68168D99
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:05:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEFBA1946A40
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20802ECE90;
-	Tue, 17 Jun 2025 16:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DC22DFF1B;
+	Tue, 17 Jun 2025 16:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JNKECMb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC7UqLUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC82518E025;
-	Tue, 17 Jun 2025 16:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01772285059;
+	Tue, 17 Jun 2025 16:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176062; cv=none; b=pC7vrbnlgCO6ThMu71k9Ay9xUh6sAxxqiCLDUDK7tfCepkz4h0ROjvtX6O6OOyTf4637AcWP6q46UqdV9Xz8gV0giiYXeq9xMfCIV4ZAAT2bUrnYU03QMNfF+NR2PHxpW6qoPYeKQZ8hDi0LP/4WCaFsjM+13qOB5WIqyfwxHKg=
+	t=1750178377; cv=none; b=QroPbUuWMTaCIgnbbFhPyjDioesKSF23OB2CsjFUDy6SKdnu0dJIZ0aFGueWAztfGaV+EG7UCsSIlJVXedBgMLp2tho3bdFWntT/quX8u6PwxAUw5cgOk35jl8Vlo4SwZJtZ31ECMwkXLA7EZ2gxPyWoFNd3e9llo1WWTQBOJn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176062; c=relaxed/simple;
-	bh=HZFed2DZjmQ5t3EoH4BS1ApYjbBcFdgqvMhHUWtXlvs=;
+	s=arc-20240116; t=1750178377; c=relaxed/simple;
+	bh=uKnM2Jm0BA5nUZ2h5DOaX6YIzEW7DY7ilEUj2gwIZ78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSk+U97JYO7nWiM6+pYqXzSzQQq5hBJC4DWzGtjeGNF+FGoWQZIrD1cbtHUmKBwG8vGmulF8UWHV5iB7ImM6J8EJcC87Ex8aoVMWTLo1z61i8VjvDmuYYK8Vz9Qyem8krUoukSTL7NncWGDZS+6tHtaOhKyOAjJfIm+XTn0715I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JNKECMb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE3C4CEE3;
-	Tue, 17 Jun 2025 16:01:01 +0000 (UTC)
+	 MIME-Version; b=Sw5gejVgKlmVRIXW2sPtXCRx4uFj2xCR75lEX22WhUjhJeYxzwuyLYLNcQmUKkCYglBo6P9cea1gUFsHDuvttCHBx4TfEfVfRcUocQjcs8bBuNJnn7De5AgZPwZSuRs09XphpwiTnsyKTgvzYv9ei1vJ4FE9LtRSCYGTFVoYJ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC7UqLUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DF9C4CEE3;
+	Tue, 17 Jun 2025 16:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176062;
-	bh=HZFed2DZjmQ5t3EoH4BS1ApYjbBcFdgqvMhHUWtXlvs=;
+	s=korg; t=1750178376;
+	bh=uKnM2Jm0BA5nUZ2h5DOaX6YIzEW7DY7ilEUj2gwIZ78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JNKECMb2P2kiRowH7k/dkid7FiaSX9rVOwJ0+qMG6nE6LWcfJBtror/D3n5Je4IaS
-	 dl5W/NOJgQwHI/gnlaqgcegEHbG3T+J0glkC/8u2GaRlE72jwwn8ZTiOirRlqTCn4y
-	 8co2Lk7thwrB25qOLUNbc7GanB9xYf0KRvCUfbcI=
+	b=PC7UqLUvAsLiTBvff6x9E/5iROJFz0wF9AQrUbA17e0OpDHUE4T8+zfVo+cP3wyiI
+	 6HNzOq6RKeEXG/CAbeYHmT9MuTJ2YNTLgbLsUDQv4I8kNh2wKtOEf9rxAkDcI+6Aqp
+	 tWnKMOXMlt2Yn9O27MQ3f6HJvAL/C2TpnkSshpuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/512] netfilter: nf_tables: nft_fib_ipv6: fix VRF ipv4/ipv6 result discrepancy
-Date: Tue, 17 Jun 2025 17:22:38 +0200
-Message-ID: <20250617152427.416128904@linuxfoundation.org>
+Subject: [PATCH 6.15 451/780] remoteproc: k3-r5: Refactor sequential core power up/down operations
+Date: Tue, 17 Jun 2025 17:22:39 +0200
+Message-ID: <20250617152509.829603531@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
-References: <20250617152419.512865572@linuxfoundation.org>
+In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
+References: <20250617152451.485330293@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,233 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-[ Upstream commit 8b53f46eb430fe5b42d485873b85331d2de2c469 ]
+[ Upstream commit 701177511abd295e0fc2499796e466d8ff12165c ]
 
-With a VRF, ipv4 and ipv6 FIB expression behave differently.
+The existing implementation of the waiting mechanism in
+"k3_r5_cluster_rproc_init()" waits for the "released_from_reset" flag to
+be set as part of the firmware boot process in "k3_r5_rproc_start()".
+The "k3_r5_cluster_rproc_init()" function is invoked in the probe
+routine which causes unexpected failures in cases where the firmware is
+unavailable at boot time, resulting in probe failure and removal of the
+remoteproc handles in the sysfs paths.
 
-   fib daddr . iif oif
+To address this, the waiting mechanism is refactored out of the probe
+routine into the appropriate "k3_r5_rproc_{prepare/unprepare}()"
+functions. This allows the probe routine to complete without depending
+on firmware booting, while still maintaining the required
+power-synchronization between cores.
 
-Will return the input interface name for ipv4, but the real device
-for ipv6.  Example:
+Further, this wait mechanism is dropped from
+"k3_r5_rproc_{start/stop}()" functions as they deal with Core Run/Halt
+operations, and as such, there is no constraint in Running or Halting
+the cores of a cluster in order.
 
-If VRF device name is tvrf and real (incoming) device is veth0.
-First round is ok, both ipv4 and ipv6 will yield 'veth0'.
-
-But in the second round (incoming device will be set to "tvrf"), ipv4
-will yield "tvrf" whereas ipv6 returns "veth0" for the second round too.
-
-This makes ipv6 behave like ipv4.
-
-A followup patch will add a test case for this, without this change
-it will fail with:
-  get element inet t fibif6iif { tvrf . dead:1::99 . tvrf }
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  FAIL: did not find tvrf . dead:1::99 . tvrf in fibif6iif
-
-Alternatively we could either not do anything at all or change
-ipv4 to also return the lower/real device, however, nft (userspace)
-doc says "iif: if fib lookup provides a route then check its output
-interface is identical to the packets input interface." which is what
-the nft fib ipv4 behaviour is.
-
-Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20250513054510.3439842-4-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nft_fib_ipv6.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 110 +++++++++++++----------
+ 1 file changed, 63 insertions(+), 47 deletions(-)
 
-diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
-index 7fd9d7b21cd42..f1f5640da6728 100644
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -158,6 +158,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 3fc0b97dec600..ba082ca13e750 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -440,13 +440,36 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
  {
- 	const struct nft_fib *priv = nft_expr_priv(expr);
- 	int noff = skb_network_offset(pkt->skb);
-+	const struct net_device *found = NULL;
- 	const struct net_device *oif = NULL;
- 	u32 *dest = &regs->data[priv->dreg];
- 	struct ipv6hdr *iph, _iph;
-@@ -203,11 +204,15 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 	if (rt->rt6i_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
- 		goto put_rt_err;
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+-	struct k3_r5_core *core = kproc->core;
++	struct k3_r5_core *core = kproc->core, *core0, *core1;
+ 	struct device *dev = kproc->dev;
+ 	u32 ctrl = 0, cfg = 0, stat = 0;
+ 	u64 boot_vec = 0;
+ 	bool mem_init_dis;
+ 	int ret;
  
--	if (oif && oif != rt->rt6i_idev->dev &&
--	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) != oif->ifindex)
--		goto put_rt_err;
-+	if (!oif) {
-+		found = rt->rt6i_idev->dev;
-+	} else {
-+		if (oif == rt->rt6i_idev->dev ||
-+		    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == oif->ifindex)
-+			found = oif;
++	/*
++	 * R5 cores require to be powered on sequentially, core0 should be in
++	 * higher power state than core1 in a cluster. So, wait for core0 to
++	 * power up before proceeding to core1 and put timeout of 2sec. This
++	 * waiting mechanism is necessary because rproc_auto_boot_callback() for
++	 * core1 can be called before core0 due to thread execution order.
++	 *
++	 * By placing the wait mechanism here in .prepare() ops, this condition
++	 * is enforced for rproc boot requests from sysfs as well.
++	 */
++	core0 = list_first_entry(&cluster->cores, struct k3_r5_core, elem);
++	core1 = list_last_entry(&cluster->cores, struct k3_r5_core, elem);
++	if (cluster->mode == CLUSTER_MODE_SPLIT && core == core1 &&
++	    !core0->released_from_reset) {
++		ret = wait_event_interruptible_timeout(cluster->core_transition,
++						       core0->released_from_reset,
++						       msecs_to_jiffies(2000));
++		if (ret <= 0) {
++			dev_err(dev, "can not power up core1 before core0");
++			return -EPERM;
++		}
 +	}
++
+ 	ret = ti_sci_proc_get_status(core->tsp, &boot_vec, &cfg, &ctrl, &stat);
+ 	if (ret < 0)
+ 		return ret;
+@@ -462,6 +485,14 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
+ 		return ret;
+ 	}
  
--	nft_fib_store_result(dest, priv, rt->rt6i_idev->dev);
-+	nft_fib_store_result(dest, priv, found);
-  put_rt_err:
- 	ip6_rt_put(rt);
++	/*
++	 * Notify all threads in the wait queue when core0 state has changed so
++	 * that threads waiting for this condition can be executed.
++	 */
++	core->released_from_reset = true;
++	if (core == core0)
++		wake_up_interruptible(&cluster->core_transition);
++
+ 	/*
+ 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
+ 	 * of TCMs, so there is no need to perform the s/w memzero. This bit is
+@@ -507,10 +538,30 @@ static int k3_r5_rproc_unprepare(struct rproc *rproc)
+ {
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+-	struct k3_r5_core *core = kproc->core;
++	struct k3_r5_core *core = kproc->core, *core0, *core1;
+ 	struct device *dev = kproc->dev;
+ 	int ret;
+ 
++	/*
++	 * Ensure power-down of cores is sequential in split mode. Core1 must
++	 * power down before Core0 to maintain the expected state. By placing
++	 * the wait mechanism here in .unprepare() ops, this condition is
++	 * enforced for rproc stop or shutdown requests from sysfs and device
++	 * removal as well.
++	 */
++	core0 = list_first_entry(&cluster->cores, struct k3_r5_core, elem);
++	core1 = list_last_entry(&cluster->cores, struct k3_r5_core, elem);
++	if (cluster->mode == CLUSTER_MODE_SPLIT && core == core0 &&
++	    core1->released_from_reset) {
++		ret = wait_event_interruptible_timeout(cluster->core_transition,
++						       !core1->released_from_reset,
++						       msecs_to_jiffies(2000));
++		if (ret <= 0) {
++			dev_err(dev, "can not power down core0 before core1");
++			return -EPERM;
++		}
++	}
++
+ 	/* Re-use LockStep-mode reset logic for Single-CPU mode */
+ 	ret = (cluster->mode == CLUSTER_MODE_LOCKSTEP ||
+ 	       cluster->mode == CLUSTER_MODE_SINGLECPU) ?
+@@ -518,6 +569,14 @@ static int k3_r5_rproc_unprepare(struct rproc *rproc)
+ 	if (ret)
+ 		dev_err(dev, "unable to disable cores, ret = %d\n", ret);
+ 
++	/*
++	 * Notify all threads in the wait queue when core1 state has changed so
++	 * that threads waiting for this condition can be executed.
++	 */
++	core->released_from_reset = false;
++	if (core == core1)
++		wake_up_interruptible(&cluster->core_transition);
++
+ 	return ret;
  }
+ 
+@@ -543,7 +602,7 @@ static int k3_r5_rproc_start(struct rproc *rproc)
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+ 	struct device *dev = kproc->dev;
+-	struct k3_r5_core *core0, *core;
++	struct k3_r5_core *core;
+ 	u32 boot_addr;
+ 	int ret;
+ 
+@@ -565,21 +624,9 @@ static int k3_r5_rproc_start(struct rproc *rproc)
+ 				goto unroll_core_run;
+ 		}
+ 	} else {
+-		/* do not allow core 1 to start before core 0 */
+-		core0 = list_first_entry(&cluster->cores, struct k3_r5_core,
+-					 elem);
+-		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
+-			dev_err(dev, "%s: can not start core 1 before core 0\n",
+-				__func__);
+-			return -EPERM;
+-		}
+-
+ 		ret = k3_r5_core_run(core);
+ 		if (ret)
+ 			return ret;
+-
+-		core->released_from_reset = true;
+-		wake_up_interruptible(&cluster->core_transition);
+ 	}
+ 
+ 	return 0;
+@@ -620,8 +667,7 @@ static int k3_r5_rproc_stop(struct rproc *rproc)
+ {
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+-	struct device *dev = kproc->dev;
+-	struct k3_r5_core *core1, *core = kproc->core;
++	struct k3_r5_core *core = kproc->core;
+ 	int ret;
+ 
+ 	/* halt all applicable cores */
+@@ -634,16 +680,6 @@ static int k3_r5_rproc_stop(struct rproc *rproc)
+ 			}
+ 		}
+ 	} else {
+-		/* do not allow core 0 to stop before core 1 */
+-		core1 = list_last_entry(&cluster->cores, struct k3_r5_core,
+-					elem);
+-		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
+-			dev_err(dev, "%s: can not stop core 0 before core 1\n",
+-				__func__);
+-			ret = -EPERM;
+-			goto out;
+-		}
+-
+ 		ret = k3_r5_core_halt(core);
+ 		if (ret)
+ 			goto out;
+@@ -1271,26 +1307,6 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
+ 		    cluster->mode == CLUSTER_MODE_SINGLECPU ||
+ 		    cluster->mode == CLUSTER_MODE_SINGLECORE)
+ 			break;
+-
+-		/*
+-		 * R5 cores require to be powered on sequentially, core0
+-		 * should be in higher power state than core1 in a cluster
+-		 * So, wait for current core to power up before proceeding
+-		 * to next core and put timeout of 2sec for each core.
+-		 *
+-		 * This waiting mechanism is necessary because
+-		 * rproc_auto_boot_callback() for core1 can be called before
+-		 * core0 due to thread execution order.
+-		 */
+-		ret = wait_event_interruptible_timeout(cluster->core_transition,
+-						       core->released_from_reset,
+-						       msecs_to_jiffies(2000));
+-		if (ret <= 0) {
+-			dev_err(dev,
+-				"Timed out waiting for %s core to power up!\n",
+-				rproc->name);
+-			goto out;
+-		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
