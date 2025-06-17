@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-154532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7F1ADDA5F
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CD5ADD8FC
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9035A714A
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:58:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA4E64A285F
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7D62FA623;
-	Tue, 17 Jun 2025 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1589D2DFF38;
+	Tue, 17 Jun 2025 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5iGSKNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IuFLGUVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B32A2FA626;
-	Tue, 17 Jun 2025 16:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8003285059;
+	Tue, 17 Jun 2025 16:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179513; cv=none; b=WlBJJqCYx5LVMObUdt9K/B1CLeaTfNPXUTDmJtHS1SJr+gcjWCJyZSvy3nhvefUySknJ5Nr8mMTaZAKLTp2stGAxmA3joI4ScekSQGF7l9qHh2JpLFjCix86VaXmz2WPpo+2ZgPwywDJDtHq4799lw0xvPlj14QjC8WGTtxbkL4=
+	t=1750178337; cv=none; b=NDNe5iJNY78vLcLbqYo2DWhCVS0Zq9JicMrWucYQK89WW4/GeQvHblzW6LDl57vsyp6BxxEZhNjLkABo0Ksi2wjlbGJHPq8bTeA8cRKqfS5r/CegK0QBcqkKaDTeMvZ+NGMD4vOIcM4iZDaV6eY4imJ+Tzar1CD4Rwcoxqbg6sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179513; c=relaxed/simple;
-	bh=uKif6iMQLTq8Pz7ILElwbYz093UD8bvtNg47Tc5yvHc=;
+	s=arc-20240116; t=1750178337; c=relaxed/simple;
+	bh=9yhE4cS1J0t9Hi6sExWsGN1JWCz8eRp28e3HNOKO2X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIjsNM6tnh6pINQvIZ7lViAjZoilTofPl9tauWZjRDeb3G6divDZGtHTtwKO3MDJyXjDbqHZjPoU7KeCfG+1u9F7VNB1J0mySg2ww1thB2dYvkhpyG6xMpij4oaAGmjL0NagH+BxhX9fFnC+6WZR70dDtymQJNnGRkVhIyO4Ijc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5iGSKNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECA5C4CEE3;
-	Tue, 17 Jun 2025 16:58:32 +0000 (UTC)
+	 MIME-Version; b=hB5T3W2uPplza5HMDgspO6yRuaMq+Qs4A6L0xSpl8UyCZCwDopQyC0u0B6m07WaYe8W1g6A691EpmmTNqbfhX7II4WYG6gJ1nIZA2lcCRwCxSN1N8WzlxYwFW40aM6dv5S6STNKiRqOqXhU4bbc1nFv75TKl33Dtz9UHSeBJz4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IuFLGUVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26983C4CEE3;
+	Tue, 17 Jun 2025 16:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179513;
-	bh=uKif6iMQLTq8Pz7ILElwbYz093UD8bvtNg47Tc5yvHc=;
+	s=korg; t=1750178337;
+	bh=9yhE4cS1J0t9Hi6sExWsGN1JWCz8eRp28e3HNOKO2X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5iGSKNT5aWrXcgAbEw7wUcb4XMHr9bUAnGnF/h8hwLfmYrk3OiPGEzsoxU3K8K4o
-	 UZZ6O6ylHaa1DDjVstO129gG5NGnYHkVD1lob45TivP1z1KD8o0AZ0a0UE7cVRr3UW
-	 bM2JSV49BHJ8TVv9obHszxpZuQJVuKyMezPTWesQ=
+	b=IuFLGUVeBEKMwMp0Do/ZYUHkn8GU5oKFQwOlwqKFV/YuDHiTdRvksXogl12upeIh9
+	 6FYkPJRS1/wLCG2yaCjrDI4+WxbH7vfY5iho6ZYemgkVOlOUbBxpsnuIEVpZYFGAtm
+	 yiWGpeLZHLnm6Q1W8EhyVh01puEuVfL+LIS3q6mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 738/780] block: Fix bvec_set_folio() for very large folios
-Date: Tue, 17 Jun 2025 17:27:26 +0200
-Message-ID: <20250617152521.553597983@linuxfoundation.org>
+Subject: [PATCH 6.12 481/512] block: Fix bvec_set_folio() for very large folios
+Date: Tue, 17 Jun 2025 17:27:27 +0200
+Message-ID: <20250617152439.077340614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index 204b22a99c4ba..0a80e1f9aa201 100644
+index f41c7f0ef91ed..a8333b82e766d 100644
 --- a/include/linux/bvec.h
 +++ b/include/linux/bvec.h
 @@ -57,9 +57,12 @@ static inline void bvec_set_page(struct bio_vec *bv, struct page *page,
