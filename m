@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-153658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410CAADD669
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:33:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802F2ADD8AD
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA858194688B
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 763A82C22AF
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355F1285077;
-	Tue, 17 Jun 2025 16:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7AE2E973E;
+	Tue, 17 Jun 2025 16:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNgVj8ZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6rMh58W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E2928506E;
-	Tue, 17 Jun 2025 16:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE343285048;
+	Tue, 17 Jun 2025 16:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176674; cv=none; b=jLlK/n/GZjMT+NaWqwAyEBAHSiQW4seDcPUCbdVMWfAsPS63nETSpFHqe2q3VS2INs726r5ox0pIBvnHvE0VPHSGdLmrtK3sV7aOLO853bhQKo+nz6KSuiX5YRaPF2ZkP9rz8dsMTyPLDxZXu+XqxeEntKtLI48ifJiFzqQlTnE=
+	t=1750178141; cv=none; b=ovjMzsIl0y6cQMQVvZNs2P9C2vhaqbL/nkIHRv/3lv+LqbwgdsTQG9sZ6dxwn/zBvHPHHjwRLS6q+7hIRaWsLjutiPAPB3F1zj+rHtmByuU1nKLBkRGi3rCSN/qTNZSs6q1zfU/liGvPBeOYyqo/xO8+5S4CNAms6WcVqgYejNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176674; c=relaxed/simple;
-	bh=q0sLmmdKYAHhARmxkP+Ir2OXdPo7Tv1SVLFw3irvuw8=;
+	s=arc-20240116; t=1750178141; c=relaxed/simple;
+	bh=jiqKqn4kPJEHS3ZrtZMmvS77kHbusVBAde4ghL7YztY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPVoOMCN3/q1ZXRgvfaiQW2osF8A9Q7Bs728wBW6As2v4nzUmpytHpO0Cs9FMnkZIZ65LGxtyuKlqVZifmF2b9vi5MTeln7BHv4wfQFsBpTkYBaXpun4LiHstuugeWlekqEND22mORXxgAgh8F2vN96cdB3pCYsGn+hhmi8oABI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNgVj8ZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA5AC4CEF0;
-	Tue, 17 Jun 2025 16:11:13 +0000 (UTC)
+	 MIME-Version; b=EzVglcKlf5aEZZDjKqz0sHt8NDjGFbOIfD4ss3UUNhorGHqmyS9AnJ6JRI2FdhwzYPdT+smb666OyYx0Lr72yeHPF4zK8HEp9tcyVmoJUmSufZfqx6HxC1lLOEGCDx9VwXU4oMEZzXRXDi37Zwyc7EGbg4gJ7Cx6mZq339YWCGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6rMh58W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9355C4CEE3;
+	Tue, 17 Jun 2025 16:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176673;
-	bh=q0sLmmdKYAHhARmxkP+Ir2OXdPo7Tv1SVLFw3irvuw8=;
+	s=korg; t=1750178141;
+	bh=jiqKqn4kPJEHS3ZrtZMmvS77kHbusVBAde4ghL7YztY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNgVj8ZFNcwSASCrzpZQQ7ostb42l+OtiNMdiD6/zcayeBsbJLKLofnwHzs257VEy
-	 If+EhdMruQRwa4+kEnIjqPNg3yWLom6k0Yr3+iLcQwX8Q21aqQm6hfV11i3O3zAMaM
-	 uDt7T9Ayj/2DxFOTDO4TgpOvhpLd6Z3jlW7GT0C0=
+	b=D6rMh58Wl2d9zcy7+rFVj4lJaz3yZN2RKbV0ZFzgIr018qTXWZupUlo2xNTGCTWHo
+	 Xkqi2nWsJl/7Q73b8AWpA1TkhVHuoX+DY8agRtmIVamSsO28fblN3qQL8uMS2h4/8T
+	 kJR8AbtSX+EwQfcjnrfhtLpcCnIbaZJhEjsZuuP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 303/356] regulator: max20086: Fix refcount leak in max20086_parse_regulators_dt()
+Subject: [PATCH 6.12 452/512] net: Fix TOCTOU issue in sk_is_readable()
 Date: Tue, 17 Jun 2025 17:26:58 +0200
-Message-ID: <20250617152350.366264306@linuxfoundation.org>
+Message-ID: <20250617152437.884768118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 06118ae36855b7d3d22688298e74a766ccf0cb7a ]
+[ Upstream commit 2660a544fdc0940bba15f70508a46cf9a6491230 ]
 
-There is a missing call to of_node_put() if devm_kcalloc() fails.
-Fix this by changing the code to use cleanup.h magic to drop the
-refcount.
+sk->sk_prot->sock_is_readable is a valid function pointer when sk resides
+in a sockmap. After the last sk_psock_put() (which usually happens when
+socket is removed from sockmap), sk->sk_prot gets restored and
+sk->sk_prot->sock_is_readable becomes NULL.
 
-Fixes: 6b0cd72757c6 ("regulator: max20086: fix invalid memory access")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aDVRLqgJWMxYU03G@stanley.mountain
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This makes sk_is_readable() racy, if the value of sk->sk_prot is reloaded
+after the initial check. Which in turn may lead to a null pointer
+dereference.
+
+Ensure the function pointer does not turn NULL after the check.
+
+Fixes: 8934ce2fd081 ("bpf: sockmap redirect ingress support")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250609-skisreadable-toctou-v1-1-d0dfb2d62c37@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max20086-regulator.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/sock.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
-index ebfbcadbca529..1cf04d1efb331 100644
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -5,6 +5,7 @@
- // Copyright (C) 2022 Laurent Pinchart <laurent.pinchart@idesonboard.com>
- // Copyright (C) 2018 Avnet, Inc.
- 
-+#include <linux/cleanup.h>
- #include <linux/err.h>
- #include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
-@@ -133,11 +134,11 @@ static int max20086_regulators_register(struct max20086 *chip)
- static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
+diff --git a/include/net/sock.h b/include/net/sock.h
+index fa9b9dadbe170..b7270b6b9e9cc 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2942,8 +2942,11 @@ int sock_ioctl_inout(struct sock *sk, unsigned int cmd,
+ int sk_ioctl(struct sock *sk, unsigned int cmd, void __user *arg);
+ static inline bool sk_is_readable(struct sock *sk)
  {
- 	struct of_regulator_match *matches;
--	struct device_node *node;
- 	unsigned int i;
- 	int ret;
- 
--	node = of_get_child_by_name(chip->dev->of_node, "regulators");
-+	struct device_node *node __free(device_node) =
-+		of_get_child_by_name(chip->dev->of_node, "regulators");
- 	if (!node) {
- 		dev_err(chip->dev, "regulators node not found\n");
- 		return -ENODEV;
-@@ -153,7 +154,6 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
- 
- 	ret = of_regulator_match(chip->dev, node, matches,
- 				 chip->info->num_outputs);
--	of_node_put(node);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "Failed to match regulators\n");
- 		return -EINVAL;
+-	if (sk->sk_prot->sock_is_readable)
+-		return sk->sk_prot->sock_is_readable(sk);
++	const struct proto *prot = READ_ONCE(sk->sk_prot);
++
++	if (prot->sock_is_readable)
++		return prot->sock_is_readable(sk);
++
+ 	return false;
+ }
+ #endif	/* _SOCK_H */
 -- 
 2.39.5
 
