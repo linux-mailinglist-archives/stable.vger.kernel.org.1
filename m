@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-153694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3407FADD5CB
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2BEADD5CC
 	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68CA77A685D
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 288572C3CC6
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49FE2F2C71;
-	Tue, 17 Jun 2025 16:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2932EE27C;
+	Tue, 17 Jun 2025 16:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFWmiPR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrXJgx1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B482ED172;
-	Tue, 17 Jun 2025 16:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891712EE277;
+	Tue, 17 Jun 2025 16:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176787; cv=none; b=CegSmS2l0izHiY5pEI3ShOQNhZrXSqbZCeuJ5A6FQGOoocG3qW8bz0F0IDVF1uDtbG18Yo5KsyiWqxtSVJ4DqM6Pga21h6S8W0rSs6hVNxRkVLRSqmw0f5wZB6Kio9pLI+jxTa0/xCzBbh/SYObPMEQWDIP6cH3L2vhEudHjWQQ=
+	t=1750176797; cv=none; b=aFy5wIP/MycLkJn334DwtBUbi0EMVnKcwFtUXeA4E6oZRfOvBP1oGco5cXn+mXs4/9bAAL6/sqixN6E+u04CrsPIzfRaa9qLT55+q6p4vAj6Dw0pl1zlonFgOoKwjmPYkiF3ML1I2s8Osp5G1eXr4UwGyRE7t1cbRXgv+XqQols=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176787; c=relaxed/simple;
-	bh=W4GtbGS0G6RNg7+bf9Y9lSxuAZ4xUad7ERANDXkVFRA=;
+	s=arc-20240116; t=1750176797; c=relaxed/simple;
+	bh=Xcb3Swoeh2X4FTV94Lsx/6CigMtcZVAOCYvSnb8CWqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhNUSFwiMPuyUrtLdwP50L+3Rn1aeli42qq1UsLSYAjsf52Ldf5OlooE3COuhJYSh8J985AQTTyFKcQA7lRp4IFxmz39B6GTv1F8xcttPsT4u8hbm2jttCBlbdWSND+B3y5+fxsdX0btIYNFO9jM4JizkLVjsxiyd0yA+DdDuzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFWmiPR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC510C4CEE3;
-	Tue, 17 Jun 2025 16:13:06 +0000 (UTC)
+	 MIME-Version; b=axzsCcVMJ5sVVKL3wnOIajk6h6Xy/AjxqzeW4OlOxf7hHTjyoqvS8vIilWTuaH0PHptPKpTB8G0ym/+aCp7h0jhBhHhKdz84GForI56fT6IpRHnPPLtE/Rf0ym1f5zXYif8CAOQNOltmAN8qBNqnVAuyDy4sET9wgdxx3U3eQr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrXJgx1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5409C4CEE3;
+	Tue, 17 Jun 2025 16:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176787;
-	bh=W4GtbGS0G6RNg7+bf9Y9lSxuAZ4xUad7ERANDXkVFRA=;
+	s=korg; t=1750176797;
+	bh=Xcb3Swoeh2X4FTV94Lsx/6CigMtcZVAOCYvSnb8CWqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFWmiPR6nwPAFEySJsBslT1T6BshS4L4n85I4L0ZL0kpMEyW+CFC8JWkHmwegrraf
-	 qp4gktrcRLJim0gtmQ9TdQN5YuCuzribcl1HaQpE19IepiTT86yXo6refxr2NJoej3
-	 p70PIP2mKrgVdb5OoOPRlMNO9alh7X7+3CMUjmTI=
+	b=CrXJgx1aPe4Q+vPShjv2oqYuTRljWWBi30NYjr4q2QpWxrLicEZKyFIDEneQaMPLW
+	 yhoFG7VIK/2L6AEtMa4pZFX0eC2GO8WS3AwnLqMwu6R8VK4goaHyqy99ncqINPrORG
+	 jJ5ZcPGCL3cToXBqxlf1ZQPx++LUHaocrxrUYJ1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rafal Romanowski <rafal.romanowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/356] i40e: return false from i40e_reset_vf if reset is in progress
-Date: Tue, 17 Jun 2025 17:27:08 +0200
-Message-ID: <20250617152350.762702123@linuxfoundation.org>
+Subject: [PATCH 6.6 314/356] i40e: retry VFLR handling if there is ongoing VF reset
+Date: Tue, 17 Jun 2025 17:27:09 +0200
+Message-ID: <20250617152350.801715791@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -69,17 +69,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit a2c90d63b71223d69a813333c1abf4fdacddbbe5 ]
+[ Upstream commit fb4e9239e029954a37a00818b21e837cebf2aa10 ]
 
-The function i40e_vc_reset_vf attempts, up to 20 times, to handle a
-VF reset request, using the return value of i40e_reset_vf as an indicator
-of whether the reset was successfully triggered. Currently, i40e_reset_vf
-always returns true, which causes new reset requests to be ignored if a
-different VF reset is already in progress.
-
-This patch updates the return value of i40e_reset_vf to reflect when
-another VF reset is in progress, allowing the caller to properly use
-the retry mechanism.
+When a VFLR interrupt is received during a VF reset initiated from a
+different source, the VFLR may be not fully handled. This can
+leave the VF in an undefined state.
+To address this, set the I40E_VFLR_EVENT_PENDING bit again during VFLR
+handling if the reset is not yet complete. This ensures the driver
+will properly complete the VF reset in such scenarios.
 
 Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
 Signed-off-by: Robert Malz <robert.malz@canonical.com>
@@ -87,33 +84,25 @@ Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index d5509bc16d0d5..348869f05020f 100644
+index 348869f05020f..80036942dc764 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1552,8 +1552,8 @@ static void i40e_cleanup_reset_vf(struct i40e_vf *vf)
-  * @vf: pointer to the VF structure
-  * @flr: VFLR was issued or not
-  *
-- * Returns true if the VF is in reset, resets successfully, or resets
-- * are disabled and false otherwise.
-+ * Return: True if reset was performed successfully or if resets are disabled.
-+ * False if reset is already in progress.
-  **/
- bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
- {
-@@ -1572,7 +1572,7 @@ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+@@ -4332,7 +4332,10 @@ int i40e_vc_process_vflr_event(struct i40e_pf *pf)
+ 		reg = rd32(hw, I40E_GLGEN_VFLRSTAT(reg_idx));
+ 		if (reg & BIT(bit_idx))
+ 			/* i40e_reset_vf will clear the bit in GLGEN_VFLRSTAT */
+-			i40e_reset_vf(vf, true);
++			if (!i40e_reset_vf(vf, true)) {
++				/* At least one VF did not finish resetting, retry next time */
++				set_bit(__I40E_VFLR_EVENT_PENDING, pf->state);
++			}
+ 	}
  
- 	/* If VF is being reset already we don't need to continue. */
- 	if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
--		return true;
-+		return false;
- 
- 	i40e_trigger_vf_reset(vf, flr);
- 
+ 	return 0;
 -- 
 2.39.5
 
