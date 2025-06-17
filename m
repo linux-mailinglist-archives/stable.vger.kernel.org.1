@@ -1,183 +1,165 @@
-Return-Path: <stable+bounces-152745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-152746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C04ADBF68
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 05:02:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538B2ADBFE5
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 05:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED363A6261
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 03:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E32AD166A0A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 03:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D5C20487E;
-	Tue, 17 Jun 2025 03:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14A51922FB;
+	Tue, 17 Jun 2025 03:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PIcolLWy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dVsMuar8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B7B2AD11;
-	Tue, 17 Jun 2025 03:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3A51BC3F
+	for <stable@vger.kernel.org>; Tue, 17 Jun 2025 03:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750129315; cv=none; b=pFkHuQP1nVgiINsfPS5VnVCadwhXrHoRUgt3/dsk1kLIRwMTTqHorv357wsu/EV4xUrFyS7TUtsm87GzvUkRMPv/Gyvs/bprnaLdczKN3kaz7SPYW4zv0JmMULPOnOyDa0Y8CkBGVdtNByxtR4OwZBlkFxVVszaxz64k4GNVRPI=
+	t=1750131107; cv=none; b=JSDiAOsh4UBrbpjeh/DFU+/LmzB3MI3sYCIpI0K9aNk3bxCSfS/G5gDhnopAUksf7IEvHQ6I2ipTAkRbVXPn55d80uByW4/DmQ0rvc5cDrBsHzGGiBRCn1w1jcOvwGub8UmDgGmb91LJjN3AFobZa/ffK3bIqaXmRtXZOjIsb7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750129315; c=relaxed/simple;
-	bh=+nsuOjHKSn+wU7zKSuad9aE9Iy7woMm2OR7+pFpohD4=;
+	s=arc-20240116; t=1750131107; c=relaxed/simple;
+	bh=ieph6lxJ3Hbp+Rp377DeV7BoLQycTf5gx8twwmnu68g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FbJSCVcskO2RKsI0DC4mY+RHlpcEZz6784QciqAA9k7MjpSZovNse/rz33GtUpNaahGYceKsCKCo1GrH/5L9zq9jga6x3u421CkxWfm94Ne5LtHyl7VXjSwJ5gKvYx3MPmPMHunFlV61qynh64HIEsXfXWeqCPCOgEtd5YT2X/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PIcolLWy; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-53145c74e15so902652e0c.0;
-        Mon, 16 Jun 2025 20:01:53 -0700 (PDT)
+	 To:Cc:Content-Type; b=G+RFzj0Pyfie2D4It/0jmCbsCdwMukF2rpauk7WKuxtZMjuz95HYvsXIcjOQ6qBC6RNJRU2A5MMAc+bNjeLlc8/ON1l72DHt0wudZ5rmxwCq8P0+Z/Y9aGj8H2qQm1LIt8pnk2SILq0dnI3S3fJFk0aCKSod2FTz/s1BHJWgneY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dVsMuar8; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-551f007a303so2340e87.1
+        for <stable@vger.kernel.org>; Mon, 16 Jun 2025 20:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750129312; x=1750734112; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750131104; x=1750735904; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u75Z/m51HLoqvQuvmxYYX48fqhq+BQTGNtp2KTyT5vE=;
-        b=PIcolLWyN6Gz8ITUKtFW/+VlulORLLPoW78e8zVyz26FaapMKximWdiJigiXFcstxm
-         RdddPeq/ognHf8maz7j+WGWFFqgfSZcwXIKTsJATPadB5E3f9eR6me3lFQL8xjVOEPh8
-         F2GyX9hd3RiYCEsB3dSFuTLesbqCFlGh8veFeTULvyli0GnSb2RinsfcjjWQPfDM53c9
-         UWrmNYPOwZ6HOjfcxGVKTHnEce4HqbqOAb8+uJUu9+1oNFcnE2kXwH7gEcZ4YresWSpL
-         Cu7ivCGwR5vdlhgdE9J6OTa9F7Im+LTDGdhUL1N5PFiUwjRrgzwKWMOpe1t1WAwV0hgV
-         9vDw==
+        bh=mwhOByNmuLKBhb5Mlg+5pTuchaKObMpIf2JB0S1ADBY=;
+        b=dVsMuar8yrm/G2igr5QLyMut8oumHNdvZ+caLjegkbHueNVglAbTmx5qO6NH/MjyPL
+         l2Egjfts32ZxPXFcETD1Cq3swij9aywwkQmjoE0Ji8c49tovTcApwBMYxFKuFcEsKP5R
+         ObOcnqpDNRkD6iY48hVioCOb34EEr/E6t8zJK9WZkQ2VezXkisLyZZRVRJfuEgBpANQc
+         PRZ8JAsuqLzztuXPBhmx/WCP8sxXHx/9GESGEsNSBTNlXIIyhO0ByJ+rRwXly9/NV0ji
+         F/M8JKkEV0XMeEypiy6rqZhvfDXokKaGKDql7rK0DTX9iAx5U7+XhA4yrkts9FGXymA9
+         WNKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750129312; x=1750734112;
+        d=1e100.net; s=20230601; t=1750131104; x=1750735904;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u75Z/m51HLoqvQuvmxYYX48fqhq+BQTGNtp2KTyT5vE=;
-        b=dUfujhTWZ2lKxSGTG0xKgQlaa8/8FY2eI/SmkPaVaLeDMG48ONyHBjrFhG5ZoxqiyU
-         w8EjlFKXyCUQJEtIEJdcxdERnwVHs0MhPOWJTpBjgeLq1gVcPIsVmY/zJ7XUHqxiLT+c
-         UF0WZA6UXunc9ER3IZ0+BOErTnzTB+geoRIB97k0duXazxJsu3ZJx0neXKUCoKYb7aJC
-         HM2Hi8TUyHI6PvRX2HWNiCf8I3KzfnTnXF9Yb/287kuBCkVJR5OA81is1u90KvWfmxpk
-         vv2Sc0qAUFKc4MD2gLS3R2aSPRahHasX1c5sDbJy+B0iTeUjezr/IM5Lgxpp5/1Jqk03
-         OPdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWugO73FFW9yD5oTYjMzaz6TtmEDc8Ym2clC7kb8qAPOV/lTAdFdRemzk/HTh3dcLDa0GIWCUndAs+ll2M=@vger.kernel.org, AJvYcCX5xRzuzRKBNsRRZnaGa1gNUVmRKZpfcozXyHUMCTdStL3/TlwMt1eqvSIZWo8RuCZH2eFfkeVp@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPWnce6bc49de5dvdlzrb8SHVJUr8ph/y0QDGzMBpKJ0px35qg
-	2D0FYddXiiHgoxkkB6oW8USuGS0nqpspEJHceDYqeooRALdZJIu6rvZ2jHDo2eLsIRgkjnqn/g5
-	rVLO3w8sR9NdLGRd3zel48os9gtxXkNo=
-X-Gm-Gg: ASbGncvYzihkad8iYqdeEDl7YlL0smFuw1xPDVF70qJY6012OVQpRo4qLFIbw28uyCB
-	7MZsinmcRwDVUHj4MNe7vUz8kbpER2uLLZSIKhK2PgGKznDgXk5J8iG452/BiqDO7xg9oiYTR0m
-	wfj1sWyVyBoUcgFAJjx94u6X9Gh8LTbg1NvjvO5fkpOOo=
-X-Google-Smtp-Source: AGHT+IH3O0bo9lTKoYDcGH9D7lVDop32g1C5r70VHXuxW/nd9qbrLusDr29m441OZsEZGw0CB3nvZH1Gj9WsqLJ29zk=
-X-Received: by 2002:a05:6122:3bd0:b0:531:3900:8551 with SMTP id
- 71dfb90a1353d-5314989a8eamr6802796e0c.8.1750129312186; Mon, 16 Jun 2025
- 20:01:52 -0700 (PDT)
+        bh=mwhOByNmuLKBhb5Mlg+5pTuchaKObMpIf2JB0S1ADBY=;
+        b=OUE/rpX1WvQ54ineuJgdceb9jnJrp0YbGgf9EF7da9j/h9y2NsC5MibQoKYOF+QHzI
+         ODZyQNbdAqHNxytFk9Yhza+ofgroNZGJL+1B4oz87DnZx3a6scNjRAYxA/lO1sHDxMCu
+         sTaAScu4plc6WBRvhKh/Wi1NXgsni2/xUU5eTKI7/nT6D9L/oG+rTgDJxAZpe6/CVcpw
+         Cnd1YDd9o6JyhLKwKObjNJmvGU9FTR1cUIEVnoqs46SSVQcJjYVBM7r8ORuse0TtGK+3
+         YVgw3MsduBZLOd3AOKIi/UMZoDXiIQCnBBGSaBTA2qdRPCZSXesUk2+iYZHNz7sSu7fg
+         KBuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnyOWox3x2xh8/AzUxgxHT99AZMndN3jNXoJx19Gfk6RVpeFHa7gQhCLkRJHYrxTZM0efdM0w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4MCf5LYKrb+XyT0wIGVRHhsE2xgP5PAtv1BbTEArgEG3I5NIy
+	kKdLDvrDOpI2DbuYBN9XcQ4ZD/VquDRrQa3KMMX9T/S667MvWeFvG0LDDxSkfgHYJhD3osXOKKI
+	gU6Lg0Vy/UE0Mzs8eZnF3wSgcb3n7t5WGoBCcsHb7
+X-Gm-Gg: ASbGnctSJJYm0Yf94mUMrn1inVlua/oa+TcPmndsMcrQh50BYc9Dzf5xMjC2251I80I
+	0zDPrA2s1cn29SqlZXuc1iv42ulj4lNmc7ZW128tzQYNvf6vEp0xj9aVVDVHpEflHA9XU4E5GCw
+	GGZwu1dMr6MzEYFZn5i499YXBqLXslhOVlE4H/LWnjuHRu5lbpFieMCDWsVXrZidEQgf0cWfY=
+X-Google-Smtp-Source: AGHT+IGyuaznBGQp3QUnLGhxV3KnZapR1/Gtg7nZI85N47EBN9ZMHFJ3qlouR/mC0M+rb+Bp7XeJeYNp9yNbpRoZJj4=
+X-Received: by 2002:ac2:5deb:0:b0:553:50d2:5c20 with SMTP id
+ 2adb3069b0e04-553b80b051cmr508080e87.6.1750131103855; Mon, 16 Jun 2025
+ 20:31:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250616132539.63434-1-danisjiang@gmail.com> <aFCh-JXnifNXTgSt@codewreck.org>
-In-Reply-To: <aFCh-JXnifNXTgSt@codewreck.org>
-From: Danis Jiang <danisjiang@gmail.com>
-Date: Tue, 17 Jun 2025 11:01:40 +0800
-X-Gm-Features: AX0GCFtKyrfm9TIjR5SftUPZL2VQwc6OnrGk3iuj5hx40J4WFoWm2EVEyMO3TCo
-Message-ID: <CAHYQsXR43MGM826eHtEkmH4X2bM-amM29A38XUj+hMbNF2vDJQ@mail.gmail.com>
-Subject: Re: [PATCH] net/9p: Fix buffer overflow in USB transport layer
-To: asmadeus@codewreck.org
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com, 
-	v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, security@kernel.org, 
+References: <20250616132152.1544096-1-khtsai@google.com> <20250616132152.1544096-2-khtsai@google.com>
+ <2025061634-heavily-outrage-603a@gregkh>
+In-Reply-To: <2025061634-heavily-outrage-603a@gregkh>
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Tue, 17 Jun 2025 11:31:17 +0800
+X-Gm-Features: AX0GCFsjBA1PsPOxoPnvm17MTnEeKtIwkTEYPQhKjxWr5yq-Sg5ZoYFB0zEugGg
+Message-ID: <CAKzKK0oB83B3EwX75NTFd55E0qQ=QwNpKv3hUf9Oe3ZF3AAzrQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] usb: gadget: u_serial: Fix race condition in TTY wakeup
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: prashanth.k@oss.qualcomm.com, hulianqin@vivo.com, 
+	krzysztof.kozlowski@linaro.org, mwalle@kernel.org, jirislaby@kernel.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 17, 2025 at 7:00=E2=80=AFAM <asmadeus@codewreck.org> wrote:
+On Mon, Jun 16, 2025 at 10:17=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
 >
-> Yuhao Jiang wrote on Mon, Jun 16, 2025 at 09:25:39PM +0800:
-> > A buffer overflow vulnerability exists in the USB 9pfs transport layer
-> > where inconsistent size validation between packet header parsing and
-> > actual data copying allows a malicious USB host to overflow heap buffer=
-s.
+> On Mon, Jun 16, 2025 at 09:21:47PM +0800, Kuen-Han Tsai wrote:
+> > A race condition occurs when gs_start_io() calls either gs_start_rx() o=
+r
+> > gs_start_tx(), as those functions briefly drop the port_lock for
+> > usb_ep_queue(). This allows gs_close() and gserial_disconnect() to clea=
+r
+> > port.tty and port_usb, respectively.
 > >
-> > The issue occurs because:
-> > - usb9pfs_rx_header() validates only the declared size in packet header
-> > - usb9pfs_rx_complete() uses req->actual (actual received bytes) for me=
-mcpy
+> > Use the null-safe TTY Port helper function to wake up TTY.
 > >
-> > This allows an attacker to craft packets with small declared size (bypa=
-ssing
-> > validation) but large actual payload (triggering overflow in memcpy).
-> >
-> > Add validation in usb9pfs_rx_complete() to ensure req->actual does not
-> > exceed the buffer capacity before copying data.
->
-> Thanks for this check!
->
-> Did you reproduce this or was this static analysis found?
-> (to knowi if you tested wrt question below)
-
-I found this by static analysis.
-
->
-> > Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> > Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transpor=
-t")
 > > Cc: stable@vger.kernel.org
-> > Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+> > Fixes: 35f95fd7f234 ("TTY: usb/u_serial, use tty from tty_port")
+> > Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
 > > ---
-> >  net/9p/trans_usbg.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-> > index 6b694f117aef..047a2862fc84 100644
-> > --- a/net/9p/trans_usbg.c
-> > +++ b/net/9p/trans_usbg.c
-> > @@ -242,6 +242,15 @@ static void usb9pfs_rx_complete(struct usb_ep *ep,=
- struct usb_request *req)
-> >       if (!p9_rx_req)
-> >               return;
-> >
-> > +     /* Validate actual received size against buffer capacity */
-> > +     if (req->actual > p9_rx_req->rc.capacity) {
-> > +             dev_err(&cdev->gadget->dev,
-> > +                     "received data size %u exceeds buffer capacity %z=
-u\n",
-> > +                     req->actual, p9_rx_req->rc.capacity);
-> > +             p9_req_put(usb9pfs->client, p9_rx_req);
+> > Explanation:
+> >     CPU1:                            CPU2:
+> >     gserial_connect() // lock
+> >                                      gs_close() // await lock
+> >     gs_start_rx()     // unlock
+> >     usb_ep_queue()
+> >                                      gs_close() // lock, reset port_tty=
+ and unlock
+> >     gs_start_rx()     // lock
+> >     tty_wakeup()      // dereference
 >
-> I still haven't gotten around to setting up something to test this, and
-> even less the error case, but I'm not sure a single put is enough --
-> p9_client_cb does another put.
-> Conceptually I think it's better to mark the error and move on
-> e.g. (not even compile tested)
-> ```
->         int status =3D REQ_STATUS_RCVD;
->
->         [...]
->
->         if (req->actual > p9_rx_req->rc.capacity) {
->                 dev_err(...)
->                 req->actual =3D 0;
->                 status =3D REQ_STATUS_ERROR;
->         }
->
->         memcpy(..)
->
->         p9_rx_req->rc.size =3D req->actual;
->
->         p9_client_cb(usb9pfs->client, p9_rx_req, status);
->         p9_req_put(usb9pfs->client, p9_rx_req);
->
->         complete(&usb9pfs->received);
-> ```
-> (I'm not sure overriding req->actual is allowed, might be safer to use
-> an intermediate variable like status instead)
->
-> What do you think?
->
-> Thanks,
-> --
-> Dominique Martinet | Asmadeus
+> Why isn't this up in the changelog?
 
-Yes, I think your patch is better, my initial patch forgot p9_client_cb.
+Thanks for the suggestion. I'll move this part up in the changelog.
 
-Thanks,
-Yuhao Jiang
+>
+> >
+> > Stack traces:
+> > [   51.494375][  T278] ttyGS1: shutdown
+> > [   51.494817][  T269] android_work: sent uevent USB_STATE=3DDISCONNECT=
+ED
+> > [   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep=
+1in OUT/ep1out
+> > [   52.516288][ T1026] android_work: sent uevent USB_STATE=3DCONNECTED
+> > [   52.551667][ T1533] gserial_connect: start ttyGS1
+> > [   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.t=
+ty=3D0000000046bd4060
+> > [   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
+> > [   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
+> > [   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
+> > [   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
+> > [   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
+0a5) ...
+> > [   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
+> > [   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be975=
+0a5) done!
+> > [   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
+> > [   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
+> > [   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_=
+wakeup(), port->port.tty=3D0000000000000000
+> > [   52.747629][ T1533] Unable to handle kernel NULL pointer dereference=
+ at virtual address 00000000000001f8
+>
+> What is [khtsai] from?
+>
+> thanks,
+>
+> greg k-h
+
+I added the "[khtsai]" logs for debugging and left them in the traces
+because they clearly reveal the sequence of events that led to the
+problem.
+
+Regards,
+Kuen-Han
 
