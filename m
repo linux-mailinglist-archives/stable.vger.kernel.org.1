@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-153374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A09ADD407
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:05:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A6DADD40C
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E574A175E72
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:59:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B8111765FE
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8EC2F2349;
-	Tue, 17 Jun 2025 15:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A187F2F2353;
+	Tue, 17 Jun 2025 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddo3DC/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fo1j3oSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD172F234C;
-	Tue, 17 Jun 2025 15:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3382F2346;
+	Tue, 17 Jun 2025 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175749; cv=none; b=eFo6S0PPJr3+F5fYOcC10G3ZaUV4vncC3ZHUxkKEstxptBIt4zOM17C4LeCOp9CJnK9i6TmT5GYS5lvoPmEJxcuQUH9BECMElA2IzmS2MOKwqDzslKh4pc58lyh3ykLqBfpnucWBExojtXUiMgQFRgOViMKQcPCZ18O008l6IUI=
+	t=1750175763; cv=none; b=nZG/ctjMUXI3W7vos4CNYwQTiWToPBzh9rQFexNMnseJ/Z3tAwQaCHVR5Fd5NGw+vXU5t5rrU2CX/C20nMp7wni7MU5ZtkPZtYNkJ8/S1FF5JvBXBIbxGHoZ9RfTl3gseqkUuESz5GMLdyQuXX7F+u1QHeYSPp/l41ae9SlGaTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175749; c=relaxed/simple;
-	bh=SklbKqFCtxWTVzJcamT7+wKzk+oFW8xEZB57ynuu5ck=;
+	s=arc-20240116; t=1750175763; c=relaxed/simple;
+	bh=MogzHdUdEzlVvhgFdYxuJwGJQbd8DtyZ0x5B0sQSBeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=td9M8VVO2GXPPYK0uGjTxbRwZZxEd8SqyZ/l/4QMhax7JhhEblli4xF2ZvaPZSSCV3UKde5e1AtRN0vItkJXzE/7gBaErvMe16tDMpf86PcDbWq5uI2gkt/fZY2Pgfh1XX4l5PfCmC8/9wpOItU6sE6SswBKR0jrns01dSkZTjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddo3DC/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FE5C4CEE3;
-	Tue, 17 Jun 2025 15:55:48 +0000 (UTC)
+	 MIME-Version; b=LlwFgHVPXNaSEQ/ZaaVpacDjCGkNmaRzX9Nr/mbgmsHk3LkzRvESZyanXEkyPGrs9tIOIpKsiz5jqnBg5w+s7nie0eLP6OzGVzF2QUFhkIT3CkAizPcQoHVur7pQecp1F/IB3on50mxqHn5tpUzeaPqTv3wRBXi/+/8xCqdF1jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fo1j3oSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB03C4CEE3;
+	Tue, 17 Jun 2025 15:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175749;
-	bh=SklbKqFCtxWTVzJcamT7+wKzk+oFW8xEZB57ynuu5ck=;
+	s=korg; t=1750175763;
+	bh=MogzHdUdEzlVvhgFdYxuJwGJQbd8DtyZ0x5B0sQSBeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddo3DC/WhUZ21G3mf6Tc8gTj7dEyxn2aaSfuntG2LRXNrSsJrtKhDH+MCBzag0iDx
-	 F5cIf+oRP6tPHOhieqmCAZFnbYHxytrfwsZsjQyic7svoVlvystB6TbTnXNoUQAVFf
-	 r3dvC/s2ZnTVIUnkcLeQUzp4imh8Er6WCh79c6KM=
+	b=fo1j3oSvSL9E6CjlipVGNkUIwttmCLIC07UdOezJz39bhsxJC9PwSVfHNpwb1jfMp
+	 yWXjT/FzR5V/iQPJwbnWVM3g2v6tI127oIlbJDoQvYccersV77vOP3Luc/6Kb2Ugiq
+	 a42jTwu0RutFTL6jtgh78CuoXzR4srO9hEAi38QU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	syzbot+e36cc3297bd3afd25e19@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 119/780] fs/ntfs3: handle hdr_first_de() return value
-Date: Tue, 17 Jun 2025 17:17:07 +0200
-Message-ID: <20250617152456.344878616@linuxfoundation.org>
+Subject: [PATCH 6.15 120/780] fs/ntfs3: Add missing direct_IO in ntfs_aops_cmpr
+Date: Tue, 17 Jun 2025 17:17:08 +0200
+Message-ID: <20250617152456.386125207@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
 References: <20250617152451.485330293@linuxfoundation.org>
@@ -66,54 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit af5cab0e5b6f8edb0be51a9f47f3f620e0b4fd70 ]
+[ Upstream commit 8b26c8c376b29cf29710fbfd093df194cefe26ad ]
 
-The hdr_first_de() function returns a pointer to a struct NTFS_DE. This
-pointer may be NULL. To handle the NULL error effectively, it is important
-to implement an error handler. This will help manage potential errors
-consistently.
+The ntfs3 can use the page cache directly, so its address_space_operations
+need direct_IO. Exit ntfs_direct_IO() if it is a compressed file.
 
-Additionally, error handling for the return value already exists at other
-points where this function is called.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Fixes: b432163ebd15 ("fs/ntfs3: Update inode->i_mapping->a_ops on compression state")
+Reported-by: syzbot+e36cc3297bd3afd25e19@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e36cc3297bd3afd25e19
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ntfs3/inode.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 78d20e4baa2c9..1bf2a6593dec6 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -2182,6 +2182,10 @@ static int indx_get_entry_to_replace(struct ntfs_index *indx,
- 
- 		e = hdr_first_de(&n->index->ihdr);
- 		fnd_push(fnd, n, e);
-+		if (!e) {
-+			err = -EINVAL;
-+			goto out;
-+		}
- 
- 		if (!de_is_last(e)) {
- 			/*
-@@ -2203,6 +2207,10 @@ static int indx_get_entry_to_replace(struct ntfs_index *indx,
- 
- 	n = fnd->nodes[level];
- 	te = hdr_first_de(&n->index->ihdr);
-+	if (!te) {
-+		err = -EINVAL;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 3e2957a1e3605..0f0d27d4644a9 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -805,6 +805,10 @@ static ssize_t ntfs_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
+ 		ret = 0;
+ 		goto out;
+ 	}
++	if (is_compressed(ni)) {
++		ret = 0;
 +		goto out;
 +	}
- 	/* Copy the candidate entry into the replacement entry buffer. */
- 	re = kmalloc(le16_to_cpu(te->size) + sizeof(u64), GFP_NOFS);
- 	if (!re) {
+ 
+ 	ret = blockdev_direct_IO(iocb, inode, iter,
+ 				 wr ? ntfs_get_block_direct_IO_W :
+@@ -2068,5 +2072,6 @@ const struct address_space_operations ntfs_aops_cmpr = {
+ 	.read_folio	= ntfs_read_folio,
+ 	.readahead	= ntfs_readahead,
+ 	.dirty_folio	= block_dirty_folio,
++	.direct_IO	= ntfs_direct_IO,
+ };
+ // clang-format on
 -- 
 2.39.5
 
