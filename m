@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-153195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BE2ADD318
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:53:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2252AADD30D
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 17:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31DB83B3C03
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:49:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 802C017EE84
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 15:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D58E2F2C5A;
-	Tue, 17 Jun 2025 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5387B2F2C6C;
+	Tue, 17 Jun 2025 15:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JejlLfSc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaK81szb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511222ECEA8;
-	Tue, 17 Jun 2025 15:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9C12ECEA8;
+	Tue, 17 Jun 2025 15:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750175185; cv=none; b=Ki7ITUzBJ7tbUAU1YywEgv07QhzMuKviIiQJwnFKxJHqt+4VVHTuVBAFUku0NpC+CJsRgf+mKyu5aU19pmNh6t5ZlBs6JlPDq3ht9FB33Vtvu9a27F6FwysT/ZBJsFL/RHZOzeSAVErrngDmLTTvJci0R9WvOyvOxMk8CsLKvqM=
+	t=1750175195; cv=none; b=WlQI8/quwSUZBb56BL54ruQqmEqvE26rSw0tjYGJkH8VHrF0qL1go7DXI9i/E3tCMZ1giXZC9VGoCRaw7q2+LyzDXxGfPBlb1O3V1mP5HKZ2qaLvA/P7GeM5U9ChzQsQ4M+rvv0sPotZSLBza6jZ/XUAvePwGa48PeSYlyEQOwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750175185; c=relaxed/simple;
-	bh=u6NdcmKp29GHEJYFd/PZF2wOXOc6cWRj2cdzc1xzNmg=;
+	s=arc-20240116; t=1750175195; c=relaxed/simple;
+	bh=iXmnWLFAXysEQNaBpPg8sK79kkIL5gXQpRd0JOq+L7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RycDyyF/4xkeLl5FTfE5qbHmHuKHYLY4iG/s6Vl1nfQbrvBrsej1/AaU+JqWd9sHGdOAFCWL/vus1cJmqiUwPjRWfHxFEgZ0nngvw3Y/0Xpl5z7dUvprbcgHjKMb84ziXeMTrAN15ZFhZVT8HoK8rcTiK79JqKtIOxXaStx2uiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JejlLfSc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD28EC4CEE7;
-	Tue, 17 Jun 2025 15:46:24 +0000 (UTC)
+	 MIME-Version; b=sOD2q1wUkkEcTrhx3CtlpUKZ+BlnGPVUl1jZY/7Xcot6f6YVXd6s2EiY1PytMy4LQxV5c2y3mELr/X63PUE7LX85EY7S5ziR0bd19Wk0cde+5xaLsV/pJZhyl3eLDGiPdkhjVQ/NhEnkzdnAsXNO6i++l++gx47+GloogPU8Xa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaK81szb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4C0C4CEE3;
+	Tue, 17 Jun 2025 15:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750175185;
-	bh=u6NdcmKp29GHEJYFd/PZF2wOXOc6cWRj2cdzc1xzNmg=;
+	s=korg; t=1750175194;
+	bh=iXmnWLFAXysEQNaBpPg8sK79kkIL5gXQpRd0JOq+L7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JejlLfSc6fUHqzMyh8ITEL0nu3a6HBXwHXG5oj4njNSnd5i2r5HtwAFAKHe/Vuc+l
-	 5a2U1zF+RMp30wEfohiKrC9Zm3L74q4Xrp3oPjZ43jVuXd5Y7HURlYCanY5iFJWkrY
-	 azMTdrre8j6+pL4bGcMw1g7OQ3MFNSbmKYuK0RfI=
+	b=aaK81szbkF8R1poMnIlP/LiKV6TfcMh/3wGg7fk/FZpC+mjRosXSp7iMyDabkR2+7
+	 H+BdgiudKuzaYj7Hns2dhf0X5PXRM1HtN/ONdwWYYqYkMMAepB/ZMYWhX+uczYoXLN
+	 og140cXXUNgANYq0HRXASrJ6mroAP51eS6tdLir0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Simon Horman <horms@kernel.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	John Cheung <john.cs.hey@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/356] octeontx2-pf: QOS: Refactor TC_HTB_LEAF_DEL_LAST callback
-Date: Tue, 17 Jun 2025 17:24:26 +0200
-Message-ID: <20250617152344.311082253@linuxfoundation.org>
+Subject: [PATCH 6.6 152/356] calipso: Dont call calipso functions for AF_INET sk.
+Date: Tue, 17 Jun 2025 17:24:27 +0200
+Message-ID: <20250617152344.351682118@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
 References: <20250617152338.212798615@linuxfoundation.org>
@@ -67,58 +69,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 67af4ec948e8ce3ea53a9cf614d01fddf172e56d ]
+[ Upstream commit 6e9f2df1c550ead7cecb3e450af1105735020c92 ]
 
-This patch addresses below issues,
+syzkaller reported a null-ptr-deref in txopt_get(). [0]
 
-1. Active traffic on the leaf node must be stopped before its send queue
-   is reassigned to the parent. This patch resolves the issue by marking
-   the node as 'Inner'.
+The offset 0x70 was of struct ipv6_txoptions in struct ipv6_pinfo,
+so struct ipv6_pinfo was NULL there.
 
-2. During a system reboot, the interface receives TC_HTB_LEAF_DEL
-   and TC_HTB_LEAF_DEL_LAST callbacks to delete its HTB queues.
-   In the case of TC_HTB_LEAF_DEL_LAST, although the same send queue
-   is reassigned to the parent, the current logic still attempts to update
-   the real number of queues, leadning to below warnings
+However, this never happens for IPv6 sockets as inet_sk(sk)->pinet6
+is always set in inet6_create(), meaning the socket was not IPv6 one.
 
-        New queues can't be registered after device unregistration.
-        WARNING: CPU: 0 PID: 6475 at net/core/net-sysfs.c:1714
-        netdev_queue_update_kobjects+0x1e4/0x200
+The root cause is missing validation in netlbl_conn_setattr().
 
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250522115842.1499666-1-hkelam@marvell.com
+netlbl_conn_setattr() switches branches based on struct
+sockaddr.sa_family, which is passed from userspace.  However,
+netlbl_conn_setattr() does not check if the address family matches
+the socket.
+
+The syzkaller must have called connect() for an IPv6 address on
+an IPv4 socket.
+
+We have a proper validation in tcp_v[46]_connect(), but
+security_socket_connect() is called in the earlier stage.
+
+Let's copy the validation to netlbl_conn_setattr().
+
+[0]:
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 2 UID: 0 PID: 12928 Comm: syz.9.1677 Not tainted 6.12.0 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:txopt_get include/net/ipv6.h:390 [inline]
+RIP: 0010:
+Code: 02 00 00 49 8b ac 24 f8 02 00 00 e8 84 69 2a fd e8 ff 00 16 fd 48 8d 7d 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 53 02 00 00 48 8b 6d 70 48 85 ed 0f 84 ab 01 00
+RSP: 0018:ffff88811b8afc48 EFLAGS: 00010212
+RAX: dffffc0000000000 RBX: 1ffff11023715f8a RCX: ffffffff841ab00c
+RDX: 000000000000000e RSI: ffffc90007d9e000 RDI: 0000000000000070
+RBP: 0000000000000000 R08: ffffed1023715f9d R09: ffffed1023715f9e
+R10: ffffed1023715f9d R11: 0000000000000003 R12: ffff888123075f00
+R13: ffff88810245bd80 R14: ffff888113646780 R15: ffff888100578a80
+FS:  00007f9019bd7640(0000) GS:ffff8882d2d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f901b927bac CR3: 0000000104788003 CR4: 0000000000770ef0
+PKRU: 80000000
+Call Trace:
+ <TASK>
+ calipso_sock_setattr+0x56/0x80 net/netlabel/netlabel_calipso.c:557
+ netlbl_conn_setattr+0x10c/0x280 net/netlabel/netlabel_kapi.c:1177
+ selinux_netlbl_socket_connect_helper+0xd3/0x1b0 security/selinux/netlabel.c:569
+ selinux_netlbl_socket_connect_locked security/selinux/netlabel.c:597 [inline]
+ selinux_netlbl_socket_connect+0xb6/0x100 security/selinux/netlabel.c:615
+ selinux_socket_connect+0x5f/0x80 security/selinux/hooks.c:4931
+ security_socket_connect+0x50/0xa0 security/security.c:4598
+ __sys_connect_file+0xa4/0x190 net/socket.c:2067
+ __sys_connect+0x12c/0x170 net/socket.c:2088
+ __do_sys_connect net/socket.c:2098 [inline]
+ __se_sys_connect net/socket.c:2095 [inline]
+ __x64_sys_connect+0x73/0xb0 net/socket.c:2095
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xaa/0x1b0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f901b61a12d
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f9019bd6fa8 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 00007f901b925fa0 RCX: 00007f901b61a12d
+RDX: 000000000000001c RSI: 0000200000000140 RDI: 0000000000000003
+RBP: 00007f901b701505 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f901b5b62a0 R15: 00007f9019bb7000
+ </TASK>
+Modules linked in:
+
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: John Cheung <john.cs.hey@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAP=Rh=M1LzunrcQB1fSGauMrJrhL6GGps5cPAKzHJXj6GQV+-g@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20250522221858.91240-1-kuniyu@amazon.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/netlabel/netlabel_kapi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 37db19584c143..92861f102590f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -1560,6 +1560,7 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
- 	if (!node->is_static)
- 		dwrr_del_node = true;
- 
-+	WRITE_ONCE(node->qid, OTX2_QOS_QID_INNER);
- 	/* destroy the leaf node */
- 	otx2_qos_disable_sq(pfvf, qid);
- 	otx2_qos_destroy_node(pfvf, node);
-@@ -1604,9 +1605,6 @@ static int otx2_qos_leaf_del_last(struct otx2_nic *pfvf, u16 classid, bool force
- 	}
- 	kfree(new_cfg);
- 
--	/* update tx_real_queues */
--	otx2_qos_update_tx_netdev_queues(pfvf);
--
- 	return 0;
- }
- 
+diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
+index 27511c90a26f4..75b645c1928db 100644
+--- a/net/netlabel/netlabel_kapi.c
++++ b/net/netlabel/netlabel_kapi.c
+@@ -1140,6 +1140,9 @@ int netlbl_conn_setattr(struct sock *sk,
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case AF_INET6:
++		if (sk->sk_family != AF_INET6)
++			return -EAFNOSUPPORT;
++
+ 		addr6 = (struct sockaddr_in6 *)addr;
+ 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
+ 						   &addr6->sin6_addr);
 -- 
 2.39.5
 
