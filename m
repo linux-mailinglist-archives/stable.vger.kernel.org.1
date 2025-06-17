@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-154429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE32AADD996
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 19:07:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC695ADD76A
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 491651BC0528
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 905A54A62C8
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865E62FA656;
-	Tue, 17 Jun 2025 16:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680092ED153;
+	Tue, 17 Jun 2025 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3pwDr5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2CZ4ael"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C642FA63F;
-	Tue, 17 Jun 2025 16:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AB22EE266;
+	Tue, 17 Jun 2025 16:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750179164; cv=none; b=RoOLJrKz1aHY+u76UyF/ziTjsRlPN93qaeamPjqK2VQkae1WYB/kBOHK+kGFH39+dKP3+Wa3f2o/HoBfQcHwaLKMWrg1jnSM0b7tEVo1UHsrIiU7mtCJfvgzsY6tWs/XXKCxXk/JeR2DuuiF7Xm1INTNUsRBz01dv8giXBWaU0Y=
+	t=1750177868; cv=none; b=lD6OasJm54YGuGbDEf7xJNUPgSnYHFlx+xW096tFl0RQjrhDEmF3C0B0BuCFS17jL2Ovz4eJ85OljYOMwNj/ZTf9UKHgZ2AYQLR5of9P7z+Ml4FM2P6gpbkcJD7wUypKF0JhQbzoDxOMfTM5pFnYVz3ZNRfTixgF1ObGjfJawzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750179164; c=relaxed/simple;
-	bh=rjXIossGE1O0SzeLBLti8LhdsQDuudpprau3E22E5pQ=;
+	s=arc-20240116; t=1750177868; c=relaxed/simple;
+	bh=8/jLO4rak0ikUCgUhtsvBiQ/r89ghrWYezOxhOFrJiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLwoG9WvzbOYwXolBWyWJT+vDeqInL7X2bKPDFl9JCpJYFnl+qnFRAGBu+6lnxiEo4m9pqf2YhumnVjpWnVavJwtRLMOkWYVQx6IUCIdFMUPyJgTWx5I5uUE7rNyxUPOeYGMeKWiQSTgufUNar0/sDpd0JVaU5do9+uLcojYF6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3pwDr5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B935C4CEE3;
-	Tue, 17 Jun 2025 16:52:42 +0000 (UTC)
+	 MIME-Version; b=bmHoUPL5bumCEVzteSNixpHM21Ek5o/DMlZqeR5NZbruA6chPniZtlanOgNHM72ZJ+82nA9c1uo2MIeZblQAzo2m/a1n0KX+pZxDGe/DQs0Lvnsw4wgjzuo1diOegxUnrZQ1DzfZ7C9MkiD6Q+G3kGRD5BYrMbPEPDEs9KumnaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2CZ4ael; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85173C4CEE7;
+	Tue, 17 Jun 2025 16:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750179162;
-	bh=rjXIossGE1O0SzeLBLti8LhdsQDuudpprau3E22E5pQ=;
+	s=korg; t=1750177868;
+	bh=8/jLO4rak0ikUCgUhtsvBiQ/r89ghrWYezOxhOFrJiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3pwDr5AQk8O3i2z4GkCf5r8oxpyBrOl1vx/9Kl8i6Llyh2j7rgG7WLkigMujLtUA
-	 cuSsYp78XTaFdIOFY17w62Ce1TUgl6/7zVU8bY1nGlnGwXHb5gH3lovuRnWKizJ091
-	 aZE5eagh9f9DcZd2pwyM7hLo9+SRNyZv4pANZRhU=
+	b=u2CZ4aelQWhjI29VWTJPLGMPB24JkvtiPZ0WDwAS6Q5rJVMo6FvtRS9gTtuFAo4TI
+	 7sPj1ekiZx8yNUUnUni0Mzh4rhSzQhJdbwczBm21rd8Xdjv/d/QV/ar/+/dpi74Wot
+	 QXtFNcTQEeL1jgquW1/geDjYI8H9HoL4+oEFHlKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 666/780] Bluetooth: btintel_pcie: Reduce driver buffer posting to prevent race condition
+Subject: [PATCH 6.12 408/512] mmc: sdhci-of-dwcmshc: add PD workaround on RK3576
 Date: Tue, 17 Jun 2025 17:26:14 +0200
-Message-ID: <20250617152518.589762287@linuxfoundation.org>
+Message-ID: <20250617152436.107626283@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-[ Upstream commit bf2ffc4d14db29cab781549912d2dc69127f4d3e ]
+[ Upstream commit 08f959759e1e6e9c4b898c51a7d387ac3480630b ]
 
-Modify the driver to post 3 fewer buffers than the maximum rx buffers
-(64) allowed for the firmware. This change mitigates a hardware issue
-causing a race condition in the firmware, improving stability and data
-handling.
+RK3576's power domains have a peculiar design where the PD_NVM power
+domain, of which the sdhci controller is a part, seemingly does not have
+idempotent runtime disable/enable. The end effect is that if PD_NVM gets
+turned off by the generic power domain logic because all the devices
+depending on it are suspended, then the next time the sdhci device is
+unsuspended, it'll hang the SoC as soon as it tries accessing the CQHCI
+registers.
 
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+RK3576's UFS support needed a new dev_pm_genpd_rpm_always_on function
+added to the generic power domains API to handle what appears to be a
+similar hardware design.
+
+Use this new function to ask for the same treatment in the sdhci
+controller by giving rk3576 its own platform data with its own postinit
+function. The benefit of doing this instead of marking the power domains
+always on in the power domain core is that we only do this if we know
+the platform we're running on actually uses the sdhci controller. For
+others, keeping PD_NVM always on would be a waste, as they won't run
+into this specific issue. The only other IP in PD_NVM that could be
+affected is FSPI0. If it gets a mainline driver, it will probably want
+to do the same thing.
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+Fixes: cfee1b507758 ("pmdomain: rockchip: Add support for RK3576 SoC")
+Cc: <stable@vger.kernel.org> # v6.15+
+Link: https://lore.kernel.org/r/20250423-rk3576-emmc-fix-v3-1-0bf80e29967f@collabora.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 40 +++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index a4883523ccc9e..385e29367dd1d 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -305,7 +305,11 @@ static int btintel_pcie_start_rx(struct btintel_pcie_data *data)
- 	int i, ret;
- 	struct rxq *rxq = &data->rxq;
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 8fd80dac11bfd..bf29aad082a19 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -17,6 +17,7 @@
+ #include <linux/module.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/sizes.h>
+@@ -787,6 +788,29 @@ static void dwcmshc_rk35xx_postinit(struct sdhci_host *host, struct dwcmshc_priv
+ 	}
+ }
  
--	for (i = 0; i < rxq->count; i++) {
-+	/* Post (BTINTEL_PCIE_RX_DESCS_COUNT - 3) buffers to overcome the
-+	 * hardware issues leading to race condition at the firmware.
-+	 */
++static void dwcmshc_rk3576_postinit(struct sdhci_host *host, struct dwcmshc_priv *dwc_priv)
++{
++	struct device *dev = mmc_dev(host->mmc);
++	int ret;
 +
-+	for (i = 0; i < rxq->count - 3; i++) {
- 		ret = btintel_pcie_submit_rx(data);
- 		if (ret)
- 			return ret;
++	/*
++	 * This works around the design of the RK3576's power domains, which
++	 * makes the PD_NVM power domain, which the sdhci controller on the
++	 * RK3576 is in, never come back the same way once it's run-time
++	 * suspended once. This can happen during early kernel boot if no driver
++	 * is using either PD_NVM or its child power domain PD_SDGMAC for a
++	 * short moment, leading to it being turned off to save power. By
++	 * keeping it on, sdhci suspending won't lead to PD_NVM becoming a
++	 * candidate for getting turned off.
++	 */
++	ret = dev_pm_genpd_rpm_always_on(dev, true);
++	if (ret && ret != -EOPNOTSUPP)
++		dev_warn(dev, "failed to set PD rpm always on, SoC may hang later: %pe\n",
++			 ERR_PTR(ret));
++
++	dwcmshc_rk35xx_postinit(host, dwc_priv);
++}
++
+ static int th1520_execute_tuning(struct sdhci_host *host, u32 opcode)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -1218,6 +1242,18 @@ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk35xx_pdata = {
+ 	.postinit = dwcmshc_rk35xx_postinit,
+ };
+ 
++static const struct dwcmshc_pltfm_data sdhci_dwcmshc_rk3576_pdata = {
++	.pdata = {
++		.ops = &sdhci_dwcmshc_rk35xx_ops,
++		.quirks = SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN |
++			  SDHCI_QUIRK_BROKEN_TIMEOUT_VAL,
++		.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
++			   SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN,
++	},
++	.init = dwcmshc_rk35xx_init,
++	.postinit = dwcmshc_rk3576_postinit,
++};
++
+ static const struct dwcmshc_pltfm_data sdhci_dwcmshc_th1520_pdata = {
+ 	.pdata = {
+ 		.ops = &sdhci_dwcmshc_th1520_ops,
+@@ -1316,6 +1352,10 @@ static const struct of_device_id sdhci_dwcmshc_dt_ids[] = {
+ 		.compatible = "rockchip,rk3588-dwcmshc",
+ 		.data = &sdhci_dwcmshc_rk35xx_pdata,
+ 	},
++	{
++		.compatible = "rockchip,rk3576-dwcmshc",
++		.data = &sdhci_dwcmshc_rk3576_pdata,
++	},
+ 	{
+ 		.compatible = "rockchip,rk3568-dwcmshc",
+ 		.data = &sdhci_dwcmshc_rk35xx_pdata,
 -- 
 2.39.5
 
