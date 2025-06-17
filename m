@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-154307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3AEADD893
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:57:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0629FADD678
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7B775A22BB
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70D142C5E99
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5C5285067;
-	Tue, 17 Jun 2025 16:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4520C2E8E04;
+	Tue, 17 Jun 2025 16:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/1ZMpNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gp/udzM2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457BB239561;
-	Tue, 17 Jun 2025 16:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA292E8DFE;
+	Tue, 17 Jun 2025 16:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750178770; cv=none; b=RbWwJsuxCxWleT5E5K1MMfIw1PU/NnYeA+SCxfBatoiwQsHdb/59Cg3NPVXcXWLTTqbhcPxD8DdMsXemCaRbnOq+MgS+jU9t4m7AaQQWFxzWZnKyj2gOQnvIr8VtcCt8dAqUrZu/2mDba1RrHgFvIEiJk5Fapx0a5WhAmY1ZdPI=
+	t=1750176957; cv=none; b=D0ZsKJkhP2P6D6lAH2glT8ABG5+p5XiQkICoSCoqLV1IK+60blUwnqd+yyIQk6Qso86QRg7cA48qIWfmwewuxU06B3I6h7AHz1dAJwQO1OndwEhhKpoAy2seMp+3IfTN+xSisnUint4/nFLT73JMngVGa76sol547ntjHE0hfx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750178770; c=relaxed/simple;
-	bh=Sd48opIUpeSHApqDRF8B9IgLjMupzvT8xu7MR7XmKps=;
+	s=arc-20240116; t=1750176957; c=relaxed/simple;
+	bh=EZpRY+ElMOE8qzIRgQJJwBXrFfvZHKkQwIi5d/CkwKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCiwCYCNZzjmjCbAo1P6eq63VKwcCFnm2PshEX1eZC/tiwra/5BPm+R98IyfY2CSdZnMa54fC6S58a/UZBUE2sk2QgHBIZe3scM5qbjgRkQXr0K6i6XfToIcZ/zBWbFtKUqpkc5Oid5bJhiBV5gKoCq2OSDIXtmtIMWSDI3PAaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/1ZMpNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB272C4CEE7;
-	Tue, 17 Jun 2025 16:46:09 +0000 (UTC)
+	 MIME-Version; b=FDUCrrS10Aq0gmsX+VcSroiZhEku/H+0e8rHovZYDWy5O1x9yeEq0QfjZMvlEmhkYPdCq+NJYUKQ3Fi9GpN9YfjdWLl3CxTqX2reV7gQLXel8pNxVpUfZNG6jMVLdKyfU02BPHhqMLjk9zYD8W4FOjYTFsXGAGwjxJPFpkg9IFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gp/udzM2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3827C4CEE3;
+	Tue, 17 Jun 2025 16:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750178770;
-	bh=Sd48opIUpeSHApqDRF8B9IgLjMupzvT8xu7MR7XmKps=;
+	s=korg; t=1750176956;
+	bh=EZpRY+ElMOE8qzIRgQJJwBXrFfvZHKkQwIi5d/CkwKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/1ZMpNWYnQvOsHmqp2E9rUi3ilhp7lQ3gfhXXv5iO8oah0BHfKyob8IygfPIe3vd
-	 To3NTiksvXgN9H0lE7oGek/ZoiiGkDycW5ywJ8xc5fM80kRbjWsDWwo411vh096U7y
-	 Bl2vTLyd/IJB4WKAxEAFF+y4k5EMz4Jrucmj108g=
+	b=Gp/udzM2bmijUPnePLt2mkbxuW/Nbfe7nipm2bXDcvkkEVTREl42k4ao0uZJNEgxc
+	 ndpx7glPtoEkBsCEoNI5awbj1e7HChOmwzcovY3anJhXGvWzzUsNwR3qNSM5zi8c0s
+	 o/PlWn4n7u5P+EuhnIS17iHnfbgBi/YiBxSxWF1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roxana Nicolescu <nicolescu.roxana@protonmail.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 541/780] misc: lis3lv02d: Fix correct sysfs directory path for lis3lv02d
+Subject: [PATCH 6.12 283/512] perf trace: Fix leaks of struct thread in set_filter_loop_pids()
 Date: Tue, 17 Jun 2025 17:24:09 +0200
-Message-ID: <20250617152513.544266490@linuxfoundation.org>
+Message-ID: <20250617152431.061900150@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152451.485330293@linuxfoundation.org>
-References: <20250617152451.485330293@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +69,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roxana Nicolescu <nicolescu.roxana@protonmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 7b386d7454b610534026b279aa150e5a9e584082 ]
+[ Upstream commit 30d20fb1f84ad5c92706fe2c6cbb2d4cc293e671 ]
 
-The lis3lv02d driver does not create a platform device anymore. It was
-recently changed to use a faux device instead. Therefore the sysfs path
-has changed from /sys/devices/platform/lis3lv02d to
-/sys/devices/faux/lis3lv02d.
+I've found some leaks from 'perf trace -a'.
 
-Fixes: 3b18ccb5472b ("misc: lis3lv02d: convert to use faux_device")
-Signed-off-by: Roxana Nicolescu <nicolescu.roxana@protonmail.com>
-Link: https://lore.kernel.org/r/20250506110002.36477-1-nicolescu.roxana@protonmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It seems there are more leaks but this is what I can find for now.
+
+Fixes: 082ab9a18e532864 ("perf trace: Filter out 'sshd' in the tracer ancestry in syswide tracing")
+Reviewed-by: Howard Chu <howardchu95@gmail.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250403054213.7021-1-namhyung@kernel.org
+[ split from a larget patch ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/misc-devices/lis3lv02d.rst | 6 +++---
- drivers/misc/lis3lv02d/Kconfig           | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ tools/perf/builtin-trace.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/misc-devices/lis3lv02d.rst b/Documentation/misc-devices/lis3lv02d.rst
-index 959bd2b822cfa..6b3b7405ebdf6 100644
---- a/Documentation/misc-devices/lis3lv02d.rst
-+++ b/Documentation/misc-devices/lis3lv02d.rst
-@@ -22,10 +22,10 @@ sporting the feature officially called "HP Mobile Data Protection System 3D" or
- models (full list can be found in drivers/platform/x86/hp_accel.c) will have
- their axis automatically oriented on standard way (eg: you can directly play
- neverball). The accelerometer data is readable via
--/sys/devices/platform/lis3lv02d. Reported values are scaled
-+/sys/devices/faux/lis3lv02d. Reported values are scaled
- to mg values (1/1000th of earth gravity).
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index ecd26e058baf6..ee82e858ab200 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -3986,10 +3986,13 @@ static int trace__set_filter_loop_pids(struct trace *trace)
+ 		if (!strcmp(thread__comm_str(parent), "sshd") ||
+ 		    strstarts(thread__comm_str(parent), "gnome-terminal")) {
+ 			pids[nr++] = thread__tid(parent);
++			thread__put(parent);
+ 			break;
+ 		}
++		thread__put(thread);
+ 		thread = parent;
+ 	}
++	thread__put(thread);
  
--Sysfs attributes under /sys/devices/platform/lis3lv02d/:
-+Sysfs attributes under /sys/devices/faux/lis3lv02d/:
- 
- position
-       - 3D position that the accelerometer reports. Format: "(x,y,z)"
-@@ -85,7 +85,7 @@ the accelerometer are converted into a "standard" organisation of the axes
- If your laptop model is not recognized (cf "dmesg"), you can send an
- email to the maintainer to add it to the database.  When reporting a new
- laptop, please include the output of "dmidecode" plus the value of
--/sys/devices/platform/lis3lv02d/position in these four cases.
-+/sys/devices/faux/lis3lv02d/position in these four cases.
- 
- Q&A
- ---
-diff --git a/drivers/misc/lis3lv02d/Kconfig b/drivers/misc/lis3lv02d/Kconfig
-index bb2fec4b5880b..56005243a230d 100644
---- a/drivers/misc/lis3lv02d/Kconfig
-+++ b/drivers/misc/lis3lv02d/Kconfig
-@@ -10,7 +10,7 @@ config SENSORS_LIS3_SPI
- 	help
- 	  This driver provides support for the LIS3LV02Dx accelerometer connected
- 	  via SPI. The accelerometer data is readable via
--	  /sys/devices/platform/lis3lv02d.
-+	  /sys/devices/faux/lis3lv02d.
- 
- 	  This driver also provides an absolute input class device, allowing
- 	  the laptop to act as a pinball machine-esque joystick.
-@@ -26,7 +26,7 @@ config SENSORS_LIS3_I2C
- 	help
- 	  This driver provides support for the LIS3LV02Dx accelerometer connected
- 	  via I2C. The accelerometer data is readable via
--	  /sys/devices/platform/lis3lv02d.
-+	  /sys/devices/faux/lis3lv02d.
- 
- 	  This driver also provides an absolute input class device, allowing
- 	  the device to act as a pinball machine-esque joystick.
+ 	err = evlist__append_tp_filter_pids(trace->evlist, nr, pids);
+ 	if (!err && trace->filter_pids.map)
 -- 
 2.39.5
 
