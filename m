@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-153544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-154094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB9BADD578
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:21:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0AFADD809
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 18:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C95C819E0C62
-	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:08:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5A24A7F29
+	for <lists+stable@lfdr.de>; Tue, 17 Jun 2025 16:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241822EB5CF;
-	Tue, 17 Jun 2025 16:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B842922FE11;
+	Tue, 17 Jun 2025 16:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MC27yYeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUUsep3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD2E2F2346;
-	Tue, 17 Jun 2025 16:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A5F20CCFB;
+	Tue, 17 Jun 2025 16:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750176305; cv=none; b=K6MM70dWB4B6IRTXCPhODVNlKyUidpHP07nJeHQrPTrEZZgs4+/gMVIqluQ+h+9h9y3lp6qXIPhmdw/R9BOx+d8TIa3zE/m9EKhjK+sAv9PQfSSXaGCRjLzlXNRVtoLnFo3NV1TIIZ2scNY3xE40pEXvS5oWSnd3XVau3+LxQH4=
+	t=1750178082; cv=none; b=GYlG7AR0sp7yB3LNQFHLe205Nktlie2e6+h/uJkQmdstHSG8jWV0ET5XCW0v4y/e7gflOkEgK3o3lAv1UL2HPXZDVX1tQC8xz/V3+I5hRC+WjYC6PoX0+zDhQ36PMRMcfSSNRPxAs+DpIu5guFQSOOxLMGv7y2LN20DzHp30zjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750176305; c=relaxed/simple;
-	bh=htO05rXnm3XXqL8jUF9QjEBLdH/2DjL3qLibkSRsLnw=;
+	s=arc-20240116; t=1750178082; c=relaxed/simple;
+	bh=Zjq5N6F9BhD2Efm3sqwlTwwRxd37+A75eUNaWkjY/d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4mozw4MfFHD+ci4/h8Fzvi9dS5ez9VSUBg5bCeoZMuAO2+Khlg6U1SQjfKn7MSLwn1cHQk/7nqwhbVHyemXenvLnY2Jorf/rOjJ8ivo/HvW/noSSPYPAwGw6pDLjXEDYhVsI9Le7tlqNxS8vUx32orqmOoc9/J0y87zHZN6ky8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MC27yYeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1C8C4CEE3;
-	Tue, 17 Jun 2025 16:05:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N3RxPfrnzjNxuiSVq14dV0r0n4HNew8fshVjo7bhAgoM6xE0DHYWFgrWvtXhKIEnHOqC1JEncfevAwnV0UR1WA6iI+29Wvc3H4xY+vJsqfg/JTARJYsMkO6D4aoUwNFj+inzAZpOewbv7CTt3qzB5hh8oN5Kknlh1Mdsiai0de0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUUsep3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4262C4CEE3;
+	Tue, 17 Jun 2025 16:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750176305;
-	bh=htO05rXnm3XXqL8jUF9QjEBLdH/2DjL3qLibkSRsLnw=;
+	s=korg; t=1750178082;
+	bh=Zjq5N6F9BhD2Efm3sqwlTwwRxd37+A75eUNaWkjY/d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MC27yYeK/2zwiuiUTVYBjkVtrMUNds3Qt2XGRfnTmqQWoS4hSY5HyhtPWVe57Udby
-	 BluQCtGTAEbAjKC/xobOlyXCS8Ij2MeTIp4M3BxB93o9lj7EubjQvxPzyvJnO6m+nQ
-	 XjEQmR2RW8U8d1vfsF3J0+DbBlwO15QasRmbGSqM=
+	b=dUUsep3grlZxec1NUaHeJFetz0TmP2SsZN2Ydo8XsNd1nFJkyOEr5lBKvp0bCfW7z
+	 AddBRUzNzNE3MEFCjsykukXjRGgh1e9asjgeKloBsfuppQ+02vAIOyEQs/Dtv82G3W
+	 eQ5b/0cFekEn+O3KboApUxmc8R4Os8pVxD2MzI8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Shaun Brady <brady.1345@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/356] netfilter: nf_nat: also check reverse tuple to obtain clashing entry
+Subject: [PATCH 6.12 413/512] pinctrl: samsung: add gs101 specific eint suspend/resume callbacks
 Date: Tue, 17 Jun 2025 17:26:19 +0200
-Message-ID: <20250617152348.831287944@linuxfoundation.org>
+Message-ID: <20250617152436.317161676@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250617152338.212798615@linuxfoundation.org>
-References: <20250617152338.212798615@linuxfoundation.org>
+In-Reply-To: <20250617152419.512865572@linuxfoundation.org>
+References: <20250617152419.512865572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +61,198 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 50d9ce9679dd50df2dc51ada717fa875bc248fad ]
+[ Upstream commit bdbe0a0f71003b997d6a2dbe4bc7b5b0438207c7 ]
 
-The logic added in the blamed commit was supposed to only omit nat source
-port allocation if neither the existing nor the new entry are subject to
-NAT.
+gs101 differs to other SoCs in that fltcon1 register doesn't
+always exist. Additionally the offset of fltcon0 is not fixed
+and needs to use the newly added eint_fltcon_offset variable.
 
-However, its not enough to lookup the conntrack based on the proposed
-tuple, we must also check the reverse direction.
-
-Otherwise there are esoteric cases where the collision is in the reverse
-direction because that colliding connection has a port rewrite, but the
-new entry doesn't.  In this case, we only check the new entry and then
-erronously conclude that no clash exists anymore.
-
- The existing (udp) tuple is:
-  a:p -> b:P, with nat translation to s:P, i.e. pure daddr rewrite,
-  reverse tuple in conntrack table is s:P -> a:p.
-
-When another UDP packet is sent directly to s, i.e. a:p->s:P, this is
-correctly detected as a colliding entry: tuple is taken by existing reply
-tuple in reverse direction.
-
-But the colliding conntrack is only searched for with unreversed
-direction, and we can't find such entry matching a:p->s:P.
-
-The incorrect conclusion is that the clashing entry has timed out and
-that no port address translation is required.
-
-Such conntrack will then be discarded at nf_confirm time because the
-proposed reverse direction clashes with an existing mapping in the
-conntrack table.
-
-Search for the reverse tuple too, this will then check the NAT bits of
-the colliding entry and triggers port reallocation.
-
-Followp patch extends nft_nat.sh selftest to cover this scenario.
-
-The IPS_SEQ_ADJUST change is also a bug fix:
-Instead of checking for SEQ_ADJ this tested for SEEN_REPLY and ASSURED
-by accident -- _BIT is only for use with the test_bit() API.
-
-This bug has little consequence in practice, because the sequence number
-adjustments are only useful for TCP which doesn't support clash resolution.
-
-The existing test case (conntrack_reverse_clash.sh) exercise a race
-condition path (parallel conntrack creation on different CPUs), so
-the colliding entries have neither SEEN_REPLY nor ASSURED set.
-
-Thanks to Yafang Shao and Shaun Brady for an initial investigation
-of this bug.
-
-Fixes: d8f84a9bc7c4 ("netfilter: nf_nat: don't try nat source port reallocation for reverse dir clash")
-Closes: https://bugzilla.netfilter.org/show_bug.cgi?id=1795
-Reported-by: Yafang Shao <laoar.shao@gmail.com>
-Reported-by: Shaun Brady <brady.1345@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Tested-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 4a8be01a1a7a ("pinctrl: samsung: Add gs101 SoC pinctrl configuration")
+Cc: stable@vger.kernel.org  # depends on the previous three patches
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250402-pinctrl-fltcon-suspend-v6-3-78ce0d4eb30c@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_nat_core.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ .../pinctrl/samsung/pinctrl-exynos-arm64.c    | 24 +++----
+ drivers/pinctrl/samsung/pinctrl-exynos.c      | 71 +++++++++++++++++++
+ drivers/pinctrl/samsung/pinctrl-exynos.h      |  2 +
+ 3 files changed, 85 insertions(+), 12 deletions(-)
 
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index ccca6e3848bcc..9df883d79acc9 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -248,7 +248,7 @@ static noinline bool
- nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
- 		      const struct nf_conn *ignored_ct)
- {
--	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST_BIT;
-+	static const unsigned long uses_nat = IPS_NAT_MASK | IPS_SEQ_ADJUST;
- 	const struct nf_conntrack_tuple_hash *thash;
- 	const struct nf_conntrack_zone *zone;
- 	struct nf_conn *ct;
-@@ -287,8 +287,14 @@ nf_nat_used_tuple_new(const struct nf_conntrack_tuple *tuple,
- 	zone = nf_ct_zone(ignored_ct);
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+index ce61a85c7784a..a2ac1702d0dfa 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos-arm64.c
+@@ -1024,15 +1024,15 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
+ 		.pin_banks	= gs101_pin_alive,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_alive),
+ 		.eint_wkup_init = exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (FAR_ALIVE) */
+ 		.pin_banks	= gs101_pin_far_alive,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_far_alive),
+ 		.eint_wkup_init = exynos_eint_wkup_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (GSACORE) */
+ 		.pin_banks	= gs101_pin_gsacore,
+@@ -1046,29 +1046,29 @@ static const struct samsung_pin_ctrl gs101_pin_ctrl[] __initconst = {
+ 		.pin_banks	= gs101_pin_peric0,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric0),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (PERIC1) */
+ 		.pin_banks	= gs101_pin_peric1,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_peric1),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume	= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (HSI1) */
+ 		.pin_banks	= gs101_pin_hsi1,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi1),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	}, {
+ 		/* pin banks of gs101 pin-controller (HSI2) */
+ 		.pin_banks	= gs101_pin_hsi2,
+ 		.nr_banks	= ARRAY_SIZE(gs101_pin_hsi2),
+ 		.eint_gpio_init = exynos_eint_gpio_init,
+-		.suspend	= exynos_pinctrl_suspend,
+-		.resume		= exynos_pinctrl_resume,
++		.suspend	= gs101_pinctrl_suspend,
++		.resume		= gs101_pinctrl_resume,
+ 	},
+ };
  
- 	thash = nf_conntrack_find_get(net, zone, tuple);
--	if (unlikely(!thash)) /* clashing entry went away */
--		return false;
-+	if (unlikely(!thash)) {
-+		struct nf_conntrack_tuple reply;
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
+index af4fb1cde8de9..7887fd4166511 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
+@@ -799,6 +799,41 @@ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank)
+ 	}
+ }
+ 
++void gs101_pinctrl_suspend(struct samsung_pin_bank *bank)
++{
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++	const void __iomem *regs = bank->eint_base;
 +
-+		nf_ct_invert_tuple(&reply, tuple);
-+		thash = nf_conntrack_find_get(net, zone, &reply);
-+		if (!thash) /* clashing entry went away */
-+			return false;
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		save->eint_con = readl(regs + EXYNOS_GPIO_ECON_OFFSET
++				       + bank->eint_offset);
++
++		save->eint_fltcon0 = readl(regs + EXYNOS_GPIO_EFLTCON_OFFSET
++					   + bank->eint_fltcon_offset);
++
++		/* fltcon1 register only exists for pins 4-7 */
++		if (bank->nr_pins > 4)
++			save->eint_fltcon1 = readl(regs +
++						EXYNOS_GPIO_EFLTCON_OFFSET
++						+ bank->eint_fltcon_offset + 4);
++
++		save->eint_mask = readl(regs + bank->irq_chip->eint_mask
++					+ bank->eint_offset);
++
++		pr_debug("%s: save     con %#010x\n",
++			 bank->name, save->eint_con);
++		pr_debug("%s: save fltcon0 %#010x\n",
++			 bank->name, save->eint_fltcon0);
++		if (bank->nr_pins > 4)
++			pr_debug("%s: save fltcon1 %#010x\n",
++				 bank->name, save->eint_fltcon1);
++		pr_debug("%s: save    mask %#010x\n",
++			 bank->name, save->eint_mask);
++	} else if (bank->eint_type == EINT_TYPE_WKUP) {
++		exynos_set_wakeup(bank);
 +	}
++}
++
+ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+@@ -818,6 +853,42 @@ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank)
+ 	}
+ }
  
- 	ct = nf_ct_tuplehash_to_ctrack(thash);
- 
++void gs101_pinctrl_resume(struct samsung_pin_bank *bank)
++{
++	struct exynos_eint_gpio_save *save = bank->soc_priv;
++
++	void __iomem *regs = bank->eint_base;
++	void __iomem *eint_fltcfg0 = regs + EXYNOS_GPIO_EFLTCON_OFFSET
++		     + bank->eint_fltcon_offset;
++
++	if (bank->eint_type == EINT_TYPE_GPIO) {
++		pr_debug("%s:     con %#010x => %#010x\n", bank->name,
++			 readl(regs + EXYNOS_GPIO_ECON_OFFSET
++			       + bank->eint_offset), save->eint_con);
++
++		pr_debug("%s: fltcon0 %#010x => %#010x\n", bank->name,
++			 readl(eint_fltcfg0), save->eint_fltcon0);
++
++		/* fltcon1 register only exists for pins 4-7 */
++		if (bank->nr_pins > 4)
++			pr_debug("%s: fltcon1 %#010x => %#010x\n", bank->name,
++				 readl(eint_fltcfg0 + 4), save->eint_fltcon1);
++
++		pr_debug("%s:    mask %#010x => %#010x\n", bank->name,
++			 readl(regs + bank->irq_chip->eint_mask
++			       + bank->eint_offset), save->eint_mask);
++
++		writel(save->eint_con, regs + EXYNOS_GPIO_ECON_OFFSET
++		       + bank->eint_offset);
++		writel(save->eint_fltcon0, eint_fltcfg0);
++
++		if (bank->nr_pins > 4)
++			writel(save->eint_fltcon1, eint_fltcfg0 + 4);
++		writel(save->eint_mask, regs + bank->irq_chip->eint_mask
++		       + bank->eint_offset);
++	}
++}
++
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank)
+ {
+ 	struct exynos_eint_gpio_save *save = bank->soc_priv;
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.h b/drivers/pinctrl/samsung/pinctrl-exynos.h
+index 837b737c6f0a7..c70b8ead56b4b 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.h
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.h
+@@ -215,6 +215,8 @@ void exynosautov920_pinctrl_resume(struct samsung_pin_bank *bank);
+ void exynosautov920_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_suspend(struct samsung_pin_bank *bank);
+ void exynos_pinctrl_resume(struct samsung_pin_bank *bank);
++void gs101_pinctrl_suspend(struct samsung_pin_bank *bank);
++void gs101_pinctrl_resume(struct samsung_pin_bank *bank);
+ struct samsung_retention_ctrl *
+ exynos_retention_init(struct samsung_pinctrl_drv_data *drvdata,
+ 		      const struct samsung_retention_data *data);
 -- 
 2.39.5
 
